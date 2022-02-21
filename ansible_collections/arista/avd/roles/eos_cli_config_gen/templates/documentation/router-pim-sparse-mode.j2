@@ -13,7 +13,7 @@
 | ------------------------ | ------------- |
 {%             for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort %}
 {%                 set rp_groups = router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups | arista.avd.default(['-']) | join(', ') %}
-| {{ rp_address }} | rp_groups |
+| {{ rp_address }} | {{ rp_groups }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
