@@ -624,8 +624,8 @@ port_channel_interfaces:
     type: switched
     shutdown: false
     mode: access
-    mtu: 1600
     vlans: 110
+    mtu: 1600
     mlag: 11
 ethernet_interfaces:
   Ethernet5:

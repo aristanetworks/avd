@@ -186,7 +186,7 @@ Syntax:
 
 ```jinja
 {% <value> is arista.avd.defined(test_value=<test_value>,
-                                 var_type=['float', 'int', 'str', 'list', 'dict', 'tuple'],
+                                 var_type=['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool'],
                                  fail_action=['warning','error'],
                                  var_name=<string representing name of value>) %}
 ```
@@ -436,25 +436,36 @@ The module arguments are:
           list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
           # Filter out keys from the generated output if value is null/none/undefined
           strip_empty_keys: < true (default) | false >
+    # Output list 'avd_yaml_templates_to_facts_debug' with timestamps of each performed action.
+    debug: < true | false (default) >
+    # Destination path. If set, the output facts will also be written to this path.
+    # Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
+    dest: < path >
+    # If true the output data will be run through another jinja2 rendering before returning.
+    # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    template_output: < true | false (default) >
 ```
 
 **example:**
 
 ```yaml
 - name: Set AVD facts
+  tags: [build, provision]
   yaml_templates_to_facts:
     templates: "{{ templates.facts }}"
+  delegate_to: localhost
   check_mode: no
   changed_when: False
-  tags: [build, provision]
 
 - name: Generate device configuration in structured format
-  yaml_templates_to_facts:
-    root_key: structured_config
-    templates: "{{ templates.structured_config }}"
-  check_mode: no
-  changed_when: False
   tags: [build, provision]
+  yaml_templates_to_facts:
+    templates: "{{ templates.structured_config }}"
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    template_output: True
+  delegate_to: localhost
+  check_mode: no
+  register: structured_config
 ```
 
 Role default variables applied to this example:

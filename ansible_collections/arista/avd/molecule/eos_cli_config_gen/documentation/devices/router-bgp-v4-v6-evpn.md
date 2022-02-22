@@ -69,7 +69,8 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -106,7 +107,7 @@ interface Management1
 | Remote AS | 65000 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -147,20 +148,20 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 1.1.1.1 | 1 | default | - | - |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 1.1.1.1 | 1 | default | False | - | - | - | - |
+| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - |
+| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - |
+| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - |
+| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - |
+| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - |
+| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - |
+| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY |
+| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY |
+| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY |
+| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | - | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG | - | - |
+| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - |
 
 ### Router BGP EVPN Address Family
 

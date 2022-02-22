@@ -65,9 +65,6 @@ STP mode: **rapid-pvst**
 | 3 | 8192 |
 | 100-500 | 16384 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -98,7 +95,8 @@ spanning-tree vlan-id 100-500 priority 16384
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

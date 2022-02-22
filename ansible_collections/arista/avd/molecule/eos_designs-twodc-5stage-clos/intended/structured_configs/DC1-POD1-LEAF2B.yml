@@ -151,10 +151,10 @@ router_bgp:
   vlans:
     110:
       tenant: Tenant_A
-      rd: 172.16.110.5:10110
+      rd: 172.16.110.5:99110
       route_targets:
         both:
-        - 10110:10110
+        - 99110:99110
       redistribute_routes:
       - learned
     111:
@@ -167,10 +167,10 @@ router_bgp:
       - learned
     112:
       tenant: Tenant_A
-      rd: 172.16.110.5:50112
+      rd: 172.16.110.5:20112
       route_targets:
         both:
-        - 50112:50112
+        - 20112:20112
       redistribute_routes:
       - learned
     2500:
@@ -183,10 +183,10 @@ router_bgp:
       - learned
     2600:
       tenant: Tenant_A
-      rd: 172.16.110.5:2600
+      rd: 172.16.110.5:32600
       route_targets:
         both:
-        - 2600:2600
+        - 32600:32600
       redistribute_routes:
       - learned
 static_routes:
@@ -240,7 +240,9 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n\
+  \  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback\
+  \ created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
   4094:
     tenant: system
@@ -728,11 +730,11 @@ vxlan_interface:
         111:
           vni: 50111
         112:
-          vni: 50112
+          vni: 10112
         2500:
           vni: 2500
         2600:
-          vni: 2600
+          vni: 12600
       vrfs:
         Common_VRF:
           vni: 1025

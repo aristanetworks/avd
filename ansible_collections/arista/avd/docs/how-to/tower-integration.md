@@ -131,7 +131,7 @@ First go to __Resources > Projects__ and create a new one using:
 - Ansible Environment: `/your/path/to/venv`
 - SCM URL: `https://github.com/arista-netdevops-community/avd-with-ansible-tower-awx.git`
 
-![](../_media/awx-create-project-venv.png)
+![AWX create project](../_media/awx-create-project-venv.png)
 
 This project will be used for 2 things:
 
@@ -146,7 +146,7 @@ Next action is to create an inventory in AWX. It is a 2 step actions:
 
 Go to __Resources > Inventory__
 
-![](../_media/awx-create-inventory.png)
+![AWX create inventory](../_media/awx-create-inventory.png)
 
 Once ready, you need to add a source to your inventory
 
@@ -154,21 +154,21 @@ Once ready, you need to add a source to your inventory
 
 In your inventory, select __Sources__
 
-![](../_media/awx-inventory-add-source.png)
+![AWX add source(s)](../_media/awx-inventory-add-source.png)
 
 Then add a source using your existing project
 
-![](../_media/awx-create-source.png)
+![AWX create source(s)](../_media/awx-create-source.png)
 
-In our example, our inventory file is part of a subdirectory. So we had to type the path manually as it was not part of the suggestion list. Also, don't forget to specificy virtual-env to use with this inventory.
+In our example, our inventory file is part of a subdirectory. So we had to type the path manually as it was not part of the suggestion list. Also, don't forget to specify virtual-env to use with this inventory.
 
-Onc you click on `Save` button, select __SYNC-ALL__ button to get all hosts part of your inventory:
+Once you click on `Save` button, select __SYNC-ALL__ button to get all hosts part of your inventory:
 
-![](../_media/awx-inventory-add-source.png)
+![AWX sync source(s)](../_media/awx-inventory-add-source.png)
 
 You should get all your devices in __Resources > Inventory > Your inventory Name__
 
-![](../_media/awx-inventory-list-devices.png)
+![AWX inventory list](../_media/awx-inventory-list-devices.png)
 
 Now we can focus on playbook itself.
 
@@ -186,7 +186,7 @@ In this section you have to provide at least:
 
 As AVD implements Ansible `TAGS`, we have specified `build` only, but you can adapt to your own setup.
 
-![](../_media/awx-create-template.png)
+![Create template in AWX](../_media/awx-create-template.png)
 
 You can configure more than just one playbook, but we will focus on playbook definition as it is not an AWX user's guide.
 
@@ -208,12 +208,11 @@ collections:
     version: 2.1.0
 ```
 
-
 ### What to change to work with AVD and AWX
 
 Ansible has a default variable that point to inventory file used in playbook and named `{{ inventory_file }}`. Since AWX/Tower is using a database, this variable is not available anymore and [inventory file does not exist in such environment](https://github.com/ansible/awx/issues/5926).
 
-AVD use this variable to read inventory and to build container topology on Cloudvision. So to mitigate this behavior, a small warkaround is to add a task that download your inventory from your git repository and define `{{ inventory_file }}`:
+AVD uses this variable to read inventory and to build container topology on Cloudvision. So to mitigate this behavior, a small workaround is to add a task that downloads your inventory from your git repository and define `{{ inventory_file }}`:
 
 - Define variable:
 
@@ -257,4 +256,4 @@ inventory_file: '/tmp/inventory.yml'
 
 Under __Resources > Templates__ click on the rocket icon to start playbook execution
 
-![](../_media/awx-playbook-run.png)
+![AWX run a playbook](../_media/awx-playbook-run.png)

@@ -1,4 +1,4 @@
-Type, Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
 {% set interfaces_done = [] %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
@@ -22,7 +22,7 @@ Type, Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Pee
 {%                         set peer_hostvars = hostvars[peer] | arista.avd.default %}
 {%                         if peer_hostvars.ethernet_interfaces is arista.avd.defined %}
 {%                             if peer_hostvars.ethernet_interfaces[peer_interface] is arista.avd.defined %}
-{%                                set peer_ip_address = peer_hostvars.ethernet_interfaces[peer_interface].ip_address | arista.avd.default("") %}
+{%                                 set peer_ip_address = peer_hostvars.ethernet_interfaces[peer_interface].ip_address | arista.avd.default("") %}
 {%                             endif %}
 {%                         endif %}
 {%                         do csv_line.append(peer_ip_address) %}

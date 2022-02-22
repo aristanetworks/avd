@@ -1,6 +1,6 @@
 # AVD Coding style
 
-This page provides a list of guidelines to apply when developing Jinja2 template in AVD context. These rules apply for either creation or update of any J2 file available in aristanetworks/ansible-avd repository.
+This page provides a list of guidelines to apply when developing the Jinja2 template in the AVD context. These rules apply for either creation or update of any J2 file available in aristanetworks/ansible-avd repository.
 
 ## Python code style
 
@@ -36,12 +36,12 @@ When variables are used in combination with a filter, `|` shall be enclosed by s
 
 - _Description_
 
-Nested jinja code block shall follow next rules:
+Nested jinja code block shall follow the next rules:
 
-* All J2 statements must be enclosed by 1 space
-* All J2 statements must be indented by 4 more spaces within jinja delimiter
-* To close a control, end tag must have same indentation level
-* Indentation are 4 spaces and NOT tabulation
+- All J2 statements must be enclosed by 1 space
+- All J2 statements must be indented by 4 more spaces within the jinja delimiter
+- To close a control, the end tag must have the same indentation level as the opening tag
+- Indentation must be 4 spaces and NOT tabulation
 
 - _Example_
 
@@ -58,11 +58,11 @@ Nested jinja code block shall follow next rules:
 {% endfor %}
 ```
 
-### SYNTAX-4 - Expand list on single line
+### SYNTAX-4 - Expand list on a single line
 
 - _Description_
 
-Instead of doing a for loop on a single line, `join` filter should be leverage as much as possible
+Instead of doing a for loop on a single line, the `join` filter should be leveraged as much as possible
 
 - _Example_
 
@@ -70,23 +70,23 @@ Instead of doing a for loop on a single line, `join` filter should be leverage a
 {{ ciphers | join(", ") }}
 ```
 
-### SYNTAX-5 - Test if variable in a list
+### SYNTAX-5 - Test if a variable in a list
 
 __Description__
 
-To test if a variable is part of a list, `in` operator should be used as much as possible to avoid long `if/elif/else` block.
+To test if a variable is part of a list, the `in` operator should be used as much as possible to avoid long `if/elif/else` block.
 
 __Example__
 
 ```jinja
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol in ['ibgp', 'isis', 'ospf'] %}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol in ['isis', 'ospf'] %}
 ```
 
 ### SYNTAX-6 - Render long CLI
 
 - _Description_
 
-When a long CLI with multiple options needs to be built, use a pure J2 logic and then print
+When a long CLI with multiple options needs to be built, use pure J2 logic and then print
 
 - _Example_
 
@@ -121,7 +121,7 @@ All variables shall use lower case
 
 - _Description_
 
-If variable is multi-words, underscore `_` shall be used as a separator.
+If a variable is multi-words, underscore `_` shall be used as a separator.
 
 - _Example_
 
@@ -133,7 +133,7 @@ If variable is multi-words, underscore `_` shall be used as a separator.
 
 - _Description_
 
-For iterable variable, the plural form shall be used
+For an iterable variable, the plural form shall be used
 
 - _Example_
 
@@ -157,20 +157,19 @@ For variables in a for loop, the singular form shall be used
 
 __Description__
 
-Tilde `~` symbol should be used for string concatenation as it automatically converts variables to a string.
+Tilde `~` should be used for string concatenation as it automatically converts variables to a string.
 
 __Example__
 
 ```jinja
-{% set ip_helper_cli = " source-interface " ~ vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface %}
+{% set ip_helper_cli = ip_helper_cli ~ " source-interface " ~ vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface %}
 ```
-
 
 ### VAR-6 - Variable type comparison
 
 __Description__
 
-To test type of a variable, it is recommended to use `is`/`is not` keywords
+To test the type of a variable, it is recommended to use `is`/`is not` keywords
 
 __Example__
 
@@ -186,20 +185,20 @@ __Example__
 
 __Description__
 
-To test content of a variable, it is recommended to use `==`/`!=` keywords
+To test the content of a variable, it is recommended to use `==`/`!=` keywords
 
 __Example__
 
 ```jinja
-{# Test if variable is string #}
+{# Test if variable is equal to 'Ethernet1' #}
 {% if ethernet_interface == 'Ethernet1' %}
 
-{# Test if variable is not a string #}
+{# Test if variable is not equal to 'Ethernet1' #}
 {% if ethernet_interface != 'Ethernet1' %}
 ```
 
 !!! info
-    Also [PLUGIN-2](#plugin-2-test-if-variable-exists-with-given-value) can do test if variable is defined and has specific value
+    Also [PLUGIN-2](#plugin-2-test-if-variable-exists-with-a-given-value) can do a test if the variable is defined and has a specific value
 
 ### VAR-8 - String comparison
 
@@ -210,7 +209,7 @@ All strings should be compared based on lowercase format.
 __Example__
 
 ```jinja
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
 ```
 
 ---
@@ -223,7 +222,7 @@ Plugins documentation is available [here](../../plugins/README.md)
 
 - _Description_
 
-All tests to check if variable is defined shall be done with __`arista.avd.defined`__.
+All tests to check if a variable is defined shall be done with __`arista.avd.defined`__.
 Test also does a deep test and does not require to do test at upper level.
 
 - _Example_
@@ -236,11 +235,11 @@ Test also does a deep test and does not require to do test at upper level.
 {% if router_bgp.vrfs[vrf].rd is arista.avd.defined %}
 ```
 
-### PLUGIN-2 - Test if variable exists with given value
+### PLUGIN-2 - Test if variable exists with a given value
 
 - _Description_
 
-To test if a variable is defined and has a specific value, test __`arista.avd.defined`__ shall be used
+To test if a variable is defined and has a specific value, the test __`arista.avd.defined`__ shall be used
 
 - _Example_
 
@@ -252,15 +251,15 @@ To test if a variable is defined and has a specific value, test __`arista.avd.de
 
 - _Description_
 
-If a default value must be used, `arista.avd.default` plugin shall be used instead of a `if/else` block.
-Plugin can be used to fallback to different value until one of them is defined and valid
+If a default value must be used, the `arista.avd.default` plugin shall be used instead of a `if/else` block.
+The plugin can be used to fallback to different value(s) until one of them is defined and valid
 
 - _Example_
 
 ```jinja
-{# Simple default value with fix value #}
-{{ vlan.name | arista.avd.default('test') }}
+{# Simple default test with one default value #}
+{{ vlan.name | arista.avd.default('test_vlan') }}
 
-{# Default value with list of options #}
-{{ vlan.name | arista.avd.default(default.vlan.name, 'test') }}
+{# Default test with a list of default options #}
+{{ vlan.name | arista.avd.default(default.vlan.name, 'test_vlan') }}
 ```

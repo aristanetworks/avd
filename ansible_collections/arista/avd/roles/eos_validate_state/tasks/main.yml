@@ -10,21 +10,15 @@
   delegate_to: localhost
   run_once: true
 
-- name: Check if structure configuration file exists
-  tags:
-    - always
-  stat:
-    path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
-  register: stat_result
-  delegate_to: localhost
-  when: structured_config is not defined
-
 - name: Include device intended structure configuration variables
-  include_vars: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+  include_vars: "{{ filename }}"
   delegate_to: localhost
+  # errors='ignore' is needed for compatibility with ansible-core < 2.12
+  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+  vars:
+    filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
   tags:
     - always
-  when: structured_config is not defined and stat_result.stat.exists
 
 - name: Generate variables for testing
   template:
@@ -125,10 +119,10 @@
   tags:
     - routing_table
 
-- name: Validate loopback0 reachability
-  include_tasks: "loopback0_reachability.yml"
+- name: Validate loopback reachability
+  include_tasks: "loopback_reachability.yml"
   tags:
-    - loopback0_reachability
+    - loopback_reachability
 
 - name: Remove generated vars for testing
   file:

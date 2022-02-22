@@ -7,7 +7,7 @@
 {%     if ethernet_interfaces[ethernet_interface].bfd.interval is arista.avd.defined and
           ethernet_interfaces[ethernet_interface].bfd.min_rx is arista.avd.defined and
           ethernet_interfaces[ethernet_interface].bfd.multiplier is arista.avd.defined %}
-{%        set ethernet_interface_bfd.configured = true %}
+{%         set ethernet_interface_bfd.configured = true %}
 {%     endif %}
 {% endfor %}
 {% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
@@ -28,7 +28,7 @@
 
 # BFD
 {## Router BFD #}
-{% include 'documentation/router-bfd.j2' %}
+{%     include 'documentation/router-bfd.j2' %}
 {## BFD Interfaces #}
-{% include 'documentation/bfd-interfaces.j2' %}
+{%     include 'documentation/bfd-interfaces.j2' %}
 {% endif %}

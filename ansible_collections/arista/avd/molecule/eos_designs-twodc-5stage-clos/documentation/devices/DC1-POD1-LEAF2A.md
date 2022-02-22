@@ -166,7 +166,7 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4094**
+- Spanning Tree disabled for VLANs: **4094**
 
 ## Spanning Tree Device Configuration
 
@@ -626,11 +626,11 @@ interface Vlan4094
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
-
-#### EVPN MLAG Shared Router MAC : mlag-system-id
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
+| EVPN MLAG Shared Router MAC | mlag-system-id |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -638,9 +638,9 @@ interface Vlan4094
 | ---- | --- | ---------- | --------------- |
 | 110 | 10110 | - | - |
 | 111 | 50111 | - | - |
-| 112 | 50112 | - | - |
+| 112 | 10112 | - | - |
 | 2500 | 2500 | - | - |
-| 2600 | 2600 | - | - |
+| 2600 | 12600 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
 
@@ -662,9 +662,9 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 50111
-   vxlan vlan 112 vni 50112
+   vxlan vlan 112 vni 10112
    vxlan vlan 2500 vni 2500
-   vxlan vlan 2600 vni 2600
+   vxlan vlan 2600 vni 12600
    vxlan vrf Common_VRF vni 1025
    vxlan vrf vrf_with_loopbacks_dc1_pod1_only vni 1102
    vxlan vrf vrf_with_loopbacks_from_overlapping_pool vni 1100
@@ -700,7 +700,8 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| Common_VRF | true |
+| default | true |
+| Common_VRF | true |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | true |
 | vrf_with_loopbacks_from_overlapping_pool | true |
@@ -723,12 +724,12 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || Common_VRF | false |
+| default | false |
+| Common_VRF | false |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | false |
 | vrf_with_loopbacks_from_overlapping_pool | false |
 | vrf_with_loopbacks_from_pod_pools | false |
-
 
 ## Static Routes
 
@@ -769,7 +770,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -794,17 +795,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 100.100.100.201 | 65211 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.10.1 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.16.110.1 | 65110.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.16.110.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.17.110.8 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.110.10 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.110.12 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.110.14 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 100.100.100.201 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.110.8 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.10 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.12 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.14 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -820,11 +821,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.4:10110 | 10110:10110 | - | - | learned |
+| 110 | 172.16.110.4:99110 | 99110:99110 | - | - | learned |
 | 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned |
-| 112 | 172.16.110.4:50112 | 50112:50112 | - | - | learned |
+| 112 | 172.16.110.4:20112 | 20112:20112 | - | - | learned |
 | 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.110.4:2600 | 2600:2600 | - | - | learned |
+| 2600 | 172.16.110.4:32600 | 32600:32600 | - | - | learned |
 
 ### Router BGP VRFs
 
@@ -897,8 +898,8 @@ router bgp 65112.100
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 110
-      rd 172.16.110.4:10110
-      route-target both 10110:10110
+      rd 172.16.110.4:99110
+      route-target both 99110:99110
       redistribute learned
    !
    vlan 111
@@ -907,8 +908,8 @@ router bgp 65112.100
       redistribute learned
    !
    vlan 112
-      rd 172.16.110.4:50112
-      route-target both 50112:50112
+      rd 172.16.110.4:20112
+      route-target both 20112:20112
       redistribute learned
    !
    vlan 2500
@@ -917,8 +918,8 @@ router bgp 65112.100
       redistribute learned
    !
    vlan 2600
-      rd 172.16.110.4:2600
-      route-target both 2600:2600
+      rd 172.16.110.4:32600
+      route-target both 32600:32600
       redistribute learned
    !
    address-family evpn
@@ -991,8 +992,9 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

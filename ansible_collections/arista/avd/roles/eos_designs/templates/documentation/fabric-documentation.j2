@@ -156,11 +156,11 @@
 
 | POD | Node | CLNS Address |
 | --- | ---- | ------------ |
-{% for fabric_switch in fabric_switches %}
-{%     if fabric_switch.router_isis_net is arista.avd.defined %}
+{%     for fabric_switch in fabric_switches %}
+{%         if fabric_switch.router_isis_net is arista.avd.defined %}
 | {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.router_isis_net }} |
-{%     endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
 
 {% endif %}
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)

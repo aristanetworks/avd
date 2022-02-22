@@ -17,6 +17,7 @@ local_users:
     role: < Specify a role for the user >
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     sha512_password: "< SHA512 ENCRYPTED password >"
+    ssh_key: "< ssh_key_string >"
 
   < username_2 >:
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
@@ -42,7 +43,10 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < CV as a Service hostname >
+# cvp_ingestauth_key is required for on-prem CVP
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
+# cvp_token_file is only applicable to CV as a Service
+cvp_token_file: < 'path_to_token_file_on_switch' | default -> '/tmp/cv-onboarding-token' >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
@@ -60,8 +64,8 @@ mgmt_destination_networks:
 
 # list of DNS servers | Optional
 name_servers:
- - < IPv4_address_1 >
- - < IPv4_address_2 >
+  - < IPv4_address_1 >
+  - < IPv4_address_2 >
 
 # Set SNMP settings | Optional
 snmp_settings:
@@ -77,14 +81,13 @@ Gives ability to monitor and react to Syslog messages provides a powerful and fl
 
 ```yaml
 event_handlers:
-  evpn-blacklist-recovery:    # Name of the event-handler
+  < event_handler_name >:
     action_type: < bash, increment >
     action: < Command to run when handler is triggered >
     delay: < int / delay in sec between 2 triggers >
     trigger: < on-logging >
     regex:  < string to trigger handler >
     asynchronous: < true, false >
-
 ```
 
 ### Example for EVPN blacklist recovery

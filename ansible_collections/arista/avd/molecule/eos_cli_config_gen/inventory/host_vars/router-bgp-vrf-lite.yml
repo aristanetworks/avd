@@ -52,6 +52,10 @@ router_bgp:
       remote_as: 65003
       update_source: Loopback101
       ebgp_multihop: 10
+    SEDI-shut:
+      type: ipv4
+      description: 'BGP Peer Shutdown'
+      shutdown: true
   redistribute_routes:
     - static
   address_family_ipv4:
@@ -61,6 +65,9 @@ router_bgp:
       WELCOME_ROUTERS:
         activate: true
       SEDI:
+        activate: true
+        route_map_out: RM-BGP-EXPORT-DEFAULT-BLUE-C1
+      SEDI-shut:
         activate: true
         route_map_out: RM-BGP-EXPORT-DEFAULT-BLUE-C1
   vrfs:
@@ -75,6 +82,11 @@ router_bgp:
         101.0.3.1:
           peer_group: SEDI
           weight: 100
+        101.0.3.2:
+          peer_group: SEDI
+          shutdown: true
+        101.0.3.3:
+          peer_group: SEDI-shut
       redistribute_routes:
         - static
       aggregate_addresses:

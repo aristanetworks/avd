@@ -3,7 +3,7 @@
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
 <div style="text-align:center">
-  <img src="../../../../media/5-stage-topology.gif" />
+  <img src="../../../media/5-stage-topology.gif" />
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -151,6 +151,28 @@ defaults <- node_group <- node_group.node <- node
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
 
+    # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+    # Useful in EVPN multhoming designs.
+    link_tracking:
+      enabled: < true | false | default -> false >
+      # Link Tracking Groups | Optional
+      # By default a single group named "LT_GROUP1" is defined with default values. Any groups defined under "groups" will replace the default.
+      groups:
+        - name: < tracking_group_name >
+          recovery_delay: < 0-3600 | default -> platform_settings_mlag_reload_delay -> 300 >
+          # Optional
+          links_minimum: < 1-100000 >
+
+    # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+    # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+    lacp_port_id_range:
+      enabled: < true | false | default -> false >
+      # Recommended size > = number of ports in the switch.
+      size: < 1-65535 | default -> 128 >
+      # Offset is used to avoid overlapping port-id ranges of different switches | Optional
+      # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+      offset: < offset_for_lacp_port_id_range | default -> 0 >
+
     # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |
       < multiline eos cli >
@@ -185,10 +207,11 @@ defaults <- node_group <- node_group.node <- node
     uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
   # When nodes are part of node group
-  < node-group-name >:
-    nodes:
-      # Uplink switches interfaces (list), interface located on uplink switch. | Required.
-      uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+  node_groups:
+    < node-group-name >:
+      nodes:
+        # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+        uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
   # When nodes are not in node_group
   nodes:
@@ -223,6 +246,8 @@ defaults <- node_group <- node_group.node <- node
     vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
 
     # Offset all assigned loopback IP addresses.
+    # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+    # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
     loopback_ipv4_offset: 2
 
     # Set VXLAN source interface. Loopback1 is default
@@ -307,7 +332,7 @@ defaults <- node_group <- node_group.node <- node
     # MLAG Peer Link allowed VLANs
     mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
 
-    # IP address pool used for MLAG Peer Link (control link)| *Required when MLAG leafs present in topology.
+    # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
     # IP is derived from the node id.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 

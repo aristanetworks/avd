@@ -166,6 +166,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
 # Monitoring
@@ -228,9 +229,6 @@ STP Root Super: **True**
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
-
-### Global Spanning-Tree Settings
-
 
 ## Spanning Tree Device Configuration
 
@@ -480,6 +478,8 @@ interface Port-Channel10
    switchport
    switchport trunk allowed vlan 210-211
    switchport mode trunk
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
 !
 interface Port-Channel11
    description server01_MTU_PROFILE_MLAG_PortChanne1
@@ -487,12 +487,16 @@ interface Port-Channel11
    mtu 1600
    switchport
    switchport access vlan 110
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel12
    description server01_MTU_ADAPTOR_MLAG_PortChanne1
    no shutdown
    mtu 1601
    switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel20
    description FIREWALL01_PortChanne1
@@ -667,9 +671,10 @@ interface Vlan311
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -760,7 +765,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_APP_Zone | true |
 | Tenant_A_DB_Zone | true |
 | Tenant_A_OP_Zone | true |
@@ -787,14 +793,14 @@ ip routing vrf Tenant_C_OP_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_APP_Zone | false |
 | Tenant_A_DB_Zone | false |
 | Tenant_A_OP_Zone | false |
 | Tenant_A_WEB_Zone | false |
 | Tenant_B_OP_Zone | false |
 | Tenant_C_OP_Zone | false |
-
 
 ## Static Routes
 
@@ -833,7 +839,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -848,16 +854,16 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 172.31.255.16 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.18 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.20 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.22 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 172.31.255.16 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.18 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.20 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.22 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -871,14 +877,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 65001:12 | 12:12 | - | - | learned | 130-131 |
-| Tenant_A_DB_Zone | 65001:13 | 13:13 | - | - | learned | 140-141 |
-| Tenant_A_NFS | 65001:10161 | 10161:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 65001:10 | 10:10 | - | - | learned | 110-111 |
-| Tenant_A_VMOTION | 65001:10160 | 10160:10160 | - | - | learned | 160 |
-| Tenant_A_WEB_Zone | 65001:11 | 11:11 | - | - | learned | 120-121 |
-| Tenant_B_OP_Zone | 65001:20 | 20:20 | - | - | learned | 210-211 |
-| Tenant_C_OP_Zone | 65001:30 | 30:30 | - | - | learned | 310-311 |
+| Tenant_A_APP_Zone | 65001:12 | 100000:12 | - | - | learned | 130-131 |
+| Tenant_A_DB_Zone | 65001:13 | 100000:13 | - | - | learned | 140-141 |
+| Tenant_A_NFS | 65001:20161 | 100000:20161 | - | - | learned | 161 |
+| Tenant_A_OP_Zone | 65001:9 | 100000:9 | - | - | learned | 110-111 |
+| Tenant_A_VMOTION | 65001:20160 | 100000:20160 | - | - | learned | 160 |
+| Tenant_A_WEB_Zone | 65001:11 | 100000:11 | - | - | learned | 120-121 |
+| Tenant_B_OP_Zone | 65001:20 | 100000:20 | - | - | learned | 210-211 |
+| Tenant_C_OP_Zone | 65001:30 | 100000:30 | - | - | learned | 310-311 |
 
 ### Router BGP VRFs
 
@@ -886,7 +892,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | --- | ------------------- | ------------ |
 | Tenant_A_APP_Zone | 65001:12 | connected |
 | Tenant_A_DB_Zone | 65001:13 | connected |
-| Tenant_A_OP_Zone | 65001:10 | connected |
+| Tenant_A_OP_Zone | 65001:9 | connected |
 | Tenant_A_WEB_Zone | 65001:11 | connected |
 | Tenant_B_OP_Zone | 65001:20 | connected |
 | Tenant_C_OP_Zone | 65001:30 | connected |
@@ -939,49 +945,49 @@ router bgp 65102
    !
    vlan-aware-bundle Tenant_A_APP_Zone
       rd 65001:12
-      route-target both 12:12
+      route-target both 100000:12
       redistribute learned
       vlan 130-131
    !
    vlan-aware-bundle Tenant_A_DB_Zone
       rd 65001:13
-      route-target both 13:13
+      route-target both 100000:13
       redistribute learned
       vlan 140-141
    !
    vlan-aware-bundle Tenant_A_NFS
-      rd 65001:10161
-      route-target both 10161:10161
+      rd 65001:20161
+      route-target both 100000:20161
       redistribute learned
       vlan 161
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 65001:10
-      route-target both 10:10
+      rd 65001:9
+      route-target both 100000:9
       redistribute learned
       vlan 110-111
    !
    vlan-aware-bundle Tenant_A_VMOTION
-      rd 65001:10160
-      route-target both 10160:10160
+      rd 65001:20160
+      route-target both 100000:20160
       redistribute learned
       vlan 160
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 65001:11
-      route-target both 11:11
+      route-target both 100000:11
       redistribute learned
       vlan 120-121
    !
    vlan-aware-bundle Tenant_B_OP_Zone
       rd 65001:20
-      route-target both 20:20
+      route-target both 100000:20
       redistribute learned
       vlan 210-211
    !
    vlan-aware-bundle Tenant_C_OP_Zone
       rd 65001:30
-      route-target both 30:30
+      route-target both 100000:30
       redistribute learned
       vlan 310-311
    !
@@ -994,43 +1000,43 @@ router bgp 65102
    !
    vrf Tenant_A_APP_Zone
       rd 65001:12
-      route-target import evpn 12:12
-      route-target export evpn 12:12
+      route-target import evpn 100000:12
+      route-target export evpn 100000:12
       router-id 192.168.255.10
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
       rd 65001:13
-      route-target import evpn 13:13
-      route-target export evpn 13:13
+      route-target import evpn 100000:13
+      route-target export evpn 100000:13
       router-id 192.168.255.10
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
-      rd 65001:10
-      route-target import evpn 10:10
-      route-target export evpn 10:10
+      rd 65001:9
+      route-target import evpn 100000:9
+      route-target export evpn 100000:9
       router-id 192.168.255.10
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
       rd 65001:11
-      route-target import evpn 11:11
-      route-target export evpn 11:11
+      route-target import evpn 100000:11
+      route-target export evpn 100000:11
       router-id 192.168.255.10
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
       rd 65001:20
-      route-target import evpn 20:20
-      route-target export evpn 20:20
+      route-target import evpn 100000:20
+      route-target export evpn 100000:20
       router-id 192.168.255.10
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
       rd 65001:30
-      route-target import evpn 30:30
-      route-target export evpn 30:30
+      route-target import evpn 100000:30
+      route-target export evpn 100000:30
       router-id 192.168.255.10
       redistribute connected
 ```
@@ -1059,12 +1065,15 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
+#### IP IGMP Snooping Vlan Summary
 
-| VLAN | IGMP Snooping |
-| --- | --------------- |
-| 120 | disabled |
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 120 | False | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
@@ -1166,6 +1175,12 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.10
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

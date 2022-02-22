@@ -88,7 +88,8 @@ link tracking group EVPN_MH_ES2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

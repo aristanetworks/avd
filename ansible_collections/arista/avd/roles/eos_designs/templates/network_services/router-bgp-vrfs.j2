@@ -1,3 +1,4 @@
+{# j2lint: disable=V1 #}
 {# tenant router bgp evpn VRFs #}
 {% if switch.network_services_l3 is arista.avd.defined(true) %}
 {%     set bgp_vrf = namespace() %}
@@ -6,7 +7,8 @@
 {%         for vrf in tenant.vrfs %}
 {%             set bgp_vrf.address_family_ipv4_neighbors = [] %}
 {%             set bgp_vrf.address_family_ipv6_neighbors = [] %}
-{%             set leaf_evpn_rt = (network_services_data.evpn_rt_admin_subfield or vrf.vrf_vni) ~ ':' ~ vrf.vrf_vni %}
+{%             set bgp_vrf_id = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) %}
+{%             set leaf_evpn_rt = (network_services_data.rt_admin_subfield or bgp_vrf_id) ~ ':' ~ bgp_vrf_id %}
 {%             set route_targets = namespace(import={'evpn': [leaf_evpn_rt]}, export={'evpn': [leaf_evpn_rt]}) %}
 {%             for additional_route_target in vrf.additional_route_targets | arista.avd.natural_sort %}
 {%                 if inventory_hostname in additional_route_target.nodes | arista.avd.default([inventory_hostname]) %}
@@ -23,7 +25,7 @@
 {%             endfor %}
     {{ vrf.name }}:
       router_id: {{ switch.router_id }}
-      rd: "{{ network_services_data.evpn_rd_admin_subfield }}:{{ vrf.vrf_vni }}"
+      rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_id }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
@@ -75,8 +77,13 @@
 {%                             break %}
 {%                         endif %}
 {%                     endfor %}
-{%                 elif vrf.redistribute_static == true %}
+{%                 elif vrf.redistribute_static is arista.avd.defined(true)  %}
         - static
+{%                 endif %}
+{%             endif %}
+{%             if vrf.ospf.enabled is arista.avd.defined(true) and vrf.redistribute_ospf is not arista.avd.defined(false) %}
+{%                 if inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
+        - ospf
 {%                 endif %}
 {%             endif %}
       address_families:
