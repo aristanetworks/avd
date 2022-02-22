@@ -1711,6 +1711,14 @@ management_console:
   idle_timeout: < 0-86400 in minutes >
 ```
 
+#### Management Defaults
+
+```yaml
+management_defaults:
+  secret:
+    hash: < Hash algorithm >
+```
+
 #### Management Security
 
 ```yaml
