@@ -26,11 +26,7 @@ router_pim_sparse_mode:
               - 239.12.22.12/32
               - 239.12.22.13/32
               - 239.12.22.14/32
-    - name: MCAST_VRF2
+    - name: MCAST_VRF2_ALL_GROUPS
       ipv4:
         rp_addresses:
           - address: 10.238.3.161
-            groups:
-              - 239.12.22.16/32
-              - 239.12.22.20/32
-              - 239.12.22.21/32
