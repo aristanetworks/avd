@@ -1,4 +1,4 @@
-# policy-maps
+# policy-maps-pbr
 # Table of Contents
 
 - [Management](#management)
@@ -16,7 +16,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-  - [QOS Policy Maps](#qos-policy-maps)
 
 # Management
 
@@ -88,22 +87,26 @@ interface Management1
 
 ### PBR Policy Maps Summary
 
-#### PM_PBR_BREAKOUT
+#### POLICY_DROP_THEN_NEXTHOP
 
 | Class | Index | Drop | Nexthop | Recursive |
 | ----- | ----- | ---- | ------- | --------- |
-| CM_PBR_EXCLUDE | - | - | - | - |
-| CM_PBR_INCLUDE | - | - | 192.168.4.2 | True |
+| CLASS_DROP | 10 | True | - | - |
+| CLASS_NEXTHOP | 20 | - | 172.30.1.2 | True |
+| NO_ACTION | - | - | - | - |
 
 ### PBR Policy Maps Configuration
 
 ```eos
 !
-policy-map type pbr PM_PBR_BREAKOUT
-   class CM_PBR_EXCLUDE
+policy-map type pbr POLICY_DROP_THEN_NEXTHOP
+   10 class CLASS_DROP
+      drop
    !
-   class CM_PBR_INCLUDE
-      set nexthop recursive 192.168.4.2
+   20 class CLASS_NEXTHOP
+      set nexthop recursive 172.30.1.2
+   !
+   class NO_ACTION
 ```
 
 # Multicast
@@ -113,46 +116,3 @@ policy-map type pbr PM_PBR_BREAKOUT
 # ACL
 
 # Quality Of Service
-
-## QOS Policy Maps
-
-### QOS Policy Maps Summary
-
-**PM_REPLICATION_LD**
-
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | drop_precedence | 1 |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | traffic_class | 2 |
-| CM_REPLICATION_LD_2 | dscp | af11 |
-| CM_REPLICATION_LD_2 | traffic_class | 2 |
-
-**PM_REPLICATION_LD2**
-
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | cos | 4 |
-| CM_REPLICATION_LD | dscp | af11 |
-
-### QOS Policy Maps configuration
-
-```eos
-!
-policy-map type quality-of-service PM_REPLICATION_LD
-   class CM_REPLICATION_LD
-      set dscp af11
-      set traffic-class 2
-      set drop-precedence 1
-   !
-   class CM_REPLICATION_LD_2
-      set dscp af11
-      set traffic-class 2
-   !
-!
-policy-map type quality-of-service PM_REPLICATION_LD2
-   class CM_REPLICATION_LD
-      set dscp af11
-      set cos 4
-   !
-```
