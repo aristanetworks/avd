@@ -1765,6 +1765,7 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+  log_level: < SSH daemon log level >
 ```
 
 #### IP SSH Client Source Interfaces
