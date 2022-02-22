@@ -171,28 +171,28 @@ port_profiles:
             unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
         # Monitor Session configuration: use defined switchports as source or destination for monitoring sessions | Optional
-        monitor_session:
-          name: < session_name >
-          role: < source | destination >
-          source_settings:
-            - direction: < rx | tx | both >
+        monitor_sessions:
+          - name: < session_name >
+            role: < source | destination >
+            source_settings:
+              - direction: < rx | tx | both >
+                access_group:
+                  type: < ip | ipv6 | mac >
+                  name: < acl_name >
+                  priority: < priority >
+            # Session settings are defined per session name. Different session_settings with for same session name will be combined/merged
+            session_settings:
+              encapsulation_gre_metadata_tx: < true | false >
+              header_remove_size: < bytes >
               access_group:
                 type: < ip | ipv6 | mac >
                 name: < acl_name >
-                priority: < priority >
-          # Session settings are defined per session name. Different session_settings with for same session name will be combined/merged
-          session_settings:
-            encapsulation_gre_metadata_tx: < true | false >
-            header_remove_size: < bytes >
-            access_group:
-              type: < ip | ipv6 | mac >
-              name: < acl_name >
-            rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
-            rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
-            sample: < int >
-            truncate:
-              enabled: < true | false >
-              size: < bytes >
+              rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+              rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+              sample: < int >
+              truncate:
+                enabled: < true | false >
+                size: < bytes >
 
       # Example of port-channel adapter
       - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
