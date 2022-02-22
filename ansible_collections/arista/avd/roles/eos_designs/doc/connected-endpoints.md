@@ -175,11 +175,11 @@ port_profiles:
           - name: < session_name >
             role: < source | destination >
             source_settings:
-              - direction: < rx | tx | both >
-                access_group:
-                  type: < ip | ipv6 | mac >
-                  name: < acl_name >
-                  priority: < priority >
+              direction: < rx | tx | both >
+              access_group:
+                type: < ip | ipv6 | mac >
+                name: < acl_name >
+                priority: < priority >
             # Session settings are defined per session name. Different session_settings with for same session name will be combined/merged
             session_settings:
               encapsulation_gre_metadata_tx: < true | false >
