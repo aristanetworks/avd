@@ -56,13 +56,13 @@ pod_name: < POD_Name >
 
 The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](node-types.md)
 
-| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| super_spine        | ✅              | p2p          | none              | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
-| spine              | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
-| l3leaf             | ✅              | p2p          | client            | ✅                 | ✅                  | ✅  | ✅           | ✅                 |
-| l2leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
-| overlay_controller | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
+| super_spine        | ✅               | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| spine              | ✅               | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| l3leaf             | ✅               | p2p          | client            | ✅                   | ✅                   | ✅    | ✅            | ✅                   |
+| l2leaf             | ✘               | port-channel | none              | ✅                   | ✘                   | ✘    | ✅            | ✅                   |
+| overlay_controller | ✅               | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
 
 The variables should be applied to all devices in the fabric.
 
@@ -180,6 +180,10 @@ defaults <- node_group <- node_group.node <- node
     # Enable PTP on uplink links | Optional
     uplink_ptp:
       enable: < boolean >
+
+    # Enable MacSec on all uplinks | Optional
+    uplink_macsec:
+      profile: "< MacSec profile name >"
 
     # Point-to-Point interface speed - will apply to uplinks on both ends | Optional.
     uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
