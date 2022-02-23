@@ -98,6 +98,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -113,6 +114,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
@@ -128,6 +130,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_A_WAN_Zone:
@@ -145,6 +148,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -160,6 +164,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -175,6 +180,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -190,6 +196,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -205,6 +212,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -220,6 +228,7 @@ router_bgp:
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
+          description: DC1-SVC3A
       redistribute_routes:
       - connected
   vlan_aware_bundles:

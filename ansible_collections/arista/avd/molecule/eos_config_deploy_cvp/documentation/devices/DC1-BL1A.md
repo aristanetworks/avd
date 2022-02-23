@@ -792,6 +792,7 @@ router bgp 65104
       route-target export evpn 14:14
       router-id 192.168.255.10
       neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.11 description DC1-BL1B
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -800,6 +801,7 @@ router bgp 65104
       route-target export evpn 21:21
       router-id 192.168.255.10
       neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.11 description DC1-BL1B
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -808,6 +810,7 @@ router bgp 65104
       route-target export evpn 31:31
       router-id 192.168.255.10
       neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.11 description DC1-BL1B
       redistribute connected
 ```
 

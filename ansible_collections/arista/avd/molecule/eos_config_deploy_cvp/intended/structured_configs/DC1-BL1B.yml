@@ -92,6 +92,7 @@ router_bgp:
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: DC1-BL1A
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -107,6 +108,7 @@ router_bgp:
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: DC1-BL1A
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -122,6 +124,7 @@ router_bgp:
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: DC1-BL1A
       redistribute_routes:
       - connected
   vlan_aware_bundles:
