@@ -1716,7 +1716,7 @@ management_console:
 ```yaml
 management_defaults:
   secret:
-    hash: < Hash algorithm >
+    hash: < md5 | sha512 >
 ```
 
 #### Management Security
