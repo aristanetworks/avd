@@ -20,6 +20,9 @@ ethernet_interfaces:
     ptp:
       enable: {{ link.ptp }}
 {%         endif %}
+{%         if link.mac_security is arista.avd.defined %}
+    mac_security: {{ link.mac_security }}
+{%         endif %}
     type: routed
     shutdown: false
 {%         if link.ipv6_enable is arista.avd.defined(true) %}

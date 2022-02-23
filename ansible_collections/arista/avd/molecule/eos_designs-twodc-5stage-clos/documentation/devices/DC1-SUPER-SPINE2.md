@@ -185,6 +185,7 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet2
    no shutdown
+   mac security profile MACSEC_PROFILE
    mtu 1500
    no switchport
    ip address 172.16.11.64/31
@@ -194,6 +195,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet2
    no shutdown
+   mac security profile MACSEC_PROFILE
    mtu 1500
    no switchport
    ip address 172.16.11.66/31
@@ -203,6 +205,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2
    no shutdown
+   mac security profile MACSEC_PROFILE
    mtu 1500
    no switchport
    ip address 172.16.12.64/31
@@ -212,6 +215,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet2
    no shutdown
+   mac security profile MACSEC_PROFILE
    mtu 1500
    no switchport
    ip address 172.16.12.66/31
