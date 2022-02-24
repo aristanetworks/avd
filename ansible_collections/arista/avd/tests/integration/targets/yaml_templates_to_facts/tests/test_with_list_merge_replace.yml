@@ -1,0 +1,29 @@
+- name: Test with list_merge replace option
+  ignore_errors: yes
+  register: result
+  vars:
+    timezone: "test"
+    hours: 84
+  yaml_templates_to_facts:
+    templates:
+      - template: "templates/template.j2"
+      - template: "templates/template1.j2"
+        options:
+          strip_empty_keys: false
+          list_merge: 'replace'
+
+- assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts.clock is defined
+      - result.ansible_facts.clock.timezone is defined
+      - result.ansible_facts.clock.timezone == 'test1'
+      - result.ansible_facts.clock.hours is defined
+      - result.ansible_facts.clock.hours == 84
+      - result.ansible_facts.clock.minutes is defined
+      - result.ansible_facts.clock.minutes == 30
+      - result.ansible_facts.clock.seconds is defined
+      - result.ansible_facts.clock.seconds == [3, 4, 5, 5]
+      # TODO: Add checks for dictionary keys ordering

@@ -1,0 +1,5 @@
+---
+testcase: '*'
+collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collections/arista/avd/tests"
+expected_output_dir: "{{ collection_path }}/inventory/yaml_templates_to_facts/expected_output"
+actual_output_dir: "{{ collection_path }}/output"

@@ -14,6 +14,8 @@
 {% include 'eos/daemon-terminattr.j2' %}
 {# daemons #}
 {% include 'eos/daemons.j2' %}
+{# DHCP relay #}
+{% include 'eos/dhcp-relay.j2' %}
 {# ip dhcp relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
 {# switchport default #}
@@ -46,6 +48,8 @@
 {% include 'eos/logging.j2' %}
 {# match-list #}
 {% include 'eos/match-lists.j2' %}
+{# as-paths #}
+{% include 'eos/as-path.j2' %}
 {# macsec #}
 {% include 'eos/mac-security.j2' %}
 {# hostname #}
@@ -124,8 +128,8 @@
 {% include 'eos/tcam-profile.j2' %}
 {# Connectivity monitor configuration #}
 {% include 'eos/monitor-connectivity.j2' %}
-{# MAC address-table#}
-{% include 'eos/mac-address-table.j2' %}
+{# MAC address-table aging #}
+{% include 'eos/mac-address-table-aging-time.j2' %}
 {# Router virtual mac address #}
 {% include 'eos/virtual-router-mac-address.j2' %}
 {# Router virtual source nat #}
@@ -142,12 +146,18 @@
 {% include 'eos/ipv6-standard-access-lists.j2' %}
 {# Extended Access-lists #}
 {% include 'eos/access-lists.j2' %}
+{# Extended Access-lists, improved data model #}
+{% include 'eos/ip-access-lists.j2' %}
 {# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
+{# MAC Access-lists #}
+{% include 'eos/mac-access-lists.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
 {# IPv6 Routing #}
 {% include 'eos/ipv6-routing.j2' %}
+{# Monitor Sessions #}
+{% include 'eos/monitor-sessions.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
 {# IP Extended Community Lists #}
@@ -160,6 +170,8 @@
 {% include 'eos/ipv6-prefix-lists.j2' %}
 {# System Control-Plane#}
 {% include 'eos/system-control-plane.j2' %}
+{# mac address-table notification #}
+{% include 'eos/mac-address-table-notification.j2' %}
 {# maintenance #}
 {% include 'eos/maintenance.j2' %}
 {# mlag configuration #}
@@ -170,6 +182,8 @@
 {% include 'eos/ipv6-static-routes.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps-qos.j2' %}
+{# PBR policy-map #}
+{% include 'eos/policy-maps-pbr.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}
@@ -190,6 +204,8 @@
 {% include 'eos/router-multicast.j2' %}
 {# router general configuration #}
 {% include 'eos/router-general.j2' %}
+{# router traffic-engineering configuration #}
+{% include 'eos/router-traffic-engineering.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
 {# router pim sparse mode configuration #}

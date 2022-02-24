@@ -67,7 +67,7 @@
 {%         if p2p_link.include_in_underlay_protocol | arista.avd.default(
               p2p_profile.include_in_underlay_protocol) is arista.avd.defined(true) %}
 {# Include in underlay routing. Build routing data #}
-{%             if switch.underlay_routing_protocol in ["ebgp","ibgp"] %}
+{%             if switch.underlay_routing_protocol == "ebgp" %}
 {%                 set as = p2p_link.as | arista.avd.default(
                             p2p_profile.as) %}
 {%                 set p2p_bgp_neighbor = namespace() %}
@@ -76,7 +76,7 @@
 {%                 set p2p_bgp_neighbor.peer_group = bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") %}
 {%                 set p2p_bgp_neighbor.bfd = p2p_link.bfd | arista.avd.default(
                                               p2p_profile.bfd) %}
-{%                 if switch.bgp_as is arista.avd.defined and as[node_index] | string != switch.bgp_as %}
+{%                 if switch.bgp_as is arista.avd.defined and as[node_index] | string != switch.bgp_as %}
 {%                     set p2p_bgp_neighbor.local_as = as[node_index] | string %}
 {%                 endif %}
 {%                 do l3_edge_data.bgp_neighbors.update({ p2p_interface.peer_ip: p2p_bgp_neighbor }) %}

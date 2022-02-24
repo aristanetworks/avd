@@ -61,6 +61,8 @@ interface Management1
 
 Heartbeat Interval is 5000 milliseconds.
 Dual primary detection is enabled. The detection delay is 5 seconds.
+Dual primary recovery delay for MLAG interfaces is 90 seconds.
+Dual primary recovery delay for NON-MLAG interfaces is 30 seconds.
 
 ## MLAG Device Configuration
 
@@ -73,6 +75,7 @@ mlag configuration
    peer-address 172.16.0.1
    peer-link Port-Channel12
    dual-primary detection delay 5 action errdisable all-interfaces
+   dual-primary recovery delay mlag 90 non-mlag 30
    reload-delay mlag 400
    reload-delay non-mlag 450
 ```
@@ -97,7 +100,8 @@ mlag configuration
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

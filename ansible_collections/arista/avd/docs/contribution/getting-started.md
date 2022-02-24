@@ -7,30 +7,30 @@
 
 ## Pull requests
 
-* Be sure to open an issue **before** you start working on a pull request, and
+- Be sure to open an issue **before** you start working on a pull request, and
 discuss your idea(s) with the __ansible-avd__ maintainers before beginning work. This will
 help prevent wasting time on something that might we might not be able to
 implement. When suggesting a new feature, also make sure it won't conflict with
 any work that's already in progress.
 
-* Any pull request which does _not_ relate to an accepted issue will not be approved.
+- Any pull request which does _not_ relate to an accepted issue will not be approved.
 
-* All major new functionality must include relevant tests where applicable.
+- All major new functionality must include relevant molecule tests where applicable.
 
-* When submitting a pull request, please be sure to rebase from the `devel`
+- When submitting a pull request, please be sure to rebase from the `devel`
 branch, rather than a release branch:`releases/*`. The `devel` branch is used for ongoing
 development, while `releases/*` are used for tagging new stable releases.
 
-* All code submissions should meet the following criteria (CI will enforce
+- All code submissions should meet the following criteria (CI will enforce
 these checks):
 
-    * YAML syntax is valid
-    * Python syntax is valid
-    * All tests pass when run with `make sanity`
-    * PEP 8 compliance is enforced, with the exception that lines may be
-      greater than 80 characters in length
+  - YAML syntax is valid
+  - Python syntax is valid
+  - All tests pass when run with `make sanity`
+  - PEP 8 compliance is enforced, with the exception that lines may be
+    greater than 80 characters in length
 
-Adhering to the following this process is the best way to get your work
+Adhering to the following process is the best way to get your work
 merged:
 
 - [Fork](http://help.github.com/fork-a-repo/) the repo, clone your fork,

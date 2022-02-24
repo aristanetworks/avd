@@ -53,6 +53,22 @@ options:
             required: false
             default: true
             type: bool
+  debug:
+    description: Output list 'avd_yaml_templates_to_facts_debug' with timestamps of each performed action.
+    required: false
+    type: bool
+  dest:
+    description: |
+      Destination path. If set, the output facts will also be written to this path.
+      Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
+    required: false
+    type: str
+  template_output:
+    description: |
+      If true the output data will be run through another jinja2 rendering before returning.
+      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    required: false
+    type: bool
 '''
 
 EXAMPLES = r'''

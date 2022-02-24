@@ -32,6 +32,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -139,6 +140,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
 # Monitoring
@@ -201,9 +203,6 @@ STP Root Super: **True**
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
-
-### Global Spanning-Tree Settings
-
 
 ## Spanning Tree Device Configuration
 
@@ -322,6 +321,12 @@ interface Ethernet7
    no switchport
    vrf Tenant_A_WAN_Zone
    ip address 10.10.10.10/24
+   ip ospf network point-to-point
+   ip ospf area 0
+   ip ospf cost 100
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 1 sha1 7 AQQvKeimxJu+uGQ/yYvv9w==
+   ip ospf message-digest-key 2 sha512 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
 interface Ethernet8
    description test
@@ -409,6 +414,10 @@ interface Vlan150
    no shutdown
    vrf Tenant_A_WAN_Zone
    ip address virtual 10.1.40.1/24
+   ip ospf area 1
+   ip ospf cost 100
+   ip ospf authentication
+   ip ospf authentication-key 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
 interface Vlan250
    description Tenant_B_WAN_Zone_1
@@ -427,9 +436,10 @@ interface Vlan350
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -496,7 +506,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_OP_Zone | true |
 | Tenant_B_WAN_Zone | true |
@@ -521,13 +532,13 @@ ip routing vrf Tenant_L3_VRF_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_OP_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
 | Tenant_L3_VRF_Zone | false |
-
 
 ## Static Routes
 
@@ -544,6 +555,40 @@ ip routing vrf Tenant_L3_VRF_Zone
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
+```
+
+## Router OSPF
+
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 14 | 192.168.255.14 | enabled | Ethernet7 <br> Vlan150 <br> | disabled | 15000 | disabled | disabled | - | - | - | - |
+
+### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 14 | bgp | - |
+
+### OSPF Interfaces
+
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+| Ethernet7 | 0 | 100 | True |
+| Vlan150 | 1 | 100 | False |
+
+### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 14 vrf Tenant_A_WAN_Zone
+   router-id 192.168.255.14
+   passive-interface default
+   no passive-interface Ethernet7
+   no passive-interface Vlan150
+   max-lsa 15000
+   redistribute bgp
 ```
 
 ## Router BGP
@@ -568,7 +613,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -583,20 +628,20 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 172.31.255.80 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.82 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.84 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.86 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 |
-| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | all | - |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 172.31.255.80 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.82 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.84 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.86 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - |
+| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | True |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -610,15 +655,15 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.254.14:14 | 14:14 | - | - | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.254.14:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.254.14:31 | 31:31 | - | - | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.254.14:14 | 65104:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.254.14:21 | 65104:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.254.14:31 | 65104:31 | - | - | learned | 350 |
 
 ### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.254.14:14 | connected<br>static |
+| Tenant_A_WAN_Zone | 192.168.254.14:14 | connected<br>static<br>ospf |
 | Tenant_B_OP_Zone | 192.168.254.14:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.254.14:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.254.14:31 | connected |
@@ -672,19 +717,19 @@ router bgp 65104
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
       rd 192.168.254.14:14
-      route-target both 14:14
+      route-target both 65104:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
       rd 192.168.254.14:21
-      route-target both 21:21
+      route-target both 65104:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
       rd 192.168.254.14:31
-      route-target both 31:31
+      route-target both 65104:31
       redistribute learned
       vlan 350
    !
@@ -697,10 +742,10 @@ router bgp 65104
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.254.14:14
-      route-target import evpn 14:14
+      route-target import evpn 65104:14
       route-target import evpn 65000:456
       route-target import vpn-ipv4 65000:123
-      route-target export evpn 14:14
+      route-target export evpn 65104:14
       route-target export evpn 65000:789
       route-target export vpn-ipv4 65000:123
       router-id 192.168.255.14
@@ -720,6 +765,7 @@ router bgp 65104
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3
+      neighbor 123.1.1.11 bfd
       neighbor 123.1.1.11 send-community standard extended
       neighbor 123.1.1.11 maximum-routes 0
       neighbor 123.1.1.11 default-originate
@@ -731,6 +777,7 @@ router bgp 65104
       neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
       neighbor fd5a:fe45:8831:06c5::b remote-as 12345
       redistribute connected
+      redistribute ospf
       redistribute static
       !
       address-family ipv4
@@ -743,29 +790,29 @@ router bgp 65104
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.254.14:20
-      route-target import evpn 20:20
-      route-target export evpn 20:20
+      route-target import evpn 65104:20
+      route-target export evpn 65104:20
       router-id 192.168.255.14
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.254.14:21
-      route-target import evpn 21:21
-      route-target export evpn 21:21
+      route-target import evpn 65104:21
+      route-target export evpn 65104:21
       router-id 192.168.255.14
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.254.14:31
-      route-target import evpn 31:31
-      route-target export evpn 31:31
+      route-target import evpn 65104:31
+      route-target export evpn 65104:31
       router-id 192.168.255.14
       redistribute connected
    !
    vrf Tenant_L3_VRF_Zone
       rd 192.168.254.14:15
-      route-target import evpn 15:15
-      route-target export evpn 15:15
+      route-target import evpn 65104:15
+      route-target export evpn 65104:15
       router-id 192.168.255.14
       redistribute connected
 ```
@@ -794,8 +841,9 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
@@ -895,6 +943,12 @@ vrf instance Tenant_L3_VRF_Zone
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

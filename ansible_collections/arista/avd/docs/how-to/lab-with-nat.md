@@ -1,4 +1,4 @@
-# How-to use NAT gateway to configure EOS devices.
+# How-to use NAT gateway to configure EOS devices
 
 ## Abstract
 

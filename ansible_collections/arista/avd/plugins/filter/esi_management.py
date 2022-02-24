@@ -26,17 +26,12 @@ class FilterModule(object):
         str
             String based on route-target format like 03:03:02:02:01:01
         """
+        if esi_short is None:
+            return None
         delimiter = ':'
         esi = esi_short.replace(delimiter, "")
         esi_split = re.findall('..', esi)
-        rt = ""
-        loop_cpt = 0
-        for esi_section in esi_split:
-            loop_cpt += 1
-            rt = rt + str(esi_section)
-            if loop_cpt < len(esi_split):
-                rt = rt + str(delimiter)
-        return rt
+        return delimiter.join(esi_split)
 
     def filters(self):
         return {

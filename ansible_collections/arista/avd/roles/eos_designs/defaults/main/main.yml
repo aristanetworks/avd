@@ -65,7 +65,7 @@ isis_maximum_paths: 4
 bgp_maximum_paths: 4
 bgp_ecmp: 4
 
-vxlan_vlan_aware_bundles: false
+evpn_vlan_aware_bundles: false
 
 default_igmp_snooping_enabled: true
 
@@ -149,3 +149,5 @@ custom_structured_configuration_list_merge: 'replace'
 node_type_keys: "{{ default_node_type_keys[design.type] }}"
 
 templates: "{{ default_templates[design.type] }}"
+
+avd_structured_config_file_format: "yml"

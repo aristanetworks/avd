@@ -72,10 +72,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '12:12'
+          - '1234:12'
         export:
           evpn:
-          - '12:12'
+          - '1234:12'
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -84,10 +84,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '11:11'
+          - '1234:11'
         export:
           evpn:
-          - '11:11'
+          - '1234:11'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -95,7 +95,7 @@ router_bgp:
       rd: 1.1.1.1:12
       route_targets:
         both:
-        - '12:12'
+        - '1234:12'
       redistribute_routes:
       - learned
       vlan: 130-132
@@ -103,7 +103,7 @@ router_bgp:
       rd: 1.1.1.1:11
       route_targets:
         both:
-        - '11:11'
+        - '1234:11'
       redistribute_routes:
       - learned
       vlan: 120-121
@@ -160,6 +160,8 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
 vrfs:
   MGMT:
     ip_routing: false
@@ -242,7 +244,7 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
+    spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: false
     storm_control:
       all:

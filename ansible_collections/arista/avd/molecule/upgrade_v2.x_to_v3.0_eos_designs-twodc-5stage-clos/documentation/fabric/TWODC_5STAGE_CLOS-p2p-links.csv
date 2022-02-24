@@ -1,4 +1,4 @@
-Type, Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
 l3leaf,DC1-POD1-LEAF1A,Ethernet1,172.17.110.1/31,spine,DC1-POD1-SPINE1,Ethernet3,172.17.110.0/31
 l3leaf,DC1-POD1-LEAF1A,Ethernet2,172.17.110.3/31,spine,DC1-POD1-SPINE2,Ethernet3,172.17.110.2/31
 l3leaf,DC1-POD1-LEAF1A,Ethernet4,172.17.10.4/31,overlay-controller,DC1-RS1,Ethernet3,172.17.10.5/31

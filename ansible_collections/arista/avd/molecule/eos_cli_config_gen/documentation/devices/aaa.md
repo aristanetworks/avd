@@ -82,6 +82,7 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 |  mgt | 10.10.10.157 | True |
 |  default | 10.10.10.249 | False |
 |  default | 10.10.10.158 | False |
+|  default | 10.10.10.159 | False |
 
 ### TACACS Servers Device Configuration
 
@@ -89,6 +90,7 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 !
 tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 071B245F5A
 tacacs-server host 10.10.10.158 key 7 071B245F5A
+tacacs-server host 10.10.10.159 key 8a $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
 tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 ```
 
@@ -173,6 +175,14 @@ Authorization for configuration commands is enabled.
 
 Authorization for serial console is enabled.
 
+### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group aaaAuth |
+| 5 | group radius |
+| 10,15 | group tacacs+ local |
+
 ### AAA Authorization Device Configuration
 
 ```eos
@@ -180,6 +190,8 @@ Authorization for serial console is enabled.
 aaa authorization exec default group CUST local
 aaa authorization serial-console
 aaa authorization commands all default group aaaAuth
+aaa authorization commands 5 default group radius
+aaa authorization commands 10,15 default group tacacs+ local
 !
 ```
 
@@ -232,7 +244,8 @@ aaa accounting commands 0 default start-stop logging
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

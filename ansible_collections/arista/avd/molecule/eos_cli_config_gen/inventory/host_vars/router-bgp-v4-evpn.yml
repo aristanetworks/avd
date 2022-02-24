@@ -184,6 +184,10 @@ router_bgp:
           send_community: large
           default_originate:
             always: true
+        10.255.251.4:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: Test_Bfd
+          bfd: true
       redistribute_routes:
         connected:
         static:

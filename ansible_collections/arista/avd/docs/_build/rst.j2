@@ -1,7 +1,7 @@
 .. _@{ module }@:
 
 {% set title = module %}
-{% set title_len = title|length %}
+{% set title_len = title | length %}
 @{ title }@
 @{ '+' * title_len }@
 {% if short_description %}
@@ -43,9 +43,9 @@ Synopsis
 
 {% if description %}
 
-{% for desc in description -%}
+{%     for desc in description -%}
 @{ desc | convert_symbols_to_format }@
-{% endfor %}
+{%     endfor %}
 
 
 {% endif %}
@@ -61,9 +61,9 @@ Requirements
 ------------
 The following software packages must be installed on hosts that execute this module:
 
-{% for req in requirements %}
+{%     for req in requirements %}
 * @{ req | convert_symbols_to_format }@
-{% endfor %}
+{%     endfor %}
 
 
 
@@ -88,32 +88,32 @@ The following options may be specified for this module:
     <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
-{% for k in option_keys -%}
-{% set v = options[k] -%}
-{% if not v['suboptions'] %}
+{%     for k in option_keys -%}
+{%         set v = options[k] -%}
+{%         if not v['suboptions'] %}
 
     <tr>
     <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
     <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
     <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
     <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
-{% if v.get('type', 'not_bool') == 'bool' %}
+{%             if v.get('type', 'not_bool') == 'bool' %}
     <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
+{%             else %}
     <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
+{%             endif %}
     <td>
-{% if v.description is string %}
+{%             if v.description is string %}
         <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in v.description %}
+{%             else %}
+{%                 for desc in v.description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
-{% if 'aliases' in v and v.aliases %}
+{%                 endfor %}
+{%             endif %}
+{%             if 'aliases' in v and v.aliases %}
         </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
-{% endif %}
-{% else %}
+{%             endif %}
+{%         else %}
 
     <tr>
     <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
@@ -122,12 +122,12 @@ The following options may be specified for this module:
     <td></td>
     <td></td>
     <td>
-{% for desc in v.description %}
+{%             for desc in v.description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% if 'aliases' in v and v.aliases %}
+{%             endfor %}
+{%             if 'aliases' in v and v.aliases %}
         </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
-{% endif %}
+{%             endif %}
     </tr>
 
     <tr>
@@ -143,42 +143,42 @@ The following options may be specified for this module:
         <th class="head">choices</th>
         <th class="head">comments</th>
         </tr>
-{% for k2 in v['suboptions'] %}
-{% set v2 = v['suboptions'] [k2] %}
+{%             for k2 in v['suboptions'] %}
+{%                 set v2 = v['suboptions'] [k2] %}
 
         <tr>
         <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
         <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
         <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
         <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
-{% if v2.get('type', 'not_bool') == 'bool' %}
+{%                 if v2.get('type', 'not_bool') == 'bool' %}
         <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
+{%                 else %}
         <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
+{%                 endif %}
         <td>
-{% if v2.description is string %}
+{%                 if v2.description is string %}
         <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in v2.description %}
+{%                 else %}
+{%                     for desc in v2.description %}
             <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
-{% if 'aliases' in v and v2.aliases %}
+{%                     endfor %}
+{%                 endif %}
+{%                 if 'aliases' in v and v2.aliases %}
             </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
-{% endif %}
+{%                 endif %}
         </td>
         </tr>
-{% endfor %}
+{%             endfor %}
 
         </table>
 
     </td>
     </tr>
-{% endif %}
+{%         endif %}
     </td>
     </tr>
-{% endfor %}
+{%     endfor %}
 
     </table>
     </br>
@@ -203,32 +203,32 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
     <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
-{% for k in connection_option_keys -%}
-{% set v = connection_options[k] -%}
-{% if not v['suboptions'] %}
+{%     for k in connection_option_keys -%}
+{%         set v = connection_options[k] -%}
+{%         if not v['suboptions'] %}
 
     <tr>
     <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
     <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
     <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
     <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
-{% if v.get('type', 'not_bool') == 'bool' %}
+{%             if v.get('type', 'not_bool') == 'bool' %}
     <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
+{%             else %}
     <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
+{%             endif %}
     <td>
-{% if v.description is string %}
+{%             if v.description is string %}
         <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in v.description %}
+{%             else %}
+{%                 for desc in v.description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
-{% if 'aliases' in v and v.aliases %}
+{%                 endfor %}
+{%             endif %}
+{%             if 'aliases' in v and v.aliases %}
         </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
-{% endif %}
-{% else %}
+{%             endif %}
+{%         else %}
 
     <tr>
     <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
@@ -237,12 +237,12 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
     <td></td>
     <td></td>
     <td>
-{% for desc in v.description %}
+{%             for desc in v.description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% if 'aliases' in v and v.aliases %}
+{%             endfor %}
+{%             if 'aliases' in v and v.aliases %}
         </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
-{% endif %}
+{%             endif %}
     </tr>
 
     <tr>
@@ -258,42 +258,42 @@ In addition to the :ref:`module-specific-options-label`, the following connectio
         <th class="head">choices</th>
         <th class="head">comments</th>
         </tr>
-{% for k2 in v['suboptions'] %}
-{% set v2 = v['suboptions'] [k2] %}
+{%             for k2 in v['suboptions'] %}
+{%                 set v2 = v['suboptions'] [k2] %}
 
         <tr>
         <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
         <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
         <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
         <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
-{% if v2.get('type', 'not_bool') == 'bool' %}
+{%                 if v2.get('type', 'not_bool') == 'bool' %}
         <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
+{%                 else %}
         <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
+{%                 endif %}
         <td>
-{% if v2.description is string %}
+{%                 if v2.description is string %}
         <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in v2.description %}
+{%                 else %}
+{%                     for desc in v2.description %}
             <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
-{% if 'aliases' in v and v2.aliases %}
+{%                     endfor %}
+{%                 endif %}
+{%                 if 'aliases' in v and v2.aliases %}
             </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
-{% endif %}
+{%                 endif %}
         </td>
         </tr>
-{% endfor %}
+{%             endfor %}
 
         </table>
 
     </td>
     </tr>
-{% endif %}
+{%         endif %}
     </td>
     </tr>
-{% endfor %}
+{%     endfor %}
 
     </table>
     </br>
@@ -318,32 +318,32 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
     <th class="head">choices</th>
     <th class="head">comments</th>
     </tr>
-{% for k in logging_option_keys -%}
-{% set v = logging_options[k] -%}
-{% if not v['suboptions'] %}
+{%     for k in logging_option_keys -%}
+{%         set v = logging_options[k] -%}
+{%         if not v['suboptions'] %}
 
     <tr>
     <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
     <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
     <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
     <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
-{% if v.get('type', 'not_bool') == 'bool' %}
+{%             if v.get('type', 'not_bool') == 'bool' %}
     <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
+{%             else %}
     <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
+{%             endif %}
     <td>
-{% if v.description is string %}
+{%             if v.description is string %}
         <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in v.description %}
+{%             else %}
+{%                 for desc in v.description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
-{% if 'aliases' in v and v.aliases %}
+{%                 endfor %}
+{%             endif %}
+{%             if 'aliases' in v and v.aliases %}
         </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
-{% endif %}
-{% else %}
+{%             endif %}
+{%         else %}
 
     <tr>
     <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
@@ -352,12 +352,12 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
     <td></td>
     <td></td>
     <td>
-{% for desc in v.description %}
+{%             for desc in v.description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% if 'aliases' in v and v.aliases %}
+{%             endfor %}
+{%             if 'aliases' in v and v.aliases %}
         </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
-{% endif %}
+{%             endif %}
     </tr>
 
     <tr>
@@ -373,42 +373,42 @@ In addition to the :ref:`module-specific-options-label`, the following logging-r
         <th class="head">choices</th>
         <th class="head">comments</th>
         </tr>
-{% for k2 in v['suboptions'] %}
-{% set v2 = v['suboptions'] [k2] %}
+{%             for k2 in v['suboptions'] %}
+{%                 set v2 = v['suboptions'] [k2] %}
 
         <tr>
         <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
         <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
         <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
         <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
-{% if v2.get('type', 'not_bool') == 'bool' %}
+{%                 if v2.get('type', 'not_bool') == 'bool' %}
         <td><ul><li>yes</li><li>no</li></ul></td>
-{% else %}
+{%                 else %}
         <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
-{% endif %}
+{%                 endif %}
         <td>
-{% if v2.description is string %}
+{%                 if v2.description is string %}
         <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in v2.description %}
+{%                 else %}
+{%                     for desc in v2.description %}
             <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
-{% if 'aliases' in v and v2.aliases %}
+{%                     endfor %}
+{%                 endif %}
+{%                 if 'aliases' in v and v2.aliases %}
             </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
-{% endif %}
+{%                 endif %}
         </td>
         </tr>
-{% endfor %}
+{%             endfor %}
 
         </table>
 
     </td>
     </tr>
-{% endif %}
+{%         endif %}
     </td>
     </tr>
-{% endfor %}
+{%     endfor %}
 
     </table>
     </br>
@@ -421,15 +421,15 @@ Examples:
 ---------
 
 ::
-{% for example in examples %}
-{% if example['description'] %}
+{%     for example in examples %}
+{%         if example['description'] %}
 @{ example['description'] }@
-{% endif %}
+{%         endif %}
 @{ example['code'] | escape | indent(4, True) }@
-{% endfor %}
-{% if plainexamples %}
+{%     endfor %}
+{%     if plainexamples %}
 @{ plainexamples | indent(4, True) }@
-{% endif %}
+{%     endif %}
 {% endif %}
 {% if returndocs -%}
 
@@ -449,24 +449,24 @@ Return Values
     <th class="head">sample</th>
     </tr>
 
-{% for entry in returndocs_keys %}
+{%     for entry in returndocs_keys %}
 
     <tr>
     <td>@{ entry }@</td>
     <td>
-{% if returndocs[entry].description is string %}
+{%         if returndocs[entry].description is string %}
         <div>@{ returndocs[entry].description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in returndocs[entry].description %}
+{%         else %}
+{%             for desc in returndocs[entry].description %}
         <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
+{%             endfor %}
+{%         endif %}
     </td>
     <td align=center>@{ returndocs[entry].returned | html_ify }@</td>
     <td align=center>@{ returndocs[entry].type | html_ify }@</td>
     <td align=center>@{ returndocs[entry].sample | replace('\n', '\n    ') | html_ify }@</td>
     </tr>
-{% if returndocs[entry].type == 'complex' %}
+{%         if returndocs[entry].type == 'complex' %}
 
     <tr>
     <td>contains:</td>
@@ -480,30 +480,30 @@ Return Values
         <th class="head">type</th>
         <th class="head">sample</th>
         </tr>
-{% for sub in returndocs[entry].contains %}
+{%             for sub in returndocs[entry].contains %}
 
         <tr>
         <td>@{ sub }@</td>
         <td>
-{% if returndocs[entry].contains[sub].description is string %}
+{%                 if returndocs[entry].contains[sub].description is string %}
             <div>@{ returndocs[entry].contains[sub].description | replace('\n', '\n    ') | html_ify }@</div>
-{% else %}
-{% for desc in returndocs[entry].contains[sub].description %}
+{%                 else %}
+{%                     for desc in returndocs[entry].contains[sub].description %}
             <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
-{% endfor %}
-{% endif %}
+{%                     endfor %}
+{%                 endif %}
         </td>
         <td align=center>@{ returndocs[entry].contains[sub].returned | html_ify }@</td>
         <td align=center>@{ returndocs[entry].contains[sub].type | html_ify }@</td>
         <td align=center>@{ returndocs[entry].contains[sub].sample }@</td>
         </tr>
-{% endfor %}
+{%             endfor %}
 
         </table>
     </td>
     </tr>
-{% endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
 
     </table>
     </br>
@@ -518,9 +518,9 @@ Notes
 -----
 
 .. note::
-{% for note in notes %}
+{%     for note in notes %}
     - @{ note | convert_symbols_to_format }@
-{% endfor %}
+{%     endfor %}
 
 
 {% endif %}
@@ -530,27 +530,27 @@ Notes
 Author
 ~~~~~~
 
-{% for author_name in author %}
+{%     for author_name in author %}
 * @{ author_name }@
-{% endfor %}
+{%     endfor %}
 
 
 {% endif %}
 {% if not deprecated %}
-{% set support = { 'core': 'The Ansible Core Team', 'network': 'The Ansible Network Team', 'certified': 'an Ansible Partner', 'community': 'The Ansible Community', 'curated': 'A Third Party'} %}
-{% set module_states = { 'preview': 'it is not guaranteed to have a backwards compatible interface', 'stableinterface': 'the maintainers for this module guarantee that no backward incompatible interface changes will be made'} %}
-{% if metadata %}
-{% if metadata.status %}
+{%     set support = { 'core': 'The Ansible Core Team', 'network': 'The Ansible Network Team', 'certified': 'an Ansible Partner', 'community': 'The Ansible Community', 'curated': 'A Third Party'} %}
+{%     set module_states = { 'preview': 'it is not guaranteed to have a backwards compatible interface', 'stableinterface': 'the maintainers for this module guarantee that no backward incompatible interface changes will be made'} %}
+{%     if metadata %}
+{%         if metadata.status %}
 
 
 Status
 ~~~~~~
 
-{% for cur_state in  metadata.status %}
+{%             for cur_state in  metadata.status %}
 This module is flagged as **@{cur_state}@** which means that @{module_states[cur_state]}@.
-{% endfor %}
+{%             endfor %}
 
 
-{% endif %}
-{% endif %}
+{%         endif %}
+{%     endif %}
 {% endif %}
