@@ -10,6 +10,7 @@ router_bgp:
       type: ipv4
       remote_as: '65102'
       next_hop_self: true
+      description: DC1-LEAF2A
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
@@ -102,7 +103,6 @@ router_bgp:
       neighbors:
         10.255.251.2:
           peer_group: MLAG_PEER
-          description: DC1-LEAF2A
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -118,7 +118,6 @@ router_bgp:
       neighbors:
         10.255.251.2:
           peer_group: MLAG_PEER
-          description: DC1-LEAF2A
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
@@ -134,7 +133,6 @@ router_bgp:
       neighbors:
         10.255.251.2:
           peer_group: MLAG_PEER
-          description: DC1-LEAF2A
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -150,7 +148,6 @@ router_bgp:
       neighbors:
         10.255.251.2:
           peer_group: MLAG_PEER
-          description: DC1-LEAF2A
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -166,7 +163,6 @@ router_bgp:
       neighbors:
         10.255.251.2:
           peer_group: MLAG_PEER
-          description: DC1-LEAF2A
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -182,7 +178,6 @@ router_bgp:
       neighbors:
         10.255.251.2:
           peer_group: MLAG_PEER
-          description: DC1-LEAF2A
       redistribute_routes:
       - connected
   vlan_aware_bundles:

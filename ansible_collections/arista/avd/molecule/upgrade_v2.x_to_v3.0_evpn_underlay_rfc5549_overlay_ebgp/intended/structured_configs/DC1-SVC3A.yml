@@ -10,6 +10,7 @@ router_bgp:
       type: ipv4
       remote_as: '65103'
       next_hop_self: true
+      description: DC1-SVC3B
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
@@ -104,7 +105,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -120,7 +120,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
@@ -136,7 +135,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_A_WAN_Zone:
@@ -152,7 +150,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -168,7 +165,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -184,7 +180,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -200,7 +195,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -216,7 +210,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -232,7 +225,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG_PEER
-          description: DC1-SVC3B
       redistribute_routes:
       - connected
   vlan_aware_bundles:

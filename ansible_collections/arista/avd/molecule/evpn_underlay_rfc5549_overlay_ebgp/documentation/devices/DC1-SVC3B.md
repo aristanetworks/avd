@@ -1207,6 +1207,7 @@ router bgp 65103
    neighbor MLAG_PEER peer group
    neighbor MLAG_PEER remote-as 65103
    neighbor MLAG_PEER next-hop-self
+   neighbor MLAG_PEER description DC1-SVC3A
    neighbor MLAG_PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG_PEER send-community
    neighbor MLAG_PEER maximum-routes 12000
@@ -1318,7 +1319,6 @@ router bgp 65103
       route-target export evpn 12:12
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1327,7 +1327,6 @@ router bgp 65103
       route-target export evpn 13:13
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1336,7 +1335,6 @@ router bgp 65103
       route-target export evpn 10:10
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1345,7 +1343,6 @@ router bgp 65103
       route-target export evpn 14:14
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
@@ -1354,7 +1351,6 @@ router bgp 65103
       route-target export evpn 11:11
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1363,7 +1359,6 @@ router bgp 65103
       route-target export evpn 20:20
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1372,7 +1367,6 @@ router bgp 65103
       route-target export evpn 21:21
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1381,7 +1375,6 @@ router bgp 65103
       route-target export evpn 30:30
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1390,7 +1383,6 @@ router bgp 65103
       route-target export evpn 31:31
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG_PEER
-      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
 ```
 
