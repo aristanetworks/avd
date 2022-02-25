@@ -104,6 +104,8 @@
 {% include 'documentation/vlan-internal-order.j2' %}
 {# VLANs #}
 {% include 'documentation/vlans.j2' %}
+{# Mac address-table ##}
+{% include 'documentation/mac-address-table.j2' %}
 
 # Interfaces
 {## Switchport Default #}
@@ -142,12 +144,16 @@
 {% include 'documentation/arp.j2' %}
 {## Router General #}
 {% include 'documentation/router-general.j2' %}
+{## Router Traffic Engineering #}
+{% include 'documentation/router-traffic-engineering.j2' %}
 {## Router OSPF #}
 {% include 'documentation/router-ospf.j2' %}
 {## Router ISIS #}
 {% include 'documentation/router-isis.j2' %}
 {## Router BGP #}
 {% include 'documentation/router-bgp.j2' %}
+{## PBR Policy Maps ##}
+{% include 'documentation/policy-maps-pbr.j2' %}
 {# BFD #}
 {% include 'documentation/bfd.j2' %}
 {# MPLS #}

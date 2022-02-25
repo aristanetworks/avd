@@ -8,6 +8,8 @@ class-map type qos match-any {{ class_map }}
    match cos {{ class_maps.qos[class_map].cos }}
 {%     elif class_maps.qos[class_map].ip.access_group is arista.avd.defined %}
    match ip access-group {{ class_maps.qos[class_map].ip.access_group }}
+{%     elif class_maps.qos[class_map].ipv6.access_group is arista.avd.defined %}
+   match ipv6 access-group {{ class_maps.qos[class_map].ipv6.access_group }}
 {%     endif %}
 {% endfor %}
 {# PBR class-map #}

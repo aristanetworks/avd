@@ -1,3 +1,6 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 import os
 import logging

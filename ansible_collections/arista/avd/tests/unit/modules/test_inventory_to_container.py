@@ -1,4 +1,8 @@
-from ansible_collections.arista.avd.plugins.modules.inventory_to_container import is_in_filter, isIterable, get_device_option_value, serialize, get_devices, isLeaf, get_containers
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
+from ansible_collections.arista.avd.plugins.modules.inventory_to_container import is_in_filter, isIterable, get_device_option_value
+from ansible_collections.arista.avd.plugins.modules.inventory_to_container import serialize, get_devices, isLeaf, get_containers
 import os
 import logging
 import pytest
@@ -20,10 +24,37 @@ IS_ITERABLE_INVALID = [
 
 PARENT_CONTAINER = {
     "default_parent": {"parent": "Tenant",
-                       "expected_output": {'all': {}, 'CVP': {'devices': ['cv_ztp', 'cv_server'], 'parent_container': 'all'}, 'DC1': {'parent_container': 'all'}, 'DC1_FABRIC': {'parent_container': 'DC1'}, 'DC1_L2LEAFS': {'parent_container': 'DC1_FABRIC'}, 'DC1_L2LEAF1': {'devices': ['DC1-L2LEAF1A'], 'parent_container': 'DC1_L2LEAFS'}, 'DC1_L2LEAF2': {'devices': ['DC1-L2LEAF2A'], 'parent_container': 'DC1_L2LEAFS'}, 'DC1_L3LEAFS': {'parent_container': 'DC1_FABRIC'}, 'DC1_LEAF1': {'devices': ['DC1-LEAF1A', 'DC1-LEAF1B'], 'parent_container': 'DC1_L3LEAFS'}, 'DC1_LEAF2': {'devices': ['DC1-LEAF2A', 'DC1-LEAF2B'], 'parent_container': 'DC1_L3LEAFS'}, 'DC1_SPINES': {'devices': ['DC1-SPINE1', 'DC1-SPINE2'], 'parent_container': 'DC1_FABRIC'}, 'DC1_SERVERS': {'devices': [], 'parent_container': 'DC1'}, 'DC1_TENANTS_NETWORKS': {'devices': [], 'parent_container': 'DC1'}}
+                       "expected_output": {'all': {},
+                                           'CVP': {'devices': ['cv_ztp', 'cv_server'], 'parent_container': 'all'},
+                                           'DC1': {'parent_container': 'all'},
+                                           'DC1_FABRIC': {'parent_container': 'DC1'},
+                                           'DC1_L2LEAFS': {'parent_container': 'DC1_FABRIC'},
+                                           'DC1_L2LEAF1': {'devices': ['DC1-L2LEAF1A'],
+                                                           'parent_container': 'DC1_L2LEAFS'
+                                                           },
+                                           'DC1_L2LEAF2': {'devices': ['DC1-L2LEAF2A'],
+                                                           'parent_container': 'DC1_L2LEAFS'
+                                                           },
+                                           'DC1_L3LEAFS': {'parent_container': 'DC1_FABRIC'},
+                                           'DC1_LEAF1': {'devices': ['DC1-LEAF1A', 'DC1-LEAF1B'],
+                                                         'parent_container': 'DC1_L3LEAFS'
+                                                         },
+                                           'DC1_LEAF2': {'devices': ['DC1-LEAF2A', 'DC1-LEAF2B'],
+                                                         'parent_container': 'DC1_L3LEAFS'
+                                                         },
+                                           'DC1_SPINES': {'devices': ['DC1-SPINE1', 'DC1-SPINE2'],
+                                                          'parent_container': 'DC1_FABRIC'
+                                                          },
+                                           'DC1_SERVERS': {'devices': [],
+                                                           'parent_container': 'DC1'
+                                                           },
+                                           'DC1_TENANTS_NETWORKS': {'devices': [],
+                                                                    'parent_container': 'DC1'
+                                                                    }
+                                           }
                        },
     "non_default_parent": {"parent": "CVP",
-                           "expected_output":  {'CVP': {'parent_container': 'Tenant'}}
+                           "expected_output": {'CVP': {'parent_container': 'Tenant'}}
                            }
 }
 

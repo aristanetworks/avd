@@ -47,6 +47,7 @@ options:
   configlet_prefix:
     description: Prefix to put on configlet.
     required: false
+    default: 'AVD'
     type: str
   destination:
     description: Optional path to save variable.

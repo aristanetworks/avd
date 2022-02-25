@@ -119,7 +119,6 @@
       - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [Routing](#routing)
       - [ARP](#arp)
-      - [MAC Address-table](#mac-address-table)
       - [Router Virtual MAC Address](#router-virtual-mac-address)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
@@ -128,6 +127,7 @@
       - [Router IGMP Configuration](#router-igmp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
+      - [Router Traffic Engineering](#router-traffic-engineering)
       - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
       - [Static Routes](#static-routes)
@@ -139,6 +139,7 @@
     - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
+    - [MAC Address-table](#mac-address-table)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
     - [Versioning](#versioning)
     - [Example Playbooks](#example-playbooks)
@@ -1416,7 +1417,7 @@ vxlan_interface:
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       qos:
         # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
-        # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in “DSCP Trust” mode.
+        # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
         dscp_propagation_encapsulation: < true | false >
         map_dscp_to_traffic_class_decapsulation: < true | false >
       vlans:
@@ -1745,7 +1746,7 @@ management_ssh:
   cipher:
     - < cipher1 >
     - < cipher2 >
-  key-exchange:
+  key_exchange:
     - < method1 >
     - < method2 >
   mac:
@@ -1764,6 +1765,7 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+  log_level: < SSH daemon log level >
 ```
 
 #### IP SSH Client Source Interfaces
@@ -1826,6 +1828,8 @@ mlag_configuration:
     peer_ip: < IPv4_address >
     vrf: < vrf_name >
   dual_primary_detection_delay: < seconds >
+  dual_primary_recovery_delay_mlag: < 0 - 1000 >
+  dual_primary_recovery_delay_non_mlag: < 0 - 1000 >
   peer_link: < Port-Channel_id >
   reload_delay_mlag: < seconds >
   reload_delay_non_mlag: < seconds >
@@ -2360,7 +2364,9 @@ class_maps:
       vlan: < VLAN value(s) or range(s) of VLAN values >
       cos: < CoS value(s) or range(s) of CoS values >
       ip:
-        access_group: < Standard access-list name >
+        access_group: < IPv4 access-list name >
+      ipv6:
+        access_group: < IPv6 access-list name >
 ```
 
 #### QOS Policy-map
@@ -2371,6 +2377,9 @@ policy_maps:
     < policy-map name >:
       classes:
         < class name >:
+          index: < integer > # Optional
+          # Set only one of the below actions per class
+          drop: < true | false >
           set:
             nexthop:
               ip_address: < IPv4_address | IPv6_address >
@@ -2380,6 +2389,7 @@ policy_maps:
       classes:
         < class name >:
           set:
+            cos: < cos_value >
             dscp: < dscp-code >
             traffic_class: < traffic-class ID >
             drop_precedence: < drop-precedence value >
@@ -2395,6 +2405,9 @@ qos_profiles:
     dscp: < dscp-value >
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    service_policy:
+      type:
+        qos_input: < policy_map_name >
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
@@ -2448,13 +2461,6 @@ queue_monitor_streaming:
 arp:
   aging:
     timeout_default: < timeout-in-seconds >
-```
-
-#### MAC Address-table
-
-```yaml
-mac_address_table:
-  aging_time: < aging_time_in_seconds >
 ```
 
 #### Router Virtual MAC Address
@@ -2527,6 +2533,10 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
+      default_originate:
+        enabled: < true | false >
+        always: < true | false >
+        route_map: < route_map_name >
       send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
@@ -2557,6 +2567,10 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
+      default_originate:
+        enabled: < true | false >
+        always: < true | false >
+        route_map: < route_map_name >
       send_community: < all | extended | large | standard >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
@@ -2686,6 +2700,9 @@ router_bgp:
       rd: < route distinguisher >
       route_targets:
         import_export: < route target >
+      mpls_control_word: < true | false, Default -> false >
+      label_flow: < true | false, Default -> false >
+      mtu: < mtu >
       pseudowires:
         - name: < pseudowire name >
           id_local: < integer, must match id_remote on other pe >
@@ -2862,6 +2879,7 @@ router_bgp:
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
+          shutdown: < true | false >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -3037,6 +3055,42 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+```
+
+#### Router Traffic Engineering
+
+```yaml
+router_traffic_engineering:
+  router_id:
+    ipv4: < IPv4_address >
+    ipv6: < IPv6_address >
+  segment_routing:
+    colored_tunnel_rib: true
+    policy_endpoints:
+      - address: < IPv4_address | IPv6_address >
+        colors:
+          - value: < integer >
+            binding_sid: < integer >
+            description: < description >
+            name: < name >
+            path_group:
+              - preference: < integer >
+                explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
+                segment_list:
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
+          - value: < integer >
+            binding_sid: < integer >
+            description: < description >
+            name: < name >
+            path_group:
+              - preference: < integer >
+                explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
+                segment_list:
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
 ```
 
 #### Service Routing Configuration BGP
@@ -3265,6 +3319,18 @@ vlans:
       primary_vlan: < vlan_id >
   < vlan_id >:
     name: < vlan_name >
+```
+
+### MAC Address-table
+
+```yaml
+mac_address_table:
+  aging_time: < aging_time_in_seconds >
+  notification_host_flap:
+    logging: < true | false >
+    detection:
+      window: < 2-300 >
+      moves: < 2-10 >
 ```
 
 ## Upgrade of eos_cli_config_gen data model

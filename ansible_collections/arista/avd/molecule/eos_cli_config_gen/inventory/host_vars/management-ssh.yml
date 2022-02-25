@@ -11,3 +11,4 @@ management_ssh:
   vrfs:
     mgt:
       enable: true
+  log_level: debug

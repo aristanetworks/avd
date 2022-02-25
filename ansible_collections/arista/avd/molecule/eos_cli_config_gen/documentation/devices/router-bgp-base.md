@@ -104,12 +104,12 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
-| 192.0.3.1 | 65432 | default | all | - | - | - |
-| 192.0.3.2 | 65433 | default | extended | 10000 | - | - |
-| 192.0.3.3 | 65434 | default | standard | - | - | - |
-| 192.0.3.4 | 65435 | default | large | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 192.0.3.1 | 65432 | default | - | all | - | - | - |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - |
 
 ### BGP Route Aggregation
 
@@ -134,8 +134,10 @@ router bgp 65101
    graceful-restart
    bgp bestpath d-path
    neighbor 192.0.3.1 remote-as 65432
+   neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
    neighbor 192.0.3.2 remote-as 65433
+   neighbor 192.0.3.2 default-originate route-map RM-FOO-MATCH3
    neighbor 192.0.3.2 send-community extended
    neighbor 192.0.3.2 maximum-routes 10000
    neighbor 192.0.3.3 remote-as 65434

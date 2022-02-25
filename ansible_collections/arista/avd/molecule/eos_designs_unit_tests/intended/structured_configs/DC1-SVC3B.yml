@@ -890,6 +890,20 @@ port_channel_interfaces:
     mode: access
     vlans: 110
     mlag: 24
+  Port-Channel27:
+    description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 27
+  Port-Channel42:
+    description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 42
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-SVC3A
@@ -1276,6 +1290,46 @@ ethernet_interfaces:
     channel_group:
       id: 24
       mode: active
+  Ethernet25:
+    peer: server18_monitoring_session_source_phys_interfaces
+    peer_interface: Eth2
+    peer_type: server
+    description: server18_monitoring_session_source_phys_interfaces_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+  Ethernet27:
+    peer: server18_monitoring_session_source_po
+    peer_interface: Eth4
+    peer_type: server
+    description: server18_monitoring_session_source_po_Eth4
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 27
+      mode: active
+  Ethernet26:
+    peer: server19_monitoring_session_destination_phys
+    peer_interface: Eth2
+    peer_type: server
+    description: server19_monitoring_session_destination_phys_Eth2
+    type: switched
+    shutdown: false
+  Ethernet42:
+    peer: server21_monitoring_session_destination_po
+    peer_interface: Eth2
+    peer_type: server
+    description: server21_monitoring_session_destination_po_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 42
+      mode: active
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092
@@ -1393,3 +1447,36 @@ vxlan_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
+monitor_sessions:
+- name: MonitoringSessionServer18WithDest
+  sources:
+  - name: Ethernet25
+    direction: rx
+    access_group:
+      type: ip
+      name: MyIpACL
+      priority: 5
+  - name: Port-Channel27
+    direction: tx
+    access_group:
+      type: mac
+      name: MyMacACL
+      priority: 5
+  destinations:
+  - Ethernet26
+  - Port-Channel42
+  encapsulation_gre_metadata_tx: true
+  header_remove_size: 20
+  access_group:
+    type: ip
+    name: ip_acl
+  rate_limit_per_ingress_chip: 30 bps
+  rate_limit_per_egress_chip: 30 bps
+  sample: 10
+  truncate:
+    enabled: true
+    size: 20
+- name: MonitoringSessionServer18WithoutDest
+  sources:
+  - name: Ethernet25
+    direction: tx

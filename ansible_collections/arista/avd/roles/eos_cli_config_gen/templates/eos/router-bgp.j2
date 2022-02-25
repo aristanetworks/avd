@@ -74,6 +74,16 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.peer_groups[peer_group].password is arista.avd.defined %}
    neighbor {{ peer_group }} password 7 {{ router_bgp.peer_groups[peer_group].password }}
 {%         endif %}
+{%         if router_bgp.peer_groups[peer_group].default_originate.enabled is arista.avd.defined(true) %}
+{%             set default_originate_cli = "neighbor " ~ peer_group ~ " default-originate" %}
+{%             if router_bgp.peer_groups[peer_group].default_originate.route_map is arista.avd.defined %}
+{%                 set default_originate_cli = default_originate_cli ~ " route-map " ~ router_bgp.peer_groups[peer_group].default_originate.route_map %}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].default_originate.always is arista.avd.defined(true) %}
+{%                 set default_originate_cli = default_originate_cli ~ " always" %}
+{%             endif %}
+   {{ default_originate_cli }}
+{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group }} send-community
 {%         elif router_bgp.peer_groups[peer_group].send_community is arista.avd.defined %}
@@ -158,6 +168,16 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].route_map_out is arista.avd.defined %}
    neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_out }} out
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].default_originate.enabled is arista.avd.defined(true) %}
+{%             set default_originate_cli = "neighbor " ~ neighbor ~ " default-originate" %}
+{%             if router_bgp.neighbors[neighbor].default_originate.route_map is arista.avd.defined %}
+{%                 set default_originate_cli = default_originate_cli ~ " route-map " ~ router_bgp.neighbors[neighbor].default_originate.route_map %}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].default_originate.always is arista.avd.defined(true) %}
+{%                 set default_originate_cli = default_originate_cli ~ " always" %}
+{%             endif %}
+   {{ default_originate_cli }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].send_community is arista.avd.defined('all') %}
    neighbor {{ neighbor }} send-community
@@ -290,6 +310,15 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if vpws_service.route_targets.import_export is arista.avd.defined %}
       route-target import export evpn {{ vpws_service.route_targets.import_export }}
+{%                 endif %}
+{%                 if vpws_service.mpls_control_word is arista.avd.defined(true) %}
+      mpls control-word
+{%                 endif %}
+{%                 if vpws_service.label_flow is arista.avd.defined(true) %}
+      label flow
+{%                 endif %}
+{%                 if vpws_service.mtu is arista.avd.defined %}
+      mtu {{ vpws_service.mtu }}
 {%                 endif %}
 {%                 for pw in vpws_service.pseudowires | arista.avd.natural_sort %}
 {%                     if pw.name is arista.avd.defined and pw.id_local is arista.avd.defined and pw.id_remote is arista.avd.defined %}
@@ -666,6 +695,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].timers is arista.avd.defined %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].shutdown is arista.avd.defined(true) %}
+      neighbor {{ neighbor }} shutdown
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined('all') %}
       neighbor {{ neighbor }} send-community
