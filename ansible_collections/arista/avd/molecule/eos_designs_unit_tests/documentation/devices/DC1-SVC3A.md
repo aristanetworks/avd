@@ -1770,6 +1770,7 @@ vrf instance Tenant_A_APP_Zone
 vrf instance Tenant_A_DB_Zone
 !
 vrf instance Tenant_A_OP_Zone
+   description Tenant_A_OP_Zone
 !
 vrf instance Tenant_A_WAN_Zone
 !
