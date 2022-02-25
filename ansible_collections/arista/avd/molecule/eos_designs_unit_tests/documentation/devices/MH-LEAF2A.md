@@ -688,7 +688,7 @@ router bfd
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
-#### TENANT-CONN-DEFAULT-VRF
+#### PL-TENANT-CONN-DEFAULT-VRF
 
 | Sequence | Action |
 | -------- | ------ |
@@ -702,7 +702,7 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
 !
-ip prefix-list TENANT-CONN-DEFAULT-VRF
+ip prefix-list PL-TENANT-CONN-DEFAULT-VRF
    seq 10 permit 10.2.10.0/24
 ```
 

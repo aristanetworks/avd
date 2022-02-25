@@ -1,6 +1,6 @@
 {# prefix_lists #}
 prefix_lists:
-  TENANT-CONN-DEFAULT-VRF:
+  PL-TENANT-CONN-DEFAULT-VRF:
     sequence_numbers:
 {% for svi_subnet in default_vrf.svi_subnets %}
       {{ 10*loop.index }}:
