@@ -231,6 +231,12 @@ defaults <- node_group <- node_group.node <- node
 
     # Number of path to configure in ECMP for ISIS
     isis_maximum_paths: < integer >
+
+    # IS type
+    is_type: < level-1-2 | level-1 | level-2 | Default -> level-2 >
+
+    # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+    node_sid_base: < integer | Default -> 0 >
 ```
 
 ### Loopback and VTEP management

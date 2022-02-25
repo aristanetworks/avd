@@ -19,6 +19,10 @@ node_type_keys:
     # Optional | Default evpn_role. Can be overridden in topology vars.
     default_evpn_role: < none | client | server | default -> none >
 
+    # Optional | Set the default underlay routing_protocol.
+    # Can be overridden by setting "underlay_routing_protocol" host/group_vars
+    default_underlay_routing_protocol: < routing_protocol | default -> ebgp >
+
     # Optional | Can this node type support mlag
     mlag_support: < true | false | default -> false >
 
@@ -38,6 +42,9 @@ node_type_keys:
 
     # Optional | Is this switch an EVPN VTEP
     vtep: < true | false | default -> false >
+
+    # Optional | Is this switch an MPLS LSR
+    mpls_lsr: < true | false | default -> false >
 
     # Optional | Override ip_adressing templates
     ip_addressing:

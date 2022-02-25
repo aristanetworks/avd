@@ -23,6 +23,12 @@ switch:
 {# switch.default_evpn_role #}
   default_evpn_role: {{ ns.node_type_key_data.default_evpn_role | arista.avd.default('none') }}
 
+{# switch.default_underlay_routing_protocol #}
+  default_underlay_routing_protocol: {{ ns.node_type_key_data.default_underlay_routing_protocol | arista.avd.default('ebgp') }}
+
+{# switch.mpls_lsr #}
+  mpls_lsr: {{ ns.node_type_key_data.mpls_lsr | arista.avd.default(false) }}
+
 {# switch.mlag_support #}
   mlag_support: {{ ns.node_type_key_data.mlag_support | arista.avd.default(false) }}
 
