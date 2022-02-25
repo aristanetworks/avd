@@ -1,0 +1,15 @@
+### Roles ###
+roles:
+  - name: network-limited
+    sequence_numbers:
+      - sequence: 10
+        action: permit
+        mode: exec
+        command: ssh
+      - sequence: 20
+        action: deny
+        command: telnet
+      - sequence: 30
+        action: permit
+        mode: exec
+        command: traceroute
