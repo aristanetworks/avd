@@ -1,0 +1,15 @@
+policy_maps:
+  pbr:
+    POLICY_DROP_THEN_NEXTHOP:
+      classes:
+        CLASS_DROP:
+          index: 10
+          drop: true
+        CLASS_NEXTHOP:
+          index: 20
+          set:
+            nexthop:
+              ip_address: 172.30.1.2
+              recursive: true
+        # Should create only class
+        NO_ACTION:

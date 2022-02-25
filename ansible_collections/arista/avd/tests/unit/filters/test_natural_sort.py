@@ -1,3 +1,6 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert
 import pytest
 from jinja2.runtime import Undefined

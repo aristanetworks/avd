@@ -1,3 +1,6 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 from ansible_collections.arista.avd.plugins.filter.esi_management import FilterModule
 import logging
 import pytest
@@ -17,12 +20,12 @@ f = FilterModule()
 class TestEsiManagementFilter():
     def test_generate_esi_without_prefix(self):
         resp = f.generate_esi(ESI_SHORT)
-        assert resp == "0000:0000:"+ESI_SHORT
+        assert resp == "0000:0000:" + ESI_SHORT
 
     def test_generate_esi_with_prefix(self):
         assert ESI_PREFIX is not None and ESI_PREFIX != ""
         resp = f.generate_esi(ESI_SHORT, ESI_PREFIX)
-        assert resp == ESI_PREFIX+ESI_SHORT
+        assert resp == ESI_PREFIX + ESI_SHORT
 
     def test_lacp_id(self):
         assert ESI_SHORT_1 is not None and ESI_SHORT_1 != ""

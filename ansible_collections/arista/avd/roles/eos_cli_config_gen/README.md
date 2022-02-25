@@ -1417,7 +1417,7 @@ vxlan_interface:
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       qos:
         # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
-        # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in “DSCP Trust” mode.
+        # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
         dscp_propagation_encapsulation: < true | false >
         map_dscp_to_traffic_class_decapsulation: < true | false >
       vlans:
@@ -1765,6 +1765,7 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+  log_level: < SSH daemon log level >
 ```
 
 #### IP SSH Client Source Interfaces
@@ -1827,6 +1828,8 @@ mlag_configuration:
     peer_ip: < IPv4_address >
     vrf: < vrf_name >
   dual_primary_detection_delay: < seconds >
+  dual_primary_recovery_delay_mlag: < 0 - 1000 >
+  dual_primary_recovery_delay_non_mlag: < 0 - 1000 >
   peer_link: < Port-Channel_id >
   reload_delay_mlag: < seconds >
   reload_delay_non_mlag: < seconds >
@@ -2374,6 +2377,9 @@ policy_maps:
     < policy-map name >:
       classes:
         < class name >:
+          index: < integer > # Optional
+          # Set only one of the below actions per class
+          drop: < true | false >
           set:
             nexthop:
               ip_address: < IPv4_address | IPv6_address >
