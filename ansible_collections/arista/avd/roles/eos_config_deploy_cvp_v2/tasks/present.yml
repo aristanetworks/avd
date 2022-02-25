@@ -1,0 +1,71 @@
+---
+
+
+- name: "Create configlets on CVP cv_server."
+  tags: [provision]
+  delegate_to: cv_server
+  arista.cvp.cv_configlet_v3:
+    # configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
+    # configlets: "{{ { 'AVD_' ~ inventory_hostname : lookup('file', root_dir ~ '/intended/configs/' ~ inventory_hostname ~ '.cfg', errors='ignore') } }}"
+    # configlets: "{{ { configlets_prefix  ~ '_' ~ inventory_hostname : lookup('file', root_dir ~ '/intended/configs/' ~ inventory_hostname ~ '.cfg', errors='ignore') } }}"
+    configlets: "{{{ configlets_prefix ~ '_' ~ inventory_hostname :lookup('file', root_dir ~ '/intended/configs/' ~ inventory_hostname ~ '.cfg') }}}"
+  register: CVP_CONFIGLETS_STATUS
+
+- name: "Execute any configlet generated tasks to update configuration on cv_server"
+  tags: [apply]
+  delegate_to: cv_server
+  arista.cvp.cv_task_v3:
+    tasks: "{{ CVP_CONFIGLETS_STATUS.taskIds }}"
+  when:
+    - CVP_CONFIGLETS_STATUS.taskIds | length > 0
+    - execute_tasks|bool
+
+- name: "Load CVP device information for cv_server"
+  tags: [build, provision, online]
+  delegate_to: localhost
+  # run_once: true
+  include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+
+- name: "Building Containers topology on cv_server"
+  tags: [provision, containers]
+  delegate_to: cv_server
+  run_once: true
+  arista.cvp.cv_container_v3:
+    topology: "{{ CVP_CONTAINERS }}"
+    state: present
+    apply_mode: loose
+  register: CVP_CONTAINER_RESULTS
+
+- name: "Execute pending tasks on cv_server"
+  tags: [apply]
+  delegate_to: cv_server
+  run_once: true
+  arista.cvp.cv_task_v3:
+    tasks: "{{ CVP_CONTAINER_RESULTS.taskIds }}"
+  when:
+    - CVP_CONTAINER_RESULTS.taskIds | length > 0
+    - execute_tasks|bool
+
+- name: "Configure devices on cv_server"
+  # run_once: true
+  tags: [provision, apply]
+  delegate_to: cv_server
+  arista.cvp.cv_device_v3:
+    # devices:
+    #   - fqdn: "{{ inventory_hostname }}"
+    #     parentContainerName: TP_LEAF1
+    #     configlets:
+    #       - "{{ configlets_prefix ~ '_' ~ inventory_hostname }}"
+    devices: "{{ CVP_DEVICES }}"
+    state: present
+  register: CVP_DEVICES_RESULTS
+
+- name: "Execute pending tasks on cv_server"
+  # run_once: true
+  tags: [apply]
+  delegate_to: cv_server
+  arista.cvp.cv_task_v3:
+    tasks: "{{ CVP_DEVICES_RESULTS.taskIds }}"
+  when:
+    - CVP_DEVICES_RESULTS.taskIds | length > 0
+    - execute_tasks|bool
