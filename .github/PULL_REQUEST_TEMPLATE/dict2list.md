@@ -1,5 +1,7 @@
 ## "Wildcard Keyed Dict" to "List of Dicts" Data model migration
 
+<!-- Use this PR Title: Refactor(eos_cli_config_gen): Wildcard dict to list for `< data_model_key >` -->
+
 ## Data model key
 
 `< data_model_key >`
