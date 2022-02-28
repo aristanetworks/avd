@@ -364,4 +364,4 @@ jobs:
       - name: Run J2lint
         timeout-minutes: 2
         run: |
-          j2lint $GITHUB_WORKSPACE --ignore S7 S6
+          j2lint $GITHUB_WORKSPACE --ignore S7
