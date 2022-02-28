@@ -10,7 +10,7 @@ The fabric topology variables define the connectivity between the various node t
 fabric_name: < Fabric_Name >
 ```
 
-- Connectivity is defined in a free-standing backbone_interfaces construct.
+- Connectivity is defined in a free-standing core_interfaces construct.
 - A static unique identifier (id) is assigned to each device.
   - This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
 - Within the pe, p and rr dictionary variables, defaults can be defined.
@@ -19,12 +19,12 @@ fabric_name: < Fabric_Name >
 
 ## Supported designs
 
-`eos_designs` with the mpls design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the backbone_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
+`eos_designs` with the mpls design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
 
 ### Arbitrary Mesh or L3LS Topology
 
 - The **eos_designs** role with the mpls design type supports any type of topology consisting of any combination of pe-routers, p-routers and rr-routers.
-- Any node group of 2 or more rr-routers will form a Route Reflector cluster. The backbone_interfaces construct is used to define underlay interfaces and associated interface profiles.
+- Any node group of 2 or more rr-routers will form a Route Reflector cluster. The core_interfaces construct is used to define underlay interfaces and associated interface profiles.
 
 ## Node Type Variables
 
@@ -70,10 +70,10 @@ All node types have the same structure based on `defaults`, `node_group`, `node`
 
 ## Point-to-point link management
 
-Unlike with the l3ls-evpn design type, underlay p2p links are built using the backbone_interfaces dictionary:
+Unlike with the l3ls-evpn design type, underlay p2p links are built using the core_interfaces dictionary:
 
 ```yaml
-backbone_interfaces:
+core_interfaces:
   p2p_links_ip_pools:
     < pool name >: < IPv4_address/Mask >
   p2p_links_profiles:
