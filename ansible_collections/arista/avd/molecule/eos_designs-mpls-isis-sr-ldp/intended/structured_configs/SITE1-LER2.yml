@@ -228,12 +228,13 @@ loopback_interfaces:
       ip: true
       ldp:
         interface: true
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: CORE
     isis_passive: true
     node_segment:
       ipv4_index: 206
+      ipv6_index: 206
 router_isis:
-  instance: MPLS_UNDERLAY
+  instance: CORE
   log_adjacency_changes: true
   net: 49.0001.0000.0001.0006.00
   router_id: 100.70.0.6
@@ -273,7 +274,7 @@ ethernet_interfaces:
     ip_address: 100.64.48.2/31
     speed: forced 100gfull
     ipv6_enable: true
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: CORE
     isis_metric: 50
     isis_network_point_to_point: true
     isis_hello_padding: false
@@ -296,7 +297,7 @@ ethernet_interfaces:
     ip_address: 100.64.48.5/31
     speed: forced 10000full
     ipv6_enable: true
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: CORE
     isis_metric: 500
     isis_network_point_to_point: true
     isis_hello_padding: false
@@ -353,7 +354,6 @@ port_channel_interfaces:
     lacp_id: 0303.0202.0101
   Port-Channel8.111:
     type: l2dot1q
-    mode: flexencap
     esi: 0000:0000:0303:0202:0111
     rt: 03:03:02:02:01:11
     vlan_id: 111
@@ -365,7 +365,6 @@ port_channel_interfaces:
         client: true
   Port-Channel8.222:
     type: l2dot1q
-    mode: flexencap
     esi: 0000:0000:0303:0202:0222
     rt: 03:03:02:02:02:22
     vlan_id: 222
@@ -377,7 +376,6 @@ port_channel_interfaces:
         client: true
   Port-Channel8.333:
     type: l2dot1q
-    mode: flexencap
     esi: 0000:0000:0303:0202:0222
     rt: 03:03:02:02:02:22
     vlan_id: 434

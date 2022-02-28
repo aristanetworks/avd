@@ -248,7 +248,7 @@ vlan internal order ascending range 3700 3900
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | MPLS_UNDERLAY |  - |  passive |
+| Loopback0 | CORE |  - |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -259,10 +259,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.10/32
    ipv6 address 2000:1234:ffff:ffff::a/128
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis passive
    mpls ldp interface
    node-segment ipv4 index 210
+   node-segment ipv6 index 210
 ```
 
 # Routing
@@ -341,7 +342,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Value |
 | -------- | ----- |
-| Instance | MPLS_UNDERLAY |
+| Instance | CORE |
 | Net-ID | 49.0001.0000.0001.0010.00 |
 | Type | level-1-2 |
 | Address Family | ipv4 unicast, ipv6 unicast |
@@ -356,19 +357,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-| Loopback0 | MPLS_UNDERLAY | - | passive |
+| Loopback0 | CORE | - | passive |
 
 ### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 210 | - |
+| Loopback0 | 210 | 210 |
 
 ### Router ISIS Device Configuration
 
 ```eos
 !
-router isis MPLS_UNDERLAY
+router isis CORE
    net 49.0001.0000.0001.0010.00
    is-type level-1-2
    router-id ipv4 100.70.0.10
@@ -441,8 +442,9 @@ patch panel
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

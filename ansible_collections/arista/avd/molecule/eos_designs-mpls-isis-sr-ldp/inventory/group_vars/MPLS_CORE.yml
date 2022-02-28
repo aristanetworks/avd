@@ -205,7 +205,7 @@ connected_endpoints_keys:
   cpes:
     type: cpe
 
-backbone_interfaces:
+core_interfaces:
   p2p_links_ip_pools:
     underlay_pool: 100.64.48.0/24
   p2p_links_profiles:

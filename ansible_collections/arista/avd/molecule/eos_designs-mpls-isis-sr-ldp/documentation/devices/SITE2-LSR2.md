@@ -248,9 +248,9 @@ vlan internal order ascending range 3700 3900
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet3 | - | MPLS_UNDERLAY | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet12 | 12 | *MPLS_UNDERLAY | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet13 | 12 | *MPLS_UNDERLAY | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet3 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet12 | 12 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet13 | 12 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -265,7 +265,7 @@ interface Ethernet3
    no switchport
    ip address 100.64.48.11/31
    ipv6 enable
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis circuit-type level-2
    isis metric 60
    isis network point-to-point
@@ -306,7 +306,7 @@ interface Ethernet13
 
 | Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel12 | MPLS_UNDERLAY | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel12 | CORE | 60 | point-to-point | level-2 | False | md5 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -322,7 +322,7 @@ interface Port-Channel12
    mpls ip
    mpls ldp interface
    mpls ldp igp sync
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis circuit-type level-2
    isis metric 60
    isis network point-to-point
@@ -351,7 +351,7 @@ interface Port-Channel12
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | MPLS_UNDERLAY |  - |  passive |
+| Loopback0 | CORE |  - |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -362,10 +362,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.4/32
    ipv6 address 2000:1234:ffff:ffff::4/128
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis passive
    mpls ldp interface
    node-segment ipv4 index 304
+   node-segment ipv6 index 304
 ```
 
 # Routing
@@ -431,7 +432,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Value |
 | -------- | ----- |
-| Instance | MPLS_UNDERLAY |
+| Instance | CORE |
 | Net-ID | 49.0001.0000.0000.0004.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast, ipv6 unicast |
@@ -446,20 +447,20 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-| Ethernet3 | MPLS_UNDERLAY | 60 | point-to-point |
-| Loopback0 | MPLS_UNDERLAY | - | passive |
+| Ethernet3 | CORE | 60 | point-to-point |
+| Loopback0 | CORE | - | passive |
 
 ### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 304 | - |
+| Loopback0 | 304 | 304 |
 
 ### Router ISIS Device Configuration
 
 ```eos
 !
-router isis MPLS_UNDERLAY
+router isis CORE
    net 49.0001.0000.0000.0004.00
    is-type level-2
    router-id ipv4 100.70.0.4

@@ -243,12 +243,13 @@ loopback_interfaces:
       ip: true
       ldp:
         interface: true
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: CORE
     isis_passive: true
     node_segment:
       ipv4_index: 207
+      ipv6_index: 207
 router_isis:
-  instance: MPLS_UNDERLAY
+  instance: CORE
   log_adjacency_changes: true
   net: 49.0001.0000.0001.0007.00
   router_id: 100.70.0.7
@@ -288,7 +289,7 @@ ethernet_interfaces:
     ip_address: 100.64.48.15/31
     speed: forced 40gfull
     ipv6_enable: true
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: CORE
     isis_metric: 60
     isis_network_point_to_point: true
     isis_hello_padding: false
@@ -369,7 +370,7 @@ port_channel_interfaces:
     ip_address: 100.64.48.17/31
     speed: forced 40gfull
     ipv6_enable: true
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: CORE
     isis_metric: 60
     isis_network_point_to_point: true
     isis_hello_padding: false

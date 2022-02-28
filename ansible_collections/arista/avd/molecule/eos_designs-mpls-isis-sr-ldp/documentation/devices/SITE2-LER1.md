@@ -301,8 +301,8 @@ vlan 2020
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | MPLS_UNDERLAY | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet11 | 11 | *MPLS_UNDERLAY | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet1 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet11 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -317,7 +317,7 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.15/31
    ipv6 enable
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis circuit-type level-2
    isis metric 60
    isis network point-to-point
@@ -406,7 +406,7 @@ interface Ethernet11
 
 | Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel11 | MPLS_UNDERLAY | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel11 | CORE | 60 | point-to-point | level-2 | False | md5 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -451,7 +451,7 @@ interface Port-Channel11
    mpls ip
    mpls ldp interface
    mpls ldp igp sync
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis circuit-type level-2
    isis metric 60
    isis network point-to-point
@@ -480,7 +480,7 @@ interface Port-Channel11
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | MPLS_UNDERLAY |  - |  passive |
+| Loopback0 | CORE |  - |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -491,10 +491,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.7/32
    ipv6 address 2000:1234:ffff:ffff::7/128
-   isis enable MPLS_UNDERLAY
+   isis enable CORE
    isis passive
    mpls ldp interface
    node-segment ipv4 index 207
+   node-segment ipv6 index 207
 ```
 
 ## VLAN Interfaces
@@ -638,7 +639,7 @@ router ospf 99 vrf TENANT_B_WAN
 
 | Settings | Value |
 | -------- | ----- |
-| Instance | MPLS_UNDERLAY |
+| Instance | CORE |
 | Net-ID | 49.0001.0000.0001.0007.00 |
 | Type | level-1-2 |
 | Address Family | ipv4 unicast, ipv6 unicast |
@@ -653,20 +654,20 @@ router ospf 99 vrf TENANT_B_WAN
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-| Ethernet1 | MPLS_UNDERLAY | 60 | point-to-point |
-| Loopback0 | MPLS_UNDERLAY | - | passive |
+| Ethernet1 | CORE | 60 | point-to-point |
+| Loopback0 | CORE | - | passive |
 
 ### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 207 | - |
+| Loopback0 | 207 | 207 |
 
 ### Router ISIS Device Configuration
 
 ```eos
 !
-router isis MPLS_UNDERLAY
+router isis CORE
    net 49.0001.0000.0001.0007.00
    is-type level-1-2
    router-id ipv4 100.70.0.7
@@ -711,17 +712,17 @@ router isis MPLS_UNDERLAY
 | Address Family | mpls |
 | Remote AS | 65000 |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
-| 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
-| 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
-| 192.168.48.3 | 65202 | TENANT_B_WAN | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
+| 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
+| 192.168.48.3 | 65202 | TENANT_B_WAN | - | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -747,14 +748,14 @@ router isis MPLS_UNDERLAY
 
 ### Router BGP VPWS Instances
 
-| Instance | Route-Distinguisher | Both Route-Target | Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | ----------------- | ---------- | -------- | --------- |
-| TENANT_A | 100.70.0.7:1000 | 65000:1000 | TEN_A_site2_site5_eline_port_based | 57 | 26 |
-| TENANT_B | 100.70.0.7:2000 | 65000:2000 | TEN_B_site3_site5_eline_vlan_based_1000 | 51000 | 31000 |
-| TENANT_B | 100.70.0.7:2000 | 65000:2000 | TEN_B_site3_site5_eline_vlan_based_1001 | 51001 | 31001 |
-| TENANT_B | 100.70.0.7:2000 | 65000:2000 | TEN_B_site3_site5_eline_vlan_based_1002 | 51002 | 31002 |
-| TENANT_B | 100.70.0.7:2000 | 65000:2000 | TEN_B_site3_site5_eline_vlan_based_1003 | 51003 | 31003 |
-| TENANT_B | 100.70.0.7:2000 | 65000:2000 | TEN_B_site3_site5_eline_vlan_based_1004 | 51004 | 31004 |
+| Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
+| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| TENANT_A | 100.70.0.7:1000 | 65000:1000 | False | False | - | TEN_A_site2_site5_eline_port_based | 57 | 26 |
+| TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 51000 | 31000 |
+| TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 51001 | 31001 |
+| TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 51002 | 31002 |
+| TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1003 | 51003 | 31003 |
+| TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1004 | 51004 | 31004 |
 
 ### Router BGP VRFs
 
@@ -972,8 +973,9 @@ patch panel
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
