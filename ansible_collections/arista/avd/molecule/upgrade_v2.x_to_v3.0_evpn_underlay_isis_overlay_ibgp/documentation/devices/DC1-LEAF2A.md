@@ -296,10 +296,10 @@ vlan 4094
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 | True | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 | True | - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 | True | - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 | True | - |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -312,10 +312,8 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.9/31
    isis enable EVPN_UNDERLAY
-   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
-   isis hello padding
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
@@ -324,10 +322,8 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.11/31
    isis enable EVPN_UNDERLAY
-   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
-   isis hello padding
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet2
@@ -336,10 +332,8 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.13/31
    isis enable EVPN_UNDERLAY
-   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
-   isis hello padding
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet2
@@ -348,10 +342,8 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.15/31
    isis enable EVPN_UNDERLAY
-   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
-   isis hello padding
 !
 interface Ethernet5
    description MLAG_PEER_DC1-LEAF2B_Ethernet5
