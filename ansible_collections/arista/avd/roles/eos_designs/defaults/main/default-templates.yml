@@ -70,8 +70,8 @@ default_templates:
       - template: "base/main.j2"
       # Underlay feature
       - template: "underlay/main.j2"
-      # Backbone Interfaces
-      - template: "backbone_interfaces/main.j2"
+      # Core Interfaces Feature
+      - template: "core_interfaces/main.j2"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Connected Endpoints feature
