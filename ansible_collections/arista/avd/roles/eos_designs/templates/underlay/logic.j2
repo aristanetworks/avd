@@ -35,14 +35,3 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
-{# Set isis instance name #}
-{% if switch.underlay_routing_protocol == "isis" %}
-{%     if switch.mpls_lsr is arista.avd.defined(true) %}
-{%         set underlay_data.isis_instance_name = "MPLS_UNDERLAY" %}
-{%     else %}
-{%         set underlay_data.isis_instance_name = "EVPN_UNDERLAY" %}
-{%     endif %}
-{% endif %}
-{% if switch.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp"] %}
-{%     set underlay_data.isis_instance_name = "MPLS_UNDERLAY" %}
-{% endif %}
