@@ -131,19 +131,6 @@ switch:
 {########################}
 {# Router related facts #}
 
-{# switch.overlay_loopback_description #}
-{% set switch_overlay_loopback_description = switch_data.combined.overlay_loopback_description | arista.avd.default(overlay_loopback_description) %}
-{% if switch_overlay_loopback_description is not arista.avd.defined %}
-{%     if switch.default_mpls_overlay_role in ["server", "client"] %}
-{%         set switch_overlay_loopback_description = "MPLS_Overlay_peering" %}
-{%     elif switch.mpls_lsr is arista.avd.defined(true) %}
-{%         set switch_overlay_loopback_description = "LSR_Router_ID" %}
-{%     else %}
-{%         set switch_overlay_loopback_description = "EVPN_Overlay_Peering" %}
-{%     endif %}
-{% endif %}
-  overlay_loopback_description: {{ switch_overlay_loopback_description }}
-
 {% if switch.underlay_router is arista.avd.defined(true) and
       switch_data.combined.loopback_ipv4_pool is arista.avd.defined(fail_action='error',var_name='loopback_ipv4_pool') %}
 
