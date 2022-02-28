@@ -1,9 +1,9 @@
-# Fabric Topology Variables for mpls Design
+# Fabric Topology Variables for MPLS Design
 
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
-- The mpls design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
-- The mpls design additionally supports several new fabric topology variables that are outlined in this document.
+- The MPLS design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
+- The MPLS design additionally supports several new fabric topology variables that are outlined in this document.
 - Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
 
 ```yaml
@@ -19,11 +19,11 @@ fabric_name: < Fabric_Name >
 
 ## Supported designs
 
-`eos_designs` with the mpls design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
+`eos_designs` with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
 
 ### Arbitrary Mesh or L3LS Topology
 
-- The **eos_designs** role with the mpls design type supports any type of topology consisting of any combination of pe-routers, p-routers and rr-routers.
+- The **eos_designs** role with the `mpls` design type supports any type of topology consisting of any combination of pe-routers, p-routers and rr-routers.
 - Any node group of 2 or more rr-routers will form a Route Reflector cluster. The core_interfaces construct is used to define underlay interfaces and associated interface profiles.
 
 ## Node Type Variables

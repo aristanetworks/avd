@@ -1,7 +1,7 @@
-# Network Services Variables for mpls Design - VRFs/VLANs
+# Network Services Variables for MPLS Design - VRFs/VLANs
 
-- The mpls design supports any network services variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
-- The mpls design additionally supports several new network services variables that are outlined in this document.
+- The MPLS design supports any network services variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
+- The MPLS design additionally supports several new network services variables that are outlined in this document.
 - The network services variables provide an abstracted model to create L2 and L3 network services across the fabric.
 - The network services are grouped by tenants. The definition of a tenant may vary between organizations.
   - e.g. Tenants can be organizations or departments.
@@ -104,29 +104,29 @@ tenants:
 
 ## Unsupported Variables
 
-The following variables used with l3ls-evpn are not supported with the mpls design:
+The following variables used with l3ls-evpn are not supported with the MPLS design:
 
 ```yaml
-# MLAG is currently not supported with mpls-evpn.
+# MLAG is currently not supported with MPLS-EVPN.
 mlag_ibgp_peering_vrfs:
   base_vlan: < vlan >
 
 tenants:
   < tenant_a >:
-    # MLAG is not supported with mpls-evpn topologies.
+    # MLAG is not supported with MPLS-EVPN topologies.
     enable_mlag_ibgp_peering_vrfs: < true | false >
     vrfs:
       < vrf name >:
         # Replaced by vrf_id
         vrf_vni: < vni >
-        # MLAG is not supported with mpls-evpn topologies.
+        # MLAG is not supported with MPLS-EVPN topologies.
         enable_mlag_ibgp_peering_vrfs: < true | false >
         mlag_ibgp_peering_vlan: <1-4096>
         svis:
           < 1-4096 >:
             # Replaced by rt_override
             vni_override: < 1-16777215 >
-            # Not relevant for mpls
+            # Not relevant for MPLS
             vxlan: < true | false | default -> true >
     l2vlans:
       < vlan id >:

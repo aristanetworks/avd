@@ -90,6 +90,7 @@ default_templates:
     ip_addressing:
       router_id: 'ip_addressing/router-id.j2'
       p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
       ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
     interface_descriptions:
       underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'

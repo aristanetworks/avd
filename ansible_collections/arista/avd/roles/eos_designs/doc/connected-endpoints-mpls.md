@@ -1,13 +1,13 @@
-# Connected Endpoints for mpls design
+# Connected Endpoints for MPLS design
 
-- The mpls design supports all connected endpoint variables already supported by l3ls-evpn barring the exceptions outlined in this document.
+- The MPLS design supports all connected endpoint variables already supported by l3ls-evpn barring the exceptions outlined in this document.
 - The connected endpoints variables, define endpoints that connect to the fabric on pe interface(s).
 - The connected endpoints are leveraged to define any device that connects to a pe switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
 - Connected endpoints key/value pairs are designed to be extended for your own needs and leveraged to configure the endpoint itself.
 
 ## Unsupported variables
 
-Since MLAG is not supported with mpls-evpn topologies, it is necessary to use the EVPN A/A data model if a dual-homed port-channel configuration is desired. As such, the following data model will not render a functional configuration:
+Since MLAG is not supported with MPLS-EVPN topologies, it is necessary to use the EVPN A/A data model if a dual-homed port-channel configuration is desired. As such, the following data model will not render a functional configuration:
 
 ```yaml
 servers:

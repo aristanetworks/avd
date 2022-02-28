@@ -1,7 +1,7 @@
-# Fabric Variables for mpls Design
+# Fabric Variables for MPLS Design
 
-- The mpls design supports any fabric variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
-- The mpls design additionally supports several new fabric variables that are outlined in this document.
+- The MPLS design supports any fabric variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
+- The MPLS design additionally supports several new fabric variables that are outlined in this document.
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
   - ISIS-SR.
@@ -56,7 +56,7 @@ bgp_peer_groups:
 
 ## Unsupported Fabric Variables
 
-The following fabric variables or variable values are not supported with the mpls design.
+The following fabric variables or variable values are not supported with the MPLS design.
 
 ```yaml
 underlay_routing_protocol: < ebgp | isis | ospf >
@@ -67,7 +67,7 @@ overlay_routing_protocol: ebgp
 underlay_rfc5549: < true | false | default -> false >
 
 # IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
-# Unsupported due to lack of vtep in mpls design.
+# Unsupported due to lack of vtep in MPLS design.
 vtep_vvtep_ip: < IPv4_address/Mask >
 
 # EVPN ebgp-multihop
@@ -75,7 +75,7 @@ vtep_vvtep_ip: < IPv4_address/Mask >
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
-# Unsupported due to lack of l2leaf node type in mpls design.
+# Unsupported due to lack of l2leaf node type in MPLS design.
 inband_management_subnet: < IPv4_network/Mask >
 inband_management_vlan: < vlan_id >
 ```
