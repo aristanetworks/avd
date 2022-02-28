@@ -21,7 +21,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router ISIS](#router-isis)
-  - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
@@ -337,13 +336,13 @@ interface Port-Channel12
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.0.0.1/32 |
+| Loopback0 | LSR_Router_ID | default | 10.0.0.1/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | LSR_Router_ID | default | 2000:1234:ffff:ffff::1/128 |
 
 #### ISIS
 
@@ -356,9 +355,10 @@ interface Port-Channel12
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description LSR_Router_ID
    no shutdown
    ip address 10.0.0.1/32
+   ipv6 address 2000:1234:ffff:ffff::1/128
    isis enable CORE
    isis passive
    mpls ldp interface
@@ -398,8 +398,15 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | true |
 | MGMT | false |
+
+### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing
+```
 
 ## Static Routes
 
@@ -474,27 +481,6 @@ router isis CORE
    !
    segment-routing mpls
       no shutdown
-```
-
-## Router BGP
-
-### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65000|  10.0.0.1 |
-
-| BGP Tuning |
-| ---------- |
-| maximum-paths 4 ecmp 4 |
-
-### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65000
-   router-id 10.0.0.1
-   maximum-paths 4 ecmp 4
 ```
 
 # MPLS

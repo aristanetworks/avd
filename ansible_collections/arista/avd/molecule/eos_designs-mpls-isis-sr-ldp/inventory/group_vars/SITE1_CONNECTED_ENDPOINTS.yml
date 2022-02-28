@@ -27,7 +27,7 @@ cpes:
         - number: 222
           short_esi: 0303:0202:0222
         - number: 333
-          short_esi: 0303:0202:0222
+          short_esi: 0303:0202:0333
           vlan_id: 434
           encapsulation_vlan:
             client_dot1q: 333

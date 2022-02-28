@@ -21,7 +21,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router OSPF](#router-ospf)
-  - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
@@ -280,13 +279,13 @@ interface Port-Channel12
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.0.0.2/32 |
+| Loopback0 | LSR_Router_ID | default | 10.0.0.2/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | LSR_Router_ID | default | 2000:1234:ffff:ffff::2/128 |
 
 
 ### Loopback Interfaces Device Configuration
@@ -294,9 +293,10 @@ interface Port-Channel12
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description LSR_Router_ID
    no shutdown
    ip address 10.0.0.2/32
+   ipv6 address 2000:1234:ffff:ffff::2/128
    ip ospf area 0.0.0.0
    mpls ldp interface
 ```
@@ -333,8 +333,15 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | true |
 | MGMT | false |
+
+### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing
+```
 
 ## Static Routes
 
@@ -390,27 +397,6 @@ router ospf 101
    no passive-interface Port-Channel12
    bfd default
    max-lsa 12000
-```
-
-## Router BGP
-
-### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65000|  10.0.0.2 |
-
-| BGP Tuning |
-| ---------- |
-| maximum-paths 4 ecmp 4 |
-
-### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65000
-   router-id 10.0.0.2
-   maximum-paths 4 ecmp 4
 ```
 
 # MPLS
