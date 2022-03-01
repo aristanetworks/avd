@@ -199,6 +199,9 @@ defaults <- node_group <- node_group.node <- node
     # Number of interfaces towards uplink switches | Optional
     max_uplink_switches: < integer >
 
+    # Number of parallel links towards uplink switches | Optional
+    max_parallel_uplinks: < integer >
+
     # Enable PTP on uplink links | Optional
     uplink_ptp:
       enable: < boolean >
