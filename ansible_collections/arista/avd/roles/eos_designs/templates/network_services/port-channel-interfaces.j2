@@ -38,7 +38,7 @@ port_channel_interfaces:
 {%                             endif %}
 {%                         endfor %}
 {%                     else %}
-{%                     do switch_l3_port_channels.append(pw_interface.interface) %}
+{%                         do switch_l3_port_channels.append(pw_interface.interface) %}
   {{ pw_interface.interface }}:
     type: routed
 {%                         if point_to_point_service.lldp_disable is arista.avd.defined(true) %}
