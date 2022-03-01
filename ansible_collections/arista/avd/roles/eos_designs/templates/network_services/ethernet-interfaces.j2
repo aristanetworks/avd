@@ -1,5 +1,6 @@
 {# Tenant l3 interfaces #}
 {% set l3_interface_subif_parents = [] %}
+{% set switch_l3_interfaces = [] %}
 ethernet_interfaces:
 {% for tenant in network_services_data.tenants %}
 {%     for vrf in tenant.vrfs %}
@@ -11,6 +12,8 @@ ethernet_interfaces:
 {%                             set l3_interface_subif_id = l3_interface.encapsulation_dot1q_vlan[loop.index0] | arista.avd.default(
                                                            l3_interface.interfaces[loop.index0].split('.') | last) %}
 {%                             do l3_interface_subif_parents.append(l3_interface.interfaces[loop.index0].split('.') | first) %}
+{%                         else %}
+{%                             do switch_l3_interfaces.append(l3_interface.interfaces[loop.index0]) %}
 {%                         endif %}
   {{ l3_interface.interfaces[loop.index0] }}:
 {%                         if l3_interface_subif_id is arista.avd.defined %}
@@ -133,10 +136,12 @@ ethernet_interfaces:
 {# Create parent / base interfaces as routed. Will be merged onto structured config, #}
 {# so even if the same interfaces are created elsewhere, it will still work. #}
 {% for l3_interface_subif_parent in (l3_interface_subif_parents + point_to_point_service_subif_parents) | arista.avd.natural_sort | unique %}
+{%     if l3_interface_subif_parent not in switch_l3_interfaces and l3_interface_subif_parent not in ethernet_interfaces | arista.avd.default([]) %}
   {{ l3_interface_subif_parent }}:
     type: routed
     peer_type: l3_interface
     shutdown: false
+{%     endif %}
 {% endfor %}
 {% for member in point_to_point_service_port_channel_members %}
   {{ member.interface }}:

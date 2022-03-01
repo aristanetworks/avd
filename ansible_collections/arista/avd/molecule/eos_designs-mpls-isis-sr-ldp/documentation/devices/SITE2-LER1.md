@@ -286,6 +286,7 @@ vlan 2020
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | 100.64.48.15/31 | default | 9178 | false | - | - |
+| Ethernet6 | TENANT_B_SITE_5_WAN_TEST | routed | - | 123.10.10.2/31 | TENANT_B_WAN | - | false | - | - |
 | Ethernet6.10 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | false | - | - |
 | Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 192.168.48.4/31 | TENANT_B_WAN | - | false | - | - |
 | Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *100.64.48.17/31 | **default | *9178 | *false | **- | **- |
@@ -337,8 +338,11 @@ interface Ethernet5
    channel-group 4 mode active
 !
 interface Ethernet6
+   description TENANT_B_SITE_5_WAN_TEST
    no shutdown
    no switchport
+   vrf TENANT_B_WAN
+   ip address 123.10.10.2/31
 !
 interface Ethernet6.10
    description TENANT_B_SITE_5

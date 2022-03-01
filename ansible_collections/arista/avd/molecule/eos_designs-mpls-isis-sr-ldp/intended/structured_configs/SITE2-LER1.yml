@@ -337,15 +337,18 @@ ethernet_interfaces:
     ospf_area: 0
     ospf_network_point_to_point: true
     ospf_cost: 10
+  Ethernet6:
+    type: routed
+    peer_type: l3_interface
+    vrf: TENANT_B_WAN
+    ip_address: 123.10.10.2/31
+    shutdown: false
+    description: TENANT_B_SITE_5_WAN_TEST
   Ethernet7:
     type: routed
     lldp:
       transmit: false
       receive: false
-    peer_type: l3_interface
-    shutdown: false
-  Ethernet6:
-    type: routed
     peer_type: l3_interface
     shutdown: false
   Ethernet4:

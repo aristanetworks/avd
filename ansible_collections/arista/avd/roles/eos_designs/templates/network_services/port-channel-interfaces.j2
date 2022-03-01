@@ -1,5 +1,6 @@
 {# Tenant l3 interfaces #}
 {% set l3_interface_subif_parents = [] %}
+{% set switch_l3_port_channels = [] %}
 port_channel_interfaces:
 {% set point_to_point_service_subif_parents = [] %}
 {# pseudowire interfaces #}
@@ -37,6 +38,7 @@ port_channel_interfaces:
 {%                             endif %}
 {%                         endfor %}
 {%                     else %}
+{%                     do switch_l3_port_channels.append(pw_interface.interface) %}
   {{ pw_interface.interface }}:
     type: routed
 {%                         if point_to_point_service.lldp_disable is arista.avd.defined(true) %}
@@ -64,15 +66,17 @@ port_channel_interfaces:
 {# Create parent / base interfaces as routed. Will be merged onto structured config, #}
 {# so even if the same interfaces are created elsewhere, it will still work. #}
 {% for parent in point_to_point_service_subif_parents %}
+{%     if parent.interface not in switch_l3_port_channels and parent.interface not in port_channel_interfaces | arista.avd.default([]) %}
   {{ parent.interface }}:
     type: routed
     peer_type: l3_interface
     shutdown: false
-{%     if parent.port_channel.short_esi is arista.avd.defined %}
+{%         if parent.port_channel.short_esi is arista.avd.defined %}
     esi: {{ parent.port_channel.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
     rt: {{ parent.port_channel.short_esi | arista.avd.generate_route_target }}
-{%         if parent.port_channel.mode is arista.avd.defined("active") %}
+{%             if parent.port_channel.mode is arista.avd.defined("active") %}
     lacp_id: {{ parent.port_channel.short_esi | arista.avd.generate_lacp_id }}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endfor %}

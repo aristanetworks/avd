@@ -149,6 +149,14 @@ tenants:
               - 192.168.48.2/31
             nodes:
               - SITE2-LER1
+          - description: TENANT_B_SITE_5_WAN_TEST
+            enabled: true
+            interfaces:
+              - Ethernet6
+            ip_addresses:
+              - 123.10.10.2/31
+            nodes:
+              - SITE2-LER1
         bgp_peers:
           192.168.48.1:
             description: TENANT_B_CPE_SITE3
