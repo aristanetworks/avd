@@ -1,0 +1,13 @@
+### vmtracer sessions ###
+
+vmtracer_sessions:
+  session_1:
+    url: "https://192.168.0.10"
+    username: user1
+    password: "encrypted_password"
+    autovlan_disable: true
+    source_interface: Management1
+  session_2:
+    url: "https://192.168.0.10"
+    username: user1
+    password: "encrypted_password"
