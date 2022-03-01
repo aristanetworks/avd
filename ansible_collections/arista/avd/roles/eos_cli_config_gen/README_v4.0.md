@@ -203,17 +203,17 @@ The legacy data model supports simplified ACL definition with `sequence_number` 
 
 ```yaml
 access_lists:
-  < access_list_name_1 >:
+  - name: < access_list_name_1 >
     counters_per_entry: < true | false >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < access_list_name_2 >:
+  - name: < access_list_name_2 >
     counters_per_entry: < true | false >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
