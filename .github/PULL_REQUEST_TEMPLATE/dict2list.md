@@ -22,10 +22,12 @@
 
 - Reviewer 1:
   - [ ] Verify data model changes
+  - [ ] Verify that all molecule `host_vars` under `eos_cli_config_gen_v4.0` has been updated to the new data model
   - [ ] Verify no changes to configs/docs on any molecule scenario
   - [ ] Verify that CI pass
 
 - Reviewer 2:
   - [ ] Verify data model changes
+  - [ ] Verify that all molecule `host_vars` under `eos_cli_config_gen_v4.0` has been updated to the new data model
   - [ ] Verify no changes to configs/docs on any molecule scenario
   - [ ] Verify that CI pass
