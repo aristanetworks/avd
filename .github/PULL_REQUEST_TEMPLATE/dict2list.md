@@ -15,9 +15,7 @@
 - [ ] Update `templates/eos/< template >.j2` and `templates/documentation/< template >.j2`:
   - [ ] Add `arista.avd.convert_dicts('<primary key>')` filter for loops previously using wildcard keys
   - [ ] Update `arista.avd.natural_sort('<primary key>')` to sort on the primary key (if applicable)
-- [ ] Run molecule `cd ansible_collections/arista/avd ; molecule converge -s eos_cli_config_gen`
-  - [ ] Verify no changes to generated configs/docs
-- [ ] Run molecule `cd ansible_collections/arista/avd ; molecule converge -s eos_cli_config_gen_v4.0`
+- [ ] Run molecule `cd ansible_collections/arista/avd/molecule ; make cli-4.0-schema`
   - [ ] Verify no changes to generated configs/docs
 
 ### Reviewer Checklist
