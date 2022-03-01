@@ -1,7 +1,5 @@
 {# router bgp default vrf configuration for evpn #}
-  redistribute_routes:
-    connected: true
   peer_groups:
     {{ bgp_peer_groups["IPv4_UNDERLAY_PEERS"].name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
       type: ipv4
-      route_map_out: RM-CONN-2-BGP
+      route_map_out: RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES

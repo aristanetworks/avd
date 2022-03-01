@@ -600,14 +600,14 @@ router bgp 65153
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor UNDERLAY-PEERS route-map RM-CONN-2-BGP out
+   neighbor UNDERLAY-PEERS route-map RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES out
    neighbor 10.10.101.4 peer group UNDERLAY-PEERS
    neighbor 10.10.101.4 remote-as 65001
    neighbor 10.10.101.4 description DC1-SPINE1_Ethernet12
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
-   redistribute connected
+   redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle default
       rd 192.168.255.35:21
@@ -715,12 +715,19 @@ ip prefix-list PL-TENANT-CONN-DEFAULT-VRF
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+| 20 | permit | match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF |
 
 #### RM-TENANT-CONN-DEFAULT-VRF
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list TENANT-CONN-DEFAULT-VRF |
+| 10 | permit | match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF |
+
+#### RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | deny | match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF |
 
 ### Route-maps Device Configuration
 
@@ -729,8 +736,16 @@ ip prefix-list PL-TENANT-CONN-DEFAULT-VRF
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
+route-map RM-CONN-2-BGP permit 20
+   match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+!
 route-map RM-TENANT-CONN-DEFAULT-VRF permit 10
-   match ip address prefix-list TENANT-CONN-DEFAULT-VRF
+   match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+!
+route-map RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES deny 10
+   match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+!
+route-map RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES permit 20
 ```
 
 # ACL

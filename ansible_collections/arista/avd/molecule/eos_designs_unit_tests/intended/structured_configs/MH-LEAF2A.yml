@@ -9,7 +9,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
-      route_map_out: RM-CONN-2-BGP
+      route_map_out: RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -25,7 +25,8 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   redistribute_routes:
-    connected: true
+    connected:
+      route_map: RM-CONN-2-BGP
   neighbors:
     10.10.101.4:
       peer_group: UNDERLAY-PEERS
@@ -220,12 +221,24 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+      20:
+        type: permit
+        match:
+        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
   RM-TENANT-CONN-DEFAULT-VRF:
     sequence_numbers:
       10:
         type: permit
         match:
-        - ip address prefix-list TENANT-CONN-DEFAULT-VRF
+        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+  RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+      20:
+        type: permit
 router_bfd:
   multihop:
     interval: 1200

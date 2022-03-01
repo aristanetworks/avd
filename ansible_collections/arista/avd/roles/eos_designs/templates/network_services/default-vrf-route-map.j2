@@ -14,4 +14,18 @@ route_maps:
       10:
         type: permit
         match:
-        - ip address prefix-list TENANT-CONN-DEFAULT-VRF
+        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+  RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+      20:
+        type: permit
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      20:
+        type: permit
+        match:
+        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
