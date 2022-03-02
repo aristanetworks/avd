@@ -394,11 +394,6 @@ vlan_interfaces:
     shutdown: false
     vrf: vrf_with_loopbacks_from_pod_pools
     ip_address_virtual: 10.101.100.1/24
-virtual_source_nat_vrfs:
-  vrf_with_loopbacks_from_overlapping_pool:
-    ip_address: 10.100.0.3
-  vrf_with_loopbacks_from_pod_pools:
-    ip_address: 10.101.102.3
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
@@ -428,5 +423,10 @@ vxlan_interface:
           vni: 1100
         vrf_with_loopbacks_from_pod_pools:
           vni: 1101
+virtual_source_nat_vrfs:
+  vrf_with_loopbacks_from_overlapping_pool:
+    ip_address: 10.100.0.3
+  vrf_with_loopbacks_from_pod_pools:
+    ip_address: 10.101.102.3
 domain_list:
 - structured-config.set.under.vrf.common-vrf

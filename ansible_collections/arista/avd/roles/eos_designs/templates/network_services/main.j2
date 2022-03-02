@@ -33,8 +33,6 @@
 
 {%     include 'network_services/vrfs.j2' %}
 
-{%     include 'network_services/virtual-source-nat-vrfs.j2' %}
-
 {%     include 'network_services/router-ospf.j2' %}
 
 {%     include 'network_services/eos-cli-vrfs.j2' %}
@@ -52,5 +50,13 @@
 {%     include 'network_services/router-bgp.j2' %}
 
 {%     include 'network_services/vxlan-interface.j2' %}
+
+{% endif %}
+
+{# VTEP and L2 and L3 #}
+{% if switch.vtep is arista.avd.defined(true) and
+      switch.network_services_l2 is arista.avd.defined(true) and
+      switch.network_services_l3 is arista.avd.defined(true) %}
+{%     include 'network_services/virtual-source-nat-vrfs.j2' %}
 
 {% endif %}

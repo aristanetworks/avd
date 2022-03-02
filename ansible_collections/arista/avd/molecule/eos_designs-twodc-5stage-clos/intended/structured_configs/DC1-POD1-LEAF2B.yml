@@ -707,13 +707,6 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-virtual_source_nat_vrfs:
-  vrf_with_loopbacks_dc1_pod1_only:
-    ip_address: 10.102.101.5
-  vrf_with_loopbacks_from_overlapping_pool:
-    ip_address: 10.100.0.5
-  vrf_with_loopbacks_from_pod_pools:
-    ip_address: 10.101.101.5
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
@@ -744,5 +737,12 @@ vxlan_interface:
           vni: 1100
         vrf_with_loopbacks_from_pod_pools:
           vni: 1101
+virtual_source_nat_vrfs:
+  vrf_with_loopbacks_dc1_pod1_only:
+    ip_address: 10.102.101.5
+  vrf_with_loopbacks_from_overlapping_pool:
+    ip_address: 10.100.0.5
+  vrf_with_loopbacks_from_pod_pools:
+    ip_address: 10.101.101.5
 domain_list:
 - structured-config.set.under.vrf.common-vrf
