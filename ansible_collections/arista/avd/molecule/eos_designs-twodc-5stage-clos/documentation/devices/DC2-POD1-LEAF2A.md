@@ -1,4 +1,4 @@
-# DC2-POD1-SPINE2
+# DC2-POD1-LEAF2A
 # Table of Contents
 
 - [Management](#management)
@@ -14,16 +14,26 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+- [VLANs](#vlans)
+  - [VLANs Summary](#vlans-summary)
+  - [VLANs Device Configuration](#vlans-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
+  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
+  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
+  - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
@@ -44,7 +54,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.21/24 | 192.168.1.254 |
+| Management1 | oob_management | oob | MGMT | 192.168.1.24/24 | 192.168.1.254 |
 
 #### IPv6
 
@@ -60,7 +70,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 192.168.1.21/24
+   ip address 192.168.1.24/24
 ```
 
 ## Management API HTTP
@@ -114,26 +124,31 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-SPINE2 | All | Disabled |
+| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF2A | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
-snmp-server location TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-SPINE2
+snmp-server location TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF2A
 ```
 
 # Spanning Tree
 
 ## Spanning Tree Summary
 
-STP mode: **none**
+STP mode: **rstp**
+
+### Global Spanning-Tree Settings
+
+- Global RSTP priority: 4096
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
-spanning-tree mode none
+spanning-tree mode rstp
+spanning-tree priority 4096
 ```
 
 # Internal VLAN Allocation Policy
@@ -151,6 +166,22 @@ spanning-tree mode none
 vlan internal order ascending range 1006 1199
 ```
 
+# VLANs
+
+## VLANs Summary
+
+| VLAN ID | Name | Trunk Groups |
+| ------- | ---- | ------------ |
+| 4092 | L2LEAF_INBAND_MGMT | - |
+
+## VLANs Device Configuration
+
+```eos
+!
+vlan 4092
+   name L2LEAF_INBAND_MGMT
+```
+
 # Interfaces
 
 ## Ethernet Interfaces
@@ -161,6 +192,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 | DC2-POD1-L2LEAF2A_Ethernet1 | *trunk | *4092 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -168,59 +200,58 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.21.3/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.21.67/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2 | routed | - | 172.17.210.2/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2 | routed | - | 172.17.210.6/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4 | routed | - | 200.200.200.201/24 | default | 1498 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4 | routed | - | 172.17.210.5/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4 | routed | - | 172.17.210.7/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
+   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.16.21.3/31
+   ip address 172.17.210.5/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
+   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.16.21.67/31
+   ip address 172.17.210.7/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2
+   description DC2-POD1-L2LEAF2A_Ethernet1
    no shutdown
-   mtu 1500
-   no switchport
-   ip address 172.17.210.2/31
-   ptp enable
-   service-profile QOS-PROFILE
+   channel-group 3 mode active
+```
+
+## Port-Channel Interfaces
+
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | DC2-POD1-L2LEAF2A_Po1 | switched | trunk | 4092 | - | - | - | - | - | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
 !
-interface Ethernet4
-   description P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2
+interface Port-Channel3
+   description DC2-POD1-L2LEAF2A_Po1
    no shutdown
-   mtu 1500
-   no switchport
-   ip address 172.17.210.6/31
-   ptp enable
+   switchport
+   switchport trunk allowed vlan 4092
+   switchport mode trunk
    service-profile QOS-PROFILE
-!
-interface Ethernet5
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
-   no shutdown
-   mtu 1498
-   no switchport
-   ip address 200.200.200.201/24
-   ptp enable
 ```
 
 ## Loopback Interfaces
@@ -231,13 +262,15 @@ interface Ethernet5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.2/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.4/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.4/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -247,7 +280,59 @@ interface Ethernet5
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 172.16.210.2/32
+   ip address 172.16.210.4/32
+!
+interface Loopback1
+   description VTEP_VXLAN_Tunnel_Source
+   no shutdown
+   ip address 172.18.210.4/32
+```
+
+## VLAN Interfaces
+
+### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4092 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4092 |  default  |  172.21.210.2/24  |  -  |  172.21.210.1  |  -  |  -  |  -  |
+
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4092
+   description L2LEAF_INBAND_MGMT
+   no shutdown
+   mtu 1500
+   ip address 172.21.210.2/24
+   ip virtual-router address 172.21.210.1
+   ip attached-host route export 19
+```
+
+## VXLAN Interface
+
+### VXLAN Interface Summary
+
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
+
+### VXLAN Interface Device Configuration
+
+```eos
+!
+interface Vxlan1
+   description DC2-POD1-LEAF2A_VTEP
+   vxlan source-interface Loopback1
+   vxlan udp-port 4789
 ```
 
 # Routing
@@ -258,6 +343,19 @@ Multi agent routing protocol model enabled
 ```eos
 !
 service routing protocols model multi-agent
+```
+
+## Virtual Router MAC Address
+
+### Virtual Router MAC Address Summary
+
+#### Virtual Router MAC Address: 00:1c:73:00:dc:01
+
+### Virtual Router MAC Address Configuration
+
+```eos
+!
+ip virtual-router mac-address 00:1c:73:00:dc:01
 ```
 
 ## IP Routing
@@ -306,7 +404,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65210|  172.16.210.2 |
+| 65212|  172.16.210.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -317,6 +415,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | maximum-paths 4 ecmp 4 |
 
 ### Router BGP Peer Groups
+
+#### EVPN-OVERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 5 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
 
 #### IPv4-UNDERLAY-PEERS
 
@@ -330,48 +439,93 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
-| 172.16.21.2 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.16.21.66 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.17.210.3 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.17.210.7 | 65212 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 200.200.200.101 | 65112 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.210.3 | 65211 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.210.4 | 65210 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.210.6 | 65210 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+
+### Router BGP EVPN Address Family
+
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65210
-   router-id 172.16.210.2
+router bgp 65212
+   router-id 172.16.210.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-PEERS bfd
+   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
+   neighbor EVPN-OVERLAY-PEERS send-community
+   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.21.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.21.2 remote-as 65200
-   neighbor 172.16.21.2 description DC2-SUPER-SPINE1_Ethernet2
-   neighbor 172.16.21.66 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.21.66 remote-as 65200
-   neighbor 172.16.21.66 description DC2-SUPER-SPINE2_Ethernet2
-   neighbor 172.17.210.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.210.3 remote-as 65211
-   neighbor 172.17.210.3 description DC2-POD1-LEAF1A_Ethernet2
-   neighbor 172.17.210.7 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.210.7 remote-as 65212
-   neighbor 172.17.210.7 description DC2-POD1-LEAF2A_Ethernet2
-   neighbor 200.200.200.101 peer group IPv4-UNDERLAY-PEERS
-   neighbor 200.200.200.101 remote-as 65112
-   neighbor 200.200.200.101 description DC1-POD2-SPINE2
+   neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.210.3 remote-as 65211
+   neighbor 172.16.210.3 description DC2-POD1-LEAF1A
+   neighbor 172.17.210.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.4 remote-as 65210
+   neighbor 172.17.210.4 description DC2-POD1-SPINE1_Ethernet4
+   neighbor 172.17.210.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.6 remote-as 65210
+   neighbor 172.17.210.6 description DC2-POD1-SPINE2_Ethernet4
+   redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !
+   address-family evpn
+      neighbor EVPN-OVERLAY-PEERS activate
+   !
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-PEERS activate
+   !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
+# BFD
+
+## Router BFD
+
+### Router BFD Multihop Summary
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+| 300 | 300 | 3 |
+
+### Router BFD Device Configuration
+
+```eos
+!
+router bfd
+   multihop interval 300 min-rx 300 multiplier 3
+```
+
 # Multicast
+
+## IP IGMP Snooping
+
+### IP IGMP Snooping Summary
+
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
+
+### IP IGMP Snooping Device Configuration
+
+```eos
+```
 
 # Filters
 
@@ -379,18 +533,29 @@ router bgp 65210
 
 ### Prefix-lists Summary
 
+#### PL-L2LEAF-INBAND-MGMT
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 172.21.210.0/24 |
+
 #### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 172.16.210.0/24 eq 32 |
+| 20 | permit 172.18.210.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
+ip prefix-list PL-L2LEAF-INBAND-MGMT
+   seq 10 permit 172.21.210.0/24
+!
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 172.16.210.0/24 eq 32
+   seq 20 permit 172.18.210.0/24 eq 32
 ```
 
 ## Route-maps
@@ -402,6 +567,7 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+| 20 | permit | match ip address prefix-list PL-L2LEAF-INBAND-MGMT |
 
 ### Route-maps Device Configuration
 
@@ -409,6 +575,9 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP permit 20
+   match ip address prefix-list PL-L2LEAF-INBAND-MGMT
 ```
 
 # ACL
@@ -434,8 +603,8 @@ vrf instance MGMT
 
 ```eos
 !
-interface Loopback1009
-  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
+interface Loopback1010
+  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
 
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB

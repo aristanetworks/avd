@@ -521,6 +521,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.10.2 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.4 | 65212 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.17.210.0 | 65210 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 | 172.17.210.2 | 65210 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 
@@ -581,6 +582,9 @@ router bgp 65211
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.210.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.210.4 remote-as 65212
+   neighbor 172.16.210.4 description DC2-POD1-LEAF2A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210
    neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3

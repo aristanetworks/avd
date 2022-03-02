@@ -14,6 +14,8 @@
 
 {%         include 'inband_management/parent-vlan-interfaces.j2' %}
 
+{%         include 'inband_management/ip-virtual-router-mac-address.j2' %}
+
 {%         if switch.underlay_router is arista.avd.defined(true) and
               switch.underlay_routing_protocol == "ebgp" %}
 {%             include 'inband_management/parent-router-bgp.j2' %}

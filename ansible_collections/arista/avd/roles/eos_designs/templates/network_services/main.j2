@@ -33,6 +33,8 @@
 
 {%     include 'network_services/vrfs.j2' %}
 
+{%     include 'network_services/virtual-source-nat-vrfs.j2' %}
+
 {%     include 'network_services/router-ospf.j2' %}
 
 {%     include 'network_services/eos-cli-vrfs.j2' %}
@@ -48,8 +50,6 @@
 {%     include 'network_services/vtep-logic.j2' %}
 
 {%     include 'network_services/router-bgp.j2' %}
-
-{%     include 'network_services/virtual-source-nat-vrfs.j2' %}
 
 {%     include 'network_services/vxlan-interface.j2' %}
 
