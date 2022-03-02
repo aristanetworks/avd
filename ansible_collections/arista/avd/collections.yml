@@ -1,5 +1,6 @@
 # collection requirements leveraged by molecule
 collections:
-  - arista.cvp
-  - arista.eos
-  - ansible.netcommon
+  - name: arista.cvp
+  - name: arista.eos
+  - name: ansible.netcommon
+    version: ">=2.4.0,<2.6.0"
