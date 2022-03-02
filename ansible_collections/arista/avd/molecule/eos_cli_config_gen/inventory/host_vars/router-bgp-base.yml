@@ -86,3 +86,10 @@ router_bgp:
       send_community: large
       default_originate:
         enabled: false
+  neighbor_interfaces:
+    Ethernet2:
+      peer_group: PG-FOO-v4
+      remote_as: 65102
+    Ethernet3:
+      peer_group: PG-FOO-v4
+      peer_filter: PF-BAR-v4

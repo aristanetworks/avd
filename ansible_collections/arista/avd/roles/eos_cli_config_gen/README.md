@@ -2596,7 +2596,7 @@ router_bgp:
     < interface >:
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
-      description: "< description as string >"
+      peer_filter: <peer_filter>
   aggregate_addresses:
     < aggregate_address_1/mask >:
       advertise_only: < true | false >

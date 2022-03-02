@@ -111,6 +111,13 @@ interface Management1
 | 192.0.3.3 | 65434 | default | - | standard | - | - | - |
 | 192.0.3.4 | 65435 | default | - | large | - | - | - |
 
+### BGP Neighbor Interfaces
+
+| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
+| ------------------ | ---------- | --------- | ----------- |
+| Ethernet2 | PG-FOO-v4 | 65102 | - |
+| Ethernet3 | PG-FOO-v4 | - | PF-BAR-v4 |
+
 ### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
@@ -133,6 +140,8 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    bgp bestpath d-path
+   neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
+   neighbor interface Ethernet3 peer-group PG-FOO-v4 peer_filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
    neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
