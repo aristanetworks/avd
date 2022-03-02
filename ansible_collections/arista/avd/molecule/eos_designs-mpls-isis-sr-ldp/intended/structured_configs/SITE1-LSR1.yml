@@ -22,7 +22,6 @@ vlan_internal_order:
     ending: 3900
 queue_monitor_length:
   enabled: true
-  notifying: true
   log: 5
 name_server:
   source:
@@ -36,10 +35,6 @@ snmp_server:
 spanning_tree:
   mode: none
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
   cvpadmin:
     privilege: 15
     role: network-admin

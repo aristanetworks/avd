@@ -142,18 +142,6 @@ static_routes:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 ipv6_unicast_routing: true
-hardware:
-  speed_groups:
-    1:
-      serdes: 10g
-    2:
-      serdes: 10g
-    3:
-      serdes: 10g
-    4:
-      serdes: 10g
-    5:
-      serdes: 10g
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -171,7 +159,6 @@ vlan_internal_order:
     ending: 3900
 queue_monitor_length:
   enabled: true
-  notifying: true
   log: 5
 name_server:
   source:
@@ -188,10 +175,6 @@ spanning_tree:
     '0':
       priority: 4096
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
   cvpadmin:
     privilege: 15
     role: network-admin

@@ -145,14 +145,12 @@ management api http-commands
 
 | User | Privilege | Role |
 | ---- | --------- | ---- |
-| admin | 15 | network-admin |
 | cvpadmin | 15 | network-admin |
 
 ### Local Users Device Configuration
 
 ```eos
 !
-username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 ```
 
