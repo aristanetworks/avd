@@ -1,16 +1,13 @@
 ---
-# LAB shared attributes
+# Shared attributes
 root_dir: '{{playbook_dir}}'
+
+fabric_name: MPLS_CORE
 
 underlay_ipv6: true
 
 # local users
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-
   cvpadmin:
     privilege: 15
     role: network-admin
@@ -48,54 +45,51 @@ ntp:
 queue_monitor_length:
   log: 5
   notifying: true
-  # Note "notifying" should only be rendered on 7280R since default
-  # platform_settings for default has queue_monitor_length_notify_support: false
-
-fabric_name: MPLS_CORE
 
 underlay_routing_protocol: isis-sr-ldp
 
-# ISIS TI-LFA config
+# Core ISIS parameters
 isis_ti_lfa:
   enabled: true
   protection: link
   local_convergence_delay: 15000
 
-# What should the defaults be?
 isis_default_is_type: level-2
 isis_default_circuit_type: level-2
 isis_default_metric: 50
 isis_advertise_passive_only: true
 
-# ibgp should be default
+# Overlay Routing Protocol
 overlay_routing_protocol: ibgp
 bgp_as: 65000
 
-# bgp peer groups passwords
+# BGP peer groups
 bgp_peer_groups:
   MPLS_OVERLAY_PEERS:
     password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
   RR_OVERLAY_PEERS:
     password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
 
+# Internal VLAN allocation
 internal_vlan_order:
   allocation: ascending
   range:
     beginning: 3700
     ending: 3900
 
+# RD/RT Format
 overlay_rd_type:
   admin_subfield: overlay_loopback
 overlay_rt_type:
   admin_subfield: 65000
 
-# Adjust default bfd values if desired.
+# BFD
 bfd_multihop:
   interval: 1500
   min_rx: 1500
   multiplier: 3
 
-# P Routers
+# P-routers
 p:
   platform: 7280SR
   defaults:
@@ -120,6 +114,7 @@ p:
       id: 4
       mgmt_ip: 192.168.200.104/24
 
+# PE-routers
 pe:
   defaults:
     virtual_router_mac_address: 00:1c:73:00:dc:00
@@ -171,6 +166,7 @@ pe:
           id: 10
           mgmt_ip: 192.168.200.110/24
 
+# RR-routers
 rr:
   defaults:
     platform: 7280SR3
@@ -205,6 +201,7 @@ connected_endpoints_keys:
   cpes:
     type: cpe
 
+# Core underlay interfaces
 core_interfaces:
   p2p_links_ip_pools:
     underlay_pool: 100.64.48.0/24
@@ -276,15 +273,3 @@ core_interfaces:
           SITE2-LSR2: [ Ethernet12, Ethernet13 ]
           SITE2-LER1: [ Ethernet11, Ethernet11 ]
       profile: default_bb_profile
-
-# Platform settings for TCAM profiles.
-platform_settings:
-  - platforms: [ 7280R ]
-    tcam_profile: mpls-evpn
-  - platforms: [ 7280R3 ]
-    tcam_profile: vxlan-routing
-
-# Set Hardware Speed Groups per Platform
-platform_speed_groups:
-  7280SR3:
-    10g: [ 1, 2, 3, 4, 5 ]

@@ -62,7 +62,6 @@ tenants:
           - evpn
         ospf:
           enabled: true
-          # process_id: 19 - Should default to vrf_id number
           router_id: 123.1.1.0
           max_lsa: 10000
           nodes:
