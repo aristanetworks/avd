@@ -1,4 +1,3 @@
-{# j2lint: disable=jinja-statements-delimeter #}
 {% if loopback_interfaces is defined and loopback_interfaces is not none %}
 
 ## Loopback Interfaces
@@ -10,17 +9,20 @@
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description | arista.avd.default('-') }} |
-{%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {%         else %} default {%         endif -%} |
-{%-        if loopback_interfaces[loopback_interface].ip_address is defined %}
- {{ loopback_interfaces[loopback_interface].ip_address }}
-{%-            if loopback_interfaces[loopback_interface].ip_address_secondaries is defined and loopback_interfaces[loopback_interface].ip_address_secondaries is not none %}
- <br> {{ loopback_interfaces[loopback_interface].ip_address_secondaries | join(' secondary <br> ') }} secondary
-{%-            endif %}
-{%-        else %}
- -
-{%-        endif %}
- |
+{%         if loopback_interfaces[loopback_interface].vrf is defined %}
+{%             set vrf = loopback_interfaces[loopback_interface].vrf %}
+{%         else %}
+{%             set vrf = "default" %}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].ip_address is defined %}
+{%             set ip = loopback_interfaces[loopback_interface].ip_address %}
+{%             if loopback_interfaces[loopback_interface].ip_address_secondaries is defined and loopback_interfaces[loopback_interface].ip_address_secondaries is not none %}
+{%                 set ip = loopback_interfaces[loopback_interface].ip_address ~ ' <br> ' ~ loopback_interfaces[loopback_interface].ip_address_secondaries | join(' secondary <br> ') ~ ' secondary' %}
+{%             endif %}
+{%         else %}
+{%             set ip = "-" %}
+{%         endif %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description | arista.avd.default('-') }} | {{ vrf }} | {{ ip }} |
 {%     endfor %}
 
 #### IPv6
@@ -28,9 +30,17 @@
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description | arista.avd.default('-') }} |
-{%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {%         else %} default {%         endif -%} |
-{%-        if loopback_interfaces[loopback_interface].ipv6_address is defined %} {{ loopback_interfaces[loopback_interface].ipv6_address }} {%         else %} - {%         endif -%} |
+{%         if loopback_interfaces[loopback_interface].vrf is defined %}
+{%             set ip = loopback_interfaces[loopback_interface].vrf %}
+{%         else %}
+{%             set ip = "default" %}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].ipv6_address is defined %}
+{%             set ipv6 = loopback_interfaces[loopback_interface].ipv6_address %}
+{%         else %}
+{%             set ipv6 = "-" %}
+{%         endif %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description | arista.avd.default('-') }} | {{ ip }} | {{ ipv6 }} |
 {%     endfor %}
 
 {%     set loopback_interface_isis = namespace() %}

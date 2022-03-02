@@ -1,4 +1,3 @@
-{# j2lint: disable=jinja-statements-delimeter #}
 {% if management_interfaces is defined and management_interfaces is not none %}
 
 ## Management Interfaces
@@ -10,9 +9,12 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort %}
-| {{ management_interface }} | {{ management_interfaces[management_interface].description }} | {{ management_interfaces[management_interface].type | arista.avd.default('oob') }} |
-{%-        if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is not none %} {{ management_interfaces[management_interface].vrf }} {%         else %} default {%         endif -%}
-| {{ management_interfaces[management_interface].ip_address }} | {{ management_interfaces[management_interface].gateway }} |
+{%         if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is not none %}
+{%             set vrf = management_interfaces[management_interface].vrf %}
+{%         else %}
+{%             set vrf = "default" %}
+{%         endif %}
+| {{ management_interface }} | {{ management_interfaces[management_interface].description }} | {{ management_interfaces[management_interface].type | arista.avd.default('oob') }} | {{ vrf }} | {{ management_interfaces[management_interface].ip_address }} | {{ management_interfaces[management_interface].gateway }} |
 {%     endfor %}
 
 #### IPv6
@@ -20,9 +22,22 @@
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort %}
-| {{ management_interface }} | {{ management_interfaces[management_interface].description }} | {{ management_interfaces[management_interface].type | arista.avd.default('oob') }} |
-{%-        if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is not none %} {{ management_interfaces[management_interface].vrf }} {%         else %} default {%         endif -%}
-| {%- if management_interfaces[management_interface].ipv6_address is defined and management_interfaces[management_interface].ipv6_address is not none %} {{ management_interfaces[management_interface].ipv6_address }} {% else %} - {% endif %} | {%- if management_interfaces[management_interface].ipv6_gateway is defined and management_interfaces[management_interface].ipv6_gateway is not none %} {{ management_interfaces[management_interface].ipv6_gateway }} {% else %} - {% endif -%} |
+{%         if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is not none %}
+{%             set vrf = management_interfaces[management_interface].vrf %}
+{%         else %}
+{%             set vrf = default %}
+{%         endif %}
+{%         if management_interfaces[management_interface].ipv6_address is defined and management_interfaces[management_interface].ipv6_address is not none %}
+{%             set ipv6 = management_interfaces[management_interface].ipv6_address %}
+{%         else %}
+{%             set ipv6 = '-' %}
+{%         endif %}
+{%         if management_interfaces[management_interface].ipv6_gateway is defined and management_interfaces[management_interface].ipv6_gateway is not none %}
+{%             set ipv6_gateway = management_interfaces[management_interface].ipv6_gateway %}
+{%         else %}
+{%             set ipv6_gateway = '-' %}
+{%         endif %}
+| {{ management_interface }} | {{ management_interfaces[management_interface].description }} | {{ management_interfaces[management_interface].type | arista.avd.default('oob') }} | {{ vrf }} | {{ ipv6 }}  | {{ ipv6_gateway }} |
 {%     endfor %}
 
 ### Management Interfaces Device Configuration
