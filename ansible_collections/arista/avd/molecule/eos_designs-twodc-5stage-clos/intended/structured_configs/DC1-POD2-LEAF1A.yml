@@ -397,11 +397,6 @@ vlan_interfaces:
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
-virtual_source_nat_vrfs:
-  vrf_with_loopbacks_from_overlapping_pool:
-    ip_address: 10.100.0.3
-  vrf_with_loopbacks_from_pod_pools:
-    ip_address: 10.101.102.3
 vxlan_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP
@@ -428,5 +423,10 @@ vxlan_interface:
           vni: 1100
         vrf_with_loopbacks_from_pod_pools:
           vni: 1101
+virtual_source_nat_vrfs:
+  vrf_with_loopbacks_from_overlapping_pool:
+    ip_address: 10.100.0.3
+  vrf_with_loopbacks_from_pod_pools:
+    ip_address: 10.101.102.3
 domain_list:
 - structured-config.set.under.vrf.common-vrf
