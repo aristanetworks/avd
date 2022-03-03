@@ -63,6 +63,25 @@ qos_profiles:
         bandwidth_percent: 80
       0:
         bandwidth_percent: 1
+  uc_mc_queues_test:
+    uc_tx_queues:
+      1:
+        bandwidth_percent: 50
+        priority: 'no priority'
+      2:
+        bandwidth_percent: 10
+        priority: 'priority strict'
+      4:
+        bandwidth_guaranteed_percent: 10
+    mc_tx_queues:
+      1:
+        bandwidth_percent: 50
+        priority: 'no priority'
+      2:
+        bandwidth_percent: 10
+        priority: 'priority strict'
+      4:
+        bandwidth_guaranteed_percent: 10
 
 policy_maps:
   qos:

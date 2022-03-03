@@ -84,6 +84,7 @@
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
+      - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
@@ -2406,6 +2407,7 @@ policy_maps:
 #### QOS Profiles
 
 ```yaml
+# The below knobs are platform dependent
 qos_profiles:
   < profile-1 >:
     trust: < dscp | cos | disabled >
@@ -2419,14 +2421,27 @@ qos_profiles:
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
-        # The below knob is platform dependent
         bandwidth_guaranteed_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
       < tx-queue-id >:
         bandwidth_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    uc_tx_queues:
+      < uc-tx-queue-id >:
+        bandwidth_percent: < value >
+        bandwidth_guaranteed_percent: < value >
+        priority: < "priority strict" | "no priority" >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    mc_tx_queues:
+      < mc-tx-queue-id >:
+        bandwidth_percent: < value >
+        bandwidth_guaranteed_percent: < value >
+        priority: < "priority strict" | "no priority" >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
   < profile-2 >:
@@ -2436,10 +2451,10 @@ qos_profiles:
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
       < tx-queue-id >:
         bandwidth_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
 ```
 
 #### Queue Monitor Length
