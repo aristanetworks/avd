@@ -1,0 +1,34 @@
+### BGP & Interface Groups ###
+bgp_groups:
+  foo:
+    neighbors:
+      - fe80::1
+      - 169.254.1.1
+    bgp_maintenance_profiles:
+      - uplink-neighbors
+      - ixp
+
+  bar:
+    neighbors:
+      - peer-group-baz
+    bgp_maintenance_profiles:
+      - downlink-neighbors
+    vrf: red
+
+interface_groups:
+  SFP_Interface_Group:
+    interfaces:
+      - Ethernet10-20
+      - Ethernet30-48
+    bgp_maintenance_profiles:
+      - downlink-neighbors
+      - local-ix
+    interface_maintenance_profiles:
+      - downlink-interfaces
+      - ix-interfaces
+
+  QSFP_Interface_Group:
+    interfaces:
+      - Ethernet1,5
+    interface_maintenance_profiles:
+      - uplink-interfaces
