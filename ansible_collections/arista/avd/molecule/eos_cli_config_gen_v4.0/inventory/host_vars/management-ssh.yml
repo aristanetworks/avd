@@ -1,0 +1,14 @@
+management_ssh:
+  access_groups:
+    - name: ACL-SSH
+    - name: ACL-SSH-VRF
+      vrf: mgt
+  idle_timeout: 15
+  connection:
+    limit: 50
+    per_host: 10
+  enable: true
+  vrfs:
+    mgt:
+      enable: true
+  log_level: debug
