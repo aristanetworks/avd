@@ -357,9 +357,9 @@ QOS Profile: **experiment**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 2 | - | cos | - | test_qos_policy_v1 |
 
-**Tx-queues**
+**tx-queues**
 
-| Tx-queue | Bandwidth | Priority | Shape Rate |
+| tx-queue | Bandwidth | Priority | Shape Rate |
 | -------- | --------- | -------- | ---------- |
 | 3 | 30 | no priority | - |
 | 4 | 10 | - | - |
@@ -382,9 +382,9 @@ QOS Profile: **qprof_testwithpolicy**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | - | - | - | pmap_test1 |
 
-**Tx-queues**
+**tx-queues**
 
-| Tx-queue | Bandwidth | Priority | Shape Rate |
+| tx-queue | Bandwidth | Priority | Shape Rate |
 | -------- | --------- | -------- | ---------- |
 | 0 | 1 | - | - |
 | 1 | 80 | - | - |
@@ -398,10 +398,34 @@ QOS Profile: **test**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | 46 | dscp | 80 percent | - |
 
-**Tx-queues**
+**tx-queues**
 
-| Tx-queue | Bandwidth | Priority | Shape Rate |
+| tx-queue | Bandwidth | Priority | Shape Rate |
 | -------- | --------- | -------- | ---------- |
+| 1 | 50 | no priority | - |
+| 2 | 10 | priority strict | - |
+| 4 | 10 | - | - |
+
+QOS Profile: **uc_mc_queues_test**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+**uc-tx-queues**
+
+| uc-tx-queue | Bandwidth | Priority | Shape Rate |
+| ----------- | --------- | -------- | ---------- |
+| 1 | 50 | no priority | - |
+| 2 | 10 | priority strict | - |
+| 4 | 10 | - | - |
+
+**mc-tx-queues**
+
+| mc-tx-queue | Bandwidth | Priority | Shape Rate |
+| ----------- | --------- | -------- | ---------- |
 | 1 | 50 | no priority | - |
 | 2 | 10 | priority strict | - |
 | 4 | 10 | - | - |
@@ -461,6 +485,30 @@ qos profile test
       priority strict
    !
    tx-queue 4
+      bandwidth guaranteed percent 10
+!
+qos profile uc_mc_queues_test
+   !
+   uc-tx-queue 1
+      bandwidth percent 50
+      no priority
+   !
+   uc-tx-queue 2
+      bandwidth percent 10
+      priority strict
+   !
+   uc-tx-queue 4
+      bandwidth guaranteed percent 10
+   !
+   mc-tx-queue 1
+      bandwidth percent 50
+      no priority
+   !
+   mc-tx-queue 2
+      bandwidth percent 10
+      priority strict
+   !
+   mc-tx-queue 4
       bandwidth guaranteed percent 10
 ```
 
