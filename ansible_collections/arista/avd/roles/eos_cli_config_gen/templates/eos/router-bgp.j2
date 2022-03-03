@@ -123,7 +123,7 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined and router_bgp.neighbor_interfaces[neighbor_interface].remote_as is arista.avd.defined %}
    neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} remote-as {{ router_bgp.neighbor_interfaces[neighbor_interface].remote_as }}
 {%         elif router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined and router_bgp.neighbor_interfaces[neighbor_interface].peer_filter is arista.avd.defined %}
-   neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} peer_filter {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_filter }}
+   neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} peer-filter {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_filter }}
 {%         endif %}
 {%     endfor %}
 {%     for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
