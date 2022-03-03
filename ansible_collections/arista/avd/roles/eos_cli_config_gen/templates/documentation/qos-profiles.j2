@@ -20,9 +20,9 @@ QOS Profile: **{{ profile }}**
 | {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} | {{ qos_sp }} |
 {%         if qos_profiles[profile].tx_queues is arista.avd.defined %}
 
-**Tx-queues**
+**tx-queues**
 
-| Tx-queue | Bandwidth | Priority | Shape Rate |
+| tx-queue | Bandwidth | Priority | Shape Rate |
 | -------- | --------- | -------- | ---------- |
 {%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
 {%                 set queue = qos_profiles[profile].tx_queues[tx_queue] | arista.avd.default('-') %}
@@ -32,6 +32,38 @@ QOS Profile: **{{ profile }}**
 {%                 set priority = qos_profiles[profile].tx_queues[tx_queue].priority | arista.avd.default('-') %}
 {%                 set shape_rate = qos_profiles[profile].tx_queues[tx_queue].shape.rate | arista.avd.default('-') %}
 | {{ tx_queue }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%             endfor %}
+{%         endif %}
+{%         if qos_profiles[profile].uc_tx_queues is arista.avd.defined %}
+
+**uc-tx-queues**
+
+| uc-tx-queue | Bandwidth | Priority | Shape Rate |
+| ----------- | --------- | -------- | ---------- |
+{%             for uc_tx_queue in qos_profiles[profile].uc_tx_queues | arista.avd.natural_sort %}
+{%                 set queue = qos_profiles[profile].uc_tx_queues[uc_tx_queue] | arista.avd.default('-') %}
+{%                 set bw_percent = qos_profiles[profile].uc_tx_queues[uc_tx_queue].bandwidth_percent | arista.avd.default(
+                                    qos_profiles[profile].uc_tx_queues[uc_tx_queue].bandwidth_guaranteed_percent,
+                                    '-') %}
+{%                 set priority = qos_profiles[profile].uc_tx_queues[uc_tx_queue].priority | arista.avd.default('-') %}
+{%                 set shape_rate = qos_profiles[profile].uc_tx_queues[uc_tx_queue].shape.rate | arista.avd.default('-') %}
+| {{ uc_tx_queue }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%             endfor %}
+{%         endif %}
+{%         if qos_profiles[profile].mc_tx_queues is arista.avd.defined %}
+
+**mc-tx-queues**
+
+| mc-tx-queue | Bandwidth | Priority | Shape Rate |
+| ----------- | --------- | -------- | ---------- |
+{%             for mc_tx_queue in qos_profiles[profile].mc_tx_queues | arista.avd.natural_sort %}
+{%                 set queue = qos_profiles[profile].mc_tx_queues[mc_tx_queue] | arista.avd.default('-') %}
+{%                 set bw_percent = qos_profiles[profile].mc_tx_queues[mc_tx_queue].bandwidth_percent | arista.avd.default(
+                                    qos_profiles[profile].mc_tx_queues[mc_tx_queue].bandwidth_guaranteed_percent,
+                                    '-') %}
+{%                 set priority = qos_profiles[profile].mc_tx_queues[mc_tx_queue].priority | arista.avd.default('-') %}
+{%                 set shape_rate = qos_profiles[profile].mc_tx_queues[mc_tx_queue].shape.rate | arista.avd.default('-') %}
+| {{ mc_tx_queue }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
 {%             endfor %}
 {%         endif %}
 {%     endfor %}

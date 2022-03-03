@@ -36,4 +36,34 @@ qos profile {{ profile }}
       shape rate {{ qos_profiles[profile].tx_queues[tx_queue].shape.rate }}
 {%         endif %}
 {%     endfor %}
+{%     for uc_tx_queue in qos_profiles[profile].uc_tx_queues | arista.avd.natural_sort %}
+   !
+   uc-tx-queue {{ uc_tx_queue }}
+{%         if qos_profiles[profile].uc_tx_queues[uc_tx_queue].bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ qos_profiles[profile].uc_tx_queues[uc_tx_queue].bandwidth_percent }}
+{%         elif qos_profiles[profile].uc_tx_queues[uc_tx_queue].bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ qos_profiles[profile].uc_tx_queues[uc_tx_queue].bandwidth_guaranteed_percent }}
+{%         endif %}
+{%         if qos_profiles[profile].uc_tx_queues[uc_tx_queue].priority is arista.avd.defined %}
+      {{ qos_profiles[profile].uc_tx_queues[uc_tx_queue].priority }}
+{%         endif %}
+{%         if qos_profiles[profile].uc_tx_queues[uc_tx_queue].shape.rate is arista.avd.defined %}
+      shape rate {{ qos_profiles[profile].uc_tx_queues[uc_tx_queue].shape.rate }}
+{%         endif %}
+{%     endfor %}
+{%     for mc_tx_queue in qos_profiles[profile].mc_tx_queues | arista.avd.natural_sort %}
+   !
+   mc-tx-queue {{ mc_tx_queue }}
+{%         if qos_profiles[profile].mc_tx_queues[mc_tx_queue].bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ qos_profiles[profile].mc_tx_queues[mc_tx_queue].bandwidth_percent }}
+{%         elif qos_profiles[profile].mc_tx_queues[mc_tx_queue].bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ qos_profiles[profile].mc_tx_queues[mc_tx_queue].bandwidth_guaranteed_percent }}
+{%         endif %}
+{%         if qos_profiles[profile].mc_tx_queues[mc_tx_queue].priority is arista.avd.defined %}
+      {{ qos_profiles[profile].mc_tx_queues[mc_tx_queue].priority }}
+{%         endif %}
+{%         if qos_profiles[profile].mc_tx_queues[mc_tx_queue].shape.rate is arista.avd.defined %}
+      shape rate {{ qos_profiles[profile].mc_tx_queues[mc_tx_queue].shape.rate }}
+{%         endif %}
+{%     endfor %}
 {% endfor %}
