@@ -357,14 +357,14 @@ QOS Profile: **experiment**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 2 | - | cos | - | test_qos_policy_v1 |
 
-**tx-queues**
+**TX Queues**
 
-| tx-queue | Bandwidth | Priority | Shape Rate |
-| -------- | --------- | -------- | ---------- |
-| 3 | 30 | no priority | - |
-| 4 | 10 | - | - |
-| 5 | 40 | - | - |
-| 7 | 30 | - | 40 percent |
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
+| 3 | All | 30 | no priority | - |
+| 4 | All | 10 | - | - |
+| 5 | All | 40 | - | - |
+| 7 | All | 30 | - | 40 percent |
 
 QOS Profile: **no_qos_trust**
 
@@ -382,13 +382,13 @@ QOS Profile: **qprof_testwithpolicy**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | - | - | - | pmap_test1 |
 
-**tx-queues**
+**TX Queues**
 
-| tx-queue | Bandwidth | Priority | Shape Rate |
-| -------- | --------- | -------- | ---------- |
-| 0 | 1 | - | - |
-| 1 | 80 | - | - |
-| 5 | 19 | no priority | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
+| 0 | All | 1 | - | - |
+| 1 | All | 80 | - | - |
+| 5 | All | 19 | no priority | - |
 
 QOS Profile: **test**
 
@@ -398,13 +398,13 @@ QOS Profile: **test**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | 46 | dscp | 80 percent | - |
 
-**tx-queues**
+**TX Queues**
 
-| tx-queue | Bandwidth | Priority | Shape Rate |
-| -------- | --------- | -------- | ---------- |
-| 1 | 50 | no priority | - |
-| 2 | 10 | priority strict | - |
-| 4 | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
+| 1 | All | 50 | no priority | - |
+| 2 | All | 10 | priority strict | - |
+| 4 | All | 10 | - | - |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -414,21 +414,16 @@ QOS Profile: **uc_mc_queues_test**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | - | - | - | - |
 
-**uc-tx-queues**
+**TX Queues**
 
-| uc-tx-queue | Bandwidth | Priority | Shape Rate |
-| ----------- | --------- | -------- | ---------- |
-| 1 | 50 | no priority | - |
-| 2 | 10 | priority strict | - |
-| 4 | 10 | - | - |
-
-**mc-tx-queues**
-
-| mc-tx-queue | Bandwidth | Priority | Shape Rate |
-| ----------- | --------- | -------- | ---------- |
-| 1 | 50 | no priority | - |
-| 2 | 10 | priority strict | - |
-| 4 | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
+| 1 | Unicast | 50 | no priority | - |
+| 2 | Unicast | 10 | priority strict | - |
+| 4 | Unicast | 10 | - | - |
+| 1 | Multicast | 50 | no priority | - |
+| 2 | Multicast | 10 | priority strict | - |
+| 4 | Multicast | 10 | - | - |
 
 ### QOS Profile Device Configuration
 
