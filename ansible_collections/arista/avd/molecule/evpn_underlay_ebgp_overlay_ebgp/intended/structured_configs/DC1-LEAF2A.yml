@@ -635,17 +635,15 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: SVI 110 CUSTOM DESCRIPTION
+    description: Tenant_A_OP_Zone_1
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
-    ip_helpers:
-      1.2.3.4: {}
   Vlan111:
     tenant: Tenant_A
     tags:
     - opzone
-    description: SVI 111 CUSTOM DESCRIPTION
+    description: Tenant_A_OP_Zone_2
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24

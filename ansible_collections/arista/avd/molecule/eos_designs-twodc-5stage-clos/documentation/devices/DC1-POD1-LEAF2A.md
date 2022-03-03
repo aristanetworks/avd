@@ -531,7 +531,7 @@ interface Loopback102
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
+| Vlan110 |  set from structured_config on svi (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
 | Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
 | Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
@@ -561,7 +561,7 @@ interface Loopback102
 ```eos
 !
 interface Vlan110
-   description set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
+   description set from structured_config on svi (was Tenant_A_OP_Zone_1)
    no shutdown
    vrf Common_VRF
    ip address virtual 10.1.10.1/24

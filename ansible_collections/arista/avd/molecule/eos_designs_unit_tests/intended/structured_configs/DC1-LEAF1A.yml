@@ -334,7 +334,6 @@ vlan_interfaces:
     description: Tenant_A_APP_Zone_3
     shutdown: false
     vrf: Tenant_A_APP_Zone
-    ip_address: 10.1.32.1/24
     ip_virtual_router_addresses:
     - 10.1.32.254
     - 10.2.32.254/24

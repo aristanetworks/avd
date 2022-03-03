@@ -799,8 +799,8 @@ interface Loopback100
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan2 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone  |  Tenant_C_OP_Zone  |  1500  |  false  |
-| Vlan110 |  SVI 110 CUSTOM DESCRIPTION  |  Tenant_A_OP_Zone  |  -  |  false  |
-| Vlan111 |  SVI 111 CUSTOM DESCRIPTION  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan110 |  Tenant_A_OP_Zone_1  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
 | Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
@@ -873,14 +873,13 @@ interface Vlan2
    ip address 10.255.252.7/31
 !
 interface Vlan110
-   description SVI 110 CUSTOM DESCRIPTION
+   description Tenant_A_OP_Zone_1
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.10.1/24
-   ip helper-address 1.2.3.4
 !
 interface Vlan111
-   description SVI 111 CUSTOM DESCRIPTION
+   description Tenant_A_OP_Zone_2
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24

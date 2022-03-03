@@ -400,7 +400,7 @@ interface Loopback1
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
-| Vlan132 |  Tenant_A_APP_Zone  |  10.1.32.1/24  |  -  |  10.1.32.254, 10.2.32.254/24, 10.3.32.254/24  |  -  |  -  |  -  |
+| Vlan132 |  Tenant_A_APP_Zone  |  -  |  -  |  10.1.32.254, 10.2.32.254/24, 10.3.32.254/24  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -439,7 +439,6 @@ interface Vlan132
    description Tenant_A_APP_Zone_3
    no shutdown
    vrf Tenant_A_APP_Zone
-   ip address 10.1.32.1/24
    ip virtual-router address 10.1.32.254
    ip virtual-router address 10.2.32.254/24
    ip virtual-router address 10.3.32.254/24
