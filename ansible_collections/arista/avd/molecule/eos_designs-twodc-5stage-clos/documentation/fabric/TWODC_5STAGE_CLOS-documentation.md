@@ -33,7 +33,9 @@
 | DC1 | super-spine | DC1-SUPER-SPINE1 | - | vEOS-LAB | Provisioned |
 | DC1 | super-spine | DC1-SUPER-SPINE2 | 192.168.1.2/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 192.168.1.23/24 | vEOS-LAB | Provisioned |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 192.168.1.25/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | l3leaf | DC2-POD1-LEAF1A | 192.168.1.22/24 | vEOS-LAB | Provisioned |
+| DC2_POD1 | l3leaf | DC2-POD1-LEAF2A | 192.168.1.24/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | spine | DC2-POD1-SPINE1 | 192.168.1.20/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | spine | DC2-POD1-SPINE2 | 192.168.1.21/24 | vEOS-LAB | Provisioned |
 | DC2 | overlay-controller | DC2-RS1 | 192.168.1.18/24 | vEOS-LAB | Provisioned |
@@ -50,6 +52,7 @@
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | 172.21.110.5/24 | Vlan4085 |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 172.21.110.6/24 | Vlan4085 |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 172.21.210.4/24 | Vlan4092 |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 172.21.210.5/24 | Vlan4092 |
 
 # Fabric Topology
 
@@ -97,8 +100,11 @@
 | super-spine | DC1-SUPER-SPINE1 | Ethernet6 | super-spine | DC2-SUPER-SPINE1 | Ethernet4 |
 | super-spine | DC1-SUPER-SPINE2 | Ethernet6 | super-spine | DC2-SUPER-SPINE2 | Ethernet4 |
 | l2leaf | DC2-POD1-L2LEAF1A | Ethernet1 | l3leaf | DC2-POD1-LEAF1A | Ethernet3 |
+| l2leaf | DC2-POD1-L2LEAF2A | Ethernet1 | l3leaf | DC2-POD1-LEAF2A | Ethernet3 |
 | l3leaf | DC2-POD1-LEAF1A | Ethernet1 | spine | DC2-POD1-SPINE1 | Ethernet3 |
 | l3leaf | DC2-POD1-LEAF1A | Ethernet2 | spine | DC2-POD1-SPINE2 | Ethernet3 |
+| l3leaf | DC2-POD1-LEAF2A | Ethernet1 | spine | DC2-POD1-SPINE1 | Ethernet4 |
+| l3leaf | DC2-POD1-LEAF2A | Ethernet2 | spine | DC2-POD1-SPINE2 | Ethernet4 |
 | spine | DC2-POD1-SPINE1 | Ethernet1 | super-spine | DC2-SUPER-SPINE1 | Ethernet1 |
 | spine | DC2-POD1-SPINE1 | Ethernet2 | super-spine | DC2-SUPER-SPINE2 | Ethernet1 |
 | spine | DC2-POD1-SPINE2 | Ethernet1 | super-spine | DC2-SUPER-SPINE1 | Ethernet2 |
@@ -121,7 +127,7 @@
 | 172.17.20.0/24 | 256 | 8 | 3.13 % |
 | 172.17.110.0/24 | 256 | 20 | 7.82 % |
 | 172.17.120.0/24 | 256 | 4 | 1.57 % |
-| 172.17.210.0/24 | 256 | 4 | 1.57 % |
+| 172.17.210.0/24 | 256 | 8 | 3.13 % |
 
 ## Point-To-Point Links Node Allocation
 
@@ -161,6 +167,8 @@
 | DC1-SUPER-SPINE2 | Ethernet6 | 11.1.2.2/31 | DC2-SUPER-SPINE2 | Ethernet4 | 11.1.2.3/31 |
 | DC2-POD1-LEAF1A | Ethernet1 | 172.17.210.1/31 | DC2-POD1-SPINE1 | Ethernet3 | 172.17.210.0/31 |
 | DC2-POD1-LEAF1A | Ethernet2 | 172.17.210.3/31 | DC2-POD1-SPINE2 | Ethernet3 | 172.17.210.2/31 |
+| DC2-POD1-LEAF2A | Ethernet1 | 172.17.210.5/31 | DC2-POD1-SPINE1 | Ethernet4 | 172.17.210.4/31 |
+| DC2-POD1-LEAF2A | Ethernet2 | 172.17.210.7/31 | DC2-POD1-SPINE2 | Ethernet4 | 172.17.210.6/31 |
 | DC2-POD1-SPINE1 | Ethernet1 | 172.16.21.1/31 | DC2-SUPER-SPINE1 | Ethernet1 | 172.16.21.0/31 |
 | DC2-POD1-SPINE1 | Ethernet2 | 172.16.21.65/31 | DC2-SUPER-SPINE2 | Ethernet1 | 172.16.21.64/31 |
 | DC2-POD1-SPINE2 | Ethernet1 | 172.16.21.3/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.21.2/31 |
@@ -180,7 +188,7 @@
 | 172.16.110.0/24 | 256 | 5 | 1.96 % |
 | 172.16.120.0/24 | 256 | 3 | 1.18 % |
 | 172.16.200.0/24 | 256 | 2 | 0.79 % |
-| 172.16.210.0/24 | 256 | 3 | 1.18 % |
+| 172.16.210.0/24 | 256 | 4 | 1.57 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -199,6 +207,7 @@
 | DC1 | DC1-SUPER-SPINE1 | 172.16.100.1/32 |
 | DC1 | DC1-SUPER-SPINE2 | 172.16.100.2/32 |
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.16.210.3/32 |
+| DC2_POD1 | DC2-POD1-LEAF2A | 172.16.210.4/32 |
 | DC2_POD1 | DC2-POD1-SPINE1 | 172.16.210.1/32 |
 | DC2_POD1 | DC2-POD1-SPINE2 | 172.16.210.2/32 |
 | DC2 | DC2-RS1 | 172.16.20.1/32 |
@@ -212,7 +221,7 @@
 | --------------------- | ------------------- | ------------------ | ------------------ |
 | 172.18.110.0/24 | 256 | 3 | 1.18 % |
 | 172.18.120.0/24 | 256 | 1 | 0.4 % |
-| 172.18.210.0/24 | 256 | 1 | 0.4 % |
+| 172.18.210.0/24 | 256 | 2 | 0.79 % |
 
 ## VTEP Loopback Node allocation
 
@@ -223,3 +232,4 @@
 | DC1_POD1 | DC1-POD1-LEAF2B | 172.18.110.4/32 |
 | DC1_POD2 | DC1-POD2-LEAF1A | 172.18.120.3/32 |
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.18.210.3/32 |
+| DC2_POD1 | DC2-POD1-LEAF2A | 172.18.210.4/32 |
