@@ -266,13 +266,14 @@
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS |
-| ------------------ | ---------- | --------- |
+| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
+| ------------------ | ---------- | --------- | ----------- |
 {%         for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.natural_sort %}
 {%             set neighbor_interface = neighbor_interface %}
 {%             set peer_group = router_bgp.neighbor_interfaces[neighbor_interface].peer_group | arista.avd.default("-") %}
 {%             set remote_as = router_bgp.neighbor_interfaces[neighbor_interface].remote_as | arista.avd.default("-") %}
-| {{ neighbor_interface }} | {{ peer_group }} | {{ remote_as }} |
+{%             set peer_filter = router_bgp.neighbor_interfaces[neighbor_interface].peer_filter | arista.avd.default("-") %}
+| {{ neighbor_interface }} | {{ peer_group }} | {{ remote_as }} | {{ peer_filter }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is arista.avd.defined %}

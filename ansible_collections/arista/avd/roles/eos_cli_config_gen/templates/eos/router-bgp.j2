@@ -120,14 +120,11 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%     endfor %}
 {%     for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.natural_sort %}
-{%         set neighbor_interface_cli = "neighbor interface " ~ neighbor_interface %}
-{%         if router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined %}
-{%             set neighbor_interface_cli = neighbor_interface_cli ~ " peer-group " ~ router_bgp.neighbor_interfaces[neighbor_interface].peer_group %}
+{%         if router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined and router_bgp.neighbor_interfaces[neighbor_interface].remote_as is arista.avd.defined %}
+   neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} remote-as {{ router_bgp.neighbor_interfaces[neighbor_interface].remote_as }}
+{%         elif router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined and router_bgp.neighbor_interfaces[neighbor_interface].peer_filter is arista.avd.defined %}
+   neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} peer-filter {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_filter }}
 {%         endif %}
-{%         if router_bgp.neighbor_interfaces[neighbor_interface].remote_as is arista.avd.defined %}
-{%             set neighbor_interface_cli = neighbor_interface_cli ~ " remote-as " ~ router_bgp.neighbor_interfaces[neighbor_interface].remote_as %}
-{%         endif %}
-   {{ neighbor_interface_cli }}
 {%     endfor %}
 {%     for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%         if router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
