@@ -67,8 +67,6 @@
 
 {%     include 'network_services/router-bgp.j2' %}
 
-{%     include 'network_services/virtual-source-nat-vrfs.j2' %}
-
 {%     if switch.vtep is arista.avd.defined(true) %}
 {%         include 'network_services/vxlan-interface.j2' %}
 
