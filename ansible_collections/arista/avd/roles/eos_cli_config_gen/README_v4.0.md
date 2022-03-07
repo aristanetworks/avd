@@ -615,15 +615,15 @@ errdisable:
 
 ```yaml
 prefix_lists:
-  < prefix_list_name_1 >:
+  - name: < prefix_list_name_1 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < prefix_list_name_2 >:
+  - name: < prefix_list_name_2 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
