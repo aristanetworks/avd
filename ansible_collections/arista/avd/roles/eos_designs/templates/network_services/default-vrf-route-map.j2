@@ -1,6 +1,6 @@
 {# prefix_lists #}
 prefix_lists:
-  PL-TENANT-CONN-DEFAULT-VRF:
+  PL-SVI-DEFAULT-VRF:
     sequence_numbers:
 {% for svi_subnet in default_vrf.svi_subnets %}
       {{ 10*loop.index }}:
@@ -9,18 +9,18 @@ prefix_lists:
 
 {# route_maps #}
 route_maps:
-  RM-TENANT-CONN-DEFAULT-VRF:
+  RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT:
     sequence_numbers:
       10:
         type: permit
         match:
-        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
-  RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES:
+        - ip address prefix-list PL-SVI-DEFAULT-VRF
+  RM-BGP-UNDERLAY-PEERS-OUT:
     sequence_numbers:
       10:
         type: deny
         match:
-        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-DEFAULT-VRF
       20:
         type: permit
   RM-CONN-2-BGP:
@@ -28,4 +28,4 @@ route_maps:
       20:
         type: permit
         match:
-        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-DEFAULT-VRF

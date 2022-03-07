@@ -2,4 +2,4 @@
   peer_groups:
     {{ bgp_peer_groups["IPv4_UNDERLAY_PEERS"].name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
       type: ipv4
-      route_map_out: RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES
+      route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
