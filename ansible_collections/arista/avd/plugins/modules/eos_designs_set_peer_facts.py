@@ -19,7 +19,7 @@ DOCUMENTATION = r'''
 ---
 module: eos_designs_set_peer_facts
 version_added: "3.4.0"
-author: Arista Ansible Team <ansible@arista.com>
+author: Arista Ansible Team (@aristanetworks)
 short_description: Set eos_designs peer facts
 description:
   - Parse all hostvars and set a common avd_topology_peers and avd_overlay_peers dicts with list per host
@@ -33,7 +33,7 @@ options:
   avd_overlay_peers:
     description: |
       Set avd_overlay_peers fact with a list per device of EVPN Route Server Clients,
-      meaning devices pointing to this device as EVPN Router Server
+      meaning devices pointing to this device as EVPN Route Server
     required: false
     type: bool
 '''
