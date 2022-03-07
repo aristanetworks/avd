@@ -118,16 +118,16 @@ vlan_interfaces:
                                                  true) %}
 {%             if configure_mlag_ibgp_peering %}
 {%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
+{%                 if vrf.name != 'default' %}
   Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
     type: underlay_peering
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf.name }}"
-{%                 if vrf.name != 'default' %}
     vrf: {{ vrf.name }}
-{%                 endif %}
     ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
     mtu: {{ p2p_uplinks_mtu }}
+{%                 endif %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
