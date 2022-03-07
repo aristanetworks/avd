@@ -9,7 +9,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
-      route_map_out: RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES
+      route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -50,7 +50,7 @@ router_bgp:
         export:
           evpn:
           - '21:21'
-          - route-map RM-TENANT-CONN-DEFAULT-VRF
+          - route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT
     Tenant_X_OP_Zone:
       router_id: 192.168.255.35
       rd: 192.168.255.35:20
@@ -210,7 +210,7 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
-  PL-TENANT-CONN-DEFAULT-VRF:
+  PL-SVI-DEFAULT-VRF:
     sequence_numbers:
       10:
         action: permit 10.2.10.0/24
@@ -224,19 +224,19 @@ route_maps:
       20:
         type: permit
         match:
-        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
-  RM-TENANT-CONN-DEFAULT-VRF:
+        - ip address prefix-list PL-SVI-DEFAULT-VRF
+  RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT:
     sequence_numbers:
       10:
         type: permit
         match:
-        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
-  RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES:
+        - ip address prefix-list PL-SVI-DEFAULT-VRF
+  RM-BGP-UNDERLAY-PEERS-OUT:
     sequence_numbers:
       10:
         type: deny
         match:
-        - ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-DEFAULT-VRF
       20:
         type: permit
 router_bfd:
@@ -282,7 +282,10 @@ vxlan_interface:
         310:
           vni: 11310
       vrfs:
-        Tenant_X_OP_Zone: {}
+        default:
+          vni: 21
+        Tenant_X_OP_Zone:
+          vni: 20
 virtual_source_nat_vrfs:
   Tenant_X_OP_Zone:
     ip_address: 10.255.1.35

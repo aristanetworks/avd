@@ -222,7 +222,8 @@ vxlan_interface:
         310:
           vni: 11310
       vrfs:
-        Tenant_X_OP_Zone: {}
+        Tenant_X_OP_Zone:
+          vni: 20
 virtual_source_nat_vrfs:
   Tenant_X_OP_Zone:
     ip_address: 10.255.1.34

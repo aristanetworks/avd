@@ -600,7 +600,7 @@ router bgp 65153
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor UNDERLAY-PEERS route-map RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES out
+   neighbor UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
    neighbor 10.10.101.4 peer group UNDERLAY-PEERS
    neighbor 10.10.101.4 remote-as 65001
    neighbor 10.10.101.4 description DC1-SPINE1_Ethernet12
@@ -632,7 +632,7 @@ router bgp 65153
       rd 192.168.255.35:21
       route-target import evpn 21:21
       route-target export evpn 21:21
-      route-target export evpn route-map RM-TENANT-CONN-DEFAULT-VRF
+      route-target export evpn route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT
    !
    vrf Tenant_X_OP_Zone
       rd 192.168.255.35:20
@@ -688,7 +688,7 @@ router bfd
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
-#### PL-TENANT-CONN-DEFAULT-VRF
+#### PL-SVI-DEFAULT-VRF
 
 | Sequence | Action |
 | -------- | ------ |
@@ -702,7 +702,7 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
 !
-ip prefix-list PL-TENANT-CONN-DEFAULT-VRF
+ip prefix-list PL-SVI-DEFAULT-VRF
    seq 10 permit 10.2.10.0/24
 ```
 
@@ -710,42 +710,42 @@ ip prefix-list PL-TENANT-CONN-DEFAULT-VRF
 
 ### Route-maps Summary
 
+#### RM-BGP-UNDERLAY-PEERS-OUT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | deny | match ip address prefix-list PL-SVI-DEFAULT-VRF |
+
 #### RM-CONN-2-BGP
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
-| 20 | permit | match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF |
+| 20 | permit | match ip address prefix-list PL-SVI-DEFAULT-VRF |
 
-#### RM-TENANT-CONN-DEFAULT-VRF
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF |
-
-#### RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES
+#### RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | deny | match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF |
+| 10 | permit | match ip address prefix-list PL-SVI-DEFAULT-VRF |
 
 ### Route-maps Device Configuration
 
 ```eos
 !
+route-map RM-BGP-UNDERLAY-PEERS-OUT deny 10
+   match ip address prefix-list PL-SVI-DEFAULT-VRF
+!
+route-map RM-BGP-UNDERLAY-PEERS-OUT permit 20
+!
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 20
-   match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
+   match ip address prefix-list PL-SVI-DEFAULT-VRF
 !
-route-map RM-TENANT-CONN-DEFAULT-VRF permit 10
-   match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
-!
-route-map RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES deny 10
-   match ip address prefix-list PL-TENANT-CONN-DEFAULT-VRF
-!
-route-map RM-TENANT-CONN-DEFAULT-VRF-DENY-TO-SPINES permit 20
+route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT permit 10
+   match ip address prefix-list PL-SVI-DEFAULT-VRF
 ```
 
 # ACL
