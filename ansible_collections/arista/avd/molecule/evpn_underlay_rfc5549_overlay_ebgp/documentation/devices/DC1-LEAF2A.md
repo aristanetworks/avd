@@ -1039,6 +1039,7 @@ router bgp 65102
    neighbor MLAG_PEER peer group
    neighbor MLAG_PEER remote-as 65102
    neighbor MLAG_PEER next-hop-self
+   neighbor MLAG_PEER description DC1-LEAF2B
    neighbor MLAG_PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG_PEER send-community
    neighbor MLAG_PEER maximum-routes 12000

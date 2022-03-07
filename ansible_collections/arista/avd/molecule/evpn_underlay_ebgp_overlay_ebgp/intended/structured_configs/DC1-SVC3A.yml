@@ -10,6 +10,7 @@ router_bgp:
       type: ipv4
       remote_as: '65103'
       next_hop_self: true
+      description: DC1-SVC3B
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
