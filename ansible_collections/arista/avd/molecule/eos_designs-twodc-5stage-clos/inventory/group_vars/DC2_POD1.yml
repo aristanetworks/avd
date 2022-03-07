@@ -75,6 +75,18 @@ l3leaf:
           mgmt_ip: 192.168.1.22/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
 
+    # Single leaf with l2only combined with inband management parent
+    RACK2_SINGLE:
+      evpn_role: client
+      evpn_route_servers: [ DC2-POD1-LEAF1A ]
+      bgp_as: 65212
+      evpn_services_l2_only: true
+      nodes:
+        DC2-POD1-LEAF2A:
+          id: 2
+          mgmt_ip: 192.168.1.24/24
+          uplink_switch_interfaces: ['Ethernet4', 'Ethernet4']
+
 # In DC2 we define all variables via defaults if possible
 l2leaf:
   defaults:
@@ -94,4 +106,11 @@ l2leaf:
         DC2-POD1-L2LEAF1A:
           id: 1
           mgmt_ip: 192.168.1.23/24
+          uplink_switch_interfaces: ['Ethernet3']
+    RACK2_SINGLE:
+      uplink_switches: ['DC2-POD1-LEAF2A']
+      nodes:
+        DC2-POD1-L2LEAF2A:
+          id: 2
+          mgmt_ip: 192.168.1.25/24
           uplink_switch_interfaces: ['Ethernet3']

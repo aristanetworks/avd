@@ -55,6 +55,10 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS2
       remote_as: '65102'
+    172.16.210.4:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF2A
+      remote_as: '65212'
     11.1.0.38:
       remote_as: '65120'
       description: DC1-POD1-LEAF2B
@@ -296,11 +300,6 @@ ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
-virtual_source_nat_vrfs:
-  vrf_with_loopbacks_from_overlapping_pool:
-    ip_address: 10.100.0.3
-  vrf_with_loopbacks_from_pod_pools:
-    ip_address: 10.101.201.3
 vxlan_interface:
   Vxlan1:
     description: DC2-POD1-LEAF1A_VTEP
@@ -316,6 +315,11 @@ vxlan_interface:
           vni: 1100
         vrf_with_loopbacks_from_pod_pools:
           vni: 1101
+virtual_source_nat_vrfs:
+  vrf_with_loopbacks_from_overlapping_pool:
+    ip_address: 10.100.0.3
+  vrf_with_loopbacks_from_pod_pools:
+    ip_address: 10.101.201.3
 vlans:
   4092:
     tenant: system
