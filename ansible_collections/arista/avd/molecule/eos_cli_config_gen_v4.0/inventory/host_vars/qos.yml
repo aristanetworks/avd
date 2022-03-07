@@ -173,13 +173,13 @@ port_channel_interfaces:
 
 ### ACLs and Class Maps ###
 access_lists:
-  acl_qos_tc0_v4:
+  - name: acl_qos_tc0_v4
     sequence_numbers:
-      10:
+      - sequence: 10
         action: "permit ip any 192.0.2.0/29"
-  acl_qos_tc5_v4:
+  - name: acl_qos_tc5_v4
     sequence_numbers:
-      10:
+      - sequence: 10
         action: "permit ip any any dscp ef"
 
 ipv6_access_lists:
