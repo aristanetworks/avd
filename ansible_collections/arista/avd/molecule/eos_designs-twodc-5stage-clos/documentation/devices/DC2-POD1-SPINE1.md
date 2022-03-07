@@ -173,6 +173,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.21.1/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1 | routed | - | 172.16.21.65/31 | default | 1500 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1 | routed | - | 172.17.210.0/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1 | routed | - | 172.17.210.4/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 11.1.1.19/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -203,6 +204,15 @@ interface Ethernet3
    mtu 1500
    no switchport
    ip address 172.17.210.0/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet4
+   description P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.17.210.4/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -341,6 +351,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.17.210.1 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.210.5 | 65212 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -395,6 +406,9 @@ router bgp 65210
    neighbor 172.17.210.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.1 remote-as 65211
    neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet1
+   neighbor 172.17.210.5 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.5 remote-as 65212
+   neighbor 172.17.210.5 description DC2-POD1-LEAF2A_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

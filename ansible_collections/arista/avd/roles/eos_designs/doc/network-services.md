@@ -110,6 +110,9 @@ tenants:
       # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
       < tenant_a_vrf_1 >:
 
+        # Optional
+        description: < vrf_description >
+
         # VRF VNI | Optional (required if "vrf_id" is not set).
         # The VRF VNI range is not limited, but if vrf_id is not set, "vrf_vni" is used for calculating MLAG IBGP peering vlan id.
         # See "mlag_ibgp_peering_vrfs.base_vlan" for details.

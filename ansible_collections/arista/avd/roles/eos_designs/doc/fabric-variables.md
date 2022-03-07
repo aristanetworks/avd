@@ -2,35 +2,51 @@
 
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
-  - EBGP (default)
+  - EBGP (default for l3ls-evpn)
   - OSPF.
   - ISIS.
+  - ISIS-SR*.
+  - ISIS-LDP*.
+  - ISIS-SR-LDP*.
+  - OSPF-LDP*.
 - The following overlay routing protocols are supported:
-  - EBGP (default)
-  - IBGP (only with OSPF or ISIS in underlay)
+  - EBGP (default for l3ls-evpn)
+  - IBGP (only with OSPF or ISIS variants in underlay)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 - The variables should be applied to all devices in the fabric.
+
+*Only supported with core_interfaces data model.
 
 **Variables and Options:**
 
 ```yaml
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < EBGP or OSPF or ISIS | default -> EBGP >
-overlay_routing_protocol: < EBGP or IBGP | default -> EBGP >
+underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | default for l3ls-evpn -> EBGP >
+overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
 underlay_rfc5549: < true | false | default -> false >
 
-# Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
+# Underlay OSFP | Required when < underlay_routing_protocol > == OSPF variants
 underlay_ospf_process_id: < process_id | default -> 100 >
 underlay_ospf_area: < ospf_area | default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | default -> 12000 >
 underlay_ospf_bfd_enable: < true | false | default -> false >
 
-# Underlay ISIS | Required when < underlay_routing_protocol > == ISIS
+# Underlay ISIS | Required when < underlay_routing_protocol > == ISIS variants
 isis_area_id: < isis area | default -> "49.0001" >
+
+# Additional underlay ISIS parameters | Optional.
+isis_default_is_type: < level-1-2, | level-1 | level-2 | default -> level-2 >
+isis_advertise_passive_only: < true | false | default -> false >
+
+# ISIS TI-LFA parameters | Optional.
+isis_ti_lfa:
+  enabled: < true | false | default -> false >
+  protection: < link | node >
+  local_convergence_delay: < local_convergence_delay_in_ms | default -> 10000 >
 
 # AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
 bgp_as: < AS number >

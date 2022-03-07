@@ -10,6 +10,7 @@ router_bgp:
       type: ipv4
       remote_as: '65103'
       next_hop_self: true
+      description: DC1-SVC3A
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
@@ -367,6 +368,7 @@ vrfs:
   Tenant_A_OP_Zone:
     tenant: Tenant_A
     ip_routing: true
+    description: Tenant_A_OP_Zone
   Tenant_A_WAN_Zone:
     tenant: Tenant_A
     ip_routing: true
@@ -1383,9 +1385,6 @@ ip_igmp_snooping:
     120:
       enabled: false
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-virtual_source_nat_vrfs:
-  Tenant_A_OP_Zone:
-    ip_address: 10.255.1.13
 vxlan_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
@@ -1447,6 +1446,9 @@ vxlan_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
+virtual_source_nat_vrfs:
+  Tenant_A_OP_Zone:
+    ip_address: 10.255.1.13
 monitor_sessions:
 - name: MonitoringSessionServer18WithDest
   sources:

@@ -5,5 +5,8 @@ vrfs:
   {{ vrf.name }}:
     tenant: {{ tenant.name }}
     ip_routing: true
+{%         if vrf.description is arista.avd.defined %}
+    description: {{ vrf.description }}
+{%         endif %}
 {%     endfor %}
 {% endfor %}

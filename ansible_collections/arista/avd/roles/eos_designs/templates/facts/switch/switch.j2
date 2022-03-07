@@ -28,11 +28,11 @@ switch:
   mgmt_interface: {{ switch_data.combined.mgmt_interface | arista.avd.default(switch_platform_settings.management_interface, mgmt_interface) }}
 
 {# switch.underlay_routing_protocol #}
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
-  underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
-{% else %}
-  underlay_routing_protocol: 'ebgp'
+{% set switch_underlay_routing_protocol = underlay_routing_protocol | arista.avd.default(switch.default_underlay_routing_protocol) | lower %}
+{% if switch_underlay_routing_protocol not in ['ebgp', 'isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp', 'ospf', 'ospf-ldp'] %}
+{%     set switch_underlay_routing_protocol = switch.default_underlay_routing_protocol %}
 {% endif %}
+  underlay_routing_protocol: {{ switch_underlay_routing_protocol }}
 
 {# switch.overlay_routing_protocol #}
 {% if overlay_routing_protocol is arista.avd.defined and overlay_routing_protocol | lower in ['ibgp']  %}
@@ -173,9 +173,31 @@ switch:
   evpn_route_servers: {{ switch_data.combined.evpn_route_servers | arista.avd.default() }}
 {%     endif %}
 
+{# switch isis parameters #}
+{%     if switch_underlay_routing_protocol in ['isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp'] %}
 {# switch.isis_net #}
-{%     if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
+{%         if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
   isis_net: {{ isis_area_id }}.{{ switch_data.combined.isis_system_id_prefix }}.{{ '%04d' | format(switch_id) }}.00
+{%         endif %}
+{# switch.is_type #}
+{%         set switch_is_type = switch_data.combined.is_type | arista.avd.default(isis_default_is_type) | lower %}
+{%         if switch_is_type not in ["level-1", "level-2", "level-1-2"] %}
+{%             set switch_is_type = "level-2" %}
+{%         endif %}
+  is_type: {{ switch_is_type }}
+
+{# switch.isis_instance_name #}
+{%         if switch.mpls_lsr is arista.avd.defined(true) %}
+{%             set switch_isis_instance_name = "CORE" %}
+{%         else %}
+{%             set switch_isis_instance_name = "EVPN_UNDERLAY" %}
+{%         endif %}
+  isis_instance_name: {{ switch_isis_instance_name }}
+
+{# switch.node_sid #}
+{%         if switch_underlay_routing_protocol in ['isis-sr', 'isis-sr-ldp'] %}
+  node_sid: {{ switch_id + (switch_data.combined.node_sid_base | arista.avd.default(0)) | int }}
+{%         endif %}
 {%     endif %}
 {% endif %}
 

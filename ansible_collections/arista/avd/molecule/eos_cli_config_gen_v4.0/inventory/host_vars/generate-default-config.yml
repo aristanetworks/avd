@@ -1,0 +1,3 @@
+generate_default_config: false
+#Override config inherited from all.yml
+management_interfaces: null

@@ -20,6 +20,8 @@ default_templates:
       - template: "underlay/main.j2"
       # Overlay feature
       - template: "overlay/main.j2"
+      # Core Interfaces Feature
+      - template: "core_interfaces/main.j2"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Tenants feature

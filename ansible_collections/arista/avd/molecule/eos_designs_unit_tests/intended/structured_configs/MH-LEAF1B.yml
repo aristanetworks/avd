@@ -212,9 +212,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_X_OP_Zone
     ip_address_virtual: 10.1.10.1/24
-virtual_source_nat_vrfs:
-  Tenant_X_OP_Zone:
-    ip_address: 10.255.1.34
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF1B_VTEP
@@ -225,8 +222,10 @@ vxlan_interface:
         310:
           vni: 11310
       vrfs:
-        Tenant_X_OP_Zone:
-          vni: 20
+        Tenant_X_OP_Zone: {}
+virtual_source_nat_vrfs:
+  Tenant_X_OP_Zone:
+    ip_address: 10.255.1.34
 port_channel_interfaces:
   Port-Channel11:
     description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
