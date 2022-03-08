@@ -11,7 +11,8 @@
 {%             for vrf in sflow.vrfs | arista.avd.natural_sort %}
 {%                 if sflow.vrfs[vrf].destinations is defined and sflow.vrfs[vrf].destinations is not none %}
 {%                     for destination in sflow.vrfs[vrf].destinations | arista.avd.natural_sort %}
-| {{ vrf }} | - | {{ destination }} |{% if sflow.vrfs[vrf].destinations[destination].port is defined and sflow.vrfs[vrf].destinations[destination].port is not none %} {{ sflow.vrfs[vrf].destinations[destination].port }}{% else %} 6343 {% endif %} |
+{%                         set port = sflow.vrfs[vrf].destinations[destination].port | arista.avd.default('6343') %}
+| {{ vrf }} | - | {{ destination }} | {{ port }} |
 {%                     endfor %}
 {%                 endif %}
 {%                 if sflow.vrfs[vrf].source_interface is defined and sflow.vrfs[vrf].source_interface is not none %}
@@ -21,7 +22,8 @@
 {%         endif %}
 {%         if sflow.destinations is defined and sflow.destinations is not none %}
 {%             for destination in sflow.destinations %}
-| default | - | {{ destination }} |{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
+{%                 set port = sflow.destinations[destination].port | arista.avd.default('6343') %}
+| default | - | {{ destination }} | {{ port }} |
 {%             endfor %}
 {%         endif %}
 {%         if sflow.source_interface is defined and sflow.source_interface is not none %}

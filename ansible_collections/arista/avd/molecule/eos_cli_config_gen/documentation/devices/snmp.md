@@ -77,8 +77,8 @@ interface Management1
 
 | VRF | Status |
 | --- | ------ |
-| default |  Disabled  |
-| MGMT |  Enabled  |
+| default | Disabled |
+| MGMT | Enabled |
 
 ### SNMP Hosts Configuration
 

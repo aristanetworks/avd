@@ -31,7 +31,12 @@
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
-| {{ management_ssh.idle_timeout | arista.avd.default('default') }} | {% if ssh.enable %} Enabled {% else %} Disabled {% endif %} |
+{%     if ssh.enable %}
+{%         set ssh = 'Enabled' %}
+{%     else %}
+{%         set ssh = 'Disabled' %}
+{%     endif %}
+| {{ management_ssh.idle_timeout | arista.avd.default('default') }} | {{ ssh }} |
 
 ### Max number of SSH sessions limit and per-host limit
 
@@ -51,7 +56,12 @@
 | VRF | Status |
 | --- | ------ |
 {%         for vrf in management_ssh.vrfs %}
-| {{ vrf }} | {% if management_ssh.vrfs[vrf].enable %} Enabled {% else %} Disabled {% endif %} |
+{%             if management_ssh.vrfs[vrf].enable %}
+{%                 set status = 'Enabled' %}
+{%             else %}
+{%                 set status = 'Disabled' %}
+{%             endif %}
+| {{ vrf }} | {{ status }} |
 {%         endfor %}
 {%     endif %}
 

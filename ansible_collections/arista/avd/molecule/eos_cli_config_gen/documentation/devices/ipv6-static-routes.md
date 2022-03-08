@@ -89,11 +89,11 @@ interface Management1
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| default  | 2a01:cb04:4e6:d300::/64 |  2a01:cb04:4e6:d100::1  |  vlan101  |  1  |  -  |  -  |  - |
-| default  | 2a01:cb04:4e6:d400::/64 |  2a01:cb04:4e6:d100::1  |  vlan101  |  200  |  666  |  RT-TO-FAKE-DMZ  |  - |
-| default  | 2a01:cb04:4e6:d400::/64 |  2a01:cb04:4e6:d100::1  |  vlan101  |  200  |  666  |  RT-TO-FAKE-DB-ZONE  |  100 |
-| customer01  | 2a01:cb04:4e6:a300::/64 |  2a01:cb04:4e6:100::1  |  vlan101  |  1  |  -  |  -  |  - |
-| customer01  | 2a01:cb04:4e6:a400::/64 |  2a01:cb04:4e6:100::1  |  vlan101  |  201  |  667  |  RT-TO-FAKE-DMZ  |  - |
+| default | 2a01:cb04:4e6:d300::/64 | 2a01:cb04:4e6:d100::1 | vlan101 | 1 | - | - | - |
+| default | 2a01:cb04:4e6:d400::/64 | 2a01:cb04:4e6:d100::1 | vlan101 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| default | 2a01:cb04:4e6:d400::/64 | 2a01:cb04:4e6:d100::1 | vlan101 | 200 | 666 | RT-TO-FAKE-DB-ZONE | 100 |
+| customer01 | 2a01:cb04:4e6:a300::/64 | 2a01:cb04:4e6:100::1 | vlan101 | 1 | - | - | - |
+| customer01 | 2a01:cb04:4e6:a400::/64 | 2a01:cb04:4e6:100::1 | vlan101 | 201 | 667 | RT-TO-FAKE-DMZ | - |
 
 ### Static Routes Device Configuration
 
