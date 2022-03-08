@@ -315,22 +315,22 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  Tenant_A_OP_Zone_1  |  Tenant_A_OP_Zone  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
-| Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
-| Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
-| Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
-| Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
-| Vlan132 |  Tenant_A_APP_Zone_3  |  Tenant_A_APP_Zone  |  -  |  false  |
-| Vlan140 |  Tenant_A_DB_BZone_1  |  Tenant_A_DB_Zone  |  -  |  false  |
-| Vlan141 |  Tenant_A_DB_Zone_2  |  Tenant_A_DB_Zone  |  -  |  false  |
-| Vlan150 |  Tenant_A_WAN_Zone_1  |  Tenant_A_WAN_Zone  |  -  |  false  |
-| Vlan210 |  Tenant_B_OP_Zone_1  |  Tenant_B_OP_Zone  |  -  |  false  |
-| Vlan211 |  Tenant_B_OP_Zone_2  |  Tenant_B_OP_Zone  |  -  |  false  |
-| Vlan250 |  Tenant_B_WAN_Zone_1  |  Tenant_B_WAN_Zone  |  -  |  false  |
-| Vlan310 |  Tenant_C_OP_Zone_1  |  Tenant_C_OP_Zone  |  -  |  false  |
-| Vlan311 |  Tenant_C_OP_Zone_2  |  Tenant_C_OP_Zone  |  -  |  false  |
-| Vlan350 |  Tenant_C_WAN_Zone_1  |  Tenant_C_WAN_Zone  |  -  |  false  |
+| Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | false |
+| Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | false |
+| Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | false |
+| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | 1560 | true |
+| Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | false |
+| Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | false |
+| Vlan132 | Tenant_A_APP_Zone_3 | Tenant_A_APP_Zone | - | false |
+| Vlan140 | Tenant_A_DB_BZone_1 | Tenant_A_DB_Zone | - | false |
+| Vlan141 | Tenant_A_DB_Zone_2 | Tenant_A_DB_Zone | - | false |
+| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | false |
+| Vlan210 | Tenant_B_OP_Zone_1 | Tenant_B_OP_Zone | - | false |
+| Vlan211 | Tenant_B_OP_Zone_2 | Tenant_B_OP_Zone | - | false |
+| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | false |
+| Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | false |
+| Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | false |
+| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
 
 #### IPv4
 
@@ -630,9 +630,9 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
-| Tenant_A_APP_Zone  | 10.2.32.0/24 |  -  |  Vlan132  |  1  |  -  |  VARP  |  - |
-| Tenant_A_APP_Zone  | 10.3.32.0/24 |  -  |  Vlan132  |  1  |  -  |  VARP  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
+| Tenant_A_APP_Zone | 10.2.32.0/24 | - | Vlan132 | 1 | - | VARP | - |
+| Tenant_A_APP_Zone | 10.3.32.0/24 | - | Vlan132 | 1 | - | VARP | - |
 
 ### Static Routes Device Configuration
 

@@ -387,13 +387,13 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
-| Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
-| Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
-| Vlan123 |  Tenant_a_WEB_DHCP_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
-| Vlan124 |  Tenant_a_WEB_DHCP_vrf_no_source_int  |  Tenant_A_WEB_Zone  |  -  |  false  |
-| Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
-| Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
+| Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | false |
+| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | 1560 | true |
+| Vlan122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | Tenant_A_WEB_Zone | - | false |
+| Vlan123 | Tenant_a_WEB_DHCP_source_int_no_vrf | Tenant_A_WEB_Zone | - | false |
+| Vlan124 | Tenant_a_WEB_DHCP_vrf_no_source_int | Tenant_A_WEB_Zone | - | false |
+| Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | false |
+| Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | false |
 
 #### IPv4
 
@@ -565,7 +565,7 @@ ip routing vrf Tenant_A_WEB_Zone
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

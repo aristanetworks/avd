@@ -284,9 +284,9 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  Tenant_A_OP_Zone_1  |  Common_VRF  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
-| Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
+| Vlan110 | Tenant_A_OP_Zone_1 | Common_VRF | - | false |
+| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | true |
+| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | false |
 
 #### IPv4
 
@@ -422,7 +422,7 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.1.254  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

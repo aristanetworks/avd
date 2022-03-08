@@ -337,13 +337,13 @@ interface Loopback101
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  set from structured_config on svi (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
-| Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
-| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
-| Vlan1100 |  test_svi  |  vrf_with_loopbacks_from_overlapping_pool  |  -  |  false  |
-| Vlan1101 |  test_svi  |  vrf_with_loopbacks_from_pod_pools  |  -  |  false  |
-| Vlan1102 |  test_svi  |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  false  |
+| Vlan110 | set from structured_config on svi (was Tenant_A_OP_Zone_1) | Common_VRF | - | false |
+| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | true |
+| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | false |
+| Vlan113 | SVI_with_no_vxlan | Common_VRF | - | false |
+| Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | false |
+| Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | false |
+| Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | false |
 
 #### IPv4
 
@@ -522,7 +522,7 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.1.254  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

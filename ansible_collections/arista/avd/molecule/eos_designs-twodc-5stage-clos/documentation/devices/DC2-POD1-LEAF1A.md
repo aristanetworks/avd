@@ -344,7 +344,7 @@ interface Loopback101
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
+| Vlan4092 | L2LEAF_INBAND_MGMT | default | 1500 | false |
 
 #### IPv4
 
@@ -464,7 +464,7 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.1.254  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

@@ -349,7 +349,7 @@ interface Port-Channel12
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | CORE |  - |  passive |
+| Loopback0 | CORE | - | passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -407,7 +407,7 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.0.1  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

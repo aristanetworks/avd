@@ -401,8 +401,8 @@ interface Port-Channel5
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -429,8 +429,8 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | false |
+| Vlan4094 | MLAG_PEER | default | 1500 | false |
 
 #### IPv4
 
@@ -444,7 +444,7 @@ interface Loopback1
 
 | Interface | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 
 ### VLAN Interfaces Device Configuration
 
@@ -542,7 +542,7 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

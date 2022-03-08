@@ -426,8 +426,8 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | false |
+| Vlan4094 | MLAG_PEER | default | 1500 | false |
 
 #### IPv4
 
@@ -532,7 +532,7 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
