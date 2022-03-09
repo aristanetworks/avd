@@ -68,6 +68,8 @@ router_bgp:
       default_originate:
         enabled: true
         always: true
+      rib_in_pre_policy_retain:
+        enabled: true
     192.0.3.2:
       remote_as: 65433
       send_community: extended
@@ -76,15 +78,23 @@ router_bgp:
         enabled: true
         route_map: RM-FOO-MATCH3
         always: false
+      rib_in_pre_policy_retain:
+        enabled: true
+        all: true
     192.0.3.3:
       remote_as: 65434
       send_community: standard
+      rib_in_pre_policy_retain:
+        enabled: true
+        all: false
       # Test no config generation
       default_originate:
     192.0.3.4:
       remote_as: 65435
       send_community: large
       default_originate:
+        enabled: false
+      rib_in_pre_policy_retain:
         enabled: false
   neighbor_interfaces:
     Ethernet2:
