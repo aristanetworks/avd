@@ -282,6 +282,7 @@ interface Ethernet50
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 | Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
+| Port-Channel99 | MCAST | routed | - | 192.0.2.10/31 | default | - | - | - | - |
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
@@ -416,6 +417,12 @@ interface Port-Channel51
    switchport trunk allowed vlan 1-500
    switchport mode trunk
    ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+!
+interface Port-Channel99
+   description MCAST
+   no switchport
+   ip address 192.0.2.10/31
+   pim ipv4 sparse-mode
 !
 interface Port-Channel100
    logging event link-status
