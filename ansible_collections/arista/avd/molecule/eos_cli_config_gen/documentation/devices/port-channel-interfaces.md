@@ -333,6 +333,7 @@ interface Port-Channel9
    spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
+   bfd echo
 !
 interface Port-Channel10
    description SRV01_bond0

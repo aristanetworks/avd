@@ -115,6 +115,7 @@ port_channel_interfaces:
     type: routed
     ip_address: 10.9.2.3/31
     bfd:
+      echo: true
       interval: 500
       min_rx: 500
       multiplier: 5

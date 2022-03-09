@@ -205,6 +205,7 @@ interface Ethernet1
    priority-flow-control priority 5 drop
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5
+   bfd echo
    link tracking group EVPN_MH_ES1 upstream
    comment
    Comment created from eos_cli under ethernet_interfaces.Ethernet1

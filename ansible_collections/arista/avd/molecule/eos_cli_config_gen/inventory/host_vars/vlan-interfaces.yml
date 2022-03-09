@@ -45,6 +45,7 @@ vlan_interfaces:
     ip_address: 10.10.84.1/24
     arp_cache_dynamic_capacity: 50000
     bfd:
+      echo: true
       interval: 500
       min_rx: 500
       multiplier: 5

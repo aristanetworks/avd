@@ -936,6 +936,7 @@ ethernet_interfaces:
         - priority: < 0-7 >
           no_drop: < true | false >
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1049,6 +1050,7 @@ ethernet_interfaces:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1185,6 +1187,7 @@ port_channel_interfaces:
       dscp: < dscp-value >
       cos: < cos-value >
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1390,6 +1393,7 @@ vlan_interfaces:
     ip_attached_host_route_export:
       distance: < distance >
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >

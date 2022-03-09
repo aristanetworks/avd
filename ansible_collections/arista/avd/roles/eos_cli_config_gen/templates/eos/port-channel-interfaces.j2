@@ -315,6 +315,9 @@ interface {{ port_channel_interface }}
           port_channel_interfaces[port_channel_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ port_channel_interfaces[port_channel_interface].bfd.interval }} min-rx {{ port_channel_interfaces[port_channel_interface].bfd.min_rx }} multiplier {{ port_channel_interfaces[port_channel_interface].bfd.multiplier }}
 {%     endif %}
+{%         if port_channel_interfaces[port_channel_interface].bfd.echo is arista.avd.defined %}
+   bfd echo
+{%         endif %}
 {%     for link_tracking_group in port_channel_interfaces[port_channel_interface].link_tracking_groups | arista.avd.natural_sort('name') %}
 {%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
