@@ -62,6 +62,14 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.peer_groups[peer_group].description is arista.avd.defined %}
    neighbor {{ peer_group }} description {{ router_bgp.peer_groups[peer_group].description }}
 {%         endif %}
+{%         if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_all_cli = " all" %}
+{%         endif %}
+{%         if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "   no neighbor {{ peer_group }} rib-in pre-policy retain" ~ neighbor_rib_in_pre_policy_retain_all_cli %}
+{%         elif router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "   neighbor {{ peer_group }} rib-in pre-policy retain" ~ neighbor_rib_in_pre_policy_retain_all_cli %}
+{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].route_reflector_client is arista.avd.defined(true) %}
    neighbor {{ peer_group }} route-reflector-client
 {%         endif %}
@@ -147,6 +155,14 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].update_source is arista.avd.defined %}
    neighbor {{ neighbor }} update-source {{ router_bgp.neighbors[neighbor].update_source }}
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_all_cli = " all" %}
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "   no neighbor {{ peer_group }} rib-in pre-policy retain" ~ neighbor_rib_in_pre_policy_retain_all_cli %}
+{%         elif router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "   neighbor {{ peer_group }} rib-in pre-policy retain" ~ neighbor_rib_in_pre_policy_retain_all_cli %}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor }} bfd

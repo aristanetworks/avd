@@ -83,6 +83,12 @@
 {%             if router_bgp.peer_groups[peer_group].update_source is arista.avd.defined %}
 | Source | {{ router_bgp.peer_groups[peer_group].update_source }} |
 {%             endif %}
+{%             if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined() %}
+| RIB Retain Policy Enabled | {{ router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled }} |
+{%                 if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+| RIB Retain Policy All | {{ router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.all }} |
+{%                 endif %}
+{%             endif %}
 {%             if router_bgp.peer_groups[peer_group].bfd is arista.avd.defined(true) %}
 | BFD | True |
 {%             endif %}
