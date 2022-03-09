@@ -206,6 +206,10 @@ defaults <- node_group <- node_group.node <- node
     uplink_ptp:
       enable: < boolean >
 
+    # Enable MacSec on all uplinks | Optional
+    uplink_macsec:
+      profile: "< MacSec profile name >"
+
     # Point-to-Point interface speed - will apply to uplinks on both ends | Optional.
     uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
