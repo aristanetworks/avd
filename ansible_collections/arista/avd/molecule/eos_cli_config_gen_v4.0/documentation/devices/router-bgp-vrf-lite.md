@@ -180,20 +180,20 @@ router bgp 65001
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   neighbor OBS_WAN description BGP Connection to OBS WAN CPE
    neighbor OBS_WAN peer group
    neighbor OBS_WAN remote-as 65000
-   neighbor SEDI description BGP Connection to OBS WAN CPE
+   neighbor OBS_WAN description BGP Connection to OBS WAN CPE
    neighbor SEDI peer group
    neighbor SEDI remote-as 65003
    neighbor SEDI update-source Loopback101
+   neighbor SEDI description BGP Connection to OBS WAN CPE
    neighbor SEDI ebgp-multihop 10
-   neighbor SEDI-shut description BGP Peer Shutdown
    neighbor SEDI-shut shutdown
    neighbor SEDI-shut peer group
-   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
+   neighbor SEDI-shut description BGP Peer Shutdown
    neighbor WELCOME_ROUTERS peer group
    neighbor WELCOME_ROUTERS remote-as 65001
+   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    redistribute static
    !
    address-family ipv4

@@ -113,6 +113,9 @@ switch:
 {# switch.uplink_ptp #}
   uplink_ptp: {{ switch_data.combined.uplink_ptp | arista.avd.default() }}
 
+{# switch.uplink_macsec #}
+  uplink_macsec: {{ switch_data.combined.uplink_macsec | arista.avd.default() }}
+
 {# switch.rack #}
   rack: {{ switch_data.combined.rack | arista.avd.default() }}
 
