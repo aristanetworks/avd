@@ -1,4 +1,4 @@
-Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
+Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface
 l3leaf,DC1-BL1A,Ethernet7,l3_interface,,
 l3leaf,DC1-BL1A,Ethernet8,l3_interface,,
 l3leaf,DC1-BL1A,Ethernet9,l3_interface,,

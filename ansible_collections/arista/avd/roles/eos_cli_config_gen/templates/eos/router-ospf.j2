@@ -12,6 +12,17 @@ router ospf {{ process_id }}
 {%     if router_ospf.process_ids[process_id].router_id is arista.avd.defined %}
    router-id {{ router_ospf.process_ids[process_id].router_id }}
 {%     endif %}
+{%     if router_ospf.process_ids[process_id].distance is arista.avd.defined %}
+{%         if router_ospf.process_ids[process_id].distance.intra_area is arista.avd.defined %}
+   distance ospf intra-area {{ router_ospf.process_ids[process_id].distance.intra_area }}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].distance.external is arista.avd.defined %}
+   distance ospf external {{ router_ospf.process_ids[process_id].distance.external }}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].distance.inter_area is arista.avd.defined %}
+   distance ospf inter-area {{ router_ospf.process_ids[process_id].distance.inter_area }}
+{%         endif %}
+{%     endif %}
 {%     if router_ospf.process_ids[process_id].passive_interface_default is arista.avd.defined(true) %}
    passive-interface default
 {%     endif %}
@@ -70,6 +81,9 @@ router ospf {{ process_id }}
    area {{ area }} filter prefix-list {{ router_ospf.process_ids[process_id].areas[area].filter.prefix_list }}
 {%         endif %}
 {%     endfor %}
+{%     if router_ospf.process_ids[process_id].distribute_list_in.route_map is arista.avd.defined %}
+   distribute-list route-map {{ router_ospf.process_ids[process_id].distribute_list_in.route_map }} in
+{%     endif %}
 {%     if router_ospf.process_ids[process_id].max_lsa is arista.avd.defined %}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%     endif %}
@@ -95,7 +109,7 @@ router ospf {{ process_id }}
    {{ timer_ospf_spf_delay }}
 {%     endif %}
 {%     if router_ospf.process_ids[process_id].default_information_originate is defined %}
-{%         set default_information_originate_cli = "default-information originate"%}
+{%         set default_information_originate_cli = "default-information originate" %}
 {%         if router_ospf.process_ids[process_id].default_information_originate.always is arista.avd.defined(true) %}
 {%             set default_information_originate_cli = default_information_originate_cli ~ " always" %}
 {%         endif %}

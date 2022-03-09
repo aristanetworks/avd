@@ -89,6 +89,7 @@ management ssh
    connection limit 50
    connection per-host 10
    no shutdown
+   log-level debug
    vrf mgt
       no shutdown
 ```
@@ -117,7 +118,8 @@ management ssh
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

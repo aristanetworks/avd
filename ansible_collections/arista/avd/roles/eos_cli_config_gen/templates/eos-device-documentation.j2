@@ -64,6 +64,8 @@
 {% include 'documentation/prompt.j2' %}
 {# Aliases #}
 {% include 'documentation/aliases.j2' %}
+{# DHCP Relay #}
+{% include 'documentation/dhcp-relay.j2' %}
 
 # Monitoring
 {## TerminAttr Daemon #}
@@ -74,6 +76,8 @@
 {% include 'documentation/logging.j2' %}
 {## SNMP #}
 {% include 'documentation/snmp-settings.j2' %}
+{## Monitor Sessions #}
+{% include 'documentation/monitor-sessions.j2' %}
 {## SFlow #}
 {% include 'documentation/sflow.j2' %}
 {## Hardware Counters #}
@@ -100,6 +104,8 @@
 {% include 'documentation/vlan-internal-order.j2' %}
 {# VLANs #}
 {% include 'documentation/vlans.j2' %}
+{# Mac address-table ##}
+{% include 'documentation/mac-address-table.j2' %}
 
 # Interfaces
 {## Switchport Default #}
@@ -138,12 +144,16 @@
 {% include 'documentation/arp.j2' %}
 {## Router General #}
 {% include 'documentation/router-general.j2' %}
+{## Router Traffic Engineering #}
+{% include 'documentation/router-traffic-engineering.j2' %}
 {## Router OSPF #}
 {% include 'documentation/router-ospf.j2' %}
 {## Router ISIS #}
 {% include 'documentation/router-isis.j2' %}
 {## Router BGP #}
 {% include 'documentation/router-bgp.j2' %}
+{## PBR Policy Maps ##}
+{% include 'documentation/policy-maps-pbr.j2' %}
 {# BFD #}
 {% include 'documentation/bfd.j2' %}
 {# MPLS #}
@@ -178,16 +188,22 @@
 {% include 'documentation/ip-extended-community-lists-regexp.j2' %}
 {## Match-Lists #}
 {% include 'documentation/match-lists.j2' %}
+{# as-paths #}
+{% include 'documentation/as-path.j2' %}
 
 # ACL
 {## Standard Access-lists #}
 {% include 'documentation/standard-access-lists.j2' %}
 {## Extended Access-lists #}
 {% include 'documentation/access-lists.j2' %}
+{## Extended Access-lists, improved data model #}
+{% include 'documentation/ip-access-lists.j2' %}
 {## IPv6 Standard Access-lists #}
 {% include 'documentation/ipv6-standard-access-lists.j2' %}
 {## IPv6 Extended Access-lists #}
 {% include 'documentation/ipv6-access-lists.j2' %}
+{## MAC Access-lists #}
+{% include 'documentation/mac-access-lists.j2' %}
 {# VRF Instances #}
 {% include 'documentation/vrf-instances.j2' %}
 {# Virtual Source NAT #}

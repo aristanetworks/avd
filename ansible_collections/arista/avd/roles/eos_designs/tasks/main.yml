@@ -39,25 +39,12 @@
 - name: Generate device configuration in structured format
   tags: [build, provision]
   yaml_templates_to_facts:
-    root_key: structured_config
     templates: "{{ templates.structured_config }}"
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    template_output: True
   delegate_to: localhost
   check_mode: no
-  changed_when: False
-
-- name: Write device structured configuration to YAML file
-  tags: [build, provision]
-  template:
-    src: generate-structured-config.j2
-    dest: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
-    mode: 0664
-  delegate_to: localhost
-  changed_when: False
-
-- name: Include device structured configuration, that was previously generated.
-  tags: [build, provision]
-  include_vars: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
-  delegate_to: localhost
+  register: structured_config
 
 - name: Generate fabric documentation
   tags: [build, provision, documentation]

@@ -6,13 +6,13 @@
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
-{%         for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
+{%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
 | {{ vrf }} | {{ virtual_source_nat_vrfs[vrf].ip_address }} |
-{%         endfor %}
+{%     endfor %}
 
 ## Virtual Source NAT Configuration
 
 ```eos
-{% include 'eos/virtual-source-nat.j2' %}
+{%     include 'eos/virtual-source-nat.j2' %}
 ```
 {% endif %}

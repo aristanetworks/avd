@@ -59,7 +59,7 @@ STP mode: **rstp**
 
 ### Global Spanning-Tree Settings
 
-Global RSTP priority: 8192
+- Global RSTP priority: 8192
 
 ## Spanning Tree Device Configuration
 
@@ -89,7 +89,8 @@ spanning-tree priority 8192
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

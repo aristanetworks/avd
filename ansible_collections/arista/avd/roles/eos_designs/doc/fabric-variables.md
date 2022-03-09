@@ -16,21 +16,21 @@
 
 ```yaml
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
-overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
+underlay_routing_protocol: < EBGP or OSPF or ISIS | default -> EBGP >
+overlay_routing_protocol: < EBGP or IBGP | default -> EBGP >
 
-# Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumberred.
+# Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
-underlay_rfc5549: < true | false | Default -> false >
+underlay_rfc5549: < true | false | default -> false >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
-underlay_ospf_process_id: < process_id | Default -> 100 >
-underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
-underlay_ospf_max_lsa: < lsa | Default -> 12000 >
-underlay_ospf_bfd_enable: < true | false | Default -> false >
+underlay_ospf_process_id: < process_id | default -> 100 >
+underlay_ospf_area: < ospf_area | default -> 0.0.0.0 >
+underlay_ospf_max_lsa: < lsa | default -> 12000 >
+underlay_ospf_bfd_enable: < true | false | default -> false >
 
 # Underlay ISIS | Required when < underlay_routing_protocol > == ISIS
-isis_area_id: < isis area | Default -> "49.0001" >
+isis_area_id: < isis area | default -> "49.0001" >
 
 # AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
 bgp_as: < AS number >
@@ -68,7 +68,8 @@ bgp_peer_groups:
       password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
-vxlan_vlan_aware_bundles: < boolean | default -> false >
+# Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
+evpn_vlan_aware_bundles: < boolean | default -> false >
 
 # Disable IGMP snooping at fabric level.
 # If set, it overrides per vlan settings
@@ -87,28 +88,28 @@ evpn_hostflap_detection:
   enabled: < true | false | default -> true >
 
   # Minimum number of MAC moves that indicate a MAC duplication issue
-  threshold: < number | default 5 >
+  threshold: < number | default -> 5 >
 
   # Time (in seconds) to detect a MAC duplication issue
-  window: < seconds | default 180 >
+  window: < seconds | default -> 180 >
 
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
-evpn_overlay_bgp_rtc: < true | false , default -> false >
+evpn_overlay_bgp_rtc: < true | false | default -> false >
 
 # Enable VPN import pruning (Min. EOS 4.24.2F)
 # The Route Target extended communities carried by incoming VPN paths will
 # be examined. If none of those Route Targets have been configured for import,
 # the path will be immediately discarded
-evpn_import_pruning: true
+evpn_import_pruning: < true | false | default -> false >
 
 # Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
 # This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
-evpn_prevent_readvertise_to_server : < true | false , default -> false >
+evpn_prevent_readvertise_to_server : < true | false | default -> false >
 
 # Configure prefix for "short_esi" values | Optional
-evpn_short_esi_prefix: < string, default -> "0000:0000:" >
+evpn_short_esi_prefix: < string | default -> "0000:0000:" >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
@@ -119,16 +120,16 @@ evpn_short_esi_prefix: < string, default -> "0000:0000:" >
 # l2leafs       : <subnet> + 3 + <l2leaf id>
 # GW on l2leafs : <subnet> + 1
 # Assign range larger than total l2leafs + 5
-l2leaf_inband_management_subnet: < IPv4_network/Mask >
+inband_management_subnet: < IPv4_network/Mask >
 
 # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
 # Optional - default -> 4092
-l2leaf_inband_management_vlan: < vlan_id >
+inband_management_vlan: < vlan_id >
 
 # QOS Profile assigned on all infrastructure links | Optional
 p2p_uplinks_qos_profile: < qos_profile_name >
 
 # Enable PTP on all infrastructure links | Optional
-p2p_uplinks_ptp:
+uplink_ptp:
   enable: < boolean | default -> false >
 ```

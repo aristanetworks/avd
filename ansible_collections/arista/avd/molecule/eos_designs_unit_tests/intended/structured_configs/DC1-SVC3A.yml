@@ -111,14 +111,14 @@ router_bgp:
       - connected
     Tenant_A_OP_Zone:
       router_id: 192.168.255.12
-      rd: '65103:10'
+      rd: '65103:9'
       route_targets:
         import:
           evpn:
-          - '10:10'
+          - '9:9'
         export:
           evpn:
-          - '10:10'
+          - '9:9'
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
@@ -234,10 +234,10 @@ router_bgp:
       - learned
       vlan: 140-141
     Tenant_A_OP_Zone:
-      rd: '65103:10'
+      rd: '65103:9'
       route_targets:
         both:
-        - '10:10'
+        - '9:9'
       redistribute_routes:
       - learned
       vlan: 110-111
@@ -259,19 +259,19 @@ router_bgp:
       vlan: 120-121
     Tenant_A_VMOTION:
       tenant: Tenant_A
-      rd: 65103:10160
+      rd: 65103:20160
       route_targets:
         both:
-        - 10160:10160
+        - 20160:20160
       redistribute_routes:
       - learned
       vlan: 160
     Tenant_A_NFS:
       tenant: Tenant_A
-      rd: 65103:10161
+      rd: 65103:20161
       route_targets:
         both:
-        - 10161:10161
+        - 20161:20161
       redistribute_routes:
       - learned
       vlan: 161
@@ -353,6 +353,8 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
 vrfs:
   MGMT:
     ip_routing: false
@@ -434,7 +436,7 @@ vlans:
   111:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_2
-  3009:
+  3008:
     tenant: Tenant_A
     name: MLAG_iBGP_Tenant_A_OP_Zone
     trunk_groups:
@@ -584,7 +586,7 @@ vlan_interfaces:
       1.1.1.1:
         source_interface: lo100
         vrf: MGMT
-  Vlan3009:
+  Vlan3008:
     tenant: Tenant_A
     type: underlay_peering
     shutdown: false
@@ -600,6 +602,11 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    ospf_area: 1
+    ospf_network_point_to_point: false
+    ospf_cost: 100
+    ospf_authentication: simple
+    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
@@ -753,8 +760,8 @@ port_channel_interfaces:
     l2_mtu: 8000
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     storm_control:
       all:
         level: 10
@@ -777,7 +784,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -800,7 +807,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -826,7 +833,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -852,7 +859,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -890,6 +897,20 @@ port_channel_interfaces:
     mode: access
     vlans: 110
     mlag: 24
+  Port-Channel27:
+    description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 27
+  Port-Channel42:
+    description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 42
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-SVC3B
@@ -996,8 +1017,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1022,7 +1043,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1047,7 +1068,7 @@ ethernet_interfaces:
     mode: access
     vlans: 210
     spanning_tree_portfast: network
-    spanning_tree_bpdufilter: false
+    spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: true
     storm_control:
       all:
@@ -1073,8 +1094,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     storm_control:
       all:
         level: 10
@@ -1102,7 +1123,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1130,7 +1151,7 @@ ethernet_interfaces:
     mode: access
     vlans: 210
     spanning_tree_portfast: network
-    spanning_tree_bpdufilter: false
+    spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: true
     storm_control:
       all:
@@ -1156,7 +1177,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1186,7 +1207,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -1216,7 +1237,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -1287,6 +1308,62 @@ ethernet_interfaces:
     vlans: 110
     channel_group:
       id: 24
+      mode: active
+  Ethernet28:
+    peer: server18_monitoring_session_source_phys_interface
+    peer_interface: Eth5
+    peer_type: server
+    description: server18_monitoring_session_source_phys_interface_Eth5
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+  Ethernet25:
+    peer: server18_monitoring_session_source_phys_interfaces
+    peer_interface: Eth1
+    peer_type: server
+    description: server18_monitoring_session_source_phys_interfaces_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+  Ethernet27:
+    peer: server18_monitoring_session_source_po
+    peer_interface: Eth3
+    peer_type: server
+    description: server18_monitoring_session_source_po_Eth3
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 27
+      mode: active
+  Ethernet26:
+    peer: server19_monitoring_session_destination_phys
+    peer_interface: Eth1
+    peer_type: server
+    description: server19_monitoring_session_destination_phys_Eth1
+    type: switched
+    shutdown: false
+  Ethernet40:
+    peer: server20_monitoring_session_destination_phys
+    peer_interface: Eth1
+    peer_type: server
+    description: server20_monitoring_session_destination_phys_Eth1
+    type: switched
+    shutdown: false
+  Ethernet42:
+    peer: server21_monitoring_session_destination_po
+    peer_interface: Eth1
+    peer_type: server
+    description: server21_monitoring_session_destination_po_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 42
       mode: active
 mlag_configuration:
   domain_id: DC1_SVC3
@@ -1405,3 +1482,42 @@ vxlan_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
+monitor_sessions:
+- name: MonitoringSessionServer18WithDest
+  sources:
+  - name: Ethernet28
+    direction: tx
+    access_group:
+      type: mac
+      name: MyMacACL
+      priority: 5
+  - name: Ethernet25
+    direction: rx
+    access_group:
+      type: ip
+      name: MyIpACL
+      priority: 5
+  - name: Port-Channel27
+    direction: tx
+    access_group:
+      type: mac
+      name: MyMacACL
+      priority: 5
+  destinations:
+  - Ethernet26
+  - Ethernet40
+  - Port-Channel42
+  header_remove_size: 200
+  access_group:
+    type: mac
+    name: mac_acl
+  rate_limit_per_ingress_chip: 30 bps
+  rate_limit_per_egress_chip: 30 bps
+  sample: 10
+  truncate:
+    enabled: true
+    size: 20
+- name: MonitoringSessionServer18WithoutDest
+  sources:
+  - name: Ethernet25
+    direction: tx

@@ -72,10 +72,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '12:12'
+          - '100000:12'
         export:
           evpn:
-          - '12:12'
+          - '100000:12'
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -84,22 +84,22 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '13:13'
+          - '100000:13'
         export:
           evpn:
-          - '13:13'
+          - '100000:13'
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
       router_id: 192.168.255.10
-      rd: '65001:10'
+      rd: '65001:9'
       route_targets:
         import:
           evpn:
-          - '10:10'
+          - '100000:9'
         export:
           evpn:
-          - '10:10'
+          - '100000:9'
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -108,10 +108,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '11:11'
+          - '100000:11'
         export:
           evpn:
-          - '11:11'
+          - '100000:11'
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -120,10 +120,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '20:20'
+          - '100000:20'
         export:
           evpn:
-          - '20:20'
+          - '100000:20'
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -132,10 +132,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '30:30'
+          - '100000:30'
         export:
           evpn:
-          - '30:30'
+          - '100000:30'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -143,7 +143,7 @@ router_bgp:
       rd: '65001:12'
       route_targets:
         both:
-        - '12:12'
+        - '100000:12'
       redistribute_routes:
       - learned
       vlan: 130-131
@@ -151,15 +151,15 @@ router_bgp:
       rd: '65001:13'
       route_targets:
         both:
-        - '13:13'
+        - '100000:13'
       redistribute_routes:
       - learned
       vlan: 140-141
     Tenant_A_OP_Zone:
-      rd: '65001:10'
+      rd: '65001:9'
       route_targets:
         both:
-        - '10:10'
+        - '100000:9'
       redistribute_routes:
       - learned
       vlan: 110-111
@@ -167,25 +167,25 @@ router_bgp:
       rd: '65001:11'
       route_targets:
         both:
-        - '11:11'
+        - '100000:11'
       redistribute_routes:
       - learned
       vlan: 120-121
     Tenant_A_VMOTION:
       tenant: Tenant_A
-      rd: 65001:10160
+      rd: 65001:20160
       route_targets:
         both:
-        - 10160:10160
+        - 100000:20160
       redistribute_routes:
       - learned
       vlan: 160
     Tenant_A_NFS:
       tenant: Tenant_A
-      rd: 65001:10161
+      rd: 65001:20161
       route_targets:
         both:
-        - 10161:10161
+        - 100000:20161
       redistribute_routes:
       - learned
       vlan: 161
@@ -193,7 +193,7 @@ router_bgp:
       rd: '65001:20'
       route_targets:
         both:
-        - '20:20'
+        - '100000:20'
       redistribute_routes:
       - learned
       vlan: 210-211
@@ -201,7 +201,7 @@ router_bgp:
       rd: '65001:30'
       route_targets:
         both:
-        - '30:30'
+        - '100000:30'
       redistribute_routes:
       - learned
       vlan: 310-311
@@ -260,6 +260,8 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
 vrfs:
   MGMT:
     ip_routing: false
@@ -400,6 +402,8 @@ ethernet_interfaces:
     shutdown: false
     mode: trunk
     vlans: 210-211
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
     channel_group:
       id: 10
       mode: active
@@ -411,6 +415,8 @@ ethernet_interfaces:
     mtu: 1601
     type: switched
     shutdown: false
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
     channel_group:
       id: 12
       mode: active
@@ -424,6 +430,8 @@ ethernet_interfaces:
     shutdown: false
     mode: access
     vlans: 110
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     channel_group:
       id: 11
       mode: active
@@ -458,18 +466,24 @@ port_channel_interfaces:
     shutdown: false
     mode: trunk
     vlans: 210-211
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
   Port-Channel12:
     description: server01_MTU_ADAPTOR_MLAG_PortChanne1
     type: switched
     shutdown: false
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
     mtu: 1601
   Port-Channel11:
     description: server01_MTU_PROFILE_MLAG_PortChanne1
     type: switched
     shutdown: false
     mode: access
-    mtu: 1600
     vlans: 110
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
+    mtu: 1600
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

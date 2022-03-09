@@ -15,6 +15,8 @@
   - [IPv6 Routing](#ipv6-routing)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [MPLS](#mpls)
+  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -79,8 +81,10 @@ interface Management1
 | Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
 | Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 |
 | Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
+| Ethernet11/2 | LAG Member LACP fallback LLDP ZTP VLAN | *trunk | *112 | *- | *- | 112 |
 | Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
 | Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
+| Ethernet18 | LAG Member | *access | *110 | *- | *- | 109 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
@@ -91,6 +95,13 @@ interface Management1
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
+
+#### ISIS
+
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
+ *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
 
@@ -133,6 +144,23 @@ interface Ethernet10/4
    switchport mode trunk
    spanning-tree portfast
 !
+interface Ethernet10/10
+   description isis_port_channel_member
+   channel-group 110 mode active
+!
+interface Ethernet11/1
+   description LAG Member
+   channel-group 111 mode active
+!
+interface Ethernet11/2
+   description LAG Member LACP fallback LLDP ZTP VLAN
+   channel-group 112 mode active
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   spanning-tree portfast
+   lldp tlv transmit ztp vlan 112
+!
 interface Ethernet15
    description DC1-AGG03_Ethernet1
    channel-group 15 mode active
@@ -147,6 +175,10 @@ interface Ethernet16
 interface Ethernet17
    description LAG Member
    channel-group 17 mode active
+!
+interface Ethernet18
+   description LAG Member
+   channel-group 109 mode active
 !
 interface Ethernet50
    description SRV-POD03_Eth1
@@ -165,6 +197,8 @@ interface Ethernet50
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel13 | EVPN-Vxlan single-active redundancy | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
+| Port-Channel14 | EVPN-MPLS multihoming | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
@@ -176,6 +210,29 @@ interface Ethernet50
 | Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel104 | LACP fallback individual | switched | trunk | 112 | - | - | 300 | individual | - | - |
+| Port-Channel105 | bpdu disabled | switched | access | - | - | - | - | - | - | - |
+| Port-Channel106 | bpdu enabled | switched | access | - | - | - | - | - | - | - |
+| Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
+| Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
+| Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
+| Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
+
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | l3dot1q | - | 101 |
+
+#### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
 
 #### Private VLAN
 
@@ -189,6 +246,27 @@ interface Ethernet50
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
 | Port-Channel102 | 111-112 | 110 | out
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel13 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
+| Port-Channel14 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Port-Channel13 | preference | 100 | True | 10 | - | True |
+
+##### EVPN-MPLS summary
+
+| Interface | Shared Index | Tunnel Flood Filter Time |
+| --------- | ------------ | ------------------------ |
+| Port-Channel14 | 100 | 100 |
 
 #### Link Tracking Groups
 
@@ -204,6 +282,14 @@ interface Ethernet50
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 | Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
+| Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
+| Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel110 | ISIS_TEST | 99 | point-to-point | level-2 | True | text |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -244,6 +330,7 @@ interface Port-Channel8.101
 !
 interface Port-Channel9
    no switchport
+   spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
 !
@@ -264,12 +351,33 @@ interface Port-Channel12
    switchport phone vlan 70
    switchport phone trunk untagged
 !
+interface Port-Channel13
+   description EVPN-Vxlan single-active redundancy
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0304
+      redundancy single-active
+      designated-forwarder election algorithm preference 100 dont-preempt
+      designated-forwarder election hold-time 10
+      designated-forwarder election candidate reachability required
+      route-target import 00:00:01:02:03:04
+!
+interface Port-Channel14
+   description EVPN-MPLS multihoming
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0305
+      mpls tunnel flood filter time 100
+      mpls shared index 100
+      route-target import 00:00:01:02:03:05
+!
 interface Port-Channel15
    description DC1_L2LEAF3_Po1
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 15
+   spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
@@ -278,6 +386,7 @@ interface Port-Channel16
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 16
+   spanning-tree guard none
 !
 interface Port-Channel17
    description PBR Description
@@ -355,6 +464,112 @@ interface Port-Channel104
    switchport mode trunk
    port-channel lacp fallback timeout 300
    port-channel lacp fallback individual
+!
+interface Port-Channel105
+   description bpdu disabled
+   switchport
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
+!
+interface Port-Channel106
+   description bpdu enabled
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel107
+   description bpdu true
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel108
+   description bpdu false
+   switchport
+!
+interface Port-Channel109
+   description Molecule ACLs
+   switchport
+   switchport access vlan 110
+   ip access-group IPV4_ACL_IN in
+   ip access-group IPV4_ACL_OUT out
+   ipv6 access-group IPV6_ACL_IN in
+   ipv6 access-group IPV6_ACL_OUT out
+   mac access-group MAC_ACL_IN in
+   mac access-group MAC_ACL_OUT out
+!
+interface Port-Channel110
+   description isis_interface_knobs
+   no switchport
+   isis enable ISIS_TEST
+   isis circuit-type level-2
+   isis metric 99
+   isis network point-to-point
+   isis hello padding
+   isis authentication mode text
+   isis authentication key 7 asfddja23452
+!
+interface Port-Channel111
+   description Flexencap Port-Channel
+   no switchport
+!
+interface Port-Channel111.1
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client unmatched
+!
+interface Port-Channel111.100
+   description TENANT_A pseudowire 2 interface
+   encapsulation vlan
+      client dot1q 100 network client
+!
+interface Port-Channel111.200
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q 200
+!
+interface Port-Channel111.300
+   description TENANT_A pseudowire 4 interface
+   encapsulation vlan
+      client dot1q 300 network dot1q 400
+!
+interface Port-Channel111.400
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+!
+interface Port-Channel111.1000
+   description L2 Subinterface
+   vlan id 1000
+   encapsulation vlan
+      client dot1q 100 network client
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
+!
+interface Port-Channel112
+   description LACP fallback individual
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   port-channel lacp fallback timeout 5
+   port-channel lacp fallback individual
+!
+interface Port-Channel113
+   description interface_with_mpls_enabled
+   no switchport
+   ip address 172.31.128.9/31
+   mpls ip
+   mpls ldp interface
+   mpls ldp igp sync
+!
+interface Port-Channel114
+   description interface_with_mpls_disabled
+   no switchport
+   ip address 172.31.128.10/31
+   no mpls ip
+   no mpls ldp interface
 ```
 
 # Routing
@@ -365,7 +580,8 @@ interface Port-Channel104
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -385,6 +601,15 @@ interface Port-Channel104
 | Interface | Interval | Minimum RX | Multiplier |
 | --------- | -------- | ---------- | ---------- |
 | Port-Channel9 | 500 | 500 | 5 |
+
+# MPLS
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Port-Channel113 | True | True | True |
+| Port-Channel114 | False | False | - |
 
 # Multicast
 

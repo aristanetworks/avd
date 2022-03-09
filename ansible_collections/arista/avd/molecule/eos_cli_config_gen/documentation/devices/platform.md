@@ -71,7 +71,8 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -94,7 +95,20 @@ interface Management1
 
 ## Platform Summary
 
-   The platform trident forwarding-table partition is 2.
+### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+| forwarding_table_partition | 2 |
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| forwarding_mode | arad |
+| lag.hardware_only | True |
+| lag.mode | 512x32 |
+| multicast_replication.default | ingress |
 
 ## Platform Configuration
 
@@ -103,6 +117,7 @@ interface Management1
 platform trident forwarding-table partition 2
 platform sand lag hardware-only
 platform sand lag mode 512x32
+platform sand forwarding mode arad
 platform sand multicast replication default ingress
 ```
 

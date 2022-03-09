@@ -18,5 +18,5 @@ event-handler {{ handler }}
 {%         if event_handlers[handler].asynchronous is arista.avd.defined(true) %}
    asynchronous
 {%         endif %}
-{%    endfor %}
+{%     endfor %}
 {% endif %}

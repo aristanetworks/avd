@@ -46,13 +46,15 @@ port_profiles:
   < port_profile_1 >:
     parent_profile: < port_profile_name >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
+    enabled: < true | false >
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < mtu >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     native_vlan: <native vlan number>
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
-    spanning_tree_bpdufilter: < true | false >
-    spanning_tree_bpduguard: < true | false >
+    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     flowcontrol:
       received: < "received" | "send" | "on" >
     qos_profile: < qos_profile_name >
@@ -102,7 +104,7 @@ port_profiles:
         # List of port(s) connected to switches | required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switche(s) | required
+        # List of switch(es) | required
         switches: [ < device > ]
 
         # Port-profile name, to inherit configuration.
@@ -123,8 +125,8 @@ port_profiles:
 
         # Spanning Tree
         spanning_tree_portfast: < edge | network >
-        spanning_tree_bpdufilter: < true | false >
-        spanning_tree_bpduguard: < true | false >
+        spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+        spanning_tree_bpduguard: < "enabled" | true | "disabled" >
 
         # Flow control | Optional
         flowcontrol:
@@ -137,16 +139,21 @@ port_profiles:
         ptp:
           enable: < true | false >
 
+        # Configure the downstream interfaces of a respective Link Tracking Group | Optional
+        # If port_channel is defined in an adapter then port-channel interface is configured to be the downstream
+        # else all the ethernet-interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks
+        link_tracking:
+          enabled: < true | false >
+          # The default group name is taken from fabric variable of the switch, link_tracking.groups[0].name with default value being "LT_GROUP1".
+          # Optional if default link_tracking settings are configured on the node.
+          name: < tracking_group_name >
+
         # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         raw_eos_cli: |
           < multiline eos cli >
 
         # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
         structured_config: < dictionary >
-
-      < port_profile_2 >:
-        mode: < access | dot1q-tunnel | trunk >
-        vlans: < vlans as string >
 
         # Storm control settings applied on port toward the endpoint | Optional
         storm_control:
@@ -163,6 +170,29 @@ port_profiles:
             level: < Configure maximum storm-control level >
             unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
+        # Monitor Session configuration: use defined switchports as source or destination for monitoring sessions | Optional
+        monitor_session:
+          name: < session_name >
+          role: < source | destination >
+          source_settings:
+            - direction: < rx | tx | both >
+              access_group:
+                type: < ip | ipv6 | mac >
+                name: < acl_name >
+                priority: < priority >
+          # Session settings are defined per session name. Different session_settings with for same session name will be combined/merged
+          session_settings:
+            encapsulation_gre_metadata_tx: < true | false >
+            header_remove_size: < bytes >
+            access_group:
+              type: < ip | ipv6 | mac >
+              name: < acl_name >
+            rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+            rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+            sample: < int >
+            truncate:
+              enabled: < true | false >
+              size: < bytes >
 
       # Example of port-channel adapter
       - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
@@ -187,6 +217,16 @@ port_profiles:
           lacp_fallback:
             mode: < static > Currently only static mode is supported
             timeout: < timeout in seconds > | Optional - default is 90 seconds
+
+          # Port-Channel L2 Subinterfaces
+          # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+          subinterfaces:
+          - number: < subinterface number >
+            short_esi: < 0000:0000:0000 > Required for multihomed port-channels with subinterfaces
+            vlan_id: < VLAN ID to bridge > | Optional - default is subinterface number
+            # Flexible encapsulation parameters
+            encapsulation_vlan:
+              client_dot1q: < client vlan id encapsulation > | Optional - default is subinterface number
 
           # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
           raw_eos_cli: |

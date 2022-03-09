@@ -131,7 +131,7 @@ custom_structured_configuration_prefix: < variable_prefix, default -> "custom_st
 custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_prefix_2 > , < variable_prefix_3 > ]
 ```
 
-#### Example using multiple prefixes:
+#### Example using multiple prefixes
 
 ```yaml
 custom_structured_configuration_prefix: [ my_dci_ , my_special_dci_ ]
@@ -154,7 +154,7 @@ my_special_dci_ethernet_interfaces:
 
 In this example  `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_structured_configuration_prefix`
 
-#### Example with `append` list_merge strategy:
+#### Example with `append` list_merge strategy
 
 ```yaml
 name_servers:
@@ -169,7 +169,18 @@ override_name_server:
   - 10.10.10.12
 ```
 
-In this example the `name_servers` variable will be read by `eos_designs` templates and the `name_server` structured configuration will be generated accordingly. The `override_name_server.nodes` list will be `appended` to `name_server.nodes` list resulting in:
+In this example the `name_servers` variable will be read by `eos_designs` templates and the `name_server` structured configuration will be generated accordingly:
+
+```yaml
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 10.10.10.10
+  - 10.10.10.11
+```
+
+The `override_name_server.nodes` list will be `appended` to `name_server.nodes` list resulting in:
 
 ```yaml
 name_server:

@@ -7,6 +7,9 @@
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
+- [MAC Address Table](#mac-address-table)
+  - [MAC Address Table Summary](#mac-address-table-summary)
+  - [MAC Address Table Device Configuration](#mac-address-table-device-configuration)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
@@ -58,6 +61,29 @@ interface Management1
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
+# MAC Address Table
+
+## MAC Address Table Summary
+
+- MAC address table entry maximum age: 100 seconds
+
+- Logging MAC address interface flapping is Enabled
+
+- 2 MAC moves are considered as one flap
+
+- Size of the flap detection time window: 10 seconds
+
+## MAC Address Table Device Configuration
+
+```eos
+!
+mac address-table aging-time 100
+!
+mac address-table notification host-flap logging
+mac address-table notification host-flap detection window 10
+mac address-table notification host-flap detection moves 2
+```
+
 # Interfaces
 
 # Routing
@@ -68,7 +94,8 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
