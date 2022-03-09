@@ -25,9 +25,8 @@ topology:
 {%             if switch.uplink_ptp.enable is arista.avd.defined %}
       ptp: {{ switch.uplink_ptp.enable }}
 {%             endif %}
-{%             if switch.uplink_macsec.profile is arista.avd.defined %}
-      mac_security:
-        profile: {{ switch.uplink_macsec.profile }}
+{%             if switch.uplink_macsec is arista.avd.defined %}
+      mac_security: {{ switch.uplink_macsec }}
 {%             endif %}
 {%             if underlay_rfc5549 is arista.avd.defined(true) %}
       ipv6_enable: true
