@@ -10,7 +10,7 @@
       - [IPv6](#ipv6)
     - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
 - [Authentication](#authentication)
-- [DHCP Relay](#dhcp-relay-1)
+- [DHCP Relay](#dhcp-relay)
   - [DHCP Relay Summary](#dhcp-relay-summary)
   - [DHCP Relay Configuration](#dhcp-relay-configuration)
 - [Monitoring](#monitoring)
