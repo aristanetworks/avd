@@ -411,10 +411,10 @@ interface Vlan120
    description Tenant_A_WEB_Zone_1
    no shutdown
    vrf Tenant_A_WEB_Zone
+   ip helper-address 1.1.1.1 vrf TEST source-interface lo100
    ip address virtual 10.1.20.1/24
    ip address virtual 10.2.20.1/24 secondary
    ip address virtual 10.2.21.1/24 secondary
-   ip helper-address 1.1.1.1 vrf TEST source-interface lo100
 !
 interface Vlan121
    description Tenant_A_WEBZone_2

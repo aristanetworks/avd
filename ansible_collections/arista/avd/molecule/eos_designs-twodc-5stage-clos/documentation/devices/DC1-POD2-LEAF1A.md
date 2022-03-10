@@ -378,11 +378,11 @@ interface Vlan112
    description Tenant_A_OP_Zone_3
    no shutdown
    vrf Common_VRF
-   ip address virtual 10.1.12.1/24
    comment
    Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
    EOF
 
+   ip address virtual 10.1.12.1/24
 !
 interface Vlan113
    description SVI_with_no_vxlan
