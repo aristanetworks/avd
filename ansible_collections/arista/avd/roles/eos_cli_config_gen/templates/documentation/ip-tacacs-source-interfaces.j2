@@ -7,8 +7,8 @@
 | VRF | Source Interface Name |
 | --- | --------------- |
 {%     for ip_tacacs_source_interface in ip_tacacs_source_interfaces %}
-{%         set vrf = ip_tacacs_source_interface['vrf'] | arista.avd.default('default') %}
-| {{ vrf }} | {{ ip_tacacs_source_interface['name'] }} |
+{%         set vrf = ip_tacacs_source_interface.vrf | arista.avd.default('default') %}
+| {{ vrf }} | {{ ip_tacacs_source_interface.name }} |
 {%     endfor %}
 
 ### IP TACACS Source Interfaces Device Configuration

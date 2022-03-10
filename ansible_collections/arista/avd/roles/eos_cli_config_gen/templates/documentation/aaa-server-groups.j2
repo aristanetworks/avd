@@ -8,8 +8,8 @@
 | ------------------| ----- | --- | ---------- |
 {%     for aaa_server_group in aaa_server_groups %}
 {%         for server in aaa_server_group.servers %}
-{%             set vrf = server['vrf'] | arista.avd.default('default') %}
-| {{ aaa_server_group['name'] }} | {{ aaa_server_group['type'] }} | {{ vrf }} | {{ server['server'] }} |
+{%             set vrf = server.vrf | arista.avd.default('default') %}
+| {{ aaa_server_group.name }} | {{ aaa_server_group.type }} | {{ vrf }} | {{ server.server }} |
 {%         endfor %}
 {%     endfor %}
 

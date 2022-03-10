@@ -10,7 +10,7 @@
 {%         set url = vmtracer_sessions[session].url | arista.avd.default('-') %}
 {%         if vmtracer_sessions[session].autovlan_disable is arista.avd.defined and vmtracer_sessions[session].autovlan_disable == true %}
 {%             set autovlan = 'disabled' %}
-{%         endif %}|
+{%         endif %}
 {%         set source_interface = vmtracer_sessions[session].source_interface | arista.avd.default('-') %}
 | {{ session }} | {{ url }} | {{ vmtracer_sessions[session].username }} | {{ autovlan | arista.avd.default('enabled') }} | {{ source_interface }} |
 {%     endfor %}

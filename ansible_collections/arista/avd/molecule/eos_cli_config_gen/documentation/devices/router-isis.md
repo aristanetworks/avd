@@ -211,7 +211,7 @@ interface Port-Channel6
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| --------- | ------------- | ----------- | -------------- |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
 | Loopback2 | EVPN_UNDERLAY | 50 | passive |

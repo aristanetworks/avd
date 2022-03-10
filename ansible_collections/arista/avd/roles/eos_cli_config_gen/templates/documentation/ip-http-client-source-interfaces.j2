@@ -7,7 +7,7 @@
 | VRF | Source Interface Name |
 | --- | --------------- |
 {%     for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort %}
-| {{ ip_http_client_source_interface['vrf'] | arista.avd.default('default') }} | {{ ip_http_client_source_interface['name'] }} |
+| {{ ip_http_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_http_client_source_interface.name }} |
 {%     endfor %}
 
 ### IP HTTP Client Source Interfaces Device Configuration

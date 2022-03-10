@@ -7,8 +7,8 @@
 | VRF | TACACS Servers | Single-Connection |
 | --- | -------------- | ----------------- |
 {%     for host in tacacs_servers.hosts %}
-{%         set vrf = host['vrf'] | arista.avd.default('default') %}
-| {{ vrf }} | {{ host['host'] }} | {{ host['single_connection'] | default(false) }} |
+{%         set vrf = host.vrf | arista.avd.default('default') %}
+| {{ vrf }} | {{ host.host }} | {{ host.single_connection | default(false) }} |
 {%     endfor %}
 
 {%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}
