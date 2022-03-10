@@ -1,6 +1,5 @@
 {# eos - aaa accounting #}
 {% if aaa_accounting is arista.avd.defined %}
-!
 {%     if aaa_accounting.exec.console.type is arista.avd.defined and aaa_accounting.exec.console.group is arista.avd.defined %}
 aaa accounting exec console {{ aaa_accounting.exec.console.type }} group {{ aaa_accounting.exec.console.group }}
 {%     endif %}

@@ -1,6 +1,5 @@
 {# eos - AAA Group Servers#}
 {% if aaa_server_groups is arista.avd.defined %}
-!
 {%     for aaa_server_group in aaa_server_groups %}
 {%         if aaa_server_group.type is arista.avd.defined and aaa_server_group.name is arista.avd.defined %}
 aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
@@ -12,6 +11,7 @@ aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
 {%                             set server_cli = server_cli ~ " vrf " ~ server.vrf %}
 {%                         endif %}
    {{ server_cli }}
+!
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
