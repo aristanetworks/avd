@@ -631,15 +631,15 @@ prefix_lists:
 
 ```yaml
 ipv6_prefix_lists:
-  < ipv6_prefix_list_name_1 >:
+  - name: < ipv6_prefix_list_name_1 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < ipv6_prefix_list_name_2 >:
+  - name: < ipv6_prefix_list_name_2 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
