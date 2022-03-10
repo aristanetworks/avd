@@ -416,6 +416,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].bfd.echo is arista.avd.defined(true) %}
    bfd echo
+{%         elif ethernet_interfaces[ethernet_interface].bfd.echo is arista.avd.defined(false) %}
+   no bfd echo
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ ethernet_interfaces[ethernet_interface].service_policy.pbr.input }}

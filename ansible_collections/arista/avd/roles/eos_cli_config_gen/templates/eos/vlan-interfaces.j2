@@ -198,6 +198,8 @@ interface {{ vlan_interface }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].bfd.echo is arista.avd.defined(true) %}
    bfd echo
+{%     elif vlan_interfaces[vlan_interface].bfd.echo is arista.avd.defined(false) %}
+   no bfd echo
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ vlan_interfaces[vlan_interface].service_policy.pbr.input }}
