@@ -894,6 +894,7 @@ ethernet_interfaces:
         key: "< encrypted_password >"
     pim:
       ipv4:
+        dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
     mac_security:
       profile: < profile >
@@ -1295,6 +1296,7 @@ port_channel_interfaces:
     mac_access_group_out: < mac_access_list_name >
     pim:
       ipv4:
+        dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
     service_profile: < qos_profile >
     ospf_network_point_to_point: < true | false >
@@ -1371,6 +1373,7 @@ vlan_interfaces:
         key: "< encrypted_password >"
     pim:
       ipv4:
+        dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
     ipv6_virtual_router_address: < IPv6_address >
