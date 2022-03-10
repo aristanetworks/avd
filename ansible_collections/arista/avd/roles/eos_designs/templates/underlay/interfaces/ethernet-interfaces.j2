@@ -20,6 +20,9 @@ ethernet_interfaces:
     ptp:
       enable: {{ link.ptp }}
 {%         endif %}
+{%         if link.mac_security is arista.avd.defined %}
+    mac_security: {{ link.mac_security }}
+{%         endif %}
     type: routed
     shutdown: false
 {%         if link.ipv6_enable is arista.avd.defined(true) %}
@@ -33,7 +36,7 @@ ethernet_interfaces:
     ospf_area: {{ underlay_ospf_area }}
 {%         endif %}
 {%         if switch.underlay_routing_protocol == "isis" %}
-    isis_enable: EVPN_UNDERLAY
+    isis_enable: {{ switch.isis_instance_name }}
     isis_metric: 50
     isis_network_point_to_point: true
 {%         endif %}

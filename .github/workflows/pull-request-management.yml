@@ -151,7 +151,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_cli_config_gen', 'upgrade_eos_cli_config_gen']
+        avd_scenario: ['eos_cli_config_gen', 'upgrade_eos_cli_config_gen', 'eos_cli_config_gen_v4.0']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
@@ -364,4 +364,4 @@ jobs:
       - name: Run J2lint
         timeout-minutes: 2
         run: |
-          j2lint $GITHUB_WORKSPACE --ignore S7 S6
+          j2lint $GITHUB_WORKSPACE --ignore S7

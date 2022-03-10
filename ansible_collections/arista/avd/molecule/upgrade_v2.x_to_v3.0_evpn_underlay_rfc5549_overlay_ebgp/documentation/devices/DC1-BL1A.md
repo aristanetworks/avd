@@ -590,12 +590,12 @@ router general
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS |
-| ------------------ | ---------- | --------- |
-| Ethernet1 | UNDERLAY_PEERS | 65001 |
-| Ethernet2 | UNDERLAY_PEERS | 65001 |
-| Ethernet3 | UNDERLAY_PEERS | 65001 |
-| Ethernet4 | UNDERLAY_PEERS | 65001 |
+| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
+| ------------------ | ---------- | --------- | ----------- |
+| Ethernet1 | UNDERLAY_PEERS | 65001 | - |
+| Ethernet2 | UNDERLAY_PEERS | 65001 | - |
+| Ethernet3 | UNDERLAY_PEERS | 65001 | - |
+| Ethernet4 | UNDERLAY_PEERS | 65001 | - |
 
 ### Router BGP EVPN Address Family
 

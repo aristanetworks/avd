@@ -257,9 +257,6 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-virtual_source_nat_vrfs:
-  Tenant_A_OP_Zone:
-    ip_address: 10.255.1.109
 vxlan_interface:
   Vxlan1:
     description: evpn_services_l2_only_true_VTEP

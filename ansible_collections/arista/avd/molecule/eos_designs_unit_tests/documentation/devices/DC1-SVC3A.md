@@ -1464,6 +1464,7 @@ router bgp 65103
    neighbor MLAG-PEERS peer group
    neighbor MLAG-PEERS remote-as 65103
    neighbor MLAG-PEERS next-hop-self
+   neighbor MLAG-PEERS description DC1-SVC3B
    neighbor MLAG-PEERS password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-PEERS send-community
    neighbor MLAG-PEERS maximum-routes 12000
@@ -1770,6 +1771,7 @@ vrf instance Tenant_A_APP_Zone
 vrf instance Tenant_A_DB_Zone
 !
 vrf instance Tenant_A_OP_Zone
+   description Tenant_A_OP_Zone
 !
 vrf instance Tenant_A_WAN_Zone
 !
