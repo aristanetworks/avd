@@ -632,7 +632,7 @@ router bgp 65153
       rd 192.168.255.35:21
       route-target import evpn 21:21
       route-target export evpn 21:21
-      route-target export evpn route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT
+      route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
    !
    vrf Tenant_X_OP_Zone
       rd 192.168.255.35:20
@@ -723,7 +723,7 @@ ip prefix-list PL-SVI-DEFAULT-VRF
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 | 20 | permit | match ip address prefix-list PL-SVI-DEFAULT-VRF |
 
-#### RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT
+#### RM-EVPN-EXPORT-VRF-DEFAULT
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
@@ -744,7 +744,7 @@ route-map RM-CONN-2-BGP permit 10
 route-map RM-CONN-2-BGP permit 20
    match ip address prefix-list PL-SVI-DEFAULT-VRF
 !
-route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT permit 10
+route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
    match ip address prefix-list PL-SVI-DEFAULT-VRF
 ```
 

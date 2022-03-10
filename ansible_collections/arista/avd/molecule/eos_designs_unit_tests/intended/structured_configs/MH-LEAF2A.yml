@@ -50,7 +50,7 @@ router_bgp:
         export:
           evpn:
           - '21:21'
-          - route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT
+          - route-map RM-EVPN-EXPORT-VRF-DEFAULT
     Tenant_X_OP_Zone:
       router_id: 192.168.255.35
       rd: 192.168.255.35:20
@@ -225,7 +225,7 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-SVI-DEFAULT-VRF
-  RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT:
+  RM-EVPN-EXPORT-VRF-DEFAULT:
     sequence_numbers:
       10:
         type: permit
