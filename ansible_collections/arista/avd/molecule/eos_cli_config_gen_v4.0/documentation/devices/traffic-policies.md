@@ -95,8 +95,8 @@ interface Management1
 
 | Field Set Name | Values |
 | -------------- | ------ |
-| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16|
-| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8|
+| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
+| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
 
 **IPv6 Field sets**
 
@@ -157,7 +157,7 @@ traffic-policies
       !
       match BLUE-C1-POLICY-02 ipv4
          source prefix field-set DEMO-01 DEMO-02
-         protocol tcp flags established destination port field-set SERVICE-DEMO
+         protocol tcp flags establisheddestination port field-set SERVICE-DEMO
          protocol icmp
          actions
             count DEMO-TRAFFIC
