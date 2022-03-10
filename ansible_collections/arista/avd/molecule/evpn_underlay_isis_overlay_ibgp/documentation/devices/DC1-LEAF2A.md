@@ -414,7 +414,7 @@ interface Port-Channel7
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| --------- | ------------- | ----------- | -------------- |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback10 | EVPN_UNDERLAY | - | passive |
 

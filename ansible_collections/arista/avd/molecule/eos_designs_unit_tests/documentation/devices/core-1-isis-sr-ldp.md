@@ -348,7 +348,7 @@ interface Port-Channel12
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CORE | - | passive |
 
 ### Loopback Interfaces Device Configuration
