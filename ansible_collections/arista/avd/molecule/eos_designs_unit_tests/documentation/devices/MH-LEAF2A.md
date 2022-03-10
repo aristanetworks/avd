@@ -688,7 +688,7 @@ router bfd
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
-#### PL-SVI-DEFAULT-VRF
+#### PL-SVI-VRF-DEFAULT
 
 | Sequence | Action |
 | -------- | ------ |
@@ -702,7 +702,7 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
 !
-ip prefix-list PL-SVI-DEFAULT-VRF
+ip prefix-list PL-SVI-VRF-DEFAULT
    seq 10 permit 10.2.10.0/24
 ```
 
@@ -714,27 +714,27 @@ ip prefix-list PL-SVI-DEFAULT-VRF
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | deny | match ip address prefix-list PL-SVI-DEFAULT-VRF |
+| 10 | deny | match ip address prefix-list PL-SVI-VRF-DEFAULT |
 
 #### RM-CONN-2-BGP
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
-| 20 | permit | match ip address prefix-list PL-SVI-DEFAULT-VRF |
+| 20 | permit | match ip address prefix-list PL-SVI-VRF-DEFAULT |
 
 #### RM-EVPN-EXPORT-VRF-DEFAULT
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-SVI-DEFAULT-VRF |
+| 10 | permit | match ip address prefix-list PL-SVI-VRF-DEFAULT |
 
 ### Route-maps Device Configuration
 
 ```eos
 !
 route-map RM-BGP-UNDERLAY-PEERS-OUT deny 10
-   match ip address prefix-list PL-SVI-DEFAULT-VRF
+   match ip address prefix-list PL-SVI-VRF-DEFAULT
 !
 route-map RM-BGP-UNDERLAY-PEERS-OUT permit 20
 !
@@ -742,10 +742,10 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 20
-   match ip address prefix-list PL-SVI-DEFAULT-VRF
+   match ip address prefix-list PL-SVI-VRF-DEFAULT
 !
 route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
-   match ip address prefix-list PL-SVI-DEFAULT-VRF
+   match ip address prefix-list PL-SVI-VRF-DEFAULT
 ```
 
 # ACL

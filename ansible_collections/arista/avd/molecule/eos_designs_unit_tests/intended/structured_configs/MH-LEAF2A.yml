@@ -210,7 +210,7 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
-  PL-SVI-DEFAULT-VRF:
+  PL-SVI-VRF-DEFAULT:
     sequence_numbers:
       10:
         action: permit 10.2.10.0/24
@@ -224,19 +224,19 @@ route_maps:
       20:
         type: permit
         match:
-        - ip address prefix-list PL-SVI-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
   RM-EVPN-EXPORT-VRF-DEFAULT:
     sequence_numbers:
       10:
         type: permit
         match:
-        - ip address prefix-list PL-SVI-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
   RM-BGP-UNDERLAY-PEERS-OUT:
     sequence_numbers:
       10:
         type: deny
         match:
-        - ip address prefix-list PL-SVI-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
       20:
         type: permit
 router_bfd:
