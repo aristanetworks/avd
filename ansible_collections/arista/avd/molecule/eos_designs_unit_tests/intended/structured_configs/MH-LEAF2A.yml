@@ -9,6 +9,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
+      route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -40,24 +41,42 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: true
   vrfs:
-    Tenant_X_OP_Zone:
-      router_id: 192.168.255.35
-      rd: '192.168.255.35:'
+    default:
+      rd: 192.168.255.35:21
       route_targets:
         import:
           evpn:
-          - None:None
+          - '21:21'
         export:
           evpn:
-          - None:None
+          - '21:21'
+          - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+    Tenant_X_OP_Zone:
+      router_id: 192.168.255.35
+      rd: 192.168.255.35:20
+      route_targets:
+        import:
+          evpn:
+          - '20:20'
+        export:
+          evpn:
+          - '20:20'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
-    Tenant_X_OP_Zone:
-      rd: 192.168.255.35:0
+    default:
+      rd: 192.168.255.35:21
       route_targets:
         both:
-        - 0:0
+        - '21:21'
+      redistribute_routes:
+      - learned
+      vlan: 311
+    Tenant_X_OP_Zone:
+      rd: 192.168.255.35:20
+      route_targets:
+        both:
+        - '20:20'
       redistribute_routes:
       - learned
       vlan: 310
@@ -191,6 +210,10 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
+  PL-SVI-VRF-DEFAULT:
+    sequence_numbers:
+      10:
+        action: permit 10.2.10.0/24
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -198,12 +221,33 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+      30:
+        type: permit
+        match:
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
+  RM-EVPN-EXPORT-VRF-DEFAULT:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
+  RM-BGP-UNDERLAY-PEERS-OUT:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
+      20:
+        type: permit
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 vlans:
+  311:
+    tenant: Tenant_X
+    name: Tenant_default_vrf
   310:
     tenant: Tenant_X
     name: Tenant_X_OP_Zone_1
@@ -211,6 +255,13 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
+  Vlan311:
+    tenant: Tenant_X
+    tags:
+    - default_vrf
+    description: Tenant_default_vrf
+    shutdown: false
+    ip_address_virtual: 10.2.10.1/24
   Vlan310:
     tenant: Tenant_X
     tags:
@@ -226,10 +277,15 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
+        311:
+          vni: 11311
         310:
           vni: 11310
       vrfs:
-        Tenant_X_OP_Zone: {}
+        default:
+          vni: 21
+        Tenant_X_OP_Zone:
+          vni: 20
 virtual_source_nat_vrfs:
   Tenant_X_OP_Zone:
     ip_address: 10.255.1.35

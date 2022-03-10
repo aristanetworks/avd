@@ -1,0 +1,32 @@
+{# prefix_lists #}
+prefix_lists:
+  PL-SVI-VRF-DEFAULT:
+    sequence_numbers:
+{% for svi_subnet in default_vrf.svi_subnets %}
+      {{ 10*loop.index }}:
+        action: "permit {{ svi_subnet }}"
+{% endfor %}
+
+{# route_maps #}
+route_maps:
+  RM-EVPN-EXPORT-VRF-DEFAULT:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
+  RM-BGP-UNDERLAY-PEERS-OUT:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
+      20:
+        type: permit
+  RM-CONN-2-BGP:
+    sequence_numbers:
+{# sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here #}
+      30:
+        type: permit
+        match:
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
