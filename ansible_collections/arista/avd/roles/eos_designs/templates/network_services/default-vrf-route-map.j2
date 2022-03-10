@@ -1,6 +1,6 @@
 {# prefix_lists #}
 prefix_lists:
-  PL-SVI-DEFAULT-VRF:
+  PL-SVI-VRF-DEFAULT:
     sequence_numbers:
 {% for svi_subnet in default_vrf.svi_subnets %}
       {{ 10*loop.index }}:
@@ -14,13 +14,13 @@ route_maps:
       10:
         type: permit
         match:
-        - ip address prefix-list PL-SVI-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
   RM-BGP-UNDERLAY-PEERS-OUT:
     sequence_numbers:
       10:
         type: deny
         match:
-        - ip address prefix-list PL-SVI-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
       20:
         type: permit
   RM-CONN-2-BGP:
@@ -28,4 +28,4 @@ route_maps:
       20:
         type: permit
         match:
-        - ip address prefix-list PL-SVI-DEFAULT-VRF
+        - ip address prefix-list PL-SVI-VRF-DEFAULT
