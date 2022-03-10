@@ -349,6 +349,9 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].pim.ipv4.dr_priority is arista.avd.defined %}
+   pim ipv4 dr-priority {{ ethernet_interfaces[ethernet_interface].pim.ipv4.dr_priority }}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%         endif %}

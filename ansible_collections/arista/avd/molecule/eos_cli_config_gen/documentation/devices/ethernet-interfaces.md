@@ -274,6 +274,7 @@ interface Ethernet5
    isis authentication mode md5
    isis authentication key 7 asfddja23452
    pim ipv4 sparse-mode
+   pim ipv4 dr-priority 200
 !
 interface Ethernet6
    description SRV-POD02_Eth1

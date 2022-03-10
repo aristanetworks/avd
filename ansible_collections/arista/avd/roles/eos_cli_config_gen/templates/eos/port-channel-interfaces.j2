@@ -270,6 +270,9 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].pim.ipv4.dr_priority is arista.avd.defined %}
+   pim ipv4 dr-priority {{ port_channel_interfaces[port_channel_interface].pim.ipv4.dr_priority }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%     endif %}

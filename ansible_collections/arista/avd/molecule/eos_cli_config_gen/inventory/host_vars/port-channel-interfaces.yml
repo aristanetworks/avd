@@ -168,6 +168,15 @@ port_channel_interfaces:
       pbr:
         input: MyPolicy
 
+  Port-Channel99:
+    description: MCAST
+    type: routed
+    ip_address: 192.0.2.10/31
+    pim:
+      ipv4:
+        dr_priority: 200
+        sparse_mode: true
+
   Port-Channel101:
     description: PVLAN Promiscuous Access - only one secondary
     mode: access

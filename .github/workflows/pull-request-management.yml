@@ -308,7 +308,6 @@ jobs:
       - name: 'set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Set up Python 3
         uses: actions/setup-python@v2
@@ -318,10 +317,10 @@ jobs:
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'ansible-test linting'
+      - name: 'ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test sanity  -v --requirements --docker --python ${{ matrix.python_version }}
+          ansible-test sanity --color yes -v --requirements --docker --python ${{ matrix.python_version }}
 
   galaxy_importer:
     name: Test galaxy-importer
