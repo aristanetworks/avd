@@ -1,3 +1,4 @@
+{# j2lint: disable=jinja-statements-delimeter #}
 {
     "devices": {
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}

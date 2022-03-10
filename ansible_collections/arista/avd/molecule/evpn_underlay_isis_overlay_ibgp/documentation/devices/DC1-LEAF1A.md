@@ -305,7 +305,7 @@ interface Ethernet4
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
 
 ### Loopback Interfaces Device Configuration
 

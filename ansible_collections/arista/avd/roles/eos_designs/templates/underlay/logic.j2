@@ -24,6 +24,7 @@
 {%                 set link.vlans = fabric_switch_link.vlans | arista.avd.default() %}
 {%                 set link.bfd = fabric_switch_link.bfd | arista.avd.default() %}
 {%                 set link.ptp = fabric_switch_link.ptp | arista.avd.default() %}
+{%                 set link.mac_security = fabric_switch_link.mac_security | arista.avd.default() %}
 {%                 set link.short_esi = fabric_switch_link.peer_short_esi | arista.avd.default() %}
 {%                 set link.ipv6_enable = fabric_switch_link.ipv6_enable | arista.avd.default() %}
 {%                 set interface = fabric_switch_link.peer_interface %}
