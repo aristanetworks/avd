@@ -8,9 +8,7 @@ router_bgp:
 {%     include 'network_services/router-bgp-vlan-aware-bundles.j2' %}
 
 {%     if default_vrf.svi_subnets %}
-
 {%         include 'network_services/router-bgp-default-vrf.j2' %}
-
 {%     endif %}
 
 {% endif %}

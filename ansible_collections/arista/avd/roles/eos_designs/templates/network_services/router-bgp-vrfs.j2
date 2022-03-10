@@ -26,7 +26,7 @@
     {{ vrf.name }}:
 {%             if vrf.name == 'default' %}
 {%                 if default_vrf.svi_subnets %}
-{%                     do route_targets.export.evpn.append('route-map RM-EVPN-OVERLAY-PEERS-DEFAULT-VRF-OUT') %}
+{%                     do route_targets.export.evpn.append('route-map RM-EVPN-EXPORT-VRF-DEFAULT') %}
       rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_id }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
