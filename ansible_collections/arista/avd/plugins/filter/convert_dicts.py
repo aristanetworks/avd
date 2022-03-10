@@ -7,6 +7,7 @@ __metaclass__ = type
 
 import os
 
+
 def convert_dicts(dictionary, primary_key="name"):
     """
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of dictionaries
