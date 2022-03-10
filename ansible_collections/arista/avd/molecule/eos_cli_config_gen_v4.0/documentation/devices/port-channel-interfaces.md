@@ -600,7 +600,7 @@ interface Port-Channel114
 
 | Interface | Interval | Minimum RX | Multiplier | Echo |
 | --------- | -------- | ---------- | ---------- | ---- |
-| Port-Channel9 | 500 | 500 | 5 | False |
+| Port-Channel9 | 500 | 500 | 5 | - |
 
 # MPLS
 

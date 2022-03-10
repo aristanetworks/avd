@@ -322,7 +322,7 @@ interface Vlan4094
 
 | Interface | Interval | Minimum RX | Multiplier | Echo |
 | --------- | -------- | ---------- | ---------- | ---- |
-| Vlan85 | 500 | 500 | 5 | False |
+| Vlan85 | 500 | 500 | 5 | - |
 
 # Multicast
 

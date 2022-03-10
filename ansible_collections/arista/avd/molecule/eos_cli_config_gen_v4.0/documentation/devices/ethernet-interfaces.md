@@ -518,7 +518,7 @@ interface Ethernet28
 
 | Interface | Interval | Minimum RX | Multiplier | Echo |
 | --------- | -------- | ---------- | ---------- | ---- |
-| Ethernet1 | 500 | 500 | 5 | False |
+| Ethernet1 | 500 | 500 | 5 | - |
 
 # MPLS
 
