@@ -599,9 +599,9 @@ interface Port-Channel114
 
 ## BFD Interfaces
 
-| Interface | Interval | Minimum RX | Multiplier |
-| --------- | -------- | ---------- | ---------- |
-| Port-Channel9 | 500 | 500 | 5 |
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
+| Port-Channel9 | 500 | 500 | 5 | True |
 
 # MPLS
 

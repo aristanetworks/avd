@@ -3,8 +3,8 @@
 
 ## BFD Interfaces
 
-| Interface | Interval | Minimum RX | Multiplier |
-| --------- | -------- | ---------- | ---------- |
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
 {%     if ethernet_interface_bfd.configured %}
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].bfd.interval is arista.avd.defined and
@@ -13,7 +13,8 @@
 {%                 set interval = ethernet_interfaces[ethernet_interface].bfd.interval %}
 {%                 set min_rx = ethernet_interfaces[ethernet_interface].bfd.min_rx %}
 {%                 set multiplier = ethernet_interfaces[ethernet_interface].bfd.multiplier %}
-| {{ ethernet_interface }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} |
+{%                 set echo = ethernet_interfaces[ethernet_interface].bfd.echo | arista.avd.default("False") %}
+| {{ ethernet_interface }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} | {{ echo }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -25,7 +26,8 @@
 {%                 set interval = port_channel_interfaces[port_channel_interface].bfd.interval %}
 {%                 set min_rx = port_channel_interfaces[port_channel_interface].bfd.min_rx %}
 {%                 set multiplier = port_channel_interfaces[port_channel_interface].bfd.multiplier %}
-| {{ port_channel_interface }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} |
+{%                 set echo = port_channel_interfaces[port_channel_interface].bfd.echo | arista.avd.default("False") %}
+| {{ port_channel_interface }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} | {{ echo }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -37,7 +39,8 @@
 {%                 set interval = vlan_interfaces[vlan_interface].bfd.interval %}
 {%                 set min_rx = vlan_interfaces[vlan_interface].bfd.min_rx %}
 {%                 set multiplier = vlan_interfaces[vlan_interface].bfd.multiplier %}
-| {{ vlan_interface }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} |
+{%                 set echo = vlan_interfaces[vlan_interface].bfd.echo | arista.avd.default("False") %}
+| {{ vlan_interface }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} | {{ echo }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
