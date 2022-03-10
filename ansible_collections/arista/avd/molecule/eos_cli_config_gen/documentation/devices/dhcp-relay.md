@@ -1,10 +1,16 @@
 # dhcp-relay
 # Table of Contents
 
+- [dhcp-relay](#dhcp-relay)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
 - [Authentication](#authentication)
-- [DHCP Relay](#dhcp-relay)
+- [DHCP Relay](#dhcp-relay-1)
   - [DHCP Relay Summary](#dhcp-relay-summary)
   - [DHCP Relay Configuration](#dhcp-relay-configuration)
 - [Monitoring](#monitoring)
@@ -13,7 +19,10 @@
 - [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -63,6 +72,7 @@ interface Management1
 ## DHCP Relay Configuration
 
 ```eos
+!
 dhcp relay
    server dhcp-relay-server1
    server dhcp-relay-server2
