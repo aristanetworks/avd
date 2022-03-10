@@ -17,6 +17,8 @@ l3leaf:
         enabled: true
       lacp_port_id_range:
         enabled: true
+      filter:
+        tags: [opzone]
       nodes:
         MH-LEAF1A:
           id: 1
