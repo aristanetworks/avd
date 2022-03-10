@@ -28,7 +28,8 @@ provisioner:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-
+  env:
+    AVD_DISABLE_CONVERT_DICTS: "TRUE"
   inventory:
     links:
       hosts: 'inventory/hosts.ini'
