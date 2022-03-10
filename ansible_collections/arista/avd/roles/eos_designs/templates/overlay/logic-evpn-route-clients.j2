@@ -1,18 +1,20 @@
 {% if switch.evpn_role == "server" %}
 {%     set overlay_data.evpn_route_clients = {} %}
 {# #}
-{# Look for switches pointing to us as evpn_route_server #}
-{%     for fabric_switch in groups[fabric_name] if fabric_switch not in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
-{%         set fabric_switch_facts = hostvars[fabric_switch].switch | arista.avd.default %}
-{%         if fabric_switch_facts is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ fabric_switch ~ '].switch') %}
-{%             set fabric_switch_evpn_role = fabric_switch_facts.evpn_role | arista.avd.default('none') %}
-{%             set fabric_switch_evpn_route_servers = fabric_switch_facts.evpn_route_servers | arista.avd.default([]) %}
-{%             if inventory_hostname in fabric_switch_evpn_route_servers and fabric_switch_evpn_role in ['client', 'server'] %}
+{%     set avd_overlay_peers = hostvars[ansible_play_hosts[0]].ansible_facts.avd_overlay_peers[inventory_hostname] | arista.avd.default([]) %}
+
+{# Parse switches pointing to us as evpn_route_server #}
+{%     for peer in avd_overlay_peers %}
+{%         set peer_facts = hostvars[peer] %}
+{%         if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ peer) %}
+{%             if inventory_hostname in peer_facts.switch.evpn_route_servers | arista.avd.default([]) and
+                  peer_facts.switch.evpn_role in ['client', 'server'] and
+                  peer not in overlay_data.evpn_route_servers | arista.avd.default([]) %}
 {# Found a matching client. Gathering information for this client #}
 {%                 set client = namespace() %}
-{%                 set client.bgp_as = fabric_switch_facts.bgp_as %}
-{%                 set client.ip_address = fabric_switch_facts.router_id %}
-{%                 do overlay_data.evpn_route_clients.update({ fabric_switch: client }) %}
+{%                 set client.bgp_as = peer_facts.switch.bgp_as %}
+{%                 set client.ip_address = peer_facts.switch.router_id %}
+{%                 do overlay_data.evpn_route_clients.update({ peer: client }) %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
