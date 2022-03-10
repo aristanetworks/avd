@@ -25,7 +25,8 @@ route_maps:
         type: permit
   RM-CONN-2-BGP:
     sequence_numbers:
-      20:
+{# sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here #}
+      30:
         type: permit
         match:
         - ip address prefix-list PL-SVI-VRF-DEFAULT

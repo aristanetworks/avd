@@ -721,7 +721,7 @@ ip prefix-list PL-SVI-VRF-DEFAULT
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
-| 20 | permit | match ip address prefix-list PL-SVI-VRF-DEFAULT |
+| 30 | permit | match ip address prefix-list PL-SVI-VRF-DEFAULT |
 
 #### RM-EVPN-EXPORT-VRF-DEFAULT
 
@@ -741,7 +741,7 @@ route-map RM-BGP-UNDERLAY-PEERS-OUT permit 20
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
-route-map RM-CONN-2-BGP permit 20
+route-map RM-CONN-2-BGP permit 30
    match ip address prefix-list PL-SVI-VRF-DEFAULT
 !
 route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10

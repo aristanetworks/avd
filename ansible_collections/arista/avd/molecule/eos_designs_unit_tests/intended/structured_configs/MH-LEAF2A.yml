@@ -221,7 +221,7 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-      20:
+      30:
         type: permit
         match:
         - ip address prefix-list PL-SVI-VRF-DEFAULT
