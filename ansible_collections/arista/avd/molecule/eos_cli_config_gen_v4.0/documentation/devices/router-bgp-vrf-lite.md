@@ -154,7 +154,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - |
 | 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - |
