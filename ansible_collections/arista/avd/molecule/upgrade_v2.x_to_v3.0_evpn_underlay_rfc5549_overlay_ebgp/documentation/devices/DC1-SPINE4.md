@@ -412,15 +412,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS |
-| ------------------ | ---------- | --------- |
-| Ethernet1 | UNDERLAY_PEERS | 65101 |
-| Ethernet2 | UNDERLAY_PEERS | 65102 |
-| Ethernet3 | UNDERLAY_PEERS | 65102 |
-| Ethernet4 | UNDERLAY_PEERS | 65103 |
-| Ethernet5 | UNDERLAY_PEERS | 65103 |
-| Ethernet6 | UNDERLAY_PEERS | 65104 |
-| Ethernet7 | UNDERLAY_PEERS | 65105 |
+| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
+| ------------------ | ---------- | --------- | ----------- |
+| Ethernet1 | UNDERLAY_PEERS | 65101 | - |
+| Ethernet2 | UNDERLAY_PEERS | 65102 | - |
+| Ethernet3 | UNDERLAY_PEERS | 65102 | - |
+| Ethernet4 | UNDERLAY_PEERS | 65103 | - |
+| Ethernet5 | UNDERLAY_PEERS | 65103 | - |
+| Ethernet6 | UNDERLAY_PEERS | 65104 | - |
+| Ethernet7 | UNDERLAY_PEERS | 65105 | - |
 
 ### Router BGP EVPN Address Family
 
