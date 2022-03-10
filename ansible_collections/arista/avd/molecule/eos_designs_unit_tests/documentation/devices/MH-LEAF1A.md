@@ -458,7 +458,7 @@ interface Vlan310
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
-| Tenant_X_OP_Zone | - | - |
+| Tenant_X_OP_Zone | 20 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -469,6 +469,7 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 310 vni 11310
+   vxlan vrf Tenant_X_OP_Zone vni 20
 ```
 
 # Routing
@@ -589,13 +590,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_X_OP_Zone | 192.168.255.33:0 | 0:0 | - | - | learned | 310 |
+| Tenant_X_OP_Zone | 192.168.255.33:20 | 20:20 | - | - | learned | 310 |
 
 ### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_X_OP_Zone | 192.168.255.33: | connected |
+| Tenant_X_OP_Zone | 192.168.255.33:20 | connected |
 
 ### Router BGP Device Configuration
 
@@ -624,8 +625,8 @@ router bgp 65151
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_X_OP_Zone
-      rd 192.168.255.33:0
-      route-target both 0:0
+      rd 192.168.255.33:20
+      route-target both 20:20
       redistribute learned
       vlan 310
    !
@@ -637,9 +638,9 @@ router bgp 65151
       neighbor UNDERLAY-PEERS activate
    !
    vrf Tenant_X_OP_Zone
-      rd 192.168.255.33:
-      route-target import evpn None:None
-      route-target export evpn None:None
+      rd 192.168.255.33:20
+      route-target import evpn 20:20
+      route-target export evpn 20:20
       router-id 192.168.255.33
       redistribute connected
 ```
