@@ -28,13 +28,13 @@ options:
     description: |
       Set avd_topology_peers fact with a list per device of downstream devices,
       meaning devices pointing to this device as uplink switch
-    required: false
+    required: False
     type: bool
   avd_overlay_peers:
     description: |
       Set avd_overlay_peers fact with a list per device of EVPN Route Server Clients,
       meaning devices pointing to this device as EVPN Route Server
-    required: false
+    required: False
     type: bool
 '''
 
