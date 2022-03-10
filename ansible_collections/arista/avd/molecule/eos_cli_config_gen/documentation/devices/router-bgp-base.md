@@ -104,12 +104,12 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | - | Retain |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | Retain All |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | Retain |
-| 192.0.3.4 | 65435 | default | - | large | - | - | - | - |
+| 192.0.3.1 | 65432 | default | - | all | - | - | - | True |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - | False |
 
 ### BGP Neighbor Interfaces
 
