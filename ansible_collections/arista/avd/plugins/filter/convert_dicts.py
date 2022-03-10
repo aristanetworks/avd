@@ -5,6 +5,8 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
+import os
+
 def convert_dicts(dictionary, primary_key="name"):
     """
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of dictionaries
@@ -45,7 +47,7 @@ def convert_dicts(dictionary, primary_key="name"):
     any
         Returns list of dictionaries or input variable untouched if not a nested dictionary
     """
-    if not isinstance(dictionary, dict):
+    if not isinstance(dictionary, dict) or os.environ.get('AVD_DISABLE_CONVERT_DICTS'):
         # Not a dictionary, return the original
         return dictionary
     else:
