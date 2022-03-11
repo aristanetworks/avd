@@ -470,13 +470,13 @@ ip_tacacs_source_interfaces:
 
 ```yaml
 local_users:
-  < user_1 >:
+  - name: < user_1 >
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     ssh_key: "< ssh_key_string >"
-  < user_2 >:
+  - name: < user_2 >
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
@@ -615,15 +615,15 @@ errdisable:
 
 ```yaml
 prefix_lists:
-  < prefix_list_name_1 >:
+  - name: < prefix_list_name_1 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < prefix_list_name_2 >:
+  - name: < prefix_list_name_2 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
@@ -631,15 +631,15 @@ prefix_lists:
 
 ```yaml
 ipv6_prefix_lists:
-  < ipv6_prefix_list_name_1 >:
+  - name: < ipv6_prefix_list_name_1 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < ipv6_prefix_list_name_2 >:
+  - name: < ipv6_prefix_list_name_2 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
