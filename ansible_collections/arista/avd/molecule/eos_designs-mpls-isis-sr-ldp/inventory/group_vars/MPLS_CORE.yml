@@ -127,6 +127,7 @@ pe:
     backbone_interface_speed: forced 100gfull
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
+    overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
@@ -144,6 +145,7 @@ pe:
       nodes:
         SITE1-LER1:
           id: 5
+          overlay_address_families: [ evpn ]
           mgmt_ip: 192.168.200.105/24
         SITE1-LER2:
           id: 6
@@ -175,6 +177,7 @@ rr:
     is_type: level-1-2
     node_sid_base: 100
     isis_system_id_prefix: '0000.0002'
+    overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'

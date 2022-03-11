@@ -41,6 +41,10 @@ switch:
 {% endif %}
   overlay_routing_protocol: {{ switch_overlay_routing_protocol }}
 
+{# switch.overlay_address_families #}
+{% set switch_overlay_address_families = switch_data.combined.overlay_address_families | arista.avd.default(switch.default_overlay_address_families) %}
+  overlay_address_families: {{ switch_overlay_address_families }}
+
 {# Network services related facts #}
 {% if switch.network_services_l2 is arista.avd.defined(true) or
       switch.network_services_l3 is arista.avd.defined(true) or

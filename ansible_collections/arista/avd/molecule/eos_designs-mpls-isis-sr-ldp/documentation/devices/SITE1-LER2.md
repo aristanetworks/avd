@@ -478,7 +478,7 @@ interface Port-Channel8.333
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | CORE |  - |  passive |
+| Loopback0 | CORE | - | passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -802,11 +802,7 @@ router bgp 65000
    !
    vrf TENANT_B_INTRA
       rd 100.70.0.6:19
-      route-target import vpn-ipv4 65000:19
-      route-target import vpn-ipv6 65000:19
       route-target import evpn 65000:19
-      route-target export vpn-ipv4 65000:19
-      route-target export vpn-ipv6 65000:19
       route-target export evpn 65000:19
       router-id 100.70.0.6
       redistribute connected
@@ -814,7 +810,9 @@ router bgp 65000
    vrf TENANT_B_WAN
       rd 100.70.0.6:20
       route-target import vpn-ipv4 65000:20
+      route-target import vpn-ipv6 65000:20
       route-target export vpn-ipv4 65000:20
+      route-target export vpn-ipv6 65000:20
       router-id 100.70.0.6
       neighbor 192.168.48.1 remote-as 65201
       neighbor 192.168.48.1 password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==

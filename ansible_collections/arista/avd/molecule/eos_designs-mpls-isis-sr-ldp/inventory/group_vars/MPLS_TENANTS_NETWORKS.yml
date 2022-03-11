@@ -57,8 +57,6 @@ tenants:
       TENANT_B_INTRA:
         vrf_id: 19
         address_families:
-          - vpn-ipv4
-          - vpn-ipv6
           - evpn
         ospf:
           enabled: true
@@ -111,6 +109,7 @@ tenants:
         vrf_id: 20
         address_families:
           - vpn-ipv4
+          - vpn-ipv6
         ospf:
           enabled: true
           process_id: 99

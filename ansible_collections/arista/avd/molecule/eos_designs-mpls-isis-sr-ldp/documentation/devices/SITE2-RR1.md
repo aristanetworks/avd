@@ -291,7 +291,7 @@ interface Ethernet4
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
-| Loopback0 | CORE |  - |  passive |
+| Loopback0 | CORE | - | passive |
 
 ### Loopback Interfaces Device Configuration
 

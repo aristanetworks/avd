@@ -45,9 +45,11 @@ default_node_type_keys:
       mpls_ler: true
       default_overlay_routing_protocol: ibgp
       default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families: [ vpn-ipv4 ]
     rr:
       type: rr
       mpls_lsr: true
       default_mpls_overlay_role: server
       default_overlay_routing_protocol: ibgp
       default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families: [ vpn-ipv4 ]

@@ -29,6 +29,9 @@ switch:
 {# switch.default_overlay_routing_protocol #}
   default_overlay_routing_protocol: {{ ns.node_type_key_data.default_overlay_routing_protocol | arista.avd.default('ebgp') }}
 
+{# switch.default_overlay_address_families #}
+  default_overlay_address_families: {{ ns.node_type_key_data.default_overlay_address_families | arista.avd.default(['evpn']) }}
+
 {# switch.default_mpls_overlay_role #}
   default_mpls_overlay_role: {{ ns.node_type_key_data.default_mpls_overlay_role | arista.avd.default('none') }}
 

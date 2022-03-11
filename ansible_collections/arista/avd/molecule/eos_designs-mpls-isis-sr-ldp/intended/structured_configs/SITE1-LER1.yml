@@ -27,18 +27,6 @@ router_bgp:
     peer_groups:
       MPLS-OVERLAY-PEERS:
         activate: true
-  address_family_vpn_ipv4:
-    neighbor_default_encapsulation_mpls_next_hop_self:
-      source_interface: Loopback0
-    peer_groups:
-      MPLS-OVERLAY-PEERS:
-        activate: true
-  address_family_vpn_ipv6:
-    neighbor_default_encapsulation_mpls_next_hop_self:
-      source_interface: Loopback0
-    peer_groups:
-      MPLS-OVERLAY-PEERS:
-        activate: true
   neighbors:
     100.70.0.8:
       peer_group: MPLS-OVERLAY-PEERS
@@ -52,17 +40,9 @@ router_bgp:
       rd: 100.70.0.5:19
       route_targets:
         import:
-          vpn-ipv4:
-          - '65000:19'
-          vpn-ipv6:
-          - '65000:19'
           evpn:
           - '65000:19'
         export:
-          vpn-ipv4:
-          - '65000:19'
-          vpn-ipv6:
-          - '65000:19'
           evpn:
           - '65000:19'
       redistribute_routes:

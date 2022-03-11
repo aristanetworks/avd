@@ -52,17 +52,9 @@ router_bgp:
       rd: 100.70.0.7:19
       route_targets:
         import:
-          vpn-ipv4:
-          - '65000:19'
-          vpn-ipv6:
-          - '65000:19'
           evpn:
           - '65000:19'
         export:
-          vpn-ipv4:
-          - '65000:19'
-          vpn-ipv6:
-          - '65000:19'
           evpn:
           - '65000:19'
       redistribute_routes:
@@ -75,8 +67,12 @@ router_bgp:
         import:
           vpn-ipv4:
           - '65000:20'
+          vpn-ipv6:
+          - '65000:20'
         export:
           vpn-ipv4:
+          - '65000:20'
+          vpn-ipv6:
           - '65000:20'
       neighbors:
         192.168.48.3:
