@@ -189,9 +189,6 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].pvlan_mapping is arista.avd.defined %}
    pvlan mapping {{ vlan_interfaces[vlan_interface].pvlan_mapping }}
 {%     endif %}
-{%     if vlan_interfaces[vlan_interface].eos_cli is arista.avd.defined %}
-   {{ vlan_interfaces[vlan_interface].eos_cli | indent(3, false) }}
-{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_virtual_router_addresses is arista.avd.defined %}
 {%         for ip_virtual_router_address in vlan_interfaces[vlan_interface].ip_virtual_router_addresses %}
    ip virtual-router address {{ ip_virtual_router_address }}
@@ -204,5 +201,8 @@ interface {{ vlan_interface }}
    ip address virtual {{ ip_address_virtual_secondary }} secondary
 {%             endfor %}
 {%         endif %}
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].eos_cli is arista.avd.defined %}
+   {{ vlan_interfaces[vlan_interface].eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}
