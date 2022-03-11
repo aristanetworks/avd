@@ -128,6 +128,9 @@ core_interfaces:
 
     # List of inventory hostname acting as MPLS route-reflectors.
     mpls_route_reflectors: [ '< inventory_hostname_of_mpls_route_reflectors >' ]
+
+    # Overlay Address Families to activate. Any subset of evpn, vpn-ipv4, vpn-ipv6.
+    overlay_address_families: [ '< address_family_1 >', '< address_family_2 >', '< address_family_3 >' ] -> Default [ 'evpn' ]
 ```
 
 ## Unsupported variables
