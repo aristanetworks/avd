@@ -90,23 +90,23 @@
 | l3leaf | DC1-LEAF1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet1 |
 | l3leaf | DC1-LEAF1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet1 |
 | l3leaf | DC1-LEAF1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet2 | l3leaf | DC1-LEAF2A | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet3 | l3leaf | DC1-LEAF2B | Ethernet1 |
+| l3leaf | DC1-LEAF2A | Ethernet1 | spine | DC1-SPINE1 | Ethernet2 |
+| l3leaf | DC1-LEAF2A | Ethernet2 | spine | DC1-SPINE2 | Ethernet2 |
+| l3leaf | DC1-LEAF2A | Ethernet3 | spine | DC1-SPINE3 | Ethernet2 |
+| l3leaf | DC1-LEAF2A | Ethernet4 | spine | DC1-SPINE4 | Ethernet2 |
+| l3leaf | DC1-LEAF2B | Ethernet1 | spine | DC1-SPINE1 | Ethernet3 |
+| l3leaf | DC1-LEAF2B | Ethernet2 | spine | DC1-SPINE2 | Ethernet3 |
+| l3leaf | DC1-LEAF2B | Ethernet3 | spine | DC1-SPINE3 | Ethernet3 |
+| l3leaf | DC1-LEAF2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet3 |
 | spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet10 | l3leaf | MH-LEAF1A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet11 | l3leaf | MH-LEAF1B | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet12 | l3leaf | MH-LEAF2A | Ethernet1 |
-| spine | DC1-SPINE2 | Ethernet2 | l3leaf | DC1-LEAF2A | Ethernet2 |
-| spine | DC1-SPINE2 | Ethernet3 | l3leaf | DC1-LEAF2B | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
-| spine | DC1-SPINE3 | Ethernet2 | l3leaf | DC1-LEAF2A | Ethernet3 |
-| spine | DC1-SPINE3 | Ethernet3 | l3leaf | DC1-LEAF2B | Ethernet3 |
 | spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet3 |
 | spine | DC1-SPINE3 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet3 |
-| spine | DC1-SPINE4 | Ethernet2 | l3leaf | DC1-LEAF2A | Ethernet4 |
-| spine | DC1-SPINE4 | Ethernet3 | l3leaf | DC1-LEAF2B | Ethernet4 |
 | spine | DC1-SPINE4 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet4 |
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet4 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
@@ -120,7 +120,7 @@
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 | 10.10.101.0/24 | 256 | 6 | 2.35 % |
-| 172.31.255.0/24 | 256 | 64 | 25.0 % |
+| 172.31.255.0/24 | 256 | 72 | 28.13 % |
 
 ## Point-To-Point Links Node Allocation
 
@@ -146,6 +146,14 @@
 | DC1-LEAF1A | Ethernet2 | 172.31.255.3/31 | DC1-SPINE2 | Ethernet1 | 172.31.255.2/31 |
 | DC1-LEAF1A | Ethernet3 | 172.31.255.5/31 | DC1-SPINE3 | Ethernet1 | 172.31.255.4/31 |
 | DC1-LEAF1A | Ethernet4 | 172.31.255.7/31 | DC1-SPINE4 | Ethernet1 | 172.31.255.6/31 |
+| DC1-LEAF2A | Ethernet1 | 172.31.255.17/31 | DC1-SPINE1 | Ethernet2 | 172.31.255.16/31 |
+| DC1-LEAF2A | Ethernet2 | 172.31.255.19/31 | DC1-SPINE2 | Ethernet2 | 172.31.255.18/31 |
+| DC1-LEAF2A | Ethernet3 | 172.31.255.21/31 | DC1-SPINE3 | Ethernet2 | 172.31.255.20/31 |
+| DC1-LEAF2A | Ethernet4 | 172.31.255.23/31 | DC1-SPINE4 | Ethernet2 | 172.31.255.22/31 |
+| DC1-LEAF2B | Ethernet1 | 172.31.255.33/31 | DC1-SPINE1 | Ethernet3 | 172.31.255.32/31 |
+| DC1-LEAF2B | Ethernet2 | 172.31.255.35/31 | DC1-SPINE2 | Ethernet3 | 172.31.255.34/31 |
+| DC1-LEAF2B | Ethernet3 | 172.31.255.37/31 | DC1-SPINE3 | Ethernet3 | 172.31.255.36/31 |
+| DC1-LEAF2B | Ethernet4 | 172.31.255.39/31 | DC1-SPINE4 | Ethernet3 | 172.31.255.38/31 |
 | DC1-SPINE1 | Ethernet4 | 172.31.255.48/31 | DC1-SVC3A | Ethernet1 | 172.31.255.49/31 |
 | DC1-SPINE1 | Ethernet5 | 172.31.255.64/31 | DC1-SVC3B | Ethernet1 | 172.31.255.65/31 |
 | DC1-SPINE1 | Ethernet10 | 10.10.101.0/31 | MH-LEAF1A | Ethernet1 | 10.10.101.1/31 |
@@ -162,7 +170,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 16 | 6.25 % |
+| 192.168.255.0/24 | 256 | 18 | 7.04 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -173,6 +181,8 @@
 | DC1_FABRIC | DC1-BL2A | 192.168.255.16/32 |
 | DC1_FABRIC | DC1-BL2B | 192.168.255.17/32 |
 | DC1_FABRIC | DC1-LEAF1A | 192.168.255.9/32 |
+| DC1_FABRIC | DC1-LEAF2A | 192.168.255.10/32 |
+| DC1_FABRIC | DC1-LEAF2B | 192.168.255.11/32 |
 | DC1_FABRIC | DC1-SPINE1 | 192.168.255.1/32 |
 | DC1_FABRIC | DC1-SPINE2 | 192.168.255.2/32 |
 | DC1_FABRIC | DC1-SPINE3 | 192.168.255.3/32 |
@@ -189,7 +199,7 @@
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 12 | 4.69 % |
+| 192.168.254.0/24 | 256 | 14 | 5.47 % |
 
 ## VTEP Loopback Node allocation
 
@@ -200,6 +210,8 @@
 | DC1_FABRIC | DC1-BL2A | 192.168.254.16/32 |
 | DC1_FABRIC | DC1-BL2B | 192.168.254.17/32 |
 | DC1_FABRIC | DC1-LEAF1A | 192.168.254.9/32 |
+| DC1_FABRIC | DC1-LEAF2A | 192.168.254.10/32 |
+| DC1_FABRIC | DC1-LEAF2B | 192.168.254.11/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.254.12/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.12/32 |
 | DC1_FABRIC | evpn_services_l2_only_false | 192.168.254.109/32 |
