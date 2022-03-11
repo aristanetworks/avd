@@ -12,10 +12,10 @@ aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
 {%                             set server_cli = server_cli ~ " vrf " ~ server.vrf %}
 {%                         endif %}
    {{ server_cli }}
-!
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
+!
 {%     endfor %}
 {% endif %}
