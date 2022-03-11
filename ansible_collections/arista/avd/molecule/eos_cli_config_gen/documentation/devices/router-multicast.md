@@ -89,6 +89,7 @@ interface Management1
 
 ### IP Router Multicast Summary
 
+- Counters rate period decay is set for 300 seconds
 - Routing for IPv4 multicast is enabled.
 - Multipathing deterministically by selecting the same upstream router.
 - Software forwarding by the Software Forwarding Engine (SFE)
@@ -106,6 +107,7 @@ interface Management1
 !
 router multicast
    ipv4
+      counters rate period decay 300
       routing
       multipath deterministic router-id
       software-forwarding sfe
