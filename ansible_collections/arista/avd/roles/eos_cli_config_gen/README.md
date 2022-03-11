@@ -1895,6 +1895,8 @@ ip_igmp_snooping:
 ```yaml
 router_multicast:
   ipv4:
+    counters:
+      rate_period_decay: < 0-600>
     routing: < true | false >
     multipath: < none | deterministic | "deterministic color" | "deterministic router-id" >
     software_forwarding: < kernel | sfe >
