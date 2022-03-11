@@ -238,6 +238,9 @@
 {%                         if router_bgp.peer_groups[router_bgp.vrfs[vrf].neighbors[neighbor].peer_group].shutdown is arista.avd.defined(true) %}
 {%                             set inherited_vrf.shutdown = "Inherited from peer group " ~ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group %}
 {%                         endif %}
+{%                         if router_bgp.peer_groups[router_bgp.vrfs[vrf].neighbors[neighbor].peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%                             set inherited_vrf.rib_in_pre_policy_retain = "Inherited from peer group " ~ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group %}
+{%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf = namespace() %}
 {%                     set active_parameter_vrf.remote_as = router_bgp.vrfs[vrf].neighbors[neighbor].remote_as | arista.avd.default(inherited_vrf.remote_as, '-') %}
@@ -274,7 +277,14 @@
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.allowas_in = value_allowas | arista.avd.default(inherited_vrf.allowas_in, '-') %}
-| {{ neighbor }} | {{ active_parameter_vrf.remote_as }} | {{ vrf }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} |
+{%                     if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined() %}
+{%                         set neighbor_rib_in_pre_policy_retain= router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled %}
+{%                         if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) and router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                             set neighbor_rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain ~ " (All)" %}
+{%                         endif %}
+{%                     endif %}
+{%                     set active_parameter_vrf.rib_in_pre_policy_retain = value_allowas | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
+| {{ neighbor }} | {{ active_parameter_vrf.remote_as }} | {{ vrf }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
