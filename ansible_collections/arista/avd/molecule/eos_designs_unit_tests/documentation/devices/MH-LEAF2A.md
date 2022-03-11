@@ -390,8 +390,8 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan310 |  Tenant_X_OP_Zone_1  |  Tenant_X_OP_Zone  |  -  |  false  |
-| Vlan311 |  Tenant_default_vrf  |  default  |  -  |  false  |
+| Vlan310 | Tenant_X_OP_Zone_1 | Tenant_X_OP_Zone | - | false |
+| Vlan311 | Tenant_default_vrf | default | - | false |
 
 #### IPv4
 

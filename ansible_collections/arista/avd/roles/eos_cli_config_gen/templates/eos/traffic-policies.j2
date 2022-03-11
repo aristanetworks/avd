@@ -92,7 +92,7 @@ traffic-policies
 {%                                 if traffic_policies.policies[policy].matches[match].protocols[protocol].flags is arista.avd.defined %}
 {%                                     set protocol_cli = protocol_cli ~ ' flags ' ~  traffic_policies.policies[policy].matches[match].protocols[protocol].flags | join(' ') %}
 {%                                 endif %}
-{%                                 set protocol_cli = protocol_cli ~ 'destination port field-set ' ~ traffic_policies.policies[policy].matches[match].protocols[protocol].dst_field %}
+{%                                 set protocol_cli = protocol_cli ~ ' destination port field-set ' ~ traffic_policies.policies[policy].matches[match].protocols[protocol].dst_field %}
          {{ protocol_cli }}
 {#                             -- source field-set -- #}
 {%                             elif traffic_policies.policies[policy].matches[match].protocols[protocol].src_field is arista.avd.defined and protocol | lower in ['tcp','udp'] %}

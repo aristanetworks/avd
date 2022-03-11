@@ -157,7 +157,7 @@ traffic-policies
       !
       match BLUE-C1-POLICY-02 ipv4
          source prefix field-set DEMO-01 DEMO-02
-         protocol tcp flags establisheddestination port field-set SERVICE-DEMO
+         protocol tcp flags established destination port field-set SERVICE-DEMO
          protocol icmp
          actions
             count DEMO-TRAFFIC
