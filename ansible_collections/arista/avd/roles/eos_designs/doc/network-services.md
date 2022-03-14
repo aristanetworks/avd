@@ -56,8 +56,10 @@ mac_address_table:
 # Optional profiles to apply on SVI interfaces
 # Each profile can support all or some of the following keys according to your own needs.
 # Keys are the same used under SVI.
+# Svi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).
 svi_profiles:
   < profile_name >:
+    parent_profile: < svi_profile_name >
     mtu: < mtu >
     enabled: < true | false >
     ip_virtual_router_addresses:
