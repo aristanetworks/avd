@@ -715,10 +715,10 @@ router bgp {{ router_bgp.as }}
 {%                 if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
 {%                     set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
 {%                 endif %}
-   {{ neighbor_rib_in_pre_policy_retain_cli }}
+      {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%             elif router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
 {%                 set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
-   {{ neighbor_rib_in_pre_policy_retain_cli }}
+      {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].timers is arista.avd.defined %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
