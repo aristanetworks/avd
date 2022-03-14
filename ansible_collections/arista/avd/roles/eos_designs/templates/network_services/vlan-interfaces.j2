@@ -21,7 +21,12 @@ vlan_interfaces:
                                            svi.structured_config,
                                            svi_profile.structured_config,
                                            parent_profile.structured_config) %}
-{%             set svi_description = svi_settings.description | arista.avd.default(svi_settings.name) %}
+{%             set svi_raw_eos_cli = svi_settings.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
+                                     svi_settings.raw_eos_cli) %}
+{%             set svi_ip_helpers = svi_settings.ip_helpers | arista.avd.default(
+                                    vrf.ip_helpers) %}
+{%             set svi_description = svi_settings.description | arista.avd.default(
+                                     svi_settings.name) %}
   Vlan{{ svi.id | int }}:
     tenant: {{ tenant.name }}
     tags: {{ svi_settings.tags }}
@@ -62,12 +67,12 @@ vlan_interfaces:
     mtu: {{ svi_settings.mtu }}
 {%             endif %}
 {# IP helper configuration #}
-{%             if svi_settings.ip_helpers is arista.avd.defined %}
+{%             if svi_ip_helpers is arista.avd.defined %}
     ip_helpers:
-{%                 for helper_ip in svi_settings.ip_helpers %}
+{%                 for helper_ip in svi_ip_helpers %}
       {{ helper_ip }}:
-        source_interface: {{ svi_settings.ip_helpers[helper_ip].source_interface | arista.avd.default }}
-        vrf: {{ svi_settings.ip_helpers[helper_ip].source_vrf | arista.avd.default }}
+        source_interface: {{ svi_ip_helpers[helper_ip].source_interface | arista.avd.default }}
+        vrf: {{ svi_ip_helpers[helper_ip].source_vrf | arista.avd.default }}
 {%                 endfor %}
 {%             endif %}
 {%             if svi_settings.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
@@ -91,9 +96,9 @@ vlan_interfaces:
 {%                     endfor %}
 {%                 endif %}
 {%             endif %}
-{%             if svi_settings.raw_eos_cli is arista.avd.defined %}
+{%             if svi_raw_eos_cli is arista.avd.defined %}
     eos_cli: |
-      {{ svi_settings.raw_eos_cli | indent(6,false) }}
+      {{ svi_raw_eos_cli | indent(6,false) }}
 {%             endif %}
 {%             if svi_structured_config is arista.avd.defined %}
     struct_cfg: {{ svi_structured_config }}
