@@ -14,17 +14,19 @@ vlan_interfaces:
 {%             set svi_settings = {} | combine(parent_profile | arista.avd.default({}),
                                                svi_profile | arista.avd.default({}),
                                                svi, recursive=true, list_merge='replace') %}
+{#             Structured config should not be merged recursively, but will be taken directly from the most specific level #}
 {%             set svi_structured_config = svi.nodes[inventory_hostname].structured_config | arista.avd.default(
                                            svi_profile.nodes[inventory_hostname].structured_config,
                                            parent_profile.nodes[inventory_hostname].structured_config,
                                            svi.structured_config,
                                            svi_profile.structured_config,
                                            parent_profile.structured_config) %}
-  Vlan{{ svi_settings.id | int }}:
+{%             set svi_description = svi_settings.description | arista.avd.default(svi_settings.name) %}
+  Vlan{{ svi.id | int }}:
     tenant: {{ tenant.name }}
     tags: {{ svi_settings.tags }}
-{%             if svi_settings.name is arista.avd.defined() %}
-    description: {{ svi_settings.name }}
+{%             if svi_description is arista.avd.defined %}
+    description: {{ svi_description }}
 {%             endif %}
 {%             if svi_settings.enabled is arista.avd.defined(true) %}
     shutdown: false
@@ -40,8 +42,8 @@ vlan_interfaces:
 {%                 endif %}
 {%             endif %}
 {# IP address configuration #}
-{%             if svi_settings.ip_address is arista.avd.defined %}
-    ip_address: {{ svi_settings.ip_address }}
+{%             if svi_settings.nodes[inventory_hostname].ip_address is arista.avd.defined %}
+    ip_address: {{ svi_settings.nodes[inventory_hostname].ip_address }}
 {%             endif %}
 {# Virtual Router IP Address #}
 {%             if svi_settings.ip_virtual_router_addresses is arista.avd.defined %}
@@ -105,7 +107,7 @@ vlan_interfaces:
 {%             if configure_mlag_ibgp_peering %}
 {%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
 {%                 if vrf.name != 'default' %}
-  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
+  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
     type: underlay_peering
     shutdown: false

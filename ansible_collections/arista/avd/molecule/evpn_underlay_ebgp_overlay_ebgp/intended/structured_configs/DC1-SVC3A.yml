@@ -583,7 +583,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_1
+    description: SVI 110 CUSTOM DESCRIPTION
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
@@ -591,7 +591,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_2
+    description: SVI 111 CUSTOM DESCRIPTION
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
