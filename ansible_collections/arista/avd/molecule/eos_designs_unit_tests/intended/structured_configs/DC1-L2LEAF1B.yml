@@ -78,6 +78,9 @@ vlans:
   111:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
@@ -110,7 +113,7 @@ port_channel_interfaces:
     description: DC1_LEAF2_Po7
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
+    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
     mlag: 1
 ethernet_interfaces:
