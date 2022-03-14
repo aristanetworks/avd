@@ -2890,6 +2890,9 @@ router_bgp:
           next_hop_self: < true | false >
           bfd: < true | false >
           timers: < keepalive_hold_timer_values >
+          rib_in_pre_policy_retain:
+            enabled: < true | false >
+            all: < true | false >
           send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
