@@ -768,9 +768,9 @@ interface Port-Channel17
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   mlag 17
    port-channel lacp fallback timeout 90
    port-channel lacp fallback static
+   mlag 17
    spanning-tree portfast
    spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
@@ -785,9 +785,9 @@ interface Port-Channel18
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   mlag 18
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
+   mlag 18
    spanning-tree portfast
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
@@ -802,9 +802,9 @@ interface Port-Channel19
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   mlag 19
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
+   mlag 19
    spanning-tree portfast
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
