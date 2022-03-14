@@ -151,6 +151,7 @@ radius-server host 10.10.10.158 vrf default key 7 071B245F5A
 ### AAA Server Groups Device Configuration
 
 ```eos
+!
 aaa group server tacacs+ TACACS1
    server 10.10.10.157 vrf mgt
    server 10.10.10.249
@@ -158,7 +159,6 @@ aaa group server tacacs+ TACACS1
 aaa group server tacacs+ TACACS2
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
-!
 ```
 
 ## AAA Authentication
