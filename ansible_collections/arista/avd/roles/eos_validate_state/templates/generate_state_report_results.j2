@@ -121,7 +121,7 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-  test_description: "Ethernet Interface Status & Line Protocol == \"up\""
+  test_description: "Ethernet Interface (Shutdown == \"False\" & Status == \"up\" & Line Protocol == \"up\") or (Shutdown == \"True\" & Status == \"adminDown\" & Line Protocol == \"down\")"
   test: "{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description | arista.avd.default('') }}"
 {%             if result.failed == false %}
   result: "PASS"
@@ -140,7 +140,7 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-  test_description: "Port-Channel Interface Status & Line Protocol == \"up\""
+  test_description: "Port-Channel Interface (Shutdown == \"False\" & Status == \"up\" & Line Protocol == \"up\") or (Shutdown == \"True\" & Status == \"adminDown\" & Line Protocol == \"down\")"
   test: "{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description | arista.avd.default('') }}"
 {%             if result.failed == false %}
   result: "PASS"
@@ -159,7 +159,7 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-  test_description: "Vlan Interface Status & Line Protocol == \"up\""
+  test_description: "Vlan Interface (Shutdown == \"False\" & Status == \"up\" & Line Protocol == \"up\") or (Shutdown == \"True\" & Status == \"adminDown\" & Line Protocol == \"down\")"
   test: "{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description | arista.avd.default('') }}"
 {%             if result.failed == false %}
   result: "PASS"
