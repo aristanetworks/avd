@@ -21,11 +21,16 @@ router_bgp:
         enabled: true
         route_map: RM-FOO
         always: true
+      rib_in_pre_policy_retain:
+        enabled: true
+        all: true
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65101
       # Test no config generation
       default_originate:
+      # Test no config generation
+      rib_in_pre_policy_retain:
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS

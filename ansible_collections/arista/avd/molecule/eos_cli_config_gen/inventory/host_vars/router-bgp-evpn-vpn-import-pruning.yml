@@ -93,6 +93,9 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+          rib_in_pre_policy_retain:
+            enabled: true
+            all: false
       redistribute_routes:
         - connected
     TENANT_A_PROJECT02:
