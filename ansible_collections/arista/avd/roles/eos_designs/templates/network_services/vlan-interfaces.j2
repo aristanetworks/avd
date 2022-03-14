@@ -14,6 +14,12 @@ vlan_interfaces:
 {%             set svi_settings = {} | combine(parent_profile | arista.avd.default({}),
                                                svi_profile | arista.avd.default({}),
                                                svi, recursive=true, list_merge='replace') %}
+{%             set svi_structured_config = svi.nodes[inventory_hostname].structured_config | arista.avd.default(
+                                           svi_profile.nodes[inventory_hostname].structured_config,
+                                           parent_profile.nodes[inventory_hostname].structured_config,
+                                           svi.structured_config,
+                                           svi_profile.structured_config,
+                                           parent_profile.structured_config) %}
   Vlan{{ svi_settings.id | int }}:
     tenant: {{ tenant.name }}
     tags: {{ svi_settings.tags }}
@@ -87,8 +93,8 @@ vlan_interfaces:
     eos_cli: |
       {{ svi_settings.raw_eos_cli | indent(6,false) }}
 {%             endif %}
-{%             if svi_settings.structured_config is arista.avd.defined %}
-    struct_cfg: {{ svi_settings.structured_config }}
+{%             if svi_structured_config is arista.avd.defined %}
+    struct_cfg: {{ svi_structured_config }}
 {%             endif %}
 {%         endfor %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
