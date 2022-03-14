@@ -1,4 +1,5 @@
 {% if dhcp_relay is arista.avd.defined %}
+!
 dhcp relay
 {%     for server in dhcp_relay.servers | arista.avd.natural_sort %}
    server {{ server }}
