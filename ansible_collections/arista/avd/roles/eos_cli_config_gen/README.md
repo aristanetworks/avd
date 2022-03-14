@@ -2574,6 +2574,9 @@ router_bgp:
         times: < 1-10 >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      rib_in_pre_policy_retain:
+        enabled: < true | false >
+        all: < true | false >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
     < peer_group_name_2 >:
@@ -2593,6 +2596,9 @@ router_bgp:
       bfd: < true | false >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      rib_in_pre_policy_retain:
+        enabled: < true | false >
+        all: < true | false >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
       default_originate:
@@ -2886,6 +2892,9 @@ router_bgp:
           next_hop_self: < true | false >
           bfd: < true | false >
           timers: < keepalive_hold_timer_values >
+          rib_in_pre_policy_retain:
+            enabled: < true | false >
+            all: < true | false >
           send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >

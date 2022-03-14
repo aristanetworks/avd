@@ -68,6 +68,16 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.peer_groups[peer_group].bfd is arista.avd.defined(true) %}
    neighbor {{ peer_group }} bfd
 {%         endif %}
+{%         if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "neighbor " ~ peer_group ~ " rib-in pre-policy retain" %}
+{%             if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
+{%             endif %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%         elif router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ peer_group ~ " rib-in pre-policy retain" %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].ebgp_multihop is arista.avd.defined %}
    neighbor {{ peer_group }} ebgp-multihop {{ router_bgp.peer_groups[peer_group].ebgp_multihop }}
 {%         endif %}
@@ -150,6 +160,16 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor }} bfd
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+{%             if router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
+{%             endif %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%         elif router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].password is arista.avd.defined %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
@@ -689,6 +709,16 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} bfd
 {%             elif router_bgp.vrfs[vrf].neighbors[neighbor].bfd is arista.avd.defined(false) %}
       no neighbor {{ neighbor }} bfd
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = "neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                     set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
+{%                 endif %}
+      {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%             elif router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+      {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].timers is arista.avd.defined %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
