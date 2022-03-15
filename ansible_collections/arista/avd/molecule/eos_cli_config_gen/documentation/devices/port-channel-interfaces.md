@@ -334,6 +334,7 @@ interface Port-Channel9
    spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
+   bfd echo
 !
 interface Port-Channel10
    description SRV01_bond0
@@ -606,9 +607,9 @@ interface Port-Channel114
 
 ## BFD Interfaces
 
-| Interface | Interval | Minimum RX | Multiplier |
-| --------- | -------- | ---------- | ---------- |
-| Port-Channel9 | 500 | 500 | 5 |
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
+| Port-Channel9 | 500 | 500 | 5 | True |
 
 # MPLS
 

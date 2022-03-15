@@ -516,9 +516,9 @@ interface Ethernet28
 
 ## BFD Interfaces
 
-| Interface | Interval | Minimum RX | Multiplier |
-| --------- | -------- | ---------- | ---------- |
-| Ethernet1 | 500 | 500 | 5 |
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
+| Ethernet1 | 500 | 500 | 5 | - |
 
 # MPLS
 

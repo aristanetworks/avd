@@ -19,6 +19,7 @@ ethernet_interfaces:
           # drop
           no_drop: false
     bfd:
+      echo: true
       interval: 500
       min_rx: 500
       multiplier: 5
