@@ -1,20 +1,20 @@
-{% if ipv6_standard_access_lists is defined and ipv6_standard_access_lists is not none %}
+{% if ipv6_standard_access_lists is arista.avd.defined %}
 
 ## IPv6 Standard Access-lists
 
 ### IPv6 Standard Access-lists Summary
 
-{%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort %}
-#### {{ ipv6_standard_access_list }}
-{%         if ipv6_standard_access_lists[ipv6_standard_access_list].counters_per_entry is arista.avd.defined(true) %}
+{%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### {{ ipv6_standard_access_list.name }}
+{%         if ipv6_standard_access_list.counters_per_entry is arista.avd.defined(true) %}
 
 ACL has counting mode `counters per-entry` enabled!
 {%         endif %}
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers | arista.avd.natural_sort %}
-| {{ sequence }} | {{ ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action }} |
+{%         for sequence in ipv6_standard_access_list.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+| {{ sequence.sequence }} | {{ sequence.action }} |
 {%         endfor %}
 
 {%     endfor %}
