@@ -2,6 +2,9 @@
 # Shared attributes
 root_dir: '{{playbook_dir}}'
 
+design:
+  type: "mpls"
+
 fabric_name: MPLS_CORE
 
 underlay_ipv6: true
@@ -207,9 +210,10 @@ connected_endpoints_keys:
 # Core underlay interfaces
 core_interfaces:
   p2p_links_ip_pools:
-    underlay_pool: 100.64.48.0/24
+    - name: underlay_pool
+      ipv4_pool: 100.64.48.0/24
   p2p_links_profiles:
-    default_bb_profile:
+    - name: default_bb_profile
       speed: "forced 40gfull"
       mtu: 9178
       isis_hello_padding: false

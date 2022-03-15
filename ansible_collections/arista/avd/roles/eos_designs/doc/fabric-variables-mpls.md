@@ -18,27 +18,27 @@
 
 ```yaml
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < isis-sr, isis-ldp, isis-sr-ldp, ospf-ldp | Default -> isis-sr >
-overlay_routing_protocol: < ibgp | Default -> ibgp >
+underlay_routing_protocol: < isis-sr, isis-ldp, isis-sr-ldp, ospf-ldp | default -> isis-sr >
+overlay_routing_protocol: < ibgp | default -> ibgp >
 
 # Underlay ISIS parameters
-isis_default_is_type: < level-1 | level-2 | level-1-2 | Default -> level-1-2 >
-isis_default_circuit_type: < level-1 | level-2 | level-1-2 | Default -> level-1-2 >
+isis_default_is_type: < level-1 | level-2 | level-1-2 | default -> level-1-2 >
+isis_default_circuit_type: < level-1 | level-2 | level-1-2 | default -> level-1-2 >
 isis_default_metric: < int >
-isis_advertise_passive_only: < true | false | Default -> false >
+isis_advertise_passive_only: < true | false | default -> false >
 
 #  Underlay ISIS TI-LFA parameters
 isis_ti_lfa:
-  enabled: < true | false | Default -> false >
-  protection: < link | node | Default -> link >
+  enabled: < true | false | default -> false >
+  protection: < link | node | default -> link >
   # Microloop protection delay in ms
-  local_convergence_delay: < int | Default -> 10000 >
+  local_convergence_delay: < int | default -> 10000 >
 
 # Underlay IPv6 turns on ipv6 for the underlay, which requires loopback_ipv6_pool to be defined.
-underlay_ipv6: < true | false | Default -> false >
+underlay_ipv6: < true | false | default -> false >
 
 # Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
-bgp_mesh_pes: < true | false | Default -> false >
+bgp_mesh_pes: < true | false | default -> false >
 
 # BGP peer groups encrypted password
 # MPLS_OVERLAY_PEERS | Required

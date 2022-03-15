@@ -10,9 +10,10 @@ Make sure to configure the variables in a group_vars file covering all devices m
 ```yaml
 core_interfaces:
   p2p_links_ip_pools:
-    < p2p_pool_name_1 >: < IPv4_address/Mask >
+    - name: < p2p_pool_name_1 >
+      ipv4_pool: < IPv4_address/Mask >
   p2p_links_profiles:
-    < p2p_profile_name >:
+    - name: < p2p_profile_name >
       < any variable supported under p2p_links can be inherited from a profile >
   p2p_links:
       # Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
@@ -30,7 +31,7 @@ core_interfaces:
       # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
       ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
 
-      ipv6_enable: < true | false | Default -> false >
+      ipv6_enable: < true | false | default -> false >
 
       # Nodes where this link should be configured | Required
       nodes: [ < node_a >, < node_b > ]
@@ -52,8 +53,8 @@ core_interfaces:
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
       # MPLS Parameters
-      mpls_ip: < true | false | Default -> true if switch.mpls_lsr is true >
-      mpls_ldp: < true | false | Default -> true for ldp underlay variants, otherwise false >
+      mpls_ip: < true | false | default -> true if switch.mpls_lsr is true >
+      mpls_ldp: < true | false | default -> true for ldp underlay variants, otherwise false >
 
       # MTU for this P2P link | Optional
       mtu: < number | default -> same as p2p_uplinks_mtu >
@@ -86,6 +87,6 @@ core_interfaces:
 These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level:
 
 ```yaml
-isis_default_circuit_type: < level-1-2, | level-1 | level-2 | Default -> level-2 >
-isis_default_metric: < metric | Default -> 50 >
+isis_default_circuit_type: < level-1-2, | level-1 | level-2 | default -> level-2 >
+isis_default_metric: < metric | default -> 50 >
 ````

@@ -2,10 +2,6 @@
 
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
-- The MPLS design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
-- The MPLS design additionally supports several new fabric topology variables that are outlined in this document.
-- Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
-
 ```yaml
 fabric_name: < Fabric_Name >
 ```
@@ -15,7 +11,7 @@ fabric_name: < Fabric_Name >
   - This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
 - Within the pe, p and rr dictionary variables, defaults can be defined.
   - This reduces user input requirements, limiting errors.
-  - The default variables can be overridden when defined under the node groups.
+  - The default variables can be overridden when defined under the node groups or individual nodes.
 
 ## Supported designs
 
@@ -42,6 +38,10 @@ The variables should be applied to all devices in the fabric.
 - This is leveraged to load the appropriate templates to generate the configuration.
 
 ### Variables and Options
+
+- The MPLS design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
+- The MPLS design additionally supports several new fabric topology variables that are outlined in this document.
+- Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
 
 As explained above, you can defined your own types of devices. CLI only provides default node types.
 
@@ -72,12 +72,15 @@ All node types have the same structure based on `defaults`, `node_group`, `node`
 
 Unlike with the l3ls-evpn design type, underlay p2p links are built using the core_interfaces dictionary:
 
+The full data model for core_interfaces is documented on the Core Interfaces page.
+
 ```yaml
 core_interfaces:
   p2p_links_ip_pools:
-    < pool name >: < IPv4_address/Mask >
+    - name: < pool name >
+      ipv4_pool: < IPv4_address/Mask >
   p2p_links_profiles:
-    < backbone profile name >:
+    - name: < backbone profile name >
       speed: < speed >
       mtu: < mtu >
       isis_hello_padding: < true | false >
@@ -124,69 +127,33 @@ core_interfaces:
     # Acting role in overlay control plane.
     # Override role definition from node_type_keys
     # Can be set per node
-    mpls_overlay_role: < client | server | none | Default -> refer to node type variable table >
+    mpls_overlay_role: < client | server | none | default -> refer to node type variable table >
 
     # List of inventory hostname acting as MPLS route-reflectors.
     mpls_route_reflectors: [ '< inventory_hostname_of_mpls_route_reflectors >' ]
 
     # Overlay Address Families to activate. Any subset of evpn, vpn-ipv4, vpn-ipv6.
-    overlay_address_families: [ '< address_family_1 >', '< address_family_2 >', '< address_family_3 >' ] -> Default [ 'evpn' ]
+    overlay_address_families: [ '< address_family_1 >', '< address_family_2 >', '< address_family_3 >' ] -> default [ 'evpn' ]
 ```
 
 ## Unsupported variables
-
-### Loopback and VTEP management
 
 ```yaml
 < node_type_key >:
 
   defaults:
-    # IPv4 subnet for VTEP/Loopback1 allocation.
     vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
-
-    # Set VXLAN source interface. Loopback1 is default
     vtep_loopback: < Loopback_interface_1 >
-
-    # Acting role in EVPN control plane.
-    # Replaced by mpls_overlay_role
-    evpn_role: < client | server | none | Default -> refer to node type variable table >
-
-    # List of inventory hostname acting as EVPN route-servers
-    # Replaced by mpls_route_reflectors
+    evpn_role: < client | server | none | default -> refer to node type variable table >
     evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
-
-    # Possibility to prevent configuration of Tenant VRFs and SVIs
-    # Override node definition "network_services_l3" from node_type_keys
-    # This allows support for centralized routing.
     evpn_services_l2_only: < false | true >
-
-    # Enable / Disable auto MLAG, when two nodes are defined in node group.
     mlag: < true | false -> default true >
-
-    # Enable / Disable MLAG dual primary detection
     mlag_dual_primary_detection: < true | false -> default false >
-
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
-
-    # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
     mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
-
-    # Underlay L3 peering SVI interface id
-    # If set to false or the same vlan as mlag_peer_vlan the mlag_peer_vlan will be used for L3 peering.
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
-
-    # IP address pool used for MLAG underlay L3 peering | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id.
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
-
-    # MLAG Peer Link (control link) SVI interface id
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
-
-    # MLAG Peer Link allowed VLANs
     mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
-
-    # IP address pool used for MLAG Peer Link (control link)| *Required when MLAG leafs present in topology.
-    # IP is derived from the node id.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 ```
