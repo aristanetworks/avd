@@ -42,19 +42,6 @@ interface {{ vlan_interface }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if vlan_interfaces[vlan_interface].ip_virtual_router_addresses is arista.avd.defined %}
-{%         for ip_virtual_router_address in vlan_interfaces[vlan_interface].ip_virtual_router_addresses %}
-   ip virtual-router address {{ ip_virtual_router_address }}
-{%         endfor %}
-{%     endif %}
-{%     if vlan_interfaces[vlan_interface].ip_address_virtual is arista.avd.defined %}
-   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual }}
-{%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondaries is arista.avd.defined %}
-{%             for ip_address_virtual_secondary in vlan_interfaces[vlan_interface].ip_address_virtual_secondaries %}
-   ip address virtual {{ ip_address_virtual_secondary }} secondary
-{%             endfor %}
-{%         endif %}
-{%     endif %}
 {%     for ip_helper in vlan_interfaces[vlan_interface].ip_helpers | arista.avd.natural_sort %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper %}
 {%         if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is arista.avd.defined %}
@@ -201,6 +188,19 @@ interface {{ vlan_interface }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].pvlan_mapping is arista.avd.defined %}
    pvlan mapping {{ vlan_interfaces[vlan_interface].pvlan_mapping }}
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].ip_virtual_router_addresses is arista.avd.defined %}
+{%         for ip_virtual_router_address in vlan_interfaces[vlan_interface].ip_virtual_router_addresses %}
+   ip virtual-router address {{ ip_virtual_router_address }}
+{%         endfor %}
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].ip_address_virtual is arista.avd.defined %}
+   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual }}
+{%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondaries is arista.avd.defined %}
+{%             for ip_address_virtual_secondary in vlan_interfaces[vlan_interface].ip_address_virtual_secondaries %}
+   ip address virtual {{ ip_address_virtual_secondary }} secondary
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].eos_cli is arista.avd.defined %}
    {{ vlan_interfaces[vlan_interface].eos_cli | indent(3, false) }}

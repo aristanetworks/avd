@@ -143,19 +143,19 @@ interface Management1
 interface Vlan24
    description SVI Description
    no shutdown
-   ip address virtual 10.10.24.1/24
    ipv6 address 1b11:3a00:22b0:6::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:6::/64 infinite infinite no-autoconfig
    ipv6 virtual-router address 1b11:3a00:22b0:6::1
+   ip address virtual 10.10.24.1/24
 !
 interface Vlan41
    description SVI Description
    no shutdown
-   ip address virtual 10.10.41.1/24
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
+   ip address virtual 10.10.41.1/24
 !
 interface Vlan42
    description SVI Description
@@ -165,18 +165,18 @@ interface Vlan42
 interface Vlan75
    description SVI Description
    no shutdown
-   ip address virtual 10.10.75.1/24
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
+   ip address virtual 10.10.75.1/24
 !
 interface Vlan81
    description IPv6 Virtual Address
    vrf Tenant_C
-   ip address virtual 10.10.81.1/24
    ipv6 enable
    ipv6 address virtual fc00:10:10:81::1/64
+   ip address virtual 10.10.81.1/24
 !
 interface Vlan83
    description SVI Description
@@ -219,7 +219,6 @@ interface Vlan88
 interface Vlan89
    description SVI Description
    no shutdown
-   ip address virtual 10.10.144.3/20
    ip igmp
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
@@ -228,6 +227,7 @@ interface Vlan89
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
+   ip address virtual 10.10.144.3/20
 !
 interface Vlan90
    description SVI Description
@@ -256,20 +256,20 @@ interface Vlan1001
    description SVI Description
    no shutdown
    vrf Tenant_A
-   ip address virtual 10.1.1.1/24
    ipv6 address a1::1/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+   ip address virtual 10.1.1.1/24
 !
 interface Vlan1002
    description SVI Description
    no shutdown
    vrf Tenant_A
-   ip address virtual 10.1.2.1/24
    ipv6 address a2::1/64
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
    ipv6 nd prefix a2::/64 infinite infinite no-autoconfig
+   ip address virtual 10.1.2.1/24
 !
 interface Vlan2001
    description SVI Description
