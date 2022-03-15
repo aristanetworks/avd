@@ -142,7 +142,7 @@ interface Loopback2
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan24 |  -  |  default  |  -  |  -  |
+| Vlan24 | - | default | - | - |
 
 #### IPv4
 

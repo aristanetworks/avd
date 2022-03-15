@@ -390,8 +390,8 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan310 |  Tenant_X_OP_Zone_1  |  Tenant_X_OP_Zone  |  -  |  false  |
-| Vlan311 |  Tenant_default_vrf  |  default  |  -  |  false  |
+| Vlan310 | Tenant_X_OP_Zone_1 | Tenant_X_OP_Zone | - | false |
+| Vlan311 | Tenant_default_vrf | default | - | false |
 
 #### IPv4
 
@@ -511,7 +511,7 @@ ip routing vrf Tenant_X_OP_Zone
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
