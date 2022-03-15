@@ -147,7 +147,6 @@ Policy local allow-nopassword-remote-login has been enabled.
 ### AAA Authentication Device Configuration
 
 ```eos
-!
 aaa authentication login default group TACACS local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
@@ -179,9 +178,8 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
-!
-aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization exec default group CUST local
 aaa authorization commands all default group aaaAuth
 !
 ```
@@ -199,7 +197,6 @@ aaa authorization commands all default group aaaAuth
 ### AAA Accounting Device Configuration
 
 ```eos
-!
 aaa accounting exec default start-stop group TACACS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
