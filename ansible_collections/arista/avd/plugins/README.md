@@ -168,6 +168,34 @@ tasks:
     mode: 0664
 ```
 
+### range_expand filter
+
+The `arista.avd.range_expand` filter provides the capabilities to expand a range of interfaces or list of ranges and return as a list for example:
+
+The filter supports vlans, interfaces, modules, sub-interfaces and ranges are expanded at all levels.
+Within a single range, prefixes (ex. Ethernet, Eth, Po) are carried over to items without prefix (see 3rd example below)
+
+```yaml
+  - "Ethernet1"                                   -> ["Ethernet1"]
+  - "Ethernet1-2"                                 -> ["Ethernet1", "Ethernet2"]
+  - "Eth 3-5,7-8"                                 -> ["Eth 3", "Eth 4", "Eth 5", "Eth 7", "Eth 8"]
+  - "et2-6,po1-2"                                 -> ["et2", "et3", "et4", "et5", "et6", "po1", "po2"]
+  - ["Ethernet1"]                                 -> ["Ethernet1"]
+  - ["Ethernet 1-2", "Eth3-5", "7-8"]             -> ["Ethernet 1", "Ethernet 2", "Eth3", "Eth4", "Eth5", "7", "8"]
+  - ["Ethernet2-6", "Port-channel1-2"]            -> ["Ethernet2", "Ethernet3", "Ethernet4", "Ethernet5", "Ethernet6", "Port-channel1", "Port-channel2"]
+  - ["Ethernet1/1-2", "Eth1-2/3-5,5/1-2"]         -> ["Ethernet1/1", "Ethernet1/2", "Eth1/3", "Eth1/4", "Eth1/5", "Eth2/3", "Eth2/4", "Eth2/5", "Eth5/1", "Eth5/2"]
+  - ["Eth1.1,9-10.1", "Eth2.2-3", "Eth3/1-2.3-4"] -> ["Eth1.1", "Eth9.1", "Eth10.1", "Eth2.2", "Eth2.3", "Eth3/1.3", "Eth3/1.4", "Eth3/2.3", "Eth3/2.4"]
+  - "1-3"                                         -> ["1", "2", "3"]
+  - ["1", "2", "3"]                               -> ["1", "2", "3"]
+  - "vlan1-3"                                     -> ["vlan1", "vlan2", "vlan3"]
+```
+
+To use this filter:
+
+```jinja
+{{ range_to_expand | arista.avd.range_expand }}
+```
+
 ## Plugin Tests
 
 Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates
