@@ -76,20 +76,20 @@ class FilterModule(object):
                     if last_module:
                         for module in range(first_module, last_module + 1):
 
-                            #expand interfaces
+                            # expand interfaces
                             for interface in range(first_interface, last_interface + 1):
 
-                                #expand sub-interfaces if found
+                                # expand sub-interfaces if found
                                 if last_subinterface:
                                     for subinterface in range(first_subinterface, last_subinterface + 1):
                                         result.append(f"{prefix}{module}/{interface}.{subinterface}")
                                 else:
                                     result.append(f"{prefix}{module}/{interface}")
                     else:
-                        #expand interfaces
+                        # expand interfaces
                         for interface in range(first_interface, last_interface + 1):
 
-                            #expand sub-interfaces if found
+                            # expand sub-interfaces if found
                             if last_subinterface:
                                 for subinterface in range(first_subinterface, last_subinterface + 1):
                                     result.append(f"{prefix}{interface}.{subinterface}")
