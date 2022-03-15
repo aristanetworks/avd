@@ -636,8 +636,8 @@ interface Vlan4085
    no shutdown
    mtu 1500
    ip address 172.21.110.3/24
-   ip virtual-router address 172.21.110.1
    ip attached-host route export 19
+   ip virtual-router address 172.21.110.1
 !
 interface Vlan4094
    description MLAG_PEER

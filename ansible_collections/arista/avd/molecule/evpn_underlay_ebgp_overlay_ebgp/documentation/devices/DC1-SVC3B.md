@@ -876,22 +876,22 @@ interface Vlan110
    description SVI 110 CUSTOM DESCRIPTION
    no shutdown
    vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.10.1/24
    ip helper-address 1.2.3.4
+   ip address virtual 10.1.10.1/24
 !
 interface Vlan111
    description SVI 111 CUSTOM DESCRIPTION
    no shutdown
    vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.11.1/24
    ip helper-address 1.1.1.1 vrf MGMT source-interface lo100
+   ip address virtual 10.1.11.1/24
 !
 interface Vlan120
    description Tenant_A_WEB_Zone_1
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.20.1/24
    ip helper-address 1.1.1.1 vrf TEST source-interface lo100
+   ip address virtual 10.1.20.1/24
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
@@ -904,22 +904,22 @@ interface Vlan122
    description Tenant_a_WEB_DHCP_no_source_int_no_vrf
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.22.1/24
    ip helper-address 1.1.1.1
+   ip address virtual 10.1.22.1/24
 !
 interface Vlan123
    description Tenant_a_WEB_DHCP_source_int_no_vrf
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.23.1/24
    ip helper-address 1.1.1.1 source-interface lo100
+   ip address virtual 10.1.23.1/24
 !
 interface Vlan124
    description Tenant_a_WEB_DHCP_vrf_no_source_int
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.24.1/24
    ip helper-address 1.1.1.1 vrf TEST
+   ip address virtual 10.1.24.1/24
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
