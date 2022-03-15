@@ -1,3 +1,4 @@
+{# j2lint: disable=V1 #}
   address_family_rtc:
     peer_groups:
       {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:

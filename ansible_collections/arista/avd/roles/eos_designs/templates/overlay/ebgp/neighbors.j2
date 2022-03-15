@@ -1,3 +1,4 @@
+{# j2lint: disable=V1 #}
   neighbors:
 {% for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
     {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
