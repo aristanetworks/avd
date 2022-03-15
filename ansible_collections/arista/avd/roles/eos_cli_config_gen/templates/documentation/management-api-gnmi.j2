@@ -9,7 +9,12 @@
 | VRF with GNMI | OCTA |
 | ---------- | ---------- |
 {%         for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
-| {{ vrf }} | {% if management_api_gnmi.octa is defined  %} enabled {% else %} disabled {% endif %} |
+{%             if management_api_gnmi.octa is defined  %}
+{%                 set octa= 'enabled' %}
+{%             else %}
+{%                 set octa= 'disabled' %}
+{%             endif %}
+| {{ vrf }} | {{ octa }} |
 {%         endfor %}
 {%     else %}
 GNMI is not configured on any VRF.

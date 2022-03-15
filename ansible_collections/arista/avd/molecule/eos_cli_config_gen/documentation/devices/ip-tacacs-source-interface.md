@@ -53,9 +53,9 @@ interface Management1
 
 | VRF | Source Interface Name |
 | --- | --------------- |
- default |loopback1 |
- TEST1 |lo3 |
-  default |loopback10 |
+| default | loopback1 |
+| TEST1 | lo3 |
+| default | loopback10 |
 
 ### IP TACACS Source Interfaces Device Configuration
 

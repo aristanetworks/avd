@@ -89,12 +89,12 @@ interface Management1
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| default  | 1.1.1.0/24 |  10.1.1.1  |  vlan101  |  1  |  -  |  -  |  - |
-| default  | 1.1.2.0/24 |  10.1.1.1  |  vlan101  |  200  |  666  |  RT-TO-FAKE-DMZ  |  - |
-| customer01  | 1.2.1.0/24 |  10.1.2.1  |  vlan202  |  1  |  -  |  -  |  - |
-| customer01  | 1.2.2.0/24 |  10.1.2.1  |  vlan101  |  201  |  667  |  RT-TO-FAKE-DMZ  |  - |
-| APP  | 10.3.4.0/24 |  1.2.3.4  |  -  |  1  |  -  |  -  |  - |
-| APP  | 10.3.5.0/24 |  -  |  Null0  |  1  |  -  |  -  |  - |
+| default | 1.1.1.0/24 | 10.1.1.1 | vlan101 | 1 | - | - | - |
+| default | 1.1.2.0/24 | 10.1.1.1 | vlan101 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| customer01 | 1.2.1.0/24 | 10.1.2.1 | vlan202 | 1 | - | - | - |
+| customer01 | 1.2.2.0/24 | 10.1.2.1 | vlan101 | 201 | 667 | RT-TO-FAKE-DMZ | - |
+| APP | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
+| APP | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

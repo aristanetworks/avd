@@ -55,7 +55,12 @@
 | VRF | Status |
 | --- | ------ |
 {%         for vrf in snmp_server.vrfs %}
-| {{ vrf.name }} | {% if vrf.enable | arista.avd.default(false) %} Enabled {% else %} Disabled {% endif %} |
+{%             if vrf.enable | arista.avd.default(false) %}
+{%                 set status = 'Enabled' %}
+{%             else %}
+{%                 set status = 'Disabled' %}
+{%             endif %}
+| {{ vrf.name }} | {{ status }} |
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.hosts is arista.avd.defined %}

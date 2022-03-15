@@ -7,7 +7,15 @@
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-| {{ vlan_interface }} | {% if vlan_interfaces[vlan_interface].description is defined and vlan_interfaces[vlan_interface].description is not none %} {{ vlan_interfaces[vlan_interface].description }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif %} | {% if vlan_interfaces[vlan_interface].mtu is defined and vlan_interfaces[vlan_interface].mtu is not none %} {{ vlan_interfaces[vlan_interface].mtu }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown is not none %} {{ vlan_interfaces[vlan_interface].shutdown | lower }} {% else %} - {% endif %} |
+{%         set description = vlan_interfaces[vlan_interface].description | arista.avd.default('-') %}
+{%         set vrf = vlan_interfaces[vlan_interface].vrf | arista.avd.default('default') %}
+{%         set mtu = vlan_interfaces[vlan_interface].mtu | arista.avd.default('-') %}
+{%         if vlan_interfaces[vlan_interface].shutdown is arista.avd.defined %}
+{%             set shutdown = vlan_interfaces[vlan_interface].shutdown | lower %}
+{%         else %}
+{%             set shutdown = '-' %}
+{%         endif %}
+| {{ vlan_interface }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
 {# PVLAN #}
 {%     set vlan_interface_pvlan = namespace() %}
@@ -79,8 +87,14 @@
 | Interface | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ----------- | ---- |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%             if vlan_interfaces[vlan_interface].isis_enable is defined and vlan_interfaces[vlan_interface].isis_enable is not none %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} | {% if vlan_interfaces[vlan_interface].isis_metric is defined and vlan_interfaces[vlan_interface].isis_metric is not none %} {{ vlan_interfaces[vlan_interface].isis_metric }} {% else %} - {% endif %}| {% if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point is not none %} point-to-point {% elif vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%             if vlan_interfaces[vlan_interface].isis_enable is arista.avd.defined %}
+{%                 set isis_metric = vlan_interfaces[vlan_interface].isis_metric | arista.avd.default('-') %}
+{%                 if vlan_interfaces[vlan_interface].isis_network_point_to_point is arista.avd.defined %}
+{%                     set mode = 'point-to-point' | arista.avd.default('-') %}
+{%                 elif vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined %}
+{%                     set mode = 'passive' | arista.avd.default('-') %}
+{%                 endif %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} | {{ isis_metric }} | {{ mode }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

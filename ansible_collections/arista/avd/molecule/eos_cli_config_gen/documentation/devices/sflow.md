@@ -58,12 +58,12 @@ interface Management1
 | AAA | - | 10.6.75.62 | 123 |
 | AAA | - | 10.6.75.63 | 333 |
 | AAA | Ethernet2 | - | - |
-| MGMT | - | 10.6.75.59 | 6343  |
+| MGMT | - | 10.6.75.59 | 6343 |
 | MGMT | - | 10.6.75.62 | 123 |
 | MGMT | - | 10.6.75.63 | 333 |
 | MGMT | Ethernet3 | - | - |
-| default | - | 10.6.75.62 | 123  |
-| default | - | 10.6.75.61 | 6343  |
+| default | - | 10.6.75.62 | 123 |
+| default | - | 10.6.75.61 | 6343 |
 | default | Management0 | - | - |
 
 sFlow Sample Rate: 1000

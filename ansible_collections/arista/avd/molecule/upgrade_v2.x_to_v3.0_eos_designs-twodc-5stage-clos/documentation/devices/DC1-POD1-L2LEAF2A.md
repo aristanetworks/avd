@@ -313,7 +313,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4094 | MLAG_PEER | default | 1500 | false |
 
 #### IPv4
 
@@ -375,8 +375,8 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.1.254  |  -  |  1  |  -  |  -  |  - |
-| default  | 0.0.0.0/0 |  172.21.110.1  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 172.21.110.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

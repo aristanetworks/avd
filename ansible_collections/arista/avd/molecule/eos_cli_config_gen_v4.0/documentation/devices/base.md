@@ -71,7 +71,7 @@ interface Management1
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
-| 15 |  Enabled  |
+| 15 | Enabled |
 
 ### Max number of SSH sessions limit and per-host limit
 
@@ -89,7 +89,7 @@ interface Management1
 
 | VRF | Status |
 | --- | ------ |
-| mgt |  Enabled  |
+| mgt | Enabled |
 
 ### Management SSH Configuration
 
