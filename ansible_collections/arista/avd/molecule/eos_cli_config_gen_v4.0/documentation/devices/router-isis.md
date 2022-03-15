@@ -211,7 +211,7 @@ interface Port-Channel6
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| --------- | ------------- | ----------- | -------------- |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
 | Loopback2 | EVPN_UNDERLAY | 50 | passive |
@@ -248,9 +248,9 @@ interface Loopback2
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  PR01-DEMO  |  TENANT_A_PROJECT01  |  -  |  false  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  -  |  -  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | false |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | - | - |
+| Vlan4094 | MLAG_PEER | default | 1500 | - |
 
 #### IPv4
 
@@ -265,7 +265,7 @@ interface Loopback2
 
 | Interface | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 
 ### VLAN Interfaces Device Configuration
 

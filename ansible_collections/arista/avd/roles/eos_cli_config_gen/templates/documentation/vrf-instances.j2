@@ -7,7 +7,12 @@
 | VRF Name | IP Routing |
 | -------- | ---------- |
 {%     for vrf in vrfs | arista.avd.natural_sort %}
-| {{ vrf }} |{% if vrfs[vrf].ip_routing == true %} enabled {% else %} disabled {% endif %}|
+{%         if vrfs[vrf].ip_routing == true %}
+{%             set ip_routing = 'enabled' %}
+{%         else %}
+{%             set ip_routing = 'disabled' %}
+{%         endif %}
+| {{ vrf }} | {{ ip_routing }} |
 {%     endfor %}
 
 ## VRF Instances Device Configuration

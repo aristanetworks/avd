@@ -69,27 +69,27 @@ interface Management1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan24 |  SVI Description  |  default  |  -  |  false  |
-| Vlan41 |  SVI Description  |  default  |  -  |  false  |
-| Vlan42 |  SVI Description  |  default  |  -  |  false  |
-| Vlan75 |  SVI Description  |  default  |  -  |  false  |
-| Vlan81 |  IPv6 Virtual Address  |  Tenant_C  |  -  |  -  |
-| Vlan83 |  SVI Description  |  default  |  -  |  false  |
-| Vlan84 |  SVI Description  |  default  |  -  |  -  |
-| Vlan85 |  SVI Description  |  default  |  -  |  -  |
-| Vlan86 |  SVI Description  |  default  |  -  |  -  |
-| Vlan87 |  SVI Description  |  default  |  -  |  true  |
-| Vlan88 |  SVI Description  |  default  |  -  |  true  |
-| Vlan89 |  SVI Description  |  default  |  -  |  false  |
-| Vlan90 |  SVI Description  |  default  |  -  |  -  |
-| Vlan91 |  PBR Description  |  default  |  -  |  true  |
-| Vlan110 |  PVLAN Primary with vlan mapping  |  Tenant_A  |  -  |  false  |
-| Vlan501 |  SVI Description  |  default  |  -  |  false  |
-| Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
-| Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
-| Vlan2001 |  SVI Description  |  Tenant_B  |  -  |  -  |
-| Vlan2002 |  SVI Description  |  Tenant_B  |  -  |  -  |
-| Vlan4094 |  SVI Description  |  default  |  9214  |  -  |
+| Vlan24 | SVI Description | default | - | false |
+| Vlan41 | SVI Description | default | - | false |
+| Vlan42 | SVI Description | default | - | false |
+| Vlan75 | SVI Description | default | - | false |
+| Vlan81 | IPv6 Virtual Address | Tenant_C | - | - |
+| Vlan83 | SVI Description | default | - | false |
+| Vlan84 | SVI Description | default | - | - |
+| Vlan85 | SVI Description | default | - | - |
+| Vlan86 | SVI Description | default | - | - |
+| Vlan87 | SVI Description | default | - | true |
+| Vlan88 | SVI Description | default | - | true |
+| Vlan89 | SVI Description | default | - | false |
+| Vlan90 | SVI Description | default | - | - |
+| Vlan91 | PBR Description | default | - | true |
+| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
+| Vlan501 | SVI Description | default | - | false |
+| Vlan1001 | SVI Description | Tenant_A | - | false |
+| Vlan1002 | SVI Description | Tenant_A | - | false |
+| Vlan2001 | SVI Description | Tenant_B | - | - |
+| Vlan2002 | SVI Description | Tenant_B | - | - |
+| Vlan4094 | SVI Description | default | 9214 | - |
 
 #### Private VLAN
 

@@ -82,7 +82,7 @@ ip name-server vrf mgt 10.10.129.10
 
 | Source interface | vrf |
 | ---------------- | --- |
-| Management0 | mgt  |
+| Management0 | mgt |
 
 ### DNS Domain Lookup Device Configuration
 

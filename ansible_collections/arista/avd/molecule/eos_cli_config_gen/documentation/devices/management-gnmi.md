@@ -51,8 +51,8 @@ interface Management1
 
 | VRF with GNMI | OCTA |
 | ---------- | ---------- |
-| MGMT |  enabled  |
-| MONITORING |  enabled  |
+| MGMT | enabled |
+| MONITORING | enabled |
 
 ### Management API gnmi configuration
 

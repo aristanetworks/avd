@@ -79,10 +79,10 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 
 | VRF | TACACS Servers | Single-Connection |
 | --- | -------------- | ----------------- |
-|  mgt | 10.10.10.157 | True |
-|  default | 10.10.10.249 | False |
-|  default | 10.10.10.158 | False |
-|  default | 10.10.10.159 | False |
+| mgt | 10.10.10.157 | True |
+| default | 10.10.10.249 | False |
+| default | 10.10.10.158 | False |
+| default | 10.10.10.159 | False |
 
 ### TACACS Servers Device Configuration
 
@@ -100,9 +100,9 @@ tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 
 | VRF | RADIUS Servers |
 | --- | ---------------|
-|  mgt | 10.10.10.157 |
-|  default | 10.10.10.249 |
-|  default | 10.10.10.158 |
+| mgt | 10.10.10.157 |
+| default | 10.10.10.249 |
+| default | 10.10.10.158 |
 
 ### RADIUS Servers Device Configuration
 
@@ -119,8 +119,8 @@ radius-server host 10.10.10.158 vrf default key 7 071B245F5A
 
 | Server Group Name | Type  | VRF | IP address |
 | ------------------| ----- | --- | ---------- |
-| TACACS | tacacs+ |  mgt | 10.10.10.157 |
-| TACACS | tacacs+ |  default | 10.10.10.249 |
+| TACACS | tacacs+ | mgt | 10.10.10.157 |
+| TACACS | tacacs+ | default | 10.10.10.249 |
 
 ### AAA Server Groups Device Configuration
 
