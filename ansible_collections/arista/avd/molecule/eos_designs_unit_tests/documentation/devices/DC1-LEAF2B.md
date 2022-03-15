@@ -560,6 +560,7 @@ interface Loopback100
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | false |
 | Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | false |
+| Vlan112 | Tenant_A_OP_Zone_3 | Tenant_A_OP_Zone | 1560 | false |
 | Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | false |
 | Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | 1560 | true |
 | Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | false |
