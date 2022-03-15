@@ -198,6 +198,7 @@ interface Vlan85
    arp cache dynamic capacity 50000
    ip address 10.10.84.1/24
    bfd interval 500 min-rx 500 multiplier 5
+   bfd echo
 !
 interface Vlan86
    description SVI Description
@@ -321,9 +322,9 @@ interface Vlan4094
 
 ## BFD Interfaces
 
-| Interface | Interval | Minimum RX | Multiplier |
-| --------- | -------- | ---------- | ---------- |
-| Vlan85 | 500 | 500 | 5 |
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
+| Vlan85 | 500 | 500 | 5 | True |
 
 # Multicast
 
