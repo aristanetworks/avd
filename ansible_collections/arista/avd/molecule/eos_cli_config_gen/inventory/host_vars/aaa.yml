@@ -31,12 +31,19 @@ radius_servers:
 
 ### AAA Server Groups
 aaa_server_groups:
-  - name: TACACS
+  - name: TACACS1
     type: tacacs+
     servers:
       - server: 10.10.10.157
         vrf: mgt
       - server: 10.10.10.249
+  - name: TACACS2
+    type: tacacs+
+    servers:
+      - server: 192.168.10.157
+        vrf: mgt
+      - server: 10.10.10.248
+
 
 ## AAA Authentication
 aaa_authentication:

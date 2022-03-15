@@ -119,16 +119,22 @@ radius-server host 10.10.10.158 vrf default key 7 071B245F5A
 
 | Server Group Name | Type  | VRF | IP address |
 | ------------------| ----- | --- | ---------- |
-| TACACS | tacacs+ | mgt | 10.10.10.157 |
-| TACACS | tacacs+ | default | 10.10.10.249 |
+| TACACS1 | tacacs+ | mgt | 10.10.10.157 |
+| TACACS1 | tacacs+ | default | 10.10.10.249 |
+| TACACS2 | tacacs+ | mgt | 192.168.10.157 |
+| TACACS2 | tacacs+ | default | 10.10.10.248 |
 
 ### AAA Server Groups Device Configuration
 
 ```eos
 !
-aaa group server tacacs+ TACACS
+aaa group server tacacs+ TACACS1
    server 10.10.10.157 vrf mgt
    server 10.10.10.249
+!
+aaa group server tacacs+ TACACS2
+   server 192.168.10.157 vrf mgt
+   server 10.10.10.248
 ```
 
 ## AAA Authentication
@@ -151,7 +157,6 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 ### AAA Authentication Device Configuration
 
 ```eos
-!
 aaa authentication login default group TACACS local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
@@ -186,9 +191,8 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
-!
-aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization exec default group CUST local
 aaa authorization commands all default group aaaAuth
 aaa authorization commands 5 default group radius
 aaa authorization commands 10,15 default group tacacs+ local
@@ -212,7 +216,6 @@ aaa authorization commands 10,15 default group tacacs+ local
 ### AAA Accounting Device Configuration
 
 ```eos
-!
 aaa accounting exec console start-stop group TACACS
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging

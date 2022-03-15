@@ -151,7 +151,6 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 ### AAA Authentication Device Configuration
 
 ```eos
-!
 aaa authentication login default group TACACS local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
@@ -186,9 +185,8 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
-!
-aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization exec default group CUST local
 aaa authorization commands all default group aaaAuth
 aaa authorization commands 5 default group radius
 aaa authorization commands 10,15 default group tacacs+ local
@@ -212,7 +210,6 @@ aaa authorization commands 10,15 default group tacacs+ local
 ### AAA Accounting Device Configuration
 
 ```eos
-!
 aaa accounting exec console start-stop group TACACS
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
