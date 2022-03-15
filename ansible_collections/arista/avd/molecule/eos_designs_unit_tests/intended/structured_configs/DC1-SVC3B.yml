@@ -241,7 +241,7 @@ router_bgp:
         - '9:9'
       redistribute_routes:
       - learned
-      vlan: 110-111
+      vlan: 110-112
     Tenant_A_WAN_Zone:
       rd: '65103:14'
       route_targets:
@@ -438,6 +438,9 @@ vlans:
   111:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
   3008:
     tenant: Tenant_A
     name: MLAG_iBGP_Tenant_A_OP_Zone
@@ -587,6 +590,18 @@ vlan_interfaces:
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
+        vrf: MGMT
+  Vlan112:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_3
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    mtu: 1560
+    ip_helpers:
+      2.2.2.2:
+        source_interface: lo101
         vrf: MGMT
   Vlan3008:
     tenant: Tenant_A
@@ -744,7 +759,7 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel14:
@@ -1405,6 +1420,8 @@ vxlan_interface:
           vni: 10110
         111:
           vni: 50111
+        112:
+          vni: 10112
         150:
           vni: 10150
         120:
