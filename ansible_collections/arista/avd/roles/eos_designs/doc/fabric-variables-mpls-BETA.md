@@ -1,24 +1,32 @@
+# BETA Feature
+
+The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
+
 # Fabric Variables for MPLS Design
 
 - The MPLS design supports any fabric variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
-- The MPLS design additionally supports several new fabric variables that are outlined in this document.
+- Additionally the MPLS design supports several new fabric variables that are outlined in this document.
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
-  - ISIS-SR.
-  - ISIS + LDP.
-  - ISIS-SR + LDP.
-  - OSPF + LDP.
+  - ISIS-SR (default)
+  - ISIS + LDP
+  - ISIS-SR + LDP
+  - OSPF + LDP
 - The following overlay routing protocols are supported:
   - IBGP (default)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
-- The variables should be applied to all devices in the fabric.
+- The variables described in this document should be applied to all devices in the fabric.
 
-**Variables and Options:**
+## New Variables and Options
 
 ```yaml
+# Fabric Name | Required
+# Required to match an Ansible Group name covering all devices in the Fabric
+fabric_name: < Fabric_Name >
+
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < isis-sr, isis-ldp, isis-sr-ldp, ospf-ldp | default -> isis-sr >
+underlay_routing_protocol: < isis-sr | isis-ldp | isis-sr-ldp | ospf-ldp | default -> isis-sr >
 overlay_routing_protocol: < ibgp | default -> ibgp >
 
 # Underlay ISIS parameters
@@ -27,7 +35,7 @@ isis_default_circuit_type: < level-1 | level-2 | level-1-2 | default -> level-1-
 isis_default_metric: < int >
 isis_advertise_passive_only: < true | false | default -> false >
 
-#  Underlay ISIS TI-LFA parameters
+# Underlay ISIS TI-LFA parameters
 isis_ti_lfa:
   enabled: < true | false | default -> false >
   protection: < link | node | default -> link >
@@ -41,15 +49,15 @@ underlay_ipv6: < true | false | default -> false >
 bgp_mesh_pes: < true | false | default -> false >
 
 # BGP peer groups encrypted password
-# MPLS_OVERLAY_PEERS | Required
-# RR_OVERLAY_PEERS | Optional (Used to peer route reflectors in the same node-group (rr cluster) to each other)
+# mpls_overlay_peers | Required
+# rr_overlay_peers | Optional (Used to peer route reflectors in the same node-group (rr cluster) to each other)
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
-  MPLS_OVERLAY_PEERS:
+  mpls_overlay_peers:
     name: < name of peer group | default -> MPLS-OVERLAY-PEERS >
     password: "< encrypted password >"
-  RR_OVERLAY_PEERS:
+  rr_overlay_peers:
     name: < name of peer group | default -> RR-OVERLAY-PEERS >
     password: "< encrypted password >"
 ```
@@ -61,21 +69,9 @@ The following fabric variables or variable values are not supported with the MPL
 ```yaml
 underlay_routing_protocol: < ebgp | isis | ospf >
 overlay_routing_protocol: ebgp
-
-# Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
-# Unsupported because it requires "underlay_routing_protocol: EBGP"
 underlay_rfc5549: < true | false | default -> false >
-
-# IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
-# Unsupported due to lack of vtep in MPLS design.
 vtep_vvtep_ip: < IPv4_address/Mask >
-
-# EVPN ebgp-multihop
-# Unsupported because ebgp in the overlay is not supported.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
-
-# Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
-# Unsupported due to lack of l2leaf node type in MPLS design.
 inband_management_subnet: < IPv4_network/Mask >
 inband_management_vlan: < vlan_id >
 ```

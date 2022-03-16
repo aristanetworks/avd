@@ -1,3 +1,7 @@
+# BETA Feature
+
+The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
+
 # Network Services Variables for MPLS Design - VRFs/VLANs
 
 - The MPLS design supports any network services variables already supported by l3ls-evpn, barring the exceptions outlined in this document.

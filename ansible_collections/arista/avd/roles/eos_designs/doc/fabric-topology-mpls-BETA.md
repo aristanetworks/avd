@@ -1,11 +1,13 @@
+# BETA Feature
+
+The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
+
 # Fabric Topology Variables for MPLS Design
 
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
-```yaml
-fabric_name: < Fabric_Name >
-```
-
+- The MPLS design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
+- Additionally the MPLS design supports several new fabric topology variables that are outlined in this document.
 - Connectivity is defined in a free-standing core_interfaces construct.
 - A static unique identifier (id) is assigned to each device.
   - This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
@@ -21,6 +23,16 @@ fabric_name: < Fabric_Name >
 
 - The **eos_designs** role with the `mpls` design type supports any type of topology consisting of any combination of pe-routers, p-routers and rr-routers.
 - Any node group of 2 or more rr-routers will form a Route Reflector cluster. The core_interfaces construct is used to define underlay interfaces and associated interface profiles.
+
+### Variables and Options
+
+By setting the `design.type` to `mpls`, the default node-types and templates described in these documents will be used.
+
+```yaml
+# AVD Design | Optional
+design:
+  type: < "l3ls-evpn" | "mpls" | default -> "l3ls-evpn" >
+```
 
 ## Node Type Variables
 
@@ -38,10 +50,6 @@ The variables should be applied to all devices in the fabric.
 - This is leveraged to load the appropriate templates to generate the configuration.
 
 ### Variables and Options
-
-- The MPLS design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
-- The MPLS design additionally supports several new fabric topology variables that are outlined in this document.
-- Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
 
 As explained above, you can defined your own types of devices. CLI only provides default node types.
 
@@ -70,32 +78,7 @@ All node types have the same structure based on `defaults`, `node_group`, `node`
 
 ## Point-to-point link management
 
-Unlike with the l3ls-evpn design type, underlay p2p links are built using the core_interfaces dictionary:
-
-The full data model for core_interfaces is documented on the Core Interfaces page.
-
-```yaml
-core_interfaces:
-  p2p_links_ip_pools:
-    - name: < pool name >
-      ipv4_pool: < IPv4_address/Mask >
-  p2p_links_profiles:
-    - name: < backbone profile name >
-      speed: < speed >
-      mtu: < mtu >
-      isis_hello_padding: < true | false >
-      isis_metric: < metric >
-      ip_pool: < pool name >
-      isis_circuit_type: < isis circuit type >
-      ipv6_enable: < true | false >
-  p2p_links:
-    - id: < Link ID, used for selecting a subnet from the provided pool >
-      nodes: ['< node1 inventory_hostname >', '< node2 inventory_hostname >']
-      interfaces: ['< node1 interface >', '< node2 interface >']
-      profile: < backbone profile name >
-    - id: < Link ID >
-      ...
-```
+Unlike with the l3ls-evpn design type, underlay p2p links are built using the `core_interfaces` data model described [here](core-interfaces-BETA.md).
 
 ## ISIS underlay protocol management and node-SID management
 
@@ -156,4 +139,15 @@ core_interfaces:
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
     mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
+    uplink_ipv4_pool: < IPv4_address/Mask  >
+    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+    uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
+    max_uplink_switches: < integer >
+    max_parallel_uplinks: < integer >
+    uplink_ptp:
+      enable: < boolean >
+    uplink_macsec:
+      profile: "< MacSec profile name >"
+    uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
+        uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 ```
