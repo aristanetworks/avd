@@ -85,7 +85,6 @@ interface Management1
 ### Domain-list Device Configuration
 
 ```eos
-!
 ip domain-list structured-config.set.under.vrf.common-vrf
 !
 ```

@@ -61,7 +61,6 @@
 ### Domain-list Device Configuration
 
 ```eos
-!
 ip domain-list structured-config.set.on.node
 ip domain-list structured-config.set.under.vrf.common-vrf
 !
