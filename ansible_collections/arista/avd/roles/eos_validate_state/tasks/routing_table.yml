@@ -17,7 +17,7 @@
   assert:
     that:
       - vtep_reachability_test['stdout'][0] | regex_search(vtep_reachability_test.vtep_ip)
-    fail_msg: "VTEP {{ vtep_reachability_test.vtep_ip }} is not in the routing table"
+    fail_msg: "VTEP {{ vtep_reachability_test.vtep_ip | replace('\"','') }} is not in the routing table"
     quiet: true
   loop: "{{ routing_table_vtep_state.results }}"
   loop_control:
@@ -46,7 +46,7 @@
   assert:
     that:
       - routing_table_loopback0_test['stdout'][0] | regex_search(routing_table_loopback0_test.loopback0_address)
-    fail_msg: "Lo0 {{ routing_table_loopback0_test.loopback0_address }} is not in the routing table"
+    fail_msg: "Lo0 {{ routing_table_loopback0_test.loopback0_address | replace('\"','') }} is not in the routing table"
     quiet: true
   loop: "{{ routing_table_loopback0_state.results }}"
   loop_control:
