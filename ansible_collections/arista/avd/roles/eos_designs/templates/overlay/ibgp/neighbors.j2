@@ -1,0 +1,38 @@
+  neighbors:
+{% if switch.mpls_overlay_role in ["server", "client"] %}
+{%     for mpls_route_server in overlay_data.mpls_route_servers | arista.avd.natural_sort %}
+    {{ overlay_data.mpls_route_servers[mpls_route_server].ip_address }}:
+      peer_group: {{ overlay_data.overlay_peer_group_name }}
+      description: {{ mpls_route_server }}
+{%     endfor %}
+{%     for mpls_route_client in overlay_data.mpls_route_clients | arista.avd.natural_sort %}
+    {{ overlay_data.mpls_route_clients[mpls_route_client].ip_address }}:
+      peer_group: {{ overlay_data.overlay_peer_group_name }}
+      description: {{ mpls_route_client }}
+{%     endfor %}
+{%     if overlay_data.mpls_mesh_pes is arista.avd.defined %}
+{%         for mpls_mesh_pe in overlay_data.mpls_mesh_pes | arista.avd.natural_sort %}
+    {{ overlay_data.mpls_mesh_pes[mpls_mesh_pe].ip_address }}:
+      peer_group: {{ overlay_data.overlay_peer_group_name }}
+      description: {{ mpls_mesh_pe }}
+{%         endfor %}
+{%     endif %}
+{%     if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
+{%         for mpls_rr_peer in overlay_data.mpls_rr_peers | arista.avd.natural_sort %}
+    {{ overlay_data.mpls_rr_peers[mpls_rr_peer].ip_address }}:
+      peer_group: {{ overlay_data.rr_peers_peer_group_name }}
+      description: {{ mpls_rr_peer }}
+{%         endfor %}
+{%     endif %}
+{% else %}
+{%     for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
+      peer_group: {{ overlay_data.overlay_peer_group_name }}
+      description: {{ evpn_route_server }}
+{%     endfor %}
+{%     for evpn_route_client in overlay_data.evpn_route_clients | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_route_clients[evpn_route_client].ip_address }}:
+      peer_group: {{ overlay_data.overlay_peer_group_name }}
+      description: {{ evpn_route_client }}
+{%     endfor %}
+{% endif %}

@@ -58,6 +58,9 @@ p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 # This is only needed for centralized routing designs
 vtep_vvtep_ip: < IPv4_address/Mask >
 
+# Customizable overlay loopback description | Optional
+overlay_loopback_description: < description >
+
 # BGP multi-path | Optional
 bgp_maximum_paths: < number_of_max_paths | default -> 4 >
 bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
