@@ -107,7 +107,7 @@ interface Management1
 !
 router multicast
    ipv4
-      counters rate period decay 300
+      counters rate period decay 300 seconds
       routing
       multipath deterministic router-id
       software-forwarding sfe

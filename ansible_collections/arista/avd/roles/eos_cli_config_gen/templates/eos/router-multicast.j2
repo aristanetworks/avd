@@ -5,7 +5,7 @@ router multicast
 {%     if router_multicast.ipv4 is arista.avd.defined %}
    ipv4
 {%         if router_multicast.ipv4.counters.rate_period_decay is arista.avd.defined %}
-      counters rate period decay {{ router_multicast.ipv4.counters.rate_period_decay }}
+      counters rate period decay {{ router_multicast.ipv4.counters.rate_period_decay }} seconds
 {%         endif %}
 {%         if router_multicast.ipv4.routing is arista.avd.defined(true) %}
       routing
