@@ -183,13 +183,13 @@ access_lists:
         action: "permit ip any any dscp ef"
 
 ipv6_access_lists:
-  acl_qos_tc0_v6:
+  - name: acl_qos_tc0_v6
     sequence_numbers:
-      10:
+      - sequence: 10
         action: "permit ipv6 any any dscp cs1"
-  acl_qos_tc5_v6:
+  - name: acl_qos_tc5_v6
     sequence_numbers:
-      10:
+      - sequence: 10
         action: "permit ipv6 any 2001:db8::/48"
 
 class_maps:
