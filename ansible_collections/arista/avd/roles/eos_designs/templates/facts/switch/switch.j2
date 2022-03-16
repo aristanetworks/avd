@@ -187,6 +187,9 @@ switch:
   bgp_as: "{{ switch_data.combined.bgp_as }}"
 {%             endif %}
 {%         endif %}
+{# Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines #}
+{%     elif switch_underlay_routing_protocol in ['isis', 'ospf'] and switch_evpn_role == 'none' and bgp_as is arista.avd.defined %}
+  bgp_as: "{{ bgp_as }}"
 {%     endif %}
 
 {# switch.bgp_defaults #}
