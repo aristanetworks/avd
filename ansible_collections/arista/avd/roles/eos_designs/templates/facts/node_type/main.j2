@@ -26,11 +26,23 @@ switch:
 {# switch.default_underlay_routing_protocol #}
   default_underlay_routing_protocol: {{ ns.node_type_key_data.default_underlay_routing_protocol | arista.avd.default('ebgp') }}
 
+{# switch.default_overlay_routing_protocol #}
+  default_overlay_routing_protocol: {{ ns.node_type_key_data.default_overlay_routing_protocol | arista.avd.default('ebgp') }}
+
+{# switch.default_overlay_address_families #}
+  default_overlay_address_families: {{ ns.node_type_key_data.default_overlay_address_families | arista.avd.default(['evpn']) }}
+
+{# switch.default_mpls_overlay_role #}
+  default_mpls_overlay_role: {{ ns.node_type_key_data.default_mpls_overlay_role | arista.avd.default('none') }}
+
 {# switch.mpls_lsr #}
   mpls_lsr: {{ ns.node_type_key_data.mpls_lsr | arista.avd.default(false) }}
 
 {# switch.mlag_support #}
   mlag_support: {{ ns.node_type_key_data.mlag_support | arista.avd.default(false) }}
+
+{# switch.network_services_l1 #}
+  network_services_l1: {{ ns.node_type_key_data.network_services.l1 | arista.avd.default(false) }}
 
 {# switch.network_services_l2 #}
   network_services_l2: {{ ns.node_type_key_data.network_services.l2 | arista.avd.default(false) }}
@@ -46,6 +58,9 @@ switch:
 
 {# switch.vtep #}
   vtep: {{ ns.node_type_key_data.vtep | arista.avd.default(false) }}
+
+{# switch.mpls_ler #}
+  mpls_ler: {{ ns.node_type_key_data.mpls_ler | arista.avd.default(false) }}
 
 {# switch.ip_addressing #}
   ip_addressing: {{ templates.ip_addressing | combine(ns.node_type_key_data.ip_addressing | arista.avd.default({})) }}

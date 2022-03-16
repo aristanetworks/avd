@@ -129,17 +129,7 @@ platform_settings:
 
 # Infrastructure Elements Keys
 
-connected_endpoints_keys:
-  servers:
-    type: server
-  firewalls:
-    type: firewall
-  routers:
-    type: router
-  load_balancers:
-    type: load_balancer
-  storage_arrays:
-    type: storage_array
+connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
 
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_

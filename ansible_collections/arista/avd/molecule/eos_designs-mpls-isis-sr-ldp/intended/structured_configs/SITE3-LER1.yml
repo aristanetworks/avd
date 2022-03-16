@@ -1,0 +1,81 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+ipv6_unicast_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.110/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+eos_cli: "management security\n   password encryption-key common\n"
+loopback_interfaces:
+  Loopback0:
+    description: MPLS_Overlay_peering
+    shutdown: false
+    ip_address: 100.70.0.10/32
+    ipv6_address: 2000:1234:ffff:ffff::a/128
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+    isis_enable: CORE
+    isis_passive: true
+    node_segment:
+      ipv4_index: 210
+      ipv6_index: 210
+router_isis:
+  instance: CORE
+  log_adjacency_changes: true
+  net: 49.0001.0000.0001.0010.00
+  router_id: 100.70.0.10
+  is_type: level-1-2
+  advertise:
+    passive_only: true
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      delay: 15000
+      protected_prefixes: true
+  address_family:
+  - ipv4 unicast
+  - ipv6 unicast
+  isis_af_defaults:
+  - maximum-paths 4
+  - fast-reroute ti-lfa mode link-protection
+  segment_routing_mpls:
+    router_id: 100.70.0.10
+    enabled: true
+mpls:
+  ip: true
+  ldp:
+    interface_disabled_default: true
+    router_id: 100.70.0.10
+    shutdown: false
+    transport_address_interface: Loopback0
+patch_panel: {}
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:00

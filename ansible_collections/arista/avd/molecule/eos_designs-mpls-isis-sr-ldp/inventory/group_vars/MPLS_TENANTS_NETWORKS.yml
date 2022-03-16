@@ -1,0 +1,170 @@
+---
+tenants:
+  TENANT_A:
+    mac_vrf_id_base: 10000
+    pseudowire_rt_base: 1000
+    point_to_point_services:
+      # Port-based vpws service
+      - name: TEN_A_site2_site5_eline_port_based
+        type: vpws-pseudowire
+        endpoints:
+          - id: 26
+            nodes: ["SITE1-LER1"]
+            interfaces: ["Ethernet6"]
+          - id: 57
+            nodes: ["SITE2-LER1"]
+            interfaces: ["Ethernet7"]
+        lldp_disable: true
+    l2vlans:
+      10:
+        name: TENANT_A_L2_SERVICE
+        tags:
+          - site1-2
+          - site5
+      20:
+        name: TENANT_A_L2_SERVICE
+        rt_override: 123456
+        tags:
+          - site1-2
+          - site5
+  TENANT_B:
+    pseudowire_rt_base: 2000
+    mac_vrf_id_base: 20000
+    point_to_point_services:
+      - name: TEN_B_site3_site5_eline_vlan_based
+        type: vpws-pseudowire
+        subinterfaces:
+          - number: 1000
+          - number: 1001
+          - number: 1002
+          - number: 1003
+          - number: 1004
+        endpoints:
+          # ESI dual-homed port-channel endpoint with subinterfaces.
+          - id: 30000
+            nodes: ["SITE1-LER2", "SITE1-LER1", "SITE1-LER2", "SITE1-LER1"]
+            interfaces: ["Ethernet3", "Ethernet3", "Ethernet4", "Ethernet4"]
+            port_channel:
+              mode: active
+              short_esi: "0102:0000:0034"
+          # Normal single-homed port-channel endpoint with subinterfaces.
+          - id: 50000
+            nodes: ["SITE2-LER1", "SITE2-LER1"]
+            interfaces: ["Ethernet4", "Ethernet5"]
+            port_channel:
+              mode: active
+    vrfs:
+      TENANT_B_INTRA:
+        vrf_id: 19
+        address_families:
+          - evpn
+        ospf:
+          enabled: true
+          router_id: 123.1.1.0
+          max_lsa: 10000
+          nodes:
+            - SITE1-LER1
+        l3_interfaces:
+          - description: TENANT_B_SITE_3_INTRA_L3VPN
+            enabled: true
+            interfaces:
+              - Ethernet6.10
+            ip_addresses:
+              - 123.1.1.0/31
+            nodes:
+              - SITE1-LER1
+            ospf:
+              enabled: true
+              point_to_point: true
+              area: 0
+              cost: 10
+          - description: TENANT_B_SITE_5_INTRA_L3VPN
+            enabled: true
+            interfaces:
+              - Ethernet6.10
+            ip_addresses:
+              - 123.1.1.2/31
+            nodes:
+              - SITE2-LER1
+        static_routes:
+          - destination_address_prefix: 123.0.10.0/24
+            gateway: 123.1.1.3
+            name: TENANT_B_SITE_5_SUBNET
+            interface: Ethernet6.10
+            nodes:
+              - SITE2-LER1
+        svis:
+          2020:
+            enabled: true
+            name: TENANT_B_INSIDE_FW
+            ip_virtual_router_address: 10.1.255.1
+            nodes:
+              pe1:
+                ip_address: 10.1.255.2/27
+              pe2:
+                ip_address: 10.1.255.3/27
+            tags:
+              - tag1
+      TENANT_B_WAN:
+        vrf_id: 20
+        address_families:
+          - vpn-ipv4
+          - vpn-ipv6
+        ospf:
+          enabled: true
+          process_id: 99
+          router_id: 192.168.48.4
+          max_lsa: 10000
+          nodes:
+            - SITE2-LER1
+        l3_interfaces:
+          - description: TENANT_B_SITE_3
+            enabled: true
+            interfaces:
+              - Ethernet5.100
+            ip_addresses:
+              - 192.168.48.0/31
+            nodes:
+              - SITE1-LER2
+          - description: TENANT_B_SITE_3_OSPF
+            enabled: true
+            interfaces:
+              - Ethernet6.100
+            ip_addresses:
+              - 192.168.48.4/31
+            nodes:
+              - SITE2-LER1
+            ospf:
+              enabled: true
+              point_to_point: true
+              area: 0
+              cost: 10
+          - description: TENANT_B_SITE_5
+            enabled: true
+            interfaces:
+              - Ethernet6.10
+            ip_addresses:
+              - 192.168.48.2/31
+            nodes:
+              - SITE2-LER1
+          - description: TENANT_B_SITE_5_WAN_TEST
+            enabled: true
+            interfaces:
+              - Ethernet6
+            ip_addresses:
+              - 123.10.10.2/31
+            nodes:
+              - SITE2-LER1
+        bgp_peers:
+          192.168.48.1:
+            description: TENANT_B_CPE_SITE3
+            nodes:
+              - SITE1-LER2
+            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            remote_as: "65201"
+          192.168.48.3:
+            description: TENANT_B_CPE_SITE5
+            nodes:
+              - SITE2-LER1
+            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            remote_as: "65202"

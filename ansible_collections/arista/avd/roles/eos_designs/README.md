@@ -71,13 +71,14 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 The following reference design types are included in the roles default variables:
 
 - l3ls-evpn: Layer 3 Leaf Spine with VXLAN EVPN
+- mpls (BETA): MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 ### Layer 3 Leaf Spine with VXLAN EVPN
 
 Feasible Layer 3 leaf & spine topologies leveraging VXLAN data-plane with an EVPN control-plane:
 
 | Underlay | Overlay | Topology |
-| -------- | ------- | ---------- |
+| -------- | ------- | -------- |
 | eBGP | eBGP | Multi-Stage + L2 Leafs |
 | ISIS | eBGP | Multi-Stage + L2 Leafs |
 | ISIS | iBGP | Multi-Stage + L2 Leafs |
@@ -103,6 +104,15 @@ Across all designs the following functionality is provided:
 <div style="text-align:center">
   <img src="../../media/dissag-topology.gif" />
 </div>
+
+### (BETA) MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+
+| Underlay | Overlay | Topology |
+| -------- | ------- | -------- |
+| ISIS-SR | iBGP | Arbitrary Mesh or leaf-spine |
+| ISIS-SR + LDP | iBGP | Arbitrary Mesh or leaf-spine |
+| ISIS + LDP | iBGP | Arbitrary Mesh or leaf-spine |
+| OSPF + LDP | iBGP | Arbitrary Mesh or leaf-spine |
 
 ## Requirements
 

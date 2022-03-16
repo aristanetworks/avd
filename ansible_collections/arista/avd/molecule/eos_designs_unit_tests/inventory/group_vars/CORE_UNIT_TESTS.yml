@@ -52,10 +52,12 @@ core_router:
 
 core_interfaces:
   p2p_links_ip_pools:
-    underlay_pool: 100.64.48.0/24
-    some_other_pool: 100.123.123.0/24
+    - name: underlay_pool
+      ipv4_pool: 100.64.48.0/24
+    - name: some_other_pool
+      ipv4_pool: 100.123.123.0/24
   p2p_links_profiles:
-    isis_bb_profile:
+    - name: isis_bb_profile
       speed: "forced 1000full"
       mtu: 1500
       isis_hello_padding: false
@@ -66,7 +68,7 @@ core_interfaces:
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
-    ospf_bb_profile:
+    - name: ospf_bb_profile
       speed: "forced 1000full"
       mtu: 1500
       ip_pool: underlay_pool
