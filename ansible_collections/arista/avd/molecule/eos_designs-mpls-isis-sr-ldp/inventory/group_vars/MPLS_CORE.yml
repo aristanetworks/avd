@@ -68,9 +68,9 @@ bgp_as: 65000
 
 # BGP peer groups
 bgp_peer_groups:
-  MPLS_OVERLAY_PEERS:
+  mpls_overlay_peers:
     password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
-  RR_OVERLAY_PEERS:
+  rr_overlay_peers:
     password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
 
 # Internal VLAN allocation
