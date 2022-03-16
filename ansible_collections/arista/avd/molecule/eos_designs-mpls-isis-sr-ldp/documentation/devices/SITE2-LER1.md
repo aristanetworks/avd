@@ -3,14 +3,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Name Servers](#name-servers)
-  - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -81,46 +76,6 @@ interface Management1
    ip address 192.168.200.107/24
 ```
 
-## Name Servers
-
-### Name Servers Summary
-
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 192.168.200.5 | MGMT |
-| 8.8.8.8 | MGMT |
-
-### Name Servers Device Configuration
-
-```eos
-ip name-server vrf MGMT 8.8.8.8
-ip name-server vrf MGMT 192.168.200.5
-```
-
-## NTP
-
-### NTP Summary
-
-#### NTP Local Interface
-
-| Interface | VRF |
-| --------- | --- |
-| Management1 | MGMT |
-
-#### NTP Servers
-
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
-
-### NTP Device Configuration
-
-```eos
-!
-ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 192.168.200.5 prefer
-```
-
 ## Management API HTTP
 
 ### Management API HTTP Summary
@@ -149,55 +104,7 @@ management api http-commands
 
 # Authentication
 
-## Local Users
-
-### Local Users Summary
-
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| cvpadmin | 15 | network-admin |
-
-### Local Users Device Configuration
-
-```eos
-!
-username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-```
-
 # Monitoring
-
-## TerminAttr Daemon
-
-### TerminAttr Daemon Summary
-
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
-
-### TerminAttr Daemon Device Configuration
-
-```eos
-!
-daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
-   no shutdown
-```
-
-## SNMP
-
-### SNMP Configuration Summary
-
-| Contact | Location | SNMP Traps | State |
-| ------- | -------- | ---------- | ----- |
-| example@example.com | MPLS_CORE SITE2-LER1 | All | Disabled |
-
-### SNMP Device Configuration
-
-```eos
-!
-snmp-server contact example@example.com
-snmp-server location MPLS_CORE SITE2-LER1
-```
 
 # Spanning Tree
 
@@ -225,13 +132,13 @@ spanning-tree mst 0 priority 4096
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 3700 | 3900 |
+| ascending | 1006 | 1199 |
 
 ## Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
-vlan internal order ascending range 3700 3900
+vlan internal order ascending range 1006 1199
 ```
 
 # VLANs
@@ -878,14 +785,14 @@ router bgp 65000
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
-| 1500 | 1500 | 3 |
+| 300 | 300 | 3 |
 
 ### Router BFD Device Configuration
 
 ```eos
 !
 router bfd
-   multihop interval 1500 min-rx 1500 multiplier 3
+   multihop interval 300 min-rx 300 multiplier 3
 ```
 
 # MPLS

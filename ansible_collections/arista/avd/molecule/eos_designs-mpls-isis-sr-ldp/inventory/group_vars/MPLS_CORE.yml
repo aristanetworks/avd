@@ -9,45 +9,8 @@ fabric_name: MPLS_CORE
 
 underlay_ipv6: true
 
-# local users
-local_users:
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
-
-# Cloud Vision server
-cvp_instance_ips:
-  - 192.168.200.11
-
-cvp_ingestauth_key: telarista
-terminattr_disable_aaa: false
-
-snmp_settings:
-  contact: example@example.com
-  location: true
-
 # OOB Management network default gateway.
 mgmt_gateway: 192.168.200.5
-
-# dns servers.
-name_servers:
-  - 192.168.200.5
-  - 8.8.8.8
-
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
-ntp:
-  local_interface:
-    name: "{{ mgmt_interface | arista.avd.default('Management1') }}"
-    vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
-  servers:
-    - name: 192.168.200.5
-      preferred: True
-      vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
-
-queue_monitor_length:
-  log: 5
-  notifying: true
 
 underlay_routing_protocol: isis-sr-ldp
 
@@ -73,24 +36,12 @@ bgp_peer_groups:
   rr_overlay_peers:
     password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
 
-# Internal VLAN allocation
-internal_vlan_order:
-  allocation: ascending
-  range:
-    beginning: 3700
-    ending: 3900
 
 # RD/RT Format
 overlay_rd_type:
   admin_subfield: overlay_loopback
 overlay_rt_type:
   admin_subfield: 65000
-
-# BFD
-bfd_multihop:
-  interval: 1500
-  min_rx: 1500
-  multiplier: 3
 
 # P-routers
 p:
@@ -200,12 +151,6 @@ rr:
         SITE2-RR1:
           id: 9
           mgmt_ip: 10.30.30.109/24
-
-connected_endpoints_keys:
-  routers:
-    type: router
-  cpes:
-    type: cpe
 
 # Core underlay interfaces
 core_interfaces:
