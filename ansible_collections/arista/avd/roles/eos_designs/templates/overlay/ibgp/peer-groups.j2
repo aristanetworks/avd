@@ -1,4 +1,3 @@
-{# j2lint: disable=V1 #}
   peer_groups:
     {{ overlay_data.overlay_peer_group_name }}:
 {% if switch.mpls_overlay_role in ["server", "client"] %}
@@ -10,12 +9,12 @@
       remote_as: "{{ switch.bgp_as }}"
       bfd: true
 {% if switch.mpls_overlay_role in ["server", "client"] %}
-{%     if bgp_peer_groups.mpls_overlay_peers.password is arista.avd.defined() %}
+{%     if bgp_peer_groups.mpls_overlay_peers.password is arista.avd.defined %}
       password: "{{ bgp_peer_groups.mpls_overlay_peers.password }}"
 {%     endif %}
 {% else %}
-{%     if bgp_peer_groups.EVPN_OVERLAY_PEERS.password is arista.avd.defined() %}
-      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+{%     if switch.bgp_peer_groups.evpn_overlay_peers.password is arista.avd.defined %}
+      password: "{{ bgp_peer_groups.evpn_overlay_peers.password }}"
 {%     endif %}
 {% endif %}
       send_community: all
