@@ -71,7 +71,7 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 The following reference design types are included in the roles default variables:
 
 - l3ls-evpn: Layer 3 Leaf Spine with VXLAN EVPN
-- mpls: MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+- mpls (BETA): MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 ### Layer 3 Leaf Spine with VXLAN EVPN
 
@@ -105,7 +105,7 @@ Across all designs the following functionality is provided:
   <img src="../../media/dissag-topology.gif" />
 </div>
 
-### MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+### (BETA) MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 | Underlay | Overlay | Topology |
 | -------- | ------- | -------- |
