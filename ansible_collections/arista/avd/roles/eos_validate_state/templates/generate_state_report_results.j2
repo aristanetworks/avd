@@ -5,7 +5,7 @@ eos_validate_state_report:
 {% set copy_hostvars = namespace(hostvars) %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - power supplies status #}
-{%     if copy_hostvars[node].power_supplies_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
+{%     if copy_hostvars[node].power_supplies_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
 - id: {{ test_id.value }}
@@ -24,7 +24,7 @@ eos_validate_state_report:
 {% endfor %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - fan status (power supplies) #}
-{%     if copy_hostvars[node].fan_power_supplies_results.results is arista.avd.defined and copy_hostvars[node].fan_power_supplies_results.skipped is not arista.avd.defined %}
+{%     if copy_hostvars[node].fan_power_supplies_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].fan_power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
 - id: {{ test_id.value }}
@@ -43,7 +43,7 @@ eos_validate_state_report:
 {% endfor %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - fan status (fan tray) #}
-{%     if copy_hostvars[node].fan_tray_status_results.results is arista.avd.defined and copy_hostvars[node].fan_tray_status_results.skipped is not arista.avd.defined %}
+{%     if copy_hostvars[node].fan_tray_status_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].fan_tray_status_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
 - id: {{ test_id.value }}
@@ -79,21 +79,19 @@ eos_validate_state_report:
 {% endfor %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - transceivers manufacturers #}
-{%     if copy_hostvars[node].transceiver_inventory_results.results is arista.avd.defined and copy_hostvars[node].transceiver_inventory_results.skipped is not arista.avd.defined %}
+{%     if copy_hostvars[node].transceiver_inventory_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].transceiver_inventory_results.results %}
-{%             if result.failed is arista.avd.defined() %}
-{%                 set test_id.value = test_id.value + 1 %}
+{%             set test_id.value = test_id.value + 1 %}
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Hardware"
   test_description: "Transceivers manufacturers"
   test: "Port {{ result.xcvrSlot.key }}"
-{%                 if result.failed == false %}
+{%             if result.failed == false %}
   result: "PASS"
-{%                 else %}
+{%             else %}
   result: "FAIL"
   failure_reason: "{{ result.msg }}"
-{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
