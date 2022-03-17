@@ -4,6 +4,9 @@
 
 ### IP Router Multicast Summary
 
+{%     if router_multicast.ipv4.counters.rate_period_decay is arista.avd.defined %}
+- Counters rate period decay is set for {{ router_multicast.ipv4.counters.rate_period_decay }} seconds
+{%     endif %}
 {%     if router_multicast.ipv4.routing is arista.avd.defined(true) %}
 - Routing for IPv4 multicast is enabled.
 {%     endif %}
