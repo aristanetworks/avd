@@ -1,16 +1,26 @@
 # ip-routing
 # Table of Contents
 
+- [ip-routing](#ip-routing)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing)
+  - [IP Routing](#ip-routing-1)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
+    - [IPv6 Routing Device Configuration](#ipv6-routing-device-configuration)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -81,9 +91,9 @@ interface Management1
 ```eos
 !
 no ip routing
+no ip icmp redirect
 ip routing vrf TEST1
 no ip routing vrf TEST2
-no ip icmp redirect
 ```
 ## IPv6 Routing
 
