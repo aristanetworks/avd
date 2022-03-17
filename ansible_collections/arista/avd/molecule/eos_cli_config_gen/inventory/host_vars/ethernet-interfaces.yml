@@ -402,3 +402,20 @@ ethernet_interfaces:
       mpls:
         shared_index: 100
         tunnel_flood_filter_time: 100
+
+  Ethernet29:
+    description: DOT1X Testing - auto phone true
+    dot1x:
+      port_control: auto
+      port_control_force_authorized_phone: true 
+
+  Ethernet30:
+    description: DOT1X Testing - force-authorized phone false
+    dot1x:
+      port_control: force-authorized
+      port_control_force_authorized_phone: false
+
+  Ethernet31:
+    description: DOT1X Testing - force-unauthorized - no phone
+    dot1x:
+      port_control: force-unauthorized
