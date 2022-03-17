@@ -15,7 +15,7 @@
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing-1)
+  - [IP Routing](#ip-routing)
     - [IP Routing Summary](#ip-routing-summary)
     - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
