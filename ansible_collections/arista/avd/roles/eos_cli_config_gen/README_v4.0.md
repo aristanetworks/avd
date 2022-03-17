@@ -302,16 +302,16 @@ standard_access_lists:
 
 ```yaml
 ipv6_access_lists:
-  < ipv6_access_list_name_1 >:
+  - name: < ipv6_access_list_name_1 >
     counters_per_entry: < true | false >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < ipv6_access_list_name_2 >:
+  - name: < ipv6_access_list_name_2 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
