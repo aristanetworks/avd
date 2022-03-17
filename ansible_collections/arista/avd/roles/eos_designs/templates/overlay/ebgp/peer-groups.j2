@@ -18,7 +18,7 @@
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: "{{ evpn_ebgp_multihop }}"
+      ebgp_multihop: "{{ evpn_ebgp_gateway_multihop }}"
 {%     if bgp_peer_groups.EVPN_OVERLAY_CORE.password is arista.avd.defined() %}
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_CORE.password }}"
 {%     endif %}
