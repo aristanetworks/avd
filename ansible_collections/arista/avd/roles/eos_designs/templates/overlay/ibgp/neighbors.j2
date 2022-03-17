@@ -1,4 +1,3 @@
-{# j2lint: disable=V1 #}
   neighbors:
 {% if switch.mpls_overlay_role in ["server", "client"] %}
 {%     for mpls_route_server in overlay_data.mpls_route_servers | arista.avd.natural_sort %}
