@@ -82,10 +82,10 @@ interface Management1
 !
 interface Ethernet1
    no switchport
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.1
    ip ospf cost 99
+   ip ospf network point-to-point
    ip ospf authentication message-digest
+   ip ospf area 0.0.0.1
    ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 

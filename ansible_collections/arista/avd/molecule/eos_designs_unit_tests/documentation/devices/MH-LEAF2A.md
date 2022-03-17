@@ -314,9 +314,9 @@ interface Ethernet2
 interface Ethernet10
    description ROUTER01_Eth1
    no shutdown
-   switchport
    switchport access vlan 310
    switchport mode access
+   switchport
    link tracking group Eth-conn-to-router downstream
 ```
 
