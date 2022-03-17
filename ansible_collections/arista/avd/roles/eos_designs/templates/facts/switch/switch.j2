@@ -187,6 +187,12 @@ switch:
                           switch.default_evpn_role, 'none') %}
   evpn_role: {{ switch_evpn_role }}
 
+{# switch.evpn_gateway #}
+{%     set switch_evpn_gateway = switch_data.combined.evpn_gateway.evpn_l2.enabled is arista.avd.defined(true) or
+                                 switch_data.combined.evpn_gateway.evpn_l3.enabled is arista.avd.defined(true) or
+                                 switch_data.combined.evpn_gateway.vpn_ipv4.enabled is arista.avd.defined(true) %}
+  evpn_gateway: {{ switch_evpn_gateway | arista.avd.default(false) }}
+
 {# switch.mpls_overlay_role #}
 {%     set switch_mpls_overlay_role = switch_data.combined.mpls_overlay_role | arista.avd.default(
                           switch.default_mpls_overlay_role) %}

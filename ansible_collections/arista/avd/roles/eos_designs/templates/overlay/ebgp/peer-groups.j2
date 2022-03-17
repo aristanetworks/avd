@@ -13,3 +13,15 @@
 {% if switch.evpn_role == "server" %}
       next_hop_unchanged: true
 {% endif %}
+{% if switch.evpn_gateway is arista.avd.defined(true)%}
+    {{ bgp_peer_groups.EVPN_OVERLAY_CORE.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: "{{ evpn_ebgp_multihop }}"
+{%     if bgp_peer_groups.EVPN_OVERLAY_CORE.password is arista.avd.defined() %}
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_CORE.password }}"
+{%     endif %}
+      send_community: all
+      maximum_routes: 0
+{% endif %}
