@@ -34,7 +34,7 @@ logging synchronous level {{ logging.synchronous.level | arista.avd.default("cri
 {%     for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%         for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
 {%             set logging_host_cli = "logging" %}
-{%             if logging.vrfs[vrf].hosts is arista.avd.defined and vrf is not arista.avd.defined('default') %}
+{%             if vrf != "default" %}
 {%                 set logging_host_cli = logging_host_cli ~ " vrf " ~ vrf %}
 {%             endif %}
 {%             set logging_host_cli = logging_host_cli ~ " host " ~ host %}
@@ -66,11 +66,13 @@ logging source-interface {{ logging.source_interface }}
 {%     endif %}
 {%     for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%         set logging_cli = "logging" %}
-{%         if logging.vrfs[vrf].source_interface is arista.avd.defined and vrf is not arista.avd.defined('default') %}
-{%             set logging_cli = logging_cli ~ " vrf " ~ vrf %}
-{%         endif %}
-{%         set logging_cli = logging_cli ~ " source-interface " ~ logging.vrfs[vrf].source_interface %}
+{%         if logging.vrfs[vrf].source_interface is arista.avd.defined %}
+{%             if vrf != "default" %}
+{%                 set logging_cli = logging_cli ~ " vrf " ~ vrf %}
+{%             endif %}
+{%             set logging_cli = logging_cli ~ " source-interface " ~ logging.vrfs[vrf].source_interface %}
 {{ logging_cli }}
+{%         endif %}
 {%     endfor %}
 {%     for match_list in logging.policy.match.match_lists | arista.avd.natural_sort %}
 logging policy match match-list {{ match_list }} {{ logging.policy.match.match_lists[match_list].action }}

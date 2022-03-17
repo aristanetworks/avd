@@ -73,6 +73,7 @@ interface Management1
 | mgt | 10.10.10.7 | Default | UDP |
 | mgt | 30.30.30.7 | 100, 200 | TCP |
 | mgt | 40.40.40.7 | 300, 400 | UDP |
+| vrf_with_no_source_interface | 1.2.3.4 | Default | UDP |
 
 ### Logging Servers and Features Device Configuration
 
@@ -88,6 +89,7 @@ logging host 60.60.60.7 100 200
 logging vrf mgt host 10.10.10.7
 logging vrf mgt host 30.30.30.7 100 200 protocol tcp
 logging vrf mgt host 40.40.40.7 300 400
+logging vrf vrf_with_no_source_interface host 1.2.3.4
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
 ```
