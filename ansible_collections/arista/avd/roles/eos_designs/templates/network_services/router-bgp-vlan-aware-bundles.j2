@@ -38,12 +38,11 @@
                              tenant_mac_vrf_id_base + l2vlan_int) %}
     {{ l2vlan.name }}:
       tenant: {{ tenant.name }}
-{%             if switch.evpn_gateway is arista.avd.defined(true) %}
-      rd_evpn_domain:
-        domain: "all"
-        rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
-{%             else %}
       rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+{%             if switch.evpn_gateway_evpn_l2 is arista.avd.defined(true) %}
+      rd_evpn_domain:
+        domain: "remote"
+        rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
 {%             endif %}
       route_targets:
         both:
