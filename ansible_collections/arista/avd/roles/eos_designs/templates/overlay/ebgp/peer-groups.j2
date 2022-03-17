@@ -13,7 +13,7 @@
 {% if switch.evpn_role == "server" %}
       next_hop_unchanged: true
 {% endif %}
-{% if switch.evpn_gateway is arista.avd.defined(true)%}
+{% if switch.evpn_gateway is arista.avd.defined(true) %}
     {{ bgp_peer_groups.EVPN_OVERLAY_CORE.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
       type: evpn
       update_source: Loopback0
