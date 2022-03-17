@@ -3,3 +3,5 @@
     peer_groups:
       {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
         activate: false
+      {{ bgp_peer_groups.EVPN_OVERLAY_CORE.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
+        activate: false
