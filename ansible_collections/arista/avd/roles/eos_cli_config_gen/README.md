@@ -1701,16 +1701,28 @@ ip_http_client_source_interfaces:
 
 ```yaml
 management_api_gnmi:
+  provider: < "eos-native" >
+  transport:
+     grpc:
+     - name: < transport_name >
+       # vrf is optional
+       vrf: < vrf_name >
+      # Per the GNMI specification, the default timestamp field of a notification message is set to be
+      # the time at which the value of the underlying data source changes or when the reported event takes place.
+      # In order to facilitate integration in legacy environments oriented around polling style operations,
+      # an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
+      notification_timestamp: < "send-time" | "last-change-time" >
+      ip_access_group: < acl_name >
+
+  # Below keys will be deprecated in AVD v4.0 - These should not be mixed with the new keys above.
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
     < vrf_name_2 >:
       access_group: < Standard IPv4 ACL name >
+  # Enable provider 'eos-native' to stream both OpenConfig and EOS native paths.
   octa:
 ```
-
-!!! info "gNMI provider"
-    Octa activates `eos-native` provider and it is the only provider currently supported by EOS.
 
 #### Management Console
 
