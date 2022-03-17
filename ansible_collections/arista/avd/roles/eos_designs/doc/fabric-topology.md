@@ -313,6 +313,29 @@ defaults <- node_group <- node_group.node <- node
     igmp_snooping_enabled: < true | false >
 ```
 
+### BGP & EVPN Multi-Domain Gateway
+```yaml
+< node_type_key >:
+
+  defaults:
+    # Node is acting as EVPN Multi-Domain Gateway | Optional.
+    evpn_gateway:
+      evpn_l2:
+        enabled: < true | false >
+        remote_peer_group: < peer_group_name | Default -> "EVPN-OVERLAY-CORE" >
+        evpn_route_servers: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
+      evpn_l3:
+        enabled: < true | false >
+        remote_peer_group: < peer_group_name | Default -> "EVPN-OVERLAY-CORE" >
+        evpn_route_servers: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
+      vpn_ipv4:
+        enabled: < true | false >
+        remote_peer_group: < peer_group_name | Default -> "EVPN-OVERLAY-CORE" >
+        evpn_route_servers: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
+        remote_domain: < domain_id >
+        local_domain: < domain_id >
+```
+
 ### MLAG configuration management
 
 ```yaml
