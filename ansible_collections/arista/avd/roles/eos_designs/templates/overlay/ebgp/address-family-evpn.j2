@@ -7,6 +7,12 @@
       {{ bgp_peer_groups.EVPN_OVERLAY_CORE.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
         domain_remote: true
         activate: true
+{%     if switch.evpn_gateway_evpn_l3 is arista.avd.defined(true) %}
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+{%     endif %}
 {% endif %}
 {% if switch.vtep_ip is arista.avd.defined and evpn_hostflap_detection is arista.avd.defined %}
     evpn_hostflap_detection:
