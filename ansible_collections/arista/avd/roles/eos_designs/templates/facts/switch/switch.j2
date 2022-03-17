@@ -192,6 +192,9 @@ switch:
                                  switch_data.combined.evpn_gateway.evpn_l3.enabled is arista.avd.defined(true) or
                                  switch_data.combined.evpn_gateway.vpn_ipv4.enabled is arista.avd.defined(true) %}
   evpn_gateway: {{ switch_evpn_gateway | arista.avd.default(false) }}
+{% if switch_evpn_gateway is arista.avd.defined(true) %}
+  evpn_gateway_route_servers: {{ switch_data.combined.evpn_gateway.evpn_l2.remote_peers + switch_data.combined.evpn_gateway.evpn_l3.remote_peers + switch_data.combined.evpn_gateway.vpn_ipv4.remote_peers | arista.avd.default() }}
+{% endif %}
 
 {# switch.mpls_overlay_role #}
 {%     set switch_mpls_overlay_role = switch_data.combined.mpls_overlay_role | arista.avd.default(
