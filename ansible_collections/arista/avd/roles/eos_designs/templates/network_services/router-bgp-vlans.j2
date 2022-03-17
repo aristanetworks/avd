@@ -25,6 +25,9 @@
       route_targets:
         both:
           - "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+        import_export_evpn_domains:
+          - domain: "remote"
+            route_target: "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
       redistribute_routes:
         - learned
 {%             endfor %}
@@ -49,6 +52,9 @@
       route_targets:
         both:
           - "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+        import_export_evpn_domains:
+          - domain: "remote"
+            route_target: "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
       redistribute_routes:
         - learned
 {%         endfor %}
