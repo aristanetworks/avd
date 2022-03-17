@@ -657,12 +657,14 @@ community_lists:
 
 ```yaml
 ip_extcommunity_lists:
-  < community_list_name_1 >:
-    - type: < permit | deny >
-      extcommunities: "< communities as string >"
-  < community_list_name_2 >:
-    - type: < permit | deny >
-      extcommunities: "< communities as string >"
+  - name: < community_list_name_1 >
+    types:
+      - type: < permit | deny >
+        extcommunities: "< communities as string >"
+  - name: < community_list_name_2 >
+    types:
+      - type: < permit | deny >
+        extcommunities: "< communities as string >"
 ```
 
 #### IP Extended Community Lists RegExp

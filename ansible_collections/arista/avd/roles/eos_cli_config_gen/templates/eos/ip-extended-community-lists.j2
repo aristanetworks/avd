@@ -1,9 +1,9 @@
 {# eos - ip-extended-community-lists #}
-{% for ip_extcommunity_list in ip_extcommunity_lists | arista.avd.natural_sort %}
+{% for ip_extcommunity_list in ip_extcommunity_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 !
-{%     for sequence in ip_extcommunity_lists[ip_extcommunity_list] | arista.avd.default([]) %}
-{%         if sequence.type is arista.avd.defined and sequence.extcommunities is arista.avd.defined %}
-ip extcommunity-list {{ ip_extcommunity_list }} {{ sequence.type }} {{ sequence.extcommunities }}
+{%     for type in ip_extcommunity_list.types | arista.avd.default([]) %}
+{%         if type.type is arista.avd.defined and type.extcommunities is arista.avd.defined %}
+ip extcommunity-list {{ ip_extcommunity_list.name }} {{ type.type }} {{ type.extcommunities }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
