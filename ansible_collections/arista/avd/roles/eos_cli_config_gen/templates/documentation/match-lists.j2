@@ -5,7 +5,7 @@
 {%     if match_list_input.string is arista.avd.defined %}
 ### Match-list Input String Summary
 
-{%         for match_list in match_list_input['string'] | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for match_list in match_list_input.string | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 #### {{ match_list.name }}
 
 | Sequence | Match Regex |
