@@ -17,7 +17,7 @@
 {% endfor %}
 {% for evpn_route_client in overlay_data.evpn_gateway_route_servers | arista.avd.natural_sort %}
     {{ overlay_data.evpn_gateway_route_servers[evpn_route_client].ip_address }}:
-      peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_CORE.name | arista.avd.default("EVPN-OVERLAY-CORE") }}
+      peer_group: {{ bgp_peer_groups.evpn_overlay_core.name | arista.avd.default("EVPN-OVERLAY-CORE") }}
       description: {{ evpn_route_client }}
       remote_as: "{{ overlay_data.evpn_gateway_route_servers[evpn_route_client].bgp_as }}"
 {% endfor %}

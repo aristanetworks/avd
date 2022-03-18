@@ -91,7 +91,7 @@ bgp_peer_groups:
   EVPN_OVERLAY_PEERS:
       name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
       password: "< encrypted password >"
-  EVPN_OVERLAY_CORE:
+  evpn_overlay_core:
       name: < name of peer group | default -> EVPN-OVERLAY-CORE >
       password: "< encrypted password >"
 

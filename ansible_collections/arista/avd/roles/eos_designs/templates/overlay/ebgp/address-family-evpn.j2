@@ -4,7 +4,7 @@
       {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
         activate: true
 {% if switch.evpn_gateway is arista.avd.defined(true) %}
-      {{ bgp_peer_groups.EVPN_OVERLAY_CORE.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
+      {{ bgp_peer_groups.evpn_overlay_core.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
         domain_remote: true
         activate: true
 {%     if switch.evpn_gateway_evpn_l3 is arista.avd.defined(true) %}
