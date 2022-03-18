@@ -15,6 +15,8 @@ port_channel_interfaces:
 {%             if adapter_settings.port_channel.mode is arista.avd.defined %}
 {%                 set channel_group_id = (adapter_settings.switch_ports[0] | regex_findall("\d") | join) %}
 {%                 set adapter_port_channel_description = adapter_settings.port_channel.description | arista.avd.default('') %}
+{%                 set esi_hash_switches = adapter_settings.switches[:2] | join %}
+{%                 set esi_hash_ports = adapter_settings.switch_ports[:2] | join %}
 {%                 for adapter_switch in adapter_settings.switches | arista.avd.natural_sort %}
 {%                     if adapter_switch == inventory_hostname %}
 {%                         if adapter_settings.monitor_sessions is arista.avd.defined %}
@@ -71,6 +73,11 @@ port_channel_interfaces:
 {%                         endif %}
 {%                         if adapter_settings.switches | unique | list | length > 1 %}
 {%                             if adapter.port_channel.short_esi is arista.avd.defined %}
+{%                                 if adapter.port_channel.short_esi == 'auto' %}
+{%                                     set esi_hash = (esi_hash_switches ~ esi_hash_ports ~ channel_group_id) | hash('sha256') %}
+{%                                     set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
+{%                                     do adapter.update({ 'port_channel': { 'short_esi': short_esi_hash }}) %}
+{%                                 endif %}
 {%                                 if adapter.port_channel.short_esi.split(':') | length == 3 %}
     esi: {{ adapter.port_channel.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
     rt: {{ adapter.port_channel.short_esi | arista.avd.generate_route_target }}
@@ -107,6 +114,11 @@ port_channel_interfaces:
   Port-Channel{{ channel_group_id }}.{{ subinterface.number }}:
     type: l2dot1q
 {%                                 if subinterface.short_esi is arista.avd.defined %}
+{%                                     if subinterface.short_esi == 'auto' %}
+{%                                         set esi_hash = (esi_hash_switches ~ esi_hash_ports ~ channel_group_id ~ subinterface.number) | hash('sha256') %}
+{%                                         set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
+{%                                         do subinterface.update({ 'short_esi': short_esi_hash }) %}
+{%                                     endif %}
 {%                                     if subinterface.short_esi.split(':') | length == 3 %}
     esi: {{ subinterface.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
     rt: {{ subinterface.short_esi | arista.avd.generate_route_target }}
