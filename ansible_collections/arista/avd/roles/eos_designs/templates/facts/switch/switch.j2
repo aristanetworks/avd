@@ -194,6 +194,7 @@ switch:
   evpn_gateway: {{ switch_evpn_gateway | arista.avd.default(false) }}
   evpn_gateway_evpn_l2: {{ switch_data.combined.evpn_gateway.evpn_l2.enabled | arista.avd.default(false) }}
   evpn_gateway_evpn_l3: {{ switch_data.combined.evpn_gateway.evpn_l3.enabled | arista.avd.default(false) }}
+  evpn_gateway_evpn_l3_inter_domain: {{ switch_data.combined.evpn_gateway.evpn_l3.inter_domain | arista.avd.default(evpn_ebgp_gateway_inter_domain) }}
   evpn_gateway_vpn_ipv4: {{ switch_data.combined.evpn_gateway.vpn_ipv4.enabled | arista.avd.default(false) }}
 {%     if switch_evpn_gateway is arista.avd.defined(true) %}
   evpn_gateway_route_servers: {{ switch_data.combined.evpn_gateway.remote_peers_vxlan | arista.avd.default() }}
