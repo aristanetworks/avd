@@ -17,9 +17,21 @@
 {% for evpn_gateway_route_server in switch.evpn_gateway_route_servers | arista.avd.natural_sort %}
 {%     set peer_facts = hostvars[evpn_gateway_route_server] %}
 {%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ evpn_gateway_route_server) %}
+{# Found a matching server. Gathering information for this server #}
 {%         set server = namespace() %}
 {%         set server.bgp_as = peer_facts.switch.bgp_as %}
 {%         set server.ip_address = peer_facts.switch.router_id %}
 {%         do overlay_data.evpn_gateway_route_servers.update({ evpn_gateway_route_server: server }) %}
+{%     endif %}
+{% endfor %}
+{% for evpn_gateway_route_server in switch.evpn_gateway_route_servers_user_defined | arista.avd.natural_sort %}
+{# Add user-defined EVPN GW Route Servers #}
+{%     set server = namespace() %}
+{%     set server.bgp_as = evpn_gateway_route_server.bgp_as %}
+{%     set server.ip_address = evpn_gateway_route_server.router_id %}
+{%     if evpn_gateway_route_server.description is arista.avd.defined %}
+{%         do overlay_data.evpn_gateway_route_servers.update({ evpn_gateway_route_server.description: server }) %}
+{%     else %}
+{%         do overlay_data.evpn_gateway_route_servers.update({ evpn_gateway_route_server.router_id: server }) %}
 {%     endif %}
 {% endfor %}
