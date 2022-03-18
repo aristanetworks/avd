@@ -17,7 +17,8 @@ RANGE_TO_EXPAND_VALID_VALUES = [
     ["Eth1.1,9-10.1", "Eth2.2-3", "Eth3/1-2.3-4"],
     "1-3",
     ["1", "2", "3"],
-    "vlan1-3"
+    "vlan1-3",
+    "Et1-2/3-4/5-6",
 ]
 
 EXPECTED_RESULT_VALID_VALUES = [
@@ -33,6 +34,7 @@ EXPECTED_RESULT_VALID_VALUES = [
     ["1", "2", "3"],
     ["1", "2", "3"],
     ["vlan1", "vlan2", "vlan3"],
+    ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"],
 ]
 
 f = FilterModule()

@@ -188,6 +188,7 @@ Within a single range, prefixes (ex. Ethernet, Eth, Po) are carried over to item
   - "1-3"                                         -> ["1", "2", "3"]
   - ["1", "2", "3"]                               -> ["1", "2", "3"]
   - "vlan1-3"                                     -> ["vlan1", "vlan2", "vlan3"]
+  - "Et1-2/3-4/5-6"                               -> ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"]
 ```
 
 To use this filter:
@@ -195,6 +196,8 @@ To use this filter:
 ```jinja
 {{ range_to_expand | arista.avd.range_expand }}
 ```
+
+!!! Note this is not using the same range syntax as EOS for modular or break-out ports. On EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD the same range would be `et1-2/1-4`
 
 ## Plugin Tests
 
