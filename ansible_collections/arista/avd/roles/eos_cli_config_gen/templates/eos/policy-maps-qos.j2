@@ -2,7 +2,7 @@
 {% for policy_map in policy_maps.qos | arista.avd.natural_sort %}
 !
 policy-map type quality-of-service {{ policy_map }}
-{%     for class in policy_maps.qos[policy_map].classes | arista.avd.natural_sort %}
+{%     for class in policy_maps.qos[policy_map].classes | arista.avd.default([]) %}
    class {{ class }}
 {%         if policy_maps.qos[policy_map].classes[class].set is arista.avd.defined %}
 {%             for set in policy_maps.qos[policy_map].classes[class].set %}
