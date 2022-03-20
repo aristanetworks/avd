@@ -47,9 +47,11 @@
       route_targets:
         both:
           - "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+{%             if switch.evpn_gateway_evpn_l2 is arista.avd.defined(true) %}
         import_export_evpn_domains:
           - domain: "remote"
             route_target: "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+{%             endif %}
       redistribute_routes:
         - learned
       vlan: {{ l2vlan_int }}
