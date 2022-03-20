@@ -327,13 +327,7 @@ class-map type qos match-any cmap_tc5_v6
 ```eos
 !
 policy-map type quality-of-service pmap_test1
-   class class-default
-      set traffic-class 1
-   !
    class cmap_tc0_v4
-      set traffic-class 0
-   !
-   class cmap_tc0_v6
       set traffic-class 0
    !
    class cmap_tc5_v4
@@ -341,6 +335,12 @@ policy-map type quality-of-service pmap_test1
    !
    class cmap_tc5_v6
       set traffic-class 5
+   !
+   class cmap_tc0_v6
+      set traffic-class 0
+   !
+   class class-default
+      set traffic-class 1
    !
 ```
 
