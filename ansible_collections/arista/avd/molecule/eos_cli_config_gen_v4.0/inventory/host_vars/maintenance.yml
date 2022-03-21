@@ -3,7 +3,7 @@ maintenance:
   default_bgp_profile: BP1
   default_unit_profile: IP1
   interface_profiles:
-    IP1:
+    - name: IP1
       rate_monitoring:
         load_interval: 10
         threshold: 500
