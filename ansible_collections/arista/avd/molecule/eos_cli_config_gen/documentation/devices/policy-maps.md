@@ -148,11 +148,9 @@ policy-map type quality-of-service PM_REPLICATION_LD
    class CM_REPLICATION_LD_2
       set dscp af11
       set traffic-class 2
-   !
 !
 policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
       set cos 4
-   !
 ```

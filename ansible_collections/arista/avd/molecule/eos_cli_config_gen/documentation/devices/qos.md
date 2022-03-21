@@ -341,7 +341,6 @@ policy-map type quality-of-service pmap_test1
    !
    class class-default
       set traffic-class 1
-   !
 ```
 
 ## QOS Profiles
