@@ -3,7 +3,7 @@ maintenance:
   default_bgp_profile: BP1
   default_unit_profile: IP1
   interface_profiles:
-    - name: IP1
+    IP1:
       rate_monitoring:
         load_interval: 10
         threshold: 500
@@ -31,7 +31,7 @@ maintenance:
       profile: UP1
       groups:
         bgp_groups:
-        - BGP_GROUP_1
-        - BGP_GROUP_2
+          - BGP_GROUP_1
+          - BGP_GROUP_2
         interface_groups:
-        - INTERFACE_GROUP_1
+          - INTERFACE_GROUP_1
