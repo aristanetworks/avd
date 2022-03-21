@@ -316,24 +316,18 @@ class-map type qos match-any cmap_tc5_v6
 
 | class | Set | Value |
 | ----- | --- | ----- |
-| class-default | traffic_class | 1 |
 | cmap_tc0_v4 | traffic_class | 0 |
-| cmap_tc0_v6 | traffic_class | 0 |
 | cmap_tc5_v4 | traffic_class | 5 |
 | cmap_tc5_v6 | traffic_class | 5 |
+| cmap_tc0_v6 | traffic_class | 0 |
+| class-default | traffic_class | 1 |
 
 ### QOS Policy Maps configuration
 
 ```eos
 !
 policy-map type quality-of-service pmap_test1
-   class class-default
-      set traffic-class 1
-   !
    class cmap_tc0_v4
-      set traffic-class 0
-   !
-   class cmap_tc0_v6
       set traffic-class 0
    !
    class cmap_tc5_v4
@@ -342,6 +336,11 @@ policy-map type quality-of-service pmap_test1
    class cmap_tc5_v6
       set traffic-class 5
    !
+   class cmap_tc0_v6
+      set traffic-class 0
+   !
+   class class-default
+      set traffic-class 1
 ```
 
 ## QOS Profiles

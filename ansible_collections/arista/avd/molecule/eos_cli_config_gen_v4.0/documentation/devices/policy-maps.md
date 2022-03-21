@@ -122,9 +122,9 @@ policy-map type pbr PM_PBR_BREAKOUT
 
 | class | Set | Value |
 | ----- | --- | ----- |
-| CM_REPLICATION_LD | drop_precedence | 1 |
 | CM_REPLICATION_LD | dscp | af11 |
 | CM_REPLICATION_LD | traffic_class | 2 |
+| CM_REPLICATION_LD | drop_precedence | 1 |
 | CM_REPLICATION_LD_2 | dscp | af11 |
 | CM_REPLICATION_LD_2 | traffic_class | 2 |
 
@@ -132,8 +132,8 @@ policy-map type pbr PM_PBR_BREAKOUT
 
 | class | Set | Value |
 | ----- | --- | ----- |
-| CM_REPLICATION_LD | cos | 4 |
 | CM_REPLICATION_LD | dscp | af11 |
+| CM_REPLICATION_LD | cos | 4 |
 
 ### QOS Policy Maps configuration
 
@@ -148,11 +148,9 @@ policy-map type quality-of-service PM_REPLICATION_LD
    class CM_REPLICATION_LD_2
       set dscp af11
       set traffic-class 2
-   !
 !
 policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
       set cos 4
-   !
 ```
