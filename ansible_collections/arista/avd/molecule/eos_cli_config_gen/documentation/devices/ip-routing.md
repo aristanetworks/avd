@@ -81,9 +81,9 @@ interface Management1
 ```eos
 !
 no ip routing
+no ip icmp redirect
 ip routing vrf TEST1
 no ip routing vrf TEST2
-no ip icmp redirect
 ```
 ## IPv6 Routing
 
