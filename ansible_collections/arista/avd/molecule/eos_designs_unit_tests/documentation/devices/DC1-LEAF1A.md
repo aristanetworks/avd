@@ -296,32 +296,32 @@ vlan 132
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.1/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.3/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.5/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.7/31
 !
@@ -329,21 +329,21 @@ interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 ```
 
 ## Loopback Interfaces

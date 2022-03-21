@@ -303,32 +303,32 @@ vlan 350
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet8
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.113/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet8
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.115/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet8
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.117/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet8
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.119/31
 ```

@@ -250,72 +250,72 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.6/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.22/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.38/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.54/31
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.70/31
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.86/31
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.102/31
 !
 interface Ethernet8
    description P2P_LINK_TO_DC1-BL2A_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.118/31
 !
 interface Ethernet9
    description P2P_LINK_TO_DC1-BL2B_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.134/31
 ```

@@ -89,9 +89,9 @@ interface Management1
 interface Ethernet1
    no switchport
    ip address 192.168.100.1/31
-   mpls ip
-   mpls ldp interface
    mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
 ```
 
 ## Loopback Interfaces
