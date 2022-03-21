@@ -78,11 +78,11 @@ bgp_peer_groups:
   ipv4_underlay_peers:
     name: < name of peer group | default -> IPv4-UNDERLAY-PEERS >
     password: "< encrypted password >"
-   # Old uppercase key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
+   # Old mixed case key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
   mlag_ipv4_underlay_peer:
       name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
       password: "< encrypted password >"
-   # Old uppercase key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
+   # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
       name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
       password: "< encrypted password >"
