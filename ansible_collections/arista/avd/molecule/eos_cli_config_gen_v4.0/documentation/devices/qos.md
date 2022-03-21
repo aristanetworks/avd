@@ -316,11 +316,11 @@ class-map type qos match-any cmap_tc5_v6
 
 | class | Set | Value |
 | ----- | --- | ----- |
-| class-default | traffic_class | 1 |
 | cmap_tc0_v4 | traffic_class | 0 |
-| cmap_tc0_v6 | traffic_class | 0 |
 | cmap_tc5_v4 | traffic_class | 5 |
 | cmap_tc5_v6 | traffic_class | 5 |
+| cmap_tc0_v6 | traffic_class | 0 |
+| class-default | traffic_class | 1 |
 
 ### QOS Policy Maps configuration
 
