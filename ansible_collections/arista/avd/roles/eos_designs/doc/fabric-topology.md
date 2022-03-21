@@ -319,21 +319,23 @@ defaults <- node_group <- node_group.node <- node
 
   defaults:
     # Node is acting as EVPN Multi-Domain Gateway | Optional.
+    # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers. Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable
+    # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
     evpn_gateway:
+      remote_peers_vxlan: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
+
+      # When remote EVPN GWs or Route Servers are not present in the running Ansible inventory, they can be defined statically.
+      remote_peers_vxlan_neighbors:
+      - router_id: < RouterID of remote Route Server >
+        bgp_as: < BGP ASN of remote Route Server >
+        description: "< Description for neighbor identification >"
+
+      # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP) and 5 (IP-PREFIX) can be enabled separately as needed.
       evpn_l2:
-        enabled: < true | false >
-        remote_peer_group: < peer_group_name | Default -> "EVPN-OVERLAY-CORE" >
-        evpn_route_servers: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
+        enabled: < true | false | Default -> False >
       evpn_l3:
-        enabled: < true | false >
-        remote_peer_group: < peer_group_name | Default -> "EVPN-OVERLAY-CORE" >
-        evpn_route_servers: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
-      vpn_ipv4:
-        enabled: < true | false >
-        remote_peer_group: < peer_group_name | Default -> "EVPN-OVERLAY-CORE" >
-        evpn_route_servers: [ '< inventory_hostname_of_remote_evpn_gw_server >' ]
-        remote_domain: < domain_id >
-        local_domain: < domain_id >
+        enabled: < true | false | Default -> False >
+        inter_domain: < true | false | Default -> True >
 ```
 
 ### MLAG configuration management

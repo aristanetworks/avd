@@ -75,10 +75,14 @@ evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 # Adapt the value for your specific topology.
 evpn_ebgp_gateway_multihop: < ebgp_multihop | default -> 15 >
 
+# EVPN GW inter-domain | Optional
+# Default of True. Enables crossing of BGP EVPN Route Type 5 between different EVPN domains changing the next hop.
+evpn_ebgp_gateway_inter_domain: < true | false | default -> True >
+
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Optional
 # EVPN_OVERLAY_PEERS | Optional
-# EVPN_OVERLAY_CORE | Optional
+# evpn_overlay_core | Optional
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
@@ -92,8 +96,8 @@ bgp_peer_groups:
       name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
       password: "< encrypted password >"
   evpn_overlay_core:
-      name: < name of peer group | default -> EVPN-OVERLAY-CORE >
-      password: "< encrypted password >"
+    name: < name of peer group | default -> EVPN-OVERLAY-CORE >
+    password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
