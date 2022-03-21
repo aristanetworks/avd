@@ -13,7 +13,7 @@ management api gnmi
       vrf {{ vrf }}
 {%         endif %}
 {%     endfor %}
-{%     if management_api_gnmi.octa is arista.avd.defined %}
+{%     if management_api_gnmi.octa is defined %}
    provider eos-native
 {%     endif %}
 {%     if management_api_gnmi.transport is arista.avd.defined %}
