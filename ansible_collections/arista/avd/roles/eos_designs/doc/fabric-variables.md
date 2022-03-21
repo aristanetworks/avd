@@ -80,12 +80,12 @@ bgp_peer_groups:
     password: "< encrypted password >"
    # Old mixed case key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
   mlag_ipv4_underlay_peer:
-      name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
-      password: "< encrypted password >"
+    name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
+    password: "< encrypted password >"
    # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
-      name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
-      password: "< encrypted password >"
+    name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
+    password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
