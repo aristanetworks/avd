@@ -217,6 +217,31 @@ switch:
 {# switch.bgp_cluster_id #}
   bgp_cluster_id: {{ switch_data.combined.bgp_cluster_id | arista.avd.default() }}
 
+{# switch.bgp_peer_groups #}
+{# Keep support for old uppercase keys for backward-compatibility #}
+{# Using ['<name>'] style for upper-case keys, to avoid linting errors #}
+  bgp_peer_groups:
+    ipv4_underlay_peers:
+      name: {{ bgp_peer_groups.ipv4_underlay_peers.name | arista.avd.default(bgp_peer_groups['IPv4_UNDERLAY_PEERS'].name, 'IPv4-UNDERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.ipv4_underlay_peers.password | arista.avd.default(bgp_peer_groups['IPv4_UNDERLAY_PEERS'].password) | to_json }}
+    mlag_ipv4_underlay_peer:
+      name: {{ bgp_peer_groups.mlag_ipv4_underlay_peer.name | arista.avd.default(bgp_peer_groups['MLAG_IPv4_UNDERLAY_PEER'].name, 'MLAG-IPv4-UNDERLAY-PEER') }}
+      password: {{ bgp_peer_groups.mlag_ipv4_underlay_peer.password | arista.avd.default(bgp_peer_groups['MLAG_IPv4_UNDERLAY_PEER'].password) | to_json }}
+    evpn_overlay_peers:
+      name: {{ bgp_peer_groups.evpn_overlay_peers.name | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].name, 'EVPN-OVERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.evpn_overlay_peers.password | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].password) | to_json }}
+    mpls_overlay_peers:
+      name: {{ bgp_peer_groups.mpls_overlay_peers.name | arista.avd.default('MPLS-OVERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.mpls_overlay_peers.password | arista.avd.default | to_json }}
+    rr_overlay_peers:
+      name: {{ bgp_peer_groups.rr_overlay_peers.name | arista.avd.default('RR-OVERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.rr_overlay_peers.password | arista.avd.default | to_json }}
+
+{# switch.evpn_role #}
+{%     set switch_evpn_role = switch_data.combined.evpn_role | arista.avd.default(
+                          switch.default_evpn_role) %}
+  evpn_role: {{ switch_evpn_role }}
+
 {# switch.evpn_route_servers #}
 {# For clients the default value for EVPN Route Servers is content of the uplink_switches variable set above. #}
 {%     if switch_evpn_role == "client" %}
