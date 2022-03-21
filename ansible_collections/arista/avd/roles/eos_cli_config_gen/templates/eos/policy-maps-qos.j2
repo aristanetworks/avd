@@ -4,14 +4,12 @@
 policy-map type quality-of-service {{ policy_map }}
 {%     for class in policy_maps.qos[policy_map].classes | arista.avd.default([]) %}
    class {{ class }}
-{%         if policy_maps.qos[policy_map].classes[class].set is arista.avd.defined %}
-{%             for set in policy_maps.qos[policy_map].classes[class].set %}
-{%                 set cli_set = set | replace('_','-') | lower %}
-{%                 if cli_set in ['cos', 'dscp', 'traffic-class', 'drop-precedence']  %}
+{%         for set in policy_maps.qos[policy_map].classes[class].set | arista.avd.default([]) %}
+{%             set cli_set = set | replace('_','-') | lower %}
+{%             if cli_set in ['cos', 'dscp', 'traffic-class', 'drop-precedence'] %}
       set {{ cli_set }} {{ policy_maps.qos[policy_map].classes[class].set[set] }}
-{%                 endif %}
-{%             endfor %}
+{%             endif %}
+{%         endfor %}
    !
-{%         endif %}
 {%     endfor %}
 {% endfor %}
