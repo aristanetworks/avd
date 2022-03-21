@@ -9,12 +9,12 @@
       remote_as: "{{ switch.bgp_as }}"
       bfd: true
 {% if switch.mpls_overlay_role in ["server", "client"] %}
-{%     if bgp_peer_groups.mpls_overlay_peers.password is arista.avd.defined %}
-      password: "{{ bgp_peer_groups.mpls_overlay_peers.password }}"
+{%     if switch.bgp_peer_groups.mpls_overlay_peers.password is arista.avd.defined %}
+      password: "{{ switch.bgp_peer_groups.mpls_overlay_peers.password }}"
 {%     endif %}
 {% else %}
 {%     if switch.bgp_peer_groups.evpn_overlay_peers.password is arista.avd.defined %}
-      password: "{{ bgp_peer_groups.evpn_overlay_peers.password }}"
+      password: "{{ switch.bgp_peer_groups.evpn_overlay_peers.password }}"
 {%     endif %}
 {% endif %}
       send_community: all
@@ -28,8 +28,8 @@
       update_source: Loopback0
       remote_as: "{{ bgp_as }}"
       bfd: true
-{%     if bgp_peer_groups.rr_overlay_peers.password is arista.avd.defined() %}
-      password: "{{ bgp_peer_groups.rr_overlay_peers.password }}"
+{%     if switch.bgp_peer_groups.rr_overlay_peers.password is arista.avd.defined() %}
+      password: "{{ switch.bgp_peer_groups.rr_overlay_peers.password }}"
       send_community: all
       maximum_routes: 0
 {%     endif %}
