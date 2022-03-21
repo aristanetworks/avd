@@ -1,7 +1,7 @@
 {% if switch.evpn_role == "server" %}
 {%     set overlay_data.evpn_route_clients = {} %}
 {# #}
-{%     set avd_overlay_peers = hostvars[ansible_play_hosts[0]].ansible_facts.avd_overlay_peers[inventory_hostname] | arista.avd.default([]) %}
+{%     set avd_overlay_peers = avd_overlay_peers[inventory_hostname] | arista.avd.default([]) %}
 
 {# Parse switches pointing to us as evpn_route_server #}
 {%     for peer in avd_overlay_peers %}
