@@ -70,6 +70,7 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 # Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
+
 # EVPN GW ebgp-multihop | Optional
 # Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
 # Adapt the value for your specific topology.
@@ -79,25 +80,25 @@ evpn_ebgp_gateway_multihop: < ebgp_multihop | default -> 15 >
 # Default of True. Enables crossing of BGP EVPN Route Type 5 between different EVPN domains changing the next hop.
 evpn_ebgp_gateway_inter_domain: < true | false | default -> True >
 
-# BGP peer groups encrypted password
-# IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Optional
-# EVPN_OVERLAY_PEERS | Optional
-# evpn_overlay_core | Optional
+# BGP peer group names and encrypted password | Optional
+
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS:
+   # Old mixed case key "IPv4_UNDERLAY_PEERS" is supported for backward-compatibility
+  ipv4_underlay_peers:
     name: < name of peer group | default -> IPv4-UNDERLAY-PEERS >
     password: "< encrypted password >"
-  MLAG_IPv4_UNDERLAY_PEER:
-      name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
-      password: "< encrypted password >"
-  EVPN_OVERLAY_PEERS:
-      name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
-      password: "< encrypted password >"
+   # Old mixed case key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
+  mlag_ipv4_underlay_peer:
+    name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
+    password: "< encrypted password >"
+   # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
+  evpn_overlay_peers:
+    name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
+    password: "< encrypted password >"
   evpn_overlay_core:
     name: < name of peer group | default -> EVPN-OVERLAY-CORE >
-    password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.

@@ -97,9 +97,9 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
    no switchport
+   ip address 172.31.255.1/31
    qos trust dscp
    qos dscp 48
-   ip address 172.31.255.1/31
    service-profile test
 !
 interface Ethernet3
@@ -112,18 +112,18 @@ interface Ethernet4
 !
 interface Ethernet6
    description SRV-POD02_Eth1
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
    qos trust cos
    qos cos 2
    service-profile experiment
 !
 interface Ethernet7
    description Test-with-policymap
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
    service-profile qprof_testwithpolicy
 ```
 
@@ -316,24 +316,18 @@ class-map type qos match-any cmap_tc5_v6
 
 | class | Set | Value |
 | ----- | --- | ----- |
-| class-default | traffic_class | 1 |
 | cmap_tc0_v4 | traffic_class | 0 |
-| cmap_tc0_v6 | traffic_class | 0 |
 | cmap_tc5_v4 | traffic_class | 5 |
 | cmap_tc5_v6 | traffic_class | 5 |
+| cmap_tc0_v6 | traffic_class | 0 |
+| class-default | traffic_class | 1 |
 
 ### QOS Policy Maps configuration
 
 ```eos
 !
 policy-map type quality-of-service pmap_test1
-   class class-default
-      set traffic-class 1
-   !
    class cmap_tc0_v4
-      set traffic-class 0
-   !
-   class cmap_tc0_v6
       set traffic-class 0
    !
    class cmap_tc5_v4
@@ -342,6 +336,11 @@ policy-map type quality-of-service pmap_test1
    class cmap_tc5_v6
       set traffic-class 5
    !
+   class cmap_tc0_v6
+      set traffic-class 0
+   !
+   class class-default
+      set traffic-class 1
 ```
 
 ## QOS Profiles

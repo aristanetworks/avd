@@ -285,32 +285,32 @@ vlan 350
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.81/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.83/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.85/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.87/31
 !
@@ -321,10 +321,10 @@ interface Ethernet7
    no switchport
    vrf Tenant_A_WAN_Zone
    ip address 10.10.10.10/24
-   ip ospf network point-to-point
-   ip ospf area 0
    ip ospf cost 100
+   ip ospf network point-to-point
    ip ospf authentication message-digest
+   ip ospf area 0
    ip ospf message-digest-key 1 sha1 7 AQQvKeimxJu+uGQ/yYvv9w==
    ip ospf message-digest-key 2 sha512 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
