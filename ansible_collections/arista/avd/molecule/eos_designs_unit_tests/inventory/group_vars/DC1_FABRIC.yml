@@ -135,7 +135,8 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
           evpn_gateway:
-            remote_peers_vxlan: [ "DC1-BL2A" ]
+            remote_peers:
+              - hostname: "DC1-BL2A"
             evpn_l2:
               enabled: true
             evpn_l3:
@@ -148,10 +149,11 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
           evpn_gateway:
-            remote_peers_vxlan_neighbors:
-              - router_id: 1.1.1.1
+            remote_peers:
+              - hostname: "MY_EVPN_GW_USER_DEFINED"
+                ip_address: 1.1.1.1
                 bgp_as: 65555
-                description: "MY_EVPN_GW_USER_DEFINED"
+
             evpn_l2:
               enabled: true
             evpn_l3:
