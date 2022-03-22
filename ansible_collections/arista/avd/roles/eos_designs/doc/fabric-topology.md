@@ -323,11 +323,13 @@ defaults <- node_group <- node_group.node <- node
     # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
     evpn_gateway:
 
-      # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in inventory, peer_ip and BGP ASN will be automatically populated. If hostname can't be found, peer_ip and bgp_as will be used to create the neighbor.
+      # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in inventory, ip_address and BGP ASN will be automatically populated, unless explicitly defined, which will override the calculated parameters. If hostname can't be found, ip_address and bgp_as will be used to create the neighbor.
       remote_peers:
-        - hostname: < inventory_hostname_of_remote_evpn_gw_server >
-        - hostname: < description_of_remote_evpn_gw_server >
-          peer_ip: < Peering IP of remote Route Server >
+        - hostname: < Inventory hostname of remote EVPN GW server >
+          ip_address: < Peering IP of remote Route Server | Optional if override is required >
+          bgp_as: < BGP ASN of remote Route Server | Optional if override is required >
+        - hostname: < Hostname of remote EVPN GW server >
+          ip_address: < Peering IP of remote Route Server >
           bgp_as: < BGP ASN of remote Route Server >
 
       # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP) and 5 (IP-PREFIX) can be enabled separately as needed.
