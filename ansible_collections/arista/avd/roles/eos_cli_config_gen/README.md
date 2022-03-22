@@ -87,6 +87,7 @@
       - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
+      - [Management Tech-Support](#management-tech-support)
       - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
       - [NTP](#ntp)
     - [MPLS](#mpls)
@@ -1794,6 +1795,19 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
   log_level: < SSH daemon log level >
+```
+
+#### Management Tech-Support
+
+```yaml
+management_tech_support:
+  policy_show_tech_support:
+    exclude_commands:
+      - command: < command_to_exclude >
+        # The supported values for type are platform dependent
+        type: < text | json | default -> text >
+    include_commands:
+      - command: < command_to_include >
 ```
 
 #### IP SSH Client Source Interfaces
