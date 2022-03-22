@@ -3,6 +3,6 @@
       {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}:
         activate: false
 {% if switch.evpn_gateway is arista.avd.defined(true) %}
-      {{ bgp_peer_groups.evpn_overlay_core.name | arista.avd.default("EVPN-OVERLAY-CORE") }}:
+      {{ switch.bgp_peer_groups.evpn_overlay_core.name }}:
         activate: false
 {% endif %}

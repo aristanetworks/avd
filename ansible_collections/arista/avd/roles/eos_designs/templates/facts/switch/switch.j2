@@ -243,6 +243,9 @@ switch:
     evpn_overlay_peers:
       name: {{ bgp_peer_groups.evpn_overlay_peers.name | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].name, 'EVPN-OVERLAY-PEERS') }}
       password: {{ bgp_peer_groups.evpn_overlay_peers.password | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].password) | to_json }}
+    evpn_overlay_core:
+      name: {{ bgp_peer_groups.evpn_overlay_core.name | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_CORE'].name, 'EVPN-OVERLAY-CORE') }}
+      password: {{ bgp_peer_groups.evpn_overlay_core.password | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_CORE'].password) | to_json }}
     mpls_overlay_peers:
       name: {{ bgp_peer_groups.mpls_overlay_peers.name | arista.avd.default('MPLS-OVERLAY-PEERS') }}
       password: {{ bgp_peer_groups.mpls_overlay_peers.password | arista.avd.default | to_json }}
