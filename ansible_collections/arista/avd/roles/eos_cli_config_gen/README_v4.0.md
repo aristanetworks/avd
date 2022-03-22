@@ -1630,7 +1630,7 @@ name_server:
 ```yaml
 ip_domain_lookup:
   source_interfaces:
-    < source_interface_1 >:
+    - name: < source_interface_1 >
       vrf: < vrf_name >
 ```
 
