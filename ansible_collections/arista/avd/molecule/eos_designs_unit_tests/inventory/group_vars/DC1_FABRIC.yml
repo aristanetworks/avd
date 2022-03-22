@@ -153,7 +153,6 @@ l3leaf:
               - hostname: "MY_EVPN_GW_USER_DEFINED"
                 ip_address: 1.1.1.1
                 bgp_as: 65555
-
             evpn_l2:
               enabled: true
             evpn_l3:
