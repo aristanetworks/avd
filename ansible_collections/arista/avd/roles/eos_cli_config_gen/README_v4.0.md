@@ -1646,7 +1646,7 @@ domain_list:
 
 ```yaml
 management_interfaces:
-  < Management_interface_1 >:
+  - name: < Management_interface_1 >
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
