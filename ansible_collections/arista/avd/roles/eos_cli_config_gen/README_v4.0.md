@@ -1094,7 +1094,7 @@ switchport_default:
 
 ```yaml
 interface_profiles:
-  < interface_profile_1 >:
+  - name: < interface_profile_1 >
     commands:
       - < command_1 >
       - < command_2 >
@@ -1572,7 +1572,7 @@ maintenance:
   default_bgp_profile: < bgp_profile_1 >
   default_unit_profile: < unit_profile_1 >
   interface_profiles:
-    < interface_profile_1 >:
+    - name: < interface_profile_1 >
       rate_monitoring:
         load_interval: < seconds >
         threshold: < kbps >

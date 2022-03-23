@@ -31,7 +31,7 @@ maintenance:
       profile: UP1
       groups:
         bgp_groups:
-        - BGP_GROUP_1
-        - BGP_GROUP_2
+          - BGP_GROUP_1
+          - BGP_GROUP_2
         interface_groups:
-        - INTERFACE_GROUP_1
+          - INTERFACE_GROUP_1
