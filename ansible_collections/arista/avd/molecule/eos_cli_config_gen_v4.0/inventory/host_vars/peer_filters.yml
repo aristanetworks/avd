@@ -1,0 +1,13 @@
+### peer filters ###
+
+peer_filters:
+  - name: PF1
+    sequence_numbers:
+      - sequence: 10
+        match: "as-path"
+      - sequence: 20
+        match: "as-range"
+  - name: PF2
+    sequence_numbers:
+      - sequnece: 30
+        match: "community-list"
