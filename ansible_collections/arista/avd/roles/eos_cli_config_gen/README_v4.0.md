@@ -723,9 +723,9 @@ route_maps:
 ```yaml
 match_list_input:
   string:
-    < match_list_1 >:
+    - name: < match_list_1 >
       sequence_numbers:
-        < sequence_id 1 >:
+        - sequence: < sequence_id 1 >
           match_regex: < match string >
 ```
 
