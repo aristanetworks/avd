@@ -88,7 +88,6 @@ interface Management1
 ### Domain-list Device Configuration
 
 ```eos
-!
 ip domain-list structured-config.set.under.vrf.common-vrf
 !
 ```
@@ -556,15 +555,15 @@ interface Loopback102
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  set from structured_config on svi (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
-| Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
-| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
-| Vlan1100 |  test_svi  |  vrf_with_loopbacks_from_overlapping_pool  |  -  |  false  |
-| Vlan1101 |  test_svi  |  vrf_with_loopbacks_from_pod_pools  |  -  |  false  |
-| Vlan1102 |  test_svi  |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  false  |
-| Vlan4085 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan110 | set from structured_config on svi (was Tenant_A_OP_Zone_1) | Common_VRF | - | false |
+| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | true |
+| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | false |
+| Vlan113 | SVI_with_no_vxlan | Common_VRF | - | false |
+| Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | false |
+| Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | false |
+| Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | false |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | false |
+| Vlan4094 | MLAG_PEER | default | 1500 | false |
 
 #### IPv4
 
@@ -636,8 +635,8 @@ interface Vlan4085
    no shutdown
    mtu 1500
    ip address 172.21.110.3/24
-   ip virtual-router address 172.21.110.1
    ip attached-host route export 19
+   ip virtual-router address 172.21.110.1
 !
 interface Vlan4094
    description MLAG_PEER
@@ -762,7 +761,7 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.1.254  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
@@ -820,17 +819,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
-| 11.1.0.39 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True |
-| 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.17.110.16 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.17.110.18 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.17.110.20 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.17.110.22 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
-| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| 11.1.0.39 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True | - |
+| 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 172.17.110.16 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
+| 172.17.110.18 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
+| 172.17.110.20 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
+| 172.17.110.22 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
+| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -886,6 +885,7 @@ router bgp 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
+   neighbor MLAG-IPv4-UNDERLAY-PEER description DC1-POD1-LEAF2A
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000

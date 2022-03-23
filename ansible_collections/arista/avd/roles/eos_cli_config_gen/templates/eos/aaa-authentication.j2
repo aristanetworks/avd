@@ -1,6 +1,5 @@
 {# eos - aaa authentication #}
 {% if aaa_authentication is arista.avd.defined %}
-!
 {%     if aaa_authentication.login.default is arista.avd.defined %}
 aaa authentication login default {{ aaa_authentication.login.default }}
 {%     endif %}

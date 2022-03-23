@@ -2,6 +2,8 @@
 
 router_multicast:
   ipv4:
+    counters:
+      rate_period_decay: 300
     routing: true
     multipath: "deterministic router-id"
     software_forwarding: sfe

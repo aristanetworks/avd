@@ -84,6 +84,7 @@
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
+      - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
@@ -893,6 +894,7 @@ ethernet_interfaces:
         key: "< encrypted_password >"
     pim:
       ipv4:
+        dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
     mac_security:
       profile: < profile >
@@ -935,6 +937,7 @@ ethernet_interfaces:
         - priority: < 0-7 >
           no_drop: < true | false >
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1048,6 +1051,7 @@ ethernet_interfaces:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1184,6 +1188,7 @@ port_channel_interfaces:
       dscp: < dscp-value >
       cos: < cos-value >
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1294,6 +1299,7 @@ port_channel_interfaces:
     mac_access_group_out: < mac_access_list_name >
     pim:
       ipv4:
+        dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
     service_profile: < qos_profile >
     ospf_network_point_to_point: < true | false >
@@ -1370,6 +1376,7 @@ vlan_interfaces:
         key: "< encrypted_password >"
     pim:
       ipv4:
+        dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
     ipv6_virtual_router_address: < IPv6_address >
@@ -1389,6 +1396,7 @@ vlan_interfaces:
     ip_attached_host_route_export:
       distance: < distance >
     bfd:
+      echo: < true | false >
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
@@ -1693,22 +1701,42 @@ ip_http_client_source_interfaces:
 
 ```yaml
 management_api_gnmi:
+  provider: < "eos-native" >
+  transport:
+    grpc:
+      - name: < transport_name >
+        # vrf is optional
+        vrf: < vrf_name >
+        # Per the GNMI specification, the default timestamp field of a notification message is set to be
+        # the time at which the value of the underlying data source changes or when the reported event takes place.
+        # In order to facilitate integration in legacy environments oriented around polling style operations,
+        # an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
+        notification_timestamp: < "send-time" | "last-change-time" >
+        ip_access_group: < acl_name >
+
+  # Below keys will be deprecated in AVD v4.0 - These should not be mixed with the new keys above.
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
     < vrf_name_2 >:
       access_group: < Standard IPv4 ACL name >
+  # Enable provider 'eos-native' to stream both OpenConfig and EOS native paths.
   octa:
 ```
-
-!!! info "gNMI provider"
-    Octa activates `eos-native` provider and it is the only provider currently supported by EOS.
 
 #### Management Console
 
 ```yaml
 management_console:
   idle_timeout: < 0-86400 in minutes >
+```
+
+#### Management Defaults
+
+```yaml
+management_defaults:
+  secret:
+    hash: < md5 | sha512 >
 ```
 
 #### Management Security
@@ -1883,6 +1911,8 @@ ip_igmp_snooping:
 ```yaml
 router_multicast:
   ipv4:
+    counters:
+      rate_period_decay: < 0-600 > # in seconds, optional
     routing: < true | false >
     multipath: < none | deterministic | "deterministic color" | "deterministic router-id" >
     software_forwarding: < kernel | sfe >
@@ -2377,6 +2407,9 @@ policy_maps:
     < policy-map name >:
       classes:
         < class name >:
+          index: < integer > # Optional
+          # Set only one of the below actions per class
+          drop: < true | false >
           set:
             nexthop:
               ip_address: < IPv4_address | IPv6_address >
@@ -2395,6 +2428,7 @@ policy_maps:
 #### QOS Profiles
 
 ```yaml
+# The below knobs are platform dependent
 qos_profiles:
   < profile-1 >:
     trust: < dscp | cos | disabled >
@@ -2408,14 +2442,27 @@ qos_profiles:
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
-        # The below knob is platform dependent
         bandwidth_guaranteed_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
       < tx-queue-id >:
         bandwidth_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    uc_tx_queues:
+      < uc-tx-queue-id >:
+        bandwidth_percent: < value >
+        bandwidth_guaranteed_percent: < value >
+        priority: < "priority strict" | "no priority" >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    mc_tx_queues:
+      < mc-tx-queue-id >:
+        bandwidth_percent: < value >
+        bandwidth_guaranteed_percent: < value >
+        priority: < "priority strict" | "no priority" >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
   < profile-2 >:
@@ -2425,10 +2472,10 @@ qos_profiles:
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
       < tx-queue-id >:
         bandwidth_percent: < value >
-        priority: < string >
+        priority: < "priority strict" | "no priority" >
 ```
 
 #### Queue Monitor Length
@@ -2543,6 +2590,9 @@ router_bgp:
         times: < 1-10 >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      rib_in_pre_policy_retain:
+        enabled: < true | false >
+        all: < true | false >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
     < peer_group_name_2 >:
@@ -2562,6 +2612,9 @@ router_bgp:
       bfd: < true | false >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      rib_in_pre_policy_retain:
+        enabled: < true | false >
+        all: < true | false >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
       default_originate:
@@ -2585,7 +2638,7 @@ router_bgp:
     < interface >:
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
-      description: "< description as string >"
+      peer_filter: <peer_filter>
   aggregate_addresses:
     < aggregate_address_1/mask >:
       advertise_only: < true | false >
@@ -2855,6 +2908,9 @@ router_bgp:
           next_hop_self: < true | false >
           bfd: < true | false >
           timers: < keepalive_hold_timer_values >
+          rib_in_pre_policy_retain:
+            enabled: < true | false >
+            all: < true | false >
           send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >

@@ -253,6 +253,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 310 | Tenant_X_OP_Zone_1 | - |
+| 311 | Tenant_default_vrf | - |
 
 ## VLANs Device Configuration
 
@@ -260,6 +261,9 @@ vlan internal order ascending range 1006 1199
 !
 vlan 310
    name Tenant_X_OP_Zone_1
+!
+vlan 311
+   name Tenant_default_vrf
 ```
 
 # Interfaces
@@ -310,9 +314,9 @@ interface Ethernet2
 interface Ethernet10
    description ROUTER01_Eth1
    no shutdown
-   switchport
    switchport access vlan 310
    switchport mode access
+   switchport
    link tracking group Eth-conn-to-router downstream
 ```
 
@@ -386,13 +390,15 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan310 |  Tenant_X_OP_Zone_1  |  Tenant_X_OP_Zone  |  -  |  false  |
+| Vlan310 | Tenant_X_OP_Zone_1 | Tenant_X_OP_Zone | - | false |
+| Vlan311 | Tenant_default_vrf | default | - | false |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan310 |  Tenant_X_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan311 |  default  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -404,6 +410,11 @@ interface Vlan310
    no shutdown
    vrf Tenant_X_OP_Zone
    ip address virtual 10.1.10.1/24
+!
+interface Vlan311
+   description Tenant_default_vrf
+   no shutdown
+   ip address virtual 10.2.10.1/24
 ```
 
 ## VXLAN Interface
@@ -420,12 +431,14 @@ interface Vlan310
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
 | 310 | 11310 | - | - |
+| 311 | 11311 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
-| Tenant_X_OP_Zone | - | - |
+| default | 21 | - |
+| Tenant_X_OP_Zone | 20 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -436,6 +449,9 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 310 vni 11310
+   vxlan vlan 311 vni 11311
+   vxlan vrf default vni 21
+   vxlan vrf Tenant_X_OP_Zone vni 20
 ```
 
 # Routing
@@ -495,7 +511,7 @@ ip routing vrf Tenant_X_OP_Zone
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
@@ -539,10 +555,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
-| 10.10.101.4 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
-| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| 10.10.101.4 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
 ### Router BGP EVPN Address Family
 
@@ -556,13 +572,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_X_OP_Zone | 192.168.255.35:0 | 0:0 | - | - | learned | 310 |
+| default | 192.168.255.35:21 | 21:21 | - | - | learned | 311 |
+| Tenant_X_OP_Zone | 192.168.255.35:20 | 20:20 | - | - | learned | 310 |
 
 ### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_X_OP_Zone | 192.168.255.35: | connected |
+| default | 192.168.255.35:21 | - |
+| Tenant_X_OP_Zone | 192.168.255.35:20 | connected |
 
 ### Router BGP Device Configuration
 
@@ -582,6 +600,7 @@ router bgp 65153
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
    neighbor 10.10.101.4 peer group UNDERLAY-PEERS
    neighbor 10.10.101.4 remote-as 65001
    neighbor 10.10.101.4 description DC1-SPINE1_Ethernet12
@@ -590,9 +609,15 @@ router bgp 65153
    neighbor 192.168.255.1 description DC1-SPINE1
    redistribute connected route-map RM-CONN-2-BGP
    !
+   vlan-aware-bundle default
+      rd 192.168.255.35:21
+      route-target both 21:21
+      redistribute learned
+      vlan 311
+   !
    vlan-aware-bundle Tenant_X_OP_Zone
-      rd 192.168.255.35:0
-      route-target both 0:0
+      rd 192.168.255.35:20
+      route-target both 20:20
       redistribute learned
       vlan 310
    !
@@ -603,10 +628,16 @@ router bgp 65153
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY-PEERS activate
    !
+   vrf default
+      rd 192.168.255.35:21
+      route-target import evpn 21:21
+      route-target export evpn 21:21
+      route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
+   !
    vrf Tenant_X_OP_Zone
-      rd 192.168.255.35:
-      route-target import evpn None:None
-      route-target export evpn None:None
+      rd 192.168.255.35:20
+      route-target import evpn 20:20
+      route-target export evpn 20:20
       router-id 192.168.255.35
       redistribute connected
 ```
@@ -657,6 +688,12 @@ router bfd
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
+#### PL-SVI-VRF-DEFAULT
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.2.10.0/24 |
+
 ### Prefix-lists Device Configuration
 
 ```eos
@@ -664,24 +701,51 @@ router bfd
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
+!
+ip prefix-list PL-SVI-VRF-DEFAULT
+   seq 10 permit 10.2.10.0/24
 ```
 
 ## Route-maps
 
 ### Route-maps Summary
 
+#### RM-BGP-UNDERLAY-PEERS-OUT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | deny | match ip address prefix-list PL-SVI-VRF-DEFAULT |
+
 #### RM-CONN-2-BGP
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+| 30 | permit | match ip address prefix-list PL-SVI-VRF-DEFAULT |
+
+#### RM-EVPN-EXPORT-VRF-DEFAULT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | match ip address prefix-list PL-SVI-VRF-DEFAULT |
 
 ### Route-maps Device Configuration
 
 ```eos
 !
+route-map RM-BGP-UNDERLAY-PEERS-OUT deny 10
+   match ip address prefix-list PL-SVI-VRF-DEFAULT
+!
+route-map RM-BGP-UNDERLAY-PEERS-OUT permit 20
+!
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP permit 30
+   match ip address prefix-list PL-SVI-VRF-DEFAULT
+!
+route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
+   match ip address prefix-list PL-SVI-VRF-DEFAULT
 ```
 
 # ACL

@@ -25,20 +25,20 @@ maintenance
 {%         set first_line = {'flag': False} %}
    profile unit {{ maintenance.default_unit_profile }} default
 {%     endif %}
-{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort %}
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
 {%         set first_line = {'flag': False} %}
-   profile interface {{ interface_profile }}
-{%         if maintenance.interface_profiles[interface_profile].rate_monitoring.load_interval is arista.avd.defined %}
-      rate-monitoring load-interval {{ maintenance.interface_profiles[interface_profile].rate_monitoring.load_interval }}
+   profile interface {{ interface_profile.name }}
+{%         if interface_profile.rate_monitoring.load_interval is arista.avd.defined %}
+      rate-monitoring load-interval {{ interface_profile.rate_monitoring.load_interval }}
 {%         endif %}
-{%         if maintenance.interface_profiles[interface_profile].rate_monitoring.threshold is arista.avd.defined %}
-      rate-monitoring threshold {{ maintenance.interface_profiles[interface_profile].rate_monitoring.threshold }}
+{%         if interface_profile.rate_monitoring.threshold is arista.avd.defined %}
+      rate-monitoring threshold {{ interface_profile.rate_monitoring.threshold }}
 {%         endif %}
-{%         if maintenance.interface_profiles[interface_profile].shutdown.max_delay is arista.avd.defined %}
-      shutdown max-delay {{ maintenance.interface_profiles[interface_profile].shutdown.max_delay }}
+{%         if interface_profile.shutdown.max_delay is arista.avd.defined %}
+      shutdown max-delay {{ interface_profile.shutdown.max_delay }}
 {%         endif %}
 {%     endfor %}
 {%     for unit_profile in maintenance.unit_profiles | arista.avd.natural_sort %}

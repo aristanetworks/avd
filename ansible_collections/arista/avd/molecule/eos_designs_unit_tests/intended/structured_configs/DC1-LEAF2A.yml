@@ -162,7 +162,7 @@ router_bgp:
         - '100000:9'
       redistribute_routes:
       - learned
-      vlan: 110-111
+      vlan: 110-112
     Tenant_A_WEB_Zone:
       rd: '65001:11'
       route_targets:
@@ -274,6 +274,7 @@ vrfs:
   Tenant_A_OP_Zone:
     tenant: Tenant_A
     ip_routing: true
+    description: Tenant_A_OP_Zone
   Tenant_A_WEB_Zone:
     tenant: Tenant_A
     ip_routing: true
@@ -440,7 +441,7 @@ port_channel_interfaces:
     description: DC1_L2LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
+    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
     esi: 0000:0000:0808:0707:0606
     rt: 08:08:07:07:06:06
@@ -449,7 +450,7 @@ port_channel_interfaces:
     description: DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
+    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
     esi: 0000:0000:0606:0707:0808
     rt: 06:06:07:07:08:08
@@ -536,6 +537,9 @@ vlans:
   111:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
@@ -621,6 +625,18 @@ vlan_interfaces:
       1.1.1.1:
         source_interface: lo100
         vrf: MGMT
+  Vlan112:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_3
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    mtu: 1560
+    ip_helpers:
+      2.2.2.2:
+        source_interface: lo101
+        vrf: MGMT
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -678,9 +694,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
-virtual_source_nat_vrfs:
-  Tenant_A_OP_Zone:
-    ip_address: 10.255.1.10
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
@@ -700,6 +713,8 @@ vxlan_interface:
           vni: 10110
         111:
           vni: 50111
+        112:
+          vni: 10112
         120:
           vni: 10120
         121:
@@ -729,3 +744,6 @@ vxlan_interface:
           vni: 20
         Tenant_C_OP_Zone:
           vni: 30
+virtual_source_nat_vrfs:
+  Tenant_A_OP_Zone:
+    ip_address: 10.255.1.10

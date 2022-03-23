@@ -10,6 +10,13 @@ svi_profiles:
     mtu: 1560
     enabled: false
     ip_address_virtual: 10.1.10.254/24
+  GENERIC_DHCP:
+    mtu: 1560
+    enabled: false
+    ip_helpers:
+      2.2.2.2:
+        source_interface: lo101
+        source_vrf: MGMT
   WITH_NO_MTU:
     enabled: true
   WITH_DHCP_AND_SNOOPING:
@@ -26,7 +33,9 @@ svi_profiles:
       1.1.1.1:
         source_interface: lo100
         source_vrf: MGMT
-
+  DERIVED_DHCP:
+    parent_profile: GENERIC_DHCP
+    enabled: true
 
 tenants:
   # Tenant_A Specific Information - VRFs / VLANs
@@ -35,6 +44,7 @@ tenants:
     mac_vrf_id_base: 20000
     vrfs:
       Tenant_A_OP_Zone:
+        description: "Tenant_A_OP_Zone"
         vrf_vni: 10
         vrf_id: 9 # Check that RD and RT will use this number for this VRF. VNI should still respect vrf_vni
         vtep_diagnostic:
@@ -58,6 +68,12 @@ tenants:
               1.1.1.1:
                 source_interface: lo100
                 source_vrf: MGMT
+          # SVI using a nested svi_profile
+          112:
+            name: Tenant_A_OP_Zone_3
+            profile: DERIVED_DHCP
+            tags: ['opzone']
+            enabled: True
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:

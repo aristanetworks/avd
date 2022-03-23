@@ -222,6 +222,7 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
+| 112 | Tenant_A_OP_Zone_3 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
@@ -248,6 +249,9 @@ vlan 110
 !
 vlan 111
    name Tenant_A_OP_Zone_2
+!
+vlan 112
+   name Tenant_A_OP_Zone_3
 !
 vlan 120
    name Tenant_A_WEB_Zone_1
@@ -341,7 +345,7 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

@@ -79,9 +79,9 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 
 | VRF | TACACS Servers | Single-Connection |
 | --- | -------------- | ----------------- |
-|  mgt | 10.10.10.157 | True |
-|  default | 10.10.10.249 | False |
-|  default | 10.10.10.158 | False |
+| mgt | 10.10.10.157 | True |
+| default | 10.10.10.249 | False |
+| default | 10.10.10.158 | False |
 
 ### TACACS Servers Device Configuration
 
@@ -98,9 +98,9 @@ tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 
 | VRF | RADIUS Servers |
 | --- | ---------------|
-|  mgt | 10.10.10.157 |
-|  default | 10.10.10.249 |
-|  default | 10.10.10.158 |
+| mgt | 10.10.10.157 |
+| default | 10.10.10.249 |
+| default | 10.10.10.158 |
 
 ### RADIUS Servers Device Configuration
 
@@ -117,8 +117,8 @@ radius-server host 10.10.10.158 vrf default key 7 071B245F5A
 
 | Server Group Name | Type  | VRF | IP address |
 | ------------------| ----- | --- | ---------- |
-| TACACS | tacacs+ |  mgt | 10.10.10.157 |
-| TACACS | tacacs+ |  default | 10.10.10.249 |
+| TACACS | tacacs+ | mgt | 10.10.10.157 |
+| TACACS | tacacs+ | default | 10.10.10.249 |
 
 ### AAA Server Groups Device Configuration
 
@@ -147,7 +147,6 @@ Policy local allow-nopassword-remote-login has been enabled.
 ### AAA Authentication Device Configuration
 
 ```eos
-!
 aaa authentication login default group TACACS local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
@@ -179,9 +178,8 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
-!
-aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization exec default group CUST local
 aaa authorization commands all default group aaaAuth
 !
 ```
@@ -199,7 +197,6 @@ aaa authorization commands all default group aaaAuth
 ### AAA Accounting Device Configuration
 
 ```eos
-!
 aaa accounting exec default start-stop group TACACS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging

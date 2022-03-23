@@ -92,6 +92,8 @@ ethernet_interfaces:
     service_profile: QOS-PROFILE
     ptp:
       enable: true
+    mac_security:
+      profile: MACSEC_PROFILE
     type: routed
     shutdown: false
     ip_address: 172.16.11.64/31
@@ -104,6 +106,8 @@ ethernet_interfaces:
     service_profile: QOS-PROFILE
     ptp:
       enable: true
+    mac_security:
+      profile: MACSEC_PROFILE
     type: routed
     shutdown: false
     ip_address: 172.16.11.66/31
@@ -116,6 +120,8 @@ ethernet_interfaces:
     service_profile: QOS-PROFILE
     ptp:
       enable: true
+    mac_security:
+      profile: MACSEC_PROFILE
     type: routed
     shutdown: false
     ip_address: 172.16.12.64/31
@@ -128,6 +134,8 @@ ethernet_interfaces:
     service_profile: QOS-PROFILE
     ptp:
       enable: true
+    mac_security:
+      profile: MACSEC_PROFILE
     type: routed
     shutdown: false
     ip_address: 172.16.12.66/31

@@ -68,8 +68,6 @@
 {% include 'eos/ptp.j2' %}
 {# radius servers #}
 {% include 'eos/radius-servers.j2' %}
-{# aaa server groups #}
-{% include 'eos/aaa-server-groups.j2' %}
 {# router l2-vpn#}
 {% include 'eos/router-l2-vpn.j2' %}
 {# sflow #}
@@ -90,16 +88,12 @@
 {% include 'eos/unsupported-transceiver.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
-{# aaa authentication #}
-{% include 'eos/aaa-authentication.j2' %}
-{# aaa authorization #}
-{% include 'eos/aaa-authorization.j2' %}
-{# aaa accounting #}
-{% include 'eos/aaa-accounting.j2' %}
-{# aaa root #}
-{% include 'eos/aaa-root.j2' %}
+{# aaa #}
+{% include 'eos/aaa.j2' %}
 {# enable password #}
 {% include 'eos/enable-password.j2' %}
+{# aaa root #}
+{% include 'eos/aaa-root.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# roles #}
@@ -160,6 +154,8 @@
 {% include 'eos/monitor-sessions.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
+{# Community-lists #}
+{% include 'eos/community-lists.j2' %}
 {# IP Extended Community Lists #}
 {% include 'eos/ip-extended-community-lists.j2' %}
 {# IP Extended Community Lists Regexp #}
@@ -182,12 +178,12 @@
 {% include 'eos/ipv6-static-routes.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps-qos.j2' %}
+{# PBR policy-map #}
+{% include 'eos/policy-maps-pbr.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}
 {% include 'eos/arp.j2' %}
-{# Community-lists #}
-{% include 'eos/community-lists.j2' %}
 {# route-maps #}
 {% include 'eos/route-maps.j2' %}
 {# router bfd #}
@@ -226,20 +222,22 @@
 {% include 'eos/traffic-policies.j2' %}
 {# banner #}
 {% include 'eos/banners.j2' %}
-{# management api http #}
-{% include 'eos/management-api-http.j2' %}
 {# ip http client source interfaces #}
 {% include 'eos/ip-http-client-source-interfaces.j2' %}
-{# management api gnmi #}
-{% include 'eos/management-api-gnmi.j2' %}
+{# ip ssh client source interfaces #}
+{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
+{# management api http #}
+{% include 'eos/management-api-http.j2' %}
 {# management console #}
 {% include 'eos/management-console.j2' %}
+{# management defaults #}
+{% include 'eos/management-defaults.j2' %}
+{# management api gnmi #}
+{% include 'eos/management-api-gnmi.j2' %}
 {# management security #}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
-{# ip ssh client source interfaces #}
-{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}

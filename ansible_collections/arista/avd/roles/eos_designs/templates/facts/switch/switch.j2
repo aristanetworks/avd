@@ -28,23 +28,41 @@ switch:
   mgmt_interface: {{ switch_data.combined.mgmt_interface | arista.avd.default(switch_platform_settings.management_interface, mgmt_interface) }}
 
 {# switch.underlay_routing_protocol #}
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
-  underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
-{% else %}
-  underlay_routing_protocol: 'ebgp'
+{% set switch_underlay_routing_protocol = underlay_routing_protocol | arista.avd.default(switch.default_underlay_routing_protocol) | lower %}
+{% if switch_underlay_routing_protocol not in ['ebgp', 'isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp', 'ospf', 'ospf-ldp'] %}
+{%     set switch_underlay_routing_protocol = switch.default_underlay_routing_protocol %}
 {% endif %}
+  underlay_routing_protocol: {{ switch_underlay_routing_protocol }}
 
 {# switch.overlay_routing_protocol #}
-{% if overlay_routing_protocol is arista.avd.defined and overlay_routing_protocol | lower in ['ibgp']  %}
-{%     set switch_overlay_routing_protocol = overlay_routing_protocol | lower %}
-{% else %}
-{%     set switch_overlay_routing_protocol = 'ebgp' %}
+{% set switch_overlay_routing_protocol = overlay_routing_protocol | arista.avd.default(switch.default_overlay_routing_protocol) | lower %}
+{% if switch_overlay_routing_protocol not in ['ibgp'] %}
+{%     set switch_overlay_routing_protocol = switch.default_overlay_routing_protocol %}
 {% endif %}
   overlay_routing_protocol: {{ switch_overlay_routing_protocol }}
 
+{# switch.overlay_address_families #}
+{% set switch_overlay_address_families = switch_data.combined.overlay_address_families | arista.avd.default(switch.default_overlay_address_families) %}
+  overlay_address_families: {{ switch_overlay_address_families }}
+
+{# switch.overlay_loopback_description #}
+{% if overlay_loopback_description is not arista.avd.defined %}
+{%     if switch.default_mpls_overlay_role in ["server", "client"] %}
+{%         set switch_overlay_loopback_description = "MPLS_Overlay_peering" %}
+{%     elif switch.mpls_lsr is arista.avd.defined(true) %}
+{%         set switch_overlay_loopback_description = "LSR_Router_ID" %}
+{%     else %}
+{%         set switch_overlay_loopback_description = "EVPN_Overlay_Peering" %}
+{%     endif %}
+{% else %}
+{%     set switch_overlay_loopback_description = overlay_loopback_description %}
+{% endif %}
+  overlay_loopback_description: {{ switch_overlay_loopback_description }}
+
 {# Network services related facts #}
 {% if switch.network_services_l2 is arista.avd.defined(true) or
-      switch.network_services_l3 is arista.avd.defined(true) %}
+      switch.network_services_l3 is arista.avd.defined(true) or
+      switch.network_services_l1 is arista.avd.defined(true) %}
 
 {# switch.filter_tenants #}
 {%     set switch_filter_tenants = switch_data.combined.filter.tenants | arista.avd.default(['all']) %}
@@ -113,6 +131,9 @@ switch:
 {# switch.uplink_ptp #}
   uplink_ptp: {{ switch_data.combined.uplink_ptp | arista.avd.default() }}
 
+{# switch.uplink_macsec #}
+  uplink_macsec: {{ switch_data.combined.uplink_macsec | arista.avd.default() }}
+
 {# switch.rack #}
   rack: {{ switch_data.combined.rack | arista.avd.default() }}
 
@@ -127,6 +148,7 @@ switch:
 
 {########################}
 {# Router related facts #}
+
 {% if switch.underlay_router is arista.avd.defined(true) and
       switch_data.combined.loopback_ipv4_pool is arista.avd.defined(fail_action='error',var_name='loopback_ipv4_pool') %}
 
@@ -138,26 +160,82 @@ switch:
 {%     set loopback_ipv4_offset = switch_data.combined.loopback_ipv4_offset | arista.avd.default(0) %}
   loopback_ipv4_offset: {{ loopback_ipv4_offset }}
 
-{# switch.loopback_ipv4_description #}
-  loopback_ipv4_description: {{ switch_data.combined.loopback_ipv4_description | arista.avd.default(overlay_loopback_description) }}
-
 {# switch.uplink_ipv4_pool #}
   uplink_ipv4_pool: {{ switch_data.combined.uplink_ipv4_pool | arista.avd.default() }}
 
 {# switch.router_id #}
   router_id: {% include switch.ip_addressing.router_id %}
 
-{# switch.bgp_as #}
-{%     if bgp_as is arista.avd.defined and switch_overlay_routing_protocol == 'ibgp' %}
-  bgp_as: "{{ bgp_as }}"
-{%     else %}
-{%         if switch_data.combined.bgp_as is arista.avd.defined(fail_action='error', var_name='bgp_as') %}
-  bgp_as: "{{ switch_data.combined.bgp_as }}"
+{%     if underlay_ipv6 is arista.avd.defined(true) %}
+{%         if switch_data.combined.loopback_ipv6_pool is arista.avd.defined(fail_action='error',var_name='loopback_ipv6_pool') %}
+{# IPv6 related facts #}
+{# switch.loopback_ipv6_pool #}
+{%             set loopback_ipv6_pool = switch_data.combined.loopback_ipv6_pool %}
+  loopback_ipv6_pool: {{ loopback_ipv6_pool }}
+
+{# switch.loopback_ipv6_offset #}
+{%             set loopback_ipv6_offset = switch_data.combined.loopback_ipv6_offset | arista.avd.default(0) %}
+  loopback_ipv6_offset: {{ loopback_ipv6_offset }}
+
+{# switch.ipv6_router_id #}
+  ipv6_router_id: {% include switch.ip_addressing.ipv6_router_id %}
 {%         endif %}
+{%     endif %}
+
+{# switch.evpn_role #}
+{%     set switch_evpn_role = switch_data.combined.evpn_role | arista.avd.default(
+                          switch.default_evpn_role, 'none') %}
+  evpn_role: {{ switch_evpn_role }}
+
+{# switch.mpls_overlay_role #}
+{%     set switch_mpls_overlay_role = switch_data.combined.mpls_overlay_role | arista.avd.default(
+                          switch.default_mpls_overlay_role) %}
+  mpls_overlay_role: {{ switch_mpls_overlay_role }}
+
+{# switch.bgp_as #}
+{%     if switch_underlay_routing_protocol == 'ebgp' or switch_evpn_role != 'none' or switch_mpls_overlay_role != 'none' %}
+{%         if bgp_as is arista.avd.defined %}
+  bgp_as: "{{ bgp_as }}"
+{%         else %}
+{%             if switch_data.combined.bgp_as is arista.avd.defined(fail_action='error', var_name='bgp_as') %}
+  bgp_as: "{{ switch_data.combined.bgp_as }}"
+{%             endif %}
+{%         endif %}
+{# Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines #}
+{%     elif switch_underlay_routing_protocol in ['isis', 'ospf'] and switch_evpn_role == 'none' and bgp_as is arista.avd.defined %}
+  bgp_as: "{{ bgp_as }}"
 {%     endif %}
 
 {# switch.bgp_defaults #}
   bgp_defaults: {{ switch_data.combined.bgp_defaults | arista.avd.default([]) }}
+
+{# switch.mpls_route_reflectors #}
+{%     if switch_mpls_overlay_role in ["client", "server"] %}
+  mpls_route_reflectors: {{ switch_data.combined.mpls_route_reflectors | arista.avd.default() }}
+{%     endif %}
+
+{# switch.bgp_cluster_id #}
+  bgp_cluster_id: {{ switch_data.combined.bgp_cluster_id | arista.avd.default() }}
+
+{# switch.bgp_peer_groups #}
+{# Keep support for old uppercase keys for backward-compatibility #}
+{# Using ['<name>'] style for upper-case keys, to avoid linting errors #}
+  bgp_peer_groups:
+    ipv4_underlay_peers:
+      name: {{ bgp_peer_groups.ipv4_underlay_peers.name | arista.avd.default(bgp_peer_groups['IPv4_UNDERLAY_PEERS'].name, 'IPv4-UNDERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.ipv4_underlay_peers.password | arista.avd.default(bgp_peer_groups['IPv4_UNDERLAY_PEERS'].password) | to_json }}
+    mlag_ipv4_underlay_peer:
+      name: {{ bgp_peer_groups.mlag_ipv4_underlay_peer.name | arista.avd.default(bgp_peer_groups['MLAG_IPv4_UNDERLAY_PEER'].name, 'MLAG-IPv4-UNDERLAY-PEER') }}
+      password: {{ bgp_peer_groups.mlag_ipv4_underlay_peer.password | arista.avd.default(bgp_peer_groups['MLAG_IPv4_UNDERLAY_PEER'].password) | to_json }}
+    evpn_overlay_peers:
+      name: {{ bgp_peer_groups.evpn_overlay_peers.name | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].name, 'EVPN-OVERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.evpn_overlay_peers.password | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].password) | to_json }}
+    mpls_overlay_peers:
+      name: {{ bgp_peer_groups.mpls_overlay_peers.name | arista.avd.default('MPLS-OVERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.mpls_overlay_peers.password | arista.avd.default | to_json }}
+    rr_overlay_peers:
+      name: {{ bgp_peer_groups.rr_overlay_peers.name | arista.avd.default('RR-OVERLAY-PEERS') }}
+      password: {{ bgp_peer_groups.rr_overlay_peers.password | arista.avd.default | to_json }}
 
 {# switch.evpn_role #}
 {%     set switch_evpn_role = switch_data.combined.evpn_role | arista.avd.default(
@@ -173,9 +251,31 @@ switch:
   evpn_route_servers: {{ switch_data.combined.evpn_route_servers | arista.avd.default() }}
 {%     endif %}
 
+{# switch isis parameters #}
+{%     if switch_underlay_routing_protocol in ['isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp'] %}
 {# switch.isis_net #}
-{%     if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
+{%         if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
   isis_net: {{ isis_area_id }}.{{ switch_data.combined.isis_system_id_prefix }}.{{ '%04d' | format(switch_id) }}.00
+{%         endif %}
+{# switch.is_type #}
+{%         set switch_is_type = switch_data.combined.is_type | arista.avd.default(isis_default_is_type) | lower %}
+{%         if switch_is_type not in ["level-1", "level-2", "level-1-2"] %}
+{%             set switch_is_type = "level-2" %}
+{%         endif %}
+  is_type: {{ switch_is_type }}
+
+{# switch.isis_instance_name #}
+{%         if switch.mpls_lsr is arista.avd.defined(true) %}
+{%             set switch_isis_instance_name = "CORE" %}
+{%         else %}
+{%             set switch_isis_instance_name = "EVPN_UNDERLAY" %}
+{%         endif %}
+  isis_instance_name: {{ switch_isis_instance_name }}
+
+{# switch.node_sid #}
+{%         if switch_underlay_routing_protocol in ['isis-sr', 'isis-sr-ldp'] %}
+  node_sid: {{ switch_id + (switch_data.combined.node_sid_base | arista.avd.default(0)) | int }}
+{%         endif %}
 {%     endif %}
 {% endif %}
 
@@ -294,7 +394,7 @@ switch:
 {% endif %}
 
 {########################}
-{# VTEP related facts   #}
+{# VXLAN VTEP related facts #}
 {% if switch.vtep is arista.avd.defined(true) and
       switch_data.combined.vtep_loopback_ipv4_pool is arista.avd.defined(fail_action='error',var_name='vtep_loopback_ipv4_pool') %}
 
@@ -344,10 +444,12 @@ switch:
 
 
 {% if switch.network_services_l2 is arista.avd.defined(true) or
-      switch.network_services_l3 is arista.avd.defined(true) %}
+      switch.network_services_l3 is arista.avd.defined(true) or
+      switch.network_services_l1 is arista.avd.defined(true) %}
 {%     set leaf = namespace() %}
 {%     set leaf.vlans = []  %}
 {%     set leaf.tenants = {} %}
+{%     set leaf.pseudowires = [] %}
 {%     for tenant in tenants | arista.avd.natural_sort if tenant in switch_filter_tenants or "all" in switch_filter_tenants %}
 {%         set add_vrfs = {} %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
@@ -386,8 +488,17 @@ switch:
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
-{%         if add_vrfs | length > 0 or add_l2vlans | length > 0 %}
-{%             do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans} }) %}
+{%         set add_point_to_point_services = [] %}
+{%         for point_to_point_service in tenants[tenant].point_to_point_services | arista.avd.natural_sort %}
+{%             for endpoint in point_to_point_service.endpoints | arista.avd.default([]) %}
+{%                 if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                     do add_point_to_point_services.append(point_to_point_service) %}
+{%                     break %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%         if add_vrfs | length > 0 or add_l2vlans | length > 0 or add_point_to_point_services | length > 0 %}
+{%             do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans, "point_to_point_service": add_point_to_point_services} }) %}
 {%         endif %}
 {%     endfor %}
 

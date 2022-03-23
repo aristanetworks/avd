@@ -40,9 +40,6 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%     endfor %}
 {%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
-{%         if router_bgp.peer_groups[peer_group].description is arista.avd.defined %}
-   neighbor {{ peer_group }} description {{ router_bgp.peer_groups[peer_group].description }}
-{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].shutdown is arista.avd.defined(true) %}
    neighbor {{ peer_group }} shutdown
 {%         endif %}
@@ -62,11 +59,31 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.peer_groups[peer_group].update_source is arista.avd.defined %}
    neighbor {{ peer_group }} update-source {{ router_bgp.peer_groups[peer_group].update_source }}
 {%         endif %}
+{%         if router_bgp.peer_groups[peer_group].description is arista.avd.defined %}
+   neighbor {{ peer_group }} description {{ router_bgp.peer_groups[peer_group].description }}
+{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].route_reflector_client is arista.avd.defined(true) %}
    neighbor {{ peer_group }} route-reflector-client
 {%         endif %}
 {%         if router_bgp.peer_groups[peer_group].bfd is arista.avd.defined(true) %}
    neighbor {{ peer_group }} bfd
+{%         endif %}
+{%         if router_bgp.peer_groups[peer_group].allowas_in.enabled is arista.avd.defined(true) %}
+{%             set allowas_in_cli = "neighbor " ~ peer_group ~ " allowas-in" %}
+{%             if router_bgp.peer_groups[peer_group].allowas_in.times is arista.avd.defined %}
+{%                 set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.peer_groups[peer_group].allowas_in.times %}
+{%             endif %}
+   {{ allowas_in_cli }}
+{%         endif %}
+{%         if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "neighbor " ~ peer_group ~ " rib-in pre-policy retain" %}
+{%             if router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
+{%             endif %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%         elif router_bgp.peer_groups[peer_group].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ peer_group ~ " rib-in pre-policy retain" %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%         endif %}
 {%         if router_bgp.peer_groups[peer_group].ebgp_multihop is arista.avd.defined %}
    neighbor {{ peer_group }} ebgp-multihop {{ router_bgp.peer_groups[peer_group].ebgp_multihop }}
@@ -99,13 +116,6 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
-{%         if router_bgp.peer_groups[peer_group].allowas_in.enabled is arista.avd.defined(true) %}
-{%             set allowas_in_cli = "neighbor " ~ peer_group ~ " allowas-in" %}
-{%             if router_bgp.peer_groups[peer_group].allowas_in.times is arista.avd.defined %}
-{%                 set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.peer_groups[peer_group].allowas_in.times %}
-{%             endif %}
-   {{ allowas_in_cli }}
-{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].weight is arista.avd.defined %}
    neighbor {{ peer_group }} weight {{ router_bgp.peer_groups[peer_group].weight }}
 {%         endif %}
@@ -120,14 +130,11 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%     endfor %}
 {%     for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.natural_sort %}
-{%         set neighbor_interface_cli = "neighbor interface " ~ neighbor_interface %}
-{%         if router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined %}
-{%             set neighbor_interface_cli = neighbor_interface_cli ~ " peer-group " ~ router_bgp.neighbor_interfaces[neighbor_interface].peer_group %}
+{%         if router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined and router_bgp.neighbor_interfaces[neighbor_interface].remote_as is arista.avd.defined %}
+   neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} remote-as {{ router_bgp.neighbor_interfaces[neighbor_interface].remote_as }}
+{%         elif router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined and router_bgp.neighbor_interfaces[neighbor_interface].peer_filter is arista.avd.defined %}
+   neighbor interface {{ neighbor_interface }} peer-group {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_group }} peer-filter {{ router_bgp.neighbor_interfaces[neighbor_interface].peer_filter }}
 {%         endif %}
-{%         if router_bgp.neighbor_interfaces[neighbor_interface].remote_as is arista.avd.defined %}
-{%             set neighbor_interface_cli = neighbor_interface_cli ~ " remote-as " ~ router_bgp.neighbor_interfaces[neighbor_interface].remote_as %}
-{%         endif %}
-   {{ neighbor_interface_cli }}
 {%     endfor %}
 {%     for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%         if router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
@@ -153,6 +160,23 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor }} bfd
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].allowas_in.enabled is arista.avd.defined(true) %}
+{%             set allowas_in_cli = "neighbor " ~ neighbor ~ " allowas-in" %}
+{%             if router_bgp.neighbors[neighbor].allowas_in.times is arista.avd.defined %}
+{%                 set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.neighbors[neighbor].allowas_in.times %}
+{%             endif %}
+   {{ allowas_in_cli }}
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+{%             if router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
+{%             endif %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%         elif router_bgp.neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%             set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+   {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].password is arista.avd.defined %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
@@ -193,13 +217,6 @@ router bgp {{ router_bgp.as }}
 {%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%             endif %}
    {{ maximum_routes_cli }}
-{%         endif %}
-{%         if router_bgp.neighbors[neighbor].allowas_in.enabled is arista.avd.defined(true) %}
-{%             set allowas_in_cli = "neighbor " ~ neighbor ~ " allowas-in" %}
-{%             if router_bgp.neighbors[neighbor].allowas_in.times is arista.avd.defined %}
-{%                 set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.neighbors[neighbor].allowas_in.times %}
-{%             endif %}
-   {{ allowas_in_cli }}
 {%         endif %}
 {%     endfor %}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
@@ -408,13 +425,6 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_ipv4 is arista.avd.defined %}
    !
    address-family ipv4
-{%         for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort %}
-{%             if router_bgp.address_family_ipv4.networks[network].route_map is arista.avd.defined %}
-      network {{ network }} route-map {{ router_bgp.address_family_ipv4.networks[network].route_map }}
-{%             else %}
-      network {{ network }}
-{%             endif %}
-{%         endfor %}
 {%         for peer_group in router_bgp.address_family_ipv4.peer_groups | arista.avd.natural_sort %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_in is arista.avd.defined %}
       neighbor {{ peer_group }} route-map {{ router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_in }} in
@@ -476,6 +486,13 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor }} activate
 {%             endif %}
 {%         endfor %}
+{%         for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort %}
+{%             if router_bgp.address_family_ipv4.networks[network].route_map is arista.avd.defined %}
+      network {{ network }} route-map {{ router_bgp.address_family_ipv4.networks[network].route_map }}
+{%             else %}
+      network {{ network }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {# address family ipv4 multicast activation #}
 {%     if router_bgp.address_family_ipv4_multicast is arista.avd.defined %}
@@ -519,13 +536,6 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_ipv6 is arista.avd.defined %}
    !
    address-family ipv6
-{%         for network in router_bgp.address_family_ipv6.networks | arista.avd.natural_sort %}
-{%             if router_bgp.address_family_ipv6.networks[network].route_map is arista.avd.defined %}
-      network {{ network }} route-map {{ router_bgp.address_family_ipv6.networks[network].route_map }}
-{%             else %}
-      network {{ network }}
-{%             endif %}
-{%         endfor %}
 {%         for peer_group in router_bgp.address_family_ipv6.peer_groups | arista.avd.natural_sort %}
 {%             if router_bgp.address_family_ipv6.peer_groups[peer_group].route_map_in is arista.avd.defined %}
       neighbor {{ peer_group }} route-map {{ router_bgp.address_family_ipv6.peer_groups[peer_group].route_map_in }} in
@@ -562,6 +572,13 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} activate
 {%             elif router_bgp.address_family_ipv6.neighbors[neighbor].activate is arista.avd.defined(false) %}
       no neighbor {{ neighbor }} activate
+{%             endif %}
+{%         endfor %}
+{%         for network in router_bgp.address_family_ipv6.networks | arista.avd.natural_sort %}
+{%             if router_bgp.address_family_ipv6.networks[network].route_map is arista.avd.defined %}
+      network {{ network }} route-map {{ router_bgp.address_family_ipv6.networks[network].route_map }}
+{%             else %}
+      network {{ network }}
 {%             endif %}
 {%         endfor %}
 {%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.natural_sort %}
@@ -652,13 +669,6 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.vrfs[vrf].timers is arista.avd.defined %}
       timers bgp {{ router_bgp.vrfs[vrf].timers }}
 {%         endif %}
-{%         for network in router_bgp.vrfs[vrf].networks | arista.avd.natural_sort %}
-{%             if router_bgp.vrfs[vrf].networks[network].route_map is arista.avd.defined %}
-      network {{ network }} route-map {{ router_bgp.vrfs[vrf].networks[network].route_map }}
-{%             else %}
-      network {{ network }}
-{%             endif %}
-{%         endfor %}
 {%         for neighbor in router_bgp.vrfs[vrf].neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is arista.avd.defined %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
@@ -693,6 +703,23 @@ router bgp {{ router_bgp.as }}
 {%             elif router_bgp.vrfs[vrf].neighbors[neighbor].bfd is arista.avd.defined(false) %}
       no neighbor {{ neighbor }} bfd
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.enabled is arista.avd.defined(true) %}
+{%                 set allowas_in_cli = "neighbor " ~ neighbor ~ " allowas-in" %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.times is arista.avd.defined %}
+{%                     set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.times %}
+{%                 endif %}
+      {{ allowas_in_cli }}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = "neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
+{%                     set neighbor_rib_in_pre_policy_retain_cli = neighbor_rib_in_pre_policy_retain_cli ~ " all" %}
+{%                 endif %}
+      {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%             elif router_bgp.vrfs[vrf].neighbors[neighbor].rib_in_pre_policy_retain.enabled is arista.avd.defined(false) %}
+{%                 set neighbor_rib_in_pre_policy_retain_cli = "no neighbor " ~ neighbor ~ " rib-in pre-policy retain" %}
+      {{ neighbor_rib_in_pre_policy_retain_cli }}
+{%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].timers is arista.avd.defined %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
 {%             endif %}
@@ -713,13 +740,6 @@ router bgp {{ router_bgp.as }}
 {%                     set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%                 endif %}
       {{ maximum_routes_cli }}
-{%             endif %}
-{%             if router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.enabled is arista.avd.defined(true) %}
-{%                 set allowas_in_cli = "neighbor " ~ neighbor ~ " allowas-in" %}
-{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.times is arista.avd.defined %}
-{%                     set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.times %}
-{%                 endif %}
-      {{ allowas_in_cli }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is arista.avd.defined %}
 {%                 set neighbor_default_originate_cli = "neighbor " ~ neighbor ~ " default-originate" %}
@@ -747,12 +767,12 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} prefix-list {{ router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_out }} out
 {%             endif %}
 {%         endfor %}
-{%         for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
-{%             set redistribute_cli = "redistribute " ~ redistribute_route %}
-{%             if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is arista.avd.defined %}
-{%                 set redistribute_cli = redistribute_cli + " route-map " ~ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map %}
+{%         for network in router_bgp.vrfs[vrf].networks | arista.avd.natural_sort %}
+{%             if router_bgp.vrfs[vrf].networks[network].route_map is arista.avd.defined %}
+      network {{ network }} route-map {{ router_bgp.vrfs[vrf].networks[network].route_map }}
+{%             else %}
+      network {{ network }}
 {%             endif %}
-      {{ redistribute_cli }}
 {%         endfor %}
 {%         for aggregate_address in router_bgp.vrfs[vrf].aggregate_addresses | arista.avd.natural_sort %}
 {%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address %}
@@ -772,6 +792,13 @@ router bgp {{ router_bgp.as }}
 {%                 set aggregate_address_cli = aggregate_address_cli ~ " advertise-only" %}
 {%             endif %}
       {{ aggregate_address_cli }}
+{%         endfor %}
+{%         for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
+{%             set redistribute_cli = "redistribute " ~ redistribute_route %}
+{%             if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is arista.avd.defined %}
+{%                 set redistribute_cli = redistribute_cli + " route-map " ~ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map %}
+{%             endif %}
+      {{ redistribute_cli }}
 {%         endfor %}
 {%         for  address_family in router_bgp.vrfs[vrf].address_families | arista.avd.natural_sort %}
       !

@@ -1,0 +1,8 @@
+  address_family_rtc:
+    peer_groups:
+      {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}:
+        activate: true
+{% if switch.evpn_role == "server" %}
+        default_route_target:
+          only: true
+{% endif %}

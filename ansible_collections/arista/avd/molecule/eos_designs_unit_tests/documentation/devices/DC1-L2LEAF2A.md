@@ -264,6 +264,7 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
+| 112 | Tenant_A_OP_Zone_3 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
@@ -290,6 +291,9 @@ vlan 110
 !
 vlan 111
    name Tenant_A_OP_Zone_2
+!
+vlan 112
+   name Tenant_A_OP_Zone_3
 !
 vlan 120
    name Tenant_A_WEB_Zone_1
@@ -351,8 +355,8 @@ vlan 4091
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-SVC3A_Ethernet7 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 1 |
-| Ethernet2 | DC1-SVC3B_Ethernet7 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 1 |
+| Ethernet1 | DC1-SVC3A_Ethernet7 | *trunk | *110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 1 |
+| Ethernet2 | DC1-SVC3B_Ethernet7 | *trunk | *110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-L2LEAF2B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-L2LEAF2B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
@@ -391,7 +395,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -402,7 +406,7 @@ interface Port-Channel1
    description DC1_SVC3_Po7
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+   switchport trunk allowed vlan 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
    mlag 1
 !
@@ -421,7 +425,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4091 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4091 | MLAG_PEER | default | 1500 | false |
 
 #### IPv4
 
@@ -483,7 +487,7 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

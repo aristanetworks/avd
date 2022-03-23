@@ -1,0 +1,34 @@
+---
+port_profiles:
+  TENANT_A_WAN_SERVICE_10:
+    mode: trunk
+    vlans: 10
+    spanning_tree_portfast: edge
+cpes:
+  CPE_TENANT_A_SITE1:
+    adapters:
+    - profile: TENANT_A_WAN_SERVICE_10
+      endpoint_ports:
+      - Ethernet1
+      - Ethernet2
+      switch_ports:
+      - Ethernet8
+      - Ethernet8
+      switches:
+      - SITE1-LER1
+      - SITE1-LER2
+      port_channel:
+        description: EVPN-A-A-PortChannel
+        mode: active
+        short_esi: 0303:0202:0101
+        subinterfaces:
+        - number: 111
+          short_esi: 0303:0202:0111
+        - number: 222
+          short_esi: 0303:0202:0222
+        - number: 333
+          short_esi: 0303:0202:0333
+          vlan_id: 434
+          encapsulation_vlan:
+            client_dot1q: 333
+    rack: Undefined

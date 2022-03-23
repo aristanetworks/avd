@@ -42,22 +42,22 @@ router_bgp:
   vrfs:
     Tenant_X_OP_Zone:
       router_id: 192.168.255.33
-      rd: '192.168.255.33:'
+      rd: 192.168.255.33:20
       route_targets:
         import:
           evpn:
-          - None:None
+          - '20:20'
         export:
           evpn:
-          - None:None
+          - '20:20'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
     Tenant_X_OP_Zone:
-      rd: 192.168.255.33:0
+      rd: 192.168.255.33:20
       route_targets:
         both:
-        - 0:0
+        - '20:20'
       redistribute_routes:
       - learned
       vlan: 310
@@ -212,9 +212,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_X_OP_Zone
     ip_address_virtual: 10.1.10.1/24
-virtual_source_nat_vrfs:
-  Tenant_X_OP_Zone:
-    ip_address: 10.255.1.33
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF1A_VTEP
@@ -225,7 +222,11 @@ vxlan_interface:
         310:
           vni: 11310
       vrfs:
-        Tenant_X_OP_Zone: {}
+        Tenant_X_OP_Zone:
+          vni: 20
+virtual_source_nat_vrfs:
+  Tenant_X_OP_Zone:
+    ip_address: 10.255.1.33
 port_channel_interfaces:
   Port-Channel11:
     description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces

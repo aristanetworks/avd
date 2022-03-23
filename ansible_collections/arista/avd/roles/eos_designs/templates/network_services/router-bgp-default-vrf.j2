@@ -1,0 +1,5 @@
+{# router bgp default vrf configuration for evpn #}
+  peer_groups:
+    {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
+      type: ipv4
+      route_map_out: RM-BGP-UNDERLAY-PEERS-OUT

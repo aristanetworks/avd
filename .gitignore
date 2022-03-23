@@ -51,6 +51,12 @@ coverage.xml
 *.mo
 *.pot
 
+# Ansible builder
+*context/
+*_build/
+Containerfile
+Dockerfile
+
 # Django stuff:
 *.log
 local_settings.py

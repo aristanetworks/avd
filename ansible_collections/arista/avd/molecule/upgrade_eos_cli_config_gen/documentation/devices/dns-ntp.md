@@ -55,7 +55,6 @@ interface Management1
 ### DNS Domain Device Configuration
 
 ```eos
-!
 dns domain test.local
 !
 ```
@@ -82,12 +81,11 @@ ip name-server vrf mgt 10.10.129.10
 
 | Source interface | vrf |
 | ---------------- | --- |
-| Management0 | mgt  |
+| Management0 | mgt |
 
 ### DNS Domain Lookup Device Configuration
 
 ```eos
-!
 ip domain lookup vrf mgt source-interface Management0
 ```
 

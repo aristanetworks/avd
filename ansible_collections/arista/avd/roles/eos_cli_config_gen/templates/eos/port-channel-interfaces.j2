@@ -97,9 +97,6 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interfaces[port_channel_interface].l2_protocol.encapsulation_dot1q_vlan }}
 {%     endif %}
-{%     if port_channel_interfaces[port_channel_interface].mlag is arista.avd.defined %}
-   mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
-{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].esi is arista.avd.defined or port_channel_interfaces[port_channel_interface].evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
 {%         if port_channel_interfaces[port_channel_interface].esi is arista.avd.defined %}
@@ -149,6 +146,9 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].lacp_fallback_mode is arista.avd.defined %}
    port-channel lacp fallback {{ port_channel_interfaces[port_channel_interface].lacp_fallback_mode }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].mlag is arista.avd.defined %}
+   mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].qos.trust is arista.avd.defined %}
 {%         if port_channel_interfaces[port_channel_interface].qos.trust == 'disabled' %}
@@ -270,6 +270,9 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].pim.ipv4.dr_priority is arista.avd.defined %}
+   pim ipv4 dr-priority {{ port_channel_interfaces[port_channel_interface].pim.ipv4.dr_priority }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%     endif %}
@@ -314,6 +317,11 @@ interface {{ port_channel_interface }}
           port_channel_interfaces[port_channel_interface].bfd.min_rx is arista.avd.defined and
           port_channel_interfaces[port_channel_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ port_channel_interfaces[port_channel_interface].bfd.interval }} min-rx {{ port_channel_interfaces[port_channel_interface].bfd.min_rx }} multiplier {{ port_channel_interfaces[port_channel_interface].bfd.multiplier }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].bfd.echo is arista.avd.defined(true) %}
+   bfd echo
+{%     elif port_channel_interfaces[port_channel_interface].bfd.echo is arista.avd.defined(false) %}
+   no bfd echo
 {%     endif %}
 {%     for link_tracking_group in port_channel_interfaces[port_channel_interface].link_tracking_groups | arista.avd.natural_sort('name') %}
 {%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}

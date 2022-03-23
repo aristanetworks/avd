@@ -19,6 +19,7 @@ ethernet_interfaces:
           # drop
           no_drop: false
     bfd:
+      echo: true
       interval: 500
       min_rx: 500
       multiplier: 5
@@ -112,6 +113,7 @@ ethernet_interfaces:
         key: "asfddja23452"
     pim:
       ipv4:
+        dr_priority: 200
         sparse_mode: true
     isis_enable: ISIS_TEST
     isis_passive: false

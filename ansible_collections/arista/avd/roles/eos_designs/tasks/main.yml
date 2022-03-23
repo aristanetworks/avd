@@ -27,6 +27,14 @@
   check_mode: no
   changed_when: False
 
+- name: Set AVD peer facts
+  tags: [build, provision]
+  eos_designs_set_peer_facts:
+    avd_topology_peers: True
+    avd_overlay_peers: True
+  check_mode: no
+  run_once: True
+
 - name: Generate YAML file with hostvars (only for debugging)
   tags: [debug, never]
   template:

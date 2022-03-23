@@ -56,8 +56,10 @@ mac_address_table:
 # Optional profiles to apply on SVI interfaces
 # Each profile can support all or some of the following keys according to your own needs.
 # Keys are the same used under SVI.
+# Svi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).
 svi_profiles:
   < profile_name >:
+    parent_profile: < svi_profile_name >
     mtu: < mtu >
     enabled: < true | false >
     ip_virtual_router_addresses:
@@ -87,7 +89,7 @@ tenants:
     # e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
     mac_vrf_vni_base: < 10000-16770000 >
 
-    # Base number for MAC VRF RD/RT ID | Required unless mac_vrf_vni_based is set.
+    # Base number for MAC VRF RD/RT ID | Required unless mac_vrf_vni_base is set.
     # ID is derived from the base number with simple addition.
     # e.g. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.
     mac_vrf_id_base: < 10000-16770000 | default -> <mac_vrf_vni_base> >
@@ -105,7 +107,13 @@ tenants:
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
+      # vrf "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
+      # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+      # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
       < tenant_a_vrf_1 >:
+
+        # Optional
+        description: < vrf_description >
 
         # VRF VNI | Optional (required if "vrf_id" is not set).
         # The VRF VNI range is not limited, but if vrf_id is not set, "vrf_vni" is used for calculating MLAG IBGP peering vlan id.
@@ -404,7 +412,7 @@ tenants:
 
       # VLAN id.
       < 1-4096 >:
-        # By default the vni will be derived from "mac_vrf_vni_base:"
+        # By default the vni will be derived from "mac_vrf_vni_base"
         # The vni_override, allows to override this value and statically define it.
         vni_override: < 1-16777215 >
 

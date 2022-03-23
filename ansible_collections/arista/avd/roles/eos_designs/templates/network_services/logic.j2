@@ -27,7 +27,17 @@
 {%                 do tmp_l2vlans.append(l2vlan) %}
 {%             endif %}
 {%         endfor %}
-{%         do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans}) %}
+{#         point_to_point_services #}
+{%         set tmp_point_to_point_services = [] %}
+{%         for point_to_point_service in tenant.point_to_point_services | arista.avd.natural_sort('name') %}
+{%             for endpoint in point_to_point_service.endpoints | arista.avd.default([]) %}
+{%                 if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                     do tmp_point_to_point_services.append(point_to_point_service) %}
+{%                     break %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%         do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans, 'point_to_point_services': tmp_point_to_point_services}) %}
 {%         do tmp_tenants.append(tenant) %}
 {%     endif %}
 {% endfor %}

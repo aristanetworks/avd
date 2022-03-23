@@ -9,7 +9,12 @@
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
-| {{ field_set_ipv4 }} | {% if traffic_policies.field_sets.ipv4[field_set_ipv4] | length > 1 %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4][0] }}{% endif %}|
+{%                 if traffic_policies.field_sets.ipv4[field_set_ipv4] | length > 1 %}
+{%                     set value = traffic_policies.field_sets.ipv4[field_set_ipv4] | join('<br/>') %}
+{%                 else %}
+{%                     set value = traffic_policies.field_sets.ipv4[field_set_ipv4][0] %}
+{%                 endif %}
+| {{ field_set_ipv4 }} | {{ value }} |
 {%             endfor %}
 {%         else %}
 No IPv4 field-set configured.
@@ -21,7 +26,12 @@ No IPv4 field-set configured.
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
-| {{ field_set_ipv6 }} | {% if traffic_policies.field_sets.ipv6[field_set_ipv6] | length > 1 %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6][0] }}{% endif %}|
+{%                 if traffic_policies.field_sets.ipv6[field_set_ipv6] | length > 1 %}
+{%                     set value = traffic_policies.field_sets.ipv6[field_set_ipv6] | join('<br/>') %}
+{%                 else %}
+{%                     set value = traffic_policies.field_sets.ipv6[field_set_ipv6][0] %}
+{%                 endif %}
+| {{ field_set_ipv6 }} | {{ value }} |
 {%             endfor %}
 {%         else %}
 No IPv6 field-set configured.

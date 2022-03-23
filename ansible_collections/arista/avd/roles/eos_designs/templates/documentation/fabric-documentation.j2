@@ -151,7 +151,7 @@
 {%     endif %}
 {% endfor %}
 
-{% if switch.underlay_routing_protocol == "isis" %}
+{% if switch.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"] %}
 ## ISIS CLNS interfaces
 
 | POD | Node | CLNS Address |
