@@ -1523,10 +1523,10 @@ mac_security:
     license_key: < license-number >
   fips_restrictions: < true | false >
   profiles:
-    < profile >:
+    - name: < profile >
       cipher: < valid-cipher-string >
       connection_keys:
-        "< connection_key >":
+        - key: "< connection_key >"
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
       mka:
