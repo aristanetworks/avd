@@ -1694,9 +1694,9 @@ ip_http_client_source_interfaces:
 ```yaml
 management_api_gnmi:
   enable_vrfs:
-    < vrf_name_1 >:
+    - name: < vrf_name_1 >
       access_group: < Standard IPv4 ACL name >
-    < vrf_name_2 >:
+    - name: < vrf_name_2 >
       access_group: < Standard IPv4 ACL name >
   octa:
 ```
