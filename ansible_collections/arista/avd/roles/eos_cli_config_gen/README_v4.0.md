@@ -1735,12 +1735,12 @@ management_security:
 ```yaml
 management_ssh:
   access_groups:
-    - name: < standard_acl_name_1 >:
-    - name: < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >
+    - name: < standard_acl_name_2 >
       vrf: < vrf name >
   ipv6_access_groups:
-    - name: < standard_acl_name_1 >:
-    - name: < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >
+    - name: < standard_acl_name_2 >
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
   cipher:
@@ -1761,9 +1761,9 @@ management_ssh:
     limit: < 1-100 SSH Connections >
     per_host: < 1-20 max sessions from a host >
   vrfs:
-    < vrf_name_1 >:
+    - name: < vrf_name_1 >
       enable: < true | false >
-    < vrf_name_2 >:
+    - name: < vrf_name_2 >
       enable: < true | false >
   log_level: < SSH daemon log level >
 ```
