@@ -1579,15 +1579,15 @@ maintenance:
       shutdown:
         max_delay: < seconds >
   bgp_profiles:
-    < bgp_profile_1 >:
+    - name: < bgp_profile_1 >
       initiator:
         route_map_inout: < route_map >
   unit_profiles:
-    < unit_profile_1 >:
+    - name: < unit_profile_1 >
       on_boot:
         duration: < 300-3600 >
   units:
-    < unit_name_1 >:
+    - name: < unit_name_1 >
       quiesce: < true | false >
       profile: < unit_profile_1 >
       groups:
