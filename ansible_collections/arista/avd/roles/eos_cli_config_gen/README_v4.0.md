@@ -2002,7 +2002,7 @@ You can either provide a list of IPs/FQDNs to target on-premise Cloudvision clus
 
 ```yaml
 daemons:
-  < daemon_name >:
+  - name: < daemon_name >
     exec: "< command to run as a daemon >"
     enabled: "< true | false | default -> true >"
 ```
