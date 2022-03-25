@@ -2629,6 +2629,7 @@ router_bgp:
       remote_as: < bgp_as >
       local_as: < bgp_as >
       description: "< description as string >"
+      ebgp_multihop: < integer >
       shutdown: < true | false >
       update_source: < interface >
       bfd: < true | false >
