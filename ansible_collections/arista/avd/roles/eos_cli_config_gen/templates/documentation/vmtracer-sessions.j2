@@ -8,11 +8,11 @@
 | ------- | --- | -------- | -------- | ---------------- |
 {%     for session in vmtracer_sessions | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%         set url = session.url | arista.avd.default('-') %}
-{%         if session.autovlan_disable is arista.avd.defined and session.autovlan_disable == true %}
+{%         if session.autovlan_disable is arista.avd.defined(true) %}
 {%             set autovlan = 'disabled' %}
 {%         endif %}
 {%         set source_interface = session.source_interface | arista.avd.default('-') %}
-| {{ session.name }} | {{ url }} | {{ session.username }} | {{ autovlan | arista.avd.default('enabled') }} | {{ source_interface }} |
+| {{ session.name }} | {{ url }} | {{ session.username | arista.avd.default('-') }} | {{ autovlan | arista.avd.default('enabled') }} | {{ source_interface }} |
 {%     endfor %}
 
 ### VM Tracer Device Configuration
