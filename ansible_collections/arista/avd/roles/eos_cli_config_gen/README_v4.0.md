@@ -678,15 +678,15 @@ ip_extcommunity_lists_regexp:
 
 ```yaml
 peer_filters:
-  < peer_filter_name_1:
+  - name: < peer_filter_name_1
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         match: "< match as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         match: "< match as string >"
-  < peer_filter_name_2:
+  - name: < peer_filter_name_2
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         match: "< match as string >"
 ```
 
