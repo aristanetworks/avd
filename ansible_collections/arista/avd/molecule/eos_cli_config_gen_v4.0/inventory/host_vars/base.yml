@@ -42,7 +42,7 @@ management_ssh:
     per_host: 12
   enable: true
   vrfs:
-    mgt:
+    - name: mgt
       enable: true
 
 eos_cli: |
