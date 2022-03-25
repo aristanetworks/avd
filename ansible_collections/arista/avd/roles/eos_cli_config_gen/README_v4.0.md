@@ -2047,7 +2047,7 @@ monitor_connectivity:
 ```yaml
 ### Event Handler ###
 event_handlers:
-  < event_handler_name >:
+  - name: < event_handler_name >
     action_type: < Type of action. [bash, increment, log] >
     action: < Command to execute >
     delay: < Event-handler delay in seconds >

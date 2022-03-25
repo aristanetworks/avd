@@ -1,5 +1,5 @@
 event_handlers:
-  tracking:
+  - name: tracking
     action_type: bash
     action: /mnt/flash/tracking.sh
     delay: 300
