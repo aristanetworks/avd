@@ -121,7 +121,11 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-  test_description: "Ethernet Interface (Shutdown == \"False\" & Status == \"up\" & Line Protocol == \"up\") or (Shutdown == \"True\" & Status == \"adminDown\" & Line Protocol != \"up\")"
+{%             if not result.ethernet_interface.value.shutdown %}
+  test_description: "Ethernet Interface & Line Protocol == \"up\""
+{%             else %}
+  test_description: "Ethernet Interface & Line Protocol == \"adminDown\""
+{%             endif %}
   test: "{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description | arista.avd.default('') }}"
 {%             if result.failed == false %}
   result: "PASS"
@@ -140,7 +144,11 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-  test_description: "Port-Channel Interface (Shutdown == \"False\" & Status == \"up\" & Line Protocol == \"up\") or (Shutdown == \"True\" & Status == \"adminDown\" & Line Protocol != \"up\")"
+{%             if not result.port_channel_interface.value.shutdown %}
+  test_description: "Port-Channel Interface & Line Protocol == \"up\""
+{%             else %}
+  test_description: "Port-Channel Interface & Line Protocol == \"adminDown\""
+{%             endif %}
   test: "{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description | arista.avd.default('') }}"
 {%             if result.failed == false %}
   result: "PASS"
@@ -159,7 +167,11 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-  test_description: "Vlan Interface (Shutdown == \"False\" & Status == \"up\" & Line Protocol == \"up\") or (Shutdown == \"True\" & Status == \"adminDown\" & Line Protocol != \"up\")"
+{%             if not result.vlan_interface.value.shutdown %}
+  test_description: "Vlan Interface & Line Protocol == \"up\""
+{%             else %}
+  test_description: "Vlan Interface & Line Protocol == \"adminDown\""
+{%             endif %}
   test: "{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description | arista.avd.default('') }}"
 {%             if result.failed == false %}
   result: "PASS"
