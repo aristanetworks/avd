@@ -65,6 +65,8 @@
     - [Internal VLAN Order](#internal-vlan-order)
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
+    - [IP Hardware](#ip-hardware)
+    - [IPv6 Hardware](#ipv6-hardware)
     - [LACP](#lacp)
     - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
@@ -1480,6 +1482,26 @@ ip_dhcp_relay:
 ```yaml
 ip_icmp_redirect: < true | false >
 ipv6_icmp_redirect: < true | false >
+```
+
+### IP Hardware
+
+```yaml
+ip_hardware:
+  fib:
+    optimize:
+      prefixes:
+        profile: < internet | urpf-internet >
+```
+
+### IPv6 Hardware
+
+```yaml
+ipv6_hardware:
+  fib:
+    optimize:
+      prefixes:
+        profile: < internet >
 ```
 
 ### LACP
