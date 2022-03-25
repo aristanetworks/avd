@@ -63,13 +63,11 @@ interface Management1
 | show ipv6 route vrf all detail | text |
 | show version detail | json |
 
-
 #### Include Commands
 
 | Command |
 | ------- |
 | show version detail \| grep TerminAttr |
-
 
 ### Policy Configuration
 
