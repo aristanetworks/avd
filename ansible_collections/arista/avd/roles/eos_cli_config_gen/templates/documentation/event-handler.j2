@@ -1,5 +1,5 @@
 {# eos - event-handler #}
-{% if event_handlers is defined and event_handlers is iterable %}
+{% if event_handlers is arista.avd.defined %}
 
 ## Event Handler
 
@@ -7,8 +7,8 @@
 
 | Handler | Action Type | Action | Trigger |
 | ------- | ----------- | ------ | ------- |
-{%     for handler in event_handlers | arista.avd.natural_sort %}
-| {{ handler }} | {{ event_handlers[handler].action_type }} | {{ event_handlers[handler].action }} | {{ event_handlers[handler].trigger }} |
+{%     for handler in event_handlers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ handler.name }} | {{ handler.action_type }} | {{ handler.action }} | {{ handler.trigger }} |
 {%     endfor %}
 
 ### Event Handler Device Configuration

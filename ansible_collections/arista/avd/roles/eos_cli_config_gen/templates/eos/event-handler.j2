@@ -1,21 +1,21 @@
 {# eos - Event handlers #}
 {% if event_handlers is arista.avd.defined %}
-{%     for handler in event_handlers %}
+{%     for handler in event_handlers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 !
-event-handler {{ handler }}
-{%         if event_handlers[handler].trigger is arista.avd.defined %}
-   trigger {{ event_handlers[handler].trigger }}
-{%             if event_handlers[handler].regex is arista.avd.defined %}
-      regex {{ event_handlers[handler].regex }}
+event-handler {{ handler.name }}
+{%         if handler.trigger is arista.avd.defined %}
+   trigger {{ handler.trigger }}
+{%             if handler.regex is arista.avd.defined %}
+      regex {{ handler.regex }}
 {%             endif %}
 {%         endif %}
-{%         if event_handlers[handler].action is arista.avd.defined and event_handlers[handler].action_type is arista.avd.defined %}
-   action {{ event_handlers[handler].action_type }} {{ event_handlers[handler].action }}
+{%         if handler.action is arista.avd.defined and handler.action_type is arista.avd.defined %}
+   action {{ handler.action_type }} {{ handler.action }}
 {%         endif %}
-{%         if event_handlers[handler].delay is arista.avd.defined %}
-   delay {{ event_handlers[handler].delay }}
+{%         if handler.delay is arista.avd.defined %}
+   delay {{ handler.delay }}
 {%         endif %}
-{%         if event_handlers[handler].asynchronous is arista.avd.defined(true) %}
+{%         if handler.asynchronous is arista.avd.defined(true) %}
    asynchronous
 {%         endif %}
 {%     endfor %}
