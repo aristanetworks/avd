@@ -1541,7 +1541,7 @@ mac_security:
 
 ```yaml
 bgp_groups:
-  < group_name >:
+  - name: < group_name >
     vrf: "< vrf_name >"
     neighbors:
       - "< ip_address >"

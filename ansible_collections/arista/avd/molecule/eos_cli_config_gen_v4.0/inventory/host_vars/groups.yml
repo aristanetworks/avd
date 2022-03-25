@@ -1,6 +1,6 @@
 ### BGP & Interface Groups ###
 bgp_groups:
-  foo:
+  - name: foo
     neighbors:
       - fe80::1
       - 169.254.1.1
@@ -8,7 +8,7 @@ bgp_groups:
       - uplink-neighbors
       - ixp
 
-  bar:
+  - name: bar
     neighbors:
       - peer-group-baz
     bgp_maintenance_profiles:
