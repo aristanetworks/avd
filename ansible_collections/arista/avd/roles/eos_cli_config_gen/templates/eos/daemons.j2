@@ -1,12 +1,12 @@
 {# eos - daemons #}
 {% if daemons is arista.avd.defined %}
-{%     for daemon in daemons %}
+{%     for daemon in daemons | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 !
-daemon {{ daemon }}
-{%         if daemons[daemon].exec is arista.avd.defined %}
-   exec {{ daemons[daemon].exec }}
+daemon {{ daemon.name }}
+{%         if daemon.exec is arista.avd.defined %}
+   exec {{ daemon.exec }}
 {%         endif %}
-{%         if daemons[daemon].enabled is arista.avd.defined(false) %}
+{%         if daemon.enabled is arista.avd.defined(false) %}
    shutdown
 {%         else %}
    no shutdown
