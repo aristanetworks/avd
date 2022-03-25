@@ -2272,13 +2272,13 @@ system:
 
 ```yaml
 vmtracer_sessions:
-  < vmtracer_session_name_1 >:
+  - name: < vmtracer_session_name_1 >
     url: < url >
     username: < username >
     password: "< encrypted_password >"
     autovlan_disable: < true | false >
     source_interface: < interface_name >
-  < vmtracer_session_name_2 >:
+  - name: < vmtracer_session_name_2 >
     url: < url >
     username: < username >
     password: "< encrypted_password >"
