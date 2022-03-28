@@ -54,7 +54,7 @@ interface Management1
 ### Object Tracking Summary
 
 | Name | Interface | Tracked Property |
-| ---------- | ------------- | -------------- |
+| ---- | --------- | ---------------- |
 | MyTrackNoProperty | Ethernet1/1 | line-protocol |
 | MyTrackSetProperty | Ethernet2/1 | line-protocol |
 
