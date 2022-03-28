@@ -34,4 +34,20 @@ sflow source-interface {{ sflow.source_interface }}
 {%     if sflow.run is arista.avd.defined(true) %}
 sflow run
 {%     endif %}
+{%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
+sflow hardware acceleration
+{%     endif %}
+{%     if sflow.hardware_acceleration.sample is arista.avd.defined %}
+sflow hardware acceleration sample {{ sflow.hardware_acceleration.sample }}
+{%     endif %}
+{%     for module in sflow.hardware_acceleration.modules | arista.avd.natural_sort %}
+{%         if module.name is arista.avd.defined %}
+{%             if module.enabled is arista.avd.defined(false) %}
+{%                 set module_cli = "no sflow hardware acceleration module " ~ module.name %}
+{%             else %}
+{%                 set module_cli = "sflow hardware acceleration module " ~ module.name %}
+{%             endif %}
+{{ module_cli }}
+{%         endif %}
+{%     endfor %}
 {% endif %}

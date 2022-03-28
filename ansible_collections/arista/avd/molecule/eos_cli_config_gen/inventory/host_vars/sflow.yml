@@ -24,3 +24,11 @@ sflow:
   sample: 1000
   dangerous: true
   run: true
+  hardware_acceleration:
+    enabled: true
+    sample: 1024
+    modules:
+      - name: Linecard2
+        enabled: true
+      - name: Linecard3
+        enabled: false
