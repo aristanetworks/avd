@@ -479,11 +479,11 @@ interface {{ ethernet_interface.name }}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%         endif %}
 {%     endfor %}
-{%     if ethernet_interfaces[ethernet_interface].traffic_policy_input is arista.avd.defined %}
-   traffic-policy input {{ ethernet_interfaces[ethernet_interface].traffic_policy_input }}
+{%     if ethernet_interfaces[ethernet_interface].traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ ethernet_interfaces[ethernet_interface].traffic_policy.input }}
 {%     endif %}
-{%     if ethernet_interfaces[ethernet_interface].traffic_policy_output is arista.avd.defined %}
-   traffic-policy output {{ ethernet_interfaces[ethernet_interface].traffic_policy_output }}
+{%     if ethernet_interfaces[ethernet_interface].traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ ethernet_interfaces[ethernet_interface].traffic_policy.output }}
 {%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}

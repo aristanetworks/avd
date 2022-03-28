@@ -295,7 +295,7 @@
 {# Aegis Traffic-Policies #}
 {%     set ethernet_interfaces_traffic_policies = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].traffic_policy_input is arista.avd.defined or ethernet_interfaces[ethernet_interface].traffic_policy_output is arista.avd.defined %}
+{%         if ethernet_interfaces[ethernet_interface].traffic_policy.input is arista.avd.defined or ethernet_interfaces[ethernet_interface].traffic_policy.output is arista.avd.defined %}
 {%             do ethernet_interfaces_traffic_policies.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -306,8 +306,8 @@
 | Interface | Input Traffic-Policy | Output Traffic-Policy |
 | --------- | -------------------- | --------------------- |
 {%         for interface in ethernet_interfaces_traffic_policies %}
-{%             set row_in_policy = ethernet_interfaces[interface].traffic_policy_input | arista.avd.default("-") %}
-{%             set row_out_policy = ethernet_interfaces[interface].traffic_policy_output | arista.avd.default("-") %}
+{%             set row_in_policy = ethernet_interfaces[interface].traffic_policy.input | arista.avd.default("-") %}
+{%             set row_out_policy = ethernet_interfaces[interface].traffic_policy.output | arista.avd.default("-") %}
 | {{ interface }} | {{ row_in_policy }} | {{ row_out_policy }} |
 {%         endfor %}
 
