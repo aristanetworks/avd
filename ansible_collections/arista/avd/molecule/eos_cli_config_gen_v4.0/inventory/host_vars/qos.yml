@@ -105,7 +105,7 @@ policy_maps:
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     peer: DC1-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
@@ -118,7 +118,7 @@ ethernet_interfaces:
       trust: dscp
       dscp: 48
 
-  Ethernet6:
+  - name: Ethernet6
     peer: SRV-POD02
     peer_interface: Eth1
     peer_type: server
@@ -130,7 +130,7 @@ ethernet_interfaces:
       trust: cos
       cos: 2
 
-  Ethernet3:
+  - name: Ethernet3
     peer: DC1-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
@@ -139,7 +139,7 @@ ethernet_interfaces:
       id: 3
       mode: active
 
-  Ethernet4:
+  - name: Ethernet4
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     peer_type: mlag_peer
@@ -148,7 +148,7 @@ ethernet_interfaces:
       id: 3
       mode: active
 
-  Ethernet7:
+  - name: Ethernet7
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server

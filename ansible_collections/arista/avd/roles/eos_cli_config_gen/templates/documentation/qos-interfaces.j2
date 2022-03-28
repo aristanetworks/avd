@@ -1,9 +1,9 @@
 {# QOS Interfaces #}
 {% set ethernet_interfaces_qos = [] %}
 {% set port_channel_interfaces_qos = [] %}
-{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%     if ethernet_interfaces[ethernet_interface].shape is arista.avd.defined or
-          ethernet_interfaces[ethernet_interface].qos is arista.avd.defined %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.shape is arista.avd.defined or
+          ethernet_interface.qos is arista.avd.defined %}
 {%         do ethernet_interfaces_qos.append(ethernet_interface) %}
 {%     endif %}
 {% endfor %}
@@ -19,12 +19,12 @@
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
-{%     for ethernet_interface in ethernet_interfaces_qos %}
-{%         set qos_trust = ethernet_interfaces[ethernet_interface].qos.trust | arista.avd.default('-') %}
-{%         set qos_dscp = ethernet_interfaces[ethernet_interface].qos.dscp | arista.avd.default('-') %}
-{%         set qos_cos = ethernet_interfaces[ethernet_interface].qos.cos | arista.avd.default('-') %}
-{%         set shape_rate = ethernet_interfaces[ethernet_interface].shape.rate | arista.avd.default('-') %}
-| {{ ethernet_interface }} | {{ qos_trust }} | {{ qos_dscp }} | {{ qos_cos }} | {{ shape_rate }} |
+{%     for ethernet_interface in ethernet_interfaces_qos | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set qos_trust = ethernet_interface.qos.trust | arista.avd.default('-') %}
+{%         set qos_dscp = ethernet_interface.qos.dscp | arista.avd.default('-') %}
+{%         set qos_cos = ethernet_interface.qos.cos | arista.avd.default('-') %}
+{%         set shape_rate = ethernet_interface.shape.rate | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ qos_trust }} | {{ qos_dscp }} | {{ qos_cos }} | {{ shape_rate }} |
 {%     endfor %}
 {%     for port_channel_interface in port_channel_interfaces_qos %}
 {%         set qos_trust = port_channel_interfaces[port_channel_interface].qos.trust | arista.avd.default('-') %}
