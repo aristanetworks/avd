@@ -221,3 +221,18 @@ vlan_interfaces:
     vrf: Tenant_A
     ip address: 10.0.101.1/24
     pvlan_mapping: 111-112
+
+# VRRP
+  Vlan333:
+    description: VRRP VLAN
+    ip_address: 10.10.10.107/29
+    vrrp:
+      virtual_router: 20
+      priority: 95
+      advertisement_interval: 3
+      ipv4: 10.10.10.105
+      tracked_object:
+        - name: TrackedObjectDecrement
+          decrement: 5
+        - name: TrackedObjectShutdown
+          shutdown: true

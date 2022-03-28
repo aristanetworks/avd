@@ -84,6 +84,7 @@ interface Management1
 | Vlan90 | SVI Description | default | - | - |
 | Vlan91 | PBR Description | default | - | true |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
+| Vlan333 | VRRP VLAN | default | - | - |
 | Vlan501 | SVI Description | default | - | false |
 | Vlan1001 | SVI Description | Tenant_A | - | false |
 | Vlan1002 | SVI Description | Tenant_A | - | false |
@@ -116,6 +117,7 @@ interface Management1
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan333 |  default  |  10.10.10.107/29  |  -  |  -  |  10.10.10.105  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
@@ -245,6 +247,15 @@ interface Vlan110
    no shutdown
    vrf Tenant_A
    pvlan mapping 111-112
+!
+interface Vlan333
+   description VRRP VLAN
+   ip address 10.10.10.107/29
+   vrrp 20 priority-level 95
+   vrrp 20 advertisement interval 3
+   vrrp 20 ipv4 10.10.10.105
+   vrrp 20 tracked-object TrackedObjectDecrement decrement 5
+   vrrp 20 tracked-object TrackedObjectShutdown shutdown
 !
 interface Vlan501
    description SVI Description
