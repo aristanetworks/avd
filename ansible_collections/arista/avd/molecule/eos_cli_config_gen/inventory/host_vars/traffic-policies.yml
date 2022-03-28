@@ -131,3 +131,15 @@ traffic_policies:
           actions:
             drop: true
             log: true
+
+ethernet_interfaces:
+  Ethernet1:
+    type: routed
+    traffic_policy_input: BLUE-C1-POLICY
+    traffic_policy_output: BLUE-C2-POLICY
+
+port_channel_interfaces:
+  Port-Channel2:
+    type: routed
+    traffic_policy_input: BLUE-C1-POLICY
+    traffic_policy_output: BLUE-C2-POLICY

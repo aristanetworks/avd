@@ -292,6 +292,26 @@
 {%     if port_channel_interface_ipv6.configured == true %}
  *Inherited from Port-Channel Interface
 {%     endif %}
+{# Aegis Traffic-Policies #}
+{%     set ethernet_interfaces_traffic_policies = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%         if ethernet_interfaces[ethernet_interface].traffic_policy_input is arista.avd.defined or ethernet_interfaces[ethernet_interface].traffic_policy_output is arista.avd.defined %}
+{%             do ethernet_interfaces_traffic_policies.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if ethernet_interfaces_traffic_policies | length > 0 %}
+
+#### Aegis Traffic-Policies
+
+| Interface | Input Traffic-Policy | Output Traffic-Policy |
+| --------- | -------------------- | --------------------- |
+{%         for interface in ethernet_interfaces_traffic_policies %}
+{%             set row_in_policy = ethernet_interfaces[interface].traffic_policy_input | arista.avd.default("-") %}
+{%             set row_out_policy = ethernet_interfaces[interface].traffic_policy_output | arista.avd.default("-") %}
+| {{ interface }} | {{ row_in_policy }} | {{ row_out_policy }} |
+{%         endfor %}
+
+{%     endif %}
 {# ISIS #}
 {%     set ethernet_interfaces_isis = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}

@@ -8,6 +8,8 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -60,6 +62,60 @@ interface Management1
 | ascending | 1006 | 4094 |
 
 # Interfaces
+
+## Ethernet Interfaces
+
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+
+*Inherited from Port-Channel Interface
+
+#### Aegis Traffic-Policies
+
+| Interface | Input Traffic-Policy | Output Traffic-Policy |
+| --------- | -------------------- | --------------------- |
+| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   no switchport
+   traffic-policy input BLUE-C1-POLICY
+   traffic-policy output BLUE-C2-POLICY
+```
+
+## Port-Channel Interfaces
+
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+#### Aegis Traffic-Policies
+
+| Interface | Input Traffic-Policy | Output Traffic-Policy |
+| --------- | -------------------- | --------------------- |
+| Port-Channel2 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel2
+   no switchport
+   traffic-policy input BLUE-C1-POLICY
+   traffic-policy output BLUE-C2-POLICY
+```
 
 # Routing
 
