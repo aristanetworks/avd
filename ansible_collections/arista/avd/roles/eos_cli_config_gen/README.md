@@ -65,6 +65,8 @@
     - [Internal VLAN Order](#internal-vlan-order)
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
+    - [IP Hardware](#ip-hardware)
+    - [IPv6 Hardware](#ipv6-hardware)
     - [LACP](#lacp)
     - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
@@ -87,6 +89,7 @@
       - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
+      - [Management Tech-Support](#management-tech-support)
       - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
       - [NTP](#ntp)
     - [MPLS](#mpls)
@@ -1483,6 +1486,26 @@ ip_icmp_redirect: < true | false >
 ipv6_icmp_redirect: < true | false >
 ```
 
+### IP Hardware
+
+```yaml
+ip_hardware:
+  fib:
+    optimize:
+      prefixes:
+        profile: < internet | urpf-internet >
+```
+
+### IPv6 Hardware
+
+```yaml
+ipv6_hardware:
+  fib:
+    optimize:
+      prefixes:
+        profile: < internet >
+```
+
 ### LACP
 
 ```yaml
@@ -1795,6 +1818,19 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
   log_level: < SSH daemon log level >
+```
+
+#### Management Tech-Support
+
+```yaml
+management_tech_support:
+  policy_show_tech_support:
+    exclude_commands:
+      - command: < command_to_exclude >
+        # The supported values for type are platform dependent
+        type: < text | json | default -> text >
+    include_commands:
+      - command: < command_to_include >
 ```
 
 #### IP SSH Client Source Interfaces
@@ -2617,6 +2653,7 @@ router_bgp:
       remote_as: < bgp_as >
       local_as: < bgp_as >
       description: "< description as string >"
+      ebgp_multihop: < integer >
       shutdown: < true | false >
       update_source: < interface >
       bfd: < true | false >

@@ -678,15 +678,15 @@ ip_extcommunity_lists_regexp:
 
 ```yaml
 peer_filters:
-  < peer_filter_name_1:
+  - name: < peer_filter_name_1
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         match: "< match as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         match: "< match as string >"
-  < peer_filter_name_2:
+  - name: < peer_filter_name_2
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         match: "< match as string >"
 ```
 
@@ -1541,7 +1541,7 @@ mac_security:
 
 ```yaml
 bgp_groups:
-  < group_name >:
+  - name: < group_name >
     vrf: "< vrf_name >"
     neighbors:
       - "< ip_address >"
@@ -1579,15 +1579,15 @@ maintenance:
       shutdown:
         max_delay: < seconds >
   bgp_profiles:
-    < bgp_profile_1 >:
+    - name: < bgp_profile_1 >
       initiator:
         route_map_inout: < route_map >
   unit_profiles:
-    < unit_profile_1 >:
+    - name: < unit_profile_1 >
       on_boot:
         duration: < 300-3600 >
   units:
-    < unit_name_1 >:
+    - name: < unit_name_1 >
       quiesce: < true | false >
       profile: < unit_profile_1 >
       groups:
@@ -1646,7 +1646,7 @@ domain_list:
 
 ```yaml
 management_interfaces:
-  < Management_interface_1 >:
+  - name: < Management_interface_1 >
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
@@ -1667,10 +1667,10 @@ management_api_http:
   enable_https: < true | false >
   https_ssl_profile: < SSL Profile Name >
   enable_vrfs:
-    < vrf_name_1 >:
+    - name: < vrf_name_1 >
       access_group: < Standard IPv4 ACL name >
       ipv6_access_group: < Standard IPv6 ACL name >
-    < vrf_name_2 >:
+    - name: < vrf_name_2 >
       access_group: < Standard IPv4 ACL name >
       ipv6_access_group: < Standard IPv6 ACL name >
   protocol_https_certificate:
@@ -1735,12 +1735,12 @@ management_security:
 ```yaml
 management_ssh:
   access_groups:
-    - name: < standard_acl_name_1 >:
-    - name: < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >
+    - name: < standard_acl_name_2 >
       vrf: < vrf name >
   ipv6_access_groups:
-    - name: < standard_acl_name_1 >:
-    - name: < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >
+    - name: < standard_acl_name_2 >
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
   cipher:
@@ -1761,9 +1761,9 @@ management_ssh:
     limit: < 1-100 SSH Connections >
     per_host: < 1-20 max sessions from a host >
   vrfs:
-    < vrf_name_1 >:
+    - name: < vrf_name_1 >
       enable: < true | false >
-    < vrf_name_2 >:
+    - name: < vrf_name_2 >
       enable: < true | false >
   log_level: < SSH daemon log level >
 ```
@@ -2002,7 +2002,7 @@ You can either provide a list of IPs/FQDNs to target on-premise Cloudvision clus
 
 ```yaml
 daemons:
-  < daemon_name >:
+  - name: < daemon_name >
     exec: "< command to run as a daemon >"
     enabled: "< true | false | default -> true >"
 ```
@@ -2047,7 +2047,7 @@ monitor_connectivity:
 ```yaml
 ### Event Handler ###
 event_handlers:
-  < event_handler_name >:
+  - name: < event_handler_name >
     action_type: < Type of action. [bash, increment, log] >
     action: < Command to execute >
     delay: < Event-handler delay in seconds >
@@ -2272,13 +2272,13 @@ system:
 
 ```yaml
 vmtracer_sessions:
-  < vmtracer_session_name_1 >:
+  - name: < vmtracer_session_name_1 >
     url: < url >
     username: < username >
     password: "< encrypted_password >"
     autovlan_disable: < true | false >
     source_interface: < interface_name >
-  < vmtracer_session_name_2 >:
+  - name: < vmtracer_session_name_2 >
     url: < url >
     username: < username >
     password: "< encrypted_password >"

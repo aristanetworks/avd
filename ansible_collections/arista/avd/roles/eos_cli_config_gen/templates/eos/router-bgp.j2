@@ -155,6 +155,9 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.neighbors[neighbor].description is arista.avd.defined %}
    neighbor {{ neighbor }} description {{ router_bgp.neighbors[neighbor].description }}
 {%         endif %}
+{%         if router_bgp.neighbors[neighbor].ebgp_multihop is arista.avd.defined %}
+   neighbor {{ neighbor }} ebgp-multihop {{ router_bgp.neighbors[neighbor].ebgp_multihop }}
+{%         endif %}
 {%         if router_bgp.neighbors[neighbor].update_source is arista.avd.defined %}
    neighbor {{ neighbor }} update-source {{ router_bgp.neighbors[neighbor].update_source }}
 {%         endif %}
