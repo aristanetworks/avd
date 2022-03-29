@@ -1526,7 +1526,7 @@ mac_security:
     - name: < profile >
       cipher: < valid-cipher-string >
       connection_keys:
-        - key: "< connection_key >"
+        - id: "< key_id >"
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
       mka:
