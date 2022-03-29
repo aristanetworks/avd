@@ -271,8 +271,8 @@
 {%             set port_channel_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%         if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if loopback_interface.ospf_area is arista.avd.defined %}
 {%             set loopback_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
@@ -313,12 +313,12 @@
 {%             endfor %}
 {%         endif %}
 {%         if loopback_interface_ospf.configured %}
-{%             for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%                 if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
-{%                     set ospf_area = loopback_interfaces[loopback_interface].ospf_area %}
-{%                     set ospf_cost = loopback_interfaces[loopback_interface].ospf_cost | arista.avd.default('-') %}
-{%                     set ospf_network_point_to_point = loopback_interfaces[loopback_interface].ospf_network_point_to_point | arista.avd.default('-') %}
-| {{ loopback_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
+{%             for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 if loopback_interface.ospf_area is arista.avd.defined %}
+{%                     set ospf_area = loopback_interface.ospf_area %}
+{%                     set ospf_cost = loopback_interface.ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = loopback_interface.ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ loopback_interface.name }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}

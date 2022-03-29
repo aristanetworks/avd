@@ -1104,7 +1104,7 @@ interface_profiles:
 
 ```yaml
 loopback_interfaces:
-  < Loopback_interface_1 >:
+  - name: < Loopback_interface_1 >
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
@@ -1120,7 +1120,7 @@ loopback_interfaces:
       ldp:
         interface: < true | false >
 
-  < Loopback_interface_2 >:
+  - name: < Loopback_interface_2 >
     description: < description >
     ip_address: < IPv4_address/Mask >
     isis_enable: < ISIS Instance >
