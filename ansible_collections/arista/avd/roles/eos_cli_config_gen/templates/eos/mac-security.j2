@@ -14,9 +14,9 @@ mac security
 {%         if profile.cipher is arista.avd.defined %}
       cipher {{ profile.cipher }}
 {%         endif %}
-{%         for connection_key in profile.connection_keys | arista.avd.convert_dicts('key') | arista.avd.natural_sort('key') %}
+{%         for connection_key in profile.connection_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%             if connection_key.encrypted_key is arista.avd.defined %}
-{%                 set key_cli = "key " ~ connection_key.key ~ " 7 " ~ connection_key.encrypted_key %}
+{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key %}
 {%                 if connection_key.fallback is arista.avd.defined %}
 {%                     set key_cli = key_cli ~ " fallback" %}
 {%                 endif %}
