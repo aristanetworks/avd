@@ -29,7 +29,7 @@ Settings:
 {%             set sci = profile.sci | arista.avd.default('-') %}
 | {{ cipher }} | {{ rekey_period }} | {{ sci }} |
 
-**Keys:**
+Keys:
 
 {%             if profile.connection_keys is arista.avd.defined %}
 | Key ID | Encrypted (Type 7) Key | Fallback |
