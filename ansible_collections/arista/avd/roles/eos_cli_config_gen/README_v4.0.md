@@ -871,11 +871,11 @@ ethernet_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      - ipv6_mask: < IPv6_address_1/Mask >
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      - ipv6_mask: < IPv6_address_2/Mask >
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
