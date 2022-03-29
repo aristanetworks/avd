@@ -35,7 +35,7 @@ Keys:
 | Key ID | Encrypted (Type 7) Key | Fallback |
 | ------ | ---------------------- | -------- |
 {%                 for connection_key in profile.connection_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
-{%                     if encrypted_key is arista.avd.defined %}
+{%                     if connection_key.encrypted_key is arista.avd.defined %}
 {%                         set encrypted_key = connection_key.encrypted_key %}
 {%                         set fallback = connection_key.fallback | arista.avd.default('-') %}
 | {{ connection_key.id }} | {{ encrypted_key }} | {{ fallback }} |
