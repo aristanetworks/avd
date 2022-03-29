@@ -11,14 +11,14 @@ mac_security:
           rekey_period: 30
       cipher: aes128-gcm
       connection_keys:
-        - key: 1234a
+        - id: 1234a
           encrypted_key: 025756085F535976
-        - key: 1234c
+        - id: 1234c
           encrypted_key: 10195F4C5144405A
           fallback: true
     - name: A2
       connection_keys:
-        - key: 1234b
+        - id: 1234b
           encrypted_key: 12485744465E5A53
         # 1234d:
         #   encrypted_key: 091B185C4D564543
