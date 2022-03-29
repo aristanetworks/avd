@@ -2174,6 +2174,15 @@ logging:
           action: < discard >
 ```
 
+#### Object Tracking
+
+```yaml
+track:
+  - name: < tracked object name >
+    interface: < interface_name >
+    tracked_property: < property_to_track | default -> line-protocol >
+```
+
 #### Sflow
 
 ```yaml
@@ -2317,15 +2326,6 @@ monitor_sessions:
     truncate:
       enabled: < true | false >
       size: < bytes >
-```
-
-### Object Tracking
-
-```yaml
-track:
-  - name: < tracked object name >
-    interface: < interface_name >
-    tracked_property: < property_to_track | default -> line-protocol >
 ```
 
 ### System Control-Plane
