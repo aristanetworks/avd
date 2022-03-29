@@ -1,0 +1,21 @@
+{# Object Tracking #}
+{% if trackers is arista.avd.defined %}
+
+## Object Tracking
+
+### Object Tracking Summary
+
+| Name | Interface | Tracked Property |
+| ---- | --------- | ---------------- |
+{%     for tracked_obj in trackers | arista.avd.natural_sort('name') %}
+{%         if tracked_obj.name is arista.avd.defined and tracked_obj.interface is arista.avd.defined %}
+| {{ tracked_obj.name }} | {{ tracked_obj.interface }} | {{ tracked_obj.tracked_property | arista.avd.default("line-protocol") }} |
+{%         endif %}
+{%     endfor %}
+
+### Object Tracking Configuration
+
+```eos
+{%     include 'eos/object-tracking.j2' %}
+```
+{% endif %}
