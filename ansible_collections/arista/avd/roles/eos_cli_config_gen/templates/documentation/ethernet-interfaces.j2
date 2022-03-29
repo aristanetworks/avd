@@ -12,10 +12,10 @@
 {%         if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%             set port_channel_interface = 'Port-Channel' + ethernet_interface.channel_group.id | string %}
 {%             if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
-{%                 set description = ethernet_interface.description | default("-") %}
-{%                 set mode = port_channel_interfaces[port_channel_interface].mode | default("access") %}
-{%                 set vlans = port_channel_interfaces[port_channel_interface].vlans | default ('-') %}
-{%                 set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | default ('-') %}
+{%                 set description = ethernet_interface.description | arista.avd.default("-") %}
+{%                 set mode = port_channel_interfaces[port_channel_interface].mode | arista.avd.default("access") %}
+{%                 set vlans = port_channel_interfaces[port_channel_interface].vlans | arista.avd.default('-') %}
+{%                 set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | arista.avd.default('-') %}
 {%                 set channel_group = ethernet_interface.channel_group.id %}
 {%                 if port_channel_interfaces[port_channel_interface].trunk_groups is arista.avd.defined %}
 {%                     set l2 = namespace() %}
@@ -32,8 +32,8 @@
 {%         elif ethernet_interface.type is not defined or ethernet_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set mode = ethernet_interface.mode | arista.avd.default("access") %}
-{%             set vlans = ethernet_interface.vlans | arista.avd.default ('-') %}
-{%             set native_vlan = ethernet_interface.native_vlan | arista.avd.default ('-') %}
+{%             set vlans = ethernet_interface.vlans | arista.avd.default('-') %}
+{%             set native_vlan = ethernet_interface.native_vlan | arista.avd.default('-') %}
 {%             if ethernet_interface.trunk_groups is defined %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = [] %}
@@ -240,7 +240,7 @@
 {%     endfor %}
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}
-{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%     if port_channel_interfaces is arista.avd.defined %}
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 {%             if port_channel_interfaces[port_channel_interface].type is defined
                 and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q']
