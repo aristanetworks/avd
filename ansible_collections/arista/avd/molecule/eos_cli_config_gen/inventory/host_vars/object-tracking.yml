@@ -1,4 +1,4 @@
-track:
+trackers:
   - name: MyTrackNoProperty
     interface: Ethernet1/1
   - name: MyTrackSetProperty

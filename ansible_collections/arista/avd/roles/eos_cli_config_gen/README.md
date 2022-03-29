@@ -2177,7 +2177,7 @@ logging:
 #### Object Tracking
 
 ```yaml
-track:
+trackers:
   - name: < tracked object name >
     interface: < interface_name >
     tracked_property: < property_to_track | default -> line-protocol >
