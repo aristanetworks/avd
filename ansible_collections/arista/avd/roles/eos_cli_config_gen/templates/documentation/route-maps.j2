@@ -4,20 +4,20 @@
 
 ### Route-maps Summary
 
-{%     for route_map in route_maps | arista.avd.natural_sort %}
-#### {{ route_map }}
+{%     for route_map in route_maps | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### {{ route_map.name }}
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-{%         for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort %}
-{%             if route_maps[route_map].sequence_numbers[sequence].match is arista.avd.defined %}
-{%                 for match_rule in route_maps[route_map].sequence_numbers[sequence].match | arista.avd.natural_sort %}
-| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | match {{ match_rule }} |
+{%         for sequence in route_map.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%             if sequence.match is arista.avd.defined %}
+{%                 for match_rule in sequence.match | arista.avd.natural_sort %}
+| {{ sequence.sequence }} | {{ sequence.type }} | match {{ match_rule }} |
 {%                 endfor %}
 {%             endif %}
-{%             if route_maps[route_map].sequence_numbers[sequence].set is arista.avd.defined %}
-{%                 for set_rule in route_maps[route_map].sequence_numbers[sequence].set | arista.avd.natural_sort %}
-| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | set {{ set_rule }} |
+{%             if sequence.set is arista.avd.defined %}
+{%                 for set_rule in sequence.set | arista.avd.natural_sort %}
+| {{ sequence.sequence }} | {{ sequence.type }} | set {{ set_rule }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

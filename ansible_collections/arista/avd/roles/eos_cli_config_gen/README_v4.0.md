@@ -694,9 +694,9 @@ peer_filters:
 
 ```yaml
 route_maps:
-  < route_map_name_1 >:
+  - name: < route_map_name_1 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         type: < permit | deny >
         description: < description >
         match:
@@ -704,13 +704,13 @@ route_maps:
           - "< match rule 2 as string >"
         set:
           - "< set as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         type: < permit | deny >
         match:
           - "< match as string >"
-  < route_map_name_2 >:
+  - name: < route_map_name_2 >
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         type: < permit | deny >
         description: < description >
         set:
