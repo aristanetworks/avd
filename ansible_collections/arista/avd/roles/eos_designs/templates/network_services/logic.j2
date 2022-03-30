@@ -42,3 +42,14 @@
 {%     endif %}
 {% endfor %}
 {% set network_services_data.tenants = tmp_tenants %}
+{% for tenants_key in tenants_keys | arista.avd.natural_sort %}
+{%     if hostvars[inventory_hostname][tenants_key.name] is arista.avd.defined %}
+{%         for tenant in hostvars[inventory_hostname][tenants_key.name] | arista.avd.natural_sort %}
+{%             do tenants.update({tenant: hostvars[inventory_hostname][tenants_key.name][tenant]}) %}
+{% for network_services_key in network_services_keys | arista.avd.natural_sort %}
+{%     if hostvars[inventory_hostname][network_services_key.name] is arista.avd.defined %}
+{%         for tenant in hostvars[inventory_hostname][network_services_key.name] | arista.avd.natural_sort %}
+{%             do tenants.update({tenant: hostvars[inventory_hostname][network_services_key.name][tenant]}) %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

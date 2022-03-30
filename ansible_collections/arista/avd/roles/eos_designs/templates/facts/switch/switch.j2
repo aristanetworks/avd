@@ -446,6 +446,8 @@ switch:
 {% if switch.network_services_l2 is arista.avd.defined(true) or
       switch.network_services_l3 is arista.avd.defined(true) or
       switch.network_services_l1 is arista.avd.defined(true) %}
+{%     set tenants = dict() %}
+{%     include 'network_services/logic.j2' %}
 {%     set leaf = namespace() %}
 {%     set leaf.vlans = []  %}
 {%     set leaf.tenants = {} %}
