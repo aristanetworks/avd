@@ -74,6 +74,13 @@ sFlow hardware acceleration is enabled.
 
 sFlow hardware accelerated Sample Rate: 1024
 
+### SFlow Hardware Accelerated Modules
+| Module | Acceleration Enabled |
+| ------ | -------------------- |
+| Linecard1 | True |
+| Linecard2 | True |
+| Linecard3 | False |
+
 ### SFlow Device Configuration
 
 ```eos
