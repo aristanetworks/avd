@@ -74,13 +74,6 @@ interface Management1
 
 *Inherited from Port-Channel Interface
 
-#### Aegis Traffic-Policies
-
-| Interface | Input Traffic-Policy | Output Traffic-Policy |
-| --------- | -------------------- | --------------------- |
-| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -99,13 +92,6 @@ interface Ethernet1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-
-#### Aegis Traffic-Policies
-
-| Interface | Input Traffic-Policy | Output Traffic-Policy |
-| --------- | -------------------- | --------------------- |
-| Port-Channel2 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -184,6 +170,14 @@ No IPv6 field-set configured.
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | tcp<br/>icmp | 1,10-20 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | SERVICE-DEMO | ANY | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
 | BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>logging |
+
+
+#### Traffic-Policy Interfaces
+
+| Interface | Input Traffic-Policy | Output Traffic-Policy |
+| --------- | -------------------- | --------------------- |
+| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+| Port-Channel2 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 
 ### Traffic Policies Device Configuration
 
