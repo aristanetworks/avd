@@ -5,8 +5,8 @@
 {%         set mpls_configured.ethernet_interfaces = true %}
 {%     endif %}
 {% endfor %}
-{% for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%     if loopback_interfaces[loopback_interface].mpls is arista.avd.defined %}
+{% for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if loopback_interface.mpls is arista.avd.defined %}
 {%         set mpls_configured.loopback_interfaces = true %}
 {%     endif %}
 {% endfor %}

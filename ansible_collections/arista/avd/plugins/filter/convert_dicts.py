@@ -54,7 +54,10 @@ def convert_dicts(dictionary, primary_key="name"):
     else:
         output = []
         for key in dictionary:
-            if not isinstance(dictionary[key], dict):
+            if dictionary[key] is None:
+                # Catch cornercase where dictionary has no value because of old data models
+                output.append({primary_key: key})
+            elif not isinstance(dictionary[key], dict):
                 # Not a nested dictionary, return the original
                 return dictionary
             else:

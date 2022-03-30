@@ -9,24 +9,24 @@ mac security
    fips restrictions
 {%     endif %}
    !
-{%     for profile in mac_security.profiles | arista.avd.natural_sort %}
-   profile {{ profile }}
-{%         if mac_security.profiles[profile].cipher is arista.avd.defined %}
-      cipher {{ mac_security.profiles[profile].cipher }}
+{%     for profile in mac_security.profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+   profile {{ profile.name }}
+{%         if profile.cipher is arista.avd.defined %}
+      cipher {{ profile.cipher }}
 {%         endif %}
-{%         for connection_key in mac_security.profiles[profile].connection_keys | arista.avd.natural_sort %}
-{%             if mac_security.profiles[profile].connection_keys[connection_key].encrypted_key is arista.avd.defined %}
-{%                 set key_cli = "key " ~ connection_key ~ " 7 " ~ mac_security.profiles[profile].connection_keys[connection_key].encrypted_key %}
-{%                 if mac_security.profiles[profile].connection_keys[connection_key].fallback is arista.avd.defined %}
+{%         for connection_key in profile.connection_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             if connection_key.encrypted_key is arista.avd.defined %}
+{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key %}
+{%                 if connection_key.fallback is arista.avd.defined %}
 {%                     set key_cli = key_cli ~ " fallback" %}
 {%                 endif %}
       {{ key_cli }}
 {%             endif %}
 {%         endfor %}
-{%         if mac_security.profiles[profile].mka.session.rekey_period is arista.avd.defined %}
-      mka session rekey-period {{ mac_security.profiles[profile].mka.session.rekey_period }}
+{%         if profile.mka.session.rekey_period is arista.avd.defined %}
+      mka session rekey-period {{ profile.mka.session.rekey_period }}
 {%         endif %}
-{%         if mac_security.profiles[profile].sci is arista.avd.defined(true) %}
+{%         if profile.sci is arista.avd.defined(true) %}
       sci
 {%         endif %}
 {%     endfor %}
