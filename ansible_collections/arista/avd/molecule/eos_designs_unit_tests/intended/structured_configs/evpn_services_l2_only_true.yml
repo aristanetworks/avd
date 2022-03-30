@@ -89,6 +89,15 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 161
+    Vlan_everywhere:
+      tenant: Tenant_A
+      rd: 192.168.255.109:20162
+      route_targets:
+        both:
+        - 20162:20162
+      redistribute_routes:
+      - learned
+      vlan: 162
     Tenant_B_OP_Zone:
       rd: 192.168.255.109:20
       route_targets:
@@ -237,6 +246,9 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
+  162:
+    tenant: Tenant_A
+    name: Vlan_everywhere
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
@@ -293,6 +305,8 @@ vxlan_interface:
           vni: 10160
         161:
           vni: 10161
+        162:
+          vni: 10162
         210:
           vni: 20210
         211:

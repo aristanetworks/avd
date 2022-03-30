@@ -195,6 +195,7 @@ vlan internal order ascending range 1006 1199
 | 150 | Tenant_A_WAN_Zone_1 | - |
 | 160 | Tenant_A_VMOTION | - |
 | 161 | Tenant_A_NFS | - |
+| 162 | Vlan_everywhere | - |
 | 210 | Tenant_B_OP_Zone_1 | - |
 | 211 | Tenant_B_OP_Zone_2 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
@@ -244,6 +245,9 @@ vlan 160
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 162
+   name Vlan_everywhere
 !
 vlan 210
    name Tenant_B_OP_Zone_1
@@ -326,6 +330,7 @@ interface Loopback1
 | 150 | 10150 | - | - |
 | 160 | 10160 | - | - |
 | 161 | 10161 | - | - |
+| 162 | 10162 | - | - |
 | 210 | 20210 | - | - |
 | 211 | 20211 | - | - |
 | 250 | 20250 | - | - |
@@ -354,6 +359,7 @@ interface Vxlan1
    vxlan vlan 150 vni 10150
    vxlan vlan 160 vni 10160
    vxlan vlan 161 vni 10161
+   vxlan vlan 162 vni 10162
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 250 vni 20250
@@ -468,6 +474,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_B_WAN_Zone | 192.168.255.109:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.109:30 | 30:30 | - | - | learned | 310-311 |
 | Tenant_C_WAN_Zone | 192.168.255.109:31 | 31:31 | - | - | learned | 350 |
+| Vlan_everywhere | 192.168.255.109:20162 | 20162:20162 | - | - | learned | 162 |
 
 ### Router BGP Device Configuration
 
@@ -554,6 +561,12 @@ router bgp 101
       route-target both 31:31
       redistribute learned
       vlan 350
+   !
+   vlan-aware-bundle Vlan_everywhere
+      rd 192.168.255.109:20162
+      route-target both 20162:20162
+      redistribute learned
+      vlan 162
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate

@@ -252,6 +252,9 @@ tenants:
       161:
         name: Tenant_A_NFS
         tags: ['opzone']
+      162:
+        name: Vlan_everywhere
+        # No "tags" defined - should render on switches with tag "all" or no tags
   # Tenant_B Specific Information - VRFs / VLANs
   Tenant_B:
     mac_vrf_vni_base: 20000

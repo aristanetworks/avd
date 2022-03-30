@@ -94,6 +94,9 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
+  162:
+    tenant: Tenant_A
+    name: Vlan_everywhere
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1

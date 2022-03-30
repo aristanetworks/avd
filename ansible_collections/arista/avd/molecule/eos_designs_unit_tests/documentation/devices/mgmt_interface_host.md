@@ -233,6 +233,7 @@ vlan internal order ascending range 1006 1199
 | 150 | Tenant_A_WAN_Zone_1 | - |
 | 160 | Tenant_A_VMOTION | - |
 | 161 | Tenant_A_NFS | - |
+| 162 | Vlan_everywhere | - |
 | 210 | Tenant_B_OP_Zone_1 | - |
 | 211 | Tenant_B_OP_Zone_2 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
@@ -282,6 +283,9 @@ vlan 160
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 162
+   name Vlan_everywhere
 !
 vlan 210
    name Tenant_B_OP_Zone_1
