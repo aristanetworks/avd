@@ -25,7 +25,7 @@
 {#                 l2vlans #}
 {%                 set tmp_l2vlans = [] %}
 {%                 for l2vlan in tenant.l2vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
-{%                    if l2vlan.id in switch_tenant.l2vlans | arista.avd.default([]) %}
+{%                     if l2vlan.id in switch_tenant.l2vlans | arista.avd.default([]) %}
 {%                         do tmp_l2vlans.append(l2vlan) %}
 {%                     endif %}
 {%                 endfor %}
