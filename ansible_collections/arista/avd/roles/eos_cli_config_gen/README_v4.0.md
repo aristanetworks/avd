@@ -1555,7 +1555,7 @@ bgp_groups:
 
 ```yaml
 interface_groups:
-  < group_name >:
+  - name: < group_name >
     interfaces:
       - "< interface_or_interface_range >"
     bgp_maintenance_profiles:
