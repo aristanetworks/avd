@@ -12,13 +12,6 @@
 
 {% endif %}
 
-{% if switch.vtep is arista.avd.defined(true) or
-      switch.network_services_l2 is arista.avd.defined(true) or
-      switch.network_services_l3 is arista.avd.defined(true) %}
-{%     set tenants = dict() %}
-{%     include 'network_services/logic.j2' %}
-{% endif %}
-
 {# L2 #}
 {% if switch.network_services_l2 is arista.avd.defined(true) %}
 {%     include 'network_services/vlans.j2' %}
