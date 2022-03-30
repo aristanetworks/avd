@@ -66,14 +66,14 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65107'
       description: DC1-BL2B_Ethernet1
-    10.10.101.1:
+    172.31.255.145:
       peer_group: UNDERLAY-PEERS
-      remote_as: '65151'
-      description: MH-LEAF1A_Ethernet1
-    10.10.101.3:
+      remote_as: '65108'
+      description: DC1-CL1A_Ethernet1
+    172.31.255.161:
       peer_group: UNDERLAY-PEERS
-      remote_as: '65152'
-      description: MH-LEAF1B_Ethernet1
+      remote_as: '65109'
+      description: DC1-CL1B_Ethernet1
     10.10.101.5:
       peer_group: UNDERLAY-PEERS
       remote_as: '65153'
@@ -94,6 +94,14 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL2B
       remote_as: '65107'
+    192.168.255.18:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-CL1A
+      remote_as: '65108'
+    192.168.255.19:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-CL1B
+      remote_as: '65109'
     192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
@@ -280,23 +288,25 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.31.255.128/31
   Ethernet10:
-    peer: MH-LEAF1A
+    peer: DC1-CL1A
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_MH-LEAF1A_Ethernet1
+    description: P2P_LINK_TO_DC1-CL1A_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 10.10.101.0/31
+    ip_address: 172.31.255.144/31
   Ethernet11:
-    peer: MH-LEAF1B
+    peer: DC1-CL1B
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_MH-LEAF1B_Ethernet1
+    description: P2P_LINK_TO_DC1-CL1B_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 10.10.101.2/31
+    ip_address: 172.31.255.160/31
   Ethernet12:
     peer: MH-LEAF2A
     peer_interface: Ethernet1
