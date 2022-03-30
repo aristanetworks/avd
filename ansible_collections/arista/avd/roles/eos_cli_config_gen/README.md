@@ -109,6 +109,7 @@
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
+    - [Object Tracking](#object-tracking)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -2178,6 +2179,15 @@ logging:
       match_lists:
         < match_list >:
           action: < discard >
+```
+
+#### Object Tracking
+
+```yaml
+trackers:
+  - name: < tracked object name >
+    interface: < interface_name >
+    tracked_property: < property_to_track | default -> line-protocol >
 ```
 
 #### Sflow
