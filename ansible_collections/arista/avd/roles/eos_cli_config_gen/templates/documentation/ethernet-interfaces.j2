@@ -67,7 +67,7 @@
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
-{%         for ethernet_interface in encapsulation_dot1q_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for ethernet_interface in encapsulation_dot1q_interfaces %}
 {%             set description = ethernet_interface.description | arista.avd.default('-') %}
 {%             set type = ethernet_interface.type %}
 {%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
@@ -81,7 +81,7 @@
 
 | Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-{%         for ethernet_interface in flexencap_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for ethernet_interface in flexencap_interfaces %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set type = ethernet_interface.type %}
 {%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
@@ -388,7 +388,7 @@
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
-{%         for evpn_es_ethernet_interface in evpn_es_ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for evpn_es_ethernet_interface in evpn_es_ethernet_interfaces %}
 {%             set esi = evpn_es_ethernet_interface.evpn_ethernet_segment.identifier | arista.avd.default("-") %}
 {%             set redundancy = evpn_es_ethernet_interface.evpn_ethernet_segment.redundancy | arista.avd.default("all-active") %}
 {%             set rt = evpn_es_ethernet_interface.evpn_ethernet_segment.route_target | arista.avd.default("-") %}
@@ -400,7 +400,7 @@
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
-{%             for evpn_dfe_ethernet_interface in evpn_dfe_ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for evpn_dfe_ethernet_interface in evpn_dfe_ethernet_interfaces %}
 {%                 set df_eth_settings = evpn_dfe_ethernet_interface.evpn_ethernet_segment.designated_forwarder_election %}
 {%                 set algorithm = df_eth_settings.algorithm | arista.avd.default("modulus") %}
 {%                 set pref_value = df_eth_settings.preference_value | arista.avd.default("-") %}
@@ -417,7 +417,7 @@
 
 | Interface | Shared Index | Tunnel Flood Filter Time |
 | --------- | ------------ | ------------------------ |
-{%             for evpn_mpls_ethernet_interface in evpn_mpls_ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for evpn_mpls_ethernet_interface in evpn_mpls_ethernet_interfaces %}
 {%                 set shared_index = evpn_mpls_ethernet_interface.evpn_ethernet_segment.mpls.shared_index | arista.avd.default("-") %}
 {%                 set tff_time = evpn_mpls_ethernet_interface.evpn_ethernet_segment.mpls.tunnel_flood_filter_time | arista.avd.default("-") %}
 | {{ evpn_mpls_ethernet_interface.name }} | {{ shared_index }} | {{ tff_time }} |
@@ -436,7 +436,7 @@
 
 | Interface | Enabled |
 | --------- | ------- |
-{%         for ethernet_interface in err_cor_enc_intfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for ethernet_interface in err_cor_enc_intfs %}
 {%             if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
 {%                 set enabled = ['Disabled'] %}
 {%             else %}

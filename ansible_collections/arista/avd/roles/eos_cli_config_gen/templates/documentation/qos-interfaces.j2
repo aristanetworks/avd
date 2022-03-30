@@ -19,7 +19,7 @@
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
-{%     for ethernet_interface in ethernet_interfaces_qos | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for ethernet_interface in ethernet_interfaces_qos %}
 {%         set qos_trust = ethernet_interface.qos.trust | arista.avd.default('-') %}
 {%         set qos_dscp = ethernet_interface.qos.dscp | arista.avd.default('-') %}
 {%         set qos_cos = ethernet_interface.qos.cos | arista.avd.default('-') %}

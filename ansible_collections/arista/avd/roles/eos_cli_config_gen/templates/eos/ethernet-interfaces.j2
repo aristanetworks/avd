@@ -229,7 +229,7 @@ interface {{ ethernet_interface.name }}
    ipv6 nd managed-config-flag
 {%         endif %}
 {%         if ethernet_interface.ipv6_nd_prefixes is arista.avd.defined %}
-{%             for prefix in ethernet_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') | arista.avd.natural_sort('ipv6_prefix') %}
+{%             for prefix in ethernet_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
 {%                 set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
 {%                 if prefix.valid_lifetime is arista.avd.defined %}
 {%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
