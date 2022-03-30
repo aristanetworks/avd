@@ -173,7 +173,7 @@ router_bgp:
         - '14:14'
       redistribute_routes:
       - learned
-      vlan: 150
+      vlan: 150-151
     Tenant_A_WEB_Zone:
       rd: 192.168.255.109:11
       route_targets:
@@ -200,7 +200,7 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 161
-    Vlan_everywhere:
+    l2vlan_with_no_tags:
       tenant: Tenant_A
       rd: 192.168.255.109:20162
       route_targets:
@@ -386,6 +386,9 @@ vlans:
   150:
     tenant: Tenant_A
     name: Tenant_A_WAN_Zone_1
+  151:
+    tenant: Tenant_A
+    name: svi_with_no_tags
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
@@ -400,7 +403,7 @@ vlans:
     name: Tenant_A_NFS
   162:
     tenant: Tenant_A
-    name: Vlan_everywhere
+    name: l2vlan_with_no_tags
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
@@ -516,6 +519,12 @@ vlan_interfaces:
     ospf_cost: 100
     ospf_authentication: simple
     ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
+  Vlan151:
+    tenant: Tenant_A
+    description: svi_with_no_tags
+    shutdown: false
+    vrf: Tenant_A_WAN_Zone
+    ip_address_virtual: 10.1.51.1/24
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -614,6 +623,8 @@ vxlan_interface:
           vni: 10112
         150:
           vni: 10150
+        151:
+          vni: 10151
         120:
           vni: 10120
         121:
