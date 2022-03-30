@@ -2225,7 +2225,7 @@ sflow:
   source_interface: < source_interface >
   run: < true | false >
   hardware_acceleration:
-    enabled: < true | false >
+    enabled: < true | false | default -> true >
     sample: < sample_rate >
     modules:
       - name: < module name >

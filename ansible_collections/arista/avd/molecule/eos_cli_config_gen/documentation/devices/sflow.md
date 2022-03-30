@@ -92,6 +92,7 @@ sflow source-interface Management0
 sflow run
 sflow hardware acceleration
 sflow hardware acceleration sample 1024
+sflow hardware acceleration module Linecard1
 sflow hardware acceleration module Linecard2
 no sflow hardware acceleration module Linecard3
 ```
