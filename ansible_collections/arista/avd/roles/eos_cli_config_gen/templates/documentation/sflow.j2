@@ -59,8 +59,8 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 | {{ module.name }} | {{ module.enabled | arista.avd.default(true) }} |
 {%             endif %}
 {%         endfor %}
-
 {%     endif %}
+
 ### SFlow Device Configuration
 
 ```eos
