@@ -11,7 +11,7 @@
     (vtep_reachability.vtep_ip_reachability is arista.avd.defined)
   register: routing_table_vtep_state
   tags:
-    - routing_table_check
+    - routing_table
 
 - name: Validate VTEP IP is in routing table
   assert:
@@ -26,7 +26,7 @@
   when: (vtep_reachability_test.skipped is not defined)
   register: routing_table_vtep_results
   tags:
-    - routing_table_check
+    - routing_table
 
 - name: run show ip route lo0
   eos_command:
@@ -40,7 +40,7 @@
     (type is defined and type != 'l2leaf')
   register: routing_table_loopback0_state
   tags:
-    - routing_table_check
+    - routing_table
 
 - name: Validate lo0 is in routing table
   assert:
@@ -55,4 +55,4 @@
   when: (routing_table_loopback0_test.skipped is not defined)
   register: routing_table_loopback0_results
   tags:
-    - routing_table_check
+    - routing_table
