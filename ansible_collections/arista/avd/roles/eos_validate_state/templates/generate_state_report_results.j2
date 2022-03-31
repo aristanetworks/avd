@@ -31,7 +31,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "Hardware"
   test_description: "Fan status (power supplies)"
-  test: "Fan power supply {{ result.powerSupplySlot.label }}"
+  test: "Power supply fan {{ result.powerSupplySlot.label }}"
 {%             if result.failed == false %}
   result: "PASS"
 {%             else %}
