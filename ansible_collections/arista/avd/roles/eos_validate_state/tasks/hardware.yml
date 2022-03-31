@@ -34,7 +34,7 @@
   assert:
     that:
       - powerSupplySlot.status == 'ok'
-    fail_msg: "Fan power supply status is {{ powerSupplySlot.status | replace('\"','') }}"
+    fail_msg: "Power supply fan status is {{ powerSupplySlot.status | replace('\"','') }}"
     quiet: true
   loop: "{{ system_environment_cooling.stdout_lines.0.powerSupplySlots }}"
   loop_control:
