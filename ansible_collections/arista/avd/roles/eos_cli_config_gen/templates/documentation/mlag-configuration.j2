@@ -21,6 +21,9 @@ Dual primary recovery delay for NON-MLAG interfaces is {{ mlag_configuration.dua
 {%     else %}
 Dual primary detection is disabled.
 {%     endif %}
+{%     if mlag_configuration.primary_priority is arista.avd.defined %}
+Mlag primary-priority is set to {{ mlag_configuration.primary_priority }}
+{%     endif %}
 
 ## MLAG Device Configuration
 

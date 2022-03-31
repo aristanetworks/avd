@@ -22,6 +22,9 @@ mlag configuration
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }}
 {%         endif %}
 {%     endif %}
+{%     if mlag_configuration.primary_priority is arista.avd.defined %}
+   primary-priority {{ mlag_configuration.primary_priority }}
+{%     endif %}
 {%     if mlag_configuration.peer_link is arista.avd.defined %}
    peer-link {{ mlag_configuration.peer_link }}
 {%     endif %}
