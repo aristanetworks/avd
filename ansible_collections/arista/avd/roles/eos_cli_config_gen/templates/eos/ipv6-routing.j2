@@ -17,3 +17,6 @@ ipv6 unicast-routing vrf {{ vrf }}
 {% if ipv6_icmp_redirect is arista.avd.defined(false) %}
 no ipv6 icmp redirect
 {% endif %}
+{% if ipv6_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
+ipv6 hardware fib optimize prefixes profile {{ ipv6_hardware.fib.optimize.prefixes.profile }}
+{% endif %}

@@ -3,6 +3,7 @@ ip_domain_lookup:
   source_interfaces:
     - name: Management0
       vrf: mgt
+    - name: Loopback0
 
 ### Name Servers ###
 name_server:

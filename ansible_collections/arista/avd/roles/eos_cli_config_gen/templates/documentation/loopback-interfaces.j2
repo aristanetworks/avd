@@ -8,33 +8,33 @@
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%         set vrf = loopback_interfaces[loopback_interface].vrf | arista.avd.default('default') %}
-{%         if loopback_interfaces[loopback_interface].ip_address is arista.avd.defined %}
-{%             set ip = loopback_interfaces[loopback_interface].ip_address %}
-{%             if loopback_interfaces[loopback_interface].ip_address_secondaries is arista.avd.defined %}
-{%                 set ip = loopback_interfaces[loopback_interface].ip_address ~ ' <br> ' ~ loopback_interfaces[loopback_interface].ip_address_secondaries | join(' secondary <br> ') ~ ' secondary' %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set vrf = loopback_interface.vrf | arista.avd.default('default') %}
+{%         if loopback_interface.ip_address is arista.avd.defined %}
+{%             set ip = loopback_interface.ip_address %}
+{%             if loopback_interface.ip_address_secondaries is arista.avd.defined %}
+{%                 set ip = loopback_interface.ip_address ~ ' <br> ' ~ loopback_interface.ip_address_secondaries | join(' secondary <br> ') ~ ' secondary' %}
 {%             endif %}
 {%         endif %}
-{%         set description = loopback_interfaces[loopback_interface].description | arista.avd.default('-') %}
-| {{ loopback_interface }} | {{ description }} | {{ vrf }} | {{ ip | arista.avd.default('-') }} |
+{%         set description = loopback_interface.description | arista.avd.default('-') %}
+| {{ loopback_interface.name }} | {{ description }} | {{ vrf }} | {{ ip | arista.avd.default('-') }} |
 {%     endfor %}
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%         set ip = loopback_interfaces[loopback_interface].vrf | arista.avd.default('default') %}
-{%         set ipv6 = loopback_interfaces[loopback_interface].ipv6_address | arista.avd.default('-') %}
-{%         set description = loopback_interfaces[loopback_interface].description | arista.avd.default('-') %}
-| {{ loopback_interface }} | {{ description }} | {{ ip }} | {{ ipv6 }} |
+{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set ip = loopback_interface.vrf | arista.avd.default('default') %}
+{%         set ipv6 = loopback_interface.ipv6_address | arista.avd.default('-') %}
+{%         set description = loopback_interface.description | arista.avd.default('-') %}
+| {{ loopback_interface.name }} | {{ description }} | {{ ip }} | {{ ipv6 }} |
 {%     endfor %}
 
 {%     set loopback_interface_isis = namespace() %}
 {%     set loopback_interface_isis.configured = false %}
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%         if loopback_interfaces[loopback_interface].isis_enable is arista.avd.defined %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if loopback_interface.isis_enable is arista.avd.defined %}
 {%             set loopback_interface_isis.configured = true %}
 {%         endif %}
 {%     endfor %}
@@ -43,14 +43,14 @@
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
-{%         for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%             if loopback_interfaces[loopback_interface].isis_enable is arista.avd.defined %}
-{%                 if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined %}
+{%         for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if loopback_interface.isis_enable is arista.avd.defined %}
+{%                 if loopback_interface.isis_network_point_to_point is arista.avd.defined %}
 {%                     set mode = 'point-to-point' %}
-{%                 elif loopback_interfaces[loopback_interface].isis_passive is arista.avd.defined %}
+{%                 elif loopback_interface.isis_passive is arista.avd.defined %}
 {%                     set mode = 'passive' %}
 {%                 endif %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].isis_enable }} | {{ loopback_interfaces[loopback_interface].isis_metric | arista.avd.default('-') }} | {{ mode | arista.avd.default('-') }} |
+| {{ loopback_interface.name }} | {{ loopback_interface.isis_enable }} | {{ loopback_interface.isis_metric | arista.avd.default('-') }} | {{ mode | arista.avd.default('-') }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

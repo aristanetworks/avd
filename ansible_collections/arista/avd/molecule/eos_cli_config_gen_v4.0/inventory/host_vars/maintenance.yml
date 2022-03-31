@@ -10,24 +10,24 @@ maintenance:
       shutdown:
         max_delay: 300
   bgp_profiles:
-    BP1:
+    - name: BP1
       initiator:
         route_map_inout: RM-MAINTENANCE
-    BP2:
+    - name: BP2
       initiator:
         route_map_inout: RM-MAINTENANCE2
-    BP3:
+    - name: BP3
       initiator:
         route_map_inout: RM-MAINTENANCE3
   unit_profiles:
-    UP1:
+    - name: UP1
       on_boot:
         duration: 900
-    UP2:
+    - name: UP2
       on_boot:
         duration: 600
   units:
-    UNIT1:
+    - name: UNIT1
       profile: UP1
       groups:
         bgp_groups:
