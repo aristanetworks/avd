@@ -80,7 +80,7 @@ eos_validate_state_report:
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - transceivers manufacturers #}
 {%     if copy_hostvars[node].transceiver_inventory_results.results is arista.avd.defined %}
-{%         for result in copy_hostvars[node].transceiver_inventory_results.results %}
+{%         for result in copy_hostvars[node].transceiver_inventory_results.results if result.skipped is not arista.avd.defined %}
 {%             set test_id.value = test_id.value + 1 %}
 - id: {{ test_id.value }}
   device: "{{ node }}"
