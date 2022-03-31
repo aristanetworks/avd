@@ -1,0 +1,11 @@
+{# eos - ip-community-lists #}
+{% if ip_community_lists is arista.avd.defined %}
+!
+{%     for a_community_list in ip_community_lists %}
+{%         if a_community_list.regexp is arista.avd.defined %}
+ip community-list regexp {{ a_community_list.name }} {{ a_community_list.action }} {{ a_community_list.regexp }}
+{%         else %}
+ip community-list {{ a_community_list.name }} {{ a_community_list.action }} {{ a_community_list.community_list_entries | join(' ') }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
