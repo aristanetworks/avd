@@ -14,6 +14,7 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
+  - [IP Community-lists](#ip-community-lists)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
@@ -102,6 +103,27 @@ interface Management1
 !
 ip community-list TEST1 permit 1000:1000
 ip community-list TEST2 permit 2000:3000
+```
+
+## IP Community-lists
+
+### IP Community-lists Summary
+
+| Name | Action | Communities / Regexp |
+| -------- | ------ | ---------------- |
+| IP_CL_TEST1 | permit | 1001:1001 1002:1002 |
+| IP_CL_TEST2 | deny | 1003:1003 |
+| IP_RE_TEST1 | permit | ^$ |
+| IP_RE_TEST2 | deny | ^100 |
+
+### IP Community-lists Device Configuration
+
+```eos
+!
+ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
+ip community-list IP_CL_TEST2 deny 1003:1003
+ip community-list regexp IP_RE_TEST1 permit ^$
+ip community-list regexp IP_RE_TEST2 deny ^100
 ```
 
 # ACL
