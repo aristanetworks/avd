@@ -63,6 +63,7 @@ Heartbeat Interval is 5000 milliseconds.
 Dual primary detection is enabled. The detection delay is 5 seconds.
 Dual primary recovery delay for MLAG interfaces is 90 seconds.
 Dual primary recovery delay for NON-MLAG interfaces is 30 seconds.
+Mlag primary-priority is set to 5000
 
 ## MLAG Device Configuration
 
@@ -73,6 +74,7 @@ mlag configuration
    heartbeat-interval 5000
    local-interface Vlan4094
    peer-address 172.16.0.1
+   primary-priority 5000
    peer-link Port-Channel12
    dual-primary detection delay 5 action errdisable all-interfaces
    dual-primary recovery delay mlag 90 non-mlag 30
