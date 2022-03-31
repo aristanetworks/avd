@@ -106,10 +106,10 @@
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
       - [Logging](#logging)
+      - [Object Tracking](#object-tracking)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
-    - [Object Tracking](#object-tracking)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -201,7 +201,7 @@ AVD currently supports 2 different data models for extended ACLs:
 - The legacy `access_lists` data model, for compatibility with existing deployments
 - The improved `ip_access_lists` data model, for access to more EOS features
 
-Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+Both data models can coexist without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
 Access list names must be unique.
 
 The legacy data model supports simplified ACL definition with `sequence_number` to `action_string` mapping:
@@ -650,12 +650,40 @@ ipv6_prefix_lists:
 
 #### Community Lists
 
+AVD supports 2 different data models for extended ACLs:
+
+- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
+- The improved `ip_community_lists` data model.
+
+Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
+Access list names must be unique.
+
+The legacy data model supports simplified community list definition that only allows rules to be defined as strings:
+
 ```yaml
 community_lists:
   < community_list_name_1 >:
     action: "< action as string >"
   < community_list_name_2 >:
     action: "< action as string >"
+```
+
+The improved data model has a better design documented below:
+
+```yaml
+ip_community_lists:
+  - name: "<ip community list name as string>"  # mandatory
+    action: "< permit | deny >"  # required
+    # possible community strings are (case insensitive):
+    # - GSHUT
+    # - internet
+    # - local-as
+    # - no-advertise
+    # - no-export
+    # - <1-4294967040>
+    # - aa:nn
+    community_list_entries: [ "< a_community as string >", "< a_community as string >", ... ]  # optional, if defined - standard community list will be configured
+    regexp: "< regular expression >"  # if defined, regex community list will be configured
 ```
 
 #### IP Extended Community Lists
