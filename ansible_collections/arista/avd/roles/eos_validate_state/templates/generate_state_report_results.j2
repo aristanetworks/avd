@@ -13,7 +13,7 @@ eos_validate_state_report:
   test_category: "Hardware"
   test_description: "Power supply status"
   test: "Power supply {{ result.powerSupply.key }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -32,7 +32,7 @@ eos_validate_state_report:
   test_category: "Hardware"
   test_description: "Fan status (power supplies)"
   test: "Power supply fan {{ result.powerSupplySlot.label }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -51,7 +51,7 @@ eos_validate_state_report:
   test_category: "Hardware"
   test_description: "Fan status (fan tray)"
   test: "Tray {{ result.fanTraySlot.label }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -69,7 +69,7 @@ eos_validate_state_report:
   test_category: "Hardware"
   test_description: "Temperature"
   test: "System temperature"
-{%         if copy_hostvars[node].environment_temperature_results.failed == false %}
+{%         if copy_hostvars[node].environment_temperature_results.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%         else %}
   result: "FAIL"
@@ -87,7 +87,7 @@ eos_validate_state_report:
   test_category: "Hardware"
   test_description: "Transceivers manufacturers"
   test: "Port {{ result.xcvrSlot.key }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -103,7 +103,7 @@ eos_validate_state_report:
   test_category: "NTP"
   test_description: "Synchronised with NTP server"
   test: "NTP"
-{%         if copy_hostvars[node].ntp_status_results.failed == false %}
+{%         if copy_hostvars[node].ntp_status_results.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%         else %}
   result: "FAIL"
@@ -125,7 +125,7 @@ eos_validate_state_report:
   test_description: "Ethernet Interface & Line Protocol == \"adminDown\""
 {%             endif %}
   test: "{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description | arista.avd.default('') }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -148,7 +148,7 @@ eos_validate_state_report:
   test_description: "Port-Channel Interface & Line Protocol == \"adminDown\""
 {%             endif %}
   test: "{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description | arista.avd.default('') }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -171,7 +171,7 @@ eos_validate_state_report:
   test_description: "Vlan Interface & Line Protocol == \"adminDown\""
 {%             endif %}
   test: "{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description | arista.avd.default('') }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -189,7 +189,7 @@ eos_validate_state_report:
   test_category: "Interface State"
   test_description: "Vxlan Interface Status & Line Protocol == \"up\""
   test: "Vxlan1"
-{%         if copy_hostvars[node].vxlan_interface_state_results.failed == false %}
+{%         if copy_hostvars[node].vxlan_interface_state_results.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%         else %}
   result: "FAIL"
@@ -207,7 +207,7 @@ eos_validate_state_report:
   test_category: "Interface State"
   test_description: "Loopback Interface Status & Line Protocol == \"up\""
   test: "{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description | arista.avd.default('') }}"
-{%             if result.failed == false %}
+{%             if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%             else %}
   result: "FAIL"
@@ -227,7 +227,7 @@ eos_validate_state_report:
   test_category: "LLDP Topology"
   test_description: "LLDP topology - validate peer and interface"
   test: "local: {{ result.ethernet_interface.key }} - remote: {{ copy_hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer }}_{{ copy_hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer_interface }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -246,7 +246,7 @@ eos_validate_state_report:
   test_category: "MLAG"
   test_description: "MLAG State active & Status connected"
   test: "MLAG"
-{%         if copy_hostvars[node].mlag_state_results.failed == false %}
+{%         if copy_hostvars[node].mlag_state_results.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%         else %}
   result: "FAIL"
@@ -265,7 +265,7 @@ eos_validate_state_report:
   test_category: "IP Reachability"
   test_description: "ip reachability test p2p links"
   test: "Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} - Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -284,7 +284,7 @@ eos_validate_state_report:
   test_category: "BGP"
   test_description: "ArBGP is configured and operating"
   test: "ArBGP"
-{%         if copy_hostvars[node].arbgp_state_results.failed == false %}
+{%         if copy_hostvars[node].arbgp_state_results.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%         else %}
   result: "FAIL"
@@ -303,7 +303,7 @@ eos_validate_state_report:
   test_category: "BGP"
   test_description: "ip bgp peer state established (ipv4)"
   test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -324,7 +324,7 @@ eos_validate_state_report:
   test_category: "BGP"
   test_description: "bgp evpn peer state established (evpn)"
   test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -343,7 +343,7 @@ eos_validate_state_report:
   test_category: "Reload Cause"
   test_description: "Reload Cause - Reload requested by the user"
   test: "Reload Cause"
-{%         if copy_hostvars[node].reload_cause_results.failed == false %}
+{%         if copy_hostvars[node].reload_cause_results.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%         else %}
   result: "FAIL"
@@ -362,7 +362,7 @@ eos_validate_state_report:
   test_category: "Routing Table"
   test_description: "Remote VTEP address"
   test: "{{ result.vtep_reachability_test.vtep_ip }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -383,7 +383,7 @@ eos_validate_state_report:
   test_category: "Routing Table"
   test_description: "Remote Lo0 address"
   test: {{ result.routing_table_loopback0_test.loopback0_address }}
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -404,7 +404,7 @@ eos_validate_state_report:
   test_category: "Loopback0 Reachability"
   test_description: "Loopback0 Reachability"
   test: "Source: {{ node }} - {{ copy_hostvars[node].loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
@@ -425,7 +425,7 @@ eos_validate_state_report:
   test_category: "Loopback0 Reachability"
   test_description: "Inband Mgmt Reachability"
   test: "Source: {{ node }} - {{ result.inb_mgmt_loopback0_reachability_test.invocation.module_args.commands[0].split(" ") | last }} Destination: {{ result.inb_mgmt_loopback0_reachability_test.loopback0_address }}"
-{%                 if result.failed == false %}
+{%                 if result.failed is arista.avd.defined(fasle) %}
   result: "PASS"
 {%                 else %}
   result: "FAIL"
