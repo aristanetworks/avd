@@ -1,5 +1,7 @@
 ### Hardware ###
 hardware:
+  access_list:
+    mechanism: tcam
   speed_groups:
     1:
       serdes: 10g
