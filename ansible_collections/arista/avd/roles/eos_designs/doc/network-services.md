@@ -223,6 +223,7 @@ svi_profiles:
 
             # Tags leveraged for networks services filtering. | Optional
             # Tags are matched against "filter.tags" defined under Fabric Topology variables
+            # Tags are also matched agains the "node_group" name under Fabric Topology variables
             tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
             # Enable or disable interface
