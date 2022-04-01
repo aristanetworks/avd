@@ -1,7 +1,10 @@
 # DC1 Tenants Networks
 # Documentation of Tenant specific information - Vlans/VRFs
 
-tenants:
+network_services_keys:
+  - name: tenant_group1
+
+tenant_group1:
   fake_tenant:
     mac_vrf_vni_base: 20000
     vrfs:
