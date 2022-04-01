@@ -242,9 +242,11 @@ vlan internal order ascending range 1006 1199
 | Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet1 | routed | - | 172.31.255.96/31 | default | 1500 | false | - | - |
 | Ethernet8 | P2P_LINK_TO_DC1-BL2A_Ethernet1 | routed | - | 172.31.255.112/31 | default | 1500 | false | - | - |
 | Ethernet9 | P2P_LINK_TO_DC1-BL2B_Ethernet1 | routed | - | 172.31.255.128/31 | default | 1500 | false | - | - |
-| Ethernet10 | P2P_LINK_TO_DC1-CL1A_Ethernet1 | routed | - | 172.31.255.144/31 | default | 1500 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-CL1B_Ethernet1 | routed | - | 172.31.255.160/31 | default | 1500 | false | - | - |
+| Ethernet10 | P2P_LINK_TO_MH-LEAF1A_Ethernet1 | routed | - | 10.10.101.0/31 | default | 1500 | false | - | - |
+| Ethernet11 | P2P_LINK_TO_MH-LEAF1B_Ethernet1 | routed | - | 10.10.101.2/31 | default | 1500 | false | - | - |
 | Ethernet12 | P2P_LINK_TO_MH-LEAF2A_Ethernet1 | routed | - | 10.10.101.4/31 | default | 1500 | false | - | - |
+| Ethernet14 | P2P_LINK_TO_DC1-CL1A_Ethernet1 | routed | - | 172.31.255.144/31 | default | 1500 | false | - | - |
+| Ethernet15 | P2P_LINK_TO_DC1-CL1B_Ethernet1 | routed | - | 172.31.255.160/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -323,20 +325,18 @@ interface Ethernet9
    ip address 172.31.255.128/31
 !
 interface Ethernet10
-   description P2P_LINK_TO_DC1-CL1A_Ethernet1
+   description P2P_LINK_TO_MH-LEAF1A_Ethernet1
    no shutdown
    mtu 1500
-   speed forced 100gfull
    no switchport
-   ip address 172.31.255.144/31
+   ip address 10.10.101.0/31
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-CL1B_Ethernet1
+   description P2P_LINK_TO_MH-LEAF1B_Ethernet1
    no shutdown
    mtu 1500
-   speed forced 100gfull
    no switchport
-   ip address 172.31.255.160/31
+   ip address 10.10.101.2/31
 !
 interface Ethernet12
    description P2P_LINK_TO_MH-LEAF2A_Ethernet1
@@ -344,6 +344,22 @@ interface Ethernet12
    mtu 1500
    no switchport
    ip address 10.10.101.4/31
+!
+interface Ethernet14
+   description P2P_LINK_TO_DC1-CL1A_Ethernet1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.144/31
+!
+interface Ethernet15
+   description P2P_LINK_TO_DC1-CL1B_Ethernet1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.160/31
 ```
 
 ## Loopback Interfaces
@@ -463,6 +479,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| 10.10.101.1 | 65151 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 10.10.101.3 | 65152 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 10.10.101.5 | 65153 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.1 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.17 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -519,6 +537,12 @@ router bgp 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor 10.10.101.1 peer group UNDERLAY-PEERS
+   neighbor 10.10.101.1 remote-as 65151
+   neighbor 10.10.101.1 description MH-LEAF1A_Ethernet1
+   neighbor 10.10.101.3 peer group UNDERLAY-PEERS
+   neighbor 10.10.101.3 remote-as 65152
+   neighbor 10.10.101.3 description MH-LEAF1B_Ethernet1
    neighbor 10.10.101.5 peer group UNDERLAY-PEERS
    neighbor 10.10.101.5 remote-as 65153
    neighbor 10.10.101.5 description MH-LEAF2A_Ethernet1

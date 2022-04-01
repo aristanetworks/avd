@@ -172,12 +172,12 @@ l3leaf:
           id: 10
           bgp_as: 65108
           mgmt_ip: 192.168.200.119/24
-          uplink_switch_interfaces: [ Ethernet10, Ethernet10, Ethernet10, Ethernet10 ]
+          uplink_switch_interfaces: [ Ethernet14, Ethernet14, Ethernet14, Ethernet14 ]
         DC1-CL1B:
           id: 11
           bgp_as: 65109
           mgmt_ip: 192.168.200.120/24
-          uplink_switch_interfaces: [ Ethernet11, Ethernet11, Ethernet11, Ethernet11 ]
+          uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
 
 l2leaf:
   defaults:

@@ -74,16 +74,16 @@
 | l3leaf | DC1-BL2B | Ethernet2 | spine | DC1-SPINE2 | Ethernet9 |
 | l3leaf | DC1-BL2B | Ethernet3 | spine | DC1-SPINE3 | Ethernet9 |
 | l3leaf | DC1-BL2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet9 |
-| l3leaf | DC1-CL1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet10 |
-| l3leaf | DC1-CL1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet10 |
-| l3leaf | DC1-CL1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet10 |
-| l3leaf | DC1-CL1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet10 |
+| l3leaf | DC1-CL1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet14 |
+| l3leaf | DC1-CL1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet14 |
+| l3leaf | DC1-CL1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet14 |
+| l3leaf | DC1-CL1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet14 |
 | l3leaf | DC1-CL1A | Ethernet5 | mlag_peer | DC1-CL1B | Ethernet5 |
 | l3leaf | DC1-CL1A | Ethernet6 | mlag_peer | DC1-CL1B | Ethernet6 |
-| l3leaf | DC1-CL1B | Ethernet1 | spine | DC1-SPINE1 | Ethernet11 |
-| l3leaf | DC1-CL1B | Ethernet2 | spine | DC1-SPINE2 | Ethernet11 |
-| l3leaf | DC1-CL1B | Ethernet3 | spine | DC1-SPINE3 | Ethernet11 |
-| l3leaf | DC1-CL1B | Ethernet4 | spine | DC1-SPINE4 | Ethernet11 |
+| l3leaf | DC1-CL1B | Ethernet1 | spine | DC1-SPINE1 | Ethernet15 |
+| l3leaf | DC1-CL1B | Ethernet2 | spine | DC1-SPINE2 | Ethernet15 |
+| l3leaf | DC1-CL1B | Ethernet3 | spine | DC1-SPINE3 | Ethernet15 |
+| l3leaf | DC1-CL1B | Ethernet4 | spine | DC1-SPINE4 | Ethernet15 |
 | l2leaf | DC1-L2LEAF1A | Ethernet1 | l3leaf | DC1-LEAF2A | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet2 | l3leaf | DC1-LEAF2B | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet3 | mlag_peer | DC1-L2LEAF1B | Ethernet3 |
@@ -112,6 +112,8 @@
 | l3leaf | DC1-LEAF2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet3 |
 | spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet10 | l3leaf | MH-LEAF1A | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet11 | l3leaf | MH-LEAF1B | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet12 | l3leaf | MH-LEAF2A | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
@@ -129,7 +131,7 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 10.10.101.0/24 | 256 | 2 | 0.79 % |
+| 10.10.101.0/24 | 256 | 6 | 2.35 % |
 | 172.31.255.0/24 | 256 | 88 | 34.38 % |
 
 ## Point-To-Point Links Node Allocation
@@ -152,14 +154,14 @@
 | DC1-BL2B | Ethernet2 | 172.31.255.131/31 | DC1-SPINE2 | Ethernet9 | 172.31.255.130/31 |
 | DC1-BL2B | Ethernet3 | 172.31.255.133/31 | DC1-SPINE3 | Ethernet9 | 172.31.255.132/31 |
 | DC1-BL2B | Ethernet4 | 172.31.255.135/31 | DC1-SPINE4 | Ethernet9 | 172.31.255.134/31 |
-| DC1-CL1A | Ethernet1 | 172.31.255.145/31 | DC1-SPINE1 | Ethernet10 | 172.31.255.144/31 |
-| DC1-CL1A | Ethernet2 | 172.31.255.147/31 | DC1-SPINE2 | Ethernet10 | 172.31.255.146/31 |
-| DC1-CL1A | Ethernet3 | 172.31.255.149/31 | DC1-SPINE3 | Ethernet10 | 172.31.255.148/31 |
-| DC1-CL1A | Ethernet4 | 172.31.255.151/31 | DC1-SPINE4 | Ethernet10 | 172.31.255.150/31 |
-| DC1-CL1B | Ethernet1 | 172.31.255.161/31 | DC1-SPINE1 | Ethernet11 | 172.31.255.160/31 |
-| DC1-CL1B | Ethernet2 | 172.31.255.163/31 | DC1-SPINE2 | Ethernet11 | 172.31.255.162/31 |
-| DC1-CL1B | Ethernet3 | 172.31.255.165/31 | DC1-SPINE3 | Ethernet11 | 172.31.255.164/31 |
-| DC1-CL1B | Ethernet4 | 172.31.255.167/31 | DC1-SPINE4 | Ethernet11 | 172.31.255.166/31 |
+| DC1-CL1A | Ethernet1 | 172.31.255.145/31 | DC1-SPINE1 | Ethernet14 | 172.31.255.144/31 |
+| DC1-CL1A | Ethernet2 | 172.31.255.147/31 | DC1-SPINE2 | Ethernet14 | 172.31.255.146/31 |
+| DC1-CL1A | Ethernet3 | 172.31.255.149/31 | DC1-SPINE3 | Ethernet14 | 172.31.255.148/31 |
+| DC1-CL1A | Ethernet4 | 172.31.255.151/31 | DC1-SPINE4 | Ethernet14 | 172.31.255.150/31 |
+| DC1-CL1B | Ethernet1 | 172.31.255.161/31 | DC1-SPINE1 | Ethernet15 | 172.31.255.160/31 |
+| DC1-CL1B | Ethernet2 | 172.31.255.163/31 | DC1-SPINE2 | Ethernet15 | 172.31.255.162/31 |
+| DC1-CL1B | Ethernet3 | 172.31.255.165/31 | DC1-SPINE3 | Ethernet15 | 172.31.255.164/31 |
+| DC1-CL1B | Ethernet4 | 172.31.255.167/31 | DC1-SPINE4 | Ethernet15 | 172.31.255.166/31 |
 | DC1-LEAF1A | Ethernet1 | 172.31.255.1/31 | DC1-SPINE1 | Ethernet1 | 172.31.255.0/31 |
 | DC1-LEAF1A | Ethernet2 | 172.31.255.3/31 | DC1-SPINE2 | Ethernet1 | 172.31.255.2/31 |
 | DC1-LEAF1A | Ethernet3 | 172.31.255.5/31 | DC1-SPINE3 | Ethernet1 | 172.31.255.4/31 |
@@ -174,6 +176,8 @@
 | DC1-LEAF2B | Ethernet4 | 172.31.255.39/31 | DC1-SPINE4 | Ethernet3 | 172.31.255.38/31 |
 | DC1-SPINE1 | Ethernet4 | 172.31.255.48/31 | DC1-SVC3A | Ethernet1 | 172.31.255.49/31 |
 | DC1-SPINE1 | Ethernet5 | 172.31.255.64/31 | DC1-SVC3B | Ethernet1 | 172.31.255.65/31 |
+| DC1-SPINE1 | Ethernet10 | 10.10.101.0/31 | MH-LEAF1A | Ethernet1 | 10.10.101.1/31 |
+| DC1-SPINE1 | Ethernet11 | 10.10.101.2/31 | MH-LEAF1B | Ethernet1 | 10.10.101.3/31 |
 | DC1-SPINE1 | Ethernet12 | 10.10.101.4/31 | MH-LEAF2A | Ethernet1 | 10.10.101.5/31 |
 | DC1-SPINE2 | Ethernet4 | 172.31.255.50/31 | DC1-SVC3A | Ethernet2 | 172.31.255.51/31 |
 | DC1-SPINE2 | Ethernet5 | 172.31.255.66/31 | DC1-SVC3B | Ethernet2 | 172.31.255.67/31 |

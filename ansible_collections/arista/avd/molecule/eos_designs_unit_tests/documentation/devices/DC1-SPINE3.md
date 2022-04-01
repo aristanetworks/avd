@@ -242,8 +242,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | routed | - | 172.31.255.100/31 | default | 1500 | false | - | - |
 | Ethernet8 | P2P_LINK_TO_DC1-BL2A_Ethernet3 | routed | - | 172.31.255.116/31 | default | 1500 | false | - | - |
 | Ethernet9 | P2P_LINK_TO_DC1-BL2B_Ethernet3 | routed | - | 172.31.255.132/31 | default | 1500 | false | - | - |
-| Ethernet10 | P2P_LINK_TO_DC1-CL1A_Ethernet3 | routed | - | 172.31.255.148/31 | default | 1500 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-CL1B_Ethernet3 | routed | - | 172.31.255.164/31 | default | 1500 | false | - | - |
+| Ethernet14 | P2P_LINK_TO_DC1-CL1A_Ethernet3 | routed | - | 172.31.255.148/31 | default | 1500 | false | - | - |
+| Ethernet15 | P2P_LINK_TO_DC1-CL1B_Ethernet3 | routed | - | 172.31.255.164/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -321,7 +321,7 @@ interface Ethernet9
    no switchport
    ip address 172.31.255.132/31
 !
-interface Ethernet10
+interface Ethernet14
    description P2P_LINK_TO_DC1-CL1A_Ethernet3
    no shutdown
    mtu 1500
@@ -329,7 +329,7 @@ interface Ethernet10
    no switchport
    ip address 172.31.255.148/31
 !
-interface Ethernet11
+interface Ethernet15
    description P2P_LINK_TO_DC1-CL1B_Ethernet3
    no shutdown
    mtu 1500

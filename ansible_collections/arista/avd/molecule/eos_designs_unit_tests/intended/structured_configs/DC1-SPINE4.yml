@@ -271,7 +271,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.134/31
-  Ethernet10:
+  Ethernet14:
     peer: DC1-CL1A
     peer_interface: Ethernet4
     peer_type: l3leaf
@@ -281,7 +281,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.150/31
-  Ethernet11:
+  Ethernet15:
     peer: DC1-CL1B
     peer_interface: Ethernet4
     peer_type: l3leaf

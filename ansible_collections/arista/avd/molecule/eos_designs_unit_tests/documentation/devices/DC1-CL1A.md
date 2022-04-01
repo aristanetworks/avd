@@ -394,17 +394,17 @@ vlan 4092
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet10 | routed | - | 172.31.255.145/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet10 | routed | - | 172.31.255.147/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet10 | routed | - | 172.31.255.149/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet10 | routed | - | 172.31.255.151/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet14 | routed | - | 172.31.255.145/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet14 | routed | - | 172.31.255.147/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet14 | routed | - | 172.31.255.149/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet14 | routed | - | 172.31.255.151/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet10
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet14
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -412,7 +412,7 @@ interface Ethernet1
    ip address 172.31.255.145/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet10
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet14
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -420,7 +420,7 @@ interface Ethernet2
    ip address 172.31.255.147/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet10
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet14
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -428,7 +428,7 @@ interface Ethernet3
    ip address 172.31.255.149/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet10
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet14
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -768,16 +768,16 @@ router bgp 65108
    neighbor 10.255.251.19 description DC1-CL1B
    neighbor 172.31.255.144 peer group UNDERLAY-PEERS
    neighbor 172.31.255.144 remote-as 65001
-   neighbor 172.31.255.144 description DC1-SPINE1_Ethernet10
+   neighbor 172.31.255.144 description DC1-SPINE1_Ethernet14
    neighbor 172.31.255.146 peer group UNDERLAY-PEERS
    neighbor 172.31.255.146 remote-as 65001
-   neighbor 172.31.255.146 description DC1-SPINE2_Ethernet10
+   neighbor 172.31.255.146 description DC1-SPINE2_Ethernet14
    neighbor 172.31.255.148 peer group UNDERLAY-PEERS
    neighbor 172.31.255.148 remote-as 65001
-   neighbor 172.31.255.148 description DC1-SPINE3_Ethernet10
+   neighbor 172.31.255.148 description DC1-SPINE3_Ethernet14
    neighbor 172.31.255.150 peer group UNDERLAY-PEERS
    neighbor 172.31.255.150 remote-as 65001
-   neighbor 172.31.255.150 description DC1-SPINE4_Ethernet10
+   neighbor 172.31.255.150 description DC1-SPINE4_Ethernet14
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
