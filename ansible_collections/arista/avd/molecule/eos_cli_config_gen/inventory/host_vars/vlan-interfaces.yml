@@ -222,7 +222,6 @@ vlan_interfaces:
     ip address: 10.0.101.1/24
     pvlan_mapping: 111-112
 
-
 # VRRP
 
   Vlan667:
