@@ -2374,9 +2374,9 @@ class_maps:
 ```yaml
 policy_maps:
   pbr:
-    < policy-map name >:
+    - name: < policy-map name >
       classes:
-        < class name >:
+        - class: < class name >
           index: < integer > # Optional
           # Set only one of the below actions per class
           drop: < true | false >
@@ -2385,9 +2385,9 @@ policy_maps:
               ip_address: < IPv4_address | IPv6_address >
               recursive: < true | false >
   qos:
-    < policy-map name >:
+    - name: < policy-map name >
       classes:
-        < class name >:
+        - class: < class name >
           set:
             cos: < cos_value >
             dscp: < dscp-code >
