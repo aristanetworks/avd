@@ -8,7 +8,8 @@
     loop_var: vtep_ip
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (vtep_reachability.vtep_ip_reachability is arista.avd.defined)
+    (vtep_reachability.vtep_ip_reachability is arista.avd.defined) and
+    (vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined)
   register: routing_table_vtep_state
   tags:
     - routing_table
@@ -36,8 +37,8 @@
     loop_var: loopback0_address
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
-    (type is defined and type != 'l2leaf')
+    (loopback0_reachability.loopback0_range is arista.avd.defined) and
+    (loopback_interfaces.Loopback0.ip_address is arista.avd.defined)
   register: routing_table_loopback0_state
   tags:
     - routing_table
