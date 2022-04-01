@@ -85,6 +85,7 @@ interface Management1
 | Vlan91 | PBR Description | default | - | true |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
 | Vlan501 | SVI Description | default | - | false |
+| Vlan667 | Multiple VRIDs | default | - | false |
 | Vlan1001 | SVI Description | Tenant_A | - | false |
 | Vlan1002 | SVI Description | Tenant_A | - | false |
 | Vlan2001 | SVI Description | Tenant_B | - | - |
@@ -117,6 +118,7 @@ interface Management1
 | Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
+| Vlan667 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
 | Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
@@ -132,6 +134,7 @@ interface Management1
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | true | - | - | - |
+| Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
 | Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
 
@@ -252,6 +255,19 @@ interface Vlan501
    ip address 10.50.26.29/27
    ipv6 address 1b11:3a00:22b0:0088::207/127
    ipv6 nd ra disabled
+!
+interface Vlan667
+   description Multiple VRIDs
+   no shutdown
+   arp aging timeout 180
+   ipv6 enable
+   ipv6 address 2001:db8::2/64
+   ipv6 address fe80::2/64 link-local
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 2 ipv6 2001:db8::1
 !
 interface Vlan1001
    description SVI Description
