@@ -1858,7 +1858,7 @@ ip_igmp_snooping:
     version: < 1-3 >
   proxy: < true | false >
   vlans:
-    < vlan_id >:
+    - id: < vlan_id >
       enabled: < true | false >
       querier:
         enabled: < true | false >
