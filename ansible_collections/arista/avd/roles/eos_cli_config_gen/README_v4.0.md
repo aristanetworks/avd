@@ -2399,7 +2399,7 @@ policy_maps:
 
 ```yaml
 qos_profiles:
-  < profile-1 >:
+  - name: < profile-1 >
     trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
@@ -2409,27 +2409,27 @@ qos_profiles:
       type:
         qos_input: < policy_map_name >
     tx_queues:
-      < tx-queue-id >:
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         # The below knob is platform dependent
         bandwidth_guaranteed_percent: < value >
         priority: < string >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
-      < tx-queue-id >:
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
-  < profile-2 >:
+  - name: < profile-2 >
     trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
     tx_queues:
-      < tx-queue-id >:
+      id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
-      < tx-queue-id >:
+      id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
 ```
