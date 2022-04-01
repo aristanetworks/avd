@@ -161,6 +161,23 @@ l3leaf:
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
+    DC1_CL1:
+      mlag: true
+      evpn_services_l2_only: true
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+      nodes:
+        DC1-CL1A:
+          id: 10
+          bgp_as: 65108
+          mgmt_ip: 192.168.200.119/24
+          uplink_switch_interfaces: [ Ethernet14, Ethernet14, Ethernet14, Ethernet14 ]
+        DC1-CL1B:
+          id: 11
+          bgp_as: 65109
+          mgmt_ip: 192.168.200.120/24
+          uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
 
 l2leaf:
   defaults:
