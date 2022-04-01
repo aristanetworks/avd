@@ -457,7 +457,7 @@ switch:
 {%     set tmp_hostvars = hostvars[inventory_hostname] %}
 {%     for network_services_key in network_services_keys | arista.avd.natural_sort('name') %}
 {%         if network_services_key.name is arista.avd.defined and tmp_hostvars[network_services_key.name] is arista.avd.defined %}
-{%             for tenant in tmp_hostvars[network_services_key.name] | arista.avd.convert_dicts | arista.avd.natural_sort('name') if tenant.name in switch_filter_tenants or "all" in switch_filter_tenants %}
+{%             for tenant in tmp_hostvars[network_services_key.name] | arista.avd.convert_dicts | arista.avd.natural_sort('name') if switch_filter_tenants is arista.avd.contains([tenant.name, "all"]) %}
 {%                 set add_vrfs = {} %}
 {%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
 {%                     set add_svis = [] %}
