@@ -52,6 +52,7 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 {%     if sflow.hardware_acceleration.modules is arista.avd.defined and sflow.hardware_acceleration.modules | length > 0 %}
 
 ### SFlow Hardware Accelerated Modules
+
 | Module | Acceleration Enabled |
 | ------ | -------------------- |
 {%         for module in sflow.hardware_acceleration.modules %}
