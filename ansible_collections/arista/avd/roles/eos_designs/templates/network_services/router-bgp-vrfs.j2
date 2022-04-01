@@ -63,10 +63,10 @@
 {%                     for bgp_peer in vrf.bgp_peers %}
 {%                         if inventory_hostname in bgp_peer.nodes | arista.avd.default([]) %}
 {%                             if bgp_peer.name | ansible.netcommon.ipv4 %}
-{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer.name) %}
+{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer) %}
 {%                             endif %}
 {%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
-{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.name) %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer) %}
 {%                             endif %}
 {%                             if bgp_peer.set_ipv4_next_hop is arista.avd.defined or bgp_peer.set_ipv6_next_hop is arista.avd.defined %}
 {%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.name ~ '-SET-NEXT-HOP-OUT' }) %}
@@ -86,6 +86,13 @@
         {{ bgp_peer.name }}:
 {%                             do bgp_peer.pop('name') %}
           {{ bgp_peer }}
+{%                         else %}
+{%                             if bgp_peer.name | ansible.netcommon.ipv4 %}
+{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer) %}
+{%                             endif %}
+{%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer) %}
+{%                             endif %}
 {%                         endif %}
 {%                     endfor %}
       redistribute_routes:
@@ -112,16 +119,22 @@
         ipv4:
           neighbors:
 {%                         for ipv4_neighbor in bgp_vrf.address_family_ipv4_neighbors %}
-            {{ ipv4_neighbor }}:
+            {{ ipv4_neighbor.name }}:
               activate: true
+{%                             if ipv4_neighbor.peer_group %}
+              peer_group: {{ ipv4_neighbor.peer_group }}
+{%                             endif %}
 {%                         endfor %}
 {%                     endif %}
 {%                     if bgp_vrf.address_family_ipv6_neighbors | length > 0 %}
         ipv6:
           neighbors:
 {%                         for ipv6_neighbor in bgp_vrf.address_family_ipv6_neighbors %}
-            {{ ipv6_neighbor }}:
+            {{ ipv6_neighbor.name }}:
               activate: true
+{%                             if ipv6_neighbor.peer_group %}
+              peer_group: {{ ipv6_neighbor.peer_group }}
+{%                             endif %}
 {%                         endfor %}
 {%                     endif %}
 {%                 endif %}
