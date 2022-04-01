@@ -221,8 +221,10 @@ svi_profiles:
             # SVI description. | Optional
             description: < description | Default -> vlan name >
 
-            # Tags leveraged for networks services filtering. | Required
-            tags: [ < tag_1 >, < tag_2 > ]
+            # Tags leveraged for networks services filtering. | Optional
+            # Tags are matched against "filter.tags" defined under Fabric Topology variables
+            # Tags are also matched against the "node_group" name under Fabric Topology variables
+            tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
             # Enable or disable interface
             enabled: < true | false >
@@ -437,11 +439,13 @@ svi_profiles:
         # The rt_override allows us to override this value and statically define it. | Optional
         rt_override: < 1-16777215 | default -> vni_override >
 
-        # VLAN name.
+        # VLAN name | Required
         name: < description >
 
-        # Tags leveraged for networks services filtering.
-        tags: [ < tag_1 >, < tag_2 > ]
+        # Tags leveraged for network services filtering. | Optional
+        # Tags are matched against "filter.tags" defined under Fabric Topology variables
+        # Tags are also matched against the "node_group" name under Fabric Topology variables
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
         # VXLAN | Optional - default true
         # Extend this L2VLAN over VXLAN

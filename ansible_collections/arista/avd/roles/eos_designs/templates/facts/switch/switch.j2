@@ -450,21 +450,22 @@ switch:
 {%     set leaf.vlans = []  %}
 {%     set leaf.tenants = {} %}
 {%     set leaf.pseudowires = [] %}
+{%     set match_tags = switch_filter_tags %}
+{%     if switch_data.group is arista.avd.defined %}
+{%         do match_tags.append(switch_data.group) %}
+{%     endif %}
 {%     set tmp_hostvars = hostvars[inventory_hostname] %}
 {%     for network_services_key in network_services_keys | arista.avd.natural_sort('name') %}
 {%         if network_services_key.name is arista.avd.defined and tmp_hostvars[network_services_key.name] is arista.avd.defined %}
-{%             for tenant in tmp_hostvars[network_services_key.name] | arista.avd.convert_dicts | arista.avd.natural_sort('name') if tenant.name in switch_filter_tenants or "all" in switch_filter_tenants %}
+{%             for tenant in tmp_hostvars[network_services_key.name] | arista.avd.convert_dicts | arista.avd.natural_sort('name') if switch_filter_tenants is arista.avd.contains([tenant.name, "all"]) %}
 {%                 set add_vrfs = {} %}
 {%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
 {%                     set add_svis = [] %}
 {%                     for svi in vrf.svis | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
-{%                         for svi_tag in svi.tags | arista.avd.natural_sort %}
-{%                             if svi_tag in switch_filter_tags or switch_data.group is arista.avd.defined(svi_tag) or "all" in switch_filter_tags %}
-{%                                 do add_svis.append(svi.id) %}
-{%                                 do leaf.vlans.append(svi.id | int) %}
-{%                                 break %}
-{%                             endif %}
-{%                         endfor %}
+{%                         if "all" in switch_filter_tags or svi.tags | arista.avd.default(['all']) is arista.avd.contains(match_tags) %}
+{%                             do add_svis.append(svi.id) %}
+{%                             do leaf.vlans.append(svi.id | int) %}
+{%                         endif %}
 {%                     endfor %}
 {# Append VRF if we found SVIs #}
 {%                     if add_svis | length > 0 %}
@@ -483,13 +484,10 @@ switch:
 {%                 endfor %}
 {%                 set add_l2vlans = [] %}
 {%                 for l2vlan in tenant.l2vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
-{%                     for vlan_tag in l2vlan.tags | arista.avd.natural_sort %}
-{%                         if vlan_tag in switch_filter_tags or switch_data.group is arista.avd.defined(vlan_tag) or "all" in switch_filter_tags %}
-{%                             do add_l2vlans.append(l2vlan.id) %}
-{%                             do leaf.vlans.append(l2vlan.id | int) %}
-{%                             break %}
-{%                         endif %}
-{%                     endfor %}
+{%                     if "all" in switch_filter_tags or l2vlan.tags | arista.avd.default(['all']) is arista.avd.contains(match_tags) %}
+{%                         do add_l2vlans.append(l2vlan.id) %}
+{%                         do leaf.vlans.append(l2vlan.id | int) %}
+{%                     endif %}
 {%                 endfor %}
 {%                 set add_point_to_point_services = [] %}
 {%                 for point_to_point_service in tenant.point_to_point_services | arista.avd.natural_sort %}

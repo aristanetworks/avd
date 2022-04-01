@@ -217,6 +217,11 @@ tenants:
               cost: 100
               authentication: simple
               simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+          151:
+            name: svi_with_no_tags
+            enabled: True
+            ip_address_virtual: 10.1.51.1/24
+            # No "tags" defined - should render on switches with tag "all" or no tags
         additional_route_targets:
           - type: import
             address_family: vpn-ipv4
@@ -252,6 +257,9 @@ tenants:
       161:
         name: Tenant_A_NFS
         tags: ['opzone']
+      162:
+        name: l2vlan_with_no_tags
+        # No "tags" defined - should render on switches with tag "all" or no tags
   # Tenant_B Specific Information - VRFs / VLANs
   Tenant_B:
     mac_vrf_vni_base: 20000

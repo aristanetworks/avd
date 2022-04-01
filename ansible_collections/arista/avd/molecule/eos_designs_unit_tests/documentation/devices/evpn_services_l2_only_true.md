@@ -193,8 +193,10 @@ vlan internal order ascending range 1006 1199
 | 140 | Tenant_A_DB_BZone_1 | - |
 | 141 | Tenant_A_DB_Zone_2 | - |
 | 150 | Tenant_A_WAN_Zone_1 | - |
+| 151 | svi_with_no_tags | - |
 | 160 | Tenant_A_VMOTION | - |
 | 161 | Tenant_A_NFS | - |
+| 162 | l2vlan_with_no_tags | - |
 | 210 | Tenant_B_OP_Zone_1 | - |
 | 211 | Tenant_B_OP_Zone_2 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
@@ -239,11 +241,17 @@ vlan 141
 vlan 150
    name Tenant_A_WAN_Zone_1
 !
+vlan 151
+   name svi_with_no_tags
+!
 vlan 160
    name Tenant_A_VMOTION
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 162
+   name l2vlan_with_no_tags
 !
 vlan 210
    name Tenant_B_OP_Zone_1
@@ -324,8 +332,10 @@ interface Loopback1
 | 140 | 10140 | - | - |
 | 141 | 10141 | - | - |
 | 150 | 10150 | - | - |
+| 151 | 10151 | - | - |
 | 160 | 10160 | - | - |
 | 161 | 10161 | - | - |
+| 162 | 10162 | - | - |
 | 210 | 20210 | - | - |
 | 211 | 20211 | - | - |
 | 250 | 20250 | - | - |
@@ -352,8 +362,10 @@ interface Vxlan1
    vxlan vlan 140 vni 10140
    vxlan vlan 141 vni 10141
    vxlan vlan 150 vni 10150
+   vxlan vlan 151 vni 10151
    vxlan vlan 160 vni 10160
    vxlan vlan 161 vni 10161
+   vxlan vlan 162 vni 10162
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 250 vni 20250
@@ -457,12 +469,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
+| l2vlan_with_no_tags | 192.168.255.109:20162 | 20162:20162 | - | - | learned | 162 |
 | Tenant_A_APP_Zone | 192.168.255.109:12 | 12:12 | - | - | learned | 130-132 |
 | Tenant_A_DB_Zone | 192.168.255.109:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_NFS | 192.168.255.109:20161 | 20161:20161 | - | - | learned | 161 |
 | Tenant_A_OP_Zone | 192.168.255.109:9 | 9:9 | - | - | learned | 110-112 |
 | Tenant_A_VMOTION | 192.168.255.109:20160 | 20160:20160 | - | - | learned | 160 |
-| Tenant_A_WAN_Zone | 192.168.255.109:14 | 14:14 | - | - | learned | 150 |
+| Tenant_A_WAN_Zone | 192.168.255.109:14 | 14:14 | - | - | learned | 150-151 |
 | Tenant_A_WEB_Zone | 192.168.255.109:11 | 11:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.109:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_B_WAN_Zone | 192.168.255.109:21 | 21:21 | - | - | learned | 250 |
@@ -488,6 +501,12 @@ router bgp 101
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan-aware-bundle l2vlan_with_no_tags
+      rd 192.168.255.109:20162
+      route-target both 20162:20162
+      redistribute learned
+      vlan 162
    !
    vlan-aware-bundle Tenant_A_APP_Zone
       rd 192.168.255.109:12
@@ -523,7 +542,7 @@ router bgp 101
       rd 192.168.255.109:14
       route-target both 14:14
       redistribute learned
-      vlan 150
+      vlan 150-151
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 192.168.255.109:11
