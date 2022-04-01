@@ -673,17 +673,19 @@ The improved data model has a better design documented below:
 ```yaml
 ip_community_lists:
   - name: "<ip community list name as string>"  # mandatory
-    action: "< permit | deny >"  # required
-    # possible community strings are (case insensitive):
-    # - GSHUT
-    # - internet
-    # - local-as
-    # - no-advertise
-    # - no-export
-    # - <1-4294967040>
-    # - aa:nn
-    community_list_entries: [ "< a_community as string >", "< a_community as string >", ... ]  # optional, if defined - standard community list will be configured
-    regexp: "< regular expression >"  # if defined, regex community list will be configured
+    entries:
+      - action: "< permit | deny >"  # required
+        # community_values and regexp MUST not be configured together in the same entry
+        # possible community strings are (case insensitive):
+        # - GSHUT
+        # - internet
+        # - local-as
+        # - no-advertise
+        # - no-export
+        # - <1-4294967040>
+        # - aa:nn
+        community_values: [ "< a_community as string >", "< another_community as string >", ... ]  # optional, if defined - standard community list will be configured
+        regexp: "< regular expression >"  # if defined, regex community list will be configured
 ```
 
 #### IP Extended Community Lists

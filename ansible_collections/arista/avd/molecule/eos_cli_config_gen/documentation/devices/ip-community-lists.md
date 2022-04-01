@@ -110,8 +110,10 @@ ip community-list TEST2 permit 2000:3000
 ### IP Community-lists Summary
 
 | Name | Action | Communities / Regexp |
-| -------- | ------ | ---------------- |
+| ---- | ------ | -------------------- |
 | IP_CL_TEST1 | permit | 1001:1001 1002:1002 |
+| IP_CL_TEST1 | deny | 1010:1010 |
+| IP_CL_TEST1 | permit | 20:* |
 | IP_CL_TEST2 | deny | 1003:1003 |
 | IP_RE_TEST1 | permit | ^$ |
 | IP_RE_TEST2 | deny | ^100 |
@@ -121,6 +123,8 @@ ip community-list TEST2 permit 2000:3000
 ```eos
 !
 ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
+ip community-list IP_CL_TEST1 deny 1010:1010
+ip community-list regexp IP_CL_TEST1 permit 20:*
 ip community-list IP_CL_TEST2 deny 1003:1003
 ip community-list regexp IP_RE_TEST1 permit ^$
 ip community-list regexp IP_RE_TEST2 deny ^100
