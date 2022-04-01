@@ -1888,7 +1888,6 @@ mlag_configuration:
   domain_id: < domain_id_name >
   heartbeat_interval: < milliseconds >
   local_interface: < interface_name >
-  primary_priority: < integer >
   peer_address: < IPv4_address >
   peer_address_heartbeat:
     peer_ip: < IPv4_address >
