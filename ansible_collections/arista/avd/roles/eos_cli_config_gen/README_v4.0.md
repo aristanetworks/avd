@@ -2376,7 +2376,7 @@ policy_maps:
   pbr:
     - name: < policy-map name >
       classes:
-        - class: < class name >
+        - name: < class name >
           index: < integer > # Optional
           # Set only one of the below actions per class
           drop: < true | false >
@@ -2387,7 +2387,7 @@ policy_maps:
   qos:
     - name: < policy-map name >
       classes:
-        - class: < class name >
+        - name: < class name >
           set:
             cos: < cos_value >
             dscp: < dscp-code >

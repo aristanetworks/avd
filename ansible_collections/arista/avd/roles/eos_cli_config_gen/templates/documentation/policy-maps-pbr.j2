@@ -10,12 +10,12 @@
 
 | Class | Index | Drop | Nexthop | Recursive |
 | ----- | ----- | ---- | ------- | --------- |
-{%             for class in policy_map.classes | arista.avd.convert_dicts('class') %}
+{%             for class in policy_map.classes | arista.avd.convert_dicts('name') %}
 {%                 set index = class.index | arista.avd.default('-') %}
 {%                 set drop = class.drop | arista.avd.default('-') %}
 {%                 set nexthop = class.set.nexthop.ip_address | arista.avd.default('-') %}
 {%                 set recur = class.set.nexthop.recursive | arista.avd.default('-') %}
-| {{ class.class }} | {{ index }} | {{ drop }} | {{ nexthop }} | {{ recur }} |
+| {{ class.name }} | {{ index }} | {{ drop }} | {{ nexthop }} | {{ recur }} |
 {%             endfor %}
 {%         endif %}
 {%     endfor %}

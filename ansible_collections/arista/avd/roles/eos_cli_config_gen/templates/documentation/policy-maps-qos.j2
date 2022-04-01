@@ -9,9 +9,9 @@
 
 | class | Set | Value |
 | ----- | --- | ----- |
-{%         for class in policy_map.classes | arista.avd.convert_dicts('class') | arista.avd.default([]) %}
+{%         for class in policy_map.classes | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
 {%             for set in class.set | arista.avd.default([]) %}
-| {{ class.class }} | {{ set }} | {{ class.set[set] }} |
+| {{ class.name }} | {{ set }} | {{ class.set[set] }} |
 {%             endfor %}
 {%         endfor %}
 {%     endfor %}
