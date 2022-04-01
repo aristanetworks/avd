@@ -442,9 +442,9 @@ svi_profiles:
         # VLAN name | Required
         name: < description >
 
-        # Tags leveraged for networks services filtering. | Optional
+        # Tags leveraged for network services filtering. | Optional
         # Tags are matched against "filter.tags" defined under Fabric Topology variables
-        # Tags are also matched agains the "node_group" name under Fabric Topology variables
+        # Tags are also matched against the "node_group" name under Fabric Topology variables
         tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
         # VXLAN | Optional - default true
