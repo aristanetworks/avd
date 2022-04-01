@@ -14,7 +14,7 @@
     that:
       - mlag_state.stdout[0].state == 'active'
       - mlag_state.stdout[0].negStatus == 'connected'
-    fail_msg: "state: {{ mlag_state.stdout[0].state }} - negotiation_status: {{ mlag_state.stdout[0].negStatus }}"
+    fail_msg: "State: {{ mlag_state.stdout[0].state| replace('\"','')  }} - negotiation_status: {{ mlag_state.stdout[0].negStatus| replace('\"','')  }}"
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: mlag_state_results
