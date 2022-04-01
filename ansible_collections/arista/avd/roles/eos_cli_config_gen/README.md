@@ -817,6 +817,8 @@ redundancy:
 
 ```yaml
 hardware:
+  access_list:
+    mechanism: < algomatch | none | tcam >
   speed_groups:
     1:
       serdes: < 10g | 25g >
