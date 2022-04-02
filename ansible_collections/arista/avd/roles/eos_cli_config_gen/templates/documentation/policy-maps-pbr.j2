@@ -3,19 +3,19 @@
 ## PBR Policy Maps
 
 ### PBR Policy Maps Summary
-{%     for policy_map in policy_maps.pbr | arista.avd.natural_sort %}
+{%     for policy_map in policy_maps.pbr | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 
-#### {{ policy_map }}
-{%         if policy_maps.pbr[policy_map].classes is arista.avd.defined %}
+#### {{ policy_map.name }}
+{%         if policy_map.classes is arista.avd.defined %}
 
 | Class | Index | Drop | Nexthop | Recursive |
 | ----- | ----- | ---- | ------- | --------- |
-{%             for class in policy_maps.pbr[policy_map].classes %}
-{%                 set index = policy_maps.pbr[policy_map].classes[class].index | arista.avd.default('-') %}
-{%                 set drop = policy_maps.pbr[policy_map].classes[class].drop | arista.avd.default('-') %}
-{%                 set nexthop = policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address | arista.avd.default('-') %}
-{%                 set recur = policy_maps.pbr[policy_map].classes[class].set.nexthop.recursive | arista.avd.default('-') %}
-| {{ class }} | {{ index }} | {{ drop }} | {{ nexthop }} | {{ recur }} |
+{%             for class in policy_map.classes | arista.avd.convert_dicts('name') %}
+{%                 set index = class.index | arista.avd.default('-') %}
+{%                 set drop = class.drop | arista.avd.default('-') %}
+{%                 set nexthop = class.set.nexthop.ip_address | arista.avd.default('-') %}
+{%                 set recur = class.set.nexthop.recursive | arista.avd.default('-') %}
+| {{ class.name }} | {{ index }} | {{ drop }} | {{ nexthop }} | {{ recur }} |
 {%             endfor %}
 {%         endif %}
 {%     endfor %}

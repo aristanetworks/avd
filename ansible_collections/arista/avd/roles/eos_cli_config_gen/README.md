@@ -817,6 +817,8 @@ redundancy:
 
 ```yaml
 hardware:
+  access_list:
+    mechanism: < algomatch | none | tcam >
   speed_groups:
     1:
       serdes: < 10g | 25g >
@@ -1390,6 +1392,22 @@ vlan_interfaces:
     isis_network_point_to_point: < boolean >
     mtu: < mtu >
     no_autostate: < true | false >
+    # New improved "vrrp" data model to support multiple IDs
+    vrrp_ids:
+      - id: < vrid >
+        priority_level: < instance_priority >
+        advertisement:
+          interval: < advertisement_interval>
+        preempt:
+          enabled: < true | false >
+          delay:
+            minimum: < integer >
+            reload: < integer >
+        ipv4:
+          address: < virtual_ip_address >
+        ipv6:
+          address: < virtual_ip_address >
+    # The below "vrrp" keys will be deprecated in AVD v4.0 - These should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
     vrrp:
       virtual_router: < virtual_router_id >
       priority: < instance_priority >

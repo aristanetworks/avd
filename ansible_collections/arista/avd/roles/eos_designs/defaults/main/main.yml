@@ -131,10 +131,12 @@ platform_settings:
 
 connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
 
+network_services_keys:
+  - name: tenants
+
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
 custom_structured_configuration_list_merge: 'replace'
-
 
 node_type_keys: "{{ default_node_type_keys[design.type] }}"
 
