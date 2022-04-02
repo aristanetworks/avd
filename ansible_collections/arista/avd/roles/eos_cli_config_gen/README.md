@@ -1403,6 +1403,13 @@ vlan_interfaces:
           delay:
             minimum: < integer >
             reload: < integer >
+        tracked_object:
+          - name: < tracked_object_name_1 >
+            decrement: < decrement vrrp priority by 1-254 >
+            shutdown: < true | false >
+          - name: < tracked_object_name_2 >
+            decrement: < decrement vrrp priority by 1-254 >
+            shutdown: < true | false >
         ipv4:
           address: < virtual_ip_address >
         ipv6:
@@ -1415,13 +1422,6 @@ vlan_interfaces:
       preempt_delay_minimum: < minimum_preemption_delay >
       ipv4: < virtual_ip_address >
       ipv6: < virtual_ip_address >
-      tracked_object:
-        - name: < tracked_object_name_1 >
-          decrement: < decrement vrrp priority by 1-254 >
-          shutdown: < true | false >
-        - name: < tracked_object_name_2 >
-          decrement: < decrement vrrp priority by 1-254 >
-          shutdown: < true | false >
     ip_attached_host_route_export:
       distance: < distance >
     bfd:

@@ -430,7 +430,6 @@ interface Loopback1
 | Vlan4093 |  default  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.3/31  |  -  |  -  |  -  |  -  |  -  |
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
