@@ -1858,7 +1858,7 @@ ip_igmp_snooping:
     version: < 1-3 >
   proxy: < true | false >
   vlans:
-    < vlan_id >:
+    - id: < vlan_id >
       enabled: < true | false >
       querier:
         enabled: < true | false >
@@ -2356,11 +2356,11 @@ qos:
 ```yaml
 class_maps:
   pbr:
-    < class-map name >:
+    - name: < class-map name >
       ip:
         access_group: < Standard access-list name >
   qos:
-    < class-map name >:
+    - name: < class-map name >
       vlan: < VLAN value(s) or range(s) of VLAN values >
       cos: < CoS value(s) or range(s) of CoS values >
       ip:

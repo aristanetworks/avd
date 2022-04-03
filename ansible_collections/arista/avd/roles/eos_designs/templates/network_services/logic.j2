@@ -17,7 +17,7 @@
 {%                     endif %}
 {%                 endfor %}
 {%                 set tmp_bgp_peers = [] %}
-{%                 for peer in vrf.bgp_peers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 for peer in vrf.neighbors | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {# {%                     if peer.id in switch_vrf.bgp_peers | arista.avd.default([]) %} #}
 {%                         do tmp_bgp_peers.append(peer) %}
 {# {%                         for address_family in peer.address_families | arista.avd.convert_dicts('af') | arista.avd.natural_sort('af') %}

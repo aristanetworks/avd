@@ -584,9 +584,6 @@ router general
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | None | - | - | - | - |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - |
 
 ### BGP Neighbor Interfaces
 
@@ -700,28 +697,8 @@ router bgp 65104
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.10
-      neighbor 123.1.1.10 remote-as 1234
-      neighbor 123.1.1.10 local-as 123 no-prepend replace-as
-      neighbor 123.1.1.10 description External IPv4 BGP peer
-      neighbor 123.1.1.10 ebgp-multihop 3
-      neighbor 123.1.1.10 send-community standard extended
-      neighbor 123.1.1.10 maximum-routes 0
-      neighbor 123.1.1.10 default-originate
-      neighbor 123.1.1.10 update-source Loopback123
-      neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
-      neighbor fd5a:fe45:8831:06c5::a remote-as 12345
-      neighbor fd5a:fe45:8831:06c5::a send-community None
-      neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
-      neighbor fd5a:fe45:8831:06c5::b remote-as 12345
       redistribute connected
       redistribute static
-      !
-      address-family ipv4
-         neighbor 123.1.1.10 activate
-      !
-      address-family ipv6
-         neighbor fd5a:fe45:8831:06c5::a activate
-         neighbor fd5a:fe45:8831:06c5::b activate
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.10:21
@@ -803,30 +780,12 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 
-#### RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set ip next-hop 123.1.1.1 |
-
-#### RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set ipv6 next-hop fd5a:fe45:8831:06c5::1 |
-
 ### Route-maps Device Configuration
 
 ```eos
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-!
-route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT permit 10
-   set ip next-hop 123.1.1.1
-!
-route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
-   set ipv6 next-hop fd5a:fe45:8831:06c5::1
 ```
 
 # ACL
