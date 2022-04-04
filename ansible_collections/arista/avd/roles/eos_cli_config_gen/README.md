@@ -2761,6 +2761,11 @@ router_bgp:
       local_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
+      remove_private_as:
+        enabled: < true | false >
+        all: < true | false >
+        ingress: < true | false >
+        replace_as: < true | false >
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
@@ -2801,6 +2806,11 @@ router_bgp:
       description: "< description as string >"
       ebgp_multihop: < integer >
       shutdown: < true | false >
+      remove_private_as:
+        enabled: < true | false >
+        all: < true | false >
+        ingress: < true | false >
+        replace_as: < true | false >
       update_source: < interface >
       bfd: < true | false >
       weight: < weight_value >
@@ -3098,6 +3108,11 @@ router_bgp:
           remote_as: < asn >
           peer_group: < peer_group_name >
           password: "< encrypted_password >"
+          remove_private_as:
+            enabled: < true | false >
+            all: < true | false >
+            ingress: < true | false >
+            replace_as: < true | false >
           weight: < weight_value >
           local_as: < asn >
           description: < description >
