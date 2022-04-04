@@ -68,7 +68,7 @@
 {%                                 if bgp_peer.peer_group is arista.avd.defined %}
 {%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append(bgp_peer.peer_group) %}
 {%                                 else %}
-{%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append('None') %}
+{%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append(None) %}
 {%                                 endif %}
 {%                             endif %}
 {%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
