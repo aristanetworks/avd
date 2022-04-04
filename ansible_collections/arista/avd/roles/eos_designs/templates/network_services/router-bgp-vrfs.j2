@@ -16,6 +16,7 @@
 {%                 set bgp_vrf.address_family_ipv4_neighbors = [] %}
 {%                 set bgp_vrf.address_family_ipv4_neighbors_peer_group = [] %}
 {%                 set bgp_vrf.address_family_ipv6_neighbors = [] %}
+{%                 set bgp_vrf.address_family_ipv6_neighbors_peer_group = [] %}
 {%                 set bgp_vrf_id = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) %}
 {%                 set leaf_overlay_rt = (network_services_data.rt_admin_subfield or bgp_vrf_id) ~ ':' ~ bgp_vrf_id %}
 {%                 set route_targets = namespace(import={}, export={}) %}
@@ -73,6 +74,11 @@
 {%                             endif %}
 {%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
 {%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.name) %}
+{%                                 if bgp_peer.peer_group is arista.avd.defined %}
+{%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(bgp_peer.peer_group) %}
+{%                                 else %}
+{%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(None) %}
+{%                                 endif %}
 {%                             endif %}
 {%                             if bgp_peer.set_ipv4_next_hop is arista.avd.defined or bgp_peer.set_ipv6_next_hop is arista.avd.defined %}
 {%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.name ~ '-SET-NEXT-HOP-OUT' }) %}
@@ -103,6 +109,11 @@
 {%                             endif %}
 {%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
 {%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.name) %}
+{%                                 if bgp_peer.peer_group is arista.avd.defined %}
+{%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(bgp_peer.peer_group) %}
+{%                                 else %}
+{%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(None) %}
+{%                                 endif %}
 {%                             endif %}
 {%                         endif %}
 {%                     endfor %}
@@ -143,8 +154,8 @@
 {%                         for ipv6_neighbor in bgp_vrf.address_family_ipv6_neighbors %}
             {{ ipv6_neighbor }}:
               activate: true
-{%                             if ipv6_neighbor.peer_group is arista.avd.defined %}
-              peer_group: {{ ipv6_neighbor.peer_group }}
+{%                             if bgp_vrf.address_family_ipv6_neighbors_peer_group[loop.index-1] is arista.avd.defined %}
+              peer_group: {{ bgp_vrf.address_family_ipv6_neighbors_peer_group [loop.index-1] }}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
