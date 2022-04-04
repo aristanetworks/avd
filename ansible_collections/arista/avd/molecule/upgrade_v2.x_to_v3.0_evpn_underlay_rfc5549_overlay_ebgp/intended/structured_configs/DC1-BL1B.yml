@@ -85,9 +85,40 @@ router_bgp:
         export:
           evpn:
           - '14:14'
+      neighbors:
+        123.1.1.10:
+          remote_as: 1234
+          description: External IPv4 BGP peer
+          send_community: standard extended
+          maximum_routes: 0
+          default_originate:
+            always: false
+            route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+          update_source: Loopback123
+          ebgp_multihop: 3
+          local_as: 123
+          route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+        fd5a:fe45:8831:06c5::a:
+          remote_as: 12345
+          send_community: None
+          route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+        fd5a:fe45:8831:06c5::b:
+          remote_as: 12345
       redistribute_routes:
       - connected
       - static
+      address_families:
+        ipv4:
+          neighbors:
+            123.1.1.10:
+              activate: true
+              peer_group: None
+        ipv6:
+          neighbors:
+            fd5a:fe45:8831:06c5::a:
+              activate: true
+            fd5a:fe45:8831:06c5::b:
+              activate: true
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:21
@@ -289,6 +320,18 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ip next-hop 123.1.1.1
+  RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ipv6 next-hop fd5a:fe45:8831:06c5::1
 router_bfd:
   multihop:
     interval: 1200

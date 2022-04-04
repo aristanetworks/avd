@@ -1593,6 +1593,14 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.251.6 peer group MLAG-PEERS
       redistribute connected
+      !
+      address-family ipv4
+         neighbor 123.1.1.10 activate
+         neighbor 123.1.1.11 activate
+      !
+      address-family ipv6
+         neighbor fd5a:fe45:8831:06c5::a activate
+         neighbor fd5a:fe45:8831:06c5::b activate
    !
    vrf Tenant_A_WEB_Zone
       rd 65103:11
