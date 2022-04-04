@@ -829,7 +829,7 @@ hardware:
 ```yaml
 # Routed Interfaces
 ethernet_interfaces:
-  <Ethernet_interface_1 >:
+  - name: <Ethernet_interface_1 >
     description: < description >
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -871,11 +871,11 @@ ethernet_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -888,7 +888,7 @@ ethernet_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
     pim:
@@ -963,7 +963,7 @@ ethernet_interfaces:
 ```yaml
 # Switched Interfaces
 ethernet_interfaces:
-  <Ethernet_interface_2 >:
+  - name: <Ethernet_interface_2 >
     description: < description >
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
