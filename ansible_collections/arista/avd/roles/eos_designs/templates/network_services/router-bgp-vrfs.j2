@@ -133,7 +133,7 @@
             {{ ipv4_neighbor }}:
               activate: true
 {%                             if bgp_vrf.address_family_ipv4_neighbors_peer_group[loop.index-1] is arista.avd.defined %}
-              peer_group: {{ bgp_vrf.address_family_ipv4_neighbors_peer_group[loop.index-1] }}
+              peer_group: {{ bgp_vrf.address_family_ipv4_neighbors_peer_group [loop.index-1] }}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
