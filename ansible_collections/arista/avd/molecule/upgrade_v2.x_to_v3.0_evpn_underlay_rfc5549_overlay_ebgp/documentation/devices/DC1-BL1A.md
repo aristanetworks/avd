@@ -718,7 +718,6 @@ router bgp 65104
       !
       address-family ipv4
          neighbor 123.1.1.10 activate
-         neighbor 123.1.1.10 peer group None
       !
       address-family ipv6
          neighbor fd5a:fe45:8831:06c5::a activate

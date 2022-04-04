@@ -110,7 +110,6 @@ router_bgp:
           neighbors:
             123.1.1.10:
               activate: true
-              peer_group: None
         ipv6:
           neighbors:
             fd5a:fe45:8831:06c5::a:
