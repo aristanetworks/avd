@@ -7,15 +7,19 @@
 | Name | Action | Communities / Regexp |
 | ---- | ------ | -------------------- |
 {%     for community_list in ip_community_lists %}
-{%         for entry in community_list.entries %}
-{%             if entry.regexp is arista.avd.defined %}
+{%         if community_list.name is arista.avd.defined %}
+{%             for entry in community_list.entries %}
+{%                 if entry.action is arista.avd.defined %}
+{%                     if entry.regexp is arista.avd.defined %}
 | {{ community_list.name }} | {{ entry.action }} | {{ entry.regexp }} |
-{%             elif entry.community_values is arista.avd.defined %}
-{%                 if entry.community_values | length > 0 %}
+{%                     elif entry.community_values is arista.avd.defined %}
+{%                         if entry.community_values | length > 0 %}
 | {{ community_list.name }} | {{ entry.action }} | {{ entry.community_values | join(' ') }} |
+{%                         endif %}
+{%                     endif %}
 {%                 endif %}
-{%             endif %}
-{%         endfor %}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 
 ### IP Community-lists Device Configuration
