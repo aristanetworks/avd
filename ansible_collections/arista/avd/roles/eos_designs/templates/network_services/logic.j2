@@ -18,17 +18,17 @@
 {%                 endfor %}
 {%                 set tmp_bgp_peers = [] %}
 {%                 for peer in vrf.bgp_peers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{# {%                     if peer.id in switch_vrf.bgp_peers | arista.avd.default([]) %} #}
-{%                         do tmp_bgp_peers.append(peer) %}
-{# {%                         for address_family in peer.address_families | arista.avd.convert_dicts('af') | arista.avd.natural_sort('af') %}
-{%                                 do tmp_vrf_af.append(address_family.af) %}
+{# {%                  if peer.id in switch_vrf.bgp_peers | arista.avd.default([]) %} #}
+{%                     do tmp_bgp_peers.append(peer) %}
+{# {%                      for address_family in peer.address_families | arista.avd.convert_dicts('af') | arista.avd.natural_sort('af') %}
+{%                             do tmp_vrf_af.append(address_family.af) %}
 {%                         endfor %} #}
-{# {%                     endif %} #}
+{# {%                  endif %} #}
 {%                 endfor %}
 {%                 set tmp_bgp_peer_groups = [] %}
 {%                 for bgp_peer_group in vrf.bgp_peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {# {%                     if bgp_peer_group.name in switch_vrf.bgp_peer_groups | arista.avd.default([]) %} #}
-{%                         do tmp_bgp_peer_groups.append(bgp_peer_group) %}
+{%                     do tmp_bgp_peer_groups.append(bgp_peer_group) %}
 {# {%                     endif %} #}
 {%                 endfor %}
 {%                 do vrf.update({'svis': tmp_svis, 'bgp_peers': tmp_bgp_peers, 'bgp_peer_groups': tmp_bgp_peer_groups | arista.avd.convert_dicts | arista.avd.natural_sort('name')}) %}
