@@ -829,7 +829,7 @@ hardware:
 ```yaml
 # Routed Interfaces
 ethernet_interfaces:
-  <Ethernet_interface_1 >:
+  - name: <Ethernet_interface_1 >
     description: < description >
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -871,11 +871,11 @@ ethernet_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -888,7 +888,7 @@ ethernet_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
     pim:
@@ -963,7 +963,7 @@ ethernet_interfaces:
 ```yaml
 # Switched Interfaces
 ethernet_interfaces:
-  <Ethernet_interface_2 >:
+  - name: <Ethernet_interface_2 >
     description: < description >
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -1899,15 +1899,15 @@ router_pim_sparse_mode:
   ipv4:
     ssm_range: < range >
     rp_addresses:
-      < rp_address_1 >:
+      - address: < rp_address_1 >
         groups:
-          < group_prefix_1/mask >:
-          < group_prefix_2/mask >:
-      < rp_address_2 >:
+          - < group_prefix_1/mask >
+          - < group_prefix_2/mask >
+      - address: < rp_address_2 >
     anycast_rps:
-      < anycast_rp_address_1 >:
+      - address: < anycast_rp_address_1 >
         other_anycast_rp_addresses:
-          < ip_address_other_anycast_rp_1 >:
+          - address: < ip_address_other_anycast_rp_1 >
             register_count: < register_count_nb >
   vrfs:
     - name: < vrf_name >
@@ -2374,9 +2374,9 @@ class_maps:
 ```yaml
 policy_maps:
   pbr:
-    < policy-map name >:
+    - name: < policy-map name >
       classes:
-        < class name >:
+        - name: < class name >
           index: < integer > # Optional
           # Set only one of the below actions per class
           drop: < true | false >
@@ -2385,9 +2385,9 @@ policy_maps:
               ip_address: < IPv4_address | IPv6_address >
               recursive: < true | false >
   qos:
-    < policy-map name >:
+    - name: < policy-map name >
       classes:
-        < class name >:
+        - name: < class name >
           set:
             cos: < cos_value >
             dscp: < dscp-code >
@@ -2399,7 +2399,7 @@ policy_maps:
 
 ```yaml
 qos_profiles:
-  < profile-1 >:
+  - name: < profile-1 >
     trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
@@ -2409,27 +2409,27 @@ qos_profiles:
       type:
         qos_input: < policy_map_name >
     tx_queues:
-      < tx-queue-id >:
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         # The below knob is platform dependent
         bandwidth_guaranteed_percent: < value >
         priority: < string >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
-      < tx-queue-id >:
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
-  < profile-2 >:
+  - name: < profile-2 >
     trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
     tx_queues:
-      < tx-queue-id >:
+      id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
-      < tx-queue-id >:
+      id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
 ```
