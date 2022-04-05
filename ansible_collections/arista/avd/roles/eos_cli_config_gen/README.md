@@ -185,6 +185,25 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
+## Extensibility with Custom Templates
+
+- Custom templates can be added below the playbook directory.
+- If a location above the directory is desired, a symbolic link can be used.
+- Example under the `playbooks` directory create symbolic link with the following command:
+
+  ```bash
+  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
+  ```
+
+- It is recomment to use a `!` delimiter at the top of each custom template.
+
+Add custom template to group/host variables:
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
+```
 ## Input Variables
 
 - The input variables are documented inline within yaml formatted output with: "< >"
@@ -551,14 +570,6 @@ router_bfd:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
     multiplier: < 3-50 >
-```
-
-### Custom Templates
-
-```yaml
-custom_templates:
-  - < template 1 relative path below playbook directory >
-  - < template 2 relative path below playbook directory >
 ```
 
 ### DHCP Relay
