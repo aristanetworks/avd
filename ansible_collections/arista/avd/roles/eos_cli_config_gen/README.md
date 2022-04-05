@@ -195,7 +195,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
   ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
   ```
 
-- It is recomment to use a `!` delimiter at the top of each custom template.
+- It is recommenended to use a `!` delimiter at the top of each custom template.
 
 Add custom template to group/host variables:
 
