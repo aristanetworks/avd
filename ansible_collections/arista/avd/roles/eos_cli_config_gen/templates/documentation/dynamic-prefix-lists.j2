@@ -7,10 +7,10 @@
 {%     for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 #### {{ dynamic_prefix_lists.name }}
 
-{%         if dynamic_prefix_list.ipv4.prefix_list is arista.avd.defined %}
-{%             set prefix_list = dynamic_prefix_list.ipv4.prefix_list %}
-{%         elif dynamic_prefix_list.ipv6.prefix_list is arista.avd.defined %}
-{%             set prefix_list = dynamic_prefix_list.ipv4.prefix_list %}
+{%         if dynamic_prefix_list.prefix_list.ipv4is arista.avd.defined %}
+{%             set prefix_list = dynamic_prefix_list.prefix_list.ipv4%}
+{%         elif dynamic_prefix_list.prefix_list.ipv6is arista.avd.defined %}
+{%             set prefix_list = dynamic_prefix_list.prefix_list.ipv4%}
 {%         endif  %}
 
 | Match Map | Prefix-list |

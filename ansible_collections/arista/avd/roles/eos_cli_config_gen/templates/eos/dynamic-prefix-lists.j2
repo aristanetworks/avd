@@ -3,10 +3,10 @@
 !
 dynamic prefix-list {{ dynamic_prefix_list.name }}
    match-map {{ dynamic_prefix_list.match_map }}
-{%     if dynamic_prefix_list.ipv4.prefix_list is arista.avd.defined %}
-   prefix-list ipv4 {{ dynamic_prefix_list.ipv4.prefix_list }}
+{%     if dynamic_prefix_list.prefix_list.ipv4is arista.avd.defined %}
+   prefix-list ipv4 {{ dynamic_prefix_list.prefix_list.ipv4}}
 {%     endif  %}
-{%     if dynamic_prefix_list.ipv6.prefix_list is arista.avd.defined %}
-   prefix-list ipv6 {{ dynamic_prefix_list.ipv6.prefix_list }}
+{%     if dynamic_prefix_list.prefix_list.ipv6is arista.avd.defined %}
+   prefix-list ipv6 {{ dynamic_prefix_list.prefix_list.ipv6}}
 {%     endif  %}
 {% endfor %}
