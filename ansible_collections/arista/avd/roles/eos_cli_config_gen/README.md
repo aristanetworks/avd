@@ -1971,6 +1971,12 @@ router_multicast:
     routing: < true | false >
     multipath: < none | deterministic | "deterministic color" | "deterministic router-id" >
     software_forwarding: < kernel | sfe >
+    rpf:
+      routes:
+        - subnet: < IPv4 subnet / netmask >
+          nexthop_ip: < IPv4_network/Mask >
+          nexthop_interface: < interface >
+          distance: < 1 - 255 >  # optional
   vrfs:
     - name: < vrf_name >
       ipv4:

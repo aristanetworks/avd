@@ -24,6 +24,20 @@
 {%     elif router_multicast.ipv4.software_forwarding is arista.avd.defined('sfe') %}
 - Software forwarding by the Software Forwarding Engine (SFE)
 {%     endif %}
+{%     if router_multicast.rpf.routes is arista.avd.defined %}
+
+### IP Router Multicast RPF Routes
+
+| Source Prefix | Next Hop IP | Next Hop Interface | Administrative Distance |
+| ------------- | ----------- | ------------------ | ----------------------- |
+{%         for rpf_route in router_multicast.ipv4.rpf.routes %}
+{%             set nexthop_ip = rpf_route.nexthop_ip | arista.avd.default('-') %}
+{%             set nexthop_interface = rpf_route.interface | arista.avd.default('-') %}
+{%             set distance = static_rorpf_routeute.distance | arista.avd.default('1') %}
+| {{ rpf_route.subnet }} | {{ nexthop_ip }} | {{ nexthop_interface }} | {{ distance }} |
+{%         endfor %}
+
+{%     endif %}
 {%     if router_multicast.vrfs is arista.avd.defined %}
 
 ### IP Router Multicast VRFs

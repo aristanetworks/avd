@@ -2,6 +2,12 @@
 
 router_multicast:
   ipv4:
+    routes:
+      - subnet: "10.10.10.1/32"
+        nexthop_ip: 10.9.9.9
+        distance: 1
+      - subnet: "10.10.10.2/32"
+        nexthop_interface: Ethernet1
     counters:
       rate_period_decay: 300
     routing: true
