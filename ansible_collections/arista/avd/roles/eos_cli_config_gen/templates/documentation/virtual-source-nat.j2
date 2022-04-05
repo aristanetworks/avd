@@ -6,8 +6,8 @@
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
-{%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
-| {{ vrf }} | {{ virtual_source_nat_vrfs[vrf].ip_address }} |
+{%     for vrf in virtual_source_nat_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ vrf.name }} | {{ vrf.ip_address }} |
 {%     endfor %}
 
 ## Virtual Source NAT Configuration
