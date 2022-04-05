@@ -1,0 +1,26 @@
+{% if dynamic_prefix_lists is arista.avd.defined %}
+
+## Dynamic Prefix-lists
+
+### Dynamic Prefix-lists Summary
+
+{%     for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### {{ dynamic_prefix_lists.name }}
+
+{%     if dynamic_prefix_list.ipv4.prefix_list is arista.avd.defined %}
+{%         set prefix_list = dynamic_prefix_list.ipv4.prefix_list %}
+{%     elif dynamic_prefix_list.ipv6.prefix_list is arista.avd.defined %}
+{%         set prefix_list = dynamic_prefix_list.ipv4.prefix_list %}
+{%     endif  %}
+
+| Match Map | Prefix-list |
+| --------- | ----------- |
+| {{ dynamic_prefix_list.match_map }} | {{ prefix_list | arista.avd.default('-') }} |
+
+{%     endfor %}
+### Dynamic Prefix-lists Device Configuration
+
+```eos
+{%     include 'eos/dynamic-prefix-lists.j2' %}
+```
+{% endif %}

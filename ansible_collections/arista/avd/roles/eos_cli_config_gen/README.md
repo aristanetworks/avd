@@ -34,6 +34,7 @@
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
+      - [Dynamic Prefix Lists](#dynamic-prefix-lists)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
       - [Community Lists](#community-lists)
@@ -615,6 +616,20 @@ errdisable:
 ```
 
 ### Filters
+
+#### Dynamic Prefix Lists
+
+```yaml
+dynamic_prefix_lists:
+  < dynamic_prefix_list_name_1 >:
+    match_map: < route_map >
+    prefix_list:
+      ipv4: < prefix_list >
+  < dynamic_prefix_list_name_2 >:
+    match_map: < route_map >
+    prefix_list:
+      ipv6: < prefix_list >
+```
 
 #### Prefix Lists
 
