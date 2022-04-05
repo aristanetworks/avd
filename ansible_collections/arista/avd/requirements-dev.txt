@@ -1,5 +1,5 @@
 ansible-core>=2.11.3,<2.13.0
-ansible-lint
+ansible-lint<6.0.0
 galaxy-importer>=0.3.1
 pycodestyle
 flake8
