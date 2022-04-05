@@ -204,6 +204,7 @@ custom_templates:
   - < template 1 relative path below playbook directory >
   - < template 2 relative path below playbook directory >
 ```
+
 ## Input Variables
 
 - The input variables are documented inline within yaml formatted output with: "< >"
