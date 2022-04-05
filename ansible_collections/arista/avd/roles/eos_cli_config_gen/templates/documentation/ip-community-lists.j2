@@ -8,7 +8,7 @@
 | ---- | ------ | -------------------- |
 {%     for community_list in ip_community_lists %}
 {%         if community_list.name is arista.avd.defined %}
-{%             for entry in community_list.entries %}
+{%             for entry in community_list.entries | arista.avd.default([]) %}
 {%                 if entry.action is arista.avd.defined %}
 {%                     if entry.regexp is arista.avd.defined %}
 | {{ community_list.name }} | {{ entry.action }} | {{ entry.regexp }} |
