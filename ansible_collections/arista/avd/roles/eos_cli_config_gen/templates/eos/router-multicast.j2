@@ -4,7 +4,7 @@
 router multicast
 {%     if router_multicast.ipv4 is arista.avd.defined %}
    ipv4
-{%         for rpf_route in router_multicast.ipv4.rpf.routes | arista.avd.natural_sort('subnet') if rpf_route.subnet is arista.avd.defined %}
+{%         for rpf_route in router_multicast.ipv4.rpf.routes | arista.avd.natural_sort('nexthop') if rpf_route.subnet is arista.avd.defined %}
 {%             for destination in rpf_route.destinations if destination.nexthop is arista.avd.defined %}
 {%                 set rpf_route_cli = "rpf route " ~ rpf_route.subnet ~ " " ~ destination.nexthop %}
 {%                 if destination.distance is arista.avd.defined %}
