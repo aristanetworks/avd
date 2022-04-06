@@ -563,7 +563,7 @@ interface Ethernet31
 
 ### DOT1X Interfaces
 
-| Interface | State | Phone State |
+| Interface | State | Phone Force Authorized |
 | --------- | ----- | ----------- |
 | Ethernet29 | auto | True |
 | Ethernet30 | force-authorized | False |
