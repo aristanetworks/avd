@@ -93,16 +93,11 @@ interface Management1
 
 ### Dynamic Prefix-lists Summary
 
-#### DYNAMIC_PREFIX_LIST_NAME_1
-
-| Match Map | Prefix-list |
-| --------- | ----------- |
-| Test_1 | IPV4_PREFIX_LIST |
-#### DYNAMIC_PREFIX_LIST_NAME_2
-
-| Match Map | Prefix-list |
-| --------- | ----------- |
-| Test_2 | IPV6_PREFIX_LIST |
+| Dynamic Prefix-List Name | Match Map | IPv4 Prefix-list | IPv6 Prefix-list |
+| ------------------------ | --------- | ---------------- | ---------------- |
+| DYNAMIC_PREFIX_LIST_NAME_1 | Test_1 | - | IPV4_PREFIX_LIST | -
+| DYNAMIC_PREFIX_LIST_NAME_2 | Test_2 | - | - | IPV6_PREFIX_LIST
+| DYNAMIC_PREFIX_LIST_NAME_3 | Test_2 | - | IPV4_PREFIX_LIST | IPV6_PREFIX_LIST
 
 ### Dynamic Prefix-lists Device Configuration
 
@@ -114,6 +109,11 @@ dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_1
 !
 dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_2
    match-map Test_2
+   prefix-list ipv6 IPV6_PREFIX_LIST
+!
+dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_3
+   match-map Test_2
+   prefix-list ipv4 IPV4_PREFIX_LIST
    prefix-list ipv6 IPV6_PREFIX_LIST
 ```
 
