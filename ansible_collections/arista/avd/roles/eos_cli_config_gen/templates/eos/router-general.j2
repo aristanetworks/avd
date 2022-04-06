@@ -18,8 +18,8 @@ router general
 {%     if delimiter is arista.avd.defined(true) and router_general.vrfs is arista.avd.defined %}
    !
 {%     endif %}
-{%     for vrf in router_general.vrfs | arista.avd.convert_dicts('destination') | arista.avd.natural_sort('destination') %}
-   vrf {{ vrf.destination }}
+{%     for vrf in router_general.vrfs | arista.avd.convert_dicts('destination_vrf') | arista.avd.natural_sort('destination_vrf') %}
+   vrf {{ vrf.destination_vrf }}
 {%         for leak_route in vrf.leak_routes | arista.avd.natural_sort %}
 {%             if leak_route.source_vrf is arista.avd.defined and leak_route.subscribe_policy is arista.avd.defined %}
       leak routes source-vrf {{ leak_route.source_vrf }} subscribe-policy {{ leak_route.subscribe_policy }}

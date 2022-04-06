@@ -16,7 +16,7 @@
 {%     set has = namespace() %}
 {%     set has.found = false %}
 {%     if router_general.vrfs is arista.avd.defined %}
-{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('destination') %}
+{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('destination_vrf') %}
 {%             if vrf.leaks is arista.avd.defined %}
 {%                 set has.found = true %}
 {%             endif %}
@@ -28,10 +28,10 @@
 
 | VRF | Source VRF | Route Map Policy |
 |-----|------------|------------------|
-{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('destination') %}
+{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('destination_vrf') %}
 {%             for leak in vrf.leaks | arista.avd.natural_sort %}
 {%                 if leak.source_vrf is arista.avd.defined and leak.policy is arista.avd.defined %}
-| {{ vrf.destination }} | {{ leak.source_vrf }} | {{ leak.policy }} |
+| {{ vrf.destination_vrf }} | {{ leak.source_vrf }} | {{ leak.policy }} |
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}

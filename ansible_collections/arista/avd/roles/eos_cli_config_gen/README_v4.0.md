@@ -2487,7 +2487,7 @@ ip_routing_ipv6_interfaces: < true | false >
 ```yaml
 router_general:
   vrfs:
-    - destination: < destination-vrf >
+    - destination_vrf: < destination-vrf >
       leak_routes:
         - source_vrf: < source-vrf >
           subscribe_policy: < route-map policy >
