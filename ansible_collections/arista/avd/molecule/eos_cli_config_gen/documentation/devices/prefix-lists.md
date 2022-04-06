@@ -116,25 +116,25 @@ interface Management1
 
 | Match Map | Prefix-list |
 | --------- | ----------- |
-|Test_1 | IPV4_PREFIX_LIST |
+| Test_1 | IPV4_PREFIX_LIST |
 
 #### DYNAMIC_PREFIX_LIST_NAME_2
 
 | Match Map | Prefix-list |
 | --------- | ----------- |
-|Test_2 | IPV6_PREFIX_LIST |
+| Test_2 | IPV6_PREFIX_LIST |
 
 ### Dynamic Prefix-lists Device Configuration
 
 ```eos
-dynamic pefix-list DYNAMIC_PREFIX_LIST_NAME_1
-   match_map Test_1
-    prefix_list ipv4 IPV4_PREFIX_LIST
 !
-dynamic pefix-list DYNAMIC_PREFIX_LIST_NAME_2
-   match_map Test_2
-    prefix_list ipv6 IPV6_PREFIX_LIST
+dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_1
+   match-map Test_1
+   prefix-list ipv4 IPV4_PREFIX_LIST
 !
+dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_2
+   match-map Test_2
+   prefix-list ipv6 IPV6_PREFIX_LIST
 ```
 
 ## Prefix-lists

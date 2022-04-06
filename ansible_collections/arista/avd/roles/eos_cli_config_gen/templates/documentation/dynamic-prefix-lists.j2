@@ -5,14 +5,13 @@
 ### Dynamic Prefix-lists Summary
 
 {%     for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-#### {{ dynamic_prefix_lists.name }}
+#### {{ dynamic_prefix_list.name }}
 
 {%         if dynamic_prefix_list.prefix_list.ipv4 is arista.avd.defined %}
 {%             set prefix_list = dynamic_prefix_list.prefix_list.ipv4 %}
 {%         elif dynamic_prefix_list.prefix_list.ipv6 is arista.avd.defined %}
-{%             set prefix_list = dynamic_prefix_list.prefix_list.ipv4 %}
+{%             set prefix_list = dynamic_prefix_list.prefix_list.ipv6 %}
 {%         endif  %}
-
 | Match Map | Prefix-list |
 | --------- | ----------- |
 | {{ dynamic_prefix_list.match_map }} | {{ prefix_list | arista.avd.default('-') }} |
