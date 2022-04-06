@@ -621,15 +621,15 @@ errdisable:
 
 ```yaml
 dynamic_prefix_lists:
-  - name: < dynamic_prefix_list_name_1 >
+  - name: < dynamic_prefix_list_name >
     match_map: < route_map >
     prefix_list:
       ipv4: < ipv4_prefix_list >
-  - name: < dynamic_prefix_list_name_2 >
+  - name: < dynamic_prefix_list_name >
     match_map: < route_map >
     prefix_list:
       ipv6: < ipv6_prefix_list >
-  - name: < dynamic_prefix_list_name_2 >
+  - name: < dynamic_prefix_list_name >
     match_map: < route_map >
     prefix_list:
       ipv4: < ipv4_prefix_list >
