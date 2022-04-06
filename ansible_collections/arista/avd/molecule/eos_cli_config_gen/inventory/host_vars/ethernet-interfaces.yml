@@ -407,7 +407,7 @@ ethernet_interfaces:
     description: DOT1X Testing - auto phone true
     dot1x:
       port_control: auto
-      port_control_force_authorized_phone: true 
+      port_control_force_authorized_phone: true
 
   Ethernet30:
     description: DOT1X Testing - force-authorized phone false
@@ -419,3 +419,4 @@ ethernet_interfaces:
     description: DOT1X Testing - force-unauthorized - no phone
     dot1x:
       port_control: force-unauthorized
+      
