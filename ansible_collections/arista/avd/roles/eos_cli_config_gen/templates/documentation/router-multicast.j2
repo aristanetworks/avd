@@ -31,8 +31,8 @@
 | Source Prefix | Next Hop | Administrative Distance |
 | ------------- | -------- | ----------------------- |
 {%         for rpf_route in router_multicast.ipv4.rpf.routes | arista.avd.natural_sort('subnet') if rpf_route.subnet is arista.avd.defined %}
-{%             set nexthop = rpf_route.nexthop_ip | arista.avd.default(rpf_route.interface, '-') %}
-{%             set distance = rpf_route.distance | arista.avd.default('1') %}
+{%             set nexthop = rpf_route.nexthop_ip | arista.avd.default(rpf_route.nexthop_interface, '-') %}
+{%             set distance = rpf_route.distance | arista.avd.default('-') %}
 | {{ rpf_route.subnet }} | {{ nexthop }} | {{ distance }} |
 {%         endfor %}
 {%     endif %}

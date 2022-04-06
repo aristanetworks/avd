@@ -98,8 +98,8 @@ interface Management1
 
 | Source Prefix | Next Hop | Administrative Distance |
 | ------------- | -------- | ----------------------- |
-| 10.10.10.1/32 | 10.9.9.9 | 1 |
-| 10.10.10.2/32 | - | 1 |
+| 10.10.10.1/32 | 10.9.9.9 | 2 |
+| 10.10.10.2/32 | Ethernet1 | - |
 
 ### IP Router Multicast VRFs
 
@@ -114,7 +114,7 @@ interface Management1
 !
 router multicast
    ipv4
-      rpf route 10.10.10.1/32 10.9.9.9 1
+      rpf route 10.10.10.1/32 10.9.9.9 2
       rpf route 10.10.10.2/32 Ethernet1
       counters rate period decay 300 seconds
       routing
