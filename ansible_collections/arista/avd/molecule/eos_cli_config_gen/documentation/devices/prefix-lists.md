@@ -98,7 +98,6 @@ interface Management1
 | Match Map | Prefix-list |
 | --------- | ----------- |
 | Test_1 | IPV4_PREFIX_LIST |
-
 #### DYNAMIC_PREFIX_LIST_NAME_2
 
 | Match Map | Prefix-list |
