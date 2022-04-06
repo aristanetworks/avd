@@ -35,7 +35,6 @@
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
-{%         if router_general.vrfs[vrf].routes.dynamic_prefix_lists is arista.avd.defined %}
 
 ### VRF Routes Dynamic Prefix-lists
 
@@ -46,7 +45,6 @@
       routes dynamic prefix-list {{ dynamic_prefix_list }}
 {%                 endfor %}
 {%             endfor %}
-{%         endif %}
 {%     endif %}
 
 ### Router General configuration
