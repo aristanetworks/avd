@@ -419,4 +419,3 @@ ethernet_interfaces:
     description: DOT1X Testing - force-unauthorized - no phone
     dot1x:
       port_control: force-unauthorized
-      
