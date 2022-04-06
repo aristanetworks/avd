@@ -94,6 +94,13 @@ interface Management1
 - Multipathing deterministically by selecting the same upstream router.
 - Software forwarding by the Software Forwarding Engine (SFE)
 
+### IP Router Multicast RPF Routes
+
+| Source Prefix | Next Hop | Administrative Distance |
+| ------------- | -------- | ----------------------- |
+| 10.10.10.1/32 | 10.9.9.9 | 1 |
+| 10.10.10.2/32 | - | 1 |
+
 ### IP Router Multicast VRFs
 
 | VRF Name | Multicast Routing |
