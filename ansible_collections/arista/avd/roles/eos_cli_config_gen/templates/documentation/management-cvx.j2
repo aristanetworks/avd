@@ -1,0 +1,9 @@
+{# Management CVX #}
+{% if management_cvx is arista.avd.defined %}
+## Management CVX
+
+### Management CVX configuration
+```eos
+{%      include 'eos/management-cvx.j2' %}
+```
+{% endif %}

@@ -1773,6 +1773,15 @@ management_console:
   idle_timeout: < 0-86400 in minutes >
 ```
 
+#### Management CVX
+```yaml
+management_cvx:
+  shutdown: false
+  server_host:
+    - < IPv4_address >
+    - < IPv4_address >
+```
+
 #### Management Defaults
 
 ```yaml

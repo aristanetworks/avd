@@ -1,0 +1,15 @@
+{# management cvx #}
+{% if management_cvx is arista.avd.defined %}
+!
+management cvx
+{%     if management_cvx.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     else %}
+   no shutdown
+{%     endif %}
+{%     if management_cvx.server_host is arista.avd.defined %}
+{%         for ip in management_cvx.server_host %}
+   server host {{ip}}
+{%         endfor %}
+{%     endif %}
+{% endif %}
