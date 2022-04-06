@@ -4,11 +4,21 @@ router_multicast:
   ipv4:
     rpf:
       routes:
+        - subnet: < IPv4 subnet / netmask >
+          destinations:
+            - nexthop: < ip | interface_name >
+              distance: < 1 - 255 >  # optional
+    rpf:
+      routes:
         - subnet: 10.10.10.1/32
-          nexthop_ip: 10.9.9.9
-          distance: 2
+          destinations:
+            - nexthop: 10.9.9.9
+              distance: 2
+            - nexthop: Ethernet1
+              distance: 1
         - subnet: 10.10.10.2/32
-          nexthop_interface: Ethernet1
+          destinations:
+            - nexthop: Ethernet2
     counters:
       rate_period_decay: 300
     routing: true

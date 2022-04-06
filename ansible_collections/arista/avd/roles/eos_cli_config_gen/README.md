@@ -1974,9 +1974,9 @@ router_multicast:
     rpf:
       routes:
         - subnet: < IPv4 subnet / netmask >
-          nexthop_ip: < IPv4_network/Mask >
-          nexthop_interface: < interface >
-          distance: < 1 - 255 >  # optional
+          destinations:
+            - nexthop: < ip | interface_name >
+              distance: < 1 - 255 >  # optional
   vrfs:
     - name: < vrf_name >
       ipv4:
