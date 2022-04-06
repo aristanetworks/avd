@@ -1,0 +1,6 @@
+### MANAGEMENT CVX ###
+management_cvx:
+  shutdown: false
+  server_host:
+  - 10.90.224.188
+  - 10.90.224.189
