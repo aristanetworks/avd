@@ -74,12 +74,12 @@ router_ospf:
         bgp:
           route_map: rm-ospf-bgp
       areas:
-        - name: '0.0.0.2'
+        - id: '0.0.0.2'
           filter:
             networks:
               - 1.1.1.0/24
               - 2.2.2.0/24
-        - name: '0.0.0.3'
+        - id: '0.0.0.3'
           filter:
             prefix_list: PL-OSPF-FILTERING
       max_metric: # not expected to produce config. Just here to test proper variable checks.
@@ -106,31 +106,31 @@ router_ospf:
             override_metric: 456
     - id: 600
       areas:
-        - name: 0.0.0.1
-        - name: 0.0.10.11
+        - id: 0.0.0.1
+        - id: 0.0.10.11
           type: stub
           no_summary: true
-        - name: 0.0.20.20
+        - id: 0.0.20.20
           type: nssa
-        - name: 0.0.20.21
+        - id: 0.0.20.21
           type: nssa
           no_summary: true
-        - name: 0.0.20.22
+        - id: 0.0.20.22
           type: nssa
           nssa_only: true
-        - name: 0.0.20.23
+        - id: 0.0.20.23
           type: nssa
           default_information_originate:
-        - name: 0.0.20.24
+        - id: 0.0.20.24
           type: nssa
           default_information_originate:
             metric: 50
-        - name: 0.0.20.25
+        - id: 0.0.20.25
           type: nssa
           default_information_originate:
             metric_type: 1
           no_summary: true
-        - name: 0.0.20.26
+        - id: 0.0.20.26
           type: nssa
           no_summary: true
           nssa_only: true

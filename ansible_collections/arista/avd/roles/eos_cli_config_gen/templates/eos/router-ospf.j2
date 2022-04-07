@@ -37,10 +37,10 @@ router ospf {{ process_id.id }}
 {%     if process_id.bfd_enable is arista.avd.defined and process_id.bfd_enable %}
    bfd default
 {%     endif %}
-{%     for area in process_id.areas | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for area in process_id.areas | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {# OSPF stub area configuration #}
 {%         if area.type is arista.avd.defined("stub") %}
-{%             set stub_area_cli = "area " ~ area.name ~ " stub" %}
+{%             set stub_area_cli = "area " ~ area.id ~ " stub" %}
 {%             if area.no_summary is arista.avd.defined(true) %}
 {%                 set stub_area_cli = stub_area_cli ~ " no-summary" %}
 {%             endif %}
@@ -50,7 +50,7 @@ router ospf {{ process_id.id }}
 {%         if area.type is arista.avd.defined("nssa") %}
 {#             print_nssa is set to ensure not to print "area xx nssa" twice in certain corner cases #}
 {%             set ns = namespace(print_nssa = true) %}
-{%             set nssa_area_cli = "area " ~ area.name ~ " nssa" %}
+{%             set nssa_area_cli = "area " ~ area.id ~ " nssa" %}
 {%             if area.no_summary is arista.avd.defined(true) %}
 {%                 set ns.print_nssa = false %}
    {{ nssa_area_cli }} no-summary
@@ -75,10 +75,10 @@ router ospf {{ process_id.id }}
 {%         endif %}
 {# OSPF inter-area filtering configuration #}
 {%         for filter_network in area.filter.networks | arista.avd.natural_sort %}
-   area {{ area.name }} filter {{ filter_network }}
+   area {{ area.id }} filter {{ filter_network }}
 {%         endfor %}
 {%         if area.filter.prefix_list is arista.avd.defined %}
-   area {{ area.name }} filter prefix-list {{ area.filter.prefix_list }}
+   area {{ area.id }} filter prefix-list {{ area.filter.prefix_list }}
 {%         endif %}
 {%     endfor %}
 {%     if process_id.distribute_list_in.route_map is arista.avd.defined %}

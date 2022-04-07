@@ -222,7 +222,7 @@
 | Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
 | ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
 {%         for process_id in router_ospf.process_ids | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
-{%             for area in process_id.areas | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for area in process_id.areas | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%                 if area.filter.networks is arista.avd.defined %}
 {%                     set network_filter = area.filter.networks | join(', ') %}
 {%                 else %}
@@ -247,7 +247,7 @@
 {%                 if area.nssa_only is arista.avd.defined(true) %}
 {%                     do additional_cfg_options_list.append('nssa-only') %}
 {%                 endif %}
-| {{ process_id.id }} | {{ area.name }} | {{ area_type }} | {{ network_filter }} | {{ prefix_list_filter }} | {{ additional_cfg_options_list | join(', ') }} |
+| {{ process_id.id }} | {{ area.id }} | {{ area_type }} | {{ network_filter }} | {{ prefix_list_filter }} | {{ additional_cfg_options_list | join(', ') }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

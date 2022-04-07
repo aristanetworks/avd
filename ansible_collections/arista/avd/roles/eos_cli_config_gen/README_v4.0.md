@@ -2991,13 +2991,13 @@ router_ospf:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
       areas:
-        - name: < area >
+        - id: < area >
           filter:
             networks:
               - < IPv4 subnet / netmask >
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
-        - name: < area >
+        - id: < area >
           type: < normal | stub | nssa | default -> normal >
           no_summary: < true | false >
           nssa_only: < true | false >
