@@ -261,8 +261,8 @@
 {%             set vlan_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.ospf_area is arista.avd.defined %}
 {%             set ethernet_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
@@ -283,12 +283,12 @@
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
 {%         if ethernet_interface_ospf.configured %}
-{%             for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%                 if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
-{%                     set ospf_area = ethernet_interfaces[ethernet_interface].ospf_area %}
-{%                     set ospf_cost = ethernet_interfaces[ethernet_interface].ospf_cost | arista.avd.default('-') %}
-{%                     set ospf_network_point_to_point = ethernet_interfaces[ethernet_interface].ospf_network_point_to_point | arista.avd.default('-') %}
-| {{ ethernet_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
+{%             for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 if ethernet_interface.ospf_area is arista.avd.defined %}
+{%                     set ospf_area = ethernet_interface.ospf_area %}
+{%                     set ospf_cost = ethernet_interface.ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = ethernet_interface.ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
