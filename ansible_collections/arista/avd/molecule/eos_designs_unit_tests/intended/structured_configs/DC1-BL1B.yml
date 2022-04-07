@@ -205,25 +205,43 @@ router_bgp:
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.254.15:14
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:14
       route_targets:
         both:
         - '65105:14'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65105:14'
       redistribute_routes:
       - learned
       vlan: 150
     Tenant_B_WAN_Zone:
       rd: 192.168.254.15:21
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:21
       route_targets:
         both:
         - '65105:21'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65105:21'
       redistribute_routes:
       - learned
       vlan: 250
     Tenant_C_WAN_Zone:
       rd: 192.168.254.15:31
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:31
       route_targets:
         both:
         - '65105:31'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65105:31'
       redistribute_routes:
       - learned
       vlan: 350

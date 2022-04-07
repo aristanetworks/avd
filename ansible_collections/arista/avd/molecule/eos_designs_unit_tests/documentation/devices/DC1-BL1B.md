@@ -665,9 +665,9 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.254.15:14 | 65105:14 | - | - | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.254.15:21 | 65105:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.254.15:31 | 65105:31 | - | - | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.254.15:14 | 65105:14<br>remote 65105:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.254.15:21 | 65105:21<br>remote 65105:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.254.15:31 | 65105:31<br>remote 65105:31 | - | - | learned | 350 |
 
 ### Router BGP VRFs
 
@@ -736,19 +736,25 @@ router bgp 65105
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
       rd 192.168.254.15:14
+      rd evpn domain remote 192.168.254.15:14
       route-target both 65105:14
+      route-target import export evpn domain remote 65105:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
       rd 192.168.254.15:21
+      rd evpn domain remote 192.168.254.15:21
       route-target both 65105:21
+      route-target import export evpn domain remote 65105:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
       rd 192.168.254.15:31
+      rd evpn domain remote 192.168.254.15:31
       route-target both 65105:31
+      route-target import export evpn domain remote 65105:31
       redistribute learned
       vlan 350
    !
