@@ -3,7 +3,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Management CVX](#management-cvx)
+  - [Management CVX Summary](#management-cvx-summary)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -44,7 +44,12 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-## Management CVX
+
+## Management CVX Summary
+
+| Shutdown | CVX Servers |
+| ---------- | ------------- |
+| False | 10.90.224.188, 10.90.224.189, leaf1.atd.lab |
 
 ### Management CVX configuration
 ```eos
@@ -53,6 +58,7 @@ management cvx
    no shutdown
    server host 10.90.224.188
    server host 10.90.224.189
+   server host leaf1.atd.lab
 ```
 
 # Authentication
