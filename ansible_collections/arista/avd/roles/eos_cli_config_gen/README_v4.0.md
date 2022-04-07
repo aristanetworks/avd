@@ -3179,20 +3179,20 @@ spanning_tree:
       name: < name >
       revision: < 0-65535 >
       instances:
-        "< instance_id >":
+        - id: "< instance_id >"
           vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
-        "< instance_id >":
+        - id: "< instance_id >"
           vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
   mst_instances:
-    "< instance_id >":
+    - id: "< instance_id >"
       priority: < priority >
-    "< instance_id >":
+    - id: "< instance_id >"
       priority: < priority >
   no_spanning_tree_vlan: "< vlan_id >, < vlan_id >-< vlan_id >"
   rapid_pvst_instances:
-    "< vlan_id >":
+    - id: "< vlan_id >"
       priority: < priority >
-    "< vlan_id >, < vlan_id >-< vlan_id >":
+    - id: "< vlan_id >, < vlan_id >-< vlan_id >"
       priority: < priority >
 ```
 
