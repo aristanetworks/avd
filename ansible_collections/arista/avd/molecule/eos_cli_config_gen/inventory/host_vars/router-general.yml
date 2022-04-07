@@ -12,5 +12,5 @@ router_general:
           subscribe_policy: RM-BLUE-LEAKING
       routes:
         dynamic_prefix_lists:
-          - DYNAMIC_TEST_PREFIX_LIST_2
-          - DYNAMIC_TEST_PREFIX_LIST_1
+          - name: DYNAMIC_TEST_PREFIX_LIST_2
+          - name: DYNAMIC_TEST_PREFIX_LIST_1

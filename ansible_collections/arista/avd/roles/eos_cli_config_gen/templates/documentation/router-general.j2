@@ -42,7 +42,7 @@
 |-----|---------------------|
 {%         for vrf in router_general.vrfs %}
 {%             for dynamic_prefix_list in router_general.vrfs[vrf].routes.dynamic_prefix_lists | arista.avd.natural_sort if router_general.vrfs[vrf].routes.dynamic_prefix_lists is arista.avd.defined %}
-      routes dynamic prefix-list {{ dynamic_prefix_list }}
+      routes dynamic prefix-list {{ dynamic_prefix_list.name }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
