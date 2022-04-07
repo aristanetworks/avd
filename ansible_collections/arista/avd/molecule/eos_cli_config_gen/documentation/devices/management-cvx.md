@@ -48,7 +48,7 @@ interface Management1
 ## Management CVX Summary
 
 | Shutdown | CVX Servers |
-| ---------- | ------------- |
+| -------- | ------------- |
 | False | 10.90.224.188, 10.90.224.189, leaf1.atd.lab |
 
 ### Management CVX configuration
