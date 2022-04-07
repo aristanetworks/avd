@@ -31,7 +31,6 @@
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
     - [DHCP Relay](#dhcp-relay)
-    - [DOT1X](#dot1x)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
