@@ -1776,10 +1776,11 @@ management_console:
 #### Management CVX
 ```yaml
 management_cvx:
-  shutdown: false
-  server_host:
-    - < IPv4_address >
-    - < IPv4_address >
+  shutdown: < true | false >
+  # List of Hostname(s) or IP Address(es) of CVX server(s)
+  server_hosts:
+    - < IP | hostname >
+    - < IP | hostname >
 ```
 
 #### Management Defaults
