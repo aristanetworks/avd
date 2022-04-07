@@ -1993,9 +1993,9 @@ router_multicast:
     software_forwarding: < kernel | sfe >
     rpf:
       routes:
-        - subnet: < IPv4 subnet / netmask >
+        - source_prefix: < IPv4 subnet / netmask >
           destinations:
-            - nexthop: < ip | interface_name >
+            - nexthop: < nexthop_ip | interface_name >
               distance: < 1 - 255 >  # optional
   vrfs:
     - name: < vrf_name >

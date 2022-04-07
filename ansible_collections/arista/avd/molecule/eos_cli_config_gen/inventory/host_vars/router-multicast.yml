@@ -4,13 +4,13 @@ router_multicast:
   ipv4:
     rpf:
       routes:
-        - subnet: 10.10.10.1/32
+        - source_prefix: 10.10.10.1/32
           destinations:
             - nexthop: 10.9.9.9
               distance: 2
             - nexthop: Ethernet1
               distance: 1
-        - subnet: 10.10.10.2/32
+        - source_prefix: 10.10.10.2/32
           destinations:
             - nexthop: Ethernet2
     counters:
