@@ -105,12 +105,12 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| forwarding_mode | arad |
-| lag.hardware_only | True |
-| lag.mode | 512x32 |
-| multicast_replication.default | ingress |
+| Forwarding Mode | arad |
+| Hardware Only Lag | True |
+| Lag Mode | 512x32 |
+| Default Multicast Replication | ingress |
 
-#### QOS Mapping
+#### Internal Network QOS Mapping
 
 | Traffic Class | To Network QOS |
 | ------------- | -------------- |

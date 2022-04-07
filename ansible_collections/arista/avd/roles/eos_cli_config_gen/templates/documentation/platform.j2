@@ -20,24 +20,21 @@
 
 | Settings | Value |
 | -------- | ----- |
-{%             for sandsetting in platform.sand | arista.avd.natural_sort if sandsetting not in ['qos_maps'] %}
-{%                 if sandsetting == 'lag' %}
-{%                     for lag_sandsetting in platform.sand.lag | arista.avd.natural_sort %}
-{%                         set lag_sandsettingmod = "lag." ~ lag_sandsetting %}
-| {{ lag_sandsettingmod }} | {{ platform.sand.lag[lag_sandsetting] }} |
-{%                     endfor %}
-{%                 elif sandsetting == 'multicast_replication' %}
-{%                     for multicast_replication_sandsetting in platform.sand.multicast_replication | arista.avd.natural_sort %}
-{%                         set multicast_replication_sandsettingmod = "multicast_replication." ~ multicast_replication_sandsetting %}
-| {{ multicast_replication_sandsettingmod }} | {{ platform.sand.multicast_replication[multicast_replication_sandsetting] }} |
-{%                     endfor %}
-{%                 else %}
-| {{ sandsetting }} | {{ platform.sand[sandsetting] }} |
-{%                 endif %}
-{%             endfor %}
+{%             if platform.sand.forwarding_mode is arista.avd.defined %}
+| Forwarding Mode | {{ platform.sand.forwarding_mode }} |
+{%             endif %}
+{%             if platform.sand.lag.hardware_only is arista.avd.defined %}
+| Hardware Only Lag | {{ platform.sand.lag.hardware_only }} |
+{%             endif %}
+{%             if platform.sand.lag.mode is arista.avd.defined %}
+| Lag Mode | {{ platform.sand.lag.mode }} |
+{%             endif %}
+{%             if platform.sand.multicast_replication.default is arista.avd.defined %}
+| Default Multicast Replication | {{ platform.sand.multicast_replication.default }} |
+{%             endif %}
 {%             if platform.sand.qos_maps is arista.avd.defined %}
 
-#### QOS Mapping
+#### Internal Network QOS Mapping
 
 | Traffic Class | To Network QOS |
 | ------------- | -------------- |

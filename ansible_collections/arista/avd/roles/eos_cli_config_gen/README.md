@@ -825,7 +825,7 @@ platform:
         to_network_qos: < 0-63 >
     lag:
       hardware_only: < true | false >
-      mode: < mode | default -> 1024x16 >
+      mode: < mode >
     forwarding_mode: < petraA | arad >
     multicast_replication:
       default: ingress
