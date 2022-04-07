@@ -41,6 +41,26 @@ sFlow is enabled.
 
 sFlow is disabled.
 {%     endif %}
+{%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
+
+sFlow hardware acceleration is enabled.
+{%     endif %}
+{%     if sflow.hardware_acceleration.sample is arista.avd.defined %}
+
+sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
+{%     endif %}
+{%     if sflow.hardware_acceleration.modules is arista.avd.defined and sflow.hardware_acceleration.modules | length > 0 %}
+
+### SFlow Hardware Accelerated Modules
+
+| Module | Acceleration Enabled |
+| ------ | -------------------- |
+{%         for module in sflow.hardware_acceleration.modules %}
+{%             if module.name is arista.avd.defined %}
+| {{ module.name }} | {{ module.enabled | arista.avd.default(true) }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 ### SFlow Device Configuration
 

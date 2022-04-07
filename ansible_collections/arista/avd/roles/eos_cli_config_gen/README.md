@@ -2224,6 +2224,12 @@ sflow:
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
   run: < true | false >
+  hardware_acceleration:
+    enabled: < true | false >
+    sample: < sample_rate >
+    modules:
+      - name: < module name >
+        enabled: < true | false | default -> true >
 ```
 
 #### SNMP Settings
