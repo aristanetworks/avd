@@ -931,7 +931,7 @@ vrf instance Tenant_L3_VRF_Zone
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 
