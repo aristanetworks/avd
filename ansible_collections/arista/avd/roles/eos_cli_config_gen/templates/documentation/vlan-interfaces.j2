@@ -85,7 +85,7 @@
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv6 Virtual IP |
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------|
 {%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.natural_sort %}
-{%             for vrid in vlan_interfaces[vlan_interface].vrrp_ids %}
+{%             for vrid in vlan_interfaces[vlan_interface].vrrp_ids if vrid.id is arista.avd.defined %}
 {%                 set row_id = vrid.id %}
 {%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
 {%                 set row_ad_interval = vrid.advertisement.interval | arista.avd.default('-') %}

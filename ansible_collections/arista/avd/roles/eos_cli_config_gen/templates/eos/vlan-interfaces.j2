@@ -201,19 +201,17 @@ interface {{ vlan_interface }}
 {%             if vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
 {%             endif %}
-{%             if vrid.tracked_object is arista.avd.defined %}
-{%                 for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
-{%                     if tracked_obj.name is arista.avd.defined %}
-{%                         set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
-{%                         if tracked_obj.decrement is arista.avd.defined %}
-{%                             set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
-{%                         elif tracked_obj.shutdown is arista.avd.defined(true) %}
-{%                             set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
-{%                         endif %}
-   {{ tracked_obj_cli }}
+{%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%                 if tracked_obj.name is arista.avd.defined %}
+{%                     set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
+{%                     if tracked_obj.decrement is arista.avd.defined %}
+{%                         set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
+{%                     elif tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                         set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
 {%                     endif %}
-{%                 endfor %}
-{%             endif %}
+   {{ tracked_obj_cli }}
+{%                 endif %}
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_attached_host_route_export.distance is arista.avd.defined %}
