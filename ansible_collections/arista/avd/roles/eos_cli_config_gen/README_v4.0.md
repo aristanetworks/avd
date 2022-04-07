@@ -3179,20 +3179,20 @@ spanning_tree:
       name: < name >
       revision: < 0-65535 >
       instances:
-        "< instance_id >":
+        - id: "< instance_id >"
           vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
-        "< instance_id >":
+        - id: "< instance_id >"
           vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
   mst_instances:
-    "< instance_id >":
+    - id: "< instance_id >"
       priority: < priority >
-    "< instance_id >":
+    - id: "< instance_id >"
       priority: < priority >
   no_spanning_tree_vlan: "< vlan_id >, < vlan_id >-< vlan_id >"
   rapid_pvst_instances:
-    "< vlan_id >":
+    - id: "< vlan_id >"
       priority: < priority >
-    "< vlan_id >, < vlan_id >-< vlan_id >":
+    - id: "< vlan_id >, < vlan_id >-< vlan_id >"
       priority: < priority >
 ```
 
@@ -3298,9 +3298,9 @@ traffic_policies:
 
 ```yaml
 virtual_source_nat_vrfs:
-  < vrf_name_1 >:
+  - name: < vrf_name_1 >
     ip_address: < IPv4_address >
-  < vrf_name_2 >:
+  - name: < vrf_name_2 >
     ip_address: < IPv4_address >
 ```
 

@@ -34,6 +34,7 @@
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
+      - [Dynamic Prefix Lists](#dynamic-prefix-lists)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
       - [Community Lists](#community-lists)
@@ -615,6 +616,25 @@ errdisable:
 ```
 
 ### Filters
+
+#### Dynamic Prefix Lists
+
+```yaml
+dynamic_prefix_lists:
+  - name: < dynamic_prefix_list_name >
+    match_map: < route_map >
+    prefix_list:
+      ipv4: < ipv4_prefix_list >
+  - name: < dynamic_prefix_list_name >
+    match_map: < route_map >
+    prefix_list:
+      ipv6: < ipv6_prefix_list >
+  - name: < dynamic_prefix_list_name >
+    match_map: < route_map >
+    prefix_list:
+      ipv4: < ipv4_prefix_list >
+      ipv6: < ipv6_prefix_list >
+```
 
 #### Prefix Lists
 
@@ -2224,6 +2244,12 @@ sflow:
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
   run: < true | false >
+  hardware_acceleration:
+    enabled: < true | false >
+    sample: < sample_rate >
+    modules:
+      - name: < module name >
+        enabled: < true | false | default -> true >
 ```
 
 #### SNMP Settings
@@ -3294,6 +3320,10 @@ spanning_tree:
     bpdufilter_default: < true | false >
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >
+  bpduguard_rate_limit:
+    default: < true | false >
+    # Maximum number of BPDUs per timer interval
+    count: < integer >
   rstp_priority: < priority >
   mst:
     pvst_border: < true | false >
