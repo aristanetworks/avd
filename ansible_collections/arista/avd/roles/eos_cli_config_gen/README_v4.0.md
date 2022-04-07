@@ -1933,7 +1933,7 @@ daemon_terminattr:
     - < ip/fqdn >:<port>
     - < ip/fqdn >:<port>
   clusters: # For multiple cluster support
-    < cluster_name >:
+    - name: < cluster_name >
       cvaddrs:
         - < ip/fqdn >:<port>
         - < ip/fqdn >:<port>
