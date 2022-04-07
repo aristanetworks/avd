@@ -20,7 +20,7 @@
 
 | Settings | Value |
 | -------- | ----- |
-{%             for sandsetting in platform.sand | arista.avd.natural_sort %}
+{%             for sandsetting in platform.sand | arista.avd.natural_sort if sandsetting not in ['qos_maps'] %}
 {%                 if sandsetting == 'lag' %}
 {%                     for lag_sandsetting in platform.sand.lag | arista.avd.natural_sort %}
 {%                         set lag_sandsettingmod = "lag." ~ lag_sandsetting %}
@@ -35,6 +35,18 @@
 | {{ sandsetting }} | {{ platform.sand[sandsetting] }} |
 {%                 endif %}
 {%             endfor %}
+{%             if platform.sand.qos_maps is arista.avd.defined %}
+
+#### QOS Mapping
+
+| Traffic Class | To Network QOS |
+| ------------- | -------------- |
+{%                 for qos_map in platform.sand.qos_maps | arista.avd.natural_sort('traffic_class') %}
+{%                     if qos_map.traffic_class is arista.avd.defined and qos_map.to_network_qos is arista.avd.defined %}
+| {{ qos_map.traffic_class }} | {{ qos_map.to_network_qos }} |
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 
