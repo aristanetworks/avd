@@ -3298,9 +3298,9 @@ traffic_policies:
 
 ```yaml
 virtual_source_nat_vrfs:
-  < vrf_name_1 >:
+  - name: < vrf_name_1 >
     ip_address: < IPv4_address >
-  < vrf_name_2 >:
+  - name: < vrf_name_2 >
     ip_address: < IPv4_address >
 ```
 
