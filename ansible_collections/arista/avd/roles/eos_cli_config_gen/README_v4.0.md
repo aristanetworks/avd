@@ -2089,21 +2089,21 @@ logging:
   facility: < syslog_facility_value >
   source_interface: < source_interface_name >
   vrfs:
-    < vrf_name >:
+    - name: < vrf_name >
       source_interface: < source_interface_name >
       hosts:
-        < syslog_server_1 >:
+        - name: < syslog_server_1 >
           protocol: < tcp | udp (default udp) >
           ports:
             - < custom_port_1 >
             - < custom_port_2 >
-        < syslog_server_2 >:
+        - name: < syslog_server_2 >
           ports:
             - < custom_port_1 >
   policy:
     match:
       match_lists:
-        < match_list >:
+        - name: < match_list >
           action: < discard >
 ```
 
