@@ -332,7 +332,7 @@ defaults <- node_group <- node_group.node <- node
           ip_address: < Peering IP of remote Route Server >
           bgp_as: < BGP ASN of remote Route Server >
 
-      # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP) and 5 (IP-PREFIX) can be enabled separately as needed.
+      # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
       evpn_l2:
         enabled: < true | false | Default -> False >
       evpn_l3:
