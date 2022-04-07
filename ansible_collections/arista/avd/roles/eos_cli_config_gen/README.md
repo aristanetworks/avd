@@ -650,15 +650,15 @@ ipv6_prefix_lists:
 
 #### Community Lists
 
-AVD supports 2 different data models for extended ACLs:
+AVD supports 2 different data models for community lists:
 
 - The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
 - The improved `ip_community_lists` data model.
 
 Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Access list names must be unique.
+Community list names must be unique.
 
-The legacy data model supports simplified community list definition that only allows rules to be defined as strings:
+The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
 
 ```yaml
 community_lists:
@@ -675,7 +675,7 @@ ip_community_lists:
   - name: "<ip community list name as string>"  # mandatory
     entries:
       - action: "< permit | deny >"  # required
-        # community_values and regexp MUST not be configured together in the same entry
+        # communities and regexp MUST not be configured together in the same entry
         # possible community strings are (case insensitive):
         # - GSHUT
         # - internet
@@ -684,7 +684,7 @@ ip_community_lists:
         # - no-export
         # - <1-4294967040>
         # - aa:nn
-        community_values: [ "< a_community as string >", "< another_community as string >", ... ]  # optional, if defined - standard community list will be configured
+        communities: [ "< a_community as string >", "< another_community as string >", ... ]  # optional, if defined - standard community list will be configured
         regexp: "< regular expression >"  # if defined, regex community list will be configured
 ```
 

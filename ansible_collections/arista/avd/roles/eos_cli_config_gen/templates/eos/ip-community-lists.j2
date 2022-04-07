@@ -7,9 +7,9 @@
 {%                 if entry.action is arista.avd.defined %}
 {%                     if entry.regexp is arista.avd.defined %}
 ip community-list regexp {{ community_list.name }} {{ entry.action }} {{ entry.regexp }}
-{%                     elif entry.community_values is arista.avd.defined %}
-{%                         if entry.community_values | length > 0 %}
-ip community-list {{ community_list.name }} {{ entry.action }} {{ entry.community_values | join(' ') }}
+{%                     elif entry.communities is arista.avd.defined %}
+{%                         if entry.communities | length > 0 %}
+ip community-list {{ community_list.name }} {{ entry.action }} {{ entry.communities | join(' ') }}
 {%                         endif %}
 {%                     endif %}
 {%                 endif %}

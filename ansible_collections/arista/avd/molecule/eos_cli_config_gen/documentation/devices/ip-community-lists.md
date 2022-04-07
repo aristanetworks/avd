@@ -111,7 +111,7 @@ ip community-list TEST2 permit 2000:3000
 
 | Name | Action | Communities / Regexp |
 | ---- | ------ | -------------------- |
-| IP_CL_TEST1 | permit | 1001:1001 1002:1002 |
+| IP_CL_TEST1 | permit | 1001:1001, 1002:1002 |
 | IP_CL_TEST1 | deny | 1010:1010 |
 | IP_CL_TEST1 | permit | 20:* |
 | IP_CL_TEST2 | deny | 1003:1003 |
