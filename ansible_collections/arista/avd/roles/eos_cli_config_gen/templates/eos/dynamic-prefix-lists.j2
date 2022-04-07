@@ -1,0 +1,12 @@
+{# eos - dynamic prefix-lists #}
+{% for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.natural_sort('name') if dynamic_prefix_list.name is arista.avd.defined and dynamic_prefix_list.match_map is arista.avd.defined %}
+!
+dynamic prefix-list {{ dynamic_prefix_list.name }}
+   match-map {{ dynamic_prefix_list.match_map }}
+{%     if dynamic_prefix_list.prefix_list.ipv4 is arista.avd.defined %}
+   prefix-list ipv4 {{ dynamic_prefix_list.prefix_list.ipv4 }}
+{%     endif  %}
+{%     if dynamic_prefix_list.prefix_list.ipv6 is arista.avd.defined %}
+   prefix-list ipv6 {{ dynamic_prefix_list.prefix_list.ipv6 }}
+{%     endif  %}
+{% endfor %}
