@@ -110,11 +110,22 @@ interface Management1
 | lag.mode | 512x32 |
 | multicast_replication.default | ingress |
 
+#### QOS Mapping
+
+| Traffic Class | To Network QOS |
+| ------------- | -------------- |
+| 0 | 0 |
+| 1 | 7 |
+| 2 | 15 |
+
 ## Platform Configuration
 
 ```eos
 !
 platform trident forwarding-table partition 2
+platform sand qos map traffic-class 0 to network-qos 0
+platform sand qos map traffic-class 1 to network-qos 7
+platform sand qos map traffic-class 2 to network-qos 15
 platform sand lag hardware-only
 platform sand lag mode 512x32
 platform sand forwarding mode arad
