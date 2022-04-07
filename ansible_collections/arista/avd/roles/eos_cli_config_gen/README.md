@@ -571,12 +571,6 @@ dhcp_relay:
   tunnel_requests_disabled: < true | false >
 ```
 
-### DOT1X
-
-```yaml
-Global DOT1X to add later
-```
-
 ### EOS CLI
 
 ```yaml

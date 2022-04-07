@@ -18,8 +18,8 @@
   - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
-- [DOT1X](#dot1x)
-  - [DOT1X Summary](#dot1x-summary)
+- [802.1X Port Security](#8021x-port-security)
+  - [802.1X Summary](#8021x-summary)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
@@ -557,18 +557,17 @@ interface Ethernet31
 
 # Filters
 
-# DOT1X
+# 802.1X Port Security
 
-## DOT1X Summary
+## 802.1X Summary
 
-### DOT1X Interfaces
+### 802.1X Interfaces
 
 | Interface | State | Phone Force Authorized |
 | --------- | ----- | ----------- |
 | Ethernet29 | auto | True |
 | Ethernet30 | force-authorized | False |
 | Ethernet31 | force-unauthorized | - |
-
 
 # ACL
 
