@@ -3296,6 +3296,10 @@ spanning_tree:
     bpdufilter_default: < true | false >
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >
+  bpduguard_rate_limit:
+    default: < true | false >
+    # Maximum number of BPDUs per timer interval
+    count: < integer >
   rstp_priority: < priority >
   mst:
     pvst_border: < true | false >
