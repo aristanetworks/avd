@@ -1,0 +1,7 @@
+{# eos - System Boot Configuration #}
+{% if boot is arista.avd.defined %}
+!
+{%     if boot.secret.encryption_type is arista.avd.defined and boot.secret.password is arista.avd.defined %}
+! boot secret {{ boot.secret.encryption_type }} {{ boot.secret.password }}
+{%     endif %}
+{% endif %}

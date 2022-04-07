@@ -1,0 +1,24 @@
+{# System Boot Configuration #}
+{% if boot is arista.avd.defined %}
+
+# System Boot Settings
+{%     if boot.secret.encryption_type is arista.avd.defined and boot.secret.password is arista.avd.defined %}
+
+## Boot Secret Summary
+{%         if boot.secret.encryption_type == 'sha512' %}
+{%             set method = "SHA512 ENCRYPTED" %}
+{%         elif boot.secret.encryption_type == '5' %}
+{%             set method = "MD5 ENCRYPTED" %}
+{%         elif boot.secret.encryption_type in ['0', 'LINE'] %}
+{%             set method = "UNENCRYPTED" %}
+{%         endif %}
+
+- The {{ method }} Aboot password is: {{ boot.secret.password }}
+{%     endif %}
+
+## System Boot Configuration
+
+```eos
+{%     include 'eos/boot.j2' %}
+```
+{% endif %}
