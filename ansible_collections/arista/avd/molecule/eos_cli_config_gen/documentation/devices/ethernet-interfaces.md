@@ -564,7 +564,7 @@ interface Ethernet31
 ### 802.1X Interfaces
 
 | Interface | State | Phone Force Authorized |
-| --------- | ----- | ----------- |
+| --------- | ----- | ---------------------- |
 | Ethernet29 | auto | True |
 | Ethernet30 | force-authorized | False |
 | Ethernet31 | force-unauthorized | - |
