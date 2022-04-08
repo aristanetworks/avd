@@ -3142,11 +3142,11 @@ ipv6_static_routes:
 
 ```yaml
 vrfs:
-  < vrf_name >:
+  - name: < vrf_name >
     description: < description>
     ip_routing: < true | false >
     ipv6_routing: < true | false >
-  < vrf_name >:
+  - name: < vrf_name >
     description: < description>
     ip_routing: < true | false >
     ipv6_routing: < true | false >
