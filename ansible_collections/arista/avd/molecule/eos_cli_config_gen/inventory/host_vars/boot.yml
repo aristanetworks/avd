@@ -1,5 +1,4 @@
 ### System Boot Configuration
 boot:
   secret:
-    encryption_type: sha512
-    password: a153de6290ff1409257a
+    sha512_password: a153de6290ff1409257a
