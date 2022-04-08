@@ -2939,7 +2939,7 @@ router_igmp:
 ```yaml
 router_ospf:
   process_ids:
-    < process_id >:
+    - id: < process_id >
       vrf: < vrf_name_for_process_id >
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
@@ -2949,9 +2949,9 @@ router_ospf:
         intra_area: < 1-255 >
       log_adjacency_changes_detail: < true | false >
       network_prefixes:
-        < IPv4 subnet / netmask >:
+        - ipv4_prefix: < IPv4 subnet / netmask >
           area: < area >
-        < IPv4 subnet / netmask >:
+        - ipv4_prefix: < IPv4 subnet / netmask >
           area: < area >
       bfd_enable: < true | false >
       no_passive_interfaces:
@@ -2991,13 +2991,13 @@ router_ospf:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
       areas:
-        < area >:
+        - id: < area >
           filter:
             networks:
               - < IPv4 subnet / netmask >
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
-        < area >:
+        - id: < area >
           type: < normal | stub | nssa | default -> normal >
           no_summary: < true | false >
           nssa_only: < true | false >
