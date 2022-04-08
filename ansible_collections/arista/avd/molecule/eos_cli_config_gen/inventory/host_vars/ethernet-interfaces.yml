@@ -425,3 +425,9 @@ ethernet_interfaces:
     dot1x:
       port_control: auto
       reauthentication: true
+
+  Ethernet33:
+    description: DOT1X Testing - auto reauthentication default to false
+    dot1x:
+      port_control: auto
+      # reauthentication: false
