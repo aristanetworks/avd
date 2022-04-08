@@ -13,16 +13,7 @@
 
 - Nexthop fast fail-over is enabled.
 {%     endif %}
-{%     set has = namespace() %}
-{%     set has.found = false %}
-{%     if router_general.vrfs is arista.avd.defined %}
-{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('name') %}
-{%             if vrf.leaks is arista.avd.defined %}
-{%                 set has.found = true %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if has.found is arista.avd.defined(true) %}
+{%     if router_general.vrfs | arista.avd.default([]) | arista.avd.convert_dicts('name') | selectattr('leaks','arista.avd.defined') %}
 
 ### VRF Route leaking
 
@@ -35,14 +26,18 @@
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
+{%     endif %}
+{%     if router_general.vrfs | arista.avd.default([]) | arista.avd.convert_dicts('name') | selectattr('routes.dynamic_prefix_lists','arista.avd.defined') %}
 
 ### VRF Routes Dynamic Prefix-lists
 
 | VRF | Dynamic Prefix-list |
 |-----|---------------------|
-{%         for vrf in router_general.vrfs %}
-{%             for dynamic_prefix_list in router_general.vrfs[vrf].routes.dynamic_prefix_lists | arista.avd.natural_sort if router_general.vrfs[vrf].routes.dynamic_prefix_lists is arista.avd.defined %}
+{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('name') %}
+{%             for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort('name') %}
+{%                 if dynamic_prefix_list.name is arista.avd.defined %}
       routes dynamic prefix-list {{ dynamic_prefix_list.name }}
+{%                 endif %}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
