@@ -326,8 +326,6 @@ jobs:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
     container: avdteam/base:3.8-v2.0
-    needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
