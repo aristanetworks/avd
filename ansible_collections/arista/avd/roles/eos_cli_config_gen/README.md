@@ -1095,6 +1095,9 @@ ethernet_interfaces:
       - from: < list of vlans as string (only one vlan if direction is "both") >
         to: < vlan_id >
         direction: < in | out | both | default -> both >
+    dot1x:
+      port_control: < "auto" | "force-authorized" | "force-unauthorized" >
+      port_control_force_authorized_phone: < true | false >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
