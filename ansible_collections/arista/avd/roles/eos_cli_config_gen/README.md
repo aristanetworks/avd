@@ -6,6 +6,7 @@
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
+  - [Extensibility with Custom Templates](#extensibility-with-custom-templates)
   - [Input Variables](#input-variables)
     - [ACLs](#acls)
       - [IP Extended Access-Lists](#ip-extended-access-lists)
@@ -29,7 +30,6 @@
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
-    - [Custom Templates](#custom-templates)
     - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
@@ -107,10 +107,10 @@
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
       - [Logging](#logging)
+      - [Object Tracking](#object-tracking)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
-    - [Object Tracking](#object-tracking)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -186,6 +186,27 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
+## Extensibility with Custom Templates
+
+- Custom templates can be added below the playbook directory.
+- If a location above the directory is desired, a symbolic link can be used.
+- Example under the `playbooks` directory create symbolic link with the following command:
+
+  ```bash
+  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
+  ```
+- The output will be rendered at the end of the configuration.
+- The order of custom templates in the list can be important if they overlap.
+- It is recommenended to use a `!` delimiter at the top of each custom template.
+
+Add custom template to group/host variables:
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
+```
+
 ## Input Variables
 
 - The input variables are documented inline within yaml formatted output with: "< >"
@@ -202,7 +223,7 @@ AVD currently supports 2 different data models for extended ACLs:
 - The legacy `access_lists` data model, for compatibility with existing deployments
 - The improved `ip_access_lists` data model, for access to more EOS features
 
-Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+Both data models can coexist without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
 Access list names must be unique.
 
 The legacy data model supports simplified ACL definition with `sequence_number` to `action_string` mapping:
@@ -554,14 +575,6 @@ router_bfd:
     multiplier: < 3-50 >
 ```
 
-### Custom Templates
-
-```yaml
-custom_templates:
-  - < template 1 relative path below playbook directory >
-  - < template 2 relative path below playbook directory >
-```
-
 ### DHCP Relay
 
 ```yaml
@@ -670,12 +683,42 @@ ipv6_prefix_lists:
 
 #### Community Lists
 
+AVD supports 2 different data models for community lists:
+
+- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
+- The improved `ip_community_lists` data model.
+
+Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
+Community list names must be unique.
+
+The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
+
 ```yaml
 community_lists:
   < community_list_name_1 >:
     action: "< action as string >"
   < community_list_name_2 >:
     action: "< action as string >"
+```
+
+The improved data model has a better design documented below:
+
+```yaml
+ip_community_lists:
+  - name: "<ip community list name as string>"  # mandatory
+    entries:
+      - action: "< permit | deny >"  # required
+        # communities and regexp MUST not be configured together in the same entry
+        # possible community strings are (case insensitive):
+        # - GSHUT
+        # - internet
+        # - local-as
+        # - no-advertise
+        # - no-export
+        # - <1-4294967040>
+        # - aa:nn
+        communities: [ "< a_community as string >", "< another_community as string >", ... ]  # optional, if defined - standard community list will be configured
+        regexp: "< regular expression >"  # if defined, regex community list will be configured
 ```
 
 #### IP Extended Community Lists
@@ -1095,6 +1138,9 @@ ethernet_interfaces:
       - from: < list of vlans as string (only one vlan if direction is "both") >
         to: < vlan_id >
         direction: < in | out | both | default -> both >
+    dot1x:
+      port_control: < "auto" | "force-authorized" | "force-unauthorized" >
+      port_control_force_authorized_phone: < true | false >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
