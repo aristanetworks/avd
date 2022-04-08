@@ -10,11 +10,10 @@ l2leaf:
       mlag_interfaces: [ Ethernet3 ]
       mlag_peer_vlan: 4091
       mlag_peer_ipv4_pool: 192.168.255.0/24
-      rack:
       nodes:
         mgmt_interface_platform_7368X4_1:
           id: 106
-          mgmt_ip: 42.42.42.42
+          mgmt_ip: 42.42.42.42/24
         mgmt_interface_platform_7368X4_2:
           id: 107
-          mgmt_ip: 42.42.42.43
+          mgmt_ip: 42.42.42.43/24
