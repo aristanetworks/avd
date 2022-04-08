@@ -2679,6 +2679,10 @@ router_general:
           subscribe_policy: < route-map policy >
         - source_vrf: < source-vrf >
           subscribe_policy: < route-map policy >
+      routes:
+        dynamic_prefix_lists:
+          - name: < dynamic_prefix_list_1 >
+          - name: < dynamic_prefix_list_2 >
 ```
 
 #### Router BGP Configuration
