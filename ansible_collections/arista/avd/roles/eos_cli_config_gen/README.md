@@ -1141,6 +1141,7 @@ ethernet_interfaces:
     dot1x:
       port_control: < "auto" | "force-authorized" | "force-unauthorized" >
       port_control_force_authorized_phone: < true | false >
+      reauthentication: < true | false | default -> false >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
