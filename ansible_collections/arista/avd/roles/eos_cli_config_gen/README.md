@@ -6,6 +6,7 @@
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
+  - [Extensibility with Custom Templates](#extensibility-with-custom-templates)
   - [Input Variables](#input-variables)
     - [ACLs](#acls)
       - [IP Extended Access-Lists](#ip-extended-access-lists)
@@ -29,7 +30,6 @@
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
-    - [Custom Templates](#custom-templates)
     - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
@@ -107,10 +107,10 @@
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
       - [Logging](#logging)
+      - [Object Tracking](#object-tracking)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
-    - [Object Tracking](#object-tracking)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -185,6 +185,27 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 ## Requirements
 
 Requirements are located here: [avd-requirements](../../README.md#Requirements)
+
+## Extensibility with Custom Templates
+
+- Custom templates can be added below the playbook directory.
+- If a location above the directory is desired, a symbolic link can be used.
+- Example under the `playbooks` directory create symbolic link with the following command:
+
+  ```bash
+  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
+  ```
+- The output will be rendered at the end of the configuration.
+- The order of custom templates in the list can be important if they overlap.
+- It is recommenended to use a `!` delimiter at the top of each custom template.
+
+Add custom template to group/host variables:
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
+```
 
 ## Input Variables
 
@@ -552,14 +573,6 @@ router_bfd:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
     multiplier: < 3-50 >
-```
-
-### Custom Templates
-
-```yaml
-custom_templates:
-  - < template 1 relative path below playbook directory >
-  - < template 2 relative path below playbook directory >
 ```
 
 ### DHCP Relay
