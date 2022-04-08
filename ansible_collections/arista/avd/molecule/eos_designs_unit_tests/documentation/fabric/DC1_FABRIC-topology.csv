@@ -185,8 +185,6 @@ l3leaf,DC1-SVC3B,Ethernet25,server,server18_monitoring_session_source_phys_inter
 l3leaf,DC1-SVC3B,Ethernet26,server,server19_monitoring_session_destination_phys,Eth2
 l3leaf,DC1-SVC3B,Ethernet27,server,server18_monitoring_session_source_po,Eth4
 l3leaf,DC1-SVC3B,Ethernet42,server,server21_monitoring_session_destination_po,Eth2
-l2leaf,mgmt_interface_platform_7368X4_1,Ethernet3,mlag_peer,mgmt_interface_platform_7368X4_2,Ethernet3
-l2leaf,mgmt_interface_platform_7368X4_2,Ethernet3,mlag_peer,mgmt_interface_platform_7368X4_1,Ethernet3
 l2leaf,MH-L2LEAF1A,Ethernet1,l3leaf,MH-LEAF2A,Ethernet2
 l2leaf,MH-L2LEAF1A,Ethernet10,server,server02,Eth1
 l3leaf,MH-LEAF1A,Ethernet1,spine,DC1-SPINE1,Ethernet10

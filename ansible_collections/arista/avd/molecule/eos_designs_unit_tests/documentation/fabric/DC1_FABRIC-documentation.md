@@ -21,7 +21,7 @@
 | DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL2A | 192.168.200.117/24 | 7280R2 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL2B | 192.168.200.118/24 | 7280R3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-CL1A | 192.168.200.119/24 | 7280R | Provisioned |
+| DC1_FABRIC | l3leaf | DC1-CL1A | 192.168.200.119/24 | 7368X4 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-CL1B | 192.168.200.120/24 | 7280R | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1B | 192.168.200.115/24 | vEOS-LAB | Provisioned |
@@ -43,8 +43,6 @@
 | DC1_FABRIC | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
 | DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
 | DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_platform_7368X4_1 | 42.42.42.42/24 | 7368X4 | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_platform_7368X4_2 | 42.42.42.43/24 | 7368X4 | Provisioned |
 | DC1_FABRIC | l2leaf | MH-L2LEAF1A | 192.168.201.201/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
@@ -125,7 +123,6 @@
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet4 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
-| l2leaf | mgmt_interface_platform_7368X4_1 | Ethernet3 | mlag_peer | mgmt_interface_platform_7368X4_2 | Ethernet3 |
 | l2leaf | MH-L2LEAF1A | Ethernet1 | l3leaf | MH-LEAF2A | Ethernet2 |
 
 # Fabric IP Allocation
