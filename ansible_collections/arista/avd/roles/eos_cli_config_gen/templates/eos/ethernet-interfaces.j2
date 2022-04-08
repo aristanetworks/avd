@@ -189,6 +189,16 @@ interface {{ ethernet_interface.name }}
       route-target import {{ ethernet_interface.evpn_ethernet_segment.route_target }}
 {%             endif %}
 {%         endif %}
+{%         if ethernet_interface.dot1x is arista.avd.defined %}
+{%             if ethernet_interface.dot1x.port_control is arista.avd.defined %}
+   dot1x port-control {{ ethernet_interface.dot1x.port_control }}
+{%             endif %}
+{%             if ethernet_interface.dot1x.port_control_force_authorized_phone is arista.avd.defined(true) %}
+   dot1x port-control force-authorized phone
+{%             elif ethernet_interface.dot1x.port_control_force_authorized_phone is arista.avd.defined(false) %}
+   no dot1x port-control force-authorized phone
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interface.vrf is arista.avd.defined %}
    vrf {{ ethernet_interface.vrf }}
 {%         endif %}
