@@ -530,17 +530,14 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | Tenant_B_OP_Zone | Tenant_A_OP_Zone | RM-CONN-2-BGP |
 | Tenant_B_OP_Zone | Tenant_C_OP_Zone | RM-CONN-2-BGP |
 
-### VRF Routes Dynamic Prefix-lists
-
-| VRF | Dynamic Prefix-list |
-|-----|---------------------|
-
 ### Router General configuration
 
 ```eos
 !
 router general
    vrf Tenant_B_OP_Zone
+      leak routes source-vrf Tenant_A_OP_Zone subscribe-policy RM-CONN-2-BGP
+      leak routes source-vrf Tenant_C_OP_Zone subscribe-policy RM-CONN-2-BGP
    !
 ```
 

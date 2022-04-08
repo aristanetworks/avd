@@ -91,6 +91,20 @@ interface Management1
 
 - Nexthop fast fail-over is enabled.
 
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
+| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+
+### VRF Routes Dynamic Prefix-lists
+
+| VRF | Dynamic Prefix-list |
+|-----|---------------------|
+| BLUE-C2 | DYNAMIC_TEST_PREFIX_LIST_1 |
+| BLUE-C2 | DYNAMIC_TEST_PREFIX_LIST_2 |
+
 ### Router General configuration
 
 ```eos
