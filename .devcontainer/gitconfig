@@ -1,0 +1,39 @@
+[user]
+    name = USERNAME
+    email = USER_EMAIL
+[alias]
+    # Generic command
+    rollback = reset --hard
+    recommit = commit --amend --no-edit
+    commit-unsafe = commit --no-verify
+    undo = reset HEAD~1 --mixed
+    uncommit = reset --soft HEAD~1
+
+    # Misc command
+    refresh = !git pull --rebase --prune $@
+    conflicts = !git ls-files -u | cut -f 2 | sort -u
+    push-current = push -u origin HEAD
+
+    # Logging & History
+    last = log --stat -1 HEAD
+    graph = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    logs = log --oneline --decorate --color
+
+    # In Fork model
+    forigin = fetch origin
+    fupstream = fetch upstream
+    fetch-all = !sh -c 'for remote in $(git remote);do git fetch remote;done'
+
+[core]
+    excludesfile = ~/.gitignore_global
+[commit]
+    template = ~/.stCommitMsg
+[pull]
+    rebase = true
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[pager]
+  branch = false
