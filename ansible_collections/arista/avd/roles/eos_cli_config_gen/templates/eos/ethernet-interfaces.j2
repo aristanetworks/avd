@@ -199,6 +199,11 @@ interface {{ ethernet_interface.name }}
    no dot1x port-control force-authorized phone
 {%             endif %}
 {%         endif %}
+{%         if ethernet_interface.snmp_trap_link_change is arista.avd.defined(false) %}
+   no snmp trap link-change
+{%         elif ethernet_interface.snmp_trap_link_change is arista.avd.defined(true) %}
+   snmp trap link-change
+{%         endif %}
 {%         if ethernet_interface.vrf is arista.avd.defined %}
    vrf {{ ethernet_interface.vrf }}
 {%         endif %}
