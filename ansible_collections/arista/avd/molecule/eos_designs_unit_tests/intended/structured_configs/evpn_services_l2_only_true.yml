@@ -178,6 +178,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
