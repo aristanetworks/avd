@@ -8,8 +8,8 @@ management cvx
    no shutdown
 {%     endif %}
 {%     if management_cvx.server_hosts is arista.avd.defined %}
-{%         for ip in management_cvx.server_hosts %}
-   server host {{ ip }}
+{%         for server_host in management_cvx.server_hosts | arista.avd.natural_sort %}
+   server host {{ server_host }}
 {%         endfor %}
 {%     endif %}
 {% endif %}
