@@ -56,7 +56,7 @@ logging synchronous level {{ logging.synchronous.level | arista.avd.default("cri
 {%                 set timestamp_cli = timestamp_cli ~ " year" %}
 {%             endif %}
 {%             if "timezone" in logging.format.timestamp %}
-{%                 set timestamp_cli = timestamp_cli ~ " timezone"%}
+{%                 set timestamp_cli = timestamp_cli ~ " timezone" %}
 {%             endif %}
 {%         endif %}
 {{ timestamp_cli }}
