@@ -25,10 +25,21 @@
 
 | Format Type | Setting |
 | ----------- | ------- |
-{%         if logging.format.timestamp is arista.avd.defined and logging.format.timestamp == 'high-resolution' %}
-| Timestamp | high-resolution |
-{%         else %}
-| Timestamp | traditional |
+{%         if logging.format.timestamp is arista.avd.defined %}
+{%             if logging.format.timestamp == 'high-resolution' %}
+{%                 set timestamp_cli = "high-resolution" %}
+{%             elif "traditional" in logging.format.timestamp %}
+{%                 set timestamp_cli = "traditional" %}
+{%                 if "year" in logging.format.timestamp %}
+{%                     set timestamp_cli = timestamp_cli ~ " year" %}
+{%                 endif %}
+{%                 if "timezone" in logging.format.timestamp %}
+{%                     set timestamp_cli = timestamp_cli ~ " timezone"%}
+{%                 endif %}
+{%             else %}
+{%                 set timestamp_cli = "traditional" %}
+{%             endif %}
+| Timestamp | {{ timestamp_cli }} |
 {%         endif %}
 {%         if logging.format.hostname is arista.avd.defined %}
 | Hostname | {{ logging.format.hostname }} |

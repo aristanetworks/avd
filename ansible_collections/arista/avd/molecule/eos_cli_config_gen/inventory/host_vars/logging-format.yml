@@ -1,0 +1,7 @@
+### Logging ###
+logging:
+  console: informational
+  monitor: debugging
+  facility: syslog
+  format:
+    timestamp: traditional year timezone
