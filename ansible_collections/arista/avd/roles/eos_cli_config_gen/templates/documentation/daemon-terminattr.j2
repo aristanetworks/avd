@@ -6,17 +6,17 @@
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-{%     for cluster_name in daemon_terminattr.clusters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         set url = cluster_name.cvaddrs | arista.avd.default([]) | join(',') %}
-{%         if cluster_name.cvauth.method is arista.avd.defined('key') %}
-{%             set auth = 'key,' ~ cluster_name.cvauth.key | arista.avd.default('') %}
-{%         elif cluster_name.cvauth.method is arista.avd.defined('token') and cluster_name.cvauth.token_file is arista.avd.defined %}
-{%             set auth = 'token,' ~ cluster_name.cvauth.token_file %}
-{%         elif cluster_name.cvauth.method is arista.avd.defined('token-secure') and cluster_name.cvauth.token_file is arista.avd.defined %}
-{%             set auth = 'token-secure,' ~ cluster_name.cvauth.token_file %}+
+{%     for cluster in daemon_terminattr.clusters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set url = cluster.cvaddrs | arista.avd.default([]) | join(',') %}
+{%         if cluster.cvauth.method is arista.avd.defined('key') %}
+{%             set auth = 'key,' ~ cluster.cvauth.key | arista.avd.default('') %}
+{%         elif cluster.cvauth.method is arista.avd.defined('token') and cluster.cvauth.token_file is arista.avd.defined %}
+{%             set auth = 'token,' ~ cluster.cvauth.token_file %}
+{%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
+{%             set auth = 'token-secure,' ~ cluster.cvauth.token_file %}+
 {%         endif %}
-{%         if cluster_name.cvvrf is arista.avd.defined %}
-{%             set cvvrf = cluster_name.cvvrf %}
+{%         if cluster.cvvrf is arista.avd.defined %}
+{%             set cvvrf = cluster.cvvrf %}
 {%         else %}
 {%             set cvvrf = daemon_terminattr.cvvrf | arista.avd.default('-') %}
 {%         endif %}

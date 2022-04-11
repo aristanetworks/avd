@@ -4,26 +4,26 @@
 !
 daemon TerminAttr
 {%     set cvp_config.cli = "exec /usr/bin/TerminAttr" %}
-{%     for cluster_name in daemon_terminattr.clusters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         set cvp_config.cli = cvp_config.cli ~  " -cvopt " ~ cluster_name.name ~ ".addr=" ~ cluster_name.cvaddrs | join(',') %}
-{%         if cluster_name.cvauth.method is arista.avd.defined('key') %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".auth=key," ~ cluster_name.cvauth.key | arista.avd.default('') %}
-{%         elif cluster_name.cvauth.method is arista.avd.defined('token') and cluster_name.cvauth.token_file is arista.avd.defined %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".auth=token," ~ cluster_name.cvauth.token_file %}
-{%         elif cluster_name.cvauth.method is arista.avd.defined('token-secure') and cluster_name.cvauth.token_file is arista.avd.defined %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".auth=token-secure," ~ cluster_name.cvauth.token_file %}
+{%     for cluster in daemon_terminattr.clusters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set cvp_config.cli = cvp_config.cli ~  " -cvopt " ~ cluster.name ~ ".addr=" ~ cluster.cvaddrs | join(',') %}
+{%         if cluster.cvauth.method is arista.avd.defined('key') %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=key," ~ cluster.cvauth.key | arista.avd.default('') %}
+{%         elif cluster.cvauth.method is arista.avd.defined('token') and cluster.cvauth.token_file is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=token," ~ cluster.cvauth.token_file %}
+{%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=token-secure," ~ cluster.cvauth.token_file %}
 {%         endif %}
-{%         if cluster_name.cvvrf is arista.avd.defined %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".vrf=" ~ cluster_name.cvvrf %}
+{%         if cluster.cvvrf is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".vrf=" ~ cluster.cvvrf %}
 {%         endif %}
-{%         if cluster_name.cvsourceip is arista.avd.defined %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".sourceip=" ~ cluster_name.cvsourceip %}
+{%         if cluster.cvsourceip is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".sourceip=" ~ cluster.cvsourceip %}
 {%         endif %}
-{%         if cluster_name.cvproxy is arista.avd.defined %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".proxy=" ~ cluster_name.cvproxy %}
+{%         if cluster.cvproxy is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".proxy=" ~ cluster.cvproxy %}
 {%         endif %}
-{%         if cluster_name.cvobscurekeyfile is arista.avd.defined %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name.name ~ ".obscurekeyfile=" ~ cluster_name.cvobscurekeyfile %}
+{%         if cluster.cvobscurekeyfile is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".obscurekeyfile=" ~ cluster.cvobscurekeyfile %}
 {%         endif %}
 {%     endfor %}
 {%     if daemon_terminattr.cvaddrs is arista.avd.defined %}
