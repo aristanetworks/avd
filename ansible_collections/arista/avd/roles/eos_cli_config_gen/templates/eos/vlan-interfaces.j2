@@ -195,8 +195,14 @@ interface {{ vlan_interface }}
 {%                 endif %}
    {{ delay_cli }}
 {%             endif %}
+{%             if vrid.timers.delay.reload is arista.avd.defined %}
+   vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
+{%             endif %}
 {%             if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
+{%             endif %}
+{%             if vrid.ipv4.version is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
 {%             endif %}
 {%             if vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}

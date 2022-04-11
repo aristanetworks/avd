@@ -1469,6 +1469,9 @@ vlan_interfaces:
           delay:
             minimum: < integer >
             reload: < integer >
+        timers:
+          delay:
+            reload: < integer >
         tracked_object:
           - name: < tracked_object_name_1 >
             decrement: < decrement vrrp priority by 1-254 >
@@ -1478,6 +1481,7 @@ vlan_interfaces:
             shutdown: < true | false >
         ipv4:
           address: < virtual_ip_address >
+          version: < 2 | 3 >
         ipv6:
           address: < virtual_ip_address >
     # The below "vrrp" keys will be deprecated in AVD v4.0 - These should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
