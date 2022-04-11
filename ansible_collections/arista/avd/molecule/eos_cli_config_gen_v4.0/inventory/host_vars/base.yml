@@ -15,7 +15,7 @@ management_api_http:
   enable_http: true
   enable_https: true
   enable_vrfs:
-    mgt:
+    - name: mgt
       access_group: ACL-API
 
 ### Management console ###
@@ -42,7 +42,7 @@ management_ssh:
     per_host: 12
   enable: true
   vrfs:
-    mgt:
+    - name: mgt
       enable: true
 
 eos_cli: |

@@ -9,6 +9,24 @@
 
 ## Variables and Options
 
+### Tenants Keys
+
+```yaml
+# Define network services keys, to define grouping of network services.
+# This provides the ability to define various keys of your choice to better organize/group your data.
+# This should be defined in top level group_var for the fabric.
+network_services_keys:
+  - name: < key_1 >
+  - name: < key_2 >
+```
+
+```yaml
+# Example
+# The below key/pair values are the role defaults.
+network_services_keys:
+  - name: tenants
+```
+
 ```yaml
 # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering. | Required (when mlag leafs in topology)
 # The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1
@@ -75,10 +93,9 @@ svi_profiles:
         source_interface: < interface-name >
         source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
-# Dictionary of tenants, to define network services: L3 VRFs and L2 VLANS.
-
-tenants:
-
+# Dictionary of network services: L3 VRFs and L2 VLANS.
+# The network service key from network_services_keys
+< network_services_keys.key_1 >:
   # Specify a tenant name. | Required
   # Tenant provide a construct to group L3 VRFs and L2 VLANs.
   # Networks services can be filtered by tenant name.
@@ -204,8 +221,10 @@ tenants:
             # SVI description. | Optional
             description: < description | Default -> vlan name >
 
-            # Tags leveraged for networks services filtering. | Required
-            tags: [ < tag_1 >, < tag_2 > ]
+            # Tags leveraged for networks services filtering. | Optional
+            # Tags are matched against "filter.tags" defined under Fabric Topology variables
+            # Tags are also matched against the "node_group" name under Fabric Topology variables
+            tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
             # Enable or disable interface
             enabled: < true | false >
@@ -420,11 +439,13 @@ tenants:
         # The rt_override allows us to override this value and statically define it. | Optional
         rt_override: < 1-16777215 | default -> vni_override >
 
-        # VLAN name.
+        # VLAN name | Required
         name: < description >
 
-        # Tags leveraged for networks services filtering.
-        tags: [ < tag_1 >, < tag_2 > ]
+        # Tags leveraged for network services filtering. | Optional
+        # Tags are matched against "filter.tags" defined under Fabric Topology variables
+        # Tags are also matched against the "node_group" name under Fabric Topology variables
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
         # VXLAN | Optional - default true
         # Extend this L2VLAN over VXLAN
@@ -436,7 +457,37 @@ tenants:
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
 
-  < tenant_a >:
+  < tenant_b >:
+    mac_vrf_vni_base: < 10000-16770000 >
+    vrfs:
+      < tenant_b_vrf_1 >:
+        vrf_vni: < 1-1024 >
+        vtep_diagnostic:
+          loopback: < 2-2100 >
+          loopback_ip_range: < IPv4_address/Mask >
+        svis:
+          < 1-4096 >:
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_address_virtual: < IPv4_address/Mask >
+          < 1-4096 >:
+            vni_override: < 1-16777215 >
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_address_virtual: < IPv4_address/Mask >
+    l2vlans:
+      < 1-4096 >:
+        vni_override: < 1-16777215 >
+        name: < description >
+        tags: [ < tag_1 >, < tag_2 > ]
+      < 1-4096 >:
+        name: < description >
+        tags: [ < tag_1 >, < tag_2 > ]
+
+< network_services_keys.key_2 >:
+  < tenant_c >:
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:
       < tenant_b_vrf_1 >:
@@ -472,7 +523,10 @@ tenants:
 # mlag_ibgp_peering_vrfs:
 #   base_vlan: 3000
 
-tenants:
+network_services_keys:
+  - name: dc1_tenants
+
+dc1_tenants:
   Tenant_A:
     mac_vrf_vni_base: 10000
     vrfs:

@@ -81,11 +81,13 @@ ip name-server vrf mgt 10.10.129.10
 
 | Source interface | vrf |
 | ---------------- | --- |
+| Loopback0 | - |
 | Management0 | mgt |
 
 ### DNS Domain Lookup Device Configuration
 
 ```eos
+ip domain lookup source-interface Loopback0
 ip domain lookup vrf mgt source-interface Management0
 ```
 

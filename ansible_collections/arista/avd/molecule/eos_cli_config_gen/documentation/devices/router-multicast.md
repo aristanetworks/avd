@@ -94,6 +94,14 @@ interface Management1
 - Multipathing deterministically by selecting the same upstream router.
 - Software forwarding by the Software Forwarding Engine (SFE)
 
+### IP Router Multicast RPF Routes
+
+| Source Prefix | Next Hop | Administrative Distance |
+| ------------- | -------- | ----------------------- |
+| 10.10.10.1/32 | 10.9.9.9 | 2 |
+| 10.10.10.1/32 | Ethernet1 | 1 |
+| 10.10.10.2/32 | Ethernet2 | - |
+
 ### IP Router Multicast VRFs
 
 | VRF Name | Multicast Routing |
@@ -107,6 +115,9 @@ interface Management1
 !
 router multicast
    ipv4
+      rpf route 10.10.10.1/32 10.9.9.9 2
+      rpf route 10.10.10.1/32 Ethernet1 1
+      rpf route 10.10.10.2/32 Ethernet2
       counters rate period decay 300 seconds
       routing
       multipath deterministic router-id

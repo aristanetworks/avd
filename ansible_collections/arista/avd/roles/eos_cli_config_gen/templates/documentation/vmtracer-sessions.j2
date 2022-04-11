@@ -1,4 +1,4 @@
-{% if vmtracer_sessions is defined and vmtracer_sessions is not none %}
+{% if vmtracer_sessions is arista.avd.defined %}
 
 ## VM Tracer Sessions
 
@@ -6,13 +6,13 @@
 
 | Session | URL | Username | Autovlan | Source Interface |
 | ------- | --- | -------- | -------- | ---------------- |
-{%     for session in vmtracer_sessions | arista.avd.natural_sort %}
-{%         set url = vmtracer_sessions[session].url | arista.avd.default('-') %}
-{%         if vmtracer_sessions[session].autovlan_disable is arista.avd.defined and vmtracer_sessions[session].autovlan_disable == true %}
+{%     for session in vmtracer_sessions | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set url = session.url | arista.avd.default('-') %}
+{%         if session.autovlan_disable is arista.avd.defined(true) %}
 {%             set autovlan = 'disabled' %}
 {%         endif %}
-{%         set source_interface = vmtracer_sessions[session].source_interface | arista.avd.default('-') %}
-| {{ session }} | {{ url }} | {{ vmtracer_sessions[session].username }} | {{ autovlan | arista.avd.default('enabled') }} | {{ source_interface }} |
+{%         set source_interface = session.source_interface | arista.avd.default('-') %}
+| {{ session.name }} | {{ url }} | {{ session.username | arista.avd.default('-') }} | {{ autovlan | arista.avd.default('enabled') }} | {{ source_interface }} |
 {%     endfor %}
 
 ### VM Tracer Device Configuration

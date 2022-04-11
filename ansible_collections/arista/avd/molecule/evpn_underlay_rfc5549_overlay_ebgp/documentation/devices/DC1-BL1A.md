@@ -277,10 +277,10 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -373,7 +373,6 @@ interface Loopback1
 | Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -536,6 +535,8 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 !
 router general
    vrf Tenant_B_OP_Zone
+      leak routes source-vrf Tenant_A_OP_Zone subscribe-policy RM-CONN-2-BGP
+      leak routes source-vrf Tenant_C_OP_Zone subscribe-policy RM-CONN-2-BGP
    !
 ```
 

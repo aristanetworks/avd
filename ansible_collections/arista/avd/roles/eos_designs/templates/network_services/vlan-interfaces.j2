@@ -29,7 +29,7 @@ vlan_interfaces:
                                      svi_settings.name) %}
   Vlan{{ svi.id | int }}:
     tenant: {{ tenant.name }}
-    tags: {{ svi_settings.tags }}
+    tags: {{ svi_settings.tags | arista.avd.default }}
 {%             if svi_description is arista.avd.defined %}
     description: {{ svi_description }}
 {%             endif %}
