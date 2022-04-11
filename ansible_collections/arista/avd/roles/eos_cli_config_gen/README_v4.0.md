@@ -2114,20 +2114,20 @@ sflow:
   sample: < sample_rate >
   dangerous: < true | false >
   vrfs:
-    <vrf_name_1>:
+    - name: <vrf_name_1>
       destinations:
-        < sflow_destination_ip_1>:
-        < sflow_destination_ip_2>:
+        - sflow_destination_ip: < sflow_destination_ip_1>
+        - sflow_destination_ip: < sflow_destination_ip_2>
           port: < port_number >
       source_interface: < source_interface >
-    <vrf_name_2>:
+    - name: <vrf_name_2>
       destinations:
-        < sflow_destination_ip_1>:
+        - sflow_destination_ip: < sflow_destination_ip_1>
       source_interface: < source_interface >
   destinations:
-    < sflow_destination_ip_1 >:
+    - sflow_destination_ip: < sflow_destination_ip_1 >
       port: < port_number >
-    < sflow_destination_ip_2 >:
+    - sflow_destination_ip: < sflow_destination_ip_2 >
   source_interface: < source_interface >
   run: < true | false >
 ```
