@@ -425,4 +425,3 @@ ethernet_interfaces:
     dot1x:
       port_control: auto
       reauthentication: true
-
