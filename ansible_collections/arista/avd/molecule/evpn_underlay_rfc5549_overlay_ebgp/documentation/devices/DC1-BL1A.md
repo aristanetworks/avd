@@ -535,6 +535,8 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 !
 router general
    vrf Tenant_B_OP_Zone
+      leak routes source-vrf Tenant_A_OP_Zone subscribe-policy RM-CONN-2-BGP
+      leak routes source-vrf Tenant_C_OP_Zone subscribe-policy RM-CONN-2-BGP
    !
 ```
 

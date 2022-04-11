@@ -12,10 +12,10 @@ no ip icmp redirect
 {% if ip_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
 ip hardware fib optimize prefixes profile {{ ip_hardware.fib.optimize.prefixes.profile }}
 {% endif %}
-{% for vrf in vrfs | arista.avd.natural_sort %}
-{%     if vrfs[vrf].ip_routing is arista.avd.defined(true) and vrf != 'default' %}
-ip routing vrf {{ vrf }}
-{%     elif vrfs[vrf].ip_routing is arista.avd.defined(false) and vrf != 'default' %}
-no ip routing vrf {{ vrf }}
+{% for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if vrf.ip_routing is arista.avd.defined(true) and vrf.name != 'default' %}
+ip routing vrf {{ vrf.name }}
+{%     elif vrf.ip_routing is arista.avd.defined(false) and vrf.name != 'default' %}
+no ip routing vrf {{ vrf.name }}
 {%     endif %}
 {% endfor %}

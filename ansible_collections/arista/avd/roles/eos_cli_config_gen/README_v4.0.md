@@ -2089,21 +2089,21 @@ logging:
   facility: < syslog_facility_value >
   source_interface: < source_interface_name >
   vrfs:
-    < vrf_name >:
+    - name: < vrf_name >
       source_interface: < source_interface_name >
       hosts:
-        < syslog_server_1 >:
+        - name: < syslog_server_1 >
           protocol: < tcp | udp (default udp) >
           ports:
             - < custom_port_1 >
             - < custom_port_2 >
-        < syslog_server_2 >:
+        - name: < syslog_server_2 >
           ports:
             - < custom_port_1 >
   policy:
     match:
       match_lists:
-        < match_list >:
+        - name: < match_list >
           action: < discard >
 ```
 
@@ -2487,7 +2487,7 @@ ip_routing_ipv6_interfaces: < true | false >
 ```yaml
 router_general:
   vrfs:
-    < destination-vrf >:
+    - name: < destination-vrf >
       leak_routes:
         - source_vrf: < source-vrf >
           subscribe_policy: < route-map policy >
@@ -2939,7 +2939,7 @@ router_igmp:
 ```yaml
 router_ospf:
   process_ids:
-    < process_id >:
+    - id: < process_id >
       vrf: < vrf_name_for_process_id >
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
@@ -2949,9 +2949,9 @@ router_ospf:
         intra_area: < 1-255 >
       log_adjacency_changes_detail: < true | false >
       network_prefixes:
-        < IPv4 subnet / netmask >:
+        - ipv4_prefix: < IPv4 subnet / netmask >
           area: < area >
-        < IPv4 subnet / netmask >:
+        - ipv4_prefix: < IPv4 subnet / netmask >
           area: < area >
       bfd_enable: < true | false >
       no_passive_interfaces:
@@ -2991,13 +2991,13 @@ router_ospf:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
       areas:
-        < area >:
+        - id: < area >
           filter:
             networks:
               - < IPv4 subnet / netmask >
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
-        < area >:
+        - id: < area >
           type: < normal | stub | nssa | default -> normal >
           no_summary: < true | false >
           nssa_only: < true | false >
@@ -3142,11 +3142,11 @@ ipv6_static_routes:
 
 ```yaml
 vrfs:
-  < vrf_name >:
+  - name: < vrf_name >
     description: < description>
     ip_routing: < true | false >
     ipv6_routing: < true | false >
-  < vrf_name >:
+  - name: < vrf_name >
     description: < description>
     ip_routing: < true | false >
     ipv6_routing: < true | false >
@@ -3298,9 +3298,9 @@ traffic_policies:
 
 ```yaml
 virtual_source_nat_vrfs:
-  < vrf_name_1 >:
+  - name: < vrf_name_1 >
     ip_address: < IPv4_address >
-  < vrf_name_2 >:
+  - name: < vrf_name_2 >
     ip_address: < IPv4_address >
 ```
 

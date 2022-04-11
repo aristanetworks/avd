@@ -13,6 +13,7 @@
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
 - [Filters](#filters)
+  - [Dynamic Prefix-lists](#dynamic-prefix-lists)
   - [Prefix-lists](#prefix-lists)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
 - [ACL](#acl)
@@ -87,6 +88,34 @@ interface Management1
 # Multicast
 
 # Filters
+
+## Dynamic Prefix-lists
+
+### Dynamic Prefix-lists Summary
+
+| Dynamic Prefix-List Name | Match Map | IPv4 Prefix-list | IPv6 Prefix-list |
+| ------------------------ | --------- | ---------------- | ---------------- |
+| DYNAMIC_PREFIX_LIST_NAME_1 | Test_1 | IPV4_PREFIX_LIST | - |
+| DYNAMIC_PREFIX_LIST_NAME_2 | Test_2 | - | IPV6_PREFIX_LIST |
+| DYNAMIC_PREFIX_LIST_NAME_3 | Test_2 | IPV4_PREFIX_LIST | IPV6_PREFIX_LIST |
+
+### Dynamic Prefix-lists Device Configuration
+
+```eos
+!
+dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_1
+   match-map Test_1
+   prefix-list ipv4 IPV4_PREFIX_LIST
+!
+dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_2
+   match-map Test_2
+   prefix-list ipv6 IPV6_PREFIX_LIST
+!
+dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_3
+   match-map Test_2
+   prefix-list ipv4 IPV4_PREFIX_LIST
+   prefix-list ipv6 IPV6_PREFIX_LIST
+```
 
 ## Prefix-lists
 

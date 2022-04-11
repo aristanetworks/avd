@@ -1,0 +1,23 @@
+{# DOT1X Interfaces #}
+{% set ethernet_interfaces_dot1x = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.dot1x is arista.avd.defined %}
+{%         do ethernet_interfaces_dot1x.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% if ethernet_interfaces_dot1x | length > 0 %}
+
+# 802.1X Port Security
+
+## 802.1X Summary
+
+### 802.1X Interfaces
+
+| Interface | State | Phone Force Authorized |
+| --------- | ----- | ---------------------- |
+{%     for ethernet_interface in ethernet_interfaces_dot1x %}
+{%         set state = ethernet_interface.dot1x.port_control | arista.avd.default('-') %}
+{%         set phone_state = ethernet_interface.dot1x.port_control_force_authorized_phone | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ state }} | {{ phone_state }} |
+{%     endfor %}
+{% endif %}
