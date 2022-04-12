@@ -98,6 +98,10 @@ interface Management1
 interface Loopback0
    description EVPN_Overlay_Peering
    ip address 192.168.255.3/32
+   comment
+   Comment created from eos_cli under loopback_interfaces.Loopback0
+   EOF
+
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source

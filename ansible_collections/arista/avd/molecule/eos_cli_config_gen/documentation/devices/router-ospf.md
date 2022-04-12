@@ -150,7 +150,6 @@ interface Loopback2
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan24 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos

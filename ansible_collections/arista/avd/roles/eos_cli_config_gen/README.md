@@ -1195,6 +1195,9 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: < true | false >
+    # EOS CLI rendered directly on the loopback interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 
   < Loopback_interface_2 >:
     description: < description >
@@ -1469,6 +1472,13 @@ vlan_interfaces:
           delay:
             minimum: < integer >
             reload: < integer >
+        tracked_object:
+          - name: < tracked_object_name_1 >
+            decrement: < decrement vrrp priority by 1-254 >
+            shutdown: < true | false >
+          - name: < tracked_object_name_2 >
+            decrement: < decrement vrrp priority by 1-254 >
+            shutdown: < true | false >
         ipv4:
           address: < virtual_ip_address >
         ipv6:
