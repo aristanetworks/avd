@@ -1195,6 +1195,9 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: < true | false >
+    # EOS CLI rendered directly on the loopback interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 
   < Loopback_interface_2 >:
     description: < description >
