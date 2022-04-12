@@ -1311,7 +1311,7 @@ port_channel_interfaces:
 
 ```yaml
 vlan_interfaces:
-  < Vlan_id_1 >:
+  - id: < Vlan_id_1 >:
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
@@ -1333,10 +1333,10 @@ vlan_interfaces:
       - < IPv4_address/Mask >
     ip_igmp: < true | false >
     ip_helpers:
-      < ip_helper_address_1 >:
+      - ip_address: < ip_helper_address_1 >
         source_interface: < source_interface_name >
         vrf: < vrf_name >
-      < ip_helper_address_2 >:
+      - ip_address: < ip_helper_address_2 >
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
@@ -1345,11 +1345,11 @@ vlan_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_address: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_address: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -1365,7 +1365,7 @@ vlan_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
     pim:
@@ -1399,7 +1399,7 @@ vlan_interfaces:
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
-< Vlan_id_2 >:
+  - id: < Vlan_id_2 >
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```
