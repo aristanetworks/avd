@@ -453,7 +453,6 @@ interface Loopback10
 | Vlan4093 |  default  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.3/31  |  -  |  -  |  -  |  -  |  -  |
 
-
 #### ISIS
 
 | Interface | ISIS Instance | ISIS Metric | Mode |

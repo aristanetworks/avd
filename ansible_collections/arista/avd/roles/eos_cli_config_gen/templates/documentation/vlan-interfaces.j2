@@ -71,7 +71,48 @@
 | {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].vrf | arista.avd.default('default') }} | {{ vlan_interfaces[vlan_interface].ipv6_address | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].ipv6_address_virtual | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].vrrp.ipv6 | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled | arista.avd.default('-') | lower }} | {{ vlan_interfaces[vlan_interface].ipv6_nd_managed_config_flag | arista.avd.default('-') | lower }} | {{ vlan_interfaces[vlan_interface].ipv6_access_group_in | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].ipv6_access_group_out | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
+{# VRRP #}
+{%     set vlan_interfaces_vrrp_details = [] %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
+{%         if vlan_interfaces[vlan_interface].vrrp_ids is arista.avd.defined %}
+{%             do vlan_interfaces_vrrp_details.append(vlan_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if vlan_interfaces_vrrp_details | length > 0 %}
 
+#### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv6 Virtual IP |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------|
+{%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.natural_sort %}
+{%             for vrid in vlan_interfaces[vlan_interface].vrrp_ids if vrid.id is arista.avd.defined %}
+{%                 set row_id = vrid.id %}
+{%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
+{%                 set row_ad_interval = vrid.advertisement.interval | arista.avd.default('-') %}
+{%                 set row_preempt = "Enabled" %}
+{%                 if vrid.preempt.enabled is arista.avd.defined(false) %}
+{%                     set row_preempt = "Disabled" %}
+{%                 endif %}
+{%                 if vrid.tracked_object is arista.avd.defined %}
+{%                     set row_tracked_object_name = [] %}
+{%                     set row_tracked_object_action = [] %}
+{%                     for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%                         do row_tracked_object_name.append(tracked_obj.name) %}
+{%                         if tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                             do row_tracked_object_action.append("Shutdown") %}
+{%                         elif tracked_obj.decrement is arista.avd.defined %}
+{%                             do row_tracked_object_action.append("Decrement " ~ tracked_obj.decrement) %}
+{%                         endif %}
+{%                     endfor %}
+{%                     set row_tracked_object_name = row_tracked_object_name | join(", ") %}
+{%                     set row_tracked_object_action = row_tracked_object_action | join(", ") %}
+{%                 endif %}
+{%                 set row_ipv4_virt = vrid.ipv4.address | arista.avd.default('-') %}
+{%                 set row_ipv6_virt = vrid.ipv6.address | arista.avd.default('-') %}
+| {{ vlan_interface }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virt }} | {{ row_ipv6_virt }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 {# ISIS #}
 {%     set vlan_interface_isis = namespace() %}
 {%     set vlan_interface_isis.configured = false %}
