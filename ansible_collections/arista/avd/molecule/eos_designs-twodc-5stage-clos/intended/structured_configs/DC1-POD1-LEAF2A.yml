@@ -30,6 +30,13 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+    EVPN-OVERLAY-CORE:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '15'
+      send_community: all
+      maximum_routes: 0
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -37,6 +44,8 @@ router_bgp:
       IPv4-UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
+        activate: false
+      EVPN-OVERLAY-CORE:
         activate: false
   neighbors:
     172.20.110.3:
@@ -73,6 +82,10 @@ router_bgp:
       description: DC1-RS1
       remote_as: '65101'
       route_map_out: RM-EVPN-FILTER-AS65101
+    172.16.120.3:
+      peer_group: EVPN-OVERLAY-CORE
+      description: DC1-POD2-LEAF1A
+      remote_as: '65121'
     100.100.100.201:
       remote_as: '65211'
       description: DC2-POD1-LEAF1A
@@ -85,6 +98,13 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+      EVPN-OVERLAY-CORE:
+        domain_remote: true
+        activate: true
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
     route:
       import_match_failure_action: discard
   address_family_rtc:
