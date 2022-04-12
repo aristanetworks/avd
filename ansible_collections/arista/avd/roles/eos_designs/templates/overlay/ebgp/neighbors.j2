@@ -14,9 +14,9 @@
       description: {{ evpn_route_client }}
       remote_as: "{{ overlay_data.evpn_route_clients[evpn_route_client].bgp_as }}"
 {% endfor %}
-{% for evpn_route_server in overlay_data.evpn_gateway_vxlan_route_servers | arista.avd.natural_sort %}
-    {{ overlay_data.evpn_gateway_vxlan_route_servers[evpn_route_server].ip_address }}:
+{% for evpn_route_server in overlay_data.evpn_gateway_remote_peers | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_gateway_remote_peers[evpn_route_server].ip_address }}:
       peer_group: {{ switch.bgp_peer_groups.evpn_overlay_core.name }}
       description: {{ evpn_route_server }}
-      remote_as: "{{ overlay_data.evpn_gateway_vxlan_route_servers[evpn_route_server].bgp_as }}"
+      remote_as: "{{ overlay_data.evpn_gateway_remote_peers[evpn_route_server].bgp_as }}"
 {% endfor %}

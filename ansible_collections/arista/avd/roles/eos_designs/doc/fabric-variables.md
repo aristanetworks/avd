@@ -99,6 +99,7 @@ bgp_peer_groups:
     password: "< encrypted password >"
   evpn_overlay_core:
     name: < name of peer group | default -> EVPN-OVERLAY-CORE >
+    password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.

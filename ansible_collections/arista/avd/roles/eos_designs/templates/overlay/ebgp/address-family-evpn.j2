@@ -2,15 +2,15 @@
     peer_groups:
       {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}:
         activate: true
-{% if switch.evpn_gateway is arista.avd.defined(true) %}
+{% if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) or switch.evpn_gateway_vxlan_l3 is arista.avd.defined(true) %}
       {{ switch.bgp_peer_groups.evpn_overlay_core.name }}:
         domain_remote: true
         activate: true
-{%     if switch.evpn_gateway_evpn_l3 is arista.avd.defined(true) %}
+{%     if switch.evpn_gateway_vxlan_l3 is arista.avd.defined(true) %}
     neighbor_default:
       next_hop_self_received_evpn_routes:
         enable: true
-        inter_domain: {{ switch.evpn_gateway_evpn_l3_inter_domain }}
+        inter_domain: {{ switch.evpn_gateway_vxlan_l3_inter_domain }}
 {%     endif %}
 {% endif %}
 {% if switch.vtep_ip is arista.avd.defined and evpn_hostflap_detection is arista.avd.defined %}

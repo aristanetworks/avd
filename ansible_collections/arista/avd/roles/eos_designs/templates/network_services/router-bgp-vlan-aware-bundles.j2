@@ -20,7 +20,7 @@
 {%                 set bundle_number =  vrf_id_int + tenant.vlan_aware_bundle_number_base | arista.avd.default(0) %}
     {{ vrf.name }}:
       rd: "{{ network_services_data.rd_admin_subfield }}:{{ bundle_number }}"
-{%                 if switch.evpn_gateway_evpn_l2 is arista.avd.defined(true) %}
+{%                 if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
       rd_evpn_domain:
         domain: "remote"
         rd: "{{ network_services_data.rd_admin_subfield }}:{{ bundle_number }}"
@@ -28,7 +28,7 @@
       route_targets:
         both:
           - "{{ network_services_data.rt_admin_subfield or bundle_number }}:{{ bundle_number }}"
-{%                 if switch.evpn_gateway_evpn_l2 is arista.avd.defined(true) %}
+{%                 if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
         import_export_evpn_domains:
           - domain: "remote"
             route_target: "{{ network_services_data.rt_admin_subfield or bundle_number }}:{{ bundle_number }}"
@@ -49,7 +49,7 @@
     {{ l2vlan.name }}:
       tenant: {{ tenant.name }}
       rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
-{%             if switch.evpn_gateway_evpn_l2 is arista.avd.defined(true) %}
+{%             if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
       rd_evpn_domain:
         domain: "remote"
         rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
@@ -57,7 +57,7 @@
       route_targets:
         both:
           - "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
-{%             if switch.evpn_gateway_evpn_l2 is arista.avd.defined(true) %}
+{%             if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
         import_export_evpn_domains:
           - domain: "remote"
             route_target: "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
