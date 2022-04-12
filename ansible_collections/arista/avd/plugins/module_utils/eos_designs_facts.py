@@ -3,6 +3,8 @@ __metaclass__ = type
 
 import re
 import ipaddress
+import yaml
+import json
 from functools import cached_property
 from hashlib import sha256
 from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError, get, default, template_var, AristaAvdMissingVariableError
@@ -16,7 +18,8 @@ class EosDesignsFacts:
         list_compress=None,
         convert_dicts=None,
         natural_sort=None,
-        template_lookup_module=None
+        template_lookup_module=None,
+        lookup_loader=None,
     ):
         if hostvars:
             self._hostvars = hostvars
@@ -30,6 +33,8 @@ class EosDesignsFacts:
             self._natural_sort = natural_sort
         if template_lookup_module:
             self._template_lookup_module = template_lookup_module
+        if lookup_loader:
+            self._lookup_loader = lookup_loader
 
     @classmethod
     def keys(cls):
@@ -562,6 +567,40 @@ class EosDesignsFacts:
             return get(self._switch_data_combined, "virtual_router_mac_address")
         return None
 
+    def _network_services_data(self, network_services_key: dict):
+        '''
+        Load network_services vars for one network_services_key
+        from either hostvars (inventory) or using an Ansible lookup plugin.
+
+        The ansible lookup plugin is loaded using the "lookup_loader" instance 
+        passed from the calling action plugin.
+        '''
+        network_services_key_name = get(network_services_key, 'name')
+        if network_services_key_name is None:
+            # Invalid network_services_key.name. Skipping.
+            return []
+        network_services_key_source = get(network_services_key, 'source', default='inventory')
+        if network_services_key_source == 'inventory' and get(self._hostvars, network_services_key_name) is not None:
+            return get(self._hostvars, network_services_key_name)
+        elif network_services_key_source == 'lookup' and get(network_services_key, 'lookup.name') is not None:
+            lookup_name = get(network_services_key, 'lookup.name')
+            lookup_args = get(network_services_key, 'lookup.arguments', default=[])
+            lookup_errors = get(network_services_key, 'lookup.errors', default='strict')
+            lookup_data_format = get(network_services_key, 'lookup.data_format')
+
+            _loader = self._template_lookup_module._loader
+            _templar = self._template_lookup_module._templar
+            lookup_plugin = self._lookup_loader.get(lookup_name, loader=_loader, templar=_templar)
+
+            lookup_data = lookup_plugin(*lookup_args, errors=lookup_errors)
+
+            if lookup_data_format == 'yaml':
+                lookup_data = yaml.load(lookup_data, loader=yaml.SafeLoader)
+            elif lookup_data_format == 'json':
+                lookup_data = json.loads(lookup_data)
+            return get(lookup_data, 'network_services_key_name', required=True)
+        return []
+
     @cached_property
     def _vlans(self):
         if self._any_network_services:
@@ -572,15 +611,10 @@ class EosDesignsFacts:
 
             network_services_keys = get(self._hostvars, "network_services_keys", default=[])
             for network_services_key in self._natural_sort(network_services_keys, "name"):
-                network_services_key_name = network_services_key.get("name")
-                if network_services_key_name is None or get(self._hostvars, network_services_key_name) is None:
-                    # Invalid network_services_key.name. Skipping.
-                    continue
+                network_services_data = self._network_services_data(network_services_key)
 
-                tenants = get(self._hostvars, network_services_key_name)
-                # Support legacy data model by converting nested dict to list of dict
-                tenants = self._convert_dicts(tenants, 'name')
-                for tenant in self._natural_sort(tenants, 'name'):
+                network_services_data = self._convert_dicts(network_services_data, 'name')
+                for tenant in self._natural_sort(network_services_data, 'name'):
                     if not set(self.filter_tenants).intersection([tenant['name'], 'all']):
                         # Not matching tenant filters. Skipping this tenant.
                         continue

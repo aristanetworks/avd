@@ -119,6 +119,7 @@ class ActionModule(ActionBase):
                     list_compress=list_compress,
                     natural_sort=natural_sort,
                     convert_dicts=convert_dicts,
+                    lookup_loader=lookup_loader,
                 )
             }
         return avd_switch_facts

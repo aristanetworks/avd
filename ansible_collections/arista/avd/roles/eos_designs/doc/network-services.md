@@ -15,9 +15,16 @@
 # Define network services keys, to define grouping of network services.
 # This provides the ability to define various keys of your choice to better organize/group your data.
 # This should be defined in top level group_var for the fabric.
+# Lookup source can be used to read data directly from an external source. Even with regular YAML files, this can speed up ansible runtime considerably.
 network_services_keys:
   - name: < key_1 >
   - name: < key_2 >
+    source: < "inventory" | "lookup" | default -> "inventory" >
+    lookup:
+      name: < name_of_lookup_plugin >
+      arguments: [ < lookup_plugin_argument1 >, < lookup_plugin_argument2 > ]
+      errors: < "strict" | "warn" | "ignore" | default -> "strict" >
+      data_format: < "yaml" | "json" | "raw" | default -> "raw" >
 ```
 
 ```yaml
