@@ -2139,14 +2139,14 @@ snmp_server:
   contact: < contact_name >
   location: < location >
   communities:
-    < community_name_1 >:
+    - name: < community_name_1 >
       access: < ro | rw >
       access_list_ipv4:
         name: < acl_ipv4_name >
       access_list_ipv6:
         name: < acl_ipv6_name >
       view: < view_name >
-    < community_name_2 >:
+    - name: < community_name_2 >
       access: < ro | rw >
       access_list_ipv4:
         name: < acl_ipv4_name >
@@ -2162,10 +2162,10 @@ snmp_server:
       vrf: < vrf >
     - name: < ipv6-access-list >
   local_interfaces:
-    < interface_name_1 >:
+    - name: < interface_name_1 >
       vrf: < vrf_name >
-    < interface_name_2 >:
-    < interface_name_3 >:
+    - name: < interface_name_2 >
+    - name: < interface_name_3 >
       vrf: < vrf_name >
   views:
     - name: < view_name >
