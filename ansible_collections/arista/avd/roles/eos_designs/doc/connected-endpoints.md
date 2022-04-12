@@ -12,11 +12,18 @@
 # Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
 # This provides the ability to define various keys of your choice to better organize/group your data.
 # This should be defined in top level group_var for the fabric.
+# Lookup source can be used to read data directly from an external source. Even with regular YAML files, this can speed up ansible runtime considerably.
 connected_endpoints_keys:
   < key_1 >:
     type: < type used for documentation >
   < key_2 >:
     type: < type used for documentation >
+    source: < "inventory" | "lookup" | default -> "inventory" >
+    lookup:
+      name: < name_of_lookup_plugin >
+      arguments: [ < lookup_plugin_argument1 >, < lookup_plugin_argument2 > ]
+      errors: < "strict" | "warn" | "ignore" | default -> "strict" >
+      data_format: < "yaml" | "json" | "raw" | default -> "raw" >
 ```
 
 ```yaml

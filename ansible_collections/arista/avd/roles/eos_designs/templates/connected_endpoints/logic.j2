@@ -1,10 +1,26 @@
-{% for connected_endpoints_key in connected_endpoints_keys %}
-{%     set switch_connected_endpoints = hostvars[inventory_hostname][connected_endpoints_key] | arista.avd.default({}) %}
-{%     do connected_endpoints.update({ connected_endpoints_key: {} }) %}
-{%     for connected_endpoint in switch_connected_endpoints %}
-{%         set one_connected_endpoint = switch_connected_endpoints[connected_endpoint] %}
-{%         if one_connected_endpoint.adapters | selectattr('switches','arista.avd.contains',inventory_hostname) | length > 0 %}
-{%             do connected_endpoints[connected_endpoints_key].update({connected_endpoint: one_connected_endpoint}) %}
+{% for connected_endpoints_key in connected_endpoints_keys | arista.avd.convert_dicts('name') %}
+{%     if connected_endpoints_key.name is arista.avd.defined %}
+{%         if connected_endpoints_key.source | arista.avd.default('inventory') == 'inventory' %}
+{%             set connected_endpoints_data = lookup('ansible.builtin.vars', connected_endpoints_key.name, default=[]) %}
+{%         elif connected_endpoints_key.source is arista.avd.defined('lookup') and connected_endpoints_key.lookup.name is arista.avd.defined %}
+{%             set lookup_args = connected_endpoints_key.lookup.arguments | arista.avd.default([]) %}
+{%             set lookup_errors = connected_endpoints_key.lookup.errors | arista.avd.default('strict') %}
+{%             set lookup_data = lookup(connected_endpoints_key.lookup.name, *lookup_args, errors=lookup_errors) %}
+{%             if connected_endpoints_key.lookup.data_format is arista.avd.defined('yaml') %}
+{%                 set lookup_data = lookup_data | from_yaml %}
+{%             elif connected_endpoints_key.lookup.data_format is arista.avd.defined('json') %}
+{%                 set lookup_data = lookup_data | from_json %}
+{%             endif %}
+{%             if lookup_data[connected_endpoints_key.name] is arista.avd.defined(fail_action='error', var_name='Connected Endpoints Key ' ~ connected_endpoints_key.name) %}
+{%                 set connected_endpoints_data = lookup_data[connected_endpoints_key.name] %}
+{%             endif %}
 {%         endif %}
-{%     endfor %}
+{%         do connected_endpoints.update({ connected_endpoints_key.name: {} }) %}
+{%         for connected_endpoint in connected_endpoints_data | arista.avd.default([]) %}
+{%             set one_connected_endpoint = connected_endpoints_data[connected_endpoint] %}
+{%             if one_connected_endpoint.adapters | selectattr('switches','arista.avd.contains',inventory_hostname) | length > 0 %}
+{%                 do connected_endpoints[connected_endpoints_key.name].update({connected_endpoint: one_connected_endpoint}) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endfor %}
