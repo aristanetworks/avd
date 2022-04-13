@@ -112,7 +112,7 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ip_address_virtual: 10.10.42.1/24
-    helpers:
+    ip_helpers:
       10.10.96.151:
         source_interface: Loopback0
       10.10.96.150:
@@ -197,7 +197,7 @@ vlan_interfaces:
         preferred_lifetime: infinite
         no_autoconfig_flag: true
     ipv6_virtual_router_address: 1b11:3a00:22b0:5200::3
-    helpers:
+    ip_helpers:
       10.10.96.101:
         source_interface: Loopback0
       10.10.96.151:
