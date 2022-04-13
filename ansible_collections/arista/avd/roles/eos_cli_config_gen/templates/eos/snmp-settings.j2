@@ -1,6 +1,9 @@
 {# eos - SNMP Settings#}
 {% if snmp_server is arista.avd.defined %}
 !
+{%     if snmp_server.engineid.local is arista.avd.defined %}
+snmp-server engineID local {{ snmp_server.engineid.local }}
+{%     endif %}
 {%     if snmp_server.contact is arista.avd.defined %}
 snmp-server contact {{ snmp_server.contact }}
 {%     endif %}
@@ -105,15 +108,27 @@ snmp-server location {{ snmp_server.location }}
 {%             if user.version is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " " ~ user.version %}
 {%             endif %}
-{%             if user.auth is arista.avd.defined
+{%             if user.localized is arista.avd.defined
+                  and snmp_server.engineid.local is arista.avd.defined
+                  and user.auth is arista.avd.defined
                   and user.version is arista.avd.defined('v3')
                   and user.auth_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
-{%             endif %}
-{%             if user.priv is arista.avd.defined
+{%                  set user_cli = user_cli ~ " localized " ~ snmp_server.engineid.local %}
+{%                  set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
+{%                if user.priv is arista.avd.defined
+                      and user.version is arista.avd.defined('v3')
+                      and user.priv_passphrase is arista.avd.defined %}
+{%                        set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase %}
+{%                endif %}
+{%             elif user.auth is arista.avd.defined
                   and user.version is arista.avd.defined('v3')
-                  and user.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase %}
+                  and user.auth_passphrase is arista.avd.defined %}
+{%                  set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
+{%                if user.priv is arista.avd.defined
+                      and user.version is arista.avd.defined('v3')
+                      and user.priv_passphrase is arista.avd.defined %}
+{%                        set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase %}
+{%                endif %}
 {%             endif %}
 {{ user_cli }}
 {%         endfor %}

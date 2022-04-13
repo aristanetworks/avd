@@ -1,5 +1,7 @@
 ### Snmp Settings ####
 snmp_server:
+  engineid:
+    local: 424242424242424242
   contact: DC1_OPS
   location: DC1
   communities:
@@ -47,20 +49,46 @@ snmp_server:
       read: v3read
       write: v3write
   users:
-    - name: USER-READ
+    - name: USER-READ-NO-AUTH-NO-PRIV
+      group: GRP-READ-ONLY
+      version: v3
+    - name: USER-READ-AUTH-NO-PRIV
       group: GRP-READ-ONLY
       version: v3
       auth: sha
-      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      auth_passphrase: clearPassword
+    - name: USER-READ-AUTH-PRIV
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: clearPassword
       priv: aes
-      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+      priv_passphrase: clearPassword
+    - name: USER-READ-NO-AUTH-NO-PRIV-LOC
+      group: GRP-READ-ONLY
+      version: v3
+      localized: true
+    - name: USER-READ-AUTH-NO-PRIV-LOC
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
+      localized: true
+    - name: USER-READ-AUTH-PRIV-LOC
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
+      priv: aes
+      priv_passphrase: 8da526cd35b9ea9b42d819036f7fad05
+      localized: true
     - name: USER-WRITE
       group: GRP-READ-WRITE
       version: v3
       auth: sha
-      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      auth_passphrase: clearPassword
       priv: aes
-      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+      priv_passphrase: clearPassword
   hosts:
     - host: 10.6.75.121
       vrf: MGMT
@@ -78,7 +106,7 @@ snmp_server:
       vrf: MGMT
       version: 3
       users:
-        - username: USER-READ
+        - username: USER-READ-AUTH-NO-PRIV
           authentication_level: auth
         - username: USER-WRITE
           authentication_level: auth
@@ -86,7 +114,7 @@ snmp_server:
       vrf: MGMT
       #version: 3 should be autodetected based on users key.
       users:
-        - username: USER-READ
+        - username: USER-READ-AUTH-PRIV
           authentication_level: priv
   traps:
     enable: true
