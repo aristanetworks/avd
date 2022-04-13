@@ -29,6 +29,10 @@ overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
 # Requires "underlay_routing_protocol: EBGP"
 underlay_rfc5549: < true | false | default -> false >
 
+# Enable underlay EVPN with IPv6 addresses transporting IPv4 and IPv6 | Optional
+# This feature allows IPv6 underlay routing protocol eBGP and RFC5549 to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
+underlay_ipv6: < true | false | default -> false >
+
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF variants
 underlay_ospf_process_id: < process_id | default -> 100 >
 underlay_ospf_area: < ospf_area | default -> 0.0.0.0 >
@@ -85,6 +89,12 @@ bgp_peer_groups:
    # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
     name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
+    password: "< encrypted password >"
+  ipv6_underlay_peers:
+    name: < name of peer group | default -> IPv6-UNDERLAY-PEERS >
+    password: "< encrypted password >"
+  mlag_ipv6_underlay_peer:
+    name: < name of peer group | default -> MLAG-IPv6-UNDERLAY-PEER >
     password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
