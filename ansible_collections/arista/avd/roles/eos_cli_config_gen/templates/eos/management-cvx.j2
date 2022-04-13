@@ -9,5 +9,5 @@ management cvx
 {%     endif %}
 {%     for server_host in management_cvx.server_hosts | arista.avd.natural_sort %}
    server host {{ server_host }}
-{%         endfor %}
+{%     endfor %}
 {% endif %}
