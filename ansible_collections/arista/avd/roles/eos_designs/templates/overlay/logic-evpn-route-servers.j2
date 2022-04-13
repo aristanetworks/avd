@@ -8,7 +8,11 @@
 {# Found a matching server. Gathering information for this server #}
 {%             set server = namespace() %}
 {%             set server.bgp_as = peer_facts.switch.bgp_as %}
-{%             set server.ip_address = peer_facts.switch.router_id %}
+{%             if overlay_ipv6 is arista.avd.defined(true) %}
+{%                 set server.ip_address = peer_facts.switch.ipv6_router_id %}
+{%             else %}
+{%                 set server.ip_address = peer_facts.switch.router_id %}
+{%             endif %}
 {%             do overlay_data.evpn_route_servers.update({ route_server: server }) %}
 {%         endif %}
 {%     endif %}
