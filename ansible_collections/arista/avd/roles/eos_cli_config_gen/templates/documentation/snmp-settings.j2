@@ -14,7 +14,7 @@
 {%     else %}
 {%         set row_state = 'Disabled' %}
 {%     endif %}
-| {{row_engineid}} | {{ row_contact }} | {{ row_location }} | All | {{ row_state }} |
+| {{ row_engineid }} | {{ row_contact }} | {{ row_location }} | All | {{ row_state }} |
 {%     if snmp_server.traps.snmp_traps is arista.avd.defined %}
 {%         set row_traps_disabled = snmp_server.traps.snmp_traps | selectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
 {%         set row_traps_enabled = snmp_server.traps.snmp_traps | rejectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}

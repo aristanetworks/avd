@@ -2373,7 +2373,7 @@ snmp_server:
     - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >
-      localized: < true | false > 
+      localized: < true | false >
       auth: < hash_algorithm >
       auth_passphrase: < hashed_auth_passphrase if localized is true else cleartext auth_passphrase >
       priv: < encryption_algorithm >
