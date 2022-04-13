@@ -44,7 +44,7 @@ interface {{ vlan_interface.id }}
 {%     endif %}
 {%     for ip_helper in vlan_interface.ip_helpers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_address %}
-{%         if vlan_interface.ip_helper.vrf is arista.avd.defined %}
+{%         if ip_helper.vrf is arista.avd.defined %}
 {%             set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
 {%         endif %}
 {%         if ip_helper.source_interface is arista.avd.defined %}
