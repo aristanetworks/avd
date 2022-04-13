@@ -77,7 +77,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key="items"):
                     # Not a nested dictionary but a string, return the original
                     return dictionary
             else:
-                item = dictionary[key]
+                item = dictionary[key].copy()
                 item.update({primary_key: key})
                 output.append(item)
         return output
