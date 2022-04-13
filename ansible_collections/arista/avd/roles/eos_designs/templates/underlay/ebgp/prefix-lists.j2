@@ -2,8 +2,10 @@
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
+{% if underlay_ipv6 is arista.avd.defined(false) %}
       10:
         action: "permit {{ switch.loopback_ipv4_pool }} eq 32"
+{% endif %}
 {% if switch.vtep_ip is arista.avd.defined and switch.vtep_loopback | lower != 'loopback0' %}
       20:
         action: "permit {{ switch.vtep_loopback_ipv4_pool }} eq 32"
