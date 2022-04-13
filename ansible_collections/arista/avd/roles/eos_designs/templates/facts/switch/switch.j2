@@ -41,9 +41,9 @@ switch:
 {% endif %}
   overlay_routing_protocol: {{ switch_overlay_routing_protocol }}
 
-{%     if overlay_ipv6 is arista.avd.defined(true) and switch_overlay_routing_protocol is arista.avd.defined("ebgp") %}
+{% if overlay_ipv6 is arista.avd.defined(true) and switch_overlay_routing_protocol is arista.avd.defined("ebgp") %}
   overlay_ipv6: true
-{%     endif %}
+{% endif %}
 
 {# switch.overlay_address_families #}
 {% set switch_overlay_address_families = switch_data.combined.overlay_address_families | arista.avd.default(switch.default_overlay_address_families) %}
