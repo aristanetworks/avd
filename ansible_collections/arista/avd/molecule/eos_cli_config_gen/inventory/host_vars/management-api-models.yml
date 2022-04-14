@@ -1,0 +1,18 @@
+# Management API Models
+management_api_models:
+  providers:
+    - name: smash
+      paths:
+        - path: flexCounters
+        - path: forwarding/srte/status/fec
+        - path: routing6/status
+        - path: tunnel/tunnelFib/entry
+        - path: routing/bgp/export/allPeerAdjRibIn
+        - path: routing/status
+          enabled: false
+    - name: sysdb
+      paths:
+        - path: cell/1/agent
+          enabled: false
+        - path: /Sysdb/sys/logging/config/vrfLoggingHost/mgmt
+          enabled: false

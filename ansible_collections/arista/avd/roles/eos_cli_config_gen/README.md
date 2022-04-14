@@ -1893,6 +1893,21 @@ management_api_gnmi:
   octa:
 ```
 
+#### Management API Models
+
+```yaml
+management_api_models:
+  providers:
+    - name: < provider1 (sysdb | smash) >
+      paths:
+      - path: < path1 >
+        enabled: < true | false | default -> true >
+      - path: < path2 >
+    - name: < provider2 >
+      paths:
+      - path: < path1 >
+```
+
 #### Management Console
 
 ```yaml

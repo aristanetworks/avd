@@ -1,0 +1,16 @@
+{# Management API Models #}
+{% if management_api_models is arista.avd.defined %}
+!
+management api models
+{%     for provider in management_api_models.providers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+   !
+   provider {{ provider.name }}
+{%         for path in provider.paths | arista.avd.convert_dicts('path') | arista.avd.natural_sort('path') %}
+{%             set provider_cli = "path " ~ path.path %}
+{%             if path.enabled is arista.avd.defined(false) %}
+{%                 set provider_cli = provider_cli ~ " disabled" %}
+{%             endif %}
+      {{ provider_cli }}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
