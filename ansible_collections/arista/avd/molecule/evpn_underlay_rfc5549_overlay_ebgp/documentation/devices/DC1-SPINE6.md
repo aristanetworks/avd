@@ -1,4 +1,4 @@
-# DC1-SPINE5
+# DC1-SPINE6
 # Table of Contents
 
 - [Management](#management)
@@ -215,22 +215,22 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF3A_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF3B_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF4A_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF4B_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF3A_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF4A_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF3B_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF4B_Ethernet1
    no shutdown
    mtu 1500
    no switchport
@@ -245,13 +245,13 @@ interface Ethernet2
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.5/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.6/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | 2001:1::5/128 |
+| Loopback0 | EVPN_Overlay_Peering | default | 2001:1::6/128 |
 
 
 ### Loopback Interfaces Device Configuration
@@ -261,8 +261,8 @@ interface Ethernet2
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.5/32
-   ipv6 address 2001:1::5/128
+   ip address 192.168.255.6/32
+   ipv6 address 2001:1::6/128
 ```
 
 # Routing
@@ -329,7 +329,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65001|  192.168.255.5 |
+| 65001|  192.168.255.6 |
 
 | BGP Tuning |
 | ---------- |
@@ -363,15 +363,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
-| 192.168.255.12 | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.13 | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.14 | 65107 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.15 | 65107 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
 ### BGP Neighbor Interfaces
 
 | Neighbor Interface | Peer Group | Remote AS | Peer Filter |
 | ------------------ | ---------- | --------- | ----------- |
-| Ethernet1 | IPv6_UNDERLAY_PEERS | 65106 | - |
-| Ethernet2 | IPv6_UNDERLAY_PEERS | 65106 | - |
+| Ethernet1 | IPv6_UNDERLAY_PEERS | 65107 | - |
+| Ethernet2 | IPv6_UNDERLAY_PEERS | 65107 | - |
 
 ### Router BGP EVPN Address Family
 
@@ -386,7 +386,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router bgp 65001
-   router-id 192.168.255.5
+   router-id 192.168.255.6
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -401,14 +401,14 @@ router bgp 65001
    neighbor IPv6_UNDERLAY_PEERS peer group
    neighbor IPv6_UNDERLAY_PEERS send-community
    neighbor IPv6_UNDERLAY_PEERS maximum-routes 12000
-   neighbor interface Ethernet1 peer-group IPv6_UNDERLAY_PEERS remote-as 65106
-   neighbor interface Ethernet2 peer-group IPv6_UNDERLAY_PEERS remote-as 65106
-   neighbor 192.168.255.12 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.12 remote-as 65106
-   neighbor 192.168.255.12 description DC1-LEAF3A
-   neighbor 192.168.255.13 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.13 remote-as 65106
-   neighbor 192.168.255.13 description DC1-LEAF3B
+   neighbor interface Ethernet1 peer-group IPv6_UNDERLAY_PEERS remote-as 65107
+   neighbor interface Ethernet2 peer-group IPv6_UNDERLAY_PEERS remote-as 65107
+   neighbor 192.168.255.14 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.14 remote-as 65107
+   neighbor 192.168.255.14 description DC1-LEAF4A
+   neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.15 remote-as 65107
+   neighbor 192.168.255.15 description DC1-LEAF4B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
