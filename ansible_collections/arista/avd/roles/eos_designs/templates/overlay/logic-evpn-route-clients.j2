@@ -13,7 +13,7 @@
 {# Found a matching client. Gathering information for this client #}
 {%                 set client = namespace() %}
 {%                 set client.bgp_as = peer_facts.switch.bgp_as %}
-{%                 if overlay_ipv6 is arista.avd.defined(true) %}
+{%                 if switch.overlay_ipv6 is arista.avd.defined(true) %}
 {%                     set client.ip_address = peer_facts.switch.ipv6_router_id %}
 {%                 else %}
 {%                     set client.ip_address = peer_facts.switch.router_id %}
