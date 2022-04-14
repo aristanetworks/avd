@@ -14,19 +14,19 @@
 {%         endif %}
 {%     endif %}
 {% endfor %}
-{% for evpn_gateway_vxlan_route_server in switch.evpn_gateway_remote_peers | arista.avd.natural_sort %}
-{%     set peer_facts = hostvars[evpn_gateway_vxlan_route_server.hostname] %}
+{% for evpn_gw_remote_peer in switch.evpn_gateway_remote_peers | arista.avd.natural_sort %}
+{%     set peer_facts = hostvars[evpn_gw_remote_peer.hostname] %}
 {%     if peer_facts.switch is arista.avd.defined %}
 {# Found a matching server. Gathering information for this server #}
 {%         set server = namespace() %}
-{%         set server.bgp_as = evpn_gateway_vxlan_route_server.bgp_as | arista.avd.default(peer_facts.switch.bgp_as) %}
-{%         set server.ip_address = evpn_gateway_vxlan_route_server.ip_address | arista.avd.default(peer_facts.switch.router_id) %}
-{%         do overlay_data.evpn_gateway_remote_peers.update({ evpn_gateway_vxlan_route_server.hostname: server }) %}
+{%         set server.bgp_as = evpn_gw_remote_peer.bgp_as | arista.avd.default(peer_facts.switch.bgp_as) %}
+{%         set server.ip_address = evpn_gw_remote_peer.ip_address | arista.avd.default(peer_facts.switch.router_id) %}
+{%         do overlay_data.evpn_gateway_remote_peers.update({ evpn_gw_remote_peer.hostname: server }) %}
 {%     else %}
 {# Server not found in inventory, adding manually #}
 {%         set server = namespace() %}
-{%         set server.bgp_as = evpn_gateway_vxlan_route_server.bgp_as %}
-{%         set server.ip_address = evpn_gateway_vxlan_route_server.ip_address %}
-{%         do overlay_data.evpn_gateway_remote_peers.update({ evpn_gateway_vxlan_route_server.hostname: server }) %}
+{%         set server.bgp_as = evpn_gw_remote_peer.bgp_as %}
+{%         set server.ip_address = evpn_gw_remote_peer.ip_address %}
+{%         do overlay_data.evpn_gateway_remote_peers.update({ evpn_gw_remote_peer.hostname: server }) %}
 {%     endif %}
 {% endfor %}
