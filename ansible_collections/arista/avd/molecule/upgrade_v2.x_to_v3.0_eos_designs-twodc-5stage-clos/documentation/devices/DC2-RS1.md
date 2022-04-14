@@ -114,9 +114,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps | State |
-| ------- | -------- | ---------- | ----- |
-| - | TWODC_5STAGE_CLOS DC2 DC2-RS1 | All | Disabled |
+| Local Engine ID | Contact | Location | SNMP Traps | State |
+| --------------- | ------- | -------- | ---------- | ----- |
+| Switch System Mac | - | TWODC_5STAGE_CLOS DC2 DC2-RS1 | All | Disabled |
 
 ### SNMP Device Configuration
 

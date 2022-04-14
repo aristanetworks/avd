@@ -149,9 +149,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps | State |
-| ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC evpn_services_l2_only_true | All | Disabled |
+| Local Engine ID | Contact | Location | SNMP Traps | State |
+| --------------- | ------- | -------- | ---------- | ----- |
+| Switch System Mac | example@example.com | DC1_FABRIC evpn_services_l2_only_true | All | Disabled |
 
 ### SNMP Device Configuration
 

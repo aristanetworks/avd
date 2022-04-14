@@ -191,9 +191,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps | State |
-| ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC DC1-CL1B | All | Disabled |
+| Local Engine ID | Contact | Location | SNMP Traps | State |
+| --------------- | ------- | -------- | ---------- | ----- |
+| Switch System Mac | example@example.com | DC1_FABRIC DC1-CL1B | All | Disabled |
 
 ### SNMP Device Configuration
 
