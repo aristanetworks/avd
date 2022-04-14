@@ -97,6 +97,7 @@ interface Management1
 | Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - |
 | Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
 | Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
+| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -512,6 +513,12 @@ interface Ethernet31
    description DOT1X Testing - force-unauthorized - no phone
    switchport
    dot1x port-control force-unauthorized
+!
+interface Ethernet32
+   description DOT1X Testing - auto reauthentication
+   switchport
+   dot1x reauthentication
+   dot1x port-control auto
 ```
 
 # Routing
@@ -563,11 +570,12 @@ interface Ethernet31
 
 ### 802.1X Interfaces
 
-| Interface | State | Phone Force Authorized |
-| --------- | ----- | ---------------------- |
-| Ethernet29 | auto | True |
-| Ethernet30 | force-authorized | False |
-| Ethernet31 | force-unauthorized | - |
+| Interface | State | Phone Force Authorized | Reauthentication |
+| --------- | ----- | ---------------------- | ---------------- |
+| Ethernet29 | auto | True | - |
+| Ethernet30 | force-authorized | False | - |
+| Ethernet31 | force-unauthorized | - | - |
+| Ethernet32 | auto | - | True |
 
 # ACL
 
