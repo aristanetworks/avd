@@ -303,6 +303,7 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   no snmp trap link-change
    shape rate 200000 kbps
 !
 interface Port-Channel5
@@ -387,6 +388,7 @@ interface Port-Channel16
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   snmp trap link-change
    mlag 16
    spanning-tree guard none
 !

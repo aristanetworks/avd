@@ -235,6 +235,7 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    no switchport
+   no snmp trap link-change
    ip address 172.31.128.1/31
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
@@ -250,6 +251,7 @@ interface Ethernet4
    shutdown
    mtu 9100
    switchport
+   snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
    ipv6 address FE80:FEA::AB65/64 link-local

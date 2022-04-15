@@ -907,6 +907,7 @@ ethernet_interfaces:
     # l3dot1q and l2dot1q are used for sub-interfaces.
     # The parent interface should be defined as routed.
     type: < routed | switched | l3dot1q | l2dot1q >
+    snmp_trap_link_change: < true | false >
     vrf: < vrf_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
@@ -1074,6 +1075,7 @@ ethernet_interfaces:
         shared_index: < 1-1024 >
         tunnel_flood_filter_time: < integer >
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
+    snmp_trap_link_change: < true | false >
     flowcontrol:
       received: < "received" | "send" | "on" >
     mac_security:
@@ -1244,6 +1246,7 @@ port_channel_interfaces:
     vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
+    snmp_trap_link_change: < true | false >
     link_tracking_groups:
       - name: < group_name >
         direction: < upstream | downstream >
