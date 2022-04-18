@@ -112,7 +112,7 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ip_address_virtual: 10.10.42.1/24
-    helpers:
+    ip_helpers:
       10.10.96.151:
         source_interface: Loopback0
       10.10.96.150:
@@ -197,7 +197,7 @@ vlan_interfaces:
         preferred_lifetime: infinite
         no_autoconfig_flag: true
     ipv6_virtual_router_address: 1b11:3a00:22b0:5200::3
-    helpers:
+    ip_helpers:
       10.10.96.101:
         source_interface: Loopback0
       10.10.96.151:
@@ -219,16 +219,15 @@ vlan_interfaces:
     description: PVLAN Primary with vlan mapping
     shutdown: false
     vrf: Tenant_A
-    ip address: 10.0.101.1/24
+    ip_address: 10.0.101.1/24
     pvlan_mapping: 111-112
 
 # VRRP
-
   Vlan667:
     description: Multiple VRIDs
     shutdown: false
     arp_aging_timeout: 180
-    ip address: 192.0.2.2/25
+    ip_address: 192.0.2.2/25
     ipv6_enable: true
     ipv6_address: 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
@@ -250,3 +249,40 @@ vlan_interfaces:
           delay:
         ipv6:
           address: 2001:db8::1
+
+  Vlan333:
+    description: Multiple VRIDs and tracking
+    shutdown: false
+    arp_aging_timeout: 180
+    ip_address: 192.0.2.2/25
+    ipv6_enable: true
+    ipv6_address: 2001:db8::2/64
+    ipv6_address_link_local: fe80::2/64
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+        tracked_object:
+          - name: ID1-TrackedObjectDecrement
+            decrement: 5
+          - name: ID1-TrackedObjectShutdown
+            shutdown: true
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          address: 2001:db8::1
+        tracked_object:
+          - name: ID2-TrackedObjectDecrement
+            decrement: 10
+          - name: ID2-TrackedObjectShutdown
+            shutdown: true

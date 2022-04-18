@@ -374,7 +374,6 @@ interface Loopback1
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -536,6 +535,8 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 !
 router general
    vrf Tenant_B_OP_Zone
+      leak routes source-vrf Tenant_A_OP_Zone subscribe-policy RM-CONN-2-BGP
+      leak routes source-vrf Tenant_C_OP_Zone subscribe-policy RM-CONN-2-BGP
    !
 ```
 
@@ -859,7 +860,7 @@ vrf instance Tenant_C_WAN_Zone
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

@@ -33,7 +33,7 @@ these checks):
 Adhering to the following process is the best way to get your work
 merged:
 
-- [Fork](http://help.github.com/fork-a-repo/) the repo, clone your fork,
+- [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repo, clone your fork,
    and configure the remotes:
 
    ```bash
@@ -64,7 +64,7 @@ merged:
 - Commit your changes in logical chunks. Please adhere to these [git commit
    message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
    or your code is unlikely to be merged into the main project. Use Git's
-   [git rebase](https://docs.github.com/en/free-pro-team@latest/github/using-git/about-git-rebase)
+   [git rebase](https://docs.github.com/en/get-started/using-git/about-git-rebase)
    feature to tidy up your commits before making them public.
 
 - Locally merge (or rebase) the upstream development branch into your topic branch:

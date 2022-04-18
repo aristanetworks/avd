@@ -25,6 +25,11 @@ router general
       leak routes source-vrf {{ leak_route.source_vrf }} subscribe-policy {{ leak_route.subscribe_policy }}
 {%             endif %}
 {%         endfor %}
+{%         for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort('name') %}
+{%             if dynamic_prefix_list.name is arista.avd.defined %}
+      routes dynamic prefix-list {{ dynamic_prefix_list.name }}
+{%             endif %}
+{%         endfor %}
    !
 {%     endfor %}
 {% endif %}
