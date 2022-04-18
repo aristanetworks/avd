@@ -79,7 +79,6 @@ management api models
       path cell/1/agent disabled
 ```
 
-
 # Authentication
 
 # Monitoring
