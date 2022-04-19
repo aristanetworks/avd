@@ -26,8 +26,17 @@ name_server:
   - 192.168.200.5
   - 8.8.8.8
 snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_default
+  local: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
+  contact: Bobby
+  users:
+  - name: usertest
+    group: usergroup
+    version: v3
+    localized: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
+    auth: sha
+    auth_passphrase: 06049cbfe1b2b278cb54c146a92ccc16d7baad8e
+    priv: aes
+    priv_passphrase: f58469295ec858e90f9ae24e847a66cf
 local_users:
   admin:
     privilege: 15

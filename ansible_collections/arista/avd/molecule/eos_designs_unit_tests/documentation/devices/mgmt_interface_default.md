@@ -189,14 +189,20 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | EOS_DESIGNS_UNIT_TESTS mgmt_interface_default | All | Disabled |
+| Bobby | - | All | Disabled |
+
+### SNMP Users Configuration
+
+| User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
+| ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
+| usertest | usergroup | v3 | sha | aes | - | - | 9bcf6c0f329158bf35cac04fdb34f9d238e56497 |
 
 ### SNMP Device Configuration
 
 ```eos
 !
-snmp-server contact example@example.com
-snmp-server location EOS_DESIGNS_UNIT_TESTS mgmt_interface_default
+snmp-server contact Bobby
+snmp-server user usertest usergroup v3 localized 9bcf6c0f329158bf35cac04fdb34f9d238e56497 auth sha 06049cbfe1b2b278cb54c146a92ccc16d7baad8e priv aes f58469295ec858e90f9ae24e847a66cf
 ```
 
 # Internal VLAN Allocation Policy

@@ -7,3 +7,27 @@ l2leaf:
       mgmt_gateway: 1.1.1.1
       mgmt_ip: 1.1.1.2
       id: 102
+
+snmp_settings:
+  contact: Bobby
+  location: ACME
+  auto_compute_local_engineid: true
+  compute_v3_user_localized_key: true
+  users:
+    - name: usertest
+      group: usergroup
+      version: v3
+      auth: sha
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: aes
+      priv_passphrase: clearpriv # to get from vault in real life
+
+snmp_server:
+  users:
+    - name: usertoto
+      group: usergroup
+      version: v3
+      auth: sha
+      auth_passphrase: testauth
+      priv: aes
+      priv_passphrase: testpriv
