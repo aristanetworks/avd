@@ -183,7 +183,7 @@ daemon TerminAttr
 
 | Local Engine ID | Contact | Location | SNMP Traps | State |
 | --------------- | ------- | -------- | ---------- | ----- |
-| Switch System Mac | example@example.com | DC1_FABRIC DC1-SPINE2 | All | Disabled |
+| - | example@example.com | DC1_FABRIC DC1-SPINE2 | All | Disabled |
 
 ### SNMP Device Configuration
 

@@ -55,7 +55,7 @@ interface Management1
 
 | Local Engine ID | Contact | Location | SNMP Traps | State |
 | --------------- | ------- | -------- | ---------- | ----- |
-| Switch System Mac | DC1_OPS | DC1 | All | Disabled |
+| - | DC1_OPS | DC1 | All | Disabled |
 | DC1_OPS | DC1 | bgp, bridge, lldp, mpls, msdp backward-transition, msdp established, snmp link-down, snmpConfigManEvent | Enabled |
 | DC1_OPS | DC1 | bgp arista-backward-transition, bridge arista-mac-age | Disabled |
 

@@ -55,7 +55,7 @@ interface Management1
 
 | Local Engine ID | Contact | Location | SNMP Traps | State |
 | --------------- | ------- | -------- | ---------- | ----- |
-| Switch System Mac | DC1_OPS | DC1 | All | Enabled |
+| - | DC1_OPS | DC1 | All | Enabled |
 
 ### SNMP ACLs
 | IP | ACL | VRF |

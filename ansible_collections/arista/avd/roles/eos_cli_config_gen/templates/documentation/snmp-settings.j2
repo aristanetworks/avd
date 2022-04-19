@@ -6,7 +6,7 @@
 
 | Local Engine ID | Contact | Location | SNMP Traps | State |
 | --------------- | ------- | -------- | ---------- | ----- |
-{%     set row_engineid = snmp_server.engineid.local | arista.avd.default('Switch System Mac') %}
+{%     set row_engineid = snmp_server.engineid.local | arista.avd.default('-') %}
 {%     set row_contact = snmp_server.contact | arista.avd.default('-') %}
 {%     set row_location = snmp_server.location | arista.avd.default('-') %}
 {%     if snmp_server.traps.enable is arista.avd.defined(true) %}

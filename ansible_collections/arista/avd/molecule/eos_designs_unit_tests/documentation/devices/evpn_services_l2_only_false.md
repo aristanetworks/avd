@@ -156,7 +156,7 @@ daemon TerminAttr
 
 | Local Engine ID | Contact | Location | SNMP Traps | State |
 | --------------- | ------- | -------- | ---------- | ----- |
-| Switch System Mac | example@example.com | DC1_FABRIC evpn_services_l2_only_false | All | Disabled |
+| - | example@example.com | DC1_FABRIC evpn_services_l2_only_false | All | Disabled |
 
 ### SNMP Device Configuration
 
