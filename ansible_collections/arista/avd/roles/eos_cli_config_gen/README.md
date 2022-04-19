@@ -1858,6 +1858,16 @@ management_console:
   idle_timeout: < 0-86400 in minutes >
 ```
 
+#### Management CVX
+```yaml
+management_cvx:
+  shutdown: < true | false >
+  # List of Hostname(s) or IP Address(es) of CVX server(s)
+  server_hosts:
+    - < IP | hostname >
+    - < IP | hostname >
+```
+
 #### Management Defaults
 
 ```yaml
