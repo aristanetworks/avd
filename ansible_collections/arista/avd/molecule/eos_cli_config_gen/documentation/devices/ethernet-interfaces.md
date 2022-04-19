@@ -576,13 +576,13 @@ interface Ethernet33
 
 ### 802.1X Interfaces
 
-| Interface | State | Phone Force Authorized | Pae Mode | Reauthentication |
-| --------- | ----- | ---------------------- | -------- | ---------------- |
-| Ethernet29 | auto | True | - | - |
-| Ethernet30 | force-authorized | False | - | - |
-| Ethernet31 | force-unauthorized | - | - | - |
-| Ethernet32 | auto | - | - | True |
-| Ethernet33 | - | - | authenticator | - |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication |
+| --------- | -------- | ------| ---------------------- | ---------------- |
+| Ethernet29 | - | auto | True | - |
+| Ethernet30 | - | force-authorized | False | - |
+| Ethernet31 | - | force-unauthorized | - | - |
+| Ethernet32 | - | auto | - | True |
+| Ethernet33 | authenticator | - | - | - |
 
 # ACL
 
