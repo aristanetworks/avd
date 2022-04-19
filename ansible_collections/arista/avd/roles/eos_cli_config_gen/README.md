@@ -2318,8 +2318,12 @@ sflow:
 
 ```yaml
 snmp_server:
-  engineid:
-    local: <local_engine_id>
+  engine_ids:
+    local: < engine_name in hex >
+    remote:
+      - name: < engine_name in hex >
+        ip: < hostname | ip of remote engine >
+        port: < udp-port of remote engine >
   contact: < contact_name >
   location: < location >
   communities:

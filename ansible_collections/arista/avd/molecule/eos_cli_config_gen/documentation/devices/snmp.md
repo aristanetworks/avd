@@ -53,9 +53,19 @@ interface Management1
 
 ### SNMP Configuration Summary
 
-| Local Engine ID | Contact | Location | SNMP Traps | State |
-| --------------- | ------- | -------- | ---------- | ----- |
-| 424242424242424242 | DC1_OPS | DC1 | All | Enabled |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| DC1_OPS | DC1 | All | Enabled |
+
+
+### SNMP EngineID Configuration
+
+| Type | Name (Hex) | IP | Port |
+| ---- | ---------- | -- | ---- |
+| local |  424242424242424242 | - | - |
+| remote | 6172697374615F6970 | 1.1.1.1 | - |
+| remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
+
 
 ### SNMP ACLs
 | IP | ACL | VRF |
@@ -130,6 +140,8 @@ interface Management1
 ```eos
 !
 snmp-server engineID local 424242424242424242
+snmp-server engineID remote 1.1.1.1 6172697374615F6970
+snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456
 snmp-server contact DC1_OPS
 snmp-server location DC1
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT

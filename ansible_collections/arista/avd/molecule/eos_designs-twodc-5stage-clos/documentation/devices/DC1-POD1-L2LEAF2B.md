@@ -124,9 +124,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Local Engine ID | Contact | Location | SNMP Traps | State |
-| --------------- | ------- | -------- | ---------- | ----- |
-| - | - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2B | All | Disabled |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2B | All | Disabled |
 
 ### SNMP Device Configuration
 

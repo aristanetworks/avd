@@ -1,8 +1,20 @@
 {# eos - SNMP Settings#}
 {% if snmp_server is arista.avd.defined %}
 !
-{%     if snmp_server.engineid.local is arista.avd.defined %}
-snmp-server engineID local {{ snmp_server.engineid.local }}
+{%     if snmp_server.engine_ids is arista.avd.defined %}
+{%         if snmp_server.engine_ids.local is arista.avd.defined %}
+snmp-server engineID local {{ snmp_server.engine_ids.local }}
+{%         endif %}
+{%         for engine_id in snmp_server.engine_ids.remote %}
+{%             if engine_id.name is arista.avd.defined and engine_id.ip is arista.avd.defined %}
+{%                 set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.ip %}
+{%                 if engine_id.port is arista.avd.defined %}
+{%                     set remote_engine_ids_cli =  remote_engine_ids_cli ~ " udp-port " ~  engine_id.port %}
+{%                 endif %}
+{%                 set remote_engine_ids_cli = remote_engine_ids_cli ~ " " ~ engine_id.name %}
+{{ remote_engine_ids_cli }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {%     if snmp_server.contact is arista.avd.defined %}
 snmp-server contact {{ snmp_server.contact }}
@@ -112,8 +124,8 @@ snmp-server location {{ snmp_server.location }}
                   and user.version is arista.avd.defined('v3')
                   and user.auth_passphrase is arista.avd.defined %}
 {%                 if user.localized is arista.avd.defined(true)
-                      and snmp_server.engineid.local is arista.avd.defined %}
-{%                     set user_cli = user_cli ~ " localized " ~ snmp_server.engineid.local %}
+                      and snmp_server.engine_ids.local is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " localized " ~ snmp_server.engine_ids.local %}
 {%                 endif %}
 {%                 set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
 {%                 if user.priv is arista.avd.defined

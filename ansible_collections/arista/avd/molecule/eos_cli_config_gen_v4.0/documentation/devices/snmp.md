@@ -53,9 +53,10 @@ interface Management1
 
 ### SNMP Configuration Summary
 
-| Local Engine ID | Contact | Location | SNMP Traps | State |
-| --------------- | ------- | -------- | ---------- | ----- |
-| - | DC1_OPS | DC1 | All | Enabled |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| DC1_OPS | DC1 | All | Enabled |
+
 
 ### SNMP ACLs
 | IP | ACL | VRF |

@@ -1,7 +1,15 @@
 ### Snmp Settings ####
 snmp_server:
-  engineid:
+  engine_ids:
     local: 424242424242424242
+    remote:
+      # First one without IP should not be rendered
+      - name: 1234567890ABCDEF12
+      - name: 6172697374615F6970
+        ip: 1.1.1.1
+      - name: DEADBEEFCAFE123456
+        ip: 2.2.2.2
+        port: 1337
   contact: DC1_OPS
   location: DC1
   communities:

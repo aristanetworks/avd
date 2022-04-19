@@ -4,9 +4,8 @@
 
 ### SNMP Configuration Summary
 
-| Local Engine ID | Contact | Location | SNMP Traps | State |
-| --------------- | ------- | -------- | ---------- | ----- |
-{%     set row_engineid = snmp_server.engineid.local | arista.avd.default('-') %}
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
 {%     set row_contact = snmp_server.contact | arista.avd.default('-') %}
 {%     set row_location = snmp_server.location | arista.avd.default('-') %}
 {%     if snmp_server.traps.enable is arista.avd.defined(true) %}
@@ -14,7 +13,7 @@
 {%     else %}
 {%         set row_state = 'Disabled' %}
 {%     endif %}
-| {{ row_engineid }} | {{ row_contact }} | {{ row_location }} | All | {{ row_state }} |
+| {{ row_contact }} | {{ row_location }} | All | {{ row_state }} |
 {%     if snmp_server.traps.snmp_traps is arista.avd.defined %}
 {%         set row_traps_disabled = snmp_server.traps.snmp_traps | selectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
 {%         set row_traps_enabled = snmp_server.traps.snmp_traps | rejectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
@@ -25,7 +24,27 @@
 | {{ row_contact }} | {{ row_location }} | {{ row_traps_disabled }} | Disabled |
 {%         endif %}
 {%     endif %}
+{%     if snmp_server.engine_ids is arista.avd.defined %}
+
+
+### SNMP EngineID Configuration
+
+| Type | Name (Hex) | IP | Port |
+| ---- | ---------- | -- | ---- |
+{%         if snmp_server.engine_ids.local is arista.avd.defined %}
+| local |  {{ snmp_server.engine_ids.local }} | - | - |
+{%         endif %}
+{%         for engine_id in snmp_server.engine_ids.remote %}
+{%             if engine_id.name is arista.avd.defined and engine_id.ip is arista.avd.defined %}
+{%                 set row_name = engine_id.name | arista.avd.default('-') %}
+{%                 set row_ip = engine_id.ip | arista.avd.default('-') %}
+{%                 set row_port = engine_id.port | arista.avd.default('-') %}
+| remote | {{ row_name }} | {{ row_ip }} | {{ row_port }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
+
 
 ### SNMP ACLs
 | IP | ACL | VRF |

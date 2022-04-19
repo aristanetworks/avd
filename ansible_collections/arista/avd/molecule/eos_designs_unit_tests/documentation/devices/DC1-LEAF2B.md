@@ -192,9 +192,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Local Engine ID | Contact | Location | SNMP Traps | State |
-| --------------- | ------- | -------- | ---------- | ----- |
-| - | example@example.com | DC1_FABRIC rackD DC1-LEAF2B | All | Disabled |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| example@example.com | DC1_FABRIC rackD DC1-LEAF2B | All | Disabled |
 
 ### SNMP Device Configuration
 

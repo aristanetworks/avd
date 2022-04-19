@@ -53,9 +53,9 @@ interface Management1
 
 ### SNMP Configuration Summary
 
-| Local Engine ID | Contact | Location | SNMP Traps | State |
-| --------------- | ------- | -------- | ---------- | ----- |
-| - | DC1_OPS | DC1 | All | Disabled |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| DC1_OPS | DC1 | All | Disabled |
 | DC1_OPS | DC1 | bgp, bridge, lldp, mpls, msdp backward-transition, msdp established, snmp link-down, snmpConfigManEvent | Enabled |
 | DC1_OPS | DC1 | bgp arista-backward-transition, bridge arista-mac-age | Disabled |
 
