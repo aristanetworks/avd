@@ -3308,7 +3308,7 @@ virtual_source_nat_vrfs:
 
 ```yaml
 vlans:
-  < vlan_id >:
+  - id: < vlan_id >
     name: < vlan_name >
     state: < active | suspend >
     trunk_groups:
@@ -3317,7 +3317,7 @@ vlans:
     private_vlan:
       type: < community | isolated >
       primary_vlan: < vlan_id >
-  < vlan_id >:
+  - id: < vlan_id >
     name: < vlan_name >
 ```
 
