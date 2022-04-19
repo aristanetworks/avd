@@ -15,6 +15,16 @@ snmp_server:
         name: SNMP-MGMT
       view: VW-READ
     SNMP-COMMUNITY-3:
+  engine_ids:
+    - type: local
+      name: 617269737461
+    - type: remote
+      name: 6172697374615F6970
+      ip: 1.1.1.1
+    - type: remote
+      name: 6172697374615F706F7274
+      ip: 2.2.2.2
+      port: 1337
   local_interfaces:
     Management1:
       vrf: MGMT

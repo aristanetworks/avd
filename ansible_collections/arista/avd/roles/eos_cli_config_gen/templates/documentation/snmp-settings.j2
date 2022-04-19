@@ -150,6 +150,20 @@
 | {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} |
 {%         endfor %}
 {%     endif %}
+{%     if snmp_server.engine_ids is arista.avd.defined %}
+
+### SNMP EngineID Configuration
+
+| Type | Name (Hex) | IP | Port |
+| ---- | ---------- | -- | ---- |
+{%         for engine_id in snmp_server.engine_ids %}
+{%             set row_type = engine_id.type | arista.avd.default('-') %}
+{%             set row_name = engine_id.name | arista.avd.default('-') %}
+{%             set row_ip = engine_id.ip | arista.avd.default('-') %}
+{%             set row_port = engine_id.port | arista.avd.default('-') %}
+| {{ row_type }} | {{ row_name }} | {{ row_ip }} | {{ row_port }} |
+{%         endfor %}
+{%     endif %}
 
 ### SNMP Device Configuration
 

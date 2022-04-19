@@ -2354,6 +2354,11 @@ snmp_server:
       access_list_ipv6:
         name: < acl_ipv6_name >
       view: < view_name >
+  engine_ids:
+    - type: < local | remote >
+      name: < engine_name in hex >
+      ip: < hostname | ip of remote engine >
+      port: < udp-port of remote engine >
   ipv4_acls:
     - name: < ipv4-access-list >
       vrf: < vrf >

@@ -71,6 +71,22 @@ snmp-server location {{ snmp_server.location }}
 {{ communities_cli }}
 {%         endfor %}
 {%     endif %}
+{%     if snmp_server.engine_ids is arista.avd.defined %}
+{%         for engine_id in snmp_server.engine_ids | arista.avd.natural_sort('type') %}
+{%             set engine_ids_cli = "snmp-server engineID " ~ engine_id.type %}
+{%             if engine_id.type is arista.avd.defined('local') and engine_id.name is arista.avd.defined %}
+{%                 set engine_ids_cli = engine_ids_cli ~ " " ~ engine_id.name %}
+{%             endif %}
+{%             if engine_id.type is arista.avd.defined('remote') and engine_id.name is arista.avd.defined and engine_id.ip is arista.avd.defined %}
+{%                 set engine_ids_cli = engine_ids_cli ~ " " ~ engine_id.ip %}
+{%                 if engine_id.port is arista.avd.defined %}
+{%                     set engine_ids_cli = engine_ids_cli ~ " udp-port " ~ engine_id.port %}
+{%                 endif %}
+{%                 set engine_ids_cli = engine_ids_cli ~ " " ~ engine_id.name %}
+{%             endif %}
+{{ engine_ids_cli }}
+{%         endfor %}
+{%     endif %}
 {%     if snmp_server.groups is arista.avd.defined %}
 {%         for group in snmp_server.groups %}
 {%             if group.name is arista.avd.defined %}
