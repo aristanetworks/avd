@@ -152,13 +152,13 @@ No Match condition configured.
 {%     endif %}
 {# Traffic-Policy Interfaces #}
 {%     set traffic_policy_interfaces = [] %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].traffic_policy.input is arista.avd.defined or ethernet_interfaces[ethernet_interface].traffic_policy.output is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.traffic_policy.input is arista.avd.defined or ethernet_interface.traffic_policy.output is arista.avd.defined %}
 {%             do traffic_policy_interfaces.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%         if port_channel_interfaces[port_channel_interface].traffic_policy.input is arista.avd.defined or port_channel_interfaces[port_channel_interface].traffic_policy.output is arista.avd.defined %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if port_channel_interface.traffic_policy.input is arista.avd.defined or port_channel_interface.traffic_policy.output is arista.avd.defined %}
 {%             do traffic_policy_interfaces.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -169,14 +169,9 @@ No Match condition configured.
 | Interface | Input Traffic-Policy | Output Traffic-Policy |
 | --------- | -------------------- | --------------------- |
 {%         for interface in traffic_policy_interfaces %}
-{%             if interface in ethernet_interfaces %}
-{%                 set row_in_policy = ethernet_interfaces[interface].traffic_policy.input | arista.avd.default("-") %}
-{%                 set row_out_policy = ethernet_interfaces[interface].traffic_policy.output | arista.avd.default("-") %}
-{%             elif interface in port_channel_interfaces %}
-{%                 set row_in_policy = port_channel_interfaces[interface].traffic_policy.input | arista.avd.default("-") %}
-{%                 set row_out_policy = port_channel_interfaces[interface].traffic_policy.output | arista.avd.default("-") %}
-{%             endif %}
-| {{ interface }} | {{ row_in_policy }} | {{ row_out_policy }} |
+{%             set row_in_policy = interface.traffic_policy.input | arista.avd.default("-") %}
+{%             set row_out_policy = interface.traffic_policy.output | arista.avd.default("-") %}
+| {{ interface.name }} | {{ row_in_policy }} | {{ row_out_policy }} |
 {%         endfor %}
 
 {%     endif %}
