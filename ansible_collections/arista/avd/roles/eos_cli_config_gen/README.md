@@ -1801,6 +1801,7 @@ management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
   https_ssl_profile: < SSL Profile Name >
+  default_services: < true | false >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >

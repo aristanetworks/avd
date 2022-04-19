@@ -186,6 +186,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF1A
