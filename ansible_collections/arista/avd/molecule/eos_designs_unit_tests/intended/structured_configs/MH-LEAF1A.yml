@@ -120,6 +120,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300

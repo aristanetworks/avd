@@ -169,6 +169,7 @@ l3leaf:
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
       nodes:
         DC1-CL1A:
+          platform: 7368X4
           id: 10
           bgp_as: 65108
           mgmt_ip: 192.168.200.119/24

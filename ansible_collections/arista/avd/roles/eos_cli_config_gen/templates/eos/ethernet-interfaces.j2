@@ -190,6 +190,9 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
 {%         if ethernet_interface.dot1x is arista.avd.defined %}
+{%             if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
+   dot1x reauthentication
+{%             endif %}
 {%             if ethernet_interface.dot1x.port_control is arista.avd.defined %}
    dot1x port-control {{ ethernet_interface.dot1x.port_control }}
 {%             endif %}
@@ -198,6 +201,11 @@ interface {{ ethernet_interface.name }}
 {%             elif ethernet_interface.dot1x.port_control_force_authorized_phone is arista.avd.defined(false) %}
    no dot1x port-control force-authorized phone
 {%             endif %}
+{%         endif %}
+{%         if ethernet_interface.snmp_trap_link_change is arista.avd.defined(false) %}
+   no snmp trap link-change
+{%         elif ethernet_interface.snmp_trap_link_change is arista.avd.defined(true) %}
+   snmp trap link-change
 {%         endif %}
 {%         if ethernet_interface.vrf is arista.avd.defined %}
    vrf {{ ethernet_interface.vrf }}

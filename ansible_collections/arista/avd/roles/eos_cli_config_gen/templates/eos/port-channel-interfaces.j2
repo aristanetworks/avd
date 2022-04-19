@@ -138,6 +138,11 @@ interface {{ port_channel_interface }}
       route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
 {%         endif %}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].snmp_trap_link_change is arista.avd.defined(false) %}
+   no snmp trap link-change
+{%     elif port_channel_interfaces[port_channel_interface].snmp_trap_link_change is arista.avd.defined(true) %}
+   snmp trap link-change
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interfaces[port_channel_interface].lacp_id }}
 {%     endif %}

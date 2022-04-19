@@ -860,10 +860,15 @@ tcam_profile:
 platform:
   trident:
     forwarding_table_partition: < partition >
+  # Most of the platform sand options are hardware dependant and optional
   sand:
+    # The traffic-class to network-qos mappings must be unique
+    qos_maps:
+      - traffic_class: < 0-7 >
+        to_network_qos: < 0-63 >
     lag:
       hardware_only: < true | false >
-      mode: < mode | default -> 1024x16 >
+      mode: < mode >
     forwarding_mode: < petraA | arad >
     multicast_replication:
       default: ingress
@@ -907,6 +912,7 @@ ethernet_interfaces:
     # l3dot1q and l2dot1q are used for sub-interfaces.
     # The parent interface should be defined as routed.
     type: < routed | switched | l3dot1q | l2dot1q >
+    snmp_trap_link_change: < true | false >
     vrf: < vrf_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
@@ -1074,6 +1080,7 @@ ethernet_interfaces:
         shared_index: < 1-1024 >
         tunnel_flood_filter_time: < integer >
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
+    snmp_trap_link_change: < true | false >
     flowcontrol:
       received: < "received" | "send" | "on" >
     mac_security:
@@ -1141,6 +1148,7 @@ ethernet_interfaces:
     dot1x:
       port_control: < "auto" | "force-authorized" | "force-unauthorized" >
       port_control_force_authorized_phone: < true | false >
+      reauthentication: < true | false >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1243,6 +1251,7 @@ port_channel_interfaces:
     vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
+    snmp_trap_link_change: < true | false >
     link_tracking_groups:
       - name: < group_name >
         direction: < upstream | downstream >
@@ -1792,6 +1801,7 @@ management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
   https_ssl_profile: < SSL Profile Name >
+  default_services: < true | false >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
@@ -1847,6 +1857,16 @@ management_api_gnmi:
 ```yaml
 management_console:
   idle_timeout: < 0-86400 in minutes >
+```
+
+#### Management CVX
+```yaml
+management_cvx:
+  shutdown: < true | false >
+  # List of Hostname(s) or IP Address(es) of CVX server(s)
+  server_hosts:
+    - < IP | hostname >
+    - < IP | hostname >
 ```
 
 #### Management Defaults
