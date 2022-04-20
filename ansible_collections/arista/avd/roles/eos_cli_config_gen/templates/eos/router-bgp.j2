@@ -358,11 +358,18 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
       no host-flap detection
 {%         else %}
+{%             set host_flap_detection_cli = '' %}
 {%             if router_bgp.address_family_evpn.evpn_hostflap_detection.window is arista.avd.defined %}
-      host-flap detection window {{ router_bgp.address_family_evpn.evpn_hostflap_detection.window }}
+{%                 set host_flap_detection_cli = host_flap_detection_cli ~ ' window ' ~ router_bgp.address_family_evpn.evpn_hostflap_detection.window %}
 {%             endif %}
 {%             if router_bgp.address_family_evpn.evpn_hostflap_detection.threshold is arista.avd.defined %}
-      host-flap detection threshold {{ router_bgp.address_family_evpn.evpn_hostflap_detection.threshold }}
+{%                 set host_flap_detection_cli = host_flap_detection_cli ~ ' threshold ' ~ router_bgp.address_family_evpn.evpn_hostflap_detection.threshold %}
+{%             endif %}
+{%             if router_bgp.address_family_evpn.evpn_hostflap_detection.expiry_timeout is arista.avd.defined %}
+{%                 set host_flap_detection_cli = host_flap_detection_cli ~ ' expiry timeout ' ~ router_bgp.address_family_evpn.evpn_hostflap_detection.expiry_timeout ~ ' seconds' %}
+{%             endif %}
+{%             if host_flap_detection_cli != '' %}
+      host-flap detection{{ host_flap_detection_cli }}
 {%             endif %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
