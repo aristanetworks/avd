@@ -113,6 +113,9 @@ evpn_hostflap_detection:
   # Time (in seconds) to detect a MAC duplication issue
   window: < seconds | default -> 180 >
 
+  # Time (in seconds) to purge a MAC duplication issue
+  expiry_timeout: < integer >
+
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false | default -> false >
