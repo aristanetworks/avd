@@ -1149,6 +1149,8 @@ ethernet_interfaces:
       port_control: < "auto" | "force-authorized" | "force-unauthorized" >
       port_control_force_authorized_phone: < true | false >
       reauthentication: < true | false >
+      pae:
+        mode: < "authenticator" >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >

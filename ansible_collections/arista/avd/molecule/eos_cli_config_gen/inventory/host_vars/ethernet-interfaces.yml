@@ -427,3 +427,9 @@ ethernet_interfaces:
     dot1x:
       port_control: auto
       reauthentication: true
+
+  Ethernet33:
+    description: DOT1X Testing - pae mode authenticator
+    dot1x:
+      pae:
+        mode: "authenticator"
