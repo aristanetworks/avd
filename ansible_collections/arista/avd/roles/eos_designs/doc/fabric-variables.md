@@ -41,6 +41,7 @@ isis_area_id: < isis area | default -> "49.0001" >
 # Additional underlay ISIS parameters | Optional.
 isis_default_is_type: < level-1-2, | level-1 | level-2 | default -> level-2 >
 isis_advertise_passive_only: < true | false | default -> false >
+underlay_isis_instance_name: < name >
 
 # ISIS TI-LFA parameters | Optional.
 isis_ti_lfa:
