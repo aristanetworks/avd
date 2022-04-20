@@ -357,7 +357,7 @@ router bgp {{ router_bgp.as }}
    address-family evpn
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
       no host-flap detection
-{%         else %}
+{%         elif router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(true) %}
 {%             set host_flap_detection_cli = '' %}
 {%             if router_bgp.address_family_evpn.evpn_hostflap_detection.window is arista.avd.defined %}
 {%                 set host_flap_detection_cli = host_flap_detection_cli ~ ' window ' ~ router_bgp.address_family_evpn.evpn_hostflap_detection.window %}
