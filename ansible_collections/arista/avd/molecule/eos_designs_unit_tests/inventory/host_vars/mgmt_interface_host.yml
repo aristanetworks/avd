@@ -9,7 +9,3 @@ l2leaf:
       mgmt_gateway: 1.1.1.1
       mgmt_ip: 1.1.1.2
       id: 104
-
-boot:
-  secret:
-    key: a153de6290ff1409257ade45f
