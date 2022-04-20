@@ -65,6 +65,11 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
   vrfs:
     Tenant_A_APP_Zone:
       router_id: 192.168.255.9
