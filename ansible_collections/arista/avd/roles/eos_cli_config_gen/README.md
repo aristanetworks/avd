@@ -141,6 +141,7 @@
       - [VRF Instances](#vrf-instances)
     - [Router L2 VPN](#router-l2-vpn)
     - [Spanning Tree](#spanning-tree)
+    - [System Boot Settings](#system-boot-settings)
     - [Terminal Settings](#terminal-settings)
     - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
@@ -3434,6 +3435,16 @@ spanning_tree:
       priority: < priority >
     "< vlan_id >, < vlan_id >-< vlan_id >":
       priority: < priority >
+```
+
+### System Boot Settings
+
+```yaml
+boot:
+  # Set the Aboot password
+  secret:
+    hash_algorithm: < md5 | sha512 | default -> sha512 >
+    key: "< hashed_password >"
 ```
 
 ### Terminal Settings
