@@ -667,6 +667,12 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
@@ -750,6 +756,7 @@ router bgp 65104
       vlan 350
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
