@@ -116,10 +116,10 @@ interface Management1
 
 ### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy |
-| ---- | ----- | ------- | -------------- | ------- |
-| USER-READ | GRP-READ-ONLY | v3 | sha | aes |
-| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes |
+| User | Group | Version | Authentication | Privacy | Remote IP | UDP Port | Engine ID |
+| ---- | ----- | ------- | -------------- | ------- | --------- | -------- | --------- |
+| USER-READ | GRP-READ-ONLY | v3 | sha | aes | - | - | - |
+| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes | - | - | - |
 
 ### SNMP Device Configuration
 

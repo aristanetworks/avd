@@ -75,13 +75,13 @@ snmp_server:
     - name: USER-READ-NO-AUTH-NO-PRIV-LOC
       group: GRP-READ-ONLY
       version: v3
-      localized: true
+      localized: 424242424242424242
     - name: USER-READ-AUTH-NO-PRIV-LOC
       group: GRP-READ-ONLY
       version: v3
       auth: sha
       auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
-      localized: true
+      localized: 424242424242424242
     - name: USER-READ-AUTH-PRIV-LOC
       group: GRP-READ-ONLY
       version: v3
@@ -89,7 +89,7 @@ snmp_server:
       auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
       priv: aes
       priv_passphrase: 8da526cd35b9ea9b42d819036f7fad05
-      localized: true
+      localized: 424242424242424242
     - name: USER-WRITE
       group: GRP-READ-WRITE
       version: v3
@@ -97,6 +97,22 @@ snmp_server:
       auth_passphrase: clearPassword
       priv: aes
       priv_passphrase: clearPassword
+    - name: REMOTE-USER-IP-ONLY
+      group: GRP-REMOTE
+      version: v3
+      remote_ip: 42.42.42.42
+    - name: REMOTE-USER-IP-PORT
+      group: GRP-REMOTE
+      version: v3
+      remote_ip: 42.42.42.42
+      udp_port: 666
+    - name: REMOTE-USER-IP-LOCALIZED
+      group: GRP-REMOTE
+      version: v3
+      remote_ip: 42.42.42.42
+      localized: DEADBEEFCAFE123456
+      auth: sha
+      auth_passphrase: ShouldBeEncryptedPassword
   hosts:
     - host: 10.6.75.121
       vrf: MGMT

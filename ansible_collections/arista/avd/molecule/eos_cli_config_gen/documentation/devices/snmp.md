@@ -125,15 +125,18 @@ interface Management1
 
 ### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy |
-| ---- | ----- | ------- | -------------- | ------- |
-| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - |
-| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - |
-| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | aes |
-| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - |
-| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - |
-| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | aes |
-| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes |
+| User | Group | Version | Authentication | Privacy | Remote IP | UDP Port | Engine ID |
+| ---- | ----- | ------- | -------------- | ------- | --------- | -------- | --------- |
+| USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - |
+| USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - |
+| USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | aes | - | - | - |
+| USER-READ-NO-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | - | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-NO-PRIV-LOC | GRP-READ-ONLY | v3 | sha | - | - | - | 424242424242424242 |
+| USER-READ-AUTH-PRIV-LOC | GRP-READ-ONLY | v3 | sha | aes | - | - | 424242424242424242 |
+| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes | - | - | - |
+| REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
+| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
+| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 
 ### SNMP Device Configuration
 
@@ -165,6 +168,9 @@ snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3
 snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha 8da526cd35b9ea9b42d819036f7fad058576ea0a
 snmp-server user USER-READ-AUTH-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha 8da526cd35b9ea9b42d819036f7fad058576ea0a priv aes 8da526cd35b9ea9b42d819036f7fad05
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha clearPassword priv aes clearPassword
+snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
+snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
+snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha ShouldBeEncryptedPassword
 snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
 snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
 snmp-server host 10.6.75.122 vrf MGMT version 2c SNMP-COMMUNITY-2

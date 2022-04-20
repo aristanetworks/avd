@@ -2376,12 +2376,18 @@ snmp_server:
   users:
     - name: < username >
       group: < group_name >
+      # remote_ip and udp_port are used for remote users
+      remote_ip: < ip_address >
+      # udp_port will not be used if no remote_ip is configured
+      udp_port: < udp_port >
       version: < v1 | v2c | v3 >
-      localized: < true | false >
+      # for a local user (i.e. no remote_ip) - the local engine ID should be
+      # used
+      localized: < engine_name in hex >
       auth: < hash_algorithm >
-      auth_passphrase: < hashed_auth_passphrase if localized is true else cleartext auth_passphrase >
+      auth_passphrase: < hashed_auth_passphrase if localized is used else cleartext auth_passphrase >
       priv: < encryption_algorithm >
-      priv_passphrase: < hashed_priv_passphrase if localized is true else cleartext priv_passphrase >
+      priv_passphrase: < hashed_priv_passphrase if localized is used else cleartext priv_passphrase >
     - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >

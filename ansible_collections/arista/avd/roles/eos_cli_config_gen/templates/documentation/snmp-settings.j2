@@ -159,15 +159,18 @@
 
 ### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy |
-| ---- | ----- | ------- | -------------- | ------- |
+| User | Group | Version | Authentication | Privacy | Remote IP | UDP Port | Engine ID |
+| ---- | ----- | ------- | -------------- | ------- | --------- | -------- | --------- |
 {%         for user in snmp_server.users %}
 {%             set row_user = user.name | arista.avd.default('default') %}
 {%             set row_group = user.group | arista.avd.default('-') %}
 {%             set row_version = user.version | arista.avd.default('-') %}
 {%             set row_auth = user.auth | arista.avd.default('-') %}
 {%             set row_policy = user.priv | arista.avd.default('-') %}
-| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} |
+{%             set row_remote_ip = user.remote_ip | arista.avd.default('-') %}
+{%             set row_udp_port = user.udp_port | arista.avd.default('-') %}
+{%             set row_engine_id = user.localized | arista.avd.default('-') %}
+| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} | {{ row_remote_ip }} | {{ row_udp_port }} | {{ row_engine_id }} |
 {%         endfor %}
 {%     endif %}
 
