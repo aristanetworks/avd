@@ -147,7 +147,7 @@ interface Management1
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Enabled | 10 |  1 | 3 |
+| Enabled | 10 Seconds | 1 | 3 Seconds |
 
 #### EVPN DCI Gateway Summary
 

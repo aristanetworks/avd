@@ -995,7 +995,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Enabled | 20 |  30 | - |
+| Enabled | 20 Seconds | 30 | - |
 
 ### Router BGP VLAN Aware Bundles
 

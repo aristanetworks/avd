@@ -633,7 +633,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Disabled | - |  - | - |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 

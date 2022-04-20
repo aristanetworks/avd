@@ -157,7 +157,7 @@ interface Management1
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Enabled | - |  - | 20 |
+| Enabled | - | - | 20 Seconds |
 
 ### Router BGP VLAN Aware Bundles
 

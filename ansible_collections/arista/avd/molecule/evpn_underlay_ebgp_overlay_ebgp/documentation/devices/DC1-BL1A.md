@@ -641,7 +641,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Disabled | - |  - | - |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 

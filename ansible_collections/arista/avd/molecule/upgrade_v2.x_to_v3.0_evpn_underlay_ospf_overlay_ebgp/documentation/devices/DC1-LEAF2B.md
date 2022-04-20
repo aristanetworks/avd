@@ -619,7 +619,7 @@ router ospf 101
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Enabled | 180 |  30 | - |
+| Enabled | 180 Seconds | 30 | - |
 
 ### Router BGP Device Configuration
 

@@ -639,7 +639,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
-| Disabled | - |  - | - |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 
