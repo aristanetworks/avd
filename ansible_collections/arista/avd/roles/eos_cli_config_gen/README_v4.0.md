@@ -669,7 +669,8 @@ ip_extcommunity_lists:
 
 ```yaml
 ip_extcommunity_lists_regexp:
-  < community_list_name >:
+  - name: < community_list_name >
+    types:
     - type: < permit | deny >
       regexp: "< string >"
 ```
