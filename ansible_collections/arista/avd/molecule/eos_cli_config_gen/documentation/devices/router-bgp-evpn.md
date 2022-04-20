@@ -145,9 +145,9 @@ interface Management1
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 10 |  1 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 10 |  1 | 3 |
 
 #### EVPN DCI Gateway Summary
 
@@ -243,8 +243,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
-      host-flap detection window 10
-      host-flap detection threshold 1
+      host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
