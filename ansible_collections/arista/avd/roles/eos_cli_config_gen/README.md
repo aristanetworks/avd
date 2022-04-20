@@ -1153,6 +1153,8 @@ ethernet_interfaces:
       reauthentication: < true | false >
       pae:
         mode: < "authenticator" >
+    traffic_policy_input: < ingress traffic policy >
+    traffic_policy_output: < egress traffic policy >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
