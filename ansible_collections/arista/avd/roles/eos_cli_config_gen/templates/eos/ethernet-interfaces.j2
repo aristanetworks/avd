@@ -190,6 +190,9 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
 {%         if ethernet_interface.dot1x is arista.avd.defined %}
+{%             if ethernet_interface.dot1x.pae.mode is arista.avd.defined %}
+   dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
+{%             endif %}
 {%             if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
    dot1x reauthentication
 {%             endif %}

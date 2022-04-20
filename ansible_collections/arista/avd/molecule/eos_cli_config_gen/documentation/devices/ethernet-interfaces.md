@@ -98,6 +98,7 @@ interface Management1
 | Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
 | Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
 | Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
+| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -521,6 +522,11 @@ interface Ethernet32
    switchport
    dot1x reauthentication
    dot1x port-control auto
+!
+interface Ethernet33
+   description DOT1X Testing - pae mode authenticator
+   switchport
+   dot1x pae authenticator
 ```
 
 # Routing
@@ -572,12 +578,13 @@ interface Ethernet32
 
 ### 802.1X Interfaces
 
-| Interface | State | Phone Force Authorized | Reauthentication |
-| --------- | ----- | ---------------------- | ---------------- |
-| Ethernet29 | auto | True | - |
-| Ethernet30 | force-authorized | False | - |
-| Ethernet31 | force-unauthorized | - | - |
-| Ethernet32 | auto | - | True |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication |
+| --------- | -------- | ------| ---------------------- | ---------------- |
+| Ethernet29 | - | auto | True | - |
+| Ethernet30 | - | force-authorized | False | - |
+| Ethernet31 | - | force-unauthorized | - | - |
+| Ethernet32 | - | auto | - | True |
+| Ethernet33 | authenticator | - | - | - |
 
 # ACL
 
