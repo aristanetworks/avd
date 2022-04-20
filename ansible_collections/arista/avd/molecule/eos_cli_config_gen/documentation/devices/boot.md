@@ -53,13 +53,13 @@ interface Management1
 
 ## Boot Secret Summary
 
-- The SHA512 ENCRYPTED Aboot password is: a153de6290ff1409257a
+- The md5 hashed Aboot password is configured
 
 ## System Boot Configuration
 
 ```eos
 !
-! boot secret sha512 a153de6290ff1409257a
+boot secret 5 a153de6290ff1409257a
 ```
 
 # Monitoring

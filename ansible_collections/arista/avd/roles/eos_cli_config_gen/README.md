@@ -3439,10 +3439,8 @@ spanning_tree:
 boot:
   # Set the Aboot password
   secret:
-    # Set password with only one of the variables (sha512_password, md5_password, clear_text_password)
-    sha512_password: < sha512_encrypted_password_string >
-    md5_password: < md5_encrypted_password_string >
-    clear_text_password: < clear_text_password >
+    hash_algorithm: < md5 | sha512 | default -> sha512 >
+    key: "< hashed_password >"
 ```
 
 ### Terminal Settings
