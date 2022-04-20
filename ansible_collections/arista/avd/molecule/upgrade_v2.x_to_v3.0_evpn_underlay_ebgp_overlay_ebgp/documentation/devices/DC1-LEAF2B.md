@@ -873,9 +873,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Disabled | - |  - |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 

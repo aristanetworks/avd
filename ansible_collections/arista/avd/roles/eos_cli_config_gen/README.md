@@ -2952,8 +2952,12 @@ router_bgp:
         domain_remote: < true | false >
     evpn_hostflap_detection:
       enabled: < true | false >
-      threshold: < integer >
+      # Time in seconds
       window: < integer >
+      # Minimum number of MAC moves that indicate a MAC Duplication issue
+      threshold: < integer >
+      # Timeout in seconds
+      expiry_timeout: < integer >
     route:
       import_match_failure_action: < 'discard' >
   address_family_rtc:
