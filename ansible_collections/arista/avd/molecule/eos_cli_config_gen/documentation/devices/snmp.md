@@ -125,8 +125,8 @@ interface Management1
 
 ### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy | Remote IP | UDP Port | Engine ID |
-| ---- | ----- | ------- | -------------- | ------- | --------- | -------- | --------- |
+| User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
+| ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
 | USER-READ-NO-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | - | - | - | - | - |
 | USER-READ-AUTH-NO-PRIV | GRP-READ-ONLY | v3 | sha | - | - | - | - |
 | USER-READ-AUTH-PRIV | GRP-READ-ONLY | v3 | sha | aes | - | - | - |

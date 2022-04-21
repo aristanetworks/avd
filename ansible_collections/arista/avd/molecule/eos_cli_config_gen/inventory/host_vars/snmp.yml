@@ -2,13 +2,13 @@
 snmp_server:
   engine_ids:
     local: 424242424242424242
-    remote:
+    remotes:
       # First one without IP should not be rendered
-      - name: 1234567890ABCDEF12
-      - name: 6172697374615F6970
-        ip: 1.1.1.1
-      - name: DEADBEEFCAFE123456
-        ip: 2.2.2.2
+      - id: 1234567890ABCDEF12
+      - id: 6172697374615F6970
+        address: 1.1.1.1
+      - id: DEADBEEFCAFE123456
+        address: 2.2.2.2
         port: 1337
   contact: DC1_OPS
   location: DC1
@@ -100,16 +100,16 @@ snmp_server:
     - name: REMOTE-USER-IP-ONLY
       group: GRP-REMOTE
       version: v3
-      remote_ip: 42.42.42.42
+      remote_address: 42.42.42.42
     - name: REMOTE-USER-IP-PORT
       group: GRP-REMOTE
       version: v3
-      remote_ip: 42.42.42.42
+      remote_address: 42.42.42.42
       udp_port: 666
     - name: REMOTE-USER-IP-LOCALIZED
       group: GRP-REMOTE
       version: v3
-      remote_ip: 42.42.42.42
+      remote_address: 42.42.42.42
       localized: DEADBEEFCAFE123456
       auth: sha
       auth_passphrase: ShouldBeEncryptedPassword
