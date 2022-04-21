@@ -2741,6 +2741,15 @@ router_bgp:
   bgp:
     bestpath:
       d_path: < true | false >
+  # extension of the old dm to allow for multiple listen ranges and addtional filter capabilities
+  listen_ranges:
+    - prefix: < A.B.C.D/E | A:B:C:D:E:F:G:H/I >
+      # include router id as part of peer filter
+      peer_id_include_router_id: < true | false >
+      peer_group: < name of peer-group >
+      # peer_filter and remote_as are mutally exclusive. if defined, peer_filter takes precedence
+      peer_filter: < name of peer-filter >
+      remote_as: < remote ASN in plain or dot notation >
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
