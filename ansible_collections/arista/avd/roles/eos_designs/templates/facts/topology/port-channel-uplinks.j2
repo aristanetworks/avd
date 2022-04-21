@@ -11,12 +11,14 @@ topology:
 {%         set uplink_switch_facts = hostvars[uplink_switch].switch | arista.avd.default %}
 {%         if uplink_switch_facts is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ uplink_switch ~ '].switch') %}
 {%             do topology_peers.append(uplink_switch) %}
-{%             if switch.short_esi is arista.avd.defined("auto") %}
-{%                 set esi_hash_switches = switch.uplink_switches[:2] | join %}
-{%                 set esi_hash_ports = switch.uplink_switch_interfaces[:2] | join %}
-{%                 set esi_hash = (esi_hash_switches ~ esi_hash_ports ~ switch.group) | hash('sha256') %}
-{%                 set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
-{%                 do switch.update({'short_esi': short_esi_hash}) %}
+{%             if switch.short_esi is arista.avd.defined %}
+{%                 if switch.short_esi | lower == 'auto' %}
+{%                    set esi_hash_switches = switch.uplink_switches[:2] | join %}
+{%                    set esi_hash_ports = switch.uplink_switch_interfaces[:2] | join %}
+{%                    set esi_hash = (esi_hash_switches ~ esi_hash_ports ~ switch.group) | hash('sha256') %}
+{%                    set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
+{%                    do switch.update({'short_esi': short_esi_hash}) %}
+{%                 endif %}
 {%             endif %}
     {{ uplink_interface }}:
       peer: {{ uplink_switch }}
