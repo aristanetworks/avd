@@ -35,28 +35,27 @@ router bgp {{ router_bgp.as }}
    bgp bestpath d-path
 {%     endif %}
 {%     if router_bgp.listen_ranges is arista.avd.defined %}
-{%         for listen_range in router_bgp.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined %}
-{%             if listen_range.prefix is arista.avd.defined %}
-{%                 if listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined %}
-{%                     set listen_range_cli = "bgp listen range " ~ listen_range.prefix %}
-{%                     if listen_range.peer_id_include_router_id is arista.avd.defined(true) %}
-{%                         set listen_range_cli = listen_range_cli ~ " peer-id include router-id" %}
-{%                     endif %}
-{%                     set listen_range_cli = listen_range_cli ~ " peer-group " ~ listen_range.peer_group %}
-{%                     if listen_range.peer_filter is arista.avd.defined %}
-{%                         set listen_range_cli = listen_range_cli ~ " peer-filter " ~ listen_range.peer_filter %}
-{%                     elif listen_range.remote_as is arista.avd.defined %}
-{%                         set listen_range_cli = listen_range_cli ~ " remote-as " ~ listen_range.remote_as %}
-{%                     endif %}
-   {{ listen_range_cli }}
-{%                 endif %}
+{%         for listen_range in router_bgp.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
+               and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
+{%             set listen_range_cli = "bgp listen range " ~ listen_range.prefix %}
+{%             if listen_range.peer_id_include_router_id is arista.avd.defined(true) %}
+{%                 set listen_range_cli = listen_range_cli ~ " peer-id include router-id" %}
 {%             endif %}
+{%             set listen_range_cli = listen_range_cli ~ " peer-group " ~ listen_range.peer_group %}
+{%             if listen_range.peer_filter is arista.avd.defined %}
+{%                 set listen_range_cli = listen_range_cli ~ " peer-filter " ~ listen_range.peer_filter %}
+{%             elif listen_range.remote_as is arista.avd.defined %}
+{%                 set listen_range_cli = listen_range_cli ~ " remote-as " ~ listen_range.remote_as %}
+{%             endif %}
+   {{ listen_range_cli }}
 {%         endfor %}
 {%     endif %}
 {%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
 {%         if router_bgp.peer_groups[peer_group].bgp_listen_range_prefix is arista.avd.defined and router_bgp.peer_groups[peer_group].peer_filter is arista.avd.defined %}
    bgp listen range {{ router_bgp.peer_groups[peer_group].bgp_listen_range_prefix }} peer-group {{ peer_group }} peer-filter {{ router_bgp.peer_groups[peer_group].peer_filter }}
 {%         endif %}
+{%     endfor %}
+{%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
 {%         if router_bgp.peer_groups[peer_group].shutdown is arista.avd.defined(true) %}
    neighbor {{ peer_group }} shutdown
 {%         endif %}

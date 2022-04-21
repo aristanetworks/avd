@@ -2754,13 +2754,13 @@ router_bgp:
   bgp:
     bestpath:
       d_path: < true | false >
-  # extension of the old dm to allow for multiple listen ranges and addtional filter capabilities
+  # New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
   listen_ranges:
     - prefix: < A.B.C.D/E | A:B:C:D:E:F:G:H/I >
       # include router id as part of peer filter
       peer_id_include_router_id: < true | false >
       peer_group: < name of peer-group >
-      # peer_filter and remote_as are mutally exclusive. if defined, peer_filter takes precedence
+      # peer_filter or remote_as is required but mutually exclusive. If both are defined, peer_filter takes precedence
       peer_filter: < name of peer-filter >
       remote_as: < remote ASN in plain or dot notation >
   peer_groups:
@@ -2798,6 +2798,8 @@ router_bgp:
       route_map_out: < outbound route-map >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
+      # "bgp_listen_range_prefix" and "peer_filter" will be deprecated in AVD v4.0
+      # These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
       bgp_listen_range_prefix: < IP prefix range >
       peer_filter: < peer_filter >
       password: "< encrypted_password >"
