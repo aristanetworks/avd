@@ -25,10 +25,8 @@
 
 | Format Type | Setting |
 | ----------- | ------- |
-{%         if logging.format.timestamp is arista.avd.defined and logging.format.timestamp == 'high-resolution' %}
-| Timestamp | high-resolution |
-{%         else %}
-| Timestamp | traditional |
+{%         if logging.format.timestamp is arista.avd.defined %}
+| Timestamp | {{ logging.format.timestamp }} |
 {%         endif %}
 {%         if logging.format.hostname is arista.avd.defined %}
 | Hostname | {{ logging.format.hostname }} |
