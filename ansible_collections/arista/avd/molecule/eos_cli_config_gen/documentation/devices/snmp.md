@@ -57,7 +57,6 @@ interface Management1
 | ------- | -------- | ---------- | ----- |
 | DC1_OPS | DC1 | All | Enabled |
 
-
 ### SNMP EngineID Configuration
 
 | Type | Name (Hex) | IP | Port |
@@ -65,7 +64,6 @@ interface Management1
 | local |  424242424242424242 | - | - |
 | remote | 6172697374615F6970 | 1.1.1.1 | - |
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
-
 
 ### SNMP ACLs
 | IP | ACL | VRF |

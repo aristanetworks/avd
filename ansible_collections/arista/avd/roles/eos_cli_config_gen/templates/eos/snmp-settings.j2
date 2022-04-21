@@ -134,7 +134,6 @@ snmp-server location {{ snmp_server.location }}
 {%                 endif %}
 {%                 set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
 {%                 if user.priv is arista.avd.defined
-                      and user.version is arista.avd.defined('v3')
                       and user.priv_passphrase is arista.avd.defined %}
 {%                     set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase %}
 {%                 endif %}

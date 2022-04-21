@@ -57,7 +57,6 @@ interface Management1
 | ------- | -------- | ---------- | ----- |
 | DC1_OPS | DC1 | All | Enabled |
 
-
 ### SNMP ACLs
 | IP | ACL | VRF |
 | -- | --- | --- |

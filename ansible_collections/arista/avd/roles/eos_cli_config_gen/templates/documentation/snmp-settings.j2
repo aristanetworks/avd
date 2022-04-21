@@ -26,7 +26,6 @@
 {%     endif %}
 {%     if snmp_server.engine_ids is arista.avd.defined %}
 
-
 ### SNMP EngineID Configuration
 
 | Type | Name (Hex) | IP | Port |
@@ -44,7 +43,6 @@
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
-
 
 ### SNMP ACLs
 | IP | ACL | VRF |
