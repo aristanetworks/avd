@@ -670,9 +670,9 @@ ip_extcommunity_lists:
 ```yaml
 ip_extcommunity_lists_regexp:
   - name: < community_list_name >
-    types:
-    - type: < permit | deny >
-      regexp: "< string >"
+    entries:
+      - type: < permit | deny >
+        regexp: "< string >"
 ```
 
 #### Peer Filters
