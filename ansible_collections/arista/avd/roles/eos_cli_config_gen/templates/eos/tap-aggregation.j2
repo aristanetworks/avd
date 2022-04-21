@@ -1,0 +1,28 @@
+{# eos - tap-aggregation #}
+{% if tap_aggregation is arista.avd.defined %}
+!
+tap aggregation
+{%     if tap_aggregation.mode is arista.avd.defined %}
+   mode {{ tap_aggregation.mode }}
+{%     endif %}
+{%     if tap_aggregation.encapsulation_dot1br_strip is arista.avd.defined(true) %}
+   encapsulation dot1br strip
+{%     endif %}
+{%     if tap_aggregation.encapsulation_vn_tag_strip is arista.avd.defined(true) %}
+   encapsulation vn-tag strip
+{%     endif %}
+{%     if tap_aggregation.protocol_lldp_trap is arista.avd.defined(true) %}
+   protocol lldp trap
+{%     endif %}
+{%     if tap_aggregation.truncation_size is arista.avd.defined %}
+   truncation size {{ tap_aggregation.truncation_size }}
+{%     endif %}
+{%     if tap_aggregation.mac_timestamp is arista.avd.defined %}
+   mac timestamp {{ tap_aggregation.mac_timestamp }}
+{%     endif %}
+{%     if tap_aggregation.mac_fcs_append is arista.avd.defined(true) %}
+   mac fcs append
+{%     elif tap_aggregation.mac_fcs_error is arista.avd.defined %}
+   mac fcs-error {{ tap_aggregation.mac_fcs_error }}
+{%     endif %}
+{% endif %}

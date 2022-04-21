@@ -2470,6 +2470,23 @@ monitor_sessions:
       size: < bytes >
 ```
 
+#### Tap Aggregation
+
+```yaml
+tap_aggregation:
+  # The chassis switches DCS-7500R and DCS-7500R2 also support mixed-mode on lincard basis, support for this can be added later
+  mode: < exclusive >
+  encapsulation_dot1br_strip: < true | false >
+  encapsulation_vn_tag_strip: < true | false >
+  protocol_lldp_trap: < true | false >
+  # Allowed truncation_size values vary depending on the platform
+  truncation_size: < size in bytes >
+  mac_timestamp: < replace source-mac | header format 48-bit | header format 64-bit >
+  # mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence
+  mac_fcs_append: < true | false >
+  mac_fcs_error: < correct | discard | pass-through >
+```
+
 ### System Control-Plane
 
 ```yaml

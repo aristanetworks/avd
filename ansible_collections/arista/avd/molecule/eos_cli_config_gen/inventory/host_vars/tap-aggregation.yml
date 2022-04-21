@@ -1,0 +1,8 @@
+tap_aggregation:
+  mode: exclusive
+  encapsulation_dot1br_strip: true
+  encapsulation_vn_tag_strip: true
+  protocol_lldp_trap: true
+  truncation_size: 169
+  mac_timestamp: replace source-mac
+  mac_fcs_error: pass-through
