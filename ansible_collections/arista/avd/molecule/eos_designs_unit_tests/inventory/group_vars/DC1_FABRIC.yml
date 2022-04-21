@@ -241,6 +241,32 @@ l2leaf:
           mgmt_ip: 192.168.200.116/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9 ]
+    DC1_L2LEAF4:
+      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      short_esi: auto # Test Auto ESI
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF4A:
+          id: 13
+          mgmt_ip: 192.168.200.119/24
+          uplink_switch_interfaces: [ Ethernet13, Ethernet13 ]
+    DC1_L2LEAF5:
+      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      short_esi: auto # Test Auto ESI to MLAG pair
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF5A:
+          id: 14
+          mgmt_ip: 192.168.200.120/24
+          uplink_switch_interfaces: [ Ethernet14, Ethernet14 ]
+        DC1-L2LEAF5B:
+          id: 15
+          mgmt_ip: 192.168.200.121/24
+          uplink_switch_interfaces: [ Ethernet15, Ethernet15 ]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500

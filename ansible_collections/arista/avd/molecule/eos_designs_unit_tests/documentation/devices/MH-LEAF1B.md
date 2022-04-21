@@ -290,6 +290,7 @@ vlan 310
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet10 | server01_ES1_Eth2 | *access | *310 | *- | *- | 10 |
+| Ethernet12 | server03_AUTO_ESI_Eth2 | *access | *310 | *- | *- | 12 |
 
 *Inherited from Port-Channel Interface
 
@@ -326,6 +327,11 @@ interface Ethernet11
    description ROUTER02_WITH_SUBIF_Eth2
    no shutdown
    channel-group 11 mode active
+!
+interface Ethernet12
+   description server03_AUTO_ESI_Eth2
+   no shutdown
+   channel-group 12 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -337,6 +343,7 @@ interface Ethernet11
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
+| Port-Channel12 | server03_AUTO_ESI_Auto-ESI PortChannel | switched | access | 310 | - | - | - | - | - | 0000:0000:fc87:ae24:2cb3 |
 
 #### Flexible Encapsulation Interfaces
 
@@ -344,12 +351,15 @@ interface Ethernet11
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
 | Port-Channel11.101 | - | l2dot1q | 101 | False | 101 | - | - | True | - | - | - |
 | Port-Channel11.102 | - | l2dot1q | 1102 | False | 2102 | - | - | True | - | - | - |
+| Port-Channel11.103 | - | l2dot1q | 1103 | False | 2103 | - | - | True | - | - | - |
+| Port-Channel11.104 | - | l2dot1q | 1104 | False | 2104 | - | - | True | - | - | - |
 
 #### Link Tracking Groups
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 | Port-Channel10 | LT_GROUP1 | downstream |
+| Port-Channel12 | LT_GROUP1 | downstream |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -386,6 +396,33 @@ interface Port-Channel11.102
    evpn ethernet-segment
       identifier 0000:0000:0000:0000:0102
       route-target import 00:00:00:00:01:02
+!
+interface Port-Channel11.103
+   vlan id 1103
+   encapsulation vlan
+      client dot1q 2103 network client
+   evpn ethernet-segment
+      identifier 0000:0000:c2c9:c85a:ed92
+      route-target import c2:c9:c8:5a:ed:92
+!
+interface Port-Channel11.104
+   vlan id 1104
+   encapsulation vlan
+      client dot1q 2104 network client
+   evpn ethernet-segment
+      identifier 0000:0000:5c8e:1f50:9fc4
+      route-target import 5c:8e:1f:50:9f:c4
+!
+interface Port-Channel12
+   description server03_AUTO_ESI_Auto-ESI PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 310
+   evpn ethernet-segment
+      identifier 0000:0000:fc87:ae24:2cb3
+      route-target import fc:87:ae:24:2c:b3
+   lacp system-id fc87.ae24.2cb3
+   link tracking group LT_GROUP1 downstream
 ```
 
 ## Loopback Interfaces

@@ -359,6 +359,9 @@ vlan 311
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
+| Ethernet13 | DC1-L2LEAF4A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 13 |
+| Ethernet14 | DC1-L2LEAF5A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 14 |
+| Ethernet15 | DC1-L2LEAF5B_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 14 |
 | Ethernet20 | FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
 | Ethernet21 |  ROUTER01_Eth1 | access | 110 | - | - | - |
 
@@ -439,6 +442,21 @@ interface Ethernet12
    no shutdown
    channel-group 12 mode active
 !
+interface Ethernet13
+   description DC1-L2LEAF4A_Ethernet2
+   no shutdown
+   channel-group 13 mode active
+!
+interface Ethernet14
+   description DC1-L2LEAF5A_Ethernet2
+   no shutdown
+   channel-group 14 mode active
+!
+interface Ethernet15
+   description DC1-L2LEAF5B_Ethernet2
+   no shutdown
+   channel-group 14 mode active
+!
 interface Ethernet20
    description FIREWALL01_E1
    no shutdown
@@ -465,6 +483,8 @@ interface Ethernet21
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | - | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel13 | DC1-L2LEAF4A_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:a36b:7013:457b |
+| Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:71da:d362:2084 |
 | Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -518,6 +538,28 @@ interface Port-Channel12
    switchport
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
+!
+interface Port-Channel13
+   description DC1-L2LEAF4A_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-112,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:a36b:7013:457b
+      route-target import a3:6b:70:13:45:7b
+   lacp system-id a36b.7013.457b
+!
+interface Port-Channel14
+   description DC1_L2LEAF5_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-112,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:71da:d362:2084
+      route-target import 71:da:d3:62:20:84
+   lacp system-id 71da.d362.2084
 !
 interface Port-Channel20
    description FIREWALL01_PortChanne1
