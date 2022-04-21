@@ -1032,6 +1032,9 @@ ethernet_interfaces:
       media:
         override: < transceiver_type >
     ip_proxy_arp: < true | false >
+    traffic_policy:
+      input: < ingress traffic policy >
+      output: < egress traffic policy >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1152,6 +1155,9 @@ ethernet_interfaces:
       reauthentication: < true | false >
       pae:
         mode: < "authenticator" >
+    traffic_policy:
+      input: < ingress traffic policy >
+      output: < egress traffic policy >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1317,6 +1323,9 @@ port_channel_interfaces:
     isis_hello_padding: < true | false >
     isis_authentication_mode: < text | md5 >
     isis_authentication_key: < type-7 encrypted password >
+    traffic_policy:
+      input: < ingress traffic policy >
+      output: < egress traffic policy >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1484,6 +1493,9 @@ vlan_interfaces:
           delay:
             minimum: < integer >
             reload: < integer >
+        timers:
+          delay:
+            reload: < integer >
         tracked_object:
           - name: < tracked_object_name_1 >
             decrement: < decrement vrrp priority by 1-254 >
@@ -1493,6 +1505,7 @@ vlan_interfaces:
             shutdown: < true | false >
         ipv4:
           address: < virtual_ip_address >
+          version: < 2 | 3 >
         ipv6:
           address: < virtual_ip_address >
     # The below "vrrp" keys will be deprecated in AVD v4.0 - These should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
@@ -2273,7 +2286,7 @@ logging:
   synchronous:
     level: < "<severity_level>" | "disabled" | default --> critical >
   format:
-    timestamp: < high-resolution | traditional >
+    timestamp: < high-resolution | traditional |traditional year | traditional timezone | traditonal year timezone >
     hostname: < fqdn | ipv4 >
     sequence_numbers: < true | false >
   facility: < syslog_facility_value >
