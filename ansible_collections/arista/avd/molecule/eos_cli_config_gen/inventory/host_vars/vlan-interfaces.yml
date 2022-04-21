@@ -286,3 +286,10 @@ vlan_interfaces:
             decrement: 10
           - name: ID2-TrackedObjectShutdown
             shutdown: true
+      - id: 3
+        timers:
+          delay:
+            reload: 900
+        ipv4:
+          address: 100.64.0.1
+          version: 3
