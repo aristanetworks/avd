@@ -376,6 +376,12 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].isis_authentication_key is arista.avd.defined %}
    isis authentication key 7 {{ port_channel_interfaces[port_channel_interface].isis_authentication_key }}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ port_channel_interfaces[port_channel_interface].traffic_policy.input }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ port_channel_interfaces[port_channel_interface].traffic_policy.output }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].eos_cli is arista.avd.defined %}
    {{ port_channel_interfaces[port_channel_interface].eos_cli | indent(3, false) }}
 {%     endif %}
