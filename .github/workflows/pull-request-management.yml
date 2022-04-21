@@ -228,6 +228,7 @@ jobs:
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'evpn_underlay_rfc5549_overlay_ebgp'
+          - 'eos_designs-mpls-isis-sr-ldp'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_ebgp_overlay_ebgp'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_ospf_overlay_ebgp'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_isis_overlay_ibgp'
