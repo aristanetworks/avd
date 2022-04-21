@@ -1156,9 +1156,27 @@ ethernet_interfaces:
       reauthentication: < true | false >
       pae:
         mode: < "authenticator" >
+      authentication_failure:
+        action: < "allow" | "drop" >
+        allow_vlan: < 1-4094 >
+      host_mode: 
+        mode: < "multi-host" | "single-host" >
+        multi_host_authenticated: < true | false >
+      mac_based_authentication: 
+        enabled: < true | false >
+        always: < true | false >
+        host_mode_common: < true | false >
+      timeout:
+        idle_host: < 10-65535 >
+        quiet_period: < 1-65535 >
+        reauth_period: < 60-4294967295 | server >
+        reauth_timeout_ignore: < true | false >
+        tx_period: < 1-65535 >
+      reauthorization_request_limit: < 1-10 >
     traffic_policy:
       input: < ingress traffic policy >
       output: < egress traffic policy >
+
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
