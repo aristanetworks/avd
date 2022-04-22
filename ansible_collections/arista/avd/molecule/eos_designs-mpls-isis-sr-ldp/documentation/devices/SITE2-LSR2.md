@@ -156,9 +156,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet3 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet12 | 12 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
-| Ethernet13 | 12 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet3 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet12 | 12 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet13 | 12 | *CUSTOM_NAME | *60 | *point-to-point | *level-2 | *False | *md5 |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -176,7 +176,7 @@ interface Ethernet3
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
-   isis enable CORE
+   isis enable CUSTOM_NAME
    isis circuit-type level-2
    isis metric 60
    no isis hello padding
@@ -214,7 +214,7 @@ interface Ethernet13
 
 | Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel12 | CORE | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel12 | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -230,7 +230,7 @@ interface Port-Channel12
    mpls ip
    mpls ldp interface
    mpls ldp igp sync
-   isis enable CORE
+   isis enable CUSTOM_NAME
    isis circuit-type level-2
    isis metric 60
    isis network point-to-point
@@ -259,7 +259,7 @@ interface Port-Channel12
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
-| Loopback0 | CORE | - | passive |
+| Loopback0 | CUSTOM_NAME | - | passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -270,7 +270,7 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.4/32
    ipv6 address 2000:1234:ffff:ffff::4/128
-   isis enable CORE
+   isis enable CUSTOM_NAME
    isis passive
    mpls ldp interface
    node-segment ipv4 index 304
@@ -340,7 +340,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Value |
 | -------- | ----- |
-| Instance | CORE |
+| Instance | CUSTOM_NAME |
 | Net-ID | 49.0001.0000.0000.0004.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast, ipv6 unicast |
@@ -355,8 +355,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-| Ethernet3 | CORE | 60 | point-to-point |
-| Loopback0 | CORE | - | passive |
+| Ethernet3 | CUSTOM_NAME | 60 | point-to-point |
+| Loopback0 | CUSTOM_NAME | - | passive |
 
 ### ISIS Segment-routing Node-SID
 
@@ -368,7 +368,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ```eos
 !
-router isis CORE
+router isis CUSTOM_NAME
    net 49.0001.0000.0000.0004.00
    is-type level-2
    router-id ipv4 100.70.0.4
