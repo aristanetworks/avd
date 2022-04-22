@@ -409,13 +409,14 @@
 {%     endif %}
 {%     set evpn_gw_config = namespace(peer_groups = [], configured = false) %}
 {%     for peer_group in router_bgp.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         set address_family_evpn_peer_group = router_bgp.address_family_evpn.peer_groups | arista.avd.default([]) |
+{%         if router_bgp.address_family_evpn is arista.avd.defined and router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
+{%             set address_family_evpn_peer_group = router_bgp.address_family_evpn.peer_groups | arista.avd.default([]) |
                                                                       arista.avd.convert_dicts('name') |
-                                                                      selectattr('name', 'arista.avd.defined', peer_group) |
-                                                                      first %}
-{%         if address_family_evpn_peer_group.domain_remote is arista.avd.defined(true) %}
-{%             do evpn_gw_config.peer_groups.append(peer_group.name) %}
-{%             set evpn_gw_config.configured = true %}
+                                                                      selectattr('name', 'arista.avd.defined', peer_group.name) %}
+{%             if address_family_evpn_peer_group[0].domain_remote is arista.avd.defined(true) %}
+{%                 do evpn_gw_config.peer_groups.append(peer_group.name) %}
+{%                 set evpn_gw_config.configured = true %}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {%     if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
@@ -511,9 +512,9 @@
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
-{%         for vpws_service in router_bgp.vpws | arista.avd.convert_dicts('name') %}
+{%         for vpws_service in router_bgp.vpws %}
 {%             if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
-{%                 for pseudowire in vpws_service.pseudowires | arista.avd.convert_dicts('name') | arista.avd.natural_sort("name") %}
+{%                 for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort("name") %}
 {%                     if pseudowire.name is arista.avd.defined %}
 {%                         set row_mpls_control_word = vpws_service.mpls_control_word | arista.avd.default(false) %}
 {%                         set row_label_flow = vpws_service.label_flow | arista.avd.default(false) %}
@@ -532,7 +533,7 @@
 | --- | ------------------- | ------------ |
 {%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
-{%             set redistribute = vrf.redistribute_routes | arista.avd.default("-") %}
+{%             set redistribute = vrf.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.default([{'type':'-'}]) | map(attribute='type') %}
 | {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |
 {%         endfor %}
 {%     endif %}

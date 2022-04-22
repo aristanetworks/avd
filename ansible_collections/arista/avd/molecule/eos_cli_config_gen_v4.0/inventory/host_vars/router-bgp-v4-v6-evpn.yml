@@ -92,7 +92,7 @@ router_bgp:
       - name: IPV4-UNDERLAY-MLAG
         activate: true
     redistribute_routes:
-      - type: static
+      - type: attached-host
   address_family_ipv6:
     peer_groups:
       - name: IPV6-UNDERLAY

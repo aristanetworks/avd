@@ -284,8 +284,11 @@ router bgp {{ router_bgp.as }}
    {{ aggregate_address_cli }}
 {%     endfor %}
 {%     for redistribute_route in router_bgp.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{{ redistribute_route }}
-{%         set redistribute_route_cli = "redistribute " ~ redistribute_route %}
+{%         if redistribute_route.type is arista.avd.defined %}
+{%             set redistribute_route_cli = "redistribute " ~ redistribute_route.type %}
+{%         else %}
+{%             set redistribute_route_cli = "redistribute " ~ redistribute_route %}
+{%         endif %}
 {%         if redistribute_route.route_map is arista.avd.defined %}
 {%             set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%         endif %}
@@ -364,7 +367,7 @@ router bgp {{ router_bgp.as }}
 {%     endfor %}
 {# bgp vpws services #}
 {%     if router_bgp.vpws is arista.avd.defined %}
-{%         for vpws_service in router_bgp.vpws | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vpws_service in router_bgp.vpws | arista.avd.natural_sort('name') %}
    !
 {%             if vpws_service.name is arista.avd.defined %}
    vpws {{ vpws_service.name }}
@@ -383,7 +386,7 @@ router bgp {{ router_bgp.as }}
 {%                 if vpws_service.mtu is arista.avd.defined %}
       mtu {{ vpws_service.mtu }}
 {%                 endif %}
-{%                 for pw in vpws_service.pseudowires | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 for pw in vpws_service.pseudowires | arista.avd.natural_sort('name') %}
 {%                     if pw.name is arista.avd.defined and pw.id_local is arista.avd.defined and pw.id_remote is arista.avd.defined %}
       !
       pseudowire {{ pw.name }}
@@ -578,7 +581,11 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%         for redistribute_route in router_bgp.address_family_ipv4_multicast.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%             set redistribute_route_cli = "redistribute " ~ redistribute_route %}
+{%             if redistribute_route.type is arista.avd.defined %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.type %}
+{%             else %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route %}
+{%             endif %}
 {%             if redistribute_route.route_map is arista.avd.defined %}
 {%                 set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%             endif %}
@@ -635,7 +642,11 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%             set redistribute_route_cli = "redistribute " ~ redistribute_route %}
+{%             if redistribute_route.type is arista.avd.defined %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.type %}
+{%             else %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route %}
+{%             endif %}
 {%             if redistribute_route.route_map is arista.avd.defined %}
 {%                 set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%             endif %}
@@ -712,7 +723,7 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.route_targets.export is arista.avd.defined %}
 {%             for address_family in vrf.route_targets.export | arista.avd.convert_dicts('address_family','route_target') %}
 {%                 for route_target in address_family.route_target %}
-      route-target export {{ address_family.address_family }} {{ address_family }}
+      route-target export {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
@@ -869,7 +880,11 @@ router bgp {{ router_bgp.as }}
       {{ aggregate_address_cli }}
 {%         endfor %}
 {%         for redistribute_route in vrf.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%             set redistribute_cli = "redistribute " ~ redistribute_route %}
+{%             if redistribute_route.type is arista.avd.defined %}
+{%                 set redistribute_cli = "redistribute " ~ redistribute_route.type %}
+{%             else %}
+{%                 set redistribute_cli = "redistribute " ~ redistribute_route %}
+{%             endif %}
 {%             if redistribute_route.route_map is arista.avd.defined %}
 {%                 set redistribute_cli = redistribute_cli + " route-map " ~ redistribute_route.route_map %}
 {%             endif %}
