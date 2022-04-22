@@ -8,32 +8,31 @@ __metaclass__ = type
 import os
 
 
-def convert_dicts(dictionary, primary_key="name", secondary_key="items"):
+def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     """
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
-    dictionaries It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
-    configurable) and if there is a list of dictionary in the dictionary value,it inserts this value list to
-    secondary key "items" (key name is configurable).
+    dictionaries.It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
+    configurable) and if there is a list in the dictionary value,it inserts this value list to
+    secondary key (key name is configurable), if secondary key is provided.
 
     This filter is intended for:
 
     - Seemless data model migration from dictionaries to lists.
     - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-    Note: If the variable is a list of string/integer, it will pass through untouched
+    Note: If the value is a list/string with no secondary key provided, it will pass through untouched
 
     To use this filter:
 
     ```jinja
-    {# convert list of dictionary with default `name:` as the primary key and `items:` as secondary key #}
+    {# convert list of dictionary with default `name:` as the primary key and None secondary key #}
     {% set example_list = example_dictionary | arista.avd.convert_dicts %}
     {% for example_item in example_list %}
     item primary key is {{ example_item.name }}
-    item secondary key is {{ example_item.items }}
     {% endfor %}
 
     {# convert list of dictionary with `id:` set as the primary key and `types:` set as the secondary key #}
-    {% set example_list = example_dictionary | arista.avd.convert_dicts('id') %}
+    {% set example_list = example_dictionary | arista.avd.convert_dicts('id','types') %}
     {% for example_item in example_list %}
     item primary key is {{ example_item.id }}
     item secondary key is {{ example_item.types }}
@@ -43,20 +42,27 @@ def convert_dicts(dictionary, primary_key="name", secondary_key="items"):
     Parameters
     ----------
     dictionary : any
-        Nested Dictionary to convert - returned untouched if not a nested dictionary
+        Nested Dictionary to convert - returned untouched if not a nested dictionary and list
     primary_key : str, optional
         Name of primary key used when inserting outer dictionary keys into items.
     secondary_key : str, optional
-        Name of secondary key used when inserting dictionary values which are list of dictionaries into items.
+        Name of secondary key used when inserting dictionary values which are list into items.
 
     Returns
     -------
     any
-        Returns list of dictionaries or input variable untouched if not a nested dictionary/list of dictionaries
+        Returns list of dictionaries or input variable untouched if not a nested dictionary/list.
     """
-    if not isinstance(dictionary, dict) or os.environ.get('AVD_DISABLE_CONVERT_DICTS'):
+    if not isinstance(dictionary, dict) and not isinstance(dictionary, list) or os.environ.get('AVD_DISABLE_CONVERT_DICTS'):
         # Not a dictionary, return the original
         return dictionary
+    elif isinstance(dictionary, list):
+        output = []
+        for element in dictionary:
+            item = {}
+            item.update({primary_key: element})
+            output.append(item)
+        return output
     else:
         output = []
         for key in dictionary:
@@ -64,17 +70,13 @@ def convert_dicts(dictionary, primary_key="name", secondary_key="items"):
                 # Catch cornercase where dictionary has no value because of old data models
                 output.append({primary_key: key})
             elif not isinstance(dictionary[key], dict):
-                if isinstance(dictionary[key], list):
-                    # Not a nested dictionary but a list of dictionaries, add secondary key for the list
+                # Not a nested dictionary, add secondary key for the list elements if secondary key is provided
+                if secondary_key is not None:
                     item = {}
-                    secondary_element = []
                     item.update({primary_key: key})
-                    for element in dictionary[key]:
-                        secondary_element.append(element)
-                    item.update({secondary_key: secondary_element})
+                    item.update({secondary_key: dictionary[key]})
                     output.append(item)
                 else:
-                    # Not a nested dictionary but a string, return the original
                     return dictionary
             else:
                 item = dictionary[key].copy()
