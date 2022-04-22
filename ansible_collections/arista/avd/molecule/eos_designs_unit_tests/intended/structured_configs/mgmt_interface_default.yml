@@ -119,6 +119,18 @@ vlans:
   350:
     tenant: Tenant_C
     name: Tenant_C_WAN_Zone_1
+  410:
+    tenant: Tenant_D
+    name: Tenant_D_OP_Zone_1
+  411:
+    tenant: Tenant_D
+    name: Tenant_D_OP_Zone_2
+  450:
+    tenant: Tenant_D
+    name: Tenant_D_WAN_Zone_1
+  451:
+    tenant: Tenant_D
+    name: Tenant_D_WAN_Zone_2
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
