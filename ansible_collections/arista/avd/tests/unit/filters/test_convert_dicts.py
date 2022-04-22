@@ -51,7 +51,7 @@ class TestConvertDicts():
     def test_convert_dicts_with_listofdict_secondary_key(self):
         resp = convert_dicts(list_of_dict, secondary_key='types')
         assert resp == [{'name': 'TEST1', 'types': [{'type': 'permit', 'extcommunities': '65000:65000'},
-                                                      {'type': 'deny', 'extcommunities': '65002:65002'}]},
+                                                    {'type': 'deny', 'extcommunities': '65002:65002'}]},
                         {'name': 'TEST2', 'types': [{'type': 'deny', 'extcommunities': '65001:65001'}]}]
 
     def test_convert_dicts_with_listofdict_primary_and_secondary_key(self):
