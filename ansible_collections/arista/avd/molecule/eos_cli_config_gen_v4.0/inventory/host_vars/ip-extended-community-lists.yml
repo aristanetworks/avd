@@ -2,12 +2,12 @@
 
 ip_extcommunity_lists:
   - name: TEST1
-    types:
+    entries:
       - type: permit
         extcommunities: "65000:65000"
       - type: deny
         extcommunities: "65002:65002"
   - name: TEST2
-    types:
+    entries:
       - type: deny
         extcommunities: "65001:65001"

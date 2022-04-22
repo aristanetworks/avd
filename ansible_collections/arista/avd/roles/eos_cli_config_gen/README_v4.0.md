@@ -658,11 +658,11 @@ community_lists:
 ```yaml
 ip_extcommunity_lists:
   - name: < community_list_name_1 >
-    types:
+    entries:
       - type: < permit | deny >
         extcommunities: "< communities as string >"
   - name: < community_list_name_2 >
-    types:
+    entries:
       - type: < permit | deny >
         extcommunities: "< communities as string >"
 ```

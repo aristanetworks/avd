@@ -6,10 +6,10 @@
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
-{%     for ip_extcommunity_list in ip_extcommunity_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         for type in ip_extcommunity_list.types | arista.avd.default([]) %}
-{%             if type.type is arista.avd.defined and type.extcommunities is arista.avd.defined %}
-| {{ ip_extcommunity_list.name }} | {{ type.type }} | {{ type.extcommunities }} |
+{%     for ip_extcommunity_list in ip_extcommunity_lists | arista.avd.convert_dicts('name','entries') | arista.avd.natural_sort('name') %}
+{%         for entry in ip_extcommunity_list.entries | arista.avd.default([]) %}
+{%             if entry.type is arista.avd.defined and entry.extcommunities is arista.avd.defined %}
+| {{ ip_extcommunity_list.name }} | {{ entry.type }} | {{ entry.extcommunities }} |
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
