@@ -5,6 +5,9 @@ vrfs:
   {{ vrf.name }}:
     tenant: {{ tenant.name }}
     ip_routing: true
+{%     if vrf.ipv6_routing | arista.avd.default(tenant.ipv6_routing, false) == true %}
+    ipv6_routing: true
+{%     endif %}
 {%         if vrf.description is arista.avd.defined %}
     description: {{ vrf.description }}
 {%         endif %}

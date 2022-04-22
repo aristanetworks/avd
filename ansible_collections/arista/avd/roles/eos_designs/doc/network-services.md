@@ -87,6 +87,13 @@ svi_profiles:
     ip_address_virtual_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
+    ipv6_virtual_router_addresses:
+      - < IPv6_address/Mask | IPv6_address >
+      - < IPv6_address/Mask | IPv6_address >
+    ipv6_address_virtual: < IPv6_address/Mask >
+    ipv6_address_virtual_secondaries:
+      - < IPv6_address/Mask >
+      - < IPv6_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
       < IPv4 dhcp server IP >:
@@ -122,12 +129,21 @@ svi_profiles:
     enable_mlag_ibgp_peering_vrfs: < true | false >
 
     # Define L3 network services organized by vrf.
+    
+    # Define IPv6 unicast-routing for network services organized by vrf.
+    # Define for all VRFs under the tenant
+    ipv6_routing: < true | false, default -> false >
+
     vrfs:
       # VRF name | Required
       # vrf "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
       # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
       # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
       < tenant_a_vrf_1 >:
+
+        # Define IPv6 unicast-routing for network services organized by vrf.
+        # Define per VRF
+        ipv6_routing: < true | false, default -> false >
 
         # Optional
         description: < vrf_description >
@@ -239,6 +255,10 @@ svi_profiles:
             ip_address_virtual_secondaries:
               - < IPv4_address/Mask >
               - < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
+            ipv6_address_virtual_secondaries:
+              - < IPv6_address/Mask >
+              - < IPv6_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
@@ -246,6 +266,9 @@ svi_profiles:
             ip_virtual_router_addresses:
               - < IPv4_address/Mask | IPv4_address >
               - < IPv4_address/Mask | IPv4_address >
+            ipv6_virtual_router_addresses:
+              - < IPv6_address/Mask | IPv6_address >
+              - < IPv6_address/Mask | IPv6_address >
 
             # IP Helper for DHCP relay
             ip_helpers:
@@ -262,6 +285,7 @@ svi_profiles:
               < l3_leaf_inventory_hostname_1 >:
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
+                ipv6_address: < IPv6_address/Mask >                
 
                 # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
                 # Overrides the setting on SVI level.
@@ -274,6 +298,7 @@ svi_profiles:
 
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
+                ipv6_address: < IPv6_address/Mask >
 
             # Defined interface MTU
             mtu: < mtu >
@@ -309,6 +334,7 @@ svi_profiles:
         l3_interfaces:
           - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            ipv6_addresses: [ <IPv6_address/Mask>, <IPv6_address/Mask>, <IPv6_address/Mask> ]
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
             enabled: < true | false >
@@ -335,6 +361,7 @@ svi_profiles:
           - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
             encapsulation_dot1q_vlan: [ <vlan id>, <vlan id> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            ipv6_addresses: [ <IPv6_address/Mask>, <IPv6_address/Mask> ]
             nodes: [ < node_1 >, < node_2 > ]
             description: < description >
             enabled: < true | false >
@@ -348,6 +375,15 @@ svi_profiles:
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
+            distance: < 1-255 >
+            tag: < 0-4294967295 >
+            name: < description >
+            metric: < 0-4294967295 >
+            interface: < interface >
+            nodes: [ < node_1 >, < node_2 >]
+        ipv6_static_routes:
+          - destination_address_prefix: < IPv6_address/Mask >
+            gateway: < IPv6_address >
             distance: < 1-255 >
             tag: < 0-4294967295 >
             name: < description >
@@ -420,11 +456,13 @@ svi_profiles:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
           < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
 
    # Define L2 network services organized by vlan id.
     l2vlans:
@@ -471,12 +509,14 @@ svi_profiles:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
           < 1-4096 >:
             vni_override: < 1-16777215 >
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
     l2vlans:
       < 1-4096 >:
         vni_override: < 1-16777215 >
@@ -501,12 +541,14 @@ svi_profiles:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
           < 1-4096 >:
             vni_override: < 1-16777215 >
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
     l2vlans:
       < 1-4096 >:
         vni_override: < 1-16777215 >
@@ -541,6 +583,7 @@ dc1_tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.10.0/24
+            ipv6_address_virtual: 2001:db8:110::/64
             mtu: 1400
           111:
             vni_override: 50111
@@ -548,6 +591,7 @@ dc1_tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.11.0/24
+            ipv6_address_virtual: 2001:db8:111::/64
           112:
             name: Tenant_A_OP_Zone_3
             tags: [ DC1_LEAF2 ]
@@ -555,11 +599,16 @@ dc1_tenants:
             ip_virtual_router_addresses:
               - 10.1.12.1
               - 10.2.12.1/24
+            ipv6_virtual_router_addresses:
+              - 2001:db8:112::1
+              - 2001:db8:212::1/64
             nodes:
               DC1-LEAF2A:
                 ip_address: 10.1.12.2/24
+                ipv6_address: 2001:db8:112::2/64
               DC1-LEAF2B:
                 ip_address: 10.1.12.3/24
+                ipv6_address: 2001:db8:112::3/64
           113:
             name: Tenant_A_OP_Zone_WAN
             tags: [ DC1_BL1 ]
@@ -567,8 +616,10 @@ dc1_tenants:
             nodes:
               DC1-BL1A:
                 ip_address: 10.1.13.1/24
+                ipv6_address: 2001:db8:113::1/64
               DC1-BL1B:
                 ip_address: 10.1.13.2/24
+                ipv6_address: 2001:db8:113::2/64
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
@@ -577,11 +628,13 @@ dc1_tenants:
             tags: [ web, erp1 ]
             enabled: true
             ip_address_virtual: 10.1.20.0/24
+            ipv6_address_virtual: 2001:db8:120::/64
           121:
             name: Tenant_A_WEBZone_2
             tags: [ web ]
             enabled: true
             ip_address_virtual: 10.1.21.0/24
+            ipv6_address_virtual: 2001:db8:121::/64
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -590,11 +643,13 @@ dc1_tenants:
             tags: [ app, erp1 ]
             enabled: true
             ip_address_virtual: 10.1.30.0/24
+            ipv6_address_virtual: 2001:db8:130::/64
           131:
             name: Tenant_A_APP_Zone_2
             tags: [ app ]
             enabled: true
             ip_address_virtual: 10.1.31.0/24
+            ipv6_address_virtual: 2001:db8:131::/64
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -603,11 +658,13 @@ dc1_tenants:
             tags: [ db, erp1 ]
             enabled: true
             ip_address_virtual: 10.1.40.0/24
+            ipv6_address_virtual: 2001:db8:140::/64
           141:
             name: Tenant_A_DB_Zone_2
             tags: [ db ]
             enabled: true
             ip_address_virtual: 10.1.41.0/24
+            ipv6_address_virtual: 2001:db8:141::/64
       Tenant_A_WAN_Zone:
         vrf_vni: 14
         svis:
@@ -616,6 +673,7 @@ dc1_tenants:
             tags: [ wan ]
             enabled: true
             ip_address_virtual: 10.1.40.0/24
+            ipv6_address_virtual: 2001:db8:140::/64
     l2vlans:
       160:
         vni_override: 55160
@@ -636,11 +694,13 @@ dc1_tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.2.10.0/24
+            ipv6_address_virtual: 2001:db8:210::/64
           211:
             name: Tenant_B_OP_Zone_2
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.2.11.0/24
+            ipv6_address_virtual: 2001:db8:211::/64
       Tenant_B_WAN_Zone:
         vrf_vni: 21
         svis:
@@ -649,4 +709,5 @@ dc1_tenants:
             tags: [ wan ]
             enabled: true
             ip_address_virtual: 10.2.50.0/24
+            ipv6_address_virtual: 2001:db8:250::/64
 ```

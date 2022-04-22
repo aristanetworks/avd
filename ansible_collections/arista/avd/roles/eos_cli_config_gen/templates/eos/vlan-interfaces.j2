@@ -64,9 +64,6 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ vlan_interfaces[vlan_interface].ipv6_address_link_local }} link-local
 {%     endif %}
-{%     if vlan_interfaces[vlan_interface].ipv6_address_virtual is arista.avd.defined %}
-   ipv6 address virtual {{ vlan_interfaces[vlan_interface].ipv6_address_virtual }}
-{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled is arista.avd.defined(true) %}
    ipv6 nd ra disabled
 {%     endif %}
@@ -246,11 +243,24 @@ interface {{ vlan_interface }}
    ip virtual-router address {{ ip_virtual_router_address }}
 {%         endfor %}
 {%     endif %}
+{%     if vlan_interfaces[vlan_interface].ipv6_virtual_router_addresses is arista.avd.defined %}
+{%         for ipv6_virtual_router_address in vlan_interfaces[vlan_interface].ipv6_virtual_router_addresses %}
+   ipv6 virtual-router address {{ ipv6_virtual_router_address }}
+{%         endfor %}
+{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_address_virtual is arista.avd.defined %}
    ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual }}
 {%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondaries is arista.avd.defined %}
 {%             for ip_address_virtual_secondary in vlan_interfaces[vlan_interface].ip_address_virtual_secondaries %}
    ip address virtual {{ ip_address_virtual_secondary }} secondary
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].ipv6_address_virtual is arista.avd.defined %}
+   ipv6 address virtual {{ vlan_interfaces[vlan_interface].ipv6_address_virtual }}
+{%         if vlan_interfaces[vlan_interface].ipv6_address_virtual_secondaries is arista.avd.defined %}
+{%             for ipv6_address_virtual_secondary in vlan_interfaces[vlan_interface].ipv6_address_virtual_secondaries %}
+   ipv6 address virtual {{ ipv6_address_virtual_secondary }} secondary
 {%             endfor %}
 {%         endif %}
 {%     endif %}
