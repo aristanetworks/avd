@@ -11,7 +11,7 @@ import os
 def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     """
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
-    dictionaries.It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
+    dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
     configurable) and if there is a list in the dictionary value,it inserts this value list to
     secondary key (key name is configurable), if secondary key is provided.
 
@@ -59,9 +59,10 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     elif isinstance(dictionary, list):
         output = []
         for element in dictionary:
-            item = {}
-            item.update({primary_key: element})
-            output.append(item)
+            if not isinstance(element, dict):
+                item = {}
+                item.update({primary_key: element})
+                output.append(item)
         return output
     else:
         output = []

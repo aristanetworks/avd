@@ -74,7 +74,7 @@ To use this filter:
 ### convert_dicts filter
 
 The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
-dictionaries.It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
+dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
 configurable) and if there is a list in the dictionary value,it inserts this value list to
 secondary key (key name is configurable), if secondary key is provided.
 
