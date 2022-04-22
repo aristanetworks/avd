@@ -102,6 +102,14 @@ interface Management1
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 
+### Router BGP Listen Ranges
+
+| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS |
+| ------ | ------------------------- | ---------- | ----------- | --------- |
+| 10.10.10.0/24 | - | my-peer-group1 | my-peer-filter | - |
+| 12.10.10.0/24 | True | my-peer-group3 | - | 65444 |
+| 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - |
+
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
