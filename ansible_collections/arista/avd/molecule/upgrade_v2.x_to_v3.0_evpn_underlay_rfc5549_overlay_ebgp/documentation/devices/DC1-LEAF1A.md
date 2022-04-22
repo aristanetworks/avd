@@ -122,9 +122,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -276,10 +276,10 @@ vlan 131
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -316,22 +316,22 @@ interface Ethernet4
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 ```
 
 ## Loopback Interfaces
@@ -387,7 +387,6 @@ interface Loopback1
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -603,9 +602,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 20 |  30 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 20 Seconds | 30 | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -674,8 +673,7 @@ router bgp 65101
       vlan 120-121
    !
    address-family evpn
-      host-flap detection window 20
-      host-flap detection threshold 30
+      host-flap detection window 20 threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -810,7 +808,7 @@ vrf instance Tenant_A_WEB_Zone
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

@@ -70,21 +70,22 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 # Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
-# BGP peer groups encrypted password
-# IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Optional
-# EVPN_OVERLAY_PEERS | Optional
+# BGP peer group names and encrypted password | Optional
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS:
+   # Old mixed case key "IPv4_UNDERLAY_PEERS" is supported for backward-compatibility
+  ipv4_underlay_peers:
     name: < name of peer group | default -> IPv4-UNDERLAY-PEERS >
     password: "< encrypted password >"
-  MLAG_IPv4_UNDERLAY_PEER:
-      name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
-      password: "< encrypted password >"
-  EVPN_OVERLAY_PEERS:
-      name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
-      password: "< encrypted password >"
+   # Old mixed case key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
+  mlag_ipv4_underlay_peer:
+    name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
+    password: "< encrypted password >"
+   # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
+  evpn_overlay_peers:
+    name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
+    password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
@@ -111,6 +112,9 @@ evpn_hostflap_detection:
 
   # Time (in seconds) to detect a MAC duplication issue
   window: < seconds | default -> 180 >
+
+  # Time (in seconds) to purge a MAC duplication issue
+  expiry_timeout: < integer >
 
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.

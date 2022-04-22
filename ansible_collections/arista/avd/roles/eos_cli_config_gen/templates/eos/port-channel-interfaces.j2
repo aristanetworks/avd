@@ -138,6 +138,11 @@ interface {{ port_channel_interface }}
       route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
 {%         endif %}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].snmp_trap_link_change is arista.avd.defined(false) %}
+   no snmp trap link-change
+{%     elif port_channel_interfaces[port_channel_interface].snmp_trap_link_change is arista.avd.defined(true) %}
+   snmp trap link-change
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interfaces[port_channel_interface].lacp_id }}
 {%     endif %}
@@ -370,6 +375,12 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].isis_authentication_key is arista.avd.defined %}
    isis authentication key 7 {{ port_channel_interfaces[port_channel_interface].isis_authentication_key }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ port_channel_interfaces[port_channel_interface].traffic_policy.input }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ port_channel_interfaces[port_channel_interface].traffic_policy.output }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].eos_cli is arista.avd.defined %}
    {{ port_channel_interfaces[port_channel_interface].eos_cli | indent(3, false) }}

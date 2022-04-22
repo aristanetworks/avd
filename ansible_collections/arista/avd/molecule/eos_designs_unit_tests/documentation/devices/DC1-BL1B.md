@@ -7,6 +7,9 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -99,9 +102,9 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -115,6 +118,7 @@ ip name-server vrf MGMT 192.168.200.5
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -139,6 +143,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -283,32 +300,32 @@ vlan 350
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet7
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.97/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet7
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.99/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet7
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.101/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet7
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.103/31
 !
@@ -395,7 +412,6 @@ interface Loopback1
 | Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -641,6 +657,12 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
@@ -724,6 +746,7 @@ router bgp 65105
       vlan 350
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -938,7 +961,7 @@ vrf instance Tenant_L3_VRF_Zone
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

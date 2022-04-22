@@ -69,9 +69,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -211,8 +211,8 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet6
    no shutdown
-   mac security profile MACSEC_PROFILE
    mtu 1499
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 11.1.2.1/31
    ptp enable

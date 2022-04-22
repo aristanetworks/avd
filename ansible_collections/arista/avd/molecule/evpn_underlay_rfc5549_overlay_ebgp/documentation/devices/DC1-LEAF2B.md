@@ -129,9 +129,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -395,10 +395,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | - | default | 1500 | false | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -615,7 +615,6 @@ interface Loopback100
 | Vlan3019 |  Tenant_B_OP_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.3/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -992,9 +991,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 20 |  30 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 20 Seconds | 30 | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -1116,8 +1115,7 @@ router bgp 65102
       vlan 310-311
    !
    address-family evpn
-      host-flap detection window 20
-      host-flap detection threshold 30
+      host-flap detection window 20 threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -1325,7 +1323,7 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.7
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

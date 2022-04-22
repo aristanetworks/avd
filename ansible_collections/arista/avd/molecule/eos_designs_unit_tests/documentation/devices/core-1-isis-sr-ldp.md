@@ -38,9 +38,9 @@
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -124,11 +124,14 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet5 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet6 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet3 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet5 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet6 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | - | - | - |
+| Ethernet12 | P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12 | *routed | 12 | *- | *default | *1500 | *false | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12 | *routed | 12 | *- | *default | *1500 | *false | *- | *- | *- | *- |
+ *Inherited from Port-Channel Interface
 
 #### ISIS
 
@@ -152,126 +155,126 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet1
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address unnumbered loopback0
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 $1c$sTNAlR6rKSw=
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet2
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet2
    no shutdown
-   speed 100full
    mtu 1601
+   speed 100full
    no switchport
    ip address 100.123.123.2/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   service-profile test_qos_profile
    isis enable CORE
    isis circuit-type level-1
    isis metric 60
-   isis network point-to-point
    isis hello padding
-   service-profile test_qos_profile
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
+   isis network point-to-point
 !
 interface Ethernet3
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet3
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.4/31
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 $1c$sTNAlR6rKSw=
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet4
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet4
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.6/31
    ipv6 enable
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 $1c$sTNAlR6rKSw=
 !
 interface Ethernet5
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet5
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.8/31
    ipv6 enable
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 $1c$sTNAlR6rKSw=
-   mpls ip
 !
 interface Ethernet6
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet6
    no shutdown
-   speed 100full
    mtu 1602
+   speed 100full
    no switchport
    ip address unnumbered loopback0
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   service-profile test_qos_profile
    isis enable CORE
    isis circuit-type level-1-2
    isis metric 70
-   isis network point-to-point
    isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 $1c$sTNAlR6rKSw=
-   service-profile test_qos_profile
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet10
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet10
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.12/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 50
-   isis network point-to-point
    isis hello padding
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
+   isis network point-to-point
 !
 interface Ethernet12
    description P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12

@@ -18,7 +18,7 @@ ip_igmp_snooping:
     version: 3
   proxy: true
   vlans:
-    23:
+    - id: 23
       enabled: true
       querier:
         enabled: true
@@ -33,9 +33,9 @@ ip_igmp_snooping:
       max_groups: 20
       fast_leave: true
       proxy: true
-    24:
+    - id: 24
       enabled: true
-    25:
+    - id: 25
       enabled: false
       # Settings documented even if not enabled
       fast_leave: false

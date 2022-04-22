@@ -7,6 +7,8 @@ logging:
   trap: disabled
   synchronous:
     level:
+  format:
+    timestamp: traditional year timezone
   source_interface:
   vrfs:
     mgt:

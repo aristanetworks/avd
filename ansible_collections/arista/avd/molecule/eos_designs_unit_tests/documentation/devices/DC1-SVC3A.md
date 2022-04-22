@@ -8,6 +8,9 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -126,9 +129,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -142,6 +145,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -166,6 +170,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -508,32 +525,32 @@ vlan 4092
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.49/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.51/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.53/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.55/31
 !
@@ -568,45 +585,45 @@ interface Ethernet11
    description server04_inherit_all_from_profile_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpduguard disable
-   spanning-tree bpdufilter disable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
 !
 interface Ethernet12
    description server05_no_profile_Eth1
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpduguard disable
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter enable
 !
 interface Ethernet13
    description server06_override_profile_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport access vlan 210
    switchport mode access
-   spanning-tree portfast network
-   spanning-tree bpduguard enable
-   spanning-tree bpdufilter disable
+   switchport
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast network
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter disable
 !
 interface Ethernet14
    description server07_inherit_all_from_profile_port_channel_Eth1
@@ -622,16 +639,16 @@ interface Ethernet16
    description server09_override_profile_no_port_channel_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport access vlan 210
    switchport mode access
-   spanning-tree portfast network
-   spanning-tree bpduguard enable
-   spanning-tree bpdufilter disable
+   switchport
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast network
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter disable
 !
 interface Ethernet17
    description server10_no_profile_port_channel_lacp_fallback_Eth1
@@ -654,16 +671,16 @@ interface Ethernet19
 interface Ethernet20
    description server13_disabled_interfaces_Eth1
    shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 !
 interface Ethernet21
    description server14_explicitly_enabled_interfaces_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 !
 interface Ethernet22
    description server15_port_channel_with_disabled_phy_interfaces_Eth1
@@ -683,9 +700,9 @@ interface Ethernet24
 interface Ethernet25
    description server18_monitoring_session_source_phys_interfaces_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 !
 interface Ethernet26
    description server19_monitoring_session_destination_phys_Eth1
@@ -700,9 +717,9 @@ interface Ethernet27
 interface Ethernet28
    description server18_monitoring_session_source_phys_interface_Eth5
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 !
 interface Ethernet40
    description server20_monitoring_session_destination_phys_Eth1
@@ -990,7 +1007,6 @@ interface Loopback100
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4090 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4092 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -1430,6 +1446,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
@@ -1583,6 +1605,7 @@ router bgp 65103
       vlan 350
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

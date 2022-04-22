@@ -145,9 +145,9 @@ interface Management1
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 10 |  1 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 10 Seconds | 1 | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -213,8 +213,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
-      host-flap detection window 10
-      host-flap detection threshold 1
+      host-flap detection window 10 threshold 1
       domain identifier 3906060
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate

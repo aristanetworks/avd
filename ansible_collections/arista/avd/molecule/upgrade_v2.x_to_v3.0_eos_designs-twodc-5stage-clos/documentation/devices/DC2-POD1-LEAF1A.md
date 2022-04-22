@@ -77,9 +77,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -318,7 +318,6 @@ interface Loopback1
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan4092 |  default  |  172.21.210.2/24  |  -  |  172.21.210.1  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 

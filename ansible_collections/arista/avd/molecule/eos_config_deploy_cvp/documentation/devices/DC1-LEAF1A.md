@@ -117,9 +117,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -299,16 +299,16 @@ interface Ethernet4
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 ```
 
 ## Loopback Interfaces
@@ -364,7 +364,6 @@ interface Loopback1
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 

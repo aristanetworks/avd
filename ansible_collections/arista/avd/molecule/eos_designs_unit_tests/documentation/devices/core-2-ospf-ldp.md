@@ -38,9 +38,9 @@
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -124,11 +124,14 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet5 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet6 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet5 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet6 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | - | - | - |
+| Ethernet12 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *- | *default | *1500 | *false | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *- | *default | *1500 | *false | *- | *- | *- | *- |
+ *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
 
@@ -137,50 +140,50 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address unnumbered loopback0
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet2
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet2
    no shutdown
-   speed 100full
    mtu 1601
+   speed 100full
    no switchport
    ip address 100.123.123.3/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
    service-profile test_qos_profile
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet3
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.5/31
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet4
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.7/31
    ipv6 enable
@@ -190,42 +193,42 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.9/31
    ipv6 enable
+   mpls ip
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
-   mpls ip
 !
 interface Ethernet6
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6
    no shutdown
-   speed 100full
    mtu 1602
+   speed 100full
    no switchport
    ip address unnumbered loopback0
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
    service-profile test_qos_profile
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet10
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10
    no shutdown
-   speed forced 1000full
    mtu 1500
+   speed forced 1000full
    no switchport
    ip address 100.64.48.13/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet12
    description P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12

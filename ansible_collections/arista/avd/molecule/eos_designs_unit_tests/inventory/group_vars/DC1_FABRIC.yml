@@ -7,14 +7,18 @@ fabric_name: DC1_FABRIC
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
 
+# EVPN host flapping settings
+evpn_hostflap_detection:
+  expiry_timeout: 10
+
 # bgp peer groups passwords
 bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS:
+  IPv4_UNDERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
     name: UNDERLAY-PEERS
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
-  EVPN_OVERLAY_PEERS:
+  EVPN_OVERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
     password: "q+VNViP5i4rVjW1cxFv2wA=="
-  MLAG_IPv4_UNDERLAY_PEER:
+  MLAG_IPv4_UNDERLAY_PEER: # Using legacy upper-case keys to test backwards-compatibility
     name: MLAG-PEERS
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
@@ -161,6 +165,24 @@ l3leaf:
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
+    DC1_CL1:
+      mlag: true
+      evpn_services_l2_only: true
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+      nodes:
+        DC1-CL1A:
+          platform: 7368X4
+          id: 10
+          bgp_as: 65108
+          mgmt_ip: 192.168.200.119/24
+          uplink_switch_interfaces: [ Ethernet14, Ethernet14, Ethernet14, Ethernet14 ]
+        DC1-CL1B:
+          id: 11
+          bgp_as: 65109
+          mgmt_ip: 192.168.200.120/24
+          uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
 
 l2leaf:
   defaults:
@@ -236,3 +258,8 @@ platform_speed_groups:
   7280R:             # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
     25G: [ 3, 2 ]    # Unsorted order, but we should sort output correctly.
     10G: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2
+
+# Set Aboot password with sha512 hash
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f

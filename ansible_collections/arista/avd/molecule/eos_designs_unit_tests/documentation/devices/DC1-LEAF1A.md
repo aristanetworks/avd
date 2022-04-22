@@ -8,6 +8,9 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -118,9 +121,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -134,6 +137,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -158,6 +162,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -296,32 +313,32 @@ vlan 132
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.1/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.3/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.5/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.7/31
 !
@@ -329,21 +346,21 @@ interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 ```
 
 ## Loopback Interfaces
@@ -401,7 +418,6 @@ interface Loopback1
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
 | Vlan132 |  Tenant_A_APP_Zone  |  10.1.32.1/24  |  -  |  10.1.32.254, 10.2.32.254/24, 10.3.32.254/24  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -617,6 +633,12 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
@@ -690,6 +712,7 @@ router bgp 65101
       vlan 120-121
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

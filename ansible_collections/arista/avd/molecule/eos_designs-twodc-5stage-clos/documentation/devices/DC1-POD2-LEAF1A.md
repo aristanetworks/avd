@@ -92,9 +92,9 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -355,7 +355,6 @@ interface Loopback101
 | Vlan1100 |  vrf_with_loopbacks_from_overlapping_pool  |  -  |  10.100.100.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1101 |  vrf_with_loopbacks_from_pod_pools  |  -  |  10.101.100.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1102 |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  10.102.100.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 

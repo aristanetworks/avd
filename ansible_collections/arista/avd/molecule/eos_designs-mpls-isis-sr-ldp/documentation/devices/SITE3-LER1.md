@@ -70,9 +70,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -152,7 +152,7 @@ vlan internal order ascending range 1006 1199
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CORE | - | passive |
 
 ### Loopback Interfaces Device Configuration
@@ -232,7 +232,7 @@ ipv6 unicast-routing
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 

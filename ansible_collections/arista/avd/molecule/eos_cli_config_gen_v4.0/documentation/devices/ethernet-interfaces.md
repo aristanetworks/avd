@@ -147,9 +147,9 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | *- | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | true | true | true | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | *- | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
 
 #### ISIS
 
@@ -201,10 +201,10 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
    no switchport
-   priority-flow-control on
-   priority-flow-control priority 5 drop
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5
+   priority-flow-control on
+   priority-flow-control priority 5 drop
    link tracking group EVPN_MH_ES1 upstream
    comment
    Comment created from eos_cli under ethernet_interfaces.Ethernet1
@@ -213,29 +213,29 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
    priority-flow-control on
    priority-flow-control priority 5 no-drop
-   spanning-tree bpduguard disable
-   spanning-tree bpdufilter disable
    storm-control all level 10
    storm-control broadcast level pps 500
    storm-control unknown-unicast level 1
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    no switchport
-   no priority-flow-control
-   spanning-tree guard root
    ip address 172.31.128.1/31
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   no priority-flow-control
+   spanning-tree guard root
    link tracking group EVPN_MH_ES2 downstream
 !
 interface Ethernet4
@@ -243,8 +243,6 @@ interface Ethernet4
    shutdown
    mtu 9100
    switchport
-   priority-flow-control on
-   spanning-tree guard none
    ipv6 enable
    ipv6 address 2020::2020/64
    ipv6 address FE80:FEA::AB65/64 link-local
@@ -252,34 +250,36 @@ interface Ethernet4
    ipv6 nd managed-config-flag
    ipv6 access-group IPv6_ACL_IN in
    ipv6 access-group IPv6_ACL_OUT out
+   priority-flow-control on
+   spanning-tree guard none
 !
 interface Ethernet5
    description Molecule Routing
    no shutdown
    mtu 9100
    no switchport
-   spanning-tree guard loop
-   ip ospf network point-to-point
-   ip ospf area 100
    ip ospf cost 99
+   ip ospf network point-to-point
    ip ospf authentication message-digest
    ip ospf authentication-key 7 asfddja23452
+   ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 asfddja23452
+   pim ipv4 sparse-mode
    isis enable ISIS_TEST
    isis circuit-type level-2
    isis metric 99
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asfddja23452
-   pim ipv4 sparse-mode
+   spanning-tree guard loop
 !
 interface Ethernet6
    description SRV-POD02_Eth1
    logging event link-status
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
 !
@@ -290,24 +290,24 @@ interface Ethernet7
    switchport
    qos trust cos
    qos cos 5
-   spanning-tree portfast
-   spanning-tree bpduguard enable
-   spanning-tree bpdufilter enable
-   vmtracer vmware-esx
-   ptp enable
-   ptp announce interval 10
-   ptp announce timeout 30
-   ptp delay-req interval 20
-   ptp delay-mechanism p2p
-   ptp sync-message interval 5
-   ptp role master
-   ptp vlan all
-   ptp transport layer2
-   service-profile QoS
    storm-control all level 75
    storm-control broadcast level pps 10
    storm-control multicast level 50
    storm-control unknown-unicast level 10
+   ptp enable
+   ptp sync-message interval 5
+   ptp delay-mechanism p2p
+   ptp announce interval 10
+   ptp transport layer2
+   ptp announce timeout 30
+   ptp delay-req interval 20
+   ptp role master
+   ptp vlan all
+   service-profile QoS
+   spanning-tree portfast
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+   vmtracer vmware-esx
    transceiver media override 100gbase-ar4
 !
 interface Ethernet8
@@ -327,64 +327,64 @@ interface Ethernet9
    description interface_with_mpls_enabled
    no switchport
    ip address 172.31.128.9/31
-   mpls ip
    mpls ldp interface
+   mpls ip
 !
 interface Ethernet10
    description interface_with_mpls_disabled
    no switchport
    ip address 172.31.128.10/31
-   no mpls ip
    no mpls ldp interface
+   no mpls ip
 !
 interface Ethernet11
    description interface_in_mode_access_accepting_tagged_LACP
-   switchport
    switchport access vlan 200
    switchport mode access
+   switchport
    l2-protocol encapsulation dot1q vlan 200
 !
 interface Ethernet12
    description interface_with_dot1q_tunnel
-   switchport
    switchport access vlan 300
    switchport mode dot1q-tunnel
+   switchport
 !
 interface Ethernet13
    description interface_in_mode_access_with_voice
    no logging event link-status
-   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+   switchport
 !
 interface Ethernet14
    description SRV-POD02_Eth1
    logging event link-status
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
    switchport pvlan mapping 111
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
-   switchport
+   switchport vlan translation out 111-112 110
    switchport trunk allowed vlan 110-112
    switchport mode trunk
-   switchport vlan translation out 111-112 110
+   switchport
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
-   switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
+   switchport
    switchport trunk private-vlan secondary
 !
 interface Ethernet18
@@ -396,9 +396,9 @@ interface Ethernet18
 !
 interface Ethernet19
    description Switched port with no LLDP rx/tx
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
    no lldp transmit
    no lldp receive
 !

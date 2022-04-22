@@ -52,9 +52,9 @@
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -470,7 +470,6 @@ interface Loopback1
 | Vlan4085 |  default  |  172.21.110.2/24  |  -  |  172.21.110.1  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  172.20.110.2/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.19.110.2/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 

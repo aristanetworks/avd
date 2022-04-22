@@ -121,15 +121,15 @@ ptp monitor threshold mean-path-delay 4321
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
-   switchport
    switchport trunk allowed vlan 2,14
    switchport mode trunk
+   switchport
    ptp enable
-   ptp delay-mechanism e2e
    ptp sync-message interval 1
+   ptp delay-mechanism e2e
+   ptp transport layer2
    ptp role dynamic
    ptp vlan 2
-   ptp transport layer2
 !
 interface Ethernet5
    description DC1-AGG01_Ethernet1
@@ -141,13 +141,13 @@ interface Ethernet6
    no switchport
    ip address 172.31.255.15/31
    ptp enable
+   ptp sync-message interval 1
+   ptp delay-mechanism e2e
    ptp announce interval 3
+   ptp transport ipv4
    ptp announce timeout 9
    ptp delay-req interval -7
-   ptp delay-mechanism e2e
-   ptp sync-message interval 1
    ptp role dynamic
-   ptp transport ipv4
 ```
 
 ## Port-Channel Interfaces

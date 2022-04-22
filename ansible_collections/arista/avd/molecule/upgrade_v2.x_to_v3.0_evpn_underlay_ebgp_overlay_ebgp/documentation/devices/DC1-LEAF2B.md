@@ -127,9 +127,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -359,32 +359,32 @@ vlan 311
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet3
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.33/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet3
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.35/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet3
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.37/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet3
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.39/31
 !
@@ -431,9 +431,9 @@ interface Ethernet20
 interface Ethernet21
    description ROUTER01_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 ```
 
 ## Port-Channel Interfaces
@@ -582,7 +582,6 @@ interface Loopback100
 | Vlan211 |  Tenant_B_OP_Zone  |  -  |  10.2.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -874,9 +873,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Disabled | - |  - |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -1188,7 +1187,7 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.11
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

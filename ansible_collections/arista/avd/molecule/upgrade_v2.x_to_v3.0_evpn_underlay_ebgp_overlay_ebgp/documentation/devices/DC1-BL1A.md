@@ -100,9 +100,9 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -336,32 +336,32 @@ interface Ethernet10.200
 interface Ethernet41
    description P2P_LINK_TO_DC1-SPINE1_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.81/31
 !
 interface Ethernet42
    description P2P_LINK_TO_DC1-SPINE2_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.83/31
 !
 interface Ethernet43
    description P2P_LINK_TO_DC1-SPINE3_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.85/31
 !
 interface Ethernet44
    description P2P_LINK_TO_DC1-SPINE4_Ethernet6
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.87/31
 !
@@ -424,7 +424,6 @@ interface Loopback1
 | Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -638,9 +637,9 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Disabled | - |  - |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -940,7 +939,7 @@ vrf instance Tenant_L3_VRF_Zone
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

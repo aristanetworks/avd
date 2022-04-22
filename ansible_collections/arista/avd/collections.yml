@@ -1,4 +1,4 @@
-# collection requirements leveraged by molecule
+# collection requirements leveraged by molecule etc
 collections:
   - name: arista.cvp
   - name: arista.eos

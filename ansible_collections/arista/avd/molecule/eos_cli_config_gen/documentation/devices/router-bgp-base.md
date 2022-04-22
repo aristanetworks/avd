@@ -110,6 +110,7 @@ interface Management1
 | 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) |
 | 192.0.3.3 | 65434 | default | - | standard | - | - | - | True |
 | 192.0.3.4 | 65435 | default | - | large | - | - | - | False |
+| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - |
 
 ### BGP Neighbor Interfaces
 
@@ -157,27 +158,32 @@ router bgp 65101
    neighbor 192.0.3.4 remote-as 65435
    no neighbor 192.0.3.4 rib-in pre-policy retain
    neighbor 192.0.3.4 send-community large
+   neighbor 192.0.3.5 remote-as 65436
+   neighbor 192.0.3.5 description test_ebgp_multihop
+   neighbor 192.0.3.5 ebgp-multihop 2
+   neighbor 192.0.3.5 send-community standard
+   neighbor 192.0.3.5 maximum-routes 12000
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
    !
    address-family ipv4
-      network 10.0.0.0/8
-      network 172.16.0.0/12
-      network 192.168.0.0/16 route-map RM-FOO-MATCH
       neighbor foo prefix-list PL-BAR-v4-IN in
       neighbor foo prefix-list PL-BAR-v4-OUT out
       neighbor foo default-originate route-map RM-FOO-MATCH always
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
+      network 10.0.0.0/8
+      network 172.16.0.0/12
+      network 192.168.0.0/16 route-map RM-FOO-MATCH
    !
    address-family ipv6
-      network 2001:db8:100::/40
-      network 2001:db8:200::/40 route-map RM-BAR-MATCH
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
+      network 2001:db8:100::/40
+      network 2001:db8:200::/40 route-map RM-BAR-MATCH
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
 ```
 

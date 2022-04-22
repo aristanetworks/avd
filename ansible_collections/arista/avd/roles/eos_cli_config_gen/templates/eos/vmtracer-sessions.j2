@@ -1,20 +1,20 @@
 {# eos - vmtracer sessions #}
-{% for session in vmtracer_sessions | arista.avd.natural_sort %}
+{% for session in vmtracer_sessions | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 !
-vmtracer session {{ session }}
-{%     if vmtracer_sessions[session].url is arista.avd.defined %}
-   url {{ vmtracer_sessions[session].url }}
+vmtracer session {{ session.name }}
+{%     if session.url is arista.avd.defined %}
+   url {{ session.url }}
 {%     endif %}
-{%     if vmtracer_sessions[session].username is arista.avd.defined %}
-   username {{ vmtracer_sessions[session].username }}
+{%     if session.username is arista.avd.defined %}
+   username {{ session.username }}
 {%     endif %}
-{%     if vmtracer_sessions[session].password is arista.avd.defined %}
-   password 7 {{ vmtracer_sessions[session].password }}
+{%     if session.password is arista.avd.defined %}
+   password 7 {{ session.password }}
 {%     endif %}
-{%     if vmtracer_sessions[session].autovlan_disable is arista.avd.defined(true) %}
+{%     if session.autovlan_disable is arista.avd.defined(true) %}
    autovlan disable
 {%     endif %}
-{%     if vmtracer_sessions[session].source_interface is arista.avd.defined %}
-   source-interface {{ vmtracer_sessions[session].source_interface }}
+{%     if session.source_interface is arista.avd.defined %}
+   source-interface {{ session.source_interface }}
 {%     endif %}
 {% endfor %}

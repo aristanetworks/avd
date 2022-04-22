@@ -44,7 +44,5 @@ EXAMPLES = r'''
   eos_designs_set_peer_facts:
     avd_topology_peers: True
     avd_overlay_peers: True
-  delegate_facts: True
-  delegate_to: "{{ ansible_play_hosts[0] }}"
   run_once: True
 '''

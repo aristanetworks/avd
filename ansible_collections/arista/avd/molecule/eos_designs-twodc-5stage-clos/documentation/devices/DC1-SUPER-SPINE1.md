@@ -39,9 +39,9 @@
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -154,8 +154,8 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1
    no shutdown
-   mac security profile MACSEC_PROFILE
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.11.0/31
    ptp enable
@@ -164,8 +164,8 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet1
    no shutdown
-   mac security profile MACSEC_PROFILE
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.11.2/31
    ptp enable
@@ -174,8 +174,8 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1
    no shutdown
-   mac security profile MACSEC_PROFILE
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.12.0/31
    ptp enable
@@ -184,8 +184,8 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet1
    no shutdown
-   mac security profile MACSEC_PROFILE
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.12.2/31
    ptp enable
@@ -202,8 +202,8 @@ interface Ethernet5
 interface Ethernet6
    description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet4
    no shutdown
-   mac security profile MACSEC_PROFILE
    mtu 1499
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 11.1.2.0/31
    ptp enable

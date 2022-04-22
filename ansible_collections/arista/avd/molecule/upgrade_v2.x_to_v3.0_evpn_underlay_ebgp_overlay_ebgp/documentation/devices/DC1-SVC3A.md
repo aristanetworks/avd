@@ -125,9 +125,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -471,42 +471,42 @@ interface Ethernet11
    description server04_inherit_all_from_profile_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet12
    description server05_no_profile_Eth1
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet13
    description server06_override_profile_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport access vlan 210
    switchport mode access
-   spanning-tree portfast network
-   spanning-tree bpduguard enable
+   switchport
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast network
+   spanning-tree bpduguard enable
 !
 interface Ethernet14
    description server07_inherit_all_from_profile_port_channel_Eth1
@@ -522,15 +522,15 @@ interface Ethernet16
    description server09_override_profile_no_port_channel_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport access vlan 210
    switchport mode access
-   spanning-tree portfast network
-   spanning-tree bpduguard enable
+   switchport
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast network
+   spanning-tree bpduguard enable
 !
 interface Ethernet17
    description server10_no_profile_port_channel_lacp_fallback_Eth1
@@ -553,32 +553,32 @@ interface Ethernet19
 interface Ethernet41
    description P2P_LINK_TO_DC1-SPINE1_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.49/31
 !
 interface Ethernet42
    description P2P_LINK_TO_DC1-SPINE2_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.51/31
 !
 interface Ethernet43
    description P2P_LINK_TO_DC1-SPINE3_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.53/31
 !
 interface Ethernet44
    description P2P_LINK_TO_DC1-SPINE4_Ethernet4
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.55/31
 ```
@@ -814,7 +814,6 @@ interface Loopback100
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4090 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4092 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -1243,9 +1242,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Disabled | - |  - |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 

@@ -1,8 +1,9 @@
 ### Domain Lookup ###
 ip_domain_lookup:
   source_interfaces:
-    Management0:
+    - name: Management0
       vrf: mgt
+    - name: Loopback0
 
 ### Name Servers ###
 name_server:

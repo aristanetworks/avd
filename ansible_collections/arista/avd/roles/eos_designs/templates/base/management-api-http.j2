@@ -9,4 +9,7 @@ management_api_http:
 {%     if management_eapi.enable_https is arista.avd.defined %}
   enable_https: {{ management_eapi.enable_https }}
 {%     endif %}
+{%     if management_eapi.default_services is arista.avd.defined %}
+  default_services: {{ management_eapi.default_services }}
+{%     endif %}
 {% endif %}

@@ -124,9 +124,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -561,7 +561,6 @@ interface Loopback100
 | Vlan3029 |  Tenant_C_OP_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.3/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 

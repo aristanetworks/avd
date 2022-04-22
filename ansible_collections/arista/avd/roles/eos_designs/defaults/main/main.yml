@@ -111,6 +111,11 @@ platform_settings:
     reload_delay:
       mlag: 900
       non_mlag: 1020
+  - platforms: [ '7368X4' ]
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
   - platforms: [ 'VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab' ]
     reload_delay:
       mlag: 300
@@ -131,10 +136,12 @@ platform_settings:
 
 connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
 
+network_services_keys:
+  - name: tenants
+
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
 custom_structured_configuration_list_merge: 'replace'
-
 
 node_type_keys: "{{ default_node_type_keys[design.type] }}"
 

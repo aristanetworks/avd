@@ -8,15 +8,15 @@
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
-{%             set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.channel_group.id is arista.avd.defined %}
+{%             set port_channel_interface = 'Port-Channel' + ethernet_interface.channel_group.id | string %}
 {%             if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
-{%                 set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
-{%                 set mode = port_channel_interfaces[port_channel_interface].mode | default("access") %}
-{%                 set vlans = port_channel_interfaces[port_channel_interface].vlans | default ('-') %}
-{%                 set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | default ('-') %}
-{%                 set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id %}
+{%                 set description = ethernet_interface.description | arista.avd.default("-") %}
+{%                 set mode = port_channel_interfaces[port_channel_interface].mode | arista.avd.default("access") %}
+{%                 set vlans = port_channel_interfaces[port_channel_interface].vlans | arista.avd.default('-') %}
+{%                 set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | arista.avd.default('-') %}
+{%                 set channel_group = ethernet_interface.channel_group.id %}
 {%                 if port_channel_interfaces[port_channel_interface].trunk_groups is arista.avd.defined %}
 {%                     set l2 = namespace() %}
 {%                     set l2.trunk_groups = [] %}
@@ -27,24 +27,24 @@
 {%                     set l2 = namespace() %}
 {%                     set l2.trunk_groups = "-" %}
 {%                 endif %}
-| {{ ethernet_interface }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
+| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%             endif %}
-{%         elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
-{%             set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
-{%             set mode = ethernet_interfaces[ethernet_interface].mode | default("access") %}
-{%             set vlans = ethernet_interfaces[ethernet_interface].vlans | default ('-') %}
-{%             set native_vlan = ethernet_interfaces[ethernet_interface].native_vlan | default ('-') %}
-{%             if ethernet_interfaces[ethernet_interface].trunk_groups is defined %}
+{%         elif ethernet_interface.type is not defined or ethernet_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
+{%             set description = ethernet_interface.description | arista.avd.default("-") %}
+{%             set mode = ethernet_interface.mode | arista.avd.default("access") %}
+{%             set vlans = ethernet_interface.vlans | arista.avd.default('-') %}
+{%             set native_vlan = ethernet_interface.native_vlan | arista.avd.default('-') %}
+{%             if ethernet_interface.trunk_groups is defined %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = [] %}
-{%                 for trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
+{%                 for trunk_group in ethernet_interface.trunk_groups | arista.avd.natural_sort %}
 {%                     do l2.trunk_groups.append(trunk_group) %}
 {%                 endfor %}
 {%             else %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = "-" %}
 {%             endif %}
-| {{ ethernet_interface }} |  {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - |
+| {{ ethernet_interface.name }} |  {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - |
 {%         endif %}
 {%     endfor %}
 
@@ -52,11 +52,11 @@
 {# Encapsulation #}
 {%     set encapsulation_dot1q_interfaces = [] %}
 {%     set flexencap_interfaces = [] %}
-{%     for ethernet_interface in ethernet_interfaces %}
-{%         if ethernet_interfaces[ethernet_interface].type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
-{%             if ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
+{%             if ethernet_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
 {%                 do encapsulation_dot1q_interfaces.append(ethernet_interface) %}
-{%             elif ethernet_interfaces[ethernet_interface].encapsulation_vlan is arista.avd.defined %}
+{%             elif ethernet_interface.encapsulation_vlan is arista.avd.defined %}
 {%                 do flexencap_interfaces.append(ethernet_interface) %}
 {%             endif %}
 {%         endif %}
@@ -67,12 +67,12 @@
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
-{%         for ethernet_interface in encapsulation_dot1q_interfaces | arista.avd.natural_sort %}
-{%             set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default('-') %}
-{%             set type = ethernet_interfaces[ethernet_interface].type %}
-{%             set vlan_id = ethernet_interfaces[ethernet_interface].vlan_id | arista.avd.default('-') %}
-{%             set encapsulation_dot1q_vlan = ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan | arista.avd.default('-') %}
-| {{ ethernet_interface }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} |
+{%         for ethernet_interface in encapsulation_dot1q_interfaces %}
+{%             set description = ethernet_interface.description | arista.avd.default('-') %}
+{%             set type = ethernet_interface.type %}
+{%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
+{%             set encapsulation_dot1q_vlan = ethernet_interface.encapsulation_dot1q_vlan | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} |
 {%         endfor %}
 {%     endif %}
 {%     if flexencap_interfaces | length > 0 %}
@@ -81,27 +81,27 @@
 
 | Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-{%         for ethernet_interface in flexencap_interfaces | arista.avd.natural_sort %}
-{%             set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
-{%             set type = ethernet_interfaces[ethernet_interface].type %}
-{%             set vlan_id = ethernet_interfaces[ethernet_interface].vlan_id | arista.avd.default('-') %}
-{%             set client_unmatched = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.unmatched | arista.avd.default(false) %}
-{%             set client_dot1q_vlan = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.vlan | arista.avd.default("-") %}
-{%             set client_dot1q_outer = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.outer | arista.avd.default("-") %}
-{%             set client_dot1q_inner = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.inner | arista.avd.default("-") %}
-{%             set network_client = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.client | arista.avd.default(false) %}
-{%             set network_dot1q_vlan = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.vlan | arista.avd.default("-") %}
-{%             set network_dot1q_outer = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.outer | arista.avd.default("-") %}
-{%             set network_dot1q_inner = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.inner | arista.avd.default("-") %}
-| {{ ethernet_interface }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ client_unmatched }} | {{ client_dot1q_vlan }} | {{ client_dot1q_outer }} | {{ client_dot1q_inner }} | {{ network_client }} | {{ network_dot1q_vlan }} | {{ network_dot1q_outer }} | {{ network_dot1q_inner }} |
+{%         for ethernet_interface in flexencap_interfaces %}
+{%             set description = ethernet_interface.description | arista.avd.default("-") %}
+{%             set type = ethernet_interface.type %}
+{%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
+{%             set client_unmatched = ethernet_interface.encapsulation_vlan.client.unmatched | arista.avd.default(false) %}
+{%             set client_dot1q_vlan = ethernet_interface.encapsulation_vlan.client.dot1q.vlan | arista.avd.default("-") %}
+{%             set client_dot1q_outer = ethernet_interface.encapsulation_vlan.client.dot1q.outer | arista.avd.default("-") %}
+{%             set client_dot1q_inner = ethernet_interface.encapsulation_vlan.client.dot1q.inner | arista.avd.default("-") %}
+{%             set network_client = ethernet_interface.encapsulation_vlan.network.client | arista.avd.default(false) %}
+{%             set network_dot1q_vlan = ethernet_interface.encapsulation_vlan.network.dot1q.vlan | arista.avd.default("-") %}
+{%             set network_dot1q_outer = ethernet_interface.encapsulation_vlan.network.dot1q.outer | arista.avd.default("-") %}
+{%             set network_dot1q_inner = ethernet_interface.encapsulation_vlan.network.dot1q.inner | arista.avd.default("-") %}
+| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ client_unmatched }} | {{ client_dot1q_vlan }} | {{ client_dot1q_outer }} | {{ client_dot1q_inner }} | {{ network_client }} | {{ network_dot1q_vlan }} | {{ network_dot1q_outer }} | {{ network_dot1q_inner }} |
 {%         endfor %}
 {%     endif %}
 {# PVLAN #}
 {%     set ethernet_interface_pvlan = namespace() %}
 {%     set ethernet_interface_pvlan.configured = false %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].pvlan_mapping is arista.avd.defined or
-              ethernet_interfaces[ethernet_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.pvlan_mapping is arista.avd.defined or
+              ethernet_interface.trunk_private_vlan_secondary is arista.avd.defined %}
 {%             set ethernet_interface_pvlan.configured = true %}
 {%             break %}
 {%         endif %}
@@ -112,20 +112,20 @@
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].pvlan_mapping is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].trunk_private_vlan_secondary is arista.avd.defined %}
-{%                 set row_pvlan_mapping = ethernet_interfaces[ethernet_interface].pvlan_mapping | arista.avd.default('-') %}
-{%                 set row_trunk_private_vlan_secondary = ethernet_interfaces[ethernet_interface].trunk_private_vlan_secondary | arista.avd.default('-') %}
-| {{ ethernet_interface }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.pvlan_mapping is arista.avd.defined or
+               ethernet_interface.trunk_private_vlan_secondary is arista.avd.defined %}
+{%                 set row_pvlan_mapping = ethernet_interface.pvlan_mapping | arista.avd.default('-') %}
+{%                 set row_trunk_private_vlan_secondary = ethernet_interface.trunk_private_vlan_secondary | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
 {# VLAN Translations #}
 {%     set ethernet_interface_vlan_xlate = namespace() %}
 {%     set ethernet_interface_vlan_xlate.configured = false %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].vlan_translations is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.vlan_translations is arista.avd.defined %}
 {%             set ethernet_interface_vlan_xlate.configured = true %}
 {%             break %}
 {%         endif %}
@@ -136,12 +136,12 @@
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].vlan_translations is arista.avd.defined %}
-{%                 for vlan_translation in ethernet_interfaces[ethernet_interface].vlan_translations | arista.avd.natural_sort %}
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.vlan_translations is arista.avd.defined %}
+{%                 for vlan_translation in ethernet_interface.vlan_translations | arista.avd.natural_sort %}
 {%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
 {%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
-| {{ ethernet_interface }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }}
+| {{ ethernet_interface.name }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
@@ -149,8 +149,8 @@
 {%     endif %}
 {# Link Tracking Groups #}
 {%     set link_tracking_interfaces = [] %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].link_tracking_groups is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.link_tracking_groups is arista.avd.defined %}
 {%             do link_tracking_interfaces.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -161,9 +161,9 @@
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 {%         for link_tracking_interface in link_tracking_interfaces %}
-{%             for link_tracking_group in ethernet_interfaces[link_tracking_interface].link_tracking_groups | arista.avd.natural_sort('name') %}
+{%             for link_tracking_group in link_tracking_interface.link_tracking_groups | arista.avd.natural_sort('name') %}
 {%                 if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
-| {{ link_tracking_interface }} | {{ link_tracking_group.name }} | {{ link_tracking_group.direction }} |
+| {{ link_tracking_interface.name }} | {{ link_tracking_group.name }} | {{ link_tracking_group.direction }} |
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
@@ -171,10 +171,10 @@
 {# IPv4 #}
 {%     set ethernet_interface_ipv4 = namespace() %}
 {%     set ethernet_interface_ipv4.configured = false %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined
-            and ethernet_interfaces[ethernet_interface].type in ['routed', 'l3dot1q']
-            and ethernet_interfaces[ethernet_interface].ip_address is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.type is arista.avd.defined
+            and ethernet_interface.type in ['routed', 'l3dot1q']
+            and ethernet_interface.ip_address is arista.avd.defined %}
 {%             set ethernet_interface_ipv4.configured = true %}
 {%         endif %}
 {%     endfor %}
@@ -195,32 +195,32 @@
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
-{%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.channel_group.id is arista.avd.defined %}
+{%                 set port_channel_interface = 'Port-Channel' + ethernet_interface.channel_group.id | string %}
 {%                 if port_channel_interfaces[port_channel_interface].ip_address is arista.avd.defined %}
-{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
+{%                     set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                     set type = port_channel_interfaces[port_channel_interface].type | arista.avd.default("*switchport") %}
-{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set ip_address = port_channel_interfaces[port_channel_interface].ip_address | arista.avd.default("-") %}
 {%                     set vrf = port_channel_interfaces[port_channel_interface].vrf | arista.avd.default("*default") %}
 {%                     set mtu = port_channel_interfaces[port_channel_interface].mtu | arista.avd.default("*-") %}
 {%                     set shutdown = port_channel_interfaces[port_channel_interface].shutdown | arista.avd.default("*-") %}
 {%                     set acl_in = port_channel_interfaces[port_channel_interface].access_group_in | arista.avd.default("*-") %}
 {%                     set acl_out = port_channel_interfaces[port_channel_interface].access_group_out | arista.avd.default("*-") %}
-| {{ ethernet_interface }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ip_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ acl_in }} | *{{ acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ip_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ acl_in }} | *{{ acl_out }} |
 {%                 endif %}
 {%             else %}
-{%                 if ethernet_interfaces[ethernet_interface].ip_address is arista.avd.defined %}
-{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
-{%                     set type = ethernet_interfaces[ethernet_interface].type | arista.avd.default("switchport") %}
-{%                     set ip_address = ethernet_interfaces[ethernet_interface].ip_address | arista.avd.default("-") %}
-{%                     set vrf = ethernet_interfaces[ethernet_interface].vrf | arista.avd.default("default") %}
-{%                     set mtu = ethernet_interfaces[ethernet_interface].mtu | arista.avd.default("-") %}
-{%                     set shutdown = ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default("-") %}
-{%                     set acl_in = ethernet_interfaces[ethernet_interface].access_group_in | arista.avd.default("-") %}
-{%                     set acl_out = ethernet_interfaces[ethernet_interface].access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface }} | {{ description }} | {{ type }} | - | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ acl_in }} | {{ acl_out }} |
+{%                 if ethernet_interface.ip_address is arista.avd.defined %}
+{%                     set description = ethernet_interface.description | arista.avd.default("-") %}
+{%                     set type = ethernet_interface.type | arista.avd.default("switchport") %}
+{%                     set ip_address = ethernet_interface.ip_address | arista.avd.default("-") %}
+{%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
+{%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}
+{%                     set shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
+{%                     set acl_in = ethernet_interface.access_group_in | arista.avd.default("-") %}
+{%                     set acl_out = ethernet_interface.access_group_out | arista.avd.default("-") %}
+| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | - | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ acl_in }} | {{ acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -231,20 +231,20 @@
 {# IPv6 #}
 {%     set ethernet_interface_ipv6 = namespace() %}
 {%     set ethernet_interface_ipv6.configured = false %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].type is defined
-            and ethernet_interfaces[ethernet_interface].type in ['routed', 'l3dot1q']
-            and ethernet_interfaces[ethernet_interface].ipv6_address is defined or ethernet_interfaces[ethernet_interface].ipv6_enable is arista.avd.defined(true) %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.type is defined
+            and ethernet_interface.type in ['routed', 'l3dot1q']
+            and (ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true)) %}
 {%             set ethernet_interface_ipv6.configured = true %}
 {%         endif %}
 {%     endfor %}
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}
-{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%     if port_channel_interfaces is arista.avd.defined %}
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 {%             if port_channel_interfaces[port_channel_interface].type is defined
                 and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q']
-                and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
+                and (port_channel_interfaces[port_channel_interface].ipv6_address is defined or port_channel_interfaces[port_channel_interface].ipv6_enable is arista.avd.defined(true)) %}
 {%                 set port_channel_interface_ipv6.configured = true %}
 {%             endif %}
 {%         endfor %}
@@ -255,36 +255,36 @@
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
-{%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%                 if port_channel_interfaces[port_channel_interface].ipv6_address is arista.avd.defined or ethernet_interfaces[ethernet_interface].ipv6_enable is arista.avd.defined(true) %}
-{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
-{%                     set type = port_channel_interfaces[port_channel_interface].type | arista.avd.default("*switchport") %}
-{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.channel_group.id is arista.avd.defined %}
+{%                 set port_channel_interface = 'Port-Channel' + ethernet_interface.channel_group.id | string %}
+{%                 if port_channel_interfaces[port_channel_interface].ipv6_address is arista.avd.defined or port_channel_interfaces[port_channel_interface].ipv6_enable is arista.avd.defined(true) %}
+{%                     set description = ethernet_interface.description | arista.avd.default("-") %}
+{%                     set type = port_channel_interfaces[port_channel_interface].type | arista.avd.default("switchport") %}
+{%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set ipv6_address = port_channel_interfaces[port_channel_interface].ipv6_address | arista.avd.default("-") %}
-{%                     set vrf = port_channel_interfaces[port_channel_interface].vrf | arista.avd.default("*default") %}
-{%                     set mtu = port_channel_interfaces[port_channel_interface].mtu | arista.avd.default("*-") %}
-{%                     set shutdown = port_channel_interfaces[port_channel_interface].shutdown | arista.avd.default("*-") %}
-{%                     set nd_ra_disabled = port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled | arista.avd.default("*-") %}
-{%                     set managed_config_flag = port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag | arista.avd.default("*-") %}
-{%                     set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in | arista.avd.default("*-") %}
-{%                     set ipv6_acl_out = port_channel_interfaces[port_channel_interface].ipv6_access_group_out | arista.avd.default("*-") %}
-| {{ ethernet_interface }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
+{%                     set vrf = port_channel_interfaces[port_channel_interface].vrf | arista.avd.default("default") %}
+{%                     set mtu = port_channel_interfaces[port_channel_interface].mtu | arista.avd.default("-") %}
+{%                     set shutdown = port_channel_interfaces[port_channel_interface].shutdown | arista.avd.default("-") %}
+{%                     set nd_ra_disabled = port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled | arista.avd.default("-") %}
+{%                     set managed_config_flag = port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag | arista.avd.default("-") %}
+{%                     set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in | arista.avd.default("-") %}
+{%                     set ipv6_acl_out = port_channel_interfaces[port_channel_interface].ipv6_access_group_out | arista.avd.default("-") %}
+| {{ ethernet_interface.name }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ nd_ra_disabled | lower }} | *{{ managed_config_flag | lower }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
 {%             else %}
-{%                 if ethernet_interfaces[ethernet_interface].ipv6_address is arista.avd.defined or ethernet_interfaces[ethernet_interface].ipv6_enable is arista.avd.defined(true) %}
-{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
-{%                     set type = ethernet_interfaces[ethernet_interface].type | arista.avd.default("switchport") %}
-{%                     set ipv6_address = ethernet_interfaces[ethernet_interface].ipv6_address | arista.avd.default("-") %}
-{%                     set vrf = ethernet_interfaces[ethernet_interface].vrf | arista.avd.default("default") %}
-{%                     set mtu = ethernet_interfaces[ethernet_interface].mtu | arista.avd.default("-") %}
-{%                     set shutdown = ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default("-") %}
-{%                     set nd_ra_disabled = ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled | arista.avd.default("-") %}
-{%                     set managed_config_flag = ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag | arista.avd.default("*-") %}
-{%                     set ipv6_acl_in = ethernet_interfaces[ethernet_interface].ipv6_access_group_in | arista.avd.default("-") %}
-{%                     set ipv6_acl_out = ethernet_interfaces[ethernet_interface].ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface }} | {{ description }} | {{ type }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+{%                 if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
+{%                     set description = ethernet_interface.description | arista.avd.default("-") %}
+{%                     set type = ethernet_interface.type | arista.avd.default("switchport") %}
+{%                     set ipv6_address = ethernet_interface.ipv6_address | arista.avd.default("-") %}
+{%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
+{%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}
+{%                     set shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
+{%                     set nd_ra_disabled = ethernet_interface.ipv6_nd_ra_disabled | arista.avd.default("-") %}
+{%                     set managed_config_flag = ethernet_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
+{%                     set ipv6_acl_in = ethernet_interface.ipv6_access_group_in | arista.avd.default("-") %}
+{%                     set ipv6_acl_out = ethernet_interface.ipv6_access_group_out | arista.avd.default("-") %}
+| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -294,14 +294,14 @@
 {%     endif %}
 {# ISIS #}
 {%     set ethernet_interfaces_isis = [] %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_metric is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_circuit_type is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_hello_padding is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_authentication_mode is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.isis_enable is arista.avd.defined or
+               ethernet_interface.isis_metric is arista.avd.defined or
+               ethernet_interface.isis_circuit_type is arista.avd.defined or
+               ethernet_interface.isis_network_point_to_point is arista.avd.defined or
+               ethernet_interface.isis_passive is arista.avd.defined or
+               ethernet_interface.isis_hello_padding is arista.avd.defined or
+               ethernet_interface.isis_authentication_mode is arista.avd.defined %}
 {%             do ethernet_interfaces_isis.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -323,11 +323,11 @@
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
-{%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.channel_group.id is arista.avd.defined %}
+{%                 set port_channel_interface = 'Port-Channel' + ethernet_interface.channel_group.id | string %}
 {%                 if port_channel_interface in port_channel_interfaces_isis %}
-{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("-") %}
 {%                     set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = port_channel_interfaces[port_channel_interface].isis_circuit_type | arista.avd.default("-") %}
@@ -340,24 +340,24 @@
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode }} |
+| {{ ethernet_interface.name }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface in ethernet_interfaces_isis %}
-{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
-{%                     set isis_instance = ethernet_interfaces[ethernet_interface].isis_enable | arista.avd.default("-") %}
-{%                     set isis_metric = ethernet_interfaces[ethernet_interface].isis_metric | arista.avd.default("-") %}
-{%                     set isis_circuit_type = ethernet_interfaces[ethernet_interface].isis_circuit_type | arista.avd.default("-") %}
-{%                     set isis_hello_padding = ethernet_interfaces[ethernet_interface].isis_hello_padding | arista.avd.default("-") %}
-{%                     set isis_authentication_mode = ethernet_interfaces[ethernet_interface].isis_authentication_mode | arista.avd.default("-") %}
-{%                     if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
+{%                     set isis_instance = ethernet_interface.isis_enable | arista.avd.default("-") %}
+{%                     set isis_metric = ethernet_interface.isis_metric | arista.avd.default("-") %}
+{%                     set isis_circuit_type = ethernet_interface.isis_circuit_type | arista.avd.default("-") %}
+{%                     set isis_hello_padding = ethernet_interface.isis_hello_padding | arista.avd.default("-") %}
+{%                     set isis_authentication_mode = ethernet_interface.isis_authentication_mode | arista.avd.default("-") %}
+{%                     if ethernet_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
-{%                     elif ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined(true) %}
+{%                     elif ethernet_interface.isis_passive is arista.avd.defined(true) %}
 {%                         set mode = "passive" %}
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode }} |
+| {{ ethernet_interface.name }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -369,13 +369,13 @@
 {%     set evpn_es_ethernet_interfaces = [] %}
 {%     set evpn_dfe_ethernet_interfaces = [] %}
 {%     set evpn_mpls_ethernet_interfaces = [] %}
-{%     for ethernet_interface in ethernet_interfaces %}
-{%         if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.evpn_ethernet_segment is arista.avd.defined %}
 {%             do evpn_es_ethernet_interfaces.append(ethernet_interface) %}
-{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election is arista.avd.defined %}
+{%             if ethernet_interface.evpn_ethernet_segment.designated_forwarder_election is arista.avd.defined %}
 {%                 do evpn_dfe_ethernet_interfaces.append(ethernet_interface) %}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.mpls is arista.avd.defined %}
+{%             if ethernet_interface.evpn_ethernet_segment.mpls is arista.avd.defined %}
 {%                 do evpn_mpls_ethernet_interfaces.append(ethernet_interface) %}
 {%             endif %}
 {%         endif %}
@@ -388,11 +388,11 @@
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
-{%         for evpn_es_ethernet_interface in evpn_es_ethernet_interfaces | arista.avd.natural_sort %}
-{%             set esi = ethernet_interfaces[evpn_es_ethernet_interface].evpn_ethernet_segment.identifier | arista.avd.default("-") %}
-{%             set redundancy = ethernet_interfaces[evpn_es_ethernet_interface].evpn_ethernet_segment.redundancy | arista.avd.default("all-active") %}
-{%             set rt = ethernet_interfaces[evpn_es_ethernet_interface].evpn_ethernet_segment.route_target | arista.avd.default("-") %}
-| {{ evpn_es_ethernet_interface }} | {{ esi }} | {{ redundancy }} | {{ rt }} |
+{%         for evpn_es_ethernet_interface in evpn_es_ethernet_interfaces %}
+{%             set esi = evpn_es_ethernet_interface.evpn_ethernet_segment.identifier | arista.avd.default("-") %}
+{%             set redundancy = evpn_es_ethernet_interface.evpn_ethernet_segment.redundancy | arista.avd.default("all-active") %}
+{%             set rt = evpn_es_ethernet_interface.evpn_ethernet_segment.route_target | arista.avd.default("-") %}
+| {{ evpn_es_ethernet_interface.name }} | {{ esi }} | {{ redundancy }} | {{ rt }} |
 {%         endfor %}
 {%         if evpn_dfe_ethernet_interfaces | length > 0 %}
 
@@ -400,15 +400,15 @@
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
-{%             for evpn_dfe_ethernet_interface in evpn_dfe_ethernet_interfaces | arista.avd.natural_sort %}
-{%                 set df_eth_settings = ethernet_interfaces[evpn_dfe_ethernet_interface].evpn_ethernet_segment.designated_forwarder_election %}
+{%             for evpn_dfe_ethernet_interface in evpn_dfe_ethernet_interfaces %}
+{%                 set df_eth_settings = evpn_dfe_ethernet_interface.evpn_ethernet_segment.designated_forwarder_election %}
 {%                 set algorithm = df_eth_settings.algorithm | arista.avd.default("modulus") %}
 {%                 set pref_value = df_eth_settings.preference_value | arista.avd.default("-") %}
 {%                 set dont_preempt = df_eth_settings.dont_preempt | arista.avd.default(false) %}
 {%                 set hold_time = df_eth_settings.hold_time | arista.avd.default("-") %}
 {%                 set subsequent_hold_time = df_eth_settings.subsequent_hold_time | arista.avd.default("-") %}
 {%                 set candidate_reachability = df_eth_settings.candidate_reachability_required | arista.avd.default(false) %}
-| {{ evpn_dfe_ethernet_interface }} | {{ algorithm }} | {{ pref_value }} | {{ dont_preempt }} | {{ hold_time }} | {{ subsequent_hold_time }} | {{ candidate_reachability }} |
+| {{ evpn_dfe_ethernet_interface.name }} | {{ algorithm }} | {{ pref_value }} | {{ dont_preempt }} | {{ hold_time }} | {{ subsequent_hold_time }} | {{ candidate_reachability }} |
 {%             endfor %}
 {%         endif %}
 {%         if evpn_mpls_ethernet_interfaces | length > 0 %}
@@ -417,16 +417,16 @@
 
 | Interface | Shared Index | Tunnel Flood Filter Time |
 | --------- | ------------ | ------------------------ |
-{%             for evpn_mpls_ethernet_interface in evpn_mpls_ethernet_interfaces | arista.avd.natural_sort %}
-{%                 set shared_index = ethernet_interfaces[evpn_mpls_ethernet_interface].evpn_ethernet_segment.mpls.shared_index | arista.avd.default("-") %}
-{%                 set tff_time = ethernet_interfaces[evpn_mpls_ethernet_interface].evpn_ethernet_segment.mpls.tunnel_flood_filter_time | arista.avd.default("-") %}
-| {{ evpn_mpls_ethernet_interface }} | {{ shared_index }} | {{ tff_time }} |
+{%             for evpn_mpls_ethernet_interface in evpn_mpls_ethernet_interfaces %}
+{%                 set shared_index = evpn_mpls_ethernet_interface.evpn_ethernet_segment.mpls.shared_index | arista.avd.default("-") %}
+{%                 set tff_time = evpn_mpls_ethernet_interface.evpn_ethernet_segment.mpls.tunnel_flood_filter_time | arista.avd.default("-") %}
+| {{ evpn_mpls_ethernet_interface.name }} | {{ shared_index }} | {{ tff_time }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
 {%     set err_cor_enc_intfs = [] %}
-{%     for ethernet_interface in ethernet_interfaces %}
-{%         if ethernet_interfaces[ethernet_interface].error_correction_encoding is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.error_correction_encoding is arista.avd.defined %}
 {%             do err_cor_enc_intfs.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -436,24 +436,24 @@
 
 | Interface | Enabled |
 | --------- | ------- |
-{%         for ethernet_interface in err_cor_enc_intfs | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined(false) %}
+{%         for ethernet_interface in err_cor_enc_intfs %}
+{%             if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
 {%                 set enabled = ['Disabled'] %}
 {%             else %}
 {%                 set enabled = [] %}
-{%                 if ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(true) %}
+{%                 if ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(true) %}
 {%                     do enabled.append('fire-code') %}
 {%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+{%                 if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
 {%                     do enabled.append('reed-solomon') %}
 {%                 endif %}
 {%             endif %}
-| {{ ethernet_interface }} | {{ enabled | join('<br>') }} |
+| {{ ethernet_interface.name }} | {{ enabled | join('<br>') }} |
 {%         endfor %}
 {%     endif %}
 {%     set priority_intfs = [] %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%         if ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.priority_flow_control.enabled is arista.avd.defined %}
 {%             do priority_intfs.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -463,14 +463,14 @@
 
 | Interface | PFC | Priority | Drop/No_drop |
 {%         for priority_intf in priority_intfs %}
-{%             if ethernet_interfaces[priority_intf].priority_flow_control.priorities is arista.avd.defined %}
-{%                 for priority_block in ethernet_interfaces[priority_intf].priority_flow_control.priorities | arista.avd.natural_sort %}
+{%             if priority_intf.priority_flow_control.priorities is arista.avd.defined %}
+{%                 for priority_block in priority_intf.priority_flow_control.priorities | arista.avd.natural_sort %}
 {%                     set priority = priority_block.priority | arista.avd.default("-") %}
 {%                     set drop_no_drop = priority_block.no_drop | arista.avd.default("-") %}
-| {{ priority_intf }} | {{ ethernet_interfaces[priority_intf].priority_flow_control.enabled }} | {{ priority }} | {{ drop_no_drop }} |
+| {{ priority_intf.name }} | {{ priority_intf.priority_flow_control.enabled }} | {{ priority }} | {{ drop_no_drop }} |
 {%                 endfor %}
 {%             else %}
-| {{ priority_intf }} | {{ ethernet_interfaces[priority_intf].priority_flow_control.enabled }} | - | - |
+| {{ priority_intf.name }} | {{ priority_intf.priority_flow_control.enabled }} | - | - |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

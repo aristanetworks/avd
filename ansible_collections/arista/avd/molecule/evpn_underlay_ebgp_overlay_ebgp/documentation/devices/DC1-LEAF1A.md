@@ -118,9 +118,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -303,32 +303,32 @@ vlan 131
 interface Ethernet1
    description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.1/31
 !
 interface Ethernet2
    description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.3/31
 !
 interface Ethernet3
    description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.5/31
 !
 interface Ethernet4
    description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.7/31
 !
@@ -336,22 +336,22 @@ interface Ethernet6
    description CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
    l2 mtu 8000
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet7
    description CUSTOM_server02_SINGLE_NODE_Eth1
    no shutdown
-   switchport
    switchport access vlan 110
    switchport mode access
+   switchport
 ```
 
 ## Loopback Interfaces
@@ -406,7 +406,6 @@ interface Loopback0
 | Vlan124 |  Tenant_A_WEB_Zone  |  -  |  10.1.24.1/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -632,9 +631,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Disabled | - |  - |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 

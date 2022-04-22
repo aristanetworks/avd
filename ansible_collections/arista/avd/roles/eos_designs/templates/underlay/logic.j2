@@ -1,7 +1,7 @@
 {# Add underlay links defined on this device #}
 {% set underlay_data.links = topology.links | arista.avd.default({}) %}
 
-{% set avd_topology_peers = hostvars[ansible_play_hosts[0]].ansible_facts.avd_topology_peers[inventory_hostname] | arista.avd.default([]) %}
+{% set avd_topology_peers = avd_topology_peers[inventory_hostname] | arista.avd.default([]) %}
 
 {# Add underlay links defined on other devices pointing to this device #}
 {% for peer in avd_topology_peers %}

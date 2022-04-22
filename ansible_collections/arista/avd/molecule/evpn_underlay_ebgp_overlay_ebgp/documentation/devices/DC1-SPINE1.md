@@ -111,9 +111,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -247,56 +247,56 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.0/31
 !
 interface Ethernet2
    description CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.16/31
 !
 interface Ethernet3
    description CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet1
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.32/31
 !
 interface Ethernet4
    description CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet41
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.48/31
 !
 interface Ethernet5
    description CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet41
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.64/31
 !
 interface Ethernet6
    description CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet41
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.80/31
 !
 interface Ethernet7
    description CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet45
    no shutdown
-   speed forced 100gfull
    mtu 1500
+   speed forced 100gfull
    no switchport
    ip address 172.31.255.96/31
 ```

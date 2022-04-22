@@ -138,10 +138,10 @@ interface Ethernet10/3
 !
 interface Ethernet10/4
    description LAG Member LACP fallback
-   channel-group 104 mode active
-   switchport
    switchport trunk allowed vlan 100
    switchport mode trunk
+   switchport
+   channel-group 104 mode active
    spanning-tree portfast
 !
 interface Ethernet10/10
@@ -154,12 +154,12 @@ interface Ethernet11/1
 !
 interface Ethernet11/2
    description LAG Member LACP fallback LLDP ZTP VLAN
-   channel-group 112 mode active
-   switchport
    switchport trunk allowed vlan 112
    switchport mode trunk
-   spanning-tree portfast
+   switchport
+   channel-group 112 mode active
    lldp tlv transmit ztp vlan 112
+   spanning-tree portfast
 !
 interface Ethernet15
    description DC1-AGG03_Ethernet1
@@ -303,6 +303,7 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   no snmp trap link-change
    shape rate 200000 kbps
 !
 interface Port-Channel5
@@ -387,6 +388,7 @@ interface Port-Channel16
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   snmp trap link-change
    mlag 16
    spanning-tree guard none
 !

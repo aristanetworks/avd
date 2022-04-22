@@ -129,9 +129,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -426,10 +426,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -486,41 +486,41 @@ interface Ethernet8
 interface Ethernet11
    description server04_inherit_all_from_profile_Eth2
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet12
    description server05_no_profile_Eth2
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   switchport
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet13
    description server06_override_profile_Eth2
    no shutdown
-   switchport
    switchport access vlan 210
    switchport mode access
-   spanning-tree portfast network
-   spanning-tree bpduguard enable
+   switchport
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast network
+   spanning-tree bpduguard enable
 !
 interface Ethernet14
    description server07_inherit_all_from_profile_port_channel_Eth2
@@ -535,15 +535,15 @@ interface Ethernet15
 interface Ethernet16
    description server09_override_profile_no_port_channel_Eth2
    no shutdown
-   switchport
    switchport access vlan 210
    switchport mode access
-   spanning-tree portfast network
-   spanning-tree bpduguard enable
+   switchport
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   spanning-tree portfast network
+   spanning-tree bpduguard enable
 ```
 
 ## Port-Channel Interfaces
@@ -714,7 +714,6 @@ interface Loopback100
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.7/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.7/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -1154,9 +1153,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 20 |  30 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 20 Seconds | 30 | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -1302,8 +1301,7 @@ router bgp 65103
       vlan 350
    !
    address-family evpn
-      host-flap detection window 20
-      host-flap detection threshold 30
+      host-flap detection window 20 threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -1544,7 +1542,7 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.9
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

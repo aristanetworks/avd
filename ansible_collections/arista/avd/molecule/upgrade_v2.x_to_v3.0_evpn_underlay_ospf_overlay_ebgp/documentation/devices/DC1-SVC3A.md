@@ -120,9 +120,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -436,7 +436,6 @@ interface Loopback1
 | Vlan4093 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -624,9 +623,9 @@ router ospf 101
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 180 |  30 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 30 | - |
 
 ### Router BGP Device Configuration
 
@@ -659,8 +658,7 @@ router bgp 65103
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
-      host-flap detection window 180
-      host-flap detection threshold 30
+      host-flap detection window 180 threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
