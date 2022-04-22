@@ -2474,7 +2474,6 @@ monitor_sessions:
 
 ```yaml
 tap_aggregation:
-  # The chassis switches DCS-7500R and DCS-7500R2 also support mixed-mode on lincard basis, support for this can be added later
   mode: < exclusive >
   encapsulation_dot1br_strip: < true | false >
   encapsulation_vn_tag_strip: < true | false >
