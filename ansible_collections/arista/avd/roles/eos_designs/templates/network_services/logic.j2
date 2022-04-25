@@ -18,7 +18,7 @@
 {%                                 do tmp_svis.append(svi) %}
 {%                             endif %}
 {%                         endfor %}
-{%                         do vrf.update({'svis': tmp_svis, 'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts | arista.avd.natural_sort('name')}) %}
+{%                         do vrf.update({'svis': tmp_svis, 'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address')}) %}
 {%                         do tmp_vrfs.append(vrf) %}
 {%                     endif %}
 {%                 endfor %}
