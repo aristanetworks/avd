@@ -39,11 +39,11 @@ svi_profiles:
 
 tenants:
   # Tenant_A Specific Information - VRFs / VLANs
-  Tenant_A:
+  - name: Tenant_A
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
     vrfs:
-      Tenant_A_OP_Zone:
+      - name: Tenant_A_OP_Zone
         description: "Tenant_A_OP_Zone"
         vrf_vni: 10
         vrf_id: 9 # Check that RD and RT will use this number for this VRF. VNI should still respect vrf_vni
@@ -52,13 +52,13 @@ tenants:
           loopback_ip_range: 10.255.1.0/24
         svis:
           # SVI as string
-          '110':
+          - id: '110'
             name: Tenant_A_OP_Zone_1
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.10.1/24
           # SVI as integer
-          111:
+          - id: 111
             vni_override: 50111 #10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
             tags: ['opzone']
@@ -69,15 +69,15 @@ tenants:
                 source_interface: lo100
                 source_vrf: MGMT
           # SVI using a nested svi_profile
-          112:
+          - id: 112
             name: Tenant_A_OP_Zone_3
             profile: DERIVED_DHCP
             tags: ['opzone']
             enabled: True
-      Tenant_A_WEB_Zone:
+      - name: Tenant_A_WEB_Zone
         vrf_vni: 11
         svis:
-          120:
+          - id: 120
             name: Tenant_A_WEB_Zone_1
             tags: ['web', 'erp1']
             profile: WITH_DHCP_AND_SNOOPING
@@ -85,24 +85,24 @@ tenants:
             ip_address_virtual_secondaries:
               - 10.2.20.1/24
               - 10.2.21.1/24
-          121:
+          - id: 121
             name: Tenant_A_WEBZone_2
             tags: ['web']
             profile: GENERIC_FULL
-      Tenant_A_APP_Zone:
+      - name: Tenant_A_APP_Zone
         vrf_vni: 12
         svis:
-          130:
+          - id: 130
             name: Tenant_A_APP_Zone_1
             tags: ['app', 'erp1']
             profile: WITH_NO_MTU
             ip_address_virtual: 10.1.30.1/24
-          131:
+          - id: 131
             name: Tenant_A_APP_Zone_2
             tags: ['app']
             enabled: True
             ip_address_virtual: 10.1.31.1/24
-          132:
+          - id: 132
             name: Tenant_A_APP_Zone_3
             tags: ['erp2']
             enabled: True
@@ -113,20 +113,20 @@ tenants:
               - 10.1.32.254
               - 10.2.32.254/24
               - 10.3.32.254/24
-      Tenant_A_DB_Zone:
+      - name: Tenant_A_DB_Zone
         vrf_vni: 13
         svis:
-          140:
+          - id: 140
             name: Tenant_A_DB_BZone_1
             tags: ['db', 'erp1']
             enabled: True
             ip_address_virtual: 10.1.40.1/24
-          141:
+          - id: 141
             name: Tenant_A_DB_Zone_2
             tags: ['db']
             enabled: True
             ip_address_virtual: 10.1.41.1/24
-      Tenant_A_WAN_Zone:
+      - name: Tenant_A_WAN_Zone
         vrf_id: 14
         ospf:
           enabled: true
@@ -206,7 +206,7 @@ tenants:
             remote_as: 12345
             nodes: [DC1-BL1A, DC1-BL1B]
         svis:
-          150:
+          - id: 150
             name: Tenant_A_WAN_Zone_1
             tags: ['wan']
             enabled: True
@@ -217,7 +217,7 @@ tenants:
               cost: 100
               authentication: simple
               simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
-          151:
+          - id: 151
             name: svi_with_no_tags
             enabled: True
             ip_address_virtual: 10.1.51.1/24
@@ -239,7 +239,7 @@ tenants:
             address_family: evpn
             route_target: '65000:789'
             # nodes not set - so all devices should get this additional route target
-      Tenant_L3_VRF_Zone:
+      - name: Tenant_L3_VRF_Zone
         vrf_vni: 15
         l3_interfaces:
           - interfaces: [ Ethernet8, Ethernet9, Ethernet8, Ethernet9 ]
@@ -250,64 +250,64 @@ tenants:
             description: "test"
     l2vlans:
       # L2 vlan as string
-      '160':
+      - id: '160'
         name: Tenant_A_VMOTION
         tags: ['opzone']
       # L2 vlan as integer
-      161:
+      - id: 161
         name: Tenant_A_NFS
         tags: ['opzone']
-      162:
+      - id: 162
         name: l2vlan_with_no_tags
         # No "tags" defined - should render on switches with tag "all" or no tags
   # Tenant_B Specific Information - VRFs / VLANs
-  Tenant_B:
+  - name: Tenant_B
     mac_vrf_vni_base: 20000
     vrfs:
-      Tenant_B_OP_Zone:
+      - name: Tenant_B_OP_Zone
         vrf_vni: 20
         svis:
-          210:
+          - id: 210
             name: Tenant_B_OP_Zone_1
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.2.10.1/24
-          211:
+          - id: 211
             name: Tenant_B_OP_Zone_2
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.2.11.1/24
-      Tenant_B_WAN_Zone:
+      - name: Tenant_B_WAN_Zone
         vrf_vni: 21
         svis:
-          250:
+          - id: 250
             name: Tenant_B_WAN_Zone_1
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.2.50.1/24
   # Tenant_C Specific Information - VRFs / VLANs
-  Tenant_C:
+  - name: Tenant_C
     mac_vrf_vni_base: 30000
     vrfs:
-      Tenant_C_OP_Zone:
+      - name: Tenant_C_OP_Zone
         vrf_vni: 30
         enable_mlag_ibgp_peering_vrfs: true
         mlag_ibgp_peering_vlan: 2
         svis:
-          310:
+          - id: 310
             name: Tenant_C_OP_Zone_1
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.3.10.1/24
-          311:
+          - id: 311
             name: Tenant_C_OP_Zone_2
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.3.11.1/24
-      Tenant_C_WAN_Zone:
+      - name: Tenant_C_WAN_Zone
         vrf_vni: 31
         svis:
-          350:
+          - id: 350
             name: Tenant_C_WAN_Zone_1
             tags: ['wan']
             enabled: True
