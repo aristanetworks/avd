@@ -47,8 +47,8 @@ logging synchronous level {{ logging.synchronous.level | arista.avd.default("cri
 {{ logging_host_cli }}
 {%         endfor %}
 {%     endfor %}
-{%     if logging.format.timestamp is arista.avd.defined('high-resolution') %}
-logging format timestamp high-resolution
+{%     if logging.format.timestamp is arista.avd.defined %}
+logging format timestamp {{ logging.format.timestamp }}
 {%     endif %}
 {%     if logging.format.hostname is arista.avd.defined('fqdn') %}
 logging format hostname fqdn
