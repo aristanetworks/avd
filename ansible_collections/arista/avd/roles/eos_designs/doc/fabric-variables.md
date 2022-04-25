@@ -76,10 +76,6 @@ evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 # Adapt the value for your specific topology.
 evpn_ebgp_gateway_multihop: < ebgp_multihop | default -> 15 >
 
-# EVPN GW inter-domain | Optional
-# Default of True. Enables crossing of BGP EVPN Route Type 5 between different EVPN domains changing the next hop.
-evpn_ebgp_gateway_inter_domain: < true | false | default -> True >
-
 # BGP peer group names and encrypted password | Optional
 
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.

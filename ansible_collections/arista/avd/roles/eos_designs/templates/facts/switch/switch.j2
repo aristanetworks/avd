@@ -190,7 +190,7 @@ switch:
 {# switch.evpn_gateway #}
   evpn_gateway_vxlan_l2: {{ switch_data.combined.evpn_gateway.evpn_l2.enabled | arista.avd.default(false) }}
   evpn_gateway_vxlan_l3: {{ switch_data.combined.evpn_gateway.evpn_l3.enabled | arista.avd.default(false) }}
-  evpn_gateway_vxlan_l3_inter_domain: {{ switch_data.combined.evpn_gateway.evpn_l3.inter_domain | arista.avd.default(evpn_ebgp_gateway_inter_domain) }}
+  evpn_gateway_vxlan_l3_inter_domain: {{ switch_data.combined.evpn_gateway.evpn_l3.inter_domain | arista.avd.default(true) }}
   evpn_gateway_vpn_ipv4: {{ switch_data.combined.evpn_gateway.vpn_ipv4.enabled | arista.avd.default(false) }}
 {%     if switch_data.combined.evpn_gateway.evpn_l2.enabled is arista.avd.defined(true) or switch_data.combined.evpn_gateway.evpn_l3.enabled is arista.avd.defined(true) %}
   evpn_gateway_remote_peers: {{ switch_data.combined.evpn_gateway.remote_peers | arista.avd.default() }}
