@@ -125,9 +125,9 @@ management console
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| True | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| True | True | - |
 
 ### Management API VRF Access
 

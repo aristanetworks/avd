@@ -1,5 +1,7 @@
 {# Device Configuration #}
 {% include 'eos/rancid-content-type.j2' %}
+{# System Boot Configuration #}
+{% include 'eos/boot.j2' %}
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
 {# cli prompt #}
@@ -236,6 +238,8 @@
 {% include 'eos/management-api-http.j2' %}
 {# management console #}
 {% include 'eos/management-console.j2' %}
+{# management cvx #}
+{% include 'eos/management-cvx.j2' %}
 {# management defaults #}
 {% include 'eos/management-defaults.j2' %}
 {# management api gnmi #}

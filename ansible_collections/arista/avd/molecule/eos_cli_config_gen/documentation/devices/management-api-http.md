@@ -50,9 +50,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | True |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
@@ -71,6 +71,7 @@ management api http-commands
    protocol https
    protocol https ssl profile SSL_PROFILE
    no protocol http
+   default-services
    no shutdown
    !
    vrf default

@@ -62,6 +62,7 @@ router_bgp:
       enabled: true
       window: 10
       threshold: 1
+      expiry_timeout: 3
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:

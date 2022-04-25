@@ -30,6 +30,7 @@ local_users:
 management_eapi:
   enable_http: < boolean | default -> false >
   enable_https: < boolean | default -> true >
+  default_services: < boolean >
 
 # CloudVision - Telemetry Agent (TerminAttr) configuration | Optional
 # You can either provide a list of IPs to target on-premise CloudVision cluster or

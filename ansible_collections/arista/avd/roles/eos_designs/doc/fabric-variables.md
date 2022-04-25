@@ -41,6 +41,7 @@ isis_area_id: < isis area | default -> "49.0001" >
 # Additional underlay ISIS parameters | Optional.
 isis_default_is_type: < level-1-2, | level-1 | level-2 | default -> level-2 >
 isis_advertise_passive_only: < true | false | default -> false >
+underlay_isis_instance_name: < name | default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls >
 
 # ISIS TI-LFA parameters | Optional.
 isis_ti_lfa:
@@ -122,6 +123,9 @@ evpn_hostflap_detection:
 
   # Time (in seconds) to detect a MAC duplication issue
   window: < seconds | default -> 180 >
+
+  # Time (in seconds) to purge a MAC duplication issue
+  expiry_timeout: < integer >
 
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.

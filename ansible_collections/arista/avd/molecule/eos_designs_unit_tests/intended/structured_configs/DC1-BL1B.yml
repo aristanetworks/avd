@@ -85,6 +85,11 @@ router_bgp:
       next_hop_self_received_evpn_routes:
         enable: true
         inter_domain: false
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.15
@@ -341,6 +346,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
