@@ -63,6 +63,8 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
                 item = {}
                 item.update({primary_key: element})
                 output.append(item)
+            else:
+                return dictionary
         return output
     else:
         output = []
