@@ -87,6 +87,7 @@
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
+      - [Management CVX](#management-cvx)
       - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
@@ -1849,6 +1850,7 @@ management_api_gnmi:
   transport:
     grpc:
       - name: < transport_name >
+        ssl_profile: < SSL Profile Name >
         # vrf is optional
         vrf: < vrf_name >
         # Per the GNMI specification, the default timestamp field of a notification message is set to be

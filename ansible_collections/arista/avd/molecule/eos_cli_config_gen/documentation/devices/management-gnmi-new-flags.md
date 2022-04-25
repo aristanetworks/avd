@@ -1,9 +1,17 @@
 # management-gnmi-new-flags
 # Table of Contents
 
+- [management-gnmi-new-flags](#management-gnmi-new-flags)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
   - [Management API GNMI](#management-api-gnmi)
+    - [Management API GNMI Summary](#management-api-gnmi-summary)
+    - [Management API gnmi configuration](#management-api-gnmi-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -11,7 +19,10 @@
 - [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -49,10 +60,10 @@ interface Management1
 
 ### Management API GNMI Summary
 
-| Transport | VRF | Notification Timestamp | ACL |
-| --------- | --- | ---------------------- | --- |
-| MGMT | MGMT | send-time | acl1 |
-| mytransport | - | send-time | acl1 |
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+| MGMT | gnmi | MGMT | send-time | acl1 |
+| mytransport | - | - | send-time | acl1 |
 
 Provider eos-native is configured.
 
@@ -62,6 +73,7 @@ Provider eos-native is configured.
 !
 management api gnmi
    transport grpc MGMT
+      ssl profile gnmi
       vrf MGMT
       ip access-group acl1
       notification timestamp send-time

@@ -21,16 +21,17 @@
 {# new table view using the new flags #}
 {%     if management_api_gnmi.transport is arista.avd.defined %}
 
-| Transport | VRF | Notification Timestamp | ACL |
-| --------- | --- | ---------------------- | --- |
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
 {%         if management_api_gnmi.transport.grpc is arista.avd.defined %}
 {%             for transport in management_api_gnmi.transport.grpc %}
 {%                 if transport.name is arista.avd.defined %}
 {%                     set transport_name = transport.name %}
+{%                     set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
 {%                     set vrf = transport.vrf | arista.avd.default('-') %}
 {%                     set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
 {%                     set acl = transport.ip_access_group | arista.avd.default('-') %}
-| {{ transport_name }} | {{ vrf }} | {{ notif }} | {{ acl }} |
+| {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}

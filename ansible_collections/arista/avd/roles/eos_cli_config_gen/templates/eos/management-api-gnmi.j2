@@ -21,6 +21,9 @@ management api gnmi
 {%             for transport in management_api_gnmi.transport.grpc %}
 {%                 if transport.name is arista.avd.defined %}
    transport grpc {{ transport.name }}
+{%                     if transport.ssl_profile is arista.avd.defined %}
+      ssl profile {{ transport.ssl_profile }}
+{%                     endif %}
 {%                     if transport.vrf is arista.avd.defined %}
       vrf {{ transport.vrf }}
 {%                     endif %}
