@@ -75,7 +75,7 @@ To use this filter:
 
 The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
 dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
-configurable) and if there is a list in the dictionary value,it inserts this value list to
+configurable) and if there is a non-dictionary value,it inserts this value to
 secondary key (key name is configurable), if secondary key is provided.
 
 This filter is intended for:
@@ -83,7 +83,7 @@ This filter is intended for:
 - Seemless data model migration from dictionaries to lists.
 - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-Note: If the value is a list/string with no secondary key provided, it will pass through untouched
+Note: If there is a non-dictionary value with no secondary key provided, it will pass through untouched
 
 To use this filter:
 

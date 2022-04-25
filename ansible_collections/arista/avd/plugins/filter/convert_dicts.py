@@ -12,7 +12,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     """
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
     dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
-    configurable) and if there is a list in the dictionary value,it inserts this value list to
+    configurable) and if there is a non-dictionary value,it inserts this value to
     secondary key (key name is configurable), if secondary key is provided.
 
     This filter is intended for:
@@ -20,7 +20,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     - Seemless data model migration from dictionaries to lists.
     - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-    Note: If the value is a list/string with no secondary key provided, it will pass through untouched
+    Note: If there is a non-dictionary value with no secondary key provided, it will pass through untouched
 
     To use this filter:
 
@@ -53,8 +53,8 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     any
         Returns list of dictionaries or input variable untouched if not a nested dictionary/list.
     """
-    if not isinstance(dictionary, dict) and not isinstance(dictionary, list) or os.environ.get('AVD_DISABLE_CONVERT_DICTS'):
-        # Not a dictionary, return the original
+    if not isinstance(dictionary, (dict, list)) or os.environ.get('AVD_DISABLE_CONVERT_DICTS'):
+        # Not a dictionary/list, return the original
         return dictionary
     elif isinstance(dictionary, list):
         output = []
@@ -64,7 +64,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
                 item.update({primary_key: element})
                 output.append(item)
             else:
-                return dictionary
+                output.append(element)
         return output
     else:
         output = []
@@ -73,7 +73,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
                 # Catch cornercase where dictionary has no value because of old data models
                 output.append({primary_key: key})
             elif not isinstance(dictionary[key], dict):
-                # Not a nested dictionary, add secondary key for the list elements if secondary key is provided
+                # Not a nested dictionary, add secondary key for the values if secondary key is provided
                 if secondary_key is not None:
                     item = {}
                     item.update({primary_key: key})

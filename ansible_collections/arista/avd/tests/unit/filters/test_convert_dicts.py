@@ -5,12 +5,12 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 import pytest
 
 nested_list_of_dict = {'TEST1': [{'type': 'permit', 'extcommunities': '65000:65000'},
-                          {'type': 'deny', 'extcommunities': '65002:65002'}],
-                'TEST2': [{'type': 'deny', 'extcommunities': '65001:65001'}]}
+                                 {'type': 'deny', 'extcommunities': '65002:65002'}],
+                       'TEST2': [{'type': 'deny', 'extcommunities': '65001:65001'}]}
 nested_dict = {'TEST1': {'action': 'permit 1000:1000'}, 'TEST2': {'action': 'permit 2000:3000'}}
 list = ['Test1', 'Test2', 'Test3']
 list_of_dict = [{'type': 'permit'}, {'extcommunities': '65000:65000'}]
-string = {'dict': 'test_string'}
+dict_with_string = {'dict': 'test_string'}
 
 f = FilterModule()
 
@@ -77,20 +77,20 @@ class TestConvertDicts():
         resp = convert_dicts(list, 'test', 'types')
         assert resp == [{'test': 'Test1'}, {'test': 'Test2'}, {'test': 'Test3'}]
 
-    def test_convert_dicts_with_string_default(self):
-        resp = convert_dicts(string)
-        assert resp == string
+    def test_convert_dicts_with_string_value_default(self):
+        resp = convert_dicts(dict_with_string)
+        assert resp == dict_with_string
 
-    def test_convert_dicts_with_string_primary_key(self):
-        resp = convert_dicts(string, 'test')
-        assert resp == string
+    def test_convert_dicts_with_string_value_primary_key(self):
+        resp = convert_dicts(dict_with_string, 'test')
+        assert resp == dict_with_string
 
-    def test_convert_dicts_with_string_secondary_key(self):
-        resp = convert_dicts(string, secondary_key='str')
+    def test_convert_dicts_with_string_value_secondary_key(self):
+        resp = convert_dicts(dict_with_string, secondary_key='str')
         assert resp == [{'name': 'dict', 'str': 'test_string'}]
 
-    def test_convert_dicts_with_string_primary_key_and_secondary_key(self):
-        resp = convert_dicts(string, 'test', 'str')
+    def test_convert_dicts_with_string_value_primary_key_and_secondary_key(self):
+        resp = convert_dicts(dict_with_string, 'test', 'str')
         assert resp == [{'test': 'dict', 'str': 'test_string'}]
 
     def test_convert_dicts_with_list_of_dict_default(self):
@@ -98,15 +98,15 @@ class TestConvertDicts():
         assert resp == list_of_dict
 
     def test_convert_dicts_with_list_of_dict_primary_key(self):
-        resp = convert_dicts(list_of_dict)
+        resp = convert_dicts(list_of_dict, 'test')
         assert resp == list_of_dict
 
     def test_convert_dicts_with_list_of_dict_secondary_key(self):
-        resp = convert_dicts(list_of_dict)
+        resp = convert_dicts(list_of_dict, secondary_key='id')
         assert resp == list_of_dict
 
     def test_convert_dicts_with_list_of_dict_primary_key_and_secondary_key(self):
-        resp = convert_dicts(list_of_dict)
+        resp = convert_dicts(list_of_dict, 'test', 'id')
         assert resp == list_of_dict
 
     def test_convert_dicts_filter(self):
