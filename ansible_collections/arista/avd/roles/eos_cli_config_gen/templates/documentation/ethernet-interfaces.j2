@@ -16,10 +16,10 @@
                                                                       selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                       first %}
 {%             if port_channel_interface.type is not defined or port_channel_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
-{%                 set description = ethernet_interface.description | default("-") %}
-{%                 set mode = port_channel_interface.mode | default("access") %}
-{%                 set vlans = port_channel_interface.vlans | default ('-') %}
-{%                 set native_vlan = port_channel_interface.native_vlan | default ('-') %}
+{%                 set description = ethernet_interface.description | arista.avd.default("-") %}
+{%                 set mode = port_channel_interface.mode | arista.avd.default("access") %}
+{%                 set vlans = port_channel_interface.vlans | arista.avd.default ('-') %}
+{%                 set native_vlan = port_channel_interface.native_vlan | arista.avd.default ('-') %}
 {%                 set channel_group = ethernet_interface.channel_group.id %}
 {%                 if port_channel_interface.trunk_groups is arista.avd.defined %}
 {%                     set l2 = namespace() %}
