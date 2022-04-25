@@ -57,7 +57,7 @@ router_bgp:
       description: 'BGP Peer Shutdown'
       shutdown: true
   redistribute_routes:
-    - type: static
+    - source_protocol: static
   address_family_ipv4:
     peer_groups:
       - name: OBS_WAN
@@ -88,14 +88,14 @@ router_bgp:
         - ip_address: 101.0.3.3
           peer_group: SEDI-shut
       redistribute_routes:
-        - type: static
+        - source_protocol: static
       aggregate_addresses:
-        - aggregate_address: 193.1.0.0/16
+        - prefix: 193.1.0.0/16
           as_set: true
           summary_only: true
           attribute_map: RM-BGP-AGG-APPLY-SET
           advertise_only: false
-        - aggregate_address: 0.0.0.0/0
+        - prefix: 0.0.0.0/0
           as_set: true
           summary_only: true
           attribute_map: RM-BGP-AGG-APPLY-SET

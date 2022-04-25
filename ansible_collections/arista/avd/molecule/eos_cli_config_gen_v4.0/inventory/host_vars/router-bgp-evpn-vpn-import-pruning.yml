@@ -86,31 +86,31 @@ router_bgp:
       route_targets:
         import:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "11:11"
         export:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "11:11"
       neighbors:
         - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
-        - type: connected
+        - source_protocol: connected
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
       route_targets:
         import:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "12:12"
         export:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "12:12"
       neighbors:
         - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
-        - type: connected
+        - source_protocol: connected

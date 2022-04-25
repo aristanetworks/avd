@@ -19,10 +19,10 @@ router_bgp:
     bestpath:
       d_path: true
   aggregate_addresses:
-    - aggregate_address: 1.1.1.0/24
+    - prefix: 1.1.1.0/24
       advertise_only: true
-    - aggregate_address: 2.2.1.0/24
-    - aggregate_address: 1.12.1.0/24
+    - prefix: 2.2.1.0/24
+    - prefix: 1.12.1.0/24
       as_set: true
       summary_only: true
       attribute_map: RM-ATTRIBUTE
@@ -59,7 +59,7 @@ router_bgp:
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
     redistribute_routes:
-      - type: static
+      - source_protocol: static
         route_map: RM-IPV6-STATIC-TO-BGP
   neighbors:
     - ip_address: 192.0.3.1

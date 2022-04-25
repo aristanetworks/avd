@@ -67,9 +67,9 @@ router_bgp:
       shutdown: false
       description: TEST
   redistribute_routes:
-    - type: connected
+    - source_protocol: connected
       route_map: RM-CONN-2-BGP
-    - type: static
+    - source_protocol: static
       route_map: RM-STATIC-2-BGP
   address_family_evpn:
     peer_groups:
@@ -92,7 +92,7 @@ router_bgp:
       - name: IPV4-UNDERLAY-MLAG
         activate: true
     redistribute_routes:
-      - type: attached-host
+      - source_protocol: attached-host
   address_family_ipv6:
     peer_groups:
       - name: IPV6-UNDERLAY
@@ -136,22 +136,22 @@ router_bgp:
       route_targets:
         import:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "1:30001"
         export:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "1:30001"
       redistribute_routes:
-        - type: connected
+        - source_protocol: connected
     - name: Tenant_B
       rd: "10.50.64.15:30002"
       route_targets:
         import:
           - address_family: evpn
-            route_target:
+            route_targets:
               - 1:30002
         export:
           - address_family: evpn
-            route_target:
+            route_targets:
               - 1:30002

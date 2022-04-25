@@ -264,8 +264,8 @@ router bgp {{ router_bgp.as }}
    {{ maximum_routes_cli }}
 {%         endif %}
 {%     endfor %}
-{%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.convert_dicts('aggregate_address') | arista.avd.natural_sort('aggregate_address') %}
-{%         set aggregate_address_cli = "aggregate-address " ~ aggregate_address.aggregate_address %}
+{%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
+{%         set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%         if aggregate_address.as_set is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " as-set" %}
 {%         endif %}
@@ -283,9 +283,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
    {{ aggregate_address_cli }}
 {%     endfor %}
-{%     for redistribute_route in router_bgp.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%         if redistribute_route.type is arista.avd.defined %}
-{%             set redistribute_route_cli = "redistribute " ~ redistribute_route.type %}
+{%     for redistribute_route in router_bgp.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%         if redistribute_route.source_protocol is arista.avd.defined %}
+{%             set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%         else %}
 {%             set redistribute_route_cli = "redistribute " ~ redistribute_route %}
 {%         endif %}
@@ -580,9 +580,9 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor.ip_address }} activate
 {%             endif %}
 {%         endfor %}
-{%         for redistribute_route in router_bgp.address_family_ipv4_multicast.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%             if redistribute_route.type is arista.avd.defined %}
-{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.type %}
+{%         for redistribute_route in router_bgp.address_family_ipv4_multicast.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%             if redistribute_route.source_protocol is arista.avd.defined %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%             else %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route %}
 {%             endif %}
@@ -641,9 +641,9 @@ router bgp {{ router_bgp.as }}
       network {{ network.prefix }}
 {%             endif %}
 {%         endfor %}
-{%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%             if redistribute_route.type is arista.avd.defined %}
-{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.type %}
+{%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%             if redistribute_route.source_protocol is arista.avd.defined %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%             else %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route %}
 {%             endif %}
@@ -714,15 +714,15 @@ router bgp {{ router_bgp.as }}
       evpn multicast
 {%         endif %}
 {%         if vrf.route_targets.import is arista.avd.defined %}
-{%             for address_family in vrf.route_targets.import | arista.avd.convert_dicts('address_family','route_target') %}
-{%                 for route_target in address_family.route_target %}
+{%             for address_family in vrf.route_targets.import | arista.avd.convert_dicts('address_family','route_targets') %}
+{%                 for route_target in address_family.route_targets %}
       route-target import {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
 {%         if vrf.route_targets.export is arista.avd.defined %}
-{%             for address_family in vrf.route_targets.export | arista.avd.convert_dicts('address_family','route_target') %}
-{%                 for route_target in address_family.route_target %}
+{%             for address_family in vrf.route_targets.export | arista.avd.convert_dicts('address_family','route_targets') %}
+{%                 for route_target in address_family.route_targets %}
       route-target export {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
 {%             endfor %}
@@ -860,8 +860,8 @@ router bgp {{ router_bgp.as }}
       network {{ network.prefix }}
 {%             endif %}
 {%         endfor %}
-{%         for aggregate_address in vrf.aggregate_addresses | arista.avd.convert_dicts('aggregate_address') | arista.avd.natural_sort('aggregate_address') %}
-{%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.aggregate_address %}
+{%         for aggregate_address in vrf.aggregate_addresses | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
+{%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set  aggregate_address_cli = aggregate_address_cli ~ " as-set" %}
 {%             endif %}
@@ -879,9 +879,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
       {{ aggregate_address_cli }}
 {%         endfor %}
-{%         for redistribute_route in vrf.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.natural_sort('type') %}
-{%             if redistribute_route.type is arista.avd.defined %}
-{%                 set redistribute_cli = "redistribute " ~ redistribute_route.type %}
+{%         for redistribute_route in vrf.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%             if redistribute_route.source_protocol is arista.avd.defined %}
+{%                 set redistribute_cli = "redistribute " ~ redistribute_route.source_protocol %}
 {%             else %}
 {%                 set redistribute_cli = "redistribute " ~ redistribute_route %}
 {%             endif %}

@@ -2593,19 +2593,19 @@ router_bgp:
       remote_as: < bgp_as >
       description: "< description as string >"
   aggregate_addresses:
-    - aggregate_address: < aggregate_address_1/mask >
+    - prefix: < aggregate_address_1/mask >
       advertise_only: < true | false >
-    - aggregate_address: < aggregate_address_2/mask >
-    - aggregate_address: < aggregate_address_3/mask >
+    - prefix: < aggregate_address_2/mask >
+    - prefix: < aggregate_address_3/mask >
       as_set: < true | false >
       summary_only: < true | false >
       attribute_map: < route_map_name >
       match_map: < route_map_name >
       advertise_only: < true | false >
   redistribute_routes:
-    - type: < route_type >
+    - source_protocol: < route_type >
       route_map: < route_map_name >
-    - type: < route_type >
+    - source_protocol: < route_type >
       route_map: < route_map_name >
   vlan_aware_bundles:
     - name: < vlan_aware_bundle_name_1 >
@@ -2781,7 +2781,7 @@ router_bgp:
         route_map_out: < route_map_name >
         activate: < true | false >
     redistribute_routes:
-      - type: < route_type >
+      - source_protocol: < route_type >
         route_map: < route_map_name >
   address_family_ipv6:
     networks:
@@ -2804,9 +2804,9 @@ router_bgp:
         prefix_list_out: < prefix_list_name >
         activate: < true | false >
     redistribute_routes:
-      - type: < route_type >
+      - source_protocol: < route_type >
         route_map: < route_map_name >
-      - type: < route_type >
+      - source_protocol: < route_type >
         route_map: < route_map_name >
   address_family_vpn_ipv4:
     domain_identifier: < string >
@@ -2835,16 +2835,16 @@ router_bgp:
       route_targets:
         import:
           - address_family: < address_family >
-            route_target:
+            route_targets:
               - "< route_target >"
               - "< route_target >"
           - address_family: < address_family >
-            route_target:
+            route_targets:
               - "< route_target >"
               - "< route_target >"
         export:
           - address_family: < address_family >
-            route_target:
+            route_targets:
               - "< route_target >"
               - "< route_target >"
       router_id: < IPv4_address >
@@ -2887,9 +2887,9 @@ router_bgp:
           send_community: < standard | extended | large | all >
           shutdown: < true | false >
       redistribute_routes:
-        - type: < route_type >
+        - source_protocol: < route_type >
           route_map: < route_map_name >
-        - type: < route_type >
+        - source_protocol: < route_type >
           route_map: < route_map_name >
       aggregate_addresses:
         - aggregate_addres: < aggregate_address_1/mask >
@@ -2917,22 +2917,22 @@ router_bgp:
       route_targets:
         import:
           - address_family: < address_family >
-            route_target:
+            route_targets:
               - "< route_target >"
               - "< route_target >"
           - address_family: < address_family >
-            route_target:
+            route_targets:
               - "< route_target >"
               - "< route_target >"
         export:
           - address_family: < address_family >
-            route_target:
+            route_targets:
               - "< route_target >"
               - "< route_target >"
       redistribute_routes:
-        - type: < route_type >
+        - source_protocol: < route_type >
           route_map: < route_map_name >
-        - type: < route_type >
+        - source_protocol: < route_type >
           route_map: < route_map_name >
 ```
 

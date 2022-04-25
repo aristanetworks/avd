@@ -63,7 +63,7 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
   redistribute_routes:
-    - type: connected
+    - source_protocol: connected
       route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
@@ -122,11 +122,11 @@ router_bgp:
       route_targets:
         import:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "11:11"
         export:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "11:11"
       neighbors:
         - ip_address: 10.255.251.1
@@ -152,8 +152,8 @@ router_bgp:
             - prefix: 100.64.0.0/10
               route_map: RM-10.2.3.4
       redistribute_routes:
-        - type: connected
-        - type: static
+        - source_protocol: connected
+        - source_protocol: static
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       timers: 5 15
@@ -161,11 +161,11 @@ router_bgp:
       route_targets:
         import:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "12:12"
         export:
           - address_family: evpn
-            route_target:
+            route_targets:
               - "12:12"
       neighbors:
         - ip_address: 10.255.251.1
@@ -193,6 +193,6 @@ router_bgp:
           description: Test_Bfd
           bfd: true
       redistribute_routes:
-        - type: connected
-        - type: static
+        - source_protocol: connected
+        - source_protocol: static
           route_map: RM-CONN-2-BGP

@@ -335,7 +335,7 @@
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------ | ------------- | --------- | -------------- |
-{%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.convert_dicts('aggregate_address') | arista.avd.natural_sort('aggregate_address') %}
+{%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set as_set = true %}
 {%             else %}
@@ -353,7 +353,7 @@
 {%             else %}
 {%                 set advertise_only = false %}
 {%             endif %}
-| {{ aggregate_address.aggregate_address }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
+| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
@@ -533,7 +533,7 @@
 | --- | ------------------- | ------------ |
 {%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
-{%             set redistribute = vrf.redistribute_routes | arista.avd.convert_dicts('type') | arista.avd.default([{'type':'-'}]) | map(attribute='type') %}
+{%             set redistribute = vrf.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.default([{'source_protocol':'-'}]) | map(attribute='source_protocol') %}
 | {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |
 {%         endfor %}
 {%     endif %}
