@@ -99,7 +99,7 @@ svi_profiles:
   # Specify a tenant name. | Required
   # Tenant provide a construct to group L3 VRFs and L2 VLANs.
   # Networks services can be filtered by tenant name.
-  - name: < tenant_a >
+  < tenant_a >:
 
     # Base number for MAC VRF VXLAN Network Identifier | Required with VXLAN
     # VXLAN VNI is derived from the base number with simple addition.
@@ -127,7 +127,7 @@ svi_profiles:
       # vrf "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
       # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
       # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
-      - name: < tenant_a_vrf_1 >
+      < tenant_a_vrf_1 >:
 
         # Optional
         description: < vrf_description >
@@ -201,7 +201,7 @@ svi_profiles:
         svis:
 
           # SVI interface id and VLAN id. | Required
-          - id: < 1-4096 >
+          < 1-4096 >:
 
             # By default the vni will be derived from "mac_vrf_vni_base"
             # The vni_override allows us to override this value and statically define it. | Optional
@@ -298,7 +298,7 @@ svi_profiles:
             # Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen
             structured_config: < dictionary >
 
-          - id: < 1-4096 >
+          < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
@@ -411,16 +411,16 @@ svi_profiles:
         # Custom structured config for eos_cli_config_gen
         structured_config: < dictionary >
 
-      - name: < tenant_a_vrf_2 >
+      < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >
         vrf_id: < 1-1024 >
         svis:
-          - id: < 1-4096 >
+          < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
-          - id: < 1-4096 >
+          < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
@@ -430,7 +430,7 @@ svi_profiles:
     l2vlans:
 
       # VLAN id.
-      - id: < 1-4096 >
+      < 1-4096 >:
         # By default the vni will be derived from "mac_vrf_vni_base"
         # The vni_override, allows to override this value and statically define it.
         vni_override: < 1-16777215 >
@@ -451,68 +451,68 @@ svi_profiles:
         # Extend this L2VLAN over VXLAN
         vxlan: < true | false | default -> true >
 
-      - id: < 1-4096 >
+      < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
 
-  - name: < tenant_b >
+  < tenant_b >:
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:
-      - name: < tenant_b_vrf_1 >
+      < tenant_b_vrf_1 >:
         vrf_vni: < 1-1024 >
         vtep_diagnostic:
           loopback: < 2-2100 >
           loopback_ip_range: < IPv4_address/Mask >
         svis:
-          - id: < 1-4096 >
+          < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
-          - id: < 1-4096 >
+          < 1-4096 >:
             vni_override: < 1-16777215 >
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
     l2vlans:
-      - id: < 1-4096 >
+      < 1-4096 >:
         vni_override: < 1-16777215 >
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
-      - id: < 1-4096 >
+      < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
 
 < network_services_keys.key_2 >:
-  - name: < tenant_c >
+  < tenant_c >:
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:
-      - name: < tenant_b_vrf_1 >
+      < tenant_b_vrf_1 >:
         vrf_vni: < 1-1024 >
         vtep_diagnostic:
           loopback: < 2-2100 >
           loopback_ip_range: < IPv4_address/Mask >
         svis:
-          - id: < 1-4096 >
+          < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
-          - id: < 1-4096 >
+          < 1-4096 >:
             vni_override: < 1-16777215 >
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
     l2vlans:
-      - id: < 1-4096 >
+      < 1-4096 >:
         vni_override: < 1-16777215 >
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
-      - id: < 1-4096 >
+      < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
 ```
@@ -527,28 +527,28 @@ network_services_keys:
   - name: dc1_tenants
 
 dc1_tenants:
-  - name: Tenant_A
+  Tenant_A:
     mac_vrf_vni_base: 10000
     vrfs:
-      - name: Tenant_A_OP_Zone
+      Tenant_A_OP_Zone:
         vrf_vni: 10
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
         svis:
-          - id: 110
+          110:
             name: Tenant_A_OP_Zone_1
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.10.0/24
             mtu: 1400
-          - id: 111
+          111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.11.0/24
-          - id: 112
+          112:
             name: Tenant_A_OP_Zone_3
             tags: [ DC1_LEAF2 ]
             enabled: true
@@ -560,7 +560,7 @@ dc1_tenants:
                 ip_address: 10.1.12.2/24
               DC1-LEAF2B:
                 ip_address: 10.1.12.3/24
-          - id: 113
+          113:
             name: Tenant_A_OP_Zone_WAN
             tags: [ DC1_BL1 ]
             enabled: true
@@ -569,82 +569,82 @@ dc1_tenants:
                 ip_address: 10.1.13.1/24
               DC1-BL1B:
                 ip_address: 10.1.13.2/24
-      - name: Tenant_A_WEB_Zone
+      Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
-          - id: 120
+          120:
             name: Tenant_A_WEB_Zone_1
             tags: [ web, erp1 ]
             enabled: true
             ip_address_virtual: 10.1.20.0/24
-          - id: 121
+          121:
             name: Tenant_A_WEBZone_2
             tags: [ web ]
             enabled: true
             ip_address_virtual: 10.1.21.0/24
-      - name: Tenant_A_APP_Zone
+      Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
-          - id: 130
+          130:
             name: Tenant_A_APP_Zone_1
             tags: [ app, erp1 ]
             enabled: true
             ip_address_virtual: 10.1.30.0/24
-          - id: 131
+          131:
             name: Tenant_A_APP_Zone_2
             tags: [ app ]
             enabled: true
             ip_address_virtual: 10.1.31.0/24
-      - name: Tenant_A_DB_Zone
+      Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
-          - id: 140
+          140:
             name: Tenant_A_DB_BZone_1
             tags: [ db, erp1 ]
             enabled: true
             ip_address_virtual: 10.1.40.0/24
-          - id: 141
+          141:
             name: Tenant_A_DB_Zone_2
             tags: [ db ]
             enabled: true
             ip_address_virtual: 10.1.41.0/24
-      - name: Tenant_A_WAN_Zone
+      Tenant_A_WAN_Zone:
         vrf_vni: 14
         svis:
-          - id: 150
+          150:
             name: Tenant_A_WAN_Zone_1
             tags: [ wan ]
             enabled: true
             ip_address_virtual: 10.1.40.0/24
     l2vlans:
-      - id: 160
+      160:
         vni_override: 55160
         name: Tenant_A_VMOTION
         tags: [ vmotion ]
-      - id: 161
+      161:
         name: Tenant_A_NFS
         tags: [ nfs ]
 
-  - name: Tenant_B
+  Tenant_B:
     mac_vrf_vni_base: 20000
     vrfs:
-      - name: Tenant_B_OP_Zone
+      Tenant_B_OP_Zone:
         vrf_vni: 20
         svis:
-          - id: 210
+          210:
             name: Tenant_B_OP_Zone_1
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.2.10.0/24
-          - id: 211
+          211:
             name: Tenant_B_OP_Zone_2
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.2.11.0/24
-      - name: Tenant_B_WAN_Zone
+      Tenant_B_WAN_Zone:
         vrf_vni: 21
         svis:
-          - id: 250
+          250:
             name: Tenant_B_WAN_Zone_1
             tags: [ wan ]
             enabled: true

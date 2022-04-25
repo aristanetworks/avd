@@ -166,7 +166,7 @@ tenants:
             gateway: 1.2.3.4
             nodes: [DC1-BL1A, DC1-BL1B]
         bgp_peers:
-          123.1.1.10:
+          - ip_address: 123.1.1.10
             remote_as: 1234
             password: "AQQvKeimxJu+uGQ/yYvv9w=="
             description: External IPv4 BGP peer
@@ -182,7 +182,7 @@ tenants:
             # we don't expect this in the output, next_hop takes precedence
             route_map_out: RM-123-1-1-10-OUT
             local_as: 123
-          123.1.1.11:
+          - ip_address: 123.1.1.11
             remote_as: 1234
             password: "AQQvKeimxJu+uGQ/yYvv9w=="
             description: External IPv4 BGP peer
@@ -197,12 +197,12 @@ tenants:
             route_map_out: RM-123-1-1-11-OUT
             local_as: 123
             bfd: true
-          fd5a:fe45:8831:06c5::a:
+          - ip_address: fd5a:fe45:8831:06c5::a
             remote_as: 12345
             send_community: all
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
-          fd5a:fe45:8831:06c5::b:
+          - ip_address: fd5a:fe45:8831:06c5::b
             remote_as: 12345
             nodes: [DC1-BL1A, DC1-BL1B]
         svis:
