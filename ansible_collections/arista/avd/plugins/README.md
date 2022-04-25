@@ -74,28 +74,30 @@ To use this filter:
 ### convert_dicts filter
 
 The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of dictionaries
-and insert the outer dictionary keys into each list item using the primary_key `name` (key name is configurable).
+It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is configurable) and if there is a list of dictionary in the dictionary value, it inserts this value list to secondary key "items" (key name is configurable).
 
 This filter is intended for:
 
 - Seemless data model migration from dictionaries to lists.
 - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-Note: If the variable is already a list, it will pass through untouched
+Note: If the variable is  a list of string/integer, it will pass through untouched
 
 To use this filter:
 
 ```jinja
-{# convert list of dictionary with default `name:` as the primary key #}
+{# convert list of dictionary with default `name:` as the primary key and `items:` as secondary key #}
 {% set example_list = example_dictionary | arista.avd.convert_dicts %}
 {% for example_item in example_list %}
 item primary key is {{ example_item.name }}
+item secondary key is {{ example_item.items }}
 {% endfor %}
 
-{# convert list of dictionary with `id:` set as the primary key #}
-{% set example_list = example_dictionary | arista.avd.convert_dicts('id') %}
+{# convert list of dictionary with `id:` set as the primary key and `types:` set as the secondary key #}
+{% set example_list = example_dictionary | arista.avd.convert_dicts('id','types') %}
 {% for example_item in example_list %}
 item primary key is {{ example_item.id }}
+item secondary key is {{ example_item.types }}
 {% endfor %}
 ```
 

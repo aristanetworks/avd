@@ -669,9 +669,10 @@ ip_extcommunity_lists:
 
 ```yaml
 ip_extcommunity_lists_regexp:
-  < community_list_name >:
-    - type: < permit | deny >
-      regexp: "< string >"
+  - name: < community_list_name >
+    entries:
+      - type: < permit | deny >
+        regexp: "< string >"
 ```
 
 #### Peer Filters
@@ -1311,7 +1312,7 @@ port_channel_interfaces:
 
 ```yaml
 vlan_interfaces:
-  - id: < Vlan_id_1 >:
+  - name: < Vlan_id_1 >
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
@@ -1333,10 +1334,10 @@ vlan_interfaces:
       - < IPv4_address/Mask >
     ip_igmp: < true | false >
     ip_helpers:
-      - ip_address: < ip_helper_address_1 >
+      - ip_helper: < ip_helper_address_1 >
         source_interface: < source_interface_name >
         vrf: < vrf_name >
-      - ip_address: < ip_helper_address_2 >
+      - ip_helper: < ip_helper_address_2 >
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
@@ -1345,11 +1346,11 @@ vlan_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      - ipv6_address: < IPv6_address_1/Mask >
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      - ipv6_address: < IPv6_address_2/Mask >
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -1399,7 +1400,7 @@ vlan_interfaces:
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
-  - id: < Vlan_id_2 >
+  - name: < Vlan_id_2 >
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```
@@ -1421,23 +1422,23 @@ vxlan_interface:
         dscp_propagation_encapsulation: < true | false >
         map_dscp_to_traffic_class_decapsulation: < true | false >
       vlans:
-        < vlan_id_1 >:
+        - id: < vlan_id_1 >
           vni: < vni_id_1 >
           multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
-        < vlan_id_2 >:
+        - id: < vlan_id_2 >
           vni: < vni_id_2 >
           multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
       vrfs:
-        < vrf_name_1 >:
+        - name: < vrf_name_1 >
           vni: < vni_id_3 >
           multicast_group: < ip_multicast_group_address >
-        < vrf_name_2 >:
+        - name: < vrf_name_2 >
           vni: < vni_id_4 >
           multicast_group: < ip_multicast_group_address >
       flood_vteps:
@@ -1933,7 +1934,7 @@ daemon_terminattr:
     - < ip/fqdn >:<port>
     - < ip/fqdn >:<port>
   clusters: # For multiple cluster support
-    < cluster_name >:
+    - name: < cluster_name >
       cvaddrs:
         - < ip/fqdn >:<port>
         - < ip/fqdn >:<port>
@@ -2114,20 +2115,20 @@ sflow:
   sample: < sample_rate >
   dangerous: < true | false >
   vrfs:
-    <vrf_name_1>:
+    - name: <vrf_name_1>
       destinations:
-        < sflow_destination_ip_1>:
-        < sflow_destination_ip_2>:
+        - destination: < sflow_destination_ip_1>
+        - destination: < sflow_destination_ip_2>
           port: < port_number >
       source_interface: < source_interface >
-    <vrf_name_2>:
+    - name: <vrf_name_2>
       destinations:
-        < sflow_destination_ip_1>:
+        - destination: < sflow_destination_ip_1>
       source_interface: < source_interface >
   destinations:
-    < sflow_destination_ip_1 >:
+    - destination: < sflow_destination_ip_1 >
       port: < port_number >
-    < sflow_destination_ip_2 >:
+    - destination: < sflow_destination_ip_2 >
   source_interface: < source_interface >
   run: < true | false >
 ```
@@ -2139,14 +2140,14 @@ snmp_server:
   contact: < contact_name >
   location: < location >
   communities:
-    < community_name_1 >:
+    - name: < community_name_1 >
       access: < ro | rw >
       access_list_ipv4:
         name: < acl_ipv4_name >
       access_list_ipv6:
         name: < acl_ipv6_name >
       view: < view_name >
-    < community_name_2 >:
+    - name: < community_name_2 >
       access: < ro | rw >
       access_list_ipv4:
         name: < acl_ipv4_name >
@@ -2162,10 +2163,10 @@ snmp_server:
       vrf: < vrf >
     - name: < ipv6-access-list >
   local_interfaces:
-    < interface_name_1 >:
+    - name: < interface_name_1 >
       vrf: < vrf_name >
-    < interface_name_2 >:
-    < interface_name_3 >:
+    - name: < interface_name_2 >
+    - name: < interface_name_3 >
       vrf: < vrf_name >
   views:
     - name: < view_name >
@@ -3308,7 +3309,7 @@ virtual_source_nat_vrfs:
 
 ```yaml
 vlans:
-  < vlan_id >:
+  - id: < vlan_id >
     name: < vlan_name >
     state: < active | suspend >
     trunk_groups:
@@ -3317,7 +3318,7 @@ vlans:
     private_vlan:
       type: < community | isolated >
       primary_vlan: < vlan_id >
-  < vlan_id >:
+  - id: < vlan_id >
     name: < vlan_name >
 ```
 

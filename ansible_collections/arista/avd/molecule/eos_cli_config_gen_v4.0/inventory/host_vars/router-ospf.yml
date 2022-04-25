@@ -165,7 +165,7 @@ port_channel_interfaces:
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 vlan_interfaces:
-  - id: Vlan24
+  - name: Vlan24
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.24
     ospf_cost: 99

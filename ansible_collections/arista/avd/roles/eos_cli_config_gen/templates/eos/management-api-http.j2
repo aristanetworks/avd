@@ -15,6 +15,11 @@ management api http-commands
 {%     elif management_api_http.enable_http is arista.avd.defined(false) %}
    no protocol http
 {%     endif %}
+{%     if management_api_http.default_services is arista.avd.defined(true) %}
+   default-services
+{%     elif management_api_http.default_services is arista.avd.defined(false) %}
+   no default-services
+{%     endif %}
    no shutdown
 {%     for vrf in management_api_http.enable_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
    !

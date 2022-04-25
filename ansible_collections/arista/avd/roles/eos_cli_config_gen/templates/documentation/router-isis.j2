@@ -60,7 +60,7 @@
 {# ------- #}
 {# vlan interfaces #}
 {# ------- #}
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.isis_enable is arista.avd.defined %}
 {%             set row_isis_instance = vlan_interface.isis_enable %}
 {%             set row_isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
@@ -71,7 +71,7 @@
 {%             else %}
 {%                 set row_intf_mode = "-" %}
 {%             endif %}
-| {{ vlan_interface.id }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
+| {{ vlan_interface.name }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
 {%         endif %}
 {%     endfor %}
 {# ------- #}

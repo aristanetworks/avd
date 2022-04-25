@@ -21,7 +21,7 @@
 | DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL2A | 192.168.200.117/24 | 7280R2 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL2B | 192.168.200.118/24 | 7280R3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-CL1A | 192.168.200.119/24 | 7280R | Provisioned |
+| DC1_FABRIC | l3leaf | DC1-CL1A | 192.168.200.119/24 | 7368X4 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-CL1B | 192.168.200.120/24 | 7280R | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1B | 192.168.200.115/24 | vEOS-LAB | Provisioned |

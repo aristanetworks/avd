@@ -153,6 +153,12 @@ interface Management1
 | EVPN-OVERLAY-PEERS | True |
 | MLAG-IPv4-UNDERLAY-PEER | False |
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | - | - | 20 Seconds |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
@@ -225,6 +231,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      host-flap detection expiry timeout 20 seconds
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
