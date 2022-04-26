@@ -28,10 +28,10 @@
 
 ### SNMP EngineID Configuration
 
-| Type | Name (Hex) | IP | Port |
+| Type | EngineID (Hex) | IP | Port |
 | ---- | ---------- | -- | ---- |
 {%         if snmp_server.engine_ids.local is arista.avd.defined %}
-| local |  {{ snmp_server.engine_ids.local }} | - | - |
+| local | {{ snmp_server.engine_ids.local }} | - | - |
 {%         endif %}
 {%         for engine_id in snmp_server.engine_ids.remotes %}
 {%             if engine_id.id is arista.avd.defined and engine_id.address is arista.avd.defined %}

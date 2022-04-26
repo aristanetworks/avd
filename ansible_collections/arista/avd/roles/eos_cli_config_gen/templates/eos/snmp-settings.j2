@@ -117,7 +117,7 @@ snmp-server location {{ snmp_server.location }}
 {%             if user.group is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " " ~ user.group %}
 {%             endif %}
-{%             if user.remote_address is arista.avd.defined %}
+{%             if user.remote_address is arista.avd.defined and user.version is arista.avd.defined('v3') %}
 {%                 set user_cli = user_cli ~ " remote " ~ user.remote_address %}
 {%                 if user.udp_port is arista.avd.defined %}
 {%                     set user_cli = user_cli ~ " udp-port " ~ user.udp_port %}
