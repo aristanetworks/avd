@@ -93,9 +93,9 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -512,7 +512,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 11.1.0.38 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True | - |
 | 100.100.100.101 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |

@@ -8,6 +8,9 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -123,9 +126,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -139,6 +142,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -163,6 +167,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -273,6 +290,7 @@ vlan 310
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet10 | server01_ES1_Eth1 | *access | *310 | *- | *- | 10 |
+| Ethernet12 | server03_AUTO_ESI_Eth1 | *access | *310 | *- | *- | 12 |
 
 *Inherited from Port-Channel Interface
 
@@ -309,6 +327,11 @@ interface Ethernet11
    description ROUTER02_WITH_SUBIF_Eth1
    no shutdown
    channel-group 11 mode active
+!
+interface Ethernet12
+   description server03_AUTO_ESI_Eth1
+   no shutdown
+   channel-group 12 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -320,6 +343,7 @@ interface Ethernet11
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
+| Port-Channel12 | server03_AUTO_ESI_Auto-ESI PortChannel | switched | access | 310 | - | - | - | - | - | 0000:0000:fc87:ae24:2cb3 |
 
 #### Flexible Encapsulation Interfaces
 
@@ -327,12 +351,15 @@ interface Ethernet11
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
 | Port-Channel11.101 | - | l2dot1q | 101 | False | 101 | - | - | True | - | - | - |
 | Port-Channel11.102 | - | l2dot1q | 1102 | False | 2102 | - | - | True | - | - | - |
+| Port-Channel11.103 | - | l2dot1q | 1103 | False | 2103 | - | - | True | - | - | - |
+| Port-Channel11.104 | - | l2dot1q | 1104 | False | 2104 | - | - | True | - | - | - |
 
 #### Link Tracking Groups
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 | Port-Channel10 | LT_GROUP1 | downstream |
+| Port-Channel12 | LT_GROUP1 | downstream |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -369,6 +396,33 @@ interface Port-Channel11.102
    evpn ethernet-segment
       identifier 0000:0000:0000:0000:0102
       route-target import 00:00:00:00:01:02
+!
+interface Port-Channel11.103
+   vlan id 1103
+   encapsulation vlan
+      client dot1q 2103 network client
+   evpn ethernet-segment
+      identifier 0000:0000:c2c9:c85a:ed92
+      route-target import c2:c9:c8:5a:ed:92
+!
+interface Port-Channel11.104
+   vlan id 1104
+   encapsulation vlan
+      client dot1q 2104 network client
+   evpn ethernet-segment
+      identifier 0000:0000:5c8e:1f50:9fc4
+      route-target import 5c:8e:1f:50:9f:c4
+!
+interface Port-Channel12
+   description server03_AUTO_ESI_Auto-ESI PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 310
+   evpn ethernet-segment
+      identifier 0000:0000:fc87:ae24:2cb3
+      route-target import fc:87:ae:24:2c:b3
+   lacp system-id fc87.ae24.2cb3
+   link tracking group LT_GROUP1 downstream
 ```
 
 ## Loopback Interfaces
@@ -573,7 +627,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 10.10.101.0 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
@@ -584,6 +638,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Peer Group | Activate |
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -630,6 +690,7 @@ router bgp 65151
       vlan 310
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

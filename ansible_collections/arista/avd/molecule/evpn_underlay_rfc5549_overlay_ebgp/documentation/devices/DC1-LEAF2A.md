@@ -129,9 +129,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -959,7 +959,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -991,9 +991,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 20 |  30 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 20 Seconds | 30 | - |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -1115,8 +1115,7 @@ router bgp 65102
       vlan 310-311
    !
    address-family evpn
-      host-flap detection window 20
-      host-flap detection threshold 30
+      host-flap detection window 20 threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -1324,7 +1323,7 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.6
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

@@ -74,6 +74,11 @@ platform_settings:
     reload_delay:
       mlag: 900
       non_mlag: 1020
+  - platforms: [ '7368X4' ]
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
   - platforms: [ 'VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab' ]
     reload_delay:
       mlag: 300

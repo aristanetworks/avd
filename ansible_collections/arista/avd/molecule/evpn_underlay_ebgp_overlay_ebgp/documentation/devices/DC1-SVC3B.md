@@ -125,9 +125,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -1277,7 +1277,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 10.255.252.6 | Inherited from peer group MLAG-PEERS | default | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 172.31.255.64 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.66 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -1307,9 +1307,9 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Disabled | - |  - |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Disabled | - | - | - |
 
 ### Router BGP VLAN Aware Bundles
 

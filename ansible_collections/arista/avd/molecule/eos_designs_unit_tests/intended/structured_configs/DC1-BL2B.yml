@@ -65,6 +65,11 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.17
@@ -215,6 +220,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1

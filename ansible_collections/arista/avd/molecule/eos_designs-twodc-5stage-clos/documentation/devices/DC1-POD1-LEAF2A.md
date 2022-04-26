@@ -70,9 +70,9 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -762,6 +762,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP Peer Groups
 
+#### EVPN-OVERLAY-CORE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 15 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
+
 #### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
@@ -794,11 +805,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 100.100.100.201 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 172.16.120.3 | 65121 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - |
 | 172.17.110.8 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.17.110.10 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.17.110.12 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
@@ -813,7 +825,16 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | Peer Group | Activate |
 | ---------- | -------- |
+| EVPN-OVERLAY-CORE | True |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 ### Router BGP VLANs
 
@@ -845,6 +866,12 @@ router bgp 65112.100
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-CORE peer group
+   neighbor EVPN-OVERLAY-CORE update-source Loopback0
+   neighbor EVPN-OVERLAY-CORE bfd
+   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
+   neighbor EVPN-OVERLAY-CORE send-community
+   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -879,6 +906,9 @@ router bgp 65112.100
    neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111.100 out
+   neighbor 172.16.120.3 peer group EVPN-OVERLAY-CORE
+   neighbor 172.16.120.3 remote-as 65121
+   neighbor 172.16.120.3 description DC1-POD2-LEAF1A
    neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.8 remote-as 65110.100
    neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
@@ -922,13 +952,17 @@ router bgp 65112.100
       redistribute learned
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate

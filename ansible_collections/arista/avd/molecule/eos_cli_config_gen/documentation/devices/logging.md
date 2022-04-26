@@ -60,6 +60,12 @@ interface Management1
 | Trap | disabled |
 | Synchronous | critical |
 
+| Format Type | Setting |
+| ----------- | ------- |
+| Timestamp | traditional year timezone |
+| Hostname | hostname |
+| Sequence-numbers | false |
+
 | VRF | Source Interface |
 | --- | ---------------- |
 | default | Loopback0 |
@@ -90,6 +96,7 @@ logging vrf mgt host 10.10.10.7
 logging vrf mgt host 30.30.30.7 100 200 protocol tcp
 logging vrf mgt host 40.40.40.7 300 400
 logging vrf vrf_with_no_source_interface host 1.2.3.4
+logging format timestamp traditional year timezone
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
 ```

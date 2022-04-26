@@ -82,8 +82,8 @@
 
 #### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv6 Virtual IP |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------|
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
 {%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.natural_sort %}
 {%             for vrid in vlan_interfaces[vlan_interface].vrrp_ids if vrid.id is arista.avd.defined %}
 {%                 set row_id = vrid.id %}
@@ -108,8 +108,9 @@
 {%                     set row_tracked_object_action = row_tracked_object_action | join(", ") %}
 {%                 endif %}
 {%                 set row_ipv4_virt = vrid.ipv4.address | arista.avd.default('-') %}
+{%                 set row_ipv4_vers = vrid.ipv4.version | arista.avd.default('2') %}
 {%                 set row_ipv6_virt = vrid.ipv6.address | arista.avd.default('-') %}
-| {{ vlan_interface }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virt }} | {{ row_ipv6_virt }} |
+| {{ vlan_interface }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virt }} | {{ row_ipv4_vers }} | {{ row_ipv6_virt }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

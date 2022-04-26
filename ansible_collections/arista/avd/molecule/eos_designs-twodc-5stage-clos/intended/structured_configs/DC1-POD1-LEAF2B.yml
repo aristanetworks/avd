@@ -30,6 +30,13 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+    EVPN-OVERLAY-CORE:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '15'
+      send_community: all
+      maximum_routes: 0
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -37,6 +44,8 @@ router_bgp:
       IPv4-UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
+        activate: false
+      EVPN-OVERLAY-CORE:
         activate: false
   neighbors:
     172.20.110.2:
@@ -73,6 +82,10 @@ router_bgp:
       description: DC1-RS1
       remote_as: '65101'
       route_map_out: RM-EVPN-FILTER-AS65101
+    1.1.1.1:
+      peer_group: EVPN-OVERLAY-CORE
+      description: HOSTNAME_NOT_IN_ANSIBLE
+      remote_as: '1111'
     11.1.0.39:
       remote_as: '65211'
       description: DC2-POD1-LEAF1A
@@ -87,6 +100,13 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+      EVPN-OVERLAY-CORE:
+        domain_remote: true
+        activate: true
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: false
     route:
       import_match_failure_action: discard
   address_family_rtc:
@@ -153,41 +173,71 @@ router_bgp:
     110:
       tenant: Tenant_A
       rd: 172.16.110.5:99110
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:99110
       route_targets:
         both:
         - 99110:99110
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 99110:99110
       redistribute_routes:
       - learned
     111:
       tenant: Tenant_A
       rd: 172.16.110.5:50111
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:50111
       route_targets:
         both:
         - 50111:50111
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 50111:50111
       redistribute_routes:
       - learned
     112:
       tenant: Tenant_A
       rd: 172.16.110.5:20112
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:20112
       route_targets:
         both:
         - 20112:20112
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 20112:20112
       redistribute_routes:
       - learned
     2500:
       tenant: Tenant_A
       rd: 172.16.110.5:2500
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:2500
       route_targets:
         both:
         - 2500:2500
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 2500:2500
       redistribute_routes:
       - learned
     2600:
       tenant: Tenant_A
       rd: 172.16.110.5:32600
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:32600
       route_targets:
         both:
         - 32600:32600
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 32600:32600
       redistribute_routes:
       - learned
 static_routes:

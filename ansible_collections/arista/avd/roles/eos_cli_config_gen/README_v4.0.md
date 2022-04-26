@@ -657,21 +657,24 @@ community_lists:
 
 ```yaml
 ip_extcommunity_lists:
-  < community_list_name_1 >:
-    - type: < permit | deny >
-      extcommunities: "< communities as string >"
-  < community_list_name_2 >:
-    - type: < permit | deny >
-      extcommunities: "< communities as string >"
+  - name: < community_list_name_1 >
+    entries:
+      - type: < permit | deny >
+        extcommunities: "< communities as string >"
+  - name: < community_list_name_2 >
+    entries:
+      - type: < permit | deny >
+        extcommunities: "< communities as string >"
 ```
 
 #### IP Extended Community Lists RegExp
 
 ```yaml
 ip_extcommunity_lists_regexp:
-  < community_list_name >:
-    - type: < permit | deny >
-      regexp: "< string >"
+  - name: < community_list_name >
+    entries:
+      - type: < permit | deny >
+        regexp: "< string >"
 ```
 
 #### Peer Filters
@@ -1421,23 +1424,23 @@ vxlan_interface:
         dscp_propagation_encapsulation: < true | false >
         map_dscp_to_traffic_class_decapsulation: < true | false >
       vlans:
-        < vlan_id_1 >:
+        - id: < vlan_id_1 >
           vni: < vni_id_1 >
           multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
-        < vlan_id_2 >:
+        - id: < vlan_id_2 >
           vni: < vni_id_2 >
           multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
       vrfs:
-        < vrf_name_1 >:
+        - name: < vrf_name_1 >
           vni: < vni_id_3 >
           multicast_group: < ip_multicast_group_address >
-        < vrf_name_2 >:
+        - name: < vrf_name_2 >
           vni: < vni_id_4 >
           multicast_group: < ip_multicast_group_address >
       flood_vteps:
@@ -1933,7 +1936,7 @@ daemon_terminattr:
     - < ip/fqdn >:<port>
     - < ip/fqdn >:<port>
   clusters: # For multiple cluster support
-    < cluster_name >:
+    - name: < cluster_name >
       cvaddrs:
         - < ip/fqdn >:<port>
         - < ip/fqdn >:<port>
@@ -2114,20 +2117,20 @@ sflow:
   sample: < sample_rate >
   dangerous: < true | false >
   vrfs:
-    <vrf_name_1>:
+    - name: <vrf_name_1>
       destinations:
-        < sflow_destination_ip_1>:
-        < sflow_destination_ip_2>:
+        - destination: < sflow_destination_ip_1>
+        - destination: < sflow_destination_ip_2>
           port: < port_number >
       source_interface: < source_interface >
-    <vrf_name_2>:
+    - name: <vrf_name_2>
       destinations:
-        < sflow_destination_ip_1>:
+        - destination: < sflow_destination_ip_1>
       source_interface: < source_interface >
   destinations:
-    < sflow_destination_ip_1 >:
+    - destination: < sflow_destination_ip_1 >
       port: < port_number >
-    < sflow_destination_ip_2 >:
+    - destination: < sflow_destination_ip_2 >
   source_interface: < source_interface >
   run: < true | false >
 ```
@@ -3308,7 +3311,7 @@ virtual_source_nat_vrfs:
 
 ```yaml
 vlans:
-  < vlan_id >:
+  - id: < vlan_id >
     name: < vlan_name >
     state: < active | suspend >
     trunk_groups:
@@ -3317,7 +3320,7 @@ vlans:
     private_vlan:
       type: < community | isolated >
       primary_vlan: < vlan_id >
-  < vlan_id >:
+  - id: < vlan_id >
     name: < vlan_name >
 ```
 

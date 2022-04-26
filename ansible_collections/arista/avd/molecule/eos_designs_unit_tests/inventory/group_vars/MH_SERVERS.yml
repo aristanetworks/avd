@@ -37,6 +37,18 @@ servers:
           enabled: true
           name: l2leaf-server02
 
+  server03_AUTO_ESI:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X
+        port_channel:
+          description: Auto-ESI PortChannel
+          mode: active
+          short_esi: auto
+
 routers:
   ROUTER01:
     rack: RackB
@@ -69,3 +81,16 @@ routers:
               # Flexible encapsulation parameters
               encapsulation_vlan:
                 client_dot1q: 2102 # default is subinterface number
+            # Tests for Auto ESI on subinterfaces
+            - number: 103
+              short_esi: auto # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1103 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2103 # default is subinterface number
+            - number: 104
+              short_esi: auto # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1104 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2104 # default is subinterface number

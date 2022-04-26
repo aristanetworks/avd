@@ -19,11 +19,20 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+    EVPN-OVERLAY-CORE:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '15'
+      send_community: all
+      maximum_routes: 0
   address_family_ipv4:
     peer_groups:
       UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
+        activate: false
+      EVPN-OVERLAY-CORE:
         activate: false
   redistribute_routes:
     connected:
@@ -61,10 +70,26 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
       remote_as: '65001'
+    1.1.1.1:
+      peer_group: EVPN-OVERLAY-CORE
+      description: MY_EVPN_GW_USER_DEFINED
+      remote_as: '65555'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+      EVPN-OVERLAY-CORE:
+        domain_remote: true
+        activate: true
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: false
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.15
@@ -185,25 +210,43 @@ router_bgp:
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.254.15:14
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:14
       route_targets:
         both:
         - '65105:14'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65105:14'
       redistribute_routes:
       - learned
       vlan: 150
     Tenant_B_WAN_Zone:
       rd: 192.168.254.15:21
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:21
       route_targets:
         both:
         - '65105:21'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65105:21'
       redistribute_routes:
       - learned
       vlan: 250
     Tenant_C_WAN_Zone:
       rd: 192.168.254.15:31
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:31
       route_targets:
         both:
         - '65105:31'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65105:31'
       redistribute_routes:
       - learned
       vlan: 350
@@ -303,6 +346,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
