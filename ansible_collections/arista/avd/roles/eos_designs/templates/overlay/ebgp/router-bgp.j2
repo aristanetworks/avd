@@ -4,7 +4,7 @@ router_bgp:
 
 {% include 'overlay/ebgp/address-family-ipv4.j2' %}
 
-{% if switch.overlay_ipv6 is arista.avd.defined(true) %}
+{% if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
 {%     include 'overlay/ebgp/address-family-ipv6.j2' %}
 
 {% endif %}
