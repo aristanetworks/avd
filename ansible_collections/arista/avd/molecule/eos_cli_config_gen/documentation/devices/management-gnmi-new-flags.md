@@ -7,6 +7,7 @@
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
