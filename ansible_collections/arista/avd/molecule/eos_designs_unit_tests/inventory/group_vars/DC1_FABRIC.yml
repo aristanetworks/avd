@@ -138,12 +138,30 @@ l3leaf:
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
+          evpn_gateway:
+            remote_peers:
+              - hostname: "DC1-BL2A"
+            evpn_l2:
+              enabled: true
+            evpn_l3:
+              enabled: true
+              inter_domain: true
         DC1-BL1B:
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+          evpn_gateway:
+            remote_peers:
+              - hostname: "MY_EVPN_GW_USER_DEFINED"
+                ip_address: 1.1.1.1
+                bgp_as: 65555
+            evpn_l2:
+              enabled: true
+            evpn_l3:
+              enabled: true
+              inter_domain: false
     DC1_BL2:
       mlag: false
       filter:

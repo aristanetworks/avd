@@ -92,6 +92,7 @@ Across all designs the following functionality is provided:
 - EVPN service definition: Layer 2 and Layer 3 (Network Services)
 - L3 Edge port(s) definition
 - L2 Edge ports definition (connected endpoints)
+- Multi-Domain EVPN Gateway functionality
 
 **5 Stage topology example:**
 
