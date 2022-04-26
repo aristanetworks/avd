@@ -49,6 +49,8 @@ underlay_routing_protocol: BGP
 overlay_routing_protocol: BGP
 
 evpn_ebgp_multihop: 3
+evpn_ebgp_gateway_multihop: 15
+evpn_ebgp_gateway_inter_domain: true
 
 evpn_short_esi_prefix: "0000:0000:"
 

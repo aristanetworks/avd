@@ -187,6 +187,14 @@ switch:
                           switch.default_evpn_role, 'none') %}
   evpn_role: {{ switch_evpn_role }}
 
+{# switch.evpn_gateway #}
+  evpn_gateway_vxlan_l2: {{ switch_data.combined.evpn_gateway.evpn_l2.enabled | arista.avd.default(false) }}
+  evpn_gateway_vxlan_l3: {{ switch_data.combined.evpn_gateway.evpn_l3.enabled | arista.avd.default(false) }}
+  evpn_gateway_vxlan_l3_inter_domain: {{ switch_data.combined.evpn_gateway.evpn_l3.inter_domain | arista.avd.default(true) }}
+{%     if switch_data.combined.evpn_gateway.evpn_l2.enabled is arista.avd.defined(true) or switch_data.combined.evpn_gateway.evpn_l3.enabled is arista.avd.defined(true) %}
+  evpn_gateway_remote_peers: {{ switch_data.combined.evpn_gateway.remote_peers | arista.avd.default() }}
+{%     endif %}
+
 {# switch.mpls_overlay_role #}
 {%     set switch_mpls_overlay_role = switch_data.combined.mpls_overlay_role | arista.avd.default(
                           switch.default_mpls_overlay_role) %}
@@ -230,6 +238,9 @@ switch:
     evpn_overlay_peers:
       name: {{ bgp_peer_groups.evpn_overlay_peers.name | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].name, 'EVPN-OVERLAY-PEERS') }}
       password: {{ bgp_peer_groups.evpn_overlay_peers.password | arista.avd.default(bgp_peer_groups['EVPN_OVERLAY_PEERS'].password) | to_json }}
+    evpn_overlay_core:
+      name: {{ bgp_peer_groups.evpn_overlay_core.name | arista.avd.default('EVPN-OVERLAY-CORE') }}
+      password: {{ bgp_peer_groups.evpn_overlay_core.password | arista.avd.default | to_json }}
     mpls_overlay_peers:
       name: {{ bgp_peer_groups.mpls_overlay_peers.name | arista.avd.default('MPLS-OVERLAY-PEERS') }}
       password: {{ bgp_peer_groups.mpls_overlay_peers.password | arista.avd.default | to_json }}

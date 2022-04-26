@@ -71,7 +71,14 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 # Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
+
+# EVPN GW ebgp-multihop | Optional
+# Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
+# Adapt the value for your specific topology.
+evpn_ebgp_gateway_multihop: < ebgp_multihop | default -> 15 >
+
 # BGP peer group names and encrypted password | Optional
+
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
@@ -86,6 +93,9 @@ bgp_peer_groups:
    # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
     name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
+    password: "< encrypted password >"
+  evpn_overlay_core:
+    name: < name of peer group | default -> EVPN-OVERLAY-CORE >
     password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
