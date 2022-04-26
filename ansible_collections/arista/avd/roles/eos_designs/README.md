@@ -8,7 +8,7 @@
   - [Reference Designs](#reference-designs)
     - [Layer 3 Leaf Spine with VXLAN EVPN](#layer-3-leaf-spine-with-vxlan-evpn)
   - [Requirements](#requirements)
-  - [Variables Precedence](#variables-precedence)
+  - [Role Variables](#role-variables)
   - [Upgrade of eos_designs data model](#upgrade-of-eos_designs-data-model)
     - [Versioning](#versioning)
     - [Example Playbooks](#example-playbooks)
