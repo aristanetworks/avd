@@ -250,7 +250,7 @@
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         if  port_channel_interface.type is arista.avd.defined
+{%         if port_channel_interface.type is arista.avd.defined
               and port_channel_interface.type in ['routed', 'l3dot1q']
               and (port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true)) %}
 {%             set port_channel_interface_ipv6.configured = true %}
