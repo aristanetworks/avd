@@ -2,15 +2,6 @@
 {## Underlay network peerings #}
 router_bgp:
   peer_groups:
-{% if underlay_ipv6 is arista.avd.defined(true) %}
-    {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
-      type: ipv6
-{%     if switch.bgp_peer_groups.ipv4_underlay_peers.password is arista.avd.defined() %}
-      password: "{{ switch.bgp_peer_groups.ipv4_underlay_peers.password }}"
-{%     endif %}
-      maximum_routes: 12000
-      send_community: all
-{% endif %}
     {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
       type: ipv4
 {% if switch.bgp_peer_groups.ipv4_underlay_peers.password is arista.avd.defined() %}
