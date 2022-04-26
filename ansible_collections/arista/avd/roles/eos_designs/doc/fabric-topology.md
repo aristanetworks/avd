@@ -219,6 +219,9 @@ defaults <- node_group <- node_group.node <- node
       nodes:
         # Uplink switches interfaces (list), interface located on uplink switch. | Required.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+        # short_esi only valid for l2leaf devices using port-channel uplink
+        # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+        short_esi: < 0000:0000:0000 | auto >
 
   # When nodes are not in node_group
   nodes:
