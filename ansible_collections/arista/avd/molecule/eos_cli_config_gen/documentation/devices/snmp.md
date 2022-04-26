@@ -59,9 +59,9 @@ interface Management1
 
 ### SNMP EngineID Configuration
 
-| Type | Name (Hex) | IP | Port |
+| Type | EngineID (Hex) | IP | Port |
 | ---- | ---------- | -- | ---- |
-| local |  424242424242424242 | - | - |
+| local | 424242424242424242 | - | - |
 | remote | 6172697374615F6970 | 1.1.1.1 | - |
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
 
