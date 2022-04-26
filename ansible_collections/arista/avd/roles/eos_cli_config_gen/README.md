@@ -111,6 +111,7 @@
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
+      - [Tap Aggregation](#tap-aggregation)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -2474,7 +2475,12 @@ monitor_sessions:
 
 ```yaml
 tap_aggregation:
-  mode: < exclusive >
+  mode:
+    exclusive:
+      enabled: < true | false >
+      profile: < profile_name | default --> tap-aggregation-default >
+      no-errdisable:
+        - < EthernetX | Port-ChannelX >
   encapsulation_dot1br_strip: < true | false >
   encapsulation_vn_tag_strip: < true | false >
   protocol_lldp_trap: < true | false >
@@ -2483,7 +2489,7 @@ tap_aggregation:
   mac_timestamp: < replace source-mac | header format 48-bit | header format 64-bit >
   # mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence
   mac_fcs_append: < true | false >
-  mac_fcs_error: < correct | discard | pass-through >
+  mac_fcs_error: < correct | discar | pass-through >
 ```
 
 ### System Control-Plane

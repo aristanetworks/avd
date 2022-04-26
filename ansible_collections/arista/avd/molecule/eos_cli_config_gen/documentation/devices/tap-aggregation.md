@@ -5,6 +5,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
+  - [Tap Aggregation](#tap-aggregation)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
@@ -47,6 +48,39 @@ interface Management1
 # Authentication
 
 # Monitoring
+
+## Tap Aggregation
+
+### Tap Aggregation Summary
+
+| Settings | Values |
+| -------- | ------ |
+| Mode Exclusive | True |
+| Mode Exclusive Profile | tap-aggregation-extended |
+| Mode Exclusive No-Errdisable | Ethernet1/1, Ethetnet 42/1, Port-Channel200 |
+| Encapsulation Dot1br Strip | True |
+| Encapsulation Vn Tag Strip | True |
+| Protocol LLDP Trap | True |
+| Truncation Size | 169 |
+| Mac Timestamp | replace source-mac |
+| Mac FCS Error | pass-through |
+
+### Tap Aggregation Configuration
+
+```eos
+!
+tap aggregation
+   mode exclusive profile tap-aggregation-extended
+   mode exclusive no-errdisable Ethernet1/1
+   mode exclusive no-errdisable Ethetnet 42/1
+   mode exclusive no-errdisable Port-Channel200
+   encapsulation dot1br strip
+   encapsulation vn-tag strip
+   protocol lldp trap
+   truncation size 169
+   mac timestamp replace source-mac
+   mac fcs-error pass-through
+```
 
 # Internal VLAN Allocation Policy
 

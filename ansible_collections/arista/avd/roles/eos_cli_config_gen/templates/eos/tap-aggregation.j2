@@ -2,8 +2,19 @@
 {% if tap_aggregation is arista.avd.defined %}
 !
 tap aggregation
-{%     if tap_aggregation.mode is arista.avd.defined %}
-   mode {{ tap_aggregation.mode }}
+{%     if tap_aggregation.mode.exclusive is arista.avd.defined %}
+{%         if tap_aggregation.mode.exclusive.enabled is arista.avd.defined(true) %}
+{%             set mode_cli = "mode exclusive" %}
+{%         endif %}
+{%         if tap_aggregation.mode.exclusive.profile is arista.avd.defined %}
+{%             set mode_cli = mode_cli ~ " profile " ~ tap_aggregation.mode.exclusive.profile %}
+{%         endif %}
+   {{ mode_cli }}
+{%         if tap_aggregation.mode.exclusive.no_errdisable is arista.avd.defined %}
+{%             for interface in tap_aggregation.mode.exclusive.no_errdisable %}
+   mode exclusive no-errdisable {{ interface }}
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     if tap_aggregation.encapsulation_dot1br_strip is arista.avd.defined(true) %}
    encapsulation dot1br strip
