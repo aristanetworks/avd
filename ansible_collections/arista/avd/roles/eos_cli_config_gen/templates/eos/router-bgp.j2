@@ -56,6 +56,27 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.peer_groups[peer_group].next_hop_unchanged is arista.avd.defined(true) %}
    neighbor {{ peer_group }} next-hop-unchanged
 {%         endif %}
+{%         if router_bgp.peer_groups[peer_group].remove_private_as.enabled is arista.avd.defined(true) %}
+{%             set remove_private_as_cli = "neighbor " ~ peer_group ~ " remove-private-as" %}
+{%             if router_bgp.peer_groups[peer_group].remove_private_as.all is arista.avd.defined(true) %}
+{%                 set remove_private_as_cli = remove_private_as_cli ~ " all" %}
+{%                 if router_bgp.peer_groups[peer_group].remove_private_as.replace_as is arista.avd.defined(true) %}
+{%                     set remove_private_as_cli = remove_private_as_cli ~ " replace-as" %}
+{%                 endif %}
+{%             endif %}
+   {{ remove_private_as_cli }}
+{%         elif router_bgp.peer_groups[peer_group].remove_private_as.enabled is arista.avd.defined(false) %}
+   no neighbor {{ peer_group }} remove-private-as
+{%         endif %}
+{%         if router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled is arista.avd.defined(true) %}
+{%             set remove_private_as_ingress_cli = "neighbor " ~ peer_group ~ " remove-private-as ingress" %}
+{%             if router_bgp.peer_groups[peer_group].remove_private_as_ingress.replace_as is arista.avd.defined(true) %}
+{%                 set remove_private_as_ingress_cli = remove_private_as_ingress_cli ~ " replace-as" %}
+{%             endif %}
+   {{ remove_private_as_ingress_cli }}
+{%         elif router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled is arista.avd.defined(false) %}
+   no neighbor {{ peer_group }} remove-private-as ingress
+{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].update_source is arista.avd.defined %}
    neighbor {{ peer_group }} update-source {{ router_bgp.peer_groups[peer_group].update_source }}
 {%         endif %}
@@ -148,6 +169,27 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].shutdown is arista.avd.defined(true) %}
    neighbor {{ neighbor }} shutdown
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].remove_private_as.enabled is arista.avd.defined(true) %}
+{%             set remove_private_as_cli = "neighbor " ~ neighbor ~ " remove-private-as" %}
+{%             if router_bgp.neighbors[neighbor].remove_private_as.all is arista.avd.defined(true) %}
+{%                 set remove_private_as_cli = remove_private_as_cli ~ " all" %}
+{%                 if router_bgp.neighbors[neighbor].remove_private_as.replace_as is arista.avd.defined(true) %}
+{%                     set remove_private_as_cli = remove_private_as_cli ~ " replace-as" %}
+{%                 endif %}
+{%             endif %}
+   {{ remove_private_as_cli }}
+{%         elif router_bgp.neighbors[neighbor].remove_private_as.enabled is arista.avd.defined(false) %}
+   no neighbor {{ neighbor }} remove-private-as
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].remove_private_as_ingress.enabled is arista.avd.defined(true) %}
+{%             set remove_private_as_ingress_cli = "neighbor " ~ neighbor ~ " remove-private-as ingress" %}
+{%             if router_bgp.neighbors[neighbor].remove_private_as_ingress.replace_as is arista.avd.defined(true) %}
+{%                 set remove_private_as_ingress_cli = remove_private_as_ingress_cli ~ " replace-as" %}
+{%             endif %}
+   {{ remove_private_as_ingress_cli }}
+{%         elif router_bgp.neighbors[neighbor].remove_private_as_ingress.enabled is arista.avd.defined(false) %}
+   no neighbor {{ neighbor }} remove-private-as ingress
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].local_as is arista.avd.defined %}
    neighbor {{ neighbor }} local-as {{ router_bgp.neighbors[neighbor].local_as }} no-prepend replace-as
@@ -685,6 +727,27 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is arista.avd.defined %}
       neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as.enabled is arista.avd.defined(true) %}
+{%                 set remove_private_as_cli = "neighbor " ~ neighbor ~ " remove-private-as" %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as.all is arista.avd.defined(true) %}
+{%                     set remove_private_as_cli = remove_private_as_cli ~ " all" %}
+{%                     if router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as.replace_as is arista.avd.defined(true) %}
+{%                         set remove_private_as_cli = remove_private_as_cli ~ " replace-as" %}
+{%                     endif %}
+{%                 endif %}
+      {{ remove_private_as_cli }}
+{%             elif router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as.enabled is arista.avd.defined(false) %}
+      no neighbor {{ neighbor }} remove-private-as
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as_ingress.enabled is arista.avd.defined(true) %}
+{%                 set remove_private_as_ingress_cli = "neighbor " ~ neighbor ~ " remove-private-as ingress" %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as_ingress.replace_as is arista.avd.defined(true) %}
+{%                     set remove_private_as_ingress_cli = remove_private_as_ingress_cli ~ " replace-as" %}
+{%                 endif %}
+      {{ remove_private_as_ingress_cli }}
+{%             elif router_bgp.vrfs[vrf].neighbors[neighbor].remove_private_as_ingress.enabled is arista.avd.defined(false) %}
+      no neighbor {{ neighbor }} remove-private-as ingress
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].password is arista.avd.defined %}
       neighbor {{ neighbor }} password 7 {{ router_bgp.vrfs[vrf].neighbors[neighbor].password }}
