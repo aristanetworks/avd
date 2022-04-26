@@ -7,9 +7,9 @@
 {%         do ethernet_interfaces_qos.append(ethernet_interface) %}
 {%     endif %}
 {% endfor %}
-{% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%     if port_channel_interfaces[port_channel_interface].shape is arista.avd.defined or
-          port_channel_interfaces[port_channel_interface].qos is arista.avd.defined %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if port_channel_interface.shape is arista.avd.defined or
+          port_channel_interface.qos is arista.avd.defined %}
 {%         do port_channel_interfaces_qos.append(port_channel_interface) %}
 {%     endif %}
 {% endfor %}
@@ -27,10 +27,10 @@
 | {{ ethernet_interface.name }} | {{ qos_trust }} | {{ qos_dscp }} | {{ qos_cos }} | {{ shape_rate }} |
 {%     endfor %}
 {%     for port_channel_interface in port_channel_interfaces_qos %}
-{%         set qos_trust = port_channel_interfaces[port_channel_interface].qos.trust | arista.avd.default('-') %}
-{%         set qos_dscp = port_channel_interfaces[port_channel_interface].qos.dscp | arista.avd.default('-') %}
-{%         set qos_cos = port_channel_interfaces[port_channel_interface].qos.cos | arista.avd.default('-') %}
-{%         set shape_rate = port_channel_interfaces[port_channel_interface].shape.rate | arista.avd.default('-') %}
-| {{ port_channel_interface }} | {{ qos_trust }} | {{ qos_dscp }} | {{ qos_cos }} | {{ shape_rate }} |
+{%         set qos_trust = port_channel_interface.qos.trust | arista.avd.default('-') %}
+{%         set qos_dscp = port_channel_interface.qos.dscp | arista.avd.default('-') %}
+{%         set qos_cos = port_channel_interface.qos.cos | arista.avd.default('-') %}
+{%         set shape_rate = port_channel_interface.shape.rate | arista.avd.default('-') %}
+| {{ port_channel_interface.name }} | {{ qos_trust }} | {{ qos_dscp }} | {{ qos_cos }} | {{ shape_rate }} |
 {%     endfor %}
 {% endif %}
