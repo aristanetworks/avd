@@ -143,12 +143,13 @@ interface Management1
 
 #### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv6 Virtual IP |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------|
-| Vlan333 | 1 | 105 | 2 | Enabled | ID1-TrackedObjectDecrement, ID1-TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | - |
-| Vlan333 | 2 | - | - | Enabled | ID2-TrackedObjectDecrement, ID2-TrackedObjectShutdown | Decrement 10, Shutdown | - | 2001:db8::1 |
-| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | - |
-| Vlan667 | 2 | - | - | Enabled | - | - | - | 2001:db8::1 |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
+| Vlan333 | 1 | 105 | 2 | Enabled | ID1-TrackedObjectDecrement, ID1-TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - |
+| Vlan333 | 2 | - | - | Enabled | ID2-TrackedObjectDecrement, ID2-TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 |
+| Vlan333 | 3 | - | - | Enabled | - | - | 100.64.0.1 | 3 | - |
+| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
+| Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 
 ### VLAN Interfaces Device Configuration
 
@@ -174,6 +175,9 @@ interface Vlan41
 interface Vlan42
    description SVI Description
    no shutdown
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
    ip address virtual 10.10.42.1/24
 !
 interface Vlan75
@@ -234,6 +238,10 @@ interface Vlan88
 interface Vlan89
    description SVI Description
    no shutdown
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.101 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
    ip igmp
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
@@ -278,6 +286,9 @@ interface Vlan333
    vrrp 2 ipv6 2001:db8::1
    vrrp 2 tracked-object ID2-TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2-TrackedObjectShutdown shutdown
+   vrrp 3 timers delay reload 900
+   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 version 3
 !
 interface Vlan501
    description SVI Description

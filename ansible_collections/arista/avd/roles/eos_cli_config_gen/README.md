@@ -87,6 +87,7 @@
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
+      - [Management CVX](#management-cvx)
       - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
@@ -141,6 +142,7 @@
       - [VRF Instances](#vrf-instances)
     - [Router L2 VPN](#router-l2-vpn)
     - [Spanning Tree](#spanning-tree)
+    - [System Boot Settings](#system-boot-settings)
     - [Terminal Settings](#terminal-settings)
     - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
@@ -860,10 +862,15 @@ tcam_profile:
 platform:
   trident:
     forwarding_table_partition: < partition >
+  # Most of the platform sand options are hardware dependant and optional
   sand:
+    # The traffic-class to network-qos mappings must be unique
+    qos_maps:
+      - traffic_class: < 0-7 >
+        to_network_qos: < 0-63 >
     lag:
       hardware_only: < true | false >
-      mode: < mode | default -> 1024x16 >
+      mode: < mode >
     forwarding_mode: < petraA | arad >
     multicast_replication:
       default: ingress
@@ -907,6 +914,7 @@ ethernet_interfaces:
     # l3dot1q and l2dot1q are used for sub-interfaces.
     # The parent interface should be defined as routed.
     type: < routed | switched | l3dot1q | l2dot1q >
+    snmp_trap_link_change: < true | false >
     vrf: < vrf_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
@@ -1025,6 +1033,9 @@ ethernet_interfaces:
       media:
         override: < transceiver_type >
     ip_proxy_arp: < true | false >
+    traffic_policy:
+      input: < ingress traffic policy >
+      output: < egress traffic policy >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1074,6 +1085,7 @@ ethernet_interfaces:
         shared_index: < 1-1024 >
         tunnel_flood_filter_time: < integer >
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
+    snmp_trap_link_change: < true | false >
     flowcontrol:
       received: < "received" | "send" | "on" >
     mac_security:
@@ -1141,6 +1153,12 @@ ethernet_interfaces:
     dot1x:
       port_control: < "auto" | "force-authorized" | "force-unauthorized" >
       port_control_force_authorized_phone: < true | false >
+      reauthentication: < true | false >
+      pae:
+        mode: < "authenticator" >
+    traffic_policy:
+      input: < ingress traffic policy >
+      output: < egress traffic policy >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1243,6 +1261,7 @@ port_channel_interfaces:
     vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
+    snmp_trap_link_change: < true | false >
     link_tracking_groups:
       - name: < group_name >
         direction: < upstream | downstream >
@@ -1305,6 +1324,9 @@ port_channel_interfaces:
     isis_hello_padding: < true | false >
     isis_authentication_mode: < text | md5 >
     isis_authentication_key: < type-7 encrypted password >
+    traffic_policy:
+      input: < ingress traffic policy >
+      output: < egress traffic policy >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1472,6 +1494,9 @@ vlan_interfaces:
           delay:
             minimum: < integer >
             reload: < integer >
+        timers:
+          delay:
+            reload: < integer >
         tracked_object:
           - name: < tracked_object_name_1 >
             decrement: < decrement vrrp priority by 1-254 >
@@ -1481,6 +1506,7 @@ vlan_interfaces:
             shutdown: < true | false >
         ipv4:
           address: < virtual_ip_address >
+          version: < 2 | 3 >
         ipv6:
           address: < virtual_ip_address >
     # The below "vrrp" keys will be deprecated in AVD v4.0 - These should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
@@ -1792,6 +1818,7 @@ management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
   https_ssl_profile: < SSL Profile Name >
+  default_services: < true | false >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
@@ -1823,6 +1850,7 @@ management_api_gnmi:
   transport:
     grpc:
       - name: < transport_name >
+        ssl_profile: < SSL Profile Name >
         # vrf is optional
         vrf: < vrf_name >
         # Per the GNMI specification, the default timestamp field of a notification message is set to be
@@ -1847,6 +1875,16 @@ management_api_gnmi:
 ```yaml
 management_console:
   idle_timeout: < 0-86400 in minutes >
+```
+
+#### Management CVX
+```yaml
+management_cvx:
+  shutdown: < true | false >
+  # List of Hostname(s) or IP Address(es) of CVX server(s)
+  server_hosts:
+    - < IP | hostname >
+    - < IP | hostname >
 ```
 
 #### Management Defaults
@@ -2250,7 +2288,7 @@ logging:
   synchronous:
     level: < "<severity_level>" | "disabled" | default --> critical >
   format:
-    timestamp: < high-resolution | traditional >
+    timestamp: < high-resolution | traditional |traditional year | traditional timezone | traditonal year timezone >
     hostname: < fqdn | ipv4 >
     sequence_numbers: < true | false >
   facility: < syslog_facility_value >
@@ -2725,6 +2763,14 @@ router_bgp:
       local_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
+      # Remove private AS numbers in outbound AS path
+      remove_private_as:
+        enabled: < true | false >
+        all: < true | false >
+        replace_as: < true | false >
+      remove_private_as_ingress:
+        enabled: < true | false >
+        replace_as: < true | false >
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
@@ -2765,6 +2811,14 @@ router_bgp:
       description: "< description as string >"
       ebgp_multihop: < integer >
       shutdown: < true | false >
+      # Remove private AS numbers in outbound AS path
+      remove_private_as:
+        enabled: < true | false >
+        all: < true | false >
+        replace_as: < true | false >
+      remove_private_as_ingress:
+        enabled: < true | false >
+        replace_as: < true | false >
       update_source: < interface >
       bfd: < true | false >
       weight: < weight_value >
@@ -2930,8 +2984,12 @@ router_bgp:
         domain_remote: < true | false >
     evpn_hostflap_detection:
       enabled: < true | false >
-      threshold: < integer >
+      # Time in seconds
       window: < integer >
+      # Minimum number of MAC moves that indicate a MAC Duplication issue
+      threshold: < integer >
+      # Timeout in seconds
+      expiry_timeout: < integer >
     route:
       import_match_failure_action: < 'discard' >
   address_family_rtc:
@@ -3058,6 +3116,14 @@ router_bgp:
           remote_as: < asn >
           peer_group: < peer_group_name >
           password: "< encrypted_password >"
+          # Remove private AS numbers in outbound AS path
+          remove_private_as:
+            enabled: < true | false >
+            all: < true | false >
+            replace_as: < true | false >
+          remove_private_as_ingress:
+            enabled: < true | false >
+            replace_as: < true | false >
           weight: < weight_value >
           local_as: < asn >
           description: < description >
@@ -3408,6 +3474,16 @@ spanning_tree:
       priority: < priority >
     "< vlan_id >, < vlan_id >-< vlan_id >":
       priority: < priority >
+```
+
+### System Boot Settings
+
+```yaml
+boot:
+  # Set the Aboot password
+  secret:
+    hash_algorithm: < md5 | sha512 | default -> sha512 >
+    key: "< hashed_password >"
 ```
 
 ### Terminal Settings

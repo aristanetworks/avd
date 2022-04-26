@@ -38,9 +38,9 @@
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -129,6 +129,9 @@ vlan internal order ascending range 1006 1199
 | Ethernet4 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | - | - | - |
 | Ethernet5 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | - | - | - |
 | Ethernet6 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | - | - | - |
+| Ethernet12 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *- | *default | *1500 | *false | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *- | *default | *1500 | *false | *- | *- | *- | *- |
+ *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
 

@@ -45,6 +45,7 @@ isis_area_id: < isis area | default -> "49.0001" >
 # Additional underlay ISIS parameters | Optional.
 isis_default_is_type: < level-1-2, | level-1 | level-2 | default -> level-2 >
 isis_advertise_passive_only: < true | false | default -> false >
+underlay_isis_instance_name: < name | default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls >
 
 # ISIS TI-LFA parameters | Optional.
 isis_ti_lfa:
@@ -74,7 +75,14 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 # Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
+
+# EVPN GW ebgp-multihop | Optional
+# Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
+# Adapt the value for your specific topology.
+evpn_ebgp_gateway_multihop: < ebgp_multihop | default -> 15 >
+
 # BGP peer group names and encrypted password | Optional
+
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
@@ -89,6 +97,9 @@ bgp_peer_groups:
    # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
     name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
+    password: "< encrypted password >"
+  evpn_overlay_core:
+    name: < name of peer group | default -> EVPN-OVERLAY-CORE >
     password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
@@ -116,6 +127,9 @@ evpn_hostflap_detection:
 
   # Time (in seconds) to detect a MAC duplication issue
   window: < seconds | default -> 180 >
+
+  # Time (in seconds) to purge a MAC duplication issue
+  expiry_timeout: < integer >
 
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.

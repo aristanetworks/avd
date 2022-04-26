@@ -8,6 +8,9 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -127,9 +130,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -143,6 +146,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -167,6 +171,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -342,6 +359,9 @@ vlan 311
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
+| Ethernet13 | DC1-L2LEAF4A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 13 |
+| Ethernet14 | DC1-L2LEAF5A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 14 |
+| Ethernet15 | DC1-L2LEAF5B_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 14 |
 | Ethernet20 | FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
 | Ethernet21 |  ROUTER01_Eth1 | access | 110 | - | - | - |
 
@@ -422,6 +442,21 @@ interface Ethernet12
    no shutdown
    channel-group 12 mode active
 !
+interface Ethernet13
+   description DC1-L2LEAF4A_Ethernet2
+   no shutdown
+   channel-group 13 mode active
+!
+interface Ethernet14
+   description DC1-L2LEAF5A_Ethernet2
+   no shutdown
+   channel-group 14 mode active
+!
+interface Ethernet15
+   description DC1-L2LEAF5B_Ethernet2
+   no shutdown
+   channel-group 14 mode active
+!
 interface Ethernet20
    description FIREWALL01_E1
    no shutdown
@@ -448,6 +483,8 @@ interface Ethernet21
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | - | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel13 | DC1-L2LEAF4A_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:a36b:7013:457b |
+| Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:71da:d362:2084 |
 | Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -501,6 +538,28 @@ interface Port-Channel12
    switchport
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
+!
+interface Port-Channel13
+   description DC1-L2LEAF4A_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-112,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:a36b:7013:457b
+      route-target import a3:6b:70:13:45:7b
+   lacp system-id a36b.7013.457b
+!
+interface Port-Channel14
+   description DC1_L2LEAF5_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-112,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:71da:d362:2084
+      route-target import 71:da:d3:62:20:84
+   lacp system-id 71da.d362.2084
 !
 interface Port-Channel20
    description FIREWALL01_PortChanne1
@@ -869,7 +928,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 172.31.255.32 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.34 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.36 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -886,6 +945,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Peer Group | Activate |
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -1006,6 +1071,7 @@ router bgp 65102
       vlan 310-311
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -1195,7 +1261,7 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.11
 
 | Settings | Value |
 | -------- | ----- |
-| lag.hardware_only | True |
+| Hardware Only Lag | True |
 
 ## Platform Configuration
 

@@ -10,7 +10,7 @@
     version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
     git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
   run_once: true
-  ignore_errors: true
+  failed_when: false
 
 - name: Create required output directories if not present
   file:
@@ -33,7 +33,7 @@
   eos_command:
     commands: "{{ item }}"
   with_items: "{{ commands_list }}"
-  ignore_errors: true
+  failed_when: false
   register: cli_output
 
 - name: save collected commands in text files

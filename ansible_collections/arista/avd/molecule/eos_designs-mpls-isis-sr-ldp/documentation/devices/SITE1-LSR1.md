@@ -66,9 +66,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -145,9 +145,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LER1_Ethernet1 | routed | - | - | default | 9178 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE2-LSR1_Ethernet3 | routed | - | - | default | 9178 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE1-RR1_Ethernet4 | routed | - | - | default | 9178 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE1-LER1_Ethernet1 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_SITE2-LSR1_Ethernet3 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE1-RR1_Ethernet4 | routed | - | - | default | 9178 | false | - | - | - | - |
 
 #### ISIS
 
@@ -164,59 +164,59 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_SITE1-LER1_Ethernet1
    no shutdown
-   speed forced 40gfull
    mtu 9178
+   speed forced 40gfull
    no switchport
    ip address 100.64.48.1/31
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet3
    description P2P_LINK_TO_SITE2-LSR1_Ethernet3
    no shutdown
-   speed forced 40gfull
    mtu 9178
+   speed forced 40gfull
    no switchport
    ip address 100.64.48.8/31
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet4
    description P2P_LINK_TO_SITE1-RR1_Ethernet4
    no shutdown
-   speed forced 40gfull
    mtu 9178
+   speed forced 40gfull
    no switchport
    ip address 100.64.48.6/31
    ipv6 enable
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 ```
 
 ## Loopback Interfaces
@@ -238,7 +238,7 @@ interface Ethernet4
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CORE | - | passive |
 
 ### Loopback Interfaces Device Configuration
@@ -305,7 +305,7 @@ ipv6 unicast-routing
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
