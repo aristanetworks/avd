@@ -857,15 +857,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPv6_UNDERLAY_PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv6 |
-| Send community | all |
-| Maximum routes | 12000 |
-
-#### MLAG_IPv6_UNDERLAY_PEER
+#### MLAG_PEER
 
 | Settings | Value |
 | -------- | ----- |
@@ -875,24 +867,32 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Send community | all |
 | Maximum routes | 12000 |
 
+#### UNDERLAY_PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | all |
+| Maximum routes | 12000 |
+
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
 | 192.168.255.5 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 10.255.251.15 | - | Tenant_A_APP_Zone | - | - | - | - | - | - |
-| 10.255.251.15 | - | Tenant_A_DB_Zone | - | - | - | - | - | - |
-| 10.255.251.15 | - | Tenant_A_OP_Zone | - | - | - | - | - | - |
-| 10.255.251.15 | - | Tenant_A_WEB_Zone | - | - | - | - | - | - |
-| 10.255.251.15 | - | Tenant_B_OP_Zone | - | - | - | - | - | - |
-| 10.255.251.15 | - | Tenant_C_OP_Zone | - | - | - | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
+| 10.255.251.15 | Inherited from peer group MLAG_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
 
 ### BGP Neighbor Interfaces
 
 | Neighbor Interface | Peer Group | Remote AS | Peer Filter |
 | ------------------ | ---------- | --------- | ----------- |
-| Ethernet1 | IPv6_UNDERLAY_PEERS | 65001 | - |
-| Vlan4093 | MLAG_IPv6_UNDERLAY_PEER | 65106 | - |
+| Ethernet1 | UNDERLAY_PEERS | 65001 | - |
+| Vlan4093 | MLAG_PEER | 65106 | - |
 
 ### Router BGP EVPN Address Family
 
@@ -948,18 +948,20 @@ router bgp 65106
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv6_UNDERLAY_PEERS peer group
-   neighbor IPv6_UNDERLAY_PEERS send-community
-   neighbor IPv6_UNDERLAY_PEERS maximum-routes 12000
-   neighbor MLAG_IPv6_UNDERLAY_PEER peer group
-   neighbor MLAG_IPv6_UNDERLAY_PEER remote-as 65106
-   neighbor MLAG_IPv6_UNDERLAY_PEER next-hop-self
-   neighbor MLAG_IPv6_UNDERLAY_PEER description DC1-LEAF3B
-   neighbor MLAG_IPv6_UNDERLAY_PEER send-community
-   neighbor MLAG_IPv6_UNDERLAY_PEER maximum-routes 12000
-   neighbor MLAG_IPv6_UNDERLAY_PEER route-map RM-MLAG-PEER-IN in
-   neighbor interface Ethernet1 peer-group IPv6_UNDERLAY_PEERS remote-as 65001
-   neighbor interface Vlan4093 peer-group MLAG_IPv6_UNDERLAY_PEER remote-as 65106
+   neighbor MLAG_PEER peer group
+   neighbor MLAG_PEER remote-as 65106
+   neighbor MLAG_PEER next-hop-self
+   neighbor MLAG_PEER description DC1-LEAF3B
+   neighbor MLAG_PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
+   neighbor MLAG_PEER send-community
+   neighbor MLAG_PEER maximum-routes 12000
+   neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
+   neighbor UNDERLAY_PEERS peer group
+   neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY_PEERS send-community
+   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001
+   neighbor interface Vlan4093 peer-group MLAG_PEER remote-as 65106
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65001
    neighbor 192.168.255.5 description DC1-SPINE5
@@ -1020,14 +1022,14 @@ router bgp 65106
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv6_UNDERLAY_PEERS next-hop address-family ipv6 originate
-      neighbor IPv6_UNDERLAY_PEERS activate
-      neighbor MLAG_IPv6_UNDERLAY_PEER next-hop address-family ipv6 originate
-      neighbor MLAG_IPv6_UNDERLAY_PEER activate
+      neighbor MLAG_PEER next-hop address-family ipv6 originate
+      neighbor MLAG_PEER activate
+      neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
+      neighbor UNDERLAY_PEERS activate
    !
    address-family ipv6
-      neighbor IPv6_UNDERLAY_PEERS activate
-      neighbor MLAG_IPv6_UNDERLAY_PEER activate
+      neighbor MLAG_PEER activate
+      neighbor UNDERLAY_PEERS activate
    !
    vrf Tenant_A_APP_Zone
       rd 192.168.255.12:12

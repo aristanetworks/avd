@@ -351,11 +351,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPv6_UNDERLAY_PEERS
+#### UNDERLAY_PEERS
 
 | Settings | Value |
 | -------- | ----- |
-| Address Family | ipv6 |
+| Address Family | ipv4 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -370,8 +370,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor Interface | Peer Group | Remote AS | Peer Filter |
 | ------------------ | ---------- | --------- | ----------- |
-| Ethernet1 | IPv6_UNDERLAY_PEERS | 65106 | - |
-| Ethernet2 | IPv6_UNDERLAY_PEERS | 65106 | - |
+| Ethernet1 | UNDERLAY_PEERS | 65106 | - |
+| Ethernet2 | UNDERLAY_PEERS | 65106 | - |
 
 ### Router BGP EVPN Address Family
 
@@ -398,11 +398,12 @@ router bgp 65001
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv6_UNDERLAY_PEERS peer group
-   neighbor IPv6_UNDERLAY_PEERS send-community
-   neighbor IPv6_UNDERLAY_PEERS maximum-routes 12000
-   neighbor interface Ethernet1 peer-group IPv6_UNDERLAY_PEERS remote-as 65106
-   neighbor interface Ethernet2 peer-group IPv6_UNDERLAY_PEERS remote-as 65106
+   neighbor UNDERLAY_PEERS peer group
+   neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY_PEERS send-community
+   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65106
+   neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor 192.168.255.12 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.12 remote-as 65106
    neighbor 192.168.255.12 description DC1-LEAF3A
@@ -416,11 +417,11 @@ router bgp 65001
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv6_UNDERLAY_PEERS next-hop address-family ipv6 originate
-      neighbor IPv6_UNDERLAY_PEERS activate
+      neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
+      neighbor UNDERLAY_PEERS activate
    !
    address-family ipv6
-      neighbor IPv6_UNDERLAY_PEERS activate
+      neighbor UNDERLAY_PEERS activate
 ```
 
 # BFD

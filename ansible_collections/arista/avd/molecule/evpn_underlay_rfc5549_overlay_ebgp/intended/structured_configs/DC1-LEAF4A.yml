@@ -6,16 +6,18 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    MLAG_IPv6_UNDERLAY_PEER:
+    MLAG_PEER:
       type: ipv6
       remote_as: '65107'
       next_hop_self: true
       description: DC1-LEAF4B
+      password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
-    IPv6_UNDERLAY_PEERS:
-      type: ipv6
+    UNDERLAY_PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -28,17 +30,17 @@ router_bgp:
       maximum_routes: 0
   address_family_ipv6:
     peer_groups:
-      MLAG_IPv6_UNDERLAY_PEER:
+      MLAG_PEER:
         activate: true
-      IPv6_UNDERLAY_PEERS:
+      UNDERLAY_PEERS:
         activate: true
   address_family_ipv4:
     peer_groups:
-      MLAG_IPv6_UNDERLAY_PEER:
+      MLAG_PEER:
         activate: true
         next_hop:
           address_family_ipv6_originate: true
-      IPv6_UNDERLAY_PEERS:
+      UNDERLAY_PEERS:
         activate: true
         next_hop:
           address_family_ipv6_originate: true
@@ -46,11 +48,11 @@ router_bgp:
         activate: false
   neighbor_interfaces:
     Vlan4093:
-      peer_group: MLAG_IPv6_UNDERLAY_PEER
+      peer_group: MLAG_PEER
       remote_as: '65107'
       description: DC1-LEAF4B
     Ethernet1:
-      peer_group: IPv6_UNDERLAY_PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: '65001'
       description: DC1-SPINE6_Ethernet1
   redistribute_routes:

@@ -6,8 +6,9 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv6_UNDERLAY_PEERS:
-      type: ipv6
+    UNDERLAY_PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -19,28 +20,28 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
-  address_family_ipv6:
-    peer_groups:
-      IPv6_UNDERLAY_PEERS:
-        activate: true
   address_family_ipv4:
     peer_groups:
-      IPv6_UNDERLAY_PEERS:
+      UNDERLAY_PEERS:
         activate: true
         next_hop:
           address_family_ipv6_originate: true
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_ipv6:
+    peer_groups:
+      UNDERLAY_PEERS:
+        activate: true
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
   neighbor_interfaces:
     Ethernet1:
-      peer_group: IPv6_UNDERLAY_PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: '65107'
       description: DC1-LEAF4A_Ethernet1
     Ethernet2:
-      peer_group: IPv6_UNDERLAY_PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: '65107'
       description: DC1-LEAF4B_Ethernet1
   address_family_evpn:
