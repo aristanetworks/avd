@@ -41,7 +41,7 @@ switch:
 {% endif %}
   overlay_routing_protocol: {{ switch_overlay_routing_protocol }}
 
-  overlay_routing_protocol_address_family: {{overlay_routing_protocol_address_family | arista.avd.default("ipv4")}}
+  overlay_routing_protocol_address_family: {{ overlay_routing_protocol_address_family | arista.avd.default("ipv4") }}
 
 {# switch.overlay_address_families #}
 {% set switch_overlay_address_families = switch_data.combined.overlay_address_families | arista.avd.default(switch.default_overlay_address_families) %}
