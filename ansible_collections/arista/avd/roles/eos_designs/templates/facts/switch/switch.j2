@@ -236,12 +236,6 @@ switch:
     rr_overlay_peers:
       name: {{ bgp_peer_groups.rr_overlay_peers.name | arista.avd.default('RR-OVERLAY-PEERS') }}
       password: {{ bgp_peer_groups.rr_overlay_peers.password | arista.avd.default | to_json }}
-    mlag_ipv6_underlay_peer:
-      name: {{ bgp_peer_groups.mlag_ipv6_underlay_peer.name | arista.avd.default('MLAG_IPv6_UNDERLAY_PEER') }}
-      password: {{ bgp_peer_groups.mlag_ipv6_underlay_peer.password | arista.avd.default | to_json }}
-    ipv6_underlay_peers:
-      name: {{ bgp_peer_groups.mlag_ipv6_underlay_peers.name | arista.avd.default('IPv6_UNDERLAY_PEERS') }}
-      password: {{ bgp_peer_groups.mlag_ipv6_underlay_peers.password | arista.avd.default | to_json }}
 
 {# switch.evpn_role #}
 {%     set switch_evpn_role = switch_data.combined.evpn_role | arista.avd.default(

@@ -3,44 +3,34 @@
 router_bgp:
   peer_groups:
 {% if underlay_ipv6 is arista.avd.defined(true) %}
-    {{ switch.bgp_peer_groups.ipv6_underlay_peers.name }}:
-      type: ipv6
-{%     if switch.bgp_peer_groups.ipv6_underlay_peers.password is arista.avd.defined() %}
-      password: "{{ switch.bgp_peer_groups.ipv6_underlay_peers.password }}"
-{%     endif %}
-      maximum_routes: 12000
-      send_community: all
-{% else %}
     {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
-      type: ipv4
+      type: ipv6
 {%     if switch.bgp_peer_groups.ipv4_underlay_peers.password is arista.avd.defined() %}
       password: "{{ switch.bgp_peer_groups.ipv4_underlay_peers.password }}"
 {%     endif %}
       maximum_routes: 12000
       send_community: all
 {% endif %}
-{% if underlay_ipv6 is arista.avd.defined(true) %}
-  address_family_ipv6:
-    peer_groups:
-      {{ switch.bgp_peer_groups.ipv6_underlay_peers.name }}:
-        activate: true
-  address_family_ipv4:
-    peer_groups:
-      {{ switch.bgp_peer_groups.ipv6_underlay_peers.name }}:
-        activate: true
-{%     if underlay_rfc5549 is arista.avd.defined(true) %}
-        next_hop:
-          address_family_ipv6_originate: true
-{%     endif %}
-{% else %}
+    {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
+      type: ipv4
+{% if switch.bgp_peer_groups.ipv4_underlay_peers.password is arista.avd.defined() %}
+      password: "{{ switch.bgp_peer_groups.ipv4_underlay_peers.password }}"
+{% endif %}
+      maximum_routes: 12000
+      send_community: all
   address_family_ipv4:
     peer_groups:
       {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
         activate: true
-{%     if underlay_rfc5549 is arista.avd.defined(true) %}
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
         next_hop:
           address_family_ipv6_originate: true
-{%     endif %}
+{% endif %}
+{% if underlay_ipv6 is arista.avd.defined(true) %}
+  address_family_ipv6:
+    peer_groups:
+      {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
+        activate: true
 {% endif %}
   redistribute_routes:
     connected:
@@ -52,11 +42,7 @@ router_bgp:
 {%     for link_interface in underlay_data.links | arista.avd.natural_sort if underlay_data.links[link_interface].type is arista.avd.defined('underlay_p2p') %}
 {%         set link = underlay_data.links[link_interface] %}
     {{ link_interface }}:
-{%         if underlay_ipv6 is arista.avd.defined(true) %}
-      peer_group: {{ switch.bgp_peer_groups.ipv6_underlay_peers.name }}
-{%         else %}
       peer_group: {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}
-{%         endif %}
       remote_as: "{{ link.peer_bgp_as }}"
       description: {{ link.peer }}_{{ link.peer_interface }}
 {%     endfor %}
