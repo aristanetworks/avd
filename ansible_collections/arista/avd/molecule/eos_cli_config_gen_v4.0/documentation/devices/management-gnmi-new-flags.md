@@ -49,10 +49,10 @@ interface Management1
 
 ### Management API GNMI Summary
 
-| Transport | VRF | Notification Timestamp | ACL |
-| --------- | --- | ---------------------- | --- |
-| MGMT | MGMT | send-time | acl1 |
-| mytransport | - | send-time | acl1 |
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+| MGMT | gnmi | MGMT | send-time | acl1 |
+| mytransport | - | - | send-time | acl1 |
 
 Provider eos-native is configured.
 
@@ -62,6 +62,7 @@ Provider eos-native is configured.
 !
 management api gnmi
    transport grpc MGMT
+      ssl profile gnmi
       vrf MGMT
       ip access-group acl1
       notification timestamp send-time
