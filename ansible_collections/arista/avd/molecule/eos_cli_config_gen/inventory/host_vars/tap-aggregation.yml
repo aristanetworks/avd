@@ -1,5 +1,5 @@
 tap_aggregation:
-  mode: 
+  mode:
     exclusive:
       enabled: true
       profile: tap-aggregation-extended
