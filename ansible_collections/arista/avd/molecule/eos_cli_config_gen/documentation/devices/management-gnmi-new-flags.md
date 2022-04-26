@@ -1,8 +1,6 @@
 # management-gnmi-new-flags
 # Table of Contents
 
-- [management-gnmi-new-flags](#management-gnmi-new-flags)
-- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
     - [Management Interfaces Summary](#management-interfaces-summary)
