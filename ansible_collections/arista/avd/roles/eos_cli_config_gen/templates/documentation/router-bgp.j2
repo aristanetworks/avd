@@ -63,8 +63,18 @@
 {%                 set remove_private_as_setting = router_bgp.peer_groups[peer_group].remove_private_as.enabled %}
 {%                 if router_bgp.peer_groups[peer_group].remove_private_as.enabled == true and router_bgp.peer_groups[peer_group].remove_private_as.all is arista.avd.defined(true) %}
 {%                     set remove_private_as_setting = remove_private_as_setting ~ " (All)" %}
+{%                     if router_bgp.peer_groups[peer_group].remove_private_as.replace_as is arista.avd.defined(true) %}
+{%                         set remove_private_as_setting = remove_private_as_setting ~ " (Replace AS)" %}
+{%                     endif %}
 {%                 endif %}
-| Remove Private AS | {{ remove_private_as_setting }} |
+| Remove Private AS Outbound | {{ remove_private_as_setting }} |
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled is arista.avd.defined %}
+{%                 set remove_private_as_ingress_setting = router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled %}
+{%                 if router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled == true and router_bgp.peer_groups[peer_group].remove_private_as_ingress.replace_as is arista.avd.defined(true) %}
+{%                     set remove_private_as_ingress_setting = remove_private_as_ingress_setting ~ " (Replace AS)" %}
+{%                 endif %}
+| Remove Private AS Inbound | {{ remove_private_as_ingress_setting }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].allowas_in.enabled is arista.avd.defined(true) %}
 | Allowas-in | Allowed, allowed {{ router_bgp.peer_groups[peer_group].allowas_in.times | arista.avd.default("3 (default)") }} times |

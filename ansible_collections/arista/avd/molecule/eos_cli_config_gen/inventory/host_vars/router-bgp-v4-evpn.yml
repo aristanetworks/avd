@@ -36,7 +36,9 @@ router_bgp:
       remove_private_as:
         enabled: true
         all: true
-        ingress: true
+        replace_as: true
+      remove_private_as_ingress:
+        enabled: true
         replace_as: true
     STARDARD-COMMUNITY:
       type: ipv4
