@@ -861,7 +861,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Value |
 | -------- | ----- |
-| Address Family | ipv6 |
+| Address Family | ipv4 |
 | Remote AS | 65107 |
 | Next-hop self | True |
 | Send community | all |

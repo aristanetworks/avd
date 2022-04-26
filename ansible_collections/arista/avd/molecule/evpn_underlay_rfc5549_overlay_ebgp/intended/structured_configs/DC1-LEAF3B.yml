@@ -7,7 +7,7 @@ router_bgp:
   - maximum-paths 4 ecmp 4
   peer_groups:
     MLAG_PEER:
-      type: ipv6
+      type: ipv4
       remote_as: '65106'
       next_hop_self: true
       description: DC1-LEAF3A
