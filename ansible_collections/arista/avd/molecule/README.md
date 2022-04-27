@@ -55,7 +55,7 @@ Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eo
 When you update a template in `eos_cli_config_gen`, you should report a test case in molecule scenario [`ansible_collections/arista/avd/molecule/eos_cli_config_gen`](./eos_cli_config_gen/).
 
 1. Create or update a file related to updated section under `inventory/host_vars`
-2. If section is new, update inventory file to add a new host. Host SHALL be the name of your section and also file in your `host_vars`
+2. If the section is new, update the inventory file ([hosts.ini](eos_cli_config_gen/inventory/hosts.ini)) to add a new host. The host SHALL be the name of your section and also the `<filename>.yml` in your `host_vars`
 3. Run molecule scenario to generate artifacts:
 
 ```bash
