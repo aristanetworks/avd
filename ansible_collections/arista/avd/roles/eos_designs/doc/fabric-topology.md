@@ -196,7 +196,7 @@ defaults <- node_group <- node_group.node <- node
     # Uplink switches (list). | Required.
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
-    # Number of interfaces towards uplink switches | Optional
+    # Number of uplink switches | Optional
     max_uplink_switches: < integer >
 
     # Number of parallel links towards uplink switches | Optional
