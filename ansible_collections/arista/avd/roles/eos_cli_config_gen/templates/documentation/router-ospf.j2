@@ -256,8 +256,8 @@
 {%     set port_channel_interface_ospf = namespace(configured=false) %}
 {%     set vlan_interface_ospf = namespace(configured=false) %}
 {%     set loopback_interface_ospf = namespace(configured=false) %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%         if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if vlan_interface.ospf_area is arista.avd.defined %}
 {%             set vlan_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
@@ -303,12 +303,12 @@
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interface_ospf.configured %}
-{%             for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%                 if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
-{%                     set ospf_area = vlan_interfaces[vlan_interface].ospf_area %}
-{%                     set ospf_cost = vlan_interfaces[vlan_interface].ospf_cost | arista.avd.default('-') %}
-{%                     set ospf_network_point_to_point = vlan_interfaces[vlan_interface].ospf_network_point_to_point | arista.avd.default('-') %}
-| {{ vlan_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
+{%             for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 if vlan_interface.ospf_area is arista.avd.defined %}
+{%                     set ospf_area = vlan_interface.ospf_area %}
+{%                     set ospf_cost = vlan_interface.ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = vlan_interface.ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ vlan_interface.name }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
