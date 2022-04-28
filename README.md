@@ -1,6 +1,6 @@
 # Ansible Collection For Arista Validated Designs - arista.avd
 
-![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![continuous integration](https://github.com/aristanetworks/ansible-avd/actions/workflows/continuous_integration.yml/badge.svg) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
+![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
 **Table of Contents:**
 
@@ -81,7 +81,7 @@ The documentation how to leverage ansible-avd collection is located here:
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-$ pip3 install ansible-core>=2.11.3,<2.13.0
+$ pip3 install "ansible-core>=2.11.3,<2.13.0"
 
 $ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```

@@ -59,6 +59,23 @@
 {%             if router_bgp.peer_groups[peer_group].shutdown is arista.avd.defined(true) %}
 | Shutdown | {{ router_bgp.peer_groups[peer_group].shutdown }} |
 {%             endif %}
+{%             if router_bgp.peer_groups[peer_group].remove_private_as.enabled is arista.avd.defined %}
+{%                 set remove_private_as_setting = router_bgp.peer_groups[peer_group].remove_private_as.enabled %}
+{%                 if router_bgp.peer_groups[peer_group].remove_private_as.enabled == true and router_bgp.peer_groups[peer_group].remove_private_as.all is arista.avd.defined(true) %}
+{%                     set remove_private_as_setting = remove_private_as_setting ~ " (All)" %}
+{%                     if router_bgp.peer_groups[peer_group].remove_private_as.replace_as is arista.avd.defined(true) %}
+{%                         set remove_private_as_setting = remove_private_as_setting ~ " (Replace AS)" %}
+{%                     endif %}
+{%                 endif %}
+| Remove Private AS Outbound | {{ remove_private_as_setting }} |
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled is arista.avd.defined %}
+{%                 set remove_private_as_ingress_setting = router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled %}
+{%                 if router_bgp.peer_groups[peer_group].remove_private_as_ingress.enabled == true and router_bgp.peer_groups[peer_group].remove_private_as_ingress.replace_as is arista.avd.defined(true) %}
+{%                     set remove_private_as_ingress_setting = remove_private_as_ingress_setting ~ " (Replace AS)" %}
+{%                 endif %}
+| Remove Private AS Inbound | {{ remove_private_as_ingress_setting }} |
+{%             endif %}
 {%             if router_bgp.peer_groups[peer_group].allowas_in.enabled is arista.avd.defined(true) %}
 | Allowas-in | Allowed, allowed {{ router_bgp.peer_groups[peer_group].allowas_in.times | arista.avd.default("3 (default)") }} times |
 {%             endif %}
@@ -141,7 +158,7 @@
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
