@@ -86,14 +86,14 @@ No Field-set configured on device.
 {#                     -- Protocol #}
 {%                     set row.protocols = "" %}
 {%                     if match.protocols is arista.avd.defined %}
-{%                         set row.protocols = match.protocols | arista.avd.convert_dicts('name') | map(attribute='name') | join('<br/>') %}
+{%                         set row.protocols = match.protocols | arista.avd.convert_dicts('protocol') | map(attribute='protocol') | join('<br/>') %}
 {%                     else %}
 {%                         set row.protocols = "ANY" %}
 {%                     endif %}
 {#                     -- Source Port #}
 {%                     set row.src_port = "" %}
 {%                     if match.protocols is arista.avd.defined %}
-{%                         for protocol in match.protocols | arista.avd.convert_dicts('name') %}
+{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
 {%                             if protocol.src_field is arista.avd.defined %}
 {%                                 set row.src_port = protocol.src_field %}
 {%                             elif protocol.src_port is arista.avd.defined %}
@@ -107,7 +107,7 @@ No Field-set configured on device.
 {#                     -- Destination Port #}
 {%                     set row.dst_port = "" %}
 {%                     if match.protocols is arista.avd.defined %}
-{%                         for protocol in match.protocols | arista.avd.convert_dicts('name') %}
+{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
 {%                             if protocol.dst_field is arista.avd.defined %}
 {%                                 set row.dst_port = protocol.dst_field %}
 {%                             elif protocol.dst_port is arista.avd.defined %}

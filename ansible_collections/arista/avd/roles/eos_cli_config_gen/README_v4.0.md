@@ -3254,7 +3254,7 @@ traffic_policies:
           fragment:
             offset: "< fragment offset range >"
           protocols:
-            tcp:
+            - protocol: tcp
               src_port: "< port range >"
               dst_port: "< port range >"
               src_field: "< L4 port range field set >"
@@ -3262,23 +3262,23 @@ traffic_policies:
               flags:
                 - established
                 - initial
-            icmp:
+            - protocol: icmp
               icmp_type:
                 - < ICMP message type >
                 - < ICMP message type >
-            udp:
+            - protocol: udp
               src_port: "< port range >"
               dst_port: "< port range >"
               src_field: "< L4 port range field set >"
               dst_field: "< L4 port range field set >"
-            ahp:
-            bgp:
-            icmp:
-            igmp:
-            ospf:
-            pim:
-            rsvp:
-            vrrp:
+            - protocol: ahp
+            - protocol: bgp
+            - protocol: icmp
+            - protocol: igmp
+            - protocol: ospf
+            - protocol: pim
+            - protocol: rsvp
+            - protocol: vrrp
             # The 'protocol neighbors' subcommand is not supported when any
             # other match subcommands are configured
             neighbors:

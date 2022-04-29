@@ -28,7 +28,7 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            - name: tcp
+            - protocol: tcp
               src_port: "1,10-20"
           ttl: "10, 20-30"
           actions:
@@ -40,11 +40,11 @@ traffic_policies:
               - DEMO-01
               - DEMO-02
           protocols:
-            - name: tcp
+            - protocol: tcp
               dst_field: SERVICE-DEMO
               flags:
                 - established
-            - name: icmp
+            - protocol: icmp
           actions:
             count: DEMO-TRAFFIC
             dscp: 60
@@ -54,7 +54,7 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            - name: icmp
+            - protocol: icmp
               icmp_type:
                 - echo
                 - echo-reply
@@ -73,11 +73,11 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            - name: tcp
+            - protocol:  tcp
               src_port: "22"
               flags:
                 - established
-            - name: icmp
+            - protocol: icmp
           actions:
             traffic_class: 5
         - name: BLUE-C1-POLICY-05
@@ -89,7 +89,7 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            - name: tcp
+            - protocol: tcp
           fragment:
           actions:
             traffic_class: 5
@@ -106,9 +106,9 @@ traffic_policies:
               - 10.0.0.0/8
               - 192.168.0.0/16
           protocols:
-            - name: tcp
+            - protocol: tcp
               src_port: "1,10-20"
-            - name: icmp
+            - protocol: icmp
           actions:
             traffic_class: 5
         - name: BLUE-C2-POLICY-02
@@ -118,9 +118,9 @@ traffic_policies:
               - DEMO-01
               - DEMO-02
           protocols:
-            - name: tcp
+            - protocol: tcp
               src_field: SERVICE-DEMO
-            - name: icmp
+            - protocol: icmp
           actions:
             count: DEMO-TRAFFIC
             dscp: 60
@@ -130,7 +130,7 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            - name: tcp
+            - protocol: tcp
           actions:
             drop: true
             log: true
