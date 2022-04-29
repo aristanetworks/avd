@@ -3215,21 +3215,24 @@ traffic_policies:
     counter_per_interface: < true | false >
   field_sets:
     ipv4:
-      < PREFIX FIELD SET NAME >:
-        - < IPv4 prefix 01>
-        - < IPv4 prefix 02>
-        - < IPv4 prefix 03>
+      - name: < PREFIX FIELD SET NAME >
+        prefix:
+          - < IPv4 prefix 01>
+          - < IPv4 prefix 02>
+          - < IPv4 prefix 03>
     ipv6:
-      < PREFIX FIELD SET NAME >:
-        - < IPv6 prefix 01>
-        - < IPv6 prefix 02>
-        - < IPv6 prefix 03>
+      - name: < PREFIX FIELD SET NAME >
+        prefix:
+          - < IPv6 prefix 01>
+          - < IPv6 prefix 02>
+          - < IPv6 prefix 03>
     ports:
-      < L4 PORT FIELD SET NAME >: "< vlan range >"
+      - name: < L4 PORT FIELD SET NAME >
+        vlan_range: "< vlan range >"
   policies:
-    < TRAFFIC POLICY NAME >:
+    - name: < TRAFFIC POLICY NAME >
       matches:
-        < TRAFFIC POLICY ITEM >:
+        - name: < TRAFFIC POLICY ITEM >
           type: < ipv4 | ipv6 >
           source:
             prefixes:
@@ -3288,7 +3291,7 @@ traffic_policies:
             log: < true | false (default false) >
           # Last resort policy
           default_actions:
-            < ipv4 | ipv6 >:
+            - ip: < ipv4 | ipv6 >
               dscp: < dscp code value >
               traffic_class: < traffic class id >
               count: < counter name >
