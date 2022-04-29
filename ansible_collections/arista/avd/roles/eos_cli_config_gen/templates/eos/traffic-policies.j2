@@ -102,7 +102,7 @@ traffic-policies
 {%                                 endif %}
 {%                                 set protocol_cli = protocol_cli ~ ' source port field-set ' ~ protocol.src_field %}
          {{ protocol_cli }}
-{%                             elif protocol.icmp_type is arista.avd.defined protocol.name | lower == 'icmp' %}
+{%                             elif protocol.icmp_type is arista.avd.defined(protocol.name) | lower == 'icmp' %}
          protocol icmp type {{ protocol.icmp_type | join(' ') }} code all
 {%                             elif protocol.name | lower == 'neighbors' %}
          protocol neighbors bgp
