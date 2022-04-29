@@ -379,6 +379,36 @@ ethernet_interfaces:
     channel_group:
       id: 9
       mode: active
+  Ethernet13:
+    peer: DC1-L2LEAF4A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF4A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 13
+      mode: active
+  Ethernet14:
+    peer: DC1-L2LEAF5A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF5A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 14
+      mode: active
+  Ethernet15:
+    peer: DC1-L2LEAF5B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF5B_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 14
+      mode: active
   Ethernet20:
     peer: FIREWALL01
     peer_interface: E0
@@ -461,6 +491,24 @@ port_channel_interfaces:
     esi: 0000:0000:0606:0707:0808
     rt: 06:06:07:07:08:08
     lacp_id: 0606.0707.0808
+  Port-Channel13:
+    description: DC1-L2LEAF4A_Po1
+    type: switched
+    shutdown: false
+    vlans: 110-112,120-121,130-131,160-161
+    mode: trunk
+    esi: 0000:0000:a36b:7013:457b
+    rt: a3:6b:70:13:45:7b
+    lacp_id: a36b.7013.457b
+  Port-Channel14:
+    description: DC1_L2LEAF5_Po1
+    type: switched
+    shutdown: false
+    vlans: 110-112,120-121,130-131,160-161
+    mode: trunk
+    esi: 0000:0000:71da:d362:2084
+    rt: 71:da:d3:62:20:84
+    lacp_id: 71da.d362.2084
   Port-Channel20:
     description: FIREWALL01_PortChanne1
     type: switched

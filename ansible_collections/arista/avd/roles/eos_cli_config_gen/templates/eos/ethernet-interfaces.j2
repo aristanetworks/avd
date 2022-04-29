@@ -1,7 +1,12 @@
 {# eos - Ethernet Interfaces #}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
-{%         if port_channel_interfaces['Port-Channel' ~ ethernet_interface.channel_group.id].lacp_fallback_mode is arista.avd.defined("individual") %}
+{%         set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
+{%         if port_channel_interfaces | arista.avd.default([]) |
+                                        arista.avd.convert_dicts('name') |
+                                        selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
+                                        selectattr('lacp_fallback_mode', 'arista.avd.defined', 'individual') |
+                                        length > 0 %}
 {%             set print_ethernet = true %}
 {%         endif %}
 {%     else %}

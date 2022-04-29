@@ -3,6 +3,7 @@ management_api_gnmi:
   transport:
     grpc:
     - name: MGMT
+      ssl_profile: gnmi
       vrf: MGMT
       notification_timestamp: "send-time"
       ip_access_group: acl1
