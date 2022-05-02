@@ -4,10 +4,6 @@ router_bgp:
 
 {% include 'overlay/ebgp/address-family-ipv4.j2' %}
 
-{% if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
-{%     include 'overlay/ebgp/address-family-ipv6.j2' %}
-
-{% endif %}
 {% include 'overlay/ebgp/address-family-evpn.j2' %}
 
 {% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
