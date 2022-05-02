@@ -27,7 +27,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC rackE DC1-L2LEAF5B
+  location: EOS_DESIGNS_UNIT_TESTS rackE DC1-L2LEAF5B
 spanning_tree:
   mode: mstp
   mst_instances:

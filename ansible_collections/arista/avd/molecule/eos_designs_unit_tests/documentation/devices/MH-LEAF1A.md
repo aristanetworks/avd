@@ -207,14 +207,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC MH-LEAF1A | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS MH-LEAF1A | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC MH-LEAF1A
+snmp-server location EOS_DESIGNS_UNIT_TESTS MH-LEAF1A
 ```
 
 ## Link Tracking

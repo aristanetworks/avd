@@ -173,14 +173,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC evpn_services_l2_only_false | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_false | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC evpn_services_l2_only_false
+snmp-server location EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_false
 ```
 
 # Internal VLAN Allocation Policy

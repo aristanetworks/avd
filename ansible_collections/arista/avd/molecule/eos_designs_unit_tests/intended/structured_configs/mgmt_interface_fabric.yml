@@ -27,7 +27,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC mgmt_interface_fabric
+  location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_fabric
 local_users:
   admin:
     privilege: 15

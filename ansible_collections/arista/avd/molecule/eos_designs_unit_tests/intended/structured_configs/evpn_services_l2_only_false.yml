@@ -283,7 +283,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC evpn_services_l2_only_false
+  location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_false
 local_users:
   admin:
     privilege: 15
