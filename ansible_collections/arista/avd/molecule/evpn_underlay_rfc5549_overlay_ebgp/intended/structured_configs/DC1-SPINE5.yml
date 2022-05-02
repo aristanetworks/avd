@@ -40,10 +40,6 @@ router_bgp:
       peer_group: UNDERLAY_PEERS
       remote_as: '65106'
       description: DC1-LEAF3B_Ethernet1
-  address_family_ipv6:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:

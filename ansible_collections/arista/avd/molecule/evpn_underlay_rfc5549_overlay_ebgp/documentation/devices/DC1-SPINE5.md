@@ -419,9 +419,6 @@ router bgp 65001
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
       neighbor UNDERLAY_PEERS activate
-   !
-   address-family ipv6
-      no neighbor EVPN-OVERLAY-PEERS activate
 ```
 
 # BFD
