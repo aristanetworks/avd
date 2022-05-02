@@ -249,7 +249,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC rackC DC1-LEAF2A
+  location: EOS_DESIGNS_UNIT_TESTS rackC DC1-LEAF2A
 spanning_tree:
   root_super: true
   mode: mstp
@@ -497,18 +497,18 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-112,120-121,130-131,160-161
     mode: trunk
-    esi: 0000:0000:a36b:7013:457b
-    rt: a3:6b:70:13:45:7b
-    lacp_id: a36b.7013.457b
+    esi: 0000:0000:\1:\1:\1:\1:\1
+    rt: \1:\1:\1:\1:\1
+    lacp_id: \1.\1.\1.\1.\1
   Port-Channel14:
     description: DC1_L2LEAF5_Po1
     type: switched
     shutdown: false
     vlans: 110-112,120-121,130-131,160-161
     mode: trunk
-    esi: 0000:0000:71da:d362:2084
-    rt: 71:da:d3:62:20:84
-    lacp_id: 71da.d362.2084
+    esi: 0000:0000:\1:\1:\1:\1:\1
+    rt: \1:\1:\1:\1:\1
+    lacp_id: \1.\1.\1.\1.\1
   Port-Channel20:
     description: FIREWALL01_PortChanne1
     type: switched

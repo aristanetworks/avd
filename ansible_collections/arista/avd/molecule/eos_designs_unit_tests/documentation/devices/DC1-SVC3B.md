@@ -210,14 +210,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC DC1-SVC3B | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS DC1-SVC3B | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC DC1-SVC3B
+snmp-server location EOS_DESIGNS_UNIT_TESTS DC1-SVC3B
 ```
 
 ## Monitor Sessions

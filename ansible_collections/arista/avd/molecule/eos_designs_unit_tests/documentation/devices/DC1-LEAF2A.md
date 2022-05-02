@@ -211,14 +211,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC rackC DC1-LEAF2A | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS rackC DC1-LEAF2A | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC rackC DC1-LEAF2A
+snmp-server location EOS_DESIGNS_UNIT_TESTS rackC DC1-LEAF2A
 ```
 
 # Hardware TCAM Profile
@@ -483,8 +483,8 @@ interface Ethernet21
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | - | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
-| Port-Channel13 | DC1-L2LEAF4A_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:a36b:7013:457b |
-| Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:71da:d362:2084 |
+| Port-Channel13 | DC1-L2LEAF4A_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:\1:\1:\1:\1:\1 |
+| Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:\1:\1:\1:\1:\1 |
 | Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -546,9 +546,9 @@ interface Port-Channel13
    switchport trunk allowed vlan 110-112,120-121,130-131,160-161
    switchport mode trunk
    evpn ethernet-segment
-      identifier 0000:0000:a36b:7013:457b
-      route-target import a3:6b:70:13:45:7b
-   lacp system-id a36b.7013.457b
+      identifier 0000:0000:\1:\1:\1:\1:\1
+      route-target import \1:\1:\1:\1:\1
+   lacp system-id \1.\1.\1.\1.\1
 !
 interface Port-Channel14
    description DC1_L2LEAF5_Po1
@@ -557,9 +557,9 @@ interface Port-Channel14
    switchport trunk allowed vlan 110-112,120-121,130-131,160-161
    switchport mode trunk
    evpn ethernet-segment
-      identifier 0000:0000:71da:d362:2084
-      route-target import 71:da:d3:62:20:84
-   lacp system-id 71da.d362.2084
+      identifier 0000:0000:\1:\1:\1:\1:\1
+      route-target import \1:\1:\1:\1:\1
+   lacp system-id \1.\1.\1.\1.\1
 !
 interface Port-Channel20
    description FIREWALL01_PortChanne1

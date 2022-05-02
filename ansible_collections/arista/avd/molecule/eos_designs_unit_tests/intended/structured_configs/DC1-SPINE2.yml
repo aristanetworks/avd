@@ -151,7 +151,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC DC1-SPINE2
+  location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE2
 spanning_tree:
   mode: none
 local_users:
@@ -169,7 +169,7 @@ vrfs:
   MGMT:
     ip_routing: false
 management_interfaces:
-  Management0:
+  Management1:
     description: oob_management
     shutdown: false
     vrf: MGMT

@@ -27,7 +27,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC mgmt_interface_platform
+  location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_platform
 local_users:
   admin:
     privilege: 15
@@ -43,7 +43,7 @@ vrfs:
   MGMT:
     ip_routing: false
 management_interfaces:
-  Management0:
+  Management1:
     description: oob_management
     shutdown: false
     vrf: MGMT
