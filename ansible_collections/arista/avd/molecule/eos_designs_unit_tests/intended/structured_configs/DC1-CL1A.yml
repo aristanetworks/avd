@@ -227,7 +227,7 @@ vrfs:
   MGMT:
     ip_routing: false
 management_interfaces:
-  Management1:
+  Management0:
     description: oob_management
     shutdown: false
     vrf: MGMT
