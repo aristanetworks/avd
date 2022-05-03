@@ -26,13 +26,13 @@ core_interfaces:
       # Speed | Optional
       speed: < speed | auto speed | forced speed >
 
-      # IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
+      # IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional
       ip_pool: < p2p_pool_name >
 
-      # Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      # Subnet used on this P2P link | Optional
       subnet: < IPv4_address/Mask >
 
-      # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      # Specific IP addresses used on this P2P link | Optional
       ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
 
       # Allows turning on ipv6 for the link or profile | Optional
