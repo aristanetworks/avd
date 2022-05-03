@@ -145,6 +145,10 @@ router_bgp:
           neighbors:
             10.2.3.4:
               activate: true
+              route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
+            10.2.3.5:
+              activate: true
+              route_map_in: RM-10.2.3.4-SET-NEXT-HOP-IN
           networks:
             10.0.0.0/8:
             100.64.0.0/10:
