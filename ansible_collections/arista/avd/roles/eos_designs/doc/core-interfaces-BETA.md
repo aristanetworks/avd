@@ -35,9 +35,6 @@ core_interfaces:
       # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
       ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
 
-      # Allows turning off ipv4 addressing for the link or profile | Optional
-      ipv4_enable: < true | false | default -> true >
-
       # Allows turning on ipv6 for the link or profile | Optional
       ipv6_enable: < true | false | default -> false >
 

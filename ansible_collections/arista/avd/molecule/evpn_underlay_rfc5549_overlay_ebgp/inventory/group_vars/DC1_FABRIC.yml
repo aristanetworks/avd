@@ -235,7 +235,6 @@ core_interfaces:
   p2p_links_profiles:
     - name: default_bb_profile
       ipv6_enable: true
-      ipv4_enable: false
   p2p_links:
     - id: 1
       nodes: [ DC1-BL1A, DC1-BL1B ]
