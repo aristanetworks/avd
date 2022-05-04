@@ -254,6 +254,9 @@ vlan internal order ascending range 1006 1199
 | 150 | Tenant_A_WAN_Zone_1 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
+| 450 | Tenant_D_WAN_Zone_1 | - |
+| 451 | Tenant_D_WAN_Zone_2 | - |
+| 452 | Tenant_D_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -267,6 +270,15 @@ vlan 250
 !
 vlan 350
    name Tenant_C_WAN_Zone_1
+!
+vlan 450
+   name Tenant_D_WAN_Zone_1
+!
+vlan 451
+   name Tenant_D_WAN_Zone_2
+!
+vlan 452
+   name Tenant_D_WAN_Zone_3
 ```
 
 # Interfaces
@@ -412,6 +424,9 @@ interface Loopback1
 | Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | false |
 | Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | false |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
+| Vlan450 | Tenant_D_WAN_Zone_1 | Tenant_D_WAN_Zone | - | false |
+| Vlan451 | Tenant_D_WAN_Zone_2 | Tenant_D_WAN_Zone | 1560 | false |
+| Vlan452 | Tenant_D_WAN_Zone_3 | Tenant_D_WAN_Zone | 1560 | false |
 
 #### IPv4
 
@@ -420,6 +435,17 @@ interface Loopback1
 | Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
+| Vlan450 |  Tenant_D_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan451 |  Tenant_D_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan452 |  Tenant_D_WAN_Zone  |  -  |  10.4.12.254/24  |  -  |  -  |  -  |  -  |
+
+#### IPv6
+
+| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| Vlan450 | Tenant_D_WAN_Zone | - | 2001:db8:355::1/64 | - | - | - | - | - | - |
+| Vlan451 | Tenant_D_WAN_Zone | - | 2001:db8:451::1/64 | - | - | - | - | - | - |
+| Vlan452 | Tenant_D_WAN_Zone | - | 2001:db8:412::1/64 | - | - | - | - | - | - |
 
 ### VLAN Interfaces Device Configuration
 
@@ -446,6 +472,27 @@ interface Vlan350
    no shutdown
    vrf Tenant_C_WAN_Zone
    ip address virtual 10.3.50.1/24
+!
+interface Vlan450
+   description Tenant_D_WAN_Zone_1
+   no shutdown
+   vrf Tenant_D_WAN_Zone
+   ipv6 address virtual 2001:db8:355::1/64
+!
+interface Vlan451
+   description Tenant_D_WAN_Zone_2
+   no shutdown
+   mtu 1560
+   vrf Tenant_D_WAN_Zone
+   ipv6 address virtual 2001:db8:451::1/64
+!
+interface Vlan452
+   description Tenant_D_WAN_Zone_3
+   no shutdown
+   mtu 1560
+   vrf Tenant_D_WAN_Zone
+   ipv6 address virtual 2001:db8:412::1/64
+   ip address virtual 10.4.12.254/24
 ```
 
 ## VXLAN Interface
@@ -464,6 +511,9 @@ interface Vlan350
 | 150 | 10150 | - | - |
 | 250 | 20250 | - | - |
 | 350 | 30350 | - | - |
+| 450 | 40450 | - | - |
+| 451 | 40451 | - | - |
+| 452 | 40452 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
 
@@ -473,6 +523,7 @@ interface Vlan350
 | Tenant_B_OP_Zone | 20 | - |
 | Tenant_B_WAN_Zone | 21 | - |
 | Tenant_C_WAN_Zone | 31 | - |
+| Tenant_D_WAN_Zone | 41 | - |
 | Tenant_L3_VRF_Zone | 15 | - |
 
 ### VXLAN Interface Device Configuration
@@ -486,10 +537,14 @@ interface Vxlan1
    vxlan vlan 150 vni 10150
    vxlan vlan 250 vni 20250
    vxlan vlan 350 vni 30350
+   vxlan vlan 450 vni 40450
+   vxlan vlan 451 vni 40451
+   vxlan vlan 452 vni 40452
    vxlan vrf Tenant_A_WAN_Zone vni 14
    vxlan vrf Tenant_B_OP_Zone vni 20
    vxlan vrf Tenant_B_WAN_Zone vni 21
    vxlan vrf Tenant_C_WAN_Zone vni 31
+   vxlan vrf Tenant_D_WAN_Zone vni 41
    vxlan vrf Tenant_L3_VRF_Zone vni 15
 ```
 
@@ -528,6 +583,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | Tenant_B_OP_Zone | true |
 | Tenant_B_WAN_Zone | true |
 | Tenant_C_WAN_Zone | true |
+| Tenant_D_WAN_Zone | true |
 | Tenant_L3_VRF_Zone | true |
 
 ### IP Routing Device Configuration
@@ -540,6 +596,7 @@ ip routing vrf Tenant_A_WAN_Zone
 ip routing vrf Tenant_B_OP_Zone
 ip routing vrf Tenant_B_WAN_Zone
 ip routing vrf Tenant_C_WAN_Zone
+ip routing vrf Tenant_D_WAN_Zone
 ip routing vrf Tenant_L3_VRF_Zone
 ```
 ## IPv6 Routing
@@ -554,6 +611,7 @@ ip routing vrf Tenant_L3_VRF_Zone
 | Tenant_B_OP_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
+| Tenant_D_WAN_Zone | true |
 | Tenant_L3_VRF_Zone | false |
 
 ## Static Routes
@@ -701,6 +759,7 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | Tenant_A_WAN_Zone | 192.168.254.14:14 | 65104:14<br>remote 65104:14 | - | - | learned | 150 |
 | Tenant_B_WAN_Zone | 192.168.254.14:21 | 65104:21<br>remote 65104:21 | - | - | learned | 250 |
 | Tenant_C_WAN_Zone | 192.168.254.14:31 | 65104:31<br>remote 65104:31 | - | - | learned | 350 |
+| Tenant_D_WAN_Zone | 192.168.254.14:41 | 65104:41<br>remote 65104:41 | - | - | learned | 450-452 |
 
 ### Router BGP VRFs
 
@@ -710,6 +769,7 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | Tenant_B_OP_Zone | 192.168.254.14:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.254.14:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.254.14:31 | connected |
+| Tenant_D_WAN_Zone | 192.168.254.14:41 | connected |
 | Tenant_L3_VRF_Zone | 192.168.254.14:15 | connected |
 
 ### Router BGP Device Configuration
@@ -791,6 +851,14 @@ router bgp 65104
       redistribute learned
       vlan 350
    !
+   vlan-aware-bundle Tenant_D_WAN_Zone
+      rd 192.168.254.14:41
+      rd evpn domain remote 192.168.254.14:41
+      route-target both 65104:41
+      route-target import export evpn domain remote 65104:41
+      redistribute learned
+      vlan 450-452
+   !
    address-family evpn
       host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-CORE activate
@@ -869,6 +937,13 @@ router bgp 65104
       rd 192.168.254.14:31
       route-target import evpn 65104:31
       route-target export evpn 65104:31
+      router-id 192.168.255.14
+      redistribute connected
+   !
+   vrf Tenant_D_WAN_Zone
+      rd 192.168.254.14:41
+      route-target import evpn 65104:41
+      route-target export evpn 65104:41
       router-id 192.168.255.14
       redistribute connected
    !
@@ -984,6 +1059,7 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
 | Tenant_B_OP_Zone | enabled |
 | Tenant_B_WAN_Zone | enabled |
 | Tenant_C_WAN_Zone | enabled |
+| Tenant_D_WAN_Zone | enabled |
 | Tenant_L3_VRF_Zone | enabled |
 
 ## VRF Instances Device Configuration
@@ -999,6 +1075,8 @@ vrf instance Tenant_B_OP_Zone
 vrf instance Tenant_B_WAN_Zone
 !
 vrf instance Tenant_C_WAN_Zone
+!
+vrf instance Tenant_D_WAN_Zone
 !
 vrf instance Tenant_L3_VRF_Zone
 ```

@@ -146,6 +146,30 @@ router_bgp:
           - '31:31'
       redistribute_routes:
       - connected
+    Tenant_D_OP_Zone:
+      router_id: 192.168.255.109
+      rd: 192.168.255.109:40
+      route_targets:
+        import:
+          evpn:
+          - '40:40'
+        export:
+          evpn:
+          - '40:40'
+      redistribute_routes:
+      - connected
+    Tenant_D_WAN_Zone:
+      router_id: 192.168.255.109
+      rd: 192.168.255.109:41
+      route_targets:
+        import:
+          evpn:
+          - '41:41'
+        export:
+          evpn:
+          - '41:41'
+      redistribute_routes:
+      - connected
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.109:12
@@ -246,6 +270,22 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 350
+    Tenant_D_OP_Zone:
+      rd: 192.168.255.109:40
+      route_targets:
+        both:
+        - '40:40'
+      redistribute_routes:
+      - learned
+      vlan: 410-412
+    Tenant_D_WAN_Zone:
+      rd: 192.168.255.109:41
+      route_targets:
+        both:
+        - '41:41'
+      redistribute_routes:
+      - learned
+      vlan: 450-452
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -258,6 +298,10 @@ static_routes:
   vrf: Tenant_A_APP_Zone
   name: VARP
   interface: Vlan132
+- destination_address_prefix: 10.3.11.0/24
+  vrf: Tenant_D_OP_Zone
+  name: VARP
+  interface: Vlan411
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -326,6 +370,14 @@ vrfs:
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
+  Tenant_D_OP_Zone:
+    tenant: Tenant_D
+    ip_routing: true
+    ipv6_routing: true
+  Tenant_D_WAN_Zone:
+    tenant: Tenant_D
+    ip_routing: true
+    ipv6_routing: true
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -428,6 +480,24 @@ vlans:
   350:
     tenant: Tenant_C
     name: Tenant_C_WAN_Zone_1
+  410:
+    tenant: Tenant_D
+    name: Tenant_D_OP_Zone_1
+  411:
+    tenant: Tenant_D
+    name: Tenant_D_OP_Zone_2
+  412:
+    tenant: Tenant_D
+    name: Tenant_D_OP_Zone_1
+  450:
+    tenant: Tenant_D
+    name: Tenant_D_WAN_Zone_1
+  451:
+    tenant: Tenant_D
+    name: Tenant_D_WAN_Zone_2
+  452:
+    tenant: Tenant_D
+    name: Tenant_D_WAN_Zone_3
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -604,6 +674,66 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+  Vlan410:
+    tenant: Tenant_D
+    tags:
+    - opzone
+    description: Tenant_D_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_D_OP_Zone
+    ip_address_virtual: 10.3.10.1/24
+    ipv6_address_virtual: 2001:db8:310::1/64
+    ipv6_address_virtual_secondaries:
+    - 2001:db8:311::1/64
+    - 2001:db8:312::1/64
+  Vlan411:
+    tenant: Tenant_D
+    tags:
+    - opzone
+    description: Tenant_D_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_D_OP_Zone
+    ip_virtual_router_addresses:
+    - 10.3.11.1/24
+    ipv6_virtual_router_addresses:
+    - 2001:db8:311::1/64
+  Vlan412:
+    tenant: Tenant_D
+    tags:
+    - opzone
+    description: Tenant_D_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_D_OP_Zone
+    ip_address_virtual: 10.4.12.254/24
+    ipv6_address_virtual: 2001:db8:412::1/64
+    mtu: 1560
+  Vlan450:
+    tenant: Tenant_D
+    tags:
+    - wan
+    description: Tenant_D_WAN_Zone_1
+    shutdown: false
+    vrf: Tenant_D_WAN_Zone
+    ipv6_address_virtual: 2001:db8:355::1/64
+  Vlan451:
+    tenant: Tenant_D
+    tags:
+    - wan
+    description: Tenant_D_WAN_Zone_2
+    shutdown: false
+    vrf: Tenant_D_WAN_Zone
+    ipv6_address_virtual: 2001:db8:451::1/64
+    mtu: 1560
+  Vlan452:
+    tenant: Tenant_D
+    tags:
+    - wan
+    description: Tenant_D_WAN_Zone_3
+    shutdown: false
+    vrf: Tenant_D_WAN_Zone
+    ip_address_virtual: 10.4.12.254/24
+    ipv6_address_virtual: 2001:db8:412::1/64
+    mtu: 1560
 vxlan_interface:
   Vxlan1:
     description: evpn_services_l2_only_false_VTEP
@@ -653,6 +783,18 @@ vxlan_interface:
           vni: 30311
         350:
           vni: 30350
+        410:
+          vni: 40410
+        411:
+          vni: 40411
+        412:
+          vni: 40412
+        450:
+          vni: 40450
+        451:
+          vni: 40451
+        452:
+          vni: 40452
       vrfs:
         Tenant_A_APP_Zone:
           vni: 12
@@ -672,6 +814,10 @@ vxlan_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
+        Tenant_D_OP_Zone:
+          vni: 40
+        Tenant_D_WAN_Zone:
+          vni: 41
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.109
