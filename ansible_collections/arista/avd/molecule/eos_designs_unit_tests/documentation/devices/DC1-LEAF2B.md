@@ -837,6 +837,7 @@ interface Vlan411
    vrf Tenant_D_OP_Zone
    ip address 10.3.11.3/24
    ipv6 address 2001:db8:311::3/64
+   ipv6 virtual-router address 2001:db8:311::1/64
    ip virtual-router address 10.3.11.1/24
 !
 interface Vlan412

@@ -567,6 +567,7 @@ interface Vlan411
    description Tenant_D_OP_Zone_2
    no shutdown
    vrf Tenant_D_OP_Zone
+   ipv6 virtual-router address 2001:db8:311::1/64
    ip virtual-router address 10.3.11.1/24
 !
 interface Vlan412
