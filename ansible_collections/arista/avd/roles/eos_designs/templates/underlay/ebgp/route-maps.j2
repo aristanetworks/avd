@@ -2,13 +2,10 @@
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
-{% if underlay_ipv6 is arista.avd.defined(true) and switch.vtep is arista.avd.defined(false) %}
-{% else %}
       10:
         type: permit
         match:
           - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
-{% endif %}
 {# SEQ 20 is set by inband management if applicable, so avoid setting that here #}
 {% if underlay_ipv6 is arista.avd.defined(true) %}
       30:
