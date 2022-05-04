@@ -29,6 +29,7 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
+  - [Prefix-lists](#prefix-lists)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
@@ -446,6 +447,24 @@ router bfd
 
 # Filters
 
+## Prefix-lists
+
+### Prefix-lists Summary
+
+#### PL-LOOPBACKS-EVPN-OVERLAY
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 192.168.255.0/24 eq 32 |
+
+### Prefix-lists Device Configuration
+
+```eos
+!
+ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+   seq 10 permit 192.168.255.0/24 eq 32
+```
+
 ## IPv6 Prefix-lists
 
 ### IPv6 Prefix-lists Summary
@@ -472,11 +491,15 @@ ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
+| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 | 30 | permit | match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 |
 
 ### Route-maps Device Configuration
 
 ```eos
+!
+route-map RM-CONN-2-BGP permit 10
+   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 30
    match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
