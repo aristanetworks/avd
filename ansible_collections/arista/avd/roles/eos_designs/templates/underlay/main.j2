@@ -14,6 +14,7 @@
 {%         include 'underlay/ebgp/router-bgp.j2' %}
 
 {%         include 'underlay/ebgp/prefix-lists.j2' %}
+
 {%         if underlay_ipv6 is arista.avd.defined(true) %}
 {%             include 'underlay/ebgp/ipv6-prefix-lists.j2' %}
 
