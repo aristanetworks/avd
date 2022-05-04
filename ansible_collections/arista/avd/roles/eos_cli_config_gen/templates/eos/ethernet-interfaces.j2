@@ -198,6 +198,14 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.dot1x.pae.mode is arista.avd.defined %}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
 {%             endif %}
+{%             if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
+{%                 if  ethernet_interface.dot1x.authentication_failure.action == 'allow' %}
+   dot1x authentication failure action traffic allow vlan {{ ethernet_interface.dot1x.authentication_failure.allow_vlan }}
+{%                 endif %}
+{%                 if  ethernet_interface.dot1x.authentication_failure.action == 'drop' %}
+   dot1x authentication failure action traffic drop
+{%                 endif %}
+{%             endif %}
 {%             if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
    dot1x reauthentication
 {%             endif %}

@@ -433,3 +433,16 @@ ethernet_interfaces:
     dot1x:
       pae:
         mode: "authenticator"
+
+  Ethernet34:
+    description: DOT1X Testing - authentication_failure allow
+    dot1x:
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+
+  Ethernet35:
+    description: DOT1X Testing - authentication_failure drop
+    dot1x:
+      authentication_failure:
+        action: drop

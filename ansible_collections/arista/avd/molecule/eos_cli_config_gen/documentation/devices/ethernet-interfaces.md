@@ -99,6 +99,8 @@ interface Management1
 | Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
 | Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
 | Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
+| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
+| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -527,6 +529,16 @@ interface Ethernet33
    description DOT1X Testing - pae mode authenticator
    switchport
    dot1x pae authenticator
+!
+interface Ethernet34
+   description DOT1X Testing - authentication_failure allow
+   switchport
+   dot1x authentication failure action traffic allow vlan 800
+!
+interface Ethernet35
+   description DOT1X Testing - authentication_failure drop
+   switchport
+   dot1x authentication failure action traffic drop
 ```
 
 # Routing
@@ -578,13 +590,15 @@ interface Ethernet33
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication |
-| --------- | -------- | ------| ---------------------- | ---------------- |
-| Ethernet29 | - | auto | True | - |
-| Ethernet30 | - | force-authorized | False | - |
-| Ethernet31 | - | force-unauthorized | - | - |
-| Ethernet32 | - | auto | - | True |
-| Ethernet33 | authenticator | - | - | - |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Failure VLAN |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | ------------ |
+| Ethernet29 | - | auto | True | - | - | - |
+| Ethernet30 | - | force-authorized | False | - | - | - |
+| Ethernet31 | - | force-unauthorized | - | - | - | - |
+| Ethernet32 | - | auto | - | True | - | - |
+| Ethernet33 | authenticator | - | - | - | - | - |
+| Ethernet34 | - | - | - | - | allow | 800 |
+| Ethernet35 | - | - | - | - | drop | - |
 
 # ACL
 
