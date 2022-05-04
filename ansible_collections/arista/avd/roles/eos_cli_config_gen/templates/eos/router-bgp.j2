@@ -876,15 +876,13 @@ router bgp {{ router_bgp.as }}
       {{ aggregate_address_cli }}
 {%         endfor %}
 {%         for redistribute_route in vrf.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
-{%             if redistribute_route.source_protocol is arista.avd.defined %}
-{%                 set redistribute_cli = "redistribute " ~ redistribute_route.source_protocol %}
-{%             else %}
-{%                 set redistribute_cli = "redistribute " ~ redistribute_route %}
+{%             if redistribute_route.source_protocol %}
+{%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%                 if redistribute_route.route_map is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
+{%                 endif %}
+      {{ redistribute_route_cli }}
 {%             endif %}
-{%             if redistribute_route.route_map is arista.avd.defined %}
-{%                 set redistribute_cli = redistribute_cli + " route-map " ~ redistribute_route.route_map %}
-{%             endif %}
-      {{ redistribute_cli }}
 {%         endfor %}
 {%         for  address_family in vrf.address_families | arista.avd.convert_dicts('address_family') | arista.avd.natural_sort('address_family') %}
       !
