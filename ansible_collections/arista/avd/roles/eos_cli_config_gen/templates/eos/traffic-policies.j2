@@ -8,25 +8,25 @@ traffic-policies
 {# FIELD SET #}
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
-{%         for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefix') %}
+{%         for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefixes') %}
    field-set ipv4 prefix {{ field_set_ipv4.name }}
-      {{ field_set_ipv4.prefix | join(' ') }}
+      {{ field_set_ipv4.prefixes | join(' ') }}
    !
 {%         endfor %}
 {%     endif %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
-{%         for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefix') %}
+{%         for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefixes') %}
    field-set ipv6 prefix {{ field_set_ipv6.name }}
-      {{ field_set_ipv6.prefix | join(' ') }}
+      {{ field_set_ipv6.prefixes | join(' ') }}
    !
 {%         endfor %}
 {%     endif %}
 {#     -- L4 PORT MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ports is arista.avd.defined %}
-{%         for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','vlan_range') %}
+{%         for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','port_range') %}
    field-set l4-port {{ field_set_port.name }}
-      {{ field_set_port.vlan_range }}
+      {{ field_set_port.port_range }}
    !
 {%         endfor %}
 {%     endif %}

@@ -8,11 +8,11 @@
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefix') %}
+{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefixes') %}
 {%                 if field_set_ipv4 | length > 1 %}
-{%                     set value = field_set_ipv4.prefix | join('<br/>') %}
+{%                     set value = field_set_ipv4.prefixes | join('<br/>') %}
 {%                 else %}
-{%                     set value = field_set_ipv4[0].prefix %}
+{%                     set value = field_set_ipv4[0].prefixes %}
 {%                 endif %}
 | {{ field_set_ipv4.name }} | {{ value }} |
 {%             endfor %}
@@ -25,11 +25,11 @@ No IPv4 field-set configured.
 {%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefix') %}
+{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefixes') %}
 {%                 if field_set_ipv6 | length > 1 %}
-{%                     set value = field_set_ipv6.prefix | join('<br/>') %}
+{%                     set value = field_set_ipv6.prefixes | join('<br/>') %}
 {%                 else %}
-{%                     set value = field_set_ipv6[0].prefix %}
+{%                     set value = field_set_ipv6[0].prefixes %}
 {%                 endif %}
 | {{ field_set_ipv6.name }} | {{ value }} |
 {%             endfor %}
@@ -42,8 +42,8 @@ No IPv6 field-set configured.
 {%         if traffic_policies.field_sets.ports is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','vlan_range') %}
-| {{ field_set_port.name }} | {{ field_set_port.vlan_range }}|
+{%             for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','port_range') %}
+| {{ field_set_port.name }} | {{ field_set_port.port_range }}|
 {%             endfor %}
 {%         else %}
 No L4 Port field-set configured.

@@ -3216,19 +3216,19 @@ traffic_policies:
   field_sets:
     ipv4:
       - name: < PREFIX FIELD SET NAME >
-        prefix:
+        prefixes:
           - < IPv4 prefix 01>
           - < IPv4 prefix 02>
           - < IPv4 prefix 03>
     ipv6:
       - name: < PREFIX FIELD SET NAME >
-        prefix:
+        prefixes:
           - < IPv6 prefix 01>
           - < IPv6 prefix 02>
           - < IPv6 prefix 03>
     ports:
       - name: < L4 PORT FIELD SET NAME >
-        vlan_range: "< vlan range >"
+        port_range: "< vlan range >"
   policies:
     - name: < TRAFFIC POLICY NAME >
       matches:
