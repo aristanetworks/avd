@@ -1476,7 +1476,12 @@ vlan_interfaces:
         dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
+    # The below "VARPv6" keys will be deprecated in AVD v4.0 - These should not be mixed with the new "VARPv6" key above to avoid conflicts.
     ipv6_virtual_router_address: < IPv6_address >
+    # New improved "VARPv6" data model to support multiple VARPv6 addresses.
+    ipv6_virtual_router_address:
+      - < IPv6_address/Mask | IPv6_address >
+      - < IPv6_address/Mask | IPv6_address >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
