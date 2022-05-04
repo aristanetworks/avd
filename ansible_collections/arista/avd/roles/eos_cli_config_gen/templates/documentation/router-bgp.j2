@@ -163,32 +163,32 @@
 {%             if neighbor.peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
 {%                 set neighbor_peer_group = neighbor.peer_group %}
-{%                 set peer_groups = router_bgp.peer_groups | arista.avd.default([]) |
-                                                                      arista.avd.convert_dicts('name') |
-                                                                      selectattr('name', 'arista.avd.defined', neighbor_peer_group) |
-                                                                      first %}
-{%                 if peer_groups.remote_as is arista.avd.defined %}
+{%                 set peer_group = router_bgp.peer_groups | arista.avd.default([]) |
+                                                             arista.avd.convert_dicts('name') |
+                                                             selectattr('name', 'arista.avd.defined', neighbor_peer_group) |
+                                                             first %}
+{%                 if peer_group.remote_as is arista.avd.defined %}
 {%                     set inherited.remote_as = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.vrf is arista.avd.defined %}
+{%                 if peer_group.vrf is arista.avd.defined %}
 {%                     set inherited.vrf = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.send_community is arista.avd.defined %}
+{%                 if peer_group.send_community is arista.avd.defined %}
 {%                     set inherited.send_community = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.maximum_routes is arista.avd.defined %}
+{%                 if peer_group.maximum_routes is arista.avd.defined %}
 {%                     set inherited.maximum_routes = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.allowas_in.enabled is arista.avd.defined(true) %}
+{%                 if peer_group.allowas_in.enabled is arista.avd.defined(true) %}
 {%                     set inherited.allowas_in = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.bfd is arista.avd.defined(true) %}
+{%                 if peer_group.bfd is arista.avd.defined(true) %}
 {%                     set inherited.bfd = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.shutdown is arista.avd.defined(true) %}
+{%                 if peer_group.shutdown is arista.avd.defined(true) %}
 {%                     set inherited.shutdown = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
-{%                 if peer_groups.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%                 if peer_group.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
 {%                     set inherited.rib_in_pre_policy_retain = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
 {%             endif %}
@@ -243,29 +243,29 @@
 {%                     set inherited_vrf = namespace() %}
 {%                     if neighbor.peer_group is arista.avd.defined %}
 {%                         set neighbor_peer_group = neighbor.peer_group %}
-{%                         set peer_groups = router_bgp.peer_groups | arista.avd.default([]) |
-                                                                      arista.avd.convert_dicts('name') |
-                                                                      selectattr('name', 'arista.avd.defined', neighbor_peer_group) |
-                                                                      first %}
-{%                         if peer_groups.remote_as is arista.avd.defined %}
+{%                         set peer_group = router_bgp.peer_groups | arista.avd.default([]) |
+                                                                     arista.avd.convert_dicts('name') |
+                                                                     selectattr('name', 'arista.avd.defined', neighbor_peer_group) |
+                                                                     first %}
+{%                         if peer_group.remote_as is arista.avd.defined %}
 {%                             set inherited_vrf.remote_as = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
-{%                         if peer_groups.send_community is arista.avd.defined %}
+{%                         if peer_group.send_community is arista.avd.defined %}
 {%                             set inherited_vrf.send_community = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
-{%                         if peer_groups.maximum_routes is arista.avd.defined %}
+{%                         if peer_group.maximum_routes is arista.avd.defined %}
 {%                             set inherited_vrf.maximum_routes = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
-{%                         if peer_groups.allowas_in.enabled is arista.avd.defined(true) %}
+{%                         if peer_group.allowas_in.enabled is arista.avd.defined(true) %}
 {%                             set inherited_vrf.allowas_in = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
-{%                         if peer_groups.bfd is arista.avd.defined(true) %}
+{%                         if peer_group.bfd is arista.avd.defined(true) %}
 {%                             set inherited_vrf.bfd = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
-{%                         if peer_groups.shutdown is arista.avd.defined(true) %}
+{%                         if peer_group.shutdown is arista.avd.defined(true) %}
 {%                             set inherited_vrf.shutdown = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
-{%                         if peer_groups.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
+{%                         if peer_group.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
 {%                             set inherited_vrf.rib_in_pre_policy_retain = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
 {%                     endif %}
@@ -323,10 +323,10 @@
 | Neighbor Interface | Peer Group | Remote AS | Peer Filter |
 | ------------------ | ---------- | --------- | ----------- |
 {%         for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%             set peer_groups = neighbor_interface.peer_group | arista.avd.default("-") %}
+{%             set peer_group = neighbor_interface.peer_group | arista.avd.default("-") %}
 {%             set remote_as = neighbor_interface.remote_as | arista.avd.default("-") %}
 {%             set peer_filter = neighbor_interface.peer_filter | arista.avd.default("-") %}
-| {{ neighbor_interface.name }} | {{ peer_groups }} | {{ remote_as }} | {{ peer_filter }} |
+| {{ neighbor_interface.name }} | {{ peer_group }} | {{ remote_as }} | {{ peer_filter }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is arista.avd.defined %}
