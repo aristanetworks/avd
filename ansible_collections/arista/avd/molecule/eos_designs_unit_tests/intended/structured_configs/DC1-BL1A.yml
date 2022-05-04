@@ -293,7 +293,7 @@ name_server:
   - 1.1.1.1
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC DC1-BL1A
+  location: EOS_DESIGNS_UNIT_TESTS DC1-BL1A
 spanning_tree:
   root_super: true
   mode: mstp

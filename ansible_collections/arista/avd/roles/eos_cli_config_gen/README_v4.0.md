@@ -1139,7 +1139,7 @@ loopback_interfaces:
 
 ```yaml
 port_channel_interfaces:
-  < Port-Channel_interface_1 >:
+  - name: < Port-Channel_interface_1 >
     description: < description >
     logging:
       event:
@@ -1231,7 +1231,7 @@ port_channel_interfaces:
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
-  < Port-Channel_interface_2 >:
+  - name: < Port-Channel_interface_2 >
     description: < description >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
@@ -1251,7 +1251,7 @@ port_channel_interfaces:
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
-  < Port-Channel_interface_3 >:
+  - name: < Port-Channel_interface_3 >
     description: < description >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q | l2dot1q >
@@ -1273,7 +1273,7 @@ port_channel_interfaces:
       role: < master | dynamic >
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
-  < Port-Channel_interface_4 >:
+  - name: < Port-Channel_interface_4 >
     description: < description >
     mtu: < mtu >
     type: < routed | switched | l3dot1q | l2dot1q >
@@ -1284,11 +1284,11 @@ port_channel_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -1305,7 +1305,7 @@ port_channel_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
 ```
@@ -1314,7 +1314,7 @@ port_channel_interfaces:
 
 ```yaml
 vlan_interfaces:
-  < Vlan_id_1 >:
+  - name: < Vlan_id_1 >
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
@@ -1336,10 +1336,10 @@ vlan_interfaces:
       - < IPv4_address/Mask >
     ip_igmp: < true | false >
     ip_helpers:
-      < ip_helper_address_1 >:
+      - ip_helper: < ip_helper_address_1 >
         source_interface: < source_interface_name >
         vrf: < vrf_name >
-      < ip_helper_address_2 >:
+      - ip_helper: < ip_helper_address_2 >
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
@@ -1348,11 +1348,11 @@ vlan_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -1368,7 +1368,7 @@ vlan_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
     pim:
@@ -1402,7 +1402,7 @@ vlan_interfaces:
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
-< Vlan_id_2 >:
+  - name: < Vlan_id_2 >
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```

@@ -183,14 +183,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC DC1-BL1B | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS DC1-BL1B | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC DC1-BL1B
+snmp-server location EOS_DESIGNS_UNIT_TESTS DC1-BL1B
 ```
 
 # Hardware TCAM Profile
