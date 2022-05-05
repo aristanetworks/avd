@@ -169,6 +169,18 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
+  Ethernet12:
+    peer: server03_AUTO_ESI
+    peer_interface: Eth2
+    peer_type: server
+    description: server03_AUTO_ESI_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    channel_group:
+      id: 12
+      mode: active
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -260,6 +272,28 @@ port_channel_interfaces:
           vlan: 2102
       network:
         client: true
+  Port-Channel11.103:
+    type: l2dot1q
+    esi: 0000:0000:c2c9:c85a:ed92
+    rt: c2:c9:c8:5a:ed:92
+    vlan_id: 1103
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 2103
+      network:
+        client: true
+  Port-Channel11.104:
+    type: l2dot1q
+    esi: 0000:0000:5c8e:1f50:9fc4
+    rt: 5c:8e:1f:50:9f:c4
+    vlan_id: 1104
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 2104
+      network:
+        client: true
   Port-Channel10:
     description: server01_ES1_PortChanne1
     type: switched
@@ -269,6 +303,18 @@ port_channel_interfaces:
     esi: 0000:0000:0001:1010:1010
     rt: 00:01:10:10:10:10
     lacp_id: 0001.1010.1010
+    link_tracking_groups:
+    - name: LT_GROUP1
+      direction: downstream
+  Port-Channel12:
+    description: server03_AUTO_ESI_Auto-ESI PortChannel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    esi: 0000:0000:fc87:ae24:2cb3
+    rt: fc:87:ae:24:2c:b3
+    lacp_id: fc87.ae24.2cb3
     link_tracking_groups:
     - name: LT_GROUP1
       direction: downstream
