@@ -249,7 +249,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC rackD DC1-LEAF2B
+  location: EOS_DESIGNS_UNIT_TESTS rackD DC1-LEAF2B
 spanning_tree:
   root_super: true
   mode: mstp

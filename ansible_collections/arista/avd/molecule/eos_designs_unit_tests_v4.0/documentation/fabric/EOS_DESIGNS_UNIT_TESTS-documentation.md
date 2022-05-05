@@ -1,4 +1,4 @@
-# DC1_FABRIC
+# EOS_DESIGNS_UNIT_TESTS
 
 # Table of Contents
 
@@ -17,36 +17,37 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| DC1_FABRIC | l3leaf | DC1-BL1A | 192.168.200.110/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-BL2A | 192.168.200.117/24 | 7280R2 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-BL2B | 192.168.200.118/24 | 7280R3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-CL1A | 192.168.200.119/24 | 7368X4 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-CL1B | 192.168.200.120/24 | 7280R | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF1B | 192.168.200.115/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF2B | 192.168.200.114/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF3A | 192.168.200.116/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF1A | 192.168.200.105/24 | 7050SX3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF2A | 192.168.200.106/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF2B | 192.168.200.107/24 | 7280R | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE1 | 192.168.200.101/24 | 7050SX3 | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE2 | 192.168.200.102/24 | 7500R | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE3 | 192.168.200.103/24 | 7800R3 | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE4 | 192.168.200.104/24 | 7280R3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7050SX3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
-| DC1_FABRIC | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
-| DC1_FABRIC | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_default | 1.1.1.2 | - | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
-| DC1_FABRIC | l2leaf | MH-L2LEAF1A | 192.168.201.201/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | MH-LEAF2A | 192.168.201.106/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | spine | cvp-instance-ips-cvaas | - | - | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-BL1A | 192.168.200.110/24 | 7280R | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-BL2A | 192.168.200.117/24 | 7280R2 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-BL2B | 192.168.200.118/24 | 7280R3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-CL1A | 192.168.200.119/24 | 7368X4 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-CL1B | 192.168.200.120/24 | 7280R | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | DC1-L2LEAF1B | 192.168.200.115/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | DC1-L2LEAF2B | 192.168.200.114/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | DC1-L2LEAF3A | 192.168.200.116/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-LEAF1A | 192.168.200.105/24 | 7050SX3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-LEAF2A | 192.168.200.106/24 | 7280R | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-LEAF2B | 192.168.200.107/24 | 7280R | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | spine | DC1-SPINE1 | 192.168.200.101/24 | 7050SX3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | spine | DC1-SPINE2 | 192.168.200.102/24 | 7500R | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | spine | DC1-SPINE3 | 192.168.200.103/24 | 7800R3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | spine | DC1-SPINE4 | 192.168.200.104/24 | 7280R3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7050SX3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | mgmt_interface_default | 1.1.1.2 | - | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l2leaf | MH-L2LEAF1A | 192.168.201.201/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF2A | 192.168.201.106/24 | vEOS-LAB | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -190,32 +191,34 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
+| 1.2.3.4/24 | 256 | 1 | 0.4 % |
 | 192.168.255.0/24 | 256 | 20 | 7.82 % |
 
 ## Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| DC1_FABRIC | DC1-BL1A | 192.168.255.14/32 |
-| DC1_FABRIC | DC1-BL1B | 192.168.255.15/32 |
-| DC1_FABRIC | DC1-BL2A | 192.168.255.16/32 |
-| DC1_FABRIC | DC1-BL2B | 192.168.255.17/32 |
-| DC1_FABRIC | DC1-CL1A | 192.168.255.18/32 |
-| DC1_FABRIC | DC1-CL1B | 192.168.255.19/32 |
-| DC1_FABRIC | DC1-LEAF1A | 192.168.255.9/32 |
-| DC1_FABRIC | DC1-LEAF2A | 192.168.255.10/32 |
-| DC1_FABRIC | DC1-LEAF2B | 192.168.255.11/32 |
-| DC1_FABRIC | DC1-SPINE1 | 192.168.255.1/32 |
-| DC1_FABRIC | DC1-SPINE2 | 192.168.255.2/32 |
-| DC1_FABRIC | DC1-SPINE3 | 192.168.255.3/32 |
-| DC1_FABRIC | DC1-SPINE4 | 192.168.255.4/32 |
-| DC1_FABRIC | DC1-SVC3A | 192.168.255.12/32 |
-| DC1_FABRIC | DC1-SVC3B | 192.168.255.13/32 |
-| DC1_FABRIC | evpn_services_l2_only_false | 192.168.255.109/32 |
-| DC1_FABRIC | evpn_services_l2_only_true | 192.168.255.109/32 |
-| DC1_FABRIC | MH-LEAF1A | 192.168.255.33/32 |
-| DC1_FABRIC | MH-LEAF1B | 192.168.255.34/32 |
-| DC1_FABRIC | MH-LEAF2A | 192.168.255.35/32 |
+| EOS_DESIGNS_UNIT_TESTS | cvp-instance-ips-cvaas | 1.2.3.1/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL1A | 192.168.255.14/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL1B | 192.168.255.15/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL2A | 192.168.255.16/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL2B | 192.168.255.17/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-CL1A | 192.168.255.18/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-CL1B | 192.168.255.19/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-LEAF1A | 192.168.255.9/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-LEAF2A | 192.168.255.10/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-LEAF2B | 192.168.255.11/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SPINE1 | 192.168.255.1/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SPINE2 | 192.168.255.2/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SPINE3 | 192.168.255.3/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SPINE4 | 192.168.255.4/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SVC3A | 192.168.255.12/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SVC3B | 192.168.255.13/32 |
+| EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_false | 192.168.255.109/32 |
+| EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_true | 192.168.255.109/32 |
+| EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.255.33/32 |
+| EOS_DESIGNS_UNIT_TESTS | MH-LEAF1B | 192.168.255.34/32 |
+| EOS_DESIGNS_UNIT_TESTS | MH-LEAF2A | 192.168.255.35/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
@@ -227,19 +230,19 @@
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
-| DC1_FABRIC | DC1-BL1A | 192.168.254.14/32 |
-| DC1_FABRIC | DC1-BL1B | 192.168.254.15/32 |
-| DC1_FABRIC | DC1-BL2A | 192.168.254.16/32 |
-| DC1_FABRIC | DC1-BL2B | 192.168.254.17/32 |
-| DC1_FABRIC | DC1-CL1A | 192.168.254.18/32 |
-| DC1_FABRIC | DC1-CL1B | 192.168.254.18/32 |
-| DC1_FABRIC | DC1-LEAF1A | 192.168.254.9/32 |
-| DC1_FABRIC | DC1-LEAF2A | 192.168.254.10/32 |
-| DC1_FABRIC | DC1-LEAF2B | 192.168.254.11/32 |
-| DC1_FABRIC | DC1-SVC3A | 192.168.254.12/32 |
-| DC1_FABRIC | DC1-SVC3B | 192.168.254.12/32 |
-| DC1_FABRIC | evpn_services_l2_only_false | 192.168.254.109/32 |
-| DC1_FABRIC | evpn_services_l2_only_true | 192.168.254.109/32 |
-| DC1_FABRIC | MH-LEAF1A | 192.168.254.33/32 |
-| DC1_FABRIC | MH-LEAF1B | 192.168.254.34/32 |
-| DC1_FABRIC | MH-LEAF2A | 192.168.254.35/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL1A | 192.168.254.14/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL1B | 192.168.254.15/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL2A | 192.168.254.16/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-BL2B | 192.168.254.17/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-CL1A | 192.168.254.18/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-CL1B | 192.168.254.18/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-LEAF1A | 192.168.254.9/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-LEAF2A | 192.168.254.10/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-LEAF2B | 192.168.254.11/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SVC3A | 192.168.254.12/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1-SVC3B | 192.168.254.12/32 |
+| EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_false | 192.168.254.109/32 |
+| EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_true | 192.168.254.109/32 |
+| EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.254.33/32 |
+| EOS_DESIGNS_UNIT_TESTS | MH-LEAF1B | 192.168.254.34/32 |
+| EOS_DESIGNS_UNIT_TESTS | MH-LEAF2A | 192.168.254.35/32 |
