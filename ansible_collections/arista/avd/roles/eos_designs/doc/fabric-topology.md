@@ -363,6 +363,10 @@ defaults <- node_group <- node_group.node <- node
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
     mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
+    # MLAG peer link port-channel id: | Optional; if not set, the mlag port-channel id
+    # is generated from the digits of the first interface present in 'mlag_interfaces'
+    mlag_port_channel_id: < 1-2000 > for EOS < 4.25.0F | < 1 - 999999 > for EOS >= 4.25.0F
+
     # Underlay L3 peering SVI interface id
     # If set to false or the same vlan as mlag_peer_vlan the mlag_peer_vlan will be used for L3 peering.
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
