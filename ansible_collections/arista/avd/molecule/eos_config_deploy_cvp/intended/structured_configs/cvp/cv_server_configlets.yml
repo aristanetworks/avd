@@ -1,0 +1,61 @@
+CVP_CONFIGLETS:
+  AVD_DC1-L2LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
+    \ -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
+    \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
+    !\nvlan internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan\
+    \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
+    \ multi-agent\n!\nhostname DC1-L2LEAF1A\nip name-server vrf MGMT 8.8.8.8\nip name-server\
+    \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
+    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nspanning-tree mst\
+    \ 0 priority 16384\n!\nno enable password\nno aaa root\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
+    !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
+    !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
+    !\nvrf instance MGMT\n!\ninterface Management1\n   description oob_management\n\
+    \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.112/24\n!\nip routing\n\
+    no ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement\
+    \ api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n  \
+    \    no shutdown\n!\nend\n"
+CVP_TOPOLOGY:
+  DC1_BL1:
+    devices:
+    - DC1-BL1A
+    - DC1-BL1B
+    parent_container: DC1_LEAFS
+  DC1_FABRIC:
+    parent_container: Tenant
+  DC1_L2LEAF1:
+    devices:
+    - DC1-L2LEAF1A
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAF2:
+    devices:
+    - DC1-L2LEAF2A
+    - DC1-L2LEAF2B
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_LEAF1:
+    devices:
+    - DC1-LEAF1A
+    parent_container: DC1_LEAFS
+  DC1_LEAF2:
+    devices:
+    - DC1-LEAF2A
+    - DC1-LEAF2B
+    parent_container: DC1_LEAFS
+  DC1_LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_SPINES:
+    devices:
+    - DC1-SPINE1
+    - DC1-SPINE2
+    - DC1-SPINE3
+    - DC1-SPINE4
+    parent_container: DC1_FABRIC
+  DC1_SVC3:
+    devices: []
+    parent_container: DC1_LEAFS
+changed: false
