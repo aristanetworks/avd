@@ -114,7 +114,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC MH-LEAF2A
+  location: EOS_DESIGNS_UNIT_TESTS MH-LEAF2A
 local_users:
   admin:
     privilege: 15

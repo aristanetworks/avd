@@ -120,6 +120,23 @@ router_bgp:
       send_community: standard
       ebgp_multihop: 2
       maximum_routes: 12000
+    192.0.3.6:
+      remote_as: 65437
+      description: test_remove_private_as
+      remove_private_as:
+        enabled: true
+      remove_private_as_ingress:
+        enabled: true
+    192.0.3.7:
+      remote_as: 65438
+      description: test_remove_private_as_all
+      remove_private_as:
+        enabled: true
+        all: true
+        replace_as: true
+      remove_private_as_ingress:
+        enabled: true
+        replace_as: true
   neighbor_interfaces:
     Ethernet2:
       peer_group: PG-FOO-v4

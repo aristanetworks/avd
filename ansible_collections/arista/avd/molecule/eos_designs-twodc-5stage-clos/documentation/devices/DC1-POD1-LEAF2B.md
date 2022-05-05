@@ -787,6 +787,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP Peer Groups
 
+#### EVPN-OVERLAY-CORE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 15 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
+
 #### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
@@ -819,7 +830,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
+| 1.1.1.1 | 1111 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - |
 | 11.1.0.39 | 65211 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True | - |
 | 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -838,17 +850,25 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | Peer Group | Activate |
 | ---------- | -------- |
+| EVPN-OVERLAY-CORE | True |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
+| L3 Gateway Configured | True |
 
 ### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.5:99110 | 99110:99110 | - | - | learned |
-| 111 | 172.16.110.5:50111 | 50111:50111 | - | - | learned |
-| 112 | 172.16.110.5:20112 | 20112:20112 | - | - | learned |
-| 2500 | 172.16.110.5:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.110.5:32600 | 32600:32600 | - | - | learned |
+| 110 | 172.16.110.5:99110 | 99110:99110<br>remote 99110:99110 | - | - | learned |
+| 111 | 172.16.110.5:50111 | 50111:50111<br>remote 50111:50111 | - | - | learned |
+| 112 | 172.16.110.5:20112 | 20112:20112<br>remote 20112:20112 | - | - | learned |
+| 2500 | 172.16.110.5:2500 | 2500:2500<br>remote 2500:2500 | - | - | learned |
+| 2600 | 172.16.110.5:32600 | 32600:32600<br>remote 32600:32600 | - | - | learned |
 
 ### Router BGP VRFs
 
@@ -870,6 +890,12 @@ router bgp 65112.100
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-CORE peer group
+   neighbor EVPN-OVERLAY-CORE update-source Loopback0
+   neighbor EVPN-OVERLAY-CORE bfd
+   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
+   neighbor EVPN-OVERLAY-CORE send-community
+   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -889,6 +915,9 @@ router bgp 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor 1.1.1.1 peer group EVPN-OVERLAY-CORE
+   neighbor 1.1.1.1 remote-as 1111
+   neighbor 1.1.1.1 description HOSTNAME_NOT_IN_ANSIBLE
    neighbor 11.1.0.39 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.0.39 remote-as 65211
    neighbor 11.1.0.39 local-as 65120 no-prepend replace-as
@@ -925,37 +954,51 @@ router bgp 65112.100
    !
    vlan 110
       rd 172.16.110.5:99110
+      rd evpn domain remote 172.16.110.5:99110
       route-target both 99110:99110
+      route-target import export evpn domain remote 99110:99110
       redistribute learned
    !
    vlan 111
       rd 172.16.110.5:50111
+      rd evpn domain remote 172.16.110.5:50111
       route-target both 50111:50111
+      route-target import export evpn domain remote 50111:50111
       redistribute learned
    !
    vlan 112
       rd 172.16.110.5:20112
+      rd evpn domain remote 172.16.110.5:20112
       route-target both 20112:20112
+      route-target import export evpn domain remote 20112:20112
       redistribute learned
    !
    vlan 2500
       rd 172.16.110.5:2500
+      rd evpn domain remote 172.16.110.5:2500
       route-target both 2500:2500
+      route-target import export evpn domain remote 2500:2500
       redistribute learned
    !
    vlan 2600
       rd 172.16.110.5:32600
+      rd evpn domain remote 172.16.110.5:32600
       route-target both 32600:32600
+      route-target import export evpn domain remote 32600:32600
       redistribute learned
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix
       route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate

@@ -183,14 +183,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC DC1-BL1B | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS DC1-BL1B | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC DC1-BL1B
+snmp-server location EOS_DESIGNS_UNIT_TESTS DC1-BL1B
 ```
 
 # Hardware TCAM Profile
@@ -613,6 +613,17 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 
 ### Router BGP Peer Groups
 
+#### EVPN-OVERLAY-CORE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 15 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
+
 #### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
@@ -635,7 +646,8 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
+| 1.1.1.1 | 65555 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - |
 | 172.31.255.96 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.98 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.100 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -655,6 +667,7 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 
 | Peer Group | Activate |
 | ---------- | -------- |
+| EVPN-OVERLAY-CORE | True |
 | EVPN-OVERLAY-PEERS | True |
 
 #### EVPN Host Flapping Settings
@@ -663,13 +676,20 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | ----- | ------ | --------- | -------------- |
 | Enabled | 180 Seconds | 5 | 10 Seconds |
 
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
+| L3 Gateway Configured | True |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.254.15:14 | 65105:14 | - | - | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.254.15:21 | 65105:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.254.15:31 | 65105:31 | - | - | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.254.15:14 | 65105:14<br>remote 65105:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.254.15:21 | 65105:21<br>remote 65105:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.254.15:31 | 65105:31<br>remote 65105:31 | - | - | learned | 350 |
 
 ### Router BGP VRFs
 
@@ -690,6 +710,12 @@ router bgp 65105
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-CORE peer group
+   neighbor EVPN-OVERLAY-CORE update-source Loopback0
+   neighbor EVPN-OVERLAY-CORE bfd
+   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
+   neighbor EVPN-OVERLAY-CORE send-community
+   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -701,6 +727,9 @@ router bgp 65105
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor 1.1.1.1 peer group EVPN-OVERLAY-CORE
+   neighbor 1.1.1.1 remote-as 65555
+   neighbor 1.1.1.1 description MY_EVPN_GW_USER_DEFINED
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
    neighbor 172.31.255.96 remote-as 65001
    neighbor 172.31.255.96 description DC1-SPINE1_Ethernet7
@@ -729,27 +758,37 @@ router bgp 65105
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
       rd 192.168.254.15:14
+      rd evpn domain remote 192.168.254.15:14
       route-target both 65105:14
+      route-target import export evpn domain remote 65105:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
       rd 192.168.254.15:21
+      rd evpn domain remote 192.168.254.15:21
       route-target both 65105:21
+      route-target import export evpn domain remote 65105:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
       rd 192.168.254.15:31
+      rd evpn domain remote 192.168.254.15:31
       route-target both 65105:31
+      route-target import export evpn domain remote 65105:31
       redistribute learned
       vlan 350
    !
    address-family evpn
       host-flap detection window 180 threshold 5 expiry timeout 10 seconds
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY-PEERS activate
    !
