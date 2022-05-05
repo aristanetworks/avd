@@ -57,34 +57,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet9
-    peer_type: l3leaf
-    description: DC1-LEAF2A_Ethernet9
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet9
-    peer_type: l3leaf
-    description: DC1-LEAF2B_Ethernet9
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
-port_channel_interfaces:
-  Port-Channel1:
-    description: DC1_LEAF2_Po9
-    type: switched
-    shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
-    mode: trunk
 vlans:
   130:
     tenant: Tenant_A
