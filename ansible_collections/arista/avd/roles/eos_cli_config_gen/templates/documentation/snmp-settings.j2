@@ -29,16 +29,14 @@
 ### SNMP EngineID Configuration
 
 | Type | EngineID (Hex) | IP | Port |
-| ---- | ---------- | -- | ---- |
+| ---- | -------------- | -- | ---- |
 {%         if snmp_server.engine_ids.local is arista.avd.defined %}
 | local | {{ snmp_server.engine_ids.local }} | - | - |
 {%         endif %}
-{%         for engine_id in snmp_server.engine_ids.remotes %}
+{%         for engine_id in snmp_server.engine_ids.remotes | arista.avd.default([]) %}
 {%             if engine_id.id is arista.avd.defined and engine_id.address is arista.avd.defined %}
-{%                 set row_id = engine_id.id | arista.avd.default('-') %}
-{%                 set row_address = engine_id.address | arista.avd.default('-') %}
-{%                 set row_port = engine_id.port | arista.avd.default('-') %}
-| remote | {{ row_id }} | {{ row_address }} | {{ row_port }} |
+{%                 set row_udp_port = engine_id.udp_port | arista.avd.default('-') %}
+| remote | {{ engine_id.id }} | {{ engine_id.address }} | {{ row_udp_port }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

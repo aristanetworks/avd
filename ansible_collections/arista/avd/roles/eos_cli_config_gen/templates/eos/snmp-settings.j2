@@ -1,26 +1,26 @@
 {# eos - SNMP Settings#}
 {% if snmp_server is arista.avd.defined %}
 !
-{%     if snmp_server.engine_ids is arista.avd.defined %}
-{%         if snmp_server.engine_ids.local is arista.avd.defined %}
+{%     if snmp_server.engine_ids.local is arista.avd.defined %}
 snmp-server engineID local {{ snmp_server.engine_ids.local }}
-{%         endif %}
-{%         for engine_id in snmp_server.engine_ids.remotes %}
-{%             if engine_id.id is arista.avd.defined and engine_id.address is arista.avd.defined %}
-{%                 set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.address %}
-{%                 if engine_id.port is arista.avd.defined %}
-{%                     set remote_engine_ids_cli =  remote_engine_ids_cli ~ " udp-port " ~  engine_id.port %}
-{%                 endif %}
-{%                 set remote_engine_ids_cli = remote_engine_ids_cli ~ " " ~ engine_id.id %}
-{{ remote_engine_ids_cli }}
-{%             endif %}
-{%         endfor %}
 {%     endif %}
 {%     if snmp_server.contact is arista.avd.defined %}
 snmp-server contact {{ snmp_server.contact }}
 {%     endif %}
 {%     if snmp_server.location is arista.avd.defined %}
 snmp-server location {{ snmp_server.location }}
+{%     endif %}
+{%     if snmp_server.engine_ids.remotes is arista.avd.defined %}
+{%         for engine_id in snmp_server.engine_ids.remotes %}
+{%             if engine_id.id is arista.avd.defined and engine_id.address is arista.avd.defined %}
+{%                 set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.address %}
+{%                 if engine_id.udp_port is arista.avd.defined %}
+{%                     set remote_engine_ids_cli =  remote_engine_ids_cli ~ " udp-port " ~  engine_id.udp_port %}
+{%                 endif %}
+{%                 set remote_engine_ids_cli = remote_engine_ids_cli ~ " " ~ engine_id.id %}
+{{ remote_engine_ids_cli }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 {%         for acl in snmp_server.ipv4_acls %}

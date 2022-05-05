@@ -9,7 +9,7 @@ snmp_server:
         address: 1.1.1.1
       - id: DEADBEEFCAFE123456
         address: 2.2.2.2
-        port: 1337
+        udp_port: 1337
   contact: DC1_OPS
   location: DC1
   communities:
