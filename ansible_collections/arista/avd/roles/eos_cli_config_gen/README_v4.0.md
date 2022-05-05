@@ -787,7 +787,7 @@ tcam_profile:
   system: < tcam profile name to activate >
   profiles:
     - name: < tcam_profile 01 >
-      file: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
+      config: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
