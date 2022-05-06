@@ -84,24 +84,21 @@
 
 ### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
 {%         for process_id in router_ospf.process_ids | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
-{%             if process_id.redistribute is arista.avd.defined %}
-{%                 set source_protocols = [] %}
-{%                 if process_id.redistribute.connected is defined %}
-{%                     do source_protocols.append(('connected', process_id.redistribute.connected.route_map | arista.avd.default('-'))) %}
+{%             for redistribute_route in process_id.redistribute | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%                 set source_protocol = redistribute_route.source_protocol %}
+{%                 if redistribute_route.include_leaked is arista.avd.defined(true) %}
+{%                     set include_leaked = "True" %}
+{%                 else %}
+{%                     set include_leaked = "False" %}
 {%                 endif %}
-{%                 if process_id.redistribute.static is defined %}
-{%                     do source_protocols.append(('static', process_id.redistribute.static.route_map | arista.avd.default('-'))) %}
+{%                 if redistribute_route.route_map is arista.avd.defined %}
+{%                     set route_map = redistribute_route.route_map %}
 {%                 endif %}
-{%                 if process_id.redistribute.bgp is defined %}
-{%                     do source_protocols.append(('bgp', process_id.redistribute.bgp.route_map | arista.avd.default('-'))) %}
-{%                 endif %}
-{%                 for source_protocol in source_protocols %}
-| {{ process_id.id }} | {{ source_protocol[0] }} | {{ source_protocol[1] }} |
-{%                 endfor %}
-{%             endif %}
+| {{ process_id.id }} | {{ source_protocol }} | {{ include_leaked }} | {{ route_map | arista.avd.default('-') }} |
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {# Max-Metric #}

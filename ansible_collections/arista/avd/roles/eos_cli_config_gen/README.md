@@ -3306,11 +3306,10 @@ router_ospf:
         - prefix: < summary_prefix_04 >
         - prefix: < summary_prefix_05 >
       redistribute:
-        static:
+        < route_type >:
+          include_leaked: < true | false >
           route_map: < route_map_name >
-        connected:
-          route_map: < route_map_name >
-        bgp:
+        < route_type >:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
       areas:

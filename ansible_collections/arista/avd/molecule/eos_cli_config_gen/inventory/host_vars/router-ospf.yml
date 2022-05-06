@@ -68,11 +68,15 @@ router_ospf:
         always: true
       redistribute:
         static:
+          include_leaked: true
           route_map: rm-ospf-static
         connected:
+          include_leaked: false
           route_map: rm-ospf-connected
         bgp:
           route_map: rm-ospf-bgp
+        isis:
+          include_leaked: true
       areas:
         '0.0.0.2':
           filter:

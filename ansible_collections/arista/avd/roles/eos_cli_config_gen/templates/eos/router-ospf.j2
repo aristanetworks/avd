@@ -115,27 +115,16 @@ router ospf {{ process_id.id }}
 {%         endif %}
    {{ default_information_originate_cli }}
 {%     endif %}
-{%     if process_id.redistribute.static is defined %}
-{%         set redistribute_static_cli = "redistribute static" %}
-{%         if process_id.redistribute.static.route_map is arista.avd.defined %}
-{%             set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~  process_id.redistribute.static.route_map %}
+{%     for redistribute_route in process_id.redistribute | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%         set redistribute_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%         if redistribute_route.include_leaked is arista.avd.defined(true) %}
+{%           set redistribute_cli = redistribute_cli + " include leaked" %}
 {%         endif %}
-   {{ redistribute_static_cli }}
-{%     endif %}
-{%     if process_id.redistribute.connected is defined %}
-{%         set redistribute_connected_cli = "redistribute connected" %}
-{%         if process_id.redistribute.connected.route_map is arista.avd.defined %}
-{%             set redistribute_connected_cli = redistribute_connected_cli ~ " route-map " ~ process_id.redistribute.connected.route_map %}
+{%         if redistribute_route.route_map is arista.avd.defined %}
+{%           set redistribute_cli = redistribute_cli + " route-map " ~ redistribute_route.route_map %}
 {%         endif %}
-   {{ redistribute_connected_cli }}
-{%     endif %}
-{%     if process_id.redistribute.bgp is defined %}
-{%         set redistribute_bgp_cli = "redistribute bgp" %}
-{%         if process_id.redistribute.bgp.route_map is arista.avd.defined %}
-{%             set redistribute_bgp_cli = redistribute_bgp_cli ~ " route-map " ~ process_id.redistribute.bgp.route_map %}
-{%         endif %}
-   {{ redistribute_bgp_cli }}
-{%     endif %}
+   {{ redistribute_cli }}
+{%     endfor %}
 {%     if process_id.auto_cost_reference_bandwidth is arista.avd.defined %}
    auto-cost reference-bandwidth {{ process_id.auto_cost_reference_bandwidth }}
 {%     endif %}

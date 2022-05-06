@@ -206,14 +206,15 @@ interface Vlan24
 
 ### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 100 | connected | - |
-| 100 | static | - |
-| 100 | bgp | - |
-| 200 | connected | rm-ospf-connected |
-| 200 | static | rm-ospf-static |
-| 200 | bgp | rm-ospf-bgp |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 100 | bgp | False | - |
+| 100 | connected | False | - |
+| 100 | static | False | - |
+| 200 | bgp | False | rm-ospf-bgp |
+| 200 | connected | False | rm-ospf-connected |
+| 200 | isis | True | - |
+| 200 | static | True | rm-ospf-static |
 
 ### Router OSPF Router Max-Metric
 
@@ -283,9 +284,9 @@ router ospf 100
    distribute-list route-map RM-OSPF-DIST-IN in
    max-lsa 12000
    default-information originate
-   redistribute static
-   redistribute connected
    redistribute bgp
+   redistribute connected
+   redistribute static
    auto-cost reference-bandwidth 100
    maximum-paths 10
    mpls ldp sync default
@@ -312,9 +313,10 @@ router ospf 200 vrf ospf_zone
    max-lsa 5
    timers lsa rx min interval 100
    default-information originate always
-   redistribute static route-map rm-ospf-static
-   redistribute connected route-map rm-ospf-connected
    redistribute bgp route-map rm-ospf-bgp
+   redistribute connected route-map rm-ospf-connected
+   redistribute isis include leaked
+   redistribute static include leaked route-map rm-ospf-static
 !
 router ospf 300
    max-metric router-lsa
