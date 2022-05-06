@@ -672,7 +672,6 @@ interface Ethernet45
 | Ethernet31 | - | force-unauthorized | - | - | - | - | - |
 | Ethernet32 | - | auto | - | True | - | - | - |
 | Ethernet33 | authenticator | - | - | - | - | - | - |
-         
 | Ethernet34 | - | - | - | - | allow vlan 800 | - | - |
 | Ethernet35 | - | - | - | - | drop | - | - |
 | Ethernet36 | - | - | - | - | - | single-host | - |
@@ -684,7 +683,6 @@ interface Ethernet45
 | Ethernet42 | - | - | - | - | - | - | True |
 | Ethernet43 | - | - | - | - | - | - | - |
 | Ethernet44 | - | - | - | - | - | - | - |
-         
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True |
 
 # ACL
