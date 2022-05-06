@@ -519,7 +519,7 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 800
-      host_mode: 
+      host_mode:
         mode: multi-host
         multi_host_authenticated: true
       mac_based_authentication: 
