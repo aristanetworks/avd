@@ -522,7 +522,7 @@ ethernet_interfaces:
       host_mode:
         mode: multi-host
         multi_host_authenticated: true
-      mac_based_authentication: 
+      mac_based_authentication:
         enabled: true
       timeout:
         idle_host: 10
