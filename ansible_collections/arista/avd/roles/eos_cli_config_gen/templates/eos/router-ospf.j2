@@ -121,7 +121,7 @@ router ospf {{ process_id.id }}
 {%             set redistribute_cli = redistribute_cli ~ " include leaked" %}
 {%         endif %}
 {%         if redistribute_route.route_map is arista.avd.defined %}
-{%             set redistribute_cli = redistribute_cli + " route-map " ~ redistribute_route.route_map %}
+{%             set redistribute_cli = redistribute_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%         endif %}
    {{ redistribute_cli }}
 {%     endfor %}
