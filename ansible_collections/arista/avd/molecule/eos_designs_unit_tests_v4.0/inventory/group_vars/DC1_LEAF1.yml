@@ -1,0 +1,7 @@
+---
+overlay_rd_type:
+#   # admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+  admin_subfield: 1.1.1.1
+
+overlay_rt_type:
+  admin_subfield: 1234
