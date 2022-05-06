@@ -605,9 +605,9 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 14 | bgp | - |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 14 | bgp | False | - |
 
 ### OSPF Interfaces
 
