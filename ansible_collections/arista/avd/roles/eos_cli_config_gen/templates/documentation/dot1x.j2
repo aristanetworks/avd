@@ -21,7 +21,7 @@
 {%         set auth_failure_allow_vlan = ethernet_interface.dot1x.authentication_failure.allow_vlan | arista.avd.default('-') %}
 {%         if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and 
               ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
-{%            set auth_failure_action = ethernet_interface.dot1x.authentication_failure.action ~" vlan " ~ethernet_interface.dot1x.authentication_failure.allow_vlan %}         
+{%             set auth_failure_action = ethernet_interface.dot1x.authentication_failure.action ~" vlan " ~ethernet_interface.dot1x.authentication_failure.allow_vlan %}         
 {%         endif %}
 {%         set state = ethernet_interface.dot1x.port_control | arista.avd.default('-') %}
 {%         set phone_state = ethernet_interface.dot1x.port_control_force_authorized_phone | arista.avd.default('-') %}
