@@ -1162,7 +1162,7 @@ ethernet_interfaces:
       host_mode:
         mode: < "multi-host" | "single-host" >
         multi_host_authenticated: < true | false >
-      mac_based_authentication: 
+      mac_based_authentication:
         enabled: < true | false >
         always: < true | false >
         host_mode_common: < true | false >
