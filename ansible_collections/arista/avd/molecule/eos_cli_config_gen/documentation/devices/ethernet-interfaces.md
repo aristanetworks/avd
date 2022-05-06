@@ -101,6 +101,16 @@ interface Management1
 | Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
 | Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
 | Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
+| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - |
+| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - |
+| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - |
+| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - |
+| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - |
+| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - |
+| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - |
+| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - |
+| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
+| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -539,6 +549,71 @@ interface Ethernet35
    description DOT1X Testing - authentication_failure drop
    switchport
    dot1x authentication failure action traffic drop
+!
+interface Ethernet36
+   description DOT1X Testing - host-mode single-host
+   switchport
+   dot1x host-mode single-host
+!
+interface Ethernet37
+   description DOT1X Testing - host-mode multi-host
+   switchport
+!
+interface Ethernet38
+   description DOT1X Testing - host-mode multi-host authenticated
+   switchport
+   dot1x host-mode multi-host authenticated     
+!
+interface Ethernet39
+   description DOT1X Testing - mac_based_authentication host-mode common true
+   switchport
+   dot1x mac based authentication host-mode common
+!
+interface Ethernet40
+   description DOT1X Testing - mac_based_authentication always
+   switchport
+   dot1x mac based authentication always
+!
+interface Ethernet41
+   description DOT1X Testing - mac_based_authentication always and host-mode common
+   switchport
+   dot1x mac based authentication host-mode common
+   dot1x mac based authentication always
+!
+interface Ethernet42
+   description DOT1X Testing - mac_based_authentication
+   switchport
+   dot1x mac based authentication
+!
+interface Ethernet43
+   description DOT1X Testing - timeout values
+   switchport
+   dot1x timeout quiet-period 10
+   dot1x timeout reauth-timeout-ignore always
+   dot1x timeout tx-period 6
+   dot1x timeout reauth-period server
+   dot1x timeout idle-host 15 seconds
+!
+interface Ethernet44
+   description DOT1X Testing - reauthorization_request_limit
+   switchport
+   dot1x reauthorization request limit 3
+!
+interface Ethernet45
+   description DOT1X Testing - all features
+   switchport
+   dot1x pae authenticator
+   dot1x authentication failure action traffic allow vlan 800
+   dot1x reauthentication
+   dot1x port-control auto
+   dot1x host-mode multi-host authenticated     
+   dot1x mac based authentication
+   dot1x timeout quiet-period 10
+   dot1x timeout reauth-timeout-ignore always
+   dot1x timeout tx-period 10
+   dot1x timeout reauth-period server
+   dot1x timeout idle-host 10 seconds
+   dot1x reauthorization request limit 2
 ```
 
 # Routing
@@ -590,15 +665,25 @@ interface Ethernet35
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Failure VLAN |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | ------------ |
-| Ethernet29 | - | auto | True | - | - | - |
-| Ethernet30 | - | force-authorized | False | - | - | - |
-| Ethernet31 | - | force-unauthorized | - | - | - | - |
-| Ethernet32 | - | auto | - | True | - | - |
-| Ethernet33 | authenticator | - | - | - | - | - |
-| Ethernet34 | - | - | - | - | allow | 800 |
-| Ethernet35 | - | - | - | - | drop | - |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- |
+| Ethernet29 | - | auto | True | - | - |
+| Ethernet30 | - | force-authorized | False | - | - |
+| Ethernet31 | - | force-unauthorized | - | - | - |
+| Ethernet32 | - | auto | - | True | - |
+| Ethernet33 | authenticator | - | - | - | - |
+| Ethernet34 | - | - | - | - | allow vlan 800 |              
+| Ethernet35 | - | - | - | - | drop |
+| Ethernet36 | - | - | - | - | - |
+| Ethernet37 | - | - | - | - | - |
+| Ethernet38 | - | - | - | - | - |
+| Ethernet39 | - | - | - | - | - |
+| Ethernet40 | - | - | - | - | - |
+| Ethernet41 | - | - | - | - | - |
+| Ethernet42 | - | - | - | - | - |
+| Ethernet43 | - | - | - | - | - |
+| Ethernet44 | - | - | - | - | - |
+| Ethernet45 | authenticator | auto | - | True | allow vlan 800 |              
 
 # ACL
 

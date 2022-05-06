@@ -446,3 +446,88 @@ ethernet_interfaces:
     dot1x:
       authentication_failure:
         action: drop
+
+  Ethernet36:
+    description: DOT1X Testing - host-mode single-host
+    dot1x:
+      host_mode:
+        mode: single-host
+
+  Ethernet37:
+    description: DOT1X Testing - host-mode multi-host
+    dot1x:
+      host_mode:
+        mode: multi-host
+
+  Ethernet38:
+    description: DOT1X Testing - host-mode multi-host authenticated
+    dot1x:
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+
+  Ethernet39:
+    description: DOT1X Testing - mac_based_authentication host-mode common true
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+        host_mode_common: true
+
+  Ethernet40:
+    description: DOT1X Testing - mac_based_authentication always
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+        always: true
+
+  Ethernet41:
+    description: DOT1X Testing - mac_based_authentication always and host-mode common
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+        always: true
+        host_mode_common: true
+
+  Ethernet42:
+    description: DOT1X Testing - mac_based_authentication
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+
+  Ethernet43:
+    description: DOT1X Testing - timeout values
+    dot1x:
+      timeout:
+        idle_host: 15
+        quiet_period: 10
+        reauth_period: server
+        reauth_timeout_ignore: true
+        tx_period: 6
+
+  Ethernet44:
+    description: DOT1X Testing - reauthorization_request_limit
+    dot1x:
+      reauthorization_request_limit: 3
+
+  Ethernet45:
+    description: DOT1X Testing - all features
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+      host_mode: 
+        mode: multi-host
+        multi_host_authenticated: true
+      mac_based_authentication: 
+        enabled: true
+      timeout:
+        idle_host: 10
+        quiet_period: 10
+        reauth_period: server
+        reauth_timeout_ignore: true
+        tx_period: 10
+      reauthorization_request_limit: 2
