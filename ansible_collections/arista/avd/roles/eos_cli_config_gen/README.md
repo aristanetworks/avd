@@ -1159,7 +1159,7 @@ ethernet_interfaces:
       authentication_failure:
         action: < "allow" | "drop" >
         allow_vlan: < 1-4094 >
-      host_mode: 
+      host_mode:
         mode: < "multi-host" | "single-host" >
         multi_host_authenticated: < true | false >
       mac_based_authentication: 
