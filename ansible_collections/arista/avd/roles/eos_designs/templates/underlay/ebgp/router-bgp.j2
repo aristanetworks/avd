@@ -17,6 +17,12 @@ router_bgp:
         next_hop:
           address_family_ipv6_originate: true
 {% endif %}
+{% if underlay_ipv6 is arista.avd.defined(true) %}
+  address_family_ipv6:
+    peer_groups:
+      {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
+        activate: true
+{% endif %}
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
