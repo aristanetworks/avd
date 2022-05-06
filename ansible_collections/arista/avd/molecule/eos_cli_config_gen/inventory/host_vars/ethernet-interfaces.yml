@@ -432,7 +432,7 @@ ethernet_interfaces:
     description: DOT1X Testing - pae mode authenticator
     dot1x:
       pae:
-        mode: "authenticator"
+        mode: authenticator
 
   Ethernet34:
     description: DOT1X Testing - authentication_failure allow
