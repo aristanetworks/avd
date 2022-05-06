@@ -562,7 +562,7 @@ interface Ethernet37
 interface Ethernet38
    description DOT1X Testing - host-mode multi-host authenticated
    switchport
-   dot1x host-mode multi-host authenticated     
+   dot1x host-mode multi-host authenticated
 !
 interface Ethernet39
    description DOT1X Testing - mac_based_authentication host-mode common true
@@ -606,7 +606,7 @@ interface Ethernet45
    dot1x authentication failure action traffic allow vlan 800
    dot1x reauthentication
    dot1x port-control auto
-   dot1x host-mode multi-host authenticated     
+   dot1x host-mode multi-host authenticated
    dot1x mac based authentication
    dot1x timeout quiet-period 10
    dot1x timeout reauth-timeout-ignore always
