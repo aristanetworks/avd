@@ -62,17 +62,17 @@
 {%                     endif %}
 {%                     for bgp_peer in vrf.bgp_peers %}
 {%                         if inventory_hostname in bgp_peer.nodes | arista.avd.default([]) %}
-{%                             if bgp_peer.name | ansible.netcommon.ipv4 %}
-{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer.name) %}
+{%                             if bgp_peer.ip_address | ansible.netcommon.ipv4 %}
+{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer.ip_address) %}
 {%                             endif %}
-{%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
-{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.name) %}
+{%                             if bgp_peer.ip_address | ansible.netcommon.ipv6 %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.ip_address) %}
 {%                             endif %}
 {%                             if bgp_peer.set_ipv4_next_hop is arista.avd.defined or bgp_peer.set_ipv6_next_hop is arista.avd.defined %}
-{%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.name ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                 if bgp_peer.default_originate is arista.avd.defined %}
 {%                                     if bgp_peer.default_originate.route_map is not arista.avd.defined %}
-{%                                         do bgp_peer.default_originate.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.name ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                         do bgp_peer.default_originate.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                     endif %}
 {%                                 endif %}
 {%                                 if bgp_peer.set_ipv4_next_hop is arista.avd.defined %}
@@ -83,8 +83,8 @@
 {%                                 endif %}
 {%                             endif %}
 {%                             do bgp_peer.pop('nodes') %}
-        {{ bgp_peer.name }}:
-{%                             do bgp_peer.pop('name') %}
+        {{ bgp_peer.ip_address }}:
+{%                             do bgp_peer.pop('ip_address') %}
           {{ bgp_peer }}
 {%                         endif %}
 {%                     endfor %}

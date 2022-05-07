@@ -786,7 +786,8 @@ hardware_counters:
 tcam_profile:
   system: < tcam profile name to activate >
   profiles:
-    < tcam_profile 01 >: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
+    - name: < tcam_profile 01 >
+      config: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
@@ -1139,7 +1140,7 @@ loopback_interfaces:
 
 ```yaml
 port_channel_interfaces:
-  < Port-Channel_interface_1 >:
+  - name: < Port-Channel_interface_1 >
     description: < description >
     logging:
       event:
@@ -1231,7 +1232,7 @@ port_channel_interfaces:
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
-  < Port-Channel_interface_2 >:
+  - name: < Port-Channel_interface_2 >
     description: < description >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
@@ -1251,7 +1252,7 @@ port_channel_interfaces:
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
-  < Port-Channel_interface_3 >:
+  - name: < Port-Channel_interface_3 >
     description: < description >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q | l2dot1q >
@@ -1273,7 +1274,7 @@ port_channel_interfaces:
       role: < master | dynamic >
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
-  < Port-Channel_interface_4 >:
+  - name: < Port-Channel_interface_4 >
     description: < description >
     mtu: < mtu >
     type: < routed | switched | l3dot1q | l2dot1q >
@@ -1284,11 +1285,11 @@ port_channel_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -1305,7 +1306,7 @@ port_channel_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
 ```
@@ -1314,7 +1315,7 @@ port_channel_interfaces:
 
 ```yaml
 vlan_interfaces:
-  < Vlan_id_1 >:
+  - name: < Vlan_id_1 >
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
@@ -1336,10 +1337,10 @@ vlan_interfaces:
       - < IPv4_address/Mask >
     ip_igmp: < true | false >
     ip_helpers:
-      < ip_helper_address_1 >:
+      - ip_helper: < ip_helper_address_1 >
         source_interface: < source_interface_name >
         vrf: < vrf_name >
-      < ip_helper_address_2 >:
+      - ip_helper: < ip_helper_address_2 >
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
@@ -1348,11 +1349,11 @@ vlan_interfaces:
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
-      < IPv6_address_1/Mask >:
+      - ipv6_prefix: < IPv6_address_1/Mask >
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
-      < IPv6_address_2/Mask >:
+      - ipv6_prefix: < IPv6_address_2/Mask >
     access_group_in: < access_list_name >
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
@@ -1368,7 +1369,7 @@ vlan_interfaces:
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
-      < id >:
+      - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
     pim:
@@ -1402,7 +1403,7 @@ vlan_interfaces:
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
-< Vlan_id_2 >:
+  - name: < Vlan_id_2 >
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```
@@ -2522,7 +2523,7 @@ router_bgp:
     bestpath:
       d_path: < true | false >
   peer_groups:
-    < peer_group_name_1>:
+    - name: < peer_group_name_1>
       type: < ipv4 | evpn >
       remote_as: < bgp_as >
       local_as: < bgp_as >
@@ -2551,14 +2552,14 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
-    < peer_group_name_2 >:
+    - name: < peer_group_name_2 >
       type: < ipv4 | evpn >
       bgp_listen_range_prefix: < IP prefix range >
       peer_filter: < peer_filter >
       password: "< encrypted_password >"
       maximum_routes: < integer >
   neighbors:
-    < IPv4_address_1 >:
+    - ip_address: < IPv4_address_1 >
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
       local_as: < bgp_as >
@@ -2581,34 +2582,34 @@ router_bgp:
       allowas_in:
         enabled: < true | false >
         times: < 1-10 >
-    < IPv4_address_2 >:
+    - ip_address: < IPv4_address_2 >
       remote_as: < bgp_as >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
-    < IPv6_address_1 >:
+    - ip_address: < IPv6_address_1 >
       remote_as: < bgp_as >
   neighbor_interfaces:
-    < interface >:
+    - name: < interface >
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
       description: "< description as string >"
   aggregate_addresses:
-    < aggregate_address_1/mask >:
+    - prefix: < aggregate_address_1/mask >
       advertise_only: < true | false >
-    < aggregate_address_2/mask >:
-    < aggregate_address_3/mask >:
+    - prefix: < aggregate_address_2/mask >
+    - prefix: < aggregate_address_3/mask >
       as_set: < true | false >
       summary_only: < true | false >
       attribute_map: < route_map_name >
       match_map: < route_map_name >
       advertise_only: < true | false >
   redistribute_routes:
-    < route_type >:
+    - source_protocol: < route_type >
       route_map: < route_map_name >
-    < route_type >:
+    - source_protocol: < route_type >
       route_map: < route_map_name >
   vlan_aware_bundles:
-    < vlan_aware_bundle_name_1 >:
+    - name: < vlan_aware_bundle_name_1 >
       rd: "< route distinguisher >"
       rd_evpn_domain:
         domain: < all | remote >
@@ -2636,7 +2637,7 @@ router_bgp:
       no_redistribute_routes:
         - < host-route >
       vlan: < vlan_range >
-    < vlan_aware_bundle_name_2 >:
+    - name: < vlan_aware_bundle_name_2 >
       rd: "< route distinguisher >"
       route_targets:
         both:
@@ -2658,7 +2659,7 @@ router_bgp:
         - < learned >
       vlan: < vlan_range >
   vlans:
-    < vlan_id_1>:
+    - id: < vlan_id_1>
       rd: "< route distinguisher >"
       rd_evpn_domain:
         domain: < all | remote >
@@ -2686,7 +2687,7 @@ router_bgp:
         - < learned >
       no_redistribute_routes:
         - < host-route >
-    < vlan_id_2 >:
+    - id: < vlan_id_2 >
       rd: "< route distinguisher >"
       route_targets:
         import:
@@ -2719,7 +2720,7 @@ router_bgp:
         enable: < true | false >
         inter_domain: < true | false >
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
@@ -2732,21 +2733,21 @@ router_bgp:
       import_match_failure_action: < 'discard' >
   address_family_rtc:
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
         default_route_target:
           only: < true | false >
           encoding_origin_as_omit:
   address_family_ipv4:
     networks:
-      < prefix_ipv4 >:
+      - prefix: < prefix_ipv4 >
         route_map: < route_map_name >
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         activate: < true | false >
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
@@ -2756,101 +2757,104 @@ router_bgp:
         next_hop:
           address_family_ipv6_originate: < true | false >
     neighbors:
-      < neighbor_ip_address>:
+      - ip_address: < neighbor_ip_address>
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         activate: < true | false >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
-      < neighbor_ip_address>:
+      - ip_address: < neighbor_ip_address>
         activate: < true | false >
         default_originate:
           always: < true | false >
           route_map: < route_map_name >
   address_family_ipv4_multicast:
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         activate: < true | false >
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
     neighbors:
-      < neighbor_ip_address >:
+      - ip_address: < neighbor_ip_address >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         activate: < true | false >
     redistribute_routes:
-      < route_type >:
+      - source_protocol: < route_type >
         route_map: < route_map_name >
   address_family_ipv6:
     networks:
-      < prefix_ipv6 >:
+      - prefix: < prefix_ipv6 >
         route_map: < route_map_name >
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: true
     neighbors:
-      < neighbor_ip_address >:
+      - ip_address: < neighbor_ip_address >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
         activate: < true | false >
     redistribute_routes:
-      < route_type >:
+      - source_protocol: < route_type >
         route_map: < route_map_name >
-      < route_type >:
+      - source_protocol: < route_type >
         route_map: < route_map_name >
   address_family_vpn_ipv4:
     domain_identifier: < string >
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
     neighbors:
-      < neighbor_ip_address >:
+      - ip_address: < neighbor_ip_address >
         activate: < true | false >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
   address_family_vpn_ipv6:
     domain_identifier: < string >
     peer_groups:
-      < peer_group_name >:
+      - name: < peer_group_name >
         activate: < true | false >
     neighbors:
-      < neighbor_ip_address >:
+      - name: < neighbor_ip_address >
         activate: < true | false >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
   vrfs:
-    < vrf_name_1 >:
+    - name: < vrf_name_1 >
       rd: "< route distinguisher >"
       evpn_multicast: < true | false >
       route_targets:
         import:
-          < address_family >:
-            - "< route_target >"
-            - "< route_target >"
-          < address_family >:
-            - "< route_target >"
-            - "< route_target >"
+          - address_family: < address_family >
+            route_targets:
+              - "< route_target >"
+              - "< route_target >"
+          - address_family: < address_family >
+            route_targets:
+              - "< route_target >"
+              - "< route_target >"
         export:
-          < address_family >:
-            - "< route_target >"
-            - "< route_target >"
+          - address_family: < address_family >
+            route_targets:
+              - "< route_target >"
+              - "< route_target >"
       router_id: < IPv4_address >
       timers: < keepalive_hold_timer_values >
       networks:
-        < prefix_ipv4 >:
+        - prefix: < prefix_ipv4 >
           route_map: < route_map_name >
       neighbors:
-        < neighbor_ip_address >:
+        - ip_address: < neighbor_ip_address >
           remote_as: < asn >
           peer_group: < peer_group_name >
           password: "< encrypted_password >"
@@ -2876,7 +2880,7 @@ router_bgp:
           route_map_in: < route-map name >
           prefix_list_in: < prefix_list_name >
           prefix_list_out: < prefix_list_name >
-        < neighbor_ip_address >:
+        - ip_address: < neighbor_ip_address >
           remote_as: < asn >
           description: < description >
           next_hop_self: < true | false >
@@ -2884,49 +2888,52 @@ router_bgp:
           send_community: < standard | extended | large | all >
           shutdown: < true | false >
       redistribute_routes:
-        < route_type >:
+        - source_protocol: < route_type >
           route_map: < route_map_name >
-        < route_type >:
+        - source_protocol: < route_type >
           route_map: < route_map_name >
       aggregate_addresses:
-        < aggregate_address_1/mask >:
+        - aggregate_addres: < aggregate_address_1/mask >
           advertise_only: < true | false >
-        < aggregate_address_2/mask >:
-        < aggregate_address_3/mask >:
+        - aggregate_addres: < aggregate_address_2/mask >
+        - aggregate_addres: < aggregate_address_3/mask >
           as_set: < true | false >
           summary_only: < true | false >
           attribute_map: < route_map_name >
           match_map: < route_map_name >
           advertise_only: < true | false >
       address_families:
-        < address_family >:
+        - address_family: < address_family >
           neighbors:
-            < neighbor_ip_address >:
+            - ip_address: < neighbor_ip_address >
               activate: < true | false >
           networks:
-            < prefix_address >:
+            - prefix: < prefix_address >
               route_map: < route_map_name >
       # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
       eos_cli: |
         < multiline eos cli >
-    < vrf_name_2 >:
+    - name: < vrf_name_2 >
       rd: "<route distinguisher >"
       route_targets:
         import:
-          < address_family >:
-            - "< route_target >"
-            - "< route_target >"
-          < address_family >:
-            - "< route_target >"
-            - "< route_target >"
+          - address_family: < address_family >
+            route_targets:
+              - "< route_target >"
+              - "< route_target >"
+          - address_family: < address_family >
+            route_targets:
+              - "< route_target >"
+              - "< route_target >"
         export:
-          < address_family >:
-            - "< route_target >"
-            - "< route_target >"
+          - address_family: < address_family >
+            route_targets:
+              - "< route_target >"
+              - "< route_target >"
       redistribute_routes:
-        < route_type >:
+        - source_protocol: < route_type >
           route_map: < route_map_name >
-        < route_type >:
+        - source_protocol: < route_type >
           route_map: < route_map_name >
 ```
 

@@ -196,7 +196,9 @@ defaults <- node_group <- node_group.node <- node
     # Uplink switches (list). | Required.
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
-    # Number of interfaces towards uplink switches | Optional
+    # Maximum number of uplink switches. | Optional
+    # Changing this value may change IP Addressing on uplinks.
+    # Can be used to reserve IP space for future expansions.
     max_uplink_switches: < integer >
 
     # Number of parallel links towards uplink switches | Optional
@@ -219,6 +221,9 @@ defaults <- node_group <- node_group.node <- node
       nodes:
         # Uplink switches interfaces (list), interface located on uplink switch. | Required.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+        # short_esi only valid for l2leaf devices using port-channel uplink
+        # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+        short_esi: < 0000:0000:0000 | auto >
 
   # When nodes are not in node_group
   nodes:

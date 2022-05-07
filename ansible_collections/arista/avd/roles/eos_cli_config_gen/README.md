@@ -87,6 +87,7 @@
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
+      - [Management CVX](#management-cvx)
       - [Management Defaults](#management-defaults)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
@@ -1850,6 +1851,7 @@ management_api_gnmi:
   transport:
     grpc:
       - name: < transport_name >
+        ssl_profile: < SSL Profile Name >
         # vrf is optional
         vrf: < vrf_name >
         # Per the GNMI specification, the default timestamp field of a notification message is set to be
@@ -2355,6 +2357,12 @@ sflow:
 
 ```yaml
 snmp_server:
+  engine_ids:
+    local: < engine_id_in_hex >
+    remotes:
+      - id: < engine_id_in_hex >
+        address: <  hostname_or_ip_of_remote_engine >
+        udp_port: < udp_port >
   contact: < contact_name >
   location: < location >
   communities:
@@ -2407,11 +2415,18 @@ snmp_server:
   users:
     - name: < username >
       group: < group_name >
+      # remote_address and udp_port are used for remote users
+      remote_address: < hostname_or_ip_of_remote_engine >
+      # udp_port will not be used if no remote_address is configured
+      udp_port: < udp_port >
       version: < v1 | v2c | v3 >
+      # For a local user (i.e. no remote_ip), use the local engine_id
+      # For a remote user, use the remote engine_id
+      localized: < engine_id_in_hex >
       auth: < hash_algorithm >
-      auth_passphrase: < encrypted_auth_passphrase >
+      auth_passphrase: < hashed_auth_passphrase if localized is used else cleartext auth_passphrase >
       priv: < encryption_algorithm >
-      priv_passphrase: < encrypted_priv_passphrase >
+      priv_passphrase: < hashed_priv_passphrase if localized is used else cleartext priv_passphrase >
     - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >
@@ -2783,6 +2798,14 @@ router_bgp:
       local_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
+      # Remove private AS numbers in outbound AS path
+      remove_private_as:
+        enabled: < true | false >
+        all: < true | false >
+        replace_as: < true | false >
+      remove_private_as_ingress:
+        enabled: < true | false >
+        replace_as: < true | false >
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
@@ -2823,6 +2846,14 @@ router_bgp:
       description: "< description as string >"
       ebgp_multihop: < integer >
       shutdown: < true | false >
+      # Remove private AS numbers in outbound AS path
+      remove_private_as:
+        enabled: < true | false >
+        all: < true | false >
+        replace_as: < true | false >
+      remove_private_as_ingress:
+        enabled: < true | false >
+        replace_as: < true | false >
       update_source: < interface >
       bfd: < true | false >
       weight: < weight_value >
@@ -3120,6 +3151,14 @@ router_bgp:
           remote_as: < asn >
           peer_group: < peer_group_name >
           password: "< encrypted_password >"
+          # Remove private AS numbers in outbound AS path
+          remove_private_as:
+            enabled: < true | false >
+            all: < true | false >
+            replace_as: < true | false >
+          remove_private_as_ingress:
+            enabled: < true | false >
+            replace_as: < true | false >
           weight: < weight_value >
           local_as: < asn >
           description: < description >

@@ -220,9 +220,11 @@ port_profiles:
 
           # Port-Channel L2 Subinterfaces
           # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+          # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+          # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
           subinterfaces:
           - number: < subinterface number >
-            short_esi: < 0000:0000:0000 > Required for multihomed port-channels with subinterfaces
+            short_esi: < 0000:0000:0000 | auto > Required for multihomed port-channels with subinterfaces
             vlan_id: < VLAN ID to bridge > | Optional - default is subinterface number
             # Flexible encapsulation parameters
             encapsulation_vlan:
@@ -235,6 +237,8 @@ port_profiles:
           # Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
           structured_config: < dictionary >
 
+  # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+  # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
   < endpoint_2 >:
     rack: RackC
     adapters:
@@ -250,7 +254,7 @@ port_profiles:
         port_channel:
           description: < port_channel_description >
           mode: '< active | passive | on >'
-          short_esi: < 0000:0000:0000 >
+          short_esi: < 0000:0000:0000 | auto >
 ```
 
 ## Examples
@@ -387,6 +391,13 @@ Transformation from abstraction to network values is managed by a [filter_plugin
 - _EVPN ESI_: 000:000:0303:0202:0101
 - _LACP ID_: 0303.0202.0101
 - _Route Target_: 03:03:02:02:01:01
+
+In addition, setting the `short_esi` key to `auto` generates the short_esi automatically using a hash of the following data elements:
+
+- Port-Channel Interfaces: first two uplink switch hostnames, the ports on those switches, the corresponding endpoint ports and the channel-group ID.
+- Port-Channel Subinterface: first two uplink switch hostname, the ports on those switches, the corresponding endpoint ports, the channel-group ID and the subinterface number.
+
+It should be noted that arista.avd does not currently check for hash collisions when using `short_esi: auto` and while the risk of this happening is non-zero, it is small.
 
 Active/Active multihoming connections:
 
