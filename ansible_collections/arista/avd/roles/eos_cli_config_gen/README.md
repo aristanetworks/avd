@@ -2501,10 +2501,16 @@ tap_aggregation:
   protocol_lldp_trap: < true | false >
   # Allowed truncation_size values vary depending on the platform
   truncation_size: < size in bytes >
-  mac_timestamp: < replace source-mac | header format 48-bit | header format 64-bit >
-  # mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence
-  mac_fcs_append: < true | false >
-  mac_fcs_error: < correct | discar | pass-through >
+  mac:
+    # mac.timestamp.replace_source_mac and mac.timestamp.header.format are mutually exclsuive. If both are defined, replace_source_mac takes precedence
+    timestamp:
+      replace_source_mac: < true | false >
+      header:
+        format: < "48-bit" | "64-bit" >
+        eth_type: < integer >
+    # mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence
+    fcs_append: < true | false >
+    fcs_error: < "correct" | "discard" | "pass-through" >
 ```
 
 ### System Control-Plane

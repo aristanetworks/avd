@@ -23,13 +23,18 @@
 {%     if tap_aggregation.truncation_size is arista.avd.defined %}
 | Truncation Size | {{ tap_aggregation.truncation_size }} |
 {%     endif %}
-{%     if tap_aggregation.mac_timestamp is arista.avd.defined %}
-| Mac Timestamp | {{ tap_aggregation.mac_timestamp }} |
+{%     if tap_aggregation.mac.timestamp.replace_source_mac is arista.avd.defined(true) %}
+| Mac Timestamp | Replace Source-Mac |
+{%     elif tap_aggregation.mac.timestamp.header.format is arista.avd.defined %}
+| Mac Timestamp | Header Format {{ tap_aggregation.mac.timestamp.header.format }} |
 {%     endif %}
-{%     if tap_aggregation.mac_fcs_append is arista.avd.defined(true) %}
-| Mac FCS Append | {{ tap_aggregation.mac_fcs_append }} |
-{%     elif tap_aggregation.mac_fcs_error is arista.avd.defined %}
-| Mac FCS Error | {{ tap_aggregation.mac_fcs_error }} |
+{%     if tap_aggregation.mac.timestamp.header.eth_type is arista.avd.defined %}
+| Mac Timestamp | Header eth-type {{ tap_aggregation.mac.timestamp.header.eth_type }} |
+{%     endif %}
+{%     if tap_aggregation.mac.fcs_append is arista.avd.defined(true) %}
+| Mac FCS Append | {{ tap_aggregation.mac.fcs_append }} |
+{%     elif tap_aggregation.mac.fcs_error is arista.avd.defined %}
+| Mac FCS Error | {{ tap_aggregation.mac.fcs_error }} |
 {%     endif %}
 
 ### Tap Aggregation Configuration

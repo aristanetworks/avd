@@ -11,5 +11,11 @@ tap_aggregation:
   encapsulation_vn_tag_strip: true
   protocol_lldp_trap: true
   truncation_size: 169
-  mac_timestamp: replace source-mac
-  mac_fcs_error: pass-through
+  mac:
+    timestamp:
+      replace_source_mac: false
+      header:
+        format: 64-bit
+        eth_type: 5
+    fcs_append: false
+    fcs_error: pass-through

@@ -62,7 +62,8 @@ interface Management1
 | Encapsulation Vn Tag Strip | True |
 | Protocol LLDP Trap | True |
 | Truncation Size | 169 |
-| Mac Timestamp | replace source-mac |
+| Mac Timestamp | Header Format 64-bit |
+| Mac Timestamp | Header eth-type 5 |
 | Mac FCS Error | pass-through |
 
 ### Tap Aggregation Configuration
@@ -78,7 +79,8 @@ tap aggregation
    encapsulation vn-tag strip
    protocol lldp trap
    truncation size 169
-   mac timestamp replace source-mac
+   mac timestamp header format 64-bit
+   mac timestamp header eth-type 5
    mac fcs-error pass-through
 ```
 
