@@ -155,6 +155,14 @@ vlan_interfaces:
         no_autoconfig_flag: true
     ipv6_virtual_router_address: 1b11:3a00:22b0:6::1
 
+  Vlan25:
+    description: SVI Description
+    shutdown: false
+    ipv6_address: 1b11:3a00:22b0:16::16/64
+    ipv6_virtual_router_addresses:
+      - 1b11:3a00:22b0:16::15
+      - 1b11:3a00:22b0:17::15/64
+
   Vlan1002:
     description: SVI Description
     shutdown: false
