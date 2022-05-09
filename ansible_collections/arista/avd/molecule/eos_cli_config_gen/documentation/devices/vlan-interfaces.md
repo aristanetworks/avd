@@ -70,6 +70,7 @@ interface Management1
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan24 | SVI Description | default | - | false |
+| Vlan25 | SVI Description | default | - | false |
 | Vlan41 | SVI Description | default | - | false |
 | Vlan42 | SVI Description | default | - | false |
 | Vlan75 | SVI Description | default | - | false |
@@ -104,6 +105,7 @@ interface Management1
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
+| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
@@ -132,6 +134,7 @@ interface Management1
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:17::15/64 | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
@@ -163,6 +166,13 @@ interface Vlan24
    ipv6 nd prefix 1b11:3a00:22b0:6::/64 infinite infinite no-autoconfig
    ipv6 virtual-router address 1b11:3a00:22b0:6::1
    ip address virtual 10.10.24.1/24
+!
+interface Vlan25
+   description SVI Description
+   no shutdown
+   ipv6 address 1b11:3a00:22b0:16::16/64
+   ipv6 virtual-router address 1b11:3a00:22b0:16::15
+   ipv6 virtual-router address 1b11:3a00:22b0:17::15/64
 !
 interface Vlan41
    description SVI Description
