@@ -46,6 +46,8 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
+To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](./doc/custom-structured-configuration.md#variables-precedence)
+
 **Outputs:**
 
 - A structured EOS configuration file in YAML format. This provides the following benefits:
