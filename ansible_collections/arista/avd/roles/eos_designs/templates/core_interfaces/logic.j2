@@ -25,7 +25,7 @@
 {%         set node_index = nodes.index(inventory_hostname) %}
 {%         set peer_index = 1 - node_index %}
 {%         set ip_pool_name = p2p_link.ip_pool | arista.avd.default(
-                                  link_info.p2p_profile.ip_pool, none) %}
+                                  link_info.p2p_profile.ip_pool) %}
 {%         if ip_pool_name is arista.avd.defined and core_interfaces.p2p_links_ip_pools is arista.avd.defined %}
 {%             for pool in core_interfaces.p2p_links_ip_pools %}
 {%                 if pool.name is arista.avd.defined(ip_pool_name) %}
@@ -36,9 +36,9 @@
 {%             endfor %}
 {%         endif %}
 {%         set subnet = p2p_link.subnet | arista.avd.default(
-                            link_info.p2p_profile.subnet, none) %}
+                            link_info.p2p_profile.subnet) %}
 {%         set ip_list = p2p_link.ip | arista.avd.default(
-                            link_info.p2p_profile.ip, none) %}
+                            link_info.p2p_profile.ip) %}
 {%         if p2p_link.port_channel.nodes_child_interfaces is arista.avd.defined and inventory_hostname in p2p_link.port_channel.nodes_child_interfaces %}
 {%             set interfaces = [] %}
 {%             for node in nodes %}
@@ -65,7 +65,11 @@
 {%         endif %}
 {%         set p2p_interface.speed = p2p_link.speed | arista.avd.default(
                                      link_info.p2p_profile.speed) %}
-{%         set p2p_interface.ipv6_enable = p2p_link.ipv6_enable | arista.avd.default(link_info.p2p_profile.ipv6_enable) %}
+{%         if underlay_rfc5549 is arista.avd.defined(true) and p2p_link.include_in_underlay_protocol | arista.avd.default(link_info.p2p_profile.include_in_underlay_protocol, true) is arista.avd.defined(true) %}
+{%             set p2p_interface.ipv6_enable = true %}
+{%         else %}
+{%             set p2p_interface.ipv6_enable = p2p_link.ipv6_enable | arista.avd.default(link_info.p2p_profile.ipv6_enable) %}
+{%         endif %}
 {%         if ip_list is arista.avd.defined %}
 {%             set p2p_interface.ip_address = ip_list[node_index] %}
 {%             set p2p_interface.peer_ip = ip_list[peer_index] | ansible.netcommon.ipaddr("address") %}
