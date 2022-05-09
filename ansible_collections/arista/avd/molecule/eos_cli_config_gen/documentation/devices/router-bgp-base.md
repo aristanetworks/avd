@@ -102,6 +102,14 @@ interface Management1
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 
+### Router BGP Listen Ranges
+
+| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS |
+| ------ | ------------------------- | ---------- | ----------- | --------- |
+| 10.10.10.0/24 | - | my-peer-group1 | my-peer-filter | - |
+| 12.10.10.0/24 | True | my-peer-group3 | - | 65444 |
+| 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - |
+
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
@@ -143,6 +151,9 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    bgp bestpath d-path
+   bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
+   bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
+   bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
