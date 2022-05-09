@@ -281,6 +281,8 @@ vlan 350
 | Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet9 | P2P_LINK_TO_DC1-BL1B_Ethernet9 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet10 | P2P_LINK_TO_DC1-BL1B_Ethernet10 | routed | - | - | default | 1500 | false | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -309,6 +311,20 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet6
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet9
+   description P2P_LINK_TO_DC1-BL1B_Ethernet9
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet10
+   description P2P_LINK_TO_DC1-BL1B_Ethernet10
    no shutdown
    mtu 1500
    no switchport
@@ -595,6 +611,8 @@ router general
 | Ethernet2 | UNDERLAY_PEERS | 65001 | - |
 | Ethernet3 | UNDERLAY_PEERS | 65001 | - |
 | Ethernet4 | UNDERLAY_PEERS | 65001 | - |
+| Ethernet9 | UNDERLAY_PEERS | 65105 | - |
+| Ethernet10 | UNDERLAY_PEERS | 65105 | - |
 
 ### Router BGP EVPN Address Family
 
@@ -650,6 +668,8 @@ router bgp 65104
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Ethernet3 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65001
+   neighbor interface Ethernet9 peer-group UNDERLAY_PEERS remote-as 65105
+   neighbor interface Ethernet10 peer-group UNDERLAY_PEERS remote-as 65105
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
