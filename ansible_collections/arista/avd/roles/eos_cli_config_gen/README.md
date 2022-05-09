@@ -2356,6 +2356,12 @@ sflow:
 
 ```yaml
 snmp_server:
+  engine_ids:
+    local: < engine_id_in_hex >
+    remotes:
+      - id: < engine_id_in_hex >
+        address: <  hostname_or_ip_of_remote_engine >
+        udp_port: < udp_port >
   contact: < contact_name >
   location: < location >
   communities:
@@ -2408,11 +2414,18 @@ snmp_server:
   users:
     - name: < username >
       group: < group_name >
+      # remote_address and udp_port are used for remote users
+      remote_address: < hostname_or_ip_of_remote_engine >
+      # udp_port will not be used if no remote_address is configured
+      udp_port: < udp_port >
       version: < v1 | v2c | v3 >
+      # For a local user (i.e. no remote_ip), use the local engine_id
+      # For a remote user, use the remote engine_id
+      localized: < engine_id_in_hex >
       auth: < hash_algorithm >
-      auth_passphrase: < encrypted_auth_passphrase >
+      auth_passphrase: < hashed_auth_passphrase if localized is used else cleartext auth_passphrase >
       priv: < encryption_algorithm >
-      priv_passphrase: < encrypted_priv_passphrase >
+      priv_passphrase: < hashed_priv_passphrase if localized is used else cleartext priv_passphrase >
     - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >

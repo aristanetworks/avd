@@ -1,0 +1,141 @@
+# Fabric node type keys
+node_type_keys:
+  core_router:
+    type: core_router
+    default_evpn_role: none
+    mpls_lsr: true
+
+mgmt_gateway: 192.168.0.1
+
+overlay_routing_protocol: ibgp
+bgp_as: 65000
+
+# Update p2p mtu
+p2p_uplinks_mtu: 1600
+
+underlay_ipv6: true
+
+# ISIS params
+isis_ti_lfa:
+  enabled: true
+  protection: link
+  local_convergence_delay: 15000
+
+isis_default_is_type: level-2
+isis_default_circuit_type: level-2
+isis_default_metric: 50
+isis_advertise_passive_only: true
+
+# OSPF Params
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_process_id: 101
+underlay_ospf_max_lsa: 12000
+underlay_ospf_bfd_enable: true
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    node_sid_base: 200
+    isis_system_id_prefix: "0000.0001"
+    core_interface_speed: "forced 100gfull"
+  nodes:
+    core-1-isis-sr-ldp:
+      id: 1
+    core-2-ospf-ldp:
+      id: 2
+
+core_interfaces:
+  p2p_links_ip_pools:
+    - name: underlay_pool
+      ipv4_pool: 100.64.48.0/24
+    - name: some_other_pool
+      ipv4_pool: 100.123.123.0/24
+  p2p_links_profiles:
+    - name: isis_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+      isis_hello_padding: false
+      isis_metric: 60
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      ipv6_enable: true
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+
+    - name: ospf_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+      ip_pool: underlay_pool
+
+  p2p_links:
+
+    # Unnumbered link
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: isis_bb_profile
+      ip: ["unnumbered loopback0", "unnumbered loopback0"]
+
+    # Link w/o bb profile
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 2
+      interfaces: [ Ethernet2, Ethernet2 ]
+      ip_pool: some_other_pool
+      speed: 100full
+      mtu: 1601
+      isis_hello_padding: true
+      isis_circuit_type: level-1
+      isis_metric: 60
+      qos_profile: test_qos_profile
+
+    # Normal link with profile
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 3
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: isis_bb_profile
+
+    # Profile link with no mpls_ip
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 4
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: isis_bb_profile
+      mpls_ip: false
+
+    # Profile link with no mpls_ldp
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 5
+      interfaces: [ Ethernet5, Ethernet5 ]
+      profile: isis_bb_profile
+      mpls_ldp: false
+
+    # Profile link with overrides
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 6
+      interfaces: [ Ethernet6, Ethernet6 ]
+      profile: isis_bb_profile
+      ip: ["unnumbered loopback0", "unnumbered loopback0"]
+      speed: 100full
+      mtu: 1602
+      isis_hello_padding: true
+      isis_circuit_type: level-1-2
+      isis_metric: 70
+      qos_profile: test_qos_profile
+
+    # Different link profile
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 7
+      interfaces: [ Ethernet10, Ethernet10 ]
+      profile: ospf_bb_profile
+
+    # core Port-Channel
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 9
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
+          core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
+      profile: isis_bb_profile
