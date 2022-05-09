@@ -472,7 +472,7 @@ class EosDesignsFacts:
             Fabric Topology data model mgmt_interface
         """
         return default(
-            get(self._switch_data_combined,"mgmt_interface"),
+            get(self._switch_data_combined, "mgmt_interface"),
             self.platform_settings.get("management_interface"),
             get(self._hostvars, "mgmt_interface")
         )
@@ -1068,7 +1068,7 @@ class EosDesignsFacts:
                 if len(uplink_switches) > uplink_index and len(uplink_switch_interfaces) > uplink_index:
                     uplink_switch = uplink_switches[uplink_index]
                     if uplink_switch is not None and uplink_switch in inventory_group:
-                        uplink_switch_facts : EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                        uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
                         uplink = {}
                         uplink['interface'] = uplink_interface
                         uplink['peer'] = uplink_switch
@@ -1112,7 +1112,7 @@ class EosDesignsFacts:
                 if len(uplink_switches) > uplink_index and len(uplink_switch_interfaces) > uplink_index:
                     uplink_switch = uplink_switches[uplink_index]
                     if uplink_switch is not None and uplink_switch in inventory_group:
-                        uplink_switch_facts : EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                        uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
                         uplink = {}
                         uplink['interface'] = uplink_interface
                         uplink['peer'] = uplink_switch
@@ -1132,7 +1132,7 @@ class EosDesignsFacts:
                             uplink['peer_channel_description'] = self.group
 
                         if self.mlag_role == 'secondary':
-                            mlag_peer_switch_facts : EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
+                            mlag_peer_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
 
                             uplink['channel_group_id'] = ''.join(re.findall(r'\d', mlag_peer_switch_facts.uplink_interfaces[0]))
                             uplink['peer_channel_group_id'] = ''.join(re.findall(r'\d', mlag_peer_switch_facts.uplink_switch_interfaces[0]))

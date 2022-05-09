@@ -14,6 +14,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.module_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdMissingVariableError
 
+
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
@@ -37,7 +38,8 @@ class ActionModule(ActionBase):
         # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             raise AnsibleActionFail("Invalid/missing 'fabric_name' variable."
-            "All hosts in the play must have the same 'fabric_name' value which must point to an Ansible Group containing the hosts.")
+                                    "All hosts in the play must have the same 'fabric_name' value"
+                                    "which must point to an Ansible Group containing the hosts.")
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars['hostvars']
@@ -82,7 +84,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def create_avd_switch_facts_instances(self, fabric_hosts : list, hostvars : object, default_vars : dict):
+    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, default_vars: dict):
         '''
         Create "avd_switch_facts_instances" dictionary
 
@@ -127,7 +129,7 @@ class ActionModule(ActionBase):
             }
         return avd_switch_facts
 
-    def render_avd_switch_facts(self, avd_switch_facts_instances : dict):
+    def render_avd_switch_facts(self, avd_switch_facts_instances: dict):
         """
         Run the render method on each EosDesignsFacts object
 
