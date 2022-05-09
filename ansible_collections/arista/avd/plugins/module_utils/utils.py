@@ -14,7 +14,10 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 def get(dictionary, key, default=None, required=False, org_key=None):
     """
-    Get vlans list based on network_services_keys and filters defined in fabric_topology data model
+    Get a value from a dictionary or nested dictionaries.
+
+    Key supports dot-notation like "foo.bar" to do deeper lookups.
+    Returns the supplied default value or None if the key is not found and required is False.
 
     Parameters
     ----------
@@ -55,40 +58,32 @@ def get(dictionary, key, default=None, required=False, org_key=None):
             return value
 
 
-def default(value, *default_values):
+def default(*values):
     """
-    Return value or default_value if not None
+    Accepts any number of arguments. Return the first value which is not None
 
-    If Value is not None, the default values will be checked one by one.
+    Last resort is to return None.
 
     Parameters
     ----------
-    value : any
-        Primary value
-    default_values : list of any
-        Default values
+    *values : any
+        One or more values to test
 
     Returns
     -------
     any
-        Value or default value
+        First value which is not None
     """
 
-    if value is not None:
-        return value
-    else:
-        for default_value in default_values:
-            if default_value is not None:
-                return default_value
-
+    for value in values:
+        if value is not None:
+            return value
     return None
 
 
 def unique(in_list):
     """
     Return list of unique items from the in_list
-
-    If Value is not None, the default values will be checked one by one.
 
     Parameters
     ----------
@@ -117,7 +112,7 @@ def template_var(template_file, template_vars, template_lookup_module):
     template_vars : any
         Vars to pass to template_lookup_module
     template_lookup_module : func
-        Instance of Ansible 'template' lookup module used to render ip addresses with user-defined templates
+        Instance of Ansible 'template' lookup module
 
     Returns
     -------

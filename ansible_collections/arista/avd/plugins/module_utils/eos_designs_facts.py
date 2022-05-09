@@ -573,32 +573,38 @@ class EosDesignsFacts:
             network_services_keys = get(self._hostvars, "network_services_keys", default=[])
             for network_services_key in self._natural_sort(network_services_keys, "name"):
                 network_services_key_name = network_services_key.get("name")
-                if network_services_key_name is not None and get(self._hostvars, network_services_key_name) is not None:
-                    tenants = get(self._hostvars, network_services_key_name)
+                if network_services_key_name is None or get(self._hostvars, network_services_key_name) is None:
+                    # Invalid network_services_key.name. Skipping.
+                    continue
+
+                tenants = get(self._hostvars, network_services_key_name)
+                # Support legacy data model by converting nested dict to list of dict
+                tenants = self._convert_dicts(tenants, 'name')
+                for tenant in self._natural_sort(tenants, 'name'):
+                    if not set(self.filter_tenants).intersection([tenant['name'], 'all']):
+                        # Not matching tenant filters. Skipping this tenant.
+                        continue
+
+                    vrfs = tenant.get('vrfs', [])
                     # Support legacy data model by converting nested dict to list of dict
-                    tenants = self._convert_dicts(tenants, 'name')
-                    for tenant in self._natural_sort(tenants, 'name'):
-                        if set(self.filter_tenants).intersection([tenant['name'], 'all']):
-                            vrfs = tenant.get('vrfs', [])
-                            # Support legacy data model by converting nested dict to list of dict
-                            vrfs = self._convert_dicts(vrfs, 'name')
-                            for vrf in self._natural_sort(vrfs, 'name'):
-                                svis = vrf.get('svis', [])
-                                # Support legacy data model by converting nested dict to list of dict
-                                svis = self._convert_dicts(svis, 'id')
-                                for svi in self._natural_sort(svis, 'id'):
-                                    svi_tags = svi.get('tags', ['all'])
-                                    if "all" in match_tags or set(svi_tags).intersection(match_tags):
-                                        vlans.append(int(svi['id']))
+                    vrfs = self._convert_dicts(vrfs, 'name')
+                    for vrf in self._natural_sort(vrfs, 'name'):
+                        svis = vrf.get('svis', [])
+                        # Support legacy data model by converting nested dict to list of dict
+                        svis = self._convert_dicts(svis, 'id')
+                        for svi in self._natural_sort(svis, 'id'):
+                            svi_tags = svi.get('tags', ['all'])
+                            if "all" in match_tags or set(svi_tags).intersection(match_tags):
+                                vlans.append(int(svi['id']))
 
-                            l2vlans = tenant.get('l2vlans', [])
-                            # Support legacy data model by converting nested dict to list of dict
-                            l2vlans = self._convert_dicts(l2vlans, 'id')
+                    l2vlans = tenant.get('l2vlans', [])
+                    # Support legacy data model by converting nested dict to list of dict
+                    l2vlans = self._convert_dicts(l2vlans, 'id')
 
-                            for l2vlan in self._natural_sort(l2vlans, 'id'):
-                                l2vlan_tags = l2vlan.get('tags', ['all'])
-                                if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):
-                                    vlans.append(int(l2vlan['id']))
+                    for l2vlan in self._natural_sort(l2vlans, 'id'):
+                        l2vlan_tags = l2vlan.get('tags', ['all'])
+                        if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):
+                            vlans.append(int(l2vlan['id']))
             return vlans
         return []
 
@@ -896,13 +902,11 @@ class EosDesignsFacts:
 
     @cached_property
     def mlag(self):
-        if (
+        return (
             self.mlag_support is True
             and get(self._switch_data_combined, "mlag", default=True) is True
             and len(self._switch_data_node_group_nodes) == 2
-        ):
-            return True
-        return False
+        )
 
     @cached_property
     def mlag_ibgp_origin_incomplete(self):
@@ -1065,40 +1069,46 @@ class EosDesignsFacts:
             template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
             template_vars['switch_id'] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
-                if len(uplink_switches) > uplink_index and len(uplink_switch_interfaces) > uplink_index:
-                    uplink_switch = uplink_switches[uplink_index]
-                    if uplink_switch is not None and uplink_switch in inventory_group:
-                        uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
-                        uplink = {}
-                        uplink['interface'] = uplink_interface
-                        uplink['peer'] = uplink_switch
-                        uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
-                        uplink['peer_type'] = uplink_switch_facts.type
-                        uplink['peer_bgp_as'] = uplink_switch_facts.bgp_as
-                        uplink['type'] = 'underlay_p2p'
-                        if self.uplink_interface_speed is not None:
-                            uplink['speed'] = self.uplink_interface_speed
-                        if self.uplink_bfd is True:
-                            uplink['bfd'] = True
-                        if self.uplink_ptp is not None:
-                            uplink['ptp'] = self.uplink_ptp
-                        if self.uplink_macsec is not None:
-                            uplink['mac_security'] = self.uplink_macsec
-                        if get(self._hostvars, "underlay_rfc5549") is True:
-                            uplink['ipv6_enable'] = True
-                        else:
-                            template_vars['uplink_switch_index'] = uplink_index
-                            template_path = get(self.ip_addressing, "p2p_uplinks_ip", required=True)
-                            uplink['ip_address'] = template_var(template_path, template_vars, self._template_lookup_module)
-                            template_path = get(self.ip_addressing, "p2p_uplinks_peer_ip", required=True)
-                            uplink['peer_ip_address'] = template_var(template_path, template_vars, self._template_lookup_module)
+                if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
+                    # Invalid length of input variables. Skipping
+                    continue
 
-                        if self.link_tracking_groups is not None:
-                            uplink['link_tracking_groups'] = []
-                            for lt_group in self.link_tracking_groups:
-                                uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+                uplink_switch = uplink_switches[uplink_index]
+                if uplink_switch is None or uplink_switch not in inventory_group:
+                    # Invalid uplink_switch. Skipping.
+                    continue
 
-                        uplinks.append(uplink)
+                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                uplink = {}
+                uplink['interface'] = uplink_interface
+                uplink['peer'] = uplink_switch
+                uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
+                uplink['peer_type'] = uplink_switch_facts.type
+                uplink['peer_bgp_as'] = uplink_switch_facts.bgp_as
+                uplink['type'] = 'underlay_p2p'
+                if self.uplink_interface_speed is not None:
+                    uplink['speed'] = self.uplink_interface_speed
+                if self.uplink_bfd is True:
+                    uplink['bfd'] = True
+                if self.uplink_ptp is not None:
+                    uplink['ptp'] = self.uplink_ptp
+                if self.uplink_macsec is not None:
+                    uplink['mac_security'] = self.uplink_macsec
+                if get(self._hostvars, "underlay_rfc5549") is True:
+                    uplink['ipv6_enable'] = True
+                else:
+                    template_vars['uplink_switch_index'] = uplink_index
+                    template_path = get(self.ip_addressing, "p2p_uplinks_ip", required=True)
+                    uplink['ip_address'] = template_var(template_path, template_vars, self._template_lookup_module)
+                    template_path = get(self.ip_addressing, "p2p_uplinks_peer_ip", required=True)
+                    uplink['peer_ip_address'] = template_var(template_path, template_vars, self._template_lookup_module)
+
+                if self.link_tracking_groups is not None:
+                    uplink['link_tracking_groups'] = []
+                    for lt_group in self.link_tracking_groups:
+                        uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+
+                uplinks.append(uplink)
             return uplinks
 
         elif self.uplink_type == 'port-channel':
@@ -1109,56 +1119,62 @@ class EosDesignsFacts:
             inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
 
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
-                if len(uplink_switches) > uplink_index and len(uplink_switch_interfaces) > uplink_index:
-                    uplink_switch = uplink_switches[uplink_index]
-                    if uplink_switch is not None and uplink_switch in inventory_group:
-                        uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
-                        uplink = {}
-                        uplink['interface'] = uplink_interface
-                        uplink['peer'] = uplink_switch
-                        uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
-                        uplink['peer_type'] = uplink_switch_facts.type
-                        uplink['type'] = 'underlay_l2'
+                if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
+                    # Invalid length of input variables. Skipping
+                    continue
 
-                        if self.uplink_interface_speed is not None:
-                            uplink['speed'] = self.uplink_interface_speed
+                uplink_switch = uplink_switches[uplink_index]
+                if uplink_switch is None or uplink_switch not in inventory_group:
+                    # Invalid uplink_switch. Skipping.
+                    continue
 
-                        if uplink_switch_facts.mlag is True or self.short_esi is not None:
-                            # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
-                            uplink['channel_description'] = uplink_switch_facts.group
+                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                uplink = {}
+                uplink['interface'] = uplink_interface
+                uplink['peer'] = uplink_switch
+                uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
+                uplink['peer_type'] = uplink_switch_facts.type
+                uplink['type'] = 'underlay_l2'
 
-                        if self.mlag is True:
-                            # Override the peer's description on port-channel to be our group name if we are mlag pair #}
-                            uplink['peer_channel_description'] = self.group
+                if self.uplink_interface_speed is not None:
+                    uplink['speed'] = self.uplink_interface_speed
 
-                        if self.mlag_role == 'secondary':
-                            mlag_peer_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
+                if uplink_switch_facts.mlag is True or self.short_esi is not None:
+                    # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
+                    uplink['channel_description'] = uplink_switch_facts.group
 
-                            uplink['channel_group_id'] = ''.join(re.findall(r'\d', mlag_peer_switch_facts.uplink_interfaces[0]))
-                            uplink['peer_channel_group_id'] = ''.join(re.findall(r'\d', mlag_peer_switch_facts.uplink_switch_interfaces[0]))
-                        else:
-                            uplink['channel_group_id'] = ''.join(re.findall(r'\d', uplink_interfaces[0]))
-                            uplink['peer_channel_group_id'] = ''.join(re.findall(r'\d', uplink_switch_interfaces[0]))
+                if self.mlag is True:
+                    # Override the peer's description on port-channel to be our group name if we are mlag pair #}
+                    uplink['peer_channel_description'] = self.group
 
-                        # Remove vlans if upstream switch does not have them #}
-                        switch_vlans = self._vlans
-                        uplink_switch_vlans = uplink_switch_facts._vlans
-                        uplink_vlans = list(set(switch_vlans).intersection(uplink_switch_vlans))
+                if self.mlag_role == 'secondary':
+                    mlag_peer_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
 
-                        if self.inband_management_vlan is not None:
-                            uplink_vlans.append(int(self.inband_management_vlan))
+                    uplink['channel_group_id'] = ''.join(re.findall(r'\d', mlag_peer_switch_facts.uplink_interfaces[0]))
+                    uplink['peer_channel_group_id'] = ''.join(re.findall(r'\d', mlag_peer_switch_facts.uplink_switch_interfaces[0]))
+                else:
+                    uplink['channel_group_id'] = ''.join(re.findall(r'\d', uplink_interfaces[0]))
+                    uplink['peer_channel_group_id'] = ''.join(re.findall(r'\d', uplink_switch_interfaces[0]))
 
-                        uplink['vlans'] = self._list_compress(uplink_vlans)
+                # Remove vlans if upstream switch does not have them #}
+                switch_vlans = self._vlans
+                uplink_switch_vlans = uplink_switch_facts._vlans
+                uplink_vlans = list(set(switch_vlans).intersection(uplink_switch_vlans))
 
-                        if self.short_esi is not None:
-                            uplink['peer_short_esi'] = self.short_esi
+                if self.inband_management_vlan is not None:
+                    uplink_vlans.append(int(self.inband_management_vlan))
 
-                        if self.link_tracking_groups is not None:
-                            uplink['link_tracking_groups'] = []
-                            for lt_group in self.link_tracking_groups:
-                                uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+                uplink['vlans'] = self._list_compress(uplink_vlans)
 
-                        uplinks.append(uplink)
+                if self.short_esi is not None:
+                    uplink['peer_short_esi'] = self.short_esi
+
+                if self.link_tracking_groups is not None:
+                    uplink['link_tracking_groups'] = []
+                    for lt_group in self.link_tracking_groups:
+                        uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+
+                uplinks.append(uplink)
         return uplinks
 
     @cached_property

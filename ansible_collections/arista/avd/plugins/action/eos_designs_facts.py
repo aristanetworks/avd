@@ -60,16 +60,12 @@ class ActionModule(ActionBase):
                 host_evpn_route_servers = avd_switch_facts[host]['switch'].get('evpn_route_servers', [])
 
                 for peer in host_evpn_route_servers:
-                    if peer not in avd_overlay_peers:
-                        avd_overlay_peers[peer] = []
-                    avd_overlay_peers[peer].append(host)
+                    avd_overlay_peers.setdefault(peer, []).append(host)
 
                 host_topology_peers = avd_switch_facts[host]['switch'].get('uplink_peers', [])
 
                 for peer in host_topology_peers:
-                    if peer not in avd_topology_peers:
-                        avd_topology_peers[peer] = []
-                    avd_topology_peers[peer].append(host)
+                    avd_topology_peers.setdefault(peer, []).append(host)
 
             result['ansible_facts'] = {}
             if set_avd_switch_facts:
