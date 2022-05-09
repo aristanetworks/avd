@@ -1287,7 +1287,8 @@ class EosDesignsFacts:
     def mlag_peer_mgmt_ip(self):
         if self.mlag is True:
             peer_mgmt_ip = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mgmt_ip")
-            return str(ipaddress.ip_interface(peer_mgmt_ip).ip)
+            if peer_mgmt_ip is not None:
+                return str(ipaddress.ip_interface(peer_mgmt_ip).ip)
         return None
 
     @cached_property
