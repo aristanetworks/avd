@@ -68,6 +68,9 @@
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 {%         for vlan_interface in vlan_interfaces_ipv6 | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set varp_lists = vlan_interface.ipv6_virtual_router_addresses | arista.avd.default([]) %}
+{%         do varp_lists.append(vlan_interface.ipv6_virtual_router_address) %}
+{%         set row_varp = vlan_interface.ipv6_virtual_router_address | arista.avd.default('-') | join(", ") %}
 | {{ vlan_interface.name }} | {{ vlan_interface.vrf | arista.avd.default('default') }} | {{ vlan_interface.ipv6_address | arista.avd.default('-') }} | {{ vlan_interface.ipv6_address_virtual | arista.avd.default('-') }} | {{ vlan_interface.ipv6_virtual_router_address | arista.avd.default('-') }} | {{ vlan_interface.vrrp.ipv6 | arista.avd.default('-') }} | {{ vlan_interface.ipv6_nd_ra_disabled | arista.avd.default('-') | lower }} | {{ vlan_interface.ipv6_nd_managed_config_flag | arista.avd.default('-') | lower }} | {{ vlan_interface.ipv6_access_group_in | arista.avd.default('-') }} | {{ vlan_interface.ipv6_access_group_out | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
