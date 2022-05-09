@@ -28,6 +28,12 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  address_family_ipv6:
+    peer_groups:
+      MLAG_PEER:
+        activate: true
+      UNDERLAY_PEERS:
+        activate: true
   address_family_ipv4:
     peer_groups:
       MLAG_PEER:
@@ -618,6 +624,10 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+      30:
+        type: permit
+        match:
+        - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -640,6 +650,11 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
+ipv6_prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY-V6:
+    sequence_numbers:
+      10:
+        action: permit 2001:1::/64 eq 128
 router_bfd:
   multihop:
     interval: 1200

@@ -30,6 +30,7 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
+  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
 - [VRF Instances](#vrf-instances)
@@ -419,6 +420,9 @@ router bgp 65001
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
       neighbor UNDERLAY_PEERS activate
+   !
+   address-family ipv6
+      neighbor UNDERLAY_PEERS activate
 ```
 
 # BFD
@@ -461,6 +465,24 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
 ```
 
+## IPv6 Prefix-lists
+
+### IPv6 Prefix-lists Summary
+
+#### PL-LOOPBACKS-EVPN-OVERLAY-V6
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 2001:1::/64 eq 128 |
+
+### IPv6 Prefix-lists Device Configuration
+
+```eos
+!
+ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+   seq 10 permit 2001:1::/64 eq 128
+```
+
 ## Route-maps
 
 ### Route-maps Summary
@@ -470,6 +492,7 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+| 30 | permit | match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 |
 
 ### Route-maps Device Configuration
 
@@ -477,6 +500,9 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP permit 30
+   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 ```
 
 # ACL

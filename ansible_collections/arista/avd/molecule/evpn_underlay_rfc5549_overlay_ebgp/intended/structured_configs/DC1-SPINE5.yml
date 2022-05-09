@@ -28,6 +28,10 @@ router_bgp:
           address_family_ipv6_originate: true
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_ipv6:
+    peer_groups:
+      UNDERLAY_PEERS:
+        activate: true
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -138,6 +142,11 @@ prefix_lists:
     sequence_numbers:
       10:
         action: permit 192.168.255.0/24 eq 32
+ipv6_prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY-V6:
+    sequence_numbers:
+      10:
+        action: permit 2001:1::/64 eq 128
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -145,6 +154,10 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+      30:
+        type: permit
+        match:
+        - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 router_bfd:
   multihop:
     interval: 1200
