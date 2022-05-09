@@ -79,7 +79,7 @@ ip name-server vrf EOS_CLI 8.8.8.8
 #### eos_cli_config_gen variables overwritten by eos_designs variables
 
 ```
-# Both name_servers from eos_design and name_server from
+# Both name_servers from eos_designs and name_server from
 # eos_ci_config_gen. The second ones WON'T be displayed
 # as they are overwritten by the generated structured_configuration
 name_servers:
@@ -106,7 +106,7 @@ ip name-server vrf MGMT 192.168.42.40
 
 ```
 ---
-# Both name_servers from eos_design and leveraging the
+# Both name_servers from eos_designs and leveraging the
 # custom_structured_configuration ONLY custom_struct will make it
 # except if using merge
 name_servers:
