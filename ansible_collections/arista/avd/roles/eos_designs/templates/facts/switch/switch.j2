@@ -42,7 +42,7 @@ switch:
   overlay_routing_protocol: {{ switch_overlay_routing_protocol }}
 
   overlay_routing_protocol_address_family: {{ overlay_routing_protocol_address_family | arista.avd.default("ipv4") }}
-{% if overlay_routing_protocol_address_family == 'ipv6'
+{% if overlay_routing_protocol_address_family is arista.avd.defined('ipv6')
       and underlay_ipv6 is arista.avd.defined(true, fail_action='error', var_name='overlay_routing_protocol_address_family==ipv6, underlay_ipv6')
       and underlay_rfc5549 is arista.avd.defined(true, fail_action='error', var_name='overlay_routing_protocol_address_family==ipv6, underlay_rfc5549') %}
 {% endif %}
