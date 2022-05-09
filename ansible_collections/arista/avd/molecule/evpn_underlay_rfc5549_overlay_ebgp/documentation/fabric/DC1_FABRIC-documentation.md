@@ -52,6 +52,8 @@
 | l3leaf | DC1-BL1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet6 |
 | l3leaf | DC1-BL1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet6 |
 | l3leaf | DC1-BL1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet9 | l3leaf | DC1-BL1B | Ethernet9 |
+| l3leaf | DC1-BL1A | Ethernet10 | l3leaf | DC1-BL1B | Ethernet10 |
 | l3leaf | DC1-BL1B | Ethernet1 | spine | DC1-SPINE1 | Ethernet7 |
 | l3leaf | DC1-BL1B | Ethernet2 | spine | DC1-SPINE2 | Ethernet7 |
 | l3leaf | DC1-BL1B | Ethernet3 | spine | DC1-SPINE3 | Ethernet7 |

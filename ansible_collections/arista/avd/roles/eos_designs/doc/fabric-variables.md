@@ -67,6 +67,10 @@ vtep_vvtep_ip: < IPv4_address/Mask >
 # Customizable overlay loopback description | Optional
 overlay_loopback_description: < description >
 
+# Enable overlay EVPN peering with IPv6 addresses | Optional
+# This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
+overlay_routing_protocol_address_family: < ipv4 | ipv6 | default -> ipv4 >
+
 # BGP multi-path | Optional
 bgp_maximum_paths: < number_of_max_paths | default -> 4 >
 bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
