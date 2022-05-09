@@ -110,10 +110,6 @@ vtep_ip:
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models, and may change without notice.
 
-For more information about the available contextual properties, see the following links:
-- [underlay_ethernet_interfaces facts](../../../plugins/module_utils/eos_designs_facts/topology.py)
-- [switch facts](../../../plugins/module_utils/eos_designs_facts/switch.py)
-
 ## Context for interface_descriptions templates
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
@@ -146,15 +142,6 @@ connected_endpoints_port_channel_interfaces:
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models, and may change without notice.
-
-For more information about the available contextual properties, see the following links:
-- [underlay_ethernet_interfaces facts](../../../plugins/module_utils/eos_designs_facts/topology.py)
-- [underlay_port_channel_interfaces facts](../../../plugins/module_utils/eos_designs_facts/topology.py)
-- [mlag_ethernet_interfaces facts](../templates/mlag/ethernet-interfaces.j2)
-- [mlag_port_channel_interfaces facts](../templates/mlag/port-channel-interfaces.j2)
-- [connected_endpoints_ethernet_interfaces facts](../templates/connected_endpoints/ethernet-interfaces.j2)
-- [connected_endpoints_port_channel_interfaces facts](../templates/connected_endpoints/port-channel-interfaces.j2)
-- [switch facts](../../../plugins/module_utils/eos_designs_facts/switch.py)
 
 The next output is an example based on the default definition:
 
