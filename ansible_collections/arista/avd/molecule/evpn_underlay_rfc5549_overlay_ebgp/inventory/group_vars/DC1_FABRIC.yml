@@ -232,17 +232,12 @@ bfd_multihop:
 custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'custom_structured_configuration_' ]
 
 core_interfaces:
-  p2p_links_profiles:
-    - name: default_bb_profile
   p2p_links:
     - id: 1
       nodes: [ DC1-BL1A, DC1-BL1B ]
       interfaces: [ Ethernet9, Ethernet9 ]
-      include_in_underlay_protocol: true
       as: [ "65104", "65105" ]
-      profile: default_bb_profile
     - id: 2
       nodes: [ DC1-BL1A, DC1-BL1B ]
       interfaces: [ Ethernet10, Ethernet10 ]
       as: [ "65104", "65105" ]
-      profile: default_bb_profile
