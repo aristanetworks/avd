@@ -9,49 +9,50 @@ import re
 from ansible.errors import AnsibleFilterError
 
 
-class FilterModule(object):
+def range_expand(range_to_expand):
+    if not (isinstance(range_to_expand, list) or isinstance(range_to_expand, str)):
+        raise AnsibleFilterError(f"value must be of type list or str, got {type(range_to_expand)}")
 
-    def range_expand(self, range_to_expand):
-        if not (isinstance(range_to_expand, list) or isinstance(range_to_expand, str)):
-            raise AnsibleFilterError(f"value must be of type list or str, got {type(range_to_expand)}")
+    result = []
 
-        result = []
+    # If we got a list, unpack it and run this function recursively
+    if isinstance(range_to_expand, list):
+        for r in range_to_expand:
+            result.extend(range_expand(r))
 
-        # If we got a list, unpack it and run this function recursively
-        if isinstance(range_to_expand, list):
-            for r in range_to_expand:
-                result.extend(self.range_expand(r))
+    # Must be a str now
+    else:
+        prefix = ""
 
-        # Must be a str now
-        else:
-            prefix = ""
+        # Unpack list in string
+        for one_range in range_to_expand.split(','):
+            if one_range is None:
+                continue
 
-            # Unpack list in string
-            for one_range in range_to_expand.split(','):
-
-                # Find prefix (if any)
-                regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"
-                # Groups one-by-one:
-                # Group 1  (.*?)                                                                           matches prefix ex. Ethernet, Eth, Po, Port-Channel
-                # Group 2       (((\d+)-)?(\d+)\/)?                                                        matches module(s) and slash ex. 12/, 1-3/
-                # Group 3        ((\d+)-)?                                                                 matches first module and dash ex. 1-
-                # Group 4         (\d+)                                                                    matches first module ex. 1
-                # Group 5                 (\d+)                                                            matches last module ex. 12, 3
-                # Group 6                          (((\d+)-)?(\d+)\/)?                                     matches parent interface(s) and slash ex. 47/, 1-48/
-                # Group 7                           ((\d+)-)?                                              matches parent interface(s) and dash ex. 47-
-                # Group 8                            (\d+)                                                 matches first parent interface ex. 1
-                # Group 9                                    (\d+)                                         matches last parent interface ex. 47, 48
-                # Group 10                                            (((\d+)-)?(\d+))                     matches (breakout) interface(s) ex. 1, 1-4, 1-48
-                # Group 11                                             ((\d+)-)?                           matches first interfaces and dash ex. 1-, 1-
-                # Group 12                                              (\d+)                              matches first interface
-                # Group 13                                                      (\d+)                      matches last interface ex. 1, 4, 48
-                # Group 14                                                            (\.((\d+)-)?(\d+))?  matches dot and sub-interface(s) ex. .141, .12-15
-                # Group 15                                                               ((\d+)-)?         matches first sub-interface and dash ex. 12-
-                # Group 16                                                                (\d+)            matches first sub-interface ex. 12
-                # Group 17                                                                        (\d+)    matches last sub-interface ex. 141, 15
-                # Remember that the groups() object is 0-based and the group numbers above are 1-based
-                search_result = re.search(regex, one_range)
-                if search_result and len(search_result.groups()) == 17:
+            # Find prefix (if any)
+            regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"
+            # Groups one-by-one:
+            # Group 1  (.*?)                                                                           matches prefix ex. Ethernet, Eth, Po, Port-Channel
+            # Group 2       (((\d+)-)?(\d+)\/)?                                                        matches module(s) and slash ex. 12/, 1-3/
+            # Group 3        ((\d+)-)?                                                                 matches first module and dash ex. 1-
+            # Group 4         (\d+)                                                                    matches first module ex. 1
+            # Group 5                 (\d+)                                                            matches last module ex. 12, 3
+            # Group 6                          (((\d+)-)?(\d+)\/)?                                     matches parent interface(s) and slash ex. 47/, 1-48/
+            # Group 7                           ((\d+)-)?                                              matches parent interface(s) and dash ex. 47-
+            # Group 8                            (\d+)                                                 matches first parent interface ex. 1
+            # Group 9                                    (\d+)                                         matches last parent interface ex. 47, 48
+            # Group 10                                            (((\d+)-)?(\d+))                     matches (breakout) interface(s) ex. 1, 1-4, 1-48
+            # Group 11                                             ((\d+)-)?                           matches first interfaces and dash ex. 1-, 1-
+            # Group 12                                              (\d+)                              matches first interface
+            # Group 13                                                      (\d+)                      matches last interface ex. 1, 4, 48
+            # Group 14                                                            (\.((\d+)-)?(\d+))?  matches dot and sub-interface(s) ex. .141, .12-15
+            # Group 15                                                               ((\d+)-)?         matches first sub-interface and dash ex. 12-
+            # Group 16                                                                (\d+)            matches first sub-interface ex. 12
+            # Group 17                                                                        (\d+)    matches last sub-interface ex. 141, 15
+            # Remember that the groups() object is 0-based and the group numbers above are 1-based
+            search_result = re.search(regex, one_range)
+            if search_result:
+                if len(search_result.groups()) == 17:
                     groups = search_result.groups()
                     first_module = last_module = None
                     first_parent_interface = last_parent_interface = None
@@ -127,9 +128,12 @@ class FilterModule(object):
 
                 else:
                     raise AnsibleFilterError(f"Invalid range, got {one_range} and found {search_result.groups()}")
-        return result
 
+    return result
+
+
+class FilterModule(object):
     def filters(self):
         return {
-            'range_expand': self.range_expand,
+            'range_expand': range_expand,
         }

@@ -1,6 +1,8 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+import cProfile
+import pstats
 import yaml
 from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleActionFail
@@ -22,6 +24,11 @@ class ActionModule(ActionBase):
         root_key = ""
 
         if self._task.args:
+            cprofile_file = self._task.args.get("cprofile_file")
+            if cprofile_file:
+                profiler = cProfile.Profile()
+                profiler.enable()
+
             if "root_key" in self._task.args:
                 n = self._task.args.get("root_key")
                 n = self._templar.template(n)
@@ -166,6 +173,12 @@ class ActionModule(ActionBase):
             result['ansible_facts'] = {root_key: output}
         else:
             result['ansible_facts'] = output
+
+        if cprofile_file:
+            profiler.disable()
+            stats = pstats.Stats(profiler).sort_stats('cumtime')
+            stats.dump_stats(cprofile_file)
+
         return result
 
     def write_file(self, content, task_vars):
