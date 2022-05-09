@@ -225,20 +225,15 @@ interface {{ ethernet_interface.name }}
    dot1x host-mode multi-host authenticated
 {%                 endif %}
 {%             endif %}
-{%             if ethernet_interface.dot1x.mac_based_authentication is arista.avd.defined %}
-{%                 if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) and
-                      ethernet_interface.dot1x.mac_based_authentication.host_mode_common is arista.avd.defined(true) %}
-   dot1x mac based authentication host-mode common
+{%             if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) %}
+{%                 set auth_cli = "dot1x mac based authentication" %}
+{%                 if ethernet_interface.dot1x.mac_based_authentication.host_mode_common is arista.avd.defined(true) %}
+   {{ auth_cli }} host-mode common
 {%                 endif %}
-{%                 if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) and
-                      ethernet_interface.dot1x.mac_based_authentication.always is arista.avd.defined(true) %}
-   dot1x mac based authentication always
+{%                 if ethernet_interface.dot1x.mac_based_authentication.always is arista.avd.defined(true) %}
+{%                     set auth_cli = auth_cli ~ " always" %}
 {%                 endif %}
-{%                 if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) and
-                      ethernet_interface.dot1x.mac_based_authentication.always is not arista.avd.defined and
-                      ethernet_interface.dot1x.mac_based_authentication.host_mode_common is not arista.avd.defined %}
-   dot1x mac based authentication
-{%                 endif %}
+   {{ auth_cli }}
 {%             endif %}
 {%             if ethernet_interface.dot1x.timeout is arista.avd.defined %}
 {%                 if ethernet_interface.dot1x.timeout.quiet_period is arista.avd.defined %}
