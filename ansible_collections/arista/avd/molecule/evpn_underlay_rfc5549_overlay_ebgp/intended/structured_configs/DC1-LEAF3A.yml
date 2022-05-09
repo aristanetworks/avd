@@ -67,7 +67,7 @@ router_bgp:
       threshold: 30
       enabled: true
   neighbors:
-    192.168.255.5:
+    2001:1::5:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE5
       remote_as: '65001'
