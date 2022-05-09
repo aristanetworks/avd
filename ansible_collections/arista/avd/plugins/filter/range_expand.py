@@ -31,6 +31,8 @@ def range_expand(range_to_expand):
 
             # Find prefix (if any)
             regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"
+            # Number of groups in this regex.
+            regex_groups = 17
             # Groups one-by-one:
             # Group 1  (.*?)                                                                           matches prefix ex. Ethernet, Eth, Po, Port-Channel
             # Group 2       (((\d+)-)?(\d+)\/)?                                                        matches module(s) and slash ex. 12/, 1-3/
@@ -52,7 +54,7 @@ def range_expand(range_to_expand):
             # Remember that the groups() object is 0-based and the group numbers above are 1-based
             search_result = re.search(regex, one_range)
             if search_result:
-                if len(search_result.groups()) == 17:
+                if len(search_result.groups()) == regex_groups:
                     groups = search_result.groups()
                     first_module = last_module = None
                     first_parent_interface = last_parent_interface = None
