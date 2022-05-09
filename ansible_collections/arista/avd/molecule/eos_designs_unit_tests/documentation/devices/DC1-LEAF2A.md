@@ -708,7 +708,7 @@ interface Loopback100
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan410 | Tenant_D_OP_Zone | - | 2001:db8:310::1/64 | - | - | - | - | - | - |
-| Vlan411 | Tenant_D_OP_Zone | 2001:db8:311::2/64 | - | - | - | - | - | - | - |
+| Vlan411 | Tenant_D_OP_Zone | 2001:db8:311::2/64 | - | 2001:db8:311::1/64 | - | - | - | - | - |
 | Vlan412 | Tenant_D_OP_Zone | - | 2001:db8:412::1/64 | - | - | - | - | - | - |
 | Vlan450 | Tenant_D_WAN_Zone | - | 2001:db8:355::1/64 | - | - | - | - | - | - |
 | Vlan451 | Tenant_D_WAN_Zone | - | 2001:db8:451::1/64 | - | - | - | - | - | - |
