@@ -198,6 +198,14 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.dot1x.pae.mode is arista.avd.defined %}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
 {%             endif %}
+{%             if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and
+                      ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+   dot1x authentication failure action traffic allow vlan {{ ethernet_interface.dot1x.authentication_failure.allow_vlan }}
+{%                 elif ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('drop') %}
+   dot1x authentication failure action traffic drop
+{%                 endif %}
+{%             endif %}
 {%             if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
    dot1x reauthentication
 {%             endif %}
@@ -208,6 +216,51 @@ interface {{ ethernet_interface.name }}
    dot1x port-control force-authorized phone
 {%             elif ethernet_interface.dot1x.port_control_force_authorized_phone is arista.avd.defined(false) %}
    no dot1x port-control force-authorized phone
+{%             endif %}
+{%             if ethernet_interface.dot1x.host_mode is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.host_mode.mode is arista.avd.defined('single-host') %}
+   dot1x host-mode single-host
+{%                 elif ethernet_interface.dot1x.host_mode.mode is arista.avd.defined('multi-host') %}
+{%                     set host_mode_cli = "dot1x host-mode multi-host" %}
+{%                     if ethernet_interface.dot1x.host_mode.multi_host_authenticated is arista.avd.defined(true) %}
+{%                         set host_mode_cli = host_mode_cli ~ " authenticated" %}
+{%                     endif %}
+   {{ host_mode_cli }}
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) %}
+{%                 if ethernet_interface.dot1x.mac_based_authentication.host_mode_common is arista.avd.defined(true) %}
+   dot1x mac based authentication host-mode common
+{%                     if ethernet_interface.dot1x.mac_based_authentication.always is arista.avd.defined(true) %}
+   dot1x mac based authentication always
+{%                     endif %}
+{%                 else %}
+{%                     set auth_cli = "dot1x mac based authentication" %}
+{%                     if ethernet_interface.dot1x.mac_based_authentication.always is arista.avd.defined(true) %}
+{%                         set auth_cli = auth_cli ~ " always" %}
+{%                     endif %}
+   {{ auth_cli }}
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.timeout is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.timeout.quiet_period is arista.avd.defined %}
+   dot1x timeout quiet-period {{ ethernet_interface.dot1x.timeout.quiet_period }}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.reauth_timeout_ignore is arista.avd.defined(true) %}
+   dot1x timeout reauth-timeout-ignore always
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.tx_period is arista.avd.defined %}
+   dot1x timeout tx-period {{ ethernet_interface.dot1x.timeout.tx_period }}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.reauth_period is arista.avd.defined %}
+   dot1x timeout reauth-period {{ ethernet_interface.dot1x.timeout.reauth_period }}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.idle_host is arista.avd.defined %}
+   dot1x timeout idle-host {{ ethernet_interface.dot1x.timeout.idle_host }} seconds
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.reauthorization_request_limit is arista.avd.defined %}
+   dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
 {%             endif %}
 {%         endif %}
 {%         if ethernet_interface.snmp_trap_link_change is arista.avd.defined(false) %}
