@@ -134,6 +134,7 @@ interface Management1
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:17::15/64 | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
@@ -169,7 +170,8 @@ interface Vlan24
 interface Vlan25
    description SVI Description
    no shutdown
-   ipv6 virtual-router address 1b11:3a00:22b0:16::15/64
+   ipv6 address 1b11:3a00:22b0:16::16/64
+   ipv6 virtual-router address 1b11:3a00:22b0:16::15
    ipv6 virtual-router address 1b11:3a00:22b0:17::15/64
 !
 interface Vlan41
