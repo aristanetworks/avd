@@ -35,7 +35,7 @@ core_interfaces:
       # Specific IP addresses used on this P2P link | Optional
       ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
 
-      # Allows turning on ipv6 for the link or profile | Optional
+      # Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol) | Optional
       ipv6_enable: < true | false | default -> false >
 
       # Nodes where this link should be configured | Required
