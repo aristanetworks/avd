@@ -45,10 +45,6 @@ router_bgp:
       threshold: 5
       enabled: true
       expiry_timeout: 10
-  address_family_rtc:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
   vrfs:
     default:
       rd: 192.168.255.35:21
