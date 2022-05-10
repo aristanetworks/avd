@@ -6,6 +6,11 @@ port_profiles:
     link_tracking:
       enabled: true
 
+  Tenant_ESI_Auto:
+    parent_profile: Tenant_X
+    port_channel:
+      short_esi: auto
+
   Tenant_X_LT:
     mode: access
     vlans: "310"
@@ -43,11 +48,10 @@ servers:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
         switches: [ MH-LEAF1A, MH-LEAF1B ]
-        profile: Tenant_X
+        profile: Tenant_ESI_Auto
         port_channel:
           description: Auto-ESI PortChannel
           mode: active
-          short_esi: auto
 
 routers:
   ROUTER01:
