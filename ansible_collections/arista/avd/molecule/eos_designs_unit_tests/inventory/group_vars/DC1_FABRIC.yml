@@ -5,6 +5,8 @@
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
 
+evpn_overlay_bgp_rtc: true
+
 # EVPN host flapping settings
 evpn_hostflap_detection:
   expiry_timeout: 10
