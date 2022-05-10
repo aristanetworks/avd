@@ -559,7 +559,7 @@ The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing 
   This list is built based on the `uplink_switches` from all other hosts.
 - Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
   This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
-- The plugin is designed to `run_once`. With this Ansible will set the same facts on all devices,
+- The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices,
   so all devices can lookup values of any other device without using the slower `hostvars`.
 - The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
 

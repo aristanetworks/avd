@@ -22,30 +22,30 @@ version_added: "3.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Set eos_designs facts
 description:
-  - Parse all hostvars and set common facts
+  - The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+  - Set `avd_switch_facts` fact containing both `switch` facts per host.
+  - Set `avd_topology_peers` fact containing list of downlink switches per host.
+    This list is built based on the `uplink_switches` from all other hosts.
+  - Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
+    This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+  - The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices,
+    so all devices can lookup values of any other device without using the slower `hostvars`.
+  - The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
+  - The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
+    in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
   avd_switch_facts:
     description: |
-      Set avd_switch_facts fact with a dict per device of switch.* facts
-      Set avd_overlay_peers fact with a list per device of EVPN Route Server Clients,
-      meaning devices pointing to this device as EVPN Route Server
-    required: False
-    type: bool
-  avd_topology_facts:
-    description: |
-      Set avd_switch_facts fact with a dict per device of topology.* facts
-      Set avd_topology_peers fact with a list per device of downstream devices,
-      meaning devices pointing to this device as uplink switch
-      Most topology_facts are based on switch.* facts, so those must be set in the same
-      or a previous task.
+      - Calculate and set 'avd_switch_facts.<devices>.switch', 'avd_overlay_peers' and 'avd_topology_peers' facts
     required: False
     type: bool
 '''
 
 EXAMPLES = r'''
 - name: Set eos_designs facts
-  eos_designs_facts:
+  tags: [build, provision, facts]
+  arista.avd.eos_designs_facts:
     avd_switch_facts: True
-    avd_topology_facts: True
+  check_mode: False
   run_once: True
 '''

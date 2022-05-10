@@ -68,10 +68,9 @@ class ActionModule(ActionBase):
                     avd_topology_peers.setdefault(peer, []).append(host)
 
             result['ansible_facts'] = {}
-            if set_avd_switch_facts:
-                result['ansible_facts']['avd_switch_facts'] = avd_switch_facts
-                result['ansible_facts']['avd_overlay_peers'] = avd_overlay_peers
-                result['ansible_facts']['avd_topology_peers'] = avd_topology_peers
+            result['ansible_facts']['avd_switch_facts'] = avd_switch_facts
+            result['ansible_facts']['avd_overlay_peers'] = avd_overlay_peers
+            result['ansible_facts']['avd_topology_peers'] = avd_topology_peers
 
         if cprofile_file:
             profiler.disable()
