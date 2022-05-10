@@ -28,11 +28,13 @@ tap aggregation
 {%     endif %}
 {%     if tap_aggregation.mac.timestamp.replace_source_mac is arista.avd.defined(true) %}
    mac timestamp replace source-mac
-{%     elif tap_aggregation.mac.timestamp.header.format is arista.avd.defined %}
+{%     elif tap_aggregation.mac.timestamp.header is arista.avd.defined %}
+{%         if tap_aggregation.mac.timestamp.header.format is arista.avd.defined %}
    mac timestamp header format {{ tap_aggregation.mac.timestamp.header.format }}
-{%     endif %}
-{%     if tap_aggregation.mac.timestamp.header.eth_type is arista.avd.defined %}
+{%         endif %}
+{%         if tap_aggregation.mac.timestamp.header.eth_type is arista.avd.defined %}
    mac timestamp header eth-type {{ tap_aggregation.mac.timestamp.header.eth_type }}
+{%         endif %}
 {%     endif %}
 {%     if tap_aggregation.mac.fcs_append is arista.avd.defined(true) %}
    mac fcs append
