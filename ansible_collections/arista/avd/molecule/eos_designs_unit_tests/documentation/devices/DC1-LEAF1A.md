@@ -261,12 +261,9 @@ vlan internal order ascending range 1006 1199
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 | 132 | Tenant_A_APP_Zone_3 | - |
-| 150 | Tenant_A_WAN_Zone_1 | - |
-| 250 | Tenant_B_WAN_Zone_1 | - |
-| 350 | Tenant_C_WAN_Zone_1 | - |
-| 450 | Tenant_D_WAN_Zone_1 | - |
-| 451 | Tenant_D_WAN_Zone_2 | - |
-| 452 | Tenant_D_WAN_Zone_3 | - |
+| 450 | Tenant_D_v6_WAN_Zone_1 | - |
+| 451 | Tenant_D_v6_WAN_Zone_2 | - |
+| 452 | Tenant_D_v6_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -287,23 +284,14 @@ vlan 131
 vlan 132
    name Tenant_A_APP_Zone_3
 !
-vlan 150
-   name Tenant_A_WAN_Zone_1
-!
-vlan 250
-   name Tenant_B_WAN_Zone_1
-!
-vlan 350
-   name Tenant_C_WAN_Zone_1
-!
 vlan 450
-   name Tenant_D_WAN_Zone_1
+   name Tenant_D_v6_WAN_Zone_1
 !
 vlan 451
-   name Tenant_D_WAN_Zone_2
+   name Tenant_D_v6_WAN_Zone_2
 !
 vlan 452
-   name Tenant_D_WAN_Zone_3
+   name Tenant_D_v6_WAN_Zone_3
 ```
 
 # Interfaces
@@ -432,12 +420,9 @@ interface Loopback1
 | Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | false |
 | Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | false |
 | Vlan132 | Tenant_A_APP_Zone_3 | Tenant_A_APP_Zone | - | false |
-| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | false |
-| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | false |
-| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
-| Vlan450 | Tenant_D_WAN_Zone_1 | Tenant_D_WAN_Zone | - | false |
-| Vlan451 | Tenant_D_WAN_Zone_2 | Tenant_D_WAN_Zone | 1560 | false |
-| Vlan452 | Tenant_D_WAN_Zone_3 | Tenant_D_WAN_Zone | 1560 | false |
+| Vlan450 | Tenant_D_v6_WAN_Zone_1 | Tenant_D_WAN_Zone | - | false |
+| Vlan451 | Tenant_D_v6_WAN_Zone_2 | Tenant_D_WAN_Zone | 1560 | false |
+| Vlan452 | Tenant_D_v6_WAN_Zone_3 | Tenant_D_WAN_Zone | 1560 | false |
 
 #### IPv4
 
@@ -448,9 +433,6 @@ interface Loopback1
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
 | Vlan132 |  Tenant_A_APP_Zone  |  10.1.32.1/24  |  -  |  10.1.32.254, 10.2.32.254/24, 10.3.32.254/24  |  -  |  -  |  -  |
-| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
-| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
-| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan450 |  Tenant_D_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan451 |  Tenant_D_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan452 |  Tenant_D_WAN_Zone  |  -  |  10.4.12.254/24  |  -  |  -  |  -  |  -  |
@@ -504,43 +486,21 @@ interface Vlan132
    ip virtual-router address 10.2.32.254/24
    ip virtual-router address 10.3.32.254/24
 !
-interface Vlan150
-   description Tenant_A_WAN_Zone_1
-   no shutdown
-   vrf Tenant_A_WAN_Zone
-   ip ospf area 1
-   ip ospf cost 100
-   ip ospf authentication
-   ip ospf authentication-key 7 AQQvKeimxJu+uGQ/yYvv9w==
-   ip address virtual 10.1.40.1/24
-!
-interface Vlan250
-   description Tenant_B_WAN_Zone_1
-   no shutdown
-   vrf Tenant_B_WAN_Zone
-   ip address virtual 10.2.50.1/24
-!
-interface Vlan350
-   description Tenant_C_WAN_Zone_1
-   no shutdown
-   vrf Tenant_C_WAN_Zone
-   ip address virtual 10.3.50.1/24
-!
 interface Vlan450
-   description Tenant_D_WAN_Zone_1
+   description Tenant_D_v6_WAN_Zone_1
    no shutdown
    vrf Tenant_D_WAN_Zone
    ipv6 address virtual 2001:db8:355::1/64
 !
 interface Vlan451
-   description Tenant_D_WAN_Zone_2
+   description Tenant_D_v6_WAN_Zone_2
    no shutdown
    mtu 1560
    vrf Tenant_D_WAN_Zone
    ipv6 address virtual 2001:db8:451::1/64
 !
 interface Vlan452
-   description Tenant_D_WAN_Zone_3
+   description Tenant_D_v6_WAN_Zone_3
    no shutdown
    mtu 1560
    vrf Tenant_D_WAN_Zone
@@ -566,9 +526,6 @@ interface Vlan452
 | 130 | 10130 | - | - |
 | 131 | 10131 | - | - |
 | 132 | 10132 | - | - |
-| 150 | 10150 | - | - |
-| 250 | 20250 | - | - |
-| 350 | 30350 | - | - |
 | 450 | 40450 | - | - |
 | 451 | 40451 | - | - |
 | 452 | 40452 | - | - |
@@ -578,10 +535,7 @@ interface Vlan452
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 | Tenant_A_APP_Zone | 12 | - |
-| Tenant_A_WAN_Zone | 14 | - |
 | Tenant_A_WEB_Zone | 11 | - |
-| Tenant_B_WAN_Zone | 21 | - |
-| Tenant_C_WAN_Zone | 31 | - |
 | Tenant_D_WAN_Zone | 41 | - |
 
 ### VXLAN Interface Device Configuration
@@ -597,17 +551,11 @@ interface Vxlan1
    vxlan vlan 130 vni 10130
    vxlan vlan 131 vni 10131
    vxlan vlan 132 vni 10132
-   vxlan vlan 150 vni 10150
-   vxlan vlan 250 vni 20250
-   vxlan vlan 350 vni 30350
    vxlan vlan 450 vni 40450
    vxlan vlan 451 vni 40451
    vxlan vlan 452 vni 40452
    vxlan vrf Tenant_A_APP_Zone vni 12
-   vxlan vrf Tenant_A_WAN_Zone vni 14
    vxlan vrf Tenant_A_WEB_Zone vni 11
-   vxlan vrf Tenant_B_WAN_Zone vni 21
-   vxlan vrf Tenant_C_WAN_Zone vni 31
    vxlan vrf Tenant_D_WAN_Zone vni 41
 ```
 
@@ -643,10 +591,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | default | true |
 | MGMT | false |
 | Tenant_A_APP_Zone | true |
-| Tenant_A_WAN_Zone | true |
 | Tenant_A_WEB_Zone | true |
-| Tenant_B_WAN_Zone | true |
-| Tenant_C_WAN_Zone | true |
 | Tenant_D_WAN_Zone | true |
 
 ### IP Routing Device Configuration
@@ -656,10 +601,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 ip routing
 no ip routing vrf MGMT
 ip routing vrf Tenant_A_APP_Zone
-ip routing vrf Tenant_A_WAN_Zone
 ip routing vrf Tenant_A_WEB_Zone
-ip routing vrf Tenant_B_WAN_Zone
-ip routing vrf Tenant_C_WAN_Zone
 ip routing vrf Tenant_D_WAN_Zone
 ```
 ## IPv6 Routing
@@ -671,10 +613,7 @@ ip routing vrf Tenant_D_WAN_Zone
 | default | false |
 | MGMT | false |
 | Tenant_A_APP_Zone | false |
-| Tenant_A_WAN_Zone | false |
 | Tenant_A_WEB_Zone | false |
-| Tenant_B_WAN_Zone | false |
-| Tenant_C_WAN_Zone | false |
 | Tenant_D_WAN_Zone | true |
 
 ## Static Routes
@@ -763,10 +702,7 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 1.1.1.1:12 | 1234:12 | - | - | learned | 130-132 |
-| Tenant_A_WAN_Zone | 1.1.1.1:14 | 1234:14 | - | - | learned | 150 |
 | Tenant_A_WEB_Zone | 1.1.1.1:11 | 1234:11 | - | - | learned | 120-121 |
-| Tenant_B_WAN_Zone | 1.1.1.1:21 | 1234:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 1.1.1.1:31 | 1234:31 | - | - | learned | 350 |
 | Tenant_D_WAN_Zone | 1.1.1.1:41 | 1234:41 | - | - | learned | 450-452 |
 
 ### Router BGP VRFs
@@ -774,10 +710,7 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Tenant_A_APP_Zone | 1.1.1.1:12 | connected |
-| Tenant_A_WAN_Zone | 1.1.1.1:14 | connected |
 | Tenant_A_WEB_Zone | 1.1.1.1:11 | connected |
-| Tenant_B_WAN_Zone | 1.1.1.1:21 | connected |
-| Tenant_C_WAN_Zone | 1.1.1.1:31 | connected |
 | Tenant_D_WAN_Zone | 1.1.1.1:41 | connected |
 
 ### Router BGP Device Configuration
@@ -832,29 +765,11 @@ router bgp 65101
       redistribute learned
       vlan 130-132
    !
-   vlan-aware-bundle Tenant_A_WAN_Zone
-      rd 1.1.1.1:14
-      route-target both 1234:14
-      redistribute learned
-      vlan 150
-   !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 1.1.1.1:11
       route-target both 1234:11
       redistribute learned
       vlan 120-121
-   !
-   vlan-aware-bundle Tenant_B_WAN_Zone
-      rd 1.1.1.1:21
-      route-target both 1234:21
-      redistribute learned
-      vlan 250
-   !
-   vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 1.1.1.1:31
-      route-target both 1234:31
-      redistribute learned
-      vlan 350
    !
    vlan-aware-bundle Tenant_D_WAN_Zone
       rd 1.1.1.1:41
@@ -877,33 +792,10 @@ router bgp 65101
       router-id 192.168.255.9
       redistribute connected
    !
-   vrf Tenant_A_WAN_Zone
-      rd 1.1.1.1:14
-      route-target import evpn 1234:14
-      route-target import evpn 65000:456
-      route-target export evpn 1234:14
-      route-target export evpn 65000:789
-      router-id 192.168.255.9
-      redistribute connected
-   !
    vrf Tenant_A_WEB_Zone
       rd 1.1.1.1:11
       route-target import evpn 1234:11
       route-target export evpn 1234:11
-      router-id 192.168.255.9
-      redistribute connected
-   !
-   vrf Tenant_B_WAN_Zone
-      rd 1.1.1.1:21
-      route-target import evpn 1234:21
-      route-target export evpn 1234:21
-      router-id 192.168.255.9
-      redistribute connected
-   !
-   vrf Tenant_C_WAN_Zone
-      rd 1.1.1.1:31
-      route-target import evpn 1234:31
-      route-target export evpn 1234:31
       router-id 192.168.255.9
       redistribute connected
    !
@@ -1006,10 +898,7 @@ route-map RM-CONN-2-BGP permit 10
 | -------- | ---------- |
 | MGMT | disabled |
 | Tenant_A_APP_Zone | enabled |
-| Tenant_A_WAN_Zone | enabled |
 | Tenant_A_WEB_Zone | enabled |
-| Tenant_B_WAN_Zone | enabled |
-| Tenant_C_WAN_Zone | enabled |
 | Tenant_D_WAN_Zone | enabled |
 
 ## VRF Instances Device Configuration
@@ -1020,13 +909,7 @@ vrf instance MGMT
 !
 vrf instance Tenant_A_APP_Zone
 !
-vrf instance Tenant_A_WAN_Zone
-!
 vrf instance Tenant_A_WEB_Zone
-!
-vrf instance Tenant_B_WAN_Zone
-!
-vrf instance Tenant_C_WAN_Zone
 !
 vrf instance Tenant_D_WAN_Zone
 ```

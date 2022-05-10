@@ -225,12 +225,12 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 410 | Tenant_D_OP_Zone_1 | - |
-| 411 | Tenant_D_OP_Zone_2 | - |
-| 412 | Tenant_D_OP_Zone_1 | - |
-| 450 | Tenant_D_WAN_Zone_1 | - |
-| 451 | Tenant_D_WAN_Zone_2 | - |
-| 452 | Tenant_D_WAN_Zone_3 | - |
+| 410 | Tenant_D_v6_OP_Zone_1 | - |
+| 411 | Tenant_D_v6_OP_Zone_2 | - |
+| 412 | Tenant_D_v6_OP_Zone_1 | - |
+| 450 | Tenant_D_v6_WAN_Zone_1 | - |
+| 451 | Tenant_D_v6_WAN_Zone_2 | - |
+| 452 | Tenant_D_v6_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -300,22 +300,22 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 !
 vlan 410
-   name Tenant_D_OP_Zone_1
+   name Tenant_D_v6_OP_Zone_1
 !
 vlan 411
-   name Tenant_D_OP_Zone_2
+   name Tenant_D_v6_OP_Zone_2
 !
 vlan 412
-   name Tenant_D_OP_Zone_1
+   name Tenant_D_v6_OP_Zone_1
 !
 vlan 450
-   name Tenant_D_WAN_Zone_1
+   name Tenant_D_v6_WAN_Zone_1
 !
 vlan 451
-   name Tenant_D_WAN_Zone_2
+   name Tenant_D_v6_WAN_Zone_2
 !
 vlan 452
-   name Tenant_D_WAN_Zone_3
+   name Tenant_D_v6_WAN_Zone_3
 ```
 
 # Interfaces
@@ -386,12 +386,12 @@ interface Loopback100
 | Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | false |
 | Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | false |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
-| Vlan410 | Tenant_D_OP_Zone_1 | Tenant_D_OP_Zone | - | false |
-| Vlan411 | Tenant_D_OP_Zone_2 | Tenant_D_OP_Zone | - | false |
-| Vlan412 | Tenant_D_OP_Zone_1 | Tenant_D_OP_Zone | 1560 | false |
-| Vlan450 | Tenant_D_WAN_Zone_1 | Tenant_D_WAN_Zone | - | false |
-| Vlan451 | Tenant_D_WAN_Zone_2 | Tenant_D_WAN_Zone | 1560 | false |
-| Vlan452 | Tenant_D_WAN_Zone_3 | Tenant_D_WAN_Zone | 1560 | false |
+| Vlan410 | Tenant_D_v6_OP_Zone_1 | Tenant_D_OP_Zone | - | false |
+| Vlan411 | Tenant_D_v6_OP_Zone_2 | Tenant_D_OP_Zone | - | false |
+| Vlan412 | Tenant_D_v6_OP_Zone_1 | Tenant_D_OP_Zone | 1560 | false |
+| Vlan450 | Tenant_D_v6_WAN_Zone_1 | Tenant_D_WAN_Zone | - | false |
+| Vlan451 | Tenant_D_v6_WAN_Zone_2 | Tenant_D_WAN_Zone | 1560 | false |
+| Vlan452 | Tenant_D_v6_WAN_Zone_3 | Tenant_D_WAN_Zone | 1560 | false |
 
 #### IPv4
 
@@ -557,21 +557,21 @@ interface Vlan350
    ip address virtual 10.3.50.1/24
 !
 interface Vlan410
-   description Tenant_D_OP_Zone_1
+   description Tenant_D_v6_OP_Zone_1
    no shutdown
    vrf Tenant_D_OP_Zone
    ipv6 address virtual 2001:db8:310::1/64
    ip address virtual 10.3.10.1/24
 !
 interface Vlan411
-   description Tenant_D_OP_Zone_2
+   description Tenant_D_v6_OP_Zone_2
    no shutdown
    vrf Tenant_D_OP_Zone
    ipv6 virtual-router address 2001:db8:311::1/64
    ip virtual-router address 10.3.11.1/24
 !
 interface Vlan412
-   description Tenant_D_OP_Zone_1
+   description Tenant_D_v6_OP_Zone_1
    no shutdown
    mtu 1560
    vrf Tenant_D_OP_Zone
@@ -579,20 +579,20 @@ interface Vlan412
    ip address virtual 10.4.12.254/24
 !
 interface Vlan450
-   description Tenant_D_WAN_Zone_1
+   description Tenant_D_v6_WAN_Zone_1
    no shutdown
    vrf Tenant_D_WAN_Zone
    ipv6 address virtual 2001:db8:355::1/64
 !
 interface Vlan451
-   description Tenant_D_WAN_Zone_2
+   description Tenant_D_v6_WAN_Zone_2
    no shutdown
    mtu 1560
    vrf Tenant_D_WAN_Zone
    ipv6 address virtual 2001:db8:451::1/64
 !
 interface Vlan452
-   description Tenant_D_WAN_Zone_3
+   description Tenant_D_v6_WAN_Zone_3
    no shutdown
    mtu 1560
    vrf Tenant_D_WAN_Zone
