@@ -22,7 +22,7 @@ version_added: "3.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Set eos_designs facts
 description:
-  - The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+  - The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities
   - Set `avd_switch_facts` fact containing both `switch` facts per host.
   - Set `avd_topology_peers` fact containing list of downlink switches per host.
     This list is built based on the `uplink_switches` from all other hosts.
