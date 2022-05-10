@@ -49,16 +49,16 @@ interface Management1
 
 ### Management API Models Summary
 
-| Provider | Path | Enabled |
+| Provider | Path | Disabled |
 | -------- | ---- | ------- |
-| smash | flexCounters | True |
-| smash | forwarding/srte/status/fec | True |
-| smash | routing6/status | True |
-| smash | routing/bgp/export/allPeerAdjRibIn | True |
-| smash | routing/status | False |
-| smash | tunnel/tunnelFib/entry | True |
-| sysdb | /Sysdb/sys/logging/config/vrfLoggingHost/mgmt | False |
-| sysdb | cell/1/agent | False |
+| smash | flexCounters | False |
+| smash | forwarding/srte/status/fec | False |
+| smash | routing6/status | False |
+| smash | routing/bgp/export/allPeerAdjRibIn | False |
+| smash | routing/status | True |
+| smash | tunnel/tunnelFib/entry | False |
+| sysdb | /Sysdb/sys/logging/config/vrfLoggingHost/mgmt | True |
+| sysdb | cell/1/agent | True |
 
 ### Management API Models Configuration
 

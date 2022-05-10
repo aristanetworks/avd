@@ -86,6 +86,7 @@
       - [Management HTTP](#management-http)
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
+      - [Management API Models](#management-api-models)
       - [Management Console](#management-console)
       - [Management CVX](#management-cvx)
       - [Management Defaults](#management-defaults)
@@ -1898,10 +1899,10 @@ management_api_gnmi:
 ```yaml
 management_api_models:
   providers:
-    - name: < provider1 (sysdb | smash) >
+    - name: < sysdb | smash >
       paths:
       - path: < path1 >
-        enabled: < true | false | default -> true >
+        disabled: < true | false | default -> false >
       - path: < path2 >
     - name: < provider2 >
       paths:

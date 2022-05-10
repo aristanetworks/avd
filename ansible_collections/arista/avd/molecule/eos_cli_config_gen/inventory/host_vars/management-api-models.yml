@@ -9,10 +9,10 @@ management_api_models:
         - path: tunnel/tunnelFib/entry
         - path: routing/bgp/export/allPeerAdjRibIn
         - path: routing/status
-          enabled: false
+          disabled: true
     - name: sysdb
       paths:
         - path: cell/1/agent
-          enabled: false
+          disabled: true
         - path: /Sysdb/sys/logging/config/vrfLoggingHost/mgmt
-          enabled: false
+          disabled: true
