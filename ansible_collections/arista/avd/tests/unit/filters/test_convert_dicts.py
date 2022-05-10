@@ -39,15 +39,13 @@ class TestConvertDicts():
 
     def test_convert_dicts_with_listofdict_default(self):
         resp = convert_dicts(nested_list_of_dict)
-        assert resp == {'TEST1': [{'type': 'permit', 'extcommunities': '65000:65000'},
-                                  {'type': 'deny', 'extcommunities': '65002:65002'}],
-                        'TEST2': [{'type': 'deny', 'extcommunities': '65001:65001'}]}
+        assert resp == [{'name': 'TEST1'},
+                        {'name': 'TEST2'}]
 
     def test_convert_dicts_with_listofdict_primary_key(self):
         resp = convert_dicts(nested_list_of_dict, 'test')
-        assert resp == {'TEST1': [{'type': 'permit', 'extcommunities': '65000:65000'},
-                                  {'type': 'deny', 'extcommunities': '65002:65002'}],
-                        'TEST2': [{'type': 'deny', 'extcommunities': '65001:65001'}]}
+        assert resp == [{'test': 'TEST1'},
+                        {'test': 'TEST2'}]
 
     def test_convert_dicts_with_listofdict_secondary_key(self):
         resp = convert_dicts(nested_list_of_dict, secondary_key='types')
@@ -79,11 +77,11 @@ class TestConvertDicts():
 
     def test_convert_dicts_with_string_value_default(self):
         resp = convert_dicts(dict_with_string)
-        assert resp == dict_with_string
+        assert resp == [{'name': 'dict'}]
 
     def test_convert_dicts_with_string_value_primary_key(self):
         resp = convert_dicts(dict_with_string, 'test')
-        assert resp == dict_with_string
+        assert resp == [{'test': 'dict'}]
 
     def test_convert_dicts_with_string_value_secondary_key(self):
         resp = convert_dicts(dict_with_string, secondary_key='str')
