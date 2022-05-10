@@ -3291,7 +3291,14 @@ traffic_policies:
             log: < true | false (default false) >
           # Last resort policy
           default_actions:
-            - ip: < ipv4 | ipv6 >
+            ipv4:
+              dscp: < dscp code value >
+              traffic_class: < traffic class id >
+              count: < counter name >
+              drop: < true | false (default false) >
+              # Only supported when action is set to drop
+              log: < true | false (default false) >
+            ipv6:
               dscp: < dscp code value >
               traffic_class: < traffic class id >
               count: < counter name >

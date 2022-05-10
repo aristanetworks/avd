@@ -152,27 +152,50 @@ traffic-policies
 {%             endif %}
 {# DEFAULT MATCH Section #}
 {%             if policy.default_actions is arista.avd.defined %}
-{%                 for version in policy.default_actions | arista.avd.convert_dicts('ip') %}
-      match {{ version.ip | lower }}-all-default {{ version.ip | lower }}
+{%                 for version in policy.default_actions %}
+      match {{ version | lower }}-all-default {{ version | lower }}
          actions
-{#                     -- COUNT packets -- #}
-{%                     if version.count is arista.avd.defined %}
-            count {{ version.count }}
-{%                     endif %}
-{#                     -- Traffic Class -- #}
-{%                     if version.traffic_class is arista.avd.defined %}
-            set traffic class {{ version.traffic_class }}
-{%                     endif %}
-{#                     -- DSCP -- #}
-{%                     if version.dscp is arista.avd.defined %}
-            set dscp {{ version.dscp }}
-{%                     endif %}
-{#                     -- DROP Action -- #}
-{%                     if version.drop is arista.avd.defined(true) %}
+{%                     if version is arista.avd.defined('ipv4') %}
+{#                         -- COUNT packets ipv4 -- #}
+{%                         if policy.default_actions.ipv4.count is arista.avd.defined %}
+            count {{ policy.default_actions.ipv4.count }}
+{%                         endif %}
+{#                         -- Traffic Class ipv4 -- #}
+{%                         if policy.default_actions.ipv4.traffic_class is arista.avd.defined %}
+            set traffic class {{ policy.default_actions.ipv4.traffic_class }}
+{%                         endif %}
+{#                         -- DSCP ipv4 -- #}
+{%                         if policy.default_actions.ipv4.dscp is arista.avd.defined %}
+            set dscp {{ policy.default_actions.ipv4.dscp }}
+{%                         endif %}
+{#                         -- DROP Action ipv4 -- #}
+{%                         if policy.default_actions.ipv4.drop is arista.avd.defined(true) %}
             drop
-{#                         -- LOGGING only if DROP is set-- #}
-{%                         if version.log is arista.avd.defined(true) %}
+{#                             -- LOGGING ipv4 only if DROP is set-- #}
+{%                             if policy.default_actions.ipv4.log is arista.avd.defined(true) %}
             log
+{%                             endif %}
+{%                         endif %}
+{%                     elif version is arista.avd.defined('ipv6') %}
+{#                         -- COUNT packets ipv6 -- #}
+{%                         if policy.default_actions.ipv6.count is arista.avd.defined %}
+            count {{ policy.default_actions.ipv6.count }}
+{%                         endif %}
+{#                         -- Traffic Class ipv6 -- #}
+{%                         if policy.default_actions.ipv6.traffic_class is arista.avd.defined %}
+            set traffic class {{ policy.default_actions.ipv6.traffic_class }}
+{%                         endif %}
+{#                         -- DSCP ipv6 -- #}
+{%                         if policy.default_actions.ipv6.dscp is arista.avd.defined %}
+            set dscp {{ policy.default_actions.ipv6.dscp }}
+{%                         endif %}
+{#                         -- DROP Action ipv6 -- #}
+{%                         if policy.default_actions.ipv6.drop is arista.avd.defined(true) %}
+            drop
+{#                             -- LOGGING ipv6 only if DROP is set-- #}
+{%                             if policy.default_actions.ipv6.log is arista.avd.defined(true) %}
+            log
+{%                             endif %}
 {%                         endif %}
 {%                     endif %}
 {%                 endfor %}

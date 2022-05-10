@@ -95,7 +95,7 @@ traffic_policies:
             traffic_class: 5
     - name: BLUE-C2-POLICY
       default_actions:
-        - ip: ipv4
+        ipv4:
           drop: true
           log: true
       matches:
