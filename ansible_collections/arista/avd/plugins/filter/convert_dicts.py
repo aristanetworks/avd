@@ -69,10 +69,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     else:
         output = []
         for key in dictionary:
-            if dictionary[key] is None:
-                # Catch cornercase where dictionary has no value because of old data models
-                output.append({primary_key: key})
-            elif not isinstance(dictionary[key], dict):
+            if not isinstance(dictionary[key], dict):
                 # Not a nested dictionary, add secondary key for the values if secondary key is provided
                 if secondary_key is not None:
                     item = {}
@@ -80,7 +77,9 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
                     item.update({secondary_key: dictionary[key]})
                     output.append(item)
                 else:
-                    return dictionary
+                    # Catch cornercase where dictionary value is not a dict because of old data models
+                    # Ex <key>: "none" or <key>: null or <key>: "" will all be overwritten with {<primary_key>: <key>}
+                    output.append({primary_key: key})
             else:
                 item = dictionary[key].copy()
                 item.update({primary_key: key})

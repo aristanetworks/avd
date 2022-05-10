@@ -353,6 +353,14 @@ management_api_http:
     MGMT: {}
   enable_https: true
   default_services: false
+struct_cfg:
+  sflow:
+    vrfs:
+      OOB:
+        destinations:
+          192.168.200.10: None
+          10.0.200.90: None
+        source_interface: Management1
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -546,4 +554,11 @@ vxlan_interface:
           vni: 21
         Tenant_C_WAN_Zone:
           vni: 31
+sflow:
+  vrfs:
+    OOB:
+      destinations:
+        192.168.200.10: None
+        10.0.200.90: None
+      source_interface: Management1
 ntp: null
