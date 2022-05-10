@@ -693,6 +693,9 @@ router bgp 65151
       host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-PEERS activate
+   !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY-PEERS activate
