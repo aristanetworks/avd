@@ -367,7 +367,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 101 | 10.0.0.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet10 <br> Port-Channel12 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
+| 101 | 10.0.0.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet10 <br> Port-Channel12 <br> | enabled | 4000 | disabled | enabled | 1234567 | 13 | - | - |
+
+### Router OSPF Router Max-Metric
+
+| Process ID | Router-LSA | External-LSA (metric) | Include Stub | On Startup Delay | Summary-LSA (metric) |
+| ---------- | ---------- | --------------------- | ------------ | ---------------- | -------------------- |
+| 101 | enabled | disabled | disabled | 6789 | disabled |
 
 ### OSPF Interfaces
 
@@ -388,6 +394,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 ```eos
 !
 router ospf 101
+   log-adjacency-changes detail
    router-id 10.0.0.2
    passive-interface default
    no passive-interface Ethernet1
@@ -399,7 +406,10 @@ router ospf 101
    no passive-interface Ethernet10
    no passive-interface Port-Channel12
    bfd default
-   max-lsa 12000
+   max-lsa 4000
+   auto-cost reference-bandwidth 1234567
+   maximum-paths 13
+   max-metric router-lsa on-startup 6789
 ```
 
 # MPLS

@@ -32,6 +32,22 @@ underlay_ospf_process_id: 101
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
 
+ospf_auto_cost_reference_bandwidth: 1234567
+ospf_maximum_paths: 13
+ospf_log_adjacency_changes_detail: true
+ospf_max_lsa: 4000
+ospf_timers:
+  lsa:
+    arrival: 2345
+  out_delay: 3456
+  throttle:
+    lsa: 4567
+    spf: 5678
+ospf_max_metric:
+  router_lsa:
+    on_startup: 6789
+ospf_bfd_adjacency_state_any: true
+
 # Nodes
 type: core_router
 core_router:

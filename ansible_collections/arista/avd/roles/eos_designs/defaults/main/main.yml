@@ -61,6 +61,33 @@ underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: false
 
+ospf_router_id_source_interface: 0
+ospf_auto_cost_reference_bandwidth: 10
+ospf_bfd_enable: false
+ospf_maximum_paths: 16
+ospf_log_adjacency_changes_detail:
+# Optionals not implemented. max-lsa lsa_num [WARNING] [IGNORE_TIME][IGNORE_COUNT][RESET]
+ospf_max_lsa: 0
+ospf_timers:
+  lsa:
+    rx_min_interval: 1000
+    tx_delay:
+      initial: 1000
+      min: 5000
+      max: 5000
+  spf_delay:
+    initial:
+ospf_max_metric:
+  router_lsa:
+    external_lsa:
+      override_metric: < Integer 1-16777215 >
+      include_stub: < true | false >
+      on_startup: < 'wait-for-bgp' | Integer 5-86400 >
+      summary_lsa:
+        override_metric: < Integer 1-16777215 >
+# ospf_bfd_adjacency_state_any: false
+ospf_mpls_ldp_sync_default: false
+
 # Underlay ISIS Defaults
 isis_area_id: "49.0001"
 isis_maximum_paths: 4

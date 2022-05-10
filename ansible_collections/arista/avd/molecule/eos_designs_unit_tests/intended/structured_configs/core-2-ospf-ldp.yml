@@ -33,10 +33,16 @@ loopback_interfaces:
 router_ospf:
   process_ids:
     101:
-      passive_interface_default: true
+      log_adjacency_changes_detail: true
       router_id: 10.0.0.2
+      passive_interface_default: true
+      auto_cost_reference_bandwidth: 1234567
+      maximum_paths: 13
+      max_metric:
+        router_lsa:
+          on_startup: 6789
       bfd_enable: true
-      max_lsa: 12000
+      max_lsa: 4000
       no_passive_interfaces:
       - Ethernet1
       - Ethernet2
