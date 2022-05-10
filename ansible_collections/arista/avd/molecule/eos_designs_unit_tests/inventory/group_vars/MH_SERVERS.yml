@@ -48,9 +48,21 @@ servers:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
         switches: [ MH-LEAF1A, MH-LEAF1B ]
-        profile: Tenant_ESI_Auto
+        profile: Tenant_X
         port_channel:
           description: Auto-ESI PortChannel
+          mode: active
+          short_esi: auto
+
+  server04_AUTO_ESI_Profile:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_ESI_Auto
+        port_channel:
+          description: Auto-ESI PortChannel from profile
           mode: active
 
 routers:
