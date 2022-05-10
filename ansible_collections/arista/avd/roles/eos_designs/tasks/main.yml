@@ -54,6 +54,7 @@
     templates: "{{ templates.structured_config }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
     template_output: True
+    remove_avd_switch_facts: True
   delegate_to: localhost
   check_mode: False
   register: structured_config

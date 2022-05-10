@@ -49,6 +49,7 @@ class ActionModule(ActionBase):
             dest = self._task.args.get("dest", False)
             template_output = self._task.args.get("template_output", False)
             debug = self._task.args.get("debug", False)
+            remove_avd_switch_facts = self._task.args.get("remove_avd_switch_facts", False)
 
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
@@ -174,6 +175,9 @@ class ActionModule(ActionBase):
         else:
             result['ansible_facts'] = output
 
+        if remove_avd_switch_facts:
+            result['ansible_facts']['avd_switch_facts'] = None
+
         if cprofile_file:
             profiler.disable()
             stats = pstats.Stats(profiler).sort_stats('cumtime')
@@ -187,7 +191,7 @@ class ActionModule(ActionBase):
         new_task = self._task.copy()
 
         # remove 'yaml_templates_to_facts' options (except 'dest' which will be reused):
-        for remove in ('root_key', 'templates', 'template_output', 'debug'):
+        for remove in ('root_key', 'templates', 'template_output', 'debug', 'remove_avd_switch_facts'):
             new_task.args.pop(remove, None)
 
         new_task.args['content'] = content
