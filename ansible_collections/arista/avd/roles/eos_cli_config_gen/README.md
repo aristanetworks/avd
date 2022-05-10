@@ -2516,7 +2516,7 @@ tap_aggregation:
   mode:
     exclusive:
       enabled: < true | false >
-      profile: < profile_name | default --> tap-aggregation-default >
+      profile: < profile_name >
       no-errdisable:
         - < EthernetX | Port-ChannelX >
   encapsulation_dot1br_strip: < true | false >

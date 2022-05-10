@@ -7,7 +7,9 @@
 | Settings | Values |
 | -------- | ------ |
 | Mode Exclusive | {{ tap_aggregation.mode.exclusive.enabled }} |
-| Mode Exclusive Profile | {{ tap_aggregation.mode.exclusive.profile | arista.avd.default('tap-aggregation-default') }} |
+{%     if tap_aggregation.mode.exclusive.profile is arista.avd.defined %}
+| Mode Exclusive Profile | {{ tap_aggregation.mode.exclusive.profile }} |
+{%     endif %}
 {%     if tap_aggregation.mode.exclusive.no_errdisable is arista.avd.defined %}
 | Mode Exclusive No-Errdisable | {{ tap_aggregation.mode.exclusive.no_errdisable | join(', ') }} |
 {%     endif %}
