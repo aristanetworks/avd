@@ -42,8 +42,8 @@ def merge_hash(x, y, recursive=True, list_merge='replace', primary_key='name'):
                                         if x_element[primary_key] == y_element[primary_key]:
                                             flag = 1
                                             if recursive:
-                                                x_element = merge_hash(x_element, y_element, recursive, list_merge,
-                                                                   primary_key)
+                                                x_element = merge_hash(x_element, y_element, recursive,
+                                                                       list_merge, primary_key)
 
                                             for x_element_key, x_element_value in x_element.items():
                                                 # if the key in x is not in y, add the key and value in y
