@@ -104,8 +104,7 @@ class ActionModule(ActionBase):
         avd_switch_facts = {}
         for host in fabric_hosts:
             host_hostvars = default_vars.copy()
-            # hostvars.raw_get is a quicker way of retrieving the Hostvars, since all the vars will not be templated.
-            host_hostvars.update(hostvars.raw_get(host))
+            host_hostvars.update(hostvars.get(host))
             avd_switch_facts[host] = {}
             templar = Templar(variables=host_hostvars, loader=self._loader)
             template_lookup_module = lookup_loader.get('ansible.builtin.template', loader=self._loader, templar=templar)
