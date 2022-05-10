@@ -162,6 +162,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | - | - | - |
 | 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - |
 
 ### Router BGP VRFs
 
@@ -169,6 +170,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | --- | ------------------- | ------------ |
 | BLUE-C1 | 1.0.1.1:101 | static |
 | RED-C1 | 1.0.1.1:102 | - |
+| YELLOW-C1 | 1.0.1.1:103 | - |
 
 ### Router BGP Device Configuration
 
@@ -228,6 +230,13 @@ router bgp 65001
       neighbor 10.1.1.0 peer group OBS_WAN
       neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-IN-C1 in
       neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-OUT-C1 out
+   !
+   vrf YELLOW-C1
+      rd 1.0.1.1:103
+       bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
+       bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
+       bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
+      neighbor 10.1.1.0 peer group OBS_WAN
 ```
 
 # Multicast

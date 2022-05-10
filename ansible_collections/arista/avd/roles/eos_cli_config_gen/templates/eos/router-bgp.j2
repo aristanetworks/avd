@@ -743,6 +743,22 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.timers is arista.avd.defined %}
       timers bgp {{ vrf.timers }}
 {%         endif %}
+{%         if vrf.listen_ranges is arista.avd.defined %}
+{%             for listen_range in vrf.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
+                   and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
+{%                 set listen_range_cli = "bgp listen range " ~ listen_range.prefix %}
+{%                 if listen_range.peer_id_include_router_id is arista.avd.defined(true) %}
+{%                     set listen_range_cli = listen_range_cli ~ " peer-id include router-id" %}
+{%                 endif %}
+{%                 set listen_range_cli = listen_range_cli ~ " peer-group " ~ listen_range.peer_group %}
+{%                 if listen_range.peer_filter is arista.avd.defined %}
+{%                     set listen_range_cli = listen_range_cli ~ " peer-filter " ~ listen_range.peer_filter %}
+{%                 elif listen_range.remote_as is arista.avd.defined %}
+{%                     set listen_range_cli = listen_range_cli ~ " remote-as " ~ listen_range.remote_as %}
+{%                 endif %}
+      {{ listen_range_cli }}
+{%             endfor %}
+{%         endif %}
 {%         for neighbor in vrf.neighbors | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.remote_as is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} remote-as {{ neighbor.remote_as }}
