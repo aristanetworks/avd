@@ -291,6 +291,7 @@ vlan 310
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet10 | server01_ES1_Eth1 | *access | *310 | *- | *- | 10 |
 | Ethernet12 | server03_AUTO_ESI_Eth1 | *access | *310 | *- | *- | 12 |
+| Ethernet13 | server04_AUTO_ESI_Profile_Eth1 | *access | *310 | *- | *- | 13 |
 
 *Inherited from Port-Channel Interface
 
@@ -332,6 +333,11 @@ interface Ethernet12
    description server03_AUTO_ESI_Eth1
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet13
+   description server04_AUTO_ESI_Profile_Eth1
+   no shutdown
+   channel-group 13 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -344,6 +350,7 @@ interface Ethernet12
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
 | Port-Channel12 | server03_AUTO_ESI_Auto-ESI PortChannel | switched | access | 310 | - | - | - | - | - | 0000:0000:fc87:ae24:2cb3 |
+| Port-Channel13 | server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile | switched | access | 310 | - | - | - | - | - | 0000:0000:29cc:4043:0a29 |
 
 #### Flexible Encapsulation Interfaces
 
@@ -360,6 +367,7 @@ interface Ethernet12
 | --------- | ---------- | --------- |
 | Port-Channel10 | LT_GROUP1 | downstream |
 | Port-Channel12 | LT_GROUP1 | downstream |
+| Port-Channel13 | LT_GROUP1 | downstream |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -422,6 +430,17 @@ interface Port-Channel12
       identifier 0000:0000:fc87:ae24:2cb3
       route-target import fc:87:ae:24:2c:b3
    lacp system-id fc87.ae24.2cb3
+   link tracking group LT_GROUP1 downstream
+!
+interface Port-Channel13
+   description server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
+   no shutdown
+   switchport
+   switchport access vlan 310
+   evpn ethernet-segment
+      identifier 0000:0000:29cc:4043:0a29
+      route-target import 29:cc:40:43:0a:29
+   lacp system-id 29cc.4043.0a29
    link tracking group LT_GROUP1 downstream
 ```
 
