@@ -129,6 +129,15 @@ l3leaf:
         tenants: [ all ]
         tags: [ wan ]
         always_include_vrfs_in_tenants: [ 'Tenant_B' ]
+# Test cornercase in convert_dicts with keys that have no value
+      structured_config:
+        sflow:
+          vrfs:
+            OOB:
+              destinations:
+                192.168.200.10:
+                10.0.200.90:
+              source_interface: Management1
       nodes:
         DC1-BL1A:
           id: 6
