@@ -111,6 +111,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+      EVPN-OVERLAY-CORE:
+        activate: true
   vrfs:
     Common_VRF:
       router_id: 172.16.110.4
