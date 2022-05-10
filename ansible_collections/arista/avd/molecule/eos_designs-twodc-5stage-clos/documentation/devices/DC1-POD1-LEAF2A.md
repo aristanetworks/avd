@@ -959,6 +959,7 @@ router bgp 65112.100
       route import match-failure action discard
    !
    address-family rt-membership
+      neighbor EVPN-OVERLAY-CORE activate
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

@@ -90,6 +90,12 @@ router_bgp:
       threshold: 5
       enabled: true
       expiry_timeout: 10
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-CORE:
+        activate: true
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.14
