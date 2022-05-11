@@ -28,6 +28,7 @@ static_routes:
 {%             endfor %}
 {%         endif %}
 {%         if vrf.ipv6_static_routes is arista.avd.defined %}
+ipv6_static_routes:
 {%             for ipv6_static_route in vrf.ipv6_static_routes %}
 {%                 if inventory_hostname in ipv6_static_route.nodes | arista.avd.default([inventory_hostname]) %}
   - destination_address_prefix: {{ ipv6_static_route.destination_address_prefix }}
