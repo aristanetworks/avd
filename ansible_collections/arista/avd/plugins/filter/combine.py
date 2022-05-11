@@ -67,7 +67,7 @@ def merge_hash(x, y, recursive=True, list_merge='replace', primary_key='name'):
                             ):
                                 if recursive:
                                     y_element = merge_hash(x_element, y_element, recursive,
-                                                            list_merge, primary_key)
+                                                           list_merge, primary_key)
                                 x_value_copy[x_index] = y_element
                                 # Found and handled the maching key. Go to the next y_key
                                 found_y_in_x = True
