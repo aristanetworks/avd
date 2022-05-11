@@ -155,12 +155,12 @@ port_channel_interfaces:
 
   Port-Channel14:
     description: EVPN-MPLS multihoming
-    esi: "0000:0000:0000:0102:0305"
-    rt: "00:00:01:02:03:05"
     evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0305"
       mpls:
         shared_index: 100
         tunnel_flood_filter_time: 100
+      route_target: "00:00:01:02:03:05"
 
   Port-Channel17:
     description: PBR Description
