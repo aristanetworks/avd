@@ -1368,6 +1368,7 @@ port_channel_interfaces:
         tunnel_flood_filter_time: < integer >
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     # esi and rt to be deprecated in AVD 4.0, replaced by identifier and route_target under evpn_ethernet_segment.
+    # If both esi/rt and identifier/route_target are defined, new variables take precedence over old variables.
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
