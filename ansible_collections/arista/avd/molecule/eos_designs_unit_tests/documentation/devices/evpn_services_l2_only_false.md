@@ -29,6 +29,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -795,7 +796,6 @@ ip routing vrf Tenant_D_WAN_Zone
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 | Tenant_A_APP_Zone | 10.2.32.0/24 | - | Vlan132 | 1 | - | VARP | - |
 | Tenant_A_APP_Zone | 10.3.32.0/24 | - | Vlan132 | 1 | - | VARP | - |
-| Tenant_D_OP_Zone | 10.3.11.0/24 | - | Vlan411 | 1 | - | VARP | - |
 
 ### Static Routes Device Configuration
 
@@ -804,7 +804,21 @@ ip routing vrf Tenant_D_WAN_Zone
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ip route vrf Tenant_A_APP_Zone 10.2.32.0/24 Vlan132 name VARP
 ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
-ip route vrf Tenant_D_OP_Zone 10.3.11.0/24 Vlan411 name VARP
+```
+
+## IPv6 Static Routes
+
+### IPv6 Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| Tenant_D_OP_Zone | 10.3.11.0/24 | - | Vlan411 | 1 | - | VARP | - |
+
+### Static Routes Device Configuration
+
+```eos
+!
+ipv6 route vrf Tenant_D_OP_Zone 10.3.11.0/24 Vlan411 name VARP
 ```
 
 ## Router BGP
