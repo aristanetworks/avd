@@ -120,6 +120,14 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | graceful-restart restart-time 300 |
 | graceful-restart |
 
+### Router BGP Listen Ranges
+
+| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
+| ------ | ------------------------- | ---------- | ----------- | --------- | --- |
+| 10.10.10.0/24 | - | my-peer-group1 | my-peer-filter | - | YELLOW-C1 |
+| 12.10.10.0/24 | True | my-peer-group3 | - | 65444 | YELLOW-C1 |
+| 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - | YELLOW-C1 |
+
 ### Router BGP Peer Groups
 
 #### OBS_WAN
@@ -233,9 +241,9 @@ router bgp 65001
    !
    vrf YELLOW-C1
       rd 1.0.1.1:103
-       bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
-       bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
-       bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
+      bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
+      bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
+      bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
       neighbor 10.1.1.0 peer group OBS_WAN
 ```
 
