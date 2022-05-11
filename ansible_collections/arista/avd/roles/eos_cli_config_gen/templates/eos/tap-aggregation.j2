@@ -5,11 +5,11 @@ tap aggregation
 {%     if tap_aggregation.mode.exclusive is arista.avd.defined %}
 {%         if tap_aggregation.mode.exclusive.enabled is arista.avd.defined(true) %}
 {%             set mode_cli = "mode exclusive" %}
-{%         endif %}
-{%         if tap_aggregation.mode.exclusive.profile is arista.avd.defined %}
-{%             set mode_cli = mode_cli ~ " profile " ~ tap_aggregation.mode.exclusive.profile %}
-{%         endif %}
+{%             if tap_aggregation.mode.exclusive.profile is arista.avd.defined %}
+{%                 set mode_cli = mode_cli ~ " profile " ~ tap_aggregation.mode.exclusive.profile %}
+{%             endif %}
    {{ mode_cli }}
+{%         endif %}
 {%         for interface in tap_aggregation.mode.exclusive.no_errdisable | arista.avd.natural_sort %}
    mode exclusive no-errdisable {{ interface }}
 {%         endfor %}
