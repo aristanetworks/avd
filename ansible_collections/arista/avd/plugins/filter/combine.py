@@ -25,39 +25,58 @@ def merge_hash(x, y, recursive=True, list_merge='replace', primary_key='name'):
     # we don't want to modify y, so we create a copy of it
     y = y.copy()
 
-    for x_key, x_value in x.items():
-        for y_key, y_value in y.items():
-            if x_key == y_key:
-                if isinstance(x_value, MutableMapping) and isinstance(y_value, MutableMapping):
-                    if recursive:
-                        y[y_key] = merge_hash(x_value, y_value, recursive, list_merge, primary_key)
-                    continue
-                if isinstance(x_value, MutableSequence) and isinstance(y_value, MutableSequence):
-                    if list_merge == 'update_on_key':
-                        for x_element in x_value:
-                            flag = 0
-                            for y_element in y_value:
-                                if isinstance(y_element, dict) and isinstance(x_element, dict):
-                                    if primary_key in x_element and primary_key in y_element:
-                                        if x_element[primary_key] == y_element[primary_key]:
-                                            flag = 1
-                                            if recursive:
-                                                x_element = merge_hash(x_element, y_element, recursive,
-                                                                       list_merge, primary_key)
+    # Even though the merge is y into x, we use y as basis to get y_value for different value types.
+    for key, x_value in x.items():
+        # Add missing keys.
+        if key not in y:
+            y[key] = x_value
+            continue
 
-                                            for x_element_key, x_element_value in x_element.items():
-                                                # if the key in x is not in y, add the key and value in y
-                                                if x_element_key not in y_element:
-                                                    y_element[x_element_key] = x_element_value
-                                                continue
+        y_value = y[key]
 
-                            if flag == 0:
-                                # if primary key does not match, append the x element to y
-                                y[y_key].append(x_element)
+        # Skip key if x is equal to y
+        if x_value == y_value:
+            continue
 
-        if x_key not in y.keys():
-            # if the key in x is not in y, add the key and value in y
-            y[x_key] = x_value
+        # Values are dictionaries
+        if isinstance(x_value, MutableMapping) and isinstance(y_value, MutableMapping):
+            if recursive:
+                y[key] = merge_hash(x_value, y_value, recursive, list_merge, primary_key)
+            continue
+
+        # Values are lists
+        if isinstance(x_value, MutableSequence) and isinstance(y_value, MutableSequence):
+            # Update on primary key or fallback to append
+            if list_merge == 'update_on_key':
+                # To avoid reordering the original elements from x_value,
+                # we have to update a copy of x_value as the basis for the result.
+                x_value_copy = x_value.copy()
+
+                for y_element in y_value:
+                    found_y_in_x = False
+                    for x_index, x_element in enumerate(x_value):
+                        # Continue to the next y_element if x_element is equal to y_element
+                        if x_element == y_element:
+                            found_y_in_x = True
+                            break
+                        # Values are dictionaries
+                        if isinstance(y_element, MutableMapping) and isinstance(x_element, MutableMapping):
+                            if (
+                                (primary_key in x_element and primary_key in y_element)
+                                and (x_element[primary_key] == y_element[primary_key])
+                            ):
+                                if recursive:
+                                    y_element = merge_hash(x_element, y_element, recursive,
+                                                            list_merge, primary_key)
+                                x_value_copy[x_index] = y_element
+                                # Found and handled the maching key. Go to the next y_key
+                                found_y_in_x = True
+                                break
+
+                    if not found_y_in_x:
+                        x_value_copy.append(y_element)
+
+                y[key] = x_value_copy
 
     return y
 
