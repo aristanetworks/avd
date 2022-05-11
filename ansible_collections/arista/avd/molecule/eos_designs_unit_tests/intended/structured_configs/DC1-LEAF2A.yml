@@ -258,6 +258,10 @@ static_routes:
 - destination_address_prefix: 0.0.0.0/0
   vrf: Tenant_D_OP_Zone
   gateway: 10.3.11.4
+- destination_address_prefix: 10.3.11.0/24
+  vrf: Tenant_D_OP_Zone
+  name: VARP
+  interface: Vlan411
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
@@ -885,9 +889,9 @@ ipv6_static_routes:
   vrf: Tenant_D_OP_Zone
   gateway: 2001:db8:311::4
   name: IPv6-test-2
-- destination_address_prefix: 10.3.11.0/24
+- destination_address_prefix: 2001:db8:311::/64
   vrf: Tenant_D_OP_Zone
-  name: VARP
+  name: VARPv6
   interface: Vlan411
 vxlan_interface:
   Vxlan1:

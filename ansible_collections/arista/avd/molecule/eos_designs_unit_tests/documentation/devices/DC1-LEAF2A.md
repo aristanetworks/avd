@@ -998,6 +998,7 @@ ip routing vrf Tenant_D_WAN_Zone
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 | Tenant_D_OP_Zone | 0.0.0.0/0 | 10.3.11.4 | - | 1 | - | - | - |
+| Tenant_D_OP_Zone | 10.3.11.0/24 | - | Vlan411 | 1 | - | VARP | - |
 
 ### Static Routes Device Configuration
 
@@ -1005,6 +1006,7 @@ ip routing vrf Tenant_D_WAN_Zone
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ip route vrf Tenant_D_OP_Zone 0.0.0.0/0 10.3.11.4
+ip route vrf Tenant_D_OP_Zone 10.3.11.0/24 Vlan411 name VARP
 ```
 
 ## IPv6 Static Routes
@@ -1014,14 +1016,14 @@ ip route vrf Tenant_D_OP_Zone 0.0.0.0/0 10.3.11.4
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | Tenant_D_OP_Zone | ::/0 | 2001:db8:311::4 | - | 1 | - | IPv6-test-2 | - |
-| Tenant_D_OP_Zone | 10.3.11.0/24 | - | Vlan411 | 1 | - | VARP | - |
+| Tenant_D_OP_Zone | 2001:db8:311::/64 | - | Vlan411 | 1 | - | VARPv6 | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ipv6 route vrf Tenant_D_OP_Zone ::/0 2001:db8:311::4 name IPv6-test-2
-ipv6 route vrf Tenant_D_OP_Zone 10.3.11.0/24 Vlan411 name VARP
+ipv6 route vrf Tenant_D_OP_Zone 2001:db8:311::/64 Vlan411 name VARPv6
 ```
 
 ## Router BGP
