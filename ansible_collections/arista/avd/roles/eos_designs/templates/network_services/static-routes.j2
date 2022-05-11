@@ -27,6 +27,32 @@ static_routes:
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         if vrf.ipv6_static_routes is arista.avd.defined %}
+{%             for ipv6_static_route in vrf.ipv6_static_routes %}
+{%                 if inventory_hostname in ipv6_static_route.nodes | arista.avd.default([inventory_hostname]) %}
+  - destination_address_prefix: {{ ipv6_static_route.destination_address_prefix }}
+    vrf: {{ vrf.name }}
+{%                     if ipv6_static_route.gateway is arista.avd.defined %}
+    gateway: {{ ipv6_static_route.gateway }}
+{%                     endif %}
+{%                     if ipv6_static_route.distance is arista.avd.defined %}
+    distance: {{ ipv6_static_route.distance }}
+{%                     endif %}
+{%                     if ipv6_static_route.tag is arista.avd.defined %}
+    tag: {{ ipv6_static_route.tag }}
+{%                     endif %}
+{%                     if ipv6_static_route.name is arista.avd.defined %}
+    name: {{ ipv6_static_route.name }}
+{%                     endif %}
+{%                     if ipv6_static_route.metric is arista.avd.defined %}
+    metric: {{ ipv6_static_route.metric }}
+{%                     endif %}
+{%                     if ipv6_static_route.interface is arista.avd.defined %}
+    interface: {{ ipv6_static_route.interface }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
 {%         for svi in vrf.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}

@@ -258,6 +258,12 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
+| 410 | Tenant_D_v6_OP_Zone_1 | - |
+| 411 | Tenant_D_v6_OP_Zone_2 | - |
+| 412 | Tenant_D_v6_OP_Zone_1 | - |
+| 450 | Tenant_D_v6_WAN_Zone_1 | - |
+| 451 | Tenant_D_v6_WAN_Zone_2 | - |
+| 452 | Tenant_D_v6_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -325,6 +331,24 @@ vlan 311
 !
 vlan 350
    name Tenant_C_WAN_Zone_1
+!
+vlan 410
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 411
+   name Tenant_D_v6_OP_Zone_2
+!
+vlan 412
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 450
+   name Tenant_D_v6_WAN_Zone_1
+!
+vlan 451
+   name Tenant_D_v6_WAN_Zone_2
+!
+vlan 452
+   name Tenant_D_v6_WAN_Zone_3
 ```
 
 # Interfaces

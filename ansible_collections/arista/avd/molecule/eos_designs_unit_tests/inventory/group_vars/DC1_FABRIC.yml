@@ -75,8 +75,8 @@ l3leaf:
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
-      tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-      tags: [ opzone, web, app, db, vmotion, nfs ]
+      tenants: [ Tenant_A, Tenant_B, Tenant_C, Tenant_D ]
+      tags: [ opzone, web, app, db, vmotion, nfs, v6wan, v6opzone ]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
@@ -84,7 +84,7 @@ l3leaf:
       platform: 7050SX3
       filter:
         tenants: [ all ]
-        tags: [ web, app, erp2 ]
+        tags: [ web, app, erp2, v6wan ]
       nodes:
         DC1-LEAF1A:
           id: 1

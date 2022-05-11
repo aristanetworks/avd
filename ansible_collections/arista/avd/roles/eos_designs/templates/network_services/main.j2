@@ -1,6 +1,6 @@
 {# Add one blank line after each included template #}
 {% if switch.network_services_l2 is arista.avd.defined(true) or switch.network_services_l3 is arista.avd.defined(true) or switch.network_services_l1 is arista.avd.defined(true) %}
-{%     set network_services_data = namespace() %}
+{%     set network_services_data = namespace(ipv6vrfs = {}) %}
 {%     set default_vrf = namespace(svi_subnets = []) %}
 {%     include 'network_services/logic.j2' %}
 
