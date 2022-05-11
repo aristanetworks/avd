@@ -44,17 +44,14 @@
 | {{ paths_cli }} |
 {%         endif %}
 {%     endif %}
-{# Check if neighbors or listen_ranges exist under router_bgp.vrfs #}
+{# Check if listen_ranges exist under router_bgp.vrfs #}
 {%     set temp = namespace() %}
-{%     set temp.bgp_vrf_neighbors = false %}
 {%     set temp.bgp_vrf_listen_ranges = false %}
 {%     if router_bgp.vrfs is arista.avd.defined %}
 {%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%             if vrf.neighbors is arista.avd.defined %}
-{%                 set temp.bgp_vrf_neighbors = true %}
-{%             endif %}
 {%             if vrf.listen_ranges is arista.avd.defined %}
 {%                 set temp.bgp_vrf_listen_ranges = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -187,6 +184,16 @@
 {%                     endif %}
 {%                 endif %}
 | Maximum routes | {{ value }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     set temp = namespace() %}
+{%     set temp.bgp_vrf_neighbors = false %}
+{%     if router_bgp.vrfs is arista.avd.defined %}
+{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.neighbors is arista.avd.defined %}
+{%                 set temp.bgp_vrf_neighbors = true %}
+{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
