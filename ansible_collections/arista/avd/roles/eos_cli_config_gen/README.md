@@ -3223,6 +3223,8 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
+              route_map_out: < route_map_name >
+              route_map_in: < route_map_name >
           networks:
             < prefix_address >:
               route_map: < route_map_name >
