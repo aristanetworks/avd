@@ -27,7 +27,6 @@
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
     avd_switch_facts: true
-    avd_topology_facts: true
   check_mode: false
   run_once: true
 
