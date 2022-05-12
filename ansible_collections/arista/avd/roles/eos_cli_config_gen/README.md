@@ -1354,6 +1354,7 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     evpn_ethernet_segment:
+      identifier: < EVPN Ethernet Segment Identifier (Type 1 format) >
       redundancy: < all-active | single-active >
       designated_forwarder_election:
         algorithm: < modulus | preference >
@@ -1366,6 +1367,9 @@ port_channel_interfaces:
       mpls:
         shared_index: < 1-1024 >
         tunnel_flood_filter_time: < integer >
+      route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
+    # esi and rt to be deprecated in AVD 4.0, replaced by identifier and route_target under evpn_ethernet_segment.
+    # If both esi/rt and identifier/route_target are defined, new variables take precedence over old variables.
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -3186,6 +3190,15 @@ router_bgp:
       networks:
         < prefix_ipv4 >:
           route_map: < route_map_name >
+      # New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+      listen_ranges:
+        - prefix: < A.B.C.D/E | A:B:C:D:E:F:G:H/I >
+          # include router id as part of peer filter
+          peer_id_include_router_id: < true | false >
+          peer_group: < name of peer-group >
+          # peer_filter or remote_as is required but mutually exclusive. If both are defined, peer_filter takes precedence
+          peer_filter: < name of peer-filter >
+          remote_as: < remote ASN in plain or dot notation >
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
@@ -3251,6 +3264,8 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
+              route_map_out: < route_map_name >
+              route_map_in: < route_map_name >
           networks:
             < prefix_address >:
               route_map: < route_map_name >

@@ -104,11 +104,11 @@ interface Management1
 
 ### Router BGP Listen Ranges
 
-| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS |
-| ------ | ------------------------- | ---------- | ----------- | --------- |
-| 10.10.10.0/24 | - | my-peer-group1 | my-peer-filter | - |
-| 12.10.10.0/24 | True | my-peer-group3 | - | 65444 |
-| 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - |
+| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
+| ------ | ------------------------- | ---------- | ----------- | --------- | --- |
+| 10.10.10.0/24 | - | my-peer-group1 | my-peer-filter | - | default |
+| 12.10.10.0/24 | True | my-peer-group3 | - | 65444 | default |
+| 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - | default |
 
 ### BGP Neighbors
 
