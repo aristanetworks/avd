@@ -44,20 +44,48 @@
 | {{ paths_cli }} |
 {%         endif %}
 {%     endif %}
-{%     if router_bgp.listen_ranges is arista.avd.defined %}
+{# Check if listen_ranges exist under router_bgp.vrfs #}
+{%     set temp = namespace() %}
+{%     set temp.bgp_vrf_listen_ranges = false %}
+{%     if router_bgp.vrfs is arista.avd.defined %}
+{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.listen_ranges is arista.avd.defined %}
+{%                 set temp.bgp_vrf_listen_ranges = true %}
+{%                 break %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_bgp.listen_ranges is arista.avd.defined or temp.bgp_vrf_listen_ranges is arista.avd.defined(true) %}
 
 ### Router BGP Listen Ranges
 
-| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS |
-| ------ | ------------------------- | ---------- | ----------- | --------- |
-{%         for listen_range in router_bgp.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
-           and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
-{%             if listen_range.peer_filter is arista.avd.defined %}
-{%                 set row_remote_as = "-" %}
-{%             elif listen_range.remote_as is arista.avd.defined %}
-{%                 set row_remote_as = listen_range.remote_as %}
+| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
+| ------ | ------------------------- | ---------- | ----------- | --------- | --- |
+{# listen_ranges in vrf default #}
+{%         if router_bgp.listen_ranges is arista.avd.defined %}
+{%             for listen_range in router_bgp.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
+               and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
+{%                 if listen_range.peer_filter is arista.avd.defined %}
+{%                     set row_remote_as = "-" %}
+{%                 elif listen_range.remote_as is arista.avd.defined %}
+{%                     set row_remote_as = listen_range.remote_as %}
+{%                 endif %}
+| {{ listen_range.prefix }} | {{ listen_range.peer_id_include_router_id | arista.avd.default('-') }} | {{ listen_range.peer_group }} | {{ listen_range.peer_filter | arista.avd.default('-') }} | {{ row_remote_as }} | default |
+{%             endfor %}
+{%         endif %}
+{# listen_ranges under router_bgp.vrfs #}
+{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.listen_ranges is arista.avd.defined %}
+{%                 for listen_range in vrf.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
+                   and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
+{%                     if listen_range.peer_filter is arista.avd.defined %}
+{%                         set row_remote_as = "-" %}
+{%                     elif listen_range.remote_as is arista.avd.defined %}
+{%                         set row_remote_as = listen_range.remote_as %}
+{%                     endif %}
+| {{ listen_range.prefix }} | {{ listen_range.peer_id_include_router_id | arista.avd.default('-') }} | {{ listen_range.peer_group }} | {{ listen_range.peer_filter | arista.avd.default('-') }} | {{ row_remote_as }} | {{ vrf.name }} |
+{%                 endfor %}
 {%             endif %}
-| {{ listen_range.prefix }} | {{ listen_range.peer_id_include_router_id | arista.avd.default('-') }} | {{ listen_range.peer_group }} | {{ listen_range.peer_filter | arista.avd.default('-') }} | {{ row_remote_as }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.peer_groups is arista.avd.defined %}
