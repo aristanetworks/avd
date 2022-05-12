@@ -112,6 +112,7 @@
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
+      - [Tap Aggregation](#tap-aggregation)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -2510,6 +2511,33 @@ monitor_sessions:
     truncate:
       enabled: < true | false >
       size: < bytes >
+```
+
+#### Tap Aggregation
+
+```yaml
+tap_aggregation:
+  mode:
+    exclusive:
+      enabled: < true | false >
+      profile: < profile_name >
+      no-errdisable:
+        - < EthernetX | Port-ChannelX >
+  encapsulation_dot1br_strip: < true | false >
+  encapsulation_vn_tag_strip: < true | false >
+  protocol_lldp_trap: < true | false >
+  # Allowed truncation_size values vary depending on the platform
+  truncation_size: < size in bytes >
+  mac:
+    # mac.timestamp.replace_source_mac and mac.timestamp.header.format are mutually exclsuive. If both are defined, replace_source_mac takes precedence
+    timestamp:
+      replace_source_mac: < true | false >
+      header:
+        format: < "48-bit" | "64-bit" >
+        eth_type: < integer >
+    # mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence
+    fcs_append: < true | false >
+    fcs_error: < "correct" | "discard" | "pass-through" >
 ```
 
 ### System Control-Plane
