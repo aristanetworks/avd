@@ -86,6 +86,7 @@
       - [Management HTTP](#management-http)
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
+      - [Management API Models](#management-api-models)
       - [Management Console](#management-console)
       - [Management CVX](#management-cvx)
       - [Management Defaults](#management-defaults)
@@ -1896,6 +1897,21 @@ management_api_gnmi:
       access_group: < Standard IPv4 ACL name >
   # Enable provider 'eos-native' to stream both OpenConfig and EOS native paths.
   octa:
+```
+
+#### Management API Models
+
+```yaml
+management_api_models:
+  providers:
+    - name: < sysdb | smash >
+      paths:
+      - path: < path1 >
+        disabled: < true | false | default -> false >
+      - path: < path2 >
+    - name: < provider2 >
+      paths:
+      - path: < path1 >
 ```
 
 #### Management Console
