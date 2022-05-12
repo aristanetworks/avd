@@ -3224,21 +3224,24 @@ traffic_policies:
     counter_per_interface: < true | false >
   field_sets:
     ipv4:
-      < PREFIX FIELD SET NAME >:
-        - < IPv4 prefix 01>
-        - < IPv4 prefix 02>
-        - < IPv4 prefix 03>
+      - name: < PREFIX FIELD SET NAME >
+        prefixes:
+          - < IPv4 prefix 01>
+          - < IPv4 prefix 02>
+          - < IPv4 prefix 03>
     ipv6:
-      < PREFIX FIELD SET NAME >:
-        - < IPv6 prefix 01>
-        - < IPv6 prefix 02>
-        - < IPv6 prefix 03>
+      - name: < PREFIX FIELD SET NAME >
+        prefixes:
+          - < IPv6 prefix 01>
+          - < IPv6 prefix 02>
+          - < IPv6 prefix 03>
     ports:
-      < L4 PORT FIELD SET NAME >: "< vlan range >"
+      - name: < L4 PORT FIELD SET NAME >
+        port_range: "< vlan range >"
   policies:
-    < TRAFFIC POLICY NAME >:
+    - name: < TRAFFIC POLICY NAME >
       matches:
-        < TRAFFIC POLICY ITEM >:
+        - name: < TRAFFIC POLICY ITEM >
           type: < ipv4 | ipv6 >
           source:
             prefixes:
@@ -3260,7 +3263,7 @@ traffic_policies:
           fragment:
             offset: "< fragment offset range >"
           protocols:
-            tcp:
+            - protocol: tcp
               src_port: "< port range >"
               dst_port: "< port range >"
               src_field: "< L4 port range field set >"
@@ -3268,23 +3271,23 @@ traffic_policies:
               flags:
                 - established
                 - initial
-            icmp:
+            - protocol: icmp
               icmp_type:
                 - < ICMP message type >
                 - < ICMP message type >
-            udp:
+            - protocol: udp
               src_port: "< port range >"
               dst_port: "< port range >"
               src_field: "< L4 port range field set >"
               dst_field: "< L4 port range field set >"
-            ahp:
-            bgp:
-            icmp:
-            igmp:
-            ospf:
-            pim:
-            rsvp:
-            vrrp:
+            - protocol: ahp
+            - protocol: bgp
+            - protocol: icmp
+            - protocol: igmp
+            - protocol: ospf
+            - protocol: pim
+            - protocol: rsvp
+            - protocol: vrrp
             # The 'protocol neighbors' subcommand is not supported when any
             # other match subcommands are configured
             neighbors:
@@ -3297,7 +3300,14 @@ traffic_policies:
             log: < true | false (default false) >
           # Last resort policy
           default_actions:
-            < ipv4 | ipv6 >:
+            ipv4:
+              dscp: < dscp code value >
+              traffic_class: < traffic class id >
+              count: < counter name >
+              drop: < true | false (default false) >
+              # Only supported when action is set to drop
+              log: < true | false (default false) >
+            ipv6:
               dscp: < dscp code value >
               traffic_class: < traffic class id >
               count: < counter name >
