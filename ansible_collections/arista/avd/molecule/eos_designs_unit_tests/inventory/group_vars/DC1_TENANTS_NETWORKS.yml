@@ -324,7 +324,6 @@ tenants:
             enabled: True
             ip_address_virtual: 10.3.50.1/24
   Tenant_D:
-    ipv6_routing: true
     mac_vrf_vni_base: 40000
     vrfs:
       Tenant_D_OP_Zone:
