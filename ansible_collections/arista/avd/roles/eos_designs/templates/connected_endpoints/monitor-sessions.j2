@@ -2,7 +2,7 @@
 {% if monitor_sessions_data | length > 0 %}
 monitor_sessions:
 {%     for sname, group in monitor_sessions_data | groupby("name") %}
-{%         set merged_settings = {} | combine(group, recursive=true, list_merge='append') %}
+{%         set merged_settings = {} | ansible.builtin.combine(group, recursive=true, list_merge='append') %}
   - name: {{ sname }}
     sources:
 {%         for session in group | selectattr('role', 'equalto', 'source') %}

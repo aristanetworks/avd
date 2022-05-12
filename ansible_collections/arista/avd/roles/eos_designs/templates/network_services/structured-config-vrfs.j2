@@ -3,7 +3,7 @@
 {% for tenant in network_services_data.tenants %}
 {%     for vrf in tenant.vrfs %}
 {%         if vrf.structured_config is arista.avd.defined %}
-{%             set ns.struct_cfg = ns.struct_cfg | combine(vrf.structured_config, recursive=true, list_merge=custom_structured_configuration_list_merge) %}
+{%             set ns.struct_cfg = ns.struct_cfg | ansible.builtin.combine(vrf.structured_config, recursive=true, list_merge=custom_structured_configuration_list_merge) %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}

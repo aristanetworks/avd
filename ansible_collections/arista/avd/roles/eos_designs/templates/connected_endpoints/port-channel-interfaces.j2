@@ -9,7 +9,7 @@ port_channel_interfaces:
 {%                     set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
 {%                 endif %}
 {%             endif %}
-{%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
+{%             set adapter_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
 {%             if adapter_settings.port_channel.mode is arista.avd.defined %}

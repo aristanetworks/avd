@@ -6,5 +6,5 @@
 {%         do tmp_hostvars.update({key: switch_hostvars[key]}) %}
 {%     endif %}
 {% endfor %}
-{% set merged_data_model = tmp_hostvars | combine(upgraded_data_model, recursive=true) %}
+{% set merged_data_model = tmp_hostvars | ansible.builtin.combine(upgraded_data_model, recursive=true) %}
 {{ merged_data_model | to_yaml }}

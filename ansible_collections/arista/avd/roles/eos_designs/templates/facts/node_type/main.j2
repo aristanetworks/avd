@@ -63,9 +63,9 @@ switch:
   mpls_ler: {{ ns.node_type_key_data.mpls_ler | arista.avd.default(false) }}
 
 {# switch.ip_addressing #}
-  ip_addressing: {{ templates.ip_addressing | combine(ns.node_type_key_data.ip_addressing | arista.avd.default({})) }}
+  ip_addressing: {{ templates.ip_addressing | ansible.builtin.combine(ns.node_type_key_data.ip_addressing | arista.avd.default({})) }}
 
 {# switch.interface_descriptions #}
-  interface_descriptions: {{ templates.interface_descriptions | combine(ns.node_type_key_data.interface_descriptions | arista.avd.default({})) }}
+  interface_descriptions: {{ templates.interface_descriptions | ansible.builtin.combine(ns.node_type_key_data.interface_descriptions | arista.avd.default({})) }}
 
 {% endif %}

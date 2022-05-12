@@ -17,4 +17,4 @@
 {% if switch_data.node is arista.avd.defined(fail_action='error',var_name=switch.node_type_key ~ '.(node_groups.)nodes.' ~ inventory_hostname) %}
 {%     set switch_data.defaults = node_type_vars.defaults | arista.avd.default() %}
 {% endif %}
-{% set switch_data.combined = switch_data.defaults | combine(switch_data.node_group, switch_data.node, recursive=true, list_merge='replace') %}
+{% set switch_data.combined = switch_data.defaults | ansible.builtin.combine(switch_data.node_group, switch_data.node, recursive=true, list_merge='replace') %}
