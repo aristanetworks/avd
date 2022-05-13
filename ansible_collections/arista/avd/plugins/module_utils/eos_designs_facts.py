@@ -810,7 +810,7 @@ class EosDesignsFacts:
     @cached_property
     def evpn_route_servers(self):
         '''
-        For evpn clients the default value for EVPN Route Servers is content of the uplink_switches variable set elsewhere.
+        For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.
         For all other evpn roles there is no default.
         '''
         if self.underlay_router is True:
@@ -1182,7 +1182,7 @@ class EosDesignsFacts:
         '''
         List of all uplink peers
 
-        This are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
+        These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         '''
         if self.uplinks is not None:
             return [uplink['peer'] for uplink in self.uplinks]
