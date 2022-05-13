@@ -12,14 +12,14 @@ timezone: < timezone >
 
 # Dictionary of local users | Required
 local_users:
-  < username_1 >:
+  - name: < username_1 >
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
     role: < Specify a role for the user >
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     sha512_password: "< SHA512 ENCRYPTED password >"
     ssh_key: "< ssh_key_string >"
 
-  < username_2 >:
+  - name: < username_2 >
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
     role: < Specify a role for the user >
     sha512_password: "< SHA512 ENCRYPTED password >"
@@ -82,7 +82,7 @@ Gives ability to monitor and react to Syslog messages provides a powerful and fl
 
 ```yaml
 event_handlers:
-  < event_handler_name >:
+  - name: < event_handler_name >
     action_type: < bash, increment >
     action: < Command to run when handler is triggered >
     delay: < int / delay in sec between 2 triggers >
@@ -95,7 +95,7 @@ event_handlers:
 
 ```yaml
 event_handlers:
-  evpn-blacklist-recovery:
+  - name: evpn-blacklist-recovery
     action_type: bash
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
