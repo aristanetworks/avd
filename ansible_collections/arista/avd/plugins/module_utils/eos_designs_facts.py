@@ -40,7 +40,7 @@ class EosDesignsFacts:
         The "_" check is added to allow support for "internal" cached_properties storing temporary values.
         '''
 
-        return [k for k in dir(cls) if not k.startswith('_') and isinstance(getattr(cls, k), cached_property)]
+        return [key for key in dir(cls) if not key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
 
     @classmethod
     def internal_keys(cls):
@@ -51,7 +51,7 @@ class EosDesignsFacts:
         The "_" check is added to only include "internal" cached_properties storing temporary values.
         '''
 
-        return [k for k in dir(cls) if k.startswith('_') and isinstance(getattr(cls, k), cached_property)]
+        return [key for key in dir(cls) if key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
 
     def get(self, key, default_value=None):
         '''
@@ -76,7 +76,7 @@ class EosDesignsFacts:
         If the value is not cached, it will be resolved by the attribute function first.
         Empty values are removed from the returned data.
         '''
-        return {k: getattr(self, k) for k in self.keys() if getattr(self, k) is not None}
+        return {key: getattr(self, key) for key in self.keys() if getattr(self, key) is not None}
 
     '''
     ------------------------------------------------
@@ -671,7 +671,7 @@ class EosDesignsFacts:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
+            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
             template_vars['switch_id'] = self.id
             template_vars['loopback_ipv4_pool'] = self.loopback_ipv4_pool
             template_vars['loopback_ipv4_offset'] = self.loopback_ipv4_offset
@@ -892,7 +892,7 @@ class EosDesignsFacts:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
+            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
             template_vars['switch_id'] = self.id
             template_vars['loopback_ipv6_pool'] = self.loopback_ipv6_pool
             template_vars['loopback_ipv6_offset'] = self.loopback_ipv6_offset
@@ -1066,7 +1066,7 @@ class EosDesignsFacts:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
+            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
             template_vars['switch_id'] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
@@ -1204,7 +1204,7 @@ class EosDesignsFacts:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
+            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
             template_vars['switch_id'] = self.id
             template_vars['switch_vtep_loopback_ipv4_pool'] = self.vtep_loopback_ipv4_pool
             template_vars['loopback_ipv4_offset'] = self.loopback_ipv4_offset
@@ -1237,7 +1237,7 @@ class EosDesignsFacts:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
+            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
             template_vars['switch_id'] = self.id
             template_vars['switch_data'] = {
                 "combined": {
@@ -1274,7 +1274,7 @@ class EosDesignsFacts:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {k: self.__dict__.get(k) for k in self.keys()}
+            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
             template_vars['switch_id'] = self.id
             template_vars['switch_data'] = {
                 "combined": {
