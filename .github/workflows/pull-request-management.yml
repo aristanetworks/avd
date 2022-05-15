@@ -126,7 +126,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8, 3.9 ]
+        python_version: [ 3.8, 3.9, 3.10 ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -305,7 +305,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8, 3.9 ]
+        python_version: [ 3.8, 3.9, 3.10 ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -331,7 +331,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8, 3.9 ]
+        python_version: [ 3.8, 3.9, 3.10 ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -357,7 +357,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8, 3.9 ]
+        python_version: [ 3.8, 3.9. 3.10 ]
     steps:
       - name: 'set environment variables'
         run: |
