@@ -7,7 +7,7 @@
 {%     if p2p_link.profile is arista.avd.defined and l3_edge.p2p_links_profiles is arista.avd.defined %}
 {%         set p2p_profile = l3_edge.p2p_links_profiles | arista.avd.default({}) |
                                                                       arista.avd.convert_dicts('name','<key>') |
-                                                                      selectattr('profile_name', 'arista.avd.defined', p2p_link.profile) |
+                                                                      selectattr('name', 'arista.avd.defined', p2p_link.profile) |
                                                                       first %}
 {%     else %}
 {%         set p2p_profile = {} %}
@@ -24,7 +24,7 @@
 {%         if ip_pool_name is arista.avd.defined and l3_edge.p2p_links_ip_pools is arista.avd.defined %}
 {%             set ip_pool = l3_edge.p2p_links_ip_pools | arista.avd.default({}) |
                                                                       arista.avd.convert_dicts('name','ip_address') |
-                                                                      selectattr('pool_name', 'arista.avd.defined', ip_pool_name) |
+                                                                      selectattr('name', 'arista.avd.defined', ip_pool_name) |
                                                                       first %}
 {%         endif %}
 {%         set subnet = p2p_link.subnet | arista.avd.default(
