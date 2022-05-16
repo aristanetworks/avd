@@ -1,21 +1,21 @@
 {% if event_handlers is defined and event_handlers is iterable %}
 event_handlers:
-{%     for handler in event_handlers %}
-  {{ handler }}:
-{%         if event_handlers[handler].action is defined and event_handlers[handler].action_type is defined %}
-    action_type: {{ event_handlers[handler].action_type }}
-    action: {{ event_handlers[handler].action }}
+{%     for handler in event_handlers | arista.avd.convert_dicts('name') %}
+  {{ handler.name }}:
+{%         if handler.action is defined and handler.action_type is defined %}
+    action_type: {{ handler.action_type }}
+    action: {{ handler.action }}
 {%         endif %}
-{%         if event_handlers[handler].delay is defined %}
-    delay: {{ event_handlers[handler].delay }}
+{%         if handler.delay is defined %}
+    delay: {{ handler.delay }}
 {%         endif %}
-{%         if event_handlers[handler].asynchronous is defined and event_handlers[handler].asynchronous == true %}
-    asynchronous: event_handlers[handler].asynchronous
+{%         if handler.asynchronous is defined and handler.asynchronous == true %}
+    asynchronous: handler.asynchronous
 {%         endif %}
-{%         if event_handlers[handler].trigger is defined %}
-    trigger: {{ event_handlers[handler].trigger }}
-{%             if event_handlers[handler].regex is defined %}
-    regex: {{ event_handlers[handler].regex }}
+{%         if handler.trigger is defined %}
+    trigger: {{ handler.trigger }}
+{%             if handler.regex is defined %}
+    regex: {{ handler.regex }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
