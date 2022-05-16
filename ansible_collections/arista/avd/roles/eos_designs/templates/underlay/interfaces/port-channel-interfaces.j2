@@ -1,8 +1,7 @@
 {# Underlay Port Channel interfaces #}
 {% set port_channel_list = [] %}
 port_channel_interfaces:
-{% for link_interface in underlay_data.links | arista.avd.natural_sort %}
-{%     set link = underlay_data.links[link_interface] %}
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
 {%     if link.type is arista.avd.defined('underlay_l2') and
           link.channel_group_id is arista.avd.defined and
           link.channel_group_id not in port_channel_list %}
@@ -14,7 +13,7 @@ port_channel_interfaces:
 {%         endif %}
     type: switched
     shutdown: false
-    vlans: {{ link.vlans | arista.avd.list_compress }}
+    vlans: {{ link.vlans }}
     mode: trunk
 {%         if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}

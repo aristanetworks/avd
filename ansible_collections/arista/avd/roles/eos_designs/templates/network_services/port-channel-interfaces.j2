@@ -4,8 +4,8 @@
 port_channel_interfaces:
 {% set point_to_point_service_subif_parents = [] %}
 {# pseudowire interfaces #}
-{% for tenant in switch.tenants | arista.avd.natural_sort %}
-{%     for point_to_point_service in tenants[tenant].point_to_point_services | arista.avd.default([]) %}
+{% for tenant in network_services_data.tenants | arista.avd.natural_sort('name') %}
+{%     for point_to_point_service in tenant.point_to_point_services | arista.avd.default([]) %}
 {%         for endpoint in point_to_point_service.endpoints %}
 {%             if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
 {%                 set pw_interface = namespace() %}
