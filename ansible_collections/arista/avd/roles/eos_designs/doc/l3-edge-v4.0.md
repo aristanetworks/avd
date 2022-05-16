@@ -10,10 +10,11 @@ Make sure to configure the variables in a group_vars file covering all devices m
 ```yaml
 l3_edge:
   p2p_links_ip_pools:
-    < p2p_pool_name_1 >: < IPv4_address/Mask >
+    - name: < p2p_pool_name_1 >
+      ipv4_pool: < IPv4_address/Mask >
   p2p_links_profiles:
-    < p2p_profile_name >:
-      < any variable supported under p2p_links can be inherited from a profile >
+    - name: < p2p_profile_name >
+      # any setting supported under p2p_links can be set and inherited from profile
   p2p_links:
       # Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
     - id: < integer - starting from 1 >
