@@ -410,9 +410,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         timeout-minutes: 2
-      - name: Setup J2Lint
+      - name: Setup J2Lint and requirements
         timeout-minutes: 2
         run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
           pip install git+https://github.com/aristanetworks/j2lint.git
       - name: Run J2lint
         timeout-minutes: 2
