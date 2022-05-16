@@ -23,7 +23,7 @@
                               p2p_profile.ip_pool) %}
 {%         if ip_pool_name is arista.avd.defined and l3_edge.p2p_links_ip_pools is arista.avd.defined %}
 {%             set ip_pool = l3_edge.p2p_links_ip_pools | arista.avd.default({}) |
-                                                                      arista.avd.convert_dicts('name','ip_address') |
+                                                                      arista.avd.convert_dicts('name','ipv4_pool') |
                                                                       selectattr('name', 'arista.avd.defined', ip_pool_name) |
                                                                       first %}
 {%         endif %}
@@ -54,8 +54,8 @@
 {%         elif ip_pool is arista.avd.defined %}
 {%             set link_id = p2p_link.id | arista.avd.default(
                              p2p_profile.id) %}
-{%             set p2p_interface.ip_address = ip_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
-{%             set p2p_interface.peer_ip = ip_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath((link_id - 1) * 2 + peer_index) %}
+{%             set p2p_interface.ip_address = ip_pool.ipv4_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
+{%             set p2p_interface.peer_ip = ip_pool.ipv4_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath((link_id - 1) * 2 + peer_index) %}
 {%         endif %}
 {%         set p2p_interface.mtu = p2p_link.mtu | arista.avd.default(
                                    p2p_profile.mtu,
