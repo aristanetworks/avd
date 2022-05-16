@@ -1,0 +1,72 @@
+Tenant_D:
+  mac_vrf_vni_base: 40000
+  vrfs:
+    Tenant_D_OP_Zone:
+      vrf_vni: 40
+      enable_mlag_ibgp_peering_vrfs: true
+      mlag_ibgp_peering_vlan: 2
+      svis:
+        410:
+          name: Tenant_D_v6_OP_Zone_1
+          tags: ['v6opzone']
+          enabled: True
+          ip_address_virtual: 10.3.10.1/24
+          ipv6_address_virtual: 2001:db8:310::1/64
+          ipv6_address_virtual_secondaries:
+            - 2001:db8:311::1/64
+            - 2001:db8:312::1/64
+        411:
+          name: Tenant_D_v6_OP_Zone_2
+          tags: ['v6opzone']
+          enabled: True
+          ip_virtual_router_addresses: [ 10.3.11.1/24 ]
+          ipv6_virtual_router_addresses: [ "2001:db8:311::1/64" ]
+          nodes:
+            DC1-LEAF2A:
+              ip_address: 10.3.11.2/24
+              ipv6_address: 2001:db8:311::2/64
+            DC1-LEAF2B:
+              ip_address: 10.3.11.3/24
+              ipv6_address: 2001:db8:311::3/64
+        412:
+          name: Tenant_D_v6_OP_Zone_1
+          tags: ['v6opzone']
+          enabled: True
+          profile: GENERIC_DUAL_STACK
+      static_routes:
+        - destination_address_prefix: 0.0.0.0/0
+          gateway: "10.3.11.4"
+          nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+      ipv6_static_routes:
+        - destination_address_prefix: ::/0
+          gateway: 2001:db8:311::4
+          name: IPv6-test-2
+          nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+        - destination_address_prefix: 2001:db8::/32
+          gateway: 2001:db8:310::1
+          name: IPv6-test
+          nodes: [ DC1-LEAF1A ]
+        - destination_address_prefix: 2001:db9::/32
+          gateway: 2001:db8:310::1
+          name: IPv6-test-1
+          nodes: [ DC1-LEAF1A ]
+    Tenant_D_WAN_Zone:
+      ipv6_routing: false
+      vrf_vni: 41
+      svis:
+        450:
+          name: Tenant_D_v6_WAN_Zone_1
+          tags: ['v6wan']
+          enabled: True
+          ipv6_address: 2001:db8:350::1/64
+          ipv6_address_virtual: 2001:db8:355::1/64
+        451:
+          name: Tenant_D_v6_WAN_Zone_2
+          tags: ['v6wan']
+          enabled: True
+          profile: GENERIC_FULL_V6
+        452:
+          name: Tenant_D_v6_WAN_Zone_3
+          tags: ['v6wan']
+          enabled: True
+          profile: GENERIC_DUAL_STACK

@@ -4,11 +4,10 @@ router_ospf:
       passive_interface_default: true
       router_id: {{ switch.router_id }}
       no_passive_interfaces:
-{% for link_interface in underlay_data.links | arista.avd.natural_sort %}
-{%     set link = underlay_data.links[link_interface] %}
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
 {# L3 P2P interfaces #}
 {%     if link.type is arista.avd.defined('underlay_p2p') %}
-        - {{ link_interface }}
+        - {{ link.interface }}
 {%     endif %}
 {% endfor %}
 {% if switch.mlag_l3 is arista.avd.defined(true) %}

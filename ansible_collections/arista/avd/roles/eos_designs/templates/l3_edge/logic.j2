@@ -32,7 +32,7 @@
 {%         set p2p_interface.peer = nodes[peer_index] %}
 {%         set p2p_interface.peer_interface = interfaces[peer_index] %}
 {%         if p2p_interface.peer in groups[fabric_name] %}
-{%             set p2p_interface.peer_type = hostvars[p2p_interface.peer].type | arista.avd.default("other") %}
+{%             set p2p_interface.peer_type = avd_switch_facts[p2p_interface.peer].switch.type | arista.avd.default("other") %}
 {%         else %}
 {%             set p2p_interface.peer_type = "other" %}
 {%         endif %}

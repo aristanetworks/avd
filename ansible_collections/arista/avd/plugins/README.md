@@ -13,6 +13,7 @@
       - [generate_lacp_id filter](#generate_lacp_id-filter)
       - [generate_route_target filter](#generate_route_target-filter)
     - [add_md_toc filter](#add_md_toc-filter)
+    - [range_expand filter](#range_expand-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
     - [contains test](#contains-test)
@@ -20,6 +21,7 @@
     - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
     - [Build Configuration to publish configlets to CloudVision](#build-configuration-to-publish-configlets-to-cloudvision)
     - [YAML Templates to Facts](#yaml-templates-to-facts)
+    - [EOS Designs Facts](#eos-designs-facts)
 
 ## Plugin Filters
 
@@ -455,7 +457,7 @@ The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin prov
 - Returned Facts can be set below a specific `root_key`
 - Facts returned templates can be stripped for `null` values to avoid them overwriting previous set facts
 
-The module is used in `eos_designs` first to set facts for devices and then to set the `structured_configuration` variable based on all the `eos_designs` templates.
+The module is used in `eos_designs` to generate the `structured_configuration` based on all the `eos_designs` templates.
 
 The module arguments are:
 
@@ -466,18 +468,26 @@ The module arguments are:
         # Path to template file
       - template: "< template file >"
         options:
+
           # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
           list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
+
           # Filter out keys from the generated output if value is null/none/undefined
           strip_empty_keys: < true (default) | false >
+
     # Output list 'avd_yaml_templates_to_facts_debug' with timestamps of each performed action.
     debug: < true | false (default) >
+
     # Destination path. If set, the output facts will also be written to this path.
     # Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     dest: < path >
+
     # If true the output data will be run through another jinja2 rendering before returning.
     # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     template_output: < true | false (default) >
+
+    # Export cProfile data to a file ex. "eos_designs_structured_config-{{inventory_hostname}}"
+    cprofile_file: < filename >
 ```
 
 **example:**
@@ -538,4 +548,79 @@ templates:
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
+```
+
+### EOS Designs Facts
+
+The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+
+- Set `avd_switch_facts` fact containing both `switch` facts per host.
+- Set `avd_topology_peers` fact containing list of downlink switches per host.
+  This list is built based on the `uplink_switches` from all other hosts.
+- Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
+  This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+- The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices,
+  so all devices can lookup values of any other device without using the slower `hostvars`.
+- The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
+
+The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
+in `arista.avd.eos_designs` to generate the `structured_configuration`.
+
+The module arguments are:
+
+```yaml
+- eos_designs_facts:
+    # Calculate and set 'avd_switch_facts.<devices>.switch', 'avd_overlay_peers' and 'avd_topology_peers' facts
+    avd_switch_facts: < True | False >
+
+    # Export cProfile data to a file ex. "eos_designs_facts-{{inventory_hostname}}.prof"
+    cprofile_file: < filename >
+```
+
+The output data model is:
+
+```yaml
+ansible_facts:
+  avd_switch_facts:
+    <switch_1>:
+      switch:
+        < switch.* facts used by eos_designs >
+    <switch_2>:
+      ...
+  avd_topology_peers:
+    <uplink_switch_1>:
+      - <downlink_switch_1>
+      - <downlink_switch_2>
+      - <downlink_switch_3>
+    <uplink_switch_1>:
+      ...
+  avd_overlay_peers:
+    <route_server_1>:
+      - <route_server_client_1>
+      - <route_server_client_2>
+      - <route_server_client_3>
+    <route_server_2>:
+      - <route_server_client_1>
+      - <route_server_client_2>
+      - <route_server_client_3>
+```
+
+The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `--tags facts,debug`.
+
+**example playbook:**
+
+```yaml
+- name: Set eos_designs facts
+  tags: [build, provision, facts]
+  arista.avd.eos_designs_facts:
+    avd_switch_facts: True
+  check_mode: False
+  run_once: True
+
+- name: Set eos_designs facts per device
+  tags: [build, provision, facts]
+  ansible.builtin.set_fact:
+    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
+  delegate_to: localhost
+  changed_when: False
 ```

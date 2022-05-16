@@ -5,8 +5,8 @@
 {% set avd_topology_peers = avd_topology_peers[inventory_hostname] | arista.avd.default([]) %}
 
 {% for peer in avd_topology_peers %}
-{%     set peer_facts = hostvars[peer] %}
-{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ peer) %}
+{%     set peer_facts = avd_switch_facts[peer] %}
+{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ peer ~ '].switch') %}
 {%         if inventory_hostname in peer_facts.switch.inband_management_parents | arista.avd.default([]) %}
 {%             set inband_management_data.role = 'parent' %}
 {%             if peer_facts.switch.inband_management_subnet not in inband_management_data.subnets %}

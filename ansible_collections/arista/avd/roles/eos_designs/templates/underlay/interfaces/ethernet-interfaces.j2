@@ -1,10 +1,9 @@
 {# Underlay P2P interfaces #}
 ethernet_interfaces:
-{% for link_interface in underlay_data.links | arista.avd.natural_sort %}
-{%     set link = underlay_data.links[link_interface] %}
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
 {# L3 P2P interfaces #}
 {%     if link.type is arista.avd.defined('underlay_p2p') %}
-  {{ link_interface }}:
+  {{ link.interface }}:
     peer: {{ link.peer }}
     peer_interface: {{ link.peer_interface }}
     peer_type: {{ link.peer_type }}
@@ -17,8 +16,7 @@ ethernet_interfaces:
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%         endif %}
 {%         if link.ptp is arista.avd.defined %}
-    ptp:
-      enable: {{ link.ptp }}
+    ptp: {{ link.ptp }}
 {%         endif %}
 {%         if link.mac_security is arista.avd.defined %}
     mac_security: {{ link.mac_security }}
@@ -57,7 +55,7 @@ ethernet_interfaces:
 {%         endif %}
 {# L2 interfaces #}
 {%     elif link.type is arista.avd.defined('underlay_l2') %}
-  {{ link_interface }}:
+  {{ link.interface }}:
     peer: {{ link.peer }}
     peer_interface: {{ link.peer_interface }}
     peer_type: {{ link.peer_type }}
