@@ -126,7 +126,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8, 3.9 ]
+        python_version: [ "3.8", "3.9", "3.10" ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -296,8 +296,8 @@ jobs:
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #
-  ansible_test:
-    name: Run ansible-test validation
+  ansible_test_sanity:
+    name: Run ansible-test sanity validation
     runs-on: ubuntu-20.04
     needs: [ ]
     #needs: [ molecule_eos_designs, molecule_cloudvision ]
@@ -305,7 +305,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8 ]
+        python_version: [ "3.8", "3.9", "3.10" ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -319,11 +319,65 @@ jobs:
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'ansible-test sanity'
+      - name: 'run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
           ansible-test sanity --color yes -v --requirements --docker --python ${{ matrix.python_version }}
 
+  ansible_test_units:
+    name: Run ansible-test units test cases
+    runs-on: ubuntu-20.04
+    needs: [ ]
+    strategy:
+      fail-fast: true
+      matrix:
+        python_version: [ "3.8", "3.9", "3.10" ]
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: 'Install Python requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+      - name: 'run ansible-test units test cases'
+        run: |
+          cd ansible_collections/arista/avd/
+          ansible-test units --requirements --docker --python ${{ matrix.python_version }} -vv
+
+  ansible_test_integration:
+    name: Run ansible-test intergration test cases
+    runs-on: ubuntu-20.04
+    needs: [ ]
+    strategy:
+      fail-fast: true
+      matrix:
+        python_version: [ "3.8", "3.9", "3.10" ]
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: 'Install Python requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+      - name: 'run ansible-test integration test cases'
+        run: |
+          cd ansible_collections/arista/avd/
+          ansible-test integration --requirements --docker --python ${{ matrix.python_version }} -vv
+  # ----------------------------------- #
+  # Galaxy Importer
+  # ----------------------------------- #
   galaxy_importer:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
@@ -343,7 +397,7 @@ jobs:
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'build ansible package'
         run: make collection-build
-      - name: 'run ansible-importer checks'
+      - name: 'run galaxy-importer checks'
         run: python -m galaxy_importer.main *.tar.gz
       - uses: actions/upload-artifact@v2
         with:

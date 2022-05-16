@@ -20,13 +20,17 @@ bgp_peer_groups:
     name: MLAG-PEERS
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
+# test with inline jinja2
+spine_platform: "7050SX3"
+spine_bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+
 # Spine Switches
 spine:
   defaults:
-    platform: 7050SX3
+    platform: "{{ spine_platform }}"
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: "{{ spine_bgp_defaults }}"
   nodes:
     DC1-SPINE1:
       id: 1
