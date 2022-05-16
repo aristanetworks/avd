@@ -14,6 +14,7 @@
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
   - [SFlow](#sflow)
+  - [Event Handler](#event-handler)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [Spanning Tree](#spanning-tree)
@@ -215,6 +216,25 @@ sFlow is disabled.
 sflow vrf OOB destination 10.0.200.90
 sflow vrf OOB destination 192.168.200.10
 sflow vrf OOB source-interface Management1
+```
+
+## Event Handler
+
+### Event Handler Summary
+
+| Handler | Action Type | Action | Trigger |
+| ------- | ----------- | ------ | ------- |
+| evpn-blacklist-recovery | bash | FastCli -p 15 -c "clear bgp evpn host-flap" | on-logging |
+
+### Event Handler Device Configuration
+
+```eos
+!
+event-handler evpn-blacklist-recovery
+   trigger on-logging
+      regex EVPN-3-BLACKLISTED_DUPLICATE_MAC
+   action bash FastCli -p 15 -c "clear bgp evpn host-flap"
+   delay 300
 ```
 
 # Hardware TCAM Profile
