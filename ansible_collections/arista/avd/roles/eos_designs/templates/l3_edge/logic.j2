@@ -6,7 +6,7 @@
 {% for p2p_link in l3_edge.p2p_links | arista.avd.natural_sort %}
 {%     if p2p_link.profile is arista.avd.defined and l3_edge.p2p_links_profiles is arista.avd.defined %}
 {%         set p2p_profile = l3_edge.p2p_links_profiles | arista.avd.default({}) |
-                                                                      arista.avd.convert_dicts('name','<key>') |
+                                                                      arista.avd.convert_dicts('name') |
                                                                       selectattr('name', 'arista.avd.defined', p2p_link.profile) |
                                                                       first %}
 {%     else %}
