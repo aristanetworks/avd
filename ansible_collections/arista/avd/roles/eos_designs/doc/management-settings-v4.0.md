@@ -82,7 +82,7 @@ Gives ability to monitor and react to Syslog messages provides a powerful and fl
 
 ```yaml
 event_handlers:
-  - name: < event_handler_name >
+  < event_handler_name >:
     action_type: < bash, increment >
     action: < Command to run when handler is triggered >
     delay: < int / delay in sec between 2 triggers >
@@ -95,7 +95,7 @@ event_handlers:
 
 ```yaml
 event_handlers:
-  - name: evpn-blacklist-recovery
+  evpn-blacklist-recovery:
     action_type: bash
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
