@@ -1,6 +1,6 @@
 # Fabric node type keys
 node_type_keys:
-  core_router:
+  - name: core_router
     type: core_router
     default_evpn_role: none
     mpls_lsr: true
