@@ -1,20 +1,20 @@
 {# Leaf connected_endpoint interfaces #}
 ethernet_interfaces:
 {% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
-{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.convert_dicts('endpoint') | arista.avd.natural_sort %}
-{%         for adapter in connected_endpoint.adapters %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
 {%             if adapter.profile is arista.avd.defined %}
 {%                 set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
 {%                 if adapter_profile.parent_profile is arista.avd.defined %}
 {%                     set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
 {%                 endif %}
 {%             endif %}
-{%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
+{%             set adapter_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
 {%             set endpoint_ports = adapter_settings.endpoint_ports | arista.avd.default(adapter_settings.server_ports) %}
 {%             set peer_type = connected_endpoints_keys[endpoint_key].type %}
-{%             set peer = connected_endpoint.endpoint %}
+{%             set peer = connected_endpoint %}
 {%             for adapter_switch in adapter_settings.switches %}
 {%                 if adapter_switch == inventory_hostname %}
 {%                     if adapter_settings.monitor_sessions is arista.avd.defined and adapter_settings.port_channel.mode is not arista.avd.defined %}

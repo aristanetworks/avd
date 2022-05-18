@@ -1,15 +1,15 @@
 {# Leaf server port-channels #}
 port_channel_interfaces:
 {% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
-{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.convert_dicts('endpoint') | arista.avd.natural_sort %}
-{%         for adapter in connected_endpoint.adapters %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
 {%             if adapter.profile is arista.avd.defined %}
 {%                 set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
 {%                 if adapter_profile.parent_profile is arista.avd.defined %}
 {%                     set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
 {%                 endif %}
 {%             endif %}
-{%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
+{%             set adapter_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
 {%             if adapter_settings.port_channel.mode is arista.avd.defined %}
@@ -24,7 +24,7 @@ port_channel_interfaces:
 {%                             endfor %}
 {%                         endif %}
   Port-Channel{{ channel_group_id }}:
-{%                         set peer = connected_endpoint.endpoint %}
+{%                         set peer = connected_endpoint %}
     description: "{% include switch.interface_descriptions.connected_endpoints_port_channel_interfaces %}"
 {%                         if adapter_settings.port_channel.subinterfaces is arista.avd.defined %}
 {%                             set po_type = "routed" %}
