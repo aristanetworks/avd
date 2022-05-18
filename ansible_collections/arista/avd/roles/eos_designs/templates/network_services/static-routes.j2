@@ -31,7 +31,10 @@ ipv6_static_routes:
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%             if svi.profile is arista.avd.defined %}
-{%                 set svi_profile = svi_profiles[svi.profile] | arista.avd.default() %}
+{%                 set svi_profile = svi_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi.profile) |
+                                                                      first %}
 {%             endif %}
 {%             set svi_varpv6 = svi.ipv6_virtual_router_addresses | arista.avd.default(
                               svi_profile.ipv6_virtual_router_addresses) %}
@@ -81,7 +84,10 @@ static_routes:
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%             if svi.profile is arista.avd.defined %}
-{%                 set svi_profile = svi_profiles[svi.profile] | arista.avd.default() %}
+{%                 set svi_profile = svi_profiles | arista.avd.default() |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi.profile) |
+                                                                      first %}
 {%             endif %}
 {%             set svi_varp = svi.ip_virtual_router_addresses | arista.avd.default(
                               svi_profile.ip_virtual_router_addresses) %}

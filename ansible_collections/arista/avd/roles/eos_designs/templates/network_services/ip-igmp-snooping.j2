@@ -13,10 +13,13 @@ ip_igmp_snooping:
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                 if svi.profile is arista.avd.defined %}
-{%                     set svi_profile = svi_profiles[svi.profile] | arista.avd.default() %}
+{%                     set svi_profile = svi_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi.profile) |
+                                                                      first %}
 {%                 endif %}
 {%                 if svi_profile.parent_profile is arista.avd.defined %}
-{%                     set parent_profile = svi_profiles[svi_profile.parent_profile] | arista.avd.default({}) %}
+{%                     set parent_profile = svi_profile.parent_profile | arista.avd.default({}) %}
 {%                 endif %}
 {%                 set svi_igmp_snooping_enabled = svi.igmp_snooping_enabled | arista.avd.default(
                                                    svi_profile.igmp_snooping_enabled,

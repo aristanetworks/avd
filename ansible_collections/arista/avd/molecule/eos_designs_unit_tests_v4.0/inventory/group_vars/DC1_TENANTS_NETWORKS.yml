@@ -2,38 +2,38 @@
 # Documentation of Tenant specific information - Vlans/VRFs
 # SVI Profile
 svi_profiles:
-  GENERIC:
+  - profile: GENERIC
     mtu: 1560
     enabled: true
-  GENERIC_FULL:
+  - profile: GENERIC_FULL
     name: GENERIC Name
     mtu: 1560
     enabled: false
     ip_address_virtual: 10.1.10.254/24
-  GENERIC_DHCP:
+  - profile: GENERIC_DHCP
     mtu: 1560
     enabled: false
     ip_helpers:
-      2.2.2.2:
+      - helper_address: 2.2.2.2
         source_interface: lo101
         source_vrf: MGMT
-  WITH_NO_MTU:
+  - profile: WITH_NO_MTU
     enabled: true
-  WITH_DHCP_AND_SNOOPING:
+  - profile: WITH_DHCP_AND_SNOOPING
     enabled: true
     ip_address_virtual: 10.1.11.254/24
     igmp_snooping_enabled: false
     ip_helpers:
-      1.1.1.1:
+      - helper_address: 1.1.1.1
         source_interface: lo100
         source_vrf: TEST
-  WITH_DHCP:
+  - profile: WITH_DHCP
     enabled: true
     ip_helpers:
-      1.1.1.1:
+      - helper_address: 1.1.1.1
         source_interface: lo100
         source_vrf: MGMT
-  DERIVED_DHCP:
+  - profile: DERIVED_DHCP
     parent_profile: GENERIC_DHCP
     enabled: true
 
@@ -65,7 +65,7 @@ tenants:
             enabled: True
             ip_address_virtual: 10.1.11.1/24
             ip_helpers:
-              1.1.1.1:
+              - helper_address: 1.1.1.1
                 source_interface: lo100
                 source_vrf: MGMT
           # SVI using a nested svi_profile
