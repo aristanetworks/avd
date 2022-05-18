@@ -97,7 +97,7 @@ port_profiles:
       mode: active
 
 servers:
-  - endpoint: server01_MLAG
+  - name: server01_MLAG
     rack: RackB
     adapters:
       - server_ports: [ Eth2, Eth3 ]
@@ -110,7 +110,7 @@ servers:
         spanning_tree_bpdufilter: disabled
         spanning_tree_bpduguard: disabled
 
-  - endpoint: server01_MTU_PROFILE_MLAG
+  - name: server01_MTU_PROFILE_MLAG
     rack: RackB
     adapters:
       - server_ports: [ Eth4, Eth5 ]
@@ -123,7 +123,7 @@ servers:
         spanning_tree_bpdufilter: enabled
         spanning_tree_bpduguard: enabled
 
-  - endpoint: server01_MTU_ADAPTOR_MLAG
+  - name: server01_MTU_ADAPTOR_MLAG
     rack: RackB
     adapters:
       - server_ports: [ Eth6, Eth7 ]
@@ -136,7 +136,7 @@ servers:
         spanning_tree_bpdufilter: true
         spanning_tree_bpduguard: true
 
-  - endpoint: server02_SINGLE_NODE_TRUNK
+  - name: server02_SINGLE_NODE_TRUNK
     rack: RackB
     adapters:
       - server_ports: [ Eth1 ]
@@ -146,7 +146,7 @@ servers:
         spanning_tree_bpdufilter: false
         spanning_tree_bpduguard: false
 
-  - endpoint: server02_SINGLE_NODE
+  - name: server02_SINGLE_NODE
     rack: RackB
     adapters:
       - server_ports: [ Eth1 ]
@@ -154,7 +154,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: TENANT_A
 
-  - endpoint: server03_ESI
+  - name: server03_ESI
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -166,14 +166,14 @@ servers:
           mode: active
           esi: '0303:0202:0101'
 
-  - endpoint: server04_inherit_all_from_profile
+  - name: server04_inherit_all_from_profile
     rack: RackC
     adapters:
       - switch_ports: [ Ethernet11, Ethernet11 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY
 
-  - endpoint: server05_no_profile
+  - name: server05_no_profile
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -198,7 +198,7 @@ servers:
             level: 2
             unit: percent
 
-  - endpoint: server06_override_profile
+  - name: server06_override_profile
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -224,7 +224,7 @@ servers:
             level: 2
             unit: percent
 
-  - endpoint: server07_inherit_all_from_profile_port_channel
+  - name: server07_inherit_all_from_profile_port_channel
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -232,7 +232,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
 
-  - endpoint: server08_no_profile_port_channel
+  - name: server08_no_profile_port_channel
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -260,7 +260,7 @@ servers:
           description: server08_no_profile_port_channel
           mode: 'on'
 
-  - endpoint: server09_override_profile_no_port_channel
+  - name: server09_override_profile_no_port_channel
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -287,7 +287,7 @@ servers:
             unit: percent
         port_channel: null   #Setting to null, to override port-channel inherited from profile
 
-  - endpoint: server10_no_profile_port_channel_lacp_fallback
+  - name: server10_no_profile_port_channel_lacp_fallback
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -317,7 +317,7 @@ servers:
           lacp_fallback:
             mode: static
 
-  - endpoint: server11_inherit_profile_port_channel_lacp_fallback
+  - name: server11_inherit_profile_port_channel_lacp_fallback
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -325,7 +325,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
 
-  - endpoint: server12_inherit_nested_profile_port_channel_lacp_fallback
+  - name: server12_inherit_nested_profile_port_channel_lacp_fallback
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -333,7 +333,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: NESTED_PORT_PROFILE
 
-  - endpoint: server13_disabled_interfaces
+  - name: server13_disabled_interfaces
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -342,7 +342,7 @@ servers:
         profile: TENANT_A
         enabled: false
 
-  - endpoint: server14_explicitly_enabled_interfaces
+  - name: server14_explicitly_enabled_interfaces
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -351,7 +351,7 @@ servers:
         profile: TENANT_A
         enabled: true
 
-  - endpoint: server15_port_channel_with_disabled_phy_interfaces
+  - name: server15_port_channel_with_disabled_phy_interfaces
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -364,7 +364,7 @@ servers:
           mode: active
           enabled: true
 
-  - endpoint: server16_port_channel_with_disabled_port_channel
+  - name: server16_port_channel_with_disabled_port_channel
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -376,7 +376,7 @@ servers:
           mode: active
           enabled: false
 
-  - endpoint: server17_port_channel_with_disabled_phy_and_po_interfaces
+  - name: server17_port_channel_with_disabled_phy_and_po_interfaces
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -389,7 +389,7 @@ servers:
           mode: active
           enabled: false
 
-  - endpoint: server18_monitoring_session_source_phys_interfaces
+  - name: server18_monitoring_session_source_phys_interfaces
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -410,7 +410,7 @@ servers:
             source_settings:
               direction: tx
 
-  - endpoint: server18_monitoring_session_source_po
+  - name: server18_monitoring_session_source_po
     rack: RackC
     adapters:
       - server_ports: [ Eth3, Eth4 ]
@@ -432,7 +432,7 @@ servers:
                 name: MyMacACL
                 priority: 5
 
-  - endpoint: server18_monitoring_session_source_phys_interface
+  - name: server18_monitoring_session_source_phys_interface
     rack: RackC
     adapters:
       - server_ports: [ Eth5 ]
@@ -450,7 +450,7 @@ servers:
                 name: MyMacACL
                 priority: 5
 
-  - endpoint: server19_monitoring_session_destination_phys
+  - name: server19_monitoring_session_destination_phys
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -472,7 +472,7 @@ servers:
                 enabled: true
                 size: 20
 
-  - endpoint: server20_monitoring_session_destination_phys
+  - name: server20_monitoring_session_destination_phys
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -494,7 +494,7 @@ servers:
                 enabled: true
                 size: 20
 
-  - endpoint: server21_monitoring_session_destination_po
+  - name: server21_monitoring_session_destination_po
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -511,7 +511,7 @@ servers:
             role: destination
 
 firewalls:
-  - endpoint: FIREWALL01
+  - name: FIREWALL01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -524,7 +524,7 @@ firewalls:
 
 
 routers:
-  - endpoint: ROUTER01
+  - name: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]

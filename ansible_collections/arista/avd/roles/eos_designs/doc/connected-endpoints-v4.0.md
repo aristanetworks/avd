@@ -85,7 +85,7 @@ port_profiles:
 < connected_endpoints_keys.key >:
 
   # Endpoint name, this will be used in the switchport description
-  - endpoint: < endpoint_1 >
+  - name: < endpoint_1 >
 
     # rack is used for documentation purposes only
     rack: < rack_id >
@@ -235,7 +235,7 @@ port_profiles:
           # Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
           structured_config: < dictionary >
 
-  - endpoint: < endpoint_2 >
+  - name: < endpoint_2 >
     rack: RackC
     adapters:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >

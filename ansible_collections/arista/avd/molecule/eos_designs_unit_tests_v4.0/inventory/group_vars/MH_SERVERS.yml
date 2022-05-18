@@ -15,7 +15,7 @@ port_profiles:
 
 servers:
   # Connected to MH_L3LEAF1
-  - endpoint: server01_ES1
+  - name: server01_ES1
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -27,7 +27,7 @@ servers:
           mode: active
           short_esi: 0001:1010:1010
 
-  - endpoint: server02
+  - name: server02
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -37,7 +37,7 @@ servers:
           enabled: true
           name: l2leaf-server02
 
-  - endpoint: server03_AUTO_ESI
+  - name: server03_AUTO_ESI
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -50,7 +50,7 @@ servers:
           short_esi: auto
 
 routers:
-  - endpoint: ROUTER01
+  - name: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -58,7 +58,7 @@ routers:
         switches: [ MH-LEAF2A ]
         profile: Tenant_X_LT
 
-  - endpoint: ROUTER02_WITH_SUBIF
+  - name: ROUTER02_WITH_SUBIF
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet11, Ethernet11 ]
