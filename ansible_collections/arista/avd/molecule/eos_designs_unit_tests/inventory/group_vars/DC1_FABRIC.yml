@@ -114,6 +114,7 @@ l3leaf:
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
+      mlag_port_channel_id: 2000
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]

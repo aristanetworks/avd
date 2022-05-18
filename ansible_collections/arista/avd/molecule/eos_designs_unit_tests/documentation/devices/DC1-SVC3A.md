@@ -272,7 +272,7 @@ monitor session MonitoringSessionServer18WithDest truncate size 20
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_SVC3 | Vlan4092 | 10.255.252.7 | Port-Channel5 |
+| DC1_SVC3 | Vlan4092 | 10.255.252.7 | Port-Channel2000 |
 
 Dual primary detection is disabled.
 
@@ -284,7 +284,7 @@ mlag configuration
    domain-id DC1_SVC3
    local-interface Vlan4092
    peer-address 10.255.252.7
-   peer-link Port-Channel5
+   peer-link Port-Channel2000
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```
@@ -481,8 +481,8 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *1-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *1-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *1-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 2000 |
+| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *1-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 2000 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
@@ -558,13 +558,13 @@ interface Ethernet5
    description MLAG_PEER_DC1-SVC3B_Ethernet5
    no shutdown
    speed 100g
-   channel-group 5 mode active
+   channel-group 2000 mode active
 !
 interface Ethernet6
    description MLAG_PEER_DC1-SVC3B_Ethernet6
    no shutdown
    speed 100g
-   channel-group 5 mode active
+   channel-group 2000 mode active
 !
 interface Ethernet7
    description DC1-L2LEAF2A_Ethernet1
@@ -740,7 +740,6 @@ interface Ethernet42
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | 1-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 10 | - |
 | Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
@@ -753,19 +752,11 @@ interface Ethernet42
 | Port-Channel24 | server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces | switched | access | 110 | - | - | - | - | 24 | - |
 | Port-Channel27 | server18_monitoring_session_source_po_server18_monitoring_session_source_po | switched | access | 110 | - | - | - | - | 27 | - |
 | Port-Channel42 | server21_monitoring_session_destination_po_server21_monitoring_session_destination_po | switched | access | 110 | - | - | - | - | 42 | - |
+| Port-Channel2000 | MLAG_PEER_DC1-SVC3B_Po2000 | switched | trunk | 1-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
-!
-interface Port-Channel5
-   description MLAG_PEER_DC1-SVC3B_Po5
-   no shutdown
-   switchport
-   switchport trunk allowed vlan 1-4094
-   switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
-   switchport trunk group MLAG
 !
 interface Port-Channel7
    description DC1_L2LEAF2_Po1
@@ -898,6 +889,15 @@ interface Port-Channel42
    switchport
    switchport access vlan 110
    mlag 42
+!
+interface Port-Channel2000
+   description MLAG_PEER_DC1-SVC3B_Po2000
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   switchport trunk group LEAF_PEER_L3
+   switchport trunk group MLAG
 ```
 
 ## Loopback Interfaces
