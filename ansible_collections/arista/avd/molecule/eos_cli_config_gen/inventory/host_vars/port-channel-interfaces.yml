@@ -459,7 +459,10 @@ ethernet_interfaces:
       mode: active
 
   Ethernet11/1:
-    description: LAG Member
+    description: LAG Member with error_correction
+    error_correction_encoding:
+      fire_code: true
+      reed_solomon: true
     channel_group:
       id: 111
       mode: active
