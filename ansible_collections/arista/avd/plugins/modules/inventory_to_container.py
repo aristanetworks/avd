@@ -97,11 +97,9 @@ import os
 import traceback
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.errors import AnsibleValidationError
-
 TREELIB_IMP_ERR = None
 try:
     from treelib import Tree
-
     HAS_TREELIB = True
 except ImportError:
     HAS_TREELIB = False
@@ -109,7 +107,6 @@ except ImportError:
 YAML_IMP_ERR = None
 try:
     import yaml
-
     HAS_YAML = True
 except ImportError:
     HAS_YAML = False
