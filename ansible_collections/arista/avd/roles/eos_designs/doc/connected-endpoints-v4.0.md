@@ -85,7 +85,7 @@ port_profiles:
 < connected_endpoints_keys.key >:
 
   # Endpoint name, this will be used in the switchport description
-  < endpoint_1 >:
+  - endpoint: < endpoint_1 >
 
     # rack is used for documentation purposes only
     rack: < rack_id >
@@ -235,7 +235,7 @@ port_profiles:
           # Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
           structured_config: < dictionary >
 
-  < endpoint_2 >:
+  - endpoint: < endpoint_2 >
     rack: RackC
     adapters:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -285,7 +285,7 @@ port_profiles:
 # servers
 servers:
 
-  server01:
+  - endpoint: server01
     rack: RackB
     adapters:
 
@@ -305,7 +305,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server03:
+  - endpoint: server03
     rack: RackC
     adapters:
 
@@ -320,7 +320,7 @@ servers:
           mode: active
 # Firewall
 firewalls:
-  FIREWALL01:
+  - endpoint: FIREWALL01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -333,7 +333,7 @@ firewalls:
 
 # Routers
 routers:
-  ROUTER01:
+  - endpoint: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]
@@ -348,7 +348,7 @@ Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
 
 ```yaml
 servers:
-  server01:
+  - endpoint: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0 ]
@@ -366,7 +366,7 @@ MLAG dual-homed connection:
 
 ```yaml
 servers:
-  server01:
+  - endpoint: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -395,7 +395,7 @@ Active/Active multihoming connections:
 
 ```yaml
 servers:
-  server01:
+  - endpoint: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
