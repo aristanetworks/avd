@@ -435,9 +435,11 @@ def main():
         inventory_content = ""
         with open(inventory_file, 'r', encoding='utf8') as stream:
             try:
+                # add a constructor to return "!VAULT" for inline vault variables
+                # to avoid the parse
+                yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
-                module.debug(exc)
                 raise AnsibleValidationError(
                     f"Failed to parse inventory file, original exception:{exc}"
                 ) from exc
@@ -460,7 +462,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # add a constructor to return "!VAULT" for inline vault variables
-    # to avoid the parse
-    yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
     main()
