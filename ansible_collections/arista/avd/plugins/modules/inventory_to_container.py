@@ -97,8 +97,7 @@ import glob
 import os
 import traceback
 from ansible.module_utils.basic import AnsibleModule
-from ansible.errors import AnsibleError
-from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
+from ansible.module_utils.errors import AnsibleValidationError
 
 TREELIB_IMP_ERR = None
 try:
@@ -439,7 +438,7 @@ def main():
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 module.debug(exc)
-                raise AnsibleError(
+                raise AnsibleValidationError(
                     f"Failed to parse inventory file, original exception:{exc}"
                 ) from exc
         result["CVP_TOPOLOGY"] = get_containers(inventory_content=inventory_content,
@@ -460,17 +459,8 @@ def main():
     module.exit_json(**result)
 
 
-def construct_vault_encrypted_unicode(loader, node):
-    """
-    This construct is used to handle inline !vault variable when parsing
-    the inventory.
-
-    https://stackoverflow.com/a/69856812
-    """
-    value = loader.construct_scalar(node)
-    return AnsibleVaultEncryptedUnicode(value)
-
-
 if __name__ == "__main__":
-    yaml.SafeLoader.add_constructor("!vault", construct_vault_encrypted_unicode)
+    # add a constructor to return "!VAULT" for inline vault variables
+    # to avoid the parse
+    yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
     main()

@@ -9,7 +9,6 @@ import pytest
 import yaml
 import treelib
 import json
-from ansible.parsing.yaml.objects import AnsibleVaultEncryptedUnicode
 
 IS_ITERABLE_VALID = [
     ("string1", "string2", "string3", "string4"),
@@ -83,20 +82,9 @@ TREELIB_VALID_LEAF = "Leaf1"
 TREELIB_INVALID_LEAF = "DC1"
 
 
-def construct_vault_encrypted_unicode(loader, node):
-    """
-    This construct is used to handle inline !vault variable when parsing
-    the inventory.
-
-    https://stackoverflow.com/a/69856812
-    """
-    value = loader.construct_scalar(node)
-    return AnsibleVaultEncryptedUnicode(value)
-
-
 @pytest.fixture(scope="session")
 def inventory():
-    yaml.SafeLoader.add_constructor("!vault", construct_vault_encrypted_unicode)
+    yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
     with open(INVENTORY_FILE, 'r', encoding='utf8') as stream:
         try:
             inventory_content = yaml.safe_load(stream)
