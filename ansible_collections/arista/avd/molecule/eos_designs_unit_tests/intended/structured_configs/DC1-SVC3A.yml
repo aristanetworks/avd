@@ -752,8 +752,8 @@ vlan_interfaces:
     ip_address: 10.255.251.6/31
     mtu: 1500
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC1-SVC3B_Po5
+  Port-Channel2000:
+    description: MLAG_PEER_DC1-SVC3B_Po2000
     type: switched
     shutdown: false
     vlans: 1-4094
@@ -943,7 +943,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 2000
       mode: active
     speed: 100g
   Ethernet6:
@@ -954,7 +954,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 2000
       mode: active
     speed: 100g
   Ethernet1:
@@ -1392,7 +1392,7 @@ mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092
   peer_address: 10.255.252.7
-  peer_link: Port-Channel5
+  peer_link: Port-Channel2000
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:

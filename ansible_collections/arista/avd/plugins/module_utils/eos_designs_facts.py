@@ -991,6 +991,13 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def mlag_port_channel_id(self):
+        if self.mlag is True:
+            default_mlag_port_channel_id = ''.join(re.findall(r'\d', self.mlag_interfaces[0]))
+            return get(self._switch_data_combined, "mlag_port_channel_id", default_mlag_port_channel_id)
+        return None
+
+    @cached_property
     def vtep_loopback_ipv4_pool(self):
         if self.vtep is True:
             return get(self._switch_data_combined, "vtep_loopback_ipv4_pool", required=True)
