@@ -441,7 +441,7 @@ def main():
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 raise AnsibleValidationError(
-                    f"Failed to parse inventory file, original exception:{exc}"
+                    "Failed to parse inventory file"
                 ) from exc
         result["CVP_TOPOLOGY"] = get_containers(inventory_content=inventory_content,
                                                 parent_container=parent_container,
