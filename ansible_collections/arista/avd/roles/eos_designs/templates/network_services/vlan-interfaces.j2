@@ -12,7 +12,10 @@ vlan_interfaces:
                                                                       first %}
 {%             endif %}
 {%             if svi_profile.parent_profile is arista.avd.defined %}
-{%                 set parent_profile = svi_profile.parent_profile | arista.avd.default({}) %}
+{%                 set parent_profile = svi_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi_profile.parent_profile) |
+                                                                      first %}
 {%             endif %}
 {%             set svi_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
                                                svi_profile | arista.avd.default({}),
