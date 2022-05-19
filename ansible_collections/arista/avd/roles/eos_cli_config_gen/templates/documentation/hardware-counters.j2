@@ -10,10 +10,8 @@
 | ------- | -------------- |
 {%     if hardware_counters is arista.avd.defined %}
 {%         if hardware_counters.features is arista.avd.defined %}
-{%             for feature in hardware_counters.features %}
-{%                 for feature, direction in feature.items() %}
-| {{ feature }} | {{ direction }} |
-{%                 endfor %}
+{%             for feature in hardware_counters.features | arista.avd.convert_dicts('name','direction') %}
+| {{ feature.name }} | {{ feature.direction }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}

@@ -776,8 +776,10 @@ generate_default_config: < true | false | default -> true >
 ```yaml
 hardware_counters:
   features:
-    - <feature_1>: < direction | in | out >
-    - <feature_1>: < direction | in | out >
+    - name: <feature_1>
+      direction: < direction | in | out >
+    - name: <feature_1>
+      direction: < direction | in | out >
 ```
 
 #### Hardware TCAM Profiles
