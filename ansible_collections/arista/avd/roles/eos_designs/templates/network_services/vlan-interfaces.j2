@@ -29,8 +29,8 @@ vlan_interfaces:
                                            parent_profile.structured_config) %}
 {%             set svi_raw_eos_cli = svi_settings.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
                                      svi_settings.raw_eos_cli) %}
-{%             set svi_ip_helpers = svi_settings.ip_helpers | arista.avd.convert_dicts('ip_helper') | arista.avd.default(
-                                    vrf.ip_helpers) %}
+{%             set svi_ip_helpers = svi_settings.ip_helpers | arista.avd.default(
+                                    vrf.ip_helpers) | arista.avd.convert_dicts('ip_helper') %}
 {%             set svi_description = svi_settings.description | arista.avd.default(
                                      svi_settings.name) %}
   Vlan{{ svi.id | int }}:
