@@ -584,3 +584,35 @@ ethernet_interfaces:
     description: Load Interval
     type: switched
     load_interval: 5
+
+  Ethernet49:
+    description: SFlow Interface Testing - SFlow ingress enabled
+    sflow:
+      enabled: true
+
+  Ethernet50:
+    description: SFlow Interface Testing - SFlow egress enabled
+    sflow:
+      egress:
+        enabled: true
+
+  Ethernet51:
+    description: SFlow Interface Testing - SFlow ingress and egress unmodified enabled
+    sflow:
+      enabled: true
+      egress:
+        unmodified_enabled: true
+
+  Ethernet52:
+    description: SFlow Interface Testing - SFlow ingress and egress disabled
+    sflow:
+      enabled: false
+      egress:
+        enabled: false
+
+  Ethernet53:
+    description: SFlow Interface Testing - SFlow ingress and egress unmodified disabled
+    sflow:
+      enabled: false
+      egress:
+        unmodified_enabled: false

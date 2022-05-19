@@ -1,6 +1,8 @@
 # ethernet-interfaces
 # Table of Contents
 
+- [ethernet-interfaces](#ethernet-interfaces)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
@@ -14,6 +16,7 @@
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
 - [Quality Of Service](#quality-of-service)
+    - [QOS Interfaces](#qos-interfaces)
 
 # Management
 
@@ -91,6 +94,11 @@ interface Management1
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | access | - | - | - | - |
+| Ethernet49 |  SFlow Interface Testing - SFlow ingress enabled | access | - | - | - | - |
+| Ethernet50 |  SFlow Interface Testing - SFlow egress enabled | access | - | - | - | - |
+| Ethernet51 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
+| Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
+| Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
