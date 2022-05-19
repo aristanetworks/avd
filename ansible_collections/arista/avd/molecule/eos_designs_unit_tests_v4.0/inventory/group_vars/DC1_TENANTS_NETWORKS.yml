@@ -14,7 +14,7 @@ svi_profiles:
     mtu: 1560
     enabled: false
     ip_helpers:
-      - helper_address: 2.2.2.2
+      - ip_helper: 2.2.2.2
         source_interface: lo101
         source_vrf: MGMT
   - profile: WITH_NO_MTU
@@ -24,13 +24,13 @@ svi_profiles:
     ip_address_virtual: 10.1.11.254/24
     igmp_snooping_enabled: false
     ip_helpers:
-      - helper_address: 1.1.1.1
+      - ip_helper: 1.1.1.1
         source_interface: lo100
         source_vrf: TEST
   - profile: WITH_DHCP
     enabled: true
     ip_helpers:
-      - helper_address: 1.1.1.1
+      - ip_helper: 1.1.1.1
         source_interface: lo100
         source_vrf: MGMT
   - profile: DERIVED_DHCP
@@ -65,7 +65,7 @@ tenants:
             enabled: True
             ip_address_virtual: 10.1.11.1/24
             ip_helpers:
-              - helper_address: 1.1.1.1
+              - ip_helper: 1.1.1.1
                 source_interface: lo100
                 source_vrf: MGMT
           # SVI using a nested svi_profile
