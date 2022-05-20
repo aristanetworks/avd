@@ -4,12 +4,18 @@ ethernet_interfaces:
 {%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
 {%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
 {%             if adapter.profile is arista.avd.defined %}
-{%                 set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
+{%                 set adapter_profile = port_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('name') |
+                                                                      selectattr('name', 'arista.avd.defined', adapter.profile) |
+                                                                      first %}
 {%                 if adapter_profile.parent_profile is arista.avd.defined %}
-{%                     set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
+{%                     set parent_profile = port_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('name') |
+                                                                      selectattr('name', 'arista.avd.defined', adapter_profile.parent_profile) |
+                                                                      first %}
 {%                 endif %}
 {%             endif %}
-{%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
+{%             set adapter_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
 {%             set endpoint_ports = adapter_settings.endpoint_ports | arista.avd.default(adapter_settings.server_ports) %}
