@@ -297,7 +297,7 @@ custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'overrid
 
 # Set Hardware Speed Groups per platform
 platform_speed_groups:
-  - name: 7280R            # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
+  - platform: 7280R            # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
     speeds:
       - speed: 25G
         speed_groups: [ 3, 2 ] # Unsorted order, but we should sort output correctly.
