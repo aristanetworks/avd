@@ -16,21 +16,28 @@
 {%     endif %}
 {% endfor %}
 {% if port_channel_interfaces_sflow | length > 0 or ethernet_interfaces_sflow | length > 0 %}
+{%     set sflow_egress_enabled = "-" %}
 
 #### SFlow Interfaces
 
-| Interface | Ingress | Egress | Egress Unmodified |
-| --------- | ------- | ------ | ----------------- |
-{%     for ethernet_interface in ethernet_interfaces_sflow | arista.avd.natural_sort %}
+| Interface | Ingress Enabled | Egress Enabled |
+| --------- | --------------- | -------------- |
+{%     for ethernet_interface in ethernet_interfaces_sflow | arista.avd.natural_sort('name') %}
 {%         set sflow_ingress_enabled = ethernet_interface.sflow.enabled | arista.avd.default("-") %}
-{%         set sflow_egress_enabled = ethernet_interface.sflow.egress.enabled | arista.avd.default("-") %}
-{%         set sflow_egress_unmodified_enabled = ethernet.sflow.egress.unmodified_enabled | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ sflow_ingress_enabled }} | {{ sflow_egress_enabled }} | {{ sflow_egress_unmodified_enabled }} |
+{%         if ethernet_interface.sflow.egress.enabled is arista.avd.defined %}
+{%             set sflow_egress_enabled = ethernet_interface.sflow.egress.enabled | arista.avd.default("-") %}
+{%         elif ethernet_interface.sflow.egress.unmodified_enabled is arista.avd.defined %}
+{%             set sflow_egress_enabled = ethernet_interface.sflow.egress.unmodified_enabled ~ " (unmodified)" | arista.avd.default("-") %}
+{%         endif %}
+| {{ ethernet_interface.name }} | {{ sflow_ingress_enabled }} | {{ sflow_egress_enabled }} |
 {%     endfor %}
 {%     for port_channel_interface in port_channel_interfaces_sflow | arista.avd.natural_sort %}
 {%         set sflow_ingress_enabled = port_channel_interfaces[port_channel_interface].sflow.enabled | arista.avd.default("-") %}
-{%         set sflow_egress_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.enabled | arista.avd.default("-") %}
-{%         set sflow_egress_unmodified_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.unmodified_enabled | arista.avd.default("-") %}
-| {{ port_channel_interface }} | {{ sflow_ingress_enabled }} | {{ sflow_egress_enabled }} | {{ sflow_egress_unmodified_enabled }} |
+{%         if port_channel_interfaces[port_channel_interface].sflow.egress.enabled is arista.avd.defined %}
+{%             set sflow_egress_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.enabled | arista.avd.default("-") %}
+{%         elif port_channel_interfaces[port_channel_interface].sflow.egress.unmodified_enabled is arista.avd.defined %}
+{%             set sflow_egress_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.unmodified_enabled ~ " (unmodified)" | arista.avd.default("-")%}
+{%         endif %}
+| {{ port_channel_interface }} | {{ sflow_ingress_enabled }} | {{ sflow_egress_enabled }} |
 {%     endfor %}
 {% endif %}
