@@ -817,9 +817,9 @@ redundancy:
 ```yaml
 hardware:
   speed_groups:
-    1:
+    - speed_group: <group>
       serdes: < 10g | 25g >
-    2:
+    - speed_group: <group>
       serdes: < 10g | 25g >
     ...
 ```
