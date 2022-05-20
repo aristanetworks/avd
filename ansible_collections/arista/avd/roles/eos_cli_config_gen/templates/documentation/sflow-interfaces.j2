@@ -36,7 +36,7 @@
 {%         if port_channel_interfaces[port_channel_interface].sflow.egress.enabled is arista.avd.defined %}
 {%             set sflow_egress_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.enabled | arista.avd.default("-") %}
 {%         elif port_channel_interfaces[port_channel_interface].sflow.egress.unmodified_enabled is arista.avd.defined %}
-{%             set sflow_egress_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.unmodified_enabled ~ " (unmodified)" | arista.avd.default("-")%}
+{%             set sflow_egress_enabled = port_channel_interfaces[port_channel_interface].sflow.egress.unmodified_enabled ~ " (unmodified)" | arista.avd.default("-") %}
 {%         endif %}
 | {{ port_channel_interface }} | {{ sflow_ingress_enabled }} | {{ sflow_egress_enabled }} |
 {%     endfor %}
