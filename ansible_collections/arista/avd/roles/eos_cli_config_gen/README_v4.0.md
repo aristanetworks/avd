@@ -777,9 +777,9 @@ generate_default_config: < true | false | default -> true >
 hardware_counters:
   features:
     - name: <feature_1>
-      direction: < direction | in | out >
+      direction: < in | out >
     - name: <feature_1>
-      direction: < direction | in | out >
+      direction: < in | out >
 ```
 
 #### Hardware TCAM Profiles
