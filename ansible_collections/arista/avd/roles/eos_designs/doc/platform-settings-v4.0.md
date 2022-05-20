@@ -29,7 +29,7 @@ platform_settings:
 
 # Set Hardware Speed Groups per Platform
 platform_speed_groups:
-  - name: < platform >
+  - platform: < platform >
     speeds:
       -  speed: < speed >
          speed_groups: [ < speed_group >, < speed_group > ]
