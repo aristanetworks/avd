@@ -9,7 +9,7 @@ The node type definition is done under `node_type_keys`. This dictionary defines
 # This allows for complete customization of the fabric layout.
 # This should be defined in top level group_var for the fabric.
 node_type_keys:
-  - name: <node_type_key>
+  - key: <node_type_key>
     # Required | The value of "type" set on each switch
     type: <type value matching this node_type_key>
 
@@ -160,10 +160,10 @@ The next output is structure example based on default definition:
 # Example
 # The below key/pair values are the role defaults.
 node_type_keys:
-  - name: spine
+  - key: spine
     type: spine
     default_evpn_role: server
-  - name: l3leaf
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client
@@ -172,7 +172,7 @@ node_type_keys:
       l2: true
       l3: true
     vtep: true
-  - name: l2leaf:
+  - key: l2leaf:
     type: l2leaf
     connected_endpoints: true
     mlag_support: true
@@ -180,9 +180,9 @@ node_type_keys:
       l2: true
     underlay_router: false
     uplink_type: port-channel
-  - name: super_spine
+  - key: super_spine
     type: super-spine
-  - name: overlay_controller
+  - key: overlay_controller
     type: overlay-controller
 ```
 
