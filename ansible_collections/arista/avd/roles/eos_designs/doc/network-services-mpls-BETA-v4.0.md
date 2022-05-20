@@ -23,7 +23,7 @@ tenants:
   # Specify a tenant name. | Required
   # Tenant provide a construct to group L3 VRFs and L2 VLANs.
   # Networks services can be filtered by tenant name.
-  < tenant_a >:
+  - name: < tenant_a >
 
     # Pseudowire rt base, used to generate route targets for vpws services. Avoid overlapping route target spaces between different services.
     pseudowire_rt_base: < int >
@@ -69,7 +69,7 @@ tenants:
 
 ```yaml
 tenants:
-  Tenant_A:
+  - name: Tenant_A
     pseudowire_rt_base: 1000
     point_to_point_services:
       # simple p2p pseudowire, no redundancy, port-based
@@ -116,24 +116,24 @@ mlag_ibgp_peering_vrfs:
   base_vlan: < vlan >
 
 tenants:
-  < tenant_a >:
+  - name: < tenant_a >
     # MLAG is not supported with MPLS-EVPN topologies.
     enable_mlag_ibgp_peering_vrfs: < true | false >
     vrfs:
-      < vrf name >:
+      - name: < vrf name >
         # Replaced by vrf_id
         vrf_vni: < vni >
         # MLAG is not supported with MPLS-EVPN topologies.
         enable_mlag_ibgp_peering_vrfs: < true | false >
         mlag_ibgp_peering_vlan: <1-4096>
         svis:
-          < 1-4096 >:
+          - id: < 1-4096 >
             # Replaced by rt_override
             vni_override: < 1-16777215 >
             # Not relevant for MPLS
             vxlan: < true | false | default -> true >
     l2vlans:
-      < vlan id >:
+      - id: < vlan id >
         # Replaced by rt_override
         vni_override: < 1-16777215 >
 ```
