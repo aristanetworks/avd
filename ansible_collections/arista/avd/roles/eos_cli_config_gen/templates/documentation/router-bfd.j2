@@ -23,6 +23,18 @@
 {%         set multiplier = router_bfd.multihop.multiplier | arista.avd.default('-') %}
 | {{ interval }} | {{ min_rx }} | {{ multiplier }} |
 {%     endif %}
+{%     if router_bfd.sbfd is arista.avd.defined %}
+
+### Router BFD SBFD Summary
+
+| Initiator Interval | Initiator Multiplier | Reflector Minimum RX | Reflector Local-Discriminator |
+| -------- | ---------- | ---------- | ---------- |
+{%         set init_interval = router_bfd.sbfd.initiator_interval | arista.avd.default('-') %}
+{%         set init_multiplier = router_bfd.sbfd.initiator_multiplier | arista.avd.default('-') %}
+{%         set ref_min_rx = router_bfd.sbfd.reflector.min_rx | arista.avd.default('-') %}
+{%         set ref_discriminator = router_bfd.sbfd.reflector.local_discriminator | arista.avd.default('-') %}
+| {{ init_interval }} | {{ init_multiplier }} | {{ ref_min_rx }} | {{ ref_discriminator }} |
+{%     endif %}
 
 ### Router BFD Device Configuration
 

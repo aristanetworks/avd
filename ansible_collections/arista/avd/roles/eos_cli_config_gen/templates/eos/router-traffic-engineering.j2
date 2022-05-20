@@ -26,6 +26,9 @@ router traffic-engineering
 {%                     if color.description is arista.avd.defined %}
          description {{ color.description }}
 {%                     endif %}
+{%                     if color.sbfd_remote_discriminator is arista.avd.defined %}
+         sbfd remote-discriminator {{ color.sbfd_remote_discriminator }}
+{%                     endif %}
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort('preference') %}
          !
          path-group preference {{ pathgroup.preference }}
