@@ -776,8 +776,10 @@ generate_default_config: < true | false | default -> true >
 ```yaml
 hardware_counters:
   features:
-    - <feature_1>: < direction | in | out >
-    - <feature_1>: < direction | in | out >
+    - name: <feature_1>
+      direction: < in | out >
+    - name: <feature_1>
+      direction: < in | out >
 ```
 
 #### Hardware TCAM Profiles
@@ -817,9 +819,9 @@ redundancy:
 ```yaml
 hardware:
   speed_groups:
-    1:
+    - speed_group: <group>
       serdes: < 10g | 25g >
-    2:
+    - speed_group: <group>
       serdes: < 10g | 25g >
     ...
 ```

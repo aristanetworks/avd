@@ -29,8 +29,10 @@ platform_settings:
 
 # Set Hardware Speed Groups per Platform
 platform_speed_groups:
-  < platform >:
-    < speed >: [ < speed_group >, < speed_group > ]
+  - platform: < platform >
+    speeds:
+      -  speed: < speed >
+         speed_groups: [ < speed_group >, < speed_group > ]
 
 # Redundancy for chassis platforms with dual supervisors | Optional
 redundancy:

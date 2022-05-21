@@ -53,21 +53,21 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.mac_security.profile is arista.avd.defined %}
    mac security profile {{ ethernet_interface.mac_security.profile }}
 {%     endif %}
-{%     if print_ethernet is arista.avd.defined(true) %}
-{%         if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
+{%     if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
    no error-correction encoding
-{%         else %}
-{%             if ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(true) %}
+{%     else %}
+{%         if ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(true) %}
    error-correction encoding fire-code
-{%             elif ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(false) %}
+{%         elif ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(false) %}
    no error-correction encoding fire-code
-{%             endif %}
-{%             if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
-   error-correction encoding reed-solomon
-{%             elif ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
-   no error-correction encoding reed-solomon
-{%             endif %}
 {%         endif %}
+{%         if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+   error-correction encoding reed-solomon
+{%         elif ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
+   no error-correction encoding reed-solomon
+{%         endif %}
+{%     endif %}
+{%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interface.mode is arista.avd.defined('access') or ethernet_interface.mode is arista.avd.defined('dot1q-tunnel') %}
 {%             if ethernet_interface.vlans is arista.avd.defined %}
    switchport access vlan {{ ethernet_interface.vlans }}
