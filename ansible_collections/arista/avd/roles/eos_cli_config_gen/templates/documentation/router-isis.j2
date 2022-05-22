@@ -43,10 +43,10 @@
 | Route Type | Route-Map | Include Leaked |
 | ---------- | --------- | -------------- |
 {%         for redistribute_route in router_isis.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
-{%             set src_protocol = redistribute_route.source_protocol  | arista.avd.default('-') %}
-{%             set route_map = redistribute_route.route_map  | arista.avd.default('-') %}
+{%             set src_protocol = redistribute_route.source_protocol | arista.avd.default('-') %}
+{%             set route_map = redistribute_route.route_map | arista.avd.default('-') %}
 {%             if redistribute_route.source_protocol is arista.avd.defined('static') or redistribute_route.source_protocol is arista.avd.defined('connected') or redistribute_route.source_protocol is arista.avd.defined('ospf') %}
-{%                 set include_leaked = redistribute_route.include_leaked  | arista.avd.default('-') %}
+{%                 set include_leaked = redistribute_route.include_leaked | arista.avd.default('-') %}
 {%             else %}
 {%                 set include_leaked = include_leaked | arista.avd.default('-') %}
 {%             endif %}
@@ -174,7 +174,7 @@
 
 | Source Protocol | RCF |
 | --------------- | --- |
-{%         set rcf = router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf  | arista.avd.default('-') %}
+{%         set rcf = router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf | arista.avd.default('-') %}
 | BGP Labeled-Unicast | {{ rcf }} |
 {%     endif %}
 {%     if router_isis.address_family_ipv6 is arista.avd.defined %}
