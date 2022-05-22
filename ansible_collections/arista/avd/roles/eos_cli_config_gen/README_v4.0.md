@@ -3050,6 +3050,11 @@ router_isis:
   address_family: < List of Address Families >
   isis_af_defaults:
     - maximum-paths < Integer 1-128 >
+  redistribute_routes:
+    - source_protocol: < route_type >
+      route_map: < route_map_name >
+      include_leaked: < true | false >
+      ospf_route_type: < internal | external | nssa-external >
   address_family_ipv4:
     maximum_paths: < Integer 1-128 >
     fast_reroute_ti_lfa:
@@ -3058,6 +3063,9 @@ router_isis:
       srlg:
         enable: < true | false >
         strict: < true | false >
+    tunnel_source_labeled_unicast:
+      enable: < true | false >
+      rcf: < routing_control_function() >
   address_family_ipv6:
     maximum_paths: < Integer 1-128 >
     fast_reroute_ti_lfa:
@@ -3069,6 +3077,9 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+    prefix_segments:
+      - prefix: < IPv4_network/Mask | IPv6_network/Mask >
+        index: < integer >
 ```
 
 #### Router Traffic Engineering

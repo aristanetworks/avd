@@ -36,6 +36,29 @@
 {%     if router_isis.segment_routing_mpls.enabled is arista.avd.defined %}
 | SR MPLS Enabled | {{ router_isis.segment_routing_mpls.enabled }} |
 {%     endif %}
+{%     if router_isis.redistribute_routes is arista.avd.defined %}
+
+### ISIS Route Redistribution
+
+| Route Type | Route-Map | Include Leaked |
+| ---------- | --------- | -------------- |
+{%         for redistribute_route in router_isis.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%             set src_protocol = redistribute_route.source_protocol  | arista.avd.default('-') %}
+{%             set route_map = redistribute_route.route_map  | arista.avd.default('-') %}
+{%             if redistribute_route.source_protocol is arista.avd.defined('static') or redistribute_route.source_protocol is arista.avd.defined('connected') or redistribute_route.source_protocol is arista.avd.defined('ospf') %}
+{%                 set include_leaked = redistribute_route.include_leaked  | arista.avd.default('-') %}
+{%             else %}
+{%                 set include_leaked = include_leaked | arista.avd.default('-') %}
+{%             endif %}
+{%             if redistribute_route.source_protocol is arista.avd.defined('isis') %}
+{%                 set src_protocol = src_protocol ~ " instance" %}
+{%             endif %}
+{%             if redistribute_route.source_protocol is arista.avd.defined('ospf') or redistribute_route.source_protocol is arista.avd.defined('ospfv3') %}
+{%                 set src_protocol = src_protocol ~ " " ~ redistribute_route.ospf_route_type %}
+{%             endif %}
+| {{ src_protocol }} | {{ route_map }} | {{ include_leaked }} |
+{%         endfor %}
+{%     endif %}
 
 ### ISIS Interfaces Summary
 
@@ -110,6 +133,18 @@
 | {{ loopback_interface.name }} | {{ row_ipv4_index }} | {{ row_ipv6_index }} |
 {%         endfor %}
 {%     endif %}
+{%     if router_isis.segment_routing_mpls.prefix_segments is arista.avd.defined %}
+
+### Prefix Segments
+
+| Prefix Segment | Index |
+| -------------- | ----- |
+{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
+{%             if prefix_segment.index is arista.avd.defined %}
+| {{ prefix_segment.prefix }} | {{ prefix_segment.index }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if router_isis.address_family_ipv4 is arista.avd.defined %}
 
 ### ISIS IPv4 Address Family Summary
@@ -132,6 +167,15 @@
 | TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict }} |
 {%             endif %}
 {%         endif %}
+{%     endif %}
+{%     if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enable is arista.avd.defined(true) %}
+
+### Tunnel Source
+
+| Source Protocol | RCF |
+| --------------- | --- |
+{%         set rcf = router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf  | arista.avd.default('-') %}
+| BGP Labeled-Unicast | {{ rcf }} |
 {%     endif %}
 {%     if router_isis.address_family_ipv6 is arista.avd.defined %}
 
