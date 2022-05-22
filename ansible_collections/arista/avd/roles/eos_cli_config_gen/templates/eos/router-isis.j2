@@ -68,7 +68,7 @@ router isis {{ router_isis.instance }}
       maximum-paths {{ router_isis.address_family_ipv4.maximum_paths }}
 {%         endif %}
 {%         if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enable is arista.avd.defined(true) %}
-{%         set lu_cli = "tunnel source-protocol bgp ipv4 labeled-unicast" %}
+{%             set lu_cli = "tunnel source-protocol bgp ipv4 labeled-unicast" %}
 {%             if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf is arista.avd.defined %}
 {%                 set lu_cli = lu_cli ~ " rcf " ~ router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf %}
 {%             endif %}
