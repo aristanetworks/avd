@@ -93,14 +93,14 @@ interface Management1
 
 #### SRTE Policies
 
-| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
-| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
-| 1.2.3.4 | 70810 | 180 | SRTE-1.2.3.4-70810 | SRTE POLICY FOR 1.2.3.4 COLOR 70810 | 155.2.1.1 | 900002 900003 900005 900006 | 200 | - | ipv4 ipv6 |
-| 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | - | 900002 900008 900007 900006 | 100 | 20 | none |
-| 5.6.7.8 | 20320 | 80 | - | - | 2600599809 | 900002 900003 900005 900006 | 300 | 120 | ipv4 |
-| 5.6.7.8 | 20320 | 80 | - | - | 2600599809 | 900002 900004 900007 900006 | 400 | 220 | ipv4 |
-| 5.6.7.8 | 20320 | 120 | - | - | 2600599809 | 900002 900008 900009 900006 | - | - | ipv6 |
-| 5.6.7.8 | 20320 | 120 | - | - | 2600599809 | 900002 900010 900011 900012 | - | - | ipv6 |
+| Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
+| -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
+| 1.2.3.4 | 70810 | 180 | SRTE-1.2.3.4-70810 | SRTE POLICY FOR 1.2.3.4 COLOR 70810 | 900002 900003 900005 900006 | 200 | - | ipv4 ipv6 |
+| 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | 900002 900008 900007 900006 | 100 | 20 | none |
+| 5.6.7.8 | 20320 | 80 | - | - | 900002 900003 900005 900006 | 300 | 120 | ipv4 |
+| 5.6.7.8 | 20320 | 80 | - | - | 900002 900004 900007 900006 | 400 | 220 | ipv4 |
+| 5.6.7.8 | 20320 | 120 | - | - | 900002 900008 900009 900006 | - | - | ipv6 |
+| 5.6.7.8 | 20320 | 120 | - | - | 900002 900010 900011 900012 | - | - | ipv6 |
 
 ### Router Traffic Engineering Device Configuration
 
@@ -114,7 +114,6 @@ router traffic-engineering
          binding-sid 970810
          name SRTE-1.2.3.4-70810
          description SRTE POLICY FOR 1.2.3.4 COLOR 70810
-         sbfd remote-discriminator 155.2.1.1
          !
          path-group preference 180
             explicit-null ipv4 ipv6
@@ -130,7 +129,6 @@ router traffic-engineering
       !
       policy endpoint 5.6.7.8 color 20320
          binding-sid 978320
-         sbfd remote-discriminator 2600599809
          !
          path-group preference 80
             explicit-null ipv4
