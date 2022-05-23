@@ -1332,7 +1332,6 @@ class EosDesignsFacts:
         if self.mlag is True:
             peer_mgmt_ip = get(self._hostvars,
                                f"avd_switch_facts..{self.mlag_peer}..switch..mgmt_ip",
-                               required=True,
                                org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mgmt_ip",
                                separator="..")
             if peer_mgmt_ip is not None:

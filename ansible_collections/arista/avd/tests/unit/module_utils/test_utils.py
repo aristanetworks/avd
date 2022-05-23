@@ -74,7 +74,7 @@ GET_DATA = [
         "expected_result": 42,
         "expected_exception": does_not_raise()
     },
-    {  #  org_key as exception message
+    {  # org_key as exception message
         "dictionary": {"avd_switch_facts": {"host1.test": {"id": 42}}},
         "key": "avd_switch_facts..host1.test..missing_required",
         "default": None,
@@ -84,7 +84,7 @@ GET_DATA = [
         "expected_result": None,
         "expected_exception": pytest.raises(AristaAvdError, match=re.escape("avd_switch_facts.(host1.test).missing_required"))
     },
-    ]
+]
 
 
 class TestUtils():
@@ -99,4 +99,3 @@ class TestUtils():
                       DATA["org_key"],
                       DATA["separator"])
             assert res == DATA["expected_result"]
-
