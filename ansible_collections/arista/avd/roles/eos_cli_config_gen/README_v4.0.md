@@ -647,9 +647,9 @@ ipv6_prefix_lists:
 
 ```yaml
 community_lists:
-  < community_list_name_1 >:
+  - name: < community_list_name_1 >
     action: "< action as string >"
-  < community_list_name_2 >:
+  - name: < community_list_name_2 >
     action: "< action as string >"
 ```
 
