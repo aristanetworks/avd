@@ -1200,7 +1200,9 @@ class EosDesignsFacts:
     @cached_property
     def _mlag_peer_id(self):
         if self.mlag is True:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.id", required=True)
+            # Fetching facts with 2 gets in case the hostname contains dots.
+            avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
+            return get(avd_switch_facts[self.mlag_peer], "switch.id", required=True)
 
     @cached_property
     def vtep_ip(self):
@@ -1269,7 +1271,9 @@ class EosDesignsFacts:
     @cached_property
     def mlag_peer_ip(self):
         if self.mlag is True:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mlag_ip", required=True)
+            # Fetching facts with 2 gets in case the hostname contains dots.
+            avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
+            return get(avd_switch_facts[self.mlag_peer], "switch.mlag_ip", required=True)
         return None
 
     @cached_property
