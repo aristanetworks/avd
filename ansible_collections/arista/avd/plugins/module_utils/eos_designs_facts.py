@@ -869,14 +869,21 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def underlay_ipv6(self):
+        if self.underlay_router is True:
+            return get(self._hostvars, "underlay_ipv6")
+        return None
+
+
+    @cached_property
     def loopback_ipv6_pool(self):
-        if get(self._hostvars, "underlay_ipv6") is True:
+        if self.underlay_ipv6 is True:
             return get(self._switch_data_combined, "loopback_ipv6_pool", required=True)
         return None
 
     @cached_property
     def loopback_ipv6_offset(self):
-        if get(self._hostvars, "underlay_ipv6") is True:
+        if self.underlay_ipv6 is True:
             return get(self._switch_data_combined, "loopback_ipv6_offset", default=0)
         return None
 
@@ -888,7 +895,7 @@ class EosDesignsFacts:
         Since some templates might contain certain legacy variables (switch_*),
         those are mapped from the switch.* model
         '''
-        if get(self._hostvars, "underlay_ipv6") is True:
+        if self.underlay_ipv6 is True:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.

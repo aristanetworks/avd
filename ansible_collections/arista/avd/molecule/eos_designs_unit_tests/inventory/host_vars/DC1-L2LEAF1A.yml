@@ -1,0 +1,4 @@
+---
+# Test that having underlay_ipv6 will not require
+# loopback_ipv6_pool for devices that are not underlay_router
+underlay_ipv6: true
