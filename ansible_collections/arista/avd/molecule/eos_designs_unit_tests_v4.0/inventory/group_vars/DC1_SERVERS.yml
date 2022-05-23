@@ -1,22 +1,22 @@
 port_profiles:
-  - name: TENANT_A_B
+  - profile: TENANT_A_B
     mode: trunk
     vlans: "110-111,210-211"
 
-  - name: TENANT_A
+  - profile: TENANT_A
     mode: access
     vlans: "110"
 
-  - name: TENANT_A_MTU
+  - profile: TENANT_A_MTU
     mode: access
     vlans: "110"
     mtu: 1600
 
-  - name: TENANT_B
+  - profile: TENANT_B
     mode: trunk
     vlans: "210-211"
 
-  - name: ALL_WITH_SECURITY
+  - profile: ALL_WITH_SECURITY
     parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
     server_ports: [ Eth1, Eth2 ]
     mode: trunk
@@ -39,7 +39,7 @@ port_profiles:
         level: 2
         unit: percent
 
-  - name: ALL_WITH_SECURITY_PORT_CHANNEL
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: enabled
@@ -63,7 +63,7 @@ port_profiles:
       description: ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
 
-  - name: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -90,7 +90,7 @@ port_profiles:
         mode: static
         timeout: 10
 
-  - name: NESTED_PORT_PROFILE
+  - profile: NESTED_PORT_PROFILE
     parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     port_channel:
       description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
