@@ -41,6 +41,7 @@
 | EOS_DESIGNS_UNIT_TESTS | spine | DC1-SPINE4 | 192.168.200.104/24 | 7280R3 | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7050SX3 | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | spine | device.with.dots.in.hostname | - | - | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l2leaf | mgmt_interface_default | 1.1.1.2 | - | Provisioned |
@@ -202,7 +203,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 1.2.3.4/24 | 256 | 1 | 0.4 % |
+| 1.2.3.4/24 | 256 | 2 | 0.79 % |
 | 192.168.255.0/24 | 256 | 20 | 7.82 % |
 
 ## Loopback0 Interfaces Node Allocation
@@ -225,6 +226,7 @@
 | EOS_DESIGNS_UNIT_TESTS | DC1-SPINE4 | 192.168.255.4/32 |
 | EOS_DESIGNS_UNIT_TESTS | DC1-SVC3A | 192.168.255.12/32 |
 | EOS_DESIGNS_UNIT_TESTS | DC1-SVC3B | 192.168.255.13/32 |
+| EOS_DESIGNS_UNIT_TESTS | device.with.dots.in.hostname | 1.2.3.1/32 |
 | EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_false | 192.168.255.109/32 |
 | EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_true | 192.168.255.109/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.255.33/32 |

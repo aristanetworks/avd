@@ -12,7 +12,7 @@ router_bgp:
       type: ipv4
       remote_as: '65112.100'
       next_hop_self: true
-      description: DC1-POD1-LEAF2A
+      description: DC1.POD1.LEAF2A
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
@@ -50,7 +50,7 @@ router_bgp:
   neighbors:
     172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: DC1-POD1-LEAF2A
+      description: DC1.POD1.LEAF2A
     172.17.110.16:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65110.100'
@@ -421,7 +421,7 @@ vlan_interfaces:
       distance: 19
 port_channel_interfaces:
   Port-Channel5:
-    description: MLAG_PEER_DC1-POD1-LEAF2A_Po5
+    description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -488,20 +488,20 @@ port_channel_interfaces:
       '
 ethernet_interfaces:
   Ethernet5:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet5
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5
+    description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
     type: switched
     shutdown: false
     channel_group:
       id: 5
       mode: active
   Ethernet6:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet6
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6
+    description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
     type: switched
     shutdown: false
     channel_group:
