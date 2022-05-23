@@ -89,7 +89,7 @@ svi_profiles:
       - < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
-      - helper_address: < IPv4 dhcp server IP >
+      - ip_helper: < IPv4 dhcp server IP >
         source_interface: < interface-name >
         source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
@@ -146,7 +146,7 @@ svi_profiles:
 
         # IP Helper for DHCP relay
         ip_helpers:
-          - helper_address: < IPv4 dhcp server IP >
+          - ip_helper: < IPv4 dhcp server IP >
             source_interface: < interface-name >
             source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
@@ -249,7 +249,7 @@ svi_profiles:
 
             # IP Helper for DHCP relay
             ip_helpers:
-              < IPv4 dhcp server IP >:
+              - ip_helper< IPv4 dhcp server IP >
                 source_interface: < interface-name >
                 source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
