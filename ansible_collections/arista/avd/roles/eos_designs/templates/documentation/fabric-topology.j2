@@ -1,7 +1,8 @@
 Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface
+{% set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
-{%     if node_hostvars.type | arista.avd.default('undefined') in node_type_keys | dict2items | map(attribute='value.type') | list %}
+{%     if node_hostvars.type | arista.avd.default('undefined') in node_types %}
 {%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort %}
 {%             set csv_line = [] %}
 {%             do csv_line.append(node_hostvars.type) %}

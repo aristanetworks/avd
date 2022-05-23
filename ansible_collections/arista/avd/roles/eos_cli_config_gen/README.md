@@ -2038,6 +2038,7 @@ ntp:
       version: < 1 - 4 >
       vrf: < vrf_name >
   authenticate: <true | false >
+  authenticate_servers_only: < true | false >
   authentication_keys:
     - id: < key_identifier | 1-65534 >
       hash_algorithm: < md5 | sha1 >

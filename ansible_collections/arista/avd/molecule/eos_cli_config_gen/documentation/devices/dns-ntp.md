@@ -108,10 +108,27 @@ ip domain lookup vrf mgt source-interface Management0
 | 10.10.111.1 | mgt | True | - | - | - | - | - | - | - |
 | 10.10.111.2 | mgt | - | - | - | - | - | - | - | - |
 
+#### NTP Authentication
+
+- Authentication enabled (Servers only)
+
+- Trusted Keys: 1-2
+
+#### NTP Authentication Keys
+
+| ID | Algoritm |
+| -- | -------- |
+| 1 | md5 |
+| 2 | sha1 |
+
 ### NTP Device Configuration
 
 ```eos
 !
+ntp authentication-key 1 md5 044F0E151B
+ntp authentication-key 2 sha1 15060E1F10
+ntp trusted-key 1-2
+ntp authenticate servers
 ntp local-interface vrf mgt Management0
 ntp server vrf mgt 10.10.111.1 prefer
 ntp server vrf mgt 10.10.111.2
