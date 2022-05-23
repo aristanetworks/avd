@@ -1,2 +1,19 @@
 ---
 root_dir: '{{ playbook_dir }}'
+default_connected_endpoints_keys:
+  "l3ls-evpn":
+    - key: servers
+      type: server
+    - key: firewalls
+      type: firewall
+    - key: routers
+      type: router
+    - key: load_balancers
+      type: load_balancer
+    - key: storage_arrays
+      type: storage_array
+  "mpls":
+    - key: routers
+      type: router
+    - key: cpes
+      type: cpe

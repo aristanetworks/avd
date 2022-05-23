@@ -13,9 +13,9 @@
 # This provides the ability to define various keys of your choice to better organize/group your data.
 # This should be defined in top level group_var for the fabric.
 connected_endpoints_keys:
-  < key_1 >:
+  - key: < key_1 >
     type: < type used for documentation >
-  < key_2 >:
+  - key: < key_2 >
     type: < type used for documentation >
 ```
 
@@ -23,15 +23,15 @@ connected_endpoints_keys:
 # Example
 # The below key/pair values are the role defaults.
 connected_endpoints_keys:
-  servers:
+  - key: servers
     type: server
-  firewalls:
+  - key: firewalls
     type: firewall
-  routers:
+  - key: routers
     type: router
-  load_balancers:
+  - key: load_balancers
     type: load_balancer
-  storage_arrays:
+  - key: storage_arrays
     type: storage_array
 ```
 
@@ -259,11 +259,11 @@ port_profiles:
 # Example
 
 connected_endpoints_keys:
-  servers:
+  - key: servers
     type: server
-  firewalls:
+  - key: firewalls
     type: firewall
-  routers:
+  - key: routers
     type: router
 
 
