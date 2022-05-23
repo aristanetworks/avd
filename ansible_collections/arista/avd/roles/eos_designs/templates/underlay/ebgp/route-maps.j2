@@ -7,7 +7,7 @@ route_maps:
         match:
           - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
 {# SEQ 20 is set by inband management if applicable, so avoid setting that here #}
-{% if underlay_ipv6 is arista.avd.defined(true) %}
+{% if switch.underlay_ipv6 is arista.avd.defined(true) %}
       30:
         type: permit
         match:
