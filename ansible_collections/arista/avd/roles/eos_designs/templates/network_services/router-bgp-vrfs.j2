@@ -50,15 +50,25 @@
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
-      neighbors:
+{%                     set configure_mlag_ibgp_peering = false %}
 {%                     if switch.mlag_l3 is arista.avd.defined(true) %}
 {%                         set configure_mlag_ibgp_peering = vrf.enable_mlag_ibgp_peering_vrfs | arista.avd.default(
-                                                         tenant.enable_mlag_ibgp_peering_vrfs,
-                                                         true) %}
-{%                         if configure_mlag_ibgp_peering %}
+                                                 tenant.enable_mlag_ibgp_peering_vrfs,
+                                                 true) %}
+{%                     endif %}
+{%                     if configure_mlag_ibgp_peering and underlay_rfc5549 is arista.avd.defined(true) and underlay_ipv6 is arista.avd.defined(true) %}
+{%                         set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
+      neighbor_interfaces:
+        Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
+          peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
+          remote_as: "{{ switch.bgp_as }}"
+          description: {{ switch.mlag_peer }}
+{%                         set configure_mlag_ibgp_peering = false %}
+{%                     endif %}        
+      neighbors:
+{%                     if configure_mlag_ibgp_peering %}
         {{ switch.mlag_peer_l3_ip | arista.avd.default(switch.mlag_peer_ip) }}:
           peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
-{%                         endif %}
 {%                     endif %}
 {%                     for bgp_peer in vrf.bgp_peers %}
 {%                         if inventory_hostname in bgp_peer.nodes | arista.avd.default([]) %}
