@@ -17,3 +17,4 @@ default_connected_endpoints_keys:
       type: router
     - key: cpes
       type: cpe
+      
