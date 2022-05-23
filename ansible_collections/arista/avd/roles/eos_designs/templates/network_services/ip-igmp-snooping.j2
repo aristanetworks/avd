@@ -13,7 +13,7 @@ ip_igmp_snooping:
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                 if svi.profile is arista.avd.defined %}
-{%                     set svi_profile = svi_profiles | arista.avd.default({}) |
+{%                     set svi_profile = svi_profiles | arista.avd.default([]) |
                                                                       arista.avd.convert_dicts('profile') |
                                                                       selectattr('profile', 'arista.avd.defined', svi.profile) |
                                                                       first %}
