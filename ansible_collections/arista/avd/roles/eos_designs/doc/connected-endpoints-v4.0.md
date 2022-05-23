@@ -395,7 +395,7 @@ Active/Active multihoming connections:
 
 ```yaml
 servers:
-  - endpoint: server01
+  - name: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
