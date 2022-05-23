@@ -285,7 +285,7 @@ port_profiles:
 # servers
 servers:
 
-  - endpoint: server01
+  - name: server01
     rack: RackB
     adapters:
 
@@ -305,7 +305,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  - endpoint: server03
+  - name: server03
     rack: RackC
     adapters:
 
@@ -320,7 +320,7 @@ servers:
           mode: active
 # Firewall
 firewalls:
-  - endpoint: FIREWALL01
+  - name: FIREWALL01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -333,7 +333,7 @@ firewalls:
 
 # Routers
 routers:
-  - endpoint: ROUTER01
+  - name: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]
@@ -348,7 +348,7 @@ Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
 
 ```yaml
 servers:
-  - endpoint: server01
+  - name: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0 ]
@@ -366,7 +366,7 @@ MLAG dual-homed connection:
 
 ```yaml
 servers:
-  - endpoint: server01
+  - name: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
