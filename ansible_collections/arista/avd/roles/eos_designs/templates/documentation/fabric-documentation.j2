@@ -1,3 +1,4 @@
+{% set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
 {% set fabric_switches = [] %}
 {% set topology_links = [] %}
 {% set uplink_ipv4_pools = [] %}
@@ -7,7 +8,7 @@
 {% set interfaces_done = [] %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
-{%     if node_hostvars.type | arista.avd.default('undefined') in node_type_keys | dict2items | map(attribute='value.type') | list %}
+{%     if node_hostvars.type | arista.avd.default('undefined') in node_types %}
 {# Populate network summaries #}
 {%         do uplink_ipv4_pools.append(node_hostvars.switch.uplink_ipv4_pool | arista.avd.default()) %}
 {%         do loopback_ipv4_pools.append(node_hostvars.switch.loopback_ipv4_pool | arista.avd.default()) %}
@@ -41,7 +42,7 @@
 {%         do fabric_switches.append(fabric_switch) %}
 {# Populate topology_links #}
 {%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort %}
-{%             if node_hostvars.ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default('undefined') in node_type_keys | dict2items | map(attribute='value.type') | list + ['mlag_peer'] %}
+{%             if node_hostvars.ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default('undefined') in node_types + ['mlag_peer'] %}
 {%                 do interfaces_done.append(node ~ "," ~ ethernet_interface) %}
 {%                 set peer = node_hostvars.ethernet_interfaces[ethernet_interface].peer %}
 {%                 set peer_interface = node_hostvars.ethernet_interfaces[ethernet_interface].peer_interface %}

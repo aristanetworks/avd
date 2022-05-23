@@ -125,20 +125,21 @@ class EosDesignsFacts:
         """
         switch.node_type_key fact set by finding a matching "type" in "node_type_keys" variable
         """
-        node_type_keys = get(self._hostvars, "node_type_keys", required=True)
-        for key, value in node_type_keys.items():
-            if value['type'] == self.type:
-                return key
-
-        # Not found
-        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={type}")
+        return self._node_type_key_data['key']
 
     @cached_property
     def _node_type_key_data(self):
         """
         internal _node_type_key_data containing settings for this node_type.
         """
-        return get(self._hostvars, f"node_type_keys.{self.node_type_key}", required=True)
+        node_type_keys = get(self._hostvars, "node_type_keys", required=True)
+        node_type_keys = self._convert_dicts(node_type_keys, 'key')
+        for node_type in node_type_keys:
+            if node_type['type'] == self.type:
+                return node_type
+
+        # Not found
+        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={type}")
 
     @cached_property
     def connected_endpoints(self):
