@@ -584,14 +584,14 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
-| ------------------ | ---------- | --------- | ----------- |
-| Ethernet1 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet2 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet3 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet4 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet9 | UNDERLAY_PEERS | 65104 | - |
-| Ethernet10 | UNDERLAY_PEERS | 65104 | - |
+| Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
+| ------------------ | --- | ---------- | --------- | ----------- |
+| Ethernet1 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet2 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet3 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet4 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet9 | default | UNDERLAY_PEERS | 65104 | - |
+| Ethernet10 | default | UNDERLAY_PEERS | 65104 | - |
 
 ### Router BGP EVPN Address Family
 
