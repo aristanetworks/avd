@@ -874,7 +874,6 @@ class EosDesignsFacts:
             return get(self._hostvars, "underlay_ipv6")
         return None
 
-
     @cached_property
     def loopback_ipv6_pool(self):
         if self.underlay_ipv6 is True:
