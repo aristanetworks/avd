@@ -64,7 +64,7 @@
           remote_as: "{{ switch.bgp_as }}"
           description: {{ switch.mlag_peer }}
 {%                         set configure_mlag_ibgp_peering = false %}
-{%                     endif %}        
+{%                     endif %}
       neighbors:
 {%                     if configure_mlag_ibgp_peering %}
         {{ switch.mlag_peer_l3_ip | arista.avd.default(switch.mlag_peer_ip) }}:
@@ -108,7 +108,7 @@
 {%                                     break %}
 {%                                 endif %}
 {%                             endfor %}
-{%                         elif vrf.redistribute_static is arista.avd.defined(true)  %}
+{%                         elif vrf.redistribute_static is arista.avd.defined(true) %}
         - static
 {%                         endif %}
 {%                     endif %}
