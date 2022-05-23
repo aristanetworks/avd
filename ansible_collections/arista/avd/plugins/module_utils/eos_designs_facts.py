@@ -1310,13 +1310,17 @@ class EosDesignsFacts:
     @cached_property
     def mlag_peer_l3_ip(self):
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mlag_l3_ip", required=True)
+            # Fetching facts with 2 gets in case the hostname contains dots.
+            avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
+            return get(avd_switch_facts[self.mlag_peer], "switch.mlag_l3_ip", required=True)
         return None
 
     @cached_property
     def mlag_peer_mgmt_ip(self):
         if self.mlag is True:
-            peer_mgmt_ip = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mgmt_ip")
+            # Fetching facts with 2 gets in case the hostname contains dots.
+            avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
+            peer_mgmt_ip = get(avd_switch_facts[self.mlag_peer], "switch.mgmt_ip")
             if peer_mgmt_ip is not None:
                 return str(ipaddress.ip_interface(peer_mgmt_ip).ip)
         return None
