@@ -31,7 +31,7 @@ router_isis:
 {%     endif %}
 {% endif %}
 {% set isis_address_families = ["ipv4 unicast"] %}
-{% if underlay_ipv6 is arista.avd.defined(true) %}
+{% if switch.underlay_ipv6 is arista.avd.defined(true) %}
 {%     do isis_address_families.append("ipv6 unicast") %}
 {% endif %}
   address_family: {{ isis_address_families }}
