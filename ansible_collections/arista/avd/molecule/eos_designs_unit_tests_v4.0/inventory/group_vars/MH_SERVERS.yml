@@ -1,12 +1,12 @@
 ---
 port_profiles:
-  Tenant_X:
+  - profile: Tenant_X
     mode: access
     vlans: "310"
     link_tracking:
       enabled: true
 
-  Tenant_X_LT:
+  - profile: Tenant_X_LT
     mode: access
     vlans: "310"
     link_tracking:
