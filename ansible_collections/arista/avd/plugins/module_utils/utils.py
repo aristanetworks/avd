@@ -56,7 +56,7 @@ def get(dictionary, key, default=None, required=False, org_key=None, separator="
         return default
     else:
         if len(keys) > 1:
-            return get(value, '.'.join(keys[1:]), default=default, required=required, org_key=org_key)
+            return get(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
         else:
             return value
 
