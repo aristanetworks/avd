@@ -146,7 +146,7 @@ svi_profiles:
 
         # IP Helper for DHCP relay
         ip_helpers:
-          < IPv4 dhcp server IP >:
+          - helper_address: < IPv4 dhcp server IP >
             source_interface: < interface-name >
             source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
