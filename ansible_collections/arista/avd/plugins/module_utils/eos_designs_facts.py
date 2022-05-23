@@ -1086,7 +1086,9 @@ class EosDesignsFacts:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                # Fetching facts with 2 gets in case the hostname contains dots.
+                avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
+                uplink_switch_facts: EosDesignsFacts = get(avd_switch_facts[uplink_switch], "switch", required=True)
                 uplink = {}
                 uplink['interface'] = uplink_interface
                 uplink['peer'] = uplink_switch
