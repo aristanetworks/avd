@@ -12,7 +12,7 @@ class AristaAvdMissingVariableError(AristaAvdError):
     pass
 
 
-def get(dictionary, key, default=None, required=False, org_key=None):
+def get(dictionary, key, default=None, required=False, org_key=None, separator="."):
     """
     Get a value from a dictionary or nested dictionaries.
 
@@ -31,6 +31,9 @@ def get(dictionary, key, default=None, required=False, org_key=None):
         Fail if the key is not found
     org_key : str
         Internal variable used for raising exception with the full key name even when called recursively
+    separator: str
+        String to use as the separator parameter in the split function. Useful in cases when the key
+        can contain variables with "." inside (e.g. hostnames)
 
     Returns
     -------
@@ -45,7 +48,7 @@ def get(dictionary, key, default=None, required=False, org_key=None):
 
     if org_key is None:
         org_key = key
-    keys = str(key).split('.')
+    keys = str(key).split(separator)
     value = dictionary.get(keys[0])
     if value is None:
         if required is True:
