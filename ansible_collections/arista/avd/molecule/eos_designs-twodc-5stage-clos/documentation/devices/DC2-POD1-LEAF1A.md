@@ -218,7 +218,7 @@ vlan 4092
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | routed | - | 172.17.210.1/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | routed | - | 172.17.210.3/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | routed | - | 11.1.0.39/31 | default | 1499 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -249,7 +249,7 @@ interface Ethernet3
    channel-group 3 mode active
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7
+   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
    no shutdown
    mtu 1500
    no switchport
@@ -567,7 +567,7 @@ router bgp 65211
    neighbor 11.1.0.38 bfd
    neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.100.100.101 remote-as 65112.100
-   neighbor 100.100.100.101 description DC1-POD1-LEAF2A
+   neighbor 100.100.100.101 description DC1.POD1.LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
    neighbor 172.16.10.1 description DC1-RS1
