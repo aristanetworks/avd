@@ -6,12 +6,18 @@ vlan_interfaces:
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%             if svi.profile is arista.avd.defined %}
-{%                 set svi_profile = svi_profiles[svi.profile] | arista.avd.default({}) %}
+{%                 set svi_profile = svi_profiles | arista.avd.default([]) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi.profile) |
+                                                                      first %}
 {%             endif %}
 {%             if svi_profile.parent_profile is arista.avd.defined %}
-{%                 set parent_profile = svi_profiles[svi_profile.parent_profile] | arista.avd.default({}) %}
+{%                 set parent_profile = svi_profiles | arista.avd.default([]) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi_profile.parent_profile) |
+                                                                      first %}
 {%             endif %}
-{%             set svi_settings = {} | combine(parent_profile | arista.avd.default({}),
+{%             set svi_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
                                                svi_profile | arista.avd.default({}),
                                                svi, recursive=true, list_merge='replace') %}
 {#             Structured config should not be merged recursively, but will be taken directly from the most specific level #}
@@ -24,7 +30,7 @@ vlan_interfaces:
 {%             set svi_raw_eos_cli = svi_settings.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
                                      svi_settings.raw_eos_cli) %}
 {%             set svi_ip_helpers = svi_settings.ip_helpers | arista.avd.default(
-                                    vrf.ip_helpers) %}
+                                    vrf.ip_helpers) | arista.avd.convert_dicts('ip_helper') %}
 {%             set svi_description = svi_settings.description | arista.avd.default(
                                      svi_settings.name) %}
   Vlan{{ svi.id | int }}:
@@ -88,9 +94,9 @@ vlan_interfaces:
 {%             if svi_ip_helpers is arista.avd.defined %}
     ip_helpers:
 {%                 for helper_ip in svi_ip_helpers %}
-      {{ helper_ip }}:
-        source_interface: {{ svi_ip_helpers[helper_ip].source_interface | arista.avd.default }}
-        vrf: {{ svi_ip_helpers[helper_ip].source_vrf | arista.avd.default }}
+      {{ helper_ip.ip_helper }}:
+        source_interface: {{ helper_ip.source_interface | arista.avd.default }}
+        vrf: {{ helper_ip.source_vrf | arista.avd.default }}
 {%                 endfor %}
 {%             endif %}
 {%             if svi_settings.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
