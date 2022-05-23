@@ -76,7 +76,7 @@ mac_address_table:
 # Keys are the same used under SVI.
 # Svi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).
 svi_profiles:
-  < profile_name >:
+  - profile: < profile_name >
     parent_profile: < svi_profile_name >
     mtu: < mtu >
     enabled: < true | false >
@@ -89,7 +89,7 @@ svi_profiles:
       - < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
-      < IPv4 dhcp server IP >:
+      - ip_helper: < IPv4 dhcp server IP >
         source_interface: < interface-name >
         source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
@@ -146,7 +146,7 @@ svi_profiles:
 
         # IP Helper for DHCP relay
         ip_helpers:
-          < IPv4 dhcp server IP >:
+          - ip_helper: < IPv4 dhcp server IP >
             source_interface: < interface-name >
             source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
@@ -249,7 +249,7 @@ svi_profiles:
 
             # IP Helper for DHCP relay
             ip_helpers:
-              < IPv4 dhcp server IP >:
+              - ip_helper< IPv4 dhcp server IP >
                 source_interface: < interface-name >
                 source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
