@@ -222,7 +222,7 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 snmp_server:
-  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1.POD1.LEAF2A
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -310,12 +310,12 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
+    description: set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1)
     shutdown: false
     vrf: Common_VRF
     ip_address_virtual: 10.1.10.1/24
     struct_cfg:
-      description: set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
+      description: set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1)
   Vlan111:
     tenant: Tenant_A
     tags:
@@ -728,7 +728,7 @@ ip_igmp_snooping:
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
   Vxlan1:
-    description: DC1-POD1-LEAF2A_VTEP
+    description: DC1.POD1.LEAF2A_VTEP
     vxlan:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
