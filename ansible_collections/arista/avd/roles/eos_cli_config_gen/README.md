@@ -3261,6 +3261,11 @@ router_bgp:
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
           shutdown: < true | false >
+      neighbor_interfaces:
+        < interface >:
+          peer_group: < peer_group_name >
+          remote_as: < bgp_as >
+          peer_filter: <peer_filter>
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
