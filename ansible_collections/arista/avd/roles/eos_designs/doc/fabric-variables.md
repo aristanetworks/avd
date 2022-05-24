@@ -29,7 +29,7 @@ overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
 # Requires "underlay_routing_protocol: EBGP"
 underlay_rfc5549: < true | false | default -> false >
 
-# MLAG iBGP in VRFs with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
+# Enable RFC 5549(iBGP) i.e. IPv6 Unnumbered for MLAG iBGP connections.
 # Requires "underlay_rfc5549: true"
 overlay_mlag_rfc5549: < true | false | default -> false >
 
