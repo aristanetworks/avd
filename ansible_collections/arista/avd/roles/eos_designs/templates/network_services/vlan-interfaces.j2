@@ -142,7 +142,7 @@ vlan_interfaces:
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf.name }}"
     vrf: {{ vrf.name }}
-{%                     if underlay_rfc5549 is arista.avd.defined(true) and switch.underlay_ipv6 is arista.avd.defined(true) %}
+{%                     if underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
 {%                     else %}
     ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
