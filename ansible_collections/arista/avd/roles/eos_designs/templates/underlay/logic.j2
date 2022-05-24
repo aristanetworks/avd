@@ -14,6 +14,7 @@
                        "peer": peer,
                        "peer_interface": peer_uplink.interface,
                        "peer_type": peer_facts.switch.type,
+                       "peer_is_deployed": peer_facts.switch.is_deployed | arista.avd.default,
                        "peer_bgp_as": peer_facts.switch.bgp_as | arista.avd.default,
                        "type": peer_uplink.type | arista.avd.default,
                        "speed": peer_uplink.speed | arista.avd.default,

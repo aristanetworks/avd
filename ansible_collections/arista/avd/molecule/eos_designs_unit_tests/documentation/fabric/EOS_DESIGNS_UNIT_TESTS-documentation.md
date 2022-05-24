@@ -41,6 +41,8 @@
 | EOS_DESIGNS_UNIT_TESTS | spine | DC1-SPINE4 | 192.168.200.104/24 | 7280R3 | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7050SX3 | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1_UNDEPLOYED_LEAF1A | 192.168.200.121/24 | 7280R | Not Available |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | DC1_UNDEPLOYED_LEAF1B | 192.168.200.122/24 | 7280R | Not Available |
 | EOS_DESIGNS_UNIT_TESTS | spine | device.with.dots.in.hostname | - | - | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
@@ -128,14 +130,24 @@
 | spine | DC1-SPINE1 | Ethernet10 | l3leaf | MH-LEAF1A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet11 | l3leaf | MH-LEAF1B | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet12 | l3leaf | MH-LEAF2A | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet17 | l3leaf | DC1_UNDEPLOYED_LEAF1B | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
+| spine | DC1-SPINE2 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet2 |
+| spine | DC1-SPINE2 | Ethernet17 | l3leaf | DC1_UNDEPLOYED_LEAF1B | Ethernet2 |
 | spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet3 |
 | spine | DC1-SPINE3 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet3 |
+| spine | DC1-SPINE3 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet3 |
+| spine | DC1-SPINE3 | Ethernet17 | l3leaf | DC1_UNDEPLOYED_LEAF1B | Ethernet3 |
 | spine | DC1-SPINE4 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet4 |
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet4 |
+| spine | DC1-SPINE4 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet4 |
+| spine | DC1-SPINE4 | Ethernet17 | l3leaf | DC1_UNDEPLOYED_LEAF1B | Ethernet4 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
+| l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet5 | mlag_peer | DC1_UNDEPLOYED_LEAF1B | Ethernet5 |
+| l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet6 | mlag_peer | DC1_UNDEPLOYED_LEAF1B | Ethernet6 |
 | l2leaf | MH-L2LEAF1A | Ethernet1 | l3leaf | MH-LEAF2A | Ethernet2 |
 
 # Fabric IP Allocation
@@ -145,7 +157,7 @@
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 | 10.10.101.0/24 | 256 | 6 | 2.35 % |
-| 172.31.255.0/24 | 256 | 88 | 34.38 % |
+| 172.31.255.0/24 | 256 | 104 | 40.63 % |
 
 ## Point-To-Point Links Node Allocation
 
@@ -192,19 +204,27 @@
 | DC1-SPINE1 | Ethernet10 | 10.10.101.0/31 | MH-LEAF1A | Ethernet1 | 10.10.101.1/31 |
 | DC1-SPINE1 | Ethernet11 | 10.10.101.2/31 | MH-LEAF1B | Ethernet1 | 10.10.101.3/31 |
 | DC1-SPINE1 | Ethernet12 | 10.10.101.4/31 | MH-LEAF2A | Ethernet1 | 10.10.101.5/31 |
+| DC1-SPINE1 | Ethernet16 | 172.31.255.192/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet1 | 172.31.255.193/31 |
+| DC1-SPINE1 | Ethernet17 | 172.31.255.208/31 | DC1_UNDEPLOYED_LEAF1B | Ethernet1 | 172.31.255.209/31 |
 | DC1-SPINE2 | Ethernet4 | 172.31.255.50/31 | DC1-SVC3A | Ethernet2 | 172.31.255.51/31 |
 | DC1-SPINE2 | Ethernet5 | 172.31.255.66/31 | DC1-SVC3B | Ethernet2 | 172.31.255.67/31 |
+| DC1-SPINE2 | Ethernet16 | 172.31.255.194/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet2 | 172.31.255.195/31 |
+| DC1-SPINE2 | Ethernet17 | 172.31.255.210/31 | DC1_UNDEPLOYED_LEAF1B | Ethernet2 | 172.31.255.211/31 |
 | DC1-SPINE3 | Ethernet4 | 172.31.255.52/31 | DC1-SVC3A | Ethernet3 | 172.31.255.53/31 |
 | DC1-SPINE3 | Ethernet5 | 172.31.255.68/31 | DC1-SVC3B | Ethernet3 | 172.31.255.69/31 |
+| DC1-SPINE3 | Ethernet16 | 172.31.255.196/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet3 | 172.31.255.197/31 |
+| DC1-SPINE3 | Ethernet17 | 172.31.255.212/31 | DC1_UNDEPLOYED_LEAF1B | Ethernet3 | 172.31.255.213/31 |
 | DC1-SPINE4 | Ethernet4 | 172.31.255.54/31 | DC1-SVC3A | Ethernet4 | 172.31.255.55/31 |
 | DC1-SPINE4 | Ethernet5 | 172.31.255.70/31 | DC1-SVC3B | Ethernet4 | 172.31.255.71/31 |
+| DC1-SPINE4 | Ethernet16 | 172.31.255.198/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet4 | 172.31.255.199/31 |
+| DC1-SPINE4 | Ethernet17 | 172.31.255.214/31 | DC1_UNDEPLOYED_LEAF1B | Ethernet4 | 172.31.255.215/31 |
 
 ## Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 1.2.3.4/24 | 256 | 2 | 0.79 % |
-| 192.168.255.0/24 | 256 | 20 | 7.82 % |
+| 192.168.255.0/24 | 256 | 22 | 8.6 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -226,6 +246,8 @@
 | EOS_DESIGNS_UNIT_TESTS | DC1-SPINE4 | 192.168.255.4/32 |
 | EOS_DESIGNS_UNIT_TESTS | DC1-SVC3A | 192.168.255.12/32 |
 | EOS_DESIGNS_UNIT_TESTS | DC1-SVC3B | 192.168.255.13/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1_UNDEPLOYED_LEAF1A | 192.168.255.21/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1_UNDEPLOYED_LEAF1B | 192.168.255.22/32 |
 | EOS_DESIGNS_UNIT_TESTS | device.with.dots.in.hostname | 1.2.3.1/32 |
 | EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_false | 192.168.255.109/32 |
 | EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_true | 192.168.255.109/32 |
@@ -237,7 +259,7 @@
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 16 | 6.25 % |
+| 192.168.254.0/24 | 256 | 18 | 7.04 % |
 
 ## VTEP Loopback Node allocation
 
@@ -254,6 +276,8 @@
 | EOS_DESIGNS_UNIT_TESTS | DC1-LEAF2B | 192.168.254.11/32 |
 | EOS_DESIGNS_UNIT_TESTS | DC1-SVC3A | 192.168.254.12/32 |
 | EOS_DESIGNS_UNIT_TESTS | DC1-SVC3B | 192.168.254.12/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1_UNDEPLOYED_LEAF1A | 192.168.254.21/32 |
+| EOS_DESIGNS_UNIT_TESTS | DC1_UNDEPLOYED_LEAF1B | 192.168.254.21/32 |
 | EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_false | 192.168.254.109/32 |
 | EOS_DESIGNS_UNIT_TESTS | evpn_services_l2_only_true | 192.168.254.109/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.254.33/32 |
