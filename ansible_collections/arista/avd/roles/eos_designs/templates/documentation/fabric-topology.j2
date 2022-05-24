@@ -11,7 +11,7 @@ Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface 
 {%             do csv_line.append(node_hostvars.ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default("")) %}
 {%             do csv_line.append(node_hostvars.ethernet_interfaces[ethernet_interface].peer | arista.avd.default("")) %}
 {%             do csv_line.append(node_hostvars.ethernet_interfaces[ethernet_interface].peer_interface | arista.avd.default("")) %}
-{%             do csv_line.append(not node_hostvars.ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default("")) %}
+{%             do csv_line.append(not node_hostvars.ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default(false)) %}
 {{ csv_line | join(",") }}
 {%         endfor %}
 {%     endif %}
