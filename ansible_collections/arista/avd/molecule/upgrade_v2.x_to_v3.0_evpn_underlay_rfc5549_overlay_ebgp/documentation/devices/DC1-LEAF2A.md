@@ -975,13 +975,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
-| ------------------ | ---------- | --------- | ----------- |
-| Ethernet1 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet2 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet3 | UNDERLAY_PEERS | 65001 | - |
-| Ethernet4 | UNDERLAY_PEERS | 65001 | - |
-| Vlan4093 | MLAG_PEER | 65102 | - |
+| Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
+| ------------------ | --- | ---------- | --------- | ----------- |
+| Ethernet1 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet2 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet3 | default | UNDERLAY_PEERS | 65001 | - |
+| Ethernet4 | default | UNDERLAY_PEERS | 65001 | - |
+| Vlan4093 | default | MLAG_PEER | 65102 | - |
 
 ### Router BGP EVPN Address Family
 
