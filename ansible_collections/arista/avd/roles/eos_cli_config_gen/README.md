@@ -2388,6 +2388,9 @@ sflow:
       port: < port_number >
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
+  interface:
+    disable:
+      default: < true | false >
   run: < true | false >
   hardware_acceleration:
     enabled: < true | false >
