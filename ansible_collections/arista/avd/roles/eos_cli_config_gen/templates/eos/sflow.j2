@@ -34,6 +34,9 @@ sflow source-interface {{ sflow.source_interface }}
 {%     if sflow.run is arista.avd.defined(true) %}
 sflow run
 {%     endif %}
+{%     if sflow.interface.disable.default is arista.avd.defined(true) %}
+sflow interface disable default
+{%     endif %}
 {%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
 sflow hardware acceleration
 {%     endif %}
