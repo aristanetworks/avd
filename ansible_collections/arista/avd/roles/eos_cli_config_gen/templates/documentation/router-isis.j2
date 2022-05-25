@@ -45,7 +45,7 @@
 {%         for redistribute_route in router_isis.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%             set src_protocol = redistribute_route.source_protocol | arista.avd.default('-') %}
 {%             set route_map = redistribute_route.route_map | arista.avd.default('-') %}
-{%             if redistribute_route.source_protocol is arista.avd.defined('static') or redistribute_route.source_protocol is arista.avd.defined('connected') or redistribute_route.source_protocol is arista.avd.defined('ospf') %}
+{%             if src_protocol in ['static', 'connected', 'ospf'] %}
 {%                 set include_leaked = redistribute_route.include_leaked | arista.avd.default('-') %}
 {%             else %}
 {%                 set include_leaked = include_leaked | arista.avd.default('-') %}
