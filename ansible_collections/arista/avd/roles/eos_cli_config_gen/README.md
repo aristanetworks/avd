@@ -3422,6 +3422,7 @@ router_isis:
     - source_protocol: < route_type >
       route_map: < route_map_name >
       include_leaked: < true | false >
+      # ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
       ospf_route_type: < internal | external | nssa-external >
   address_family_ipv4:
     maximum_paths: < Integer 1-128 >
