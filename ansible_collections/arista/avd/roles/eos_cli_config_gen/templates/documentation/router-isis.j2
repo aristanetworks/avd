@@ -50,7 +50,7 @@
 {%             else %}
 {%                 set include_leaked = include_leaked | arista.avd.default('-') %}
 {%             endif %}
-{%             if redistribute_route.source_protocol is arista.avd.defined('isis') %}
+{%             if src_protocol == 'isis' %}
 {%                 set src_protocol = src_protocol ~ " instance" %}
 {%             endif %}
 {%             if redistribute_route.source_protocol is arista.avd.defined('ospf') or redistribute_route.source_protocol is arista.avd.defined('ospfv3') %}
