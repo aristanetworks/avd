@@ -70,7 +70,7 @@ sFlow Sample Rate: 1000
 
 sFlow is enabled.
 
-sFlow is disabled in all interfaces per default.
+sFlow is disabled on all interfaces by default.
 
 sFlow hardware acceleration is enabled.
 
