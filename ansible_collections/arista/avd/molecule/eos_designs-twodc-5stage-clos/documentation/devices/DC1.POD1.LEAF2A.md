@@ -1,4 +1,4 @@
-# DC1-POD1-LEAF2A
+# DC1.POD1.LEAF2A
 # Table of Contents
 
 - [Management](#management)
@@ -117,13 +117,13 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A | All | Disabled |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1.POD1.LEAF2A | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
-snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1.POD1.LEAF2A
 ```
 
 # MLAG
@@ -530,7 +530,7 @@ interface Loopback102
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 | set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1) | Common_VRF | - | false |
+| Vlan110 | set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1) | Common_VRF | - | false |
 | Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | true |
 | Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | false |
 | Vlan113 | SVI_with_no_vxlan | Common_VRF | - | false |
@@ -559,7 +559,7 @@ interface Loopback102
 ```eos
 !
 interface Vlan110
-   description set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
+   description set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1)
    no shutdown
    vrf Common_VRF
    ip address virtual 10.1.10.1/24
@@ -654,7 +654,7 @@ interface Vlan4094
 ```eos
 !
 interface Vxlan1
-   description DC1-POD1-LEAF2A_VTEP
+   description DC1.POD1.LEAF2A_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789

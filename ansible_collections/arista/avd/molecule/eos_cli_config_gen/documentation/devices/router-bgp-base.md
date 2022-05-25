@@ -124,10 +124,10 @@ interface Management1
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
-| ------------------ | ---------- | --------- | ----------- |
-| Ethernet2 | PG-FOO-v4 | 65102 | - |
-| Ethernet3 | PG-FOO-v4 | - | PF-BAR-v4 |
+| Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
+| ------------------ | --- | ---------- | --------- | ----------- |
+| Ethernet2 | default | PG-FOO-v4 | 65102 | - |
+| Ethernet3 | default | PG-FOO-v4 | - | PF-BAR-v4 |
 
 ### BGP Route Aggregation
 

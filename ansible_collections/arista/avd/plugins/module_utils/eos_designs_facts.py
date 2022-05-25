@@ -1092,7 +1092,11 @@ class EosDesignsFacts:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                uplink_switch_facts: EosDesignsFacts = get(self._hostvars,
+                                                           f"avd_switch_facts..{uplink_switch}..switch",
+                                                           required=True,
+                                                           org_key=f"avd_switch_facts.({uplink_switch}).switch",
+                                                           separator="..")
                 uplink = {}
                 uplink['interface'] = uplink_interface
                 uplink['peer'] = uplink_switch
@@ -1142,7 +1146,11 @@ class EosDesignsFacts:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                uplink_switch_facts: EosDesignsFacts = get(self._hostvars,
+                                                           f"avd_switch_facts..{uplink_switch}..switch",
+                                                           required=True,
+                                                           org_key=f"avd_switch_facts.({uplink_switch}).switch",
+                                                           separator="..")
                 uplink = {}
                 uplink['interface'] = uplink_interface
                 uplink['peer'] = uplink_switch
@@ -1204,7 +1212,11 @@ class EosDesignsFacts:
     @cached_property
     def _mlag_peer_id(self):
         if self.mlag is True:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.id", required=True)
+            return get(self._hostvars,
+                       f"avd_switch_facts..{self.mlag_peer}..switch..id",
+                       required=True,
+                       org_key=f"avd_switch_facts.({self.mlag_peer}).switch.id",
+                       separator="..")
 
     @cached_property
     def vtep_ip(self):
@@ -1273,7 +1285,11 @@ class EosDesignsFacts:
     @cached_property
     def mlag_peer_ip(self):
         if self.mlag is True:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mlag_ip", required=True)
+            return get(self._hostvars,
+                       f"avd_switch_facts..{self.mlag_peer}..switch..mlag_ip",
+                       required=True,
+                       org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mlag_ip",
+                       separator="..")
         return None
 
     @cached_property
@@ -1310,13 +1326,20 @@ class EosDesignsFacts:
     @cached_property
     def mlag_peer_l3_ip(self):
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mlag_l3_ip", required=True)
+            return get(self._hostvars,
+                       f"avd_switch_facts..{self.mlag_peer}..switch..mlag_l3_ip",
+                       required=True,
+                       org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mlag_l3_ip",
+                       separator="..")
         return None
 
     @cached_property
     def mlag_peer_mgmt_ip(self):
         if self.mlag is True:
-            peer_mgmt_ip = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mgmt_ip")
+            peer_mgmt_ip = get(self._hostvars,
+                               f"avd_switch_facts..{self.mlag_peer}..switch..mgmt_ip",
+                               org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mgmt_ip",
+                               separator="..")
             if peer_mgmt_ip is not None:
                 return str(ipaddress.ip_interface(peer_mgmt_ip).ip)
         return None

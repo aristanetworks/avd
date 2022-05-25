@@ -119,10 +119,10 @@ ethernet_interfaces:
       id: 3
       mode: active
   Ethernet1:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet3
     peer_type: l3leaf
-    description: DC1-POD1-LEAF2A_Ethernet3
+    description: DC1.POD1.LEAF2A_Ethernet3
     type: switched
     shutdown: false
     channel_group:
