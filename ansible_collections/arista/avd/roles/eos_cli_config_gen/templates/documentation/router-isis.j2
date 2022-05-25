@@ -139,7 +139,7 @@
 
 | Prefix Segment | Index |
 | -------------- | ----- |
-{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
+{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.natural_sort('prefix') %}
 {%             if prefix_segment.index is arista.avd.defined %}
 | {{ prefix_segment.prefix }} | {{ prefix_segment.index }} |
 {%             endif %}
