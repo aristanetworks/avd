@@ -3419,7 +3419,7 @@ router_isis:
   isis_af_defaults:
     - maximum-paths < Integer 1-128 >
   redistribute_routes:
-    - source_protocol: < route_type >
+    - source_protocol: < bgp | connected | isis | ospf | ospfv3 | static >
       route_map: < route_map_name >
       include_leaked: < true | false >
       # ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
