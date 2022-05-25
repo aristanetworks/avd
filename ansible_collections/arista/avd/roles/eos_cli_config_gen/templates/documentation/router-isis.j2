@@ -53,7 +53,7 @@
 {%             if src_protocol == 'isis' %}
 {%                 set src_protocol = src_protocol ~ " instance" %}
 {%             endif %}
-{%             if redistribute_route.source_protocol is arista.avd.defined('ospf') or redistribute_route.source_protocol is arista.avd.defined('ospfv3') %}
+{%             if src_protocol in ['ospf', 'ospfv3'] and redistribute_route.ospf_route_type is arista.avd.defined %}
 {%                 set src_protocol = src_protocol ~ " " ~ redistribute_route.ospf_route_type %}
 {%             endif %}
 | {{ src_protocol }} | {{ route_map }} | {{ include_leaked }} |
