@@ -42,7 +42,7 @@
 
 | Route Type | Route-Map | Include Leaked |
 | ---------- | --------- | -------------- |
-{%         for redistribute_route in router_isis.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.natural_sort('source_protocol') %}
+{%         for redistribute_route in router_isis.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%             set src_protocol = redistribute_route.source_protocol | arista.avd.default('-') %}
 {%             set route_map = redistribute_route.route_map | arista.avd.default('-') %}
 {%             if redistribute_route.source_protocol is arista.avd.defined('static') or redistribute_route.source_protocol is arista.avd.defined('connected') or redistribute_route.source_protocol is arista.avd.defined('ospf') %}
