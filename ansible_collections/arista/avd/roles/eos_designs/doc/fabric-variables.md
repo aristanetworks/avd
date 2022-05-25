@@ -29,6 +29,10 @@ overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
 # Requires "underlay_routing_protocol: EBGP"
 underlay_rfc5549: < true | false | default -> false >
 
+# Enable RFC 5549(iBGP) i.e. IPv6 Unnumbered for MLAG iBGP connections.
+# Requires "underlay_rfc5549: true"
+overlay_mlag_rfc5549: < true | false | default -> false >
+
 # Enable IPv6 Address Family on underlay.
 # This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
 # Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric Topology"
