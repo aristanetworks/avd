@@ -3433,7 +3433,7 @@ router_isis:
         enable: < true | false >
         strict: < true | false >
     tunnel_source_labeled_unicast:
-      enable: < true | false >
+      enabled: < true | false >
       rcf: < routing_control_function() >
   address_family_ipv6:
     maximum_paths: < Integer 1-128 >

@@ -48,7 +48,7 @@
 {%             if src_protocol in ['static', 'connected', 'ospf'] %}
 {%                 set include_leaked = redistribute_route.include_leaked | arista.avd.default('-') %}
 {%             else %}
-{%                 set include_leaked = include_leaked | arista.avd.default('-') %}
+{%                 set include_leaked = '-' %}
 {%             endif %}
 {%             if src_protocol == 'isis' %}
 {%                 set src_protocol = src_protocol ~ " instance" %}
@@ -168,7 +168,7 @@
 {%             endif %}
 {%         endif %}
 {%     endif %}
-{%     if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enable is arista.avd.defined(true) %}
+{%     if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enabled is arista.avd.defined(true) %}
 
 ### Tunnel Source
 

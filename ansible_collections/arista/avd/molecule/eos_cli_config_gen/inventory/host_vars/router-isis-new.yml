@@ -41,7 +41,7 @@ router_isis:
         enable: true
         strict: true
     tunnel_source_labeled_unicast:
-      enable: True
+      enabled: True
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
     maximum_paths: 4
