@@ -126,8 +126,8 @@ router isis {{ router_isis.instance }}
 {%         elif router_isis.segment_routing_mpls.enabled is arista.avd.defined(false) %}
       shutdown
 {%         endif %}
-{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
-{%             if prefix_segment.index is arista.avd.defined %}
+{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.natural_sort('prefix') %}
+{%             if prefix_segment.prefix is arista.avd.defined and prefix_segment.index is arista.avd.defined %}
       prefix-segment {{ prefix_segment.prefix }} index {{ prefix_segment.index }}
 {%             endif %}
 {%         endfor %}
