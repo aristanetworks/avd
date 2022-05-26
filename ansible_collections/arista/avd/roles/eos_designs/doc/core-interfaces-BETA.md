@@ -57,6 +57,16 @@ core_interfaces:
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
+      # OSPF Parameters
+      ospf_authentication: <1.2.3.4>
+      # OSPF Auth. Parameters
+      ospf_authentication: < simple | message-digest | default -> simple >
+      ospf_authentication_key: "asfddja23452"
+      ospf_message_digest_keys:
+        1:
+          hash_algorithm: < md5 >
+          key: "asfddja23452"
+
       # MPLS Parameters
       mpls_ip: < true | false | default -> true if switch.mpls_lsr is true >
       mpls_ldp: < true | false | default -> true for ldp underlay variants, otherwise false >

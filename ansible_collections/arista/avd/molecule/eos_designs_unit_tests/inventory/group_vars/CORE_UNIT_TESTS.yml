@@ -32,6 +32,9 @@ underlay_ospf_process_id: 101
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
 
+ospf_authentication: simple
+ospf_authentication_key: global_secure_key
+
 # Nodes
 type: core_router
 core_router:
@@ -53,6 +56,10 @@ core_interfaces:
       ipv4_pool: 100.64.48.0/24
     - name: some_other_pool
       ipv4_pool: 100.123.123.0/24
+    - name: ospf_area_1_pool
+      ipv4_pool: 100.64.48.0/24
+    - name: ospf_area_2_pool
+      ipv4_pool: 100.64.49.0/24
   p2p_links_profiles:
     - name: isis_bb_profile
       speed: "forced 1000full"
@@ -65,13 +72,15 @@ core_interfaces:
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
-    - name: ospf_bb_profile
+    - name: ospf_bb_profile_simple_a1
       speed: "forced 1000full"
       mtu: 1500
-      ip_pool: underlay_pool
+      ip_pool: ospf_area_1_pool
+      ospf_area: 0.0.0.1
+      ospf_authentication: simple
+      ospf_authentication_key: profile_secure_key
 
   p2p_links:
-
     # Unnumbered link
     - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
       id: 1
@@ -139,3 +148,35 @@ core_interfaces:
           core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
           core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
+
+    # core ospf simple override
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 10
+      interfaces: [ Ethernet14, Ethernet14 ]
+      ip_pool: ospf_area_2_pool
+      ospf_area: 0.0.0.2
+      ospf_authentication: simple
+      ospf_authentication_key: p2p_secure_key
+
+    # core ospf simple profile override
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 11
+      interfaces: [ Ethernet15, Ethernet15 ]
+      ip_pool: ospf_area_1_pool
+      profile: ospf_bb_profile_simple_a1
+
+      # core ospf message-digest auth p2p
+    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+      id: 13
+      interfaces: [ Ethernet16, Ethernet16 ]
+      ip_pool: ospf_area_2_pool
+      ospf_area: 0.0.0.2
+      ospf_authentication: message-digest
+      ospf_authentication_key: p2p_secure_key
+      ospf_message_digest_keys:
+        1:
+          hash_algorithm: md5
+          key: <md5key1>
+        2:
+          hash_algorithm: md5
+          key: <md5key2>

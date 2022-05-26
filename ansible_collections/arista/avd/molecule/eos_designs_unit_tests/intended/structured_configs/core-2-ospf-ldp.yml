@@ -45,6 +45,9 @@ router_ospf:
       - Ethernet5
       - Ethernet6
       - Ethernet10
+      - Ethernet14
+      - Ethernet15
+      - Ethernet16
       - Port-Channel12
 mpls:
   ip: true
@@ -162,11 +165,58 @@ ethernet_interfaces:
     description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10
     type: routed
     shutdown: false
-    mtu: 1500
-    ip_address: 100.64.48.13/31
-    speed: forced 1000full
+    mtu: 1600
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+  Ethernet14:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet14
+    peer_type: core_router
+    description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet14
+    type: routed
+    shutdown: false
+    mtu: 1600
+    ip_address: 100.64.49.19/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.2
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+  Ethernet15:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet15
+    peer_type: core_router
+    description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet15
+    type: routed
+    shutdown: false
+    mtu: 1500
+    ip_address: 100.64.48.21/31
+    speed: forced 1000full
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.1
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+  Ethernet16:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet16
+    peer_type: core_router
+    description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet16
+    type: routed
+    shutdown: false
+    mtu: 1600
+    ip_address: 100.64.49.25/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.2
     mpls:
       ip: true
       ldp:
