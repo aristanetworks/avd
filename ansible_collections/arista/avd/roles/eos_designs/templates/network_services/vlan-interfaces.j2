@@ -136,6 +136,10 @@ vlan_interfaces:
 {%             if configure_mlag_ibgp_peering %}
 {%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
 {%                 if vrf.name != 'default' %}
+{%                     if vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
+{%                         set mlag_ibgp_peering_ip = namespace() %}
+{%                         include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}
+{%                     endif %}
   Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
     type: underlay_peering
@@ -145,7 +149,7 @@ vlan_interfaces:
 {%                     if underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
 {%                     else %}
-    ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
+    ip_address: {{ mlag_ibgp_peering_ip.ip | arista.avd.default(switch.mlag_l3_ip, switch.mlag_ip) }}/31
 {%                     endif %}
     mtu: {{ p2p_uplinks_mtu }}
 {%                 endif %}

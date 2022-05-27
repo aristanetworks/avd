@@ -34,6 +34,8 @@ default_templates:
       mlag_ip_secondary: 'ip_addressing/mlag-ip-secondary.j2'
       mlag_l3_ip_primary: 'ip_addressing/mlag-l3-ip-primary.j2'
       mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
+      mlag_ibgp_peering_ip_primary: 'ip_addressing/mlag-ibgp-peering-ip-primary.j2'
+      mlag_ibgp_peering_ip_secondary: 'ip_addressing/mlag-ibgp-peering-ip-secondary.j2'
       p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
       p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
       vtep_ip_mlag: 'ip_addressing/vtep-ip-mlag.j2'

@@ -1432,6 +1432,16 @@ class EosDesignsFacts:
                        required=True,
                        org_key=f"avd_switch_facts.({self.mlag_peer}).switch.id",
                        separator="..")
+    
+    @cached_property
+    def mlag_switch_ids(self):
+        '''
+        Returns the switch id's of both primary and secondary switches for a given node group
+        '''
+        if self.mlag_role == 'primary':
+            return {"primary": self.id, "secondary": self._mlag_peer_id}
+        elif self.mlag_role == 'secondary':
+            return {"primary": self._mlag_peer_id, "secondary": self.id}
 
     @cached_property
     def vtep_ip(self):

@@ -144,6 +144,12 @@ svi_profiles:
         # "vrf_id" is preferred over "vrf_vni" for MLAG IBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details
         vrf_id: < 1-1024 >
 
+        # MLAG IBGP Peering IPv4 Pool | Optional
+        # The subnet used for iBGP peering in the VRF.
+        # Each MLAG pair will be assigned a subnet based on the ID of the primary MLAG switch
+        # If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used
+        mlag_ibgp_peering_ipv4_pool: < IPv4_address/Mask >
+
         # IP Helper for DHCP relay
         ip_helpers:
           - ip_helper: < IPv4 dhcp server IP >
