@@ -31,7 +31,7 @@ ethernet_interfaces:
 {%             endif %}
 {%         endif %}
     type: routed
-    shutdown: false
+    shutdown: {{ shutdown_interfaces_towards_undeployed_peers is arista.avd.defined(true) and not link.peer_is_deployed }}
 {%         if link.ipv6_enable is arista.avd.defined(true) %}
     ipv6_enable: true
 {%         endif %}
@@ -64,8 +64,7 @@ ethernet_interfaces:
     speed: {{ link.speed }}
 {%         endif %}
     type: switched
-    shutdown: false
-
+    shutdown: {{ shutdown_interfaces_towards_undeployed_peers is arista.avd.defined(true) and not link.peer_is_deployed }}
 {%         if link.channel_group_id is arista.avd.defined %}
     channel_group:
       id: {{ link.channel_group_id }}

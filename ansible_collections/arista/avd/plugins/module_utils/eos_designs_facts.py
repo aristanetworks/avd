@@ -449,6 +449,10 @@ class EosDesignsFacts:
         )
 
     @cached_property
+    def is_deployed(self):
+        return get(self._hostvars, "is_deployed", default=True)
+
+    @cached_property
     def platform_settings(self):
         platform_settings = get(self._hostvars, "platform_settings", default=[])
 
@@ -1102,6 +1106,7 @@ class EosDesignsFacts:
                 uplink['peer'] = uplink_switch
                 uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
                 uplink['peer_type'] = uplink_switch_facts.type
+                uplink['peer_is_deployed'] = uplink_switch_facts.is_deployed
                 uplink['peer_bgp_as'] = uplink_switch_facts.bgp_as
                 uplink['type'] = 'underlay_p2p'
                 if self.uplink_interface_speed is not None:
@@ -1156,6 +1161,7 @@ class EosDesignsFacts:
                 uplink['peer'] = uplink_switch
                 uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
                 uplink['peer_type'] = uplink_switch_facts.type
+                uplink['peer_is_deployed'] = uplink_switch_facts.is_deployed
                 uplink['type'] = 'underlay_l2'
 
                 if self.uplink_interface_speed is not None:
