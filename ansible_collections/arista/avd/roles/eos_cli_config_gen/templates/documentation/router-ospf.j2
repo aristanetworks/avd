@@ -4,8 +4,8 @@
 
 ### Router OSPF Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | BFD Any | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ------- |----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
 {%     for process_id in router_ospf.process_ids | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%         set router_id = process_id.router_id | arista.avd.default ('-') %}
 {%         if process_id.passive_interface_default is arista.avd.defined(true) %}
@@ -26,6 +26,11 @@
 {%             set bfd_enable = 'enabled' %}
 {%         else %}
 {%             set bfd_enable = 'disabled' %}
+{%         endif %}
+{%         if process_id.bfd_adjacency_state_any is arista.avd.defined(true) %}
+{%             set bfd_any = 'enabled' %}
+{%         else %}
+{%             set bfd_any = 'disabled' %}
 {%         endif %}
 {%         set max_lsa = process_id.max_lsa | arista.avd.default('default') %}
 {%         if process_id.default_information_originate is arista.avd.defined %}
@@ -50,7 +55,7 @@
 {%         else %}
 {%             set distribute_list_in = '-' %}
 {%         endif %}
-| {{ process_id.id }} | {{ router_id }} | {{ passive_interface_default }} |{{ no_passive_interfaces.list }} | {{ bfd_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} | {{ distribute_list_in }} |
+| {{ process_id.id }} | {{ router_id }} | {{ passive_interface_default }} |{{ no_passive_interfaces.list }} | {{ bfd_enable }} | {{ bfd_any }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} | {{ distribute_list_in }} |
 {%     endfor %}
 {# OSPF Distance #}
 {%     set ospf_distance_process_ids = [] %}
