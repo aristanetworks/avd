@@ -20,9 +20,9 @@ tenants:
             structured_config:
               description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
             nodes:
-              DC1-POD1-LEAF2A:
+              DC1.POD1.LEAF2A:
                 structured_config:
-                  description: set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
+                  description: set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1)
           "111":
             vni_override: 50111
             name: Tenant_A_OP_Zone_2

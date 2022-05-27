@@ -288,8 +288,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
-| Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet16 | server-1_Eth2 | *access | *110 | *- | *- | 16 |
 | Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
 | Ethernet18 | server-1_Eth6 | *access | *110 | *- | *- | 18 |
@@ -340,12 +340,12 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5
+   description MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6
+   description MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -421,7 +421,7 @@ interface Ethernet19
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
-| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1.POD1.LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
 | Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
@@ -441,7 +441,7 @@ interface Port-Channel3
    service-profile QOS-PROFILE
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-POD1-LEAF2A_Po5
+   description MLAG_PEER_DC1.POD1.LEAF2A_Po5
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -910,7 +910,7 @@ router bgp 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
-   neighbor MLAG-IPv4-UNDERLAY-PEER description DC1-POD1-LEAF2A
+   neighbor MLAG-IPv4-UNDERLAY-PEER description DC1.POD1.LEAF2A
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
@@ -948,7 +948,7 @@ router bgp 65112.100
    neighbor 172.17.110.22 remote-as 65110.100
    neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
    neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.110.2 description DC1-POD1-LEAF2A
+   neighbor 172.20.110.2 description DC1.POD1.LEAF2A
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !
@@ -995,6 +995,7 @@ router bgp 65112.100
       route import match-failure action discard
    !
    address-family rt-membership
+      neighbor EVPN-OVERLAY-CORE activate
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

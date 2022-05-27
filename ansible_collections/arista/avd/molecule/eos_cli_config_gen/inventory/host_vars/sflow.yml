@@ -24,6 +24,9 @@ sflow:
   sample: 1000
   dangerous: true
   run: true
+  interface:
+    disable:
+      default: true
   hardware_acceleration:
     enabled: true
     sample: 1024

@@ -6,8 +6,8 @@
 
 | Name | Action |
 | -------- | ------ |
-{%     for community_list in community_lists | arista.avd.natural_sort %}
-| {{ community_list }} | {{ community_lists[community_list].action }} |
+{%     for community_list in community_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ community_list.name }} | {{ community_list.action }} |
 {%     endfor %}
 
 ### Community-lists Device Configuration

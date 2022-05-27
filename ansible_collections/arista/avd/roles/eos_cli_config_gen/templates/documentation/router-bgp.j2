@@ -44,6 +44,50 @@
 | {{ paths_cli }} |
 {%         endif %}
 {%     endif %}
+{# Check if listen_ranges exist under router_bgp.vrfs #}
+{%     set temp = namespace() %}
+{%     set temp.bgp_vrf_listen_ranges = false %}
+{%     if router_bgp.vrfs is arista.avd.defined %}
+{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.listen_ranges is arista.avd.defined %}
+{%                 set temp.bgp_vrf_listen_ranges = true %}
+{%                 break %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_bgp.listen_ranges is arista.avd.defined or temp.bgp_vrf_listen_ranges is arista.avd.defined(true) %}
+
+### Router BGP Listen Ranges
+
+| Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
+| ------ | ------------------------- | ---------- | ----------- | --------- | --- |
+{# listen_ranges in vrf default #}
+{%         if router_bgp.listen_ranges is arista.avd.defined %}
+{%             for listen_range in router_bgp.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
+               and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
+{%                 if listen_range.peer_filter is arista.avd.defined %}
+{%                     set row_remote_as = "-" %}
+{%                 elif listen_range.remote_as is arista.avd.defined %}
+{%                     set row_remote_as = listen_range.remote_as %}
+{%                 endif %}
+| {{ listen_range.prefix }} | {{ listen_range.peer_id_include_router_id | arista.avd.default('-') }} | {{ listen_range.peer_group }} | {{ listen_range.peer_filter | arista.avd.default('-') }} | {{ row_remote_as }} | default |
+{%             endfor %}
+{%         endif %}
+{# listen_ranges under router_bgp.vrfs #}
+{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.listen_ranges is arista.avd.defined %}
+{%                 for listen_range in vrf.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
+                   and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
+{%                     if listen_range.peer_filter is arista.avd.defined %}
+{%                         set row_remote_as = "-" %}
+{%                     elif listen_range.remote_as is arista.avd.defined %}
+{%                         set row_remote_as = listen_range.remote_as %}
+{%                     endif %}
+| {{ listen_range.prefix }} | {{ listen_range.peer_id_include_router_id | arista.avd.default('-') }} | {{ listen_range.peer_group }} | {{ listen_range.peer_filter | arista.avd.default('-') }} | {{ row_remote_as }} | {{ vrf.name }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if router_bgp.peer_groups is arista.avd.defined %}
 
 ### Router BGP Peer Groups
@@ -316,17 +360,28 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if router_bgp.neighbor_interfaces is arista.avd.defined %}
+{%     set neighbor_interfaces = [] %}
+{%     for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         do neighbor_interfaces.append(neighbor_interface) %}
+{%     endfor %}
+{%     for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for neighbor_interface in vrf.neighbor_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             do neighbor_interface.update({"vrf": vrf.name}) %}
+{%             do neighbor_interfaces.append(neighbor_interface) %}
+{%         endfor %}
+{%     endfor %}
+{%     if neighbor_interfaces | length > 0 %}
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
-| ------------------ | ---------- | --------- | ----------- |
-{%         for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
+| ------------------ | --- | ---------- | --------- | ----------- |
+{%         for neighbor_interface in neighbor_interfaces %}
+{%             set vrf = neighbor_interface.vrf | arista.avd.default("default") %}
 {%             set peer_group = neighbor_interface.peer_group | arista.avd.default("-") %}
 {%             set remote_as = neighbor_interface.remote_as | arista.avd.default("-") %}
 {%             set peer_filter = neighbor_interface.peer_filter | arista.avd.default("-") %}
-| {{ neighbor_interface.name }} | {{ peer_group }} | {{ remote_as }} | {{ peer_filter }} |
+| {{ neighbor_interface.name }} | {{ vrf }} | {{ peer_group }} | {{ remote_as }} | {{ peer_filter }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is arista.avd.defined %}

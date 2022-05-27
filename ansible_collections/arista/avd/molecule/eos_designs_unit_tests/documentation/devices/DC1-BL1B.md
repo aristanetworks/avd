@@ -13,6 +13,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+  - [SFlow](#sflow)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [Spanning Tree](#spanning-tree)
@@ -191,6 +192,27 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location EOS_DESIGNS_UNIT_TESTS DC1-BL1B
+```
+
+## SFlow
+
+### SFlow Summary
+
+| VRF | SFlow Source Interface | SFlow Destination | Port |
+| --- | ---------------------- | ----------------- | ---- |
+| OOB | - | 10.0.200.90 | 6343 |
+| OOB | - | 192.168.200.10 | 6343 |
+| OOB | Management1 | - | - |
+
+sFlow is disabled.
+
+### SFlow Device Configuration
+
+```eos
+!
+sflow vrf OOB destination 10.0.200.90
+sflow vrf OOB destination 192.168.200.10
+sflow vrf OOB source-interface Management1
 ```
 
 # Hardware TCAM Profile
@@ -786,6 +808,10 @@ router bgp 65105
       neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix
+   !
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-CORE activate

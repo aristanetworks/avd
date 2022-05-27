@@ -86,6 +86,7 @@
       - [Management HTTP](#management-http)
       - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
+      - [Management API Models](#management-api-models)
       - [Management Console](#management-console)
       - [Management CVX](#management-cvx)
       - [Management Defaults](#management-defaults)
@@ -112,6 +113,7 @@
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
       - [Monitor Sessions](#monitor-sessions)
+      - [Tap Aggregation](#tap-aggregation)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -1156,9 +1158,27 @@ ethernet_interfaces:
       reauthentication: < true | false >
       pae:
         mode: < "authenticator" >
+      authentication_failure:
+        action: < "allow" | "drop" >
+        allow_vlan: < 1-4094 >
+      host_mode:
+        mode: < "multi-host" | "single-host" >
+        multi_host_authenticated: < true | false >
+      mac_based_authentication:
+        enabled: < true | false >
+        always: < true | false >
+        host_mode_common: < true | false >
+      timeout:
+        idle_host: < 10-65535 >
+        quiet_period: < 1-65535 >
+        reauth_period: < 60-4294967295 | server >
+        reauth_timeout_ignore: < true | false >
+        tx_period: < 1-65535 >
+      reauthorization_request_limit: < 1-10 >
     traffic_policy:
       input: < ingress traffic policy >
       output: < egress traffic policy >
+
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1335,6 +1355,7 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     evpn_ethernet_segment:
+      identifier: < EVPN Ethernet Segment Identifier (Type 1 format) >
       redundancy: < all-active | single-active >
       designated_forwarder_election:
         algorithm: < modulus | preference >
@@ -1347,6 +1368,9 @@ port_channel_interfaces:
       mpls:
         shared_index: < 1-1024 >
         tunnel_flood_filter_time: < integer >
+      route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
+    # esi and rt to be deprecated in AVD 4.0, replaced by identifier and route_target under evpn_ethernet_segment.
+    # If both esi/rt and identifier/route_target are defined, new variables take precedence over old variables.
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -1476,7 +1500,12 @@ vlan_interfaces:
         dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
+    # The below "ipv6_virtual_router_address" key will be deprecated in AVD v4.0 - These should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
     ipv6_virtual_router_address: < IPv6_address >
+    # New improved "VARPv6" data model to support multiple VARPv6 addresses.
+    ipv6_virtual_router_addresses:
+      - < IPv6_address/Mask | IPv6_address >
+      - < IPv6_address/Mask | IPv6_address >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
@@ -1870,6 +1899,21 @@ management_api_gnmi:
   octa:
 ```
 
+#### Management API Models
+
+```yaml
+management_api_models:
+  providers:
+    - name: < sysdb | smash >
+      paths:
+      - path: < path1 >
+        disabled: < true | false | default -> false >
+      - path: < path2 >
+    - name: < provider2 >
+      paths:
+      - path: < path1 >
+```
+
 #### Management Console
 
 ```yaml
@@ -1994,6 +2038,7 @@ ntp:
       version: < 1 - 4 >
       vrf: < vrf_name >
   authenticate: <true | false >
+  authenticate_servers_only: < true | false >
   authentication_keys:
     - id: < key_identifier | 1-65534 >
       hash_algorithm: < md5 | sha1 >
@@ -2343,6 +2388,9 @@ sflow:
       port: < port_number >
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
+  interface:
+    disable:
+      default: < true | false >
   run: < true | false >
   hardware_acceleration:
     enabled: < true | false >
@@ -2483,6 +2531,33 @@ monitor_sessions:
     truncate:
       enabled: < true | false >
       size: < bytes >
+```
+
+#### Tap Aggregation
+
+```yaml
+tap_aggregation:
+  mode:
+    exclusive:
+      enabled: < true | false >
+      profile: < profile_name >
+      no-errdisable:
+        - < EthernetX | Port-ChannelX >
+  encapsulation_dot1br_strip: < true | false >
+  encapsulation_vn_tag_strip: < true | false >
+  protocol_lldp_trap: < true | false >
+  # Allowed truncation_size values vary depending on the platform
+  truncation_size: < size in bytes >
+  mac:
+    # mac.timestamp.replace_source_mac and mac.timestamp.header.format are mutually exclsuive. If both are defined, replace_source_mac takes precedence
+    timestamp:
+      replace_source_mac: < true | false >
+      header:
+        format: < "48-bit" | "64-bit" >
+        eth_type: < integer >
+    # mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence
+    fcs_append: < true | false >
+    fcs_error: < "correct" | "discard" | "pass-through" >
 ```
 
 ### System Control-Plane
@@ -2769,6 +2844,15 @@ router_bgp:
   bgp:
     bestpath:
       d_path: < true | false >
+  # New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+  listen_ranges:
+    - prefix: < A.B.C.D/E | A:B:C:D:E:F:G:H/I >
+      # include router id as part of peer filter
+      peer_id_include_router_id: < true | false >
+      peer_group: < name of peer-group >
+      # peer_filter or remote_as is required but mutually exclusive. If both are defined, peer_filter takes precedence
+      peer_filter: < name of peer-filter >
+      remote_as: < remote ASN in plain or dot notation >
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
@@ -2812,6 +2896,8 @@ router_bgp:
       route_map_out: < outbound route-map >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
+      # "bgp_listen_range_prefix" and "peer_filter" will be deprecated in AVD v4.0
+      # These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
       bgp_listen_range_prefix: < IP prefix range >
       peer_filter: < peer_filter >
       password: "< encrypted_password >"
@@ -3124,6 +3210,15 @@ router_bgp:
       networks:
         < prefix_ipv4 >:
           route_map: < route_map_name >
+      # New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+      listen_ranges:
+        - prefix: < A.B.C.D/E | A:B:C:D:E:F:G:H/I >
+          # include router id as part of peer filter
+          peer_id_include_router_id: < true | false >
+          peer_group: < name of peer-group >
+          # peer_filter or remote_as is required but mutually exclusive. If both are defined, peer_filter takes precedence
+          peer_filter: < name of peer-filter >
+          remote_as: < remote ASN in plain or dot notation >
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
@@ -3169,6 +3264,11 @@ router_bgp:
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
           shutdown: < true | false >
+      neighbor_interfaces:
+        < interface >:
+          peer_group: < peer_group_name >
+          remote_as: < bgp_as >
+          peer_filter: <peer_filter>
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -3189,6 +3289,8 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
+              route_map_out: < route_map_name >
+              route_map_in: < route_map_name >
           networks:
             < prefix_address >:
               route_map: < route_map_name >

@@ -2,6 +2,9 @@
 
 # L3LS Fabric Values
 
+# If a device is set to "is_deployed: false" at the host_vars level, then shutdown interfaces towards undeployed peers.
+shutdown_interfaces_towards_undeployed_peers: true
+
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
 
@@ -20,13 +23,17 @@ bgp_peer_groups:
     name: MLAG-PEERS
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
+# test with inline jinja2
+spine_platform: "7050SX3"
+spine_bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+
 # Spine Switches
 spine:
   defaults:
-    platform: 7050SX3
+    platform: "{{ spine_platform }}"
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: "{{ spine_bgp_defaults }}"
   nodes:
     DC1-SPINE1:
       id: 1
@@ -75,8 +82,8 @@ l3leaf:
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
-      tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-      tags: [ opzone, web, app, db, vmotion, nfs ]
+      tenants: [ Tenant_A, Tenant_B, Tenant_C, Tenant_D ]
+      tags: [ opzone, web, app, db, vmotion, nfs, v6wan, v6opzone ]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
@@ -84,7 +91,7 @@ l3leaf:
       platform: 7050SX3
       filter:
         tenants: [ all ]
-        tags: [ web, app, erp2 ]
+        tags: [ web, app, erp2, v6wan ]
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -110,6 +117,7 @@ l3leaf:
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
+      mlag_port_channel_id: 2000
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -129,6 +137,15 @@ l3leaf:
         tenants: [ all ]
         tags: [ wan ]
         always_include_vrfs_in_tenants: [ 'Tenant_B' ]
+# Test cornercase in convert_dicts with keys that have no value
+      structured_config:
+        sflow:
+          vrfs:
+            OOB:
+              destinations:
+                192.168.200.10:
+                10.0.200.90:
+              source_interface: Management1
       nodes:
         DC1-BL1A:
           id: 6
@@ -199,6 +216,21 @@ l3leaf:
           bgp_as: 65109
           mgmt_ip: 192.168.200.120/24
           uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
+    DC1_UNDEPLOYED_LEAF1:
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+      nodes:
+        DC1_UNDEPLOYED_LEAF1A:
+          id: 13
+          bgp_as: 65110
+          mgmt_ip: 192.168.200.121/24
+          uplink_switch_interfaces: [ Ethernet16, Ethernet16, Ethernet16, Ethernet16 ]
+        DC1_UNDEPLOYED_LEAF1B:
+          id: 14
+          bgp_as: 65111
+          mgmt_ip: 192.168.200.122/24
+          uplink_switch_interfaces: [ Ethernet17, Ethernet17, Ethernet17, Ethernet17 ]
 
 l2leaf:
   defaults:

@@ -1,0 +1,96 @@
+---
+port_profiles:
+  - profile: Tenant_X
+    mode: access
+    vlans: "310"
+    link_tracking:
+      enabled: true
+
+  - profile: Tenant_X_LT
+    mode: access
+    vlans: "310"
+    link_tracking:
+      enabled: true
+      name: Eth-conn-to-router
+
+servers:
+  # Connected to MH_L3LEAF1
+  - name: server01_ES1
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: 0001:1010:1010
+
+  - name: server02
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ MH-L2LEAF1A ]
+        link_tracking:
+          enabled: true
+          name: l2leaf-server02
+
+  - name: server03_AUTO_ESI
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X
+        port_channel:
+          description: Auto-ESI PortChannel
+          mode: active
+          short_esi: auto
+
+routers:
+  - name: ROUTER01
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ MH-LEAF2A ]
+        profile: Tenant_X_LT
+
+  - name: ROUTER02_WITH_SUBIF
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        port_channel:
+          description: Testing L2 subinterfaces
+          mode: active
+          # Port-Channel L2 Subinterfaces
+          # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+          subinterfaces:
+            - number: 101
+              short_esi: 0000:0000:0101 # Required for multihomed port-channels with subinterfaces
+              #vlan_id: 1101 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                #client_dot1q: 2101 # default is subinterface number
+            - number: 102
+              short_esi: 0000:0000:0102 # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1102 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2102 # default is subinterface number
+            # Tests for Auto ESI on subinterfaces
+            - number: 103
+              short_esi: auto # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1103 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2103 # default is subinterface number
+            - number: 104
+              short_esi: auto # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1104 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2104 # default is subinterface number

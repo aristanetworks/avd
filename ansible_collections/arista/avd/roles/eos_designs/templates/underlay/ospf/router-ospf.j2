@@ -10,11 +10,10 @@ router_ospf:
 {%     endif %}
       passive_interface_default: true
       no_passive_interfaces:
-{% for link_interface in underlay_data.links | arista.avd.natural_sort %}
-{%     set link = underlay_data.links[link_interface] %}
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
 {# L3 P2P interfaces #}
 {%     if link.type is arista.avd.defined('underlay_p2p') %}
-        - {{ link_interface }}
+        - {{ link.interface }}
 {%     endif %}
 {% endfor %}
 {%     if ospf_timers.lsa.rx_min_interval is arista.avd.defined

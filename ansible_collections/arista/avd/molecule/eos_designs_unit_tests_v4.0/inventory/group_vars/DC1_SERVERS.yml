@@ -1,0 +1,533 @@
+port_profiles:
+  - profile: TENANT_A_B
+    mode: trunk
+    vlans: "110-111,210-211"
+
+  - profile: TENANT_A
+    mode: access
+    vlans: "110"
+
+  - profile: TENANT_A_MTU
+    mode: access
+    vlans: "110"
+    mtu: 1600
+
+  - profile: TENANT_B
+    mode: trunk
+    vlans: "210-211"
+
+  - profile: ALL_WITH_SECURITY
+    parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
+    server_ports: [ Eth1, Eth2 ]
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
+    spanning_tree_portfast: edge
+    l2_mtu: 8000
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
+
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
+    spanning_tree_portfast: edge
+    l2_mtu: 8000
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
+    port_channel:
+      description: ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    spanning_tree_portfast: edge
+    l2_mtu: 8000
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
+    port_channel:
+      description: ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+      lacp_fallback:
+        mode: static
+        timeout: 10
+
+  - profile: NESTED_PORT_PROFILE
+    parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    port_channel:
+      description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+
+servers:
+  - name: server01_MLAG
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth2, Eth3 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+        spanning_tree_bpdufilter: disabled
+        spanning_tree_bpduguard: disabled
+
+  - name: server01_MTU_PROFILE_MLAG
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth4, Eth5 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_MTU
+        port_channel:
+          description: PortChanne1
+          mode: active
+        spanning_tree_bpdufilter: enabled
+        spanning_tree_bpduguard: enabled
+
+  - name: server01_MTU_ADAPTOR_MLAG
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth6, Eth7 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        mtu: 1601
+        port_channel:
+          description: PortChanne1
+          mode: active
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: true
+
+  - name: server02_SINGLE_NODE_TRUNK
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth1 ]
+        switch_ports: [ Ethernet6 ]
+        switches: [ DC1-LEAF1A ]
+        profile: ALL_WITH_SECURITY
+        spanning_tree_bpdufilter: false
+        spanning_tree_bpduguard: false
+
+  - name: server02_SINGLE_NODE
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth1 ]
+        switch_ports: [ Ethernet7 ]
+        switches: [ DC1-LEAF1A ]
+        profile: TENANT_A
+
+  - name: server03_ESI
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+          esi: '0303:0202:0101'
+
+  - name: server04_inherit_all_from_profile
+    rack: RackC
+    adapters:
+      - switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY
+
+  - name: server05_no_profile
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        mode: trunk
+        vlans: "1-4094"
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: disabled
+        spanning_tree_portfast: edge
+        storm_control:
+          all:
+            level: 10
+            unit: percent
+          broadcast:
+            level: 100
+            unit: pps
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+
+  - name: server06_override_profile
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY
+        mode: access
+        vlans: "210"
+        spanning_tree_bpdufilter: disabled
+        spanning_tree_bpduguard: true
+        spanning_tree_portfast: network
+        storm_control:
+          all:
+            level: 20
+            unit: pps
+          broadcast:
+            level: 200
+            unit: percent
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+
+  - name: server07_inherit_all_from_profile_port_channel
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet14, Ethernet14 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY_PORT_CHANNEL
+
+  - name: server08_no_profile_port_channel
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet15, Ethernet15 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        mode: trunk
+        vlans: "1-4094"
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: disabled
+        spanning_tree_portfast: edge
+        storm_control:
+          all:
+            level: 10
+            unit: percent
+          broadcast:
+            level: 100
+            unit: pps
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+        port_channel:
+          description: server08_no_profile_port_channel
+          mode: 'on'
+
+  - name: server09_override_profile_no_port_channel
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet16, Ethernet16 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY_PORT_CHANNEL
+        mode: access
+        vlans: "210"
+        spanning_tree_bpdufilter: disabled
+        spanning_tree_bpduguard: true
+        spanning_tree_portfast: network
+        storm_control:
+          all:
+            level: 20
+            unit: pps
+          broadcast:
+            level: 200
+            unit: percent
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+        port_channel: null   #Setting to null, to override port-channel inherited from profile
+
+  - name: server10_no_profile_port_channel_lacp_fallback
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet17, Ethernet17 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        mode: trunk
+        vlans: "1-4094"
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: disabled
+        spanning_tree_portfast: edge
+        storm_control:
+          all:
+            level: 10
+            unit: percent
+          broadcast:
+            level: 100
+            unit: pps
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+        port_channel:
+          description: server10_no_profile_port_channel_lacp_fallback
+          mode: active
+          lacp_fallback:
+            mode: static
+
+  - name: server11_inherit_profile_port_channel_lacp_fallback
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet18, Ethernet18 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+
+  - name: server12_inherit_nested_profile_port_channel_lacp_fallback
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet19, Ethernet19 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: NESTED_PORT_PROFILE
+
+  - name: server13_disabled_interfaces
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: false
+
+  - name: server14_explicitly_enabled_interfaces
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: true
+
+  - name: server15_port_channel_with_disabled_phy_interfaces
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet22, Ethernet22 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: false
+        port_channel:
+          description: server15_port_channel_with_disabled_phy_interfaces
+          mode: active
+          enabled: true
+
+  - name: server16_port_channel_with_disabled_port_channel
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet23, Ethernet23 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        port_channel:
+          description: server16_port_channel_with_disabled_port_channel
+          mode: active
+          enabled: false
+
+  - name: server17_port_channel_with_disabled_phy_and_po_interfaces
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet24, Ethernet24 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: false
+        port_channel:
+          description: server17_port_channel_with_disabled_phy_and_po_interfaces
+          mode: active
+          enabled: false
+
+  - name: server18_monitoring_session_source_phys_interfaces
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet25, Ethernet25 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: source
+            source_settings:
+              direction: rx
+              access_group:
+                type: ip
+                name: MyIpACL
+                priority: 5
+          - name: MonitoringSessionServer18WithoutDest
+            role: source
+            source_settings:
+              direction: tx
+
+  - name: server18_monitoring_session_source_po
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth3, Eth4 ]
+        switch_ports: [ Ethernet27, Ethernet27 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: true
+        port_channel:
+          description: server18_monitoring_session_source_po
+          mode: active
+          enabled: true
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: source
+            source_settings:
+              direction: tx
+              access_group:
+                type: mac
+                name: MyMacACL
+                priority: 5
+
+  - name: server18_monitoring_session_source_phys_interface
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth5 ]
+        switch_ports: [ Ethernet28 ]
+        switches: [ DC1-SVC3A ]
+        profile: TENANT_A
+        enabled: true
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: source
+            source_settings:
+              direction: tx
+              access_group:
+                type: mac
+                name: MyMacACL
+                priority: 5
+
+  - name: server19_monitoring_session_destination_phys
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet26, Ethernet26 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: destination
+            session_settings:
+              encapsulation_gre_metadata_tx: true
+              header_remove_size: 20
+              access_group:
+                type: ip
+                name: ip_acl
+              rate_limit_per_ingress_chip: 30 bps
+              rate_limit_per_egress_chip: 30 bps
+              sample: 10
+              truncate:
+                enabled: true
+                size: 20
+
+  - name: server20_monitoring_session_destination_phys
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet40 ]
+        switches: [ DC1-SVC3A ]
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: destination
+            session_settings:
+              encapsulation_gre_metadata_tx: false
+              header_remove_size: 200
+              access_group:
+                type: mac
+                name: mac_acl
+              rate_limit_per_ingress_chip: 30 bps
+              rate_limit_per_egress_chip: 30 bps
+              sample: 10
+              truncate:
+                enabled: true
+                size: 20
+
+  - name: server21_monitoring_session_destination_po
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet42, Ethernet42 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: true
+        port_channel:
+          description: server21_monitoring_session_destination_po
+          mode: active
+          enabled: true
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: destination
+
+firewalls:
+  - name: FIREWALL01
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+
+routers:
+  - name: ROUTER01
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth0, Eth1 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A

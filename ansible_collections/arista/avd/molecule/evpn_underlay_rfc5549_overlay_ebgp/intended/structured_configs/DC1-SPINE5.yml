@@ -49,11 +49,11 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: true
   neighbors:
-    192.168.255.12:
+    2001:1::c:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF3A
       remote_as: '65106'
-    192.168.255.13:
+    2001:1::d:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF3B
       remote_as: '65106'

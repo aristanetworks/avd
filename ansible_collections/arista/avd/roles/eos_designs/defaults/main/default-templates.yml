@@ -2,14 +2,6 @@
 default_templates:
   # Templates defined per design
   l3ls-evpn:
-    facts:
-      # Set "switch.*" variables based on node type
-      - template: "facts/node_type/main.j2"
-      # Set general "switch.*" variables
-      - template: "facts/switch/main.j2"
-    topology_facts:
-      # Set design specific "topology.*" variables
-      - template: "facts/topology/main.j2"
     structured_config:
       # Render Structured Configuration
       # Base features
@@ -58,14 +50,6 @@ default_templates:
       vtep_loopback_interface: 'interface_descriptions/loopback_interfaces/vtep-loopback.j2'
 
   mpls:
-    facts:
-      # Set "switch.*" variables based on node type
-      - template: "facts/node_type/main.j2"
-      # Set general "switch.*" variables
-      - template: "facts/switch/main.j2"
-    topology_facts:
-      # Set design specific "topology.*" variables
-      - template: "facts/topology/main.j2"
     structured_config:
       # Render Strucured Configuration
       - template: "base/main.j2"

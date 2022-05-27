@@ -220,6 +220,12 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
+| 410 | Tenant_D_v6_OP_Zone_1 | - |
+| 411 | Tenant_D_v6_OP_Zone_2 | - |
+| 412 | Tenant_D_v6_OP_Zone_1 | - |
+| 450 | Tenant_D_v6_WAN_Zone_1 | - |
+| 451 | Tenant_D_v6_WAN_Zone_2 | - |
+| 452 | Tenant_D_v6_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -287,6 +293,24 @@ vlan 311
 !
 vlan 350
    name Tenant_C_WAN_Zone_1
+!
+vlan 410
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 411
+   name Tenant_D_v6_OP_Zone_2
+!
+vlan 412
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 450
+   name Tenant_D_v6_WAN_Zone_1
+!
+vlan 451
+   name Tenant_D_v6_WAN_Zone_2
+!
+vlan 452
+   name Tenant_D_v6_WAN_Zone_3
 ```
 
 # Interfaces
@@ -359,6 +383,12 @@ interface Loopback1
 | 310 | 30310 | - | - |
 | 311 | 30311 | - | - |
 | 350 | 30350 | - | - |
+| 410 | 40410 | - | - |
+| 411 | 40411 | - | - |
+| 412 | 40412 | - | - |
+| 450 | 40450 | - | - |
+| 451 | 40451 | - | - |
+| 452 | 40452 | - | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -389,6 +419,12 @@ interface Vxlan1
    vxlan vlan 310 vni 30310
    vxlan vlan 311 vni 30311
    vxlan vlan 350 vni 30350
+   vxlan vlan 410 vni 40410
+   vxlan vlan 411 vni 40411
+   vxlan vlan 412 vni 40412
+   vxlan vlan 450 vni 40450
+   vxlan vlan 451 vni 40451
+   vxlan vlan 452 vni 40452
 ```
 
 # Routing
@@ -504,6 +540,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_B_WAN_Zone | 192.168.255.109:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.109:30 | 30:30 | - | - | learned | 310-311 |
 | Tenant_C_WAN_Zone | 192.168.255.109:31 | 31:31 | - | - | learned | 350 |
+| Tenant_D_OP_Zone | 192.168.255.109:40 | 40:40 | - | - | learned | 410-412 |
+| Tenant_D_WAN_Zone | 192.168.255.109:41 | 41:41 | - | - | learned | 450-452 |
 
 ### Router BGP Device Configuration
 
@@ -596,6 +634,18 @@ router bgp 101
       route-target both 31:31
       redistribute learned
       vlan 350
+   !
+   vlan-aware-bundle Tenant_D_OP_Zone
+      rd 192.168.255.109:40
+      route-target both 40:40
+      redistribute learned
+      vlan 410-412
+   !
+   vlan-aware-bundle Tenant_D_WAN_Zone
+      rd 192.168.255.109:41
+      route-target both 41:41
+      redistribute learned
+      vlan 450-452
    !
    address-family evpn
       host-flap detection window 180 threshold 5 expiry timeout 10 seconds

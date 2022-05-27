@@ -90,6 +90,12 @@ router_bgp:
       threshold: 5
       enabled: true
       expiry_timeout: 10
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-CORE:
+        activate: true
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.14
@@ -284,6 +290,14 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+event_handlers:
+  evpn-blacklist-recovery:
+    action_type: bash
+    action: FastCli -p 15 -c "clear bgp evpn host-flap"
+    delay: 300
+    asynchronous: handler.asynchronous
+    trigger: on-logging
+    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
 name_server:
   source:
     vrf: MGMT
@@ -348,6 +362,14 @@ management_api_http:
     MGMT: {}
   enable_https: true
   default_services: false
+struct_cfg:
+  sflow:
+    vrfs:
+      OOB:
+        destinations:
+          192.168.200.10: None
+          10.0.200.90: None
+        source_interface: Management1
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -553,4 +575,11 @@ vxlan_interface:
           vni: 21
         Tenant_C_WAN_Zone:
           vni: 31
+sflow:
+  vrfs:
+    OOB:
+      destinations:
+        192.168.200.10: None
+        10.0.200.90: None
+      source_interface: Management1
 ntp: null

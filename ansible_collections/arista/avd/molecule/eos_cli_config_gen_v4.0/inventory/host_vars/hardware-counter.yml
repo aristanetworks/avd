@@ -1,5 +1,7 @@
 # test hw counter
 hardware_counters:
   features:
-    - ip: in
-    - gre: out
+    - name: ip
+      direction: in
+    - name: gre
+      direction: out

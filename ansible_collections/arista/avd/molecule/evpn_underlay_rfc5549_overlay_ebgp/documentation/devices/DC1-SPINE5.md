@@ -364,15 +364,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 192.168.255.12 | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.13 | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 2001:1::c | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 2001:1::d | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
 ### BGP Neighbor Interfaces
 
-| Neighbor Interface | Peer Group | Remote AS | Peer Filter |
-| ------------------ | ---------- | --------- | ----------- |
-| Ethernet1 | UNDERLAY_PEERS | 65106 | - |
-| Ethernet2 | UNDERLAY_PEERS | 65106 | - |
+| Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
+| ------------------ | --- | ---------- | --------- | ----------- |
+| Ethernet1 | default | UNDERLAY_PEERS | 65106 | - |
+| Ethernet2 | default | UNDERLAY_PEERS | 65106 | - |
 
 ### Router BGP EVPN Address Family
 
@@ -405,12 +405,12 @@ router bgp 65001
    neighbor UNDERLAY_PEERS maximum-routes 12000
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65106
-   neighbor 192.168.255.12 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.12 remote-as 65106
-   neighbor 192.168.255.12 description DC1-LEAF3A
-   neighbor 192.168.255.13 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.13 remote-as 65106
-   neighbor 192.168.255.13 description DC1-LEAF3B
+   neighbor 2001:1::c peer group EVPN-OVERLAY-PEERS
+   neighbor 2001:1::c remote-as 65106
+   neighbor 2001:1::c description DC1-LEAF3A
+   neighbor 2001:1::d peer group EVPN-OVERLAY-PEERS
+   neighbor 2001:1::d remote-as 65106
+   neighbor 2001:1::d description DC1-LEAF3B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

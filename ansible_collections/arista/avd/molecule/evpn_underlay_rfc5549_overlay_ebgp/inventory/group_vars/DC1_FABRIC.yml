@@ -10,6 +10,9 @@ fabric_name: DC1_FABRIC
 
 # Point to Point Underlay with IPv6 Unumberred
 underlay_rfc5549: true
+overlay_mlag_rfc5549: true
+
+overlay_routing_protocol_address_family: ipv4
 
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
@@ -229,3 +232,14 @@ bfd_multihop:
   multiplier: 3
 
 custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'custom_structured_configuration_' ]
+
+core_interfaces:
+  p2p_links:
+    - id: 1
+      nodes: [ DC1-BL1A, DC1-BL1B ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      as: [ "65104", "65105" ]
+    - id: 2
+      nodes: [ DC1-BL1A, DC1-BL1B ]
+      interfaces: [ Ethernet10, Ethernet10 ]
+      as: [ "65104", "65105" ]

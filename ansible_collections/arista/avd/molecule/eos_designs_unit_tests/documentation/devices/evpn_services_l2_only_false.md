@@ -29,6 +29,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -225,6 +226,12 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
+| 410 | Tenant_D_v6_OP_Zone_1 | - |
+| 411 | Tenant_D_v6_OP_Zone_2 | - |
+| 412 | Tenant_D_v6_OP_Zone_1 | - |
+| 450 | Tenant_D_v6_WAN_Zone_1 | - |
+| 451 | Tenant_D_v6_WAN_Zone_2 | - |
+| 452 | Tenant_D_v6_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -292,6 +299,24 @@ vlan 311
 !
 vlan 350
    name Tenant_C_WAN_Zone_1
+!
+vlan 410
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 411
+   name Tenant_D_v6_OP_Zone_2
+!
+vlan 412
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 450
+   name Tenant_D_v6_WAN_Zone_1
+!
+vlan 451
+   name Tenant_D_v6_WAN_Zone_2
+!
+vlan 452
+   name Tenant_D_v6_WAN_Zone_3
 ```
 
 # Interfaces
@@ -362,6 +387,12 @@ interface Loopback100
 | Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | false |
 | Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | false |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
+| Vlan410 | Tenant_D_v6_OP_Zone_1 | Tenant_D_OP_Zone | - | false |
+| Vlan411 | Tenant_D_v6_OP_Zone_2 | Tenant_D_OP_Zone | - | false |
+| Vlan412 | Tenant_D_v6_OP_Zone_1 | Tenant_D_OP_Zone | 1560 | false |
+| Vlan450 | Tenant_D_v6_WAN_Zone_1 | Tenant_D_WAN_Zone | - | false |
+| Vlan451 | Tenant_D_v6_WAN_Zone_2 | Tenant_D_WAN_Zone | 1560 | false |
+| Vlan452 | Tenant_D_v6_WAN_Zone_3 | Tenant_D_WAN_Zone | 1560 | false |
 
 #### IPv4
 
@@ -385,6 +416,22 @@ interface Loopback100
 | Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
+| Vlan410 |  Tenant_D_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan411 |  Tenant_D_OP_Zone  |  -  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |
+| Vlan412 |  Tenant_D_OP_Zone  |  -  |  10.4.12.254/24  |  -  |  -  |  -  |  -  |
+| Vlan450 |  Tenant_D_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan451 |  Tenant_D_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan452 |  Tenant_D_WAN_Zone  |  -  |  10.4.12.254/24  |  -  |  -  |  -  |  -  |
+
+#### IPv6
+
+| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| Vlan410 | Tenant_D_OP_Zone | - | 2001:db8:310::1/64 | - | - | - | - | - | - |
+| Vlan412 | Tenant_D_OP_Zone | - | 2001:db8:412::1/64 | - | - | - | - | - | - |
+| Vlan450 | Tenant_D_WAN_Zone | - | 2001:db8:355::1/64 | - | - | - | - | - | - |
+| Vlan451 | Tenant_D_WAN_Zone | - | 2001:db8:451::1/64 | - | - | - | - | - | - |
+| Vlan452 | Tenant_D_WAN_Zone | - | 2001:db8:412::1/64 | - | - | - | - | - | - |
 
 ### VLAN Interfaces Device Configuration
 
@@ -509,6 +556,49 @@ interface Vlan350
    no shutdown
    vrf Tenant_C_WAN_Zone
    ip address virtual 10.3.50.1/24
+!
+interface Vlan410
+   description Tenant_D_v6_OP_Zone_1
+   no shutdown
+   vrf Tenant_D_OP_Zone
+   ipv6 address virtual 2001:db8:310::1/64
+   ip address virtual 10.3.10.1/24
+!
+interface Vlan411
+   description Tenant_D_v6_OP_Zone_2
+   no shutdown
+   vrf Tenant_D_OP_Zone
+   ipv6 virtual-router address 2001:db8:311::1/64
+   ip virtual-router address 10.3.11.1/24
+!
+interface Vlan412
+   description Tenant_D_v6_OP_Zone_1
+   no shutdown
+   mtu 1560
+   vrf Tenant_D_OP_Zone
+   ipv6 address virtual 2001:db8:412::1/64
+   ip address virtual 10.4.12.254/24
+!
+interface Vlan450
+   description Tenant_D_v6_WAN_Zone_1
+   no shutdown
+   vrf Tenant_D_WAN_Zone
+   ipv6 address virtual 2001:db8:355::1/64
+!
+interface Vlan451
+   description Tenant_D_v6_WAN_Zone_2
+   no shutdown
+   mtu 1560
+   vrf Tenant_D_WAN_Zone
+   ipv6 address virtual 2001:db8:451::1/64
+!
+interface Vlan452
+   description Tenant_D_v6_WAN_Zone_3
+   no shutdown
+   mtu 1560
+   vrf Tenant_D_WAN_Zone
+   ipv6 address virtual 2001:db8:412::1/64
+   ip address virtual 10.4.12.254/24
 ```
 
 ## VXLAN Interface
@@ -545,6 +635,12 @@ interface Vlan350
 | 310 | 30310 | - | - |
 | 311 | 30311 | - | - |
 | 350 | 30350 | - | - |
+| 410 | 40410 | - | - |
+| 411 | 40411 | - | - |
+| 412 | 40412 | - | - |
+| 450 | 40450 | - | - |
+| 451 | 40451 | - | - |
+| 452 | 40452 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
 
@@ -559,6 +655,8 @@ interface Vlan350
 | Tenant_B_WAN_Zone | 21 | - |
 | Tenant_C_OP_Zone | 30 | - |
 | Tenant_C_WAN_Zone | 31 | - |
+| Tenant_D_OP_Zone | 40 | - |
+| Tenant_D_WAN_Zone | 41 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -589,6 +687,12 @@ interface Vxlan1
    vxlan vlan 310 vni 30310
    vxlan vlan 311 vni 30311
    vxlan vlan 350 vni 30350
+   vxlan vlan 410 vni 40410
+   vxlan vlan 411 vni 40411
+   vxlan vlan 412 vni 40412
+   vxlan vlan 450 vni 40450
+   vxlan vlan 451 vni 40451
+   vxlan vlan 452 vni 40452
    vxlan vrf Tenant_A_APP_Zone vni 12
    vxlan vrf Tenant_A_DB_Zone vni 13
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -598,6 +702,8 @@ interface Vxlan1
    vxlan vrf Tenant_B_WAN_Zone vni 21
    vxlan vrf Tenant_C_OP_Zone vni 30
    vxlan vrf Tenant_C_WAN_Zone vni 31
+   vxlan vrf Tenant_D_OP_Zone vni 40
+   vxlan vrf Tenant_D_WAN_Zone vni 41
 ```
 
 # Routing
@@ -640,6 +746,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | Tenant_B_WAN_Zone | true |
 | Tenant_C_OP_Zone | true |
 | Tenant_C_WAN_Zone | true |
+| Tenant_D_OP_Zone | true |
+| Tenant_D_WAN_Zone | true |
 
 ### IP Routing Device Configuration
 
@@ -656,6 +764,8 @@ ip routing vrf Tenant_B_OP_Zone
 ip routing vrf Tenant_B_WAN_Zone
 ip routing vrf Tenant_C_OP_Zone
 ip routing vrf Tenant_C_WAN_Zone
+ip routing vrf Tenant_D_OP_Zone
+ip routing vrf Tenant_D_WAN_Zone
 ```
 ## IPv6 Routing
 
@@ -674,6 +784,8 @@ ip routing vrf Tenant_C_WAN_Zone
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_OP_Zone | false |
 | Tenant_C_WAN_Zone | false |
+| Tenant_D_OP_Zone | true |
+| Tenant_D_WAN_Zone | true |
 
 ## Static Routes
 
@@ -684,6 +796,7 @@ ip routing vrf Tenant_C_WAN_Zone
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 | Tenant_A_APP_Zone | 10.2.32.0/24 | - | Vlan132 | 1 | - | VARP | - |
 | Tenant_A_APP_Zone | 10.3.32.0/24 | - | Vlan132 | 1 | - | VARP | - |
+| Tenant_D_OP_Zone | 10.3.11.0/24 | - | Vlan411 | 1 | - | VARP | - |
 
 ### Static Routes Device Configuration
 
@@ -692,6 +805,22 @@ ip routing vrf Tenant_C_WAN_Zone
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ip route vrf Tenant_A_APP_Zone 10.2.32.0/24 Vlan132 name VARP
 ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
+ip route vrf Tenant_D_OP_Zone 10.3.11.0/24 Vlan411 name VARP
+```
+
+## IPv6 Static Routes
+
+### IPv6 Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| Tenant_D_OP_Zone | 2001:db8:311::/64 | - | Vlan411 | 1 | - | VARPv6 | - |
+
+### Static Routes Device Configuration
+
+```eos
+!
+ipv6 route vrf Tenant_D_OP_Zone 2001:db8:311::/64 Vlan411 name VARPv6
 ```
 
 ## Router BGP
@@ -757,6 +886,8 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | Tenant_B_WAN_Zone | 192.168.255.109:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.109:30 | 30:30 | - | - | learned | 310-311 |
 | Tenant_C_WAN_Zone | 192.168.255.109:31 | 31:31 | - | - | learned | 350 |
+| Tenant_D_OP_Zone | 192.168.255.109:40 | 40:40 | - | - | learned | 410-412 |
+| Tenant_D_WAN_Zone | 192.168.255.109:41 | 41:41 | - | - | learned | 450-452 |
 
 ### Router BGP VRFs
 
@@ -771,6 +902,8 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | Tenant_B_WAN_Zone | 192.168.255.109:21 | connected |
 | Tenant_C_OP_Zone | 192.168.255.109:30 | connected |
 | Tenant_C_WAN_Zone | 192.168.255.109:31 | connected |
+| Tenant_D_OP_Zone | 192.168.255.109:40 | connected |
+| Tenant_D_WAN_Zone | 192.168.255.109:41 | connected |
 
 ### Router BGP Device Configuration
 
@@ -864,6 +997,18 @@ router bgp 101
       redistribute learned
       vlan 350
    !
+   vlan-aware-bundle Tenant_D_OP_Zone
+      rd 192.168.255.109:40
+      route-target both 40:40
+      redistribute learned
+      vlan 410-412
+   !
+   vlan-aware-bundle Tenant_D_WAN_Zone
+      rd 192.168.255.109:41
+      route-target both 41:41
+      redistribute learned
+      vlan 450-452
+   !
    address-family evpn
       host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
@@ -934,6 +1079,20 @@ router bgp 101
       rd 192.168.255.109:31
       route-target import evpn 31:31
       route-target export evpn 31:31
+      router-id 192.168.255.109
+      redistribute connected
+   !
+   vrf Tenant_D_OP_Zone
+      rd 192.168.255.109:40
+      route-target import evpn 40:40
+      route-target export evpn 40:40
+      router-id 192.168.255.109
+      redistribute connected
+   !
+   vrf Tenant_D_WAN_Zone
+      rd 192.168.255.109:41
+      route-target import evpn 41:41
+      route-target export evpn 41:41
       router-id 192.168.255.109
       redistribute connected
 ```
@@ -1037,6 +1196,8 @@ route-map RM-CONN-2-BGP permit 10
 | Tenant_B_WAN_Zone | enabled |
 | Tenant_C_OP_Zone | enabled |
 | Tenant_C_WAN_Zone | enabled |
+| Tenant_D_OP_Zone | enabled |
+| Tenant_D_WAN_Zone | enabled |
 
 ## VRF Instances Device Configuration
 
@@ -1062,6 +1223,10 @@ vrf instance Tenant_B_WAN_Zone
 vrf instance Tenant_C_OP_Zone
 !
 vrf instance Tenant_C_WAN_Zone
+!
+vrf instance Tenant_D_OP_Zone
+!
+vrf instance Tenant_D_WAN_Zone
 ```
 
 # Virtual Source NAT

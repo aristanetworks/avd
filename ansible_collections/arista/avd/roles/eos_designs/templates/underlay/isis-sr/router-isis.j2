@@ -4,11 +4,10 @@ router_isis:
   net: {{ switch.isis_net }}
   router_id: {{ switch.router_id }}
   no_passive_interfaces:
-{% for link_interface in underlay_data.links | arista.avd.natural_sort %}
-{%     set link = underlay_data.links[link_interface] %}
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
 {# L3 P2P interfaces #}
 {%     if link.type is arista.avd.defined('underlay_p2p') %}
-    - {{ link_interface }}
+    - {{ link.interface }}
 {%     endif %}
 {% endfor %}
 {% if switch.mlag_l3 is arista.avd.defined(true) %}
@@ -32,7 +31,7 @@ router_isis:
 {%     endif %}
 {% endif %}
 {% set isis_address_families = ["ipv4 unicast"] %}
-{% if underlay_ipv6 is arista.avd.defined(true) %}
+{% if switch.underlay_ipv6 is arista.avd.defined(true) %}
 {%     do isis_address_families.append("ipv6 unicast") %}
 {% endif %}
   address_family: {{ isis_address_families }}
