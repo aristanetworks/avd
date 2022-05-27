@@ -15,7 +15,6 @@ router_ospf:
           area: 0.0.0.2
       bfd_enable: true
       bfd_adjacency_state_any: true
-
       max_lsa: 12000
       default_information_originate:
       redistribute:
