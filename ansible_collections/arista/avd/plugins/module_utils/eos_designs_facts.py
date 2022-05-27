@@ -316,13 +316,13 @@ class EosDesignsFacts:
             combined : dict
                 Combined configuration after inheritance from all levels
         """
-        switch_data = {}
+        switch_data = {'node_group': {}}
+        node_config = {}
         hostname = self.hostname
         node_type_config = get(self._hostvars, f"{self.node_type_key}", required=True)
 
         if hostname in node_type_config.get('nodes', {}):
             node_config = node_type_config['nodes'][hostname]
-            switch_data['node_group'] = {}
         else:
             for node_group in node_type_config.get('node_groups', {}):
                 if hostname in node_type_config['node_groups'][node_group].get('nodes', {}):
@@ -330,9 +330,6 @@ class EosDesignsFacts:
                     switch_data['node_group'] = node_type_config['node_groups'][node_group]
                     switch_data['group'] = node_group
                     break
-
-        if not node_config:
-            raise AristaAvdMissingVariableError(f"{self.node_type_key}.(node_groups.)nodes.{hostname}")
 
         # Load defaults
         defaults_config = node_type_config.get('defaults', {})
