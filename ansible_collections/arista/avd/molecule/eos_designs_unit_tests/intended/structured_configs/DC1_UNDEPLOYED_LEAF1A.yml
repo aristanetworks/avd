@@ -158,7 +158,7 @@ router_bgp:
           evpn:
           - '11:11'
       neighbors:
-        10.255.251.25:
+        172.31.11.26:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -685,7 +685,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
     vrf: Tenant_A_WEB_Zone
-    ip_address: 10.255.251.24/31
+    ip_address: 172.31.11.24/31
     mtu: 1500
   Vlan210:
     tenant: Tenant_B

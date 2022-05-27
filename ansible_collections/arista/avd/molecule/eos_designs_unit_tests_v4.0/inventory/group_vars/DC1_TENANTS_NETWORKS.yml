@@ -76,6 +76,7 @@ tenants:
             enabled: True
       - name: Tenant_A_WEB_Zone
         vrf_vni: 11
+        mlag_ibgp_peering_ipv4_pool: 172.31.11.0/24
         svis:
           - id: 120
             name: Tenant_A_WEB_Zone_1
