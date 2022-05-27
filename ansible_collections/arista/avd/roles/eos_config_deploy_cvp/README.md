@@ -127,7 +127,7 @@ tasks:
 
 ### Ignore devices not provisioned in Cloudvision
 
-When you want to provision a complete topoplogy and devices are not already in Cloudvision, you can configure inventory to ignore these devices by using a host variable: `is_deployed`
+When you want to provision a complete topology and devices are not already in Cloudvision, you can configure inventory to ignore these devices by using a host variable: `is_deployed`.
 
 - `is_deployed: true` or `is_deployed is not defined`: An entry in __cv_device__ is generated and AVD will configure device on Cloudvision. If device is undefined, an error is raised.
 - `is_deployed: false`: Device is not configured in __cv_device__ topology and only its configlet is uploaded on Cloudvision.

@@ -2,6 +2,9 @@
 
 # L3LS Fabric Values
 
+# If a device is set to "is_deployed: false" at the host_vars level, then shutdown interfaces towards undeployed peers.
+shutdown_interfaces_towards_undeployed_peers: true
+
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
 
@@ -213,6 +216,21 @@ l3leaf:
           bgp_as: 65109
           mgmt_ip: 192.168.200.120/24
           uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
+    DC1_UNDEPLOYED_LEAF1:
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+      nodes:
+        DC1_UNDEPLOYED_LEAF1A:
+          id: 13
+          bgp_as: 65110
+          mgmt_ip: 192.168.200.121/24
+          uplink_switch_interfaces: [ Ethernet16, Ethernet16, Ethernet16, Ethernet16 ]
+        DC1_UNDEPLOYED_LEAF1B:
+          id: 14
+          bgp_as: 65111
+          mgmt_ip: 192.168.200.122/24
+          uplink_switch_interfaces: [ Ethernet17, Ethernet17, Ethernet17, Ethernet17 ]
 
 l2leaf:
   defaults:
