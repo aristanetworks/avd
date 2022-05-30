@@ -2808,6 +2808,10 @@ ip_routing_ipv6_interfaces: < true | false >
 
 ```yaml
 router_general:
+  router_id:
+    ipv4: < IPv4_address >
+    ipv6: < IPv6_address >
+  nexthop_fast_failover: < true | false | default -> false >
   vrfs:
     < destination-vrf >:
       leak_routes:
