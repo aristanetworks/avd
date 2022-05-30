@@ -19,7 +19,11 @@ ethernet_interfaces:
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
 {%             set endpoint_ports = adapter_settings.endpoint_ports | arista.avd.default(adapter_settings.server_ports) %}
-{%             set peer_type = connected_endpoints_keys[endpoint_key].type %}
+{%             set connected_endpoints_key = connected_endpoints_keys | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('key') |
+                                                                      selectattr('key', 'arista.avd.defined', endpoint_key) |
+                                                                      first %}
+{%             set peer_type = connected_endpoints_key.type %}
 {%             set peer = connected_endpoint %}
 {%             for adapter_switch in adapter_settings.switches %}
 {%                 if adapter_switch == inventory_hostname %}
