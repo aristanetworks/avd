@@ -205,6 +205,77 @@ ethernet_interfaces:
     channel_group:
       id: 14
       mode: active
+  Ethernet15:
+    peer: server06_Single_Active_Port_Channel
+    peer_interface: Eth1
+    peer_type: server
+    description: server06_Single_Active_Port_Channel_Eth1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    channel_group:
+      id: 15
+      mode: active
+  Ethernet16:
+    peer: server07_Single_Active_Port_Channel_Manual_DF
+    peer_interface: Eth1
+    peer_type: server
+    description: server07_Single_Active_Port_Channel_Manual_DF_Eth1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    channel_group:
+      id: 16
+      mode: active
+  Ethernet17:
+    peer: server08_Single_Active_Ethernet
+    peer_interface: Eth1
+    peer_type: server
+    description: server08_Single_Active_Ethernet_Eth1
+    evpn_ethernet_segment:
+      identifier: 0000:0000:213f:36b8:ff71
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+      route_target: 21:3f:36:b8:ff:71
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+  Ethernet18:
+    peer: server09_All_Active_Ethernet
+    peer_interface: Eth1
+    peer_type: server
+    description: server09_All_Active_Ethernet_Eth1
+    evpn_ethernet_segment:
+      identifier: 0000:0000:00dd:00dd:00dd
+      redundancy: all-active
+      designated_forwarder_election:
+        algorithm: modulus
+      route_target: 00:dd:00:dd:00:dd
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+  Ethernet19:
+    peer: server10_Single_Active_Ethernet_Manual_DF
+    peer_interface: Eth1
+    peer_type: server
+    description: server10_Single_Active_Ethernet_Manual_DF_Eth1
+    evpn_ethernet_segment:
+      identifier: 0000:0000:885b:86cc:8bac
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 500
+      route_target: 88:5b:86:cc:8b:ac
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -362,7 +433,7 @@ port_channel_interfaces:
     - name: LT_GROUP1
       direction: downstream
   Port-Channel14:
-    description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel from profile
+    description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server
     type: switched
     shutdown: false
     mode: access
@@ -374,3 +445,31 @@ port_channel_interfaces:
     link_tracking_groups:
     - name: LT_GROUP1
       direction: downstream
+  Port-Channel15:
+    description: server06_Single_Active_Port_Channel_Single-Active ESI
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    evpn_ethernet_segment:
+      identifier: 0000:0000:2873:c14b:64ec
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+      route_target: 28:73:c1:4b:64:ec
+    lacp_id: 2873.c14b.64ec
+  Port-Channel16:
+    description: server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    evpn_ethernet_segment:
+      identifier: 0000:0000:ec11:73f8:7361
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+      route_target: ec:11:73:f8:73:61
+    lacp_id: ec11.73f8.7361

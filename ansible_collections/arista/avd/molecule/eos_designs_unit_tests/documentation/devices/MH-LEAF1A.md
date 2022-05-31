@@ -293,6 +293,11 @@ vlan 310
 | Ethernet12 | server03_AUTO_ESI_Eth1 | *access | *310 | *- | *- | 12 |
 | Ethernet13 | server04_AUTO_ESI_Profile_Eth1 | *access | *310 | *- | *- | 13 |
 | Ethernet14 | server05_AUTO_ESI_Profile_Override_Eth1 | *access | *310 | *- | *- | 14 |
+| Ethernet15 | server06_Single_Active_Port_Channel_Eth1 | *trunk | *310 | *- | *- | 15 |
+| Ethernet16 | server07_Single_Active_Port_Channel_Manual_DF_Eth1 | *trunk | *310 | *- | *- | 16 |
+| Ethernet17 |  server08_Single_Active_Ethernet_Eth1 | trunk | 310 | - | - | - |
+| Ethernet18 |  server09_All_Active_Ethernet_Eth1 | trunk | 310 | - | - | - |
+| Ethernet19 |  server10_Single_Active_Ethernet_Manual_DF_Eth1 | trunk | 310 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -307,6 +312,24 @@ vlan 310
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet10 | routed | - | 10.10.101.1/31 | default | 1500 | false | - | - |
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Ethernet17 | 0000:0000:213f:36b8:ff71 | single-active | 21:3f:36:b8:ff:71 |
+| Ethernet18 | 0000:0000:00dd:00dd:00dd | all-active | 00:dd:00:dd:00:dd |
+| Ethernet19 | 0000:0000:885b:86cc:8bac | single-active | 88:5b:86:cc:8b:ac |
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Ethernet17 | preference | 100 | False | - | - | False |
+| Ethernet18 | modulus | - | False | - | - | False |
+| Ethernet19 | preference | 500 | False | - | - | False |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -344,6 +367,52 @@ interface Ethernet14
    description server05_AUTO_ESI_Profile_Override_Eth1
    no shutdown
    channel-group 14 mode active
+!
+interface Ethernet15
+   description server06_Single_Active_Port_Channel_Eth1
+   no shutdown
+   channel-group 15 mode active
+!
+interface Ethernet16
+   description server07_Single_Active_Port_Channel_Manual_DF_Eth1
+   no shutdown
+   channel-group 16 mode active
+!
+interface Ethernet17
+   description server08_Single_Active_Ethernet_Eth1
+   no shutdown
+   switchport trunk allowed vlan 310
+   switchport mode trunk
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:213f:36b8:ff71
+      redundancy single-active
+      designated-forwarder election algorithm preference 100
+      route-target import 21:3f:36:b8:ff:71
+!
+interface Ethernet18
+   description server09_All_Active_Ethernet_Eth1
+   no shutdown
+   switchport trunk allowed vlan 310
+   switchport mode trunk
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:00dd:00dd:00dd
+      redundancy all-active
+      designated-forwarder election algorithm modulus
+      route-target import 00:dd:00:dd:00:dd
+!
+interface Ethernet19
+   description server10_Single_Active_Ethernet_Manual_DF_Eth1
+   no shutdown
+   switchport trunk allowed vlan 310
+   switchport mode trunk
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:885b:86cc:8bac
+      redundancy single-active
+      designated-forwarder election algorithm preference 500
+      route-target import 88:5b:86:cc:8b:ac
 ```
 
 ## Port-Channel Interfaces
@@ -357,7 +426,9 @@ interface Ethernet14
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
 | Port-Channel12 | server03_AUTO_ESI_Auto-ESI PortChannel | switched | access | 310 | - | - | - | - | - | 0000:0000:fc87:ae24:2cb3 |
 | Port-Channel13 | server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile | switched | access | 310 | - | - | - | - | - | 0000:0000:29cc:4043:0a29 |
-| Port-Channel14 | server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel from profile | switched | access | 310 | - | - | - | - | - | 0000:0000:010a:010a:010a |
+| Port-Channel14 | server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server | switched | access | 310 | - | - | - | - | - | 0000:0000:010a:010a:010a |
+| Port-Channel15 | server06_Single_Active_Port_Channel_Single-Active ESI | switched | trunk | 310 | - | - | - | - | - | 0000:0000:2873:c14b:64ec |
+| Port-Channel16 | server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:ec11:73f8:7361 |
 
 #### Flexible Encapsulation Interfaces
 
@@ -382,6 +453,15 @@ interface Ethernet14
 | Port-Channel12 | 0000:0000:fc87:ae24:2cb3 | all-active | fc:87:ae:24:2c:b3 |
 | Port-Channel13 | 0000:0000:29cc:4043:0a29 | all-active | 29:cc:40:43:0a:29 |
 | Port-Channel14 | 0000:0000:010a:010a:010a | all-active | 01:0a:01:0a:01:0a |
+| Port-Channel15 | 0000:0000:2873:c14b:64ec | single-active | 28:73:c1:4b:64:ec |
+| Port-Channel16 | 0000:0000:ec11:73f8:7361 | single-active | ec:11:73:f8:73:61 |
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Port-Channel15 | preference | 100 | False | - | - | False |
+| Port-Channel16 | preference | 100 | False | - | - | False |
 
 #### Link Tracking Groups
 
@@ -467,7 +547,7 @@ interface Port-Channel13
    link tracking group LT_GROUP1 downstream
 !
 interface Port-Channel14
-   description server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel from profile
+   description server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server
    no shutdown
    switchport
    switchport access vlan 310
@@ -476,6 +556,32 @@ interface Port-Channel14
       route-target import 01:0a:01:0a:01:0a
    lacp system-id 010a.010a.010a
    link tracking group LT_GROUP1 downstream
+!
+interface Port-Channel15
+   description server06_Single_Active_Port_Channel_Single-Active ESI
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 310
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:2873:c14b:64ec
+      redundancy single-active
+      designated-forwarder election algorithm preference 100
+      route-target import 28:73:c1:4b:64:ec
+   lacp system-id 2873.c14b.64ec
+!
+interface Port-Channel16
+   description server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 310
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:ec11:73f8:7361
+      redundancy single-active
+      designated-forwarder election algorithm preference 100
+      route-target import ec:11:73:f8:73:61
+   lacp system-id ec11.73f8.7361
 ```
 
 ## Loopback Interfaces
