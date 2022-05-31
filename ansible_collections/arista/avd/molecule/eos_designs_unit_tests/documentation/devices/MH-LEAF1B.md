@@ -361,6 +361,20 @@ interface Ethernet13
 | Port-Channel11.103 | - | l2dot1q | 1103 | False | 2103 | - | - | True | - | - | - |
 | Port-Channel11.104 | - | l2dot1q | 1104 | False | 2104 | - | - | True | - | - | - |
 
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel10 | 0000:0000:0001:1010:1010 | all-active | 00:01:10:10:10:10 |
+| Port-Channel11.101 | 0000:0000:0000:0000:0101 | all-active | 00:00:00:00:01:01 |
+| Port-Channel11.102 | 0000:0000:0000:0000:0102 | all-active | 00:00:00:00:01:02 |
+| Port-Channel11.103 | 0000:0000:c2c9:c85a:ed92 | all-active | c2:c9:c8:5a:ed:92 |
+| Port-Channel11.104 | 0000:0000:5c8e:1f50:9fc4 | all-active | 5c:8e:1f:50:9f:c4 |
+| Port-Channel12 | 0000:0000:fc87:ae24:2cb3 | all-active | fc:87:ae:24:2c:b3 |
+| Port-Channel13 | 0000:0000:29cc:4043:0a29 | all-active | 29:cc:40:43:0a:29 |
+
 #### Link Tracking Groups
 
 | Interface | Group Name | Direction |
