@@ -269,7 +269,7 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-POD1-LEAF2A_Ethernet4 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
+| Ethernet1 | DC1.POD1.LEAF2A_Ethernet4 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
 | Ethernet2 | DC1-POD1-LEAF2B_Ethernet4 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
@@ -281,7 +281,7 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description DC1-POD1-LEAF2A_Ethernet4
+   description DC1.POD1.LEAF2A_Ethernet4
    no shutdown
    channel-group 1 mode active
 !

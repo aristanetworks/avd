@@ -13,9 +13,9 @@
 # This provides the ability to define various keys of your choice to better organize/group your data.
 # This should be defined in top level group_var for the fabric.
 connected_endpoints_keys:
-  < key_1 >:
+  - key: < key_1 >
     type: < type used for documentation >
-  < key_2 >:
+  - key: < key_2 >
     type: < type used for documentation >
 ```
 
@@ -23,15 +23,15 @@ connected_endpoints_keys:
 # Example
 # The below key/pair values are the role defaults.
 connected_endpoints_keys:
-  servers:
+  - key: servers
     type: server
-  firewalls:
+  - key: firewalls
     type: firewall
-  routers:
+  - key: routers
     type: router
-  load_balancers:
+  - key: load_balancers
     type: load_balancer
-  storage_arrays:
+  - key: storage_arrays
     type: storage_array
 ```
 
@@ -43,7 +43,7 @@ connected_endpoints_keys:
 # Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
 # Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
 port_profiles:
-  < port_profile_1 >:
+  - profile: < port_profile_1 >
     parent_profile: < port_profile_name >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     enabled: < true | false >
@@ -85,7 +85,7 @@ port_profiles:
 < connected_endpoints_keys.key >:
 
   # Endpoint name, this will be used in the switchport description
-  < endpoint_1 >:
+  - name: < endpoint_1 >
 
     # rack is used for documentation purposes only
     rack: < rack_id >
@@ -235,7 +235,7 @@ port_profiles:
           # Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
           structured_config: < dictionary >
 
-  < endpoint_2 >:
+  - name: < endpoint_2 >
     rack: RackC
     adapters:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -259,33 +259,33 @@ port_profiles:
 # Example
 
 connected_endpoints_keys:
-  servers:
+  - key: servers
     type: server
-  firewalls:
+  - key: firewalls
     type: firewall
-  routers:
+  - key: routers
     type: router
 
 
 port_profiles:
 
-  VM_Servers:
+  - profile: VM_Servers
     mode: trunk
     vlans: "110-111,120-121,130-131"
     spanning_tree_portfast: edge
 
-  MGMT:
+  - profile: MGMT
     mode: access
     vlans: "110"
 
-  DB_Clusters:
+  - profile: DB_Clusters
     mode: trunk
     vlans: "140-141"
 
 # servers
 servers:
 
-  server01:
+  - name: server01
     rack: RackB
     adapters:
 
@@ -305,7 +305,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server03:
+  - name: server03
     rack: RackC
     adapters:
 
@@ -320,7 +320,7 @@ servers:
           mode: active
 # Firewall
 firewalls:
-  FIREWALL01:
+  - name: FIREWALL01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -333,7 +333,7 @@ firewalls:
 
 # Routers
 routers:
-  ROUTER01:
+  - name: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]
@@ -348,7 +348,7 @@ Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
 
 ```yaml
 servers:
-  server01:
+  - name: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0 ]
@@ -366,7 +366,7 @@ MLAG dual-homed connection:
 
 ```yaml
 servers:
-  server01:
+  - name: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -395,7 +395,7 @@ Active/Active multihoming connections:
 
 ```yaml
 servers:
-  server01:
+  - name: server01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]

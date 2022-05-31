@@ -125,20 +125,21 @@ class EosDesignsFacts:
         """
         switch.node_type_key fact set by finding a matching "type" in "node_type_keys" variable
         """
-        node_type_keys = get(self._hostvars, "node_type_keys", required=True)
-        for key, value in node_type_keys.items():
-            if value['type'] == self.type:
-                return key
-
-        # Not found
-        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={type}")
+        return self._node_type_key_data['key']
 
     @cached_property
     def _node_type_key_data(self):
         """
         internal _node_type_key_data containing settings for this node_type.
         """
-        return get(self._hostvars, f"node_type_keys.{self.node_type_key}", required=True)
+        node_type_keys = get(self._hostvars, "node_type_keys", required=True)
+        node_type_keys = self._convert_dicts(node_type_keys, 'key')
+        for node_type in node_type_keys:
+            if node_type['type'] == self.type:
+                return node_type
+
+        # Not found
+        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={type}")
 
     @cached_property
     def connected_endpoints(self):
@@ -446,6 +447,10 @@ class EosDesignsFacts:
             get(self._switch_data_combined, "max_uplink_switches"),
             len(get(self._switch_data_combined, "uplink_switches", default=[]))
         )
+
+    @cached_property
+    def is_deployed(self):
+        return get(self._hostvars, "is_deployed", default=True)
 
     @cached_property
     def platform_settings(self):
@@ -869,14 +874,20 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def underlay_ipv6(self):
+        if self.underlay_router is True:
+            return get(self._hostvars, "underlay_ipv6")
+        return None
+
+    @cached_property
     def loopback_ipv6_pool(self):
-        if get(self._hostvars, "underlay_ipv6") is True:
+        if self.underlay_ipv6 is True:
             return get(self._switch_data_combined, "loopback_ipv6_pool", required=True)
         return None
 
     @cached_property
     def loopback_ipv6_offset(self):
-        if get(self._hostvars, "underlay_ipv6") is True:
+        if self.underlay_ipv6 is True:
             return get(self._switch_data_combined, "loopback_ipv6_offset", default=0)
         return None
 
@@ -888,7 +899,7 @@ class EosDesignsFacts:
         Since some templates might contain certain legacy variables (switch_*),
         those are mapped from the switch.* model
         '''
-        if get(self._hostvars, "underlay_ipv6") is True:
+        if self.underlay_ipv6 is True:
             template_vars = {"ansible_search_path": self._ansible_search_path}
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
@@ -1085,12 +1096,17 @@ class EosDesignsFacts:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                uplink_switch_facts: EosDesignsFacts = get(self._hostvars,
+                                                           f"avd_switch_facts..{uplink_switch}..switch",
+                                                           required=True,
+                                                           org_key=f"avd_switch_facts.({uplink_switch}).switch",
+                                                           separator="..")
                 uplink = {}
                 uplink['interface'] = uplink_interface
                 uplink['peer'] = uplink_switch
                 uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
                 uplink['peer_type'] = uplink_switch_facts.type
+                uplink['peer_is_deployed'] = uplink_switch_facts.is_deployed
                 uplink['peer_bgp_as'] = uplink_switch_facts.bgp_as
                 uplink['type'] = 'underlay_p2p'
                 if self.uplink_interface_speed is not None:
@@ -1135,12 +1151,17 @@ class EosDesignsFacts:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{uplink_switch}.switch", required=True)
+                uplink_switch_facts: EosDesignsFacts = get(self._hostvars,
+                                                           f"avd_switch_facts..{uplink_switch}..switch",
+                                                           required=True,
+                                                           org_key=f"avd_switch_facts.({uplink_switch}).switch",
+                                                           separator="..")
                 uplink = {}
                 uplink['interface'] = uplink_interface
                 uplink['peer'] = uplink_switch
                 uplink['peer_interface'] = uplink_switch_interfaces[uplink_index]
                 uplink['peer_type'] = uplink_switch_facts.type
+                uplink['peer_is_deployed'] = uplink_switch_facts.is_deployed
                 uplink['type'] = 'underlay_l2'
 
                 if self.uplink_interface_speed is not None:
@@ -1197,7 +1218,11 @@ class EosDesignsFacts:
     @cached_property
     def _mlag_peer_id(self):
         if self.mlag is True:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.id", required=True)
+            return get(self._hostvars,
+                       f"avd_switch_facts..{self.mlag_peer}..switch..id",
+                       required=True,
+                       org_key=f"avd_switch_facts.({self.mlag_peer}).switch.id",
+                       separator="..")
 
     @cached_property
     def vtep_ip(self):
@@ -1266,7 +1291,11 @@ class EosDesignsFacts:
     @cached_property
     def mlag_peer_ip(self):
         if self.mlag is True:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mlag_ip", required=True)
+            return get(self._hostvars,
+                       f"avd_switch_facts..{self.mlag_peer}..switch..mlag_ip",
+                       required=True,
+                       org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mlag_ip",
+                       separator="..")
         return None
 
     @cached_property
@@ -1303,13 +1332,20 @@ class EosDesignsFacts:
     @cached_property
     def mlag_peer_l3_ip(self):
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            return get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mlag_l3_ip", required=True)
+            return get(self._hostvars,
+                       f"avd_switch_facts..{self.mlag_peer}..switch..mlag_l3_ip",
+                       required=True,
+                       org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mlag_l3_ip",
+                       separator="..")
         return None
 
     @cached_property
     def mlag_peer_mgmt_ip(self):
         if self.mlag is True:
-            peer_mgmt_ip = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch.mgmt_ip")
+            peer_mgmt_ip = get(self._hostvars,
+                               f"avd_switch_facts..{self.mlag_peer}..switch..mgmt_ip",
+                               org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mgmt_ip",
+                               separator="..")
             if peer_mgmt_ip is not None:
                 return str(ipaddress.ip_interface(peer_mgmt_ip).ip)
         return None

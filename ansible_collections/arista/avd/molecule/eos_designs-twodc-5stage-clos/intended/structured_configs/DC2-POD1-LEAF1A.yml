@@ -66,7 +66,7 @@ router_bgp:
       bfd: true
     100.100.100.101:
       remote_as: '65112.100'
-      description: DC1-POD1-LEAF2A
+      description: DC1.POD1.LEAF2A
       peer_group: IPv4-UNDERLAY-PEERS
   address_family_evpn:
     peer_groups:
@@ -221,10 +221,10 @@ ethernet_interfaces:
       id: 3
       mode: active
   Ethernet6:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet7
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7
+    description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
     type: routed
     shutdown: false
     mtu: 1500

@@ -2038,6 +2038,7 @@ ntp:
       version: < 1 - 4 >
       vrf: < vrf_name >
   authenticate: <true | false >
+  authenticate_servers_only: < true | false >
   authentication_keys:
     - id: < key_identifier | 1-65534 >
       hash_algorithm: < md5 | sha1 >
@@ -2387,6 +2388,9 @@ sflow:
       port: < port_number >
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
+  interface:
+    disable:
+      default: < true | false >
   run: < true | false >
   hardware_acceleration:
     enabled: < true | false >
@@ -2804,6 +2808,10 @@ ip_routing_ipv6_interfaces: < true | false >
 
 ```yaml
 router_general:
+  router_id:
+    ipv4: < IPv4_address >
+    ipv6: < IPv6_address >
+  nexthop_fast_failover: < true | false | default -> false >
   vrfs:
     < destination-vrf >:
       leak_routes:
@@ -3260,6 +3268,11 @@ router_bgp:
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
           shutdown: < true | false >
+      neighbor_interfaces:
+        < interface >:
+          peer_group: < peer_group_name >
+          remote_as: < bgp_as >
+          peer_filter: <peer_filter>
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >

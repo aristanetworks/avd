@@ -155,3 +155,10 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
+      neighbor_interfaces:
+        Ethernet27:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          remote_as: 1
+        Ethernet28:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_filter: SOME_FILTER

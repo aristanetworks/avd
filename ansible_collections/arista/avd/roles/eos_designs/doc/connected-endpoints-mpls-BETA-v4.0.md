@@ -15,9 +15,9 @@ The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to da
 # Example
 # The below key/pair values are the role defaults for the mpls design type.
 connected_endpoints_keys:
-  routers:
+  - key: routers
     type: router
-  cpes:
+  - key: cpes
     type: cpe
 ```
 

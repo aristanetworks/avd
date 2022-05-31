@@ -264,6 +264,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet12 | P2P_LINK_TO_MH-LEAF2A_Ethernet1 | routed | - | 10.10.101.4/31 | default | 1500 | false | - | - |
 | Ethernet14 | P2P_LINK_TO_DC1-CL1A_Ethernet1 | routed | - | 172.31.255.144/31 | default | 1500 | false | - | - |
 | Ethernet15 | P2P_LINK_TO_DC1-CL1B_Ethernet1 | routed | - | 172.31.255.160/31 | default | 1500 | false | - | - |
+| Ethernet16 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet1 | routed | - | 172.31.255.192/31 | default | 1500 | true | - | - |
+| Ethernet17 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet1 | routed | - | 172.31.255.208/31 | default | 1500 | true | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -377,6 +379,22 @@ interface Ethernet15
    speed forced 100gfull
    no switchport
    ip address 172.31.255.160/31
+!
+interface Ethernet16
+   description P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet1
+   shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.192/31
+!
+interface Ethernet17
+   description P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet1
+   shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.208/31
 ```
 
 ## Loopback Interfaces
@@ -510,6 +528,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 172.31.255.129 | 65107 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.145 | 65108 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.161 | 65109 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.193 | 65110 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.209 | 65111 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.9 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.10 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.11 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -521,6 +541,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 192.168.255.17 | 65107 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.18 | 65108 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.19 | 65109 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.21 | 65110 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.22 | 65111 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.33 | 65151 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.34 | 65152 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.35 | 65153 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -596,6 +618,12 @@ router bgp 65001
    neighbor 172.31.255.161 peer group UNDERLAY-PEERS
    neighbor 172.31.255.161 remote-as 65109
    neighbor 172.31.255.161 description DC1-CL1B_Ethernet1
+   neighbor 172.31.255.193 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.193 remote-as 65110
+   neighbor 172.31.255.193 description DC1_UNDEPLOYED_LEAF1A_Ethernet1
+   neighbor 172.31.255.209 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.209 remote-as 65111
+   neighbor 172.31.255.209 description DC1_UNDEPLOYED_LEAF1B_Ethernet1
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
    neighbor 192.168.255.9 description DC1-LEAF1A
@@ -629,6 +657,12 @@ router bgp 65001
    neighbor 192.168.255.19 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.19 remote-as 65109
    neighbor 192.168.255.19 description DC1-CL1B
+   neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.21 remote-as 65110
+   neighbor 192.168.255.21 description DC1_UNDEPLOYED_LEAF1A
+   neighbor 192.168.255.22 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.22 remote-as 65111
+   neighbor 192.168.255.22 description DC1_UNDEPLOYED_LEAF1B
    neighbor 192.168.255.33 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.33 remote-as 65151
    neighbor 192.168.255.33 description MH-LEAF1A

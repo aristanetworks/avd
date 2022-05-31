@@ -13,7 +13,7 @@ All relevant `structured_config` sections will be merged.
 
 ```yaml
 < connected_endpoints_keys.key >:
-  < endpoint_1 >:
+  - name: < endpoint_1 >
     adapters:
       - <...>
         # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
