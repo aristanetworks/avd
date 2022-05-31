@@ -11,7 +11,9 @@ router_bfd:
   sbfd:
     local_interface:
       name: Loopback0
-      protocol: ipv4 ipv6
+      protocols:
+        ipv4: true
+        ipv6: true
     initiator_interval: 500
     initiator_multiplier: 3
     reflector:

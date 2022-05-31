@@ -28,7 +28,7 @@
 ### Router BFD SBFD Summary
 
 | Initiator Interval | Initiator Multiplier | Reflector Minimum RX | Reflector Local-Discriminator |
-| -------- | ---------- | ---------- | ---------- |
+| ------------------ | -------------------- | -------------------- | ----------------------------- |
 {%         set init_interval = router_bfd.sbfd.initiator_interval | arista.avd.default('-') %}
 {%         set init_multiplier = router_bfd.sbfd.initiator_multiplier | arista.avd.default('-') %}
 {%         set ref_min_rx = router_bfd.sbfd.reflector.min_rx | arista.avd.default('-') %}

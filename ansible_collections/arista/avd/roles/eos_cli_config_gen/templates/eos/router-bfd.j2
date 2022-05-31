@@ -11,8 +11,14 @@ router bfd
 {%     if router_bfd.sbfd is arista.avd.defined %}
    !
    sbfd
-{%         if router_bfd.sbfd.local_interface is arista.avd.defined and router_bfd.sbfd.local_interface.protocol is arista.avd.defined %}
-{%             set localint = router_bfd.sbfd.local_interface.name ~ " " ~ router_bfd.sbfd.local_interface.protocol %}
+{%         if router_bfd.sbfd.local_interface is arista.avd.defined and router_bfd.sbfd.local_interface.protocols is arista.avd.defined %}
+{%             set localint = router_bfd.sbfd.local_interface.name %}
+{%             if router_bfd.sbfd.local_interface.protocols.ipv4 is arista.avd.defined(true) %}
+{%                 set localint = localint ~ " ipv4" %}
+{%             endif %}
+{%             if router_bfd.sbfd.local_interface.protocols.ipv6 is arista.avd.defined(true) %}
+{%                 set localint = localint ~ " ipv6" %}
+{%             endif %}
       local-interface {{ localint }}
 {%         endif %}
 {%         if router_bfd.sbfd.initiator_interval is arista.avd.defined and router_bfd.sbfd.initiator_multiplier is arista.avd.defined %}

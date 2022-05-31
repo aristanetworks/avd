@@ -103,7 +103,7 @@ interface Management1
 ### Router BFD SBFD Summary
 
 | Initiator Interval | Initiator Multiplier | Reflector Minimum RX | Reflector Local-Discriminator |
-| -------- | ---------- | ---------- | ---------- |
+| ------------------ | -------------------- | -------------------- | ----------------------------- |
 | 500 | 3 | 600 | 155.1.3.1 |
 
 ### Router BFD Device Configuration

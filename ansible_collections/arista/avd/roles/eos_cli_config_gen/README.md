@@ -580,7 +580,9 @@ router_bfd:
   sbfd:
     local_interface:
       name: < interface name >
-      protocol: < ipv4 | ipv6 | ipv4 ipv6 >
+      protocols:
+        ipv4: < true | false >
+        ipv6: < true | false >
     initiator_interval: < rate in milliseconds >
     initiator_multiplier: < 3-50 >
     reflector:
