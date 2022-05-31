@@ -94,7 +94,7 @@ interface Management1
 
 ### 802.1X Global
 
-| System Auth Control | Protocol_LLDP_Bypass | Dynamic Authorization |
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
 | ------------------- | -------------------- | ----------------------|
 | True | True | True |
 

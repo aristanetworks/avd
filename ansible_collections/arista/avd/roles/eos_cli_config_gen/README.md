@@ -474,10 +474,10 @@ aaa_server_groups:
 
 ### Endpoint Security
 
-#### 802.1x Authentication
+#### Global 802.1x Authentication
 
 ```yaml
-dot1x_global:
+dot1x:
   system_auth_control: < true | false >
   protocol_lldp_bypass: < true | false >
   dynamic_authorization: < true | false >
