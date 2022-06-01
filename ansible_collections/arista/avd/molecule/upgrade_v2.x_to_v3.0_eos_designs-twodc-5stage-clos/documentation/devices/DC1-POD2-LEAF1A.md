@@ -656,15 +656,15 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### RM-CONN-2-BGP
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - |
 
 #### RM-EVPN-FILTER-AS65120
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match as 65120 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | deny | match as 65120 | - | - |
 
 ### Route-maps Device Configuration
 

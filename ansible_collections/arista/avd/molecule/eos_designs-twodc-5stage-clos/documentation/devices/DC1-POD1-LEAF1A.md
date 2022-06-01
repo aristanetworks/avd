@@ -576,34 +576,34 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### RM-CONN-2-BGP
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
-| 20 | permit | match ip address prefix-list PL-L2LEAF-INBAND-MGMT |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - |
+| 20 | permit | match ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - |
 
 #### RM-EVPN-FILTER-AS65200
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match as 65200 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | deny | match as 65200 | - | - |
 
 #### RM-EVPN-FILTER-AS65201
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match as 65201 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | deny | match as 65201 | - | - |
 
 #### RM-EVPN-FILTER-AS65210
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match as 65210 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | deny | match as 65210 | - | - |
 
 #### RM-EVPN-FILTER-AS65211
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match as 65211 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | deny | match as 65211 | - | - |
 
 ### Route-maps Device Configuration
 

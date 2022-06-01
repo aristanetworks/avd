@@ -276,15 +276,15 @@ ip prefix-list PL-BGP-DEFAULT-RED-OUT-C1
 
 #### RM-BGP-AGG-APPLY-SET
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set local-preference 50 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | permit | set local-preference 50 | - | - |
 
 #### RM-BGP-EXPORT-DEFAULT-BLUE-C1
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-BGP-DEFAULT-BLUE-C1 |
+| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
+| -------- | ---- | ---------------- | ------------- | -------- |
+| 10 | permit | match ip address prefix-list PL-BGP-DEFAULT-BLUE-C1 | - | - |
 
 ### Route-maps Device Configuration
 

@@ -8,6 +8,16 @@ route_maps:
           - ip address prefix-list PL-MLAG
       20:
         type: permit
+        sub_route_map: RM-STATIC-2-BGP
+        match:
+          - ip address prefix-list PL-SUBRM
+      30:
+        type: permit
+        continue: 40
+        match:
+          - ip address prefix-list PL-CONTINUE
+      40:
+        type: permit
   RM-STATIC-2-BGP:
     sequence_numbers:
       10:
