@@ -30,10 +30,14 @@
 {% include 'documentation/ip-ssh-client-source-interfaces.j2' %}
 {## Management API GNMI #}
 {% include 'documentation/management-api-gnmi.j2' %}
+{## Management CVX #}
+{% include 'documentation/management-cvx.j2' %}
 {# management Console #}
 {% include 'documentation/management-console.j2' %}
 {## Management API HTTP #}
 {% include 'documentation/management-api-http.j2' %}
+{# Management API Models #}
+{% include 'documentation/management-api-models.j2' %}
 {## IP HTTP Client Source Interfaces #}
 {% include 'documentation/ip-http-client-source-interfaces.j2' %}
 
@@ -70,6 +74,8 @@
 {% include 'documentation/aliases.j2' %}
 {# DHCP Relay #}
 {% include 'documentation/dhcp-relay.j2' %}
+{# System Boot Configuration #}
+{% include 'documentation/boot.j2' %}
 
 # Monitoring
 {## TerminAttr Daemon #}
@@ -82,6 +88,8 @@
 {% include 'documentation/snmp-settings.j2' %}
 {## Monitor Sessions #}
 {% include 'documentation/monitor-sessions.j2' %}
+{# Tap Aggregation #}
+{% include 'documentation/tap-aggregation.j2' %}
 {## SFlow #}
 {% include 'documentation/sflow.j2' %}
 {## Hardware Counters #}
@@ -180,8 +188,12 @@
 # Filters
 {## Community-lists #}
 {% include 'documentation/community-lists.j2' %}
+{## Community-lists, improved data model #}
+{% include 'documentation/ip-community-lists.j2' %}
 {## Peer Filters #}
 {% include 'documentation/peer-filters.j2' %}
+{## Dynamic Prefix-lists #}
+{% include 'documentation/dynamic-prefix-lists.j2' %}
 {## Prefix-lists #}
 {% include 'documentation/prefix-lists.j2' %}
 {## IPv6 Prefix-lists #}
@@ -196,6 +208,8 @@
 {% include 'documentation/match-lists.j2' %}
 {# as-paths #}
 {% include 'documentation/as-path.j2' %}
+{# dot1x #}
+{% include 'documentation/dot1x.j2' %}
 
 # ACL
 {## Standard Access-lists #}

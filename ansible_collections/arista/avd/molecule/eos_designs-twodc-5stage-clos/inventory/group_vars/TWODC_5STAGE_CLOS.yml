@@ -61,7 +61,7 @@ l3_edge:
       mtu: 1498
       profile: generic-profile
       include_in_underlay_protocol: true
-    - nodes: [ DC1-POD1-LEAF2A, DC2-POD1-LEAF1A ]
+    - nodes: [ DC1.POD1.LEAF2A, DC2-POD1-LEAF1A ]
       interfaces: [ Ethernet7, Ethernet6 ]
       as: [ "65112.100", 65211 ]
       ip: [ 100.100.100.101/24, 100.100.100.201/24 ]

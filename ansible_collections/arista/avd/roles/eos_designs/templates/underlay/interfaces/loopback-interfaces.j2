@@ -25,7 +25,7 @@ loopback_interfaces:
 {%         if switch.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] %}
     node_segment:
       ipv4_index: {{ switch.node_sid }}
-{%             if underlay_ipv6 is arista.avd.defined(true) %}
+{%             if switch.underlay_ipv6 is arista.avd.defined(true) %}
       ipv6_index: {{ switch.node_sid }}
 {%             endif %}
 {%         endif %}

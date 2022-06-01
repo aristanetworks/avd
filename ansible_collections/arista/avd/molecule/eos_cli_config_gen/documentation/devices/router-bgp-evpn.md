@@ -127,12 +127,19 @@ interface Management1
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | - | default | - | - | 52000 (warning-limit 2000, warning-only) | Allowed, allowed 5 times | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50 percent) | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
+
+### BGP Neighbor Interfaces
+
+| Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
+| ------------------ | --- | ---------- | --------- | ----------- |
+| Ethernet27 | TENANT_A_PROJECT02 | MLAG-IPv4-UNDERLAY-PEER | 1 | - |
+| Ethernet28 | TENANT_A_PROJECT02 | MLAG-IPv4-UNDERLAY-PEER | - | SOME_FILTER |
 
 ### Router BGP EVPN Address Family
 
@@ -145,9 +152,9 @@ interface Management1
 
 #### EVPN Host Flapping Settings
 
-| State | Window | Threshold |
-| ----- | ------ | --------- |
-| Enabled | 10 |  1 |
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 10 Seconds | 1 | 3 Seconds |
 
 #### EVPN DCI Gateway Summary
 
@@ -243,8 +250,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
-      host-flap detection window 10
-      host-flap detection threshold 1
+      host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
@@ -269,6 +275,8 @@ router bgp 65101
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.3
+      neighbor interface Ethernet27 peer-group MLAG-IPv4-UNDERLAY-PEER remote-as 1
+      neighbor interface Ethernet28 peer-group MLAG-IPv4-UNDERLAY-PEER peer-filter SOME_FILTER
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 ```

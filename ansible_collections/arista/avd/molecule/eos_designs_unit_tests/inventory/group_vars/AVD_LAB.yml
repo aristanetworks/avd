@@ -32,6 +32,11 @@ name_servers:
   - 192.168.200.5
   - 8.8.8.8
 
+# Management api-http
+management_eapi:
+  enable_https: true
+  default_services: false
+
 # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
 ntp:
   local_interface:

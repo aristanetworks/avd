@@ -39,14 +39,14 @@ management_security:
 
 ### L2 portchannel
 port_channel_interfaces:
-  Port-Channel3:
+  - name: Port-Channel3
     description: L2-PORT
     vlans: 1-5
     mode: trunk
 
 # Children interfaces
 ethernet_interfaces:
-  Ethernet3:
+  - name: Ethernet3
     peer: DC1-AGG01
     peer_interface: Ethernet3
     peer_type: l3leaf
@@ -57,7 +57,7 @@ ethernet_interfaces:
       id: 3
       mode: active
 # Routed Interfaces
-  Ethernet1:
+  - name: Ethernet1
     type: routed
     ip_address: 1.1.1.1/24
     mac_security:

@@ -33,6 +33,13 @@ router_bgp:
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
       route_map_out: RM-MLAG-PEER-OUT
+      remove_private_as:
+        enabled: true
+        all: true
+        replace_as: true
+      remove_private_as_ingress:
+        enabled: true
+        replace_as: true
     STARDARD-COMMUNITY:
       type: ipv4
       send_community: standard
@@ -133,6 +140,10 @@ router_bgp:
           remote_as: 1234
           local_as: 123
           description: Tenant A BGP Peer
+          remove_private_as:
+            enabled: true
+            all: true
+            ingress: true
           ebgp_multihop: 3
           send_community: all
           maximum_routes: 0
@@ -145,6 +156,10 @@ router_bgp:
           neighbors:
             10.2.3.4:
               activate: true
+              route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
+            10.2.3.5:
+              activate: true
+              route_map_in: RM-10.2.3.5-SET-NEXT-HOP-IN
           networks:
             10.0.0.0/8:
             100.64.0.0/10:

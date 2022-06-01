@@ -3,6 +3,7 @@ management_api_http:
   enable_http: false
   enable_https: true
   https_ssl_profile: SSL_PROFILE
+  default_services: true
   enable_vrfs:
     default:
       access_group: ACL-API

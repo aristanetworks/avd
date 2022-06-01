@@ -7,6 +7,9 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -84,9 +87,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -100,6 +103,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -124,6 +128,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -151,14 +168,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC evpn_services_l2_only_true | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC evpn_services_l2_only_true
+snmp-server location EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
 ```
 
 # Internal VLAN Allocation Policy
@@ -193,14 +210,22 @@ vlan internal order ascending range 1006 1199
 | 140 | Tenant_A_DB_BZone_1 | - |
 | 141 | Tenant_A_DB_Zone_2 | - |
 | 150 | Tenant_A_WAN_Zone_1 | - |
+| 151 | svi_with_no_tags | - |
 | 160 | Tenant_A_VMOTION | - |
 | 161 | Tenant_A_NFS | - |
+| 162 | l2vlan_with_no_tags | - |
 | 210 | Tenant_B_OP_Zone_1 | - |
 | 211 | Tenant_B_OP_Zone_2 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
+| 410 | Tenant_D_v6_OP_Zone_1 | - |
+| 411 | Tenant_D_v6_OP_Zone_2 | - |
+| 412 | Tenant_D_v6_OP_Zone_1 | - |
+| 450 | Tenant_D_v6_WAN_Zone_1 | - |
+| 451 | Tenant_D_v6_WAN_Zone_2 | - |
+| 452 | Tenant_D_v6_WAN_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -239,11 +264,17 @@ vlan 141
 vlan 150
    name Tenant_A_WAN_Zone_1
 !
+vlan 151
+   name svi_with_no_tags
+!
 vlan 160
    name Tenant_A_VMOTION
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 162
+   name l2vlan_with_no_tags
 !
 vlan 210
    name Tenant_B_OP_Zone_1
@@ -262,6 +293,24 @@ vlan 311
 !
 vlan 350
    name Tenant_C_WAN_Zone_1
+!
+vlan 410
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 411
+   name Tenant_D_v6_OP_Zone_2
+!
+vlan 412
+   name Tenant_D_v6_OP_Zone_1
+!
+vlan 450
+   name Tenant_D_v6_WAN_Zone_1
+!
+vlan 451
+   name Tenant_D_v6_WAN_Zone_2
+!
+vlan 452
+   name Tenant_D_v6_WAN_Zone_3
 ```
 
 # Interfaces
@@ -324,14 +373,22 @@ interface Loopback1
 | 140 | 10140 | - | - |
 | 141 | 10141 | - | - |
 | 150 | 10150 | - | - |
+| 151 | 10151 | - | - |
 | 160 | 10160 | - | - |
 | 161 | 10161 | - | - |
+| 162 | 10162 | - | - |
 | 210 | 20210 | - | - |
 | 211 | 20211 | - | - |
 | 250 | 20250 | - | - |
 | 310 | 30310 | - | - |
 | 311 | 30311 | - | - |
 | 350 | 30350 | - | - |
+| 410 | 40410 | - | - |
+| 411 | 40411 | - | - |
+| 412 | 40412 | - | - |
+| 450 | 40450 | - | - |
+| 451 | 40451 | - | - |
+| 452 | 40452 | - | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -352,14 +409,22 @@ interface Vxlan1
    vxlan vlan 140 vni 10140
    vxlan vlan 141 vni 10141
    vxlan vlan 150 vni 10150
+   vxlan vlan 151 vni 10151
    vxlan vlan 160 vni 10160
    vxlan vlan 161 vni 10161
+   vxlan vlan 162 vni 10162
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 250 vni 20250
    vxlan vlan 310 vni 30310
    vxlan vlan 311 vni 30311
    vxlan vlan 350 vni 30350
+   vxlan vlan 410 vni 40410
+   vxlan vlan 411 vni 40411
+   vxlan vlan 412 vni 40412
+   vxlan vlan 450 vni 40450
+   vxlan vlan 451 vni 40451
+   vxlan vlan 452 vni 40452
 ```
 
 # Routing
@@ -453,21 +518,30 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
+| l2vlan_with_no_tags | 192.168.255.109:20162 | 20162:20162 | - | - | learned | 162 |
 | Tenant_A_APP_Zone | 192.168.255.109:12 | 12:12 | - | - | learned | 130-132 |
 | Tenant_A_DB_Zone | 192.168.255.109:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_NFS | 192.168.255.109:20161 | 20161:20161 | - | - | learned | 161 |
 | Tenant_A_OP_Zone | 192.168.255.109:9 | 9:9 | - | - | learned | 110-112 |
 | Tenant_A_VMOTION | 192.168.255.109:20160 | 20160:20160 | - | - | learned | 160 |
-| Tenant_A_WAN_Zone | 192.168.255.109:14 | 14:14 | - | - | learned | 150 |
+| Tenant_A_WAN_Zone | 192.168.255.109:14 | 14:14 | - | - | learned | 150-151 |
 | Tenant_A_WEB_Zone | 192.168.255.109:11 | 11:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.109:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_B_WAN_Zone | 192.168.255.109:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.109:30 | 30:30 | - | - | learned | 310-311 |
 | Tenant_C_WAN_Zone | 192.168.255.109:31 | 31:31 | - | - | learned | 350 |
+| Tenant_D_OP_Zone | 192.168.255.109:40 | 40:40 | - | - | learned | 410-412 |
+| Tenant_D_WAN_Zone | 192.168.255.109:41 | 41:41 | - | - | learned | 450-452 |
 
 ### Router BGP Device Configuration
 
@@ -488,6 +562,12 @@ router bgp 101
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan-aware-bundle l2vlan_with_no_tags
+      rd 192.168.255.109:20162
+      route-target both 20162:20162
+      redistribute learned
+      vlan 162
    !
    vlan-aware-bundle Tenant_A_APP_Zone
       rd 192.168.255.109:12
@@ -523,7 +603,7 @@ router bgp 101
       rd 192.168.255.109:14
       route-target both 14:14
       redistribute learned
-      vlan 150
+      vlan 150-151
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 192.168.255.109:11
@@ -555,7 +635,20 @@ router bgp 101
       redistribute learned
       vlan 350
    !
+   vlan-aware-bundle Tenant_D_OP_Zone
+      rd 192.168.255.109:40
+      route-target both 40:40
+      redistribute learned
+      vlan 410-412
+   !
+   vlan-aware-bundle Tenant_D_WAN_Zone
+      rd 192.168.255.109:41
+      route-target both 41:41
+      redistribute learned
+      vlan 450-452
+   !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

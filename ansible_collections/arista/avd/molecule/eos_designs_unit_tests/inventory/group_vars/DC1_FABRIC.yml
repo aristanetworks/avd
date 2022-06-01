@@ -2,10 +2,15 @@
 
 # L3LS Fabric Values
 
-fabric_name: DC1_FABRIC
+# If a device is set to "is_deployed: false" at the host_vars level, then shutdown interfaces towards undeployed peers.
+shutdown_interfaces_towards_undeployed_peers: true
 
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
+
+# EVPN host flapping settings
+evpn_hostflap_detection:
+  expiry_timeout: 10
 
 # bgp peer groups passwords
 bgp_peer_groups:
@@ -18,13 +23,17 @@ bgp_peer_groups:
     name: MLAG-PEERS
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
+# test with inline jinja2
+spine_platform: "7050SX3"
+spine_bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+
 # Spine Switches
 spine:
   defaults:
-    platform: 7050SX3
+    platform: "{{ spine_platform }}"
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: "{{ spine_bgp_defaults }}"
   nodes:
     DC1-SPINE1:
       id: 1
@@ -73,8 +82,8 @@ l3leaf:
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
-      tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-      tags: [ opzone, web, app, db, vmotion, nfs ]
+      tenants: [ Tenant_A, Tenant_B, Tenant_C, Tenant_D ]
+      tags: [ opzone, web, app, db, vmotion, nfs, v6wan, v6opzone ]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
@@ -82,7 +91,7 @@ l3leaf:
       platform: 7050SX3
       filter:
         tenants: [ all ]
-        tags: [ web, app, erp2 ]
+        tags: [ web, app, erp2, v6wan ]
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -108,6 +117,7 @@ l3leaf:
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
+      mlag_port_channel_id: 2000
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -127,6 +137,15 @@ l3leaf:
         tenants: [ all ]
         tags: [ wan ]
         always_include_vrfs_in_tenants: [ 'Tenant_B' ]
+# Test cornercase in convert_dicts with keys that have no value
+      structured_config:
+        sflow:
+          vrfs:
+            OOB:
+              destinations:
+                192.168.200.10:
+                10.0.200.90:
+              source_interface: Management1
       nodes:
         DC1-BL1A:
           id: 6
@@ -134,12 +153,30 @@ l3leaf:
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
+          evpn_gateway:
+            remote_peers:
+              - hostname: "DC1-BL2A"
+            evpn_l2:
+              enabled: true
+            evpn_l3:
+              enabled: true
+              inter_domain: true
         DC1-BL1B:
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+          evpn_gateway:
+            remote_peers:
+              - hostname: "MY_EVPN_GW_USER_DEFINED"
+                ip_address: 1.1.1.1
+                bgp_as: 65555
+            evpn_l2:
+              enabled: true
+            evpn_l3:
+              enabled: true
+              inter_domain: false
     DC1_BL2:
       mlag: false
       filter:
@@ -161,6 +198,39 @@ l3leaf:
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
+    DC1_CL1:
+      mlag: true
+      evpn_services_l2_only: true
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+      nodes:
+        DC1-CL1A:
+          platform: 7368X4
+          id: 10
+          bgp_as: 65108
+          mgmt_ip: 192.168.200.119/24
+          uplink_switch_interfaces: [ Ethernet14, Ethernet14, Ethernet14, Ethernet14 ]
+        DC1-CL1B:
+          id: 11
+          bgp_as: 65109
+          mgmt_ip: 192.168.200.120/24
+          uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
+    DC1_UNDEPLOYED_LEAF1:
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+      nodes:
+        DC1_UNDEPLOYED_LEAF1A:
+          id: 13
+          bgp_as: 65110
+          mgmt_ip: 192.168.200.121/24
+          uplink_switch_interfaces: [ Ethernet16, Ethernet16, Ethernet16, Ethernet16 ]
+        DC1_UNDEPLOYED_LEAF1B:
+          id: 14
+          bgp_as: 65111
+          mgmt_ip: 192.168.200.122/24
+          uplink_switch_interfaces: [ Ethernet17, Ethernet17, Ethernet17, Ethernet17 ]
 
 l2leaf:
   defaults:
@@ -219,6 +289,32 @@ l2leaf:
           mgmt_ip: 192.168.200.116/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9 ]
+    DC1_L2LEAF4:
+      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      short_esi: auto # Test Auto ESI
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF4A:
+          id: 13
+          mgmt_ip: 192.168.200.119/24
+          uplink_switch_interfaces: [ Ethernet13, Ethernet13 ]
+    DC1_L2LEAF5:
+      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      short_esi: auto # Test Auto ESI to MLAG pair
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF5A:
+          id: 14
+          mgmt_ip: 192.168.200.120/24
+          uplink_switch_interfaces: [ Ethernet14, Ethernet14 ]
+        DC1-L2LEAF5B:
+          id: 15
+          mgmt_ip: 192.168.200.121/24
+          uplink_switch_interfaces: [ Ethernet15, Ethernet15 ]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
@@ -236,3 +332,8 @@ platform_speed_groups:
   7280R:             # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
     25G: [ 3, 2 ]    # Unsorted order, but we should sort output correctly.
     10G: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2
+
+# Set Aboot password with sha512 hash
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f

@@ -96,6 +96,7 @@ import glob
 import os
 import traceback
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.errors import AnsibleValidationError
 TREELIB_IMP_ERR = None
 try:
     from treelib import Tree
@@ -157,7 +158,7 @@ def isIterable(testing_object=None):
         Object to test if it is iterable or not, by default None
     """
     try:
-        some_object_iterator = iter(testing_object)  # noqa # pylint: disable=unused-variable
+        iter(testing_object)  # noqa
         return True
     except TypeError as te:  # noqa # pylint: disable=unused-variable
         return False
@@ -430,10 +431,15 @@ def main():
         inventory_content = ""
         with open(inventory_file, 'r', encoding='utf8') as stream:
             try:
+                # add a constructor to return "!VAULT" for inline vault variables
+                # to avoid the parse
+                yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
-                module.debug(exc)
-        result['CVP_TOPOLOGY'] = get_containers(inventory_content=inventory_content,
+                raise AnsibleValidationError(
+                    "Failed to parse inventory file"
+                ) from exc
+        result["CVP_TOPOLOGY"] = get_containers(inventory_content=inventory_content,
                                                 parent_container=parent_container,
                                                 device_filter=module.params['device_filter'])
 
@@ -451,5 +457,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

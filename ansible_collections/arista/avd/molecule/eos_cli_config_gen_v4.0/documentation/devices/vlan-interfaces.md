@@ -135,7 +135,6 @@ interface Management1
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
 | Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -160,6 +159,9 @@ interface Vlan41
 interface Vlan42
    description SVI Description
    no shutdown
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
    ip address virtual 10.10.42.1/24
 !
 interface Vlan75
@@ -219,6 +221,10 @@ interface Vlan88
 interface Vlan89
    description SVI Description
    no shutdown
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.101 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
    ip igmp
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag

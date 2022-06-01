@@ -68,6 +68,8 @@ STP mode: **mstp**
 !
 no spanning-tree edge-port bpduguard default
 no spanning-tree edge-port bpdufilter default
+spanning-tree bpduguard rate-limit default
+spanning-tree bpduguard rate-limit count 100
 ```
 
 # Internal VLAN Allocation Policy

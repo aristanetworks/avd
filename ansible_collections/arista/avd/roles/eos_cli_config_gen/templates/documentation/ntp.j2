@@ -40,7 +40,10 @@
           or ntp.authentication_keys is arista.avd.defined %}
 
 #### NTP Authentication
-{%         if ntp.authenticate is arista.avd.defined(true) %}
+{%         if ntp.authenticate_servers_only is arista.avd.defined(true) %}
+
+- Authentication enabled (Servers only)
+{%         elif ntp.authenticate is arista.avd.defined(true) %}
 
 - Authentication enabled
 {%         endif %}

@@ -10,6 +10,9 @@ fabric_name: DC1_FABRIC
 
 # Point to Point Underlay with IPv6 Unumberred
 underlay_rfc5549: true
+overlay_mlag_rfc5549: true
+
+overlay_routing_protocol_address_family: ipv4
 
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
@@ -54,6 +57,18 @@ spine:
       id: 4
       mgmt_ip: 192.168.200.104/24
       mac_address: '0c:1d:c0:1d:62:01'
+    DC1-SPINE5:
+      # Testing RFC5549 with IPv6 overlay peers only
+      id: 5
+      mgmt_ip: 192.168.200.105/24
+      mac_address: '0c:1d:c0:1d:62:01'
+      loopback_ipv6_pool: 2001:1::/64
+    DC1-SPINE6:
+      # Testing underlay IPv6 peers
+      id: 6
+      mgmt_ip: 192.168.200.105/24
+      mac_address: '0c:1d:c0:1d:62:01'
+      loopback_ipv6_pool: 2001:1::/64
 
 # Leaf switch groups
 # A maximum of two nodes can form a leaf group
@@ -134,6 +149,40 @@ l3leaf:
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+    DC1_LEAF3:
+      # Testing RFC5549 with IPv6 overlay peers only
+      bgp_as: 65106
+      uplink_interfaces: ['Ethernet1']
+      uplink_switches: ['DC1-SPINE5']
+      loopback_ipv6_pool: 2001:1::/64
+      loopback_ipv6_offset: 4
+      nodes:
+        DC1-LEAF3A:
+          id: 8
+          mgmt_ip: 192.168.200.106/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet1 ]
+        DC1-LEAF3B:
+          id: 9
+          mgmt_ip: 192.168.200.107/24
+          uplink_switch_interfaces: [ Ethernet2 ]
+    DC1_LEAF4:
+      # Testing underlay IPv6 peers
+      bgp_as: 65107
+      uplink_interfaces: ['Ethernet1']
+      uplink_switches: ['DC1-SPINE6']
+      loopback_ipv6_pool: 2001:1::/64
+      loopback_ipv6_offset: 4
+      nodes:
+        DC1-LEAF4A:
+          id: 10
+          mgmt_ip: 192.168.200.106/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet1 ]
+        DC1-LEAF4B:
+          id: 11
+          mgmt_ip: 192.168.200.107/24
+          uplink_switch_interfaces: [ Ethernet2 ]
 
 l2leaf:
   defaults:
@@ -183,3 +232,14 @@ bfd_multihop:
   multiplier: 3
 
 custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'custom_structured_configuration_' ]
+
+core_interfaces:
+  p2p_links:
+    - id: 1
+      nodes: [ DC1-BL1A, DC1-BL1B ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      as: [ "65104", "65105" ]
+    - id: 2
+      nodes: [ DC1-BL1A, DC1-BL1B ]
+      interfaces: [ Ethernet10, Ethernet10 ]
+      as: [ "65104", "65105" ]

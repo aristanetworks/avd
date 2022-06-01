@@ -7,9 +7,6 @@ node_type_keys:
 
 mgmt_gateway: 192.168.0.1
 
-# Fabric name
-fabric_name: all
-
 overlay_routing_protocol: ibgp
 bgp_as: 65000
 

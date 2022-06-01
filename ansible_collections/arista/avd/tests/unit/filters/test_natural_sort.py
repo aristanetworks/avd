@@ -1,10 +1,10 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert
-import pytest
+from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert, natural_sort as _natural_sort
 from jinja2.runtime import Undefined
 from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natural_sort
+import pytest
 
 f = FilterModule()
 
@@ -24,7 +24,7 @@ class TestNaturalSortFilter():
 
     @pytest.mark.parametrize("ITEM_TO_NATURAL_SORT", ITEMS_TO_NATURAL_SORT)
     def test_natural_sort_invalid(self, ITEM_TO_NATURAL_SORT):
-        resp = f.natural_sort(ITEM_TO_NATURAL_SORT)
+        resp = _natural_sort(ITEM_TO_NATURAL_SORT)
         if ITEM_TO_NATURAL_SORT is None or isinstance(ITEM_TO_NATURAL_SORT, Undefined):
             resp == []
         else:

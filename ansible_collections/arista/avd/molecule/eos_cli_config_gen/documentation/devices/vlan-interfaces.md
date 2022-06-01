@@ -70,6 +70,7 @@ interface Management1
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan24 | SVI Description | default | - | false |
+| Vlan25 | SVI Description | default | - | false |
 | Vlan41 | SVI Description | default | - | false |
 | Vlan42 | SVI Description | default | - | false |
 | Vlan75 | SVI Description | default | - | false |
@@ -84,7 +85,9 @@ interface Management1
 | Vlan90 | SVI Description | default | - | - |
 | Vlan91 | PBR Description | default | - | true |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
+| Vlan333 | Multiple VRIDs and tracking | default | - | false |
 | Vlan501 | SVI Description | default | - | false |
+| Vlan667 | Multiple VRIDs | default | - | false |
 | Vlan1001 | SVI Description | Tenant_A | - | false |
 | Vlan1002 | SVI Description | Tenant_A | - | false |
 | Vlan2001 | SVI Description | Tenant_B | - | - |
@@ -102,6 +105,7 @@ interface Management1
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
+| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
@@ -115,8 +119,10 @@ interface Management1
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan110 |  Tenant_A  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
+| Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
 | Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
@@ -128,13 +134,25 @@ interface Management1
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:17::15/64 | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
+| Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | true | - | - | - |
+| Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
 | Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
 
+#### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
+| Vlan333 | 1 | 105 | 2 | Enabled | ID1-TrackedObjectDecrement, ID1-TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - |
+| Vlan333 | 2 | - | - | Enabled | ID2-TrackedObjectDecrement, ID2-TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 |
+| Vlan333 | 3 | - | - | Enabled | - | - | 100.64.0.1 | 3 | - |
+| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
+| Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 
 ### VLAN Interfaces Device Configuration
 
@@ -149,6 +167,13 @@ interface Vlan24
    ipv6 virtual-router address 1b11:3a00:22b0:6::1
    ip address virtual 10.10.24.1/24
 !
+interface Vlan25
+   description SVI Description
+   no shutdown
+   ipv6 address 1b11:3a00:22b0:16::16/64
+   ipv6 virtual-router address 1b11:3a00:22b0:16::15
+   ipv6 virtual-router address 1b11:3a00:22b0:17::15/64
+!
 interface Vlan41
    description SVI Description
    no shutdown
@@ -160,6 +185,9 @@ interface Vlan41
 interface Vlan42
    description SVI Description
    no shutdown
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
    ip address virtual 10.10.42.1/24
 !
 interface Vlan75
@@ -220,6 +248,10 @@ interface Vlan88
 interface Vlan89
    description SVI Description
    no shutdown
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.101 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
    ip igmp
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
@@ -244,7 +276,29 @@ interface Vlan110
    description PVLAN Primary with vlan mapping
    no shutdown
    vrf Tenant_A
+   ip address 10.0.101.1/24
    pvlan mapping 111-112
+!
+interface Vlan333
+   description Multiple VRIDs and tracking
+   no shutdown
+   arp aging timeout 180
+   ip address 192.0.2.2/25
+   ipv6 enable
+   ipv6 address 2001:db8::2/64
+   ipv6 address fe80::2/64 link-local
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 tracked-object ID1-TrackedObjectDecrement decrement 5
+   vrrp 1 tracked-object ID1-TrackedObjectShutdown shutdown
+   vrrp 2 ipv6 2001:db8::1
+   vrrp 2 tracked-object ID2-TrackedObjectDecrement decrement 10
+   vrrp 2 tracked-object ID2-TrackedObjectShutdown shutdown
+   vrrp 3 timers delay reload 900
+   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 version 3
 !
 interface Vlan501
    description SVI Description
@@ -252,6 +306,20 @@ interface Vlan501
    ip address 10.50.26.29/27
    ipv6 address 1b11:3a00:22b0:0088::207/127
    ipv6 nd ra disabled
+!
+interface Vlan667
+   description Multiple VRIDs
+   no shutdown
+   arp aging timeout 180
+   ip address 192.0.2.2/25
+   ipv6 enable
+   ipv6 address 2001:db8::2/64
+   ipv6 address fe80::2/64 link-local
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 2 ipv6 2001:db8::1
 !
 interface Vlan1001
    description SVI Description

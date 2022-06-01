@@ -18,6 +18,8 @@
   - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
+- [802.1X Port Security](#8021x-port-security)
+  - [802.1X Summary](#8021x-summary)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
@@ -92,6 +94,23 @@ interface Management1
 | Ethernet25 |  Molecule MAC | access | - | - | - | - |
 | Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
 | Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
+| Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - |
+| Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
+| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
+| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
+| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
+| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
+| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
+| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - |
+| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - |
+| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - |
+| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - |
+| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - |
+| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - |
+| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - |
+| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - |
+| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
+| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -147,9 +166,9 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | *- | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | true | true | true | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | *- | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
 
 #### ISIS
 
@@ -229,6 +248,7 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    no switchport
+   no snmp trap link-change
    ip address 172.31.128.1/31
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
@@ -244,6 +264,7 @@ interface Ethernet4
    shutdown
    mtu 9100
    switchport
+   snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
    ipv6 address FE80:FEA::AB65/64 link-local
@@ -490,6 +511,110 @@ interface Ethernet28
       mpls tunnel flood filter time 100
       mpls shared index 100
       route-target import 00:00:01:02:03:05
+!
+interface Ethernet29
+   description DOT1X Testing - auto phone true
+   switchport
+   dot1x port-control auto
+   dot1x port-control force-authorized phone
+!
+interface Ethernet30
+   description DOT1X Testing - force-authorized phone false
+   switchport
+   dot1x port-control force-authorized
+   no dot1x port-control force-authorized phone
+!
+interface Ethernet31
+   description DOT1X Testing - force-unauthorized - no phone
+   switchport
+   dot1x port-control force-unauthorized
+!
+interface Ethernet32
+   description DOT1X Testing - auto reauthentication
+   switchport
+   dot1x reauthentication
+   dot1x port-control auto
+!
+interface Ethernet33
+   description DOT1X Testing - pae mode authenticator
+   switchport
+   dot1x pae authenticator
+!
+interface Ethernet34
+   description DOT1X Testing - authentication_failure allow
+   switchport
+   dot1x authentication failure action traffic allow vlan 800
+!
+interface Ethernet35
+   description DOT1X Testing - authentication_failure drop
+   switchport
+   dot1x authentication failure action traffic drop
+!
+interface Ethernet36
+   description DOT1X Testing - host-mode single-host
+   switchport
+   dot1x host-mode single-host
+!
+interface Ethernet37
+   description DOT1X Testing - host-mode multi-host
+   switchport
+   dot1x host-mode multi-host
+!
+interface Ethernet38
+   description DOT1X Testing - host-mode multi-host authenticated
+   switchport
+   dot1x host-mode multi-host authenticated
+!
+interface Ethernet39
+   description DOT1X Testing - mac_based_authentication host-mode common true
+   switchport
+   dot1x mac based authentication host-mode common
+!
+interface Ethernet40
+   description DOT1X Testing - mac_based_authentication always
+   switchport
+   dot1x mac based authentication always
+!
+interface Ethernet41
+   description DOT1X Testing - mac_based_authentication always and host-mode common
+   switchport
+   dot1x mac based authentication host-mode common
+   dot1x mac based authentication always
+!
+interface Ethernet42
+   description DOT1X Testing - mac_based_authentication
+   switchport
+   dot1x mac based authentication
+!
+interface Ethernet43
+   description DOT1X Testing - timeout values
+   switchport
+   dot1x timeout quiet-period 10
+   dot1x timeout reauth-timeout-ignore always
+   dot1x timeout tx-period 6
+   dot1x timeout reauth-period server
+   dot1x timeout idle-host 15 seconds
+!
+interface Ethernet44
+   description DOT1X Testing - reauthorization_request_limit
+   switchport
+   dot1x reauthorization request limit 3
+!
+interface Ethernet45
+   description DOT1X Testing - all features
+   switchport
+   dot1x pae authenticator
+   dot1x authentication failure action traffic allow vlan 800
+   dot1x reauthentication
+   dot1x port-control auto
+   dot1x host-mode multi-host authenticated
+   dot1x mac based authentication
+   dot1x timeout quiet-period 10
+   dot1x timeout reauth-timeout-ignore always
+   dot1x timeout tx-period 10
+   dot1x timeout reauth-period server
+   dot1x timeout idle-host 10 seconds
+   dot1x reauthorization request limit 2
 ```
 
 # Routing
@@ -534,6 +659,32 @@ interface Ethernet28
 # Multicast
 
 # Filters
+
+# 802.1X Port Security
+
+## 802.1X Summary
+
+### 802.1X Interfaces
+
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
+| Ethernet29 | - | auto | True | - | - | - | - |
+| Ethernet30 | - | force-authorized | False | - | - | - | - |
+| Ethernet31 | - | force-unauthorized | - | - | - | - | - |
+| Ethernet32 | - | auto | - | True | - | - | - |
+| Ethernet33 | authenticator | - | - | - | - | - | - |
+| Ethernet34 | - | - | - | - | allow vlan 800 | - | - |
+| Ethernet35 | - | - | - | - | drop | - | - |
+| Ethernet36 | - | - | - | - | - | single-host | - |
+| Ethernet37 | - | - | - | - | - | multi-host | - |
+| Ethernet38 | - | - | - | - | - | multi-host | - |
+| Ethernet39 | - | - | - | - | - | - | True |
+| Ethernet40 | - | - | - | - | - | - | True |
+| Ethernet41 | - | - | - | - | - | - | True |
+| Ethernet42 | - | - | - | - | - | - | True |
+| Ethernet43 | - | - | - | - | - | - | - |
+| Ethernet44 | - | - | - | - | - | - | - |
+| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True |
 
 # ACL
 

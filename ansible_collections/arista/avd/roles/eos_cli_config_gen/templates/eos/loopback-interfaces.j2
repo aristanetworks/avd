@@ -54,4 +54,7 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.node_segment.ipv6_index is arista.avd.defined %}
    node-segment ipv6 index {{ loopback_interface.node_segment.ipv6_index }}
 {%     endif %}
+{%     if loopback_interface.eos_cli is arista.avd.defined %}
+   {{ loopback_interface.eos_cli | indent(3, false) }}
+{%     endif %}
 {% endfor %}

@@ -84,6 +84,7 @@ TREELIB_INVALID_LEAF = "DC1"
 
 @pytest.fixture(scope="session")
 def inventory():
+    yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
     with open(INVENTORY_FILE, 'r', encoding='utf8') as stream:
         try:
             inventory_content = yaml.safe_load(stream)

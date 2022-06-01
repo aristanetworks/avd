@@ -15,6 +15,12 @@ router_bgp:
 {%     if switch.mlag_ibgp_origin_incomplete == true %}
       route_map_in: RM-MLAG-PEER-IN
 {%     endif %}
+{%     if switch.underlay_ipv6 is arista.avd.defined(true) %}
+  address_family_ipv6:
+    peer_groups:
+      {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}:
+        activate: true
+{%     endif %}
   address_family_ipv4:
     peer_groups:
       {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}:

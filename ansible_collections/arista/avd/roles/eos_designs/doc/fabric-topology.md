@@ -196,7 +196,9 @@ defaults <- node_group <- node_group.node <- node
     # Uplink switches (list). | Required.
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
-    # Number of interfaces towards uplink switches | Optional
+    # Maximum number of uplink switches. | Optional
+    # Changing this value may change IP Addressing on uplinks.
+    # Can be used to reserve IP space for future expansions.
     max_uplink_switches: < integer >
 
     # Number of parallel links towards uplink switches | Optional
@@ -219,6 +221,9 @@ defaults <- node_group <- node_group.node <- node
       nodes:
         # Uplink switches interfaces (list), interface located on uplink switch. | Required.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+        # short_esi only valid for l2leaf devices using port-channel uplink
+        # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+        short_esi: < 0000:0000:0000 | auto >
 
   # When nodes are not in node_group
   nodes:
@@ -313,6 +318,33 @@ defaults <- node_group <- node_group.node <- node
     igmp_snooping_enabled: < true | false >
 ```
 
+### BGP & EVPN Multi-Domain Gateway
+```yaml
+< node_type_key >:
+
+  defaults:
+    # Node is acting as EVPN Multi-Domain Gateway | Optional.
+    # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers. Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable
+    # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
+    evpn_gateway:
+
+      # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+      remote_peers:
+        - hostname: < Inventory hostname of remote EVPN GW server >
+          ip_address: < Peering IP of remote Route Server >
+          bgp_as: < BGP ASN of remote Route Server >
+        - hostname: < Hostname of remote EVPN GW server >
+          ip_address: < Peering IP of remote Route Server >
+          bgp_as: < BGP ASN of remote Route Server >
+
+      # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
+      evpn_l2:
+        enabled: < true | false | Default -> False >
+      evpn_l3:
+        enabled: < true | false | Default -> False >
+        inter_domain: < true | false | Default -> True >
+```
+
 ### MLAG configuration management
 
 ```yaml
@@ -330,6 +362,11 @@ defaults <- node_group <- node_group.node <- node
 
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
     mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
+
+    # MLAG peer link port-channel id | Optional; if not set, the mlag port-channel id is
+    # generated based on the digits of the first interface present in 'mlag_interfaces'.
+    # Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.
+    mlag_port_channel_id: < integer >
 
     # Underlay L3 peering SVI interface id
     # If set to false or the same vlan as mlag_peer_vlan the mlag_peer_vlan will be used for L3 peering.

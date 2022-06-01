@@ -500,7 +500,7 @@ After device data have been generated, AVD can build EOS configuration as well a
     - name: generate device intended config and documentation
       tags: [build]
       import_role:
-        name: eos_cli_config_gen
+        name: arista.avd.eos_cli_config_gen
 ```
 
 The topology and device documentation can be accessed under `documentation` in the inventory folder.

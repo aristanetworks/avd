@@ -111,6 +111,29 @@ router_bgp:
           peer_group: OBS_WAN
           prefix_list_in: PL-BGP-DEFAULT-RED-IN-C1
           prefix_list_out: PL-BGP-DEFAULT-RED-OUT-C1
+    YELLOW-C1:
+      rd: 1.0.1.1:103
+      listen_ranges:
+          # should render
+        - prefix: 10.10.10.0/24
+          peer_group: my-peer-group1
+          peer_filter: my-peer-filter
+          # shouldnt render because neither peer-filter nor as-filter are defined
+        - prefix: 11.10.10.0/24
+          peer_group: my-peer-group2
+          # should render with remote-as filter
+        - prefix: 12.10.10.0/24
+          peer_id_include_router_id: true
+          peer_group: my-peer-group3
+          remote_as: 65444
+          # should render with peer-filter because of precedence
+        - prefix: 13.10.10.0/24
+          peer_group: my-peer-group4
+          peer_filter: my-peer-filter
+          remote_as: 65444
+      neighbors:
+        10.1.1.0:
+          peer_group: OBS_WAN
 
 static_routes:
   - vrf: BLUE-C1

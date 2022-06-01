@@ -47,7 +47,7 @@ router_bgp:
     172.17.110.9:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
-      description: DC1-POD1-LEAF2A_Ethernet1
+      description: DC1.POD1.LEAF2A_Ethernet1
     172.17.110.17:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
@@ -60,7 +60,7 @@ router_bgp:
     172.17.110.13:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
-      description: DC1-POD1-LEAF2A_Ethernet11
+      description: DC1.POD1.LEAF2A_Ethernet11
     172.17.110.21:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
@@ -85,13 +85,13 @@ router_bgp:
       description: DC2-SUPER-SPINE1
       remote_as: '65200'
       route_map_out: RM-EVPN-FILTER-AS65200
-    172.16.110.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD1-LEAF2A
-      remote_as: '65112.100'
     172.16.110.5:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2B
+      remote_as: '65112.100'
+    172.16.110.4:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1.POD1.LEAF2A
       remote_as: '65112.100'
   address_family_evpn:
     peer_groups:
@@ -173,10 +173,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.110.0/31
   Ethernet4:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet1
+    description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet1
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -207,10 +207,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.10.2/31
   Ethernet7:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet11
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet11
+    description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet11
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:

@@ -1,3 +1,9 @@
+{# This is the last part of eos_designs structured_config. #}
+{# This template generates a list of dicts which are later combined one-by-one on top of the structured_config #}
+
+{# Optimize performance for other tasks by removing the shared eos_designs facts #}
+{% set avd_switch_facts = none %}
+
 {# Add one blank line after each included template #}
 {% set custom_structured_configuration_data = [{}] %}
 {% include 'custom_structured_configuration/logic-struct-cfg.j2' %}

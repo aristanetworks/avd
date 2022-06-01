@@ -23,55 +23,55 @@ no ip igmp snooping fast-leave
 ip igmp snooping fast-leave
 {%         endif %}
 {%         if ip_igmp_snooping.vlans is arista.avd.defined %}
-{%             for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
-{%                 if ip_igmp_snooping.vlans[vlan].enabled is arista.avd.defined(false) %}
-no ip igmp snooping vlan {{ vlan }}
-{%                 elif ip_igmp_snooping.vlans[vlan].enabled is arista.avd.defined(true) %}
-ip igmp snooping vlan {{ vlan }}
+{%             for vlan in ip_igmp_snooping.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                 if vlan.enabled is arista.avd.defined(false) %}
+no ip igmp snooping vlan {{ vlan.id }}
+{%                 elif vlan.enabled is arista.avd.defined(true) %}
+ip igmp snooping vlan {{ vlan.id }}
 {%                 endif %}
-{%                 if ip_igmp_snooping.vlans[vlan].querier is arista.avd.defined %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.enabled is arista.avd.defined(true) %}
-ip igmp snooping vlan {{ vlan }} querier
-{%                     elif ip_igmp_snooping.vlans[vlan].querier.enabled is arista.avd.defined(false) %}
-no ip igmp snooping vlan {{ vlan }} querier
+{%                 if vlan.querier is arista.avd.defined %}
+{%                     if vlan.querier.enabled is arista.avd.defined(true) %}
+ip igmp snooping vlan {{ vlan.id }} querier
+{%                     elif vlan.querier.enabled is arista.avd.defined(false) %}
+no ip igmp snooping vlan {{ vlan.id }} querier
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.address is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier address {{ ip_igmp_snooping.vlans[vlan].querier.address }}
+{%                     if vlan.querier.address is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier address {{ vlan.querier.address }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.query_interval is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier query-interval {{ ip_igmp_snooping.vlans[vlan].querier.query_interval }}
+{%                     if vlan.querier.query_interval is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier query-interval {{ vlan.querier.query_interval }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.max_response_time is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier max-response-time {{ ip_igmp_snooping.vlans[vlan].querier.max_response_time }}
+{%                     if vlan.querier.max_response_time is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier max-response-time {{ vlan.querier.max_response_time }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.last_member_query_interval is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier last-member-query-interval {{ ip_igmp_snooping.vlans[vlan].querier.last_member_query_interval }}
+{%                     if vlan.querier.last_member_query_interval is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier last-member-query-interval {{ vlan.querier.last_member_query_interval }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.last_member_query_count is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier last-member-query-count {{ ip_igmp_snooping.vlans[vlan].querier.last_member_query_count }}
+{%                     if vlan.querier.last_member_query_count is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier last-member-query-count {{ vlan.querier.last_member_query_count }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.startup_query_interval is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier startup-query-interval {{ ip_igmp_snooping.vlans[vlan].querier.startup_query_interval }}
+{%                     if vlan.querier.startup_query_interval is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier startup-query-interval {{ vlan.querier.startup_query_interval }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.startup_query_count is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier startup-query-count {{ ip_igmp_snooping.vlans[vlan].querier.startup_query_count }}
+{%                     if vlan.querier.startup_query_count is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier startup-query-count {{ vlan.querier.startup_query_count }}
 {%                     endif %}
-{%                     if ip_igmp_snooping.vlans[vlan].querier.version is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier version {{ ip_igmp_snooping.vlans[vlan].querier.version }}
+{%                     if vlan.querier.version is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} querier version {{ vlan.querier.version }}
 {%                     endif %}
 {%                 endif %}
-{%                 if ip_igmp_snooping.vlans[vlan].max_groups is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} max-groups {{ ip_igmp_snooping.vlans[vlan].max_groups }}
+{%                 if vlan.max_groups is arista.avd.defined %}
+ip igmp snooping vlan {{ vlan.id }} max-groups {{ vlan.max_groups }}
 {%                 endif %}
-{%                 if ip_igmp_snooping.vlans[vlan].fast_leave is arista.avd.defined(true) %}
-ip igmp snooping vlan {{ vlan }} fast-leave
-{%                 elif ip_igmp_snooping.vlans[vlan].fast_leave is arista.avd.defined(false) %}
-no ip igmp snooping vlan {{ vlan }} fast-leave
+{%                 if vlan.fast_leave is arista.avd.defined(true) %}
+ip igmp snooping vlan {{ vlan.id }} fast-leave
+{%                 elif vlan.fast_leave is arista.avd.defined(false) %}
+no ip igmp snooping vlan {{ vlan.id }} fast-leave
 {%                 endif %}
-{%                 if ip_igmp_snooping.vlans[vlan].proxy is arista.avd.defined(true) %}
-{%                     do proxy_cli.append("ip igmp snooping vlan " ~ vlan ~ " proxy") %}
-{%                 elif ip_igmp_snooping.vlans[vlan].proxy is arista.avd.defined(false) %}
-{%                     do proxy_cli.append("no ip igmp snooping vlan " ~ vlan ~ " proxy") %}
+{%                 if vlan.proxy is arista.avd.defined(true) %}
+{%                     do proxy_cli.append("ip igmp snooping vlan " ~ vlan.id ~ " proxy") %}
+{%                 elif vlan.proxy is arista.avd.defined(false) %}
+{%                     do proxy_cli.append("no ip igmp snooping vlan " ~ vlan.id ~ " proxy") %}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
