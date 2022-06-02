@@ -163,6 +163,7 @@ interface Management1
 | Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
+| Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
 
 #### IPv6
 
@@ -623,6 +624,15 @@ interface Ethernet46
    switchport trunk native vlan tag
    switchport mode trunk
    switchport
+!
+interface Ethernet47
+   description IP Helper
+   no switchport
+   ip address 172.31.255.1/31
+   ip helper-address 10.10.64.150
+   ip helper-address 10.10.96.101 source-interface Loopback0
+   ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
+   ip helper-address 10.10.96.151 vrf MGMT
 ```
 
 # Routing
