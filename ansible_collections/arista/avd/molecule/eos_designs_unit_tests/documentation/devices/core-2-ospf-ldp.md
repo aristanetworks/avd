@@ -250,6 +250,8 @@ interface Ethernet14
    mpls ldp interface
    mpls ip
    ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 p2p_secure_key
    ip ospf area 0.0.0.2
 !
 interface Ethernet15
@@ -263,6 +265,8 @@ interface Ethernet15
    mpls ldp interface
    mpls ip
    ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 profile_secure_key
    ip ospf area 0.0.0.1
 !
 interface Ethernet16
@@ -275,7 +279,10 @@ interface Ethernet16
    mpls ldp interface
    mpls ip
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.2
+   ip ospf message-digest-key 1 md5 7 <md5key1>
+   ip ospf message-digest-key 2 md5 7 <md5key2>
 ```
 
 ## Port-Channel Interfaces

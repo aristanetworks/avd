@@ -32,9 +32,6 @@ underlay_ospf_process_id: 101
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
 
-ospf_authentication: simple
-ospf_authentication_key: global_secure_key
-
 # Nodes
 type: core_router
 core_router:
@@ -82,16 +79,16 @@ core_interfaces:
 
   p2p_links:
     # Unnumbered link
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 1
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       profile: isis_bb_profile
       ip: ["unnumbered loopback0", "unnumbered loopback0"]
 
     # Link w/o bb profile
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 2
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       ip_pool: some_other_pool
       speed: 100full
       mtu: 1601
@@ -101,29 +98,29 @@ core_interfaces:
       qos_profile: test_qos_profile
 
     # Normal link with profile
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 3
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces: [Ethernet3, Ethernet3]
       profile: isis_bb_profile
 
     # Profile link with no mpls_ip
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 4
-      interfaces: [ Ethernet4, Ethernet4 ]
+      interfaces: [Ethernet4, Ethernet4]
       profile: isis_bb_profile
       mpls_ip: false
 
     # Profile link with no mpls_ldp
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 5
-      interfaces: [ Ethernet5, Ethernet5 ]
+      interfaces: [Ethernet5, Ethernet5]
       profile: isis_bb_profile
       mpls_ldp: false
 
     # Profile link with overrides
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 6
-      interfaces: [ Ethernet6, Ethernet6 ]
+      interfaces: [Ethernet6, Ethernet6]
       profile: isis_bb_profile
       ip: ["unnumbered loopback0", "unnumbered loopback0"]
       speed: 100full
@@ -134,41 +131,41 @@ core_interfaces:
       qos_profile: test_qos_profile
 
     # Different link profile
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 7
-      interfaces: [ Ethernet10, Ethernet10 ]
+      interfaces: [Ethernet10, Ethernet10]
       profile: ospf_bb_profile
 
     # core Port-Channel
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 9
       port_channel:
         mode: active
         nodes_child_interfaces:
-          core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
-          core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
+          core-1-isis-sr-ldp: [Ethernet12, Ethernet13]
+          core-2-ospf-ldp: [Ethernet12, Ethernet13]
       profile: isis_bb_profile
 
     # core ospf simple override
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 10
-      interfaces: [ Ethernet14, Ethernet14 ]
+      interfaces: [Ethernet14, Ethernet14]
       ip_pool: ospf_area_2_pool
       ospf_area: 0.0.0.2
       ospf_authentication: simple
       ospf_authentication_key: p2p_secure_key
 
     # core ospf simple profile override
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 11
-      interfaces: [ Ethernet15, Ethernet15 ]
+      interfaces: [Ethernet15, Ethernet15]
       ip_pool: ospf_area_1_pool
       profile: ospf_bb_profile_simple_a1
 
       # core ospf message-digest auth p2p
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 13
-      interfaces: [ Ethernet16, Ethernet16 ]
+      interfaces: [Ethernet16, Ethernet16]
       ip_pool: ospf_area_2_pool
       ospf_area: 0.0.0.2
       ospf_authentication: message-digest

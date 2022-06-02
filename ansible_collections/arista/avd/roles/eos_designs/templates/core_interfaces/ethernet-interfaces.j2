@@ -36,12 +36,12 @@ ethernet_interfaces:
     ospf_area: {{  p2p_interface.ospf_area }}
 {%             endif %}
 {%             if p2p_interface.ospf_authentication is arista.avd.defined %}
-    ospf_authentication: {{ p2p_interface.ospf_authentication | arista.avd.default(ospf_authentication) }}
+    ospf_authentication: {{ p2p_interface.ospf_authentication }}
 {%                 if p2p_interface.ospf_authentication == 'simple' %}
-    ospf_authentication_key: {{ p2p_interface.ospf_authentication_key | arista.avd.default(ospf_authentication_key) }}
+    ospf_authentication_key: {{ p2p_interface.ospf_authentication_key }}
 {%                 endif %}
 {%                 if  p2p_interface.ospf_authentication == 'message-digest' %}
-    ospf_message_digest_keys: {{ p2p_interface.ospf_message_digest_keys | arista.avd.default(ospf_message_digest_keys) }}
+    ospf_message_digest_keys: {{ p2p_interface.ospf_message_digest_keys }}
 {%                 endif %}
 {%             endif %}
 {%         endif %}
