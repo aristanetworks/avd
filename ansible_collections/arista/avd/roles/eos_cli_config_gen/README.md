@@ -969,6 +969,13 @@ ethernet_interfaces:
     ip_address_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
+    ip_helpers:
+      < ip_helper1 >:
+        source_interface: < source_interface_name >
+        vrf: < vrf_name >
+      < ip_helper2 >:
+        source_interface: < source_interface_name >
+        vrf: < vrf_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
