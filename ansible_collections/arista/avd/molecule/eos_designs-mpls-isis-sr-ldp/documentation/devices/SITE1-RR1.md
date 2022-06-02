@@ -397,6 +397,15 @@ router isis CORE
 | ------------------------------ | ------------------------------ |
 | mpls | - |
 
+### Router BGP VPN-IPv4 Address Family
+
+#### VPN-IPv4 Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| MPLS-OVERLAY-PEERS | True |
+| RR-OVERLAY-PEERS | True |
+
 ### Router BGP Device Configuration
 
 ```eos

@@ -21,23 +21,41 @@ router_bgp:
       peer_group: MPLS-IBGP-PEERS
     192.168.255.2:
       peer_group: MPLS-IBGP-PEERS
+    192.168.255.4:
+      remote_as: 65004
+      send_community: all
+    2001:cafe:192:168::4:
+      remote_as: 65004
+      send_community: all
   address_family_vpn_ipv4:
     domain_identifier: 65000:0
+    route:
+      import_match_failure_action: discard
     peer_groups:
       MPLS-IBGP-PEERS:
         activate: true
+        route_map_in: RM-IBGP-PEER-IN4
+        route_map_out: RM-IBGP-PEER-OUT4
     neighbors:
       192.168.255.4:
         activate: true
+        route_map_in: RM-NEIGHBOR-PEER-IN4
+        route_map_out: RM-NEIGHBOR-PEER-OUT4
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
   address_family_vpn_ipv6:
     domain_identifier: 65000:0
+    route:
+      import_match_failure_action: discard
     peer_groups:
       MPLS-IBGP-PEERS:
         activate: true
+        route_map_in: RM-IBGP-PEER-IN6
+        route_map_out: RM-IBGP-PEER-OUT6
     neighbors:
-      192.168.255.4:
+      2001:cafe:192:168::4:
         activate: true
+        route_map_in: RM-NEIGHBOR-PEER-IN6
+        route_map_out: RM-NEIGHBOR-PEER-OUT6
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
