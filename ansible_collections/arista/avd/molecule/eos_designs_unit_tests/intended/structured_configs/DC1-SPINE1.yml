@@ -86,6 +86,14 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65109'
       description: DC1-CL1B_Ethernet1
+    10.10.101.7:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65161'
+      description: MLAG-OSPF-L3LEAF1A_Ethernet1
+    10.10.101.9:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65161'
+      description: MLAG-OSPF-L3LEAF1B_Ethernet1
     172.31.255.193:
       peer_group: UNDERLAY-PEERS
       remote_as: '65110'
@@ -158,6 +166,14 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: MH-LEAF2A
       remote_as: '65153'
+    192.168.255.36:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: MLAG-OSPF-L3LEAF1A
+      remote_as: '65161'
+    192.168.255.37:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: MLAG-OSPF-L3LEAF1B
+      remote_as: '65161'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:

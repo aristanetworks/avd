@@ -234,3 +234,9 @@ l3leaf,MH-LEAF1B,Ethernet12,server,server03_AUTO_ESI,Eth2,True
 l3leaf,MH-LEAF2A,Ethernet1,spine,DC1-SPINE1,Ethernet12,True
 l3leaf,MH-LEAF2A,Ethernet2,l2leaf,MH-L2LEAF1A,Ethernet1,True
 l3leaf,MH-LEAF2A,Ethernet10,router,ROUTER01,Eth1,True
+l3leaf,MLAG-OSPF-L3LEAF1A,Ethernet1,spine,DC1-SPINE1,Ethernet16,True
+l3leaf,MLAG-OSPF-L3LEAF1A,Ethernet5,mlag_peer,MLAG-OSPF-L3LEAF1B,Ethernet5,True
+l3leaf,MLAG-OSPF-L3LEAF1A,Ethernet6,mlag_peer,MLAG-OSPF-L3LEAF1B,Ethernet6,True
+l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet1,spine,DC1-SPINE1,Ethernet16,True
+l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet5,mlag_peer,MLAG-OSPF-L3LEAF1A,Ethernet5,True
+l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet6,mlag_peer,MLAG-OSPF-L3LEAF1A,Ethernet6,True

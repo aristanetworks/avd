@@ -54,6 +54,8 @@
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF2A | 192.168.201.106/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MLAG-OSPF-L3LEAF1A | 192.168.201.114/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MLAG-OSPF-L3LEAF1B | 192.168.201.115/24 | vEOS-LAB | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -149,6 +151,8 @@
 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet5 | mlag_peer | DC1_UNDEPLOYED_LEAF1B | Ethernet5 |
 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet6 | mlag_peer | DC1_UNDEPLOYED_LEAF1B | Ethernet6 |
 | l2leaf | MH-L2LEAF1A | Ethernet1 | l3leaf | MH-LEAF2A | Ethernet2 |
+| l3leaf | MLAG-OSPF-L3LEAF1A | Ethernet5 | mlag_peer | MLAG-OSPF-L3LEAF1B | Ethernet5 |
+| l3leaf | MLAG-OSPF-L3LEAF1A | Ethernet6 | mlag_peer | MLAG-OSPF-L3LEAF1B | Ethernet6 |
 
 # Fabric IP Allocation
 
@@ -224,7 +228,7 @@
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 1.2.3.4/24 | 256 | 2 | 0.79 % |
-| 192.168.255.0/24 | 256 | 22 | 8.6 % |
+| 192.168.255.0/24 | 256 | 24 | 9.38 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -254,12 +258,14 @@
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.255.33/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1B | 192.168.255.34/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF2A | 192.168.255.35/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1A | 192.168.255.36/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1B | 192.168.255.37/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 18 | 7.04 % |
+| 192.168.254.0/24 | 256 | 20 | 7.82 % |
 
 ## VTEP Loopback Node allocation
 
@@ -283,3 +289,5 @@
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.254.33/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1B | 192.168.254.34/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF2A | 192.168.254.35/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1A | 192.168.254.36/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1B | 192.168.254.36/32 |
