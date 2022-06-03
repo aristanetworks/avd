@@ -193,6 +193,8 @@ core_interfaces:
       isis_metric: 500
       interfaces: [ Ethernet2, Ethernet2 ]
       profile: default_bb_profile
+      raw_eos_cli: |
+        link-debounce time 1500
 
     - nodes: [ SITE1-LSR1, SITE1-RR1 ]
       id: 4
@@ -227,3 +229,5 @@ core_interfaces:
           SITE2-LSR2: [ Ethernet12, Ethernet13 ]
           SITE2-LER1: [ Ethernet11, Ethernet11 ]
       profile: default_bb_profile
+      raw_eos_cli: |
+        link-debounce time 1600

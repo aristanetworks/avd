@@ -335,7 +335,7 @@ port_channel_interfaces:
     isis_circuit_type: level-2
     isis_authentication_mode: md5
     isis_authentication_key: asdadjiwtelogkkdng
-    eos_cli: 'link-debounce time 1000
+    eos_cli: 'link-debounce time 1600
 
       '
     mpls:

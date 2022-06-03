@@ -239,7 +239,7 @@ interface Port-Channel12
    no isis hello padding
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   link-debounce time 1000
+   link-debounce time 1600
 
 ```
 
