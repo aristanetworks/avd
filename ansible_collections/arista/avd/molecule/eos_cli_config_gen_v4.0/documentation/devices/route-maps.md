@@ -102,7 +102,7 @@ interface Management1
 | Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
 | -------- | ---- | ---------------- | ------------- | -------- |
 | 10 | deny | match ip address prefix-list PL-MLAG | - | - |
-| 20 | permit | match ip address prefix-list PL-SUBRM | RM-STATIC-2-BGP | - |
+| 20 | permit | match ip address prefix-list PL-SUBRM | RM-HIDE-ASPATH-IN | - |
 | 30 | permit | match ip address prefix-list PL-CONTINUE | - | 40 |
 
 #### RM-HIDE-ASPATH-IN
@@ -143,7 +143,7 @@ route-map RM-CONN-BL-BGP deny 10
 !
 route-map RM-CONN-BL-BGP permit 20
    match ip address prefix-list PL-SUBRM
-   sub-route-map RM-STATIC-2-BGP
+   sub-route-map RM-HIDE-ASPATH-IN
 !
 route-map RM-CONN-BL-BGP permit 30
    match ip address prefix-list PL-CONTINUE
