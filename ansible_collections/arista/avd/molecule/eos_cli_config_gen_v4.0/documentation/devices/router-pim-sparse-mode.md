@@ -12,7 +12,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -85,30 +85,32 @@ interface Management1
 
 # Multicast
 
-## Router PIM Sparse Mode
+## PIM Sparse Mode
 
-### IP Sparse Mode Information
+### Router PIM Sparse Mode
 
-#### IP Rendezvous Information
+#### IP Sparse Mode Information
+
+##### IP Rendezvous Information
 
 | Rendezvous Point Address | Group Address |
 | ------------------------ | ------------- |
 | 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32, 239.12.12.14/32, 239.12.12.16/32, 239.12.12.20/32, 239.12.12.21/32 |
 
-#### IP Anycast Information
+##### IP Anycast Information
 
 | IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------ | -------------- |
 | 10.38.1.161 | 10.50.64.16 | 15 |
 
-#### IP Sparse Mode VRFs
+##### IP Sparse Mode VRFs
 
 | VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------ | ------------- |
 | MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
 | MCAST_VRF2_ALL_GROUPS | 10.238.3.161 | - |
 
-### Router Multicast Device Configuration
+#### Router Multicast Device Configuration
 
 ```eos
 !
