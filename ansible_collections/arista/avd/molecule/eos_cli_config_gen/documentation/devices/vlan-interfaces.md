@@ -15,6 +15,7 @@
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -395,6 +396,15 @@ interface Vlan4094
 | Vlan85 | 500 | 500 | 5 | True |
 
 # Multicast
+
+## PIM Sparse Mode
+
+### PIM Sparse Mode enabled interfaces
+
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+| Vlan89 | - | IPv4 | - | Loopback0 |
+| Vlan4094 | - | IPv4 | 200 | - |
 
 # Filters
 

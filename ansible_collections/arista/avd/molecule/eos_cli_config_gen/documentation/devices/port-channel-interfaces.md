@@ -18,6 +18,7 @@
 - [MPLS](#mpls)
   - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -631,6 +632,14 @@ interface Port-Channel114
 | Port-Channel114 | False | False | - |
 
 # Multicast
+
+## PIM Sparse Mode
+
+### PIM Sparse Mode enabled interfaces
+
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+| Port-Channel99 | - | IPv4 | 200 | - |
 
 # Filters
 

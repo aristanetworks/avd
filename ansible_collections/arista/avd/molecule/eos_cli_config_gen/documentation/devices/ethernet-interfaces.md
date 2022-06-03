@@ -17,6 +17,7 @@
 - [MPLS](#mpls)
   - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
@@ -657,6 +658,14 @@ interface Ethernet45
 | Ethernet10 | False | False | - |
 
 # Multicast
+
+## PIM Sparse Mode
+
+### PIM Sparse Mode enabled interfaces
+
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+| Ethernet5 | - | IPv4 | 200 | - |
 
 # Filters
 

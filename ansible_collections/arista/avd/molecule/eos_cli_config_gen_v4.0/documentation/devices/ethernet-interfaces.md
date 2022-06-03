@@ -17,6 +17,7 @@
 - [MPLS](#mpls)
   - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -530,6 +531,14 @@ interface Ethernet28
 | Ethernet10 | False | False | - |
 
 # Multicast
+
+## PIM Sparse Mode
+
+### PIM Sparse Mode enabled interfaces
+
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+| Ethernet5 | - | IPv4 | - | - |
 
 # Filters
 
