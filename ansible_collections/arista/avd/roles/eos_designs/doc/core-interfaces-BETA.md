@@ -79,6 +79,10 @@ core_interfaces:
       # Profile defined under p2p_profiles | Optional
       profile: < p2p_profile_name >
 
+      # EOS CLI rendered directly on the point-to-point interface in the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
+
       # Port-channel parameters
       port_channel:
         mode: active

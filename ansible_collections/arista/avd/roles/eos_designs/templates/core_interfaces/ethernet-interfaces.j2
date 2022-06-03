@@ -58,6 +58,10 @@ ethernet_interfaces:
         igp_sync: true
 {%             endif %}
 {%         endif %}
+{%         if p2p_interface.raw_eos_cli is arista.avd.defined %}
+    eos_cli: |
+      {{ p2p_interface.raw_eos_cli | indent(6,false) }}
+{%         endif %}
 {%     endfor %}
 {%     for p2p_interface_key in core_interfaces_data.p2p_port_channels | arista.avd.natural_sort %}
 {%         set p2p_interface = core_interfaces_data.p2p_port_channels[p2p_interface_key] %}

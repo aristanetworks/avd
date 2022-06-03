@@ -96,6 +96,7 @@
 {%         set p2p_interface.shutdown = "false" %}
 {%         set p2p_interface.description = "P2P_LINK_TO_" ~ p2p_interface.peer ~ "_" ~ p2p_interface.peer_interface %}
 {%         set p2p_interface.mpls_ip = p2p_link.mpls_ip | arista.avd.default(link_info.p2p_profile.mpls_ip, true) %}
+{%         set p2p_interface.raw_eos_cli = p2p_link.raw_eos_cli | arista.avd.default(link_info.p2p_profile.raw_eos_cli) %}
 {%         if p2p_link.port_channel is not arista.avd.defined %}
 {%             do core_interfaces_data.p2p_interfaces.update({ node_interface: p2p_interface }) %}
 {%         else %}

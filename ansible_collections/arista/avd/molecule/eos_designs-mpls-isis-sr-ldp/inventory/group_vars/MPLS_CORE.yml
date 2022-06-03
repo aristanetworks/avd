@@ -168,6 +168,8 @@ core_interfaces:
       ipv6_enable: true
       isis_authentication_mode: md5
       isis_authentication_key: asdadjiwtelogkkdng
+      raw_eos_cli: |
+        link-debounce time 1000
   p2p_links:
 
     - nodes: [ SITE1-LER1, SITE1-LSR1 ]
