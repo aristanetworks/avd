@@ -132,6 +132,20 @@ interface Management1
 | ---------- | -------- |
 | MPLS-IBGP-PEERS | True |
 
+### Router BGP VPN-IPv6 Address Family
+
+#### VPN-IPv6 Neighbors
+
+| Neighbor | Activate |
+| -------- | -------- |
+| 192.168.255.4 | True |
+
+#### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| MPLS-IBGP-PEERS | True |
+
 ### Router BGP Device Configuration
 
 ```eos
