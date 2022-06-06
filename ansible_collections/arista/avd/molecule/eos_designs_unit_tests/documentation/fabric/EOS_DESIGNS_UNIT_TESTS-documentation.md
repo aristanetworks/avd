@@ -134,6 +134,7 @@
 | spine | DC1-SPINE1 | Ethernet12 | l3leaf | MH-LEAF2A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet17 | l3leaf | DC1_UNDEPLOYED_LEAF1B | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet18 | l3leaf | MLAG-OSPF-L3LEAF1B | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet2 |
@@ -160,7 +161,7 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 10.10.101.0/24 | 256 | 6 | 2.35 % |
+| 10.10.101.0/24 | 256 | 8 | 3.13 % |
 | 172.31.255.0/24 | 256 | 104 | 40.63 % |
 
 ## Point-To-Point Links Node Allocation
@@ -210,6 +211,7 @@
 | DC1-SPINE1 | Ethernet12 | 10.10.101.4/31 | MH-LEAF2A | Ethernet1 | 10.10.101.5/31 |
 | DC1-SPINE1 | Ethernet16 | 172.31.255.192/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet1 | 172.31.255.193/31 |
 | DC1-SPINE1 | Ethernet17 | 172.31.255.208/31 | DC1_UNDEPLOYED_LEAF1B | Ethernet1 | 172.31.255.209/31 |
+| DC1-SPINE1 | Ethernet18 | 10.10.101.8/31 | MLAG-OSPF-L3LEAF1B | Ethernet1 | 10.10.101.9/31 |
 | DC1-SPINE2 | Ethernet4 | 172.31.255.50/31 | DC1-SVC3A | Ethernet2 | 172.31.255.51/31 |
 | DC1-SPINE2 | Ethernet5 | 172.31.255.66/31 | DC1-SVC3B | Ethernet2 | 172.31.255.67/31 |
 | DC1-SPINE2 | Ethernet16 | 172.31.255.194/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet2 | 172.31.255.195/31 |

@@ -137,9 +137,9 @@ ethernet_interfaces:
       mode: active
   Ethernet1:
     peer: DC1-SPINE1
-    peer_interface: Ethernet16
+    peer_interface: Ethernet18
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet16
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet18
     mtu: 1500
     type: routed
     shutdown: false

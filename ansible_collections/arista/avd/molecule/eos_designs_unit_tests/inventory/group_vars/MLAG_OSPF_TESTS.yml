@@ -24,11 +24,11 @@ l3leaf:
           id: 4
           bgp_as: 65161
           mgmt_ip: 192.168.201.114/24
-          uplink_switch_interfaces: [Ethernet16]
+          uplink_switch_interfaces: [Ethernet18]
           mlag_interfaces: [Ethernet5, Ethernet6]
         MLAG-OSPF-L3LEAF1B:
           id: 5
           bgp_as: 65161
           mgmt_ip: 192.168.201.115/24
-          uplink_switch_interfaces: [Ethernet16]
+          uplink_switch_interfaces: [Ethernet18]
           mlag_interfaces: [Ethernet5, Ethernet6]

@@ -266,6 +266,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet15 | P2P_LINK_TO_DC1-CL1B_Ethernet1 | routed | - | 172.31.255.160/31 | default | 1500 | false | - | - |
 | Ethernet16 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet1 | routed | - | 172.31.255.192/31 | default | 1500 | true | - | - |
 | Ethernet17 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet1 | routed | - | 172.31.255.208/31 | default | 1500 | true | - | - |
+| Ethernet18 | P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1 | routed | - | 10.10.101.8/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -395,6 +396,13 @@ interface Ethernet17
    speed forced 100gfull
    no switchport
    ip address 172.31.255.208/31
+!
+interface Ethernet18
+   description P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.10.101.8/31
 ```
 
 ## Loopback Interfaces
