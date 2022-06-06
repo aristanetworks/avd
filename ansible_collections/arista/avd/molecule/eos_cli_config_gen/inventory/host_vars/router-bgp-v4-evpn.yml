@@ -153,6 +153,11 @@ router_bgp:
           route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
       address_families:
         ipv4:
+          bgp:
+            additional_paths:
+              - install
+              - receive
+              - send ecmp
           neighbors:
             10.2.3.4:
               activate: true
