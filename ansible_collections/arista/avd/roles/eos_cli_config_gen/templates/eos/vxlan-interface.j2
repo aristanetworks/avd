@@ -33,8 +33,8 @@ interface Vxlan1
    vxlan mlag source-interface {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }}
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn is arista.avd.defined %}
-{%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval is arista.avd.defined 
-               and vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx is arista.avd.defined 
+{%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval is arista.avd.defined
+               and vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx is arista.avd.defined
                and vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier is arista.avd.defined %}
    bfd vtep evpn interval {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval }} min-rx {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx }} multiplier {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier }}
 {%         endif %}
