@@ -535,8 +535,9 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-112,120-121,130-131,160-161
     mode: trunk
-    esi: 0000:0000:0808:0707:0606
-    rt: 08:08:07:07:06:06
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0808:0707:0606
+      route_target: 08:08:07:07:06:06
     lacp_id: 0808.0707.0606
   Port-Channel9:
     description: DC1-L2LEAF3A_Po1
@@ -544,8 +545,9 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-112,120-121,130-131,160-161
     mode: trunk
-    esi: 0000:0000:0606:0707:0808
-    rt: 06:06:07:07:08:08
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0606:0707:0808
+      route_target: 06:06:07:07:08:08
     lacp_id: 0606.0707.0808
   Port-Channel13:
     description: DC1-L2LEAF4A_Po1
@@ -553,8 +555,9 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-112,120-121,130-131,160-161
     mode: trunk
-    esi: 0000:0000:a36b:7013:457b
-    rt: a3:6b:70:13:45:7b
+    evpn_ethernet_segment:
+      identifier: 0000:0000:a36b:7013:457b
+      route_target: a3:6b:70:13:45:7b
     lacp_id: a36b.7013.457b
   Port-Channel14:
     description: DC1_L2LEAF5_Po1
@@ -562,8 +565,9 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-112,120-121,130-131,160-161
     mode: trunk
-    esi: 0000:0000:71da:d362:2084
-    rt: 71:da:d3:62:20:84
+    evpn_ethernet_segment:
+      identifier: 0000:0000:71da:d362:2084
+      route_target: 71:da:d3:62:20:84
     lacp_id: 71da.d362.2084
   Port-Channel20:
     description: FIREWALL01_PortChanne1

@@ -600,6 +600,14 @@ interface Ethernet44
 | Port-Channel18 | server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
 | Port-Channel19 | server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
 
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel10 | 0000:1234:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
+
 ### Port-Channel Interfaces Device Configuration
 
 ```eos

@@ -76,6 +76,9 @@ port_profiles:
     port_channel:
       description: < port_channel_description >
       mode: < "active" | "passive" | "on" >
+      # Allocates an automatic short_esi to all ports using this profile
+      # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+      short_esi: auto
       lacp_fallback:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds

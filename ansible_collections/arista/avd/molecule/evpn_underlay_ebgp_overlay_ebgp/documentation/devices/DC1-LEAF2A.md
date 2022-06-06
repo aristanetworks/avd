@@ -467,6 +467,15 @@ interface Ethernet21
 | Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel7 | 0000:1234:0808:0707:0606 | all-active | 08:08:07:07:06:06 |
+| Port-Channel9 | 0000:1234:0606:0707:0808 | all-active | 06:06:07:07:08:08 |
+
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
