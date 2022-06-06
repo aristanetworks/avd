@@ -32,6 +32,20 @@
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(false) %}
 | Qos map dscp to traffic-class decapsulation | Disabled |
 {%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn is arista.avd.defined %}
+{%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval is arista.avd.defined %}
+| Transmission rate set for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval }}ms |
+{%         endif %}
+{%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx is arista.avd.defined %}
+| Expected minimum incoming rate set for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx }}ms |
+{%         endif %}
+{%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier is arista.avd.defined %}
+| Multiplier set for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier }} |
+{%         endif %}
+{%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list is arista.avd.defined %}
+| Prefix-list reference for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list }} |
+{%         endif %}
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
