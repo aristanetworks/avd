@@ -3303,6 +3303,10 @@ router_bgp:
           advertise_only: < true | false >
       address_families:
         < address_family >:
+          bgp:
+            additional_paths:
+              - < bgp_additional_paths_command >
+              - < bgp_additional_paths_command >
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >

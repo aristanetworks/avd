@@ -924,6 +924,9 @@ router bgp {{ router_bgp.as }}
 {%         for  address_family in vrf.address_families | arista.avd.convert_dicts('address_family') | arista.avd.natural_sort('address_family') %}
       !
       address-family {{ address_family.address_family }}
+{%             for additional_path in address_family.bgp.additional_paths | arista.avd.natural_sort %}
+         bgp additional-paths {{ additional_path }}
+{%             endfor %}
 {%             for peer_group in address_family.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%                 if peer_group.activate is arista.avd.defined(true) %}
          neighbor {{ peer_group.name }} activate
