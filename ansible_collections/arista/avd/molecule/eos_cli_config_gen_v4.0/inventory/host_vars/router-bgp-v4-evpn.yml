@@ -155,6 +155,11 @@ router_bgp:
             - prefix: 10.0.0.0/8
             - prefix: 100.64.0.0/10
               route_map: RM-10.2.3.4
+          peer_groups:
+            - name: TEST_PEER_GRP
+              activate: true
+              next_hop:
+                address_family_ipv6_originate: true
       redistribute_routes:
         - source_protocol: connected
         - source_protocol: static
