@@ -970,10 +970,10 @@ ethernet_interfaces:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
     ip_helpers:
-      < ip_helper1 >:
+      - ip_helper: < ip_helper1 >
         source_interface: < source_interface_name >
         vrf: < vrf_name >
-      < ip_helper2 >:
+      - ip_helper: < ip_helper2 >
         source_interface: < source_interface_name >
         vrf: < vrf_name >
     ipv6_enable: < true | false >

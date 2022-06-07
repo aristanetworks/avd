@@ -280,7 +280,7 @@ interface {{ ethernet_interface.name }}
    ip address {{ ip_address_secondary }} secondary
 {%                 endfor %}
 {%             endif %}
-{%             for ip_helper in ethernet_interface.ip_helpers | arista.avd.convert_dicts('ip_helper') | arista.avd.natural_sort('ip_helper') %}
+{%             for ip_helper in ethernet_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%                 set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%                 if ip_helper.vrf is arista.avd.defined %}
 {%                     set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}

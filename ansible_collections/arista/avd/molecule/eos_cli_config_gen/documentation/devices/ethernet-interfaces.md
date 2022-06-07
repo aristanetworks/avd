@@ -629,7 +629,7 @@ interface Ethernet47
    description IP Helper
    no switchport
    ip address 172.31.255.1/31
-   ip helper-address 10.10.64.150
+   ip helper-address 10.10.64.151
    ip helper-address 10.10.96.101 source-interface Loopback0
    ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
    ip helper-address 10.10.96.151 vrf MGMT
