@@ -164,6 +164,11 @@ router_bgp:
             10.0.0.0/8:
             100.64.0.0/10:
               route_map: RM-10.2.3.4
+          peer_groups:
+            TEST_PEER_GRP:
+              activate: true
+              next_hop:
+                address_family_ipv6_originate: true
       redistribute_routes:
         - connected
         - static
