@@ -99,21 +99,21 @@
 {%                             do bgp_peer.pop('ip_address') %}
           {{ bgp_peer }}
 {%                         else %}
-{%                             if bgp_peer | ansible.netcommon.ipv4 %}
-{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer) %}
+{%                             if bgp_peer.ip_address | ansible.netcommon.ipv4 %}
+{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer.ip_address) %}
 {%                                 if bgp_peer.peer_group is arista.avd.defined %}
 {%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append(bgp_peer.peer_group) %}
-        {{ bgp_peer }}:
-          peer_group: {{ bgp_peer.peer_group }}
+        {{ bgp_peer.ip_address }}:
+          {{ bgp_peer }}
 {%                                 else %}
 {%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append(None) %}
 {%                                 endif %}
 {%                             endif %}
-{%                             if bgp_peer | ansible.netcommon.ipv6 %}
-{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer) %}
+{%                             if bgp_peer.ip_address | ansible.netcommon.ipv6 %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.ip_address) %}
 {%                                 if bgp_peer.peer_group is arista.avd.defined %}
 {%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(bgp_peer.peer_group) %}
-        {{ bgp_peer }}:
+        {{ bgp_peer.ip_address }}:
           peer_group: {{ bgp_peer.peer_group }}
 {%                                 else %}
 {%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(None) %}
