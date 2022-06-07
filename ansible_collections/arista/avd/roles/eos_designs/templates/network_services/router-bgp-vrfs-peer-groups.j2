@@ -1,4 +1,3 @@
-{# tenant router bgp VRFs #}
 {% if switch.network_services_l3 is arista.avd.defined(true) %}
   peer_groups:
 {%     for tenant in network_services_data.tenants %}
