@@ -107,12 +107,8 @@ vtep_ip:
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_offset }}`
 
-`p2p_uplinks_ip` & `p2p_uplinks_peer_ip` can leverage the switch facts (switch.*) to customize the IP adressing.
-All other templates can only leverage the input variables and variables set in switch facts template.
-
-For more information about the available contextual properties, see the following links:
-- [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
-- [switch facts](../templates/facts/switch/switch.j2)
+While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
+the values are not part of the officially supported data models, and may change without notice.
 
 ## Context for interface_descriptions templates
 
@@ -144,17 +140,10 @@ connected_endpoints_port_channel_interfaces:
 - `{{ peer }}`
 - `{{ adapter_port_channel_description }}`
 
-All templates can leverage the switch facts (switch.*) to customize the interface descriptions.
+While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
+the values are not part of the officially supported data models, and may change without notice.
 
-For more information about the available contextual properties, see the following links:
-- [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
-- [underlay_port_channel_interfaces facts](../templates/facts/topology/port-channel-uplinks.j2)
-- [mlag_ethernet_interfaces facts](../templates/mlag/ethernet-interfaces.j2)
-- [mlag_port_channel_interfaces facts](../templates/mlag/port-channel-interfaces.j2)
-- [connected_endpoints_ethernet_interfaces facts](../templates/connected_endpoints/ethernet-interfaces.j2)
-- [connected_endpoints_port_channel_interfaces facts](../templates/connected_endpoints/port-channel-interfaces.j2)
-
-The next output is structure example based on default definition:
+The next output is an example based on the default definition:
 
 ```yaml
 # Example

@@ -4,6 +4,15 @@
 router multicast
 {%     if router_multicast.ipv4 is arista.avd.defined %}
    ipv4
+{%         for rpf_route in router_multicast.ipv4.rpf.routes | arista.avd.natural_sort('source_prefix') if rpf_route.source_prefix is arista.avd.defined %}
+{%             for destination in rpf_route.destinations | arista.avd.natural_sort('nexthop') if destination.nexthop is arista.avd.defined %}
+{%                 set rpf_route_cli = "rpf route " ~ rpf_route.source_prefix ~ " " ~ destination.nexthop %}
+{%                 if destination.distance is arista.avd.defined %}
+{%                     set rpf_route_cli = rpf_route_cli ~ " " ~ destination.distance %}
+{%                 endif %}
+      {{ rpf_route_cli }}
+{%             endfor %}
+{%         endfor %}
 {%         if router_multicast.ipv4.counters.rate_period_decay is arista.avd.defined %}
       counters rate period decay {{ router_multicast.ipv4.counters.rate_period_decay }} seconds
 {%         endif %}

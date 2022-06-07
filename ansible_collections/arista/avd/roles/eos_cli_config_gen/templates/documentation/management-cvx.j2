@@ -1,0 +1,17 @@
+{# Management CVX #}
+{% if management_cvx is arista.avd.defined %}
+
+## Management CVX Summary
+
+| Shutdown | CVX Servers |
+| -------- | ----------- |
+{%     set shut = management_cvx.shutdown | arista.avd.default('-') %}
+{%     set servers = management_cvx.server_hosts | arista.avd.default('-') | join(', ') %}
+| {{ shut }} | {{ servers }} |
+
+### Management CVX configuration
+
+```eos
+{%     include 'eos/management-cvx.j2' %}
+```
+{% endif %}

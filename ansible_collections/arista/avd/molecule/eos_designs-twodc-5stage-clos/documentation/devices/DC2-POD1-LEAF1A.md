@@ -93,9 +93,9 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -218,7 +218,7 @@ vlan 4092
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | routed | - | 172.17.210.1/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | routed | - | 172.17.210.3/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | routed | - | 11.1.0.39/31 | default | 1499 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -249,7 +249,7 @@ interface Ethernet3
    channel-group 3 mode active
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7
+   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
    no shutdown
    mtu 1500
    no switchport
@@ -350,7 +350,6 @@ interface Loopback101
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan4092 |  default  |  172.21.210.2/24  |  -  |  172.21.210.1  |  -  |  -  |  -  |
-
 
 ### VLAN Interfaces Device Configuration
 
@@ -513,7 +512,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 11.1.0.38 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True | - |
 | 100.100.100.101 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.16.10.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -568,7 +567,7 @@ router bgp 65211
    neighbor 11.1.0.38 bfd
    neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.100.100.101 remote-as 65112.100
-   neighbor 100.100.100.101 description DC1-POD1-LEAF2A
+   neighbor 100.100.100.101 description DC1.POD1.LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
    neighbor 172.16.10.1 description DC1-RS1

@@ -10,7 +10,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     channel_group:
-      id: {{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
+      id: {{ switch.mlag_port_channel_id }}
       mode: active
 {%         if switch.mlag_interfaces_speed is arista.avd.defined %}
     speed: {{ switch.mlag_interfaces_speed }}

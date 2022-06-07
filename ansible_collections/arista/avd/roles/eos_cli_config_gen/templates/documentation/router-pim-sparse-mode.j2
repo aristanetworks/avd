@@ -1,13 +1,13 @@
 {# IP PIM Sparse Mode Summary #}
 {% if router_pim_sparse_mode is arista.avd.defined %}
 
-## Router PIM Sparse Mode
+### Router PIM Sparse Mode
 
-### IP Sparse Mode Information
+#### IP Sparse Mode Information
 {%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
 {%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
-#### IP Rendezvous Information
+##### IP Rendezvous Information
 
 | Rendezvous Point Address | Group Address |
 | ------------------------ | ------------- |
@@ -18,7 +18,7 @@
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 
-#### IP Anycast Information
+##### IP Anycast Information
 
 | IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------ | -------------- |
@@ -32,7 +32,7 @@
 {%     endif %}
 {%     if router_pim_sparse_mode.vrfs is arista.avd.defined %}
 
-#### IP Sparse Mode VRFs
+##### IP Sparse Mode VRFs
 
 | VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------ | ------------- |
@@ -46,7 +46,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Router Multicast Device Configuration
+#### Router Multicast Device Configuration
 
 ```eos
 {%     include 'eos/router-pim-sparse-mode.j2' %}

@@ -8,11 +8,12 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [System Boot Settings](#system-boot-settings)
+  - [Boot Secret Summary](#boot-secret-summary)
+  - [System Boot Configuration](#system-boot-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
-- [Hardware TCAM Profile](#hardware-tcam-profile)
-  - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -48,9 +49,6 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Platform](#platform)
-  - [Platform Summary](#platform-summary)
-  - [Platform Configuration](#platform-configuration)
 - [Quality Of Service](#quality-of-service)
 
 # Management
@@ -63,19 +61,19 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.119/24 | 192.168.200.5 |
+| Management0 | oob_management | oob | MGMT | 192.168.200.119/24 | 192.168.200.5 |
 
 #### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management0 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management1
+interface Management0
    description oob_management
    no shutdown
    vrf MGMT
@@ -126,9 +124,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | False |
 
 ### Management API VRF Access
 
@@ -142,6 +140,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 !
 management api http-commands
    protocol https
+   no default-services
    no shutdown
    !
    vrf MGMT
@@ -166,6 +165,19 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+```
+
+# System Boot Settings
+
+## Boot Secret Summary
+
+- The sha512 hashed Aboot password is configured
+
+## System Boot Configuration
+
+```eos
+!
+boot secret sha512 a153de6290ff1409257ade45f
 ```
 
 # Monitoring
@@ -193,26 +205,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC DC1-CL1A | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS DC1-CL1A | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC DC1-CL1A
-```
-
-# Hardware TCAM Profile
-
-TCAM profile __`vxlan-routing`__ is active
-
-## Hardware TCAM configuration
-
-```eos
-!
-hardware tcam
-   system profile vxlan-routing
+snmp-server location EOS_DESIGNS_UNIT_TESTS DC1-CL1A
 ```
 
 # MLAG
@@ -234,8 +234,8 @@ mlag configuration
    local-interface Vlan4092
    peer-address 10.255.252.19
    peer-link Port-Channel5
-   reload-delay mlag 900
-   reload-delay non-mlag 1020
+   reload-delay mlag 300
+   reload-delay non-mlag 330
 ```
 
 # Spanning Tree
@@ -522,7 +522,6 @@ interface Loopback1
 | Vlan4090 |  default  |  10.255.251.18/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4092 |  default  |  10.255.252.18/31  |  -  |  -  |  -  |  -  |  -  |
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -701,7 +700,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 10.255.251.19 | Inherited from peer group MLAG-PEERS | default | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 172.31.255.144 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.146 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -719,6 +718,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Peer Group | Activate |
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold | Expiry Timeout |
+| ----- | ------ | --------- | -------------- |
+| Enabled | 180 Seconds | 5 | 10 Seconds |
 
 ### Router BGP VLAN Aware Bundles
 
@@ -859,6 +864,7 @@ router bgp 65108
       vlan 350
    !
    address-family evpn
+      host-flap detection window 180 threshold 5 expiry timeout 10 seconds
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -973,23 +979,6 @@ route-map RM-MLAG-PEER-IN permit 10
 ```eos
 !
 vrf instance MGMT
-```
-
-# Platform
-
-## Platform Summary
-
-### Platform Sand Summary
-
-| Settings | Value |
-| -------- | ----- |
-| lag.hardware_only | True |
-
-## Platform Configuration
-
-```eos
-!
-platform sand lag hardware-only
 ```
 
 # Quality Of Service

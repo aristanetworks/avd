@@ -12,7 +12,7 @@ router_bgp:
       type: ipv4
       remote_as: '65112.100'
       next_hop_self: true
-      description: DC1-POD1-LEAF2A
+      description: DC1.POD1.LEAF2A
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: all
@@ -30,6 +30,13 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+    EVPN-OVERLAY-CORE:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '15'
+      send_community: all
+      maximum_routes: 0
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -38,10 +45,12 @@ router_bgp:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false
+      EVPN-OVERLAY-CORE:
+        activate: false
   neighbors:
     172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: DC1-POD1-LEAF2A
+      description: DC1.POD1.LEAF2A
     172.17.110.16:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65110.100'
@@ -73,6 +82,10 @@ router_bgp:
       description: DC1-RS1
       remote_as: '65101'
       route_map_out: RM-EVPN-FILTER-AS65101
+    1.1.1.1:
+      peer_group: EVPN-OVERLAY-CORE
+      description: HOSTNAME_NOT_IN_ANSIBLE
+      remote_as: '1111'
     11.1.0.39:
       remote_as: '65211'
       description: DC2-POD1-LEAF1A
@@ -87,11 +100,20 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+      EVPN-OVERLAY-CORE:
+        domain_remote: true
+        activate: true
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: false
     route:
       import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-CORE:
         activate: true
   vrfs:
     Common_VRF:
@@ -153,41 +175,71 @@ router_bgp:
     110:
       tenant: Tenant_A
       rd: 172.16.110.5:99110
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:99110
       route_targets:
         both:
         - 99110:99110
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 99110:99110
       redistribute_routes:
       - learned
     111:
       tenant: Tenant_A
       rd: 172.16.110.5:50111
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:50111
       route_targets:
         both:
         - 50111:50111
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 50111:50111
       redistribute_routes:
       - learned
     112:
       tenant: Tenant_A
       rd: 172.16.110.5:20112
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:20112
       route_targets:
         both:
         - 20112:20112
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 20112:20112
       redistribute_routes:
       - learned
     2500:
       tenant: Tenant_A
       rd: 172.16.110.5:2500
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:2500
       route_targets:
         both:
         - 2500:2500
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 2500:2500
       redistribute_routes:
       - learned
     2600:
       tenant: Tenant_A
       rd: 172.16.110.5:32600
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:32600
       route_targets:
         both:
         - 32600:32600
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: 32600:32600
       redistribute_routes:
       - learned
 static_routes:
@@ -369,7 +421,7 @@ vlan_interfaces:
       distance: 19
 port_channel_interfaces:
   Port-Channel5:
-    description: MLAG_PEER_DC1-POD1-LEAF2A_Po5
+    description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -436,20 +488,20 @@ port_channel_interfaces:
       '
 ethernet_interfaces:
   Ethernet5:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet5
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5
+    description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
     type: switched
     shutdown: false
     channel_group:
       id: 5
       mode: active
   Ethernet6:
-    peer: DC1-POD1-LEAF2A
+    peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet6
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6
+    description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
     type: switched
     shutdown: false
     channel_group:

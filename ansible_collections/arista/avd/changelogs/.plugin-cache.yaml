@@ -1,0 +1,37 @@
+objects:
+  role: {}
+plugins:
+  become: {}
+  cache: {}
+  callback: {}
+  cliconf: {}
+  connection: {}
+  httpapi: {}
+  inventory: {}
+  lookup: {}
+  module:
+    configlet_build_config:
+      description: Build arista.cvp.configlet configuration.
+      name: configlet_build_config
+      namespace: ''
+      version_added: 1.0.0
+    eos_designs_facts:
+      description: Set eos_designs facts
+      name: eos_designs_facts
+      namespace: ''
+      version_added: 3.5.0
+    inventory_to_container:
+      description: Transform information from inventory to arista.cvp collection
+      name: inventory_to_container
+      namespace: ''
+      version_added: 1.0.0
+    yaml_templates_to_facts:
+      description: Set facts from YAML via Jinja2 templates
+      name: yaml_templates_to_facts
+      namespace: ''
+      version_added: 1.0.0
+  netconf: {}
+  shell: {}
+  strategy: {}
+  vars: {}
+version: 3.5.0

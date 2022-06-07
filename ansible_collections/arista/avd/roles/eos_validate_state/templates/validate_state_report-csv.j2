@@ -1,4 +1,3 @@
-{# j2lint: disable=V1 #}
 {# AVD State Validation Report - CSV #}
 test_id,node,test_category,test_description,test,result,failure_reason
 {% for report_entry in eos_validate_state_report | arista.avd.default([]) %}

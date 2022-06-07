@@ -52,39 +52,39 @@
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
-      neighbors:
+{%                     set configure_mlag_ibgp_peering = false %}
 {%                     if switch.mlag_l3 is arista.avd.defined(true) %}
 {%                         set configure_mlag_ibgp_peering = vrf.enable_mlag_ibgp_peering_vrfs | arista.avd.default(
-                                                         tenant.enable_mlag_ibgp_peering_vrfs,
-                                                         true) %}
-{%                         if configure_mlag_ibgp_peering %}
+                                                 tenant.enable_mlag_ibgp_peering_vrfs,
+                                                 true) %}
+{%                     endif %}
+{%                     if configure_mlag_ibgp_peering and underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
+{%                         set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
+      neighbor_interfaces:
+        Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
+          peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
+          remote_as: "{{ switch.bgp_as }}"
+          description: {{ switch.mlag_peer }}
+{%                         set configure_mlag_ibgp_peering = false %}
+{%                     endif %}
+      neighbors:
+{%                     if configure_mlag_ibgp_peering %}
         {{ switch.mlag_peer_l3_ip | arista.avd.default(switch.mlag_peer_ip) }}:
           peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
-{%                         endif %}
 {%                     endif %}
 {%                     for bgp_peer in vrf.bgp_peers %}
 {%                         if inventory_hostname in bgp_peer.nodes | arista.avd.default([]) %}
-{%                             if bgp_peer.name | ansible.netcommon.ipv4 %}
-{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer.name) %}
-{%                                 if bgp_peer.peer_group is arista.avd.defined %}
-{%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append(bgp_peer.peer_group) %}
-{%                                 else %}
-{%                                     do bgp_vrf.address_family_ipv4_neighbors_peer_group.append(None) %}
-{%                                 endif %}
+{%                             if bgp_peer.ip_address | ansible.netcommon.ipv4 %}
+{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer.ip_address) %}
 {%                             endif %}
-{%                             if bgp_peer.name | ansible.netcommon.ipv6 %}
-{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.name) %}
-{%                                 if bgp_peer.peer_group is arista.avd.defined %}
-{%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(bgp_peer.peer_group) %}
-{%                                 else %}
-{%                                     do bgp_vrf.address_family_ipv6_neighbors_peer_group.append(None) %}
-{%                                 endif %}
+{%                             if bgp_peer.ip_address | ansible.netcommon.ipv6 %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer.ip_address) %}
 {%                             endif %}
 {%                             if bgp_peer.set_ipv4_next_hop is arista.avd.defined or bgp_peer.set_ipv6_next_hop is arista.avd.defined %}
-{%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.name ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                 if bgp_peer.default_originate is arista.avd.defined %}
 {%                                     if bgp_peer.default_originate.route_map is not arista.avd.defined %}
-{%                                         do bgp_peer.default_originate.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.name ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                         do bgp_peer.default_originate.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                     endif %}
 {%                                 endif %}
 {%                                 if bgp_peer.set_ipv4_next_hop is arista.avd.defined %}
@@ -95,8 +95,8 @@
 {%                                 endif %}
 {%                             endif %}
 {%                             do bgp_peer.pop('nodes') %}
-        {{ bgp_peer.name }}:
-{%                             do bgp_peer.pop('name') %}
+        {{ bgp_peer.ip_address }}:
+{%                             do bgp_peer.pop('ip_address') %}
           {{ bgp_peer }}
 {%                         else %}
 {%                             if bgp_peer.name | ansible.netcommon.ipv4 %}
@@ -127,7 +127,7 @@
 {%                                     break %}
 {%                                 endif %}
 {%                             endfor %}
-{%                         elif vrf.redistribute_static is arista.avd.defined(true)  %}
+{%                         elif vrf.redistribute_static is arista.avd.defined(true) %}
         - static
 {%                         endif %}
 {%                     endif %}

@@ -67,9 +67,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -171,9 +171,9 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.11.3/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.11.67/31 | default | 1500 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2 | routed | - | 172.17.110.2/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet2 | routed | - | 172.17.110.10/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet2 | routed | - | 172.17.110.10/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2 | routed | - | 172.17.110.18/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet12 | routed | - | 172.17.110.14/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet12 | routed | - | 172.17.110.14/31 | default | 1500 | false | - | - |
 | Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12 | routed | - | 172.17.110.22/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -210,7 +210,7 @@ interface Ethernet3
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet2
+   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -228,7 +228,7 @@ interface Ethernet5
    service-profile QOS-PROFILE
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet12
+   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet12
    no shutdown
    mtu 1500
    no switchport
@@ -352,7 +352,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | -------------- |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 172.16.11.2 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.16.11.66 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 172.17.110.3 | 65111.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
@@ -387,10 +387,10 @@ router bgp 65110.100
    neighbor 172.17.110.3 description DC1-POD1-LEAF1A_Ethernet2
    neighbor 172.17.110.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.11 remote-as 65112.100
-   neighbor 172.17.110.11 description DC1-POD1-LEAF2A_Ethernet2
+   neighbor 172.17.110.11 description DC1.POD1.LEAF2A_Ethernet2
    neighbor 172.17.110.15 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.15 remote-as 65112.100
-   neighbor 172.17.110.15 description DC1-POD1-LEAF2A_Ethernet12
+   neighbor 172.17.110.15 description DC1.POD1.LEAF2A_Ethernet12
    neighbor 172.17.110.19 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.19 remote-as 65112.100
    neighbor 172.17.110.19 description DC1-POD1-LEAF2B_Ethernet2

@@ -1,0 +1,26 @@
+{# Management API Models #}
+{% if management_api_models is arista.avd.defined %}
+
+## Management API Models
+
+### Management API Models Summary
+
+| Provider | Path | Disabled |
+| -------- | ---- | ------- |
+{%     if management_api_models.providers is arista.avd.defined %}
+{%         for provider in management_api_models.providers | arista.avd.natural_sort('name') %}
+{%             if provider.paths is arista.avd.defined and provider.name | lower in ['smash', 'sysdb'] %}
+{%                 for path in provider.paths | arista.avd.natural_sort('path') %}
+{%                     set disabled = path.disabled | arista.avd.default(false) %}
+| {{ provider.name }} | {{ path.path }} | {{ disabled }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+### Management API Models Configuration
+
+```eos
+{%     include 'eos/management-api-models.j2' %}
+```
+{% endif %}

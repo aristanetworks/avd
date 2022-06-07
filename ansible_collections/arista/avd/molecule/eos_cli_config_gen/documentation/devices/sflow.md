@@ -70,6 +70,20 @@ sFlow Sample Rate: 1000
 
 sFlow is enabled.
 
+sFlow is disabled on all interfaces by default.
+
+sFlow hardware acceleration is enabled.
+
+sFlow hardware accelerated Sample Rate: 1024
+
+### SFlow Hardware Accelerated Modules
+
+| Module | Acceleration Enabled |
+| ------ | -------------------- |
+| Linecard1 | True |
+| Linecard2 | True |
+| Linecard3 | False |
+
 ### SFlow Device Configuration
 
 ```eos
@@ -86,6 +100,12 @@ sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
 sflow run
+sflow interface disable default
+sflow hardware acceleration
+sflow hardware acceleration sample 1024
+sflow hardware acceleration module Linecard1
+sflow hardware acceleration module Linecard2
+no sflow hardware acceleration module Linecard3
 ```
 
 # Internal VLAN Allocation Policy

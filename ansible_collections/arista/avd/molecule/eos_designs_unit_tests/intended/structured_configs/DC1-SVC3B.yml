@@ -79,6 +79,11 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
   vrfs:
     Tenant_A_APP_Zone:
       router_id: 192.168.255.13
@@ -350,7 +355,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC DC1-SVC3B
+  location: EOS_DESIGNS_UNIT_TESTS DC1-SVC3B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -412,6 +417,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 vlans:
   4090:
     tenant: system
@@ -759,8 +765,8 @@ vlan_interfaces:
     ip_address: 10.255.251.7/31
     mtu: 1500
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC1-SVC3A_Po5
+  Port-Channel2000:
+    description: MLAG_PEER_DC1-SVC3A_Po2000
     type: switched
     shutdown: false
     vlans: 1-4094
@@ -943,7 +949,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 2000
       mode: active
     speed: 100g
   Ethernet6:
@@ -954,7 +960,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 2000
       mode: active
     speed: 100g
   Ethernet1:
@@ -1364,7 +1370,7 @@ mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092
   peer_address: 10.255.252.6
-  peer_link: Port-Channel5
+  peer_link: Port-Channel2000
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:

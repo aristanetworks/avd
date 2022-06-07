@@ -62,6 +62,7 @@ router_bgp:
       enabled: true
       window: 10
       threshold: 1
+      expiry_timeout: 3
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -154,3 +155,10 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
+      neighbor_interfaces:
+        Ethernet27:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          remote_as: 1
+        Ethernet28:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_filter: SOME_FILTER

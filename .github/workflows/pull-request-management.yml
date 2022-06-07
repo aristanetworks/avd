@@ -111,7 +111,7 @@ jobs:
           until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
       - name: check links for 404
         run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=30
+          docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -f --limit-redirections=3 --timeout=30
       - name: 'stop docker-compose stack'
         run: |
           docker-compose -f docker-compose.yml down
@@ -126,7 +126,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8, 3.9 ]
+        python_version: [ "3.8", "3.9", "3.10" ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -223,11 +223,13 @@ jobs:
       matrix:
         avd_scenario:
           - 'eos_designs_unit_tests'
+          - 'eos_designs_unit_tests_v4.0'
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'evpn_underlay_rfc5549_overlay_ebgp'
+          - 'eos_designs-mpls-isis-sr-ldp'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_ebgp_overlay_ebgp'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_ospf_overlay_ebgp'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_isis_overlay_ibgp'
@@ -294,8 +296,8 @@ jobs:
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #
-  ansible_test:
-    name: Run ansible-test validation
+  ansible_test_sanity:
+    name: Run ansible-test sanity validation
     runs-on: ubuntu-20.04
     needs: [ ]
     #needs: [ molecule_eos_designs, molecule_cloudvision ]
@@ -303,7 +305,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.8 ]
+        python_version: [ "3.8", "3.9", "3.10" ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -317,17 +319,69 @@ jobs:
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'ansible-test sanity'
+      - name: 'run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
           ansible-test sanity --color yes -v --requirements --docker --python ${{ matrix.python_version }}
 
+  ansible_test_units:
+    name: Run ansible-test units test cases
+    runs-on: ubuntu-20.04
+    needs: [ ]
+    strategy:
+      fail-fast: true
+      matrix:
+        python_version: [ "3.8", "3.9", "3.10" ]
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: 'Install Python requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+      - name: 'run ansible-test units test cases'
+        run: |
+          cd ansible_collections/arista/avd/
+          ansible-test units --requirements --docker --python ${{ matrix.python_version }} -vv
+
+  ansible_test_integration:
+    name: Run ansible-test intergration test cases
+    runs-on: ubuntu-20.04
+    needs: [ ]
+    strategy:
+      fail-fast: true
+      matrix:
+        python_version: [ "3.8", "3.9", "3.10" ]
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: 'Install Python requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+      - name: 'run ansible-test integration test cases'
+        run: |
+          cd ansible_collections/arista/avd/
+          ansible-test integration --requirements --docker --python ${{ matrix.python_version }} -vv
+  # ----------------------------------- #
+  # Galaxy Importer
+  # ----------------------------------- #
   galaxy_importer:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
     container: avdteam/base:3.8-v2.0
-    needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
@@ -343,7 +397,7 @@ jobs:
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'build ansible package'
         run: make collection-build
-      - name: 'run ansible-importer checks'
+      - name: 'run galaxy-importer checks'
         run: python -m galaxy_importer.main *.tar.gz
       - uses: actions/upload-artifact@v2
         with:

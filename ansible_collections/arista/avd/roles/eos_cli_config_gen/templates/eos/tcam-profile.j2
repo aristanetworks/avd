@@ -3,9 +3,9 @@
 !
 hardware tcam
 {%     if tcam_profile.profiles is arista.avd.defined %}
-{%         for profile in tcam_profile.profiles | arista.avd.natural_sort %}
-   profile {{ profile }}
-{{ tcam_profile.profiles[profile] }}
+{%         for profile in tcam_profile.profiles | arista.avd.convert_dicts('name','config') | arista.avd.natural_sort('name') %}
+   profile {{ profile.name }}
+{{ profile.config }}
    !
 {%         endfor %}
 {%     endif %}

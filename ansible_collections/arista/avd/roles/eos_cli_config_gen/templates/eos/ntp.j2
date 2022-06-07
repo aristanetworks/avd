@@ -11,7 +11,9 @@ ntp authentication-key {{ authentication_key.id }} {{ authentication_key.hash_al
 {%     if ntp.trusted_keys is arista.avd.defined %}
 ntp trusted-key {{ ntp.trusted_keys }}
 {%     endif %}
-{%     if ntp.authenticate is arista.avd.defined(true) %}
+{%     if ntp.authenticate_servers_only is arista.avd.defined(true) %}
+ntp authenticate servers
+{%     elif ntp.authenticate is arista.avd.defined(true) %}
 ntp authenticate
 {%     endif %}
 {%     if ntp.local_interface.name is arista.avd.defined %}

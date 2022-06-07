@@ -30,6 +30,11 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.109:12
@@ -130,6 +135,22 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 350
+    Tenant_D_OP_Zone:
+      rd: 192.168.255.109:40
+      route_targets:
+        both:
+        - '40:40'
+      redistribute_routes:
+      - learned
+      vlan: 410-412
+    Tenant_D_WAN_Zone:
+      rd: 192.168.255.109:41
+      route_targets:
+        both:
+        - '41:41'
+      redistribute_routes:
+      - learned
+      vlan: 450-452
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -159,7 +180,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC evpn_services_l2_only_true
+  location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
 local_users:
   admin:
     privilege: 15
@@ -178,6 +199,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -270,6 +292,24 @@ vlans:
   350:
     tenant: Tenant_C
     name: Tenant_C_WAN_Zone_1
+  410:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_1
+  411:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_2
+  412:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_1
+  450:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_1
+  451:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_2
+  452:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_3
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -324,3 +364,15 @@ vxlan_interface:
           vni: 30311
         350:
           vni: 30350
+        410:
+          vni: 40410
+        411:
+          vni: 40411
+        412:
+          vni: 40412
+        450:
+          vni: 40450
+        451:
+          vni: 40451
+        452:
+          vni: 40452

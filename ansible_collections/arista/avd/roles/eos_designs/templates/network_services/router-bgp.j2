@@ -1,5 +1,5 @@
 {# Add one blank line after each included template #}
-{% if switch.tenants | arista.avd.default([]) | length > 0 %}
+{% if network_services_data.tenants | arista.avd.default([]) | length > 0 %}
 router_bgp:
 {%     include 'network_services/router-bgp-vrfs-peer-groups.j2' %}
 

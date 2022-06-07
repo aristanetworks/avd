@@ -47,8 +47,11 @@ p2p_uplinks_mtu: 9000
 
 underlay_routing_protocol: BGP
 overlay_routing_protocol: BGP
+underlay_ipv6: false
 
 evpn_ebgp_multihop: 3
+evpn_ebgp_gateway_multihop: 15
+evpn_ebgp_gateway_inter_domain: true
 
 evpn_short_esi_prefix: "0000:0000:"
 
@@ -111,6 +114,11 @@ platform_settings:
     reload_delay:
       mlag: 900
       non_mlag: 1020
+  - platforms: [ '7368X4' ]
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
   - platforms: [ 'VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab' ]
     reload_delay:
       mlag: 300

@@ -30,7 +30,7 @@ network_services_keys:
 ```yaml
 # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering. | Required (when mlag leafs in topology)
 # The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1
-# Depending on the values of vrf_id / vrf_id it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.
+# Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.
 # The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
@@ -82,10 +82,9 @@ svi_profiles:
     enabled: < true | false >
     ip_virtual_router_addresses:
       - < IPv4_address/Mask | IPv4_address >
-      - < IPv4_address/Mask | IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
+    ipv6_address_virtual: < IPv6_address/Mask >
     ip_address_virtual_secondaries:
-      - < IPv4_address/Mask >
       - < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
@@ -238,14 +237,24 @@ svi_profiles:
             ip_address_virtual: < IPv4_address/Mask >
             ip_address_virtual_secondaries:
               - < IPv4_address/Mask >
-              - < IPv4_address/Mask >
+
+            # ipv6 address virtual to configure VXLAN Anycast IP address
+            # Optional
+            ipv6_address_virtual: < IPv6_address/Mask >
+            ipv6_address_virtual_secondaries:
+              - < IPv6_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
             ip_virtual_router_addresses:
               - < IPv4_address/Mask | IPv4_address >
-              - < IPv4_address/Mask | IPv4_address >
+
+            # ipv6 virtual-router address
+            # note, also requires an IPv6 address to be configured on the SVI where it is applied.
+            # Optional
+            ipv6_virtual_router_addresses:
+              - < IPv6_address/Mask | IPv6_address >
 
             # IP Helper for DHCP relay
             ip_helpers:
@@ -262,6 +271,8 @@ svi_profiles:
               < l3_leaf_inventory_hostname_1 >:
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
+                # device unique IPv6 address for node.
+                ipv6_address: < IPv6_address/Mask >
 
                 # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
                 # Overrides the setting on SVI level.
@@ -274,6 +285,7 @@ svi_profiles:
 
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
+                ipv6_address: < IPv6_address/Mask >
 
             # Defined interface MTU
             mtu: < mtu >
@@ -303,6 +315,7 @@ svi_profiles:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
 
         # List of L3 interfaces | Optional.
         # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
@@ -340,7 +353,7 @@ svi_profiles:
             enabled: < true | false >
             mtu: < mtu - should only be used for platforms supporting mtu per subinterface >
 
-        # Dictionary of static routes | Optional.
+        # Dictionary of static routes for v4 and/or v6 | Optional.
         # This will create static routes inside the tenant VRF.
         # If nodes are not specified, all l3leafs that carry the VRF will also be applied the static routes.
         # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF.
@@ -348,6 +361,16 @@ svi_profiles:
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
+            distance: < 1-255 >
+            tag: < 0-4294967295 >
+            name: < description >
+            metric: < 0-4294967295 >
+            interface: < interface >
+            nodes: [ < node_1 >, < node_2 >]
+
+        ipv6_static_routes:
+          - destination_address_prefix: < IPv6_address/Mask >
+            gateway: < IPv6_address >
             distance: < 1-255 >
             tag: < 0-4294967295 >
             name: < description >
@@ -424,7 +447,13 @@ svi_profiles:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
+            ipv6_address_virtual: < IPv6_address/Mask >
+          < 1-4096 >:
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
 
    # Define L2 network services organized by vlan id.
     l2vlans:
@@ -507,6 +536,7 @@ svi_profiles:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
+            ipv6_address_virtual: < IPv6_address/Mask >
     l2vlans:
       < 1-4096 >:
         vni_override: < 1-16777215 >
@@ -649,4 +679,26 @@ dc1_tenants:
             tags: [ wan ]
             enabled: true
             ip_address_virtual: 10.2.50.0/24
+          251:
+            name: Tenant_B_WAN_Zone_2
+            tags: [ wan ]
+            enabled: true
+            ipv6_address_virtual: 2001:db8:251::/64
+          252:
+            name: Tenant_B_WAN_Zone_3
+            tags: [ wan ]
+            enabled: true
+            ip_address_virtual: 10.2.52.0/24
+            ipv6_address_virtual: 2001:db8:252::/64
+          253:
+            name: Tenant_B_WAN_Zone_4
+            tags: [ DC1_BL1, DC1_BL2 ]
+            enabled: true
+            ipv6_virtual_router_addresses:
+              - 2001:db8:253::/64
+            nodes:
+              DC1-BL1A:
+                ip_address: 2001:db8:253::2/64
+              DC1-BL1B:
+                ip_address: 2001:db8:253::3/64
 ```

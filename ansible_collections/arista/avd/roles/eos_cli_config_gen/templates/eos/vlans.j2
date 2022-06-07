@@ -1,18 +1,18 @@
 {# eos - VLANs #}
-{% for vlan in vlans | arista.avd.natural_sort %}
+{% for vlan in vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 !
-vlan {{ vlan }}
-{%     if vlans[vlan].name is arista.avd.defined %}
-   name {{ vlans[vlan].name }}
+vlan {{ vlan.id }}
+{%     if vlan.name is arista.avd.defined %}
+   name {{ vlan.name }}
 {%     endif %}
-{%     if vlans[vlan].state is arista.avd.defined %}
-   state {{ vlans[vlan].state }}
+{%     if vlan.state is arista.avd.defined %}
+   state {{ vlan.state }}
 {%     endif %}
-{%     for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
+{%     for trunk_group in vlan.trunk_groups | arista.avd.natural_sort %}
    trunk group {{ trunk_group }}
 {%     endfor %}
-{%     if vlans[vlan].private_vlan.type is arista.avd.defined and
-          vlans[vlan].private_vlan.primary_vlan is arista.avd.defined %}
-   private-vlan {{ vlans[vlan].private_vlan.type }} primary vlan {{ vlans[vlan].private_vlan.primary_vlan }}
+{%     if vlan.private_vlan.type is arista.avd.defined and
+          vlan.private_vlan.primary_vlan is arista.avd.defined %}
+   private-vlan {{ vlan.private_vlan.type }} primary vlan {{ vlan.private_vlan.primary_vlan }}
 {%     endif %}
 {% endfor %}

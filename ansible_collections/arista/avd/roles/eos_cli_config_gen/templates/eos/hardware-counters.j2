@@ -2,10 +2,12 @@
 {% if hardware_counters.features is arista.avd.defined %}
 !
 {%     for feature in hardware_counters.features %}
-{%         for feature_name, apply_direction in feature.items() %}
-{%             if apply_direction is arista.avd.defined %}
-hardware counter feature {{ feature_name }} {{ apply_direction }}
-{%             endif %}
-{%         endfor %}
+{%         if 'name' in feature %}
+hardware counter feature {{ feature.name }} {{ feature.direction }}
+{%         else %}
+{%             for feat in feature | arista.avd.convert_dicts('name','direction') %}
+hardware counter feature {{ feat.name }} {{ feat.direction }}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 {% endif %}

@@ -16,8 +16,8 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 
 | Instance(s) | Priority |
 | -------- | -------- |
-{%         for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
-| {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].priority | arista.avd.default("-") }} |
+{%         for mst_instance in spanning_tree.mst_instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+| {{ mst_instance.id }} | {{ mst_instance.priority | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 {%     if spanning_tree.mst.configuration is arista.avd.defined %}
@@ -33,8 +33,8 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 | Revision | {{ spanning_tree.mst.configuration.revision }} |
 {%         endif %}
 {%         if spanning_tree.mst.configuration.instances is arista.avd.defined %}
-{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort %}
-| Instance {{ instance }} | VLAN(s) {{ spanning_tree.mst.configuration.instances[instance].vlans | arista.avd.default("-") }} |
+{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+| Instance {{ instance.id }} | VLAN(s) {{ instance.vlans | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -45,8 +45,8 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 | Instance(s) | Priority |
 | -------- | -------- |
 {%         if spanning_tree.rapid_pvst_instances is arista.avd.defined  %}
-{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort %}
-| {{ vlan_id }} | {{ spanning_tree.rapid_pvst_instances[vlan_id].priority | arista.avd.default("-") }} |
+{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+| {{ vlan_id.id }} | {{ vlan_id.priority | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}

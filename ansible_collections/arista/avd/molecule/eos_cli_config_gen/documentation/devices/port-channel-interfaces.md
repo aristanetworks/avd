@@ -18,6 +18,7 @@
 - [MPLS](#mpls)
   - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -103,6 +104,12 @@ interface Management1
 | Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
  *Inherited from Port-Channel Interface
 
+#### Error Correction Encoding Interfaces
+
+| Interface | Enabled |
+| --------- | ------- |
+| Ethernet11/1 | fire-code<br>reed-solomon |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -149,7 +156,9 @@ interface Ethernet10/10
    channel-group 110 mode active
 !
 interface Ethernet11/1
-   description LAG Member
+   description LAG Member with error_correction
+   error-correction encoding fire-code
+   error-correction encoding reed-solomon
    channel-group 111 mode active
 !
 interface Ethernet11/2
@@ -303,6 +312,7 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   no snmp trap link-change
    shape rate 200000 kbps
 !
 interface Port-Channel5
@@ -387,6 +397,7 @@ interface Port-Channel16
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   snmp trap link-change
    mlag 16
    spanning-tree guard none
 !
@@ -621,6 +632,14 @@ interface Port-Channel114
 | Port-Channel114 | False | False | - |
 
 # Multicast
+
+## PIM Sparse Mode
+
+### PIM Sparse Mode enabled interfaces
+
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+| Port-Channel99 | - | IPv4 | 200 | - |
 
 # Filters
 

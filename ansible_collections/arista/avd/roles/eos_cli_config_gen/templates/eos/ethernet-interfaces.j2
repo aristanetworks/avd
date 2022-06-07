@@ -1,7 +1,12 @@
 {# eos - Ethernet Interfaces #}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
-{%         if port_channel_interfaces['Port-Channel' ~ ethernet_interface.channel_group.id].lacp_fallback_mode is arista.avd.defined("individual") %}
+{%         set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
+{%         if port_channel_interfaces | arista.avd.default([]) |
+                                        arista.avd.convert_dicts('name') |
+                                        selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
+                                        selectattr('lacp_fallback_mode', 'arista.avd.defined', 'individual') |
+                                        length > 0 %}
 {%             set print_ethernet = true %}
 {%         endif %}
 {%     else %}
@@ -48,21 +53,21 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.mac_security.profile is arista.avd.defined %}
    mac security profile {{ ethernet_interface.mac_security.profile }}
 {%     endif %}
-{%     if print_ethernet is arista.avd.defined(true) %}
-{%         if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
+{%     if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
    no error-correction encoding
-{%         else %}
-{%             if ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(true) %}
+{%     else %}
+{%         if ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(true) %}
    error-correction encoding fire-code
-{%             elif ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(false) %}
+{%         elif ethernet_interface.error_correction_encoding.fire_code is arista.avd.defined(false) %}
    no error-correction encoding fire-code
-{%             endif %}
-{%             if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
-   error-correction encoding reed-solomon
-{%             elif ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
-   no error-correction encoding reed-solomon
-{%             endif %}
 {%         endif %}
+{%         if ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+   error-correction encoding reed-solomon
+{%         elif ethernet_interface.error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
+   no error-correction encoding reed-solomon
+{%         endif %}
+{%     endif %}
+{%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interface.mode is arista.avd.defined('access') or ethernet_interface.mode is arista.avd.defined('dot1q-tunnel') %}
 {%             if ethernet_interface.vlans is arista.avd.defined %}
    switchport access vlan {{ ethernet_interface.vlans }}
@@ -188,6 +193,80 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.evpn_ethernet_segment.route_target is arista.avd.defined %}
       route-target import {{ ethernet_interface.evpn_ethernet_segment.route_target }}
 {%             endif %}
+{%         endif %}
+{%         if ethernet_interface.dot1x is arista.avd.defined %}
+{%             if ethernet_interface.dot1x.pae.mode is arista.avd.defined %}
+   dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
+{%             endif %}
+{%             if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and
+                      ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+   dot1x authentication failure action traffic allow vlan {{ ethernet_interface.dot1x.authentication_failure.allow_vlan }}
+{%                 elif ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('drop') %}
+   dot1x authentication failure action traffic drop
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
+   dot1x reauthentication
+{%             endif %}
+{%             if ethernet_interface.dot1x.port_control is arista.avd.defined %}
+   dot1x port-control {{ ethernet_interface.dot1x.port_control }}
+{%             endif %}
+{%             if ethernet_interface.dot1x.port_control_force_authorized_phone is arista.avd.defined(true) %}
+   dot1x port-control force-authorized phone
+{%             elif ethernet_interface.dot1x.port_control_force_authorized_phone is arista.avd.defined(false) %}
+   no dot1x port-control force-authorized phone
+{%             endif %}
+{%             if ethernet_interface.dot1x.host_mode is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.host_mode.mode is arista.avd.defined('single-host') %}
+   dot1x host-mode single-host
+{%                 elif ethernet_interface.dot1x.host_mode.mode is arista.avd.defined('multi-host') %}
+{%                     set host_mode_cli = "dot1x host-mode multi-host" %}
+{%                     if ethernet_interface.dot1x.host_mode.multi_host_authenticated is arista.avd.defined(true) %}
+{%                         set host_mode_cli = host_mode_cli ~ " authenticated" %}
+{%                     endif %}
+   {{ host_mode_cli }}
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) %}
+{%                 if ethernet_interface.dot1x.mac_based_authentication.host_mode_common is arista.avd.defined(true) %}
+   dot1x mac based authentication host-mode common
+{%                     if ethernet_interface.dot1x.mac_based_authentication.always is arista.avd.defined(true) %}
+   dot1x mac based authentication always
+{%                     endif %}
+{%                 else %}
+{%                     set auth_cli = "dot1x mac based authentication" %}
+{%                     if ethernet_interface.dot1x.mac_based_authentication.always is arista.avd.defined(true) %}
+{%                         set auth_cli = auth_cli ~ " always" %}
+{%                     endif %}
+   {{ auth_cli }}
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.timeout is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.timeout.quiet_period is arista.avd.defined %}
+   dot1x timeout quiet-period {{ ethernet_interface.dot1x.timeout.quiet_period }}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.reauth_timeout_ignore is arista.avd.defined(true) %}
+   dot1x timeout reauth-timeout-ignore always
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.tx_period is arista.avd.defined %}
+   dot1x timeout tx-period {{ ethernet_interface.dot1x.timeout.tx_period }}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.reauth_period is arista.avd.defined %}
+   dot1x timeout reauth-period {{ ethernet_interface.dot1x.timeout.reauth_period }}
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.timeout.idle_host is arista.avd.defined %}
+   dot1x timeout idle-host {{ ethernet_interface.dot1x.timeout.idle_host }} seconds
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interface.dot1x.reauthorization_request_limit is arista.avd.defined %}
+   dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
+{%             endif %}
+{%         endif %}
+{%         if ethernet_interface.snmp_trap_link_change is arista.avd.defined(false) %}
+   no snmp trap link-change
+{%         elif ethernet_interface.snmp_trap_link_change is arista.avd.defined(true) %}
+   snmp trap link-change
 {%         endif %}
 {%         if ethernet_interface.vrf is arista.avd.defined %}
    vrf {{ ethernet_interface.vrf }}
@@ -458,6 +537,12 @@ interface {{ ethernet_interface.name }}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%         endif %}
 {%     endfor %}
+{%     if ethernet_interface.traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ ethernet_interface.traffic_policy.input }}
+{%     endif %}
+{%     if ethernet_interface.traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ ethernet_interface.traffic_policy.output }}
+{%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}
 {%     endif %}

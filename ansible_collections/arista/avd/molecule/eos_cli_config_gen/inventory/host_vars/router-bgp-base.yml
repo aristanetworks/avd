@@ -18,6 +18,24 @@ router_bgp:
   bgp:
     bestpath:
       d_path: true
+  listen_ranges:
+      # should render
+    - prefix: 10.10.10.0/24
+      peer_group: my-peer-group1
+      peer_filter: my-peer-filter
+      # shouldnt render because neither peer-filter nor as-filter are defined
+    - prefix: 11.10.10.0/24
+      peer_group: my-peer-group2
+      # should render with remote-as filter
+    - prefix: 12.10.10.0/24
+      peer_id_include_router_id: true
+      peer_group: my-peer-group3
+      remote_as: 65444
+      # should render with peer-filter because of precedence
+    - prefix: 13.10.10.0/24
+      peer_group: my-peer-group4
+      peer_filter: my-peer-filter
+      remote_as: 65444
   aggregate_addresses:
     1.1.1.0/24:
       advertise_only: true
@@ -102,6 +120,23 @@ router_bgp:
       send_community: standard
       ebgp_multihop: 2
       maximum_routes: 12000
+    192.0.3.6:
+      remote_as: 65437
+      description: test_remove_private_as
+      remove_private_as:
+        enabled: true
+      remove_private_as_ingress:
+        enabled: true
+    192.0.3.7:
+      remote_as: 65438
+      description: test_remove_private_as_all
+      remove_private_as:
+        enabled: true
+        all: true
+        replace_as: true
+      remove_private_as_ingress:
+        enabled: true
+        replace_as: true
   neighbor_interfaces:
     Ethernet2:
       peer_group: PG-FOO-v4

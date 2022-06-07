@@ -19,11 +19,20 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+    EVPN-OVERLAY-CORE:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '15'
+      send_community: all
+      maximum_routes: 0
   address_family_ipv4:
     peer_groups:
       UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
+        activate: false
+      EVPN-OVERLAY-CORE:
         activate: false
   redistribute_routes:
     connected:
@@ -61,9 +70,31 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
       remote_as: '65001'
+    192.168.255.16:
+      peer_group: EVPN-OVERLAY-CORE
+      description: DC1-BL2A
+      remote_as: '65106'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-CORE:
+        domain_remote: true
+        activate: true
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-CORE:
         activate: true
   vrfs:
     Tenant_A_WAN_Zone:
@@ -185,25 +216,43 @@ router_bgp:
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.254.14:14
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.14:14
       route_targets:
         both:
         - '65104:14'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65104:14'
       redistribute_routes:
       - learned
       vlan: 150
     Tenant_B_WAN_Zone:
       rd: 192.168.254.14:21
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.14:21
       route_targets:
         both:
         - '65104:21'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65104:21'
       redistribute_routes:
       - learned
       vlan: 250
     Tenant_C_WAN_Zone:
       rd: 192.168.254.14:31
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.14:31
       route_targets:
         both:
         - '65104:31'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65104:31'
       redistribute_routes:
       - learned
       vlan: 350
@@ -241,6 +290,14 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+event_handlers:
+  evpn-blacklist-recovery:
+    action_type: bash
+    action: FastCli -p 15 -c "clear bgp evpn host-flap"
+    delay: 300
+    asynchronous: handler.asynchronous
+    trigger: on-logging
+    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
 name_server:
   source:
     vrf: MGMT
@@ -250,7 +307,7 @@ name_server:
   - 1.1.1.1
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC DC1-BL1A
+  location: EOS_DESIGNS_UNIT_TESTS DC1-BL1A
 spanning_tree:
   root_super: true
   mode: mstp
@@ -304,6 +361,15 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+  default_services: false
+struct_cfg:
+  sflow:
+    vrfs:
+      OOB:
+        destinations:
+          192.168.200.10: None
+          10.0.200.90: None
+        source_interface: Management1
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -509,4 +575,11 @@ vxlan_interface:
           vni: 21
         Tenant_C_WAN_Zone:
           vni: 31
+sflow:
+  vrfs:
+    OOB:
+      destinations:
+        192.168.200.10: None
+        10.0.200.90: None
+      source_interface: Management1
 ntp: null

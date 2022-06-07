@@ -66,9 +66,9 @@ interface Management1
 
 ### Management API HTTP Summary
 
-| HTTP | HTTPS |
-| ---- | ----- |
-| False | True |
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| False | True | - |
 
 ### Management API VRF Access
 
@@ -145,17 +145,17 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | - | default | 9178 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | - | default | 9178 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | - | default | 9178 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | - | default | 9178 | false | - | - | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet3 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
-| Ethernet4 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet1 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet3 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
+| Ethernet4 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -164,59 +164,59 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_SITE2-LER1_Ethernet1
    no shutdown
-   speed forced 40gfull
    mtu 9178
+   speed forced 40gfull
    no switchport
    ip address 100.64.48.14/31
    ipv6 enable
-   isis enable CORE
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CUSTOM_NAME
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet3
    description P2P_LINK_TO_SITE1-LSR1_Ethernet3
    no shutdown
-   speed forced 40gfull
    mtu 9178
+   speed forced 40gfull
    no switchport
    ip address 100.64.48.9/31
    ipv6 enable
-   isis enable CORE
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CUSTOM_NAME
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet4
    description P2P_LINK_TO_SITE2-RR1_Ethernet4
    no shutdown
-   speed forced 40gfull
    mtu 9178
+   speed forced 40gfull
    no switchport
    ip address 100.64.48.12/31
    ipv6 enable
-   isis enable CORE
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CUSTOM_NAME
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 ```
 
 ## Loopback Interfaces
@@ -238,8 +238,8 @@ interface Ethernet4
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
-| Loopback0 | CORE | - | passive |
+| --------- | ------------- | ----------- | -------------- |
+| Loopback0 | CUSTOM_NAME | - | passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -250,7 +250,7 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.3/32
    ipv6 address 2000:1234:ffff:ffff::3/128
-   isis enable CORE
+   isis enable CUSTOM_NAME
    isis passive
    mpls ldp interface
    node-segment ipv4 index 303
@@ -305,7 +305,7 @@ ipv6 unicast-routing
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
@@ -320,7 +320,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Value |
 | -------- | ----- |
-| Instance | CORE |
+| Instance | CUSTOM_NAME |
 | Net-ID | 49.0001.0000.0000.0003.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast, ipv6 unicast |
@@ -335,10 +335,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-| Ethernet1 | CORE | 60 | point-to-point |
-| Ethernet3 | CORE | 60 | point-to-point |
-| Ethernet4 | CORE | 60 | point-to-point |
-| Loopback0 | CORE | - | passive |
+| Ethernet1 | CUSTOM_NAME | 60 | point-to-point |
+| Ethernet3 | CUSTOM_NAME | 60 | point-to-point |
+| Ethernet4 | CUSTOM_NAME | 60 | point-to-point |
+| Loopback0 | CUSTOM_NAME | - | passive |
 
 ### ISIS Segment-routing Node-SID
 
@@ -350,7 +350,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ```eos
 !
-router isis CORE
+router isis CUSTOM_NAME
    net 49.0001.0000.0000.0003.00
    is-type level-2
    router-id ipv4 100.70.0.3
