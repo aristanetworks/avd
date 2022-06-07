@@ -147,9 +147,6 @@
 {%                         for ipv4_neighbor in bgp_vrf.address_family_ipv4_neighbors %}
             {{ ipv4_neighbor }}:
               activate: true
-{%                             if bgp_vrf.address_family_ipv4_neighbors_peer_group[loop.index-1] is arista.avd.defined %}
-              peer_group: {{ bgp_vrf.address_family_ipv4_neighbors_peer_group [loop.index-1] }}
-{%                             endif %}
 {%                         endfor %}
 {%                     endif %}
 {%                     if bgp_vrf.address_family_ipv6_neighbors | length > 0 %}
@@ -158,9 +155,6 @@
 {%                         for ipv6_neighbor in bgp_vrf.address_family_ipv6_neighbors %}
             {{ ipv6_neighbor }}:
               activate: true
-{%                             if bgp_vrf.address_family_ipv6_neighbors_peer_group[loop.index-1] is arista.avd.defined %}
-              peer_group: {{ bgp_vrf.address_family_ipv6_neighbors_peer_group [loop.index-1] }}
-{%                             endif %}
 {%                         endfor %}
 {%                     endif %}
 {%                 endif %}
