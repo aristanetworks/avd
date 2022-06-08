@@ -25,23 +25,23 @@ Tenant_C:
           enabled: True
           ip_address_virtual: 10.3.50.1/24
       bgp_peer_groups:
-          Tenant_C_WAN_Zone_BGP_PEER_GROUP:
-            remote_as: 666
-            description: "Tenant C WAN peer group"
-            send_community: all
-            next_hop_self: true
-            maximum_routes: 1000
-            default_originate:
-              enabled: true
-              always: true
-            nodes: [ DC1-BL2B ]
-            update_source: lo0
-            bfd: false
-            ebgp_multihop: 3
-            set_ipv4_next_hop: 1.1.1.1
-            route_map_out: TEST_OUT
-            route_map_in: TEST_IN
-            local_as: 777
+        Tenant_C_WAN_Zone_BGP_PEER_GROUP:
+          remote_as: 666
+          description: "Tenant C WAN peer group"
+          send_community: all
+          next_hop_self: true
+          maximum_routes: 1000
+          default_originate:
+            enabled: true
+            always: true
+          nodes: [ DC1-BL2B ]
+          update_source: lo0
+          bfd: false
+          ebgp_multihop: 3
+          set_ipv4_next_hop: 1.1.1.1
+          route_map_out: TEST_OUT
+          route_map_in: TEST_IN
+          local_as: 777
       bgp_peers:
         1.1.1.1:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
