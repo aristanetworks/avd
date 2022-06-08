@@ -590,6 +590,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 1.1.1.1 | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Tenant_C_WAN_Zone | - | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | - | - | - |
+| BEBA::C0CA:C07A | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Tenant_C_WAN_Zone | - | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -734,7 +736,18 @@ router bgp 65107
       route-target import evpn 31:31
       route-target export evpn 31:31
       router-id 192.168.255.17
+      neighbor 1.1.1.1 peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      neighbor 1.1.1.1 description test_description
+      neighbor 1.1.1.1 route-map RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT out
+      neighbor BEBA::C0CA:C07A peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      neighbor BEBA::C0CA:C07A description test_ipv6
       redistribute connected
+      !
+      address-family ipv4
+         neighbor 1.1.1.1 activate
+      !
+      address-family ipv6
+         neighbor BEBA::C0CA:C07A activate
 ```
 
 # BFD
@@ -802,12 +815,21 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 
+#### RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set ip next-hop 1.1.1.1 |
+
 ### Route-maps Device Configuration
 
 ```eos
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT permit 10
+   set ip next-hop 1.1.1.1
 ```
 
 # ACL

@@ -138,8 +138,28 @@ router_bgp:
         export:
           evpn:
           - '31:31'
+      neighbors:
+        1.1.1.1:
+          peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+          description: test_description
+          address_families:
+            ipv4:
+              activate: true
+          route_map_out: RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
+        BEBA::C0CA:C07A:
+          peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+          description: test_ipv6
       redistribute_routes:
       - connected
+      address_families:
+        ipv4:
+          neighbors:
+            1.1.1.1:
+              activate: true
+        ipv6:
+          neighbors:
+            BEBA::C0CA:C07A:
+              activate: true
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.17:14
@@ -304,6 +324,12 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ip next-hop 1.1.1.1
 router_bfd:
   multihop:
     interval: 1200
