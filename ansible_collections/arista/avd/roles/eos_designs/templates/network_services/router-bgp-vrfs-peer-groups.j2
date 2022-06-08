@@ -2,7 +2,7 @@
   peer_groups:
 {%     for tenant in network_services_data.tenants %}
 {%         for vrf in tenant.vrfs %}
-{%             for bgp_peer_group in vrf.bgp_peer_groups %}
+{%             for bgp_peer_group in vrf.bgp_peer_groups if inventory_hostname in bgp_peer_group.nodes | arista.avd.default([]) %}
     {{ bgp_peer_group.name }}:
       {{ bgp_peer_group }}
 {%             endfor %}
