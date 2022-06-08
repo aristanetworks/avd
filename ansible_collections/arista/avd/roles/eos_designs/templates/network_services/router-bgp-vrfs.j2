@@ -14,9 +14,7 @@
 {%             endfor %}
 {%             if vrf_implement_address_families | length > 0 %}
 {%                 set bgp_vrf.address_family_ipv4_neighbors = [] %}
-{%                 set bgp_vrf.address_family_ipv4_neighbors_peer_group = [] %}
 {%                 set bgp_vrf.address_family_ipv6_neighbors = [] %}
-{%                 set bgp_vrf.address_family_ipv6_neighbors_peer_group = [] %}
 {%                 set bgp_vrf_id = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) %}
 {%                 set leaf_overlay_rt = (network_services_data.rt_admin_subfield or bgp_vrf_id) ~ ':' ~ bgp_vrf_id %}
 {%                 set route_targets = namespace(import={}, export={}) %}
