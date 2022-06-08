@@ -181,16 +181,6 @@ static_routes:
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
-hardware:
-  speed_groups:
-    1:
-      serdes: 10G
-    2:
-      serdes: 25G
-    3:
-      serdes: 25G
-    4:
-      serdes: 10G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -237,19 +227,13 @@ vrfs:
   MGMT:
     ip_routing: false
 management_interfaces:
-  Management1:
+  Management0:
     description: oob_management
     shutdown: false
     vrf: MGMT
     ip_address: 192.168.200.120/24
     gateway: 192.168.200.5
     type: oob
-tcam_profile:
-  system: vxlan-routing
-platform:
-  sand:
-    lag:
-      hardware_only: true
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -410,8 +394,6 @@ mlag_configuration:
   local_interface: Vlan4092
   peer_address: 10.255.252.18
   peer_link: Port-Channel5
-  reload_delay_mlag: 900
-  reload_delay_non_mlag: 1020
 route_maps:
   RM-MLAG-PEER-IN:
     sequence_numbers:
