@@ -272,13 +272,15 @@ port_channel_interfaces:
     description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
     type: routed
     shutdown: false
-    esi: 0000:0000:0303:0202:0101
-    rt: 03:03:02:02:01:01
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0101
+      route_target: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
   Port-Channel8.111:
     type: l2dot1q
-    esi: 0000:0000:0303:0202:0111
-    rt: 03:03:02:02:01:11
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0111
+      route_target: 03:03:02:02:01:11
     vlan_id: 111
     encapsulation_vlan:
       client:
@@ -288,8 +290,9 @@ port_channel_interfaces:
         client: true
   Port-Channel8.222:
     type: l2dot1q
-    esi: 0000:0000:0303:0202:0222
-    rt: 03:03:02:02:02:22
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0222
+      route_target: 03:03:02:02:02:22
     vlan_id: 222
     encapsulation_vlan:
       client:
@@ -299,8 +302,9 @@ port_channel_interfaces:
         client: true
   Port-Channel8.333:
     type: l2dot1q
-    esi: 0000:0000:0303:0202:0333
-    rt: 03:03:02:02:03:33
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0333
+      route_target: 03:03:02:02:03:33
     vlan_id: 434
     encapsulation_vlan:
       client:

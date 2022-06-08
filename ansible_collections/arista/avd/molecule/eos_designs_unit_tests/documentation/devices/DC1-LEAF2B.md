@@ -512,6 +512,17 @@ interface Ethernet21
 | Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:71da:d362:2084 |
 | Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel7 | 0000:0000:0808:0707:0606 | all-active | 08:08:07:07:06:06 |
+| Port-Channel9 | 0000:0000:0606:0707:0808 | all-active | 06:06:07:07:08:08 |
+| Port-Channel13 | 0000:0000:a36b:7013:457b | all-active | a3:6b:70:13:45:7b |
+| Port-Channel14 | 0000:0000:71da:d362:2084 | all-active | 71:da:d3:62:20:84 |
+
 ### Port-Channel Interfaces Device Configuration
 
 ```eos

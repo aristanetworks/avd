@@ -291,6 +291,8 @@ vlan 310
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet10 | server01_ES1_Eth2 | *access | *310 | *- | *- | 10 |
 | Ethernet12 | server03_AUTO_ESI_Eth2 | *access | *310 | *- | *- | 12 |
+| Ethernet13 | server04_AUTO_ESI_Profile_Eth2 | *access | *310 | *- | *- | 13 |
+| Ethernet14 | server05_AUTO_ESI_Profile_Override_Eth2 | *access | *310 | *- | *- | 14 |
 
 *Inherited from Port-Channel Interface
 
@@ -332,6 +334,16 @@ interface Ethernet12
    description server03_AUTO_ESI_Eth2
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet13
+   description server04_AUTO_ESI_Profile_Eth2
+   no shutdown
+   channel-group 13 mode active
+!
+interface Ethernet14
+   description server05_AUTO_ESI_Profile_Override_Eth2
+   no shutdown
+   channel-group 14 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -344,6 +356,8 @@ interface Ethernet12
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
 | Port-Channel12 | server03_AUTO_ESI_Auto-ESI PortChannel | switched | access | 310 | - | - | - | - | - | 0000:0000:fc87:ae24:2cb3 |
+| Port-Channel13 | server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile | switched | access | 310 | - | - | - | - | - | 0000:0000:29cc:4043:0a29 |
+| Port-Channel14 | server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel from profile | switched | access | 310 | - | - | - | - | - | 0000:0000:010a:010a:010a |
 
 #### Flexible Encapsulation Interfaces
 
@@ -354,12 +368,29 @@ interface Ethernet12
 | Port-Channel11.103 | - | l2dot1q | 1103 | False | 2103 | - | - | True | - | - | - |
 | Port-Channel11.104 | - | l2dot1q | 1104 | False | 2104 | - | - | True | - | - | - |
 
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel10 | 0000:0000:0001:1010:1010 | all-active | 00:01:10:10:10:10 |
+| Port-Channel11.101 | 0000:0000:0000:0000:0101 | all-active | 00:00:00:00:01:01 |
+| Port-Channel11.102 | 0000:0000:0000:0000:0102 | all-active | 00:00:00:00:01:02 |
+| Port-Channel11.103 | 0000:0000:c2c9:c85a:ed92 | all-active | c2:c9:c8:5a:ed:92 |
+| Port-Channel11.104 | 0000:0000:5c8e:1f50:9fc4 | all-active | 5c:8e:1f:50:9f:c4 |
+| Port-Channel12 | 0000:0000:fc87:ae24:2cb3 | all-active | fc:87:ae:24:2c:b3 |
+| Port-Channel13 | 0000:0000:29cc:4043:0a29 | all-active | 29:cc:40:43:0a:29 |
+| Port-Channel14 | 0000:0000:010a:010a:010a | all-active | 01:0a:01:0a:01:0a |
+
 #### Link Tracking Groups
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 | Port-Channel10 | LT_GROUP1 | downstream |
 | Port-Channel12 | LT_GROUP1 | downstream |
+| Port-Channel13 | LT_GROUP1 | downstream |
+| Port-Channel14 | LT_GROUP1 | downstream |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -422,6 +453,28 @@ interface Port-Channel12
       identifier 0000:0000:fc87:ae24:2cb3
       route-target import fc:87:ae:24:2c:b3
    lacp system-id fc87.ae24.2cb3
+   link tracking group LT_GROUP1 downstream
+!
+interface Port-Channel13
+   description server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
+   no shutdown
+   switchport
+   switchport access vlan 310
+   evpn ethernet-segment
+      identifier 0000:0000:29cc:4043:0a29
+      route-target import 29:cc:40:43:0a:29
+   lacp system-id 29cc.4043.0a29
+   link tracking group LT_GROUP1 downstream
+!
+interface Port-Channel14
+   description server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel from profile
+   no shutdown
+   switchport
+   switchport access vlan 310
+   evpn ethernet-segment
+      identifier 0000:0000:010a:010a:010a
+      route-target import 01:0a:01:0a:01:0a
+   lacp system-id 010a.010a.010a
    link tracking group LT_GROUP1 downstream
 ```
 

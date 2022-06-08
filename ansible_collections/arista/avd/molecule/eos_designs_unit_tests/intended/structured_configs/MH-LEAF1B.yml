@@ -181,6 +181,30 @@ ethernet_interfaces:
     channel_group:
       id: 12
       mode: active
+  Ethernet13:
+    peer: server04_AUTO_ESI_Profile
+    peer_interface: Eth2
+    peer_type: server
+    description: server04_AUTO_ESI_Profile_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    channel_group:
+      id: 13
+      mode: active
+  Ethernet14:
+    peer: server05_AUTO_ESI_Profile_Override
+    peer_interface: Eth2
+    peer_type: server
+    description: server05_AUTO_ESI_Profile_Override_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    channel_group:
+      id: 14
+      mode: active
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -252,8 +276,9 @@ port_channel_interfaces:
     shutdown: false
   Port-Channel11.101:
     type: l2dot1q
-    esi: 0000:0000:0000:0000:0101
-    rt: 00:00:00:00:01:01
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0000:0000:0101
+      route_target: 00:00:00:00:01:01
     vlan_id: 101
     encapsulation_vlan:
       client:
@@ -263,8 +288,9 @@ port_channel_interfaces:
         client: true
   Port-Channel11.102:
     type: l2dot1q
-    esi: 0000:0000:0000:0000:0102
-    rt: 00:00:00:00:01:02
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0000:0000:0102
+      route_target: 00:00:00:00:01:02
     vlan_id: 1102
     encapsulation_vlan:
       client:
@@ -274,8 +300,9 @@ port_channel_interfaces:
         client: true
   Port-Channel11.103:
     type: l2dot1q
-    esi: 0000:0000:c2c9:c85a:ed92
-    rt: c2:c9:c8:5a:ed:92
+    evpn_ethernet_segment:
+      identifier: 0000:0000:c2c9:c85a:ed92
+      route_target: c2:c9:c8:5a:ed:92
     vlan_id: 1103
     encapsulation_vlan:
       client:
@@ -285,8 +312,9 @@ port_channel_interfaces:
         client: true
   Port-Channel11.104:
     type: l2dot1q
-    esi: 0000:0000:5c8e:1f50:9fc4
-    rt: 5c:8e:1f:50:9f:c4
+    evpn_ethernet_segment:
+      identifier: 0000:0000:5c8e:1f50:9fc4
+      route_target: 5c:8e:1f:50:9f:c4
     vlan_id: 1104
     encapsulation_vlan:
       client:
@@ -300,8 +328,9 @@ port_channel_interfaces:
     shutdown: false
     mode: access
     vlans: 310
-    esi: 0000:0000:0001:1010:1010
-    rt: 00:01:10:10:10:10
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0001:1010:1010
+      route_target: 00:01:10:10:10:10
     lacp_id: 0001.1010.1010
     link_tracking_groups:
     - name: LT_GROUP1
@@ -312,9 +341,36 @@ port_channel_interfaces:
     shutdown: false
     mode: access
     vlans: 310
-    esi: 0000:0000:fc87:ae24:2cb3
-    rt: fc:87:ae:24:2c:b3
+    evpn_ethernet_segment:
+      identifier: 0000:0000:fc87:ae24:2cb3
+      route_target: fc:87:ae:24:2c:b3
     lacp_id: fc87.ae24.2cb3
+    link_tracking_groups:
+    - name: LT_GROUP1
+      direction: downstream
+  Port-Channel13:
+    description: server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    evpn_ethernet_segment:
+      identifier: 0000:0000:29cc:4043:0a29
+      route_target: 29:cc:40:43:0a:29
+    lacp_id: 29cc.4043.0a29
+    link_tracking_groups:
+    - name: LT_GROUP1
+      direction: downstream
+  Port-Channel14:
+    description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel from profile
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    evpn_ethernet_segment:
+      identifier: 0000:0000:010a:010a:010a
+      route_target: 01:0a:01:0a:01:0a
+    lacp_id: 010a.010a.010a
     link_tracking_groups:
     - name: LT_GROUP1
       direction: downstream
