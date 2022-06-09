@@ -54,6 +54,8 @@
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
 | EOS_DESIGNS_UNIT_TESTS | l3leaf | MH-LEAF2A | 192.168.201.106/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MLAG-OSPF-L3LEAF1A | 192.168.201.114/24 | vEOS-LAB | Provisioned |
+| EOS_DESIGNS_UNIT_TESTS | l3leaf | MLAG-OSPF-L3LEAF1B | 192.168.201.115/24 | vEOS-LAB | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -132,6 +134,7 @@
 | spine | DC1-SPINE1 | Ethernet12 | l3leaf | MH-LEAF2A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet17 | l3leaf | DC1_UNDEPLOYED_LEAF1B | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet18 | l3leaf | MLAG-OSPF-L3LEAF1B | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet16 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet2 |
@@ -149,6 +152,8 @@
 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet5 | mlag_peer | DC1_UNDEPLOYED_LEAF1B | Ethernet5 |
 | l3leaf | DC1_UNDEPLOYED_LEAF1A | Ethernet6 | mlag_peer | DC1_UNDEPLOYED_LEAF1B | Ethernet6 |
 | l2leaf | MH-L2LEAF1A | Ethernet1 | l3leaf | MH-LEAF2A | Ethernet2 |
+| l3leaf | MLAG-OSPF-L3LEAF1A | Ethernet5 | mlag_peer | MLAG-OSPF-L3LEAF1B | Ethernet5 |
+| l3leaf | MLAG-OSPF-L3LEAF1A | Ethernet6 | mlag_peer | MLAG-OSPF-L3LEAF1B | Ethernet6 |
 
 # Fabric IP Allocation
 
@@ -156,7 +161,7 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 10.10.101.0/24 | 256 | 6 | 2.35 % |
+| 10.10.101.0/24 | 256 | 8 | 3.13 % |
 | 172.31.255.0/24 | 256 | 104 | 40.63 % |
 
 ## Point-To-Point Links Node Allocation
@@ -206,6 +211,7 @@
 | DC1-SPINE1 | Ethernet12 | 10.10.101.4/31 | MH-LEAF2A | Ethernet1 | 10.10.101.5/31 |
 | DC1-SPINE1 | Ethernet16 | 172.31.255.192/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet1 | 172.31.255.193/31 |
 | DC1-SPINE1 | Ethernet17 | 172.31.255.208/31 | DC1_UNDEPLOYED_LEAF1B | Ethernet1 | 172.31.255.209/31 |
+| DC1-SPINE1 | Ethernet18 | 10.10.101.8/31 | MLAG-OSPF-L3LEAF1B | Ethernet1 | 10.10.101.9/31 |
 | DC1-SPINE2 | Ethernet4 | 172.31.255.50/31 | DC1-SVC3A | Ethernet2 | 172.31.255.51/31 |
 | DC1-SPINE2 | Ethernet5 | 172.31.255.66/31 | DC1-SVC3B | Ethernet2 | 172.31.255.67/31 |
 | DC1-SPINE2 | Ethernet16 | 172.31.255.194/31 | DC1_UNDEPLOYED_LEAF1A | Ethernet2 | 172.31.255.195/31 |
@@ -224,7 +230,7 @@
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 1.2.3.4/24 | 256 | 2 | 0.79 % |
-| 192.168.255.0/24 | 256 | 22 | 8.6 % |
+| 192.168.255.0/24 | 256 | 24 | 9.38 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -254,12 +260,14 @@
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.255.33/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1B | 192.168.255.34/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF2A | 192.168.255.35/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1A | 192.168.255.36/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1B | 192.168.255.37/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 18 | 7.04 % |
+| 192.168.254.0/24 | 256 | 20 | 7.82 % |
 
 ## VTEP Loopback Node allocation
 
@@ -283,3 +291,5 @@
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1A | 192.168.254.33/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF1B | 192.168.254.34/32 |
 | EOS_DESIGNS_UNIT_TESTS | MH-LEAF2A | 192.168.254.35/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1A | 192.168.254.36/32 |
+| EOS_DESIGNS_UNIT_TESTS | MLAG-OSPF-L3LEAF1B | 192.168.254.36/32 |

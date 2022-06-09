@@ -266,6 +266,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet15 | P2P_LINK_TO_DC1-CL1B_Ethernet1 | routed | - | 172.31.255.160/31 | default | 1500 | false | - | - |
 | Ethernet16 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet1 | routed | - | 172.31.255.192/31 | default | 1500 | true | - | - |
 | Ethernet17 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet1 | routed | - | 172.31.255.208/31 | default | 1500 | true | - | - |
+| Ethernet18 | P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1 | routed | - | 10.10.101.8/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -395,6 +396,13 @@ interface Ethernet17
    speed forced 100gfull
    no switchport
    ip address 172.31.255.208/31
+!
+interface Ethernet18
+   description P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.10.101.8/31
 ```
 
 ## Loopback Interfaces
@@ -517,6 +525,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 10.10.101.1 | 65151 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 10.10.101.3 | 65152 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 10.10.101.5 | 65153 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 10.10.101.7 | 65161 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 10.10.101.9 | 65161 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.1 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.17 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.255.33 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -546,6 +556,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 192.168.255.33 | 65151 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.34 | 65152 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.35 | 65153 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.36 | 65161 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.37 | 65161 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
 ### Router BGP EVPN Address Family
 
@@ -585,6 +597,12 @@ router bgp 65001
    neighbor 10.10.101.5 peer group UNDERLAY-PEERS
    neighbor 10.10.101.5 remote-as 65153
    neighbor 10.10.101.5 description MH-LEAF2A_Ethernet1
+   neighbor 10.10.101.7 peer group UNDERLAY-PEERS
+   neighbor 10.10.101.7 remote-as 65161
+   neighbor 10.10.101.7 description MLAG-OSPF-L3LEAF1A_Ethernet1
+   neighbor 10.10.101.9 peer group UNDERLAY-PEERS
+   neighbor 10.10.101.9 remote-as 65161
+   neighbor 10.10.101.9 description MLAG-OSPF-L3LEAF1B_Ethernet1
    neighbor 172.31.255.1 peer group UNDERLAY-PEERS
    neighbor 172.31.255.1 remote-as 65101
    neighbor 172.31.255.1 description DC1-LEAF1A_Ethernet1
@@ -672,6 +690,12 @@ router bgp 65001
    neighbor 192.168.255.35 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.35 remote-as 65153
    neighbor 192.168.255.35 description MH-LEAF2A
+   neighbor 192.168.255.36 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.36 remote-as 65161
+   neighbor 192.168.255.36 description MLAG-OSPF-L3LEAF1A
+   neighbor 192.168.255.37 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.37 remote-as 65161
+   neighbor 192.168.255.37 description MLAG-OSPF-L3LEAF1B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
