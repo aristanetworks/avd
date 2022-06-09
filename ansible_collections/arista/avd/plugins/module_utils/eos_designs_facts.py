@@ -408,6 +408,10 @@ class EosDesignsFacts:
         return get(self._switch_data_combined, "uplink_macsec")
 
     @cached_property
+    def uplink_structured_config(self):
+        return get(self._switch_data_combined, "uplink_structured_config")
+
+    @cached_property
     def short_esi(self):
         '''
         If short_esi is set to "auto" we will use sha256 to create a
@@ -965,6 +969,12 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def mlag_structured_config(self):
+        if self.mlag is True:
+            return get(self._switch_data_combined, "mlag_structured_config")
+        return None
+
+    @cached_property
     def mlag_role(self):
         if self.mlag is True:
             index = list(self._switch_data_node_group_nodes.keys()).index(self.hostname)
@@ -1128,6 +1138,9 @@ class EosDesignsFacts:
                     for lt_group in self.link_tracking_groups:
                         uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
 
+                if self.uplink_structured_config is not None:
+                    uplink['structured_config'] = self.uplink_structured_config
+
                 uplinks.append(uplink)
             return uplinks
 
@@ -1201,6 +1214,9 @@ class EosDesignsFacts:
                     uplink['link_tracking_groups'] = []
                     for lt_group in self.link_tracking_groups:
                         uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+
+                if self.uplink_structured_config is not None:
+                    uplink['structured_config'] = self.uplink_structured_config
 
                 uplinks.append(uplink)
         return uplinks
