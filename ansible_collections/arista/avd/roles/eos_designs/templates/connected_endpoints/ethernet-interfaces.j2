@@ -69,7 +69,7 @@ ethernet_interfaces:
         algorithm: modulus
 {%                             elif adapter_settings.ethernet_segment.designated_forwarder_preferences is arista.avd.defined('auto') or
                                     adapter_settings.ethernet_segment.designated_forwarder_preferences is not arista.avd.defined %}
-{%                                     set auto_preferences = range(((adapter_settings.switches | length) * 100) - 100, 0, -100) %}
+{%                                 set auto_preferences = range(((adapter_settings.switches | length) * 100) - 100, 0, -100) %}
         algorithm: preference
         preference_value: {{ auto_preferences[adapter_settings.switches.index(inventory_hostname)] | arista.avd.default("0") }}
 {%                             else %}
