@@ -157,6 +157,70 @@ servers:
           redundancy: single-active
           designated_forwarder_preferences: [500, 250]
 
+  server11_Single_Active_Port_Channel_Manual_DF_Preempt:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overriden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_preferences: [100, 0]
+
+  server12_Single_Active_Ethernet_Manual_DF_Preempt:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_preferences: [500, 250]
+
+  # This should not configure preempt becauase algorithm is modulus
+  server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet22, Ethernet22 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overriden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_preferences: modulus
+
+  # This should not configure preempt becauase algorithm is modulus
+  server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet23, Ethernet23 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_preferences: modulus
+
 routers:
   ROUTER01:
     rack: RackB
