@@ -317,6 +317,9 @@ router bgp 65101
       redistribute static
       !
       address-family ipv4
+         bgp additional-paths install
+         bgp additional-paths receive
+         bgp additional-paths send ecmp
          neighbor TEST_PEER_GRP activate
          neighbor TEST_PEER_GRP next-hop address-family ipv6 originate
          neighbor 10.2.3.4 activate
