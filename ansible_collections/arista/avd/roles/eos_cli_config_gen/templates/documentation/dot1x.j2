@@ -31,7 +31,7 @@
 {%             set pae_mode = ethernet_interface.dot1x.pae.mode | arista.avd.default('-') %}
 {%             set auth_failure_action = ethernet_interface.dot1x.authentication_failure.action | arista.avd.default('-') %}
 {%             if auth_failure_action == 'allow' and
-              ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+                  ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
 {%                 set auth_failure_action = auth_failure_action ~ " vlan " ~ ethernet_interface.dot1x.authentication_failure.allow_vlan %}
 {%             endif %}
 {%             set state = ethernet_interface.dot1x.port_control | arista.avd.default('-') %}
