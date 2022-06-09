@@ -235,6 +235,10 @@ l3leaf,MH-LEAF1A,Ethernet16,server,server07_Single_Active_Port_Channel_Manual_DF
 l3leaf,MH-LEAF1A,Ethernet17,server,server08_Single_Active_Ethernet,Eth1,True
 l3leaf,MH-LEAF1A,Ethernet18,server,server09_All_Active_Ethernet,Eth1,True
 l3leaf,MH-LEAF1A,Ethernet19,server,server10_Single_Active_Ethernet_Manual_DF,Eth1,True
+l3leaf,MH-LEAF1A,Ethernet20,server,server11_Single_Active_Port_Channel_Manual_DF_Preempt,Eth1,True
+l3leaf,MH-LEAF1A,Ethernet21,server,server12_Single_Active_Ethernet_Manual_DF_Preempt,Eth1,True
+l3leaf,MH-LEAF1A,Ethernet22,server,server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus,Eth1,True
+l3leaf,MH-LEAF1A,Ethernet23,server,server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus,Eth1,True
 l3leaf,MH-LEAF1B,Ethernet1,spine,DC1-SPINE1,Ethernet11,True
 l3leaf,MH-LEAF1B,Ethernet10,server,server01_ES1,Eth2,True
 l3leaf,MH-LEAF1B,Ethernet11,router,ROUTER02_WITH_SUBIF,Eth2,True
@@ -246,6 +250,10 @@ l3leaf,MH-LEAF1B,Ethernet16,server,server07_Single_Active_Port_Channel_Manual_DF
 l3leaf,MH-LEAF1B,Ethernet17,server,server08_Single_Active_Ethernet,Eth2,True
 l3leaf,MH-LEAF1B,Ethernet18,server,server09_All_Active_Ethernet,Eth2,True
 l3leaf,MH-LEAF1B,Ethernet19,server,server10_Single_Active_Ethernet_Manual_DF,Eth2,True
+l3leaf,MH-LEAF1B,Ethernet20,server,server11_Single_Active_Port_Channel_Manual_DF_Preempt,Eth2,True
+l3leaf,MH-LEAF1B,Ethernet21,server,server12_Single_Active_Ethernet_Manual_DF_Preempt,Eth2,True
+l3leaf,MH-LEAF1B,Ethernet22,server,server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus,Eth2,True
+l3leaf,MH-LEAF1B,Ethernet23,server,server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus,Eth2,True
 l3leaf,MH-LEAF2A,Ethernet1,spine,DC1-SPINE1,Ethernet12,True
 l3leaf,MH-LEAF2A,Ethernet2,l2leaf,MH-L2LEAF1A,Ethernet1,True
 l3leaf,MH-LEAF2A,Ethernet10,router,ROUTER01,Eth1,True

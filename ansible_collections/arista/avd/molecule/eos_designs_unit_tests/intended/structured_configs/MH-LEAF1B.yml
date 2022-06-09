@@ -276,6 +276,62 @@ ethernet_interfaces:
     shutdown: false
     mode: trunk
     vlans: 310
+  Ethernet20:
+    peer: server11_Single_Active_Port_Channel_Manual_DF_Preempt
+    peer_interface: Eth2
+    peer_type: server
+    description: server11_Single_Active_Port_Channel_Manual_DF_Preempt_Eth2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    channel_group:
+      id: 20
+      mode: active
+  Ethernet21:
+    peer: server12_Single_Active_Ethernet_Manual_DF_Preempt
+    peer_interface: Eth2
+    peer_type: server
+    description: server12_Single_Active_Ethernet_Manual_DF_Preempt_Eth2
+    evpn_ethernet_segment:
+      identifier: 0000:0000:5d0b:68d3:6ff9
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 250
+        dont_preempt: true
+      route_target: 5d:0b:68:d3:6f:f9
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+  Ethernet22:
+    peer: server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus
+    peer_interface: Eth2
+    peer_type: server
+    description: server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus_Eth2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    channel_group:
+      id: 22
+      mode: active
+  Ethernet23:
+    peer: server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus
+    peer_interface: Eth2
+    peer_type: server
+    description: server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus_Eth2
+    evpn_ethernet_segment:
+      identifier: 0000:0000:262b:7df9:c98b
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: modulus
+      route_target: 26:2b:7d:f9:c9:8b
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -473,3 +529,31 @@ port_channel_interfaces:
         preference_value: 0
       route_target: ec:11:73:f8:73:61
     lacp_id: ec11.73f8.7361
+  Port-Channel20:
+    description: server11_Single_Active_Port_Channel_Manual_DF_Preempt_Single-Active ESI with Manual DF
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    evpn_ethernet_segment:
+      identifier: 0000:0000:47cb:834e:c0c7
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 0
+        dont_preempt: true
+      route_target: 47:cb:83:4e:c0:c7
+    lacp_id: 47cb.834e.c0c7
+  Port-Channel22:
+    description: server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus_Single-Active ESI with Manual DF
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 310
+    evpn_ethernet_segment:
+      identifier: 0000:0000:d716:1795:361e
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: modulus
+      route_target: d7:16:17:95:36:1e
+    lacp_id: d716.1795.361e
