@@ -227,6 +227,8 @@ port_profiles:
           # If omitted, Port-Channels use the EOS default of modulus
           # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above
           designated_forwarder_preferences: < auto | modulus | [ <df preference for each switch> ] >
+          # Disable preemption for single-active forwarding when auto/manual DF preference is configured | optional
+          dont_preempt: < true | false >
 
       # Example of port-channel adapter
       - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
