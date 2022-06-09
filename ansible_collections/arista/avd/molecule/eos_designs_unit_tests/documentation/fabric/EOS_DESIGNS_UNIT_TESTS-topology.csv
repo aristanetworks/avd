@@ -115,6 +115,7 @@ spine,DC1-SPINE1,Ethernet14,l3leaf,DC1-CL1A,Ethernet1,True
 spine,DC1-SPINE1,Ethernet15,l3leaf,DC1-CL1B,Ethernet1,True
 spine,DC1-SPINE1,Ethernet16,l3leaf,DC1_UNDEPLOYED_LEAF1A,Ethernet1,False
 spine,DC1-SPINE1,Ethernet17,l3leaf,DC1_UNDEPLOYED_LEAF1B,Ethernet1,False
+spine,DC1-SPINE1,Ethernet18,l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet1,True
 spine,DC1-SPINE2,Ethernet1,l3leaf,DC1-LEAF1A,Ethernet2,True
 spine,DC1-SPINE2,Ethernet2,l3leaf,DC1-LEAF2A,Ethernet2,True
 spine,DC1-SPINE2,Ethernet3,l3leaf,DC1-LEAF2B,Ethernet2,True
@@ -238,3 +239,9 @@ l3leaf,MH-LEAF1B,Ethernet14,server,server05_AUTO_ESI_Profile_Override,Eth2,True
 l3leaf,MH-LEAF2A,Ethernet1,spine,DC1-SPINE1,Ethernet12,True
 l3leaf,MH-LEAF2A,Ethernet2,l2leaf,MH-L2LEAF1A,Ethernet1,True
 l3leaf,MH-LEAF2A,Ethernet10,router,ROUTER01,Eth1,True
+l3leaf,MLAG-OSPF-L3LEAF1A,Ethernet1,spine,DC1-SPINE1,Ethernet18,True
+l3leaf,MLAG-OSPF-L3LEAF1A,Ethernet5,mlag_peer,MLAG-OSPF-L3LEAF1B,Ethernet5,True
+l3leaf,MLAG-OSPF-L3LEAF1A,Ethernet6,mlag_peer,MLAG-OSPF-L3LEAF1B,Ethernet6,True
+l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet1,spine,DC1-SPINE1,Ethernet18,True
+l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet5,mlag_peer,MLAG-OSPF-L3LEAF1A,Ethernet5,True
+l3leaf,MLAG-OSPF-L3LEAF1B,Ethernet6,mlag_peer,MLAG-OSPF-L3LEAF1A,Ethernet6,True
