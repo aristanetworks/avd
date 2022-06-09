@@ -228,6 +228,8 @@ interface Ethernet1
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 !
 interface Ethernet2
    description P2P_LINK_TO_SITE1-LER2_Ethernet2
@@ -247,6 +249,8 @@ interface Ethernet2
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1500
+
 !
 interface Ethernet3
    no shutdown

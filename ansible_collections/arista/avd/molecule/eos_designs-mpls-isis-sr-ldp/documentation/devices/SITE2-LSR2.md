@@ -183,6 +183,8 @@ interface Ethernet3
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 !
 interface Ethernet12
    description P2P_LINK_TO_SITE2-LER1_Port-Channel11
@@ -237,6 +239,8 @@ interface Port-Channel12
    no isis hello padding
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1600
+
 ```
 
 ## Loopback Interfaces

@@ -176,6 +176,8 @@ interface Ethernet4
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 ```
 
 ## Loopback Interfaces
