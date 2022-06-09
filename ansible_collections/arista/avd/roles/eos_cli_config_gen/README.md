@@ -29,6 +29,8 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
+    - [Endpoint Security](#endpoint-security)
+      - [802.1x Authentication](#802.1x-authentication)
     - [Router BFD](#router-bfd)
     - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
@@ -468,6 +470,17 @@ aaa_server_groups:
     type: < tacacs+ | radius | ladp >
     servers:
       - server: < host1_ip_address >
+```
+
+### Endpoint Security
+
+#### Global 802.1x Authentication
+
+```yaml
+dot1x:
+  system_auth_control: < true | false >
+  protocol_lldp_bypass: < true | false >
+  dynamic_authorization: < true | false >
 ```
 
 #### Enable Password

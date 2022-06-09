@@ -1,0 +1,6 @@
+---
+### 802.1x Global ###
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  dynamic_authorization: true
