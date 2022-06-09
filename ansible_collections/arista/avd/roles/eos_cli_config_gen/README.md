@@ -1593,7 +1593,7 @@ vxlan_interface:
         interval: < integer >
         min_rx: < integer >
         multiplier: < 3-50 >
-        prefix_list: < prefix-list >
+        prefix_list: < prefix_list >
       qos:
         # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
         # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.

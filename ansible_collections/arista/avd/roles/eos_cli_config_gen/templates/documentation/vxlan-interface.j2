@@ -34,16 +34,16 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn is arista.avd.defined %}
 {%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval is arista.avd.defined %}
-| Transmission rate set for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval }}ms |
+| Remote VTEPs EVPN BFD transmission rate | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.interval }}ms |
 {%         endif %}
 {%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx is arista.avd.defined %}
-| Expected minimum incoming rate set for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx }}ms |
+| Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.min_rx }}ms |
 {%         endif %}
 {%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier is arista.avd.defined %}
-| Multiplier set for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier }} |
+| Remote VTEPs EVPN BFD multiplier | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.multiplier }} |
 {%         endif %}
 {%         if vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list is arista.avd.defined %}
-| Prefix-list reference for remote VTEPs EVPN BFD configuration | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list }} |
+| Remote VTEPs EVPN BFD prefix-list | {{ vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn.prefix_list }} |
 {%         endif %}
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}

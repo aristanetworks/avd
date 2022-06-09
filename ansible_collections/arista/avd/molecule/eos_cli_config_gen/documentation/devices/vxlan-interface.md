@@ -74,10 +74,10 @@ interface Management1
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
 | Qos map dscp to traffic-class decapsulation | Enabled |
-| Transmission rate set for remote VTEPs EVPN BFD configuration | 300ms |
-| Expected minimum incoming rate set for remote VTEPs EVPN BFD configuration | 300ms |
-| Multiplier set for remote VTEPs EVPN BFD configuration | 3 |
-| Prefix-list reference for remote VTEPs EVPN BFD configuration | PL-TEST |
+| Remote VTEPs EVPN BFD transmission rate | 300ms |
+| Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
+| Remote VTEPs EVPN BFD multiplier | 3 |
+| Remote VTEPs EVPN BFD prefix-list | PL-TEST |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
