@@ -61,6 +61,39 @@ underlay_ospf_area: < ospf_area | default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | default -> 12000 >
 underlay_ospf_bfd_enable: < true | false | default -> false >
 
+ospf_router_id_source_interface:
+ospf_auto_cost_reference_bandwidth: < number | default -> 10 >
+ospf_bfd_enable: < true | false | default -> underlay_ospf_bfd_enable >
+ospf_maximum_paths: < number | default -> 16 >
+ospf_log_adjacency_changes_detail: <true | false | default -> false >
++# Optionals not implemented. max-lsa lsa_num [WARNING] [IGNORE_TIME][IGNORE_COUNT][RESET]
+ospf_max_lsa: 0
+ospf_timers:
+  lsa:
+    rx_min_interval: < number | default -> 1000 >
+    tx_delay:
+      initial: < number | default -> 1000 >
+      min: < number | default -> 5000 >
+      max: < number | default -> 5000 >
+  spf_delay:
+    tx_delay:
+    tx_delay:
+      initial: < number | default -> 1000 >
+      min: < number | default -> 5000 >
+      max: < number | default -> 5000 >
+  spf_delay:
+    initial:
+ospf_max_metric:
+  router_lsa:
+    external_lsa:
+      override_metric: < number 1-16777215 >git diff
+      include_stub: < true | false >
+      on_startup: < 'wait-for-bgp' | Integer 5-86400 >
+      summary_lsa:
+        override_metric: < number 1-16777215 >
+ospf_bfd_adjacency_state_any: <true | false | defaule -> false >
+ospf_mpls_ldp_sync_default: < true | false |default ->false >
+
 # Underlay ISIS | Required when < underlay_routing_protocol > == ISIS variants
 isis_area_id: < isis area | default -> "49.0001" >
 

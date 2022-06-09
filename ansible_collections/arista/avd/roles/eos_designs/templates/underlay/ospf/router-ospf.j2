@@ -1,8 +1,14 @@
 router_ospf:
   process_ids:
     {{ underlay_ospf_process_id }}:
-      passive_interface_default: true
+{%     if ospf_log_adjacency_changes_detail is arista.avd.defined(true) %}
+      log_adjacency_changes_detail: true
+{%     endif %}
+
+{%     if  switch.router_id is arista.avd.defined %}
       router_id: {{ switch.router_id }}
+{%     endif %}
+      passive_interface_default: true
       no_passive_interfaces:
 {% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
 {# L3 P2P interfaces #}
@@ -10,10 +16,69 @@ router_ospf:
         - {{ link.interface }}
 {%     endif %}
 {% endfor %}
+{%     if ospf_timers.lsa.rx_min_interval is arista.avd.defined
+          or  ospf_timers.lsa.tx_delay is arista.avd.defined%}
+      timers:
+{%         if ospf_timers.lsa.rx_min_interval is arista.avd.defined %}
+        lsa:
+{%             if ospf_timers.lsa.rx_min_interval is arista.avd.defined %}
+          rx_min_interval: {{ ospf_timers.lsa.rx_min_interval }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{%     if ospf_timers.lsa.tx_delay.initial is arista.avd.defined
+          and ospf_timers.lsa.tx_delay.min is arista.avd.defined
+          and ospf_timers.lsa.tx_delay.max is arista.avd.defined %}
+          tx_delay:
+            initial: {{ ospf_timers.lsa.tx_delay.initial }}
+            min: {{ ospf_timers.lsa.tx_delay.min }}
+            max: {{ ospf_timers.lsa.tx_delay.max }}
+{%     endif %}
+{%     if ospf_timers.spf_delay.initial is arista.avd.defined
+          and ospf_timers.spf_delay.min is arista.avd.defined
+          and ospf_timers.spf_delay.max is arista.avd.defined %}
+        spf_delay:
+          initial: {{ ospf_timers.spf_delay.initial }}
+          min: {{ ospf_timers.spf_delay.min }}
+          max: {{ ospf_timers.spf_delay.max }}
+{%     endif %}
+{%     if ospf_auto_cost_reference_bandwidth is arista.avd.defined %}
+      auto_cost_reference_bandwidth: {{ ospf_auto_cost_reference_bandwidth }}
+{%     endif %}
+{%     if ospf_maximum_paths is arista.avd.defined %}
+      maximum_paths: {{ ospf_maximum_paths }}
+{%     endif %}
+{%     if ospf_max_metric is defined %}
+      max_metric:
+{%         if ospf_max_metric.router_lsa is defined %}
+        router_lsa:
+{%             if ospf_max_metric.router_lsa.external_lsa is defined %}
+          external_lsa:
+{%                 if ospf_max_metric.router_lsa.external_lsa.override_metric is arista.avd.defined %}
+            override_metric: {{ ospf_max_metric.router_lsa.external_lsa.override_metric }}
+{%                 endif %}
+{%             endif %}
+{%             if ospf_max_metric.router_lsa.include_stub is arista.avd.defined(true) %}
+            include_stub: {{ ospf_max_metric.router_lsa.include_stub }}
+{%             endif %}
+{%         endif %}
+{%         if ospf_max_metric.router_lsa.on_startup is arista.avd.defined %}
+          on_startup: {{ ospf_max_metric.router_lsa.on_startup }}
+{%         endif %}
+{%         if ospf_max_metric.router_lsa.summary_lsa is defined %}
+          summary_lsa: true
+{%         endif %}
+{%         if ospf_max_metric.router_lsa.summary_lsa.override_metric is arista.avd.defined %}
+            override_metric: {{ ospf_max_metric.router_lsa.summary_lsa.override_metric }}
+{%         endif %}
+{%     endif %}
+{%     if ospf_mpls_ldp_sync_default is arista.avd.defined(true) %}
+      mpls_ldp_sync_default: true
+{%     endif %}
 {% if switch.mlag_l3 is arista.avd.defined(true) %}
         - Vlan{{ switch.mlag_peer_l3_vlan }}
 {% endif %}
 {% if underlay_ospf_bfd_enable is arista.avd.defined(true) %}
       bfd_enable: true
 {% endif %}
-      max_lsa: {{ underlay_ospf_max_lsa }}
+      max_lsa: {{ ospf_max_lsa | arista.avd.default(underlay_ospf_max_lsa) }}
