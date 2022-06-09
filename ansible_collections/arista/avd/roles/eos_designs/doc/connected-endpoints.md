@@ -207,24 +207,24 @@ port_profiles:
                 enabled: < true | false >
                 size: < bytes >
 
-        # Settings for all- or single-active EVPN multihomng
+        # Settings for all- or single-active EVPN multihoming
         ethernet_segment:
 
           # Define a manual short-esi (be careful using this on profiles) or auto-generate an ESI | required
           # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
           short_esi: < 0000:0000:0000 | auto >
 
-          # Configure this Ethernet Segment for all-acitve or single-active forwarding | optional
+          # Configure this Ethernet Segment for all-active or single-active forwarding | optional
           # If omitted, Port-Channels use the EOS default of all-active
           # If omitted, Ethernet interfaces are configured as single-active
           redundancy: < all-active | single-active >
 
           # Configure DF algorithm and preferences | optional
-          #  - auto: Use preference-based algorithm and assign preference based on position in 'switches' list
-          #          e.g. a list of three switches, would assign a preference of 200 to the first switch, 100 to the 2nd and 0 to the third
+          #  - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list
+          #          e.g. assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd and 0 to the third
           #  - modulus: Use the default modulus-based algorithm
           #  - Alternatively a list of preferences can be provided - [500, 250] for example which will be mapped according the 'switches' list
-          # If omitted, Port-Channels use the EOS default af modulus
+          # If omitted, Port-Channels use the EOS default of modulus
           # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above
           designated_forwarder_preferences: < auto | modulus | [ <df preference for each switch> ] >
 
