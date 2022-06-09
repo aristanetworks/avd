@@ -234,6 +234,8 @@ mlag configuration
    local-interface Vlan4092
    peer-address 10.255.252.18
    peer-link Port-Channel5
+   reload-delay mlag 1200
+   reload-delay non-mlag 1320
 ```
 
 # Spanning Tree
