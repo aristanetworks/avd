@@ -1068,7 +1068,7 @@ ethernet_interfaces:
     mtu: < mtu >
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
-    native_vlan: <native vlan number>
+    native_vlan: < native_vlan_number | tag >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     phone:
       trunk: < tagged | untagged >
@@ -1293,7 +1293,7 @@ port_channel_interfaces:
         client: < true | false >
     vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
-    native_vlan: < native vlan number >
+    native_vlan: < native_vlan_number | tag >
     snmp_trap_link_change: < true | false >
     link_tracking_groups:
       - name: < group_name >
