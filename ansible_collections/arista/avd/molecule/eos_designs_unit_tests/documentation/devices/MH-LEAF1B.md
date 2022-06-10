@@ -298,10 +298,10 @@ vlan 310
 | Ethernet17 |  server08_Single_Active_Ethernet_Eth2 | trunk | 310 | - | - | - |
 | Ethernet18 |  server09_All_Active_Ethernet_Eth2 | trunk | 310 | - | - | - |
 | Ethernet19 |  server10_Single_Active_Ethernet_Manual_DF_Eth2 | trunk | 310 | - | - | - |
-| Ethernet20 | server11_Single_Active_Port_Channel_Manual_DF_Preempt_Eth2 | *trunk | *310 | *- | *- | 20 |
-| Ethernet21 |  server12_Single_Active_Ethernet_Manual_DF_Preempt_Eth2 | trunk | 310 | - | - | - |
-| Ethernet22 | server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus_Eth2 | *trunk | *310 | *- | *- | 22 |
-| Ethernet23 |  server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus_Eth2 | trunk | 310 | - | - | - |
+| Ethernet20 | server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth2 | *trunk | *310 | *- | *- | 20 |
+| Ethernet21 |  server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2 | trunk | 310 | - | - | - |
+| Ethernet22 | server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth2 | *trunk | *310 | *- | *- | 22 |
+| Ethernet23 |  server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2 | trunk | 310 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -423,12 +423,12 @@ interface Ethernet19
       route-target import 88:5b:86:cc:8b:ac
 !
 interface Ethernet20
-   description server11_Single_Active_Port_Channel_Manual_DF_Preempt_Eth2
+   description server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth2
    no shutdown
    channel-group 20 mode active
 !
 interface Ethernet21
-   description server12_Single_Active_Ethernet_Manual_DF_Preempt_Eth2
+   description server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
    no shutdown
    switchport trunk allowed vlan 310
    switchport mode trunk
@@ -440,12 +440,12 @@ interface Ethernet21
       route-target import 5d:0b:68:d3:6f:f9
 !
 interface Ethernet22
-   description server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus_Eth2
+   description server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth2
    no shutdown
    channel-group 22 mode active
 !
 interface Ethernet23
-   description server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus_Eth2
+   description server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
    no shutdown
    switchport trunk allowed vlan 310
    switchport mode trunk
@@ -471,8 +471,8 @@ interface Ethernet23
 | Port-Channel14 | server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server | switched | access | 310 | - | - | - | - | - | 0000:0000:010a:010a:010a |
 | Port-Channel15 | server06_Single_Active_Port_Channel_Single-Active ESI | switched | trunk | 310 | - | - | - | - | - | 0000:0000:2873:c14b:64ec |
 | Port-Channel16 | server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:ec11:73f8:7361 |
-| Port-Channel20 | server11_Single_Active_Port_Channel_Manual_DF_Preempt_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:47cb:834e:c0c7 |
-| Port-Channel22 | server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:d716:1795:361e |
+| Port-Channel20 | server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:47cb:834e:c0c7 |
+| Port-Channel22 | server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:d716:1795:361e |
 
 #### Flexible Encapsulation Interfaces
 
@@ -507,7 +507,7 @@ interface Ethernet23
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
 | Port-Channel15 | preference | 0 | False | - | - | False |
-| Port-Channel16 | preference | 0 | False | - | - | False |
+| Port-Channel16 | preference | 200 | False | - | - | False |
 | Port-Channel20 | preference | 0 | True | - | - | False |
 | Port-Channel22 | modulus | - | False | - | - | False |
 
@@ -627,12 +627,12 @@ interface Port-Channel16
    evpn ethernet-segment
       identifier 0000:0000:ec11:73f8:7361
       redundancy single-active
-      designated-forwarder election algorithm preference 0
+      designated-forwarder election algorithm preference 200
       route-target import ec:11:73:f8:73:61
    lacp system-id ec11.73f8.7361
 !
 interface Port-Channel20
-   description server11_Single_Active_Port_Channel_Manual_DF_Preempt_Single-Active ESI with Manual DF
+   description server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF
    no shutdown
    switchport
    switchport trunk allowed vlan 310
@@ -645,7 +645,7 @@ interface Port-Channel20
    lacp system-id 47cb.834e.c0c7
 !
 interface Port-Channel22
-   description server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus_Single-Active ESI with Manual DF
+   description server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF
    no shutdown
    switchport
    switchport trunk allowed vlan 310

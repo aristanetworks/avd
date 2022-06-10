@@ -29,7 +29,7 @@ port_profiles:
     ethernet_segment:
       short_esi: auto
       redundancy: single-active
-      designated_forwarder_preferences: auto
+      designated_forwarder_algorithm: auto
 
   Tenant_X_Trunk_Auto_Eth:
     parent_profile: Tenant_X_Trunk
@@ -209,7 +209,7 @@ servers:
           short_esi: auto
           redundancy: single-active
           dont_preempt: true
-          designated_forwarder_preferences: modulus
+          designated_forwarder_algorithm: modulus
 
   # This should not configure preempt becauase algorithm is modulus
   server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus:
@@ -223,7 +223,7 @@ servers:
           short_esi: auto
           redundancy: single-active
           dont_preempt: true
-          designated_forwarder_preferences: modulus
+          designated_forwarder_algorithm: modulus
 
 routers:
   ROUTER01:

@@ -73,6 +73,7 @@ ethernet_interfaces:
 {%                                 endif %}
 {%                             elif adapter_settings.ethernet_segment.designated_forwarder_algorithm is arista.avd.defined('preference') and
                                     adapter_settings.ethernet_segment.designated_forwarder_preferences is arista.avd.defined(var_type='list') %}
+        algorithm: preference
         preference_value: {{ adapter_settings.ethernet_segment.designated_forwarder_preferences[adapter_settings.switches.index(inventory_hostname)] | arista.avd.default('0') }}
 {%                                 if adapter_settings.ethernet_segment.dont_preempt is arista.avd.defined(true) %}
         dont_preempt: true
