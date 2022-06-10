@@ -224,7 +224,7 @@ port_profiles:
           # Configure DF algorithm and preferences | optional
           #  - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list
           #          e.g. assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd and 0 to the third
-          #  - preference: Set preference for each switch manualy using designated_forwarder_preferences key
+          #  - preference: Set preference for each switch manually using designated_forwarder_preferences key
           #  - modulus: Use the default modulus-based algorithm
           # If omitted, Port-Channels use the EOS default of modulus
           # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above
