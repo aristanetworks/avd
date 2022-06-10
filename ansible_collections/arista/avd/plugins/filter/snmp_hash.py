@@ -126,26 +126,3 @@ class FilterModule(object):
         return {
             "hash_passphrase": self.hash_passphrase,
         }
-
-
-if __name__ == "__main__":
-    pa = "testauth"
-    pp = "testpriv"
-    auth = "sha"
-    engineID = "424242424242424242"
-    priv = "aes"
-    try:
-        print(key_from_passphrase(pa, "toto"))
-    except Exception as e:
-        print(e)
-    auth = ["md5", "sha", "sha256", "sha384", "sha512"]
-    for a in auth:
-        print(key_from_passphrase(pa, a))
-        print(localize_passphrase(pa, a, engineID, None))
-    priv = ["des", "aes", "aes192", "aes256"]
-    for p in priv:
-        print(localize_passphrase(pp, "sha512", engineID, p))
-    try:
-        print(localize_passphrase(pp, "md5", engineID, "toto"))
-    except Exception as e:
-        print(e)
