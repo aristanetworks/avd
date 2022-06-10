@@ -319,6 +319,7 @@ class EosDesignsFacts:
         switch_data = {}
         hostname = self.hostname
         node_type_config = get(self._hostvars, f"{self.node_type_key}", required=True)
+        node_config = None
 
         if hostname in node_type_config.get('nodes', {}):
             node_config = node_type_config['nodes'][hostname]
