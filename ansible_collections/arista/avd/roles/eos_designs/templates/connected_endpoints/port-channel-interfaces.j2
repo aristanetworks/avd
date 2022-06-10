@@ -49,7 +49,10 @@ port_channel_interfaces:
     l2_mtu: {{ adapter_settings.l2_mtu }}
 {%                             endif %}
     vlans: {{ adapter_settings.vlans | arista.avd.default }}
-{%                             if adapter_settings.native_vlan is arista.avd.defined %}
+{%                             if adapter_settings.native_vlan_tag is arista.avd.defined %}
+    native_vlan_tag: adapter_settings.native_vlan_tag
+{%                             endif %}
+{%                             if adapter_settings.native_vlan is arista.avd.defined(fail_action='warning', var_type='int') %}
     native_vlan: {{ adapter_settings.native_vlan }}
 {%                             endif %}
 {%                             if adapter_settings.spanning_tree_portfast is arista.avd.defined %}

@@ -74,10 +74,16 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
 {%         if ethernet_interface.mode is arista.avd.defined('trunk') %}
-{%             if ethernet_interface.native_vlan is arista.avd.defined %}
+{%             if ethernet_interface.native_vlan_tag is arista.avd.defined(true) %}
+   switchport trunk native vlan tag
+{# next is a way of checking the type is int only if the value is defined #}
+{# not doing the two checks would lead to false warnings when the value is undefined #}
+{%             elif ethernet_interface.native_vlan is arista.avd.defined and
+                    ethernet_interface.native_vlan is arista.avd.defined(fail_action='warning', var_type='int', var_name='native_vlan') %}
    switchport trunk native vlan {{ ethernet_interface.native_vlan }}
 {%             endif %}
 {%         endif %}
+{# TODO - understand what trunk phone is  and if it can have tag for native_vlan #}
 {%         if ethernet_interface.mode is arista.avd.defined("trunk phone") and ethernet_interface.native_vlan %}
    switchport trunk native vlan {{ ethernet_interface.native_vlan }}
 {%         endif %}

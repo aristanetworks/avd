@@ -531,3 +531,14 @@ ethernet_interfaces:
         reauth_timeout_ignore: true
         tx_period: 10
       reauthorization_request_limit: 2
+
+  Ethernet46:
+    description: native-vlan-tag-precedence
+    native_vlan_tag: true
+    native_vlan: 100
+    mode: trunk
+
+  Ethernet47:
+    description: native-vlan-warning
+    native_vlan: tag
+    mode: trunk
