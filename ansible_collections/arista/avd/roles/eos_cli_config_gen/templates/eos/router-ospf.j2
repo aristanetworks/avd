@@ -37,7 +37,7 @@ router ospf {{ process_id.id }}
 {%     if process_id.bfd_enable is arista.avd.defined(true) %}
    bfd default
 {%     endif %}
-{%     if process_id.bfd_adjacency_state_any is arista.avd.defined and process_id.bfd_adjacency_state_any %}
+{%     if process_id.bfd_adjacency_state_any is arista.avd.defined(true) %}
    bfd adjacency state any
 {%     endif %}
 {%     for area in process_id.areas | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
