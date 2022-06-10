@@ -9,8 +9,8 @@ l2leaf:
       id: 102
 
 snmp_settings:
-  contact: Bobby
-  location: ACME
+  contact: example@example.com
+  location: true
   auto_compute_local_engineid: true
   compute_v3_user_localized_key: true
   users:

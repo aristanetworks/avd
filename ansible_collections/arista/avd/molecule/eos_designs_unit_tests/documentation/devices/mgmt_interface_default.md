@@ -189,7 +189,7 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| Bobby | - | All | Disabled |
+| example@example.com | EOS_DESIGNS_UNIT_TESTS mgmt_interface_default | All | Disabled |
 
 ### SNMP Users Configuration
 
@@ -204,7 +204,8 @@ daemon TerminAttr
 
 ```eos
 !
-snmp-server contact Bobby
+snmp-server contact example@example.com
+snmp-server location EOS_DESIGNS_UNIT_TESTS mgmt_interface_default
 snmp-server user usertest-auth-priv usergroup v3 localized 9bcf6c0f329158bf35cac04fdb34f9d238e56497 auth sha 06049cbfe1b2b278cb54c146a92ccc16d7baad8e priv aes192 f58469295ec858e90f9ae24e847a66cf904c84ac1577e4d8
 snmp-server user usertest-auth-no-priv usergroup v3 localized 9bcf6c0f329158bf35cac04fdb34f9d238e56497 auth sha512 73018cb477dc10e09c853263883c7fe5c91d9e9b9b3f2a45b699b50d0a213b53d2842e927d85a4f427135cd03ac2c16a663640d191f10e9410e42308a88b816e
 snmp-server user usertest-no-auth-no-priv usergroup v3
