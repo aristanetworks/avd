@@ -969,9 +969,21 @@ class EosDesignsFacts:
         return None
 
     @cached_property
-    def mlag_structured_config(self):
+    def mlag_port_channel_structured_config(self):
         if self.mlag is True:
-            return get(self._switch_data_combined, "mlag_structured_config")
+            return get(self._switch_data_combined, "mlag_port_channel_structured_config")
+        return None
+
+    @cached_property
+    def mlag_peer_vlan_structured_config(self):
+        if self.mlag is True:
+            return get(self._switch_data_combined, "mlag_peer_vlan_structured_config")
+        return None
+
+    @cached_property
+    def mlag_peer_l3_vlan_structured_config(self):
+        if self.mlag is True:
+            return get(self._switch_data_combined, "mlag_peer_l3_vlan_structured_config")
         return None
 
     @cached_property

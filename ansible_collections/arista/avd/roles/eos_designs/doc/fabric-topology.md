@@ -383,7 +383,7 @@ defaults <- node_group <- node_group.node <- node
     # IP is derived from the node id.
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
 
-    # MLAG Peer Link (control link) SVI interface id
+    # MLAG Peer Link (control link) SVI interface id.
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
     # MLAG Peer Link allowed VLANs
@@ -393,10 +393,20 @@ defaults <- node_group <- node_group.node <- node
     # IP is derived from the node id.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 
-    # Custom structured config applied to mlag port-channel interface
-    # Added under port_channel_interfaces.<interface> for eos_cli_config_gen
+    # Custom structured config applied to MLAG peer link port-channel id.
+    # Added under port_channel_interfaces.<interface> for eos_cli_config_gen.
     # Overrides the settings on the port-channel interface level.
-    mlag_structured_config: < dictionary >
+    mlag_port_channel_structured_config: < dictionary >
+
+    # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+    # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the vlan interface level.
+    mlag_peer_vlan_structured_config: < dictionary >
+
+    # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+    # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the vlan interface level.
+    mlag_peer_l3_vlan_structured_config: < dictionary >
 
     # Spanning tree mode | Required.
     spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
