@@ -121,7 +121,8 @@ servers:
         ethernet_segment:
           short_esi: auto
           redundancy: single-active
-          designated_forwarder_preferences: [100, 0]
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [250, 200]
 
   server08_Single_Active_Ethernet:
     rack: RackA
@@ -143,7 +144,7 @@ servers:
         ethernet_segment:
           short_esi: 00dd:00dd:00dd
           redundancy: all-active
-          designated_forwarder_preferences: modulus
+          designated_forwarder_algorithm: modulus
 
   server10_Single_Active_Ethernet_Manual_DF:
     rack: RackA
@@ -155,9 +156,10 @@ servers:
         ethernet_segment:
           short_esi: auto
           redundancy: single-active
+          designated_forwarder_algorithm: preference
           designated_forwarder_preferences: [500, 250]
 
-  server11_Single_Active_Port_Channel_Manual_DF_Preempt:
+  server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt:
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -173,9 +175,10 @@ servers:
           short_esi: auto
           redundancy: single-active
           dont_preempt: true
+          designated_forwarder_algorithm: preference
           designated_forwarder_preferences: [100, 0]
 
-  server12_Single_Active_Ethernet_Manual_DF_Preempt:
+  server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt:
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -186,10 +189,11 @@ servers:
           short_esi: auto
           redundancy: single-active
           dont_preempt: true
+          designated_forwarder_algorithm: preference
           designated_forwarder_preferences: [500, 250]
 
   # This should not configure preempt becauase algorithm is modulus
-  server13_Single_Active_Port_Channel_Manual_DF_Preempt_modulus:
+  server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus:
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -208,7 +212,7 @@ servers:
           designated_forwarder_preferences: modulus
 
   # This should not configure preempt becauase algorithm is modulus
-  server14_Single_Active_Ethernet_Manual_DF_Preempt_modulus:
+  server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus:
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]

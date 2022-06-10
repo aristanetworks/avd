@@ -89,7 +89,9 @@ port_profiles:
     ethernet_segment:
       short_esi: < 0000:0000:0000 | auto >
       redundancy: < all-active | single-active >
-      designated_forwarder_preferences: < auto | modulus | [ <df preference for each switch> ] >
+      designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
+      designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
+      dont_preempt: < true | false >
 
 # Dictionary key of connected endpoint as defined in connected_endpoints_keys
 # This should be applied to group_vars or host_vars where endpoints are connecting.
@@ -222,11 +224,13 @@ port_profiles:
           # Configure DF algorithm and preferences | optional
           #  - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list
           #          e.g. assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd and 0 to the third
+          #  - preference: Set preference for each switch manualy using designated_forwarder_preferences key
           #  - modulus: Use the default modulus-based algorithm
-          #  - Alternatively a list of preferences can be provided - [500, 250] for example which will be mapped according the 'switches' list
           # If omitted, Port-Channels use the EOS default of modulus
           # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above
-          designated_forwarder_preferences: < auto | modulus | [ <df preference for each switch> ] >
+          designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
+          # manual preference as described above | required only for preference algorithm
+          designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
           # Disable preemption for single-active forwarding when auto/manual DF preference is configured | optional
           dont_preempt: < true | false >
 
