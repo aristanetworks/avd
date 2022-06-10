@@ -28,7 +28,7 @@ snmp_server:
 {%         for user in snmp_settings.users %}
     - name: {{ user.name }}
       group: {{ user.group }}
-      version: {{user.version }}
+      version: {{ user.version }}
 {%             if user.version is arista.avd.defined("v3")
                  and snmp_settings.auto_compute_local_engineid is arista.avd.defined(true)
                  and snmp_settings.compute_v3_user_localized_key is arista.avd.defined(true) %}
@@ -40,7 +40,7 @@ snmp_server:
       auth: {{ user.auth }}
 {%                 if snmp_settings.auto_compute_local_engineid is arista.avd.defined(true)
                       and snmp_settings.compute_v3_user_localized_key is arista.avd.defined(true) %}
-{%                 set hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id} %}
+{%                     set hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id} %}
       auth_passphrase: {{ hash_filter | hash_passphrase }}
 {%                 else %}
       auth_passphrase: {{ user.auth_passphrase }}
@@ -50,7 +50,7 @@ snmp_server:
       priv: {{ user.priv }}
 {%                     if snmp_settings.auto_compute_local_engineid is arista.avd.defined(true)
                          and snmp_settings.compute_v3_user_localized_key is arista.avd.defined(true) %}
-{%                     do hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv}) %}
+{%                         do hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv}) %}
       priv_passphrase: {{ hash_filter | hash_passphrase }}
 {%                     else %}
       priv_passphrase: {{ user.priv_passphrase }}
