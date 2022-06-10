@@ -13,7 +13,7 @@ PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 
 def get_hash_object(auth_type: str) -> hashlib._hashlib.HASH:
     """
-    :param auth_type: a string in [md5|sha|sha192|sha256|sha384|sha512]
+    :param auth_type: a string in [md5|sha|sha224|sha256|sha384|sha512]
 
     :return: an instance of hashlib._hashlib.HASH corresponding to the
              auth_type
@@ -35,7 +35,7 @@ def key_from_passphrase(passphrase: str, auth_type: str) -> str:
     https://www.rfc-editor.org/rfc/rfc2574.html#appendix-A2
 
     :param passphrase: the passphrase to use to generate the key
-    :param auth_type: a string in [md5|sha|sha192|sha256|sha384|sha512]
+    :param auth_type: a string in [md5|sha|sha224|sha256|sha384|sha512]
 
     :return: the key generated from the passphrase using auth_type as per
              the algorithm described in the RFC.
@@ -69,7 +69,7 @@ def localize_passphrase(
     :param passphrase: the passphrase to localize, if priv_type is None
                        it is the auth passphrase else it is the priv
                        passphrase
-    :param auth_type: a string in [md5|sha|sha192|sha256|sha384|sha512]
+    :param auth_type: a string in [md5|sha|sha224|sha256|sha384|sha512]
     :param engine_id: an hexadecimal string containing the engine_id to be
                       used to localize the key
     :param auth_type: an optional argument indicating the priv algorithm

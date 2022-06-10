@@ -50,6 +50,12 @@ class TestSNMPHashFilter:
             ),
             (
                 "testauth",
+                "sha224",
+                "b4cdc03923d5fa37bb20ca665bf2e971b9d7521c3cc311a7d29bfed2",
+                does_not_raise(),
+            ),
+            (
+                "testauth",
                 "sha256",
                 "bd7b6e2a86527e0b93b65ad3d67d1fc870a420c49d53b4d652364d81e954f704",
                 does_not_raise(),
@@ -90,6 +96,14 @@ class TestSNMPHashFilter:
                 "424242424242424242",
                 None,
                 "14c3e7d55a9d67b7341e0dafba817bd33d3eb2e4",
+                does_not_raise(),
+            ),
+            (
+                "testauth",
+                "sha224",
+                "424242424242424242",
+                None,
+                "b74ddba450a2b8a2b7f1823df22b4a1efa984071c5afcefadd72cc3f",
                 does_not_raise(),
             ),
             (
