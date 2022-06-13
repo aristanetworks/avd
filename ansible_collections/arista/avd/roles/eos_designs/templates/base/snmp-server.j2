@@ -2,7 +2,7 @@
 snmp_server:
 {% if snmp_settings is arista.avd.defined %}
 {%     if snmp_settings.compute_local_engineid is arista.avd.defined(true) %}
-{%         set local_engine_id = (inventory_hostname ~ switch.mgmt_ip) | hash('sha1') %}
+{%         set local_engine_id = (inventory_hostname ~ switch.mgmt_ip) | ansible.builtin.hash('sha1') %}
     engineid:
       local: {{ local_engine_id }}
 {%     endif %}
