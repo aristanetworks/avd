@@ -190,10 +190,14 @@ defaults <- node_group <- node_group.node <- node
     # IPv4 subnet to use to connect to uplink switches.
     uplink_ipv4_pool: < IPv4_address/Mask  >
 
-    # Local uplink interfaces (list). | Required.
+    # Local uplink interfaces (list). | Optional
+    # If uplink_interfaces is not defined, platform-specific defaults will be used instead.
+    # Please note that these defaults are not defined in default_platform_settings - you should define these yourself.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
     # Uplink switches (list). | Required.
+    # If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times
+    # e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ]
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
     # Maximum number of uplink switches. | Optional
@@ -202,6 +206,8 @@ defaults <- node_group <- node_group.node <- node
     max_uplink_switches: < integer >
 
     # Number of parallel links towards uplink switches | Optional
+    # Changing this value may change interface naming on uplinks (and corresponding downlinks)
+    # Can be used to reserve interfaces for future parallel uplinks
     max_parallel_uplinks: < integer >
 
     # Enable PTP on uplink links | Optional
@@ -227,7 +233,9 @@ defaults <- node_group <- node_group.node <- node
   node_groups:
     < node-group-name >:
       nodes:
-        # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+        # Uplink switches interfaces (list), interface located on uplink switch. | Optional
+        # If uplink_switch_interfaces is not defined, platform-specific defaults will be used instead.
+        # Please note that these defaults are not defined in default_platform_settings - you should define these yourself.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
         # short_esi only valid for l2leaf devices using port-channel uplink
         # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
@@ -369,7 +377,9 @@ defaults <- node_group <- node_group.node <- node
     # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
     mlag_ibgp_origin_incomplete: < true | false | default -> true >
 
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+    # MLAG interfaces (list) | Optional, even when MLAG leafs present in topology.
+    # If mlag_interfaces is not defined, platform-specific defaults will be used instead.
+    # Please note that these defaults are not defined in default_platform_settings - you should define these yourself.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined

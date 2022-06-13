@@ -313,46 +313,14 @@ vlan 452
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
+| Ethernet27 | P2P_LINK_TO_DC1-SPINE1_Ethernet1/1 | routed | - | 172.31.254.1/31 | default | 1500 | false | - | - |
+| Ethernet28 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/1/1 | routed | - | 172.31.254.3/31 | default | 1500 | false | - | - |
+| Ethernet29 | P2P_LINK_TO_DC1-SPINE3_Ethernet1/1/1 | routed | - | 172.31.254.5/31 | default | 1500 | false | - | - |
+| Ethernet30 | P2P_LINK_TO_DC1-SPINE4_Ethernet1/1 | routed | - | 172.31.254.7/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet1
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.1/31
-!
-interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet1
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.3/31
-!
-interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet1
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.5/31
-!
-interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet1
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.7/31
 !
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
@@ -361,10 +329,6 @@ interface Ethernet6
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    switchport
-   storm-control all level 10
-   storm-control broadcast level pps 100
-   storm-control multicast level 1
-   storm-control unknown-unicast level 2
    spanning-tree portfast
 !
 interface Ethernet7
@@ -373,6 +337,38 @@ interface Ethernet7
    switchport access vlan 110
    switchport mode access
    switchport
+!
+interface Ethernet27
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet1/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.1/31
+!
+interface Ethernet28
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/1/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.3/31
+!
+interface Ethernet29
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet1/1/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.5/31
+!
+interface Ethernet30
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet1/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.7/31
 ```
 
 ## Loopback Interfaces
@@ -674,10 +670,10 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 172.31.255.0 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.2 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.4 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.6 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.0 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.2 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.4 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.6 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -733,18 +729,18 @@ router bgp 65101
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.31.255.0 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.0 remote-as 65001
-   neighbor 172.31.255.0 description DC1-SPINE1_Ethernet1
-   neighbor 172.31.255.2 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.2 remote-as 65001
-   neighbor 172.31.255.2 description DC1-SPINE2_Ethernet1
-   neighbor 172.31.255.4 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.4 remote-as 65001
-   neighbor 172.31.255.4 description DC1-SPINE3_Ethernet1
-   neighbor 172.31.255.6 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.6 remote-as 65001
-   neighbor 172.31.255.6 description DC1-SPINE4_Ethernet1
+   neighbor 172.31.254.0 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.0 remote-as 65001
+   neighbor 172.31.254.0 description DC1-SPINE1_Ethernet1/1
+   neighbor 172.31.254.2 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.2 remote-as 65001
+   neighbor 172.31.254.2 description DC1-SPINE2_Ethernet1/1/1
+   neighbor 172.31.254.4 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.4 remote-as 65001
+   neighbor 172.31.254.4 description DC1-SPINE3_Ethernet1/1/1
+   neighbor 172.31.254.6 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.6 remote-as 65001
+   neighbor 172.31.254.6 description DC1-SPINE4_Ethernet1/1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

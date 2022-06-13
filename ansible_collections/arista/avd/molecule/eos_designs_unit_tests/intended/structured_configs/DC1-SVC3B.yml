@@ -40,22 +40,22 @@ router_bgp:
     10.255.251.6:
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
-    172.31.255.64:
+    172.31.254.128:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE1_Ethernet5
-    172.31.255.66:
+      description: DC1-SPINE1_Ethernet9/1
+    172.31.254.130:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE2_Ethernet5
-    172.31.255.68:
+      description: DC1-SPINE2_Ethernet1/9/1
+    172.31.254.132:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE3_Ethernet5
-    172.31.255.70:
+      description: DC1-SPINE3_Ethernet1/9/1
+    172.31.254.134:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE4_Ethernet5
+      description: DC1-SPINE4_Ethernet9/1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -928,68 +928,28 @@ port_channel_interfaces:
     vlans: 110
     mlag: 42
 ethernet_interfaces:
-  Ethernet5:
+  Ethernet53/1:
     peer: DC1-SVC3A
-    peer_interface: Ethernet5
+    peer_interface: Ethernet53/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet5
+    description: MLAG_PEER_DC1-SVC3A_Ethernet53/1
     type: switched
     shutdown: false
     channel_group:
       id: 2000
       mode: active
     speed: 100g
-  Ethernet6:
+  Ethernet54/1:
     peer: DC1-SVC3A
-    peer_interface: Ethernet6
+    peer_interface: Ethernet54/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet6
+    description: MLAG_PEER_DC1-SVC3A_Ethernet54/1
     type: switched
     shutdown: false
     channel_group:
       id: 2000
       mode: active
     speed: 100g
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.65/31
-  Ethernet2:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.67/31
-  Ethernet3:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.69/31
-  Ethernet4:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.71/31
   Ethernet7:
     peer: DC1-L2LEAF2A
     peer_interface: Ethernet2
@@ -1010,6 +970,46 @@ ethernet_interfaces:
     channel_group:
       id: 7
       mode: active
+  Ethernet49/1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet9/1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet9/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.129/31
+  Ethernet50/1:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/9/1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/9/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.131/31
+  Ethernet51/1:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/9/1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/9/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.133/31
+  Ethernet52/1:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet9/1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet9/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.135/31
   Ethernet11:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth2

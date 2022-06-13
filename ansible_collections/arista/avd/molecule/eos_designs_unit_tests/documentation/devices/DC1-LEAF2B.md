@@ -386,8 +386,8 @@ vlan 452
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
 | Ethernet13 | DC1-L2LEAF4A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 13 |
-| Ethernet14 | DC1-L2LEAF5A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 14 |
-| Ethernet15 | DC1-L2LEAF5B_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 14 |
+| Ethernet14/1 | DC1-L2LEAF5A_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 141 |
+| Ethernet15/1 | DC1-L2LEAF5B_Ethernet2 | *trunk | *110-112,120-121,130-131,160-161 | *- | *- | 141 |
 | Ethernet20 | FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
 | Ethernet21 |  ROUTER01_Eth1 | access | 110 | - | - | - |
 
@@ -397,47 +397,19 @@ vlan 452
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | 172.31.255.33/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | 172.31.255.35/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | 172.31.255.37/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | 172.31.255.39/31 | default | 1500 | false | - | - |
 | Ethernet24 | - | routed | - | 10.0.0.5/30 | Tenant_OSPF | - | false | - | - |
+| Ethernet49/1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5/1 | routed | - | 172.31.254.65/31 | default | 1500 | false | - | - |
+| Ethernet50/1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6/1 | routed | - | 172.31.254.67/31 | default | 1500 | false | - | - |
+| Ethernet51/1 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1 | routed | - | 172.31.254.69/31 | default | 1500 | false | - | - |
+| Ethernet52/1 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1 | routed | - | 172.31.254.71/31 | default | 1500 | false | - | - |
+| Ethernet53/1 | P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1 | routed | - | 172.31.254.73/31 | default | 1500 | false | - | - |
+| Ethernet54/1 | P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1 | routed | - | 172.31.254.75/31 | default | 1500 | false | - | - |
+| Ethernet55/1 | P2P_LINK_TO_DC1-SPINE4_Ethernet5/1 | routed | - | 172.31.254.77/31 | default | 1500 | false | - | - |
+| Ethernet56/1 | P2P_LINK_TO_DC1-SPINE4_Ethernet6/1 | routed | - | 172.31.254.79/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet3
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.33/31
-!
-interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet3
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.35/31
-!
-interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet3
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.37/31
-!
-interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet3
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.39/31
 !
 interface Ethernet7
    description DC1-L2LEAF1A_Ethernet2
@@ -474,15 +446,15 @@ interface Ethernet13
    no shutdown
    channel-group 13 mode active
 !
-interface Ethernet14
+interface Ethernet14/1
    description DC1-L2LEAF5A_Ethernet2
    no shutdown
-   channel-group 14 mode active
+   channel-group 141 mode active
 !
-interface Ethernet15
+interface Ethernet15/1
    description DC1-L2LEAF5B_Ethernet2
    no shutdown
-   channel-group 14 mode active
+   channel-group 141 mode active
 !
 interface Ethernet20
    description FIREWALL01_E1
@@ -503,6 +475,70 @@ interface Ethernet24
    ip address 10.0.0.5/30
    ip ospf network point-to-point
    ip ospf area 0
+!
+interface Ethernet49/1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet5/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.65/31
+!
+interface Ethernet50/1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.67/31
+!
+interface Ethernet51/1
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.69/31
+!
+interface Ethernet52/1
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.71/31
+!
+interface Ethernet53/1
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.73/31
+!
+interface Ethernet54/1
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.75/31
+!
+interface Ethernet55/1
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.77/31
+!
+interface Ethernet56/1
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.79/31
 ```
 
 ## Port-Channel Interfaces
@@ -519,8 +555,8 @@ interface Ethernet24
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel13 | DC1-L2LEAF4A_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:a36b:7013:457b |
-| Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:71da:d362:2084 |
 | Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
+| Port-Channel141 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:fa91:ce62:ce95 |
 
 #### EVPN Multihoming
 
@@ -531,7 +567,7 @@ interface Ethernet24
 | Port-Channel7 | 0000:0000:0808:0707:0606 | all-active | 08:08:07:07:06:06 |
 | Port-Channel9 | 0000:0000:0606:0707:0808 | all-active | 06:06:07:07:08:08 |
 | Port-Channel13 | 0000:0000:a36b:7013:457b | all-active | a3:6b:70:13:45:7b |
-| Port-Channel14 | 0000:0000:71da:d362:2084 | all-active | 71:da:d3:62:20:84 |
+| Port-Channel141 | 0000:0000:fa91:ce62:ce95 | all-active | fa:91:ce:62:ce:95 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -596,23 +632,23 @@ interface Port-Channel13
       route-target import a3:6b:70:13:45:7b
    lacp system-id a36b.7013.457b
 !
-interface Port-Channel14
-   description DC1_L2LEAF5_Po1
-   no shutdown
-   switchport
-   switchport trunk allowed vlan 110-112,120-121,130-131,160-161
-   switchport mode trunk
-   evpn ethernet-segment
-      identifier 0000:0000:71da:d362:2084
-      route-target import 71:da:d3:62:20:84
-   lacp system-id 71da.d362.2084
-!
 interface Port-Channel20
    description FIREWALL01_PortChanne1
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+!
+interface Port-Channel141
+   description DC1_L2LEAF5_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-112,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:fa91:ce62:ce95
+      route-target import fa:91:ce:62:ce:95
+   lacp system-id fa91.ce62.ce95
 ```
 
 ## Loopback Interfaces
@@ -1122,10 +1158,14 @@ router ospf 30 vrf Tenant_OSPF
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 172.31.255.32 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.34 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.36 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.38 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.64 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.66 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.68 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.70 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.72 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.74 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.76 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.78 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -1194,18 +1234,30 @@ router bgp 65102
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.31.255.32 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.32 remote-as 65001
-   neighbor 172.31.255.32 description DC1-SPINE1_Ethernet3
-   neighbor 172.31.255.34 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.34 remote-as 65001
-   neighbor 172.31.255.34 description DC1-SPINE2_Ethernet3
-   neighbor 172.31.255.36 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.36 remote-as 65001
-   neighbor 172.31.255.36 description DC1-SPINE3_Ethernet3
-   neighbor 172.31.255.38 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.38 remote-as 65001
-   neighbor 172.31.255.38 description DC1-SPINE4_Ethernet3
+   neighbor 172.31.254.64 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.64 remote-as 65001
+   neighbor 172.31.254.64 description DC1-SPINE1_Ethernet5/1
+   neighbor 172.31.254.66 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.66 remote-as 65001
+   neighbor 172.31.254.66 description DC1-SPINE1_Ethernet6/1
+   neighbor 172.31.254.68 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.68 remote-as 65001
+   neighbor 172.31.254.68 description DC1-SPINE2_Ethernet1/5/1
+   neighbor 172.31.254.70 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.70 remote-as 65001
+   neighbor 172.31.254.70 description DC1-SPINE2_Ethernet1/6/1
+   neighbor 172.31.254.72 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.72 remote-as 65001
+   neighbor 172.31.254.72 description DC1-SPINE3_Ethernet1/5/1
+   neighbor 172.31.254.74 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.74 remote-as 65001
+   neighbor 172.31.254.74 description DC1-SPINE3_Ethernet1/6/1
+   neighbor 172.31.254.76 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.76 remote-as 65001
+   neighbor 172.31.254.76 description DC1-SPINE4_Ethernet5/1
+   neighbor 172.31.254.78 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.78 remote-as 65001
+   neighbor 172.31.254.78 description DC1-SPINE4_Ethernet6/1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

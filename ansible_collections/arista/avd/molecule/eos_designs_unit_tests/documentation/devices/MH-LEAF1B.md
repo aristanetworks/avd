@@ -315,7 +315,7 @@ vlan 310
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet11 | routed | - | 10.10.101.3/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet20 | routed | - | 10.10.101.3/31 | default | 1500 | false | - | - |
 
 #### EVPN Multihoming
 
@@ -344,7 +344,7 @@ vlan 310
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet11
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet20
    no shutdown
    mtu 1500
    no switchport
@@ -910,7 +910,7 @@ router bgp 65152
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.10.101.2 peer group UNDERLAY-PEERS
    neighbor 10.10.101.2 remote-as 65001
-   neighbor 10.10.101.2 description DC1-SPINE1_Ethernet11
+   neighbor 10.10.101.2 description DC1-SPINE1_Ethernet20
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

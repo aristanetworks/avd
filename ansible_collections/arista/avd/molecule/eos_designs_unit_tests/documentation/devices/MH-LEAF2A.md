@@ -309,14 +309,14 @@ vlan 311
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet12 | routed | - | 10.10.101.5/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet21 | routed | - | 10.10.101.5/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet12
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet21
    no shutdown
    mtu 1500
    no switchport
@@ -625,7 +625,7 @@ router bgp 65153
    neighbor UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
    neighbor 10.10.101.4 peer group UNDERLAY-PEERS
    neighbor 10.10.101.4 remote-as 65001
-   neighbor 10.10.101.4 description DC1-SPINE1_Ethernet12
+   neighbor 10.10.101.4 description DC1-SPINE1_Ethernet21
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

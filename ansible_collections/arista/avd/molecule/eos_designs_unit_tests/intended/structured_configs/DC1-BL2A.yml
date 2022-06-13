@@ -49,22 +49,22 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.31.255.112:
+    172.31.254.224:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE1_Ethernet8
-    172.31.255.114:
+      description: DC1-SPINE1_Ethernet24
+    172.31.254.226:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE2_Ethernet8
-    172.31.255.116:
+      description: DC1-SPINE2_Ethernet24
+    172.31.254.228:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE3_Ethernet8
-    172.31.255.118:
+      description: DC1-SPINE3_Ethernet24
+    172.31.254.230:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE4_Ethernet8
+      description: DC1-SPINE4_Ethernet24
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -247,7 +247,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: MGMT
-    ip_address: 192.168.200.117/24
+    ip_address: 192.168.200.123/24
     gateway: 192.168.200.5
     type: oob
 tcam_profile:
@@ -264,44 +264,44 @@ management_api_http:
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
-    peer_interface: Ethernet8
+    peer_interface: Ethernet24
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet8
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet24
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.113/31
+    ip_address: 172.31.254.225/31
   Ethernet2:
     peer: DC1-SPINE2
-    peer_interface: Ethernet8
+    peer_interface: Ethernet24
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet8
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet24
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.115/31
+    ip_address: 172.31.254.227/31
   Ethernet3:
     peer: DC1-SPINE3
-    peer_interface: Ethernet8
+    peer_interface: Ethernet24
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet8
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet24
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.117/31
+    ip_address: 172.31.254.229/31
   Ethernet4:
     peer: DC1-SPINE4
-    peer_interface: Ethernet8
+    peer_interface: Ethernet24
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet8
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet24
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.119/31
+    ip_address: 172.31.254.231/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
