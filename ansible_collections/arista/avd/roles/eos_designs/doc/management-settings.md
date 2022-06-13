@@ -75,12 +75,12 @@ snmp_settings:
   # Generate a local engineId for SNMP by hashing via SHA1 the string
   # generated via the concatenation of the hostname plus the management IP.
   # {{ inventory_hostname }} + {{ switch.mgmt_ip }}
-  auto_compute_local_engineid: < boolean | default -> false >
-  # Requires auto_compute_local_engineid to be `true`
-  # if enabled, the SNMPv3 passphrases for auth and priv are transfromed
-  # using RFC 2574, matching the value they would take in EOS cli
-  # the algorithm requires a local engineId which is unknown to AVD
-  # hence the necessity to generate one beforehand.
+  compute_local_engineid: < boolean | default -> false >
+  # Requires compute_local_engineid to be `true` if enabled, the SNMPv3
+  # passphrases for auth and priv are transfromed using RFC 2574,
+  # matching the value they would take in EOS cli the algorithm requires
+  # a local engineId which is unknown to AVD hence the necessity to generate
+  # one beforehand.
   compute_v3_localized_key: < boolean | default -> false >
   users:
     - name: < username >

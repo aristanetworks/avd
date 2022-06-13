@@ -107,22 +107,23 @@ def localize_passphrase(
     return localized_key
 
 
+def hash_passphrase(input_dict):
+    try:
+        passphrase = input_dict["passphrase"]
+        auth_type = input_dict["auth"]
+        engine_id = input_dict["engine_id"]
+    except KeyError as exc:
+        raise AnsibleFilterError() from exc
+    try:
+        priv_type = input_dict["priv"]
+    except KeyError:
+        priv_type = None
+
+    return localize_passphrase(passphrase, auth_type, engine_id, priv_type)
+
+
 class FilterModule(object):
-    def hash_passphrase(self, input_dict):
-        try:
-            passphrase = input_dict["passphrase"]
-            auth_type = input_dict["auth"]
-            engine_id = input_dict["engine_id"]
-        except KeyError as exc:
-            raise AnsibleFilterError() from exc
-        try:
-            priv_type = input_dict["priv"]
-        except KeyError:
-            priv_type = None
-
-        return localize_passphrase(passphrase, auth_type, engine_id, priv_type)
-
     def filters(self):
         return {
-            "hash_passphrase": self.hash_passphrase,
+            "hash_passphrase": hash_passphrase,
         }

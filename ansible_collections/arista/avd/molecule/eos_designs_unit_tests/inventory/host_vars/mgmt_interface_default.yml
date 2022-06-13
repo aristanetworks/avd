@@ -11,7 +11,7 @@ l2leaf:
 snmp_settings:
   contact: example@example.com
   location: true
-  auto_compute_local_engineid: true
+  compute_local_engineid: true
   compute_v3_user_localized_key: true
   users:
     - name: usertest-auth-priv
