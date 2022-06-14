@@ -12,4 +12,4 @@
 
 - name: Start creation/update process.
   tags: [always]
-  include_tasks: "{{ cv_collection }}/main.yml"
+  include_tasks: '{{ cv_collection }}/main.yml'
