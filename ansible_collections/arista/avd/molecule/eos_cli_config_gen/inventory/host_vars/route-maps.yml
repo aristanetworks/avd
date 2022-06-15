@@ -8,6 +8,7 @@ route_maps:
           - ip address prefix-list PL-MLAG
       20:
         type: permit
+        description: sub-route-map test
         sub_route_map: RM-HIDE-ASPATH-IN
         match:
           - ip address prefix-list PL-SUBRM
