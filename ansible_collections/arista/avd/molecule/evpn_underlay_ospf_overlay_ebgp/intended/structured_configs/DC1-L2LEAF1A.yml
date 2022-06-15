@@ -80,6 +80,7 @@ port_channel_interfaces:
     description: DC1_LEAF2_Po7
     type: switched
     shutdown: false
+    vlans: none
     mode: trunk
 ip_igmp_snooping:
   globally_enabled: true
