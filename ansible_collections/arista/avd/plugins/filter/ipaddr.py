@@ -7,6 +7,8 @@ import ipaddress
 class FilterModule(object):
 
     def net(self, val):
+        if '/' not in val:
+            return
         try:
             return ipaddress.ip_network(val, strict=True)
         except ValueError:
@@ -99,7 +101,8 @@ class FilterModule(object):
         elif type(ip_addresses) is list:
             result = []
             for ip_address in ip_addresses:
-                result.append(self.ipaddr(ip_address, method=method))
+                if self.ipaddr(ip_address, method=method):
+                    result.append(self.ipaddr(ip_address, method=method))
 
         return result
 
@@ -110,7 +113,8 @@ class FilterModule(object):
         elif type(ip_addresses) is list:
             result = []
             for ip_address in ip_addresses:
-                result.append(self.ipmath(ip_address, add_val))
+                if self.ipmath(ip_address, add_val):
+                    result.append(self.ipmath(ip_address, add_val))
 
         return result
 
