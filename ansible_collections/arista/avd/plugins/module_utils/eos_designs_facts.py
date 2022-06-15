@@ -1192,7 +1192,10 @@ class EosDesignsFacts:
                 if self.inband_management_vlan is not None:
                     uplink_vlans.append(int(self.inband_management_vlan))
 
-                uplink['vlans'] = self._list_compress(uplink_vlans)
+                if uplink_vlans:
+                    uplink['vlans'] = self._list_compress(uplink_vlans)
+                else:
+                    uplink['vlans'] = 'none'
 
                 if self.short_esi is not None:
                     uplink['peer_short_esi'] = self.short_esi

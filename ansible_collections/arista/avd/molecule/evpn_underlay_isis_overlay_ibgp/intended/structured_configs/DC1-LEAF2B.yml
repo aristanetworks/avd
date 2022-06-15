@@ -128,6 +128,7 @@ port_channel_interfaces:
     description: DC1-L2LEAF1A_Po1
     type: switched
     shutdown: false
+    vlans: none
     mode: trunk
     mlag: 7
 ethernet_interfaces:
