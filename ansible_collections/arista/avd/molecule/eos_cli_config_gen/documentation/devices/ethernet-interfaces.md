@@ -113,7 +113,6 @@ interface Management1
 | Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
-| Ethernet47 |  native-vlan-warning | trunk | - | tag | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -622,11 +621,6 @@ interface Ethernet45
 interface Ethernet46
    description native-vlan-tag-precedence
    switchport trunk native vlan tag
-   switchport mode trunk
-   switchport
-!
-interface Ethernet47
-   description native-vlan-warning
    switchport mode trunk
    switchport
 ```

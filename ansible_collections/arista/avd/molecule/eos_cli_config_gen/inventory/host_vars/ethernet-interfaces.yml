@@ -537,8 +537,3 @@ ethernet_interfaces:
     native_vlan_tag: true
     native_vlan: 100
     mode: trunk
-
-  Ethernet47:
-    description: native-vlan-warning
-    native_vlan: tag
-    mode: trunk
