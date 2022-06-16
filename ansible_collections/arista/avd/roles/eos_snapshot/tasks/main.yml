@@ -39,7 +39,7 @@
 - name: save collected commands in text files
   template:
     src: device_text_command.j2
-    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item | replace('/', '_') }}.txt"
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item | replace('/', '_')}}.txt"
     mode: 0664
   loop: "{{ cli_output.results }}"
   when: "'text' in output_format"
