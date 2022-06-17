@@ -425,7 +425,8 @@ class EosDesignsFacts:
                                           separator="..")
                 if len(uplink_switch_facts.default_downlink_interfaces) > 0:
 
-                    actual_parallel_uplinks = int(len(self.uplink_switches) /
+                    actual_parallel_uplinks = int(
+                        len(self.uplink_switches) /
                         len(list(dict.fromkeys(self.uplink_switches))))
 
                     # Get the lead interface to each uplink switch
