@@ -1068,7 +1068,7 @@ ethernet_interfaces:
     mtu: < mtu >
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
-    # if setting both, native_vlan_tag takes precedence
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
     native_vlan: < native_vlan_number >
     native_vlan_tag: < boolean | default -> false >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
@@ -1295,7 +1295,7 @@ port_channel_interfaces:
         client: < true | false >
     vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
-    # if setting both, native_vlan_tag takes precedence
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
     native_vlan: < native_vlan_number >
     native_vlan_tag: < boolean | default -> false >
     snmp_trap_link_change: < true | false >
