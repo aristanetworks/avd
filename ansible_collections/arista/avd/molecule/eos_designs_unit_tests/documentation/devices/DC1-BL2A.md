@@ -560,6 +560,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| bgp bestpath d-path |
 
 ### Router BGP Peer Groups
 
@@ -573,6 +574,18 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
+
+#### MPLS-VPN-RR-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | mpls-vpn |
+| Local AS | 65001 |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 10 |
+| Send community | all |
+| Maximum routes | 50000 |
 
 #### UNDERLAY-PEERS
 
@@ -635,6 +648,7 @@ router bgp 65106
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
+   bgp bestpath d-path
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -642,6 +656,14 @@ router bgp 65106
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor MPLS-VPN-RR-PEERS peer group
+   neighbor MPLS-VPN-RR-PEERS local-as 65001 no-prepend replace-as
+   neighbor MPLS-VPN-RR-PEERS update-source Loopback0
+   neighbor MPLS-VPN-RR-PEERS bfd
+   neighbor MPLS-VPN-RR-PEERS ebgp-multihop 10
+   neighbor MPLS-VPN-RR-PEERS password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+   neighbor MPLS-VPN-RR-PEERS send-community
+   neighbor MPLS-VPN-RR-PEERS maximum-routes 50000
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
@@ -692,11 +714,22 @@ router bgp 65106
    !
    address-family evpn
       host-flap detection window 180 threshold 5 expiry timeout 10 seconds
+      domain identifier 65000:3
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY-PEERS activate
+   !
+   address-family vpn-ipv4
+      domain identifier 65000:4
+      neighbor MPLS-VPN-RR-PEERS activate
+      neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+   !
+   address-family vpn-ipv6
+      domain identifier 65000:4
+      neighbor MPLS-VPN-RR-PEERS activate
+      neighbor default encapsulation mpls next-hop-self source-interface Loopback0
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.16:14
