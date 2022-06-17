@@ -110,6 +110,9 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 # Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
+# Ebgp-multihop for EVPN to MPLS-VPN Gateway peerings | Optional.
+mpls_vpn_gateway_ebgp_multihop: 10
+
 # EVPN GW ebgp-multihop | Optional
 # Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
 # Adapt the value for your specific topology.
@@ -143,6 +146,9 @@ bgp_peer_groups:
     password: "< encrypted password >"
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config: < dictionary >
+  mpls_vpn_gateway_overlay_peers:
+    name: < name of peer group | Default -> MPLS-VPN-GATEWAY-OVERLAY-PEERS >
+    password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
