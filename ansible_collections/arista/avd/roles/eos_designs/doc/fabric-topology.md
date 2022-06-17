@@ -417,6 +417,45 @@ default_interfaces:
         inter_domain: < true | false | Default -> True >
 ```
 
+### BGP & MPLS-VPN Gateway
+
+```yaml
+< node_type_key >:
+
+  defaults:
+    # Node is acting as MPLS-VPN Gateway for EVPN to MPLS-VPN Interworking | Optional.
+    # A new BGP peer-group is used for this neighborship -> "bgp_peer_groups.mpls_vpn_gateway_overlay_peers".
+    # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+    mpls_vpn_gateway:
+        enabled: < true | false | Default -> False >
+
+        # Domain IDs are required to perform D-Path lookups for loop prevention. If omitted, the defaults are used.
+        evpn_domain_id: < "nn:nn" | Default -> "65000:1" >
+        mpls_domain_id: < "nn:nn" | Default -> "65000:2" >
+
+        # Maximum number of routes to allow from the MPLS domain.
+        maximum_routes: < integer | Default -> 0 >
+
+        # Local-as to use when peering to the MPLS domain.
+        local_as: < bgp asn | Default -> False >
+
+        # Address families in which to perform interworking.
+        address_families: < List of address families | Default -> [ vpn-ipv4 ] >
+
+        # Interface to use for BGP update source in the MPLS-VPN address families and next-hop manipulation for routes advertised between domains.
+        mpls_tunnel_source: < Update and tunnel source interface for mpls tunnel | Default -> Loopback0 >
+
+        # Define remote peers of the EVPN to MPLS-VPN Gateway.
+        remote_peers:
+          - hostname: < Hostname of remote mpls-vpn peer >
+            ip_address: < Peering IP of remote mpls-vpn peer >
+            bgp_as: < bgp asn of remote mpls-vpn peer >
+          - hostname: < Hostname of remote mpls-vpn peer >
+            ip_address: < Peering IP of remote mpls-vpn peer >
+            bgp_as: < bgp asn of remote mpls-vpn peer >
+
+```
+
 ### MLAG configuration management
 
 ```yaml

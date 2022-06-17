@@ -3,7 +3,11 @@ router_bgp:
 {% if switch.evpn_role == "server" or switch.mpls_overlay_role == "server" %}
   bgp_cluster_id: {{ switch.bgp_cluster_id | arista.avd.default(switch.router_id) }}
 {% endif %}
-
+{% if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+  bgp:
+    bestpath:
+      d_path: true
+{% endif %}
 {% include 'overlay/ibgp/peer-groups.j2' %}
 
 {% include 'overlay/ibgp/address-family-ipv4.j2' %}
