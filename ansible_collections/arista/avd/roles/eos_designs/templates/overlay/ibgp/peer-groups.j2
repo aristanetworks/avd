@@ -30,3 +30,18 @@
 {%     endif %}
       struct_cfg: {{ overlay_data.rr_peers_peer_group.structured_config | arista.avd.default }}
 {% endif %}
+{% if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+    {{ switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.name }}:
+      type: mpls-vpn
+      update_source: {{ switch.mpls_vpn_gateway_mpls_tunnel_source }}
+      bfd: true
+      ebgp_multihop: "{{ mpls_vpn_gateway_ebgp_multihop }}"
+{%     if switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.password is arista.avd.defined %}
+      password: {{ switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.password }}
+{%     endif %}
+      send_community: all
+      maximum_routes: {{ switch.mpls_vpn_gateway_maximum_routes }}
+{%     if switch.mpls_vpn_gateway_local_as is arista.avd.defined %}
+      local_as: {{ switch.mpls_vpn_gateway_local_as }}
+{%     endif %}
+{% endif %}

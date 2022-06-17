@@ -959,6 +959,46 @@ class EosDesignsFacts(AvdFacts):
         return None
 
     @cached_property
+    def mpls_vpn_gateway(self):
+        if self.underlay_router is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.enabled", default=False)
+
+    @cached_property
+    def evpn_domain_identifier(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.evpn_domain_id", default="65000:1")
+
+    @cached_property
+    def mpls_vpn_domain_identifier(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.mpls_domain_id", default="65000:2")
+
+    @cached_property
+    def mpls_vpn_gateway_address_families(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.address_families", default=["vpn-ipv4"])
+
+    @cached_property
+    def mpls_vpn_gateway_remote_peers(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.remote_peers", default=[])
+
+    @cached_property
+    def mpls_vpn_gateway_mpls_tunnel_source(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.mpls_tunnel_source", default="Loopback0")
+
+    @cached_property
+    def mpls_vpn_gateway_maximum_routes(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.maximum_routes", default=0)
+
+    @cached_property
+    def mpls_vpn_gateway_local_as(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.local_as", default=False)
+
+    @cached_property
     def bgp_defaults(self):
         if self.underlay_router is True:
             return get(self._switch_data_combined, "bgp_defaults", default=[])
@@ -1038,6 +1078,10 @@ class EosDesignsFacts(AvdFacts):
                     "name": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.name", default="RR-OVERLAY-PEERS"),
                     "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
                     "structured_config": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
+                },
+                "mpls_vpn_gateway_overlay_peers": {
+                    "name": get(self._hostvars, "bgp_peer_groups.mpls_vpn_gateway_overlay_peers.name", default="MPLS-VPN-GATEWAY-OVERLAY-PEERS"),
+                    "password": get(self._hostvars, "bgp_peer_groups.mpls_vpn_gateway_overlay_peers.password")
                 },
             }
         return None

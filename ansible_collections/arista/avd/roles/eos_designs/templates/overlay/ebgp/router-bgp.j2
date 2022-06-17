@@ -10,4 +10,12 @@ router_bgp:
 {%     include 'overlay/ebgp/address-family-rtc.j2' %}
 
 {% endif %}
+{% if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+{%     include 'overlay/ebgp/address-family-vpn-ipv4.j2' %}
+
+{% endif %}
+{% if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+{%     include 'overlay/ebgp/address-family-vpn-ipv6.j2' %}
+
+{% endif %}
 {% include 'overlay/ebgp/neighbors.j2' %}

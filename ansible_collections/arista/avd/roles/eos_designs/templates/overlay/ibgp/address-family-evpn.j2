@@ -28,3 +28,6 @@
     route:
       import_match_failure_action: discard
 {% endif %}
+{% if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+    domain_identifier: "{{ switch.evpn_domain_identifier }}"
+{% endif %}
