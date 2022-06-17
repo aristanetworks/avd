@@ -7,7 +7,7 @@
 - name: save collected commands in md files
   template:
     src: md_report.j2
-    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments/{{ item.item }}.md"
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments/{{ item.item | replace('/', '_') }}.md"
     mode: 0664
   loop: "{{ cli_output.results }}"
 
