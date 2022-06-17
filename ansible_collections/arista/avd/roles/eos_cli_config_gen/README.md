@@ -3178,21 +3178,33 @@ router_bgp:
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
     neighbors:
       < neighbor_ip_address >:
         activate: < true | false >
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
+    route:
+      import_match_failure_action: < 'discard' >
   address_family_vpn_ipv6:
     domain_identifier: < string >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
     neighbors:
       < neighbor_ip_address >:
         activate: < true | false >
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
+    route:
+      import_match_failure_action: < 'discard' >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
