@@ -119,6 +119,19 @@ router_bgp:
           - '100000:11'
       redistribute_routes:
       - connected
+    Tenant_OSPF:
+      router_id: 192.168.255.10
+      rd: '65001:30'
+      route_targets:
+        import:
+          evpn:
+          - '100000:30'
+        export:
+          evpn:
+          - '100000:30'
+      redistribute_routes:
+      - connected
+      - ospf
     Tenant_B_OP_Zone:
       router_id: 192.168.255.10
       rd: '65001:20'
@@ -331,6 +344,9 @@ vrfs:
   Tenant_A_WEB_Zone:
     tenant: Tenant_A
     ip_routing: true
+  Tenant_OSPF:
+    tenant: Tenant_A
+    ip_routing: true
   Tenant_B_OP_Zone:
     tenant: Tenant_B
     ip_routing: true
@@ -465,6 +481,22 @@ ethernet_interfaces:
     channel_group:
       id: 14
       mode: active
+  Ethernet22:
+    type: routed
+    peer_type: l3_interface
+    vrf: Tenant_OSPF
+    ip_address: 10.0.0.1/30
+    shutdown: false
+    ospf_area: 0
+    ospf_network_point_to_point: true
+  Ethernet23:
+    type: routed
+    peer_type: l3_interface
+    vrf: Tenant_OSPF
+    ip_address: 10.0.0.13/30
+    shutdown: false
+    ospf_area: 0
+    ospf_network_point_to_point: true
   Ethernet20:
     peer: FIREWALL01
     peer_interface: E0
@@ -893,6 +925,18 @@ ipv6_static_routes:
   vrf: Tenant_D_OP_Zone
   name: VARPv6
   interface: Vlan411
+router_ospf:
+  process_ids:
+    30:
+      vrf: Tenant_OSPF
+      passive_interface_default: true
+      router_id: 192.168.255.10
+      no_passive_interfaces:
+      - Ethernet22
+      - Ethernet23
+      redistribute:
+        bgp:
+          enabled: true
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
@@ -951,6 +995,8 @@ vxlan_interface:
           vni: 10
         Tenant_A_WEB_Zone:
           vni: 11
+        Tenant_OSPF:
+          vni: 30
         Tenant_B_OP_Zone:
           vni: 20
         Tenant_C_OP_Zone:
