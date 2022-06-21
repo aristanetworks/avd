@@ -28,6 +28,8 @@ IP_ADDRESSES_EXPECTED = ['192.24.2.1', '::1', 'fe80::100', '192.168.32.1', '192.
 DEFAULTATTR_INPUT = [5, '5', '192.168.0.0/16']
 IP_ADDRESSES_DEFAULTATTR_EXPECTED = [['192.24.2.1', '::1', '192.168.32.5/24', 'fe80::5/10', '192.168.32.5/24', '192.168.1.5/24',
                                       '192.168.1.37/28', '192.168.1.5/25'],
+                                     ['192.24.2.1', '::1', '192.168.32.5/24', 'fe80::5/10', '192.168.32.5/24', '192.168.1.5/24',
+                                      '192.168.1.37/28', '192.168.1.5/25'],
                                      ['192.168.32.0/24', '192.168.32.1/24', '192.168.1.255/24', '192.168.1.34/28', '192.168.1.34/25']
                                      ]
 INPUT_IPMATH_OFFSET = [1, '10', -1]
@@ -97,13 +99,8 @@ class TestIpAddrFilter():
     @pytest.mark.parametrize("INPUT_LISTS,IP_ADDRESS_LISTS_EXPECTED", [((IP_ADDRESSES_INPUT, DEFAULTATTR_INPUT), IP_ADDRESSES_DEFAULTATTR_EXPECTED)])
     def test_ipaddr_defaultattr_offset_list(self, INPUT_LISTS, IP_ADDRESS_LISTS_EXPECTED):
         IP_ADDRESS_LIST_INPUT = INPUT_LISTS[0]
-        for DEFAULTATTR_INPUT_ITEM in INPUT_LISTS[1]:
-            try:
-                INPUT_VAL = int(DEFAULTATTR_INPUT_ITEM)
-                EXPECTED_OUTPUT = IP_ADDRESS_LISTS_EXPECTED[0]
-            except ValueError:
-                INPUT_VAL = DEFAULTATTR_INPUT_ITEM
-                EXPECTED_OUTPUT = IP_ADDRESS_LISTS_EXPECTED[1]
+        for indx, INPUT_VAL in enumerate(INPUT_LISTS[1]):
+            EXPECTED_OUTPUT = IP_ADDRESS_LISTS_EXPECTED[indx]
             resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method=INPUT_VAL)
             print(resp_list, EXPECTED_OUTPUT)
             assert resp_list == EXPECTED_OUTPUT
