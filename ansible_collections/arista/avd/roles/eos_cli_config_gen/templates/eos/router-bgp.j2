@@ -822,7 +822,6 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbo.ip_address }} bfd
 {%             endif %}
 {%             if neighbor.allowas_in.enabled is arista.avd.defined(true) %}
-{{ neighbor.ip_address }}
 {%                 set allowas_in_cli = "neighbor " ~ neighbor.ip_address ~ " allowas-in" %}
 {%                 if neighbor.allowas_in.times is arista.avd.defined %}
 {%                     set allowas_in_cli = allowas_in_cli ~ " " ~ neighbor.allowas_in.times %}

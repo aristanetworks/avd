@@ -167,8 +167,8 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - | - |
 | 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | - |
 | 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | - | - |
-| 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | - | - | - |
-| 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | - | - | - |
+| 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | Allowed, allowed 3 (default) times | - | - |
+| 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | Allowed, allowed 5 times | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - |
 
@@ -222,8 +222,10 @@ router bgp 65001
       neighbor 101.0.3.1 peer group SEDI
       neighbor 101.0.3.1 weight 100
       neighbor 101.0.3.2 peer group SEDI
+      neighbor 101.0.3.2 allowas-in
       neighbor 101.0.3.2 shutdown
       neighbor 101.0.3.3 peer group SEDI-shut
+      neighbor 101.0.3.3 allowas-in 5
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       redistribute static
