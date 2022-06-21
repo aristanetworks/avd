@@ -47,7 +47,7 @@ vlan_interfaces:
 {%             if vrf.name != 'default' %}
     vrf: {{ vrf.name }}
 {%             else %}
-{%                 set svi_subnet = svi_settings.nodes[inventory_hostname].ip_address | arista.avd.default(svi_settings.ip_address_virtual) | ansible.netcommon.ipaddr('subnet') %}
+{%                 set svi_subnet = svi_settings.nodes[inventory_hostname].ip_address | arista.avd.default(svi_settings.ip_address_virtual) | arista.avd.ipaddr('subnet') %}
 {%                 if svi_subnet is arista.avd.defined and svi_subnet %}
 {%                     do default_vrf.svi_subnets.append(svi_subnet) %}
 {%                 endif %}

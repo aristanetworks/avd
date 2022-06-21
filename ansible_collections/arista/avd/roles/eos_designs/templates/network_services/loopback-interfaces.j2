@@ -11,7 +11,7 @@ loopback_interfaces:
     description: {{ loopback_description }}
     shutdown: false
     vrf: {{ vrf.name }}
-    ip_address: {{ loopback_ipv4_pool | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch.id + switch.loopback_ipv4_offset) }}/32
+    ip_address: {{ loopback_ipv4_pool | arista.avd.ipaddr('network') | arista.avd.ipmath(switch.id + switch.loopback_ipv4_offset) }}/32
 {%             endif %}
 {%         endif %}
 {%     endfor %}

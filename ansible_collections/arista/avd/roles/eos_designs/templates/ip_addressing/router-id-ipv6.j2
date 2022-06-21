@@ -1,1 +1,1 @@
-{{ loopback_ipv6_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath(switch_id + loopback_ipv6_offset) }}
+{{ loopback_ipv6_pool | arista.avd.ipaddr("network") | arista.avd.ipmath(switch_id + loopback_ipv6_offset) }}

@@ -405,7 +405,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "Loopback0 Reachability"
   test_description: "Loopback0 Reachability"
-  test: "Source: {{ node }} - {{ copy_hostvars[node].loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
+  test: "Source: {{ node }} - {{ copy_hostvars[node].loopback_interfaces.Loopback0.ip_address | arista.avd.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
