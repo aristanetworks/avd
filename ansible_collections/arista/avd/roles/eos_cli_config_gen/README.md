@@ -3376,6 +3376,7 @@ router_ospf:
         < IPv4 subnet / netmask >:
           area: < area >
       bfd_enable: < true | false >
+      bfd_adjacency_state_any: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >

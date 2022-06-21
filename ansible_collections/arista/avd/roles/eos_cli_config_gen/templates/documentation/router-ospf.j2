@@ -24,6 +24,9 @@
 {%         endif %}
 {%         if process_id.bfd_enable is arista.avd.defined(true) %}
 {%             set bfd_enable = 'enabled' %}
+{%             if process_id.bfd_adjacency_state_any is arista.avd.defined(true) %}
+{%                 set bfd_enable = bfd_enable ~ '<br>(any state)' %}
+{%             endif %}
 {%         else %}
 {%             set bfd_enable = 'disabled' %}
 {%         endif %}
