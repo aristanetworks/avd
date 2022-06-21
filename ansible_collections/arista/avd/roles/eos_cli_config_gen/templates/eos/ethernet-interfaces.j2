@@ -73,13 +73,12 @@ interface {{ ethernet_interface.name }}
    switchport access vlan {{ ethernet_interface.vlans }}
 {%             endif %}
 {%         endif %}
-{%         if ethernet_interface.mode is arista.avd.defined('trunk') %}
-{%             if ethernet_interface.native_vlan is arista.avd.defined %}
+{%         if ethernet_interface.mode is arista.avd.defined and ethernet_interface.mode in ['trunk', 'trunk phone'] %}
+{%             if ethernet_interface.native_vlan_tag is arista.avd.defined(true) %}
+   switchport trunk native vlan tag
+{%             elif ethernet_interface.native_vlan is arista.avd.defined %}
    switchport trunk native vlan {{ ethernet_interface.native_vlan }}
 {%             endif %}
-{%         endif %}
-{%         if ethernet_interface.mode is arista.avd.defined("trunk phone") and ethernet_interface.native_vlan %}
-   switchport trunk native vlan {{ ethernet_interface.native_vlan }}
 {%         endif %}
 {%         if ethernet_interface.phone.vlan is arista.avd.defined %}
    switchport phone vlan {{ ethernet_interface.phone.vlan }}

@@ -50,7 +50,9 @@ port_profiles:
     mode: < access | dot1q-tunnel | trunk >
     mtu: < mtu >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
-    native_vlan: <native vlan number>
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+    native_vlan: < native_vlan_number >
+    native_vlan_tag: < boolean | default -> false >
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
@@ -121,7 +123,9 @@ port_profiles:
         mode: < access | dot1q-tunnel | trunk >
 
         # Native VLAN for a trunk port | optional
-        native_vlan: <native vlan number>
+        # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+        native_vlan: < native_vlan_number >
+        native_vlan_tag: < boolean | default -> false >
 
         # Interface vlans | required
         vlans: < vlans as string >

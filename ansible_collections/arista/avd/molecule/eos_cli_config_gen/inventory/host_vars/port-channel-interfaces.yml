@@ -339,6 +339,12 @@ port_channel_interfaces:
       ldp:
         interface: false
 
+  Port-Channel115:
+    description: native-vlan-tag-precedence
+    native_vlan_tag: true
+    native_vlan: 100
+    mode: trunk
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
