@@ -84,6 +84,8 @@ l3leaf,DC1-LEAF2A,Ethernet14,l2leaf,DC1-L2LEAF5A,Ethernet1,True
 l3leaf,DC1-LEAF2A,Ethernet15,l2leaf,DC1-L2LEAF5B,Ethernet1,True
 l3leaf,DC1-LEAF2A,Ethernet20,firewall,FIREWALL01,E0,True
 l3leaf,DC1-LEAF2A,Ethernet21,router,ROUTER01,Eth0,True
+l3leaf,DC1-LEAF2A,Ethernet22,l3_interface,,,True
+l3leaf,DC1-LEAF2A,Ethernet23,l3_interface,,,True
 l3leaf,DC1-LEAF2B,Ethernet1,spine,DC1-SPINE1,Ethernet3,True
 l3leaf,DC1-LEAF2B,Ethernet2,spine,DC1-SPINE2,Ethernet3,True
 l3leaf,DC1-LEAF2B,Ethernet3,spine,DC1-SPINE3,Ethernet3,True
@@ -99,6 +101,7 @@ l3leaf,DC1-LEAF2B,Ethernet14,l2leaf,DC1-L2LEAF5A,Ethernet2,True
 l3leaf,DC1-LEAF2B,Ethernet15,l2leaf,DC1-L2LEAF5B,Ethernet2,True
 l3leaf,DC1-LEAF2B,Ethernet20,firewall,FIREWALL01,E1,True
 l3leaf,DC1-LEAF2B,Ethernet21,router,ROUTER01,Eth1,True
+l3leaf,DC1-LEAF2B,Ethernet24,l3_interface,,,True
 spine,DC1-SPINE1,Ethernet1,l3leaf,DC1-LEAF1A,Ethernet1,True
 spine,DC1-SPINE1,Ethernet2,l3leaf,DC1-LEAF2A,Ethernet1,True
 spine,DC1-SPINE1,Ethernet3,l3leaf,DC1-LEAF2B,Ethernet1,True
