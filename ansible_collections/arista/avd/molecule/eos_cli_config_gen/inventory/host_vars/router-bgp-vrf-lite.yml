@@ -85,8 +85,13 @@ router_bgp:
         101.0.3.2:
           peer_group: SEDI
           shutdown: true
+          allowas_in:
+            enabled: true
         101.0.3.3:
           peer_group: SEDI-shut
+          allowas_in:
+            enabled: true
+            times: 5
       redistribute_routes:
         - static
       aggregate_addresses:
