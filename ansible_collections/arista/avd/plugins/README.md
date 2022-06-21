@@ -14,6 +14,11 @@
       - [generate_route_target filter](#generate_route_target-filter)
     - [add_md_toc filter](#add_md_toc-filter)
     - [range_expand filter](#range_expand-filter)
+    - [ip address filters](#ip-address-filters)
+      - [ipaddr filter](#ipaddr-filter)
+      - [ipmath filter](#ipmath-filter)
+      - [ipv4 filter](#ipv4-filter)
+      - [ipv6 filter](#ipv6-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
     - [contains test](#contains-test)
@@ -146,6 +151,7 @@ The module is used in `eos_designs` to create Table Of Contents for Fabric Docum
 The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
 
 To use this filter:
+
 ```jinja2
 {{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->') }}
 ```
@@ -203,6 +209,142 @@ To use this filter:
 ```
 
 !!! Note this is not using the same range syntax as EOS for modular or break-out ports. On EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD the same range would be `et1-2/1-4`
+
+### IP Address filters
+
+Four filters are currently supported to handle all of the IP Address related calculations.
+
+#### ipaddr filter
+
+The ```arista.avd.ipaddr``` filter provides the capabilities to calculate all IP address related functionality like, `subnet`, `address`, `subnet size`, `network ip` etc. The input can be an IP address or a list of IP addresses and the output will be of similar data-type.
+
+This filter supports both `IPv4` and `IPv6` version types. If no IP version is specified, then the filter calculates for both of the versions. This filter takes two arguments apart from the IP address(es) as input, which are `method` and `version`. The supported versions are `4`, and `6` (integers), which represent the **ipv4** and **ipv6** respectively. The supported `methods` are:
+
+1) `validate`: Returns the valid IP addresses or Network IPs based on the version type. If no version number is provided then both IPv4 and IPv6 IPs are returned based on the input data-type(string or list). This is the default method in the `ipaddr` filter.
+
+    ```example
+    ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True, 'test12.com']
+    {{ ip_pool | arista.avd.ipaddr }}
+    Output: ['192.168.0.1', 'fe08::1', '192.168.1.0/24']
+    ```
+
+    The below method is same as above.
+
+    ```example
+    ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True, 'test12.com']
+    {{ ip_pool | arista.avd.ipaddr('validate') }}
+    Output: ['192.168.0.1', 'fe08::1', '192.168.1.0/24']
+    ```
+
+1) `address`: Returns the valid IP address(es) only.
+
+    ```example
+    ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True]
+    {{ ip_pool | arista.avd.ipaddr('address') }}
+    Output: ['192.168.0.1', 'fe08::1']
+    ```
+
+1) `net`: Returns only the Network IPs.
+
+    ```example
+    ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True]
+    {{ ip_pool | arista.avd.ipaddr('net') }}
+    Output: ['192.168.1.0/24']
+    ```
+
+1) `subnet`: Calculates and returns the Network IP of the provided input.
+
+    ```example
+    ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.1.20/28']
+    {{ ip_pool | arista.avd.ipaddr('subnet') }}
+    Output: ['192.168.0.1/32', 'fe08::1/128', '192.168.1.0/24', '192.168.1.16/28']
+    ```
+
+1) `netmask`: Calculates the subnet mask of the provided IP address(es).
+
+    ```example
+    ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.70/26']
+    {{ ip_pool | arista.avd.ipaddr('netmask') }}
+    Output: ['255.255.255.255', 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', '255.255.255.0', '255.255.255.192']
+    ```
+
+1) `prefix`: Calculates and returns the Network Prefix(es) for the provided IP address(es). Return value is an integer or list of integers.
+
+    ```example
+    ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.4/26']
+    {{ ip_pool | arista.avd.ipaddr('prefix') }}
+    Output: [32, 128, 24, 26]
+    ```
+
+1) `size`: Calculates and returns the number of IP address(es) possible in the provided pool(s). Return value is an integer or list of integers.
+
+    ```example
+    ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.4/26']
+    {{ ip_pool | arista.avd.ipaddr('size') }}
+    Output: [1, 1, 256, 64]
+    ```
+
+1) `network`: Calculates and returns the Network IP address(es).
+
+    ```example
+    ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.70/26']
+    {{ ip_pool | arista.avd.ipaddr('network') }}
+    Output: ['192.168.0.1', 'fe08::1', '192.168.1.0', '192.168.1.64']
+    ```
+
+1) `defaultattr`: When the provided input method type doesn't with any of the above, then this method is invoked. Useful when the input method is not actually a method but an IP pool or a number. When the input argument is an integer then IP address corresponding to that number is returned. When an IP pool is provided as an argument then all of the input addresses which are subset of the IP pool are returned (last example).
+
+    ```example
+    ip_pool = ['192.24.2.1', '::1', '192.168.32.0/24', '192.168.33.1/24', '192.168.1.255/24']
+    {{ ip_pool | arista.avd.ipaddr(5) }}
+    Output: ['192.24.2.1', '::1', '192.168.32.5/24', '192.168.33.5/24', '192.168.1.5/24']
+    ```
+
+    ```example
+    ip_pool = ['192.24.2.1', '::1', '192.168.32.0/24', '192.168.33.1/24', '192.168.1.255/24']
+    {{ ip_pool | arista.avd.ipaddr('5') }}
+    Output: ['192.24.2.1', '::1', '192.168.32.5/24', '192.168.33.5/24', '192.168.1.5/24']
+    ```
+
+    ```example
+    ip_pool = ['192.24.2.1', '::1', '192.168.32.0/24', '192.168.33.1/24', '192.168.1.255/24']
+    {{ ip_pool | arista.avd.ipaddr('192.168.0.0/16') }}
+    Output: ['192.168.32.0/24', '192.168.33.1/24', '192.168.1.255/24']
+    ```
+
+#### ipmath filter
+
+The ipmath filter does a simple mathematics by adding the number that was provided as an argument. The network prefixes are removed (in the output) as part of the functionality.
+
+  ```example
+  ip_pool = ['192.24.2.1', '::1', '192.168.32.0/24', '192.168.33.1/24', '192.168.1.255/24']
+  {{ ip_pool | arista.avd.ipmath(5) }}
+  Output: ['192.24.2.6', '::6', '192.168.32.5', '192.168.33.6', '192.168.2.4']
+  ```
+
+#### ipv4 filter
+
+This is same as ipaddr filter and takes similar arguments (except version=4 by default) and returns only IPv4 related output.
+
+  ```example
+  ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True, 'test12.com']
+  {{ ip_pool | arista.avd.ipv4 }}
+  Output: ['192.168.0.1', '192.168.1.0/24']
+  ```
+
+In the above example `validate` method is applied (as it is the default).
+
+#### ipv6 filter
+
+This is same as ipaddr filter and takes similar arguments (except version=6 by default) and returns only IPv6 related output.
+
+  ```example
+  ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True, 'test12.com']
+  {{ ip_pool | arista.avd.ipv6 }}
+  Output: ['fe08::1']
+  ```
+
+In the above example `validate` method is applied (as it is the default).
 
 ## Plugin Tests
 
