@@ -16,6 +16,8 @@
 {%     if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
       {{ switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.name }}:
         activate: true
+{%         if switch.mpls_vpn_domain_dpath_enabled is arista.avd.defined(true) %}
     domain_identifier: "{{ switch.mpls_vpn_domain_identifier }}"
+{%         endif %}
 {%     endif %}
 {% endif %}

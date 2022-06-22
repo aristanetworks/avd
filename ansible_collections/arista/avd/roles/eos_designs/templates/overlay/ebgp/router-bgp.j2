@@ -6,7 +6,7 @@ router_bgp:
 
 {% include 'overlay/ebgp/address-family-evpn.j2' %}
 
-{% if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+{% if switch.mpls_vpn_gateway is arista.avd.defined(true) and switch.mpls_vpn_domain_dpath_enabled is arista.avd.defined(true) %}
   bgp:
     bestpath:
       d_path: true

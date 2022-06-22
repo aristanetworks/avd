@@ -974,6 +974,11 @@ class EosDesignsFacts(AvdFacts):
             return get(self._switch_data_combined, "mpls_vpn_gateway.mpls_domain_id", default="65000:2")
 
     @cached_property
+    def mpls_vpn_domain_dpath_enabled(self):
+        if self.underlay_router is True and self.mpls_vpn_gateway is True:
+            return get(self._switch_data_combined, "mpls_vpn_gateway.enable_d_path", default=True)
+
+    @cached_property
     def mpls_vpn_gateway_address_families(self):
         if self.underlay_router is True and self.mpls_vpn_gateway is True:
             return get(self._switch_data_combined, "mpls_vpn_gateway.address_families", default=["vpn-ipv4"])
