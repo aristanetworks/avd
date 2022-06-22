@@ -317,6 +317,8 @@ router bgp 65101
       redistribute static
       !
       address-family ipv4
+         bgp missing-policy direction in action permit
+         bgp missing-policy direction out action deny
          bgp additional-paths install
          bgp additional-paths receive
          bgp additional-paths send ecmp
