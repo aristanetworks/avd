@@ -433,6 +433,9 @@ default_interfaces:
         evpn_domain_id: < "nn:nn" | Default -> "65000:1" >
         mpls_domain_id: < "nn:nn" | Default -> "65000:2" >
 
+        # D-path can be turned off for the inter-vpn export if desired.
+        enable_d_path: < true | false | Default -> true >
+
         # Maximum number of routes to allow from the MPLS domain.
         maximum_routes: < integer | Default -> 0 >
 
