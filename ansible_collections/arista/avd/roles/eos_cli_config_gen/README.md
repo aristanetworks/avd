@@ -1464,6 +1464,7 @@ vlan_interfaces:
     arp_gratuitous_accept: < true | false >
     arp_monitor_mac_address: < true | false >
     ip_proxy_arp: < true | false >
+    ip_directed_broadcast: < true | false >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
