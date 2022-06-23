@@ -85,6 +85,7 @@ interface Management1
 | Vlan89 | SVI Description | default | - | false |
 | Vlan90 | SVI Description | default | - | - |
 | Vlan91 | PBR Description | default | - | true |
+| Vlan92 | SVI Description | default | - | - |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
 | Vlan333 | Multiple VRIDs and tracking | default | - | false |
 | Vlan501 | SVI Description | default | - | false |
@@ -120,6 +121,7 @@ interface Management1
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
@@ -272,6 +274,12 @@ interface Vlan91
    description PBR Description
    shutdown
    service-policy type pbr input MyServicePolicy
+!
+interface Vlan92
+   description SVI Description
+   ip proxy-arp
+   ip directed-broadcast
+   ip address 10.10.92.1/24
 !
 interface Vlan110
    description PVLAN Primary with vlan mapping

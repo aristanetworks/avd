@@ -82,6 +82,12 @@ vlan_interfaces:
     ip_attached_host_route_export:
       test: 10
 
+  Vlan92:
+    description: SVI Description
+    ip_address: 10.10.92.1/24
+    ip_proxy_arp: true
+    ip_directed_broadcast: true
+
 # MCAST Configuration
 
   Vlan4094:
