@@ -158,7 +158,7 @@ router_bgp:
           evpn:
           - '11:11'
       neighbors:
-        172.31.11.8:
+        172.31.11.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected

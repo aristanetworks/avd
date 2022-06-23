@@ -69,9 +69,13 @@
 {%                     if configure_mlag_ibgp_peering %}
 {%                         if vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
 {%                             set mlag_ibgp_peering_ip = namespace() %}
-{%                             include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}
+{%                             if switch.mlag_role == 'primary' %}
+{%                                 include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}
+{%                             else %}
+{%                                 include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}
+{%                             endif %}
 {%                         endif %}
-        {{ mlag_ibgp_peering_ip.peer_ip | arista.avd.default(switch.mlag_peer_l3_ip, switch.mlag_peer_ip) }}:
+        {{ mlag_ibgp_peering_ip.ip | arista.avd.default(switch.mlag_peer_l3_ip, switch.mlag_peer_ip) }}:
           peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
 {%                     endif %}
 {%                     for bgp_peer in vrf.bgp_peers %}

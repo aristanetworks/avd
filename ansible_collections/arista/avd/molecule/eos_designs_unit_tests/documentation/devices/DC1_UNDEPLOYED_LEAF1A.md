@@ -1070,7 +1070,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 10.255.251.25 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 10.255.251.25 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 10.255.251.25 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
-| 172.31.11.26 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
+| 172.31.11.25 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 10.255.251.25 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 10.255.251.25 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
 | 10.255.251.25 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
@@ -1290,7 +1290,7 @@ router bgp 65110
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.21
-      neighbor 172.31.11.26 peer group MLAG-PEERS
+      neighbor 172.31.11.25 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_B_OP_Zone

@@ -138,7 +138,11 @@ vlan_interfaces:
 {%                 if vrf.name != 'default' %}
 {%                     if vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
 {%                         set mlag_ibgp_peering_ip = namespace() %}
-{%                         include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}
+{%                         if switch.mlag_role == 'primary' %}
+{%                             include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}
+{%                         else %}
+{%                             include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}
+{%                         endif %}
 {%                     endif %}
   Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
