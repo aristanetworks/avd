@@ -3314,6 +3314,9 @@ router_bgp:
       address_families:
         < address_family >:
           bgp:
+            missing_policy:
+              direction_in_action: < deny | deny-in-out | permit >
+              direction_out_action: < deny | deny-in-out | permit >
             additional_paths:
               - < bgp_additional_paths_command >
               - < bgp_additional_paths_command >
