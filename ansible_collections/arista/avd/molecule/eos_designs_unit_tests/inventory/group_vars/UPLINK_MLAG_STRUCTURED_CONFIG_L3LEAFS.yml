@@ -6,8 +6,8 @@ l3leaf:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 192.168.254.0/24
-    uplink_interfaces: ['Ethernet1', 'Ethernet2']
-    uplink_switches: ['UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1', 'UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2']
+    uplink_interfaces: ['Ethernet1']
+    uplink_switches: ['UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1']
     uplink_ipv4_pool: 172.31.255.0/24
     uplink_structured_config:
       pim:
@@ -33,8 +33,8 @@ l3leaf:
         UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A:
           id: 1
           mgmt_ip: 192.168.200.105/24
-          uplink_switch_interfaces: [ Ethernet1, Ethernet1]
+          uplink_switch_interfaces: [ Ethernet1 ]
         UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B:
           id: 2
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet2, Ethernet2]
+          uplink_switch_interfaces: [ Ethernet2 ]

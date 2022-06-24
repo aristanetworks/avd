@@ -11,6 +11,3 @@ spine:
     UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1:
       id: 1
       mgmt_ip: 192.168.200.101/24
-    UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2:
-      id: 2
-      mgmt_ip: 192.168.200.102/24

@@ -252,7 +252,7 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1 | routed | - | 172.31.255.0/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1 | routed | - | 172.31.255.4/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -271,7 +271,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.4/31
+   ip address 172.31.255.2/31
    pim ipv4 sparse-mode
 ```
 
@@ -393,7 +393,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 172.31.255.1 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.5 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.3 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.3 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.4 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
@@ -429,9 +429,9 @@ router bgp 65001
    neighbor 172.31.255.1 peer group UNDERLAY-PEERS
    neighbor 172.31.255.1 remote-as 65101
    neighbor 172.31.255.1 description UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
-   neighbor 172.31.255.5 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.5 remote-as 65101
-   neighbor 172.31.255.5 description UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
+   neighbor 172.31.255.3 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.3 remote-as 65101
+   neighbor 172.31.255.3 description UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65101
    neighbor 192.168.255.3 description UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A

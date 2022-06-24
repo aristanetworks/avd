@@ -44,17 +44,9 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
       description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
-    172.31.255.2:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2_Ethernet1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
-      remote_as: '65001'
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2
       remote_as: '65001'
   redistribute_routes:
     connected:
@@ -223,22 +215,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.1/31
-    struct_cfg:
-      pim:
-        ipv4:
-          sparse_mode: true
-    pim:
-      ipv4:
-        sparse_mode: true
-  Ethernet2:
-    peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2
-    peer_interface: Ethernet1
-    peer_type: spine
-    description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2_Ethernet1
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.3/31
     struct_cfg:
       pim:
         ipv4:

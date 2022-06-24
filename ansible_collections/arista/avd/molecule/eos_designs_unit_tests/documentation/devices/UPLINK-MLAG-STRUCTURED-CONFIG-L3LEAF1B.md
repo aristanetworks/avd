@@ -323,8 +323,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet2 | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2_Ethernet2 | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet2 | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -335,15 +334,7 @@ interface Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.5/31
-   pim ipv4 sparse-mode
-!
-interface Ethernet2
-   description P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2_Ethernet2
-   no shutdown
-   mtu 1500
-   no switchport
-   ip address 172.31.255.7/31
+   ip address 172.31.255.3/31
    pim ipv4 sparse-mode
 !
 interface Ethernet3
@@ -606,10 +597,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 10.255.251.0 | Inherited from peer group MLAG-PEERS | default | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - | - |
-| 172.31.255.4 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.6 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.2 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 
 ### Router BGP EVPN Address Family
 
@@ -655,18 +644,12 @@ router bgp 65101
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.255.251.0 peer group MLAG-PEERS
    neighbor 10.255.251.0 description UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
-   neighbor 172.31.255.4 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.4 remote-as 65001
-   neighbor 172.31.255.4 description UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet2
-   neighbor 172.31.255.6 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.6 remote-as 65001
-   neighbor 172.31.255.6 description UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2_Ethernet2
+   neighbor 172.31.255.2 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.2 remote-as 65001
+   neighbor 172.31.255.2 description UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet2
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
-   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description UPLINK-MLAG-STRUCTURED-CONFIG-SPINE2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -719,7 +702,6 @@ router bfd
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
 | Ethernet1 | - | IPv4 | - | - |
-| Ethernet2 | - | IPv4 | - | - |
 | Vlan4093 | - | IPv4 | - | - |
 
 # Filters
