@@ -397,19 +397,19 @@ defaults <- node_group <- node_group.node <- node
     # Custom structured config applied to MLAG peer link port-channel id.
     # Added under port_channel_interfaces.<interface> for eos_cli_config_gen.
     # Overrides the settings on the port-channel interface level.
-    # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
     mlag_port_channel_structured_config: < dictionary >
 
     # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
     # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
     # Overrides the settings on the vlan interface level.
-    # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
     mlag_peer_vlan_structured_config: < dictionary >
 
     # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
     # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
     # Overrides the settings on the vlan interface level.
-    # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
     mlag_peer_l3_vlan_structured_config: < dictionary >
 
     # Spanning tree mode | Required.
