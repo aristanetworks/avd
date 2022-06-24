@@ -220,6 +220,7 @@ defaults <- node_group <- node_group.node <- node
     # Overrides the settings on the ethernet interface level.
     # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
     # Overrides the settings on the port-channel interface level.
+    # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
     uplink_structured_config: < dictionary >
 
   # When nodes are part of node group
