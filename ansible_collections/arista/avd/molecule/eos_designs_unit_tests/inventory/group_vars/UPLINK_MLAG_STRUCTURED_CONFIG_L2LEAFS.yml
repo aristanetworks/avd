@@ -1,6 +1,5 @@
 type: l2leaf
 
-
 l2leaf:
   defaults:
     platform: vEOS-LAB
