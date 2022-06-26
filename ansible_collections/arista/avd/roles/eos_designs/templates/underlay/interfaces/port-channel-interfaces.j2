@@ -29,5 +29,8 @@ port_channel_interfaces:
 {%         if link.link_tracking_groups is arista.avd.defined %}
     link_tracking_groups: {{ link.link_tracking_groups }}
 {%         endif %}
+{%         if link.structured_config is arista.avd.defined %}
+    struct_cfg: {{ link.structured_config }}
+{%         endif %}
 {%     endif %}
 {% endfor %}
