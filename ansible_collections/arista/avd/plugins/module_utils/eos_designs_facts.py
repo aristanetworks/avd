@@ -1136,6 +1136,8 @@ class EosDesignsFacts:
                     uplink['ptp'] = self.uplink_ptp
                 if self.uplink_macsec is not None:
                     uplink['mac_security'] = self.uplink_macsec
+                if get(self._hostvars, "underlay_multicast") is True:
+                    uplink['underlay_multicast'] = True
                 if get(self._hostvars, "underlay_rfc5549") is True:
                     uplink['ipv6_enable'] = True
                 else:

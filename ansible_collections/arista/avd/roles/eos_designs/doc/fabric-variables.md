@@ -196,4 +196,7 @@ p2p_uplinks_qos_profile: < qos_profile_name >
 # Enable PTP on all infrastructure links | Optional
 uplink_ptp:
   enable: < boolean | default -> false >
+
+# Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
+underlay_multicast: < boolean | default -> false >
 ```
