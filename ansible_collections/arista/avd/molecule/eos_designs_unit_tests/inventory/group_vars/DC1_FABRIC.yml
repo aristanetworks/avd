@@ -109,7 +109,7 @@ l3leaf:
       rack: "rackD"
       mlag: false
       # Test for multiple parallel uplinks
-      uplink_switches: ['DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE3', 'DC1-SPINE4', 'DC1-SPINE4']
+      uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2', 'DC1-SPINE1', 'DC1-SPINE3', 'DC1-SPINE4', 'DC1-SPINE4', 'DC1-SPINE3']
       nodes:
         DC1-LEAF2A:
           id: 2
@@ -202,7 +202,7 @@ l3leaf:
           platform: 7280R2
           id: 8
           bgp_as: 65106
-          mgmt_ip: 192.168.200.123/24
+          mgmt_ip: 192.168.200.117/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet24, Ethernet24, Ethernet24, Ethernet24 ]
         DC1-BL2B:

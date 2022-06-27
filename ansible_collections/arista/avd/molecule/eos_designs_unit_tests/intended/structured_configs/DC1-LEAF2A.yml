@@ -36,15 +36,15 @@ router_bgp:
     172.31.254.34:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE1_Ethernet4/1
+      description: DC1-SPINE2_Ethernet1/3/1
     172.31.254.36:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE2_Ethernet1/3/1
+      description: DC1-SPINE2_Ethernet1/4/1
     172.31.254.38:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE2_Ethernet1/4/1
+      description: DC1-SPINE1_Ethernet4/1
     172.31.254.40:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
@@ -52,15 +52,15 @@ router_bgp:
     172.31.254.42:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE3_Ethernet1/4/1
+      description: DC1-SPINE4_Ethernet3/1
     172.31.254.44:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE4_Ethernet3/1
+      description: DC1-SPINE4_Ethernet4/1
     172.31.254.46:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE4_Ethernet4/1
+      description: DC1-SPINE3_Ethernet1/4/1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -468,16 +468,6 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.31.254.33/31
   Ethernet50/1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet4/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet4/1
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.254.35/31
-  Ethernet51/1:
     peer: DC1-SPINE2
     peer_interface: Ethernet1/3/1
     peer_type: spine
@@ -486,12 +476,22 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.254.37/31
-  Ethernet52/1:
+    ip_address: 172.31.254.35/31
+  Ethernet51/1:
     peer: DC1-SPINE2
     peer_interface: Ethernet1/4/1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/4/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.37/31
+  Ethernet52/1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet4/1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet4/1
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -508,16 +508,6 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.31.254.41/31
   Ethernet54/1:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet1/4/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/4/1
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.254.43/31
-  Ethernet55/1:
     peer: DC1-SPINE4
     peer_interface: Ethernet3/1
     peer_type: spine
@@ -526,12 +516,22 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.254.45/31
-  Ethernet56/1:
+    ip_address: 172.31.254.43/31
+  Ethernet55/1:
     peer: DC1-SPINE4
     peer_interface: Ethernet4/1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet4/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.45/31
+  Ethernet56/1:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/4/1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/4/1
     speed: forced 100gfull
     mtu: 1500
     type: routed

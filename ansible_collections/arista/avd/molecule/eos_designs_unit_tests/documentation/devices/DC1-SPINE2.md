@@ -268,10 +268,10 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1/1/1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet28 | routed | - | 172.31.254.2/31 | default | 1500 | false | - | - |
-| Ethernet1/3/1 | P2P_LINK_TO_DC1-LEAF2A_Ethernet51/1 | routed | - | 172.31.254.36/31 | default | 1500 | false | - | - |
-| Ethernet1/4/1 | P2P_LINK_TO_DC1-LEAF2A_Ethernet52/1 | routed | - | 172.31.254.38/31 | default | 1500 | false | - | - |
-| Ethernet1/5/1 | P2P_LINK_TO_DC1-LEAF2B_Ethernet51/1 | routed | - | 172.31.254.68/31 | default | 1500 | false | - | - |
-| Ethernet1/6/1 | P2P_LINK_TO_DC1-LEAF2B_Ethernet52/1 | routed | - | 172.31.254.70/31 | default | 1500 | false | - | - |
+| Ethernet1/3/1 | P2P_LINK_TO_DC1-LEAF2A_Ethernet50/1 | routed | - | 172.31.254.34/31 | default | 1500 | false | - | - |
+| Ethernet1/4/1 | P2P_LINK_TO_DC1-LEAF2A_Ethernet51/1 | routed | - | 172.31.254.36/31 | default | 1500 | false | - | - |
+| Ethernet1/5/1 | P2P_LINK_TO_DC1-LEAF2B_Ethernet50/1 | routed | - | 172.31.254.66/31 | default | 1500 | false | - | - |
+| Ethernet1/6/1 | P2P_LINK_TO_DC1-LEAF2B_Ethernet51/1 | routed | - | 172.31.254.68/31 | default | 1500 | false | - | - |
 | Ethernet1/7/1 | P2P_LINK_TO_DC1-SVC3A_Ethernet50/1 | routed | - | 172.31.254.98/31 | default | 1500 | false | - | - |
 | Ethernet1/9/1 | P2P_LINK_TO_DC1-SVC3B_Ethernet50/1 | routed | - | 172.31.254.130/31 | default | 1500 | false | - | - |
 | Ethernet22 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | routed | - | 172.31.254.162/31 | default | 1500 | false | - | - |
@@ -296,6 +296,14 @@ interface Ethernet1/1/1
    ip address 172.31.254.2/31
 !
 interface Ethernet1/3/1
+   description P2P_LINK_TO_DC1-LEAF2A_Ethernet50/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.34/31
+!
+interface Ethernet1/4/1
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet51/1
    no shutdown
    mtu 1500
@@ -303,29 +311,21 @@ interface Ethernet1/3/1
    no switchport
    ip address 172.31.254.36/31
 !
-interface Ethernet1/4/1
-   description P2P_LINK_TO_DC1-LEAF2A_Ethernet52/1
+interface Ethernet1/5/1
+   description P2P_LINK_TO_DC1-LEAF2B_Ethernet50/1
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.254.38/31
+   ip address 172.31.254.66/31
 !
-interface Ethernet1/5/1
+interface Ethernet1/6/1
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet51/1
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
    ip address 172.31.254.68/31
-!
-interface Ethernet1/6/1
-   description P2P_LINK_TO_DC1-LEAF2B_Ethernet52/1
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.254.70/31
 !
 interface Ethernet1/7/1
    description P2P_LINK_TO_DC1-SVC3A_Ethernet50/1
@@ -526,10 +526,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 172.31.254.3 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.35 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.254.37 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.254.39 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.67 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.254.69 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.254.71 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.254.99 | 65103 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.254.131 | 65103 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 172.31.254.163 | 65104 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
@@ -586,18 +586,18 @@ router bgp 65001
    neighbor 172.31.254.3 peer group UNDERLAY-PEERS
    neighbor 172.31.254.3 remote-as 65101
    neighbor 172.31.254.3 description DC1-LEAF1A_Ethernet28
+   neighbor 172.31.254.35 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.35 remote-as 65102
+   neighbor 172.31.254.35 description DC1-LEAF2A_Ethernet50/1
    neighbor 172.31.254.37 peer group UNDERLAY-PEERS
    neighbor 172.31.254.37 remote-as 65102
    neighbor 172.31.254.37 description DC1-LEAF2A_Ethernet51/1
-   neighbor 172.31.254.39 peer group UNDERLAY-PEERS
-   neighbor 172.31.254.39 remote-as 65102
-   neighbor 172.31.254.39 description DC1-LEAF2A_Ethernet52/1
+   neighbor 172.31.254.67 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.67 remote-as 65102
+   neighbor 172.31.254.67 description DC1-LEAF2B_Ethernet50/1
    neighbor 172.31.254.69 peer group UNDERLAY-PEERS
    neighbor 172.31.254.69 remote-as 65102
    neighbor 172.31.254.69 description DC1-LEAF2B_Ethernet51/1
-   neighbor 172.31.254.71 peer group UNDERLAY-PEERS
-   neighbor 172.31.254.71 remote-as 65102
-   neighbor 172.31.254.71 description DC1-LEAF2B_Ethernet52/1
    neighbor 172.31.254.99 peer group UNDERLAY-PEERS
    neighbor 172.31.254.99 remote-as 65103
    neighbor 172.31.254.99 description DC1-SVC3A_Ethernet50/1

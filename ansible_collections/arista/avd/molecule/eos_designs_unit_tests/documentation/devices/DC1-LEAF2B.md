@@ -399,13 +399,13 @@ vlan 452
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet24 | - | routed | - | 10.0.0.5/30 | Tenant_OSPF | - | false | - | - |
 | Ethernet49/1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5/1 | routed | - | 172.31.254.65/31 | default | 1500 | false | - | - |
-| Ethernet50/1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6/1 | routed | - | 172.31.254.67/31 | default | 1500 | false | - | - |
-| Ethernet51/1 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1 | routed | - | 172.31.254.69/31 | default | 1500 | false | - | - |
-| Ethernet52/1 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1 | routed | - | 172.31.254.71/31 | default | 1500 | false | - | - |
+| Ethernet50/1 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1 | routed | - | 172.31.254.67/31 | default | 1500 | false | - | - |
+| Ethernet51/1 | P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1 | routed | - | 172.31.254.69/31 | default | 1500 | false | - | - |
+| Ethernet52/1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6/1 | routed | - | 172.31.254.71/31 | default | 1500 | false | - | - |
 | Ethernet53/1 | P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1 | routed | - | 172.31.254.73/31 | default | 1500 | false | - | - |
-| Ethernet54/1 | P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1 | routed | - | 172.31.254.75/31 | default | 1500 | false | - | - |
-| Ethernet55/1 | P2P_LINK_TO_DC1-SPINE4_Ethernet5/1 | routed | - | 172.31.254.77/31 | default | 1500 | false | - | - |
-| Ethernet56/1 | P2P_LINK_TO_DC1-SPINE4_Ethernet6/1 | routed | - | 172.31.254.79/31 | default | 1500 | false | - | - |
+| Ethernet54/1 | P2P_LINK_TO_DC1-SPINE4_Ethernet5/1 | routed | - | 172.31.254.75/31 | default | 1500 | false | - | - |
+| Ethernet55/1 | P2P_LINK_TO_DC1-SPINE4_Ethernet6/1 | routed | - | 172.31.254.77/31 | default | 1500 | false | - | - |
+| Ethernet56/1 | P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1 | routed | - | 172.31.254.79/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -485,7 +485,7 @@ interface Ethernet49/1
    ip address 172.31.254.65/31
 !
 interface Ethernet50/1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -493,7 +493,7 @@ interface Ethernet50/1
    ip address 172.31.254.67/31
 !
 interface Ethernet51/1
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -501,7 +501,7 @@ interface Ethernet51/1
    ip address 172.31.254.69/31
 !
 interface Ethernet52/1
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -517,7 +517,7 @@ interface Ethernet53/1
    ip address 172.31.254.73/31
 !
 interface Ethernet54/1
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -525,7 +525,7 @@ interface Ethernet54/1
    ip address 172.31.254.75/31
 !
 interface Ethernet55/1
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -533,7 +533,7 @@ interface Ethernet55/1
    ip address 172.31.254.77/31
 !
 interface Ethernet56/1
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -1239,25 +1239,25 @@ router bgp 65102
    neighbor 172.31.254.64 description DC1-SPINE1_Ethernet5/1
    neighbor 172.31.254.66 peer group UNDERLAY-PEERS
    neighbor 172.31.254.66 remote-as 65001
-   neighbor 172.31.254.66 description DC1-SPINE1_Ethernet6/1
+   neighbor 172.31.254.66 description DC1-SPINE2_Ethernet1/5/1
    neighbor 172.31.254.68 peer group UNDERLAY-PEERS
    neighbor 172.31.254.68 remote-as 65001
-   neighbor 172.31.254.68 description DC1-SPINE2_Ethernet1/5/1
+   neighbor 172.31.254.68 description DC1-SPINE2_Ethernet1/6/1
    neighbor 172.31.254.70 peer group UNDERLAY-PEERS
    neighbor 172.31.254.70 remote-as 65001
-   neighbor 172.31.254.70 description DC1-SPINE2_Ethernet1/6/1
+   neighbor 172.31.254.70 description DC1-SPINE1_Ethernet6/1
    neighbor 172.31.254.72 peer group UNDERLAY-PEERS
    neighbor 172.31.254.72 remote-as 65001
    neighbor 172.31.254.72 description DC1-SPINE3_Ethernet1/5/1
    neighbor 172.31.254.74 peer group UNDERLAY-PEERS
    neighbor 172.31.254.74 remote-as 65001
-   neighbor 172.31.254.74 description DC1-SPINE3_Ethernet1/6/1
+   neighbor 172.31.254.74 description DC1-SPINE4_Ethernet5/1
    neighbor 172.31.254.76 peer group UNDERLAY-PEERS
    neighbor 172.31.254.76 remote-as 65001
-   neighbor 172.31.254.76 description DC1-SPINE4_Ethernet5/1
+   neighbor 172.31.254.76 description DC1-SPINE4_Ethernet6/1
    neighbor 172.31.254.78 peer group UNDERLAY-PEERS
    neighbor 172.31.254.78 remote-as 65001
-   neighbor 172.31.254.78 description DC1-SPINE4_Ethernet6/1
+   neighbor 172.31.254.78 description DC1-SPINE3_Ethernet1/6/1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

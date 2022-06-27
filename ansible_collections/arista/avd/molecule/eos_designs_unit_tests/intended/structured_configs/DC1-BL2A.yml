@@ -247,7 +247,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: MGMT
-    ip_address: 192.168.200.123/24
+    ip_address: 192.168.200.117/24
     gateway: 192.168.200.5
     type: oob
 tcam_profile:

@@ -34,22 +34,22 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65101'
       description: DC1-LEAF1A_Ethernet30
+    172.31.254.43:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65102'
+      description: DC1-LEAF2A_Ethernet54/1
     172.31.254.45:
       peer_group: UNDERLAY-PEERS
       remote_as: '65102'
       description: DC1-LEAF2A_Ethernet55/1
-    172.31.254.47:
+    172.31.254.75:
       peer_group: UNDERLAY-PEERS
       remote_as: '65102'
-      description: DC1-LEAF2A_Ethernet56/1
+      description: DC1-LEAF2B_Ethernet54/1
     172.31.254.77:
       peer_group: UNDERLAY-PEERS
       remote_as: '65102'
       description: DC1-LEAF2B_Ethernet55/1
-    172.31.254.79:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65102'
-      description: DC1-LEAF2B_Ethernet56/1
     172.31.254.103:
       peer_group: UNDERLAY-PEERS
       remote_as: '65103'
@@ -218,6 +218,16 @@ ethernet_interfaces:
     ip_address: 172.31.254.6/31
   Ethernet3/1:
     peer: DC1-LEAF2A
+    peer_interface: Ethernet54/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet54/1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.254.42/31
+  Ethernet4/1:
+    peer: DC1-LEAF2A
     peer_interface: Ethernet55/1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet55/1
@@ -226,17 +236,17 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.254.44/31
-  Ethernet4/1:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet56/1
+  Ethernet5/1:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet54/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet56/1
+    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet54/1
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.254.46/31
-  Ethernet5/1:
+    ip_address: 172.31.254.74/31
+  Ethernet6/1:
     peer: DC1-LEAF2B
     peer_interface: Ethernet55/1
     peer_type: l3leaf
@@ -246,16 +256,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.254.76/31
-  Ethernet6/1:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet56/1
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet56/1
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.254.78/31
   Ethernet7/1:
     peer: DC1-SVC3A
     peer_interface: Ethernet52/1
