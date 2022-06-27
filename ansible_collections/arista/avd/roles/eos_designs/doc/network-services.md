@@ -228,6 +228,11 @@ svi_profiles:
             # Enable or disable interface
             enabled: < true | false >
 
+            # Trunk Groups | optional
+            # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group
+            # Requires "enable_trunk_groups: true"
+            trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
+
             # Enable IGMP Snooping
             igmp_snooping_enabled: < true | false | default true (eos) >
 
@@ -475,6 +480,11 @@ svi_profiles:
         # Tags are matched against "filter.tags" defined under Fabric Topology variables
         # Tags are also matched against the "node_group" name under Fabric Topology variables
         tags: [ < tag_1 >, < tag_2 > | default -> all ]
+
+        # Trunk Groups | optional
+        # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group
+        # Requires "enable_trunk_groups: true"
+        trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
 
         # VXLAN | Optional - default true
         # Extend this L2VLAN over VXLAN

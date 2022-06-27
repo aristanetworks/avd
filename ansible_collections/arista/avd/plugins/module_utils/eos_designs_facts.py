@@ -14,6 +14,7 @@ class EosDesignsFacts:
         hostvars=None,
         combine=None,
         list_compress=None,
+        range_expand=None,
         convert_dicts=None,
         natural_sort=None,
         template_lookup_module=None
@@ -24,6 +25,8 @@ class EosDesignsFacts:
             self._combine = combine
         if list_compress:
             self._list_compress = list_compress
+        if range_expand:
+            self._range_expand = range_expand
         if convert_dicts:
             self._convert_dicts = convert_dicts
         if natural_sort:
@@ -569,7 +572,17 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def enable_trunk_groups(self):
+        return get(self._hostvars, "enable_trunk_groups", default=False)
+
+    @cached_property
     def _vlans(self):
+        '''
+        Return list of vlans after filtering network services.
+        The filter is based on filter.tenants, filter.tags
+
+        Ex. [1, 2, 3 ,4 ,201, 3021]
+        '''
         if self._any_network_services:
             vlans = []
             match_tags = self.filter_tags
@@ -616,6 +629,11 @@ class EosDesignsFacts:
 
     @cached_property
     def vlans(self):
+        '''
+        Return the compressed list of vlans to be defined on this switch
+
+        Ex. "1-100, 201-202"
+        '''
         return self._list_compress(self._vlans)
 
     @cached_property
@@ -1209,6 +1227,13 @@ class EosDesignsFacts:
                     uplink['peer_channel_group_id'] = ''.join(re.findall(r'\d', uplink_switch_interfaces[0]))
 
                 # Remove vlans if upstream switch does not have them #}
+                if self.enable_trunk_groups:
+                    uplink['trunk_groups'] = ["UPLINK"]
+                    if self.mlag is True:
+                        uplink['peer_trunk_groups'] = [self.group]
+                    else:
+                        uplink['peer_trunk_groups'] = [self.hostname]
+
                 switch_vlans = self._vlans
                 uplink_switch_vlans = uplink_switch_facts._vlans
                 uplink_vlans = list(set(switch_vlans).intersection(uplink_switch_vlans))
@@ -1242,8 +1267,10 @@ class EosDesignsFacts:
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         '''
-        if self.uplinks is not None:
-            return [uplink['peer'] for uplink in self.uplinks]
+        fabric_name = get(self._hostvars, "fabric_name", required=True)
+        inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
+        uplink_switches = default(self.uplink_switches, [])
+        return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in inventory_group]
 
     @cached_property
     def _mlag_peer_id(self):

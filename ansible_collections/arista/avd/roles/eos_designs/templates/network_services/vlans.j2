@@ -7,6 +7,16 @@ vlans:
   {{ svi.id | int }}:
     tenant: {{ tenant.name }}
     name: {{ svi.name }}
+{%             if switch.enable_trunk_groups %}
+{%                 set trunk_groups = svi.trunk_groups | arista.avd.default([]) %}
+{%                 if switch.mlag is arista.avd.defined(true) %}
+{%                     do trunk_groups.append('MLAG') %}
+{%                 endif %}
+{%                 if switch.uplink_type == "port-channel" %}
+{%                     do trunk_groups.append('UPLINK') %}
+{%                 endif %}
+    trunk_groups: {{ trunk_groups | unique }}
+{%             endif %}
 {%         endfor %}
 {# VLAN for iBGP peering in overlay VRFs #}
 {%         if switch.mlag_l3 is arista.avd.defined(true) and switch.network_services_l3 is arista.avd.defined(true) %}
@@ -28,5 +38,15 @@ vlans:
   {{ l2vlan.id | int }}:
     tenant: {{ tenant.name }}
     name: {{ l2vlan.name }}
+{%         if switch.enable_trunk_groups %}
+{%             set trunk_groups = l2vlan.trunk_groups | arista.avd.default([]) %}
+{%             if switch.mlag is arista.avd.defined(true) %}
+{%                 do trunk_groups.append('MLAG') %}
+{%             endif %}
+{%             if switch.uplink_type == "port-channel" %}
+{%                 do trunk_groups.append('UPLINK') %}
+{%             endif %}
+    trunk_groups: {{ trunk_groups | unique }}
+{%         endif %}
 {%     endfor %}
 {% endfor %}

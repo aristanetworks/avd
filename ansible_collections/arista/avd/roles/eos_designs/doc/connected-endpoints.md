@@ -127,7 +127,12 @@ port_profiles:
         native_vlan: < native_vlan_number >
         native_vlan_tag: < boolean | default -> false >
 
-        # Interface vlans | required
+        # Trunk Groups | required with "enable_trunk_groups: true"
+        # Trunk Groups are used for limiting vlans on trunk ports to vlans with the same Trunk Group
+        trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
+
+        # Interface vlans | optional
+        # If not set, the EOS default is all vlans are allowed for trunk ports and vlan 1 will be used for access ports
         vlans: < vlans as string >
 
         # Spanning Tree

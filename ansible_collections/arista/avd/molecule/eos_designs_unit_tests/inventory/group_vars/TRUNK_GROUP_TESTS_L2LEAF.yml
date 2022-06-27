@@ -1,0 +1,18 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    uplink_switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b ]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_ipv4_pool: 10.255.248.0/24
+  node_groups:
+    TRUNK_GROUP_TESTS_L2LEAF1:
+      nodes:
+        trunk-group-tests-l2leaf1a:
+          id: 1
+          uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+        trunk-group-tests-l2leaf1b:
+          id: 2
+          uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]
