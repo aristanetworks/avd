@@ -590,6 +590,17 @@ router_bfd:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
     multiplier: < 3-50 >
+  sbfd:
+    local_interface:
+      name: < interface name >
+      protocols:
+        ipv4: < true | false >
+        ipv6: < true | false >
+    initiator_interval: < rate in milliseconds >
+    initiator_multiplier: < 3-50 >
+    reflector:
+      min_rx: < rate in milliseconds >
+      local_discriminator: < IPv4_address | u32 format >
 ```
 
 ### DHCP Relay
@@ -3516,6 +3527,7 @@ router_traffic_engineering:
             binding_sid: < integer >
             description: < description >
             name: < name >
+            sbfd_remote_discriminator: < IPv4_address | u32 format >
             path_group:
               - preference: < integer >
                 explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >

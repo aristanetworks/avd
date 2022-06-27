@@ -12,6 +12,7 @@ router_traffic_engineering:
             binding_sid: 970810
             description: "SRTE POLICY FOR 1.2.3.4 COLOR 70810"
             name: "SRTE-1.2.3.4-70810"
+            sbfd_remote_discriminator: 155.2.1.1
             path_group:
               - preference: 180
                 explicit_null: "ipv4 ipv6"
@@ -32,6 +33,7 @@ router_traffic_engineering:
         colors:
           - value: 20320
             binding_sid: 978320
+            sbfd_remote_discriminator: 2600599809
             path_group:
               - preference: 80
                 explicit_null: "ipv4"
