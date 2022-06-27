@@ -65,6 +65,12 @@ def ipv4_ipv6_assert(INPUT_RESP, EXPECTED_OUTPUT):
 class TestIpAddrFilter():
     @pytest.mark.parametrize("VALIDATE_INPUT,VALIDATE_EXPECTED", VALIDATE_LIST_INPUT_EXPECTED)
     def test_validate_function(self, VALIDATE_INPUT, VALIDATE_EXPECTED):
+        '''
+        Test the validate function with manual test cases
+        Input: str, int, bool
+        Output: Filter all valid IP
+        bool input (0/1) is not considered a valid IP
+        '''
         resp = f.validate(VALIDATE_INPUT)
         if resp:
             resp = str(resp)
@@ -72,6 +78,9 @@ class TestIpAddrFilter():
 
     @pytest.mark.parametrize("IP_ADDRESS", IP_ADDRESSES_INPUT)
     def test_ipaddr_validate_item(self, IP_ADDRESS):
+        '''
+        Test single input to ipaddr('validate')
+        '''
         resp = f.ipaddr(IP_ADDRESS)
         expected_ip = f.validate(IP_ADDRESS)
         if type(IP_ADDRESS) in (str, int) and expected_ip:
@@ -79,73 +88,106 @@ class TestIpAddrFilter():
         else:
             assert resp is None
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_VALIDATE_EXPECTED)])
-    def test_ipaddr_validate_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT)
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'validate') == IP_ADDRESS_LIST_EXPECTED
-        ipv4_ipv6_assert(resp_list, IP_ADDRESS_LIST_EXPECTED)
+    def test_ipaddr_validate_list(self):
+        '''
+        Test list input to ipaddr('validate')
+        '''
+        resp_list = f.ipaddr(IP_ADDRESSES_INPUT)
+        assert f.ipaddr(IP_ADDRESSES_INPUT) == IP_ADDRESSES_VALIDATE_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'validate') == IP_ADDRESSES_VALIDATE_EXPECTED
+        ipv4_ipv6_assert(resp_list, IP_ADDRESSES_VALIDATE_EXPECTED)
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_NET_EXPECTED)])
-    def test_ipaddr_network_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='net')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'net') == IP_ADDRESS_LIST_EXPECTED
-        ipv4_ipv6_assert(resp_list, IP_ADDRESS_LIST_EXPECTED)
+    def test_ipaddr_network_list(self):
+        '''
+        Test list input to ipaddr('net')
+        network -> Filter only valid network IP (with their prefix)
+        '''
+        resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='net')
+        assert resp_list == IP_ADDRESSES_NET_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'net') == IP_ADDRESSES_NET_EXPECTED
+        ipv4_ipv6_assert(resp_list, IP_ADDRESSES_NET_EXPECTED)
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_SUBNETWORK_EXPECTED)])
-    def test_ipaddr_subnetwork_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='subnet')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'subnet') == IP_ADDRESS_LIST_EXPECTED
-        ipv4_ipv6_assert(resp_list, IP_ADDRESS_LIST_EXPECTED)
+    def test_ipaddr_subnetwork_list(self):
+        '''
+        Test list input to ipaddr('subnet')
+        subnet -> Filter a valid IP and return their Network IP
+        default prefix is /32 if it's just an IP
+        '''
+        resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='subnet')
+        assert resp_list == IP_ADDRESSES_SUBNETWORK_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'subnet') == IP_ADDRESSES_SUBNETWORK_EXPECTED
+        ipv4_ipv6_assert(resp_list, IP_ADDRESSES_SUBNETWORK_EXPECTED)
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_NETMASK_EXPECTED)])
-    def test_ipaddr_netmask_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='netmask')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'netmask') == IP_ADDRESS_LIST_EXPECTED
-        ipv4_ipv6_assert(resp_list, IP_ADDRESS_LIST_EXPECTED)
+    def test_ipaddr_netmask_list(self):
+        '''
+        Test list input to ipaddr('netmask')
+        netmask -> Filter a valid IP and return their subnet Mask
+        default subnet mask is 255.255.255.255 if it's just an IP
+        '''
+        resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='netmask')
+        assert resp_list == IP_ADDRESSES_NETMASK_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'netmask') == IP_ADDRESSES_NETMASK_EXPECTED
+        ipv4_ipv6_assert(resp_list, IP_ADDRESSES_NETMASK_EXPECTED)
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_PREFIX_EXPECTED)])
-    def test_ipaddr_prefixes_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='prefix')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'prefix') == IP_ADDRESS_LIST_EXPECTED
+    def test_ipaddr_prefixes_list(self):
+        '''
+        Test list input to ipaddr('prefix')
+        prefix -> Filter a valid IP and return their network prefix
+        default prefix is /32 if it's just an IP
+        '''
+        assert f.ipaddr(IP_ADDRESSES_INPUT, method='prefix') == IP_ADDRESSES_PREFIX_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'prefix') == IP_ADDRESSES_PREFIX_EXPECTED
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_SIZE_EXPECTED)])
-    def test_ipaddr_size_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='size')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'size') == IP_ADDRESS_LIST_EXPECTED
+    def test_ipaddr_size_list(self):
+        '''
+        Test list input to ipaddr('size')
+        size -> Filter a valid IP/pool and return the maximum # possible IPs
+        default size is 1 IP (for a valid IP)
+        '''
+        assert f.ipaddr(IP_ADDRESSES_INPUT, method='size') == IP_ADDRESSES_SIZE_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'size') == IP_ADDRESSES_SIZE_EXPECTED
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_NETWORK_ADDRESSES_EXPECTED)])
-    def test_ipaddr_network_address_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='network')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'network') == IP_ADDRESS_LIST_EXPECTED
-        ipv4_ipv6_assert(resp_list, IP_ADDRESS_LIST_EXPECTED)
+    def test_ipaddr_network_address_list(self):
+        '''
+        Test list input to ipaddr('network')
+        network -> Filter a valid IP/pool and return only network IP
+        If its only an IP address then the same is returned
+        '''
+        resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='network')
+        assert resp_list == IP_NETWORK_ADDRESSES_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'network') == IP_NETWORK_ADDRESSES_EXPECTED
+        ipv4_ipv6_assert(resp_list, IP_NETWORK_ADDRESSES_EXPECTED)
 
-    @pytest.mark.parametrize("IP_ADDRESS_LIST_INPUT,IP_ADDRESS_LIST_EXPECTED", [(IP_ADDRESSES_INPUT, IP_ADDRESSES_EXPECTED)])
-    def test_ipaddr_network_address_list(self, IP_ADDRESS_LIST_INPUT, IP_ADDRESS_LIST_EXPECTED):
-        resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method='address')
-        assert resp_list == IP_ADDRESS_LIST_EXPECTED
-        assert get_by_method(IP_ADDRESS_LIST_INPUT, 'address') == IP_ADDRESS_LIST_EXPECTED
-        ipv4_ipv6_assert(resp_list, IP_ADDRESS_LIST_EXPECTED)
+    def test_ipaddr_address_list(self):
+        '''
+        Test list input to ipaddr('address')
+        address -> Filter a valid IP/pool and return the IP address with out prefix
+        If its only an IP address then the same is returned
+        '''
+        resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='address')
+        assert resp_list == IP_ADDRESSES_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'address') == IP_ADDRESSES_EXPECTED
+        ipv4_ipv6_assert(resp_list, IP_ADDRESSES_EXPECTED)
 
-    @pytest.mark.parametrize("INPUT_LISTS,IP_ADDRESS_LISTS_EXPECTED", [((IP_ADDRESSES_INPUT, DEFAULTATTR_INPUT), IP_ADDRESSES_DEFAULTATTR_EXPECTED)])
-    def test_ipaddr_defaultattr_offset_list(self, INPUT_LISTS, IP_ADDRESS_LISTS_EXPECTED):
-        IP_ADDRESS_LIST_INPUT = INPUT_LISTS[0]
-        for indx, INPUT_VAL in enumerate(INPUT_LISTS[1]):
-            EXPECTED_OUTPUT = IP_ADDRESS_LISTS_EXPECTED[indx]
-            resp_list = f.ipaddr(IP_ADDRESS_LIST_INPUT, method=INPUT_VAL)
-            print(resp_list, EXPECTED_OUTPUT)
+    def test_ipaddr_defaultattr_offset_list(self):
+        '''
+        1) Test list input to ipaddr(<some_other_subnet>)
+            <some_other_subnet> -> Filter a valid IP/pool which is subset of <some_other_subnet>
+        2) Test list input to ipaddr(<integer>)
+            <integer> -> Calculate the network IP and then returns the Network IP + <integer>
+            If its only an IP address then the same is returned
+        '''
+        for indx, INPUT_VAL in enumerate(DEFAULTATTR_INPUT):
+            EXPECTED_OUTPUT = IP_ADDRESSES_DEFAULTATTR_EXPECTED[indx]
+            resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method=INPUT_VAL)
             assert resp_list == EXPECTED_OUTPUT
 
-    @pytest.mark.parametrize("INPUT_LISTS,IP_ADDRESS_LISTS_EXPECTED", [((IP_ADDRESSES_INPUT, INPUT_IPMATH_OFFSET), IPMATH_ADDRESSES_EXPECTED)])
-    def test_ipaddr_network_address_list(self, INPUT_LISTS, IP_ADDRESS_LISTS_EXPECTED):
-        IP_ADDRESS_LIST_INPUT = INPUT_LISTS[0]
-        for index, OFFSET in enumerate(INPUT_LISTS[1]):
-            resp_list = f.ipmath(IP_ADDRESS_LIST_INPUT, OFFSET)
-            IP_ADDRESS_LIST_EXPECTED = IP_ADDRESS_LISTS_EXPECTED[index]
+    def test_ipmath_address_list(self):
+        '''
+        Test list input to ipmath(<integer>)
+        Return the IP Address + <integer>
+        '''
+        for index, OFFSET in enumerate(INPUT_IPMATH_OFFSET):
+            resp_list = f.ipmath(IP_ADDRESSES_INPUT, OFFSET)
+            IP_ADDRESS_LIST_EXPECTED = IPMATH_ADDRESSES_EXPECTED[index]
             assert resp_list == IP_ADDRESS_LIST_EXPECTED
