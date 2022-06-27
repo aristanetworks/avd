@@ -198,5 +198,8 @@ uplink_ptp:
   enable: < boolean | default -> false >
 
 # Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
+# Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
+# No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)
+# The configuration is intended to be used as multicast underlay for EVPN OISM overlay
 underlay_multicast: < boolean | default -> false >
 ```
