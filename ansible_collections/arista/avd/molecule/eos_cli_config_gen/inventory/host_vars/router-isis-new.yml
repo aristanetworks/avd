@@ -17,6 +17,21 @@ router_isis:
     - Ethernet2
     - Vlan4093
     - Loopback1
+  redistribute_routes:
+    - source_protocol: static
+      include_leaked: True
+      route_map: RM-STATIC-TO-ISIS
+    - source_protocol: isis
+      route_map: RM-REDIS-ISIS-INSTANCE
+    - source_protocol: ospf
+      ospf_route_type: internal
+    - source_protocol: ospf
+      ospf_route_type: external
+      route_map: RM-OSPF-EXTERNAL-TO-ISIS
+    - source_protocol: ospf
+      include_leaked: True
+      ospf_route_type: nssa-external
+      route_map: RM-OSPF-NSSA_EXT-TO-ISIS
   address_family_ipv4:
     maximum_paths: 4
     fast_reroute_ti_lfa:
@@ -25,6 +40,9 @@ router_isis:
       srlg:
         enable: true
         strict: true
+    tunnel_source_labeled_unicast:
+      enabled: True
+      rcf: lu_2_sr_pfx()
   address_family_ipv6:
     maximum_paths: 4
     fast_reroute_ti_lfa:
@@ -33,6 +51,11 @@ router_isis:
         enable: true
   segment_routing_mpls:
     enabled: true
+    prefix_segments:
+      - prefix: 155.2.1.1/32
+        index: 211
+      - prefix: 2001:cafe:155::/64
+        index: 6211
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
