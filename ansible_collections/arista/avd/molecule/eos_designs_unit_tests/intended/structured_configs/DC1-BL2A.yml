@@ -98,7 +98,7 @@ router_bgp:
       threshold: 5
       enabled: true
       expiry_timeout: 10
-    domain_identifier: '65000:3'
+    domain_identifier: '65000:1'
   bgp:
     bestpath:
       d_path: true
@@ -108,14 +108,7 @@ router_bgp:
     peer_groups:
       MPLS-VPN-RR-PEERS:
         activate: true
-    domain_identifier: '65000:4'
-  address_family_vpn_ipv6:
-    neighbor_default_encapsulation_mpls_next_hop_self:
-      source_interface: Loopback0
-    peer_groups:
-      MPLS-VPN-RR-PEERS:
-        activate: true
-    domain_identifier: '65000:4'
+    domain_identifier: '65000:2'
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.16

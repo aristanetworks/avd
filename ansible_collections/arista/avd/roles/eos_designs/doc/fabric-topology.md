@@ -427,35 +427,35 @@ default_interfaces:
     # A new BGP peer-group is used for this neighborship -> "bgp_peer_groups.mpls_vpn_gateway_overlay_peers".
     # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
     mpls_vpn_gateway:
-        enabled: < true | false | Default -> False >
+        enabled: < true | false | default -> False >
 
         # Domain IDs are required to perform D-Path lookups for loop prevention. If omitted, the defaults are used.
-        evpn_domain_id: < "nn:nn" | Default -> "65000:1" >
-        mpls_domain_id: < "nn:nn" | Default -> "65000:2" >
+        evpn_domain_id: < "nn:nn" | default -> "65000:1" >
+        mpls_domain_id: < "nn:nn" | default -> "65000:2" >
 
         # D-path can be turned off for the inter-vpn export if desired.
-        enable_d_path: < true | false | Default -> true >
+        enable_d_path: < true | false | default -> true >
 
         # Maximum number of routes to allow from the MPLS domain.
-        maximum_routes: < integer | Default -> 0 >
+        maximum_routes: < integer | default -> 0 >
 
         # Local-as to use when peering to the MPLS domain.
-        local_as: < bgp asn | Default -> False >
+        local_as: < bgp_asn | default -> none >
 
         # Address families in which to perform interworking.
-        address_families: < List of address families | Default -> [ vpn-ipv4 ] >
+        address_families: < List of address families | default -> [ vpn-ipv4 ] >
 
         # Interface to use for BGP update source in the MPLS-VPN address families and next-hop manipulation for routes advertised between domains.
-        mpls_tunnel_source: < Update and tunnel source interface for mpls tunnel | Default -> Loopback0 >
+        mpls_tunnel_source: < Update and tunnel source interface for mpls tunnel | default -> Loopback0 >
 
         # Define remote peers of the EVPN to MPLS-VPN Gateway.
         remote_peers:
           - hostname: < Hostname of remote mpls-vpn peer >
             ip_address: < Peering IP of remote mpls-vpn peer >
-            bgp_as: < bgp asn of remote mpls-vpn peer >
+            bgp_as: < bgp_asn of remote mpls-vpn peer >
           - hostname: < Hostname of remote mpls-vpn peer >
             ip_address: < Peering IP of remote mpls-vpn peer >
-            bgp_as: < bgp asn of remote mpls-vpn peer >
+            bgp_as: < bgp_asn of remote mpls-vpn peer >
 
 ```
 
