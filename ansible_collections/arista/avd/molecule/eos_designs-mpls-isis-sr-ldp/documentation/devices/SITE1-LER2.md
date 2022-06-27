@@ -613,17 +613,17 @@ router isis CORE
 
 #### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-OVERLAY-PEERS | True |
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-OVERLAY-PEERS | True | - | - |
 
 ### Router BGP VPN-IPv6 Address Family
 
 #### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-OVERLAY-PEERS | True |
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-OVERLAY-PEERS | True | - | - |
 
 ### Router BGP VLANs
 

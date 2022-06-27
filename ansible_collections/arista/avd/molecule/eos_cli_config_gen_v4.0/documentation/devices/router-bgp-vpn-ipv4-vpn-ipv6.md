@@ -122,29 +122,29 @@ interface Management1
 
 #### VPN-IPv4 Neighbors
 
-| Neighbor | Activate |
-| -------- | -------- |
-| 192.168.255.4 | True |
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 192.168.255.4 | True | - | - |
 
 #### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-IBGP-PEERS | True |
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | - | - |
 
 ### Router BGP VPN-IPv6 Address Family
 
 #### VPN-IPv6 Neighbors
 
-| Neighbor | Activate |
-| -------- | -------- |
-| 192.168.255.4 | True |
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 192.168.255.4 | True | - | - |
 
 #### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-IBGP-PEERS | True |
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | - | - |
 
 ### Router BGP Device Configuration
 

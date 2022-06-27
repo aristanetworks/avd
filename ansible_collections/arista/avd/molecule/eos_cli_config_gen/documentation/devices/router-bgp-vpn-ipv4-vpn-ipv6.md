@@ -126,15 +126,15 @@ interface Management1
 
 #### VPN-IPv4 Neighbors
 
-| Neighbor | Activate |
-| -------- | -------- |
-| 192.168.255.4 | True |
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 |
 
 #### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-IBGP-PEERS | True |
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 |
 
 ### Router BGP VPN-IPv6 Address Family
 
@@ -142,15 +142,15 @@ interface Management1
 
 #### VPN-IPv6 Neighbors
 
-| Neighbor | Activate |
-| -------- | -------- |
-| 2001:cafe:192:168::4 | True |
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 |
 
 #### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-IBGP-PEERS | True |
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 |
 
 ### Router BGP Device Configuration
 
