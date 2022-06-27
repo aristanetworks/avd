@@ -1,11 +1,11 @@
-{% if switch.mpls_vpn_gateway is arista.avd.defined(true) and "vpn-ipv6" in switch.mpls_vpn_gateway_address_families %}
+{% if switch.mpls_vpn_gateway.enabled is arista.avd.defined(true) and "vpn-ipv6" in switch.mpls_vpn_gateway.address_families %}
   address_family_vpn_ipv6:
     neighbor_default_encapsulation_mpls_next_hop_self:
-      source_interface: {{ switch.mpls_vpn_gateway_mpls_tunnel_source }}
+      source_interface: {{ switch.mpls_vpn_gateway.mpls_tunnel_source }}
     peer_groups:
       {{ switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.name }}:
         activate: true
-{%     if switch.mpls_vpn_domain_dpath_enabled is arista.avd.defined(true) %}
-    domain_identifier: "{{ switch.mpls_vpn_domain_identifier }}"
+{%     if switch.mpls_vpn_gateway.dpath_enabled is arista.avd.defined(true) %}
+    domain_identifier: "{{ switch.mpls_vpn_gateway.mpls_vpn_domain_identifier }}"
 {%     endif %}
 {% endif %}

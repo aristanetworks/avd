@@ -1,6 +1,6 @@
-{% if switch.mpls_overlay_role in ["server", "client"] or (switch.mpls_vpn_gateway is arista.avd.defined(true) and "vpn-ipv4" in switch.mpls_vpn_gateway_address_families) %}
+{% if switch.mpls_overlay_role in ["server", "client"] or (switch.mpls_vpn_gateway.enabled is arista.avd.defined(true) and "vpn-ipv4" in switch.mpls_vpn_gateway.address_families) %}
   address_family_vpn_ipv4:
-{%     if switch.mpls_overlay_role == "client" or switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+{%     if switch.mpls_overlay_role == "client" or switch.mpls_vpn_gateway.enabled is arista.avd.defined(true) %}
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
 {%     endif %}
@@ -13,11 +13,11 @@
         activate: true
 {%         endif %}
 {%     endif %}
-{%     if switch.mpls_vpn_gateway is arista.avd.defined(true) %}
+{%     if switch.mpls_vpn_gateway.enabled is arista.avd.defined(true) %}
       {{ switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.name }}:
         activate: true
-{%         if switch.mpls_vpn_domain_dpath_enabled is arista.avd.defined(true) %}
-    domain_identifier: "{{ switch.mpls_vpn_domain_identifier }}"
+{%         if switch.mpls_vpn_gateway.dpath_enabled is arista.avd.defined(true) %}
+    domain_identifier: "{{ switch.mpls_vpn_gateway.mpls_vpn_domain_identifier }}"
 {%         endif %}
 {%     endif %}
 {% endif %}

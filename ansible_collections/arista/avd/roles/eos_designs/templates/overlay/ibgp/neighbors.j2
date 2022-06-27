@@ -36,7 +36,7 @@
       description: {{ evpn_route_client }}
 {%     endfor %}
 {% endif %}
-{% for mpls_vpn_gw_remote_peer in switch.mpls_vpn_gateway_remote_peers | arista.avd.natural_sort %}
+{% for mpls_vpn_gw_remote_peer in switch.mpls_vpn_gateway.remote_peers | arista.avd.natural_sort %}
     {{ mpls_vpn_gw_remote_peer.ip_address }}:
       peer_group: {{ switch.bgp_peer_groups.mpls_vpn_gateway_overlay_peers.name }}
       description: {{ mpls_vpn_gw_remote_peer.hostname }}

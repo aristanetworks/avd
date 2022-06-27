@@ -961,47 +961,18 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mpls_vpn_gateway(self):
         if self.underlay_router is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.enabled", default=False)
-
-    @cached_property
-    def evpn_domain_identifier(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.evpn_domain_id", default="65000:1")
-
-    @cached_property
-    def mpls_vpn_domain_identifier(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.mpls_domain_id", default="65000:2")
-
-    @cached_property
-    def mpls_vpn_domain_dpath_enabled(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.enable_d_path", default=True)
-
-    @cached_property
-    def mpls_vpn_gateway_address_families(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.address_families", default=["vpn-ipv4"])
-
-    @cached_property
-    def mpls_vpn_gateway_remote_peers(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.remote_peers", default=[])
-
-    @cached_property
-    def mpls_vpn_gateway_mpls_tunnel_source(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.mpls_tunnel_source", default="Loopback0")
-
-    @cached_property
-    def mpls_vpn_gateway_maximum_routes(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.maximum_routes", default=0)
-
-    @cached_property
-    def mpls_vpn_gateway_local_as(self):
-        if self.underlay_router is True and self.mpls_vpn_gateway is True:
-            return get(self._switch_data_combined, "mpls_vpn_gateway.local_as", default=False)
+            return {
+                "enabled": get(self._switch_data_combined, "mpls_vpn_gateway.enabled", default=False),
+                "evpn_domain_identifier": get(self._switch_data_combined, "mpls_vpn_gateway.evpn_domain_id", default="65000:1"),
+                "mpls_vpn_domain_identifier": get(self._switch_data_combined, "mpls_vpn_gateway.mpls_domain_id", default="65000:2"),
+                "dpath_enabled": get(self._switch_data_combined, "mpls_vpn_gateway.enable_d_path", default=True),
+                "address_families": get(self._switch_data_combined, "mpls_vpn_gateway.address_families", default=["vpn-ipv4"]),
+                "remote_peers": get(self._switch_data_combined, "mpls_vpn_gateway.remote_peers", default=[]),
+                "mpls_tunnel_source": get(self._switch_data_combined, "mpls_vpn_gateway.mpls_tunnel_source", default="Loopback0"),
+                "maximum_routes": get(self._switch_data_combined, "mpls_vpn_gateway.maximum_routes", default=0),
+                "local_as": get(self._switch_data_combined, "mpls_vpn_gateway.local_as"),
+            }
+        return None
 
     @cached_property
     def bgp_defaults(self):
