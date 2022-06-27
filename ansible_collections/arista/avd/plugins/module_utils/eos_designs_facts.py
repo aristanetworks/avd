@@ -157,10 +157,7 @@ class EosDesignsFacts:
         """
         internal switch.default_downlink_interfaces set based on platform_settings
         """
-        return self._range_expand(default(
-            get(self.platform_settings, "default_interfaces.downlink"),
-            [])
-        )
+        return self._range_expand(get(self.platform_settings, "default_downlink_interfaces", default=[]))
 
     @cached_property
     def default_evpn_role(self):
@@ -409,39 +406,45 @@ class EosDesignsFacts:
     def uplink_interfaces(self):
         return self._range_expand(default(
             get(self._switch_data_combined, "uplink_interfaces"),
-            get(self.platform_settings, "default_interfaces.uplink"),
+            get(self.platform_settings, "default_uplink_interfaces"),
             [])
         )
 
     @cached_property
     def uplink_switch_interfaces(self):
-        auto_uplink_interfaces = []
-        if self.uplink_switches:
-            # import epdb; epdb.serve()
-            for uplink_switch_index, uplink_switch in enumerate(self.uplink_switches):
-                uplink_switch_facts = get(self._hostvars,
-                                          f"avd_switch_facts..{uplink_switch}..switch", required=False,
-                                          org_key=f"avd_switch_facts.({uplink_switch}).switch",
-                                          separator="..")
-                if len(uplink_switch_facts.default_downlink_interfaces) > 0:
+        uplink_switch_interfaces = get(self._switch_data_combined, "uplink_switch_interfaces")
+        if uplink_switch_interfaces is not None:
+            return uplink_switch_interfaces
 
-                    actual_parallel_uplinks = int(
-                        len(self.uplink_switches) /
-                        len(list(dict.fromkeys(self.uplink_switches))))
+        if self.uplink_switches is None:
+            return []
 
-                    # Get the lead interface to each uplink switch
-                    if uplink_switch_index % actual_parallel_uplinks == 0:
-                        for uplink in range(0, actual_parallel_uplinks):
-                            auto_uplink_interfaces.append(
-                                uplink_switch_facts.default_downlink_interfaces[
-                                    (self.id - 1) * self.max_parallel_uplinks + uplink
-                                ]
-                            )
+        uplink_switch_interfaces = []
+        for uplink_switch_index, uplink_switch in enumerate(self.uplink_switches):
+            uplink_switch_facts: EosDesignsFacts = get(self._hostvars,
+                                                       f"avd_switch_facts..{uplink_switch}..switch",
+                                                       required=True,
+                                                       org_key=f"avd_switch_facts.({uplink_switch}).switch",
+                                                       separator="..")
 
-        return default(
-            get(self._switch_data_combined, "uplink_switch_interfaces"),
-            auto_uplink_interfaces
-        )
+            # Create a list of indexes of uplink_switches where it is this uplink_switch (parallel uplinks)
+            indices_of_uplinks_to_uplink_switch = [index for index, switch in enumerate(self.uplink_switches) if switch == uplink_switch]
+            # Out of the parallel uplinks, where is this uplink?. Normally this would be 0 for single uplinks.
+            index_of_parallel_uplinks = indices_of_uplinks_to_uplink_switch.index(uplink_switch_index)
+
+            # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
+            # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
+            # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
+            downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
+            if len(uplink_switch_facts.default_downlink_interfaces) > downlink_index:
+                uplink_switch_interfaces.append(uplink_switch_facts.default_downlink_interfaces[downlink_index])
+            else:
+                raise AristaAvdError(
+                    f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"does not have 'default_downlink_interfaces[{downlink_index}]' set under 'platform_settings'"
+                )
+
+        return uplink_switch_interfaces
 
     @cached_property
     def uplink_interface_speed(self):
@@ -1031,7 +1034,7 @@ class EosDesignsFacts:
         if self.mlag is True:
             return self._range_expand(default(
                 get(self._switch_data_combined, "mlag_interfaces"),
-                get(self.platform_settings, "default_interfaces.mlag"),
+                get(self.platform_settings, "default_mlag_interfaces"),
                 [])
             )
         return None
