@@ -448,7 +448,7 @@ default_interfaces:
         # Interface to use for BGP update source in the MPLS-VPN address families and next-hop manipulation for routes advertised between domains.
         mpls_tunnel_source: < Update and tunnel source interface for mpls tunnel | default -> Loopback0 >
 
-        # Define remote peers of the EVPN to MPLS-VPN Gateway.
+        # Define remote peers of the EVPN to MPLS-VPN Gateway. The hostname, ip_address and bgp_asn variables must be defined for each remote peer.
         remote_peers:
           - hostname: < Hostname of remote mpls-vpn peer >
             ip_address: < Peering IP of remote mpls-vpn peer >
