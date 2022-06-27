@@ -147,8 +147,8 @@ bgp_peer_groups:
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config: < dictionary >
   mpls_vpn_gateway_overlay_peers:
-    name: < name of peer group | Default -> MPLS-VPN-GATEWAY-OVERLAY-PEERS >
-    password: "< encrypted password >"
+    name: < peer_group_name | default -> MPLS-VPN-GATEWAY-OVERLAY-PEERS >
+    password: "< encrypted_password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
