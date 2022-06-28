@@ -111,14 +111,20 @@ port_profiles:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local endpoint port(s) | required
+        # The lists "endpoint_ports", "switch_ports" and "switches" must have the same length.
+        # Each list item is one switchport.
+
+        # Endpoint port(s). Used for description. | required unless description is set
         endpoint_ports: [ < interface_name > ]
 
-        # List of port(s) connected to switches | required
+        # List of switch interfac(es) | required
         switch_ports: [ < switchport_interface > ]
 
         # List of switch(es) | required
         switches: [ < device > ]
+
+        # Interface descriptions Description | optional
+        description: <description>
 
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >

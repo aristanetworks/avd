@@ -1,9 +1,28 @@
 {% for connected_endpoints_key in connected_endpoints_keys | arista.avd.convert_dicts('key') %}
 {%     set switch_connected_endpoints = hostvars[inventory_hostname][connected_endpoints_key.key] | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
-{%     do connected_endpoints.update({ connected_endpoints_key.key: {} }) %}
 {%     for connected_endpoint in switch_connected_endpoints %}
-{%         if connected_endpoint.adapters | selectattr('switches','arista.avd.contains',inventory_hostname) | length > 0 %}
-{%             do connected_endpoints[connected_endpoints_key.key].update({connected_endpoint.name: connected_endpoint}) %}
+{%         if connected_endpoint.adapters | selectattr('switches', 'arista.avd.contains', inventory_hostname) | length > 0 %}
+{%             do connected_endpoint.update({"type": connected_endpoints_key.type}) %}
+{%             do connected_endpoints.append(connected_endpoint) %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
+{% if network_ports is arista.avd.defined %}
+{%     for network_port_item in network_ports %}
+{%         if inventory_hostname in network_port_item.switches | arista.avd.default([]) %}
+{%             set switch_ports = network_port_item.switch_ports | arista.avd.default([]) | arista.avd.range_expand %}
+{#             Create list of inventory_hostname once per interface to be compatible with existing adapters style #}
+{%             set switches = [inventory_hostname] * (switch_ports | length) %}
+{%             set description = network_port_item.description | arista.avd.default %}
+{%             do network_port_item.update({
+                   "switch_ports": switch_ports,
+                   "switches": switches,
+               }) %}
+{%             do connected_endpoints.append({
+                   "name": description,
+                   "type": none,
+                   "adapters": [network_port_item]
+               }) %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
