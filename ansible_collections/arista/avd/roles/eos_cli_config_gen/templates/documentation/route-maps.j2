@@ -7,19 +7,10 @@
 {%     for route_map in route_maps | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 #### {{ route_map.name }}
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
 {%         for sequence in route_map.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
-{%             if sequence.match is arista.avd.defined %}
-{%                 for match_rule in sequence.match | arista.avd.natural_sort %}
-| {{ sequence.sequence }} | {{ sequence.type }} | match {{ match_rule }} | {{ sequence.sub_route_map | arista.avd.default('-') }} | {{ sequence.continue | arista.avd.default('-') }} |
-{%                 endfor %}
-{%             endif %}
-{%             if sequence.set is arista.avd.defined %}
-{%                 for set_rule in sequence.set | arista.avd.natural_sort %}
-| {{ sequence.sequence }} | {{ sequence.type }} | set {{ set_rule }} | {{ sequence.sub_route_map | arista.avd.default('-') }} | {{ sequence.continue | arista.avd.default('-') }} |
-{%                 endfor %}
-{%             endif %}
+| {{ sequence.sequence }} | {{ sequence.type }} | {{ sequence.match | arista.avd.default(['-']) | join('<br>') }} | {{ sequence.set | arista.avd.default(['-']) | join('<br>') }} | {{ sequence.sub_route_map | arista.avd.default('-') }} | {{ sequence.continue | arista.avd.default('-') }} |
 {%         endfor %}
 
 {%     endfor %}

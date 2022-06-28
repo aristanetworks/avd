@@ -489,10 +489,10 @@ ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 
 #### RM-CONN-2-BGP
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - |
-| 30 | permit | match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+| 30 | permit | ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 | - | - | - |
 
 ### Route-maps Device Configuration
 

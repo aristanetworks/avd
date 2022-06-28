@@ -1072,34 +1072,37 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### RM-CONN-2-BGP
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - |
-| 20 | permit | match ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+| 20 | permit | ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - | - |
 
 #### RM-EVPN-FILTER-AS65101
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65101 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65101 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-EVPN-FILTER-AS65110.100
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65110.100 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65110.100 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-EVPN-FILTER-AS65111.100
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65111.100 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65111.100 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-MLAG-PEER-IN
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | permit | set origin incomplete | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | origin incomplete | - | - |
 
 ### Route-maps Device Configuration
 

@@ -576,34 +576,38 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### RM-CONN-2-BGP
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - |
-| 20 | permit | match ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+| 20 | permit | ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - | - |
 
 #### RM-EVPN-FILTER-AS65200
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65200 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65200 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-EVPN-FILTER-AS65201
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65201 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65201 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-EVPN-FILTER-AS65210
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65210 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65210 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-EVPN-FILTER-AS65211
 
-| Sequence | Type | Match and/or Set | Sub-Route-Map | Continue |
-| -------- | ---- | ---------------- | ------------- | -------- |
-| 10 | deny | match as 65211 | - | - |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | as 65211 | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ### Route-maps Device Configuration
 
