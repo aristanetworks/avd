@@ -365,6 +365,10 @@ defaults <- node_group <- node_group.node <- node
     # Enable / Disable MLAG dual primary detection
     mlag_dual_primary_detection: < true | false -> default false >
 
+    # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
+    # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
+    mlag_ibgp_origin_incomplete: < true | false | default -> true >
+
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
