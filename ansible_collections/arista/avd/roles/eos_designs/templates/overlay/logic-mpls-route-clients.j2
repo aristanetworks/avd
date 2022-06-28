@@ -1,32 +1,52 @@
 {% if switch.mpls_overlay_role == "server" %}
 {%     set overlay_data.mpls_route_clients = {} %}
 {%     set overlay_data.mpls_rr_peers = {} %}
-{# Look for switches pointing to us as evpn_route_server #}
-{%     for fabric_switch in groups[fabric_name] if fabric_switch not in overlay_data.mpls_route_servers | arista.avd.natural_sort %}
-{%         if avd_switch_facts[fabric_switch].switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ fabric_switch ~ '].switch') %}
-{%             set fabric_switch_vars = avd_switch_facts[fabric_switch] %}
-{%             set fabric_switch_mpls_overlay_role = fabric_switch_vars.switch.mpls_overlay_role | arista.avd.default('none') %}
-{%             set fabric_switch_mpls_route_servers = fabric_switch_vars.switch.mpls_route_reflectors | arista.avd.default([]) %}
-{%             if inventory_hostname in fabric_switch_mpls_route_servers and fabric_switch_mpls_overlay_role in ['client', 'server'] %}
+
+{%     set overlay_peers = avd_overlay_peers[inventory_hostname] | arista.avd.default([]) %}
+
+{# Parse switches pointing to us as mpls_route_reflector #}
+{%     for peer in overlay_peers %}
+{%         set peer_facts = avd_switch_facts[peer] %}
+{%         if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ peer ~ '].switch') %}
+{%             if inventory_hostname in peer_facts.switch.mpls_route_reflectors | arista.avd.default([]) and
+                  peer_facts.switch.mpls_overlay_role in ['client', 'server'] and
+                  peer not in overlay_data.evpn_route_reflectors | arista.avd.default([]) %}
 {# Found a matching client. Gathering information for this client #}
 {%                 set client = namespace() %}
-{%                 set client.bgp_as = fabric_switch_vars.switch.bgp_as %}
-{%                 set client.ip_address = fabric_switch_vars.switch.router_id %}
-{%                 do overlay_data.mpls_route_clients.update({ fabric_switch: client }) %}
+{%                 set client.bgp_as = peer_facts.switch.bgp_as %}
+{%                 if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
+{%                     set client.ip_address = peer_facts.switch.ipv6_router_id %}
+{%                 else %}
+{%                     set client.ip_address = peer_facts.switch.router_id %}
+{%                 endif %}
+{%                 do overlay_data.mpls_route_clients.update({ peer: client }) %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
-{%     for node_group in rr.node_groups %}
-{%         if inventory_hostname in rr.node_groups[node_group].nodes and rr.node_groups[node_group].nodes | length > 1 %}
-{%             for node in rr.node_groups[node_group].nodes %}
-{%                 if node != inventory_hostname %}
-{%                     set rr_peer_vars = avd_switch_facts[node] %}
-{%                     set rr_peer = namespace() %}
-{%                     set rr_peer.bgp_as = bgp_as %}
-{%                     set rr_peer.ip_address = rr_peer_vars.switch.router_id %}
-{%                     do overlay_data.mpls_rr_peers.update({ node: rr_peer }) %}
+
+{# All MPLS servers peer to each other by default #}
+{# To avoid parsing all devices in the fabric, looking for route-reflectors, we parse avd_overlay_peers keys  #}
+{# That list contains all devices pointed to in "evpn_route_servers", "mpls_route_reflectors" AND all devices #}
+{# with "mpls_overlay_role: server", so we have to check for mpls_overlay_role: server                        #}
+{%     for peer in avd_overlay_peers %}
+{%         if peer == inventory_hostname %}
+{%             continue %}
+{%         endif %}
+{%         set peer_facts = avd_switch_facts[peer] %}
+{%         if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ peer ~ '].switch') %}
+{%             if peer_facts.switch.mpls_overlay_role is arista.avd.defined('server') and
+                  peer not in overlay_data.mpls_route_reflectors and
+                  peer not in overlay_data.mpls_route_clients %}
+{# Found a matching peer. Gathering information for this rr_peer #}
+{%                 set rr_peer = namespace() %}
+{%                 set rr_peer.bgp_as = peer_facts.switch.bgp_as %}
+{%                 if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
+{%                     set rr_peer.ip_address = peer_facts.switch.ipv6_router_id %}
+{%                 else %}
+{%                     set rr_peer.ip_address = peer_facts.switch.router_id %}
 {%                 endif %}
-{%             endfor %}
+{%                 do overlay_data.mpls_rr_peers.update({ peer: rr_peer }) %}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endif %}

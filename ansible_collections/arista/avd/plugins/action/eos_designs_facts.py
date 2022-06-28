@@ -58,9 +58,17 @@ class ActionModule(ActionBase):
 
             for host in fabric_hosts:
                 host_evpn_route_servers = avd_switch_facts[host]['switch'].get('evpn_route_servers', [])
-
                 for peer in host_evpn_route_servers:
                     avd_overlay_peers.setdefault(peer, []).append(host)
+
+                host_mpls_route_reflectors = avd_switch_facts[host]['switch'].get('mpls_route_reflectors', [])
+                for peer in host_mpls_route_reflectors:
+                    avd_overlay_peers.setdefault(peer, []).append(host)
+
+                # Make sure a device with mpls_overlay_role:server is in the avd_overlay_peers dict.
+                # This is used for automatic peering between mpls route reflectors.
+                if avd_switch_facts[host]['switch'].get('mpls_overlay_role') == "server":
+                    avd_overlay_peers.setdefault(host, [])
 
                 host_topology_peers = avd_switch_facts[host]['switch'].get('uplink_peers', [])
 
