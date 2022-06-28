@@ -65,11 +65,6 @@ class ActionModule(ActionBase):
                 for peer in host_mpls_route_reflectors:
                     avd_overlay_peers.setdefault(peer, []).append(host)
 
-                # Make sure a device with mpls_overlay_role:server is in the avd_overlay_peers dict.
-                # This is used for automatic peering between mpls route reflectors.
-                if avd_switch_facts[host]['switch'].get('mpls_overlay_role') == "server":
-                    avd_overlay_peers.setdefault(host, [])
-
                 host_topology_peers = avd_switch_facts[host]['switch'].get('uplink_peers', [])
 
                 for peer in host_topology_peers:
