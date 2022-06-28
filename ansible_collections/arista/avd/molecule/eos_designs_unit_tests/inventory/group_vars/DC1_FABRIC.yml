@@ -198,6 +198,7 @@ l3leaf:
     DC1_BL2:
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
       mlag: false
+      mpls_overlay_role: client
       filter:
         tenants: [ all ]
         tags: [ wan ]
