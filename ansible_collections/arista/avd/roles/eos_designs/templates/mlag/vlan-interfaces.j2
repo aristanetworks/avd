@@ -19,6 +19,11 @@ vlan_interfaces:
     isis_metric: 50
     isis_network_point_to_point: true
 {%     endif %}
+{%     if underlay_multicast is arista.avd.defined(true) %}
+    pim:
+      ipv4:
+        sparse_mode: true
+{%     endif %}
 {%     if switch.mlag_peer_l3_vlan_structured_config is arista.avd.defined %}
     struct_cfg: {{ switch.mlag_peer_l3_vlan_structured_config }}
 {%     endif %}
@@ -45,6 +50,11 @@ vlan_interfaces:
     isis_enable: {{ switch.isis_instance_name }}
     isis_metric: 50
     isis_network_point_to_point: true
+{%     endif %}
+{%     if underlay_multicast is arista.avd.defined(true) %}
+    pim:
+      ipv4:
+        sparse_mode: true
 {%     endif %}
 {%     if switch.mlag_peer_l3_vlan_structured_config is arista.avd.defined
           and switch.mlag_peer_vlan_structured_config is not arista.avd.defined %}
