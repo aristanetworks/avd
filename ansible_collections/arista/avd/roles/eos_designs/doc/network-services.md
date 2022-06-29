@@ -419,7 +419,7 @@ svi_profiles:
         # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
         # peer_group names should not overlap between VRFs..
         bgp_peer_groups:
-          < BGP peer group name >:
+          - name: < BGP peer group name >
             remote_as: < bgp_as >
             description: "< description as string >"
             send_community: < standard | extended | large | all >

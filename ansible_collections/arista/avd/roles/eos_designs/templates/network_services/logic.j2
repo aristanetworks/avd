@@ -25,7 +25,7 @@
 {%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
 {%                     do vrf.update({'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address')}) %}
 {#                     svis & bgp_peers #}
-{%                     do vrf.update({'bgp_peer_groups': vrf.bgp_peer_groups | arista.avd.convert_dicts | arista.avd.natural_sort('name')}) %}
+{%                     do vrf.update({'bgp_peer_groups': vrf.bgp_peer_groups | arista.avd.natural_sort('name')}) %}
 {%                     set tmp_svis = [] %}
 {%                     for svi in vrf.svis | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%                         if svi.id | int in whitelist.vlans %}
