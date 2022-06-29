@@ -2920,6 +2920,7 @@ router_bgp:
               activate: < true | false >
               route_map_out: < route_map_name >
               route_map_in: < route_map_name >
+              peer_group: < peer_group_name >
           peer_groups:
             - name: < peer_group >
               activate: < true | false >

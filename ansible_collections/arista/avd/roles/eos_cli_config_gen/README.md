@@ -3336,6 +3336,7 @@ router_bgp:
               activate: < true | false >
               route_map_out: < route_map_name >
               route_map_in: < route_map_name >
+              peer_group: < pper_group_name >
           peer_groups:
             < peer_group >:
               activate: < true | false >
