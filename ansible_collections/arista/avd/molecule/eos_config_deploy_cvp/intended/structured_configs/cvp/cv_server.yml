@@ -1,50 +1,50 @@
 ---
 CVP_DEVICES:
-  - fqdn: DC1-BL1A
+  - hostname: DC1-BL1A
     parentContainerName: DC1_BL1
     configlets:
       - AVD_DC1-BL1A
-  - fqdn: DC1-BL1B
+  - hostname: DC1-BL1B
     parentContainerName: DC1_BL1
     configlets:
       - AVD_DC1-BL1B
-  - fqdn: DC1-L2LEAF1A
+  - hostname: DC1-L2LEAF1A
     parentContainerName: DC1_L2LEAF1
     configlets:
       - AVD_DC1-L2LEAF1A
-  - fqdn: DC1-L2LEAF2A
+  - hostname: DC1-L2LEAF2A
     parentContainerName: DC1_L2LEAF2
     configlets:
       - AVD_DC1-L2LEAF2A
-  - fqdn: DC1-L2LEAF2B
+  - hostname: DC1-L2LEAF2B
     parentContainerName: DC1_L2LEAF2
     configlets:
       - AVD_DC1-L2LEAF2B
-  - fqdn: DC1-LEAF1A
+  - hostname: DC1-LEAF1A
     parentContainerName: DC1_LEAF1
     configlets:
       - AVD_DC1-LEAF1A
-  - fqdn: DC1-LEAF2A
+  - hostname: DC1-LEAF2A
     parentContainerName: DC1_LEAF2
     configlets:
       - AVD_DC1-LEAF2A
-  - fqdn: DC1-LEAF2B
+  - hostname: DC1-LEAF2B
     parentContainerName: DC1_LEAF2
     configlets:
       - AVD_DC1-LEAF2B
-  - fqdn: DC1-SPINE1
+  - hostname: DC1-SPINE1
     parentContainerName: DC1_SPINES
     configlets:
       - AVD_DC1-SPINE1
-  - fqdn: DC1-SPINE2
+  - hostname: DC1-SPINE2
     parentContainerName: DC1_SPINES
     configlets:
       - AVD_DC1-SPINE2
-  - fqdn: DC1-SPINE3
+  - hostname: DC1-SPINE3
     parentContainerName: DC1_SPINES
     configlets:
       - AVD_DC1-SPINE3
-  - fqdn: DC1-SPINE4
+  - hostname: DC1-SPINE4
     parentContainerName: DC1_SPINES
     configlets:
       - AVD_DC1-SPINE4

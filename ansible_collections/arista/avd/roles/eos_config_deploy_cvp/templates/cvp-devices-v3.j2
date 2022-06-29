@@ -11,7 +11,11 @@ CVP_DEVICES:
 {% for device in groups[container_root] | arista.avd.natural_sort %}
 {%     if device | arista.avd.is_in_filter(local_var.device_filter) %}
 {%         if hostvars[device]['is_deployed'] is arista.avd.defined(true) or hostvars[device]['is_deployed'] is not arista.avd.defined %}
-  - fqdn: {{ device }}
+{%             if cv_collection is arista.avd.defined("v3") %}
+{#                 This if block is a workaround to keep old v3 behavior of splitting hostname on "." #}
+{%                 set device = device | split('.') | first %}
+{%             endif %}
+  - hostname: {{ device }}
 {%             set dev_cntr.value = dev_cntr.value + 1 %}
 {%             for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() | arista.avd.natural_sort %}
 {%                 if 'devices' in container %}

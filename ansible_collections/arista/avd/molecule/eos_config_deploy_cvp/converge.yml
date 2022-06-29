@@ -30,5 +30,3 @@
         device_filter: 'DC1'
         execute_tasks: false
         state: present
-        # default value for cv_collection is v3
-        cv_collection: v3
