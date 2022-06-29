@@ -14,9 +14,12 @@
     - [Playbooks](#playbooks)
   - [Source of Truth](#source-of-truth)
   - [How do I use AVD?](#how-do-i-use-avd)
+    - [Using Ansible AVD with direct eAPI connectivity to the switches](#using-ansible-avd-with-direct-eapi-connectivity-to-the-switches)
+    - [Using Ansible AVD in accordance with CloudVision](#using-ansible-avd-in-accordance-with-cloudvision)
   - [Day 2 Operations](#day-2-operations)
     - [Day 2 Operations Example](#day-2-operations-example)
   - [References](#references)
+  - [Next steps](#next-steps)
 
 # AVD and Ansible Overview
 
@@ -24,7 +27,7 @@
 
 Imagine being asked to configure a layer 3 leaf spine (L3LS) network from scratch:
 
-![Figure: Arista Leaf Spine topology](../_media/getting-started/LS-Topology.png)
+![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc-topology-physical.png)
 
 Traditionally one would configure the switches manually using a laptop, console cable and USB key to load the correct EOS software
 image and configuration. Of course the configuration would be manually generated too, using snippets from the relevant Arista
@@ -78,11 +81,11 @@ on using Ansible to provision Arista EOS devices either with or without Arista C
 ## What are the requirements to run Ansible?
 
 Ansible can run on almost anything, but in production scenarios Ansible is typically deployed on a virtual Linux server,
-running on the customer's preferred hypervisor. This Ansible server then communicates either directly with the
+running on the customer’s preferred hypervisor. This Ansible server then communicates either directly with the
 Arista network devices via eAPI or with Arista CloudVision Portal, which in turn communicates with the Arista network devices.
-Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator's computer.
+Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator’s computer.
 
-![Figure: Ansible and CVP](../_media/getting-started/Ansible-and-CVP-httpapi.png)
+![Figure: Ansible and CVP](../_media/getting-started/ansible-and-cvp-httpapi.png)
 
 ## What is the arista.avd collection?
 
@@ -92,7 +95,7 @@ Arista and accepts third-party contributions on GitHub at [aristanetworks/ansibl
 While Ansible is the core automation engine, AVD is an Ansible Collection as described above. It provides roles, modules and plugins
 that allow the user to generate and deploy best-practice configurations to a layer 3 leaf spine network.
 
-![Figure: Arista Leaf Spine topology](../_media/getting-started/Ansible-AVD.png)
+![Figure: Arista Leaf Spine topology](../_media/getting-started/ansible-avd.png)
 
 In the illustration above, the AVD collection is shown as the box with the red background on the right hand side.
 
@@ -121,7 +124,7 @@ AVD also uses the information provided to produce complete documentation of the 
 
 ## When and when not to use AVD
 
-It's important to note when and perhaps more importantly when not to use AVD.
+It’s important to note when and perhaps more importantly when not to use AVD.
 
 AVD is designed to generate and deploy complete configuration files in a manner where the network device's running-configuration is
 completely replaced. As such, caution should be exercised when running AVD against an existing manually-configured network. Various
@@ -159,11 +162,11 @@ Before we can tell Ansible to do anything, Ansible needs to know about the devic
 
 This is defined in the Ansible ***inventory***. Per the official Ansible documentation the [inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
 is a file typically in either INI or YAML format, but other inventory sources can be used. In Ansible AVD we use YAML format by default,
-hence the file is called inventory.yml, located in a folder that is also called inventory:
+hence the file is called inventory.yml, located in the Ansible AVD project folder (in this case `single-dc-l3ls`):
 
-![Figure: Ansible Inventory Folder Structure](../_media/getting-started/Inventory-folder-structure.png)
+![Figure: Ansible Inventory Folder Structure](../_media/getting-started/inventory-folder-structure.png)
 
-Please note that the example above is taken from the [ansible-avd-cloudvision-demo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo) repository.
+Please note that the example above is taken from the Ansible AVD Examples repository, specifically the `Single-DC-L3LS`.
 
 The exact name of the inventory file is not important, but is provided to Ansible in the `ansible.cfg` file for the project
 or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
@@ -174,52 +177,72 @@ An example of a snippet of the inventory.yml file is shown below (subset of an a
 
 As stated earlier this file is in [YAML](https://yaml.org) format.
 
-Also note that the IP addresses shown below are only an example of the management IP addresses for the different devices.
-These can of course be adapted to fit any topology.
+It's important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN) define `ansible_host` to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:
 
-```yaml
+```yml
+---
 all:
   children:
-    # DC1_Fabric - EVPN Fabric
-    DC1:
+    FABRIC:
       children:
-        DC1_FABRIC:
+        DC1:
           children:
             DC1_SPINES:
               hosts:
-                DC1-SPINE1:
-                  ansible_host: 10.255.0.11
-                DC1-SPINE2:
-                  ansible_host: 10.255.0.12
-            DC1_L3LEAFS:
-              children:
-                DC1_LEAF1:
-                  hosts:
-                    DC1-LEAF1A:
-                      ansible_host: 10.255.0.13
-                    DC1-LEAF1B:
-                      ansible_host: 10.255.0.14
-                DC1_LEAF2:
-                  hosts:
-                    DC1-LEAF2A:
-                      ansible_host: 10.255.0.15
-                    DC1-LEAF2B:
-                      ansible_host: 10.255.0.16
+                dc1-spine1:
+                  ansible_host: 172.16.1.11
+                dc1-spine2:
+                  ansible_host: 172.16.1.12
 ```
 
-Don't confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
+However, going forward we expect that all hostnames specified are reachable without this workaround, hence the entire inventory file looks as follows:
+
+```yml
+---
+all:
+  children:
+    FABRIC:
+      children:
+        DC1:
+          children:
+            DC1_SPINES:
+              hosts:
+                dc1-spine1:
+                dc1-spine2:
+            DC1_L3_LEAVES:
+              hosts:
+                dc1-leaf1a:
+                dc1-leaf1b:
+                dc1-leaf2a:
+                dc1-leaf2b:
+            DC1_L2_LEAVES:
+              hosts:
+                dc1-leaf1c:
+                dc1-leaf2c:
+
+        NETWORK_SERVICES:
+          children:
+            DC1_L3_LEAVES:
+            DC1_L2_LEAVES:
+        CONNECTED_ENDPOINTS:
+          children:
+            DC1_L3_LEAVES:
+            DC1_L2_LEAVES:
+```
+
+Don’t confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
 including Arista switches.
 
 The settings inside the inventory.yml file are defined in a tree-like structure using ***groups***. Groups can contain hosts or other groups -
 making it easier to apply common configuration to a group of devices.
 
-The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don't worry too much about that for now.
+The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don’t worry too much about that for now.
 
-The ***children:*** keyword is used to define "groups of groups" i.e. just an internal keyword to differentiate between hosts and groups.
+The ***children:*** keyword is used to define “groups of groups” i.e. just an internal keyword to differentiate between hosts and groups.
 
-The multi-colored figure below is just a visualization of the same text file, showing the different grouping and parent/child relationships:
+The figure below is just a visualization of the same text file, showing the different grouping and parent/child relationships:
 
-![Figure: Ansible Inventory](../_media/getting-started/Inventory.png)
+![Figure: Ansible Inventory](../_media/getting-started/single-dc-inventory-and-vars.png)
 
 The key takeaway is that configuration defined at a higher (parent) level will be inherited by the children, but if needed, this can be
 overridden by specifying it again, i.e. most specific wins.
@@ -236,9 +259,7 @@ variables. Like the inventory.yml file, the host and group variables are also st
 
 Group variables are defined in YAML files inside the `group_vars` folder:
 
-![Figure: Ansible Group Variables](../_media/getting-started/Group-vars-folder-structure.png)
-
-Please note that the example above is taken from the [ansible-avd-cloudvision-demo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo) repository.
+![Figure: Ansible Group Variables](../_media/getting-started/group-vars-folder-structure.png)
 
 Each file in the `group_vars` folder controls the variables for one of the groups defined in the `inventory.yml` file,
 so settings for the whole network can be specified in `DC1.yml`, and later overridden in `DC1_SPINES.yml` for just the hosts
@@ -246,88 +267,94 @@ inside that group (DC1 spine switches in this case).
 
 A subset of DC1.yml is shown below:
 
-```yaml
-# local users
+```yml
+---
+# Default gateway used for the management interface
+mgmt_gateway: 172.16.1.1
+
+# Spine switch group
+spine:
+  # Definition of default values that will be configured to all nodes defined in this group
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: vEOS-lab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 10.255.1.0/27
+    # ASN to be used by BGP
+    bgp_as: 65100
+    # BGP configuration for fine tunning
+    bgp_defaults:
+      # The two folling commands must not be enabled when using vEOS-lab
+      # - update wait-for-convergence
+      # - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+
+  # Definition of nodes contained in this group.
+  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
+  nodes:
+    # Name of the node to be defined (must be consistent with definition in inventory)
+    dc1-spine1:
+      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
+      id: 1
+      # Management IP to be assigned to the management interface
+      mgmt_ip: 172.16.1.11/24
+
+    dc1-spine2:
+      id: 2
+      mgmt_ip: 172.16.1.12/24
+```
+
+Below is a subset of the FABRIC.yml file:
+
+```yml
+---
+# Ansible connectivity definitions
+# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
+ansible_connection: ansible.netcommon.httpapi
+# Specifies that we are indeed using Arista EOS
+ansible_network_os: arista.eos.eos
+# This user/password must exist on the switches to enable Ansible access
+ansible_user: ansible
+ansible_password: ansible
+# User escalation (to enter enable mode)
+ansible_become: true
+ansible_become_method: enable
+# Use SSL (HTTPS)
+ansible_httpapi_use_ssl: true
+# Do not try to validate certs
+ansible_httpapi_validate_certs: false
+
+# Common AVD group variables
+fabric_name: FABRIC
+
+# Local users
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    sha512_password: "<password-hash>"
-
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: "<password-hash>"
-
+  # Define a new user, which is called "ansible"
   ansible:
     privilege: 15
     role: network-admin
-    sha512_password: "<password-hash>"
-
-# Cloud Vision server information
-cvp_instance_ip: <CVP IP address>
-cvp_ingestauth_key: '<key>'
-
-# OOB Management network default gateway.
-mgmt_gateway: <IP of default gateway>
-
-# dns servers.
-name_servers:
-  - <IP of name server #1>
-  - <IP of name server #2>
+    # Password set to "ansible". Same string as the device generates when configuring a username.
+    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
 ```
 
-Below is a subset of the DC1_FABRIC file:
-
-```yaml
-l3leaf:
-  defaults:
-    # virtual router mac for VNIs assigned to Leaf switches
-    # format: xx:xx:xx:xx:xx:xx
-    virtual_router_mac_address: 00:1c:73:00:dc:01
-    platform: vEOS-LAB
-    bgp_as: 65100
-    spines: [DC1-SPINE1, DC1-SPINE2]
-    uplink_to_spine_interfaces: [Ethernet1, Ethernet2]
-    mlag_interfaces: [Ethernet3, Ethernet4]
-    spanning_tree_priority: 409
-    spanning_tree_mode: mstp
-  node_groups:
-    DC1_LEAF1:
-      bgp_as: 65101
-      nodes:
-        DC1-LEAF1A:
-          id: 1
-          mgmt_ip: 10.255.0.13/24
-          spine_interfaces: [Ethernet1, Ethernet1]
-        DC1-LEAF1B:
-          id: 2
-          mgmt_ip: 10.255.0.14/24
-          spine_interfaces: [Ethernet2, Ethernet2]
-    DC1_LEAF2:
-      bgp_as: 65102
-      nodes:
-        DC1-LEAF2A:
-          id: 3
-          mgmt_ip: 10.255.0.15/24
-          spine_interfaces: [Ethernet3, Ethernet3]
-        DC1-LEAF2B:
-          id: 4
-          mgmt_ip: 10.255.0.16/24
-          spine_interfaces: [Ethernet4, Ethernet4]
-```
-
-The above snippet defines a number of defaults that apply to all children of DC1_FABRIC along with configuration specific to
+The above snippet defines a number of defaults that apply to all children of FABRIC along with configuration specific to
 each leaf pair and finally each individual leaf switch.
 
 Group variables can be overridden by specifying host variables for specific devices.
 (See [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
 The order of precedence is (from lowest to highest):
 
-- 'All' group (because it is the 'parent' of all other groups)
-- Parent group
-- Child group
-- Host
+- 'All' group (because it is the ‘parent’ of all other groups).
+- Parent group.
+- Child group.
+- Host.
 
 You can read more about group and host variables [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#id14).
 
@@ -349,28 +376,30 @@ Playbooks with multiple plays can orchestrate multi-machine deployments, running
 another on your CloudVision instance, and another on each EOS device you look to configure.
 
 At a minimum, each play defines two things:
-1. The managed devices (***hosts***) to target, referenced from the ***inventory*** we defined earlier
-2. One or more ***tasks*** to execute on the targets defined
+
+1. The managed devices (***hosts***) to target, referenced from the ***inventory*** we defined earlier.
+2. One or more ***tasks*** to execute on the targets defined.
 
 The hosts specified in a playbook typically reference groups defined in the inventory. From a playbook you can select
 large or small groups of the inventory, right down to individual hosts to be as specific as possible with any configuration changes.
 
 A simple example of a play defined in a playbook is shown below:
 
-```yaml
-# Play to build EOS configuration from EOS_DESIGNS
-- hosts: DC1_FABRIC
+```yml
+---
+- name: Run AVD
+  hosts: FABRIC
+  gather_facts: false
   tasks:
-    # BUILD EOS configuration
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_designs
+        name: arista.avd.eos_designs
     - name: generate device intended config and documentation
       import_role:
-         name: arista.avd.eos_cli_config_gen
+        name: arista.avd.eos_cli_config_gen
 ```
 
-At the top of the file, the ***hosts*** keyword references the inventory group ***DC1_FABRIC***.
+At the top of the file, the ***hosts*** keyword references the inventory group ***FABRIC***.
 
 Recall that the group variables are defined in the inventory.yml file and further in the group_vars directory.
 Effectively this means that the ***hosts*** keyword defines the scope of devices on which to execute the play.
@@ -378,26 +407,31 @@ Effectively this means that the ***hosts*** keyword defines the scope of devices
 Following the scope definition, the ***tasks*** are then defined.
 
 In this example the play executes two tasks:
-1. Import a ***role*** called [***arista.avd.eos_designs***](https://avd.sh/en/latest/roles/eos_designs/index.html)
-2. Import a ***role*** called [***arista.avd.eos_cli_config_gen***](https://avd.sh/en/latest/roles/eos_cli_config_gen/index.html)
+
+1. Import a ***role*** called [***arista.avd.eos_designs***](https://avd.sh/en/latest/roles/eos_designs/index.html).
+2. Import a ***role*** called [***arista.avd.eos_cli_config_gen***](https://avd.sh/en/latest/roles/eos_cli_config_gen/index.html).
 
 The ***arista.avd.eos_designs*** role takes inputs from a number of [places](https://avd.sh/en/latest/roles/eos_designs/index.html#role-inputs-and-outputs):
-- role/defaults definitions
-- group_vars
-- host_vars
+
+- role/defaults definitions.
+- group_vars.
+- host_vars.
 
 Based on some or all of these inputs, it generates the following output:
-- A structured EOS configuration in YAML format
-- Fabric Documentation in Markdown format
-- Leaf and Spine Topology summary in CSV format
+
+- A structured EOS configuration in YAML format.
+- Fabric Documentation in Markdown format.
+- Leaf and Spine Topology summary in CSV format.
 
 The second role, ***arista.avd.eos_cli_config_gen*** uses the structured EOS configuration in YAML format as its [input](https://avd.sh/en/latest/roles/eos_cli_config_gen/index.html#role-inputs-and-outputs)
 (generated by arista.avd.eos_designs) and outputs the following:
-- EOS configuration in CLI format
-- Device Documentation in Markdown format
+
+- EOS configuration in CLI format.
+- Device Documentation in Markdown format.
 
 Running the play described above would result in a number of files containing the configuration and documentation for the devices in scope - in this case DC1_FABRIC.
 To apply the configuration to the actual devices, you would run additional roles such as:
+
 - [eos_config_deploy_cvp](https://avd.sh/en/latest/roles/eos_config_deploy_cvp/index.html) which deploys the EOS configuration via the
   CloudVision Management platform, including change control with RBAC and full rollback capability.
 - [eos_config_deploy_eapi](https://avd.sh/en/latest/roles/eos_config_deploy_eapi/index.html) which deploys the EOS configuration directly
@@ -434,40 +468,101 @@ Below you will find two examples of documentation automatically created by Ansib
 
 ## How do I use AVD?
 
-AVD comes with pre-built templates that you can either use as-is or adapt to your liking. For example
-[ansible-avd-cloudvision-demo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo) is a 3-stage leaf spine fabric
-that can be deployed CloudVision.
+AVD comes with pre-built templates that you can either use as-is or adapt to your liking.
 
 Once the templates reflect your desired network configuration, you deploy the configuration either directly to the Arista EOS devices or to
-Configlets within CloudVision. This is typically executed from the CLI - for example:
+Configlets within CloudVision. This is typically executed from the CLI - for example from your Ansible AVD Examples directory. 
 
-```shell
-ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags build
+### Using Ansible AVD with direct eAPI connectivity to the switches
+
+If you want to push to switches in the entire FABRIC using eAPI and your playbook looks as follows:
+
+```yml
+---
+- name: Run AVD
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+    - name: generate intended variables
+      import_role:
+        name: arista.avd.eos_designs
+    - name: generate device intended config and documentation
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+    - name: deploy configuration to device
+      import_role:
+         name: arista.avd.eos_config_deploy_eapi
 ```
 
-This will execute the playbook `playbooks/dc1-fabric-deploy-cvp.yml` with the tag `build`. This instructs Ansible to only run the tasks tagged 'build'
-in the playbook - which in this case will result in configuration files being generated but not deployed to devices.
-
-To push the configuration to devices using CloudVision:
+You would execute it using the following command:
 
 ```shell
-ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags provision
+ansible-playbook playbook.yml
 ```
 
 This will:
+
+- Create a text file containing the device's entire configuration.
+- Create device-specific and fabric-wide documentation.
+- Push the relevant configuration to each device using eAPI.
+
+### Using Ansible AVD in accordance with CloudVision
+
+If you want to push to switches in the entire FABRIC using CloudVision and your playbook looks as follows:
+
+```yml
+---
+- name: Run AVD
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+    - name: generate intended variables
+      import_role:
+        name: arista.avd.eos_designs
+    - name: generate device intended config and documentation
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+    - name: deploy configuration to device
+      import_role:
+         name: arista.avd.eos_config_deploy_eapi
+
+- name: Push to CVP
+  hosts: CVP
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: run CVP provisioning
+      import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        container_root: 'DC1'
+        configlets_prefix: 'AVD'
+        execute_tasks: false
+        apply_mode: strict
+        state: present
+        cv_collection: v3
+```
+
+You would execute it using the same command:
+
+```shell
+ansible-playbook playbook.yml
+```
+
+This will:
+
 - Create a CloudVision Configlet for each device in the inventory, containing the device's entire configuration.
 - Build out containers within CloudVision that represent the hierarchy of groups represented in the inventory.
 - Create tasks to apply the new configuration to each device within the inventory.
 
 At this point the changes can be reviewed, approved and executed in accordance with existing company requirements through CloudVision.
 
-The equivalent workflow is also possible with eAPI - albeit without the review and approval stages provided through CloudVision.
-
 Once the configuration has been deployed, an automated validation of the designed configuration versus the running configuration can be executed using the included `eos_validate_state` role, to ensure that:
 
-- All links are operational and cabled as desired
-- BGP adjacencies are operational
-- That there are no device hardware issues (for example PSU or fan issues)
+- All links are operational and cabled as desired.
+- BGP adjacencies are operational.
+- That there are no device hardware issues (for example PSU or fan issues).
 - That VTEPs can all reach each other using their loopback IPs.
 
 This quickly identifies any issues that could otherwise be overlooked and a redundant link could sit non-operational for months unless cumbersome manual testing is executed again per-device throughout the fabric.
@@ -478,10 +573,10 @@ The term day 2 operations describes most, if not all network configuration chang
 
 These tasks, while relatively simple, can be time consuming simply because they involve changes to many device:
 
-- Adding/removing new leaf switches
-- Adding/removing new VLANs
-- Creating/modifying/deleting port profiles
-- Configuring/modifying ports towards end systems
+- Adding/removing new leaf switches.
+- Adding/removing new VLANs.
+- Creating/modifying/deleting port profiles.
+- Configuring/modifying ports towards end systems.
 
 Making these changes could involve many hours of planning to generate configuration snippets to apply during a change window.
 
@@ -500,102 +595,198 @@ This would require at least the following configuration:
 - VLAN(s)
 - SVI(s)
 
-You could create a YAML file, in this example called DC1_TENANTS_NETWORKS.yml, describing the fabric-wide generic configuration for the tenant:
+You could create a YAML file, in this example called NETWORK_SERVICES.yml, describing the fabric-wide generic configuration for the tenant:
 
-```yaml
-# DC1 Tenants Networks
-# Documentation of Tenant specific information - Vlans/VRFs
+```yml
+---
 tenants:
-  # Tenant A Specific Information - VRFs / VLANs
-  Tenant_A:
+  # Definition of tenants. Additional level of abstraction to VRFs
+  TENANT1:
+    # Number used to generate the VNI of each VLAN by adding the VLAN number in this tenant.
     mac_vrf_vni_base: 10000
     vrfs:
-      Tenant_A_OP_Zone:
-        vrf_vni: 10
-        vtep_diagnostic:
-          loopback: 100
-          loopback_ip_range: 10.255.1.0/24
+      # VRF definitions inside the tenant.
+      VRF1:
+        # VRF VNI definition.
+        vrf_vni: 1
         svis:
-          110:
-            name: Tenant_A_OP_Zone_1
-            tags: [opzone]
+          # SVI definitions.
+          "11":
+            # SVI Description
+            name: VRF1_VLAN11
             enabled: true
-            ip_address_virtual: 10.1.10.1/24
-          111:
-            vni_override: 50111
-            name: Tenant_A_OP_Zone_2
-            tags: [opzone]
+            # IP anycast gateway to be used in the SVI in every leaf.
+            ip_address_virtual: 10.10.11.1/24
+          "12":
+            name: VRF1_VLAN12
             enabled: true
-            ip_address_virtual: 10.1.11.1/24
-          112:
-            vni_override: 50112
-            name: Tenant_A_OP_Zone_3
-            tags: [opzone]
+            ip_address_virtual: 10.10.12.1/24
+      VRF2:
+        vrf_vni: 2
+        svis:
+          "21":
+            name: VRF2_VLAN21
             enabled: true
-            ip_address_virtual: 10.1.12.254/24
+            ip_address_virtual: 10.10.21.1/24
+          "22":
+            name: VRF2_VLAN22
+            enabled: true
+            ip_address_virtual: 10.10.22.1/24
+
+    l2vlans:
+      # These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric
+      "3401":
+        name: L2_VLAN3401
+      "3402":
+        name: L2_VLAN3402
+
 ```
 
-You would then describe the scope for where this new tenant should exist in the inventory.yml file:
+You would then describe the scope for where these network services should exist in the inventory.yml file:
 
-```yaml
-  node_groups:
-    DC1-P101-L2LS1:
-      filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone ]
+```yml
+NETWORK_SERVICES:
+  children:
+    DC1_L3_LEAVES:
+    DC1_L2_LEAVES:
+    DC2_L3_LEAVES:
+    DC2_L2_LEAVES:
 ```
 
-This specifies that switch DC1-P101-L2LS1 will only be configured with VLANs/SVIs in Tenant_A that are tagged with 'opzone'.
+This specifies all switches in the fabric will be able to serve the new tenant.
 
 For sake of simplicity, let's say you defined just one pair of leaf switches that would serve this tenant.
 
 After running the relevant playbook, their tenant-related configuration would end up looking like this:
 
-```eos
-vlan 110
-   name Tenant_A_OP_Zone_1
+```shell
+vlan 11
+   name VRF1_VLAN11
 !
-vlan 111
-   name Tenant_A_OP_Zone_2
+vlan 12
+   name VRF1_VLAN12
 !
-vlan 112
-   name Tenant_A_OP_Zone_3
+vlan 21
+   name VRF2_VLAN21
 !
-vrf instance Tenant_A_OP_Zone
+vlan 22
+   name VRF2_VLAN22
 !
-interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+<removed for brevity>
+!
+vlan 3401
+   name L2_VLAN3401
+!
+vlan 3402
+   name L2_VLAN3402
+!
+<removed for brevity>
+!
+vrf instance VRF1
+!
+vrf instance VRF2
+!
+<removed for brevity>
+!
+interface Vlan11
+   description VRF1_VLAN11
    no shutdown
-   vrf Tenant_A_OP_Zone
-   ip address 10.255.1.3/32
+   vrf VRF1
+   ip address virtual 10.10.11.1/24
 !
-interface Vlan110
-   description Tenant_A_OP_Zone_1
+interface Vlan12
+   description VRF1_VLAN12
    no shutdown
-   vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.10.1/24
+   vrf VRF1
+   ip address virtual 10.10.12.1/24
 !
-interface Vlan111
-   description Tenant_A_OP_Zone_2
+interface Vlan21
+   description VRF2_VLAN21
    no shutdown
-   vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.11.1/24
+   vrf VRF2
+   ip address virtual 10.10.21.1/24
 !
-interface Vlan112
-   description Tenant_A_OP_Zone_3
+interface Vlan22
+   description VRF2_VLAN22
    no shutdown
-   vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.12.254/24
+   vrf VRF2
+   ip address virtual 10.10.22.1/24
+!
+<removed for brevity>
 !
 interface Vxlan1
-   vxlan vlan 110 vni 10110
-   vxlan vlan 111 vni 50111
-   vxlan vlan 112 vni 50112
-   vxlan vrf Tenant_A_OP_Zone vni 10
+   description dc1-leaf1a_VTEP
+   vxlan source-interface Loopback1
+   vxlan virtual-router encapsulation mac-address mlag-system-id
+   vxlan udp-port 4789
+   vxlan vlan 11 vni 10011
+   vxlan vlan 12 vni 10012
+   vxlan vlan 21 vni 10021
+   vxlan vlan 22 vni 10022
+   vxlan vlan 3401 vni 13401
+   vxlan vlan 3402 vni 13402
+   vxlan vrf VRF1 vni 1
+   vxlan vrf VRF2 vni 2
+!
+<removed for brevity>
+!
+ip routing vrf VRF1
+ip routing vrf VRF2
+!
+<removed for brevity>
+!
+router bgp 65101
+   !
+   <removed for brevity>
+   !
+   vlan 11
+      rd 10.255.1.33:10011
+      route-target both 10011:10011
+      redistribute learned
+   !
+   vlan 12
+      rd 10.255.1.33:10012
+      route-target both 10012:10012
+      redistribute learned
+   !
+   vlan 21
+      rd 10.255.1.33:10021
+      route-target both 10021:10021
+      redistribute learned
+   !
+   vlan 22
+      rd 10.255.1.33:10022
+      route-target both 10022:10022
+      redistribute learned
+   !
+   vlan 3401
+      rd 10.255.1.33:13401
+      route-target both 13401:13401
+      redistribute learned
+   !
+   vlan 3402
+      rd 10.255.1.33:13402
+      route-target both 13402:13402
+      redistribute learned
+   !
+   <removed for brevity>
+   !
+   vrf VRF1
+      rd 10.255.1.33:1
+      route-target import evpn 1:1
+      route-target export evpn 1:1
+      router-id 10.255.1.33
+      neighbor 10.255.1.97 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
+   !
+   vrf VRF2
+      rd 10.255.1.33:2
+      route-target import evpn 2:2
+      route-target export evpn 2:2
+      router-id 10.255.1.33
+      neighbor 10.255.1.97 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
 ```
-
-If at a later date this tenant needs to be made available on other devices in the network simply expanding the scope of the devices where Tenant_A exists.
-This would result in similar configuration being generated for those devices as well.
 
 This all takes place without any manual intervention and with very little chance for human error.
 
@@ -608,3 +799,8 @@ Below are a number of links to additional documentation about Ansible AVD and An
 - With [Ansible Tower](https://docs.ansible.com/ansible/2.3/tower.html)
 - With CI/CD
 - With [eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
+
+
+## Next steps
+
+If you want to try out a complete Ansible AVD example, complete with all group variable files, inventory, playbook etc., please look [here](../../examples/single-dc-l3ls/README.md)
