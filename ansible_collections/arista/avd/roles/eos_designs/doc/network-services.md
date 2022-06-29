@@ -415,7 +415,9 @@ svi_profiles:
             bfd: < true | false >
 
         # Dictionary of BGP peer groups definitions | Optional.
-        # This will configure BGP peer groups used inside the tenant VRF for peering with external devices. BGP peer groups are configured at higher BGP level.
+        # This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
+        # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+        # peer_group names should not overlap between VRFs..
         bgp_peer_groups:
           < BGP peer group name >:
             remote_as: < bgp_as >
