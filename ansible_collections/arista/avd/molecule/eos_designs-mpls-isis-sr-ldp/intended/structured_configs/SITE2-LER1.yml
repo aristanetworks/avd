@@ -253,6 +253,9 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    eos_cli: 'link-debounce time 1000
+
+      '
   Ethernet11:
     type: routed
     description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
@@ -332,6 +335,9 @@ port_channel_interfaces:
     isis_circuit_type: level-2
     isis_authentication_mode: md5
     isis_authentication_key: asdadjiwtelogkkdng
+    eos_cli: 'link-debounce time 1600
+
+      '
     mpls:
       ip: true
       ldp:

@@ -225,6 +225,7 @@ interface Ethernet50
 | Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
 | Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
+| Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
 
 #### Encapsulation Dot1q Interfaces
 
@@ -590,6 +591,12 @@ interface Port-Channel114
    ip address 172.31.128.10/31
    no mpls ip
    no mpls ldp interface
+!
+interface Port-Channel115
+   description native-vlan-tag-precedence
+   switchport
+   switchport trunk native vlan tag
+   switchport mode trunk
 ```
 
 # Routing

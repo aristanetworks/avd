@@ -18,7 +18,7 @@ router_ospf:
 {%                 set ospf_router_id = vrf.ospf.router_id | arista.avd.default(switch.router_id) %}
 {%                 for l3_interface in vrf.l3_interfaces | arista.avd.natural_sort %}
 {%                     if inventory_hostname in l3_interface.nodes | arista.avd.default([inventory_hostname]) and l3_interface.interfaces is arista.avd.defined and l3_interface.ospf.enabled is arista.avd.defined(true) %}
-{%                         for node in l3_interface.nodes | arista.avd.natural_sort %}
+{%                         for node in l3_interface.nodes %}
 {%                             if node == inventory_hostname %}
 {%                                 do vrf_ospf_interfaces.append(l3_interface.interfaces[loop.index0]) %}
 {%                             endif %}

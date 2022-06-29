@@ -95,6 +95,8 @@ eos_validate_state_report:
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# NTP Status Results #}
 {%     if copy_hostvars[node].ntp_status_results is arista.avd.defined and copy_hostvars[node].ntp_status_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}

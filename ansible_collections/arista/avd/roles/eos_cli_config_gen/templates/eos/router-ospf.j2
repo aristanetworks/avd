@@ -34,8 +34,11 @@ router ospf {{ process_id.id }}
 {%     for network_prefix in process_id.network_prefixes | arista.avd.convert_dicts('ipv4_prefix') | arista.avd.natural_sort('ipv4_prefix') %}
    network {{ network_prefix.ipv4_prefix }} area {{ network_prefix.area }}
 {%     endfor %}
-{%     if process_id.bfd_enable is arista.avd.defined and process_id.bfd_enable %}
+{%     if process_id.bfd_enable is arista.avd.defined(true) %}
    bfd default
+{%     endif %}
+{%     if process_id.bfd_adjacency_state_any is arista.avd.defined(true) %}
+   bfd adjacency state any
 {%     endif %}
 {%     for area in process_id.areas | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {# OSPF stub area configuration #}

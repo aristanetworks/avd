@@ -179,6 +179,8 @@ interface Ethernet1
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 !
 interface Ethernet3
    description P2P_LINK_TO_SITE2-LSR1_Ethernet3
@@ -198,6 +200,8 @@ interface Ethernet3
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 !
 interface Ethernet4
    description P2P_LINK_TO_SITE1-RR1_Ethernet4
@@ -217,6 +221,8 @@ interface Ethernet4
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 ```
 
 ## Loopback Interfaces

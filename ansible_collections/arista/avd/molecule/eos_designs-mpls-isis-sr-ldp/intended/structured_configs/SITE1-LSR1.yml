@@ -96,6 +96,9 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    eos_cli: 'link-debounce time 1000
+
+      '
   Ethernet3:
     peer: SITE2-LSR1
     peer_interface: Ethernet3
@@ -119,6 +122,9 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    eos_cli: 'link-debounce time 1000
+
+      '
   Ethernet4:
     peer: SITE1-RR1
     peer_interface: Ethernet4
@@ -142,3 +148,6 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    eos_cli: 'link-debounce time 1000
+
+      '

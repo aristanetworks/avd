@@ -316,13 +316,13 @@ class EosDesignsFacts:
             combined : dict
                 Combined configuration after inheritance from all levels
         """
-        switch_data = {}
+        switch_data = {'node_group': {}}
+        node_config = {}
         hostname = self.hostname
         node_type_config = get(self._hostvars, f"{self.node_type_key}", required=True)
 
         if hostname in node_type_config.get('nodes', {}):
             node_config = node_type_config['nodes'][hostname]
-            switch_data['node_group'] = {}
         else:
             for node_group in node_type_config.get('node_groups', {}):
                 if hostname in node_type_config['node_groups'][node_group].get('nodes', {}):
@@ -330,9 +330,6 @@ class EosDesignsFacts:
                     switch_data['node_group'] = node_type_config['node_groups'][node_group]
                     switch_data['group'] = node_group
                     break
-
-        if not node_config:
-            raise AristaAvdMissingVariableError(f"{self.node_type_key}.(node_groups.)nodes.{hostname}")
 
         # Load defaults
         defaults_config = node_type_config.get('defaults', {})
@@ -409,6 +406,10 @@ class EosDesignsFacts:
     @cached_property
     def uplink_macsec(self):
         return get(self._switch_data_combined, "uplink_macsec")
+
+    @cached_property
+    def uplink_structured_config(self):
+        return get(self._switch_data_combined, "uplink_structured_config")
 
     @cached_property
     def short_esi(self):
@@ -968,6 +969,24 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def mlag_port_channel_structured_config(self):
+        if self.mlag is True:
+            return get(self._switch_data_combined, "mlag_port_channel_structured_config")
+        return None
+
+    @cached_property
+    def mlag_peer_vlan_structured_config(self):
+        if self.mlag is True:
+            return get(self._switch_data_combined, "mlag_peer_vlan_structured_config")
+        return None
+
+    @cached_property
+    def mlag_peer_l3_vlan_structured_config(self):
+        if self.mlag is True:
+            return get(self._switch_data_combined, "mlag_peer_l3_vlan_structured_config")
+        return None
+
+    @cached_property
     def mlag_role(self):
         if self.mlag is True:
             index = list(self._switch_data_node_group_nodes.keys()).index(self.hostname)
@@ -1117,6 +1136,8 @@ class EosDesignsFacts:
                     uplink['ptp'] = self.uplink_ptp
                 if self.uplink_macsec is not None:
                     uplink['mac_security'] = self.uplink_macsec
+                if get(self._hostvars, "underlay_multicast") is True:
+                    uplink['underlay_multicast'] = True
                 if get(self._hostvars, "underlay_rfc5549") is True:
                     uplink['ipv6_enable'] = True
                 else:
@@ -1130,6 +1151,9 @@ class EosDesignsFacts:
                     uplink['link_tracking_groups'] = []
                     for lt_group in self.link_tracking_groups:
                         uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+
+                if self.uplink_structured_config is not None:
+                    uplink['structured_config'] = self.uplink_structured_config
 
                 uplinks.append(uplink)
             return uplinks
@@ -1192,7 +1216,10 @@ class EosDesignsFacts:
                 if self.inband_management_vlan is not None:
                     uplink_vlans.append(int(self.inband_management_vlan))
 
-                uplink['vlans'] = self._list_compress(uplink_vlans)
+                if uplink_vlans:
+                    uplink['vlans'] = self._list_compress(uplink_vlans)
+                else:
+                    uplink['vlans'] = 'none'
 
                 if self.short_esi is not None:
                     uplink['peer_short_esi'] = self.short_esi
@@ -1201,6 +1228,9 @@ class EosDesignsFacts:
                     uplink['link_tracking_groups'] = []
                     for lt_group in self.link_tracking_groups:
                         uplink['link_tracking_groups'].append({"name": lt_group["name"], "direction": "upstream"})
+
+                if self.uplink_structured_config is not None:
+                    uplink['structured_config'] = self.uplink_structured_config
 
                 uplinks.append(uplink)
         return uplinks

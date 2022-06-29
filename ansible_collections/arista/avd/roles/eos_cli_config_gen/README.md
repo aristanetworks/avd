@@ -29,6 +29,8 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
+    - [Endpoint Security](#endpoint-security)
+      - [802.1x Authentication](#802.1x-authentication)
     - [Router BFD](#router-bfd)
     - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
@@ -470,6 +472,17 @@ aaa_server_groups:
       - server: < host1_ip_address >
 ```
 
+### Endpoint Security
+
+#### Global 802.1x Authentication
+
+```yaml
+dot1x:
+  system_auth_control: < true | false >
+  protocol_lldp_bypass: < true | false >
+  dynamic_authorization: < true | false >
+```
+
 #### Enable Password
 
 ```yaml
@@ -577,6 +590,17 @@ router_bfd:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
     multiplier: < 3-50 >
+  sbfd:
+    local_interface:
+      name: < interface name >
+      protocols:
+        ipv4: < true | false >
+        ipv6: < true | false >
+    initiator_interval: < rate in milliseconds >
+    initiator_multiplier: < 3-50 >
+    reflector:
+      min_rx: < rate in milliseconds >
+      local_discriminator: < IPv4_address | u32 format >
 ```
 
 ### DHCP Relay
@@ -1055,7 +1079,9 @@ ethernet_interfaces:
     mtu: < mtu >
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
-    native_vlan: <native vlan number>
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+    native_vlan: < native_vlan_number >
+    native_vlan_tag: < boolean | default -> false >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     phone:
       trunk: < tagged | untagged >
@@ -1280,7 +1306,9 @@ port_channel_interfaces:
         client: < true | false >
     vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
-    native_vlan: < native vlan number >
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+    native_vlan: < native_vlan_number >
+    native_vlan_tag: < boolean | default -> false >
     snmp_trap_link_change: < true | false >
     link_tracking_groups:
       - name: < group_name >
@@ -1447,6 +1475,7 @@ vlan_interfaces:
     arp_gratuitous_accept: < true | false >
     arp_monitor_mac_address: < true | false >
     ip_proxy_arp: < true | false >
+    ip_directed_broadcast: < true | false >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -1576,6 +1605,11 @@ vxlan_interface:
       mlag_source_interface: < source_interface_name >
       udp_port: < udp_port >
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
+      bfd_vtep_evpn:
+        interval: < integer >
+        min_rx: < integer >
+        multiplier: < 3-50 >
+        prefix_list: < prefix_list >
       qos:
         # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
         # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
@@ -3290,6 +3324,13 @@ router_bgp:
           advertise_only: < true | false >
       address_families:
         < address_family >:
+          bgp:
+            missing_policy:
+              direction_in_action: < deny | deny-in-out | permit >
+              direction_out_action: < deny | deny-in-out | permit >
+            additional_paths:
+              - < bgp_additional_paths_command >
+              - < bgp_additional_paths_command >
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
@@ -3354,6 +3395,7 @@ router_ospf:
         < IPv4 subnet / netmask >:
           area: < area >
       bfd_enable: < true | false >
+      bfd_adjacency_state_any: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
@@ -3436,6 +3478,12 @@ router_isis:
   address_family: < List of Address Families >
   isis_af_defaults:
     - maximum-paths < Integer 1-128 >
+  redistribute_routes:
+    - source_protocol: < bgp | connected | isis | ospf | ospfv3 | static >
+      route_map: < route_map_name >
+      include_leaked: < true | false >
+      # ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
+      ospf_route_type: < internal | external | nssa-external >
   address_family_ipv4:
     maximum_paths: < Integer 1-128 >
     fast_reroute_ti_lfa:
@@ -3444,6 +3492,9 @@ router_isis:
       srlg:
         enable: < true | false >
         strict: < true | false >
+    tunnel_source_labeled_unicast:
+      enabled: < true | false >
+      rcf: < routing_control_function() >
   address_family_ipv6:
     maximum_paths: < Integer 1-128 >
     fast_reroute_ti_lfa:
@@ -3455,6 +3506,9 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+    prefix_segments:
+      - prefix: < IPv4_network/Mask | IPv6_network/Mask >
+        index: < integer >
 ```
 
 #### Router Traffic Engineering
@@ -3473,6 +3527,7 @@ router_traffic_engineering:
             binding_sid: < integer >
             description: < description >
             name: < name >
+            sbfd_remote_discriminator: < IPv4_address | u32 format >
             path_group:
               - preference: < integer >
                 explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >

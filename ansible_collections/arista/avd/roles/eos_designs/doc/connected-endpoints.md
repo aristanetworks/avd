@@ -50,7 +50,9 @@ port_profiles:
     mode: < access | dot1q-tunnel | trunk >
     mtu: < mtu >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
-    native_vlan: <native vlan number>
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+    native_vlan: < native_vlan_number >
+    native_vlan_tag: < boolean | default -> false >
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
@@ -76,6 +78,9 @@ port_profiles:
     port_channel:
       description: < port_channel_description >
       mode: < "active" | "passive" | "on" >
+      # Allocates an automatic short_esi to all ports using this profile
+      # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+      short_esi: auto
       lacp_fallback:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
@@ -118,7 +123,9 @@ port_profiles:
         mode: < access | dot1q-tunnel | trunk >
 
         # Native VLAN for a trunk port | optional
-        native_vlan: <native vlan number>
+        # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+        native_vlan: < native_vlan_number >
+        native_vlan_tag: < boolean | default -> false >
 
         # Interface vlans | required
         vlans: < vlans as string >

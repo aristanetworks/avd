@@ -10,7 +10,7 @@ router_ospf:
         - {{ link.interface }}
 {%     endif %}
 {% endfor %}
-{% if switch.mlag_l3 is arista.avd.defined(true) %}
+{% if switch.mlag_peer_l3_vlan is arista.avd.defined %}
         - Vlan{{ switch.mlag_peer_l3_vlan }}
 {% endif %}
 {% if underlay_ospf_bfd_enable is arista.avd.defined(true) %}

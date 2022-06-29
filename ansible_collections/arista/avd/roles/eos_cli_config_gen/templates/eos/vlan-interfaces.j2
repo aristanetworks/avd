@@ -34,6 +34,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if vlan_interface.ip_directed_broadcast is arista.avd.defined(true) %}
+   ip directed-broadcast
+{%     endif %}
 {%     if vlan_interface.ip_address is arista.avd.defined %}
    ip address {{ vlan_interface.ip_address }}
 {%         if vlan_interface.ip_address_secondaries is arista.avd.defined %}

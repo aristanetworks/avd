@@ -207,6 +207,27 @@ Tenant_A:
           mtu: 9000
           enabled: True
           description: "test"
+    Tenant_OSPF:
+      vrf_id: 30
+      ospf:
+        enabled: true
+      l3_interfaces:
+        - interfaces:
+            - Ethernet22
+            - Ethernet24
+            - Ethernet23
+          ip_addresses:
+            - 10.0.0.1/30
+            - 10.0.0.5/30
+            - 10.0.0.13/30
+          nodes:
+            - DC1-LEAF2A
+            - DC1-LEAF2B
+            - DC1-LEAF2A
+          ospf:
+            enabled: true
+            point_to_point: true
+            area: 0
   l2vlans:
     # L2 vlan as string
     '160':

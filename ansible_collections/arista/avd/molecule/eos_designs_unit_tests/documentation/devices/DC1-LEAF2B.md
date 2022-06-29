@@ -38,6 +38,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -400,6 +401,7 @@ vlan 452
 | Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | 172.31.255.35/31 | default | 1500 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | 172.31.255.37/31 | default | 1500 | false | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | 172.31.255.39/31 | default | 1500 | false | - | - |
+| Ethernet24 | - | routed | - | 10.0.0.5/30 | Tenant_OSPF | - | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -493,6 +495,14 @@ interface Ethernet21
    switchport access vlan 110
    switchport mode access
    switchport
+!
+interface Ethernet24
+   no shutdown
+   no switchport
+   vrf Tenant_OSPF
+   ip address 10.0.0.5/30
+   ip ospf network point-to-point
+   ip ospf area 0
 ```
 
 ## Port-Channel Interfaces
@@ -511,6 +521,17 @@ interface Ethernet21
 | Port-Channel13 | DC1-L2LEAF4A_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:a36b:7013:457b |
 | Port-Channel14 | DC1_L2LEAF5_Po1 | switched | trunk | 110-112,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:71da:d362:2084 |
 | Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel7 | 0000:0000:0808:0707:0606 | all-active | 08:08:07:07:06:06 |
+| Port-Channel9 | 0000:0000:0606:0707:0808 | all-active | 06:06:07:07:08:08 |
+| Port-Channel13 | 0000:0000:a36b:7013:457b | all-active | a3:6b:70:13:45:7b |
+| Port-Channel14 | 0000:0000:71da:d362:2084 | all-active | 71:da:d3:62:20:84 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -878,6 +899,7 @@ interface Vlan452
 | Tenant_C_OP_Zone | 30 | - |
 | Tenant_D_OP_Zone | 40 | - |
 | Tenant_D_WAN_Zone | 41 | - |
+| Tenant_OSPF | 30 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -916,6 +938,7 @@ interface Vxlan1
    vxlan vrf Tenant_C_OP_Zone vni 30
    vxlan vrf Tenant_D_OP_Zone vni 40
    vxlan vrf Tenant_D_WAN_Zone vni 41
+   vxlan vrf Tenant_OSPF vni 30
 ```
 
 # Routing
@@ -957,6 +980,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | Tenant_C_OP_Zone | true |
 | Tenant_D_OP_Zone | true |
 | Tenant_D_WAN_Zone | true |
+| Tenant_OSPF | true |
 
 ### IP Routing Device Configuration
 
@@ -972,6 +996,7 @@ ip routing vrf Tenant_B_OP_Zone
 ip routing vrf Tenant_C_OP_Zone
 ip routing vrf Tenant_D_OP_Zone
 ip routing vrf Tenant_D_WAN_Zone
+ip routing vrf Tenant_OSPF
 ```
 ## IPv6 Routing
 
@@ -989,6 +1014,7 @@ ip routing vrf Tenant_D_WAN_Zone
 | Tenant_C_OP_Zone | false |
 | Tenant_D_OP_Zone | true |
 | Tenant_D_WAN_Zone | true |
+| Tenant_OSPF | false |
 
 ## Static Routes
 
@@ -1024,6 +1050,37 @@ ip route vrf Tenant_D_OP_Zone 10.3.11.0/24 Vlan411 name VARP
 !
 ipv6 route vrf Tenant_D_OP_Zone ::/0 2001:db8:311::4 name IPv6-test-2
 ipv6 route vrf Tenant_D_OP_Zone 2001:db8:311::/64 Vlan411 name VARPv6
+```
+
+## Router OSPF
+
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 30 | 192.168.255.11 | enabled | Ethernet24 <br> | disabled | default | disabled | disabled | - | - | - | - |
+
+### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 30 | bgp | - |
+
+### OSPF Interfaces
+
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+| Ethernet24 | 0 | - | True |
+
+### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 30 vrf Tenant_OSPF
+   router-id 192.168.255.11
+   passive-interface default
+   no passive-interface Ethernet24
+   redistribute bgp
 ```
 
 ## Router BGP
@@ -1115,6 +1172,7 @@ ipv6 route vrf Tenant_D_OP_Zone 2001:db8:311::/64 Vlan411 name VARPv6
 | Tenant_C_OP_Zone | 65001:30 | connected |
 | Tenant_D_OP_Zone | 65001:40 | connected<br>static |
 | Tenant_D_WAN_Zone | 65001:41 | connected |
+| Tenant_OSPF | 65001:30 | connected<br>ospf |
 
 ### Router BGP Device Configuration
 
@@ -1286,6 +1344,14 @@ router bgp 65102
       route-target export evpn 100000:41
       router-id 192.168.255.11
       redistribute connected
+   !
+   vrf Tenant_OSPF
+      rd 65001:30
+      route-target import evpn 100000:30
+      route-target export evpn 100000:30
+      router-id 192.168.255.11
+      redistribute connected
+      redistribute ospf
 ```
 
 # BFD
@@ -1386,6 +1452,7 @@ route-map RM-CONN-2-BGP permit 10
 | Tenant_C_OP_Zone | enabled |
 | Tenant_D_OP_Zone | enabled |
 | Tenant_D_WAN_Zone | enabled |
+| Tenant_OSPF | enabled |
 
 ## VRF Instances Device Configuration
 
@@ -1409,6 +1476,8 @@ vrf instance Tenant_C_OP_Zone
 vrf instance Tenant_D_OP_Zone
 !
 vrf instance Tenant_D_WAN_Zone
+!
+vrf instance Tenant_OSPF
 ```
 
 # Virtual Source NAT

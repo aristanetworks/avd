@@ -53,6 +53,14 @@ ethernet_interfaces:
 {%         if link.link_tracking_groups is arista.avd.defined %}
     link_tracking_groups: {{ link.link_tracking_groups }}
 {%         endif %}
+{%         if link.underlay_multicast is arista.avd.defined(true) %}
+    pim:
+      ipv4:
+        sparse_mode: true
+{%         endif %}
+{%         if link.structured_config is arista.avd.defined %}
+    struct_cfg: {{ link.structured_config }}
+{%         endif %}
 {# L2 interfaces #}
 {%     elif link.type is arista.avd.defined('underlay_l2') %}
   {{ link.interface }}:

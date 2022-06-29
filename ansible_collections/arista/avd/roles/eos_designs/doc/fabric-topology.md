@@ -215,6 +215,14 @@ defaults <- node_group <- node_group.node <- node
     # Point-to-Point interface speed - will apply to uplinks on both ends | Optional.
     uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
+    # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces"
+    # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
+    # Overrides the settings on the ethernet interface level.
+    # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
+    # Overrides the settings on the port-channel interface level.
+    # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    uplink_structured_config: < dictionary >
+
   # When nodes are part of node group
   node_groups:
     < node-group-name >:
@@ -357,6 +365,10 @@ defaults <- node_group <- node_group.node <- node
     # Enable / Disable MLAG dual primary detection
     mlag_dual_primary_detection: < true | false -> default false >
 
+    # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
+    # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
+    mlag_ibgp_origin_incomplete: < true | false | default -> true >
+
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
@@ -376,7 +388,7 @@ defaults <- node_group <- node_group.node <- node
     # IP is derived from the node id.
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
 
-    # MLAG Peer Link (control link) SVI interface id
+    # MLAG Peer Link (control link) SVI interface id.
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
     # MLAG Peer Link allowed VLANs
@@ -385,6 +397,24 @@ defaults <- node_group <- node_group.node <- node
     # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
     # IP is derived from the node id.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
+
+    # Custom structured config applied to MLAG peer link port-channel id.
+    # Added under port_channel_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the port-channel interface level.
+    # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    mlag_port_channel_structured_config: < dictionary >
+
+    # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+    # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the vlan interface level.
+    # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    mlag_peer_vlan_structured_config: < dictionary >
+
+    # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+    # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the vlan interface level.
+    # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    mlag_peer_l3_vlan_structured_config: < dictionary >
 
     # Spanning tree mode | Required.
     spanning_tree_mode: < mstp | rstp | rapid-pvst | none >

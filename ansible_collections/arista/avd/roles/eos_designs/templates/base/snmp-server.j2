@@ -1,6 +1,11 @@
 {# snmp settings #}
 snmp_server:
 {% if snmp_settings is arista.avd.defined %}
+{%     if snmp_settings.compute_local_engineid is arista.avd.defined(true) %}
+{%         set local_engine_id = (inventory_hostname ~ switch.mgmt_ip) | ansible.builtin.hash('sha1') %}
+    engineid:
+      local: {{ local_engine_id }}
+{%     endif %}
 {%     if snmp_settings.contact is arista.avd.defined %}
     contact: {{ snmp_settings.contact }}
 {%     endif %}
@@ -17,5 +22,41 @@ snmp_server:
 {%         endif %}
 {%         set snmp_location = snmp_location ~ " " ~ inventory_hostname %}
     location: {{ snmp_location }}
+{%     endif %}
+{%     if snmp_settings.users is arista.avd.defined %}
+    users:
+{%         for user in snmp_settings.users %}
+    - name: {{ user.name }}
+      group: {{ user.group }}
+      version: {{ user.version }}
+{%             if user.version is arista.avd.defined("v3")
+                 and snmp_settings.compute_local_engineid is arista.avd.defined(true)
+                 and snmp_settings.compute_v3_user_localized_key is arista.avd.defined(true) %}
+      localized:  {{ local_engine_id }}
+{%             endif %}
+{%             if user.version is arista.avd.defined("v3")
+                and user.auth is arista.avd.defined
+                and user.auth_passphrase is arista.avd.defined %}
+      auth: {{ user.auth }}
+{%                 if snmp_settings.compute_local_engineid is arista.avd.defined(true)
+                      and snmp_settings.compute_v3_user_localized_key is arista.avd.defined(true) %}
+{%                     set hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": local_engine_id} %}
+      auth_passphrase: {{ hash_filter | arista.avd.hash_passphrase }}
+{%                 else %}
+      auth_passphrase: {{ user.auth_passphrase }}
+{%                 endif %}
+{%                 if user.priv is arista.avd.defined
+                       and user.priv_passphrase is arista.avd.defined %}
+      priv: {{ user.priv }}
+{%                     if snmp_settings.compute_local_engineid is arista.avd.defined(true)
+                         and snmp_settings.compute_v3_user_localized_key is arista.avd.defined(true) %}
+{%                         do hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv}) %}
+      priv_passphrase: {{ hash_filter | arista.avd.hash_passphrase }}
+{%                     else %}
+      priv_passphrase: {{ user.priv_passphrase }}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {% endif %}

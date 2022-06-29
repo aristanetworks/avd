@@ -16,3 +16,6 @@ port_channel_interfaces:
       - LEAF_PEER_L3
 {% endif %}
       - MLAG
+{% if switch.mlag_port_channel_structured_config is arista.avd.defined %}
+    struct_cfg: {{ switch.mlag_port_channel_structured_config }}
+{% endif %}

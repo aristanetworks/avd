@@ -228,6 +228,8 @@ interface Ethernet1
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1000
+
 !
 interface Ethernet2
    description P2P_LINK_TO_SITE1-LER2_Ethernet2
@@ -247,6 +249,8 @@ interface Ethernet2
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 asdadjiwtelogkkdng
+   link-debounce time 1500
+
 !
 interface Ethernet3
    no shutdown
@@ -297,6 +301,17 @@ interface Ethernet8
 | Port-Channel8.111 | - | l2dot1q | 111 | False | 111 | - | - | True | - | - | - |
 | Port-Channel8.222 | - | l2dot1q | 222 | False | 222 | - | - | True | - | - | - |
 | Port-Channel8.333 | - | l2dot1q | 434 | False | 333 | - | - | True | - | - | - |
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel8 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
+| Port-Channel8.111 | 0000:0000:0303:0202:0111 | all-active | 03:03:02:02:01:11 |
+| Port-Channel8.222 | 0000:0000:0303:0202:0222 | all-active | 03:03:02:02:02:22 |
+| Port-Channel8.333 | 0000:0000:0303:0202:0333 | all-active | 03:03:02:02:03:33 |
 
 ### Port-Channel Interfaces Device Configuration
 

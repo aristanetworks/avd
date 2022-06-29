@@ -164,6 +164,9 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    eos_cli: 'link-debounce time 1000
+
+      '
 router_bfd:
   multihop:
     interval: 300
