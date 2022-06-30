@@ -304,15 +304,15 @@ class EosDesignsFacts:
 
         Vars are inherited like:
         <node_type_key>.defaults ->
-            <node_type_key>.node_groups.<group> ->
-                <node_type_key>.node_groups.<group>.nodes.<node> ->
-                <node_type_key>.nodes.<node>
+            <node_type_key>.node_groups.[<node_group>] ->
+                <node_type_key>.node_groups.[].nodes.[<node>] ->
+                    <node_type_key>.nodes.[<node>]
 
         Returns
         -------
         dict
             node_group : dict
-                Configuration set at the node_group level - including the "nodes" dict.
+                Configuration set at the node_group level - including the "nodes" list.
                 Empty dict if the node is not defined under a node_group.
             group : str
                 Optional - Name of the matching node_group. Not set if the node is not defined under a node_group.
@@ -1014,9 +1014,9 @@ class EosDesignsFacts:
     @cached_property
     def mlag_role(self):
         if self.mlag is True:
-            if get(self._switch_data_node_group_nodes[0], "name", required=True) == self.hostname:
+            if self._switch_data_node_group_nodes[0]["name"] == self.hostname:
                 return "primary"
-            elif get(self._switch_data_node_group_nodes[1], "name", required=True) == self.hostname:
+            elif self._switch_data_node_group_nodes[1]["name"] == self.hostname:
                 return "secondary"
         return None
 
@@ -1024,9 +1024,9 @@ class EosDesignsFacts:
     def mlag_peer(self):
         if self.mlag is True:
             if self.mlag_role == "primary":
-                return get(self._switch_data_node_group_nodes[1], "name", required=True)
+                return self._switch_data_node_group_nodes[1]["name"]
             if self.mlag_role == "secondary":
-                return get(self._switch_data_node_group_nodes[0], "name", required=True)
+                return self._switch_data_node_group_nodes[0]["name"]
         return None
 
     @cached_property
