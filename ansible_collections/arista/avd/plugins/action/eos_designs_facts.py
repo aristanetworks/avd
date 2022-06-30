@@ -58,8 +58,11 @@ class ActionModule(ActionBase):
 
             for host in fabric_hosts:
                 host_evpn_route_servers = avd_switch_facts[host]['switch'].get('evpn_route_servers', [])
-
                 for peer in host_evpn_route_servers:
+                    avd_overlay_peers.setdefault(peer, []).append(host)
+
+                host_mpls_route_reflectors = avd_switch_facts[host]['switch'].get('mpls_route_reflectors', [])
+                for peer in host_mpls_route_reflectors:
                     avd_overlay_peers.setdefault(peer, []).append(host)
 
                 host_topology_peers = avd_switch_facts[host]['switch'].get('uplink_peers', [])

@@ -1,9 +1,9 @@
   neighbors:
 {% if switch.mpls_overlay_role in ["server", "client"] %}
-{%     for mpls_route_server in overlay_data.mpls_route_servers | arista.avd.natural_sort %}
-    {{ overlay_data.mpls_route_servers[mpls_route_server].ip_address }}:
+{%     for mpls_route_reflector in overlay_data.mpls_route_reflectors | arista.avd.natural_sort %}
+    {{ overlay_data.mpls_route_reflectors[mpls_route_reflector].ip_address }}:
       peer_group: {{ overlay_data.overlay_peer_group_name }}
-      description: {{ mpls_route_server }}
+      description: {{ mpls_route_reflector }}
 {%     endfor %}
 {%     for mpls_route_client in overlay_data.mpls_route_clients | arista.avd.natural_sort %}
     {{ overlay_data.mpls_route_clients[mpls_route_client].ip_address }}:
