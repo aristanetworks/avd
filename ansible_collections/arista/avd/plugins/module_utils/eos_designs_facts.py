@@ -323,16 +323,23 @@ class EosDesignsFacts:
         node_config = {}
         hostname = self.hostname
         node_type_config = get(self._hostvars, f"{self.node_type_key}", required=True)
+        nodes = self._convert_dicts(node_type_config.get('nodes', []), 'name')
 
-        if hostname in node_type_config.get('nodes', {}):
-            node_config = node_type_config['nodes'][hostname]
-        else:
-            for node_group in node_type_config.get('node_groups', {}):
-                if hostname in node_type_config['node_groups'][node_group].get('nodes', {}):
-                    node_config = node_type_config['node_groups'][node_group]['nodes'][hostname]
-                    switch_data['node_group'] = node_type_config['node_groups'][node_group]
-                    switch_data['group'] = node_group
-                    break
+        for node in nodes:
+            if hostname == node['name']:
+                node_config = node
+
+        if not node_config:
+            node_groups = self._convert_dicts(node_type_config.get('node_groups', []), 'group')
+            for node_group in node_groups:
+                nodes = self._convert_dicts(node_group.get('nodes', []), 'name')
+                node_group['nodes'] = nodes
+                for node in nodes:
+                    if hostname == node['name']:
+                        node_config = node
+                        switch_data['node_group'] = node_group
+                        switch_data['group'] = node_group['group']
+                        break
 
         # Load defaults
         defaults_config = node_type_config.get('defaults', {})
@@ -1007,10 +1014,9 @@ class EosDesignsFacts:
     @cached_property
     def mlag_role(self):
         if self.mlag is True:
-            index = list(self._switch_data_node_group_nodes.keys()).index(self.hostname)
-            if index == 0:
+            if get(self._switch_data_node_group_nodes[0], "name", required=True) == self.hostname:
                 return "primary"
-            elif index == 1:
+            elif get(self._switch_data_node_group_nodes[1], "name", required=True) == self.hostname:
                 return "secondary"
         return None
 
@@ -1018,9 +1024,9 @@ class EosDesignsFacts:
     def mlag_peer(self):
         if self.mlag is True:
             if self.mlag_role == "primary":
-                return list(self._switch_data_node_group_nodes.keys())[1]
+                return get(self._switch_data_node_group_nodes[1], "name", required=True)
             if self.mlag_role == "secondary":
-                return list(self._switch_data_node_group_nodes.keys())[0]
+                return get(self._switch_data_node_group_nodes[0], "name", required=True)
         return None
 
     @cached_property

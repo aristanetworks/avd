@@ -1,4 +1,4 @@
-{% if l2leaf is arista.avd.defined %}
+7{% if l2leaf is arista.avd.defined %}
 {####### l2leaf #######}
 l2leaf:
   defaults:
@@ -27,26 +27,26 @@ l2leaf:
     mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
 {%     endif %}
   node_groups:
-{%     for node_group in l2leaf.node_groups | arista.avd.default([]) %}
-    {{ node_group }}:
-{%         if l2leaf.node_groups[node_group].parent_l3leafs is arista.avd.defined %}
-# Change from l2leaf.node_groups.{{ node_group }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.uplink_switches
-      uplink_switches: {{ l2leaf.node_groups[node_group].parent_l3leafs }}
+{%     for node_group in l2leaf.node_groups | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+    {{ node_group.name }}:
+{%         if node_group.parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group.name }}.parent_l3leafs to l2leaf.node_groups.{{ node_group.name }}.uplink_switches
+      uplink_switches: {{ node_group.parent_l3leafs }}
 {%         endif %}
-{%         if l2leaf.node_groups[node_group].p2p_link_interface_speed is arista.avd.defined %}
-# Change from l2leaf.node_groups.{{ node_group }}.p2p_link_interface_speed to l2leaf.node_groups.{{ node_group }}.uplink_interface_speed
-      uplink_interface_speed: {{ l2leaf.node_groups[node_group].p2p_link_interface_speed }}
+{%         if node_group.p2p_link_interface_speed is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group.name }}.p2p_link_interface_speed to l2leaf.node_groups.{{ node_group.name }}.uplink_interface_speed
+      uplink_interface_speed: {{ node_group.p2p_link_interface_speed }}
 {%         endif %}
       nodes:
-{%         for node in l2leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
-        {{ node }}:
-{%             if l2leaf.node_groups[node_group].nodes[node].l3leaf_interfaces is arista.avd.defined %}
-# Change from l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.l3leaf_interfaces to l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switch_interfaces
-          uplink_switch_interfaces: {{ l2leaf.node_groups[node_group].nodes[node].l3leaf_interfaces }}
+{%         for node in node_group.nodes | arista.avd.convert_dicts('host_name') | arista.avd.default([]) %}
+        {{ node.host_name }}:
+{%             if node.l3leaf_interfaces is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.l3leaf_interfaces to l2leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.uplink_switch_interfaces
+          uplink_switch_interfaces: {{ node.l3leaf_interfaces }}
 {%             endif %}
-{%             if l2leaf.node_groups[node_group].nodes[node].parent_l3leafs is arista.avd.defined %}
-# Change from l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switches
-          uplink_switches: {{ l2leaf.node_groups[node_group].nodes[node].parent_l3leafs }}
+{%             if node.parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.parent_l3leafs to l2leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.uplink_switches
+          uplink_switches: {{ node.parent_l3leafs }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

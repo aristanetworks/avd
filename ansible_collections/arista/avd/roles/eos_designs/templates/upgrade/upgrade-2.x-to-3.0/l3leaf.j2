@@ -87,34 +87,34 @@ l3leaf:
             remote_as: {{ spine.bgp_as }}
 {%     endif %}
   node_groups:
-{%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
+{%     for node_group in l3leaf.node_groups | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
     {{ node_group }}:
-{%         if l3leaf.node_groups[node_group].uplink_to_spine_interfaces is arista.avd.defined %}
-# Change from l3leaf.node_groups.{{ node_group }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group }}.uplink_interfaces
-      uplink_interfaces: {{ l3leaf.node_groups[node_group].uplink_to_spine_interfaces }}
+{%         if node_group.uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group.name }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group.name }}.uplink_interfaces
+      uplink_interfaces: {{ node_group.uplink_to_spine_interfaces }}
 {%         endif %}
-{%         if l3leaf.node_groups[node_group].spines is arista.avd.defined %}
-# Change from l3leaf.node_groups.{{ node_group }}.spines to l3leaf.node_groups.{{ node_group }}.uplink_switches
-      uplink_switches: {{ l3leaf.node_groups[node_group].spines }}
+{%         if node_group.spines is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group.name }}.spines to l3leaf.node_groups.{{ node_group.name }}.uplink_switches
+      uplink_switches: {{ node_group.spines }}
 {%         endif %}
-{%         if l3leaf.node_groups[node_group].p2p_link_interface_speed is arista.avd.defined %}
-# Change from l3leaf.node_groups.{{ node_group }}.p2p_link_interface_speed to l3leaf.node_groups.{{ node_group }}.uplink_interface_speed
-      uplink_interface_speed: {{ l3leaf.node_groups[node_group].p2p_link_interface_speed }}
+{%         if node_group].p2p_link_interface_speed is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group.name }}.p2p_link_interface_speed to l3leaf.node_groups.{{ node_group.name }}.uplink_interface_speed
+      uplink_interface_speed: {{ node_group.p2p_link_interface_speed }}
 {%         endif %}
       nodes:
-{%         for node in l3leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
-        {{ node }}:
-{%             if l3leaf.node_groups[node_group].nodes[node].spine_interfaces is arista.avd.defined %}
-# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.spine_interfaces to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switch_interfaces
-          uplink_switch_interfaces: {{ l3leaf.node_groups[node_group].nodes[node].spine_interfaces }}
+{%         for node in node_group.nodes | arista.avd.convert_dicts('host_name') | arista.avd.default([]) %}
+        {{ node.host_name }}:
+{%             if node.spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name}}.spine_interfaces to l3leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.uplink_switch_interfaces
+          uplink_switch_interfaces: {{ node.spine_interfaces }}
 {%             endif %}
-{%             if l3leaf.node_groups[node_group].nodes[node].uplink_to_spine_interfaces is arista.avd.defined %}
-# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_interfaces
-          uplink_interfaces: {{ l3leaf.node_groups[node_group].nodes[node].uplink_to_spine_interfaces }}
+{%             if node.uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.uplink_interfaces
+          uplink_interfaces: {{ node.uplink_to_spine_interfaces }}
 {%             endif %}
-{%             if l3leaf.node_groups[node_group].nodes[node].spines is arista.avd.defined %}
-# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.spines to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switches
-          uplink_switches: {{ l3leaf.node_groups[node_group].nodes[node].spines }}
+{%             if node.spines is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.spines to l3leaf.node_groups.{{ node_group.name }}.nodes.{{ node.host_name }}.uplink_switches
+          uplink_switches: {{ node.spines }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
