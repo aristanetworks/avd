@@ -168,6 +168,9 @@ router_bgp:
             10.2.3.5:
               activate: true
               route_map_in: RM-10.2.3.5-SET-NEXT-HOP-IN
+            2.2.2.2:
+              activate: true
+              peer_group: LOCAL-AS
           networks:
             10.0.0.0/8:
             100.64.0.0/10:

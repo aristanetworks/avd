@@ -324,6 +324,8 @@ router bgp 65101
          bgp additional-paths send ecmp
          neighbor TEST_PEER_GRP activate
          neighbor TEST_PEER_GRP next-hop address-family ipv6 originate
+         neighbor 2.2.2.2 activate
+         neighbor 2.2.2.2 peer group LOCAL-AS
          neighbor 10.2.3.4 activate
          neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
          neighbor 10.2.3.5 activate

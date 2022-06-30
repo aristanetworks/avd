@@ -20,6 +20,7 @@ router_bgp:
       send_community: all
       maximum_routes: 0
     Tenant_C_WAN_Zone_BGP_PEER_GROUP:
+      name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       remote_as: 666
       description: Tenant C WAN peer group
       send_community: all
@@ -37,7 +38,6 @@ router_bgp:
       route_map_out: TEST_OUT
       route_map_in: TEST_IN
       local_as: 777
-      name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
   address_family_ipv4:
     peer_groups:
       UNDERLAY-PEERS:
