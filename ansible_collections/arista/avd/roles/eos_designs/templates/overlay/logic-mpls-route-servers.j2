@@ -12,11 +12,7 @@
 {# Found a matching server. Gathering information for this server #}
 {%             set server = namespace() %}
 {%             set server.bgp_as = peer_facts.switch.bgp_as %}
-{%             if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
-{%                 set server.ip_address = peer_facts.switch.ipv6_router_id %}
-{%             else %}
-{%                 set server.ip_address = peer_facts.switch.router_id %}
-{%             endif %}
+{%             set server.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
 {%             if switch.mpls_overlay_role == "client" %}
 {%                 do overlay_data.mpls_route_reflectors.update({ route_reflector: server }) %}
 {%             elif switch.mpls_overlay_role == "server" %}
@@ -29,15 +25,11 @@
 {%     set overlay_data.mpls_mesh_pes = {} %}
 {%     for fabric_switch in groups[fabric_name] if fabric_switch not in overlay_data.mpls_route_reflectors %}
 {%         if fabric_switch != inventory_hostname %}
-{%             set overlay_pe_vars = avd_switch_facts[fabric_switch] %}
-{%             if overlay_pe_vars.switch.mpls_overlay_role is arista.avd.defined('client') %}
+{%             set peer_facts = avd_switch_facts[fabric_switch] %}
+{%             if peer_facts.switch.mpls_overlay_role is arista.avd.defined('client') %}
 {%                 set peer_pe = namespace() %}
-{%                 set peer_pe.bgp_as = overlay_pe_vars.switch.bgp_as %}
-{%                 if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
-{%                     set peer_pe.ip_address = overlay_pe_vars.switch.ipv6_router_id %}
-{%                 else %}
-{%                     set peer_pe.ip_address = overlay_pe_vars.switch.router_id %}
-{%                 endif %}
+{%                 set peer_pe.bgp_as = peer_facts.switch.bgp_as %}
+{%                 set peer_pe.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
 {%                 do overlay_data.mpls_mesh_pes.update({ fabric_switch: peer_pe }) %}
 {%             endif %}
 {%         endif %}

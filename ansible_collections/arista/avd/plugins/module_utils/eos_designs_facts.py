@@ -1391,3 +1391,9 @@ class EosDesignsFacts:
                     "combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
                 )
         return overlay_routing_protocol_address_family
+
+    @cached_property
+    def overlay_routing_protocol_peering_address(self):
+        if self.overlay_routing_protocol_address_family == "ipv6":
+            return self.ipv6_router_id
+        return self.router_id
