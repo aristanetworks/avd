@@ -20,7 +20,6 @@ router_bgp:
       send_community: all
       maximum_routes: 0
     Tenant_C_WAN_Zone_BGP_PEER_GROUP:
-      name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       remote_as: 666
       description: Tenant C WAN peer group
       send_community: all

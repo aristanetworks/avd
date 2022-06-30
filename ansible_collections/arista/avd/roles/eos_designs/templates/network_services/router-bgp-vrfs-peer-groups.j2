@@ -4,6 +4,7 @@
 {%         for vrf in tenant.vrfs %}
 {%             for bgp_peer_group in vrf.bgp_peer_groups if inventory_hostname in bgp_peer_group.nodes | arista.avd.default([]) %}
     {{ bgp_peer_group.name }}:
+{%                 do bgp_peer_group.pop("name") %}
       {{ bgp_peer_group }}
 {%             endfor %}
 {%         endfor %}
