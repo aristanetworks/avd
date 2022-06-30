@@ -13,7 +13,7 @@
     - Ethernet1-2/1-4: Expands to [ Ethernet1/1, Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3, Ethernet2/4 ]
   - Range syntaxes are expanded into a list of interfaces.
   - `default_uplink_interfaces` and `default_mlag_interfaces` are directly inherited to `uplink_interfaces` and `mlag_interfaces`.
-  - `default_downlink_interfaces` are referenced by the child switch (e.g. the leaf in a leaf/spine network). Essentially the child switch indexes into an upstream switch's `default_downlink interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.
+  - `default_downlink_interfaces` are referenced by the child switch (e.g. the leaf in a leaf/spine network). Essentially the child switch indexes into an upstream switch's `default_downlink_interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.
     - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces` are mapped with consecutive downlinks per child ID.
     - Example for `max_parallel_uplinks: 2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2 to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`
   - Please note that no default interfaces are defined in the default `platform_settings`. You will need to override the defaults and create your own.
