@@ -1,100 +1,40 @@
 # Connected Endpoints
 
-- The connected endpoints variables, define endpoints that connect to the fabric on leaf interface(s).
-- The connected endpoints are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
-- Connected endpoints key/value pairs are designed to be extended for your own needs and leveraged to configure the endpoint itself.
+AVD supports two different data models for defining connectivity to endpoints:
+
+- "Connected Endpoints" is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations.
+- "Network Ports" is a compact and port-centric model intended for configuration of generic port configurations on large ranges of ports.
+
+Both data models share the same underlying implementation and can coexist without conflicts, as long as the same switchports are not
+defined in both models.
+
+Both data models support variable inheritance from profiles defined under [`port_profiles`](#port-profiles). The profiles can be shared between the models. Any setting defined under the `port_profiles` will be inherited from `parent_profile` to `profile` to `adapter`.
+
+## Connected Endpoints
+
+- The connected endpoints variables define connectivity from the perspective of the endpoints that connect to the fabric.
+- Each endpoint can have one or more `adapters` defined, under which the connected `switches`, `switch_ports` and `endpoint_ports`
+  must be set.
+- If port_channel mode is enabled under one "adapter", all switch_ports connected to that "adapter" will become part of this port-channel.
+- The keys used to define `connected_endpoints` are configurable using [`connected_endpoints_keys`](#connected-endpoints-keys).
+  The default keys are: `servers`, `firewalls`, `routers`, `load_balancers` and `storage_arrays`.
+
+## Network Ports
+
+- `network_ports` is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact, but all
+  features and keys supported under `connected_endpoints.adapters` is also supported directly under `network_ports`.
+- Since all ranges defined under `network_ports` will be expanded to individual port configurations, it is not possible to configure a
+  port-channel with multiple interfaces on the same device. For this special case `connected_endpoints` should be used.
 
 ## Variables and Options
 
-### Connected Endpoints Keys
+### Connected Endpoints
 
 ```yaml
-# Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
-# This provides the ability to define various keys of your choice to better organize/group your data.
-# This should be defined in top level group_var for the fabric.
-connected_endpoints_keys:
-  < key_1 >:
-    type: < type used for documentation >
-  < key_2 >:
-    type: < type used for documentation >
-```
-
-```yaml
-# Example
-# The below key/pair values are the role defaults.
-connected_endpoints_keys:
-  servers:
-    type: server
-  firewalls:
-    type: firewall
-  routers:
-    type: router
-  load_balancers:
-    type: load_balancer
-  storage_arrays:
-    type: storage_array
-```
-
-### Port Profiles
-
-```yaml
-# Optional profiles to apply on endpoints facing interfaces
-# Each profile can support all or some of the following keys according to your own needs.
-# Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
-# Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
-port_profiles:
-  < port_profile_1 >:
-    parent_profile: < port_profile_name >
-    speed: < interface_speed | forced interface_speed | auto interface_speed >
-    enabled: < true | false >
-    mode: < access | dot1q-tunnel | trunk >
-    mtu: < mtu >
-    l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
-    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
-    native_vlan: < native_vlan_number >
-    native_vlan_tag: < boolean | default -> false >
-    vlans: < vlans as string >
-    spanning_tree_portfast: < edge | network >
-    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
-    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
-    flowcontrol:
-      received: < "received" | "send" | "on" >
-    qos_profile: < qos_profile_name >
-    ptp:
-      enable: < true | false >
-    storm_control:
-      all:
-        level: < Configure maximum storm-control level >
-        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
-      broadcast:
-        level: < Configure maximum storm-control level >
-        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
-      multicast:
-        level: < Configure maximum storm-control level >
-        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
-      unknown_unicast:
-        level: < Configure maximum storm-control level >
-        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
-    port_channel:
-      description: < port_channel_description >
-      mode: < "active" | "passive" | "on" >
-      # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
-      # Also note that defining short_esi under ethernet_segment overrides short_esi defined at the port_channel level
-      short_esi: < xxxx:xxxx:xxxx | auto >
-      lacp_fallback:
-        mode: < static > | Currently only static mode is supported
-        timeout: < timeout in seconds > | Optional - default is 90 seconds
-
-    # Detailed information on the ethernet_segment key is given under connected_endpoints_keys.key below
-    ethernet_segment:
-      short_esi: < xxxx:xxxx:xxxx | auto >
-      redundancy: < all-active | single-active >
-      designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
-      designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
-      dont_preempt: < true | false >
-
-# Dictionary key of connected endpoint as defined in connected_endpoints_keys
+# Dictionary of connected endpoint
 # This should be applied to group_vars or host_vars where endpoints are connecting.
+# <connected_endpoints_keys.key> is one of the keys under "connected_endpoints_keys"
+# Default keys are "servers", "firewalls", "routers", "load_balancers" and "storage_arrays".
 < connected_endpoints_keys.key >:
 
   # Endpoint name, this will be used in the switchport description
@@ -135,6 +75,12 @@ port_profiles:
 
         # Interface mode | required
         mode: < access | dot1q-tunnel | trunk >
+
+        # MTU | optional
+        mtu: < mtu >
+
+        # L2 MTU - This should only be defined for platforms supporting the "l2 mtu" CLI
+        l2_mtu: < l2_mtu >
 
         # Native VLAN for a trunk port | optional
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
@@ -185,16 +131,16 @@ port_profiles:
         storm_control:
           all:
             level: < Configure maximum storm-control level >
-            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+            unit: < percent | pps > | Optional var and is hardware dependent - default is percent)
           broadcast:
             level: < Configure maximum storm-control level >
-            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+            unit: < percent | pps > | Optional var and is hardware dependent - default is percent)
           multicast:
             level: < Configure maximum storm-control level >
-            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+            unit: < percent | pps > | Optional var and is hardware dependent - default is percent)
           unknown_unicast:
             level: < Configure maximum storm-control level >
-            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+            unit: < percent | pps > | Optional var and is hardware dependent - default is percent)
 
         # Monitor Session configuration: use defined switchports as source or destination for monitoring sessions | Optional
         monitor_sessions:
@@ -254,15 +200,15 @@ port_profiles:
         # Port- Channel
         port_channel:
 
-          # Port-Channel Description.
+          # Port-Channel Mode | Required
+          mode: < "active" | "passive" | "on" >
+
+          # Port-Channel Description - added after endpoint name in the description | Optional
           description: < port_channel_description >
 
           # Port-Channel administrative state | optional - default is true
           # setting to false will set port to 'shutdown' in intended configuration
           enabled: < true | false >
-
-          # Port-Channel Mode.
-          mode: < "active" | "passive" | "on" >
 
           # LACP Fallback configuration | Optional
           lacp_fallback:
@@ -280,6 +226,10 @@ port_profiles:
             # Flexible encapsulation parameters
             encapsulation_vlan:
               client_dot1q: < client vlan id encapsulation > | Optional - default is subinterface number
+
+          # Allocates an automatic short_esi to all ports using this profile
+          # Please see the notes under "EVPN A/A ESI dual-attached endpoint examples" in this document before setting short_esi: auto.
+          short_esi: auto
 
           # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
           raw_eos_cli: |
@@ -312,7 +262,74 @@ port_profiles:
           short_esi: < xxxx:xxxx:xxxx | auto >
 ```
 
+### Network Ports
+
+```yaml
+# Network Ports | Optional
+# All switch_ports ranges are exanded into indidual port configurations.
+# Switches are matched with regex matching the full hostname.
+network_ports:
+  - switches:
+      - < regex matching the full hostname of one or more switches >
+    # Switch_ports is a list of ranges using AVD Range syntax.
+    # Ex Ethernet1-48 or Ethernet2-3/1-48
+    switch_ports:
+      - < interface | interface_range >
+    description: < description to be used on all ports >
+
+    # Port-profile name, to inherit configuration.
+    profile: < port_profile_name >
+
+    < any keys supported under connected_endpoints adapters >
+```
+
+### Port Profiles
+
+```yaml
+# Optional profiles to share common settings for connected_endpoints and/or network_ports
+# Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
+port_profiles:
+  < port_profile_name >:
+    # Parent Profile | optional
+    # Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
+    parent_profile: < port_profile_name >
+
+    < any keys supported under connected_endpoints adapters >
+```
+
+### Connected Endpoints Keys
+
+```yaml
+# Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
+# This provides the ability to define various keys of your choice to better organize/group your data.
+# This should be defined in top level group_var for the fabric.
+# The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+connected_endpoints_keys:
+  < key_1 >:
+    type: < type used for documentation >
+  < key_2 >:
+    type: < type used for documentation >
+```
+
+```yaml
+# Example
+# The below key/pair values are the role defaults.
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: load_balancer
+  storage_arrays:
+    type: storage_array
+```
+
 ## Examples
+
+### Example with profiles
 
 ```yaml
 # Example
@@ -324,7 +341,6 @@ connected_endpoints_keys:
     type: firewall
   routers:
     type: router
-
 
 port_profiles:
 
@@ -401,7 +417,7 @@ routers:
         profile: TENANT_A
 ```
 
-## Single attached endpoint scenario
+### Single attached endpoint example
 
 Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
 
@@ -416,7 +432,7 @@ servers:
         profile: MGMT
 ```
 
-## MLAG dual-attached endpoint scenario
+### MLAG dual-attached endpoint example
 
 MLAG dual-homed connection:
 
@@ -437,7 +453,7 @@ servers:
           mode: active
 ```
 
-## EVPN A/A ESI dual- and single-attached endpoint scenarios
+### EVPN A/A ESI dual-attached endpoint examples
 
 To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
 `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
@@ -473,4 +489,53 @@ servers:
           description: PortChanne1
           mode: active
           short_esi: 0303:0202:0101
+```
+
+### Example using network ports and profiles
+
+```yaml
+# Port Profiles
+# Common settings inhertited to network_ports
+port_profiles:
+  - profile: common
+    mode: access
+    vlans: "999"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+
+  - profile: ap_with_port_channel
+    parent_profile: common
+    vlans: "101"
+    port_channel:
+      mode: active
+
+  - profile: pc
+    parent_profile: common
+    vlans: "100"
+
+# Network Ports
+# All switch_ports ranges are exanded into indidual port configurations
+# Switches are matched with regex matching the full hostname.
+network_ports:
+  - switches:
+      - network-ports-tests-1
+    switch_ports:
+      - Ethernet1-2
+    profile: pc
+    description: PCs
+
+  - switches:
+      - network-ports-tests-2$
+    switch_ports:
+      - Ethernet1-2
+    profile: ap_with_port_channel
+    description: AP1 with port_channel
+
+  - switches:
+      - network-ports-[est]{5}-.*
+    switch_ports:
+      - Ethernet3-4
+      - Ethernet2/1-48
+    profile: pc
+    description: PCs
 ```

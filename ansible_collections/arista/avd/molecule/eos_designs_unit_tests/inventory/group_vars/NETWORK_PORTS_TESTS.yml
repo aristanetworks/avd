@@ -27,15 +27,14 @@ network_ports:
     description: PCs
 
   - switches:
-      - network-ports-tests-2
+      - network-ports-tests-2$
     switch_ports:
       - Ethernet1-2
     profile: ap_with_port_channel
     description: AP1 with port_channel
 
   - switches:
-      - network-ports-tests-1
-      - network-ports-tests-2
+      - network-ports-[est]{5}-.*
     switch_ports:
       - Ethernet3-4
       - Ethernet2/1-48

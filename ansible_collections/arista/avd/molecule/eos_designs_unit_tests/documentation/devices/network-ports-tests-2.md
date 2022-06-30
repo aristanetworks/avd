@@ -83,7 +83,7 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | AP1 with port_channel | *access | *101 | *- | *- | 1 |
-| Ethernet2 | AP1 with port_channel | *access | *101 | *- | *- | 1 |
+| Ethernet2 | AP1 with port_channel | *access | *101 | *- | *- | 2 |
 | Ethernet2/1 |  PCs | access | 100 | - | - | - |
 | Ethernet2/2 |  PCs | access | 100 | - | - | - |
 | Ethernet2/3 |  PCs | access | 100 | - | - | - |
@@ -149,7 +149,7 @@ interface Ethernet1
 interface Ethernet2
    description AP1 with port_channel
    no shutdown
-   channel-group 1 mode active
+   channel-group 2 mode active
 !
 interface Ethernet2/1
    description PCs
@@ -611,12 +611,21 @@ interface Ethernet4
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | AP1 with port_channel | switched | access | 101 | - | - | - | - | - | - |
+| Port-Channel2 | AP1 with port_channel | switched | access | 101 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
+   description AP1 with port_channel
+   no shutdown
+   switchport
+   switchport access vlan 101
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel2
    description AP1 with port_channel
    no shutdown
    switchport

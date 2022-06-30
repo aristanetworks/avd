@@ -9,20 +9,27 @@
 {% endfor %}
 {% if network_ports is arista.avd.defined %}
 {%     for network_port_item in network_ports %}
-{%         if inventory_hostname in network_port_item.switches | arista.avd.default([]) %}
-{%             set switch_ports = network_port_item.switch_ports | arista.avd.default([]) | arista.avd.range_expand %}
-{#             Create list of inventory_hostname once per interface to be compatible with existing adapters style #}
-{%             set switches = [inventory_hostname] * (switch_ports | length) %}
-{%             set description = network_port_item.description | arista.avd.default %}
-{%             do network_port_item.update({
-                   "switch_ports": switch_ports,
-                   "switches": switches,
-               }) %}
-{%             do connected_endpoints.append({
-                   "name": description,
-                   "type": none,
-                   "adapters": [network_port_item]
-               }) %}
-{%         endif %}
+{%         for switch_regex in network_port_item.switches | arista.avd.default([]) %}
+{%             if switch_regex[-1] != "$" %}
+{#                 The match test is built on Python re.match which tests form the beginning of the string #}
+{#                 Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force $ at the end #}
+{%                 set switch_regex = switch_regex ~ "$" %}
+{%             endif %}
+{%             if inventory_hostname is match(switch_regex) %}
+{%                 set switch_ports = network_port_item.switch_ports | arista.avd.default([]) | arista.avd.range_expand %}
+{#                 Create list of inventory_hostname once per interface to be compatible with existing adapters style #}
+{%                 set adapters = [] %}
+{%                 for switch_port in switch_ports %}
+{%                     set adapter_overrides = {"switch_ports": [switch_port], "switches": [inventory_hostname]} %}
+{%                     set adapter = network_port_item | ansible.builtin.combine(adapter_overrides) %}
+{%                     do adapters.append(adapter) %}
+{%                 endfor %}
+{%                 do connected_endpoints.append({
+                       "name": network_port_item.description | arista.avd.default,
+                       "type": "network_port",
+                       "adapters": adapters
+                   }) %}
+{%             endif %}
+{%         endfor %}
 {%     endfor %}
 {% endif %}

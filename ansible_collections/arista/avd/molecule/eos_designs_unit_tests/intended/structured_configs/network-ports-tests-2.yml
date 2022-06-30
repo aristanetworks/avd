@@ -21,6 +21,7 @@ ip_igmp_snooping:
 ethernet_interfaces:
   Ethernet1:
     peer: AP1 with port_channel
+    peer_type: network_port
     description: AP1 with port_channel
     type: switched
     shutdown: false
@@ -33,6 +34,7 @@ ethernet_interfaces:
       mode: active
   Ethernet2:
     peer: AP1 with port_channel
+    peer_type: network_port
     description: AP1 with port_channel
     type: switched
     shutdown: false
@@ -41,10 +43,11 @@ ethernet_interfaces:
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: enabled
     channel_group:
-      id: 1
+      id: 2
       mode: active
   Ethernet3:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -54,6 +57,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet4:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -63,6 +67,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/1:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -72,6 +77,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/2:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -81,6 +87,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/3:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -90,6 +97,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/4:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -99,6 +107,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/5:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -108,6 +117,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/6:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -117,6 +127,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/7:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -126,6 +137,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/8:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -135,6 +147,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/9:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -144,6 +157,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/10:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -153,6 +167,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/11:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -162,6 +177,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/12:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -171,6 +187,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/13:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -180,6 +197,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/14:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -189,6 +207,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/15:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -198,6 +217,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/16:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -207,6 +227,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/17:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -216,6 +237,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/18:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -225,6 +247,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/19:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -234,6 +257,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/20:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -243,6 +267,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/21:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -252,6 +277,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/22:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -261,6 +287,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/23:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -270,6 +297,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/24:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -279,6 +307,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/25:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -288,6 +317,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/26:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -297,6 +327,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/27:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -306,6 +337,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/28:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -315,6 +347,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/29:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -324,6 +357,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/30:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -333,6 +367,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/31:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -342,6 +377,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/32:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -351,6 +387,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/33:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -360,6 +397,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/34:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -369,6 +407,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/35:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -378,6 +417,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/36:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -387,6 +427,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/37:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -396,6 +437,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/38:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -405,6 +447,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/39:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -414,6 +457,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/40:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -423,6 +467,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/41:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -432,6 +477,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/42:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -441,6 +487,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/43:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -450,6 +497,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/44:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -459,6 +507,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/45:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -468,6 +517,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/46:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -477,6 +527,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/47:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -486,6 +537,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
   Ethernet2/48:
     peer: PCs
+    peer_type: network_port
     description: PCs
     type: switched
     shutdown: false
@@ -495,6 +547,14 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: enabled
 port_channel_interfaces:
   Port-Channel1:
+    description: AP1 with port_channel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 101
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+  Port-Channel2:
     description: AP1 with port_channel
     type: switched
     shutdown: false
