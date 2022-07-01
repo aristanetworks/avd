@@ -157,7 +157,7 @@ class EosDesignsFacts:
         """
         internal switch.default_downlink_interfaces set based on platform_settings
         """
-        return self._range_expand(get(self.platform_settings, "default_downlink_interfaces", default=[]))
+        return self._range_expand(get(self.default_interfaces, "downlink_interfaces", default=[]))
 
     @cached_property
     def default_evpn_role(self):
@@ -166,6 +166,27 @@ class EosDesignsFacts:
         node_type_keys.<node_type_key>.default_evpn_role
         """
         return get(self._node_type_key_data, "default_evpn_role", default="none")
+
+    @cached_property
+    def default_interfaces(self):
+        default_interfaces = get(self._hostvars, "default_interfaces", default=[])
+
+        # First look for a matching default interface set that matches our platform and type
+        for default_interface in default_interfaces:
+            if (
+                self.platform in default_interface.get('platforms', [])
+                and self.type in default_interface.get('types', [])
+            ):
+                return default_interface
+
+        # If not found, then look for a default default_interface that matches our type
+        for default_interface in default_interfaces:
+            if (
+                'default' in default_interface.get('platforms', [])
+                and self.type in default_interface.get('types', [])
+            ):
+                return default_interface
+        return {}
 
     @cached_property
     def default_underlay_routing_protocol(self):
@@ -406,7 +427,7 @@ class EosDesignsFacts:
     def uplink_interfaces(self):
         return self._range_expand(default(
             get(self._switch_data_combined, "uplink_interfaces"),
-            get(self.platform_settings, "default_uplink_interfaces"),
+            get(self.default_interfaces, "uplink_interfaces"),
             [])
         )
 
@@ -441,7 +462,7 @@ class EosDesignsFacts:
             else:
                 raise AristaAvdError(
                     f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'default_downlink_interfaces[{downlink_index}]' set under 'platform_settings'"
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
                 )
 
         return uplink_switch_interfaces
@@ -1034,7 +1055,7 @@ class EosDesignsFacts:
         if self.mlag is True:
             return self._range_expand(default(
                 get(self._switch_data_combined, "mlag_interfaces"),
-                get(self.platform_settings, "default_mlag_interfaces"),
+                get(self.default_interfaces, "mlag_interfaces"),
                 [])
             )
         return None

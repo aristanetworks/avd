@@ -47,96 +47,40 @@ ntp:
       preferred: True
       vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
 
-# Override default platform settings for testing automatic interface allocation
-# The platform settings defined here do not necessarily make sense in terms of hardware
-platform_settings:
+# Support for per-platform automatic interface allocation
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ 7280R3, default ]
+    uplink_interfaces: [ Ethernet49-54/1 ]
+    mlag_interfaces: [ Ethernet55-56/1 ]
+    downlink_interfaces: [ Ethernet1-32/1 ]
 
-  - platforms: ['default']
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    feature_support:
-      # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
-      queue_monitor_length_notify: false
-    default_uplink_interfaces: [ Ethernet49-52/1 ]
-    default_mlag_interfaces: [ Ethernet53-54/1 ]
-    default_downlink_interfaces: [ Ethernet1-30/1 ]
+  - types: [ spine ]
+    platforms: [ 7500R3, 7800R3 ]
+    uplink_interfaces: [ Ethernet1/31-34/1 ]
+    mlag_interfaces: [ Ethernet1/35-36/1 ]
+    downlink_interfaces: [ Ethernet1/1-30/1 ]
 
-  - platforms: ['7280R', '7280R2']
-    tcam_profile: vxlan-routing
-    lag_hardware_only: true
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    default_uplink_interfaces: [ Ethernet49-56/1 ]
-    default_mlag_interfaces: [ Ethernet57-58/1 ]
-    default_downlink_interfaces: [ Ethernet1-30/1 ]
+  - types: [ spine, l3leaf ]
+    platforms: [ 7050SX3 ]
+    uplink_interfaces: [ Ethernet49-52/1 ]
+    mlag_interfaces: [ Ethernet53-54/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
 
-  - platforms: ['7280R3']
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    default_uplink_interfaces: [ Ethernet49-54/1 ]
-    default_mlag_interfaces: [ Ethernet55-56/1 ]
-    default_downlink_interfaces: [ Ethernet1-32/1 ]
+  - types: [ l3leaf, spine ]
+    platforms: [ VEOS, vEOS, vEOS-lab, VEOS-LAB ]
+    uplink_interfaces: [ Ethernet27-34 ]
+    mlag_interfaces: [ Ethernet35-36 ]
+    downlink_interfaces: [ Ethernet1-26 ]
 
-  - platforms: ['7500R', '7500R2']
-    tcam_profile: vxlan-routing
-    lag_hardware_only: true
-    management_interface: Management0
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    default_uplink_interfaces: [ Ethernet1/31-34/1 ]
-    default_mlag_interfaces: [ Ethernet1/35-36/1 ]
-    default_downlink_interfaces: [ Ethernet1/1-30/1 ]
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet49-52/1 ]
+    mlag_interfaces: [ Ethernet53-54/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
 
-  - platforms: ['7500R3', '7800R3']
-    management_interface: Management0
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    default_uplink_interfaces: [ Ethernet1/31-34/1 ]
-    default_mlag_interfaces: [ Ethernet1/35-36/1 ]
-    default_downlink_interfaces: [ Ethernet1/1-30/1 ]
-
-  - platforms: ['7368X4']
-    management_interface: Management0
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    default_uplink_interfaces: [ Ethernet1/9-14/1 ]
-    default_mlag_interfaces: [ Ethernet1/15-16/1 ]
-    default_downlink_interfaces: [ Ethernet1/1-8/1 ]
-
-  - platforms: ['7300X3']
-    management_interface: Management0
-    reload_delay:
-      mlag: 1200
-      non_mlag: 1320
-    default_uplink_interfaces: [ Ethernet1/27-30/1 ]
-    default_mlag_interfaces: [ Ethernet1/31-32/1 ]
-    default_downlink_interfaces: [ Ethernet1/1-26/1 ]
-
-  - platforms: ['VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab']
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    feature_support:
-      queue_monitor_length_notify: false
-      interface_storm_control: false
-    default_uplink_interfaces: [ Ethernet27-34 ]
-    default_mlag_interfaces: [ Ethernet35-36 ]
-    default_downlink_interfaces: [ Ethernet1-26 ]
-
-  - platforms: ['CEOS', 'cEOS', 'ceos', 'cEOSLab']
-    management_interface: Management0
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    feature_support:
-      queue_monitor_length_notify: false
-      interface_storm_control: false
-    default_uplink_interfaces: [ Ethernet27-30 ]
-    default_mlag_interfaces: [ Ethernet31-32 ]
-    default_downlink_interfaces: [ Ethernet1-26 ]
+  - types: [ l3leaf ]
+    platforms: [ 7280R, 7280R2 ]
+    uplink_interfaces: [ Ethernet49-56/1 ]
+    mlag_interfaces: [ Ethernet57-58/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
