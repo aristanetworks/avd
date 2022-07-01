@@ -652,6 +652,22 @@ router isis CORE
 | ------------------------------ | ------------------------------ |
 | mpls | Loopback0 |
 
+### Router BGP VPN-IPv4 Address Family
+
+#### VPN-IPv4 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-OVERLAY-PEERS | True | - | - |
+
+### Router BGP VPN-IPv6 Address Family
+
+#### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-OVERLAY-PEERS | True | - | - |
+
 ### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |

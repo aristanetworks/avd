@@ -496,6 +496,70 @@
 | L3 Gateway Inter-domain | True |
 {%         endif %}
 {%     endif %}
+{%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
+
+### Router BGP VPN-IPv4 Address Family
+{%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
+
+- VPN import pruning is __enabled__
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv4.neighbors is arista.avd.defined %}
+
+#### VPN-IPv4 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+{%             for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address') %}
+{%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv4.peer_groups is arista.avd.defined %}
+
+#### VPN-IPv4 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+{%             for peer_group in router_bgp.address_family_vpn_ipv4.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_bgp.address_family_vpn_ipv6 is arista.avd.defined %}
+
+### Router BGP VPN-IPv6 Address Family
+{%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
+
+- VPN import pruning is __enabled__
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv6.neighbors is arista.avd.defined %}
+
+#### VPN-IPv6 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+{%             for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address') %}
+{%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv6.peer_groups is arista.avd.defined %}
+
+#### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+{%             for peer_group in router_bgp.address_family_vpn_ipv6.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
 ### Router BGP VLAN Aware Bundles

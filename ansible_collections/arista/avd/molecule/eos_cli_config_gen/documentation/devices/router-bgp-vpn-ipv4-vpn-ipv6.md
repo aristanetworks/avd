@@ -117,6 +117,40 @@ interface Management1
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
 | 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - |
 | 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - |
+| 192.168.255.4 | 65004 | default | - | all | - | - | - | - |
+| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - |
+
+### Router BGP VPN-IPv4 Address Family
+
+- VPN import pruning is __enabled__
+
+#### VPN-IPv4 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 |
+
+#### VPN-IPv4 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 |
+
+### Router BGP VPN-IPv6 Address Family
+
+- VPN import pruning is __enabled__
+
+#### VPN-IPv6 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 |
+
+#### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 |
 
 ### Router BGP Device Configuration
 
@@ -137,18 +171,32 @@ router bgp 65103
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group MPLS-IBGP-PEERS
    neighbor 192.168.255.2 peer group MPLS-IBGP-PEERS
+   neighbor 192.168.255.4 remote-as 65004
+   neighbor 192.168.255.4 send-community
+   neighbor 2001:cafe:192:168::4 remote-as 65004
+   neighbor 2001:cafe:192:168::4 send-community
    !
    address-family vpn-ipv4
       domain identifier 3900000
       neighbor MPLS-IBGP-PEERS activate
+      neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN4 in
+      neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT4 out
       neighbor 192.168.255.4 activate
+      neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-IN4 in
+      neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-OUT4 out
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+      route import match-failure action discard
    !
    address-family vpn-ipv6
       domain identifier 3900000
       neighbor MPLS-IBGP-PEERS activate
-      neighbor 192.168.255.4 activate
+      neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN6 in
+      neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT6 out
+      neighbor 2001:cafe:192:168::4 activate
+      neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-IN6 in
+      neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-OUT6 out
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+      route import match-failure action discard
 ```
 
 # Multicast

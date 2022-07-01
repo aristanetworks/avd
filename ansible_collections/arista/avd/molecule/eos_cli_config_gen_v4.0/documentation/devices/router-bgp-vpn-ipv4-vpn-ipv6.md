@@ -118,6 +118,34 @@ interface Management1
 | 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - |
 | 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - |
 
+### Router BGP VPN-IPv4 Address Family
+
+#### VPN-IPv4 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 192.168.255.4 | True | - | - |
+
+#### VPN-IPv4 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | - | - |
+
+### Router BGP VPN-IPv6 Address Family
+
+#### VPN-IPv6 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+| 192.168.255.4 | True | - | - |
+
+#### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-IBGP-PEERS | True | - | - |
+
 ### Router BGP Device Configuration
 
 ```eos
