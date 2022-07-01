@@ -251,7 +251,7 @@ defaults <- node_group <- node_group.node <- node
 #### Default Interfaces
 
 - Set default uplink, downlink and mlag interfaces which will be used if these interfaces are not defined on a device (either directly or through inheritance).
-- These are defined based on the combination of node_type (e.g. l3leaf or spine) and platform.
+- These are defined based on the combination of node_type (e.g. l3leaf or spine) and a regex for matching the platform.
 - A list of interfaces or interface ranges can be specified.
 - Each list item supports range syntax that can be expanded into a list of interfaces. Interface range examples:
   - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1 ]
@@ -270,8 +270,9 @@ default_interfaces:
     # List of node type keys | Required
   - types: [ < node_type_key >, < node_type_key > ]
 
-    # List of platform families | Required
-    platforms: [ < Arista platform family >, < Arista platform family > ]
+    # List of platform families  | Required
+    # This is defined as a Python regular expression that matches the full platform type
+    platforms: [ < Arista platform family regex >, < Arista platform family regex > ]
 
     # List of interfaces or interfaces ranges for each type of default interface | Required
     uplink_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
@@ -280,7 +281,7 @@ default_interfaces:
 
     # Example
   - types: [ spine, l3leaf ]
-    platforms: [ 7280R3, default ]
+    platforms: [ "7050[SC]X3", vEOS.*, default ]
     uplink_interfaces: [ Ethernet49-54/1 ]
     mlag_interfaces: [ Ethernet55-56/1 ]
     downlink_interfaces: [ Ethernet1-32/1 ]
