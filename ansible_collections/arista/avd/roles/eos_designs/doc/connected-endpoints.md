@@ -80,14 +80,14 @@ port_profiles:
       mode: < "active" | "passive" | "on" >
       # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
       # Also note that defining short_esi under ethernet_segment overrides short_esi defined at the port_channel level
-      short_esi: < 0000:0000:0000 | auto >
+      short_esi: < xxxx:xxxx:xxxx | auto >
       lacp_fallback:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
 
     # Detailed information on the ethernet_segment key is given under connected_endpoints_keys.key below
     ethernet_segment:
-      short_esi: < 0000:0000:0000 | auto >
+      short_esi: < xxxx:xxxx:xxxx | auto >
       redundancy: < all-active | single-active >
       designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
       designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
@@ -214,7 +214,7 @@ port_profiles:
 
           # Define a manual short-esi (be careful using this on profiles) or auto-generate an ESI | required
           # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
-          short_esi: < 0000:0000:0000 | auto >
+          short_esi: < xxxx:xxxx:xxxx | auto >
 
           # Configure this Ethernet Segment for all-active or single-active forwarding | optional
           # If omitted, Port-Channels use the EOS default of all-active
@@ -264,7 +264,7 @@ port_profiles:
           # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
           subinterfaces:
           - number: < subinterface number >
-            short_esi: < 0000:0000:0000 | auto > Required for multihomed port-channels with subinterfaces
+            short_esi: < xxxx:xxxx:xxxx | auto > Required for multihomed port-channels with subinterfaces
             vlan_id: < VLAN ID to bridge > | Optional - default is subinterface number
             # Flexible encapsulation parameters
             encapsulation_vlan:
@@ -296,9 +296,9 @@ port_profiles:
           mode: '< active | passive | on >'
           # Note that short_esi defined here is overriden by short_esi defined under the ethernet_segment section.
           # This key will be deprecated in the next major version of AVD.
-          short_esi: < 0000:0000:0000 | auto >
+          short_esi: < xxxx:xxxx:xxxx | auto >
         ethernet_segment:
-          short_esi: < 0000:0000:0000 | auto >
+          short_esi: < xxxx:xxxx:xxxx | auto >
 ```
 
 ## Examples
