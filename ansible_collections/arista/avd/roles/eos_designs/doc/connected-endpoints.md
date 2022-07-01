@@ -78,12 +78,20 @@ port_profiles:
     port_channel:
       description: < port_channel_description >
       mode: < "active" | "passive" | "on" >
-      # Allocates an automatic short_esi to all ports using this profile
-      # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
-      short_esi: auto
+      # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
+      # Also note that defining short_esi under ethernet_segment overrides short_esi defined at the port_channel level
+      short_esi: < xxxx:xxxx:xxxx | auto >
       lacp_fallback:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
+
+    # Detailed information on the ethernet_segment key is given under connected_endpoints_keys.key below
+    ethernet_segment:
+      short_esi: < xxxx:xxxx:xxxx | auto >
+      redundancy: < all-active | single-active >
+      designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
+      designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
+      dont_preempt: < true | false >
 
 # Dictionary key of connected endpoint as defined in connected_endpoints_keys
 # This should be applied to group_vars or host_vars where endpoints are connecting.
@@ -201,6 +209,31 @@ port_profiles:
                 enabled: < true | false >
                 size: < bytes >
 
+        # Settings for all- or single-active EVPN multihoming
+        ethernet_segment:
+
+          # Define a manual short-esi (be careful using this on profiles) or auto-generate an ESI | required
+          # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
+          short_esi: < xxxx:xxxx:xxxx | auto >
+
+          # Configure this Ethernet Segment for all-active or single-active forwarding | optional
+          # If omitted, Port-Channels use the EOS default of all-active
+          # If omitted, Ethernet interfaces are configured as single-active
+          redundancy: < all-active | single-active >
+
+          # Configure DF algorithm and preferences | optional
+          #  - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list
+          #          e.g. assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd and 0 to the third
+          #  - preference: Set preference for each switch manually using designated_forwarder_preferences key
+          #  - modulus: Use the default modulus-based algorithm
+          # If omitted, Port-Channels use the EOS default of modulus
+          # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above
+          designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
+          # manual preference as described above | required only for preference algorithm
+          designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
+          # Disable preemption for single-active forwarding when auto/manual DF preference is configured | optional
+          dont_preempt: < true | false >
+
       # Example of port-channel adapter
       - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
@@ -231,7 +264,7 @@ port_profiles:
           # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
           subinterfaces:
           - number: < subinterface number >
-            short_esi: < 0000:0000:0000 | auto > Required for multihomed port-channels with subinterfaces
+            short_esi: < xxxx:xxxx:xxxx | auto > Required for multihomed port-channels with subinterfaces
             vlan_id: < VLAN ID to bridge > | Optional - default is subinterface number
             # Flexible encapsulation parameters
             encapsulation_vlan:
@@ -261,7 +294,11 @@ port_profiles:
         port_channel:
           description: < port_channel_description >
           mode: '< active | passive | on >'
-          short_esi: < 0000:0000:0000 | auto >
+          # Note that short_esi defined here is overriden by short_esi defined under the ethernet_segment section.
+          # This key will be deprecated in the next major version of AVD.
+          short_esi: < xxxx:xxxx:xxxx | auto >
+        ethernet_segment:
+          short_esi: < xxxx:xxxx:xxxx | auto >
 ```
 
 ## Examples
@@ -389,7 +426,7 @@ servers:
           mode: active
 ```
 
-## EVPN A/A ESI dual-attached endpoint scenario
+## EVPN A/A ESI dual- and single-attached endpoint scenarios
 
 To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
 `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
@@ -403,6 +440,7 @@ In addition, setting the `short_esi` key to `auto` generates the short_esi autom
 
 - Port-Channel Interfaces: first two uplink switch hostnames, the ports on those switches, the corresponding endpoint ports and the channel-group ID.
 - Port-Channel Subinterface: first two uplink switch hostname, the ports on those switches, the corresponding endpoint ports, the channel-group ID and the subinterface number.
+- Ethernet Interfaces: first two uplink switch hostnames, the ports on those switches, the corresponding endpoint ports and the interface number.
 
 It should be noted that arista.avd does not currently check for hash collisions when using `short_esi: auto` and while the risk of this happening is non-zero, it is small.
 

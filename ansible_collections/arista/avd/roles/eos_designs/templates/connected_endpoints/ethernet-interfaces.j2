@@ -47,6 +47,41 @@ ethernet_interfaces:
 {%                     if adapter_settings.mtu is arista.avd.defined %}
     mtu: {{ adapter_settings.mtu }}
 {%                     endif %}
+{%                     if adapter_settings.port_channel is not arista.avd.defined and adapter_settings.ethernet_segment.short_esi is arista.avd.defined %}
+{%                         if adapter_settings.ethernet_segment.short_esi | lower == 'auto' %}
+{%                             set esi_hash_switches = adapter_settings.switches[:2] | join %}
+{%                             set esi_hash_switch_ports = adapter_settings.switch_ports[:2] | join %}
+{%                             set esi_hash_endpoint_ports = adapter_settings.endpoint_ports[:2] | join %}
+{%                             set esi_hash = (esi_hash_switches ~ esi_hash_switch_ports ~ esi_hash_endpoint_ports ~ channel_group_id) | hash('sha256') %}
+{%                             set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
+{%                             do adapter_settings.ethernet_segment.update({ 'short_esi': short_esi_hash }) %}
+{%                         endif %}
+{%                         if adapter_settings.ethernet_segment.short_esi.split(':') | length == 3 %}
+    evpn_ethernet_segment:
+      identifier: {{ adapter_settings.ethernet_segment.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+      redundancy: {{ adapter_settings.ethernet_segment.redundancy | arista.avd.default('single-active') }}
+      designated_forwarder_election:
+{%                             if adapter_settings.ethernet_segment.designated_forwarder_algorithm is arista.avd.defined('modulus') %}
+        algorithm: modulus
+{%                             elif adapter_settings.ethernet_segment.designated_forwarder_algorithm is arista.avd.defined('auto') or
+                                    adapter_settings.ethernet_segment.designated_forwarder_algorithm is not arista.avd.defined %}
+        algorithm: preference
+{%                                 set auto_preferences = range(((adapter_settings.switches | length) * 100) - 100, 0, -100) %}
+        preference_value: {{ auto_preferences[adapter_settings.switches.index(inventory_hostname)] | arista.avd.default('0') }}
+{%                                 if adapter_settings.ethernet_segment.dont_preempt is arista.avd.defined(true) %}
+        dont_preempt: true
+{%                                 endif %}
+{%                             elif adapter_settings.ethernet_segment.designated_forwarder_algorithm is arista.avd.defined('preference') and
+                                    adapter_settings.ethernet_segment.designated_forwarder_preferences is arista.avd.defined(var_type='list') %}
+        algorithm: preference
+        preference_value: {{ adapter_settings.ethernet_segment.designated_forwarder_preferences[adapter_settings.switches.index(inventory_hostname)] | arista.avd.default('0') }}
+{%                                 if adapter_settings.ethernet_segment.dont_preempt is arista.avd.defined(true) %}
+        dont_preempt: true
+{%                                 endif %}
+{%                             endif %}
+      route_target: {{ adapter_settings.ethernet_segment.short_esi | arista.avd.generate_route_target }}
+{%                         endif %}
+{%                     endif %}
 {%                     if adapter_settings.l2_mtu is arista.avd.defined %}
     l2_mtu: {{ adapter_settings.l2_mtu }}
 {%                     endif %}
