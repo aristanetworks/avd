@@ -10,8 +10,8 @@
   - [Roles Overview](#roles-overview)
   - [Custom Plugins & Modules](#custom-plugins--modules)
   - [Installation](#installation)
+    - [Collection Installation](#collection-installation)
     - [Requirements](#requirements)
-    - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
   - [Example Playbooks](#example-playbooks)
   - [Contributing](#contributing)
   - [License](#license)
@@ -68,46 +68,13 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 
 ## Installation
 
+### Collection Installation
+
+Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please use the [github](docs/installation/collection-installation.md) or [avd.sh](https://avd.sh/en/devel/docs/installation/collection-installation.html) links.
+
 ### Requirements
 
-**Arista EOS:**
-
-- EOS 4.21.8M or later
-- Roles validated with eAPI transport -> `ansible_connection: httpapi`
-
-**Python:**
-
-- Python 3.8 or later
-
-**Supported Ansible Versions:**
-
-- ansible-core from __2.11.3__ to __2.12.x__
-
-**Additional Python Libraries required:**
-
-- netaddr
-- Jinja2
-- treelib
-- cvprac
-- paramiko
-- jsonschema
-- requests
-- PyYAML
-- md-toc
-
-**Ansible + Additional Python Libraries Installation:**
-
-```shell
-$ pip3 install ansible-core>=2.11.3,<2.13.0
-
-$ pip3 install -r requirements.txt
-```
-
-requirements.txt content:
-
-```text
---8<-- "requirements.txt"
-```
+To install other requirements please use the [github](docs/installation/requirements.md) or [avd.sh](https://avd.sh/en/devel/docs/installation/requirements.html) links.
 
 **Ansible Configuration INI file:**
 
@@ -118,14 +85,6 @@ requirements.txt content:
 ```ini
 jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
-```
-
-### Installation from ansible-galaxy
-
-Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content
-
-```shell
-ansible-galaxy collection install arista.avd
 ```
 
 ## Example Playbooks
