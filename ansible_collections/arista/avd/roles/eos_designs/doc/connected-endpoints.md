@@ -495,7 +495,7 @@ servers:
 
 ```yaml
 # Port Profiles
-# Common settings inhertited to network_ports
+# Common settings inherited to network_ports
 port_profiles:
   - profile: common
     mode: access
@@ -514,7 +514,7 @@ port_profiles:
     vlans: "100"
 
 # Network Ports
-# All switch_ports ranges are exanded into indidual port configurations
+# All switch_ports ranges are expanded into individual port configurations
 # Switches are matched with regex matching the full hostname.
 network_ports:
   - switches:
