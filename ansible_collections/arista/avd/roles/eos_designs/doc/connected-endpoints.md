@@ -267,7 +267,8 @@ Both data models support variable inheritance from profiles defined under [`port
 ```yaml
 # Network Ports | Optional
 # All switch_ports ranges are expanded into individual port configurations.
-# Switches are matched with regular expressions, which must match the full hostname.
+# Switches are matched with regular expressions.
+# Each regular expression will be enclosed in ^<regex>$ so they must match the full hostname.
 network_ports:
   - switches:
       - < regex matching the full hostname of one or more switches >

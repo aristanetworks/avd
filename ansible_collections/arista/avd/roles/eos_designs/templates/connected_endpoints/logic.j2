@@ -10,11 +10,9 @@
 {% if network_ports is arista.avd.defined %}
 {%     for network_port_item in network_ports %}
 {%         for switch_regex in network_port_item.switches | arista.avd.default([]) %}
-{%             if switch_regex[-1] != "$" %}
-{#                 The match test is built on Python re.match which tests from the beginning of the string #}
-{#                 Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force $ at the end #}
-{%                 set switch_regex = switch_regex ~ "$" %}
-{%             endif %}
+{#             The match test is built on Python re.match which tests from the beginning of the string #}
+{#             Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex #}
+{%             switch_regex = "^" ~ switch_regex ~ "$" %}
 {%             if inventory_hostname is match(switch_regex) %}
 {%                 set switch_ports = network_port_item.switch_ports | arista.avd.default([]) | arista.avd.range_expand %}
 {#                 Create list of inventory_hostname once per interface to be compatible with existing adapters style #}
