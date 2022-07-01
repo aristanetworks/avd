@@ -1,6 +1,13 @@
 {% if switch.network_services_l3 is arista.avd.defined(true) %}
   peer_groups:
 {%     for tenant in network_services_data.tenants %}
+{# add peer_groups defined at tenant level #}
+{%         for bgp_peer_group in tenant.bgp_peer_groups if inventory_hostname in bgp_peer_group.nodes | arista.avd.default([]) %}
+    {{ bgp_peer_group.name }}:
+{%                 do bgp_peer_group.pop("name") %}
+      {{ bgp_peer_group }}
+{%         endfor %}
+{# add peer_groups defined at vrf level for all tenants #}
 {%         for vrf in tenant.vrfs %}
 {%             for bgp_peer_group in vrf.bgp_peer_groups if inventory_hostname in bgp_peer_group.nodes | arista.avd.default([]) %}
     {{ bgp_peer_group.name }}:
