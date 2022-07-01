@@ -70,11 +70,11 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 
 ### Collection Installation
 
-Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please use the [github](docs/installation/collection-installation.md) or [avd.sh](https://avd.sh/en/devel/docs/installation/collection-installation.html) links.
+Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow [this](https://avd.sh/en/latest/docs/installation/collection-installation.html) guide.
 
 ### Requirements
 
-To install other requirements please use the [github](docs/installation/requirements.md) or [avd.sh](https://avd.sh/en/devel/docs/installation/requirements.html) links.
+To install requirements please follow [this](https://avd.sh/en/latest/docs/installation/requirements.html) guide.
 
 **Ansible Configuration INI file:**
 
@@ -86,6 +86,8 @@ To install other requirements please use the [github](docs/installation/requirem
 jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
+
+> **_NOTE:_** When using ansible-cvp modules, the user who is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
 
 ## Example Playbooks
 
