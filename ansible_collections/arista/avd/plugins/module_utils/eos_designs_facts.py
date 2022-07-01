@@ -305,7 +305,7 @@ class EosDesignsFacts:
         Vars are inherited like:
         <node_type_key>.defaults ->
             <node_type_key>.node_groups.[<node_group>] ->
-                <node_type_key>.node_groups.[].nodes.[<node>] ->
+                <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
 
         Returns
@@ -328,7 +328,7 @@ class EosDesignsFacts:
         for node in nodes:
             if hostname == node['name']:
                 node_config = node
-
+                break
         if not node_config:
             node_groups = self._convert_dicts(node_type_config.get('node_groups', []), 'group')
             for node_group in node_groups:
@@ -340,6 +340,8 @@ class EosDesignsFacts:
                         switch_data['node_group'] = node_group
                         switch_data['group'] = node_group['group']
                         break
+                if node_config:
+                    break
 
         # Load defaults
         defaults_config = node_type_config.get('defaults', {})
