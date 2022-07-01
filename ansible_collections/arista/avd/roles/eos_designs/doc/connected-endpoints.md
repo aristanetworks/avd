@@ -169,16 +169,16 @@ Both data models support variable inheritance from profiles defined under [`port
         # Settings for all- or single-active EVPN multihoming
         ethernet_segment:
 
-          # Define a manual short-esi (be careful using this on profiles) or auto-generate an ESI | required
+          # Define a manual short-esi (be careful using this on profiles) or auto-generate an ESI | Required
           # Please see the notes under "EVPN A/A ESI dual- and single-attached endpoint scenarios" before setting short_esi: auto
           short_esi: < xxxx:xxxx:xxxx | auto >
 
-          # Configure this Ethernet Segment for all-active or single-active forwarding | optional
+          # Configure this Ethernet Segment for all-active or single-active forwarding | Optional
           # If omitted, Port-Channels use the EOS default of all-active
           # If omitted, Ethernet interfaces are configured as single-active
           redundancy: < all-active | single-active >
 
-          # Configure DF algorithm and preferences | optional
+          # Configure DF algorithm and preferences | Optional
           #  - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list
           #          e.g. assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd and 0 to the third
           #  - preference: Set preference for each switch manually using designated_forwarder_preferences key
@@ -186,9 +186,9 @@ Both data models support variable inheritance from profiles defined under [`port
           # If omitted, Port-Channels use the EOS default of modulus
           # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above
           designated_forwarder_algorithm: < "auto" | "modulus" | "preference" >
-          # manual preference as described above | required only for preference algorithm
+          # manual preference as described above | Required only for preference algorithm
           designated_forwarder_preferences: [ < df_preference_for_each_switch > ]
-          # Disable preemption for single-active forwarding when auto/manual DF preference is configured | optional
+          # Disable preemption for single-active forwarding when auto/manual DF preference is configured | Optional
           dont_preempt: < true | false >
 
       # Example of port-channel adapter
@@ -267,8 +267,7 @@ Both data models support variable inheritance from profiles defined under [`port
 ```yaml
 # Network Ports | Optional
 # All switch_ports ranges are expanded into individual port configurations.
-# Switches are matched with regular expressions.
-# Each regular expression will be enclosed in ^<regex>$ so they must match the full hostname.
+# Switches are matched with regular expressions, which must match the full hostname.
 network_ports:
   - switches:
       - < regex matching the full hostname of one or more switches >
