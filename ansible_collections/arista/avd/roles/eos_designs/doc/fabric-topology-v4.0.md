@@ -118,13 +118,13 @@ defaults <- node_group <- node_group.node <- node
   defaults:
     # Define vars for all nodes of this type
   node_groups:
-    <node group name>:
+    - group: <node group name>
     # Vars related to all nodes part of this group
       nodes:
-        <node inventory hostname>:
+        - name: <node inventory hostname>
           # Vars defined per node
   nodes:
-    <node inventory hostname>:
+    - name: <node inventory hostname>
       # Vars defined per node
 
       # Unique identifier | Required.
@@ -215,14 +215,14 @@ defaults <- node_group <- node_group.node <- node
 
   # When nodes are part of node group
   node_groups:
-    < node-group-name >:
+    - group: < node-group-name >
       nodes:
         # Uplink switches interfaces (list), interface located on uplink switch. | Required.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
   # When nodes are not in node_group
   nodes:
-    <node inventory hostname>:
+    - name: <node inventory hostname>
       # Uplink switches interfaces (list), interface located on uplink switch. | Required.
       uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 ```

@@ -15,7 +15,7 @@ l2leaf:
     filter:
       tags: [opzone]
   nodes:
-    MH-L2LEAF1A:
+    - name: MH-L2LEAF1A
       id: 1
       mgmt_ip: 192.168.201.201/24
       uplink_switch_interfaces: [ Ethernet2 ]

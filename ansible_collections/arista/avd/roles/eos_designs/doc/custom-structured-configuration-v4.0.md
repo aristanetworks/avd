@@ -35,15 +35,15 @@ Only the most specific `structured_config` key will be used
     # Custom structured config for eos_cli_config_gen
     structured_config: < dictionary >
   nodes:
-    < node >:
+    - name: < node >
       # Custom structured config for eos_cli_config_gen
       structured_config: < dictionary >
   node_groups:
-    < node_group >:
+    - group: < node_group >
       # Custom structured config for eos_cli_config_gen
       structured_config: < dictionary >
       nodes:
-        < node >:
+        - name: < node >
           # Custom structured config for eos_cli_config_gen
           # Overrides the setting on node_group level.
           structured_config: < dictionary >

@@ -42,9 +42,9 @@ core_router:
     isis_system_id_prefix: "0000.0001"
     core_interface_speed: "forced 100gfull"
   nodes:
-    core-1-isis-sr-ldp:
+    - name: core-1-isis-sr-ldp
       id: 1
-    core-2-ospf-ldp:
+    - name: core-2-ospf-ldp
       id: 2
 
 core_interfaces:
