@@ -21,6 +21,8 @@
       - [AAA Accounting](#aaa-accounting)
       - [AAA Root](#aaa-root)
       - [AAA Server Groups](#aaa-server-groups)
+    - [Endpoint Security](#endpoint-security)
+      - [Global 802.1x Authentication](#global-8021x-authentication)
       - [Enable Password](#enable-password)
       - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
@@ -29,8 +31,6 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
-    - [Endpoint Security](#endpoint-security)
-      - [802.1x Authentication](#802.1x-authentication)
     - [Router BFD](#router-bfd)
     - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
@@ -970,10 +970,10 @@ ethernet_interfaces:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
     ip_helpers:
-      - ip_helper: < ip_helper1 >
+      < ip_helper1 >:
         source_interface: < source_interface_name >
         vrf: < vrf_name >
-      - ip_helper: < ip_helper2 >
+      < ip_helper2 >:
         source_interface: < source_interface_name >
         vrf: < vrf_name >
     ipv6_enable: < true | false >
