@@ -192,7 +192,7 @@ defaults <- node_group <- node_group.node <- node
 
     # Local uplink interfaces (list). | Optional
     # If uplink_interfaces is not defined, platform-specific defaults will be used instead.
-    # Please note that these defaults are not defined in default_platform_settings - you should define these yourself.
+    # Please note that these defaults are not defined by default - you should define these yourself.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
     # Uplink switches (list). | Required.
@@ -246,6 +246,44 @@ defaults <- node_group <- node_group.node <- node
     <node inventory hostname>:
       # Uplink switches interfaces (list), interface located on uplink switch. | Required.
       uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+```
+
+#### Default Interfaces
+
+- Set default uplink, downlink and mlag interfaces which will be used if these interfaces are not defined on a device (either directly or through inheritance).
+- These are defined based on the combination of node_type (e.g. l3leaf or spine) and platform.
+- A list of interfaces or interface ranges can be specified.
+- Each list item supports range syntax that can be expanded into a list of interfaces. Interface range examples:
+  - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1 ]
+  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1, Ethernet1/33/1, Ethernet1/34/1 ]
+  - Ethernet49-50,53-54: Expands to [ Ethernet49, Ethernet50, Ethernet53, Ethernet54 ]
+  - Ethernet1-2/1-4: Expands to [ Ethernet1/1, Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3, Ethernet2/4 ]
+- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces` are directly inherited by `uplink_interfaces` and `mlag_interfaces`.
+- `downlink_interfaces` are referenced by the child switch (e.g. the leaf in a leaf/spine network). Essentially the child switch indexes into an upstream switch's `default_downlink_interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.
+  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces` are mapped with consecutive downlinks per child ID.
+  - Example for `max_parallel_uplinks: 2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2 to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`
+- Please note that no default interfaces are defined in AVD itself. You will need to create your own based on the example below.
+
+```yaml
+default_interfaces:
+
+    # List of node type keys | Required
+  - types: [ < node_type_key >, < node_type_key > ]
+
+    # List of platform families | Required
+    platforms: [ < Arista platform family >, < Arista platform family > ]
+
+    # List of interfaces or interfaces ranges for each type of default interface | Required
+    uplink_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
+    mlag_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
+    downlink_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
+
+    # Example
+  - types: [ spine, l3leaf ]
+    platforms: [ 7280R3, default ]
+    uplink_interfaces: [ Ethernet49-54/1 ]
+    mlag_interfaces: [ Ethernet55-56/1 ]
+    downlink_interfaces: [ Ethernet1-32/1 ]
 ```
 
 #### ISIS underlay protocol management
