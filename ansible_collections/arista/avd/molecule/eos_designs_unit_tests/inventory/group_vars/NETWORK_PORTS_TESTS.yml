@@ -20,7 +20,7 @@ port_profiles:
 
 network_ports:
   - switches:
-      - network-ports-tests-1
+      - network-ports-tests.1
     switch_ports:
       - Ethernet1-2
     profile: pc
@@ -34,7 +34,7 @@ network_ports:
     description: AP1 with port_channel
 
   - switches:
-      - network-ports-[est]{5}-.*
+      - network-ports-[est]{5}[-.].*
     switch_ports:
       - Ethernet3-4
       - Ethernet2/1-48
@@ -43,7 +43,7 @@ network_ports:
 
 l2leaf:
   nodes:
-    network-ports-tests-1:
+    network-ports-tests.1:
       id: 1
     network-ports-tests-2:
       id: 2
