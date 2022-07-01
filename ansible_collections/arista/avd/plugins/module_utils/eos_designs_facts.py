@@ -2,7 +2,6 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import re
-import q
 import ipaddress
 from functools import cached_property
 from hashlib import sha256
@@ -176,7 +175,6 @@ class EosDesignsFacts:
             return {}
 
         # First look for a matching default interface set that matches our platform and type
-        q(self.platform)
         for default_interface in default_interfaces:
             for platform in default_interface.get('platforms', []):
                 if (
