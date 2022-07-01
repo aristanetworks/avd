@@ -11,7 +11,7 @@
 {%     for network_port_item in network_ports %}
 {%         for switch_regex in network_port_item.switches | arista.avd.default([]) %}
 {%             if switch_regex[-1] != "$" %}
-{#                 The match test is built on Python re.match which tests form the beginning of the string #}
+{#                 The match test is built on Python re.match which tests from the beginning of the string #}
 {#                 Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force $ at the end #}
 {%                 set switch_regex = switch_regex ~ "$" %}
 {%             endif %}
