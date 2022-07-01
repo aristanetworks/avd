@@ -25,16 +25,9 @@
 {%                 set tmp_bgp_peer_groups = [] %}
 {%                 set tmp_mapped_peer_groups = [] %}
 {%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
-{%                     set tmp_mapped_vrf_peer_groups = [] %}
 {%                     do vrf.update({'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address')}) %}
-{%                     for bgp_peer in vrf.bgp_peers %}
-{%                         if (bgp_peer.peer_group is arista.avd.defined) and (inventory_hostname in bgp_peer.nodes | arista.avd.default([])) and (bgp_peer.peer_group not in tmp_mapped_vrf_peer_groups) %}
-{%                             do tmp_mapped_vrf_peer_groups.append(bgp_peer.peer_group) %}
-{%                             if bgp_peer.peer_group not in tmp_mapped_peer_groups %}
-{%                                 do tmp_mapped_peer_groups.append(bgp_peer.peer_group) %}
-{%                             endif %}
-{%                         endif %}
-{%                     endfor %}
+{%                     set tmp_mapped_vrf_peer_groups = vrf.bgp_peers | selectattr("peer_group", "arista.avd.defined") | selectattr("nodes", "arista.avd.contains", inventory_hostname) | map(attribute="peer_group") %}
+{%                     do tmp_mapped_peer_groups.extend(tmp_mapped_vrf_peer_groups) %}
 {#                     svis & bgp_peers #}
 {%                     for bgp_peer_group in vrf.bgp_peer_groups | arista.avd.natural_sort('name') %}
 {%                         if (inventory_hostname in bgp_peer_group.nodes | arista.avd.default([])) or (bgp_peer_group.name in tmp_mapped_vrf_peer_groups) %}

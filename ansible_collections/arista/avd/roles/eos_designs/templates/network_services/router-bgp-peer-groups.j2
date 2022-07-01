@@ -3,9 +3,7 @@
 {%     for tenant in network_services_data.tenants %}
 {# All peer_groups defined on a host #}
 {%         for bgp_peer_group in tenant.bgp_peer_groups | arista.avd.natural_sort('name') %}
-{%             if bgp_peer_group.nodes is arista.avd.defined %}
-{%                 do bgp_peer_group.pop("nodes") %}
-{%             endif %}
+{%             do bgp_peer_group.pop("nodes", none) %}
     {{ bgp_peer_group.name }}:
 {%             do bgp_peer_group.pop("name") %}
       {{ bgp_peer_group }}
