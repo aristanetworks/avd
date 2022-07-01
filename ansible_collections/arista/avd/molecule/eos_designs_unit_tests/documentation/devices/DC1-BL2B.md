@@ -557,7 +557,20 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### Tenant_C_WAN_Zone_BGP_PEER_GROUP
+#### Tenant_C_BGP_PEER_GROUP
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 666 |
+| Local AS | 777 |
+| Next-hop self | True |
+| Source | lo0 |
+| Ebgp multihop | 3 |
+| Default originate | True |
+| Send community | all |
+| Maximum routes | 1000 |
+
+#### Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP
 
 | Settings | Value |
 | -------- | ----- |
@@ -590,8 +603,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 1.1.1.1 | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Tenant_C_WAN_Zone | - | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | - | - | - |
-| BEBA::C0CA:C07A | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Tenant_C_WAN_Zone | - | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | Inherited from peer group Tenant_C_WAN_Zone_BGP_PEER_GROUP | - | - | - |
+| 1.1.1.1 | - | Tenant_C_WAN_Zone | - | - | - | - | - | - |
+| BEBA::C0CA:C07A | - | Tenant_C_WAN_Zone | - | - | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -640,18 +653,30 @@ router bgp 65107
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP peer group
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP remote-as 666
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP local-as 777 no-prepend replace-as
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP next-hop-self
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP update-source lo0
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP description Tenant C WAN peer group
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP ebgp-multihop 3
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP default-originate always
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP send-community
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP maximum-routes 1000
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP route-map TEST_IN in
-   neighbor Tenant_C_WAN_Zone_BGP_PEER_GROUP route-map TEST_OUT out
+   neighbor Tenant_C_BGP_PEER_GROUP peer group
+   neighbor Tenant_C_BGP_PEER_GROUP remote-as 666
+   neighbor Tenant_C_BGP_PEER_GROUP local-as 777 no-prepend replace-as
+   neighbor Tenant_C_BGP_PEER_GROUP next-hop-self
+   neighbor Tenant_C_BGP_PEER_GROUP update-source lo0
+   neighbor Tenant_C_BGP_PEER_GROUP description Tenant C peer group
+   neighbor Tenant_C_BGP_PEER_GROUP ebgp-multihop 3
+   neighbor Tenant_C_BGP_PEER_GROUP default-originate always
+   neighbor Tenant_C_BGP_PEER_GROUP send-community
+   neighbor Tenant_C_BGP_PEER_GROUP maximum-routes 1000
+   neighbor Tenant_C_BGP_PEER_GROUP route-map TEST_IN in
+   neighbor Tenant_C_BGP_PEER_GROUP route-map TEST_OUT out
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP peer group
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP remote-as 666
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP local-as 777 no-prepend replace-as
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP next-hop-self
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP update-source lo0
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP description Tenant C VRF WAN Zone peer group
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP ebgp-multihop 3
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP default-originate always
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP send-community
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP maximum-routes 1000
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP route-map TEST_IN in
+   neighbor Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP route-map TEST_OUT out
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
