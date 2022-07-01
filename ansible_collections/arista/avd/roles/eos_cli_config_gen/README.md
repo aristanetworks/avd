@@ -30,7 +30,7 @@
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
     - [Endpoint Security](#endpoint-security)
-      - [Global 802.1x Authentication](#global-8021x-authentication)
+      - [802.1x Authentication](#802.1x-authentication)
     - [Router BFD](#router-bfd)
     - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
