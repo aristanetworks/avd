@@ -31,7 +31,7 @@ Both data models support variable inheritance from profiles defined under [`port
 ### Connected Endpoints
 
 ```yaml
-# Dictionary of connected endpoint
+# Dictionary of connected endpoint | Optional
 # This should be applied to group_vars or host_vars where endpoints are connecting.
 # <connected_endpoints_keys.key> is one of the keys under "connected_endpoints_keys"
 # Default keys are "servers", "firewalls", "routers", "load_balancers" and "storage_arrays".
@@ -54,45 +54,45 @@ Both data models support variable inheritance from profiles defined under [`port
         # The lists "endpoint_ports", "switch_ports" and "switches" must have the same length.
         # Each list item is one switchport.
 
-        # Endpoint port(s). Used for description. | required unless description is set
+        # Endpoint port(s). Used for description. | Required unless description is set
         endpoint_ports: [ < interface_name > ]
 
-        # List of switch interfac(es) | required
+        # List of switch interfac(es) | Required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switch(es) | required
+        # List of switch(es) | Required
         switches: [ < device > ]
 
-        # Interface descriptions Description | optional
+        # Interface descriptions Description | Optional
         description: <description>
 
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
 
-        # Administrative state | optional - default is true
+        # Administrative state | Optional - default is true
         # setting to false will set port to 'shutdown' in intended configuration
         enabled: < true | false >
 
-        # Interface mode | required
+        # Interface mode | Required
         mode: < access | dot1q-tunnel | trunk >
 
-        # MTU | optional
+        # MTU | Optional
         mtu: < mtu >
 
         # L2 MTU - This should only be defined for platforms supporting the "l2 mtu" CLI
         l2_mtu: < l2_mtu >
 
-        # Native VLAN for a trunk port | optional
+        # Native VLAN for a trunk port | Optional
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
         native_vlan: < native_vlan_number >
         native_vlan_tag: < boolean | default -> false >
 
-        # Trunk Groups | required with "enable_trunk_groups: true"
+        # Trunk Groups | Required with "enable_trunk_groups: true"
         # Trunk Groups are used for limiting vlans on trunk ports to vlans with the same Trunk Group
         trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
 
-        # Interface vlans | optional
-        # If not set, the EOS default is all vlans are allowed for trunk ports and vlan 1 will be used for access ports
+        # Interface vlans | Optional
+        # If not set, the EOS default is that all vlans are allowed for trunk ports and vlan 1 will be used for access ports
         vlans: < vlans as string >
 
         # Spanning Tree
@@ -206,7 +206,7 @@ Both data models support variable inheritance from profiles defined under [`port
           # Port-Channel Description - added after endpoint name in the description | Optional
           description: < port_channel_description >
 
-          # Port-Channel administrative state | optional - default is true
+          # Port-Channel administrative state | Optional - default is true
           # setting to false will set port to 'shutdown' in intended configuration
           enabled: < true | false >
 
@@ -267,11 +267,11 @@ Both data models support variable inheritance from profiles defined under [`port
 ```yaml
 # Network Ports | Optional
 # All switch_ports ranges are expanded into individual port configurations.
-# Switches are matched with regex matching the full hostname.
+# Switches are matched with regular expressions, which must match the full hostname.
 network_ports:
   - switches:
       - < regex matching the full hostname of one or more switches >
-    # Switch_ports is a list of ranges using AVD Range syntax.
+    # Switch_ports is a list of ranges using AVD range_expand syntax (see link below).
     # Ex Ethernet1-48 or Ethernet2-3/1-48
     switch_ports:
       - < interface | interface_range >
@@ -283,6 +283,8 @@ network_ports:
     < any keys supported under connected_endpoints adapters >
 ```
 
+For more details and examples of the `range_expand` syntax, see the [arista.avd.range_expand documentation](https://avd.sh/en/latest/plugins/index.html#range_expand-filter)
+
 ### Port Profiles
 
 ```yaml
@@ -290,7 +292,7 @@ network_ports:
 # Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
 port_profiles:
   < port_profile_name >:
-    # Parent Profile | optional
+    # Parent Profile | Optional
     # Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
     parent_profile: < port_profile_name >
 
