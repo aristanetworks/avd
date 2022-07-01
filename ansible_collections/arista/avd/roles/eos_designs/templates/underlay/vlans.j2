@@ -5,11 +5,7 @@
 {#     Below we build a map with {<vlan_id>: [ trunk_groups ] #}
 {%     for vlan_trunk_groups in underlay_data.vlan_trunk_groups | arista.avd.default([]) %}
 {%         for vlan in vlan_trunk_groups.vlan_list | arista.avd.range_expand %}
-{%             if vlan not in vlan_trunk_group_map %}
-{%                 do vlan_trunk_group_map.update({vlan: vlan_trunk_groups.trunk_groups}) %}
-{%             else %}
-{%                 do vlan_trunk_group_map[vlan].extend(vlan_trunk_groups.trunk_groups) %}
-{%             endif %}
+{%             do vlan_trunk_group_map.setdefault(vlan, []).extend(vlan_trunk_groups.trunk_groups) %}
 {%         endfor %}
 {%     endfor %}
 vlans:
