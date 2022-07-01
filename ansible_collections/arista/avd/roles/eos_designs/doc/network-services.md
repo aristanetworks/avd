@@ -135,7 +135,8 @@ svi_profiles:
           enabled: < true | false >
           always: < true | false >
         # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
-        nodes: [ < node_1 >, < node_2> ]
+        # If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
+        nodes: [ < node_1 >, < node_2 > ]
         update_source: < interface >
         bfd: < true | false >
         ebgp_multihop: < 1-255 >
@@ -433,7 +434,7 @@ svi_profiles:
             update_source: < interface >
             ebgp_multihop: < 1-255 >
             # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-            nodes: [ < node_1 >, < node_2> ]
+            nodes: [ < node_1 >, < node_2 > ]
             # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
             # Next hop takes precedence over route_map_out.
             set_ipv4_next_hop: < IPv4_address >
@@ -461,7 +462,7 @@ svi_profiles:
               enabled: < true | false >
               always: < true | false >
             # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
-            nodes: [ < node_1 >, < node_2> ]
+            nodes: [ < node_1 >, < node_2 > ]
             update_source: < interface >
             bfd: < true | false >
             ebgp_multihop: < 1-255 >
