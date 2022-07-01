@@ -7,6 +7,8 @@ l2leaf:
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     mlag_peer_ipv4_pool: 10.255.248.0/24
+    filter:
+      tags: []
   node_groups:
     TRUNK_GROUP_TESTS_L2LEAF1:
       nodes:

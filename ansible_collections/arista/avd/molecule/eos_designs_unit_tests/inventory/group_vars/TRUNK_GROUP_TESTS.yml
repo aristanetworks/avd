@@ -15,6 +15,7 @@ tenants:
             enabled: True
             ip_address_virtual: 10.1.0.1/24
             trunk_groups: [ TG_100, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
       - name: TG_200
         vrf_vni: 200
         svis:
@@ -23,6 +24,7 @@ tenants:
             enabled: True
             ip_address_virtual: 10.2.0.1/24
             trunk_groups: [ TG_200, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
       - name: TG_300
         vrf_vni: 300
         svis:
@@ -31,22 +33,38 @@ tenants:
             enabled: True
             ip_address_virtual: 10.3.0.1/24
             trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+          - id: 301
+            name: svi301_with_trunk_groups_only_l3leaf
+            enabled: True
+            ip_address_virtual: 10.3.1.1/24
+            trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1 ]
           - id: 398
             name: svi398_without_trunk_groups
             enabled: True
             ip_address_virtual: 10.3.1.1/24
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
     l2vlans:
       - id: 110
         name: l2vlan110_with_trunk_groups
         trunk_groups: [ TG_100, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
       - id: 210
         name: l2vlan210_with_trunk_groups
         trunk_groups: [ TG_200, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
       - id: 310
         name: l2vlan310_with_trunk_groups
         trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+      - id: 311
+        name: l2vlan310_with_trunk_groups_only_l3leaf
+        trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1 ]
       - id: 399
         name: l2vlan399_without_trunk_groups
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
 
 servers:
   server_with_tg_100:
