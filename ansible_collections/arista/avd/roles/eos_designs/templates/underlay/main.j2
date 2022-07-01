@@ -6,6 +6,8 @@
 
 {% include 'underlay/interfaces/port-channel-interfaces.j2' %}
 
+{% include 'underlay/vlans.j2' %}
+
 {# EBGP #}
 {% if switch.underlay_router is arista.avd.defined(true) %}
 {%     include 'underlay/interfaces/loopback-interfaces.j2' %}

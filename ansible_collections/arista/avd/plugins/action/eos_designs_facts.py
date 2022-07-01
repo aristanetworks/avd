@@ -10,6 +10,7 @@ from ansible.plugins.loader import lookup_loader
 from ansible.template import Templar
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.module_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdMissingVariableError
@@ -120,6 +121,7 @@ class ActionModule(ActionBase):
                     template_lookup_module=template_lookup_module,
                     combine=combine,
                     list_compress=list_compress,
+                    range_expand=range_expand,
                     natural_sort=natural_sort,
                     convert_dicts=convert_dicts,
                 )
