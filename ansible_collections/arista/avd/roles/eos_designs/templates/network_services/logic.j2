@@ -25,6 +25,7 @@
 {%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
 {%                     do vrf.update({'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address')}) %}
 {#                     svis & bgp_peers #}
+{%                     do vrf.update({'bgp_peer_groups': vrf.bgp_peer_groups | arista.avd.natural_sort('name')}) %}
 {%                     set tmp_svis = [] %}
 {%                     for svi in vrf.svis | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%                         if svi.id | int in whitelist.vlans %}
@@ -71,7 +72,15 @@
 {%                         endif %}
 {%                     endfor %}
 {%                 endfor %}
-{%                 do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans, 'point_to_point_services': tmp_point_to_point_services}) %}
+{#                 bgp_peers at tenant level #}
+{%                 set tmp_bgp_peer_groups = [] %}
+{%                 for bgp_peer_group in tenant.bgp_peer_groups | arista.avd.natural_sort('name') %}
+{%                     if inventory_hostname in bgp_peer_group.nodes | arista.avd.default([]) %}
+{%                         do tmp_bgp_peer_groups.append(bgp_peer_group) %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%                 do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans, 'point_to_point_services': tmp_point_to_point_services, 'bgp_peer_groups': tmp_bgp_peer_groups}) %}
 {%                 do tmp_tenants.append(tenant) %}
 {%             endif %}
 {%         endfor %}

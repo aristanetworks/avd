@@ -120,6 +120,33 @@ svi_profiles:
     # This setting can be overridden per VRF.
     enable_mlag_ibgp_peering_vrfs: < true | false >
 
+    # Dictionary of BGP peer groups definitions | Optional.
+    # This will configure BGP peer groups to be used inside the tenant for peering with external devices.
+    # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+    # peer_group names should not overlap between VRFs.
+    bgp_peer_groups:
+      - name: < BGP peer group name >
+        remote_as: < bgp_as >
+        description: "< description as string >"
+        send_community: < standard | extended | large | all >
+        next_hop_self: < true | false >
+        maximum_routes: < 0-4294967294 >
+        default_originate:
+          enabled: < true | false >
+          always: < true | false >
+        # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
+        nodes: [ < node_1 >, < node_2> ]
+        update_source: < interface >
+        bfd: < true | false >
+        ebgp_multihop: < 1-255 >
+        # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+        # Next hop takes precedence over route_map_out.
+        set_ipv4_next_hop: < IPv4_address >
+        set_ipv6_next_hop: < IPv6_address >
+        route_map_out: < route-map name >
+        route_map_in: < route-map name >
+        local_as: < local BGP ASN >
+
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
@@ -393,6 +420,7 @@ svi_profiles:
         # For other address families, use custom_structured configuration with eos_cli_config_gen.
         bgp_peers:
           < IPv4_address or IPv6_address >:
+            peer_group: < peer_group_name >
             remote_as: < remote ASN >
             description: < description >
             password: < encrypted password >
@@ -418,6 +446,32 @@ svi_profiles:
             weight: < 0-65535>
             bfd: < true | false >
 
+        # Dictionary of BGP peer groups definitions | Optional.
+        # This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
+        # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+        # peer_group names should not overlap between VRFs.
+        bgp_peer_groups:
+          - name: < BGP peer group name >
+            remote_as: < bgp_as >
+            description: "< description as string >"
+            send_community: < standard | extended | large | all >
+            next_hop_self: < true | false >
+            maximum_routes: < 0-4294967294 >
+            default_originate:
+              enabled: < true | false >
+              always: < true | false >
+            # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
+            nodes: [ < node_1 >, < node_2> ]
+            update_source: < interface >
+            bfd: < true | false >
+            ebgp_multihop: < 1-255 >
+            # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+            # Next hop takes precedence over route_map_out.
+            set_ipv4_next_hop: < IPv4_address >
+            set_ipv6_next_hop: < IPv6_address >
+            route_map_out: < route-map name >
+            route_map_in: < route-map name >
+            local_as: < local BGP ASN >
         bgp:
           # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
           raw_eos_cli: |

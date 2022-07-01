@@ -19,6 +19,42 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+    Tenant_C_BGP_PEER_GROUP:
+      remote_as: 666
+      description: Tenant C peer group
+      send_community: all
+      next_hop_self: true
+      maximum_routes: 1000
+      default_originate:
+        enabled: true
+        always: true
+      nodes:
+      - DC1-BL2B
+      update_source: lo0
+      bfd: false
+      ebgp_multihop: 3
+      set_ipv4_next_hop: 1.1.1.1
+      route_map_out: TEST_OUT
+      route_map_in: TEST_IN
+      local_as: 777
+    Tenant_C_VRF_WAN_Zone_BGP_PEER_GROUP:
+      remote_as: 666
+      description: Tenant C VRF WAN Zone peer group
+      send_community: all
+      next_hop_self: true
+      maximum_routes: 1000
+      default_originate:
+        enabled: true
+        always: true
+      nodes:
+      - DC1-BL2B
+      update_source: lo0
+      bfd: false
+      ebgp_multihop: 3
+      set_ipv4_next_hop: 1.1.1.1
+      route_map_out: TEST_OUT
+      route_map_in: TEST_IN
+      local_as: 777
   address_family_ipv4:
     peer_groups:
       UNDERLAY-PEERS:
@@ -119,8 +155,28 @@ router_bgp:
         export:
           evpn:
           - '31:31'
+      neighbors:
+        1.1.1.1:
+          peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+          description: test_description
+          address_families:
+            ipv4:
+              activate: true
+          route_map_out: RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
+        BEBA::C0CA:C07A:
+          peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+          description: test_ipv6
       redistribute_routes:
       - connected
+      address_families:
+        ipv4:
+          neighbors:
+            1.1.1.1:
+              activate: true
+        ipv6:
+          neighbors:
+            BEBA::C0CA:C07A:
+              activate: true
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.17:14
@@ -285,6 +341,12 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ip next-hop 1.1.1.1
 router_bfd:
   multihop:
     interval: 1200
