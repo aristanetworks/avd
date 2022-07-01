@@ -17,6 +17,10 @@ Tenant_C:
       route_map_out: TEST_OUT
       route_map_in: TEST_IN
       local_as: 777
+    - name: Tenant_C_BGP_PEER_GROUP2
+      remote_as: 667
+      description: "Tenant C peer group2"
+      update_source: lo0
   vrfs:
     Tenant_C_OP_Zone:
       vrf_vni: 30
@@ -76,3 +80,7 @@ Tenant_C:
           peer_group: Tenant_C_BGP_PEER_GROUP
           nodes: [ DC1-BL2A ]
           description: test_bgp_peer_group_with_out_nodes
+        2.2.2.3:
+          peer_group: Tenant_C_BGP_PEER_GROUP2
+          nodes: [DC1-BL2A]
+          description: test_bgp_peer_group_with_out_nodes_2nd_time

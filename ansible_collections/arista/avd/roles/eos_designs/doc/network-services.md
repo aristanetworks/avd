@@ -462,6 +462,7 @@ svi_profiles:
               enabled: < true | false >
               always: < true | false >
             # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
+            # If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
             nodes: [ < node_1 >, < node_2 > ]
             update_source: < interface >
             bfd: < true | false >
