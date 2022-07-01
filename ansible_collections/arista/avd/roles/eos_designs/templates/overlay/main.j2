@@ -3,12 +3,12 @@
 {%     set overlay_data = namespace() %}
 {# Set peer group names for overlay peering #}
 {%     if switch.mpls_ler is arista.avd.defined(true) or switch.mpls_overlay_role == "server" %}
-{%         set overlay_data.overlay_peer_group_name = switch.bgp_peer_groups.mpls_overlay_peers.name %}
+{%         set overlay_data.overlay_peer_group = switch.bgp_peer_groups.mpls_overlay_peers %}
 {%     else %}
-{%         set overlay_data.overlay_peer_group_name = switch.bgp_peer_groups.evpn_overlay_peers.name %}
+{%         set overlay_data.overlay_peer_group = switch.bgp_peer_groups.evpn_overlay_peers %}
 {%     endif %}
 {%     if switch.mpls_overlay_role == "server" %}
-{%         set overlay_data.rr_peers_peer_group_name = switch.bgp_peer_groups.rr_overlay_peers.name %}
+{%         set overlay_data.rr_peers_peer_group = switch.bgp_peer_groups.rr_overlay_peers %}
 {%     endif %}
 {%     if switch.mpls_overlay_role in ["client", "server"] %}
 {%         include 'overlay/logic-mpls-route-servers.j2' %}

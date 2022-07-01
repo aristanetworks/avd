@@ -9,6 +9,7 @@ router_bgp:
 {% endif %}
       maximum_routes: 12000
       send_community: all
+      struct_cfg: {{ switch.bgp_peer_groups.ipv4_underlay_peers.structured_config | arista.avd.default }}
   address_family_ipv4:
     peer_groups:
       {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
