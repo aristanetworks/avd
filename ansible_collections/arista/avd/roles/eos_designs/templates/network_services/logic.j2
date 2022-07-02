@@ -22,10 +22,18 @@
 {%             if switch.filter_tenants is arista.avd.contains([tenant.name, "all"]) %}
 {#                 vrfs #}
 {%                 set tmp_vrfs = [] %}
+{%                 set tmp_bgp_peer_groups = [] %}
+{%                 set tmp_mapped_peer_groups = [] %}
 {%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
 {%                     do vrf.update({'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address')}) %}
+{%                     set tmp_mapped_vrf_peer_groups = vrf.bgp_peers | selectattr("peer_group", "arista.avd.defined") | selectattr("nodes", "arista.avd.contains", inventory_hostname) | map(attribute="peer_group") %}
+{%                     do tmp_mapped_peer_groups.extend(tmp_mapped_vrf_peer_groups) %}
 {#                     svis & bgp_peers #}
-{%                     do vrf.update({'bgp_peer_groups': vrf.bgp_peer_groups | arista.avd.natural_sort('name')}) %}
+{%                     for bgp_peer_group in vrf.bgp_peer_groups | arista.avd.natural_sort('name') %}
+{%                         if (inventory_hostname in bgp_peer_group.nodes | arista.avd.default([])) or (bgp_peer_group.name in tmp_mapped_vrf_peer_groups) %}
+{%                             do tmp_bgp_peer_groups.append(bgp_peer_group) %}
+{%                         endif %}
+{%                     endfor %}
 {%                     set tmp_svis = [] %}
 {%                     for svi in vrf.svis | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%                         if svi.id | int in whitelist.vlans %}
@@ -72,12 +80,10 @@
 {%                         endif %}
 {%                     endfor %}
 {%                 endfor %}
-{#                 bgp_peers at tenant level #}
-{%                 set tmp_bgp_peer_groups = [] %}
+{#                 bgp_peer_groups at tenant level #}
 {%                 for bgp_peer_group in tenant.bgp_peer_groups | arista.avd.natural_sort('name') %}
-{%                     if inventory_hostname in bgp_peer_group.nodes | arista.avd.default([]) %}
+{%                     if (inventory_hostname in bgp_peer_group.nodes | arista.avd.default([])) or (bgp_peer_group.name in tmp_mapped_peer_groups) %}
 {%                         do tmp_bgp_peer_groups.append(bgp_peer_group) %}
-{%                         break %}
 {%                     endif %}
 {%                 endfor %}
 {%                 do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans, 'point_to_point_services': tmp_point_to_point_services, 'bgp_peer_groups': tmp_bgp_peer_groups}) %}
