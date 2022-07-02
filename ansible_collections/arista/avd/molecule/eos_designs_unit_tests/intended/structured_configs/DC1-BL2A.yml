@@ -142,10 +142,10 @@ router_bgp:
       neighbors:
         2.2.2.2:
           peer_group: Tenant_C_BGP_PEER_GROUP
-          description: test_bgp_peer_group_with_out_nodes
+          description: test_bgp_peer_group_without_nodes
         2.2.2.3:
           peer_group: Tenant_C_BGP_PEER_GROUP2
-          description: test_bgp_peer_group_with_out_nodes_2nd_time
+          description: test_bgp_peer_group_without_nodes_2nd_time
       redistribute_routes:
       - connected
       address_families:
