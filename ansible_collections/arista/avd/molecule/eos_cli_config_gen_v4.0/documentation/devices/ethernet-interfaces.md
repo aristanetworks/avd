@@ -143,6 +143,7 @@ interface Management1
 | Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
+| Ethernet46 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
 
 #### IPv6
 
@@ -489,6 +490,15 @@ interface Ethernet28
       mpls tunnel flood filter time 100
       mpls shared index 100
       route-target import 00:00:01:02:03:05
+!
+interface Ethernet46
+   description IP Helper
+   no switchport
+   ip address 172.31.255.1/31
+   ip helper-address 10.10.64.151
+   ip helper-address 10.10.96.101 source-interface Loopback0
+   ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
+   ip helper-address 10.10.96.151 vrf MGMT
 ```
 
 # Routing

@@ -280,6 +280,16 @@ interface {{ ethernet_interface.name }}
    ip address {{ ip_address_secondary }} secondary
 {%                 endfor %}
 {%             endif %}
+{%             for ip_helper in ethernet_interface.ip_helpers | arista.avd.convert_dicts('ip_helper') | arista.avd.natural_sort('ip_helper') %}
+{%                 set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
+{%                 if ip_helper.vrf is arista.avd.defined %}
+{%                     set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
+{%                 endif %}
+{%                 if ip_helper.source_interface is arista.avd.defined %}
+{%                     set ip_helper_cli = ip_helper_cli ~ " source-interface " ~ ip_helper.source_interface %}
+{%                 endif %}
+   {{ ip_helper_cli }}
+{%             endfor %}
 {%         endif %}
 {%         if ethernet_interface.bfd.interval is arista.avd.defined and
               ethernet_interface.bfd.min_rx is arista.avd.defined and
