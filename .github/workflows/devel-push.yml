@@ -64,7 +64,7 @@ jobs:
               - 'ansible_collections/arista/avd/README.md'
 
   # ----------------------------------- #
-  # Rebuild docker image
+  # Rebuild docker base image
   # ----------------------------------- #
   docker_build:
     name: Webhook to Docker Hub to build image
@@ -84,3 +84,52 @@ jobs:
           -H "Authorization: token $AUTH_TOKEN" \
           https://api.github.com/repos/$AVD_BASE_DISPATCH/dispatches \
           -d '{"event_type":"refresh"}'
+
+  # ----------------------------------- #
+  # Rebuild ci_container images
+  # ----------------------------------- #
+  ci_container:
+    name: Build CI container
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    #if: needs.file-changes.outputs.requirements == 'true' - while testing this we will always run.
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install ansible-builder
+        run: |
+          pip install ansible-builder
+      - name: Add dev requirements to regular requirements
+        run: |
+          cat ansible_collections/arista/avd/requirements-dev.txt | tee -a ansible_collections/arista/avd/requirements.txt
+      - name: Create minimum requirements files
+        run: |
+          cat ansible_collections/arista/avd/collections.yml | sed -e 's/\"[<>=]=\([0-9\.]\+\).*/"==\1"/' | tee ansible_collections/arista/avd/min-collections.yml
+          cat ansible_collections/arista/avd/requirements.txt | sed -e 's/[<>=]=\([0-9\.]\+\).*/==\1/' | tee ansible_collections/arista/avd/min-requirements.txt
+      - name: Create ansible-avd-ee Containerfile
+        run: |
+          ansible-builder create --verbosity 3 -f execution_environments/ansible-avd-ee.yml -c context/latest
+      - name: Create ansible-avd-ee-min-req Containerfile
+        run: |
+          ansible-builder create --verbosity 3 -f execution_environments/ansible-avd-ee-min-req.yml -c context/minimum
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push ansible-avd-ee:latest
+        uses: docker/build-push-action@v3
+        with:
+          context: context/latest/
+          file: context/latest/Containerfile
+          push: true
+          tags: ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee:latest
+      - name: Build and push ansible-avd-ee-min-req:latest
+        uses: docker/build-push-action@v3
+        with:
+          context: context/minimum/
+          file: context/minimum/Containerfile
+          push: true
+          tags: ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee-min-req:latest
