@@ -445,17 +445,17 @@ class EosDesignsFacts:
             return []
 
         uplink_switch_interfaces = []
-        for uplink_switch_index, uplink_switch in enumerate(self.uplink_switches):
+        uplink_switch_counter = {}
+        for uplink_switch in self.uplink_switches:
             uplink_switch_facts: EosDesignsFacts = get(self._hostvars,
                                                        f"avd_switch_facts..{uplink_switch}..switch",
                                                        required=True,
                                                        org_key=f"avd_switch_facts.({uplink_switch}).switch",
                                                        separator="..")
 
-            # Create a list of indexes of uplink_switches where it is this uplink_switch (parallel uplinks)
-            indices_of_uplinks_to_uplink_switch = [index for index, switch in enumerate(self.uplink_switches) if switch == uplink_switch]
-            # Out of the parallel uplinks, where is this uplink?. Normally this would be 0 for single uplinks.
-            index_of_parallel_uplinks = indices_of_uplinks_to_uplink_switch.index(uplink_switch_index)
+            # Count the number of instances the current switch was processed
+            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
+            index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
 
             # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
             # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
