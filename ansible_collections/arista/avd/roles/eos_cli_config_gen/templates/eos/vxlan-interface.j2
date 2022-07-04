@@ -19,7 +19,9 @@ interface Vxlan1
    vxlan flood vtep learned data-plane
 {%     endif %}
 {%     for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         if vlan.vni is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} vni {{ vlan.vni }}
+{%         endif %}
 {%         if vlan.flood_vteps is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} flood vtep {{ vlan.flood_vteps | join(' ') }}
 {%         endif %}
