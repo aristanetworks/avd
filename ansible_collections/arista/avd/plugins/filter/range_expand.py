@@ -4,7 +4,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from itertools import count, groupby
 import re
 from ansible.errors import AnsibleFilterError
 
