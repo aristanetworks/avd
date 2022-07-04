@@ -25,6 +25,8 @@ vxlan_interface:
           flood_vteps:
             - 10.1.1.10
             - 10.1.1.11
+        112:
+          multicast_group: 239.9.1.6
       vrfs:
         Tenant_A_OP_Zone:
           vni: 10
