@@ -12,8 +12,7 @@ The following individuals are on the Arista Validated Design (AVD) Core Team:
 
 * Carl Buchmann (@carlbuchmann)
 * Claus Holbech (@ClausHolbechArista)
-* Angelique Philipps (@aphillipps)
-* Thomas Grimonet (@titom73)
+* Tony Goda (@tgodaA)
 
 ## Contributing
 
