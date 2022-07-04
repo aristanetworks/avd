@@ -9,8 +9,8 @@
   - [Reference Designs](#reference-designs)
   - [Project Documentation](#project-documentation)
   - [Installation](#installation)
+    - [Collection Installation](#collection-installation)
     - [Requirements](#requirements)
-    - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
   - [Example Playbooks](#example-playbooks)
   - [Examples](#examples)
   - [Additional Resources](#additional-resources)
@@ -51,40 +51,13 @@ The documentation how to leverage ansible-avd collection is located here:
 
 ## Installation
 
+### Collection Installation
+
+Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow [this](https://avd.sh/en/latest/docs/installation/collection-installation.html) guide.
+
 ### Requirements
 
-**Arista EOS:**
-
-- EOS 4.21.8M or later
-- Roles validated with eAPI transport -> `ansible_connection: httpapi`
-
-**Python:**
-
-- Python 3.8 or later
-
-**Supported Ansible Versions:**
-
-- ansible-core from __2.11.3__ to __2.12.x__
-
-**Additional Python Libraries required:**
-
-- netaddr
-- Jinja2
-- treelib
-- cvprac
-- paramiko
-- jsonschema
-- requests
-- PyYAML
-- md-toc
-
-**Ansible + Additional Python Libraries Installation:**
-
-```shell
-$ pip3 install "ansible-core>=2.11.3,<2.13.0"
-
-$ pip3 install -r ansible_collections/arista/avd/requirements.txt
-```
+To install requirements please follow [this](https://avd.sh/en/latest/docs/installation/requirements.html) guide.
 
 **Ansible Configuration INI file:**
 
@@ -97,15 +70,7 @@ jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
 
-> **_NOTE:_** When using ansible-cvp modules, the user that is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
-
-### Installation from ansible-galaxy
-
-Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content
-
-```shell
-ansible-galaxy collection install arista.avd
-```
+> **_NOTE:_** When using ansible-cvp modules, the user who is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
 
 ## Example Playbooks
 
