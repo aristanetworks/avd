@@ -70,7 +70,7 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 
 ### Collection Installation
 
-Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow [this](https://avd.sh/en/latest/docs/installation/collection-installation.html) guide.
+Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow [this](https://avd.sh/en/latest/docs/installation/collection-installation.html) guide.
 
 ### Requirements
 
