@@ -12,6 +12,7 @@
 {% if switch.evpn_role == "server" %}
       next_hop_unchanged: true
 {% endif %}
+      struct_cfg: {{ switch.bgp_peer_groups.evpn_overlay_peers.structured_config | arista.avd.default }}
 {% if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) or switch.evpn_gateway_vxlan_l3 is arista.avd.defined(true) %}
     {{ switch.bgp_peer_groups.evpn_overlay_core.name }}:
       type: evpn
@@ -23,4 +24,5 @@
 {%     endif %}
       send_community: all
       maximum_routes: 0
+      struct_cfg: {{ switch.bgp_peer_groups.evpn_overlay_core.structured_config | arista.avd.default }}
 {% endif %}

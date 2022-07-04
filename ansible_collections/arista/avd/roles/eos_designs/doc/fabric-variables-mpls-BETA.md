@@ -57,9 +57,13 @@ bgp_peer_groups:
   mpls_overlay_peers:
     name: < name of peer group | default -> MPLS-OVERLAY-PEERS >
     password: "< encrypted password >"
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config: < dictionary >
   rr_overlay_peers:
     name: < name of peer group | default -> RR-OVERLAY-PEERS >
     password: "< encrypted password >"
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config: < dictionary >
 ```
 
 ## Unsupported Fabric Variables

@@ -7,14 +7,14 @@
 {%     endif %}
 {% endif %}
     peer_groups:
-      {{ overlay_data.overlay_peer_group_name }}:
+      {{ overlay_data.overlay_peer_group.name }}:
         activate: true
 {% if switch.vtep_ip is arista.avd.defined %}
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
 {% endif %}
 {% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
-      {{ overlay_data.rr_peers_peer_group_name }}:
+      {{ overlay_data.rr_peers_peer_group.name }}:
         activate: true
 {% endif %}
 {% if switch.vtep_ip is arista.avd.defined and evpn_hostflap_detection is arista.avd.defined %}
