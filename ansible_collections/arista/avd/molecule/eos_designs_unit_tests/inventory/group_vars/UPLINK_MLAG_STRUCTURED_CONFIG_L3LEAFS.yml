@@ -19,7 +19,6 @@ l3leaf:
       pim:
         ipv4:
           sparse_mode: true
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24

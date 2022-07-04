@@ -2,13 +2,10 @@ router_bgp:
   as: '65001'
   router_id: 192.168.255.1
   bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY-PEERS:
+    IPv4-UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -16,13 +13,12 @@ router_bgp:
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
-      password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
-      UNDERLAY-PEERS:
+      IPv4-UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false
@@ -31,19 +27,19 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   neighbors:
     172.31.255.1:
-      peer_group: UNDERLAY-PEERS
+      peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
       description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet1
     172.31.255.3:
-      peer_group: UNDERLAY-PEERS
+      peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
       description: UNDERLAY-MULTICAST-L3LEAF1B_Ethernet1
     172.31.255.5:
-      peer_group: UNDERLAY-PEERS
+      peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65102'
       description: UNDERLAY-MULTICAST-L3LEAF2A_Ethernet1
     172.31.255.7:
-      peer_group: UNDERLAY-PEERS
+      peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65102'
       description: UNDERLAY-MULTICAST-L3LEAF2B_Ethernet1
     192.168.255.3:
@@ -72,43 +68,13 @@ static_routes:
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
-daemon_terminattr:
-  cvaddrs:
-  - 192.168.200.11:9910
-  cvauth:
-    method: key
-    key: telarista
-  cvvrf: MGMT
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-  disable_aaa: false
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS UNDERLAY-MULTICAST-SPINE1
 spanning_tree:
   mode: none
-local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
 vrfs:
   MGMT:
     ip_routing: false
@@ -124,14 +90,13 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-  default_services: false
 ethernet_interfaces:
   Ethernet1:
     peer: UNDERLAY-MULTICAST-L3LEAF1A
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet1
-    mtu: 1500
+    mtu: 9000
     type: routed
     shutdown: false
     ip_address: 172.31.255.0/31
@@ -143,7 +108,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet1
-    mtu: 1500
+    mtu: 9000
     type: routed
     shutdown: false
     ip_address: 172.31.255.2/31
@@ -155,7 +120,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet1
-    mtu: 1500
+    mtu: 9000
     type: routed
     shutdown: false
     ip_address: 172.31.255.4/31
@@ -167,7 +132,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2B_Ethernet1
-    mtu: 1500
+    mtu: 9000
     type: routed
     shutdown: false
     ip_address: 172.31.255.6/31
@@ -193,6 +158,6 @@ route_maps:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
-    interval: 1200
-    min_rx: 1200
+    interval: 300
+    min_rx: 300
     multiplier: 3
