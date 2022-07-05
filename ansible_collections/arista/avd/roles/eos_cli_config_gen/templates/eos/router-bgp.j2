@@ -309,40 +309,47 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%     endfor %}
 {# L2VPNs - (vxlan) vlan based #}
-{%     for vlan in router_bgp.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     if router_bgp.vlans is arista.avd.defined %}
+{# Force the ids to be string to follow the same ordering as on EOS #}
+{%         set bgp_vlans = router_bgp.vlans | arista.avd.convert_dicts('id') %}
+{%         for bgp_vlan in bgp_vlans %}
+{%             do bgp_vlan.update({"id": bgp_vlan['id'] | string}) %}
+{%         endfor %}
+{%         for vlan in bgp_vlans | sort(attribute="id") %}
    !
    vlan {{ vlan.id }}
-{%         if vlan.rd is arista.avd.defined %}
+{%             if vlan.rd is arista.avd.defined %}
       rd {{ vlan.rd }}
-{%         endif %}
-{%         if vlan.rd_evpn_domain.domain is arista.avd.defined and vlan.rd_evpn_domain.rd is arista.avd.defined %}
+{%             endif %}
+{%             if vlan.rd_evpn_domain.domain is arista.avd.defined and vlan.rd_evpn_domain.rd is arista.avd.defined %}
       rd evpn domain {{ vlan.rd_evpn_domain.domain }} {{ vlan.rd_evpn_domain.rd }}
-{%         endif %}
-{%         for route_target in vlan.route_targets.both | arista.avd.natural_sort %}
+{%             endif %}
+{%             for route_target in vlan.route_targets.both | arista.avd.natural_sort %}
       route-target both {{ route_target }}
-{%         endfor %}
-{%         for route_target in vlan.route_targets.import | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for route_target in vlan.route_targets.import | arista.avd.natural_sort %}
       route-target import {{ route_target }}
-{%         endfor %}
-{%         for route_target in vlan.route_targets.export | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for route_target in vlan.route_targets.export | arista.avd.natural_sort %}
       route-target export {{ route_target }}
-{%         endfor %}
-{%         for route_target in vlan.route_targets.import_evpn_domains | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for route_target in vlan.route_targets.import_evpn_domains | arista.avd.natural_sort %}
       route-target import evpn domain {{ route_target.domain }} {{ route_target.route_target }}
-{%         endfor %}
-{%         for route_target in vlan.route_targets.export_evpn_domains | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for route_target in vlan.route_targets.export_evpn_domains | arista.avd.natural_sort %}
       route-target export evpn domain {{ route_target.domain }} {{ route_target.route_target }}
-{%         endfor %}
-{%         for route_target in vlan.route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for route_target in vlan.route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
       route-target import export evpn domain {{ route_target.domain }} {{ route_target.route_target }}
-{%         endfor %}
-{%         for redistribute_route in vlan.redistribute_routes | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for redistribute_route in vlan.redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }}
-{%         endfor %}
-{%         for no_redistribute_route in vlan.no_redistribute_routes | arista.avd.natural_sort %}
+{%             endfor %}
+{%             for no_redistribute_route in vlan.no_redistribute_routes | arista.avd.natural_sort %}
       no redistribute {{ no_redistribute_route }}
+{%             endfor %}
 {%         endfor %}
-{%     endfor %}
+{%     endif %}
 {# vxlan vlan aware bundles #}
 {%     for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
    !
