@@ -55,11 +55,11 @@ is an automation engine that can be used for many purposes including:
 - Configuration management
 - Application deployment
 
-It is easily extended through the use of Ansible Collections - essentially prepackaged groups of Ansible components such as
+It's easily extended through the use of Ansible Collections - essentially prepackaged groups of Ansible components such as
 playbooks,roles, modules and plugins - that are distributed through [Ansible Galaxy](https://galaxy.ansible.com/home).
 
 Between the core Ansible software and third-party-contributed collections, Ansible can be used to carry out almost any
-automated task on network, server or cloud platforms in a consistent, secure and and distributed way.
+automated task on network, server or cloud platforms in a consistent, secure and distributed way.
 
 Consistency of tasks carried out is assured through the idea of idempotency - that the outcome of an operation is only
 performed once and only if necessary, no matter how many times that operation is carried out. A very simple example of
@@ -89,7 +89,7 @@ Controlling what Ansible does is typically done using an SSH terminal session to
 
 ## What is the arista.avd collection?
 
-[Arista.avd](https://galaxy.ansible.com/arista/avd) is an Ansible collection for Arista Validated Designs. It is maintained by
+[Arista.avd](https://galaxy.ansible.com/arista/avd) is an Ansible collection for Arista Validated Designs. It's maintained by
 Arista and accepts third-party contributions on GitHub at [aristanetworks/ansible-avd](https://github.com/aristanetworks/ansible-avd).
 
 While Ansible is the core automation engine, AVD is an Ansible Collection as described above. It provides roles, modules and plugins
@@ -107,7 +107,7 @@ AVD is an opinionated collection, meaning that field experiences and best practi
 are included. With AVD, users get up and running quickly without having to invent every part of the network configuration
 from scratch. This means only the most basic information must be provided by the user to get a new fabric up and running.
 
-Parameters which need to be defined by the user include (but are not limited to):
+Parameters which need to be defined by the user include (but aren't limited to):
 
 - Username/password for network devices and CloudVision
 - OOB management IP range
@@ -127,12 +127,12 @@ AVD also uses the information provided to produce complete documentation of the 
 It's important to note when and perhaps more importantly when not to use AVD.
 
 AVD is designed to generate and deploy complete configuration files in a manner where the network device's running-configuration is
-completely replaced. As such, caution should be exercised when running AVD against an existing manually-configured network. Various
+completely replaced. As such, caution should be exercised when running AVD against an existing manually configured network. Various
 approaches can be taken under such circumstances:
 
 - Compare AVD-generated configurations against device running-configurations; make changes to the AVD input data and iterate
   until the configurations are functionally equivalent.
-- Use AVD to generate partial configurations that can be applied to devices in such a way that they will not destroy existing
+- Use AVD to generate partial configurations that can be applied to devices in such a way that won't destroy existing
   manual configuration.
 - Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD's
   `structured_configuration`, `raw_eos_cli` or `custom_template` facilities.
@@ -153,7 +153,7 @@ you must learn to think differently and change your ways of working.
 
 Ansible should be your first choice when changing your network configuration,
 be it small or big. The CLI should only be used for troubleshooting i.e. viewing the state of your network,
-or those urgent scenarios at 2am where you need to change something very specific on just one or two devices
+or those urgent scenarios at 2 AM where you need to change something very specific on just one or two devices
 followed by proper configuration cleanup later.
 
 ## How does Ansible work?
@@ -168,7 +168,7 @@ hence the file is called inventory.yml, located in the Ansible AVD project folde
 
 Please note that the example above is taken from the Ansible AVD Examples repository, specifically the `Single-DC-L3LS`.
 
-The exact name of the inventory file is not important, but is provided to Ansible in the `ansible.cfg` file for the project
+The exact name of the inventory file isn't important, but is provided to Ansible in the `ansible.cfg` file for the project
 or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
 
 ### Inventories
@@ -177,7 +177,7 @@ An example of a snippet of the inventory.yml file is shown below (subset of an a
 
 As stated earlier this file is in [YAML](https://yaml.org) format.
 
-It's important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN) define `ansible_host` to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:
+It's important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully qualified domain-name (FQDN) define `ansible_host` to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:
 
 ```yml
 ---
@@ -252,7 +252,7 @@ More information about Ansible inventories can be found [here](https://docs.ansi
 ### Organizing host and group variables
 
 AVD makes use of variables defined in the inventory to generate the EOS configuration files necessary to configure the devices. While these
-variables can be stored in the main inventory file described earlier, it is highly recommended to use separate files for host and group
+variables can be stored in the main inventory file described earlier, it's highly recommended to use separate files for host and group
 variables. Like the inventory.yml file, the host and group variables are also stored in YAML files in dedicated folders named accordingly.
 
 ### Group Variables
@@ -351,7 +351,7 @@ Group variables can be overridden by specifying host variables for specific devi
 (See [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
 The order of precedence is (from lowest to highest):
 
-- 'All' group (because it is the 'parent' of all other groups).
+- 'All' group (because it's the 'parent' of all other groups).
 - Parent group
 - Child group
 - Host
@@ -368,7 +368,7 @@ A playbook, like an inventory file, is a text file written using YAML format and
 Each play is configured to run on a particular host or group of hosts and contains one or more ***tasks***.
 
 Each task calls an Ansible ***role*** or ***module***, such as ***ansible.avd.eos_cli_config_gen***. The tasks in
-conjunction with the roles or modules they are calling are responsible for performing a particular task or set of tasks.
+conjunction with the roles or modules they're calling are responsible for performing a particular task or set of tasks.
 
 A playbook runs in order from top to bottom. Within each play, tasks also run in order from top to bottom.
 
@@ -377,8 +377,8 @@ another on your CloudVision instance, and another on each EOS device you look to
 
 At a minimum, each play defines two things:
 
-1. The managed device(s) (***hosts***) to target, referenced from the ***inventory*** we defined earlier.
-2. One or more ***tasks*** to execute on the target(s) defined.
+1. The managed devices (***hosts***) to target, referenced from the ***inventory*** we defined earlier.
+2. One or more ***tasks*** to execute on the targets defined.
 
 The hosts specified in a playbook typically reference groups defined in the inventory. From a playbook you can select
 large or small groups of the inventory, right down to individual hosts to be as specific as possible with any configuration changes.
@@ -437,22 +437,22 @@ To apply the configuration to the actual devices, you would run additional roles
 - [eos_config_deploy_eapi](https://avd.sh/en/latest/roles/eos_config_deploy_eapi/index.html) which deploys the EOS configuration directly
   to Arista devices using config replace. This option provides no change control and no rollback capability.
 
-While this play shows both the `eos_designs` and `eos_cli_config_gen` roles used together, it is entirely possible to make use of just
+While this play shows both the `eos_designs` and `eos_cli_config_gen` roles used together, it's entirely possible to make use of just
 `eos_cli_config_gen` by itself - this would allow (for example) generation of management configuration that could potentially be merged
 into an existing network as discussed earlier.
 
 ## Source of Truth
 
-In a legacy network where configuration is not administered centrally, you have very little control of the relationship between the configuration
+In a legacy network where configuration isn't administered centrally, you have very little control of the relationship between the configuration
 you *intend* to be applied to the network, and the configuration actually *running* on the network. You might have centralized low level design
 documents describing in great detail how exactly the network should function, but you don't have much but best intentions to ensure that your
 **entire** network is working as you intended. It takes only a single configuration mistake on a single device to create havoc.
 
 Since operating many networking devices also typically result in having many networking engineers, there is even more room for error.
-Different people do things differently and repetitive tasks are not always executed in the exact same manner.
+Different people do things differently and repetitive tasks aren't always executed in the exact same manner.
 
 With AVD, you define not only the topology of your network centrally, but also which services are used where in a central repository
-of text files. Because this data is stored in text files, it is possible to apply version control (for example using tools like git, subversion
+of text files. Because this data is stored in text files, it's possible to apply version control (for example using tools like git, subversion
 or mercurial) to this source of truth, giving you visibility of when the intended configuration was changed and by who.
 
 This source of truth means you have a full overview of your entire designed network configuration without having to look at individual network devices.
@@ -591,9 +591,9 @@ configuration files running on the devices in exactly the same way as the initia
 Let's imagine that you want to create a new tenant in your existing fabric.
 This would require at least the following configuration:
 
-- VRF(s)
-- VLAN(s)
-- SVI(s)
+- VRFs
+- VLANs
+- SVIs
 
 You could create a YAML file, in this example called NETWORK_SERVICES.yml, describing the fabric-wide generic configuration for the tenant:
 
