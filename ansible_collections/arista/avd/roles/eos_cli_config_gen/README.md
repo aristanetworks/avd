@@ -21,8 +21,6 @@
       - [AAA Accounting](#aaa-accounting)
       - [AAA Root](#aaa-root)
       - [AAA Server Groups](#aaa-server-groups)
-    - [Endpoint Security](#endpoint-security)
-      - [Global 802.1x Authentication](#global-8021x-authentication)
       - [Enable Password](#enable-password)
       - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
@@ -30,6 +28,8 @@
       - [Roles](#roles)
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
+    - [Endpoint Security](#endpoint-security)
+      - [Global 802.1x Authentication](#global-8021x-authentication)
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [DHCP Relay](#dhcp-relay)
@@ -472,16 +472,6 @@ aaa_server_groups:
       - server: < host1_ip_address >
 ```
 
-### Endpoint Security
-
-#### Global 802.1x Authentication
-
-```yaml
-dot1x:
-  system_auth_control: < true | false >
-  protocol_lldp_bypass: < true | false >
-  dynamic_authorization: < true | false >
-```
 
 #### Enable Password
 
@@ -567,6 +557,17 @@ tacacs_servers:
       key: < encrypted_key >
       timeout: < timeout in seconds >
   policy_unknown_mandatory_attribute_ignore: < true | false >
+```
+
+### Endpoint Security
+
+#### Global 802.1x Authentication
+
+```yaml
+dot1x:
+  system_auth_control: < true | false >
+  protocol_lldp_bypass: < true | false >
+  dynamic_authorization: < true | false >
 ```
 
 ### Banners
