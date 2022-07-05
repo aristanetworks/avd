@@ -45,3 +45,8 @@ repos:
         language: python
         types: [file, yaml]
         args: [--strict, -c=.github/yamllintrc]
+
+  - repo: https://github.com/aristanetworks/j2lint.git
+    rev: "v0.1.0-alpha"
+    hooks:
+      - id: j2lint
