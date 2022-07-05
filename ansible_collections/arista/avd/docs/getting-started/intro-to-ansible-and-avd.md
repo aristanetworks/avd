@@ -802,4 +802,4 @@ Below are a number of links to additional documentation about Ansible AVD and An
 
 ## Next steps
 
-If you want to try out a complete Ansible AVD example, complete with all group variable files, inventory, playbook etc., please look [here](../../examples/single-dc-l3ls/README.md)
+If you want to try out a complete Ansible AVD example, complete with all group variable files, inventory, playbook etc., please look in the Examples section.
