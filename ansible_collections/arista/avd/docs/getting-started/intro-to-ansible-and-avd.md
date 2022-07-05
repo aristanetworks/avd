@@ -238,7 +238,7 @@ making it easier to apply common configuration to a group of devices.
 
 The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don't worry too much about that for now.
 
-The ***children:*** keyword is used to define “groups of groups” i.e. just an internal keyword to differentiate between hosts and groups.
+The ***children:*** keyword is used to define "groups of groups" i.e. just an internal keyword to differentiate between hosts and groups.
 
 The figure below is just a visualization of the same text file, showing the different grouping and parent/child relationships:
 
