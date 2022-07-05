@@ -15,7 +15,7 @@
   - [Source of Truth](#source-of-truth)
   - [How do I use AVD?](#how-do-i-use-avd)
     - [Using Ansible AVD with direct eAPI connectivity to the switches](#using-ansible-avd-with-direct-eapi-connectivity-to-the-switches)
-    - [Using Ansible AVD in accordance with CloudVision](#using-ansible-avd-in-accordance-with-cloudvision)
+    - [Using Ansible AVD in conjunction with CloudVision](#using-ansible-avd-in-conjunction-with-cloudvision)
   - [Day 2 Operations](#day-2-operations)
     - [Day 2 Operations Example](#day-2-operations-example)
   - [References](#references)
@@ -81,9 +81,9 @@ on using Ansible to provision Arista EOS devices either with or without Arista C
 ## What are the requirements to run Ansible?
 
 Ansible can run on almost anything, but in production scenarios Ansible is typically deployed on a virtual Linux server,
-running on the customer’s preferred hypervisor. This Ansible server then communicates either directly with the
+running on the customer's preferred hypervisor. This Ansible server then communicates either directly with the
 Arista network devices via eAPI or with Arista CloudVision Portal, which in turn communicates with the Arista network devices.
-Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator’s computer.
+Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator's computer.
 
 ![Figure: Ansible and CVP](../_media/getting-started/ansible-and-cvp-httpapi.png)
 
@@ -124,7 +124,7 @@ AVD also uses the information provided to produce complete documentation of the 
 
 ## When and when not to use AVD
 
-It’s important to note when and perhaps more importantly when not to use AVD.
+It's important to note when and perhaps more importantly when not to use AVD.
 
 AVD is designed to generate and deploy complete configuration files in a manner where the network device's running-configuration is
 completely replaced. As such, caution should be exercised when running AVD against an existing manually-configured network. Various
@@ -195,7 +195,7 @@ all:
                   ansible_host: 172.16.1.12
 ```
 
-However, going forward we expect that all hostnames specified are reachable without this workaround, hence the entire inventory file looks as follows:
+However, going forward we expect that all hostnames specified are resolvable, hence the entire inventory file looks as follows:
 
 ```yml
 ---
@@ -230,13 +230,13 @@ all:
             DC1_L2_LEAVES:
 ```
 
-Don’t confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
+Don't confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
 including Arista switches.
 
 The settings inside the inventory.yml file are defined in a tree-like structure using ***groups***. Groups can contain hosts or other groups -
 making it easier to apply common configuration to a group of devices.
 
-The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don’t worry too much about that for now.
+The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don't worry too much about that for now.
 
 The ***children:*** keyword is used to define “groups of groups” i.e. just an internal keyword to differentiate between hosts and groups.
 
@@ -351,10 +351,10 @@ Group variables can be overridden by specifying host variables for specific devi
 (See [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
 The order of precedence is (from lowest to highest):
 
-- 'All' group (because it is the ‘parent’ of all other groups).
-- Parent group.
-- Child group.
-- Host.
+- 'All' group (because it is the 'parent' of all other groups).
+- Parent group
+- Child group
+- Host
 
 You can read more about group and host variables [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#id14).
 
@@ -377,8 +377,8 @@ another on your CloudVision instance, and another on each EOS device you look to
 
 At a minimum, each play defines two things:
 
-1. The managed devices (***hosts***) to target, referenced from the ***inventory*** we defined earlier.
-2. One or more ***tasks*** to execute on the targets defined.
+1. The managed device(s) (***hosts***) to target, referenced from the ***inventory*** we defined earlier.
+2. One or more ***tasks*** to execute on the target(s) defined.
 
 The hosts specified in a playbook typically reference groups defined in the inventory. From a playbook you can select
 large or small groups of the inventory, right down to individual hosts to be as specific as possible with any configuration changes.
@@ -471,7 +471,7 @@ Below you will find two examples of documentation automatically created by Ansib
 AVD comes with pre-built templates that you can either use as-is or adapt to your liking.
 
 Once the templates reflect your desired network configuration, you deploy the configuration either directly to the Arista EOS devices or to
-Configlets within CloudVision. This is typically executed from the CLI - for example from your Ansible AVD Examples directory. 
+Configlets within CloudVision. This is typically executed from the CLI - for example from your Ansible AVD Examples directory.
 
 ### Using Ansible AVD with direct eAPI connectivity to the switches
 
@@ -494,7 +494,7 @@ If you want to push to switches in the entire FABRIC using eAPI and your playboo
          name: arista.avd.eos_config_deploy_eapi
 ```
 
-You would execute it using the following command:
+You would execute it using the following command if your playbook is called `playbook.yml`:
 
 ```shell
 ansible-playbook playbook.yml
@@ -506,7 +506,7 @@ This will:
 - Create device-specific and fabric-wide documentation.
 - Push the relevant configuration to each device using eAPI.
 
-### Using Ansible AVD in accordance with CloudVision
+### Using Ansible AVD in conjunction with CloudVision
 
 If you want to push to switches in the entire FABRIC using CloudVision and your playbook looks as follows:
 
@@ -655,7 +655,7 @@ NETWORK_SERVICES:
 
 This specifies all switches in the fabric will be able to serve the new tenant.
 
-For sake of simplicity, let's say you defined just one pair of leaf switches that would serve this tenant.
+For the sake of simplicity, let's say you defined just one pair of leaf switches that would serve this tenant.
 
 After running the relevant playbook, their tenant-related configuration would end up looking like this:
 
@@ -794,11 +794,10 @@ This all takes place without any manual intervention and with very little chance
 
 Below are a number of links to additional documentation about Ansible AVD and Ansible in general:
 
-- With [eos_design](../../roles/eos_cli_config_gen)
-- With [eos_cli_config_gen](../../roles/eos_cli_config_gen)
-- With [Ansible Tower](https://docs.ansible.com/ansible/2.3/tower.html)
-- With CI/CD
-- With [eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
+- [Role documentation for eos_design](../../roles/eos_designs)
+- [Role documentation for eos_cli_config_gen](../../roles/eos_cli_config_gen)
+- [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/2.3/tower.html)
+- [Role documentation for eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
 
 
 ## Next steps
