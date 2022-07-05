@@ -42,7 +42,7 @@ only for initial deployment, but for all subsequent network changes.
 
 AVD is also based on best practice from
 [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of
-Arista’s experience in deploying large scale leaf spine fabrics. AVD also fully integrates with Arista CloudVision, which adds
+Arista's experience in deploying large scale leaf spine fabrics. AVD also fully integrates with Arista CloudVision, which adds
 a full change control workflow, continuous compliance check and network topology overview as well as real time streaming telemetry
 including flow-based data and more.
 
@@ -63,12 +63,12 @@ automated task on network, server or cloud platforms in a consistent, secure and
 
 Consistency of tasks carried out is assured through the idea of idempotency - that the outcome of an operation is only
 performed once and only if necessary, no matter how many times that operation is carried out. A very simple example of
-idempotency would be a pair of on/off buttons for a machine - no matter how many times you push ’on’, the machine will
+idempotency would be a pair of on/off buttons for a machine - no matter how many times you push 'on', the machine will
 only turn on once.
 
-Unlike other tools, Ansible doesn’t make use of a proprietary communications mechanism or agent on the device being managed.
+Unlike other tools, Ansible doesn't make use of a proprietary communications mechanism or agent on the device being managed.
 Instead it leverages industry-standard protocols for device access including SSH and REST APIs. This also means that
-Ansible doesn’t require setup of any special infrastructure - it’s entirely possible to automate tasks using nothing but
+Ansible doesn't require setup of any special infrastructure - it's entirely possible to automate tasks using nothing but
 your laptop or desktop computer (but a central deployment server is recommended).
 
 Tasks in Ansible are described in a structured language known as [YAML](https://yaml.org). Unlike other languages such as
@@ -81,9 +81,9 @@ on using Ansible to provision Arista EOS devices either with or without Arista C
 ## What are the requirements to run Ansible?
 
 Ansible can run on almost anything, but in production scenarios Ansible is typically deployed on a virtual Linux server,
-running on the customer’s preferred hypervisor. This Ansible server then communicates either directly with the
+running on the customer's preferred hypervisor. This Ansible server then communicates either directly with the
 Arista network devices via eAPI or with Arista CloudVision Portal, which in turn communicates with the Arista network devices.
-Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator’s computer.
+Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator's computer.
 
 ![Figure: Ansible and CVP](../_media/getting-started/ansible-and-cvp-httpapi.png)
 
@@ -99,7 +99,7 @@ that allow the user to generate and deploy best-practice configurations to a lay
 
 In the illustration above, the AVD collection is shown as the box with the red background on the right hand side.
 
-When designing an EVPN/VXLAN layer 3 leaf spine (L3LS) fabric you don’t need to spend hours reading through the
+When designing an EVPN/VXLAN layer 3 leaf spine (L3LS) fabric you don't need to spend hours reading through the
 [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides). All those rules and guidelines are
 implemented as part of the AVD collection.
 
@@ -124,9 +124,9 @@ AVD also uses the information provided to produce complete documentation of the 
 
 ## When and when not to use AVD
 
-It’s important to note when and perhaps more importantly when not to use AVD.
+It's important to note when and perhaps more importantly when not to use AVD.
 
-AVD is designed to generate and deploy complete configuration files in a manner where the network device’s running-configuration is
+AVD is designed to generate and deploy complete configuration files in a manner where the network device's running-configuration is
 completely replaced. As such, caution should be exercised when running AVD against an existing manually-configured network. Various
 approaches can be taken under such circumstances:
 
@@ -134,7 +134,7 @@ approaches can be taken under such circumstances:
   until the configurations are functionally equivalent.
 - Use AVD to generate partial configurations that can be applied to devices in such a way that they will not destroy existing
   manual configuration.
-- Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD’s
+- Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD's
   `structured_configuration`, `raw_eos_cli` or `custom_template` facilities.
 
 Automating provisioning of network infrastructure makes most sense when the network is built from repeatable building blocks.
@@ -177,7 +177,7 @@ An example of a snippet of the inventory.yml file is shown below (subset of an a
 
 As stated earlier this file is in [YAML](https://yaml.org) format.
 
-It’s important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN) define `ansible_host` to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:
+It's important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN) define `ansible_host` to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:
 
 ```yml
 ---
@@ -230,13 +230,13 @@ all:
             DC1_L2_LEAVES:
 ```
 
-Don’t confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
+Don't confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
 including Arista switches.
 
 The settings inside the inventory.yml file are defined in a tree-like structure using ***groups***. Groups can contain hosts or other groups -
 making it easier to apply common configuration to a group of devices.
 
-The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don’t worry too much about that for now.
+The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don't worry too much about that for now.
 
 The ***children:*** keyword is used to define “groups of groups” i.e. just an internal keyword to differentiate between hosts and groups.
 
@@ -293,7 +293,7 @@ spine:
       - graceful-restart
 
   # Definition of nodes contained in this group.
-  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under ’defaults’
+  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
   nodes:
     # Name of the node to be defined (must be consistent with definition in inventory)
     dc1-spine1:
@@ -351,7 +351,7 @@ Group variables can be overridden by specifying host variables for specific devi
 (See [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
 The order of precedence is (from lowest to highest):
 
-- ’All’ group (because it is the ’parent’ of all other groups).
+- 'All' group (because it is the 'parent' of all other groups).
 - Parent group
 - Child group
 - Host
@@ -445,7 +445,7 @@ into an existing network as discussed earlier.
 
 In a legacy network where configuration is not administered centrally, you have very little control of the relationship between the configuration
 you *intend* to be applied to the network, and the configuration actually *running* on the network. You might have centralized low level design
-documents describing in great detail how exactly the network should function, but you don’t have much but best intentions to ensure that your
+documents describing in great detail how exactly the network should function, but you don't have much but best intentions to ensure that your
 **entire** network is working as you intended. It takes only a single configuration mistake on a single device to create havoc.
 
 Since operating many networking devices also typically result in having many networking engineers, there is even more room for error.
@@ -458,7 +458,7 @@ or mercurial) to this source of truth, giving you visibility of when the intende
 This source of truth means you have a full overview of your entire designed network configuration without having to look at individual network devices.
 An additional benefit of AVD is that by design you always have a backup of your network configuration including automated documentation in markdown format,
 No longer do you have to remember to update documentation about which interface is connected to which device etc.,
-whenever you change something on a device. It’s all done automatically based on the configuration built and applied to the network devices by Ansible,
+whenever you change something on a device. It's all done automatically based on the configuration built and applied to the network devices by Ansible,
 every time you execute the playbooks.
 
 Below you will find two examples of documentation automatically created by Ansible AVD:
@@ -502,7 +502,7 @@ ansible-playbook playbook.yml
 
 This will:
 
-- Create a text file containing the device’s entire configuration.
+- Create a text file containing the device's entire configuration.
 - Create device-specific and fabric-wide documentation.
 - Push the relevant configuration to each device using eAPI.
 
@@ -536,8 +536,8 @@ If you want to push to switches in the entire FABRIC using CloudVision and your 
       import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
-        container_root: ’DC1’
-        configlets_prefix: ’AVD’
+        container_root: 'DC1'
+        configlets_prefix: 'AVD'
         execute_tasks: false
         apply_mode: strict
         state: present
@@ -552,7 +552,7 @@ ansible-playbook playbook.yml
 
 This will:
 
-- Create a CloudVision Configlet for each device in the inventory, containing the device’s entire configuration.
+- Create a CloudVision Configlet for each device in the inventory, containing the device's entire configuration.
 - Build out containers within CloudVision that represent the hierarchy of groups represented in the inventory.
 - Create tasks to apply the new configuration to each device within the inventory.
 
@@ -588,7 +588,7 @@ configuration files running on the devices in exactly the same way as the initia
 
 ### Day 2 Operations Example
 
-Let’s imagine that you want to create a new tenant in your existing fabric.
+Let's imagine that you want to create a new tenant in your existing fabric.
 This would require at least the following configuration:
 
 - VRF(s)
@@ -655,7 +655,7 @@ NETWORK_SERVICES:
 
 This specifies all switches in the fabric will be able to serve the new tenant.
 
-For the sake of simplicity, let’s say you defined just one pair of leaf switches that would serve this tenant.
+For the sake of simplicity, let's say you defined just one pair of leaf switches that would serve this tenant.
 
 After running the relevant playbook, their tenant-related configuration would end up looking like this:
 
