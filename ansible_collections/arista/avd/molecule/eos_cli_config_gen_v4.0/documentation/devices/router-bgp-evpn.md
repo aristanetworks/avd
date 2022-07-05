@@ -169,6 +169,10 @@ interface Management1
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 66 | 145.245.21.0:66 | 145.245.21.0:66 | - | - | no learned |
+| 67 | 145.245.21.0:67 | 145.245.21.0:67 | - | - | no learned |
+| 600 | 145.245.21.0:600 | 145.245.21.0:600 | - | - | no learned |
+| 666 | 145.245.21.0:666 | 145.245.21.0:666 | - | - | no learned |
 | 2488 | 145.245.21.0:1 | 145.245.21.0:1 | - | - | no learned |
 
 ### Router BGP VRFs
@@ -215,6 +219,26 @@ router bgp 65101
    vlan 2488
       rd 145.245.21.0:1
       route-target both 145.245.21.0:1
+      no redistribute learned
+   !
+   vlan 600
+      rd 145.245.21.0:600
+      route-target both 145.245.21.0:600
+      no redistribute learned
+   !
+   vlan 66
+      rd 145.245.21.0:66
+      route-target both 145.245.21.0:66
+      no redistribute learned
+   !
+   vlan 666
+      rd 145.245.21.0:666
+      route-target both 145.245.21.0:666
+      no redistribute learned
+   !
+   vlan 67
+      rd 145.245.21.0:67
+      route-target both 145.245.21.0:67
       no redistribute learned
    !
    vlan-aware-bundle B-ELAN-201
