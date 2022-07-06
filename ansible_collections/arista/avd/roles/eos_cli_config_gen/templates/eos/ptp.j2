@@ -47,7 +47,7 @@ ptp monitor threshold offset-from-master {{ ptp.monitor.threshold.drop.offset_fr
 {%         if ptp.monitor.threshold.drop.mean_path_delay is arista.avd.defined %}
 ptp monitor threshold mean-path-delay {{ ptp.monitor.threshold.drop.mean_path_delay }} nanoseconds drop
 {%         endif %}
-{%         if ptp.monitor.missing_message.intervals.enabled is arista.avd.defined(true) %}
+{%         if ptp.monitor.missing_message.intervals is arista.avd.defined %}
 {%             if ptp.monitor.missing_message.intervals.announce is arista.avd.defined %}
 ptp monitor threshold missing-message announce {{ ptp.monitor.missing_message.intervals.announce }} intervals
 {%             endif %}
