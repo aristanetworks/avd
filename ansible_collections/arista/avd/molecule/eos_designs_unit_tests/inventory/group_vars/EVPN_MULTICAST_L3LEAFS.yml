@@ -1,0 +1,46 @@
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast: true # If set to "false" will raise an error.
+evpn_multicast: true
+#default_igmp_snooping_enabled: true # Default is true, if set to "false" will raise error.
+
+# Default is overlay_loopback_ip
+# If set to same value on MLAG pairs will raise error. Trigger error with "bgp_as" or "vtep_loopback".
+# overlay_rd_type:
+#   admin_subfield: overlay_loopback_ip
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: []
+    uplink_switches: []
+    uplink_ipv4_pool: 172.31.255.0/24
+    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+  node_groups:
+    DC1_LEAF1:
+      bgp_as: 65101
+      nodes:
+        EVPN-MULTICAST-L3LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.200.105/24
+        EVPN-MULTICAST-L3LEAF1B:
+          id: 2
+          mgmt_ip: 192.168.200.106/24
+    DC1_LEAF2:
+      bgp_as: 65102
+      platform: "7050X3"
+      nodes:
+        EVPN-MULTICAST-L3LEAF2A:
+          id: 3
+          mgmt_ip: 192.168.200.107/24
