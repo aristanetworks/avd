@@ -142,7 +142,6 @@ bgp_peer_groups:
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
 evpn_vlan_aware_bundles: < boolean | default -> false >
 
-
 # BFD Multihop tunning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
@@ -221,7 +220,7 @@ underlay_multicast: < boolean | default -> false >
 evpn_multicast: < boolean | default -> false >
 
 # Disable IGMP snooping at fabric level.
-# If set, it overrides per vlan settings
+# If set to false, overrides per vlan settings.
 default_igmp_snooping_enabled: < boolean | default -> true >
 
 # Enable Trunk Group support across eos_designs | Optional
