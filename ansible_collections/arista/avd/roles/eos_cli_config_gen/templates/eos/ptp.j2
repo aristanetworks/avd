@@ -60,8 +60,7 @@ ptp monitor threshold missing-message sync {{ ptp.monitor.missing_message.interv
 {%         endif %}
 {%         if ptp.monitor.missing_message.sequence_ids.enabled is arista.avd.defined(false) %}
 no ptp monitor sequence-id
-{%         endif %}
-{%         if ptp.monitor.missing_message.sequence_ids.enabled is arista.avd.defined(true) %}
+{%         elif ptp.monitor.missing_message.sequence_ids.enabled is arista.avd.defined(true) %}
 ptp monitor sequence-id
 {%             if ptp.monitor.missing_message.sequence_ids.announce is arista.avd.defined %}
 ptp monitor threshold missing-message announce {{ ptp.monitor.missing_message.sequence_ids.announce }} sequence-ids
