@@ -63,6 +63,7 @@ jobs:
           cd context/minimum
           docker build --tag ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee-min-req:${{ github.sha }} -f Containerfile
       - name: Push images to ghcr.io
+        run: |
           docker push ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee:${{ github.sha }}
           docker push ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee-min-req:${{ github.sha }}
 
