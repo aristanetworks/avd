@@ -19,17 +19,18 @@ l3leaf:
         enabled: true
       filter:
         tags: [opzone]
+      # NB - uplink_switch_interfaces Ethernet22+ are defined in DC1_FABRIC.yml
       nodes:
         MH-LEAF1A:
           id: 1
           bgp_as: 65151
           mgmt_ip: 192.168.201.104/24
-          uplink_switch_interfaces: [Ethernet10]
+          uplink_switch_interfaces: [Ethernet19]
         MH-LEAF1B:
           id: 2
           bgp_as: 65152
           mgmt_ip: 192.168.201.105/24
-          uplink_switch_interfaces: [Ethernet11]
+          uplink_switch_interfaces: [Ethernet20]
     MH_L3LEAF2:
       link_tracking:
         enabled: true
@@ -46,4 +47,4 @@ l3leaf:
           id: 3
           bgp_as: 65153
           mgmt_ip: 192.168.201.106/24
-          uplink_switch_interfaces: [Ethernet12]
+          uplink_switch_interfaces: [Ethernet21]

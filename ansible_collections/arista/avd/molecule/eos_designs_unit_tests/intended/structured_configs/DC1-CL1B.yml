@@ -40,22 +40,22 @@ router_bgp:
     10.255.251.18:
       peer_group: MLAG-PEERS
       description: DC1-CL1A
-    172.31.255.160:
+    172.31.255.64:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE1_Ethernet15
-    172.31.255.162:
+      description: DC1-SPINE1_Ethernet27
+    172.31.255.66:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE2_Ethernet15
-    172.31.255.164:
+      description: DC1-SPINE2_Ethernet27
+    172.31.255.68:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE3_Ethernet15
-    172.31.255.166:
+      description: DC1-SPINE3_Ethernet27
+    172.31.255.70:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE4_Ethernet15
+      description: DC1-SPINE4_Ethernet27
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -317,8 +317,8 @@ vlan_interfaces:
     no_autostate: true
     mtu: 1500
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC1-CL1A_Po5
+  Port-Channel1311:
+    description: MLAG_PEER_DC1-CL1A_Po1311
     type: switched
     shutdown: false
     vlans: 1-4094
@@ -327,73 +327,73 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
 ethernet_interfaces:
-  Ethernet5:
+  Ethernet1/31/1:
     peer: DC1-CL1A
-    peer_interface: Ethernet5
+    peer_interface: Ethernet1/31/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-CL1A_Ethernet5
+    description: MLAG_PEER_DC1-CL1A_Ethernet1/31/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 1311
       mode: active
     speed: 100g
-  Ethernet6:
+  Ethernet1/32/1:
     peer: DC1-CL1A
-    peer_interface: Ethernet6
+    peer_interface: Ethernet1/32/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-CL1A_Ethernet6
+    description: MLAG_PEER_DC1-CL1A_Ethernet1/32/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 1311
       mode: active
     speed: 100g
   Ethernet1:
     peer: DC1-SPINE1
-    peer_interface: Ethernet15
+    peer_interface: Ethernet27
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet15
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet27
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.161/31
+    ip_address: 172.31.255.65/31
   Ethernet2:
     peer: DC1-SPINE2
-    peer_interface: Ethernet15
+    peer_interface: Ethernet27
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet15
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet27
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.163/31
+    ip_address: 172.31.255.67/31
   Ethernet3:
     peer: DC1-SPINE3
-    peer_interface: Ethernet15
+    peer_interface: Ethernet27
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet15
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet27
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.165/31
+    ip_address: 172.31.255.69/31
   Ethernet4:
     peer: DC1-SPINE4
-    peer_interface: Ethernet15
+    peer_interface: Ethernet27
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet15
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet27
     speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.167/31
+    ip_address: 172.31.255.71/31
 mlag_configuration:
   domain_id: DC1_CL1
   local_interface: Vlan4092
   peer_address: 10.255.252.18
-  peer_link: Port-Channel5
+  peer_link: Port-Channel1311
   reload_delay_mlag: 1200
   reload_delay_non_mlag: 1320
 route_maps:

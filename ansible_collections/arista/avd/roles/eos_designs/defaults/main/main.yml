@@ -83,15 +83,13 @@ mlag_ibgp_peering_vrfs:
 # Platform Settings
 platform_settings: "{{ default_platform_settings }}"
 
-
 # Infrastructure Elements Keys
-
 connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
 
 network_services_keys:
   - name: tenants
 
-#custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
+# custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
 custom_structured_configuration_list_merge: 'replace'
 

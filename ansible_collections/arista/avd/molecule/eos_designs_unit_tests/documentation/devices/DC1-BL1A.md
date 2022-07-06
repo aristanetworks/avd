@@ -328,10 +328,10 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | 172.31.255.85/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | 172.31.255.87/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet22 | routed | - | 172.31.254.161/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet22 | routed | - | 172.31.254.163/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet22 | routed | - | 172.31.254.165/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet22 | routed | - | 172.31.254.167/31 | default | 1500 | false | - | - |
 | Ethernet7 | test | routed | - | 10.10.10.10/24 | Tenant_A_WAN_Zone | 9000 | false | - | - |
 | Ethernet8 | test | routed | - | 10.10.10.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet9 | test | routed | - | 10.10.20.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
@@ -342,36 +342,36 @@ vlan 350
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet6
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet22
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.81/31
+   ip address 172.31.254.161/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet6
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet22
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.83/31
+   ip address 172.31.254.163/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet6
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet22
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.85/31
+   ip address 172.31.254.165/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet6
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet22
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.87/31
+   ip address 172.31.254.167/31
 !
 interface Ethernet7
    description test
@@ -699,10 +699,10 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 172.31.255.80 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.82 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.84 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.86 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.160 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.162 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.164 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.166 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -780,18 +780,18 @@ router bgp 65104
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.31.255.80 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.80 remote-as 65001
-   neighbor 172.31.255.80 description DC1-SPINE1_Ethernet6
-   neighbor 172.31.255.82 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.82 remote-as 65001
-   neighbor 172.31.255.82 description DC1-SPINE2_Ethernet6
-   neighbor 172.31.255.84 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.84 remote-as 65001
-   neighbor 172.31.255.84 description DC1-SPINE3_Ethernet6
-   neighbor 172.31.255.86 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.86 remote-as 65001
-   neighbor 172.31.255.86 description DC1-SPINE4_Ethernet6
+   neighbor 172.31.254.160 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.160 remote-as 65001
+   neighbor 172.31.254.160 description DC1-SPINE1_Ethernet22
+   neighbor 172.31.254.162 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.162 remote-as 65001
+   neighbor 172.31.254.162 description DC1-SPINE2_Ethernet22
+   neighbor 172.31.254.164 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.164 remote-as 65001
+   neighbor 172.31.254.164 description DC1-SPINE3_Ethernet22
+   neighbor 172.31.254.166 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.166 remote-as 65001
+   neighbor 172.31.254.166 description DC1-SPINE4_Ethernet22
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

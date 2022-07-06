@@ -291,46 +291,46 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet9 | routed | - | 172.31.255.129/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet9 | routed | - | 172.31.255.131/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet9 | routed | - | 172.31.255.133/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet9 | routed | - | 172.31.255.135/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet25 | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet25 | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet25 | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet25 | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet9
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet25
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.129/31
+   ip address 172.31.255.1/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet9
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet25
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.131/31
+   ip address 172.31.255.3/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet9
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet25
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.133/31
+   ip address 172.31.255.5/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet9
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet25
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
-   ip address 172.31.255.135/31
+   ip address 172.31.255.7/31
 ```
 
 ## Loopback Interfaces
@@ -595,10 +595,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 172.31.255.128 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.130 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.132 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.134 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.0 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.2 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.4 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.6 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -681,18 +681,18 @@ router bgp 65107
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.31.255.128 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.128 remote-as 65001
-   neighbor 172.31.255.128 description DC1-SPINE1_Ethernet9
-   neighbor 172.31.255.130 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.130 remote-as 65001
-   neighbor 172.31.255.130 description DC1-SPINE2_Ethernet9
-   neighbor 172.31.255.132 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.132 remote-as 65001
-   neighbor 172.31.255.132 description DC1-SPINE3_Ethernet9
-   neighbor 172.31.255.134 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.134 remote-as 65001
-   neighbor 172.31.255.134 description DC1-SPINE4_Ethernet9
+   neighbor 172.31.255.0 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.0 remote-as 65001
+   neighbor 172.31.255.0 description DC1-SPINE1_Ethernet25
+   neighbor 172.31.255.2 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.2 remote-as 65001
+   neighbor 172.31.255.2 description DC1-SPINE2_Ethernet25
+   neighbor 172.31.255.4 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.4 remote-as 65001
+   neighbor 172.31.255.4 description DC1-SPINE3_Ethernet25
+   neighbor 172.31.255.6 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.6 remote-as 65001
+   neighbor 172.31.255.6 description DC1-SPINE4_Ethernet25
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

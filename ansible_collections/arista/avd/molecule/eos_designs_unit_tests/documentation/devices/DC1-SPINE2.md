@@ -267,127 +267,145 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet2 | routed | - | 172.31.255.50/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet2 | routed | - | 172.31.255.66/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | routed | - | 172.31.255.82/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet2 | routed | - | 172.31.255.98/31 | default | 1500 | false | - | - |
-| Ethernet8 | P2P_LINK_TO_DC1-BL2A_Ethernet2 | routed | - | 172.31.255.114/31 | default | 1500 | false | - | - |
-| Ethernet9 | P2P_LINK_TO_DC1-BL2B_Ethernet2 | routed | - | 172.31.255.130/31 | default | 1500 | false | - | - |
-| Ethernet14 | P2P_LINK_TO_DC1-CL1A_Ethernet2 | routed | - | 172.31.255.146/31 | default | 1500 | false | - | - |
-| Ethernet15 | P2P_LINK_TO_DC1-CL1B_Ethernet2 | routed | - | 172.31.255.162/31 | default | 1500 | false | - | - |
-| Ethernet16 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet2 | routed | - | 172.31.255.194/31 | default | 1500 | true | - | - |
-| Ethernet17 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet2 | routed | - | 172.31.255.210/31 | default | 1500 | true | - | - |
+| Ethernet1/1/1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet28 | routed | - | 172.31.254.2/31 | default | 1500 | false | - | - |
+| Ethernet1/3/1 | P2P_LINK_TO_DC1-LEAF2A_Ethernet50/1 | routed | - | 172.31.254.34/31 | default | 1500 | false | - | - |
+| Ethernet1/4/1 | P2P_LINK_TO_DC1-LEAF2A_Ethernet51/1 | routed | - | 172.31.254.36/31 | default | 1500 | false | - | - |
+| Ethernet1/5/1 | P2P_LINK_TO_DC1-LEAF2B_Ethernet50/1 | routed | - | 172.31.254.66/31 | default | 1500 | false | - | - |
+| Ethernet1/6/1 | P2P_LINK_TO_DC1-LEAF2B_Ethernet51/1 | routed | - | 172.31.254.68/31 | default | 1500 | false | - | - |
+| Ethernet1/7/1 | P2P_LINK_TO_DC1-SVC3A_Ethernet50/1 | routed | - | 172.31.254.98/31 | default | 1500 | false | - | - |
+| Ethernet1/9/1 | P2P_LINK_TO_DC1-SVC3B_Ethernet50/1 | routed | - | 172.31.254.130/31 | default | 1500 | false | - | - |
+| Ethernet22 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | routed | - | 172.31.254.162/31 | default | 1500 | false | - | - |
+| Ethernet23 | P2P_LINK_TO_DC1-BL1B_Ethernet2 | routed | - | 172.31.254.194/31 | default | 1500 | false | - | - |
+| Ethernet24 | P2P_LINK_TO_DC1-BL2A_Ethernet2 | routed | - | 172.31.254.226/31 | default | 1500 | false | - | - |
+| Ethernet25 | P2P_LINK_TO_DC1-BL2B_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
+| Ethernet26 | P2P_LINK_TO_DC1-CL1A_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | false | - | - |
+| Ethernet27 | P2P_LINK_TO_DC1-CL1B_Ethernet2 | routed | - | 172.31.255.66/31 | default | 1500 | false | - | - |
+| Ethernet28 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet50/1 | routed | - | 172.31.255.130/31 | default | 1500 | true | - | - |
+| Ethernet29 | P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet50/1 | routed | - | 172.31.255.162/31 | default | 1500 | true | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+interface Ethernet1/1/1
+   description P2P_LINK_TO_DC1-LEAF1A_Ethernet28
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.2/31
+!
+interface Ethernet1/3/1
+   description P2P_LINK_TO_DC1-LEAF2A_Ethernet50/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.34/31
+!
+interface Ethernet1/4/1
+   description P2P_LINK_TO_DC1-LEAF2A_Ethernet51/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.36/31
+!
+interface Ethernet1/5/1
+   description P2P_LINK_TO_DC1-LEAF2B_Ethernet50/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.66/31
+!
+interface Ethernet1/6/1
+   description P2P_LINK_TO_DC1-LEAF2B_Ethernet51/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.68/31
+!
+interface Ethernet1/7/1
+   description P2P_LINK_TO_DC1-SVC3A_Ethernet50/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.98/31
+!
+interface Ethernet1/9/1
+   description P2P_LINK_TO_DC1-SVC3B_Ethernet50/1
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.130/31
+!
+interface Ethernet22
+   description P2P_LINK_TO_DC1-BL1A_Ethernet2
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.162/31
+!
+interface Ethernet23
+   description P2P_LINK_TO_DC1-BL1B_Ethernet2
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.194/31
+!
+interface Ethernet24
+   description P2P_LINK_TO_DC1-BL2A_Ethernet2
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.254.226/31
+!
+interface Ethernet25
+   description P2P_LINK_TO_DC1-BL2B_Ethernet2
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
    ip address 172.31.255.2/31
 !
-interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF2A_Ethernet2
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.18/31
-!
-interface Ethernet3
-   description P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+interface Ethernet26
+   description P2P_LINK_TO_DC1-CL1A_Ethernet2
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
    ip address 172.31.255.34/31
 !
-interface Ethernet4
-   description P2P_LINK_TO_DC1-SVC3A_Ethernet2
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.50/31
-!
-interface Ethernet5
-   description P2P_LINK_TO_DC1-SVC3B_Ethernet2
+interface Ethernet27
+   description P2P_LINK_TO_DC1-CL1B_Ethernet2
    no shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
    ip address 172.31.255.66/31
 !
-interface Ethernet6
-   description P2P_LINK_TO_DC1-BL1A_Ethernet2
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.82/31
-!
-interface Ethernet7
-   description P2P_LINK_TO_DC1-BL1B_Ethernet2
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.98/31
-!
-interface Ethernet8
-   description P2P_LINK_TO_DC1-BL2A_Ethernet2
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.114/31
-!
-interface Ethernet9
-   description P2P_LINK_TO_DC1-BL2B_Ethernet2
-   no shutdown
+interface Ethernet28
+   description P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet50/1
+   shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
    ip address 172.31.255.130/31
 !
-interface Ethernet14
-   description P2P_LINK_TO_DC1-CL1A_Ethernet2
-   no shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.146/31
-!
-interface Ethernet15
-   description P2P_LINK_TO_DC1-CL1B_Ethernet2
-   no shutdown
+interface Ethernet29
+   description P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet50/1
+   shutdown
    mtu 1500
    speed forced 100gfull
    no switchport
    ip address 172.31.255.162/31
-!
-interface Ethernet16
-   description P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet2
-   shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.194/31
-!
-interface Ethernet17
-   description P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet2
-   shutdown
-   mtu 1500
-   speed forced 100gfull
-   no switchport
-   ip address 172.31.255.210/31
 ```
 
 ## Loopback Interfaces
@@ -507,19 +525,21 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 172.31.255.3 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.19 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.35 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.51 | 65103 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.67 | 65103 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.83 | 65104 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.99 | 65105 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.115 | 65106 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.131 | 65107 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.147 | 65108 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.163 | 65109 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.195 | 65110 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.211 | 65111 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.3 | 65101 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.35 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.37 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.67 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.69 | 65102 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.99 | 65103 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.131 | 65103 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.163 | 65104 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.195 | 65105 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.254.227 | 65106 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.3 | 65107 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.35 | 65108 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.67 | 65109 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.131 | 65110 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
+| 172.31.255.163 | 65111 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
 | 192.168.255.9 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.10 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 192.168.255.11 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
@@ -563,45 +583,51 @@ router bgp 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor 172.31.254.3 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.3 remote-as 65101
+   neighbor 172.31.254.3 description DC1-LEAF1A_Ethernet28
+   neighbor 172.31.254.35 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.35 remote-as 65102
+   neighbor 172.31.254.35 description DC1-LEAF2A_Ethernet50/1
+   neighbor 172.31.254.37 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.37 remote-as 65102
+   neighbor 172.31.254.37 description DC1-LEAF2A_Ethernet51/1
+   neighbor 172.31.254.67 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.67 remote-as 65102
+   neighbor 172.31.254.67 description DC1-LEAF2B_Ethernet50/1
+   neighbor 172.31.254.69 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.69 remote-as 65102
+   neighbor 172.31.254.69 description DC1-LEAF2B_Ethernet51/1
+   neighbor 172.31.254.99 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.99 remote-as 65103
+   neighbor 172.31.254.99 description DC1-SVC3A_Ethernet50/1
+   neighbor 172.31.254.131 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.131 remote-as 65103
+   neighbor 172.31.254.131 description DC1-SVC3B_Ethernet50/1
+   neighbor 172.31.254.163 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.163 remote-as 65104
+   neighbor 172.31.254.163 description DC1-BL1A_Ethernet2
+   neighbor 172.31.254.195 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.195 remote-as 65105
+   neighbor 172.31.254.195 description DC1-BL1B_Ethernet2
+   neighbor 172.31.254.227 peer group UNDERLAY-PEERS
+   neighbor 172.31.254.227 remote-as 65106
+   neighbor 172.31.254.227 description DC1-BL2A_Ethernet2
    neighbor 172.31.255.3 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.3 remote-as 65101
-   neighbor 172.31.255.3 description DC1-LEAF1A_Ethernet2
-   neighbor 172.31.255.19 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.19 remote-as 65102
-   neighbor 172.31.255.19 description DC1-LEAF2A_Ethernet2
+   neighbor 172.31.255.3 remote-as 65107
+   neighbor 172.31.255.3 description DC1-BL2B_Ethernet2
    neighbor 172.31.255.35 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.35 remote-as 65102
-   neighbor 172.31.255.35 description DC1-LEAF2B_Ethernet2
-   neighbor 172.31.255.51 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.51 remote-as 65103
-   neighbor 172.31.255.51 description DC1-SVC3A_Ethernet2
+   neighbor 172.31.255.35 remote-as 65108
+   neighbor 172.31.255.35 description DC1-CL1A_Ethernet2
    neighbor 172.31.255.67 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.67 remote-as 65103
-   neighbor 172.31.255.67 description DC1-SVC3B_Ethernet2
-   neighbor 172.31.255.83 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.83 remote-as 65104
-   neighbor 172.31.255.83 description DC1-BL1A_Ethernet2
-   neighbor 172.31.255.99 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.99 remote-as 65105
-   neighbor 172.31.255.99 description DC1-BL1B_Ethernet2
-   neighbor 172.31.255.115 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.115 remote-as 65106
-   neighbor 172.31.255.115 description DC1-BL2A_Ethernet2
+   neighbor 172.31.255.67 remote-as 65109
+   neighbor 172.31.255.67 description DC1-CL1B_Ethernet2
    neighbor 172.31.255.131 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.131 remote-as 65107
-   neighbor 172.31.255.131 description DC1-BL2B_Ethernet2
-   neighbor 172.31.255.147 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.147 remote-as 65108
-   neighbor 172.31.255.147 description DC1-CL1A_Ethernet2
+   neighbor 172.31.255.131 remote-as 65110
+   neighbor 172.31.255.131 description DC1_UNDEPLOYED_LEAF1A_Ethernet50/1
    neighbor 172.31.255.163 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.163 remote-as 65109
-   neighbor 172.31.255.163 description DC1-CL1B_Ethernet2
-   neighbor 172.31.255.195 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.195 remote-as 65110
-   neighbor 172.31.255.195 description DC1_UNDEPLOYED_LEAF1A_Ethernet2
-   neighbor 172.31.255.211 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.211 remote-as 65111
-   neighbor 172.31.255.211 description DC1_UNDEPLOYED_LEAF1B_Ethernet2
+   neighbor 172.31.255.163 remote-as 65111
+   neighbor 172.31.255.163 description DC1_UNDEPLOYED_LEAF1B_Ethernet50/1
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
    neighbor 192.168.255.9 description DC1-LEAF1A
