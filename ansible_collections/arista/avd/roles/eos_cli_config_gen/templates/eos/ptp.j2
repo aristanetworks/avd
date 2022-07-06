@@ -33,8 +33,7 @@ ptp forward-unicast
 {%     endif %}
 {%     if ptp.monitor.enabled is arista.avd.defined(false) %}
 no ptp monitor
-{%     endif %}
-{%     if ptp.monitor.enabled is not arista.avd.defined(false) %}
+{%     elif ptp.monitor is arista.avd.defined %}
 {%         if ptp.monitor.threshold.offset_from_master is arista.avd.defined %}
 ptp monitor threshold offset-from-master {{ ptp.monitor.threshold.offset_from_master }}
 {%         endif %}
