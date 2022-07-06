@@ -1,0 +1,6 @@
+{% if switch.evpn_multicast is arista.avd.defined(true) %}
+router_multicast:
+  ipv4:
+    routing: true
+    software_forwarding: sfe
+{% endif %}

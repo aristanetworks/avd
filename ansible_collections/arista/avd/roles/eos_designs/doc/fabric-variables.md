@@ -142,9 +142,6 @@ bgp_peer_groups:
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
 evpn_vlan_aware_bundles: < boolean | default -> false >
 
-# Disable IGMP snooping at fabric level.
-# If set, it overrides per vlan settings
-default_igmp_snooping_enabled: < boolean | default -> true >
 
 # BFD Multihop tunning | Required.
 bfd_multihop:
@@ -212,6 +209,20 @@ uplink_ptp:
 # No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)
 # The configuration is intended to be used as multicast underlay for EVPN OISM overlay
 underlay_multicast: < boolean | default -> false >
+
+# Enable Fabric to support EVPN Multicast
+# Requires "underlay_multicast: true" and IGMP snooping enabled globally.
+# For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.
+# Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP
+#   The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+#   All forwarding agents will be restarted when this configuration is applied.
+#   You can tune the settings by overridding the default variable: "platform_settings_trident_forwarding_table_partition:"
+#   Please contact an Arista representative for help with determining the appropriate values for your environment.
+evpn_multicast: < boolean | default -> false >
+
+# Disable IGMP snooping at fabric level.
+# If set, it overrides per vlan settings
+default_igmp_snooping_enabled: < boolean | default -> true >
 
 # Enable Trunk Group support across eos_designs | Optional
 # Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
