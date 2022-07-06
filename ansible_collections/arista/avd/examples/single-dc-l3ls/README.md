@@ -207,7 +207,9 @@ This naming convention makes it possible to easily extend anything, but as alway
 
 The following describes the full `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to describe the topology shown above.
 
-It's important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:
+It's important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host.
+
+Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
 
 ```yml
 ---
@@ -223,9 +225,35 @@ all:
                   ansible_host: 172.16.1.11
                 dc1-spine2:
                   ansible_host: 172.16.1.12
+            DC1_L3_LEAVES:
+              hosts:
+                dc1-leaf1a:
+                  ansible_host: 172.16.1.101
+                dc1-leaf1b:
+                  ansible_host: 172.16.1.102
+                dc1-leaf2a:
+                  ansible_host: 172.16.1.103
+                dc1-leaf2b:
+                  ansible_host: 172.16.1.104
+            DC1_L2_LEAVES:
+              hosts:
+                dc1-leaf1c:
+                  ansible_host: 172.16.1.151
+                dc1-leaf2c:
+                  ansible_host: 172.16.1.152
+
+        NETWORK_SERVICES:
+          children:
+            DC1_L3_LEAVES:
+            DC1_L2_LEAVES:
+        CONNECTED_ENDPOINTS:
+          children:
+            DC1_L3_LEAVES:
+            DC1_L2_LEAVES:
 ```
 
-However, going forward we expect that all hostnames specified are reachable without this workaround, hence the entire inventory file looks as follows:
+The above is what is included in this example, *purely* to make it as simple as possible to get started.
+However, going forward we urge you not to carry over this practice in a production environment, where an inventory file for an identical topology should look as follows:
 
 ```yml
 ---
