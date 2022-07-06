@@ -57,14 +57,14 @@ jobs:
       - name: Build ansible-avd-ee:${{ github.sha }}
         run: |
           cd context/latest
-          docker build --tag ansible-avd-ee:${{ github.sha }} -f Containerfile
+          docker build --tag ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee:${{ github.sha }} -f Containerfile
       - name: Build ansible-avd-ee-min-req:${{ github.sha }}
         run: |
           cd context/minimum
-          docker build --tag ansible-avd-ee-min-req:${{ github.sha }} -f Containerfile
+          docker build --tag ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee-min-req:${{ github.sha }} -f Containerfile
       - name: Push images to ghcr.io
-          docker push ansible-avd-ee:${{ github.sha }}
-          docker push ansible-avd-ee-min-req:${{ github.sha }}
+          docker push ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee:${{ github.sha }}
+          docker push ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee-min-req:${{ github.sha }}
 
       # - name: Build and push ansible-avd-ee:${{ github.sha }}
       #   uses: docker/build-push-action@v3
