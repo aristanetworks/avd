@@ -783,6 +783,12 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def multi_vtep(self):
+        if self.mlag is True and self.evpn_multicast is True:
+            return True
+        return None
+
+    @cached_property
     def igmp_snooping_enabled(self):
         if self.network_services_l2 is True:
             default_igmp_snooping_enabled = get(self._hostvars, "default_igmp_snooping_enabled")

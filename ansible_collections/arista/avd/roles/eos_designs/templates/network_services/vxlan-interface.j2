@@ -3,7 +3,7 @@ vxlan_interface:
   Vxlan1:
     description: {{ inventory_hostname }}_VTEP
     vxlan:
-{% if switch.evpn_multicast is arista.avd.defined(true) and switch.mlag is arista.avd.defined(true)  %}
+{% if switch.multi_vtep is arista.avd.defined(true)  %}
       source_interface: Loopback0
       mlag_source_interface: {{ switch.vtep_loopback }}
 {% else %}
