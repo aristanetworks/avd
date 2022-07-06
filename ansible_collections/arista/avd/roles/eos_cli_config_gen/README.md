@@ -2661,8 +2661,8 @@ ptp:
   clock_identity: < "clock-id in xx:xx:xx:xx:xx:xx format" >
   source:
     ip: < source-ip >
-  priority1: < integer >
-  priority2: < integer >
+  priority1: < 0-255 >
+  priority2: < 0-255 >
   ttl: < 1-254 >
   domain: < 0-255 >
   message_type:
@@ -2671,12 +2671,12 @@ ptp:
     event:
       dscp: < dscp-value >
   monitor:
-    enabled: < false | true -> default >
+    enabled: < false | true | default -> true >
     threshold:
       offset_from_master: < 0-1000000000 >
       mean_path_delay: < 0-1000000000 >
       drop:
-        enabled: < true | false -> default >
+        # enabled: < true | false -> default >
         offset_from_master: < 0-1000000000 >
         mean_path_delay: < 0-1000000000 >
     missing_message:
