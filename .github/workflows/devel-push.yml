@@ -124,6 +124,7 @@ jobs:
         with:
           context: context/latest/
           file: context/latest/Containerfile
+          load: true
           push: true
           tags: ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee:latest
       - name: Build and push ansible-avd-ee-min-req:latest
@@ -131,5 +132,6 @@ jobs:
         with:
           context: context/minimum/
           file: context/minimum/Containerfile
+          load: true
           push: true
           tags: ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee-min-req:latest

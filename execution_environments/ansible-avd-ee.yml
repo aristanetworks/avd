@@ -6,7 +6,7 @@
 version: 1
 
 build_arg_defaults:
-  EE_BASE_IMAGE: 'quay.io/ansible/ansible-runner:stable-2.12-latest'
+  EE_BASE_IMAGE: 'ghcr.io/aristanetworks/ansible-avd/ansible-avd-ee:latest'
   ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: '--force --verbose'
 
 dependencies:
