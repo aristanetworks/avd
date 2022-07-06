@@ -171,9 +171,7 @@ class EosDesignsFacts:
     def default_interfaces(self):
         default_interfaces = get(self._hostvars, "default_interfaces", default=[])
 
-        device_platform = "default"
-        if self.platform is not None:
-            device_platform = self.platform
+        device_platform = default(self.platform, "default")
 
         # First look for a matching default interface set that matches our platform and type
         for default_interface in default_interfaces:
