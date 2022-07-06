@@ -771,13 +771,13 @@ class EosDesignsFacts:
                 )
             elif self.mlag is True:
                 peer_overlay_rd_type_admin_subfield = get(self._hostvars,
-                                f"avd_switch_facts..{self.mlag_peer}..switch..overlay_rd_type_admin_subfield",
-                                org_key=f"avd_switch_facts.({self.mlag_peer}).switch.overlay_rd_type_admin_subfield",
-                                separator="..")
+                                                          f"avd_switch_facts..{self.mlag_peer}..switch..overlay_rd_type_admin_subfield",
+                                                          org_key=f"avd_switch_facts.({self.mlag_peer}).switch.overlay_rd_type_admin_subfield",
+                                                          separator="..")
                 if str(self.overlay_rd_type_admin_subfield) == str(peer_overlay_rd_type_admin_subfield):
                     raise AristaAvdError(
-                    "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' "
-                    "since it will create a multi-vtep configuration."
+                        "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' "
+                        "since it will create a multi-vtep configuration."
                     )
             return get(self._hostvars, "evpn_multicast", default=False)
         return None
