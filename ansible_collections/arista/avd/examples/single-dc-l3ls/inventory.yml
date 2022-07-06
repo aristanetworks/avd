@@ -1,0 +1,30 @@
+---
+all:
+  children:
+    FABRIC:
+      children:
+        DC1:
+          children:
+            DC1_SPINES:
+              hosts:
+                dc1-spine1:
+                dc1-spine2:
+            DC1_L3_LEAVES:
+              hosts:
+                dc1-leaf1a:
+                dc1-leaf1b:
+                dc1-leaf2a:
+                dc1-leaf2b:
+            DC1_L2_LEAVES:
+              hosts:
+                dc1-leaf1c:
+                dc1-leaf2c:
+
+        NETWORK_SERVICES:
+          children:
+            DC1_L3_LEAVES:
+            DC1_L2_LEAVES:
+        CONNECTED_ENDPOINTS:
+          children:
+            DC1_L3_LEAVES:
+            DC1_L2_LEAVES:

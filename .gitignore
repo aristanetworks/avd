@@ -119,7 +119,6 @@ examples/evpn-l3ls-cvp-deployment/collections
 # DS_Store
 *.DS_Store
 
-
 # mkdocs process
 ansible_collections/arista/avd/docs/_build/*.rst
 ansible_collections/arista/avd/docs/media/*
@@ -132,7 +131,5 @@ ansible_collections/arista/avd/molecule/*/config_backup
 # Examples config-backup folder
 ansible_collections/arista/avd/examples/*/config_backup
 
-# Ansible test folder
-ansible_collections/arista/avd/tests/
 # Ignore TAR GZ files
 *.tar.gz
