@@ -155,7 +155,7 @@ class EosDesignsFacts:
     @cached_property
     def default_downlink_interfaces(self):
         """
-        internal switch.default_downlink_interfaces set based on platform_settings
+        internal switch.default_downlink_interfaces set based on default_interfaces
         """
         return self._range_expand(get(self.default_interfaces, "downlink_interfaces", default=[]))
 
@@ -171,25 +171,19 @@ class EosDesignsFacts:
     def default_interfaces(self):
         default_interfaces = get(self._hostvars, "default_interfaces", default=[])
 
-        if self.platform is None:
-            return {}
+        device_platform = "default"
+        if self.platform is not None:
+            device_platform = self.platform
 
         # First look for a matching default interface set that matches our platform and type
         for default_interface in default_interfaces:
             for platform in default_interface.get('platforms', []):
                 if (
-                    re.search(f"^{platform}$", self.platform) and
+                    re.search(f"^{platform}$", device_platform) and
                     self.type in default_interface.get('types', [])
                 ):
                     return default_interface
 
-        # If not found, then look for a default default_interface that matches our type
-        for default_interface in default_interfaces:
-            if (
-                'default' in default_interface.get('platforms', [])
-                and self.type in default_interface.get('types', [])
-            ):
-                return default_interface
         return {}
 
     @cached_property

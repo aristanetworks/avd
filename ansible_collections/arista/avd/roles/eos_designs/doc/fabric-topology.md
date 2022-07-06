@@ -191,7 +191,7 @@ defaults <- node_group <- node_group.node <- node
     uplink_ipv4_pool: < IPv4_address/Mask  >
 
     # Local uplink interfaces (list). | Optional
-    # If uplink_interfaces is not defined, platform-specific defaults (defined by default_interfaces fact) will be used instead.
+    # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
     # Please note that these defaults are not defined by default - you should define these yourself.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
@@ -418,7 +418,7 @@ default_interfaces:
 
     # MLAG interfaces (list) | Optional, even when MLAG leafs present in topology.
     # If mlag_interfaces is not defined, platform-specific defaults (defined by default_interfaces fact) will be used instead.
-    # Please note that these defaults are not defined in default_platform_settings - you should define these yourself.
+    # Please note that these default_interfaces are not defined by default - you should define these yourself.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
