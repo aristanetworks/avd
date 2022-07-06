@@ -51,33 +51,36 @@ interface Management1
 
 ### PTP Summary
 
-| PTP setting | Value |
-| ----------- | ----- |
-| Clock-identity | 123.123.123.123 |
-| Source IP | 1.1.1.1 |
-| Priority1 | 1 |
-| Priority2 | 2 |
-| TTL | 200 |
-| Domain | 1 |
-| Msg General | DSCP 4 |
-| Msg Event | DSCP 8 |
+| Clock ID    | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode        | Forward Unicast |
+| ----------- | --------- | ---------- | ---------- | --- | ------ | ----------- | --------------- |
+| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True |
 
 ### PTP Device Configuration
 
 ```eos
 !
-ptp clock-identity 123.123.123.123
-ptp source ip 1.1.1.1
-ptp priority1 1
-ptp priority2 2
-ptp ttl 200
-ptp domain 1
-ptp message-type general dscp 4 default
-ptp message-type event dscp 8 default
+ptp clock-identity 11:11:11:11:11:11
+ptp source ip 1.1.2.3
+ptp priority1 101
+ptp priority2 102
+ptp ttl 12
+ptp domain 17
+ptp message-type general dscp 36 default
+ptp message-type event dscp 46 default
 ptp mode boundary
 ptp forward-unicast
-ptp monitor threshold offset-from-master 1234
-ptp monitor threshold mean-path-delay 4321
+ptp monitor threshold offset-from-master 11
+ptp monitor threshold mean-path-delay 12
+ptp monitor threshold offset-from-master 13 nanoseconds drop
+ptp monitor threshold mean-path-delay 14 nanoseconds drop
+ptp monitor threshold missing-message announce 101 intervals
+ptp monitor threshold missing-message follow-up 102 intervals
+ptp monitor threshold missing-message sync 103 intervals
+ptp monitor sequence-id
+ptp monitor threshold missing-message announce 201 sequence-ids
+ptp monitor threshold missing-message delay-resp 202 sequence-ids
+ptp monitor threshold missing-message follow-up 203 sequence-ids
+ptp monitor threshold missing-message sync 204 sequence-ids
 ```
 
 # Authentication

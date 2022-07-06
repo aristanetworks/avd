@@ -2656,24 +2656,41 @@ patch_panel:
 
 ```yaml
 ptp:
-  mode: < mode >
+  mode: < boundary | transparent >
   forward_unicast: < true | false >
-  clock_identity: < clock-id >
+  clock_identity: < "clock-id in xx:xx:xx:xx:xx:xx format" >
   source:
-    ip: < source-ip>
-  priority1: < priority1 >
-  priority2: < priority2 >
-  ttl: < ttl >
-  domain: < integer >
+    ip: < source-ip >
+  priority1: < integer >
+  priority2: < integer >
+  ttl: < 1-254 >
+  domain: < 0-255 >
   message_type:
     general:
       dscp: < dscp-value >
     event:
-      dscp: < dscp-Value >
+      dscp: < dscp-value >
   monitor:
+    enabled: < false | true -> default >
     threshold:
-      offset_from_master: < offset >
-      mean_path_delay: < delay >
+      offset_from_master: < 0-1000000000 >
+      mean_path_delay: < 0-1000000000 >
+      drop:
+        enabled: < true | false -> default >
+        offset_from_master: < 0-1000000000 >
+        mean_path_delay: < 0-1000000000 >
+    missing_message:
+      intervals:
+        enabled: < true | false -> default >
+        announce: < 2-255 >
+        follow_up: < 2-255 >
+        sync: < 2-255 >
+      sequence_ids:
+        enabled: < true | false -> default >
+        announce: < 2-255 >
+        delay_resp: < 2-255 >
+        follow_up: < 2-255 >
+        sync: < 2-255 >
 ```
 
 ### Prompt
