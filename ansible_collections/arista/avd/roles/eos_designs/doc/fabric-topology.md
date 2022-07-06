@@ -192,7 +192,7 @@ defaults <- node_group <- node_group.node <- node
 
     # Local uplink interfaces (list). | Optional
     # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
-    # Please note that these defaults are not defined by default - you should define these yourself.
+    # Please note that default_interfaces are not defined by default - you should define these yourself.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
     # Uplink switches (list). | Required.
@@ -234,8 +234,8 @@ defaults <- node_group <- node_group.node <- node
     < node-group-name >:
       nodes:
         # Uplink switches interfaces (list), interface located on uplink switch. | Optional
-        # If uplink_switch_interfaces is not defined, platform-specific defaults (defined by default_interfaces fact) will be used instead.
-        # Please note that these defaults are not defined in default_platform_settings - you should define these yourself.
+        # If uplink_switch_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+        # Please note that default_interfaces are not defined by default - you should define these yourself.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
         # short_esi only valid for l2leaf devices using port-channel uplink
         # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
@@ -417,8 +417,8 @@ default_interfaces:
     mlag_ibgp_origin_incomplete: < true | false | default -> true >
 
     # MLAG interfaces (list) | Optional, even when MLAG leafs present in topology.
-    # If mlag_interfaces is not defined, platform-specific defaults (defined by default_interfaces fact) will be used instead.
-    # Please note that these default_interfaces are not defined by default - you should define these yourself.
+    # If mlag_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+    # Please note that default_interfaces are not defined by default - you should define these yourself.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined

@@ -182,6 +182,15 @@ class EosDesignsFacts:
                 ):
                     return default_interface
 
+        # If not found, then look for a default default_interface that matches our type
+        for default_interface in default_interfaces:
+            for platform in default_interface.get('platforms', []):
+                if (
+                    re.search(f"^{platform}$", "default") and
+                    self.type in default_interface.get('types', [])
+                ):
+                    return default_interface
+
         return {}
 
     @cached_property
