@@ -4,9 +4,6 @@
 ! Hostname of the device
 hostname dc1-spine1
 !
-! Disables the requirement for enable password
-no enable password
-!
 ! Configures username and password for the ansible user
 username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
 !
@@ -20,9 +17,6 @@ interface Management1
    vrf MGMT
    ! IP address - must be set uniquely per device
    ip address 172.16.1.11/24
-!
-! Disables IP routing in VRF MGMT
-no ip routing vrf MGMT
 !
 ! Static default route for VRF MGMT
 ip route vrf MGMT 0.0.0.0/0 172.16.1.1
