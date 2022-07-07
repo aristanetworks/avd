@@ -116,7 +116,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### BGP Design
 
-The following drawing shows the BGP Design used in this example. The orange dashed lines illustrate the eBGP point-to-point peerings used for the underlay, while the blue dotted lines illustrates the eBGP multi-hop peerings between Loopback0 interfaces used for the EVPN overlay. Finally, the green dashed lines illustrates the iBGP peerings between MLAG peers:
+The following drawing shows the BGP Design used in this example. The orange dashed lines illustrate the eBGP point-to-point peerings used for the underlay, while the blue dotted lines illustrate the eBGP multi-hop peerings between Loopback0 interfaces used for the EVPN overlay. Finally, the green dashed lines illustrate the iBGP peerings between MLAG peers:
 
 ![Figure: Arista BGP Design](images/single-dc-bgp.png)
 
