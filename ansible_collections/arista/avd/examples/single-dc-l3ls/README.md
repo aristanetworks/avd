@@ -349,8 +349,8 @@ In this case we are specifying that:
 - Network OS which in this case is Arista EOS.
 - The username/password combo.
 - How to escalate privileges to get write access.
-- We're using SSL.
-- We're not validating certs.
+- Use SSL.
+- Do not validate SSL certificates.
 
 In the next section we specify variables that generate configuration to be applied to all devices in the fabric:
 
