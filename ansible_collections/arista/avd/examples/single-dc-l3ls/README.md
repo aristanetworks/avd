@@ -324,7 +324,7 @@ type: l3leaf
 type: l2leaf
 ```
 
-For example, this means that all switches that are children of the DC1_SPINES group defined in the inventory, will be of the type `spine`.
+For example, this means that all switches that are children of the DC1_SPINES group defined in the inventory will be of the type `spine`.
 
 ## Setting fabric-wide configuration parameters
 
