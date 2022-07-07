@@ -804,7 +804,7 @@ ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible
 (...)
 ```
 
-If you aren't seeing a similar output to the one shown above, make sure:
+If you are not seeing a similar output to the one shown above, make sure:
 
 1. You meet the documented [requirements](../../docs/installation/requirements.md)
 2. You have the latest `arista.avd` collection installed.
