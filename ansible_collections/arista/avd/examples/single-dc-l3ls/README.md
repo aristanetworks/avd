@@ -646,7 +646,7 @@ At the very bottom of the `NETWORK_SERVICES.yml` file we define two layer2-only 
 
 ## Specifying endpoint connectivity in the EVPN/VXLAN Fabric
 
-As we saw in the previous section, we've now defined all VRFs and VLANs across the fabric. Let's take a closer look at the `ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` file, which specifies the connectivity for all endpoints in the fabric (typically servers):
+As we saw in the previous section, we have now defined all VRFs and VLANs across the fabric. Let's take a closer look at the `ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` file, which specifies the connectivity for all endpoints in the fabric (typically servers):
 
 ```yml
 ---
