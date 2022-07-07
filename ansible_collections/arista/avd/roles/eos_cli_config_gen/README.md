@@ -2676,17 +2676,14 @@ ptp:
       offset_from_master: < 0-1000000000 >
       mean_path_delay: < 0-1000000000 >
       drop:
-        # enabled: < true | false -> default >
         offset_from_master: < 0-1000000000 >
         mean_path_delay: < 0-1000000000 >
     missing_message:
       intervals:
-        enabled: < true | false -> default >
         announce: < 2-255 >
         follow_up: < 2-255 >
         sync: < 2-255 >
       sequence_ids:
-        enabled: < true | false -> default >
         announce: < 2-255 >
         delay_resp: < 2-255 >
         follow_up: < 2-255 >

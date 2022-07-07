@@ -21,17 +21,14 @@ ptp:
       offset_from_master: 11
       mean_path_delay: 12
       drop:
-        enabled: true
         offset_from_master: 13
         mean_path_delay: 14
     missing_message:
       intervals:
-        enabled: true
         announce: 101
         follow_up: 102
         sync: 103
       sequence_ids:
-        enabled: true
         announce: 201
         delay_resp: 202
         follow_up: 203
