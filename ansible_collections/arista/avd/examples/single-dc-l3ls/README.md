@@ -504,7 +504,7 @@ l3leaf:
   - `spanning_tree_mode` defines the spanning-tree mode, in this case MSTP, which is the default. Other modes are supported should they be required, for example, for connectivity to legacy or third party vendor environments.
 - `node_groups` is used to define settings common to more than one node. For leaf switches, when exactly two nodes are part of a node group, AVD will by default automatically generate MLAG configuration.
 - `bgp_as` is defined just once since an MLAG pair shares a single BGP AS number.
-- `uplink_switch_interfaces` defines the interfaces used on the uplink switches (Ethernet1 on dc1-spine1 and dc1-spine2 in this example). By defining which spine interfaces the leaf is connected to under the leaf switch's settings it makes addition and removal of leaf switches much easier - there is no need to add/remove any settings under the spine switch section; AVD takes care of that for you. This child device/parent device hierarchy also applies to L2 leaves and L3 leaves.
+- `uplink_switch_interfaces` defines the interfaces used on the uplink switches (Ethernet1 on dc1-spine1 and dc1-spine2 in this example). By defining which spine interfaces the leaf is connected to under the leaf switch settings, it makes addition and removal of leaf switches much easier. There is no need to add/remove any settings under the spine switch section, AVD takes care of that for you. This child device/parent device hierarchy also applies to L2 leaves and L3 leaves.
 
 Finally we do the same, but this time for the L2 leaf switches:
 
