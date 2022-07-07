@@ -290,12 +290,12 @@ all:
 
 The `NETWORK_SERVICES` section does two things:
 
-1. It references the `ansible-avd-examples/single-dc-l3ls/NETWORK_SERVICES.yml` group variable file that specifies the VRFs and VLANs used in the entire fabric.
+1. It references the `ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml` group variable file that specifies the VRFs and VLANs used in the entire fabric.
 2. Defines the scope of the fabric where these VRFs and VLANs are applied, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
 The `CONNECTED_ENDPOINTS` section also does two things:
 
-1. It references the `ansible-avd-examples/single-dc-l3ls/CONNECTED_ENDPOINTS.yml` group variable file that specifies all endpoints, which would typically be servers.
+1. It references the `ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` group variable file that specifies all endpoints, which would typically be servers.
 2. Defines the scope of where these endpoints are connected to the fabric, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
 ## Defining device types
