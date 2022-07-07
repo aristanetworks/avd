@@ -127,6 +127,7 @@ ethernet_interfaces:
     logging:
       event:
         link_status: true
+        congestion_drops: true
     peer: SRV-POD02
     peer_interface: Eth1
     peer_type: server
@@ -230,6 +231,7 @@ ethernet_interfaces:
     logging:
       event:
         link_status: false
+        congestion_drops: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100

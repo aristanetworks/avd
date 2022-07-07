@@ -1032,6 +1032,7 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+        congestion_drops: < true | false >  # not supported on vEOS-lab
     lldp:
       transmit: < true | false >
       receive: < true | false >
