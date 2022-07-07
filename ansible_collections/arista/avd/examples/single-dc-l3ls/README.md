@@ -764,7 +764,7 @@ This playbook has three tasks that use three roles:
 
 ### If you don't have a lab, but just want to play with the AVD output
 
-If you don't have a lab, you can adapt the included playbook to look as follows:
+If you do not have a lab, you can adapt the included playbook to look as follows:
 
 ```yml
 - name: Run AVD
