@@ -203,7 +203,7 @@ Additionally groups themselves can be children of another group for example:
 
 This naming convention makes it possible to easily extend anything, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
 
-### Contents of the inventory.yml file
+### Content of the inventory.yml file
 
 The following describes the full `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to describe the topology shown above.
 
