@@ -537,7 +537,7 @@ l2leaf:
             - Ethernet8
 ```
 
- As should be clear, a L2 leaf switch is much simpler than a L3 switch, hence there are fewer settings to define.
+As should be clear, a L2 leaf switch is much simpler than a L3 switch, hence there are fewer settings to define.
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN Fabric
 
