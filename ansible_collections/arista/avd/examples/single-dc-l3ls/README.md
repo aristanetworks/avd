@@ -382,7 +382,7 @@ p2p_uplinks_mtu: 1500
 ```
 
 - The name of the fabric for internal Ansible AVD use. This name *must* match the name of an Ansible Group covering all network devices.
-- Local users/passwords and their privilege levels. In this case the "ansible" user is set with the password "ansible".
+- Local users/passwords and their privilege levels. In this case the `ansible` user is set with the password `ansible`.
 - BGP peer groups and their passwords (all passwords are "arista").
 - Point-to-point interface MTU, in this case it's set to 1500 since the example is using vEOS, but when using hardware this should be set to 9214 instead.
 
