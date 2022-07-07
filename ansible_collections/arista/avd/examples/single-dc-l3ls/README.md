@@ -17,7 +17,7 @@
 - [Specifying network services (VRFs and VLANs) in the EVPN/VXLAN Fabric](#specifying-network-services-vrfs-and-vlans-in-the-evpnvxlan-fabric)
 - [Specifying endpoint connectivity in the EVPN/VXLAN Fabric](#specifying-endpoint-connectivity-in-the-evpnvxlan-fabric)
 - [The playbook](#the-playbook)
-  - [If you do not have a lab, but just want to play with the AVD output](#if-you-do-not-have-a-lab-but-just-want-to-play-with-the-avd-output)
+  - [Testing AVD output without a lab](#testing-avd-output-without-a-lab)
   - [Executing the playbook](#executing-the-playbook)
 - [Troubleshooting](#troubleshooting)
   - [EVPN not working](#evpn-not-working)
@@ -25,7 +25,7 @@
 ## Introduction
 
 This example is meant to be used as the logical second step introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section.
-The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If you do not have access to a lab with virtual or physical switches, fear not. This example can also be used to generate the output from AVD if required.
+The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, fear not. This example can also be used to generate the output from AVD if required.
 
 The example includes and describes all the AVD files and their content used to build a Layer 3 Leaf Spine (L3LS) EVPN/VXLAN Symmetric IRB network covering a single DC, using the following:
 
@@ -39,9 +39,9 @@ Integration with CloudVision is not included in this example to keep everything 
 
 ## Installation
 
-To actually use this example in practice you must:
+To actually use this example in practice the following is required:
 
-- Ensure you have followed the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
+- Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
 - Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
 
 `ansible-playbook arista.avd.install_examples`
@@ -61,9 +61,9 @@ PLAY RECAP
 localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-After the playbook has run successfully, you will have the following directory structure, the contents of which will be covered in later sections:
+After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
-- ansible-avd-examples/ (or whereever you ran the playbook)
+- ansible-avd-examples/ (or whereever the playbook was run)
   - single-dc-l3ls
     - documentation/
     - group_vars/
@@ -75,14 +75,14 @@ After the playbook has run successfully, you will have the following directory s
     - playbook.yml
     - README.md (this document)
 
-> Please note: If you *modify* the contents of any files in the example and re-run the playbook, those files ***won't*** be overwritten.
-However, if you *delete* any files in the example and re-run the playbook, those files will be re-created.
+> Please note: If the contents of any files in the example are ***modified*** and the playbook is re-run, those files ***won't*** be overwritten.
+However, if any files in the example are ***deleted*** and the playbook is re-run, those files will be re-created.
 
 ## Overall design overview
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if you want to adapt this example to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Ethernet0 when using vEOS-lab):
+The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Ethernet0 when using vEOS-lab):
 
 ![Figure: Arista Leaf Spine physical topology](images/single-dc-topology-physical.png)
 
@@ -168,7 +168,7 @@ end
 copy running-config startup-config
 ```
 
-In the folder `single-dc-l3ls/switch-basic-configurations/` you will find a file per device you can use for the initial configuration.
+The folder `single-dc-l3ls/switch-basic-configurations/` contains a file per device for the initial configuration.
 
 ## Ansible inventory, group vars and naming scheme
 
@@ -207,7 +207,7 @@ This naming convention makes it possible to easily extend anything, but as alway
 
 This section describes the full `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to represent the topology shown above.
 
-It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host.
+It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this simply ping each host, for example, `ping dc1-spine1` from the Ansible host.
 
 Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
 
@@ -581,7 +581,7 @@ tenants:
         name: L2_VLAN3402
 ```
 
-It is in here that all services in the entire fabric or in other words all VRFs and VLANs are defined. This means that regardless where you want a given VRF or VLAN to exist you define its existence here, but you do not define ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#inventory) section.
+All services in the entire fabric or in other words all VRFs and VLANs are defined here. This means that regardless of where a given VRF or VLAN must exist, its existence is defined here, but it is not defined ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#inventory) section.
 
 AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
@@ -610,7 +610,7 @@ For example:
 This defines `VRF10`, with a L3VNI of `10` and two VLANs (`VLAN11` and `VLAN12`).
 Each VLAN has a name and a virtual IP address assigned, which will be used as the default gateway for that particular VLAN on all leaf switches where the VLAN is created.
 
-You will probably notice this configuration defined under `VRF10`:
+This configuration is also defined under `VRF10`:
 
 ```yml
         vtep_diagnostic:
@@ -751,7 +751,7 @@ In this example, the playbook looks like the following:
          name: arista.avd.eos_config_deploy_eapi
 ```
 
-The name of the playbook is set along with the scope of the playbook, which in this example is the entire `FABRIC`. If you recall, this is a group name defined in the inventory, hence if you want your playbook to only apply to a subset of devices, you can change it here.
+The name of the playbook is set along with the scope of the playbook, which in this example is the entire `FABRIC`. This is a group name defined in the inventory, hence if the playbook should only apply to a subset of devices, it can be changed here.
 
 This playbook has three tasks that use three roles:
 
@@ -759,9 +759,9 @@ This playbook has three tasks that use three roles:
 - `generate device intended config and documention` uses the role `arista.avd.eos_cli_config_gen`, which generates the actual Arista EOS CLI configurations found in the `ansible-avd-examples/single-dc-l3ls/intended/configs` folder, along with the device specific and fabric wide documentation found in the `ansible-avd-examples/single-dc-l3ls/documentation/` folder. It relies on the structured configuration generated by `arista.avd.eos_designs`.
 - Finally `deploy configuration to device` uses the role `arista.avd.eos_config_deploy_eapi` that pushes the generated configuration to the devices in scope.
 
-### If you do not have a lab, but just want to play with the AVD output
+### Testing AVD output without a lab
 
-If you do not have a lab, you can adapt the included playbook to look as follows:
+The included playbook can be modified to look as follows:
 
 ```yml
 - name: Run AVD
@@ -785,7 +785,7 @@ Please look through the folders and files described above to learn more about th
 
 ### Executing the playbook
 
-The execution of the playbook should show you the following output:
+The execution of the playbook should result in following output:
 
 ```shell
 user@ubuntu:~/Documents/git_projects/ansible-avd-examples/single-dc-l3ls$ ansible-playbook playbook.yml
@@ -801,22 +801,22 @@ ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible
 (...)
 ```
 
-If you are not seeing a similar output to the one shown above, make sure:
+If similar output is not shown, make sure:
 
-1. You meet the documented [requirements](../../docs/installation/requirements.md)
-2. You have the latest `arista.avd` collection installed.
+1. The documented [requirements](../../docs/installation/requirements.md) are met.
+2. The latest `arista.avd` collection is installed.
 
 ## Troubleshooting
 
 ### EVPN not working
 
-If you do the following steps:
+If after doing the following steps:
 
 1. Manually copy/paste the switch-basic-configuration to the devices.
 2. Run the playbook and push the generated configuration to the fabric.
 3. Login to a leaf device, for example, dc1-leaf1a and run the command `show bgp evpn summary` to view EVPN routes.
 
-Then you will see the following error message:
+The following error message is shown:
 
 ```shell
 dc1-leaf1a#show bgp evpn summ
