@@ -589,7 +589,7 @@ It is in here that we define all services that exist in the entire fabric or in 
 
 Ansible AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
-We've specified a single tenant called `TENANT1`. The first thing we specify is the base number (`10000`) used to automatically generate the L2VNI numbers, L2VNI = base number + VLAN-id. For example, L2VNI for VLAN11 = 10000 + 11 = 10011.
+We have specified a single tenant called `TENANT1`. The first thing we specify is the base number (`10000`) used to automatically generate the L2VNI numbers, `L2VNI = base number + VLAN-id`. For example, L2VNI for VLAN11 = 10000 + 11 = 10011.
 
 Next, we specify two VRFs, each with two VLANs.
 For example:
