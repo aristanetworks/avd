@@ -728,8 +728,8 @@ If we look closer at the definitions for `dc1-leaf1-server1`, we see the followi
   - `type` set to `server` and `ilo` is purely for documentation and readability purposes. It has no operational significance.
   - `server_ports` are defined for use in the interface descriptions on the switch. This does not configure anything on the server.
   - `switch_ports` define the interfaces used in the switches. In this example the server is dual-connected to Ethernet5 and Ethernet5. These two ports exist on switch dc1-leaf1a and dc1-leaf1b defined in the following line.
-  - `switches` define the switches used, in this case dc1-leaf1a and dc1-leaf1b. Note that the `server_ports`, `switch_ports` and `switches` definitions are paired vertically.
-  - `vlans` define which VLANs are allowed on the switch_ports, in this case it is two ranges, VLAN11-12 and VLAN21-22 for the dual-attached server ports and VLAN11 for the iLO port.
+  - `switches` defines the switches used, in this case dc1-leaf1a and dc1-leaf1b. Note that the `server_ports`, `switch_ports` and `switches` definitions are paired vertically.
+  - `vlans` defines which VLANs are allowed on the switch_ports, in this case it is two ranges, VLAN11-12 and VLAN21-22 for the dual-attached server ports and VLAN11 for the iLO port.
   - `native_vlan` specifies the native VLAN when the switch port mode is set to trunk.
   - `mode` is set to trunk for the dual-attached server ports and access for the iLO port.
   - `spanning_tree_portfast` defines whether we want the switch port to be a spanning-tree edge port or a network port.
