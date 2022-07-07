@@ -301,7 +301,7 @@ The `CONNECTED_ENDPOINTS` section also does two things:
 
 ## Defining device types
 
-Since we're building a L3LS network, we must tell Ansible AVD which devices are spines, L3 leaves, L2 leaves etc. We have already grouped the devices in the inventory and so in this example this is done using the group variable files with the following names and content:
+Since we are building a L3LS network, we must tell Ansible AVD which devices are spines, L3 leaves, L2 leaves etc. We have already grouped the devices in the inventory and so in this example this is done using the group variable files with the following names and content:
 
 `ansible-avd-examples/single-dc-l3ls/group_vars/DC1_SPINES.yml`
 
