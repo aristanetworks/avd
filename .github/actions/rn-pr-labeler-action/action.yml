@@ -15,7 +15,7 @@ runs:
       shell: bash
     - name: 'Delete existing "rn:" label if found'
       run: gh pr edit ${{ github.event.pull_request.number }} --remove-label "${{ env.OLD_LABEL }}"
-      shell:  bash
+      shell: bash
       if: ${{ env.OLD_LABEL }}
     - name: Set Label
       run: echo "LABEL=$(echo '${{ github.event.pull_request.title }}' | cut -d ':' -f 1)" >> $GITHUB_ENV
@@ -34,6 +34,6 @@ runs:
       shell: bash
       if: ${{ inputs.auto_create_label  && ! env.EXIST }}
     - name: Labelling PR
-      run: | 
+      run: |
         gh pr edit ${{ github.event.pull_request.number }} --add-label "rn: ${{ env.LABEL }}"
       shell: bash
