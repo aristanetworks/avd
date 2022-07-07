@@ -1,4 +1,4 @@
-# Ansible AVD example for a single data center using Layer 3 Leaf Spine (L3LS) <!-- omit in toc -->
+# AVD example for a single data center using Layer 3 Leaf Spine (L3LS) <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -24,10 +24,10 @@
 
 ## Introduction
 
-This example is meant to be used as the logical second step introducing Ansible AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section.
-The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If you do not have access to a lab with virtual or physical switches, fear not. This example can also be used to generate the output from Ansible AVD if required.
+This example is meant to be used as the logical second step introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section.
+The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If you do not have access to a lab with virtual or physical switches, fear not. This example can also be used to generate the output from AVD if required.
 
-The example includes and describes all the Ansible AVD files and their content used to build a Layer 3 Leaf Spine (L3LS) EVPN/VXLAN Symmetric IRB network covering a single DC, using the following:
+The example includes and describes all the AVD files and their content used to build a Layer 3 Leaf Spine (L3LS) EVPN/VXLAN Symmetric IRB network covering a single DC, using the following:
 
 - Two (virtual) spine switches.
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
@@ -41,7 +41,7 @@ Integration with CloudVision is not included in this example to keep everything 
 
 To actually use this example in practice you must:
 
-- Ensure you have followed the installation guide for Ansible AVD found [here](../../docs/installation/collection-installation.md).
+- Ensure you have followed the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
 - Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
 
 `ansible-playbook arista.avd.install_examples`
@@ -176,7 +176,7 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 
 ![Figure: Ansible inventory and vars](images/single-dc-inventory-and-vars.png)
 
-Please note, the two servers (`dc1-leaf1-server1` and `dc1-leaf2-server1`) at the bottom **are not** configured by Ansible AVD, but the switch ports used to connect to the servers are.
+Please note, the two servers (`dc1-leaf1-server1` and `dc1-leaf2-server1`) at the bottom **are not** configured by AVD, but the switch ports used to connect to the servers are.
 
 Group names use uppercase and underscores:
 
@@ -301,7 +301,7 @@ The `CONNECTED_ENDPOINTS` section also does two things:
 
 ## Defining device types
 
-Since this example covers building a L3LS network, Ansible AVD must know about the device types, for example spines, L3 leaves, L2 leaves etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
+Since this example covers building a L3LS network, AVD must know about the device types, for example spines, L3 leaves, L2 leaves etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
 
 `ansible-avd-examples/single-dc-l3ls/group_vars/DC1_SPINES.yml`
 
@@ -379,7 +379,7 @@ bgp_peer_groups:
 p2p_uplinks_mtu: 1500
 ```
 
-- The name of the fabric for internal Ansible AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
+- The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
 - Local users/passwords and their privilege levels. In this case the `ansible` user is set with the password `ansible` and an `admin` user is set with no password.
 - BGP peer groups and their passwords (all passwords are "arista").
 - Point-to-point interface MTU, in this case it is set to 1500 since the example is using vEOS, but when using hardware this should be set to 9214 instead.
@@ -583,7 +583,7 @@ tenants:
 
 It is in here that all services in the entire fabric or in other words all VRFs and VLANs are defined. This means that regardless where you want a given VRF or VLAN to exist you define its existence here, but you do not define ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#inventory) section.
 
-Ansible AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
+AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
 A single tenant called `TENANT1` is specified. The first setting is the base number (`10000`) used to automatically generate the L2VNI numbers, `L2VNI = base number + VLAN-id`. For example, L2VNI for VLAN11 = 10000 + 11 = 10011.
 
@@ -781,7 +781,7 @@ If you do not have a lab, you can adapt the included playbook to look as follows
 
 By simply commenting out (or deleting) the third and last task definition, the playbook will generate all of the output (variables, configurations, documentation), but will not attempt to communicate with any devices.
 
-Please look through the folders and files described above to learn more about the output generated by Ansible AVD.
+Please look through the folders and files described above to learn more about the output generated by AVD.
 
 ### Executing the playbook
 
@@ -824,5 +824,5 @@ dc1-leaf1a#show bgp evpn summ
 dc1-leaf1a#
 ```
 
-This is caused by Ansible AVD pushing the configuration line `service routing protocols model multi-agent`, which enables the multi-agent routing process supporting EVPN.
+This is caused by AVD pushing the configuration line `service routing protocols model multi-agent`, which enables the multi-agent routing process supporting EVPN.
 This change *requires* a reboot of the device.
