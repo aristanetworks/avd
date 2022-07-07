@@ -343,7 +343,7 @@ ansible_httpapi_use_ssl: true
 ansible_httpapi_validate_certs: false
 ```
 
-In this case we're specifying that:
+In this case we are specifying that:
 
 - The Ansible host must use eAPI via HTTPS.
 - Network OS which in this case is Arista EOS.
