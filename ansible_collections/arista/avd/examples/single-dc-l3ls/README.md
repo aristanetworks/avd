@@ -205,7 +205,7 @@ This naming convention makes it possible to easily extend anything, but as alway
 
 ### Content of the inventory.yml file
 
-The following describes the full `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to describe the topology shown above.
+This section describes the full `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to represent the topology shown above.
 
 It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, `ping dc1-spine1` from your Ansible host.
 
