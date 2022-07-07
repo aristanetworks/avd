@@ -585,7 +585,7 @@ tenants:
         name: L2_VLAN3402
 ```
 
-It's in here that we define all services that exist in the entire fabric or in other words all VRFs and VLANs. This means that regardless where you want a given VRF or VLAN to exist you define its existence here, but you don't define ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#inventory) section.
+It is in here that we define all services that exist in the entire fabric or in other words all VRFs and VLANs. This means that regardless where you want a given VRF or VLAN to exist you define its existence here, but you do not define ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#inventory) section.
 
 Ansible AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
