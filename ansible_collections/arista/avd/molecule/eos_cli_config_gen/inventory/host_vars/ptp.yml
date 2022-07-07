@@ -29,6 +29,7 @@ ptp:
         follow_up: 102
         sync: 103
       sequence_ids:
+        enabled: true
         announce: 201
         delay_resp: 202
         follow_up: 203

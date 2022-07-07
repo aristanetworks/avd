@@ -2684,6 +2684,7 @@ ptp:
         follow_up: < 2-255 >
         sync: < 2-255 >
       sequence_ids:
+        enabled: < true | false -> default >
         announce: < 2-255 >
         delay_resp: < 2-255 >
         follow_up: < 2-255 >
