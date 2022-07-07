@@ -10,14 +10,14 @@
   - [BGP Design](#bgp-design)
   - [Basic EOS config](#basic-eos-config)
 - [Ansible inventory, group vars and naming scheme](#ansible-inventory-group-vars-and-naming-scheme)
-  - [Contents of the inventory.yml file](#contents-of-the-inventoryyml-file)
+  - [Content of the inventory.yml file](#content-of-the-inventoryyml-file)
 - [Defining device types](#defining-device-types)
 - [Setting fabric-wide configuration parameters](#setting-fabric-wide-configuration-parameters)
 - [Setting device specific configuration parameters](#setting-device-specific-configuration-parameters)
 - [Specifying network services (VRFs and VLANs) in the EVPN/VXLAN Fabric](#specifying-network-services-vrfs-and-vlans-in-the-evpnvxlan-fabric)
 - [Specifying endpoint connectivity in the EVPN/VXLAN Fabric](#specifying-endpoint-connectivity-in-the-evpnvxlan-fabric)
 - [The playbook](#the-playbook)
-  - [If you don't have a lab, but just want to play with the AVD output](#if-you-dont-have-a-lab-but-just-want-to-play-with-the-avd-output)
+  - [If you do not have a lab, but just want to play with the AVD output](#if-you-do-not-have-a-lab-but-just-want-to-play-with-the-avd-output)
   - [Executing the playbook](#executing-the-playbook)
 - [Troubleshooting](#troubleshooting)
   - [EVPN not working](#evpn-not-working)
@@ -290,13 +290,14 @@ all:
 
 The `NETWORK_SERVICES` section does two things:
 
-1. It references the `ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml` group variable file that specifies the VRFs and VLANs used in the entire fabric.
-2. Defines the scope of the fabric where these VRFs and VLANs are applied, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
+1. It creates a group named "NETWORK_SERVICES". Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml`).
+2. The contents of the file, which in this case are specifications of VRFs and VLANs, are then applied to the children of the group, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`
+
 
 The `CONNECTED_ENDPOINTS` section also does two things:
 
-1. It references the `ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` group variable file that specifies all endpoints, which would typically be servers.
-2. Defines the scope of where these endpoints are connected to the fabric, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
+1. It creates a group named "CONNECTED_ENDPOINTS". Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml`).
+2. The contents of the file, which in this case are specifications of connected endpoints (typically servers), are then applied to the children of the group, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`
 
 ## Defining device types
 
