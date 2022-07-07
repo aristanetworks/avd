@@ -120,6 +120,9 @@ Both data models support variable inheritance from profiles defined under [`port
           # Optional if default link_tracking settings are configured on the node.
           name: < tracking_group_name >
 
+        # Structured config added under ethernet_interfaces.<interface>.dot1x for eos_cli_config_gen
+        dot1x: < dictionary >
+
         # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         raw_eos_cli: |
           < multiline eos cli >

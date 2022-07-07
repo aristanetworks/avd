@@ -565,6 +565,52 @@ ethernet_interfaces:
     channel_group:
       id: 20
       mode: active
+  Ethernet24:
+    peer: PC
+    peer_type: network_port
+    description: PC
+    type: switched
+    shutdown: false
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+      mac_based_authentication:
+        enabled: true
+      timeout:
+        reauth_period: server
+        tx_period: 3
+      reauthorization_request_limit: 3
+  Ethernet25:
+    peer: PC
+    peer_type: network_port
+    description: PC
+    type: switched
+    shutdown: false
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+      mac_based_authentication:
+        enabled: true
+      timeout:
+        reauth_period: server
+        tx_period: 3
+      reauthorization_request_limit: 3
   Ethernet21:
     peer: ROUTER01
     peer_interface: Eth0
