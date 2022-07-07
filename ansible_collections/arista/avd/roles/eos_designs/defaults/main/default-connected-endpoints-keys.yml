@@ -15,3 +15,14 @@ default_connected_endpoints_keys:
       type: router
     cpes:
       type: cpe
+  "l2ls":
+    servers:
+      type: server
+    firewalls:
+      type: firewall
+    routers:
+      type: router
+    load_balancers:
+      type: load_balancer
+    storage_arrays:
+      type: storage_array

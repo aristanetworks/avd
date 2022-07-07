@@ -26,6 +26,25 @@ default_node_type_keys:
       type: overlay-controller
       default_evpn_role: server
 
+  "l2ls":
+    spine:
+      type: spine
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      uplink_type: p2p
+      underlay_router: true
+    leaf:
+      type: leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+
   "mpls":
     p:
       type: p
