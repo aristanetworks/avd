@@ -761,7 +761,7 @@ This playbook has three tasks that use three roles:
 
 ### Testing AVD output without a lab
 
-The included playbook can be modified to look as follows:
+To use this example without a lab, the playbook can be modified as follows:
 
 ```yml
 - name: Run AVD
