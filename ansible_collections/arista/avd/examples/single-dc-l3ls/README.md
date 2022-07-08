@@ -581,7 +581,7 @@ tenants:
         name: L2_VLAN3402
 ```
 
-All services in the entire fabric or in other words all VRFs and VLANs are defined here. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#inventory) section.
+All services in the entire fabric or in other words all VRFs and VLANs are defined here. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
 
 AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
