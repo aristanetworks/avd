@@ -785,7 +785,7 @@ Please look through the folders and files described above to learn more about th
 
 ### Executing the playbook
 
-The execution of the playbook should result in following output:
+The execution of the playbook should produce the following output:
 
 ```shell
 user@ubuntu:~/Documents/git_projects/ansible-avd-examples/single-dc-l3ls$ ansible-playbook playbook.yml
