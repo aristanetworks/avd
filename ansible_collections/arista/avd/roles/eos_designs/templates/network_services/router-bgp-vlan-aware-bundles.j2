@@ -19,11 +19,11 @@
 {%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
 {%                 set bundle_number =  vrf_id_int + tenant.vlan_aware_bundle_number_base | arista.avd.default(0) %}
     {{ vrf.name }}:
-      rd: "{{ network_services_data.rd_admin_subfield }}:{{ bundle_number }}"
+      rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ bundle_number }}"
 {%                 if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
       rd_evpn_domain:
         domain: "remote"
-        rd: "{{ network_services_data.rd_admin_subfield }}:{{ bundle_number }}"
+        rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ bundle_number }}"
 {%                 endif %}
       route_targets:
         both:
@@ -48,11 +48,11 @@
                              tenant_mac_vrf_id_base + l2vlan_int) %}
     {{ l2vlan.name }}:
       tenant: {{ tenant.name }}
-      rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+      rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ vlan_rt }}"
 {%             if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
       rd_evpn_domain:
         domain: "remote"
-        rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+        rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ vlan_rt }}"
 {%             endif %}
       route_targets:
         both:

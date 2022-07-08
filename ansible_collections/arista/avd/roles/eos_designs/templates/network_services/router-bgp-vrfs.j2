@@ -39,14 +39,14 @@
 {%                 if vrf.name == 'default' %}
 {%                     if default_vrf.svi_subnets %}
 {%                         do route_targets.export.evpn.append('route-map RM-EVPN-EXPORT-VRF-DEFAULT') %}
-      rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_id }}"
+      rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ bgp_vrf_id }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
 {%                     endif %}
 {%                 else %}
       router_id: {{ switch.router_id }}
-      rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_id }}"
+      rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ bgp_vrf_id }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}

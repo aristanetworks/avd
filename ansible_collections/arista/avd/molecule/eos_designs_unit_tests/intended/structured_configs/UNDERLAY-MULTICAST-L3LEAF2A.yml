@@ -56,6 +56,9 @@ static_routes:
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
+router_multicast:
+  ipv4:
+    routing: true
 vlan_internal_order:
   allocation: ascending
   range:

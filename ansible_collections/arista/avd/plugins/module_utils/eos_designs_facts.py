@@ -733,6 +733,62 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def underlay_multicast(self):
+        return get(self._hostvars, "underlay_multicast")
+
+    @cached_property
+    def overlay_rd_type_admin_subfield(self):
+        tmp_overlay_rd_type_admin_subfield = default(
+            get(self._hostvars, "evpn_rd_type.admin_subfield"),
+            get(self._hostvars, "overlay_rd_type.admin_subfield")
+        )
+        if tmp_overlay_rd_type_admin_subfield is None:
+            return self.router_id
+        if tmp_overlay_rd_type_admin_subfield == "vtep_loopback":
+            return self.vtep_ip
+        if tmp_overlay_rd_type_admin_subfield == "bgp_as":
+            return self.bgp_as
+        if isinstance(tmp_overlay_rd_type_admin_subfield, int) and tmp_overlay_rd_type_admin_subfield > 0 and tmp_overlay_rd_type_admin_subfield < 4294967295:
+            return tmp_overlay_rd_type_admin_subfield
+        if isinstance(tmp_overlay_rd_type_admin_subfield, str):
+            try:
+                ipaddress.ip_address(tmp_overlay_rd_type_admin_subfield)
+                return tmp_overlay_rd_type_admin_subfield
+            except ValueError:
+                pass
+        return self.router_id
+
+    @cached_property
+    def evpn_multicast(self):
+        if get(self._hostvars, "evpn_multicast") is True and self.vtep is True:
+            if not (
+                self.underlay_multicast is True
+                and self.igmp_snooping_enabled is not False
+            ):
+                raise AristaAvdError(
+                    "'evpn_multicast: True' is only supported in "
+                    "combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
+                )
+            elif self.mlag is True:
+                peer_overlay_rd_type_admin_subfield = get(self._hostvars,
+                                                          f"avd_switch_facts..{self.mlag_peer}..switch..overlay_rd_type_admin_subfield",
+                                                          org_key=f"avd_switch_facts.({self.mlag_peer}).switch.overlay_rd_type_admin_subfield",
+                                                          separator="..")
+                if self.overlay_rd_type_admin_subfield == peer_overlay_rd_type_admin_subfield:
+                    raise AristaAvdError(
+                        "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' "
+                        "since it will create a multi-vtep configuration."
+                    )
+            return get(self._hostvars, "evpn_multicast", default=False)
+        return None
+
+    @cached_property
+    def multi_vtep(self):
+        if self.mlag is True and self.evpn_multicast is True:
+            return True
+        return None
+
+    @cached_property
     def igmp_snooping_enabled(self):
         if self.network_services_l2 is True:
             default_igmp_snooping_enabled = get(self._hostvars, "default_igmp_snooping_enabled")
@@ -1250,7 +1306,7 @@ class EosDesignsFacts:
                     uplink['ptp'] = self.uplink_ptp
                 if self.uplink_macsec is not None:
                     uplink['mac_security'] = self.uplink_macsec
-                if get(self._hostvars, "underlay_multicast") is True:
+                if self.underlay_multicast is True:
                     uplink['underlay_multicast'] = True
                 if get(self._hostvars, "underlay_rfc5549") is True:
                     uplink['ipv6_enable'] = True
