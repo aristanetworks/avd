@@ -210,6 +210,7 @@ uplink_ptp:
 underlay_multicast: < boolean | default -> false >
 
 # Enable Fabric to support EVPN Multicast
+# General Configuration required for EVPN Multicast. "evpn_l2_multicast" must also be configured under the Network Services (tenants).
 # Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).
 # For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.
 # Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP
