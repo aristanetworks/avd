@@ -120,7 +120,7 @@ Both data models support variable inheritance from profiles defined under [`port
           # Optional if default link_tracking settings are configured on the node.
           name: < tracking_group_name >
 
-        # Structured config added under ethernet_interfaces.<interface>.dot1x for eos_cli_config_gen
+        # 802.1x | Optional
         dot1x:
           port_control: < "auto" | "force-authorized" | "force-unauthorized" >
           port_control_force_authorized_phone: < true | false >
