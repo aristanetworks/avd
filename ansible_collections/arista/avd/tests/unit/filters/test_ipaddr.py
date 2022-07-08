@@ -100,7 +100,7 @@ class TestIpAddrFilter():
     def test_ipaddr_network_list(self):
         '''
         Test list input to ipaddr('net')
-        network -> Filter only valid network IP (with their prefix)
+        network -> Filter only valid network IP (with their prefix lengths)
         '''
         resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='net')
         assert resp_list == IP_ADDRESSES_NET_EXPECTED
@@ -111,7 +111,7 @@ class TestIpAddrFilter():
         '''
         Test list input to ipaddr('subnet')
         subnet -> Filter a valid IP and return their Network IP
-        default prefix is /32 if it's just an IP
+        default prefix length is 32 if it's just an IP
         '''
         resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='subnet')
         assert resp_list == IP_ADDRESSES_SUBNETWORK_EXPECTED
@@ -131,12 +131,12 @@ class TestIpAddrFilter():
 
     def test_ipaddr_prefixes_list(self):
         '''
-        Test list input to ipaddr('prefix')
-        prefix -> Filter a valid IP and return their network prefix
-        default prefix is /32 if it's just an IP
+        Test list input to ipaddr('prefixlen')
+        prefixlen -> Filter a valid IP and return their network prefix length
+        default prefix length is 32 if it's just an IP
         '''
-        assert f.ipaddr(IP_ADDRESSES_INPUT, method='prefix') == IP_ADDRESSES_PREFIX_EXPECTED
-        assert get_by_method(IP_ADDRESSES_INPUT, 'prefix') == IP_ADDRESSES_PREFIX_EXPECTED
+        assert f.ipaddr(IP_ADDRESSES_INPUT, method='prefixlen') == IP_ADDRESSES_PREFIX_EXPECTED
+        assert get_by_method(IP_ADDRESSES_INPUT, 'prefixlen') == IP_ADDRESSES_PREFIX_EXPECTED
 
     def test_ipaddr_size_list(self):
         '''
@@ -161,7 +161,7 @@ class TestIpAddrFilter():
     def test_ipaddr_address_list(self):
         '''
         Test list input to ipaddr('address')
-        address -> Filter a valid IP/pool and return the IP address with out prefix
+        address -> Filter a valid IP/pool and return the IP address with out prefix length
         If its only an IP address then the same is returned
         '''
         resp_list = f.ipaddr(IP_ADDRESSES_INPUT, method='address')

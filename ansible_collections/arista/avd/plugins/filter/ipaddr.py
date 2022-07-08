@@ -3,6 +3,7 @@ __metaclass__ = type
 
 import ipaddress
 from jinja2.runtime import Undefined
+from ansible.errors import AnsibleFilterError
 
 
 class FilterModule(object):
@@ -29,7 +30,7 @@ class FilterModule(object):
             return valid_subnet.netmask
         return
 
-    def prefix(self, val, version=None):
+    def prefixlen(self, val, version=None):
         valid_subnet = self.subnet(val, version)
         if valid_subnet:
             return valid_subnet.prefixlen
@@ -78,24 +79,28 @@ class FilterModule(object):
     def defaultattr(self, input_val, ip_address):
         try:
             input_val_int = int(input_val)
-            if self.size(ip_address) == 1:
+            max_ips = self.size(ip_address)
+            if max_ips == 1:
                 return ip_address
             else:
-                max_ips = self.size(ip_address)
                 if input_val_int < max_ips:
                     network_address = ipaddress.ip_network(ip_address, strict=False)
                     calc_ip = str(network_address.network_address + input_val_int)
-                    prefix = network_address.prefixlen
-                    return f'{calc_ip}/{prefix}'
+                    prefixlen = network_address.prefixlen
+                    return f'{calc_ip}/{prefixlen}'
                 else:
                     return
         except ValueError:
-            subnet_a = self.subnet(input_val)
-            subnet_b = ipaddress.ip_network(ip_address, strict=False)
-            if subnet_a and subnet_a.version == subnet_b.version and subnet_b.subnet_of(subnet_a):
-                return ip_address
-            else:
-                return
+            try:
+                subnet_a = self.subnet(input_val)
+                subnet_b = ipaddress.ip_network(ip_address, strict=False)
+                if subnet_a and subnet_a.version == subnet_b.version and subnet_b.subnet_of(subnet_a):
+                    return ip_address
+            except ValueError:
+                raise AnsibleFilterError(
+                    f"AVD FilterError: ipaddr: unknown filter type: {ip_address}"
+                ) from ValueError
+            return
 
     def ipaddr(self, ip_addresses, method='validate', version=None):
         result = None
@@ -113,8 +118,8 @@ class FilterModule(object):
             try:
                 result = getattr(self, method)(ip_addresses, version=version)
             except (TypeError, AttributeError):
-                if self.validate(ip_addresses):
-                    result = self.defaultattr(method, str(self.validate(ip_addresses, version)))
+                if validated_addresses := self.validate(ip_addresses, version):
+                    result = self.defaultattr(method, str(validated_addresses))
             if result is not None and not isinstance(result, int):
                 result = str(result)
 
@@ -127,8 +132,8 @@ class FilterModule(object):
         if isinstance(ip_addresses, list):
             result = []
             for ip_address in ip_addresses:
-                if self.ipmath(ip_address, add_val):
-                    result.append(self.ipmath(ip_address, add_val))
+                if res := self.ipmath(ip_address, add_val):
+                    result.append(res)
         else:
             if not isinstance(ip_addresses, (str, int)):
                 ip_addresses = str(ip_addresses)

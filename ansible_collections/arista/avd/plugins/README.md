@@ -216,11 +216,11 @@ Four filters are currently supported to handle all of the IP Address related cal
 
 #### ipaddr filter
 
-The ```arista.avd.ipaddr``` filter provides the capabilities to calculate all IP address related functionality like, `subnet`, `address`, `subnet size`, `network ip` etc. The input can be an IP address or a list of IP addresses and the output will be of similar data-type.
+The `arista.avd.ipaddr` filter provides capabilities to manipulate IP addresses. It supports operations like `subnet`, `address`, `subnet size`, `network ip`, etc... The input can be an IP address or a list of IP addresses and the output will be of similar data-type.
 
-This filter supports both `IPv4` and `IPv6` version types. If no IP version is specified, then the filter calculates for both of the versions. This filter takes two arguments apart from the IP address(es) as input, which are `method` and `version`. The supported versions are `4`, and `6` (integers), which represent the **ipv4** and **ipv6** respectively. The supported `methods` are:
+This filter supports both `IPv4` and `IPv6` version types. If no IP version is specified, then the filter calculates for both of the versions. This filter takes two arguments apart from the IP address(es) as input, which are `method` and `version`. The supported versions are `4`, and `6` (integers), which represent the **ipv4** and **ipv6** address families respectively. The supported `methods` are:
 
-1) `validate`: Returns the valid IP addresses or Network IPs based on the version type. If no version number is provided then both IPv4 and IPv6 IPs are returned based on the input data-type(string or list). This is the default method in the `ipaddr` filter.
+1. `validate`: Returns the valid IP addresses or Network IPs based on the version type. If no version number is provided then both IPv4 and IPv6 IPs are returned based on the input data-type (string or list). This is the default method in the `ipaddr` filter.
 
     ```example
     ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True, 'test12.com']
@@ -228,7 +228,7 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['192.168.0.1', 'fe08::1', '192.168.1.0/24']
     ```
 
-    The below method is same as above.
+    which is equivalent to:
 
     ```example
     ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True, 'test12.com']
@@ -236,7 +236,7 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['192.168.0.1', 'fe08::1', '192.168.1.0/24']
     ```
 
-1) `address`: Returns the valid IP address(es) only.
+1. `address`: Returns the valid IP address(es) only.
 
     ```example
     ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True]
@@ -244,7 +244,7 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['192.168.0.1', 'fe08::1']
     ```
 
-1) `net`: Returns only the Network IPs.
+1. `net`: Returns only the Network IPs.
 
     ```example
     ip_pool = ['192.168.0.1', '192.168.0', 'fe08::1', '192.168.1.0/24', '', True]
@@ -252,7 +252,8 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['192.168.1.0/24']
     ```
 
-1) `subnet`: Calculates and returns the Network IP of the provided input.
+1. `subnet`: Calculates and returns the Network IP of the provided input. If no subnet mask if present, this assumes `/32` for IPv4 and
+`/128` for IPv6.
 
     ```example
     ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.1.20/28']
@@ -260,7 +261,8 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['192.168.0.1/32', 'fe08::1/128', '192.168.1.0/24', '192.168.1.16/28']
     ```
 
-1) `netmask`: Calculates the subnet mask of the provided IP address(es).
+1. `netmask`: Calculates the subnet mask of the provided IP address(es). If no subnet mask if present, this assumes `/32` for IPv4 and
+`/128` for IPv6.
 
     ```example
     ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.70/26']
@@ -268,15 +270,15 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['255.255.255.255', 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', '255.255.255.0', '255.255.255.192']
     ```
 
-1) `prefix`: Calculates and returns the Network Prefix(es) for the provided IP address(es). Return value is an integer or list of integers.
+1. `prefixlen`: Calculates and returns the Network Prefix length(s) for the provided IP address(es). Return value is an integer or list of integers.
 
     ```example
     ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.4/26']
-    {{ ip_pool | arista.avd.ipaddr('prefix') }}
+    {{ ip_pool | arista.avd.ipaddr('prefixlen') }}
     Output: [32, 128, 24, 26]
     ```
 
-1) `size`: Calculates and returns the number of IP address(es) possible in the provided pool(s). Return value is an integer or list of integers.
+1. `size`: Calculates and returns the number of IP address(es) possible in the provided pool(s). Return value is an integer or list of integers.
 
     ```example
     ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.4/26']
@@ -284,7 +286,7 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: [1, 1, 256, 64]
     ```
 
-1) `network`: Calculates and returns the Network IP address(es).
+1. `network`: Calculates and returns the Network IP address(es).
 
     ```example
     ip_pool = ['192.168.0.1', 'fe08::1', '192.168.1.0/24', '192.168.0.70/26']
@@ -292,7 +294,7 @@ This filter supports both `IPv4` and `IPv6` version types. If no IP version is s
     Output: ['192.168.0.1', 'fe08::1', '192.168.1.0', '192.168.1.64']
     ```
 
-1) `defaultattr`: When the provided input method type doesn't with any of the above, then this method is invoked. Useful when the input method is not actually a method but an IP pool or a number. When the input argument is an integer then IP address corresponding to that number is returned. When an IP pool is provided as an argument then all of the input addresses which are subset of the IP pool are returned (last example).
+1. `defaultattr`: When the provided input method type doesn't match with any of the above, then this method is invoked. Useful when the input method is not actually a method but an IP pool or a number. When the input argument is an integer then IP address corresponding to that number is returned. When an IP pool is provided as an argument then all of the input addresses which are subset of the IP pool are returned (last example).
 
     ```example
     ip_pool = ['192.24.2.1', '::1', '192.168.32.0/24', '192.168.33.1/24', '192.168.1.255/24']
