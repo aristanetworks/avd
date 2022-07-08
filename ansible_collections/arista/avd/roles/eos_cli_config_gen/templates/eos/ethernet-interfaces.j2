@@ -32,10 +32,17 @@ interface {{ ethernet_interface.name }}
    mtu {{ ethernet_interface.mtu }}
 {%         endif %}
 {%     endif %}
-{%     if ethernet_interface.logging.event.link_status is arista.avd.defined(true) %}
+{%     if ethernet_interface.logging.event is arista.avd.defined %}
+{%         if ethernet_interface.logging.event.link_status is arista.avd.defined(true) %}
    logging event link-status
-{%     elif ethernet_interface.logging.event.link_status is arista.avd.defined(false) %}
+{%         elif ethernet_interface.logging.event.link_status is arista.avd.defined(false) %}
    no logging event link-status
+{%         endif %}
+{%         if ethernet_interface.logging.event.congestion_drops is arista.avd.defined(true) %}
+   logging event congestion-drops
+{%         elif ethernet_interface.logging.event.congestion_drops is arista.avd.defined(false) %}
+   no logging event congestion-drops
+{%         endif %}
 {%     endif %}
 {%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interface.flowcontrol.received is arista.avd.defined %}

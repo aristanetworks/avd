@@ -932,6 +932,7 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+        congestion_drops: < true | false >
     lldp:
       transmit: < true | false >
       receive: < true | false >
