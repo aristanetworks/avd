@@ -150,6 +150,9 @@ ethernet_interfaces:
     lacp_port_priority: 32768
 {%                     endif %}
 {%                 endif %}
+{%                 if adapter_settings.dot1x is arista.avd.defined %}
+    dot1x: {{ adapter_settings.dot1x }}
+{%                 endif %}
 {%                 if adapter_settings.raw_eos_cli is arista.avd.defined %}
     eos_cli: |
       {{ adapter_settings.raw_eos_cli | indent(6,false) }}

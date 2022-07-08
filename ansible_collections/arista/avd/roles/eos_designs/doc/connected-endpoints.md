@@ -120,6 +120,31 @@ Both data models support variable inheritance from profiles defined under [`port
           # Optional if default link_tracking settings are configured on the node.
           name: < tracking_group_name >
 
+        # 802.1x | Optional
+        dot1x:
+          port_control: < "auto" | "force-authorized" | "force-unauthorized" >
+          port_control_force_authorized_phone: < true | false >
+          reauthentication: < true | false >
+          pae:
+            mode: < "authenticator" >
+          authentication_failure:
+            action: < "allow" | "drop" >
+            allow_vlan: < 1-4094 >
+          host_mode:
+            mode: < "multi-host" | "single-host" >
+            multi_host_authenticated: < true | false >
+          mac_based_authentication:
+            enabled: < true | false >
+            always: < true | false >
+            host_mode_common: < true | false >
+          timeout:
+            idle_host: < 10-65535 >
+            quiet_period: < 1-65535 >
+            reauth_period: < 60-4294967295 | server >
+            reauth_timeout_ignore: < true | false >
+            tx_period: < 1-65535 >
+          reauthorization_request_limit: < 1-10 >
+
         # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         raw_eos_cli: |
           < multiline eos cli >

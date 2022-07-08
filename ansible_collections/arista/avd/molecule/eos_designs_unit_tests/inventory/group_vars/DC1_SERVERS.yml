@@ -96,6 +96,25 @@ port_profiles:
       description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
 
+  DOT1X_PORT_PROFILE:
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+      mac_based_authentication:
+        enabled: true
+      timeout:
+        reauth_period: server
+        tx_period: 3
+      reauthorization_request_limit: 3
+
 servers:
   server01_MLAG:
     rack: RackB
@@ -531,3 +550,11 @@ routers:
         switch_ports: [ Ethernet21, Ethernet21 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_A
+
+network_ports:
+  - switches:
+      - DC1-LEAF2A
+    switch_ports:
+      - Ethernet24-25
+    profile: DOT1X_PORT_PROFILE
+    description: PC
