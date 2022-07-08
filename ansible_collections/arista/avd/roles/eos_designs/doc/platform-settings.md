@@ -61,7 +61,6 @@ default_platform_settings:
       mlag: 300
       non_mlag: 330
     feature_support:
-      # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
   - platforms: ['7280R', '7280R2']
     tcam_profile: vxlan-routing
