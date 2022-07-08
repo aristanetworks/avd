@@ -176,7 +176,7 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 
 ![Figure: Ansible inventory and vars](images/single-dc-inventory-and-vars.png)
 
-Please note, the two servers (`dc1-leaf1-server1` and `dc1-leaf2-server1`) at the bottom **are not** configured by AVD, but the switch ports used to connect to the servers are.
+Please note, the two servers `dc1-leaf1-server1` and `dc1-leaf2-server1` at the bottom **are not** configured by AVD, but the switch ports used to connect to the servers are.
 
 Group names use uppercase and underscores:
 
