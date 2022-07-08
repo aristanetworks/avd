@@ -25,7 +25,7 @@
 ## Introduction
 
 This example is meant to be used as the logical second step introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section.
-The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, fear not. This example can also be used to generate the output from AVD if required.
+The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, fear not! This example can also be used to only generate the output from AVD if required.
 
 The example includes and describes all the AVD files and their content used to build a Layer 3 Leaf Spine (L3LS) EVPN/VXLAN Symmetric IRB network covering a single DC, using the following:
 
