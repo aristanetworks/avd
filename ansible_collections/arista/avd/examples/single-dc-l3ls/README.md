@@ -424,7 +424,7 @@ The following section defines the spine layer:
   - `bgp_defaults` defines generic BGP settings.
 - `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
   - `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case dc1-spine1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
-  - `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier Ansible will perform name lookup when using the hostnames specified in the inventory, unless using the `ansible-host` option. However there is no automatic mechanism to grab the result of the name lookup and use that to generate the configuration of the actual management interface.
+  - `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier Ansible will perform name lookup when using the hostnames specified in the inventory, unless using the `ansible_host` option. However there is no automatic mechanism to grab the result of the name lookup and use that to generate the configuration of the actual management interface.
 
 The next section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
 
