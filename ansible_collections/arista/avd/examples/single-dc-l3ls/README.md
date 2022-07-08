@@ -39,7 +39,7 @@ Integration with CloudVision is not included in this example to keep everything 
 
 ## Installation
 
-To actually use this example in practice the following is required:
+Requirements to use this example:
 
 - Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
 - Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
