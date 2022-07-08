@@ -76,7 +76,7 @@ After the playbook has run successfully, the directory structure will look as sh
     - README.md (this document)
 
 > Please note: If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten.
-However, if any files in the example are ***deleted*** and the playbook is re-run, those files will be re-created.
+However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
 
 ## Overall design overview
 
