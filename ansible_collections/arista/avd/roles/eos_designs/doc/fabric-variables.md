@@ -210,7 +210,7 @@ uplink_ptp:
 underlay_multicast: < boolean | default -> false >
 
 # Enable Fabric to support EVPN Multicast
-# Requires "underlay_multicast: true" and IGMP snooping enabled globally.
+# Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).
 # For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.
 # Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP
 #   The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
