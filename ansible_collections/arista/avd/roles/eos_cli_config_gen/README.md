@@ -2671,7 +2671,7 @@ ptp:
     event:
       dscp: < dscp-value >
   monitor:
-    enabled: < false | true | default -> true >
+    enabled: < true | false | default -> true >
     threshold:
       offset_from_master: < 0-1000000000 >
       mean_path_delay: < 0-1000000000 >
@@ -2684,7 +2684,7 @@ ptp:
         follow_up: < 2-255 >
         sync: < 2-255 >
       sequence_ids:
-        enabled: < true | false -> default >
+        enabled: < true | false | default -> false >
         announce: < 2-255 >
         delay_resp: < 2-255 >
         follow_up: < 2-255 >
