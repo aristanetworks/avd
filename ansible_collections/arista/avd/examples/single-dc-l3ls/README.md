@@ -63,7 +63,7 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
-- ansible-avd-examples/ (or whereever the playbook was run)
+- ansible-avd-examples/ (or wherever the playbook was run)
   - single-dc-l3ls
     - documentation/
     - group_vars/
