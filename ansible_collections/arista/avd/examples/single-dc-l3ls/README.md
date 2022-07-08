@@ -694,7 +694,7 @@ servers:
 
 This defines the settings for the relevant switch ports to which the endpoints connect, in this case the two servers `dc1-leaf1-server1` and `dc1-leaf2-server1`.
 
-The definitions for `dc1-leaf1-server1`, shows the following:
+As an example, here is the configuration for `dc1-leaf1-server1`:
 
 ```yml
   dc1-leaf1-server1:
