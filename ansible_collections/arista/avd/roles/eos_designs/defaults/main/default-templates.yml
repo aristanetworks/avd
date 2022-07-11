@@ -120,8 +120,8 @@ default_templates:
       mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
       p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
       p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
-      # vtep_ip_mlag: 'ip_addressing/vtep-ip-mlag.j2'
-      # vtep_ip: 'ip_addressing/vtep-ip.j2'
+      vtep_ip_mlag: 'ip_addressing/vtep-ip-mlag.j2'
+      vtep_ip: 'ip_addressing/vtep-ip.j2'
 
     interface_descriptions:
       underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
@@ -131,4 +131,4 @@ default_templates:
       connected_endpoints_ethernet_interfaces: 'interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
       connected_endpoints_port_channel_interfaces: 'interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
       overlay_loopback_interface: 'interface_descriptions/loopback_interfaces/overlay-loopback.j2'
-      # vtep_loopback_interface: 'interface_descriptions/loopback_interfaces/vtep-loopback.j2'
+      vtep_loopback_interface: 'interface_descriptions/loopback_interfaces/vtep-loopback.j2'
