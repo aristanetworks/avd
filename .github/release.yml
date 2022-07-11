@@ -1,696 +1,271 @@
 changelog:
+  exclude:
+    labels:
+      - 'rn: Test(eos_config_deploy_cvp'
+      - 'rn: CI(eos_config_deploy_cvp'
+      - 'rn: Test(eos_config_deploy_eapi'
+      - 'rn: CI(eos_config_deploy_eapi'
+      - 'rn: Test(eos_designs'
+      - 'rn: CI(eos_designs'
+      - 'rn: Test(eos_designs_to_containerlab'
+      - 'rn: CI(eos_designs_to_containerlab'
+      - 'rn: Test(eos_l3ls_evpn'
+      - 'rn: CI(eos_l3ls_evpn'
+      - 'rn: Test(eos_snapshot'
+      - 'rn: CI(eos_snapshot'
+      - 'rn: Test(eos_validate_state'
+      - 'rn: CI(eos_validate_state'
+      - 'rn: Test(build_output_folders'
+      - 'rn: CI(build_output_folders'
+      - 'rn: Test(cvp_configlet_upload'
+      - 'rn: CI(cvp_configlet_upload'
+      - 'rn: Test(dhcp_provisioner'
+      - 'rn: CI(dhcp_provisioner'
+      - 'rn: Test(eos_cli_config_gen'
+      - 'rn: CI(eos_cli_config_gen'
+      - 'rn: Test(plugins'
+      - 'rn: CI(plugins'
+      - 'rn: Test(mkdoc'
+      - 'rn: CI(mkdoc'
+      - 'rn: Test(contribution'
+      - 'rn: CI(contribution'
+      - 'rn: Test(how-to'
+      - 'rn: CI(how-to'
+      - 'rn: Test(actions'
+      - 'rn: CI(actions'
+      - 'rn: Test(molecule'
+      - 'rn: CI(molecule'
+      - 'rn: Test(ansible'
+      - 'rn: CI(ansible'
+      - 'rn: Test(github'
+      - 'rn: CI(github'
+      - 'rn: Test(requirements'
+      - 'rn: CI(requirements'
+      - 'rn: Test'
+      - 'rn: CI'
   categories:
-    - title: "`eos_config_deploy_cvp` Breaking Changes \U0001F6E0"
+    - title: "Breaking Changes \U0001F6E0"
       labels:
         - 'rn: Feat(eos_config_deploy_cvp)!'
         - 'rn: Fix(eos_config_deploy_cvp)!'
-    - title: "`eos_config_deploy_cvp` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_cvp` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_config_deploy_cvp)'
-    - title: "`eos_config_deploy_eapi` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_config_deploy_cvp)!'
+        - 'rn: Doc(eos_config_deploy_cvp)!'
+        - 'rn: Bump(eos_config_deploy_cvp)!'
+        - 'rn: Revert(eos_config_deploy_cvp)!'
+        - 'rn: Refactor(eos_config_deploy_cvp)!'
         - 'rn: Feat(eos_config_deploy_eapi)!'
         - 'rn: Fix(eos_config_deploy_eapi)!'
-    - title: "`eos_config_deploy_eapi` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_config_deploy_eapi)'
-    - title: "`eos_config_deploy_eapi` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_config_deploy_eapi)'
-    - title: "`eos_designs` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_config_deploy_eapi)!'
+        - 'rn: Doc(eos_config_deploy_eapi)!'
+        - 'rn: Bump(eos_config_deploy_eapi)!'
+        - 'rn: Revert(eos_config_deploy_eapi)!'
+        - 'rn: Refactor(eos_config_deploy_eapi)!'
         - 'rn: Feat(eos_designs)!'
         - 'rn: Fix(eos_designs)!'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)!'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)!'
-    - title: "`eos_designs` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_designs)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_designs_to_containerlab` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_designs)!'
+        - 'rn: Doc(eos_designs)!'
+        - 'rn: Bump(eos_designs)!'
+        - 'rn: Revert(eos_designs)!'
+        - 'rn: Refactor(eos_designs)!'
         - 'rn: Feat(eos_designs_to_containerlab)!'
         - 'rn: Fix(eos_designs_to_containerlab)!'
-    - title: "`eos_designs_to_containerlab` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_designs_to_containerlab)'
-    - title: "`eos_designs_to_containerlab` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_designs_to_containerlab)'
-    - title: "`eos_l3ls_evpn` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_designs_to_containerlab)!'
+        - 'rn: Doc(eos_designs_to_containerlab)!'
+        - 'rn: Bump(eos_designs_to_containerlab)!'
+        - 'rn: Revert(eos_designs_to_containerlab)!'
+        - 'rn: Refactor(eos_designs_to_containerlab)!'
         - 'rn: Feat(eos_l3ls_evpn)!'
         - 'rn: Fix(eos_l3ls_evpn)!'
-    - title: "`eos_l3ls_evpn` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_l3ls_evpn)'
-    - title: "`eos_l3ls_evpn` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_l3ls_evpn)'
-    - title: "`eos_snapshot` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_l3ls_evpn)!'
+        - 'rn: Doc(eos_l3ls_evpn)!'
+        - 'rn: Bump(eos_l3ls_evpn)!'
+        - 'rn: Revert(eos_l3ls_evpn)!'
+        - 'rn: Refactor(eos_l3ls_evpn)!'
         - 'rn: Feat(eos_snapshot)!'
         - 'rn: Fix(eos_snapshot)!'
-    - title: "`eos_snapshot` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_snapshot)'
-    - title: "`eos_snapshot` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_snapshot)'
-    - title: "`eos_snapshot` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_snapshot)'
-    - title: "`eos_snapshot` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_snapshot)'
-    - title: "`eos_snapshot` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_snapshot)'
-    - title: "`eos_snapshot` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_snapshot)'
-    - title: "`eos_snapshot` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_snapshot)'
-    - title: "`eos_snapshot` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_snapshot)'
-    - title: "`eos_snapshot` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_snapshot)'
-    - title: "`eos_validate_state` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_snapshot)!'
+        - 'rn: Doc(eos_snapshot)!'
+        - 'rn: Bump(eos_snapshot)!'
+        - 'rn: Revert(eos_snapshot)!'
+        - 'rn: Refactor(eos_snapshot)!'
         - 'rn: Feat(eos_validate_state)!'
         - 'rn: Fix(eos_validate_state)!'
-    - title: "`eos_validate_state` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_validate_state)'
-    - title: "`eos_validate_state` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_validate_state)'
-    - title: "`eos_validate_state` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_validate_state)'
-    - title: "`eos_validate_state` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_validate_state)'
-    - title: "`eos_validate_state` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_validate_state)'
-    - title: "`eos_validate_state` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_validate_state)'
-    - title: "`eos_validate_state` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_validate_state)'
-    - title: "`eos_validate_state` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_validate_state)'
-    - title: "`eos_validate_state` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_validate_state)'
-    - title: "`build_output_folders` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_validate_state)!'
+        - 'rn: Doc(eos_validate_state)!'
+        - 'rn: Bump(eos_validate_state)!'
+        - 'rn: Revert(eos_validate_state)!'
+        - 'rn: Refactor(eos_validate_state)!'
         - 'rn: Feat(build_output_folders)!'
         - 'rn: Fix(build_output_folders)!'
-    - title: "`build_output_folders` Features \u2728"
-      labels:
-        - 'rn: Feat(build_output_folders)'
-    - title: "`build_output_folders` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(build_output_folders)'
-    - title: "`build_output_folders` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(build_output_folders)'
-    - title: "`build_output_folders` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(build_output_folders)'
-    - title: "`build_output_folders` CI \U0001F477"
-      labels:
-        - 'rn: CI(build_output_folders)'
-    - title: "`build_output_folders` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(build_output_folders)'
-    - title: "`build_output_folders` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(build_output_folders)'
-    - title: "`build_output_folders` Revert \u23EA "
-      labels:
-        - 'rn: Revert(build_output_folders)'
-    - title: "`build_output_folders` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(build_output_folders)'
-    - title: "`cvp_configlet_upload` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(build_output_folders)!'
+        - 'rn: Doc(build_output_folders)!'
+        - 'rn: Bump(build_output_folders)!'
+        - 'rn: Revert(build_output_folders)!'
+        - 'rn: Refactor(build_output_folders)!'
         - 'rn: Feat(cvp_configlet_upload)!'
         - 'rn: Fix(cvp_configlet_upload)!'
-    - title: "`cvp_configlet_upload` Features \u2728"
-      labels:
-        - 'rn: Feat(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` CI \U0001F477"
-      labels:
-        - 'rn: CI(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Revert \u23EA "
-      labels:
-        - 'rn: Revert(cvp_configlet_upload)'
-    - title: "`cvp_configlet_upload` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(cvp_configlet_upload)'
-    - title: "`dhcp_provisioner` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(cvp_configlet_upload)!'
+        - 'rn: Doc(cvp_configlet_upload)!'
+        - 'rn: Bump(cvp_configlet_upload)!'
+        - 'rn: Revert(cvp_configlet_upload)!'
+        - 'rn: Refactor(cvp_configlet_upload)!'
         - 'rn: Feat(dhcp_provisioner)!'
         - 'rn: Fix(dhcp_provisioner)!'
-    - title: "`dhcp_provisioner` Features \u2728"
-      labels:
-        - 'rn: Feat(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` CI \U0001F477"
-      labels:
-        - 'rn: CI(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Revert \u23EA "
-      labels:
-        - 'rn: Revert(dhcp_provisioner)'
-    - title: "`dhcp_provisioner` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(dhcp_provisioner)'
-    - title: "`eos_cli_config_gen` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(dhcp_provisioner)!'
+        - 'rn: Doc(dhcp_provisioner)!'
+        - 'rn: Bump(dhcp_provisioner)!'
+        - 'rn: Revert(dhcp_provisioner)!'
+        - 'rn: Refactor(dhcp_provisioner)!'
         - 'rn: Feat(eos_cli_config_gen)!'
         - 'rn: Fix(eos_cli_config_gen)!'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)!'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)!'
-    - title: "`eos_cli_config_gen` Features \u2728"
-      labels:
-        - 'rn: Feat(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` CI \U0001F477"
-      labels:
-        - 'rn: CI(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Revert \u23EA "
-      labels:
-        - 'rn: Revert(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`eos_cli_config_gen` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(eos_cli_config_gen)'
-        - 'rn: Feat(eos_designs-eos_cli_config_gen)'
-        - 'rn: Feat(eos_cli_config_gen-eos_designs)'
-    - title: "`plugins` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(eos_cli_config_gen)!'
+        - 'rn: Doc(eos_cli_config_gen)!'
+        - 'rn: Bump(eos_cli_config_gen)!'
+        - 'rn: Revert(eos_cli_config_gen)!'
+        - 'rn: Refactor(eos_cli_config_gen)!'
         - 'rn: Feat(plugins)!'
         - 'rn: Fix(plugins)!'
-    - title: "`plugins` Features \u2728"
-      labels:
-        - 'rn: Feat(plugins)'
-    - title: "`plugins` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(plugins)'
-    - title: "`plugins` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(plugins)'
-    - title: "`plugins` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(plugins)'
-    - title: "`plugins` CI \U0001F477"
-      labels:
-        - 'rn: CI(plugins)'
-    - title: "`plugins` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(plugins)'
-    - title: "`plugins` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(plugins)'
-    - title: "`plugins` Revert \u23EA "
-      labels:
-        - 'rn: Revert(plugins)'
-    - title: "`plugins` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(plugins)'
-    - title: "`mkdoc` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(plugins)!'
+        - 'rn: Doc(plugins)!'
+        - 'rn: Bump(plugins)!'
+        - 'rn: Revert(plugins)!'
+        - 'rn: Refactor(plugins)!'
         - 'rn: Feat(mkdoc)!'
         - 'rn: Fix(mkdoc)!'
-    - title: "`mkdoc` Features \u2728"
-      labels:
-        - 'rn: Feat(mkdoc)'
-    - title: "`mkdoc` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(mkdoc)'
-    - title: "`mkdoc` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(mkdoc)'
-    - title: "`mkdoc` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(mkdoc)'
-    - title: "`mkdoc` CI \U0001F477"
-      labels:
-        - 'rn: CI(mkdoc)'
-    - title: "`mkdoc` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(mkdoc)'
-    - title: "`mkdoc` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(mkdoc)'
-    - title: "`mkdoc` Revert \u23EA "
-      labels:
-        - 'rn: Revert(mkdoc)'
-    - title: "`mkdoc` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(mkdoc)'
-    - title: "`contribution` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(mkdoc)!'
+        - 'rn: Doc(mkdoc)!'
+        - 'rn: Bump(mkdoc)!'
+        - 'rn: Revert(mkdoc)!'
+        - 'rn: Refactor(mkdoc)!'
         - 'rn: Feat(contribution)!'
         - 'rn: Fix(contribution)!'
-    - title: "`contribution` Features \u2728"
-      labels:
-        - 'rn: Feat(contribution)'
-    - title: "`contribution` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(contribution)'
-    - title: "`contribution` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(contribution)'
-    - title: "`contribution` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(contribution)'
-    - title: "`contribution` CI \U0001F477"
-      labels:
-        - 'rn: CI(contribution)'
-    - title: "`contribution` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(contribution)'
-    - title: "`contribution` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(contribution)'
-    - title: "`contribution` Revert \u23EA "
-      labels:
-        - 'rn: Revert(contribution)'
-    - title: "`contribution` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(contribution)'
-    - title: "`how-to` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(contribution)!'
+        - 'rn: Doc(contribution)!'
+        - 'rn: Bump(contribution)!'
+        - 'rn: Revert(contribution)!'
+        - 'rn: Refactor(contribution)!'
         - 'rn: Feat(how-to)!'
         - 'rn: Fix(how-to)!'
-    - title: "`how-to` Features \u2728"
-      labels:
-        - 'rn: Feat(how-to)'
-    - title: "`how-to` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(how-to)'
-    - title: "`how-to` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(how-to)'
-    - title: "`how-to` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(how-to)'
-    - title: "`how-to` CI \U0001F477"
-      labels:
-        - 'rn: CI(how-to)'
-    - title: "`how-to` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(how-to)'
-    - title: "`how-to` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(how-to)'
-    - title: "`how-to` Revert \u23EA "
-      labels:
-        - 'rn: Revert(how-to)'
-    - title: "`how-to` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(how-to)'
-    - title: "`actions` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(how-to)!'
+        - 'rn: Doc(how-to)!'
+        - 'rn: Bump(how-to)!'
+        - 'rn: Revert(how-to)!'
+        - 'rn: Refactor(how-to)!'
         - 'rn: Feat(actions)!'
         - 'rn: Fix(actions)!'
-    - title: "`actions` Features \u2728"
-      labels:
-        - 'rn: Feat(actions)'
-    - title: "`actions` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(actions)'
-    - title: "`actions` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(actions)'
-    - title: "`actions` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(actions)'
-    - title: "`actions` CI \U0001F477"
-      labels:
-        - 'rn: CI(actions)'
-    - title: "`actions` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(actions)'
-    - title: "`actions` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(actions)'
-    - title: "`actions` Revert \u23EA "
-      labels:
-        - 'rn: Revert(actions)'
-    - title: "`actions` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(actions)'
-    - title: "`molecule` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(actions)!'
+        - 'rn: Doc(actions)!'
+        - 'rn: Bump(actions)!'
+        - 'rn: Revert(actions)!'
+        - 'rn: Refactor(actions)!'
         - 'rn: Feat(molecule)!'
         - 'rn: Fix(molecule)!'
-    - title: "`molecule` Features \u2728"
-      labels:
-        - 'rn: Feat(molecule)'
-    - title: "`molecule` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(molecule)'
-    - title: "`molecule` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(molecule)'
-    - title: "`molecule` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(molecule)'
-    - title: "`molecule` CI \U0001F477"
-      labels:
-        - 'rn: CI(molecule)'
-    - title: "`molecule` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(molecule)'
-    - title: "`molecule` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(molecule)'
-    - title: "`molecule` Revert \u23EA "
-      labels:
-        - 'rn: Revert(molecule)'
-    - title: "`molecule` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(molecule)'
-    - title: "`ansible` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(molecule)!'
+        - 'rn: Doc(molecule)!'
+        - 'rn: Bump(molecule)!'
+        - 'rn: Revert(molecule)!'
+        - 'rn: Refactor(molecule)!'
         - 'rn: Feat(ansible)!'
         - 'rn: Fix(ansible)!'
-    - title: "`ansible` Features \u2728"
-      labels:
-        - 'rn: Feat(ansible)'
-    - title: "`ansible` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(ansible)'
-    - title: "`ansible` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(ansible)'
-    - title: "`ansible` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(ansible)'
-    - title: "`ansible` CI \U0001F477"
-      labels:
-        - 'rn: CI(ansible)'
-    - title: "`ansible` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(ansible)'
-    - title: "`ansible` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(ansible)'
-    - title: "`ansible` Revert \u23EA "
-      labels:
-        - 'rn: Revert(ansible)'
-    - title: "`ansible` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(ansible)'
-    - title: "`github` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(ansible)!'
+        - 'rn: Doc(ansible)!'
+        - 'rn: Bump(ansible)!'
+        - 'rn: Revert(ansible)!'
+        - 'rn: Refactor(ansible)!'
         - 'rn: Feat(github)!'
         - 'rn: Fix(github)!'
-    - title: "`github` Features \u2728"
-      labels:
-        - 'rn: Feat(github)'
-    - title: "`github` Bug Fixes \U0001F41B"
-      labels:
-        - 'rn: Fix(github)'
-    - title: "`github` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(github)'
-    - title: "`github` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(github)'
-    - title: "`github` CI \U0001F477"
-      labels:
-        - 'rn: CI(github)'
-    - title: "`github` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(github)'
-    - title: "`github` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(github)'
-    - title: "`github` Revert \u23EA "
-      labels:
-        - 'rn: Revert(github)'
-    - title: "`github` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(github)'
-    - title: "`requirements` Breaking Changes \U0001F6E0"
-      labels:
+        - 'rn: Cut(github)!'
+        - 'rn: Doc(github)!'
+        - 'rn: Bump(github)!'
+        - 'rn: Revert(github)!'
+        - 'rn: Refactor(github)!'
         - 'rn: Feat(requirements)!'
         - 'rn: Fix(requirements)!'
-    - title: "`requirements` Features \u2728"
+        - 'rn: Cut(requirements)!'
+        - 'rn: Doc(requirements)!'
+        - 'rn: Bump(requirements)!'
+        - 'rn: Revert(requirements)!'
+        - 'rn: Refactor(requirements)!'
+        - 'rn: Feat()!'
+        - 'rn: Fix()!'
+        - 'rn: Cut()!'
+        - 'rn: Doc()!'
+        - 'rn: Bump()!'
+        - 'rn: Revert()!'
+        - 'rn: Refactor()!'
+    - title: "Fixed issues in eos_cli_config_gen \U0001F41B"
+      labels: 'rn: Fix(eos_cli_config_gen)'
+    - title: "Fixed issues in eos_designs \U0001F41B"
+      labels: 'rn: Fix(eos_designs)'
+    - title: "Other Fixed issues \U0001F41B"
       labels:
-        - 'rn: Feat(requirements)'
-    - title: "`requirements` Bug Fixes \U0001F41B"
-      labels:
+        - 'rn: Fix(eos_config_deploy_cvp)'
+        - 'rn: Fix(eos_config_deploy_eapi)'
+        - 'rn: Fix(eos_designs_to_containerlab)'
+        - 'rn: Fix(eos_l3ls_evpn)'
+        - 'rn: Fix(eos_snapshot)'
+        - 'rn: Fix(eos_validate_state)'
+        - 'rn: Fix(build_output_folders)'
+        - 'rn: Fix(cvp_configlet_upload)'
+        - 'rn: Fix(dhcp_provisioner)'
+        - 'rn: Fix(plugins)'
+        - 'rn: Fix(mkdoc)'
+        - 'rn: Fix(contribution)'
+        - 'rn: Fix(how-to)'
+        - 'rn: Fix(actions)'
+        - 'rn: Fix(molecule)'
+        - 'rn: Fix(ansible)'
+        - 'rn: Fix(github)'
         - 'rn: Fix(requirements)'
-    - title: "`requirements` Cut \u2702\uFE0F"
-      labels:
-        - 'rn: Cut(requirements)'
-    - title: "`requirements` Documentation \U0001F4DA"
-      labels:
-        - 'rn: Doc(requirements)'
-    - title: "`requirements` CI \U0001F477"
-      labels:
-        - 'rn: CI(requirements)'
-    - title: "`requirements` Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump(requirements)'
-    - title: "`requirements` Test \U0001F6A8"
-      labels:
-        - 'rn: Test(requirements)'
-    - title: "`requirements` Revert \u23EA "
-      labels:
-        - 'rn: Revert(requirements)'
-    - title: "`requirements` Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor(requirements)'
-    - title: "Other Breaking Changes \U0001F6E0"
-      labels:
-        - 'rn: Feat!'
-        - 'rn: Fix!'
-    - title: "Other Features \u2728"
-      labels:
-        - 'rn: Feat'
-    - title: "Other Bug Fixes \U0001F41B"
-      labels:
         - 'rn: Fix'
-    - title: "Other Cut \u2702\uFE0F"
+    - title: "Documentation \U0001F4DA"
       labels:
-        - 'rn: Cut'
-    - title: "Other Documentation \U0001F4DA"
-      labels:
+        - 'rn: Doc(eos_config_deploy_cvp)'
+        - 'rn: Doc(eos_config_deploy_eapi)'
+        - 'rn: Doc(eos_designs)'
+        - 'rn: Doc(eos_designs_to_containerlab)'
+        - 'rn: Doc(eos_l3ls_evpn)'
+        - 'rn: Doc(eos_snapshot)'
+        - 'rn: Doc(eos_validate_state)'
+        - 'rn: Doc(build_output_folders)'
+        - 'rn: Doc(cvp_configlet_upload)'
+        - 'rn: Doc(dhcp_provisioner)'
+        - 'rn: Doc(eos_cli_config_gen)'
+        - 'rn: Doc(plugins)'
+        - 'rn: Doc(mkdoc)'
+        - 'rn: Doc(contribution)'
+        - 'rn: Doc(how-to)'
+        - 'rn: Doc(actions)'
+        - 'rn: Doc(molecule)'
+        - 'rn: Doc(ansible)'
+        - 'rn: Doc(github)'
+        - 'rn: Doc(requirements)'
         - 'rn: Doc'
-    - title: "Other CI \U0001F477"
+    - title: "New features and enhancements in eos_cli_config_gen \u2728"
+      labels: 'rn: Feat(eos_cli_config_gen)'
+    - title: "New features and enhancements in eos_designs \u2728"
+      labels: 'rn: Feat(eos_designs)'
+    - title: "Other new features and enhancements \u2728"
       labels:
-        - 'rn: CI'
-    - title: "Other Bump \u261D\uFE0F"
-      labels:
-        - 'rn: Bump'
-    - title: "Other Test \U0001F6A8"
-      labels:
-        - 'rn: Test'
-    - title: "Other Revert \u23EA "
-      labels:
-        - 'rn: Revert'
-    - title: "Other Refactoring \U0001F528"
-      labels:
-        - 'rn: Refactor'
+        - 'rn: Feat(eos_config_deploy_cvp)'
+        - 'rn: Feat(eos_config_deploy_eapi)'
+        - 'rn: Feat(eos_designs_to_containerlab)'
+        - 'rn: Feat(eos_l3ls_evpn)'
+        - 'rn: Feat(eos_snapshot)'
+        - 'rn: Feat(eos_validate_state)'
+        - 'rn: Feat(build_output_folders)'
+        - 'rn: Feat(cvp_configlet_upload)'
+        - 'rn: Feat(dhcp_provisioner)'
+        - 'rn: Feat(plugins)'
+        - 'rn: Feat(mkdoc)'
+        - 'rn: Feat(contribution)'
+        - 'rn: Feat(how-to)'
+        - 'rn: Feat(actions)'
+        - 'rn: Feat(molecule)'
+        - 'rn: Feat(ansible)'
+        - 'rn: Feat(github)'
+        - 'rn: Feat(requirements)'
+        - 'rn: Feat'
     - title: "Other Changes \U0001F500"
       labels:
         - '*'
