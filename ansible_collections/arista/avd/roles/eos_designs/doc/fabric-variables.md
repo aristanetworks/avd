@@ -9,6 +9,7 @@
   - ISIS-LDP*.
   - ISIS-SR-LDP*.
   - OSPF-LDP*.
+  - none (for use with l2ls)**.
 - The following overlay routing protocols are supported:
   - EBGP (default for l3ls-evpn)
   - IBGP (only with OSPF or ISIS variants in underlay)
@@ -16,6 +17,7 @@
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 
 *Only supported with core_interfaces data model.
+** For use with design type l2ls
 
 ## Flagging a Device as Not Deployed
 
@@ -41,8 +43,8 @@ Note: The variables should be applied to all devices in the fabric.
 shutdown_interfaces_towards_undeployed_peers: < true | false | default -> false >
 
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
+underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | none | default for l3ls-evpn -> EBGP >
+overlay_routing_protocol: < EBGP | IBGP | none | default for l3ls-evpn -> EBGP >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
