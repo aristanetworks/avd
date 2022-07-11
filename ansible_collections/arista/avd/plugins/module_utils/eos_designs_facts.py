@@ -574,7 +574,7 @@ class EosDesignsFacts:
     @cached_property
     def overlay_routing_protocol(self):
         overlay_routing_protocol = str(get(self._hostvars, "overlay_routing_protocol", default=self.default_overlay_routing_protocol)).lower()
-        if overlay_routing_protocol not in ['ebgp', 'ibgp']:
+        if overlay_routing_protocol not in ['ebgp', 'ibgp', 'none']:
             overlay_routing_protocol = self.default_overlay_routing_protocol
         return overlay_routing_protocol
 
