@@ -73,7 +73,7 @@ Both data models support variable inheritance from profiles defined under [`port
         # setting to false will set port to 'shutdown' in intended configuration
         enabled: < true | false >
 
-        # Interface mode | Required
+        # Interface mode | Optional
         mode: < access | dot1q-tunnel | trunk >
 
         # MTU | Optional
