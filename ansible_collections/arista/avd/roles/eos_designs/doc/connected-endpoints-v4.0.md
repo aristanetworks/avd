@@ -100,31 +100,31 @@ port_profiles:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local endpoint port(s) | required
+        # Local endpoint port(s) | Required
         endpoint_ports: [ < interface_name > ]
 
-        # List of port(s) connected to switches | required
+        # List of port(s) connected to switches | Required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switch(es) | required
+        # List of switch(es) | Required
         switches: [ < device > ]
 
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
 
-        # Administrative state | optional - default is true
+        # Administrative state | Optional - default is true
         # setting to false will set port to 'shutdown' in intended configuration
         enabled: < true | false >
 
-        # Interface mode | required
+        # Interface mode | Optional
         mode: < access | dot1q-tunnel | trunk >
 
-        # Native VLAN for a trunk port | optional
+        # Native VLAN for a trunk port | Optional
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
         native_vlan: < native_vlan_number >
         native_vlan_tag: < boolean | default -> false >
 
-        # Interface vlans | required
+        # Interface vlans | Required
         vlans: < vlans as string >
 
         # Spanning Tree
@@ -210,7 +210,7 @@ port_profiles:
           # Port-Channel Description.
           description: < port_channel_description >
 
-          # Port-Channel administrative state | optional - default is true
+          # Port-Channel administrative state | Optional - default is true
           # setting to false will set port to 'shutdown' in intended configuration
           enabled: < true | false >
 
