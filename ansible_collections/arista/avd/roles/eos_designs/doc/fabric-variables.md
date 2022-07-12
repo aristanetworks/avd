@@ -17,6 +17,7 @@
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 
 *Only supported with core_interfaces data model.
+
 ** For use with design type l2ls
 
 ## Flagging a Device as Not Deployed
