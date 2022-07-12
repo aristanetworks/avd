@@ -53,7 +53,7 @@ terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardwar
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
 terminattr_disable_aaa: "< boolean | default -> false >"
 
-# Management interface configuration | Required
+# Management interface configuration | Optional
 mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
 mgmt_interface_vrf: < vrf_name | default -> MGMT >
