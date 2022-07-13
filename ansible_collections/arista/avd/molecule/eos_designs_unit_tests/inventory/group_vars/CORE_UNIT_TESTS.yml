@@ -40,7 +40,6 @@ core_router:
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
     node_sid_base: 200
     isis_system_id_prefix: "0000.0001"
-    core_interface_speed: "forced 100gfull"
   nodes:
     core-1-isis-sr-ldp:
       id: 1

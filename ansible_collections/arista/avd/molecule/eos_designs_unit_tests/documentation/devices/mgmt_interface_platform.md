@@ -50,7 +50,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 1.1.1.2 | 192.168.200.5 |
+| Management0 | oob_management | oob | MGMT | 1.1.1.2 | 1.1.1.1 |
 
 #### IPv6
 
@@ -394,13 +394,13 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 1.1.1.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf MGMT 0.0.0.0/0 1.1.1.1
 ```
 
 # Multicast
