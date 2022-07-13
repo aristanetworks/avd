@@ -552,11 +552,11 @@ tenants:
           loopback_ip_range: 10.255.10.0/27
         svis:
           "11":
-            name: VRF1_VLAN11
+            name: VRF10_VLAN11
             enabled: true
             ip_address_virtual: 10.10.11.1/24
           "12":
-            name: VRF1_VLAN12
+            name: VRF10_VLAN12
             enabled: true
             ip_address_virtual: 10.10.12.1/24
       VRF11:
@@ -566,11 +566,11 @@ tenants:
           loopback_ip_range: 10.255.11.0/27
         svis:
           "21":
-            name: VRF2_VLAN21
+            name: VRF11_VLAN21
             enabled: true
             ip_address_virtual: 10.10.21.1/24
           "22":
-            name: VRF2_VLAN22
+            name: VRF11_VLAN22
             enabled: true
             ip_address_virtual: 10.10.22.1/24
 
@@ -598,11 +598,11 @@ For example:
           loopback_ip_range: 10.255.10.0/27
         svis:
           "11":
-            name: VRF1_VLAN11
+            name: VRF10_VLAN11
             enabled: true
             ip_address_virtual: 10.10.11.1/24
           "12":
-            name: VRF1_VLAN12
+            name: VRF10_VLAN12
             enabled: true
             ip_address_virtual: 10.10.12.1/24
 ```
