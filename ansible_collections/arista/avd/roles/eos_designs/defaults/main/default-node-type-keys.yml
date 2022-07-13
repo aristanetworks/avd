@@ -62,8 +62,6 @@ default_node_type_keys:
       network_services:
         l2: true
         l3: true
-      uplink_type: p2p
-      underlay_router: true
     leaf:
       type: leaf
       connected_endpoints: true
