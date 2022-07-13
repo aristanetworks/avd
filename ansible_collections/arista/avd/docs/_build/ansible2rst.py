@@ -20,12 +20,9 @@ __metaclass__ = type
 
 import os
 import re
-import sys
 import datetime
 import cgi
 import yaml
-import logging
-from distutils.version import LooseVersion
 from jinja2 import Environment, FileSystemLoader
 from ansible.module_utils.six import print_
 from ansible.module_utils.common._collections_compat import MutableMapping, MutableSet, MutableSequence
@@ -34,14 +31,11 @@ from ansible.parsing.plugin_docs import read_docstring
 from ansible.parsing.yaml.loader import AnsibleLoader
 from ansible.plugins.loader import fragment_loader
 from ansible.module_utils._text import to_bytes
-from ansible.errors import AnsibleError, AnsibleParserError
+from ansible.errors import AnsibleError
 
 try:
     from html import escape as html_escape
 except ImportError:
-    # Python-3.2 or later
-    import cgi
-
     def html_escape(text, quote=True):
         return cgi.escape(text, quote)
 
@@ -77,7 +71,7 @@ def too_old(added):
         added_tokens = str(added).split(".")
         readded = added_tokens[0] + "." + added_tokens[1]
         added_float = float(readded)
-    except ValueError as e:
+    except ValueError:
         return False
     return added_float < TO_OLD_TO_BE_NOTABLE
 

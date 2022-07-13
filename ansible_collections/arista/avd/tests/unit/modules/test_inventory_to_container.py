@@ -164,7 +164,6 @@ class TestInventoryToContainer:
         assert output is None
 
     def test_get_device_option_value_empty_data(self, inventory):
-        data = inventory['all']['children']['CVP']['hosts']
         output = get_device_option_value(
             device_data_dict=None,
             option_name='cv_server')
@@ -189,7 +188,7 @@ class TestInventoryToContainer:
             inventory, search_container=SEARCH_CONTAINER, devices=devices)
         assert output == ["TEST_DEVICE"] + GET_DEVICES
 
-    def test_get_devices_preexisting_devices(self, inventory):
+    def test_get_devices_preexisting_devices_with_device_filter(self, inventory):
         output = get_devices(
             inventory, search_container=SEARCH_CONTAINER, devices=[], device_filter=[GET_DEVICE_FILTER])
         assert [GET_DEVICE_FILTER in item for item in output]

@@ -24,6 +24,22 @@ repos:
   #   hooks:
   #   -   id: autopep8
 
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1  # Note ansible-test uses pycodestyle 2.8.0 which is part of this tagged release of flake8
+    hooks:
+      - id: flake8
+        name: Check for PEP8 error on Python files
+        # ignoring errors and selecting line length as per
+        # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
+        args:
+          - --ignore=E402,W503,W504,E741
+          - --max-line-length=160
+          - --config=/dev/null
+          - --
+        # Match the paths from ansible-test sanity command running in pipelien
+        types: [python]
+        files: ansible_collections/arista/avd/(plugins|test|doc)
+
   - repo: https://github.com/pycqa/pylint
     rev: 'pylint-2.6.0'
     hooks:
