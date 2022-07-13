@@ -100,4 +100,6 @@ jobs:
           # will suggest using that commit message instead of the PR title for the
           # merge commit, and it's easy to commit this by mistake. Enable this option
           # to also validate the commit message for one commit PRs.
-          validateSingleCommit: true
+          # Update 13-Jul-2022 CH: GitHub now offers a toggle for this behavior.
+          # We have set that to always use the PR title, so this check is no longer needed.
+          validateSingleCommit: false
