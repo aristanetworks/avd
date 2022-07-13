@@ -4,7 +4,7 @@ __metaclass__ = type
 from ansible_collections.arista.avd.plugins.filter.range_expand import FilterModule, AnsibleFilterError, range_expand
 import pytest
 
-RANGE_TO_EXPAND_INVALID_VALUES = ["1_3", {"key": "value"}, 33]
+RANGE_TO_EXPAND_INVALID_VALUES = [True, {"key": "value"}, 33]
 RANGE_TO_EXPAND_VALID_VALUES = [
     "Ethernet1",
     "Ethernet1-2",
