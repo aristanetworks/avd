@@ -7,8 +7,11 @@ vlans:
   {{ svi.id | int }}:
     tenant: {{ tenant.name }}
     name: {{ svi.name }}
-{%             if switch.enable_trunk_groups %}
+{%             if switch.enable_trunk_groups is arista.avd.defined(true) %}
 {%                 set trunk_groups = svi.trunk_groups | arista.avd.default([]) %}
+{%                 if switch.only_local_vlan_trunk_groups is arista.avd.defined(true) %}
+{%                     set trunk_groups = trunk_groups | intersect(switch.endpoint_trunk_groups) %}
+{%                 endif %}
 {%                 if switch.mlag is arista.avd.defined(true) %}
 {%                     do trunk_groups.append('MLAG') %}
 {%                 endif %}
@@ -38,8 +41,11 @@ vlans:
   {{ l2vlan.id | int }}:
     tenant: {{ tenant.name }}
     name: {{ l2vlan.name }}
-{%         if switch.enable_trunk_groups %}
+{%         if switch.enable_trunk_groups is arista.avd.defined(true) %}
 {%             set trunk_groups = l2vlan.trunk_groups | arista.avd.default([]) %}
+{%             if switch.only_local_vlan_trunk_groups is arista.avd.defined(true) %}
+{%                 set trunk_groups = trunk_groups | intersect(switch.endpoint_trunk_groups) %}
+{%             endif %}
 {%             if switch.mlag is arista.avd.defined(true) %}
 {%                 do trunk_groups.append('MLAG') %}
 {%             endif %}

@@ -228,6 +228,7 @@ vlans:
   200:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
+    - trunk-group-tests-l2leaf3
     - TG_200
     - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
@@ -236,6 +237,7 @@ vlans:
   210:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
+    - trunk-group-tests-l2leaf3
     - TG_200
     - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
@@ -396,6 +398,14 @@ port_channel_interfaces:
     - TRUNK_GROUP_TESTS_L2LEAF1
     mode: trunk
     mlag: 1
+  Port-Channel5:
+    description: TRUNK-GROUP-TESTS-L2LEAF3_Po1
+    type: switched
+    shutdown: false
+    trunk_groups:
+    - trunk-group-tests-l2leaf3
+    mode: trunk
+    mlag: 5
   Port-Channel13:
     description: server_with_tg_300_portchannel
     type: switched
@@ -445,6 +455,16 @@ ethernet_interfaces:
     shutdown: false
     channel_group:
       id: 1
+      mode: active
+  Ethernet5:
+    peer: trunk-group-tests-l2leaf3
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: TRUNK-GROUP-TESTS-L2LEAF3_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 5
       mode: active
   Ethernet11:
     peer: server_with_tg_100

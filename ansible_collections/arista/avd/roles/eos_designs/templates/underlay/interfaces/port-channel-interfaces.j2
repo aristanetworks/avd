@@ -13,7 +13,7 @@ port_channel_interfaces:
 {%         endif %}
     type: switched
     shutdown: false
-{%         if switch.enable_trunk_groups and link.trunk_groups is arista.avd.defined %}
+{%         if switch.enable_trunk_groups is arista.avd.defined(true) and link.trunk_groups is arista.avd.defined %}
     trunk_groups: {{ link.trunk_groups }}
 {%         elif link.vlans is arista.avd.defined %}
     vlans: {{ link.vlans }}

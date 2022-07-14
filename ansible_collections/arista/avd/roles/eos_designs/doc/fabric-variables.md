@@ -234,6 +234,13 @@ default_igmp_snooping_enabled: < boolean | default -> true >
 # If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
 # See "Details on enable_trunk_groups" below before enabling this feature
 enable_trunk_groups: < true | false | default -> false >
+
+# Only Configure VLAN Trunk Groups used by local endpoints | Optional
+# A vlan can have many trunk_groups assigned. To avoid changes on all leafs
+# if a new trunk group is added, this feature will only configure the vlan
+# trunk groups matched with local connected_endpoints.
+# Requires "enable_trunk_groups: true" and "filter.only_vlans_in_use: true" under Fabric Topology
+only_local_vlan_trunk_groups: < true | false | default -> false >
 ```
 
 ## Details on `enable_trunk_groups`
