@@ -35,13 +35,21 @@ router_bgp:
     10.255.252.4:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: UNDERLAY-MULTICAST-L3LEAF2A
-    172.31.255.6:
+    172.31.255.12:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001'
       description: UNDERLAY-MULTICAST-SPINE1_Ethernet4
+    172.31.255.14:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65001'
+      description: UNDERLAY-MULTICAST-SPINE2_Ethernet4
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: UNDERLAY-MULTICAST-SPINE1
+      remote_as: '65001'
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: UNDERLAY-MULTICAST-SPINE2
       remote_as: '65001'
   redistribute_routes:
     connected:
@@ -64,12 +72,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-spanning_tree:
-  mode: mstp
-  mst_instances:
-    '0':
-      priority: 4096
-  no_spanning_tree_vlan: 4094
 vrfs:
   MGMT:
     ip_routing: false
@@ -85,6 +87,8 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+spanning_tree:
+  no_spanning_tree_vlan: 4094
 vlans:
   4094:
     tenant: system
@@ -140,10 +144,19 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     shutdown: false
-    ip_address: 172.31.255.7/31
+    ip_address: 172.31.255.13/31
     pim:
       ipv4:
         sparse_mode: true
+  Ethernet2:
+    peer: UNDERLAY-MULTICAST-SPINE2
+    peer_interface: Ethernet4
+    peer_type: spine
+    description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE2_Ethernet4
+    mtu: 9000
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.15/31
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094

@@ -1,4 +1,4 @@
-{% if switch.underlay_multicast is arista.avd.defined(true) %}
+{% if switch.underlay_multicast is arista.avd.defined(true) and switch.underlay_router is arista.avd.defined(true) %}
 router_multicast:
   ipv4:
     routing: true
