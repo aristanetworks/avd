@@ -36,7 +36,7 @@ repos:
           - --max-line-length=160
           - --config=/dev/null
           - --
-        # Match the paths from ansible-test sanity command running in pipelien
+        # Match the paths from ansible-test sanity command running in pipeline
         types: [python]
         files: ansible_collections/arista/avd/(plugins|test|doc)
 
