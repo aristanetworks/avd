@@ -144,6 +144,12 @@ vlan_interfaces:
     vrf: {{ vrf.name }}
 {%                     if underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
+{%                     elif vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
+{%                         if switch.mlag_role == 'primary' %}
+    ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}/31"
+{%                         else %}
+    ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}/31"
+{%                         endif %}
 {%                     else %}
     ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
 {%                     endif %}

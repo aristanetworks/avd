@@ -1,0 +1,1 @@
+{{ vrf.mlag_ibgp_peering_ipv4_pool | ansible.netcommon.ipaddr('subnet') | ansible.netcommon.ipmath(((switch.mlag_switch_ids.primary - 1) * 2) + 1) }}
