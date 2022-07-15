@@ -4,8 +4,8 @@
 
 ### PTP Summary
 
-| Clock ID    | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode        | Forward Unicast |
-| ----------- | --------- | ---------- | ---------- | --- | ------ | ----------- | --------------- |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
 {%     set clock_id = ptp.clock_identity | arista.avd.default('-') %}
 {%     set sip = ptp.source.ip | arista.avd.default('-') %}
 {%     set pri1 = ptp.priority1 | arista.avd.default('-') %}
