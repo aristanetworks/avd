@@ -1122,14 +1122,27 @@ class EosDesignsFacts:
         '''
         Get global bgp_as or fabric_topology bgp_as.
 
-        This will fail if none of these are found.
+        This will fail if none of these are found. AS ranges will be expanded and allocated to devices based on:
+         - ID of node (for standalone or A/A MH devices)
+         - ID of node 0 in node group (for MLAG)
+         - Bare ASNs work as per previous behaviour
         '''
         if self.underlay_router is True:
             if self.underlay_routing_protocol == 'ebgp' or self.evpn_role != 'none' or self.mpls_overlay_role != 'none':
                 if get(self._hostvars, "bgp_as") is not None:
                     return str(get(self._hostvars, "bgp_as"))
                 else:
-                    return str(get(self._switch_data_combined, "bgp_as", required=True))
+                    bgp_as_range_expanded = self._range_expand(str(get(self._switch_data_combined, "bgp_as", required=True)))
+                    try:
+                        if len(bgp_as_range_expanded) == 1:
+                            return str(bgp_as_range_expanded[0])
+                        elif self.mlag:
+                            return str(bgp_as_range_expanded[self._switch_data_node_group_nodes[0]["id"] - 1])
+                        else:
+                            return str(bgp_as_range_expanded[self.id - 1])
+                    except IndexError as exc:
+                        raise AristaAvdError("unable to allocate bgp as: please expand the bgp_as range") from exc
+
             # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
             # TODO: Remove this as part of AVD4.0
             elif (
