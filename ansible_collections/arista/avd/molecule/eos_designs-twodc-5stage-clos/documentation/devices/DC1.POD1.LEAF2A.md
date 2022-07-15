@@ -841,7 +841,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 110 | 172.16.110.4:99110 | 99110:99110 | - | - | learned |
-| 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned |
+| 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned<br>router-mac system |
 | 112 | 172.16.110.4:20112 | 20112:20112 | - | - | learned |
 | 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
 | 2600 | 172.16.110.4:32600 | 32600:32600 | - | - | learned |
@@ -935,6 +935,12 @@ router bgp 65112.100
       rd 172.16.110.4:50111
       route-target both 50111:50111
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp vlan 113
+      EOF
+
    !
    vlan 112
       rd 172.16.110.4:20112

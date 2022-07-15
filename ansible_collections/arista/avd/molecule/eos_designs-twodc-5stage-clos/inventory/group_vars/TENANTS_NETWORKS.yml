@@ -28,6 +28,15 @@ tenants:
             name: Tenant_A_OP_Zone_2
             tags: [opzone]
             ip_address_virtual: 10.1.11.1/24
+            bgp:
+              structured_config:
+                # Will be merged with 'redistribute routes learned'
+                redistribute_routes:
+                  - router-mac system
+              raw_eos_cli: |
+                comment
+                comment created from raw_eos_cli under router bgp vlan 113
+                EOF
           "112":
             name: Tenant_A_OP_Zone_3
             tags: [opzone]

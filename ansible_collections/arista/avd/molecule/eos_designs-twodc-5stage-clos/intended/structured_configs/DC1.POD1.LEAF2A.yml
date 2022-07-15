@@ -186,6 +186,17 @@ router_bgp:
         - 50111:50111
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp vlan 113
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
     112:
       tenant: Tenant_A
       rd: 172.16.110.4:20112
