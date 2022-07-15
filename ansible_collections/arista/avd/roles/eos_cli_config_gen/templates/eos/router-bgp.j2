@@ -362,6 +362,10 @@ router bgp {{ router_bgp.as }}
 {%             for no_redistribute_route in vlan.no_redistribute_routes | arista.avd.natural_sort %}
       no redistribute {{ no_redistribute_route }}
 {%             endfor %}
+{%             if vlan.eos_cli is arista.avd.defined %}
+      !
+      {{ vlan.eos_cli | indent(6, false) }}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {# vxlan vlan aware bundles #}

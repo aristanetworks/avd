@@ -361,6 +361,13 @@ mac_address_table:
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
 
+            # Structured configuration and eos cli commands rendered on router_bgp.vlans
+            # This configuration will not be applied to vlan aware bundles
+            bgp:
+              raw_eos_cli: |
+                < multiline eos cli >
+              structured_config: < dictionary >
+
             # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
