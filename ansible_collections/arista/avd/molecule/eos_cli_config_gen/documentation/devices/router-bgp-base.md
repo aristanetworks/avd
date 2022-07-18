@@ -110,6 +110,18 @@ interface Management1
 | 12.10.10.0/24 | True | my-peer-group3 | - | 65444 | default |
 | 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - | default |
 
+### Router BGP Peer Groups
+
+#### test-link-bandwidth1
+
+| Settings | Value |
+| -------- | ----- |
+
+#### test-link-bandwidth2
+
+| Settings | Value |
+| -------- | ----- |
+
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
@@ -154,17 +166,23 @@ router bgp 65101
    bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
    bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
+   neighbor test-link-bandwidth1 peer group
+   neighbor test-link-bandwidth1 link-bandwidth default 100G
+   neighbor test-link-bandwidth2 peer group
+   neighbor test-link-bandwidth2 link-bandwidth
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
    neighbor 192.0.3.1 rib-in pre-policy retain
    neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
+   neighbor 192.0.3.1 link-bandwidth default 100G
    neighbor 192.0.3.2 remote-as 65433
    neighbor 192.0.3.2 rib-in pre-policy retain all
    neighbor 192.0.3.2 default-originate route-map RM-FOO-MATCH3
    neighbor 192.0.3.2 send-community extended
    neighbor 192.0.3.2 maximum-routes 10000
+   neighbor 192.0.3.2 link-bandwidth
    neighbor 192.0.3.3 remote-as 65434
    neighbor 192.0.3.3 rib-in pre-policy retain
    neighbor 192.0.3.3 send-community standard
