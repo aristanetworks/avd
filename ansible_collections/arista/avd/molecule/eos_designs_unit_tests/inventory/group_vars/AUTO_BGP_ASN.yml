@@ -41,3 +41,18 @@ l3leaf:
         AUTO_BGP_ASN_LEAF3B:
           id: 6
           mgmt_ip: 192.168.202.110/24
+    AUTO_BGP_ASN_LEAF4_MLAG_OVERRIDE:
+      bgp_as: 65222
+      nodes:
+        AUTO_BGP_ASN_LEAF4A:
+          id: 7
+          mgmt_ip: 192.168.202.111/24
+        AUTO_BGP_ASN_LEAF4B:
+          id: 8
+          mgmt_ip: 192.168.202.112/24
+    AUTO_BGP_ASN_LEAF5_NODE_OVERRIDE:
+      nodes:
+        AUTO_BGP_ASN_LEAF5A:
+          id: 9
+          bgp_as: 65333
+          mgmt_ip: 192.168.202.113/24
