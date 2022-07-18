@@ -2,11 +2,6 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.filter.esi_management import FilterModule
-import logging
-import pytest
-import ansible
-import sys
-from jinja2.runtime import Undefined
 from ansible_collections.arista.avd.tests.unit.filters.filter_utils import convert_esi_short_to_route_target_format
 
 ESI_SHORT = "0303:0202:0101"
