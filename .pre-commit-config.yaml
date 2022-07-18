@@ -30,7 +30,6 @@ repos:
           - --ignore=E402,W503,W504,E741
           - --max-line-length=160
           - --config=/dev/null
-          - --
         types: [python]
 
   - repo: https://github.com/pycqa/pylint
