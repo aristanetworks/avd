@@ -3,7 +3,6 @@ __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 import pytest
-import logging
 
 STRIP_EMPTIES_LIST = {
     "None": ["string1", "string2", "string3", None],

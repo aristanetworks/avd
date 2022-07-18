@@ -48,8 +48,7 @@ class TestAddMdTocFilter():
         if(MD_INPUT is not None):
             with open(MD_INPUT, "r") as input_file:
                 with pytest.raises(ValueError):
-                    resp = add_md_toc(input_file.read(),
-                                      toc_levels=INVALID_TOC_LEVEL)
+                    add_md_toc(input_file.read(), toc_levels=INVALID_TOC_LEVEL)
 
     def test_add_md_toc_invalid(self):
         md_input_toc_invalid = open(MD_INPUT_INVALID, "r")

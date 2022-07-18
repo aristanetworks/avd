@@ -3,7 +3,6 @@ __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 import os
-import logging
 import pytest
 
 CONFIGLETS_DIR = os.path.dirname(os.path.realpath(
