@@ -1122,10 +1122,14 @@ class EosDesignsFacts:
         '''
         Get global bgp_as or fabric_topology bgp_as.
 
-        This will fail if none of these are found. AS ranges will be expanded and allocated to devices based on:
-         - ID of node (for standalone or A/A MH devices)
-         - ID of node 0 in node group (for MLAG)
-         - Bare ASNs work as per previous behaviour
+        At least one of global bgp_as or fabric_topology bgp_as must be defined.
+
+        AS ranges in fabric_topology bgp_as will be expanded to a list and:
+         - For standalone or A/A MH devices, the node id will be used to index into the list to find the ASN.
+         - For MLAG devices, the node id of the first node in the node group will be used to index into the ASN list.
+         - If a bare ASN is used, that ASN will be used for all relevant devices (depending on whether defined
+           at the defaults, node_group or node level).
+         - Lower level definitions override higher level definitions as is standard with AVD.
         '''
         if self.underlay_router is True:
             if self.underlay_routing_protocol == 'ebgp' or self.evpn_role != 'none' or self.mpls_overlay_role != 'none':
@@ -1135,13 +1139,13 @@ class EosDesignsFacts:
                     bgp_as_range_expanded = self._range_expand(str(get(self._switch_data_combined, "bgp_as", required=True)))
                     try:
                         if len(bgp_as_range_expanded) == 1:
-                            return str(bgp_as_range_expanded[0])
+                            return bgp_as_range_expanded[0]
                         elif self.mlag:
-                            return str(bgp_as_range_expanded[self._switch_data_node_group_nodes[0]["id"] - 1])
+                            return bgp_as_range_expanded[self._switch_data_node_group_nodes[0]["id"] - 1]
                         else:
-                            return str(bgp_as_range_expanded[self.id - 1])
+                            return bgp_as_range_expanded[self.id - 1]
                     except IndexError as exc:
-                        raise AristaAvdError("unable to allocate bgp as: please expand the bgp_as range") from exc
+                        raise AristaAvdError("Unable to allocate bgp as: bgp_as range is too small for number of devices") from exc
 
             # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
             # TODO: Remove this as part of AVD4.0

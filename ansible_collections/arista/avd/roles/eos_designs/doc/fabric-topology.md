@@ -338,13 +338,13 @@ default_interfaces:
     # according to the following rules:
     #  - Standalone nodes and Non-MLAG (i.e. EVPN A/A multi-homing) node groups will be allocated unique ASNs from the range based on
     #    the node's ID.
-    #  - Switches in MLAG pairs will be allocated a single ASN, based on the node ID of the first node in the node group.
+    #  - Switches in MLAG pairs will be allocated a single ASN for both, based on the node ID of the first node in the node group.
     # Examples:
     # bgp_as: 65101-65110                 Contiguous range of ASNs.
     # bgp_as: 65001,65010,65020,65030     Non-contiguous range of ASNs.
     # bgp_as: 65000.101-125               Contiguous range of 4-byte ASNs, increment in the last 2 bytes.
     # bgp_as: 64512                       Single AS, no range.
-    # Commas and hyphens can be combined in more-or-less any combination.
+    # Commas and hyphens can be combined in more or less any combination.
     bgp_as: < bgp_as >
 
     # List of EOS command to apply to BGP daemon | Optional

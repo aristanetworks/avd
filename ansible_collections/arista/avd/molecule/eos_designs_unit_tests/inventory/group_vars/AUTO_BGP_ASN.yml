@@ -56,3 +56,7 @@ l3leaf:
           id: 9
           bgp_as: 65333
           mgmt_ip: 192.168.202.113/24
+  nodes:
+    AUTO_BGP_UNGROUPED_LEAF6:
+      id: 10
+      mgmt_ip: 192.168.202.114/24
