@@ -2931,6 +2931,9 @@ router_bgp:
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
+      link_bandwidth:
+        enabled: < true | false >
+        default: < nn.nn(K|M|G)  Link speed in bits/second >
       allowas_in:
         enabled: < true | false >
         times: < 1-10 >
@@ -2982,6 +2985,9 @@ router_bgp:
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
+      link_bandwidth:
+        enabled: < true | false >
+        default: < nn.nn(K|M|G)  Link speed in bits/second >
       allowas_in:
         enabled: < true | false >
         times: < 1-10 >
