@@ -37,7 +37,6 @@ options:
   configlet_prefix:
     description: Prefix to append on configlet.
     required: true
-    choices: ['none', <prefix to prepend>]
     type: str
   destination:
     description: File where to save information.
@@ -96,7 +95,7 @@ def get_configlet(src_folder="", prefix='AVD', extension='cfg'):
     src_configlets = glob.glob(src_folder + '/*.' + extension)
     configlets = {}
     for file in src_configlets:
-        if prefix != 'none':
+        if prefix and prefix != 'none':
             name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
         else:
             name = os.path.splitext(os.path.basename(file))[0]
