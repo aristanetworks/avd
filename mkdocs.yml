@@ -2,7 +2,7 @@
 site_name: Arista AVD collection
 site_author: Arista Ansible Team
 site_description: Arista Validated Design collection's documentation
-copyright: Copyright &copy; 2019 - 2021 Arista Networks
+copyright: Copyright &copy; 2019 - 2022 Arista Networks
 
 # Repository information
 repo_name: AVD on Github
@@ -10,17 +10,17 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 
 # Configuration
 use_directory_urls: false
+edit_uri: ""
 theme:
   name: material
   # custom_dir: ansible_collections/arista/avd/docs/_overrides
   features:
     - navigation.instant
     - navigation.top
+    - search.highlight
+    - header.autohide
+    - content.code.annotate
   highlightjs: true
-  hljs_languages:
-    - yaml
-    - python
-    - shell
   icon:
     repo: fontawesome/brands/github
     logo: fontawesome/solid/book
@@ -42,14 +42,21 @@ theme:
         icon: material/weather-night
         name: Switch to light mode
 
+extra:
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/aristanetworks/ansible-avd
+  - icon: fontawesome/brands/twitter
+    link: https://twitter.com/AristaNetworks
+  - icon: fontawesome/solid/globe
+    link: https://www.arista.com
+
 extra_css:
   - docs/stylesheets/extra.material.css
 
 extra_javascript:
-  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
   - docs/stylesheets/tables.js
-  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
-  - docs/stylesheets/highlight.js
 
 plugins:
   - search:
@@ -63,6 +70,8 @@ plugins:
   #     minify_js: true
 
 markdown_extensions:
+  - admonition
+  - fontawesome_markdown
   - mdx_truly_sane_lists
   - smarty
   - pymdownx.arithmatex
@@ -71,37 +80,35 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
-  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: 'ansible_collections/arista/avd/'
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true 
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-  - fontawesome_markdown
-  - admonition
-  - codehilite:
-      guess_lang: true
+  - tables
   - toc:
       separator: "-"
       # permalink: "#"
       permalink: true
       baselevel: 3
-  - pymdownx.highlight
-  - pymdownx.superfences
-  - pymdownx.snippets:
-      base_path: 'ansible_collections/arista/avd/'
 
 # TOC
 docs_dir: ansible_collections/arista/avd/
 nav:
   - Home: README.md
-  - Release Notes:
-      - 3.x.x: docs/release-notes/3.x.x.md
-      - 2.x.x: docs/release-notes/2.x.x.md
-      - 1.1.x: docs/release-notes/1.1.x.md
-      - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started:
       - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
       - Example for Single DC L3LS: examples/single-dc-l3ls/README.md
@@ -145,7 +152,7 @@ nav:
       - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
       - AVD Plugins & Filters: plugins/README.md
-      - Cloudvision Module documentation: https://cvp.avd.sh/
+      - CloudVision Module documentation: https://cvp.avd.sh/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
       - Setup environment: docs/contribution/setup-environment.md
@@ -156,8 +163,13 @@ nav:
   - External resources:
       - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
+  - Release Notes:
+      - 3.x.x: docs/release-notes/3.x.x.md
+      - 2.x.x: docs/release-notes/2.x.x.md
+      - 1.1.x: docs/release-notes/1.1.x.md
+      - 1.0.x: docs/release-notes/1.0.x.md
   - About:
       - Ansible Galaxy page: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/
       - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install
-      - Arista Netdevops Community: https://aristanetworks.github.io/netdevops-examples/
+      - Arista NetDevOps Community: https://aristanetworks.github.io/netdevops-examples/
