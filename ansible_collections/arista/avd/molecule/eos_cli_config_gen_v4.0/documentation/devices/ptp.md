@@ -51,8 +51,8 @@ interface Management1
 
 ### PTP Summary
 
-| Clock ID    | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode        | Forward Unicast |
-| ----------- | --------- | ---------- | ---------- | --- | ------ | ----------- | --------------- |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
 | 123.123.123.123 | 1.1.1.1 | 1 | 2 | 200 | 1 | boundary | True |
 
 ### PTP Device Configuration
