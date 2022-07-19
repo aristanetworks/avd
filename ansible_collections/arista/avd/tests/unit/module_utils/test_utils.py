@@ -4,7 +4,6 @@ __metaclass__ = type
 from ansible_collections.arista.avd.plugins.module_utils.utils import get, AristaAvdError
 from contextlib import contextmanager
 import pytest
-import logging
 import re
 
 

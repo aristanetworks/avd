@@ -14,15 +14,23 @@ repos:
       - id: check-merge-conflict
         exclude: ansible_collections/arista/avd/molecule
 
-  # - repo: https://github.com/pre-commit/pre-commit-hooks
-  #   rev: v2.3.0
-  #   hooks:
-  #   - id: flake8
-
   # - repo: https://github.com/pre-commit/mirrors-autopep8
   #   rev: 'v1.5.6'  # Use the sha / tag you want to point at
   #   hooks:
   #   -   id: autopep8
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1  # Note ansible-test uses pycodestyle 2.8.0 which is part of this tagged release of flake8
+    hooks:
+      - id: flake8
+        name: Check for PEP8 error on Python files
+        # ignoring errors and selecting line length as per
+        # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
+        args:
+          - --ignore=E402,W503,W504,E741
+          - --max-line-length=160
+          - --config=/dev/null
+        types: [python]
 
   - repo: https://github.com/pycqa/pylint
     rev: 'pylint-2.6.0'
