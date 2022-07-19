@@ -5,9 +5,9 @@
 - EOS __4.21.8M__ or later
 - Roles validated with eAPI transport -> `ansible_connection: httpapi`
 
-## Arista Cloudvision
+## Arista CloudVision
 
-If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvision) deployment with AVD, your CV instance must be supported by [Cloudvision ansible collection](https://cvp.avd.sh/)
+If you leverage [CloudVision](https://www.arista.com/en/products/eos/eos-cloudvision) deployment with AVD, your CV instance must be supported by [CloudVision Ansible collection](https://cvp.avd.sh/)
 
 ## Python
 
@@ -34,7 +34,7 @@ export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml 
 pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
 ```
 
-If the collection is cloned from GitHub, the requirements file can be referenced directly:
+If the collection is cloned from GitHub, we can reference the requirements file directly:
 
 ```shell
 pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt

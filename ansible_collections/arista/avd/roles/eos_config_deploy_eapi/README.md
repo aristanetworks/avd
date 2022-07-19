@@ -1,26 +1,17 @@
 # Ansible Role: eos_config_deploy_eapi
 
-**Table of Contents:**
-
-- [Ansible Role: eos_config_deploy_eapi](#ansible-role-eos_config_deploy_eapi)
-  - [Overview](#overview)
-  - [Role Inputs and Outputs](#role-inputs-and-outputs)
-  - [Default Variables](#default-variables)
-  - [Requirements](#requirements)
-  - [License](#license)
-
 ## Overview
 
-**eos_config_deploy_eapi**, is a role that deploys the configuration to Arista EOS devices.
+**eos_config_deploy_eapi** is a role that deploys the configuration to Arista EOS devices.
 
 The **eos_config_deploy_eapi** role:
 
-- Designed to replace device running-configuration with intended configuration.
-- Backup configuration after successfully change.
+- Designed to replace device running configuration with intended configuration.
+- Backup configuration after a successful change.
 
 ## Role Inputs and Outputs
 
-Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
+Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role.
 
 ![Figure 1: Ansible Role eos_config_deploy_eapi](media/role_eos_config_deploy_eapi.gif)
 
@@ -30,8 +21,8 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Outputs:**
 
-- Device running-configuration before configuration is replaced (snapshot).
-- Device running-configuration after configuration is replaced (backup).
+- Device running configuration before configuration is replaced (snapshot).
+- Device running configuration after configuration is replaced (backup).
 
 **Tasks:**
 

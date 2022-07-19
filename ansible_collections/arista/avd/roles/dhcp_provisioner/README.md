@@ -1,35 +1,21 @@
 # Ansible Role: dhcp_provisioner
 
-**Table of Contents:**
-
-- [Ansible Role: dhcp_provisioner](#ansible-role-dhcp_provisioner)
-  - [Overview](#overview)
-  - [Role requirements](#role-requirements)
-  - [Role Inputs and Outputs](#role-inputs-and-outputs)
-    - [Inputs](#inputs)
-      - [Inventory configuration](#inventory-configuration)
-      - [Module variables](#module-variables)
-      - [Variables dedicated to DHCP device](#variables-dedicated-to-dhcp-device)
-      - [Outputs](#outputs)
-    - [Tasks](#tasks)
-  - [Requirements](#requirements)
-  - [License](#license)
-
 ## Overview
 
 **dhcp_provisioner** is a role to build and deploy a DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices.
 
-!!! tip - The role supports 2 modes: `offline` and `online`:
+!!! tip
+    The role supports two modes: `offline` and `online`:
 
- - `Offline` mode let you generate a configuration you can apply on your DHCP server after carefully reviewing it.
- - `Online` mode lets you generate and push configuration to Cloudvision, RHEL or Ubuntu based linux systems.
+- `Offline` mode let you generate a configuration you can apply on your DHCP server after carefully reviewing it.
+- `Online` mode lets you generate and push configuration to CloudVision, RHEL, or Ubuntu-based Linux systems.
 
 ## Role requirements
 
-This role requires to install `arista.cvp` collection to support CloudVision interactions.
+This role requires installing the `arista.cvp` collection to support CloudVision interactions.
 
 ```shell
-$ ansible-galaxy collection install arista.cvp
+ansible-galaxy collection install arista.cvp
 ```
 
 ## Role Inputs and Outputs
@@ -52,13 +38,13 @@ all:
 
 #### Variables dedicated to DHCP device
 
-- __`fabric_group`__: Ansible group where devices are defined per type.
-- __`ztp_network_summary`__: Subnet where DHCP will listen for request
-- __`ztp_pool_start`__: First IP available in the pool
-- __`ztp_pool_end`__: Last IP available in the pool
-- __`ztp_lease_time`__: Maximum lease time before device loose IP. Renewal is max/2 (default is 300sec)
-- __`ztp_mac_source`__: Define which mac-address field is used for identification: interface ma-address (`interface`) or system-mac-address (`system`). Default: `system`
-- __`ztp_mode`__: Define how role works either `offline` or `online`. (Default `offline`)
+- **`fabric_group`**: Ansible group where devices are defined per type.
+- **`ztp_network_summary`**: Subnet where DHCP will listen for request.
+- **`ztp_pool_start`**: First IP available in the pool.
+- **`ztp_pool_end`**: Last IP available in the pool.
+- **`ztp_lease_time`**: Maximum lease time before devices lose IP. Renewal is max/2 (default is 300 sec).
+- **`ztp_mac_source`**: Define which mac-address field is used for identification: interface mac-address (`interface`) or system-mac-address (`system`). Default: `system`
+- **`ztp_mode`**: Define how role works either `offline` or `online` (Default `offline`).
 
 _Example_:
 
@@ -81,10 +67,10 @@ _Example_:
         ztp_mac_source: system
 ```
 
-This module also reads information from Fabric definition. For any node defined under __spine__, __l3leaf__ and __l2leaf__, role generate an DHCP entry if mac-address is found. Entry is based on the following fields:
+This module also reads information from the fabric definition. For any node defined under **spine**, **l3leaf**, and **l2leaf**, the role generates a DHCP entry if mac-address is found. Entry is based on the following fields:
 
-- __`mgmt_ip`__: Management IP set as per `eos_designs`
-- __`mac_address`__: Mac address used for DHCP. it can be either interface mac-address or system-mac-address
+- **`mgmt_ip`**: Management IP set as per `eos_designs`.
+- **`mac_address`**: MAC address used for DHCP. It can be either interface mac-address or system-mac-address.
 
 ```yaml
 # Spine Switches
@@ -103,7 +89,7 @@ spine:
       mac_address: '0c:1d:c0:1d:62:02'
 ```
 
-This module also use `cvp_instance_ip` / `cvp_instance_ips` knob to set correct registration URL. So in case you need to extend TerminAttr daemon, you should use an approach similar to the following code:
+This module also uses the `cvp_instance_ip` or `cvp_instance_ips` knobs to set correct registration URL. In case you need to extend the TerminAttr daemon, you should use an approach similar to the following code:
 
 ```yaml
 cvp_instance_ips:
@@ -112,7 +98,7 @@ cvp_instance_ips:
   - < cvp instance 03 >
 cvp_ingestauth_key: < Fake ingest key overwritten by custom_structured_configuration >
 
-# Cloud Vision server information
+# CloudVision server information
 custom_structured_configuration_daemon_terminattr:
   cvauth:
     method: "token"

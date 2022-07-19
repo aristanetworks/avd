@@ -1,35 +1,12 @@
 # Arista AVD Plugins
 
-**Table of Contents:**
-
-- [Arista AVD Plugins](#arista-avd-plugins)
-  - [Plugin Filters](#plugin-filters)
-    - [list_compress filter](#list_compress-filter)
-    - [natural_sort filter](#natural_sort-filter)
-    - [default filter](#default-filter)
-    - [convert_dicts filter](#convert_dicts-filter)
-    - [ethernet segment identifiers management filter](#ethernet-segment-identifiers-management-filter)
-      - [generate_esi filter](#generate_esi-filter)
-      - [generate_lacp_id filter](#generate_lacp_id-filter)
-      - [generate_route_target filter](#generate_route_target-filter)
-    - [add_md_toc filter](#add_md_toc-filter)
-    - [range_expand filter](#range_expand-filter)
-  - [Plugin Tests](#plugin-tests)
-    - [defined test](#defined-test)
-    - [contains test](#contains-test)
-  - [Modules](#modules)
-    - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
-    - [Build Configuration to publish configlets to CloudVision](#build-configuration-to-publish-configlets-to-cloudvision)
-    - [YAML Templates to Facts](#yaml-templates-to-facts)
-    - [EOS Designs Facts](#eos-designs-facts)
-
 ## Plugin Filters
 
-Arista AVD provides built-in filters to help extend jinja2 templates with functionality and improve code readability.
+Arista AVD provides built-in filters to help extend jinja2 templates' functionality and improve code readability.
 
 ### list_compress filter
 
-The `arista.avd.list_compress` filter provides the capabilities to compress a list of integers and return as a string for example:
+The `arista.avd.list_compress` filter provides the capabilities to compress a list of integers and return it as a string, for example:
 
 ```yaml
   - [1,2,3,4,5] -> "1-5"
@@ -44,8 +21,7 @@ To use this filter:
 
 ### natural_sort filter
 
-The `arista.avd.natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
-An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
+The `arista.avd.natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned. An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
 
 The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 
@@ -63,9 +39,7 @@ To use this filter:
 
 ### default filter
 
-The `arista.avd.default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
-Furthermore, the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
-As a last resort the filter will return None.
+The `arista.avd.default` filter can provide the same essential capability as the built-in `default` filter. It will return the input value only if it's valid and, if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through. Furthermore, the filter allows multiple default values as arguments, which will undergo the same validation until we find a valid default value. As a last resort, the filter will return None.
 
 To use this filter:
 
@@ -75,17 +49,15 @@ To use this filter:
 
 ### convert_dicts filter
 
-The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
-dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
-configurable) and if there is a non-dictionary value,it inserts this value to
-secondary key (key name is configurable), if secondary key is provided.
+The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (the key name is configurable). If there is a non-dictionary value, it inserts this value to a secondary key (the key name is configurable); if a secondary key is provided.
 
 This filter is intended for:
 
-- Seemless data model migration from dictionaries to lists.
+- Seamless data model migration from dictionaries to lists.
 - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-Note: If there is a non-dictionary value with no secondary key provided, it will pass through untouched
+!!! note
+    If there is a non-dictionary value with no secondary key provided, it will pass through untouched.
 
 To use this filter:
 
@@ -106,7 +78,7 @@ item secondary key is {{ example_item.types }}
 
 ### ethernet segment identifiers management filter
 
-To help provide consistency when configuring EVPN A/A ESI values, the `esi_management` filter plugin provides an abstraction in the form of a `short_esi` key. `short_esi` is an abbreviated 3 octets value to encode Ethernet Segment ID, LACP ID and route target. Transformation from abstraction to network values is managed the following jinja2 filters:
+To help provide consistency when configuring EVPN A/A ESI values, the `esi_management` filter plugin provides an abstraction in the form of a `short_esi` key. `short_esi` is an abbreviated three octets value to encode Ethernet Segment ID, LACP ID, and route target. The following jinja2 filters manage the transformation from abstraction to network values:
 
 #### generate_esi filter
 
@@ -142,10 +114,10 @@ rt: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_rou
 
 The `arista.avd.add_md_toc` filter will parse the input MarkDown and add a TOC between the `toc_markers`.
 
-The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
-The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
+The module is used in `eos_designs` to create a table of contents for Fabric Documentation. The module is also used in `eos_cli_config_gen` to create a table of contents for Device Documentation.
 
 To use this filter:
+
 ```jinja2
 {{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->') }}
 ```
@@ -177,8 +149,7 @@ tasks:
 
 The `arista.avd.range_expand` filter provides the capabilities to expand a range of interfaces or list of ranges and return as a list for example:
 
-The filter supports vlans, interfaces, modules, sub-interfaces and ranges are expanded at all levels.
-Within a single range, prefixes (ex. Ethernet, Eth, Po) are carried over to items without prefix (see 3rd example below)
+The filter supports VLANs, interfaces, modules, sub-interfaces, and ranges are expanded at all levels. Within a single range, prefixes (ex. Ethernet, Eth, Po) are carried over to items without prefixes (see third example below).
 
 ```yaml
   - "Ethernet1"                                   -> ["Ethernet1"]
@@ -202,21 +173,20 @@ To use this filter:
 {{ range_to_expand | arista.avd.range_expand }}
 ```
 
-!!! Note this is not using the same range syntax as EOS for modular or break-out ports. On EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD the same range would be `et1-2/1-4`
+!!! note
+    This isn't using the same range syntax as EOS for modular or break-out ports. For example, on EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD, the same range would be `et1-2/1-4`.
 
 ## Plugin Tests
 
-Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates
+Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates.
 
 ### defined test
 
-The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
-`arista.avd.defined` test also accepts an optional `test_value` argument to test if the value equals this.
-The optional `var_type` argument can be used to also test if the variable is of the expected type.
+The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`. `arista.avd.defined` test also accepts an optional `test_value` argument to test if the value equals this. The optional `var_type` argument can also be used to test if the variable is of the expected type.
 
 Optionally the test can emit warnings or errors if the test fails.
 
-Compared to the builtin `is defined` test, this test will also test for `None` and can even test for a specific value and/or class.
+Compared to the builtin `is defined` test, this test will also test for `None` and can even test for a specific value or class.
 
 Syntax:
 
@@ -271,10 +241,10 @@ Warnings or Errors can be emitted with the optional arguments `fail_action` and 
 
 ### contains test
 
-The `arista.avd.contains` test will test if a list contains one or more of the supplied value(s).
-The test will return `False` if either the passed value or the test_values are `Undefined` or `none`.
+The `arista.avd.contains` test will test if a list contains one or more of the supplied values. The test will return `False` if either the passed value or the test_values are `Undefined` or `none`.
 
 The test accepts either a single test_value or a list of test_values.
+
 To use this test:
 
 ```jinja
@@ -285,9 +255,9 @@ To use this test:
 {% if my_list is arista.avd.contains(item_list) %}Match{% endif %}
 ```
 
-**example**
-The `arista.avd.contains` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list
-for an element where `switch_platform` is contained in the `platforms` attribute.
+**example:**
+
+The `arista.avd.contains` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list for an element where `switch_platform` is contained in the `platforms` attribute.
 
 Data model:
 
@@ -345,11 +315,11 @@ switch:
 The `arista.avd.inventory_to_container` module provides following capabilities:
 
 - Transform inventory groups into CloudVision containers topology.
-- Create list of configlets definition.
+- Create a list of configlet definitions.
 
-It saves everything in a `YAML` file using **`destination`** keyword.
+It saves everything in a `YAML` file using the **`destination`** keyword.
 
-It is a module to build a structure of data to configure a CloudVision server. Output is ready to be passed to [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) to configure **CloudVision**.
+It's a module to build a data structure to configure a CloudVision server. Output is ready to be passed to [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) to configure **CloudVision**.
 
 **example:**
 
@@ -423,7 +393,7 @@ CVP_CONTAINERS:
 The `arista.avd.configlet_build_config` module provides the following capabilities:
 
 - Build arista.cvp.configlet configuration.
-- Build configuration to publish configlets to Cloudvision.
+- Build configuration to publish configlets to CloudVision.
 
 **options:**
 
@@ -452,10 +422,10 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
 - Set Facts based on one or more Jinja2 templates producing YAML output.
-- Recursively combining output of templates to allow templates to update overlapping parts of the data models.
-- Facts set by one template will be accessible by the next templates
-- Returned Facts can be set below a specific `root_key`
-- Facts returned templates can be stripped for `null` values to avoid them overwriting previous set facts
+- Recursively combining templates' output to allow templates to update overlapping parts of the data models.
+- Facts set by one template will be accessible by the following templates.
+- Returned facts can be set below a specific `root_key`.
+- Facts returned templates can be stripped for `null` values to avoid overwriting previous set facts.
 
 The module is used in `eos_designs` to generate the `structured_configuration` based on all the `eos_designs` templates.
 
@@ -555,16 +525,12 @@ templates:
 The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
 
 - Set `avd_switch_facts` fact containing both `switch` facts per host.
-- Set `avd_topology_peers` fact containing list of downlink switches per host.
-  This list is built based on the `uplink_switches` from all other hosts.
-- Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
-  This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
-- The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices,
-  so all devices can lookup values of any other device without using the slower `hostvars`.
-- The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
+- Set `avd_topology_peers` fact containing a list of downlink switches per host. This list is built based on the `uplink_switches` from all other hosts.
+- Set `avd_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+- The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices, so all devices can lookup values of any other device without using the slower `hostvars`.
+- The facts can also be copied to the "root" `switch` in a task run per device (see example below).
 
-The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
-in `arista.avd.eos_designs` to generate the `structured_configuration`.
+The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Jinja templates in `arista.avd.eos_designs` to generate the `structured_configuration`.
 
 The module arguments are:
 

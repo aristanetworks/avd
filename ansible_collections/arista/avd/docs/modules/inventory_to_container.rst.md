@@ -98,7 +98,7 @@ The following options may be specified for this module:
 </table>
 </br>
 
-## Examples:
+## Examples
 
     - name: generate intended variables
       inventory_to_container:
@@ -128,9 +128,9 @@ The following options may be specified for this module:
 
 ### Author
 
-  - Ansible Arista Team (@aristanetworks)
+- Ansible Arista Team (@aristanetworks)
 
 ### Status
 
-This module is flagged as **preview** which means that it is not
+This module is flagged as **preview** which means that it's not
 guaranteed to have a backwards compatible interface.

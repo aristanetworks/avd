@@ -1,25 +1,25 @@
 # Configure management network
 
-Because we want to be generic, let's configure a DHCP server on NAT gateway to provide fixed DHCP address to your devices. Thus you will be able to get access to them easily. To support that, we can leverage `arista.cvp.dhcp_configuration` to install and configure a DHCP server.
+Because we want to be generic, let's configure a DHCP server on the NAT gateway to provide a fixed DHCP address to your devices. Thus you will be able to get access to them easily. To support that, we can leverage `arista.cvp.dhcp_configuration` to install and configure a DHCP server.
 
 This role requires a set of information related to your own setup:
 
 For your out of band management network:
 
-- Subnet your are using to allocate your devices IP
-- Name server to send to your DHCP client
+- Subnet you are using to allocate your device's IP.
+- Name server to send to your DHCP client.
 - Default scope for unknown devices.
 
-For every devices:
+For every device:
 
 - EOS device hostname you want to configure.
-- Mac address to use to identify request from your device.
+- Mac address to use to identify a request from your device.
 - IP address to allocate.
 - An optional URI for ZTP registration.
 
 ## Create an inventory file
 
-Inventory contains information related to your nat-gateway:
+Inventory contains information related to your NAT-gateway:
 
 ```yaml
 # inventory.yml
@@ -36,7 +36,7 @@ all:
 
 ## Create host variables
 
-Host variables for your NAT-GATEWAY should be defined like this:
+Host variables for your NAT-gateway should be defined like this:
 
 ```yaml
 ---

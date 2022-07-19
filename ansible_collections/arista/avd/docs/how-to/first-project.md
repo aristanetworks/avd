@@ -2,17 +2,15 @@
 
 ## Abstract
 
-This page explains how to build your first Ansible project leveraging ansible-avd collection. In this tutorial, we will configure an EVPN fabric using Arista eAPI method.
+This page explains how to build your first Ansible project leveraging ansible-avd collection. In this tutorial, we will configure an EVPN fabric using Arista eAPI method. We will go through all configuration steps to generate [EVPN/VXLAN configuration](https://www.arista.com/custom_data/downloads/?f=/support/download/DesignGuides/EVPN_Deployment_Guide.pdf) for EOS devices.
 
-![Example Playbook EAPI Deployment](../../media/example-playbook-deploy-eapi.gif)
+![Example Playbook eAPI Deployment](../../media/example-playbook-deploy-eapi.gif)
 
-In this post, we will go through all configuration steps to generate [EVPN/VXLAN configuration](https://www.arista.com/custom_data/downloads/?f=/support/download/DesignGuides/EVPN_Deployment_Guide.pdf) for EOS devices.
+You can organize your working directory in many different ways, but a structure we find helpful is something like this:
 
-You can organize your work in many different ways, but a structure we find useful is something like this:
-
-- A folder for all your inventories with one sub-folder per inventory. An inventory folder contains all your variables for a given environment like `host_vars`, `group_vars`, `inventory.yml`
-- A folder to store all playbooks. So it is easy to reuse playbooks whatever the inventory is (if you use a coherent syntax)
-- ansible.cfg at the root of this repository
+- A folder for all your inventories with one sub-folder per inventory. An inventory folder containing all your variables for a given environment like `host_vars`, `group_vars`, `inventory.yml`.
+- A folder to store all playbooks. This makes it easy to reuse playbooks no matter the inventory (if you use a coherent syntax).
+- `ansible.cfg` at the root of this repository.
 
 ```shell
 $ tree -L 3 -d
@@ -27,7 +25,7 @@ $ tree -L 3 -d
 
 ## Requirements
 
-- Ansible runner configured as described in [this section](../installation/collection-installation.md)
+- Ansible runner configured as described in [this section](../installation/collection-installation.md).
 - A set of devices configured with their respective management IP address and username.
 - Access to eAPI service for all devices.
 
@@ -43,13 +41,13 @@ Here is a high-level overview of the topology
 
 Let's list our devices in the inventory:
 
-- `AVD_FABRIC` represents complete fabric topology that we are going to configure with AVD.
-- `AVD_SPINES` is a group where all spine devices belong to.
-- `AVD_L3LEAFS`: is a group to locate all VTEP devices (LEAFs running EVPN/VXLAN). As part of this group, we create one sub-group for every LEAF (single or MLAG) as highlighted below.
-  - `AVD_LEAF1` represent LEAF for POD01 and it is for an MLAG pair.
-  - `AVD_LEAF3` represent a single LEAF outside of MLAG.
-- `AVD_L2LEAFS` represent the Aggregation layer in our current design. This layer is optional, but in our design, it is in place. It works like `AVD_L3LEAFS` group but for all layer2 leafs.
-- `AVD_TENANTS_NETWORKS` is a special group hosting 2 groups already configured: `AVD_L{2|3}LEAFS`. This group will configure VNI/VLAN across the fabric, so we want to make leafs part of the configuration.
+- `AVD_FABRIC` represents complete fabric topology that we're going to configure with AVD.
+- `AVD_SPINES` is a group to which all spine devices belong.
+- `AVD_L3LEAFS`: is a group to locate all VTEP devices (LEAFs running EVPN/VXLAN). As part of this group, we create one sub-group for every LEAF (single or MLAG), as highlighted below.
+  - `AVD_LEAF1` represent LEAF for POD01, and it's for an MLAG pair.
+  - `AVD_LEAF3` represents a single LEAF outside of MLAG.
+- `AVD_L2LEAFS` represent the Aggregation layer in our current design. This layer is optional, but it's in place in our design. It works like `AVD_L3LEAFS` group but for all layer2 leafs.
+- `AVD_TENANTS_NETWORKS` is a special group hosting two groups already configured: `AVD_L{2|3}LEAFS`. This group will configure VNI/VLAN across the fabric, so we want to make leafs part of the configuration.
 - `AVD_SERVERS` has similar behavior to the previous group. Its goal is to configure downlinks to compute nodes.
 
 ```yaml
@@ -94,11 +92,11 @@ AVD:
         AVD_L2LEAFS:
 ```
 
-The management address of all devices can be defined in the inventory.yml file with the knob `ansible_host` as shown above. This is completely optional unless if we wanted to make an ssh connection to these hosts from our local device or a Jump-host. In this lab, as we are going to use eAPI to configure the hosts, the ansible_host must be defined.
+The management address of all devices can be defined in the `inventory.yml` file with the knob `ansible_host` as shown above. This is entirely optional unless we want to make an ssh connection to these hosts from our local device or a Jump-host. In this lab, we will use eAPI to configure the hosts; in this case, the `ansible_host` must be defined.
 
-Because a Jump-host will be used in this lab, we will need to configure the `ansible_port` variable to set the port number for eAPI connection. To establish ssh connection from Jump-host to all switches we need to set the ssh login credentials by setting `ansible_user` and `ansible_ssh_pass`. The Ansible learns the Network platform of the hosts through `ansible_network_os`.
+Because a Jump-host will be used in this lab, we will need to configure the `ansible_port` variable to set the port number for the eAPI connection. To establish an SSH connection from Jump-host to all switches, we need to set the ssh login credentials by setting `ansible_user` and `ansible_ssh_pass`. Ansible learns the Network platform of the hosts through the `ansible_network_os` variable.
 
-Because of the Ansible's flexibility, there are a number of ways to define the connection parameters of the hosts. One of the simplest and recommended method is shown below:
+Because of Ansible's flexibility, there are several ways to define the connection parameters of the hosts. One of the simplest and recommended methods is shown below:
 
 ```yaml
 ---
@@ -107,9 +105,10 @@ AVD:
     AVD_FABRIC:
 [... output truncated ...]
   vars:
-    ansible_user: < your username >
-    ansible_ssh_pass: < password >
-    ansible_network_os: eos
+    # Replace username and password for your deployment
+    ansible_user: admin 
+    ansible_ssh_pass:  supersecretpass 
+    ansible_network_os: arista.eos.eos
     # Configure privilege escalation
     ansible_become: true
     ansible_become_method: enable
@@ -122,11 +121,11 @@ AVD:
 
 ### AVD Variables
 
-Based on the inventory we created in the previous section, it is time to create `group_vars`.
+Based on the inventory we created in the previous section, it's time to create `group_vars`.
 
 #### Generic Fabric Information
 
-All the documentation is available here, but below is a short example. All this configuration will be configured on all devices.
+All the documentation is available here, but below is a short example. These configurations will be configured on all devices.
 
 ```yaml
 # vim inventories/eapi-example/group_vars/AVD.yml
@@ -245,11 +244,11 @@ l3leaf:
 [... output truncated ...]
 ```
 
-Complete documentation of all available variables is available in the [__Arista Validated Design documentation__](../../roles/eos_designs/README.md). You can also look at the [variables part of the demo repo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
+Complete documentation of all available variables is available in the [__Arista Validated Design documentation__](../../roles/eos_designs/README.md). You can also look at the [variables part of the demo repository](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
 
 #### Configure device type
 
-In each variable file, related to a type of device, we have to instruct AVD what is the role of that device(s).
+In each variable file related to a type of device, we must instruct AVD what the role is for each device.
 
 ```yaml
 ---
@@ -263,9 +262,9 @@ AVD supports a mechanism to create VLANs and VNIs and enable traffic forwarding 
 - L2 VLANs
 - Symmetric IRB model
 
-The model defines a set of tenants (user-defined) where you can configure VRF or `l2vlans` or a mix of them. Let's take a look at how we configure such services.
+The model defines a set of tenants (user-defined) where you can configure VRFs, L2VLANs, or a mix of them. Let's take a look at how we configure such services.
 
-All these configurations shall be configured in a file `AVD_TENANTS_NETWORKS.yml`
+All these configurations shall be configured in a file named `AVD_TENANTS_NETWORKS.yml`.
 
 #### L2 Services
 
@@ -283,9 +282,9 @@ tenants:
         tags: [DC1]
 ```
 
-Tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this VLAN. To configure device `TAGS` and `TENANTS` options, go to [__Arista Validated Design__ documentation](../../roles/eos_designs/README.md#fabric-topology-variables)
+The tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this VLAN. To configure device `TAGS` and `TENANTS` options, go to [__Arista Validated Design__ documentation](../../roles/eos_designs/README.md#fabric-topology-variables)
 
-In this configuration, VLAN will be created with a tag of `201` and its attached VNI will be configured with `20201`
+In this configuration, VLAN 201 will be created with a tag of `201` and it's attached VNI will be configured with `20201`.
 
 ```eos
 AVD-LEAF1A#show vlan 201
@@ -315,7 +314,7 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
 
 #### Symmetric IRB model
 
-To configure symmetric IRB model, use the following structure:
+To configure the symmetric IRB model, use the following structure:
 
 ```yaml
 tenants:
@@ -349,23 +348,23 @@ tenants:
             ip_address_virtual: 10.1.12.254/24
 ```
 
-The above example will create 2 VRFs :
+The above example will create two VRFs :
 
 - `TENANT_A_PROJECT01`
 - `TENANT_A_PROJECT02`
 
-In `TENANT_A_PROJECT01`, 2 subnets are created and deployed on devices matching TAGS `DC1` or `POD02`:
+In `TENANT_A_PROJECT01`, two subnets are created and deployed on devices matching TAGS `DC1` or `POD02`:
 
-- `10.1.10.0/24` with vlan `110` and vni `10110`
-- `10.1.11.0/24` with vlan `111` and vni `10111`
+- `10.1.10.0/24` with VLAN `110` and VNI `10110`
+- `10.1.11.0/24` with VLAN `111` and VNI `10111`
 
-In case you deployed this VRF on an MLAG VTEP, an additional VLAN is created to allow L3 synchronization within VRF. This VLAN is automatically generated with this algorithm:
+If you deployed this VRF on an MLAG VTEP, additional VLANs are created to allow L3 synchronization within VRF. The VLAN is automatically generated with this algorithm:
 
 ```jinja2
 {{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}
 ```
 
-In addition to that, each EOS device will allocate a dynamic VLAN per VRF to support __L3 VNI__
+In addition to that, each EOS device will allocate a dynamic VLAN per VRF to support __L3 VNI__.
 
 ```eos
 AVD-LEAF1A#show vlan
@@ -402,9 +401,9 @@ In `TENANT_A_PROJECT02`, we can also see an optional feature named __`vtep_diagn
 
 #### Configure downlinks
 
-As we have configured L3LS fabric, EVPN/VXLAN overlay, services, it is now time to configure ports to connect servers. Ports should be configured in `AVD_SERVERS.yml`.
+We've configured L3LS fabric, EVPN/VXLAN overlay, and services. It's now time to configure ports to connect servers. Ports should be configured in `AVD_SERVERS.yml`.
 
-You first have to configure a port profile. it is basically a description of how the port will be configured (`access` or `trunk`) and which set of vlan(s) will be configured
+You first have to configure a port profile. This describes how the port will be configured (`access` or `trunk`) and which set of VLANs will be configured.
 
 ```yaml
 ---
@@ -446,7 +445,7 @@ Whereas most of the information is purely optional, the below entries are requir
 
 ##### Server connected to MLAG
 
-In the case of an MLAG connection, the data structure is the same and the only difference is we need to add information about Port-Channel to be configured.
+In the case of an MLAG connection, the data structure is the same; the only difference is that we need to add information about the port channel to be configured.
 
 ```yaml
 servers:
@@ -509,7 +508,7 @@ The topology and device documentation can be accessed under `documentation` in t
 
 ### Deploy your configuration to EOS devices
 
-Once your configuration files have been generated, you can use [`arista.avd.eos_config_deploy_eapi`](../../roles/eos_config_deploy_eapi/README.md) to deploy your configuration in replace mode. Because we want to make this deployment explicit, we position tags `deploy` and `never` meaning you __must__ set this tag in your CLI
+Once your configuration files have been generated, you can use [`arista.avd.eos_config_deploy_eapi`](../../roles/eos_config_deploy_eapi/README.md) to deploy your configuration in replace mode. Because we want to make this deployment explicit, we position tags `deploy` and `never`, meaning you __must__ set this tag in your CLI.
 
 ```yaml
   tasks:
@@ -521,7 +520,7 @@ Once your configuration files have been generated, you can use [`arista.avd.eos_
 
 ### Complete AVD eAPI playbook
 
-The overall playbook is given for information below and you can update it to create your own workflow
+The complete playbook is below. Feel free to update it to create your workflow.
 
 ```yaml
 ---
