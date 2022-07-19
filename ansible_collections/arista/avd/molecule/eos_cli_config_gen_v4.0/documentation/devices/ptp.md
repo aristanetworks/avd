@@ -51,16 +51,9 @@ interface Management1
 
 ### PTP Summary
 
-| PTP setting | Value |
-| ----------- | ----- |
-| Clock-identity | 123.123.123.123 |
-| Source IP | 1.1.1.1 |
-| Priority1 | 1 |
-| Priority2 | 2 |
-| TTL | 200 |
-| Domain | 1 |
-| Msg General | DSCP 4 |
-| Msg Event | DSCP 8 |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
+| 123.123.123.123 | 1.1.1.1 | 1 | 2 | 200 | 1 | boundary | True |
 
 ### PTP Device Configuration
 
