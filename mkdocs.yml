@@ -44,12 +44,12 @@ theme:
 
 extra:
   social:
-  - icon: fontawesome/brands/github-alt
-    link: https://github.com/aristanetworks/ansible-avd
-  - icon: fontawesome/brands/twitter
-    link: https://twitter.com/AristaNetworks
-  - icon: fontawesome/solid/globe
-    link: https://www.arista.com
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/aristanetworks/ansible-avd
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/AristaNetworks
+    - icon: fontawesome/solid/globe
+      link: https://www.arista.com
 
 extra_css:
   - docs/stylesheets/extra.material.css
@@ -94,7 +94,7 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
-      alternate_style: true 
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
