@@ -106,8 +106,8 @@ AVD:
 [... output truncated ...]
   vars:
     # Replace username and password for your deployment
-    ansible_user: admin 
-    ansible_ssh_pass:  supersecretpass 
+    ansible_user: < your username >
+    ansible_ssh_pass: < password >
     ansible_network_os: arista.eos.eos
     # Configure privilege escalation
     ansible_become: true
