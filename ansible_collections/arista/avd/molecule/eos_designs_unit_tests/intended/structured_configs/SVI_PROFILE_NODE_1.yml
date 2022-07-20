@@ -115,22 +115,6 @@ router_bgp:
         - 10212:10212
       redistribute_routes:
       - learned
-    311:
-      tenant: svi_profile_tests
-      rd: 192.168.255.1:10311
-      route_targets:
-        both:
-        - 10311:10311
-      redistribute_routes:
-      - learned
-    312:
-      tenant: svi_profile_tests
-      rd: 192.168.255.1:10312
-      route_targets:
-        both:
-        - 10312:10312
-      redistribute_routes:
-      - learned
     410:
       tenant: svi_profile_tests
       rd: 192.168.255.1:10410
@@ -191,6 +175,10 @@ static_routes:
   vrf: svi_profile_tests_vrf
   name: VARP
   interface: Vlan411
+- destination_address_prefix: 10.4.12.0/24
+  vrf: svi_profile_tests_vrf
+  name: VARP
+  interface: Vlan412
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -297,6 +285,8 @@ ip_igmp_snooping:
     210:
       enabled: true
     211:
+      enabled: true
+    212:
       enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
@@ -437,6 +427,8 @@ router_ospf:
       router_id: 192.168.255.1
       no_passive_interfaces:
       - Vlan510
+      - Vlan511
+      - Vlan512
       max_lsa: 15000
       redistribute:
         bgp:
@@ -466,10 +458,6 @@ vxlan_interface:
           vni: 10211
         212:
           vni: 10212
-        311:
-          vni: 10311
-        312:
-          vni: 10312
         410:
           vni: 10410
         411:
