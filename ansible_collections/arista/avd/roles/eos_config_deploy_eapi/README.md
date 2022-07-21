@@ -44,7 +44,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 ## Default Variables
 
 ```yaml
-# Peform config backup before config replace
+# Perform config backup before config replace
 eos_config_deploy_eapi_pre_running_config_backup: false
 
 # Root directory where to build output structure
