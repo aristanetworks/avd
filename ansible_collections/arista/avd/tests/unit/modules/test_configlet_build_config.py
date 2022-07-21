@@ -51,8 +51,9 @@ class TestConfigletBuildConfig():
         output = get_configlet()
         assert output == dict()
 
-    def test_get_configlet_none_prefix(self):
+    @pytest.mark.parametrize("prefix", ['none', "", None])
+    def test_get_configlet_none_prefix(self, prefix):
         extension = 'cfg'
-        output = get_configlet(src_folder=CONFIGLETS_DIR, prefix='none')
+        output = get_configlet(src_folder=CONFIGLETS_DIR, prefix=prefix)
         assert isinstance(output, dict)
         self.verify_configlets(CONFIGLETS_DIR, "", extension, output)
