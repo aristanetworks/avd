@@ -5,16 +5,11 @@ vlan_interfaces:
 {%         for svi in vrf.svis %}
 {%             set svi_raw_eos_cli = svi.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
                                      svi.raw_eos_cli) %}
-{%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(
-                                    vrf.ip_helpers) | arista.avd.convert_dicts('ip_helper') %}
-{%             set svi_description = svi.description | arista.avd.default(
-                                     svi.name) %}
+{%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(vrf.ip_helpers) %}
   Vlan{{ svi.id | int }}:
     tenant: {{ tenant.name }}
     tags: {{ svi.tags | arista.avd.default }}
-{%             if svi_description is arista.avd.defined %}
-    description: {{ svi_description }}
-{%             endif %}
+    description: {{ svi.description | arista.avd.default(svi.name) }}
 {%             if svi.enabled is arista.avd.defined(true) %}
     shutdown: false
 {%             else %}
@@ -69,7 +64,7 @@ vlan_interfaces:
 {# IP helper configuration #}
 {%             if svi_ip_helpers is arista.avd.defined %}
     ip_helpers:
-{%                 for helper_ip in svi_ip_helpers %}
+{%                 for helper_ip in svi_ip_helpers | arista.avd.convert_dicts('ip_helper') %}
       {{ helper_ip.ip_helper }}:
         source_interface: {{ helper_ip.source_interface | arista.avd.default }}
         vrf: {{ helper_ip.source_vrf | arista.avd.default }}
