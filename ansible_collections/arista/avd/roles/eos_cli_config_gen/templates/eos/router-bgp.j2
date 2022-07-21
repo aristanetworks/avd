@@ -153,6 +153,13 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
+{%         if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
+{%             set link_bandwidth_cli = "neighbor " ~ peer_group.name ~ " link-bandwidth" %}
+{%             if peer_group.link_bandwidth.default is arista.avd.defined %}
+{%                 set link_bandwidth_cli = link_bandwidth_cli ~ " default " ~ peer_group.link_bandwidth.default %}
+{%             endif %}
+   {{ link_bandwidth_cli }}
+{%         endif %}
 {%         if peer_group.weight is arista.avd.defined %}
    neighbor {{ peer_group.name }} weight {{ peer_group.weight }}
 {%         endif %}
@@ -278,6 +285,13 @@ router bgp {{ router_bgp.as }}
 {%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%             endif %}
    {{ maximum_routes_cli }}
+{%         endif %}
+{%         if neighbor.link_bandwidth.enabled is arista.avd.defined(true) %}
+{%             set link_bandwidth_cli = "neighbor " ~ neighbor.ip_address ~ " link-bandwidth" %}
+{%             if neighbor.link_bandwidth.default is arista.avd.defined %}
+{%                 set link_bandwidth_cli = link_bandwidth_cli ~ " default " ~ neighbor.link_bandwidth.default %}
+{%             endif %}
+   {{ link_bandwidth_cli }}
 {%         endif %}
 {%     endfor %}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
