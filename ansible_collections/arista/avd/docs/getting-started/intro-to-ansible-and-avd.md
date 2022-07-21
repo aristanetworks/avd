@@ -282,9 +282,9 @@ spine:
     loopback_ipv4_pool: 10.255.1.0/27
     # ASN to be used by BGP
     bgp_as: 65100
-    # BGP configuration for fine tunning
+    # BGP configuration for fine tuning
     bgp_defaults:
-      # The two folling commands must not be enabled when using vEOS-lab
+      # The two following commands must not be enabled when using vEOS-lab
       # - update wait-for-convergence
       # - update wait-install
       - no bgp default ipv4-unicast

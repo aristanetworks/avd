@@ -216,11 +216,11 @@ tenants:
           - type: import
             address_family: evpn
             route_target: '65000:456'
-            # nodes not set - so all devices shold get this additional route target
+            # nodes not set - so all devices should get this additional route target
           - type: export
             address_family: evpn
             route_target: '65000:789'
-            # nodes not set - so all devices shold get this additional route target
+            # nodes not set - so all devices should get this additional route target
       Tenant_L3_VRF_Zone:
         vrf_vni: 15
         l3_interfaces:

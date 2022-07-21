@@ -100,7 +100,7 @@ The following options may be specified for this module:
 
 ## Examples:
 
-    - name: generate intented variables
+    - name: generate intended variables
       inventory_to_container:
         inventory: 'inventory.yml'
         container_root: 'DC1_FABRIC'

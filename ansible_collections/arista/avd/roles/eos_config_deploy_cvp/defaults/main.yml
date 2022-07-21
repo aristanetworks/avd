@@ -32,7 +32,7 @@ configlets_prefix: 'AVD-{{ fabric_name }}-'
 # State management to know if module should create/update or delete fabric
 state: 'present'
 
-# CVP Deployment methodology, whether to exectute or stage tasks
+# CVP Deployment methodology, whether to execute or stage tasks
 execute_tasks: false
 
 # Version of the Cloudvision collection to use for upload

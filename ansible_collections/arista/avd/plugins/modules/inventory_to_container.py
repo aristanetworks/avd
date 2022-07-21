@@ -65,7 +65,7 @@ options:
 '''
 
 EXAMPLES = r'''
-- name: generate intented variables
+- name: generate intended variables
   inventory_to_container:
     inventory: 'inventory.yml'
     container_root: 'DC1_FABRIC'
