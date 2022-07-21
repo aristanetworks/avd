@@ -116,11 +116,13 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
+| Link-Bandwidth | default 100G |
 
 #### test-link-bandwidth2
 
 | Settings | Value |
 | -------- | ----- |
+| Link-Bandwidth | enabled |
 
 ### BGP Neighbors
 

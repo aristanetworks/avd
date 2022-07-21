@@ -185,6 +185,13 @@
 {%                 endif %}
 | Maximum routes | {{ value }} |
 {%             endif %}
+{%             if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
+{%                 set value = "enabled" %}
+{%                 if peer_group.link_bandwidth.default is arista.avd.defined %}
+{%                     set value = "default " ~ peer_group.link_bandwidth.default %}
+{%                 endif %}
+| Link-Bandwidth | {{ value }} |
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     set temp = namespace() %}
