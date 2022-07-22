@@ -994,6 +994,13 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     mac_access_group_in: < mac_access_list_name >
     mac_access_group_out: < mac_access_list_name >
+    multicast:
+      ipv4:
+        boundary: < < acl_name > | < acl_name > out >
+        static: < true | false >
+      ipv6:
+        boundary: < acl_name >
+        static: < true | false >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     ospf_cost: < ospf_cost >
@@ -1521,9 +1528,17 @@ vlan_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     multicast:
       ipv4:
+        boundary: < < acl_name > | < acl_name > out >
         source_route_export:
           enabled: < true | false >
           administrative_distance: < 1-255 >
+        static: < true | false >
+      ipv6:
+        boundary: < acl_name >
+        source_route_export:
+          enabled: < true | false >
+          administrative_distance: < 1-255 >
+        static: < true | false >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     ospf_cost: < ospf_cost >

@@ -91,11 +91,32 @@ interface {{ vlan_interface.name }}
    {{ ipv6_nd_prefix_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if vlan_interface.multicast.ipv4.source_route_export.enabled is arista.avd.defined(true) %}
-{%         if vlan_interface.multicast.ipv4.source_route_export.administrative_distance is arista.avd.defined %}
+{%     if vlan_interface.multicast is arista.avd.defined %}
+{%         if vlan_interface.multicast.ipv4.boundary is arista.avd.defined %}
+   multicast ipv4 boundary {{ vlan_interface.multicast.ipv4.boundary }}
+{%         endif %}
+{%         if vlan_interface.multicast.ipv6.boundary is arista.avd.defined %}
+   multicast ipv6 boundary {{ vlan_interface.multicast.ipv6.boundary }} out
+{%         endif %}
+{%         if vlan_interface.multicast.ipv4.source_route_export.enabled is arista.avd.defined(true) %}
+{%             if vlan_interface.multicast.ipv4.source_route_export.administrative_distance is arista.avd.defined %}
    multicast ipv4 source route export {{ vlan_interface.multicast.ipv4.source_route_export.administrative_distance }}
-{%         else %}
+{%             else %}
    multicast ipv4 source route export
+{%             endif %}
+{%         endif %}
+{%         if vlan_interface.multicast.ipv6.source_route_export.enabled is arista.avd.defined(true) %}
+{%             if vlan_interface.multicast.ipv6.source_route_export.administrative_distance is arista.avd.defined %}
+   multicast ipv6 source route export {{ vlan_interface.multicast.ipv6.source_route_export.administrative_distance }}
+{%             else %}
+   multicast ipv6 source route export
+{%             endif %}
+{%         endif %}
+{%         if vlan_interface.multicast.ipv4.static is arista.avd.defined(true) %}
+   multicast ipv4 static
+{%         endif %}
+{%         if vlan_interface.multicast.ipv6.static is arista.avd.defined(true) %}
+   multicast ipv6 static
 {%         endif %}
 {%     endif %}
 {%     if vlan_interface.access_group_in is arista.avd.defined %}

@@ -127,12 +127,16 @@
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
-{# ISIS #}
+{# ISIS and multicast #}
 {%     set vlan_interface_isis = namespace() %}
+{%     set multicast_interfaces = [] %}
 {%     set vlan_interface_isis.configured = false %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.isis_enable is defined %}
 {%             set vlan_interface_isis.configured = true %}
+{%         endif %}
+{%         if vlan_interface.multicast is arista.avd.defined %}
+{%             do multicast_interfaces.append(vlan_interface) %}
 {%         endif %}
 {%     endfor %}
 {%     if vlan_interface_isis.configured == true %}
@@ -150,6 +154,37 @@
 {%                     set mode = 'passive' | arista.avd.default('-') %}
 {%                 endif %}
 | {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ isis_metric }} | {{ mode }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if multicast_interfaces | length > 0 %}
+
+#### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Boundary | Export Routes From Source Traffic |
+| --------- | ---------- | --------------------- | -------- | --------------------------------- |
+{%         for multicast_interface in multicast_interfaces %}
+{%             if multicast_interface.multicast.ipv4 is arista.avd.defined %}
+{%                 set version = 'IPv4' %}
+{%                 set static = multicast_interface.multicast.ipv4.static | arista.avd.default('-') %}
+{%                 set boundary = multicast_interface.multicast.ipv4.boundary | arista.avd.default('-') %}
+{%                 set source_route_export = multicast_interface.multicast.ipv4.source_route_export.enabled | arista.avd.default('-') %}
+{%             endif %}
+{%             if version is arista.avd.defined('IPv4') %}
+| {{ multicast_interface.name }} | {{ version }} | {{ static }} | {{ boundary }} | {{ source_route_export }} |
+{%             endif %}
+{%             if multicast_interface.multicast.ipv6 is arista.avd.defined %}
+{%                 set version = 'IPv6' %}
+{%                 set static = multicast_interface.multicast.ipv6.static | arista.avd.default('-') %}
+{%                 if multicast_interface.multicast.ipv6.boundary is arista.avd.defined %}
+{%                     set boundary = multicast_interface.multicast.ipv6.boundary ~ ' out' %}
+{%                 else %}
+{%                     set boundary = '-' %}
+{%                 endif %}
+{%                 set source_route_export = multicast_interface.multicast.ipv6.source_route_export.enabled | arista.avd.default('-') %}
+{%             endif %}
+{%             if version is arista.avd.defined('IPv6') %}
+| {{ multicast_interface.name }} | {{ version }} | {{ static }} | {{ boundary }} | {{ source_route_export }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
