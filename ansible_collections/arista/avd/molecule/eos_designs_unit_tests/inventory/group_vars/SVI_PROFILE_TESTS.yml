@@ -336,8 +336,8 @@ tenants:
 #### ---- Test inheritance of svi ospf.enabled ----- ###
 # Tests logic for network services: ospf and vlan-interfaces.
 
-          # # ospf_enabled_set on svi to true, child_profile and parent_profile set to false
-          # # expected result: osfp enabled on svi
+          # ospf_enabled_set on svi to true, child_profile and parent_profile set to false
+          # expected result: osfp enabled on svi
           510:
             name: ospf_enabled_510
             enabled: true
