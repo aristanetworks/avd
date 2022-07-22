@@ -253,7 +253,7 @@ tenants:
             ip_address_virtual: 10.1.15.1/24
             profile: struct_config_child_profile_4
 
-#### ---- Test enheritance of svi igmp_snooping_enabled ----- ###
+#### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
 # Tests logic for network services: ip igmp snooping
 # Expected result for all tests is that igmp snooping is enabled for all VLANs
 
