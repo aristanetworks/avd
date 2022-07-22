@@ -607,7 +607,7 @@ mac_address_table:
 ```yaml
 # Optional profiles to share common settings for SVIs
 # Keys are the same used under SVIs. Keys defined under SVIs take precedence.
-# Note, structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+# Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
 # 1. svi.nodes[inventory_hostname].structured_config
 # 2. svi_profile.nodes[inventory_hostname].structured_config
 # 3. svi_parent_profile.nodes[inventory_hostname].structured_config
