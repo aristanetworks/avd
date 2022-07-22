@@ -119,9 +119,9 @@ svi_profiles:
   vxlan_child_profile_3:
     parent_profile: vxlan_parent_profile_2
 
-#### ---- Test enheritance of svi.ip_virtual_router_addresses ----- ###
+#### ---- Test inheritance of svi.ip_virtual_router_addresses ----- ###
 # Tests logic for network services: static-routes and vlan-interfaces
-# Prescendence order:
+# Precedence order:
 # 1. svi.ip_virtual_router_addresses
 # 2. svi_profile.ip_virtual_router_addresses
 # 3. svi_parent_profile.ip_virtual_router_addresses
