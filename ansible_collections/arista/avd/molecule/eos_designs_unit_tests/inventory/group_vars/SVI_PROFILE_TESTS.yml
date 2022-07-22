@@ -95,9 +95,9 @@ svi_profiles:
   igmp_child_profile_3:
     parent_profile: igmp_parent_profile_2
 
-#### ---- Test enheritance of svi.vxlan ----- ###
+#### ---- Test inheritance of svi.vxlan ----- ###
 # Tests logic for network services: router-bgp-vlan-aware-bundles, router-bgp-vlans and vxlan-interface.
-# Prescendence order:
+# Precedence order:
 # 1. svi.vxlan
 # 2. svi_profile.vxlan
 # 3. svi_parent_profile.vxlan
