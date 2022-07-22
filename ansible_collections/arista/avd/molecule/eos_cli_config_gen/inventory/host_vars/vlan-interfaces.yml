@@ -224,6 +224,10 @@ vlan_interfaces:
       ipv4:
         source_route_export:
           enabled: true
+        boundary: ACL_MULTICAST
+      ipv6:
+        static: true
+        boundary: ACL_V6_MULTICAST_WITH_OUT
     pim:
       ipv4:
         sparse_mode: true
@@ -235,6 +239,14 @@ vlan_interfaces:
     vrf: Tenant_A
     ip_address: 10.0.101.1/24
     pvlan_mapping: 111-112
+    multicast:
+      ipv4:
+        static: true
+        boundary: ACL_MULTICAST out
+      ipv6:
+        source_route_export:
+          enabled: true
+          administrative_distance: 20
 
 # VRRP
   Vlan667:
