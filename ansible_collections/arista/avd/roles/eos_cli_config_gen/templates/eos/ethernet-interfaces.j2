@@ -387,6 +387,20 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.mac_access_group_out is arista.avd.defined %}
    mac access-group {{ ethernet_interface.mac_access_group_out }} out
 {%         endif %}
+{%         if ethernet_interface.multicast is arista.avd.defined %}
+{%             if ethernet_interface.multicast.ipv4.boundary is arista.avd.defined %}
+   multicast ipv4 boundary {{ ethernet_interface.multicast.ipv4.boundary }}
+{%             endif %}
+{%             if ethernet_interface.multicast.ipv6.boundary is arista.avd.defined %}
+   multicast ipv6 boundary {{ ethernet_interface.multicast.ipv6.boundary }} out
+{%             endif %}
+{%             if ethernet_interface.multicast.ipv4.static is arista.avd.defined(true) %}
+   multicast ipv4 static
+{%             endif %}
+{%             if ethernet_interface.multicast.ipv6.static is arista.avd.defined(true) %}
+   multicast ipv6 static
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interface.mpls.ip is arista.avd.defined(true) %}
    mpls ip
 {%         elif ethernet_interface.mpls.ip is arista.avd.defined(false) %}
