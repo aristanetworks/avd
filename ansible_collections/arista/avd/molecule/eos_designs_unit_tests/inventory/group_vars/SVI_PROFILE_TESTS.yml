@@ -307,7 +307,7 @@ tenants:
             ip_address_virtual: 10.3.12.1/24
             profile: vxlan_child_profile_3
 
-#### ---- Test enheritance of svi ip_virtual_router_addresses ----- ###
+#### ---- Test inheritance of svi ip_virtual_router_addresses ----- ###
 # Tests logic for network services: static-routes and vlan-interfaces.
 
           # ip_virtual_router_addresses set on svi, child_profile and parent_profile
