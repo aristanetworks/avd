@@ -184,8 +184,8 @@ tenants:
           max_lsa: 15000
         svis:
 
-#### ---- Test enheritance of svi structured_configuration ----- ###
-# Test logic for network services: vlan-interfaces
+#### ---- Test inheritance of svi structured_configuration ----- ###
+# Tests logic for network services: vlan-interfaces
 
           # Set nodes[inventory_hostname].structured_config on all levels
           # Expected results:
