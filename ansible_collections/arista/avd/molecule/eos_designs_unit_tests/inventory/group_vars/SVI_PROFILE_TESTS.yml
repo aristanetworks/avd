@@ -21,7 +21,7 @@ l3leaf:
       bgp_as: 65002
 
 
-#### ---- Test enheritance of svi structured_configuration ----- ###
+#### ---- Test inheritance of svi structured_configuration ----- ###
 # Test logic for network services: vlan-interfaces
 # Structured config is not be merged recursively, but will be taken directly from the most specific level
 # Prescendence order:
