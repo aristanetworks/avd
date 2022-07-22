@@ -72,9 +72,9 @@ svi_profiles:
     parent_profile: struct_config_parent_profile_2
 
 
-#### ---- Test enheritance of svi igmp_snooping_enabled ----- ###
+#### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
 # Tests logic for network services: ip igmp snooping
-# Prescendence order:
+# Precedence order:
 # 1. svi.igmp_snooping_enabled
 # 2. svi_profile.igmp_snooping_enabled
 # 3. svi_parent_profile.igmp_snooping_enabled
