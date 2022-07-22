@@ -281,7 +281,7 @@ tenants:
             ip_address_virtual: 10.2.12.1/24
             profile: igmp_child_profile_3
 
-#### ---- Test enheritance of svi ip_virtual_router_addresses ----- ###
+#### ---- Test inheritance of svi ip_virtual_router_addresses ----- ###
 # Tests logic for network services: static-routes.
 # Expected result for all tests is vxlan disabled for all VLANs
 
