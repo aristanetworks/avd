@@ -333,7 +333,7 @@ tenants:
             profile: static_routes_child_profile_3
 
 
-#### ---- Test enheritance of svi ospf.enabled ----- ###
+#### ---- Test inheritance of svi ospf.enabled ----- ###
 # Tests logic for network services: ospf and vlan-interfaces.
 
           # # ospf_enabled_set on svi to true, child_profile and parent_profile set to false
