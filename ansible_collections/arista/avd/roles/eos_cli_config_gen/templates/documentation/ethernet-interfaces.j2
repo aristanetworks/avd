@@ -188,22 +188,28 @@
 
 #### Multicast Routing
 
-| Interface | IP Version | Static Routes Allowed | Boundary ACL |
-| --------- | ---------- | --------------------- | ------------ |
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
 {%         for multicast_interface in multicast_interfaces %}
 {%             if multicast_interface.multicast.ipv4 is arista.avd.defined %}
 {%                 set static = multicast_interface.multicast.ipv4.static | arista.avd.default('-') %}
-{%                 set boundary = multicast_interface.multicast.ipv4.boundary | arista.avd.default('-') %}
-| {{ multicast_interface.name }} | IPv4 | {{ static }} | {{ boundary }} |
+{%                 if multicast_interface.multicast.ipv4.boundaries is arista.avd.defined %}
+{%                     set boundaries = multicast_interface.multicast.ipv4.boundaries | selectattr('name', 'arista.avd.defined') |
+                                                                                        map(attribute='name') |
+                                                                                        join(', ') %}
+{%                 else %}
+{%                     set boundaries = '-' %}
+{%                 endif %}
+| {{ multicast_interface.name }} | IPv4 | {{ static }} | {{ boundaries }} |
 {%             endif %}
 {%             if multicast_interface.multicast.ipv6 is arista.avd.defined %}
 {%                 set static = multicast_interface.multicast.ipv6.static | arista.avd.default('-') %}
-{%                 if multicast_interface.multicast.ipv6.boundary is arista.avd.defined %}
-{%                     set boundary = multicast_interface.multicast.ipv6.boundary ~ ' out' %}
+{%                 if multicast_interface.multicast.ipv6.boundaries is arista.avd.defined %}
+{%                     set boundaries = multicast_interface.multicast.ipv6.boundaries | join(', ') %}
 {%                 else %}
-{%                     set boundary = '-' %}
+{%                     set boundaries = '-' %}
 {%                 endif %}
-| {{ multicast_interface.name }} | IPv6 | {{ static }} | {{ boundary }} |
+| {{ multicast_interface.name }} | IPv6 | {{ static }} | {{ boundaries }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

@@ -138,8 +138,8 @@ interface Management1
 
 #### Multicast Routing
 
-| Interface | IP Version | Static Routes Allowed | Boundary | Export Routes From Source Traffic |
-| --------- | ---------- | --------------------- | -------- | --------------------------------- |
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Routes From Source Traffic |
+| --------- | ---------- | --------------------- | -------------------- | --------------------------------- |
 | Vlan89 | IPv4 | - | - | True |
 
 ### VLAN Interfaces Device Configuration

@@ -195,6 +195,17 @@ vlan_interfaces:
         preferred_lifetime: infinite
         no_autoconfig_flag: true
     ipv6_virtual_router_address: 1b11:3a00:22b0:1000::1
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - name: 224.0.1.0/24
+            out: true
+          - name: 224.0.2.0/24
+      ipv6:
+        boundaries:
+          - ff00::/16
+          - ff01::/16
 
 # IPv6 + helpers + Mcast
 
@@ -224,10 +235,12 @@ vlan_interfaces:
       ipv4:
         source_route_export:
           enabled: true
-        boundary: ACL_MULTICAST
+        boundaries:
+          - name: ACL_MULTICAST
       ipv6:
         static: true
-        boundary: ACL_V6_MULTICAST_WITH_OUT
+        boundaries:
+          - ACL_V6_MULTICAST_WITH_OUT
     pim:
       ipv4:
         sparse_mode: true
@@ -242,7 +255,9 @@ vlan_interfaces:
     multicast:
       ipv4:
         static: true
-        boundary: ACL_MULTICAST out
+        boundaries:
+          - name: ACL_MULTICAST
+            out: true
       ipv6:
         source_route_export:
           enabled: true

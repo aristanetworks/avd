@@ -155,11 +155,13 @@ interface Management1
 
 #### Multicast Routing
 
-| Interface | IP Version | Static Routes Allowed | Boundary ACL |
-| --------- | ---------- | --------------------- | ------------ |
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
 | Ethernet2 | IPv4 | True | ACL_MULTICAST |
-| Ethernet2 | IPv6 | - | ACL_V6_MULTICAST out |
-| Ethernet9 | IPv4 | - | ACL_MULTICAST out |
+| Ethernet2 | IPv6 | - | ACL_V6_MULTICAST |
+| Ethernet4 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 |
+| Ethernet4 | IPv6 | - | ff00::/16, ff01::/16 |
+| Ethernet9 | IPv4 | - | ACL_MULTICAST |
 | Ethernet9 | IPv6 | True | - |
 
 #### IPv4
@@ -287,6 +289,11 @@ interface Ethernet4
    ipv6 nd managed-config-flag
    ipv6 access-group IPv6_ACL_IN in
    ipv6 access-group IPv6_ACL_OUT out
+   multicast ipv4 boundary 224.0.1.0/24 out
+   multicast ipv4 boundary 224.0.2.0/24
+   multicast ipv6 boundary ff00::/16 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
    priority-flow-control on
    spanning-tree guard none
 !

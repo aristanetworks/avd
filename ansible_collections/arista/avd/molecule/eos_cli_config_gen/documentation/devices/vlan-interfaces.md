@@ -159,11 +159,13 @@ interface Management1
 
 #### Multicast Routing
 
-| Interface | IP Version | Static Routes Allowed | Boundary | Export Routes From Source Traffic |
-| --------- | ---------- | --------------------- | -------- | --------------------------------- |
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Routes From Source Traffic |
+| --------- | ---------- | --------------------- | -------------------- | --------------------------------- |
+| Vlan75 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 | - |
+| Vlan75 | IPv6 | - | ff00::/16, ff01::/16 | - |
 | Vlan89 | IPv4 | - | ACL_MULTICAST | True |
-| Vlan89 | IPv6 | True | ACL_V6_MULTICAST_WITH_OUT out | - |
-| Vlan110 | IPv4 | True | ACL_MULTICAST out | - |
+| Vlan89 | IPv6 | True | ACL_V6_MULTICAST_WITH_OUT | - |
+| Vlan110 | IPv4 | True | ACL_MULTICAST | - |
 | Vlan110 | IPv6 | - | - | True |
 
 ### VLAN Interfaces Device Configuration
@@ -208,6 +210,11 @@ interface Vlan75
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
+   multicast ipv4 boundary 224.0.1.0/24 out
+   multicast ipv4 boundary 224.0.2.0/24
+   multicast ipv6 boundary ff00::/16 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
    ip address virtual 10.10.75.1/24
 !
