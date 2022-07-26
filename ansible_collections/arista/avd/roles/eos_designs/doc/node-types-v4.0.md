@@ -46,7 +46,7 @@ node_type_keys:
     # Optional | Is this switch an MPLS LSR
     mpls_lsr: < true | false | default -> false >
 
-    # Optional | Override ip_adressing templates
+    # Optional | Override ip_addressing templates
     ip_addressing:
       router_id: <path to J2 template - default inherited from templates.ip_addressing.router_id >
       mlag_ip_primary: <path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary >
@@ -107,7 +107,7 @@ vtep_ip:
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_offset }}`
 
-`p2p_uplinks_ip` & `p2p_uplinks_peer_ip` can leverage the switch facts (switch.*) to customize the IP adressing.
+`p2p_uplinks_ip` & `p2p_uplinks_peer_ip` can leverage the switch facts (switch.*) to customize the IP addressing.
 All other templates can only leverage the input variables and variables set in switch facts template.
 
 For more information about the available contextual properties, see the following links:

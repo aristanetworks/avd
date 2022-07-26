@@ -46,7 +46,7 @@ node_type_keys:
     # Optional | Is this switch an MPLS LSR
     mpls_lsr: < true | false | default -> false >
 
-    # Optional | Override ip_adressing templates
+    # Optional | Override ip_addressing templates
     ip_addressing:
       router_id: <path to J2 template - default inherited from templates.ip_addressing.router_id >
       mlag_ip_primary: <path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary >
