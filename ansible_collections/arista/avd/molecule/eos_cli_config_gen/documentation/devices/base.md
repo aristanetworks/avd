@@ -103,6 +103,7 @@ management ssh
    idle-timeout 15
    connection per-host 12
    no shutdown
+   !
    vrf mgt
       no shutdown
 ```
