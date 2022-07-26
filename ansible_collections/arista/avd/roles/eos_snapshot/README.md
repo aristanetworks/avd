@@ -141,7 +141,7 @@ output_format:
  # - json
  # - yaml
 
-commands_to_collect:
+commands_list:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description
