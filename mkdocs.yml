@@ -46,8 +46,8 @@ extra:
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/aristanetworks/ansible-avd
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/AristaNetworks
+    # - icon: fontawesome/brands/twitter
+    #   link: https://twitter.com/AristaNetworks
     - icon: fontawesome/solid/globe
       link: https://www.arista.com
 
