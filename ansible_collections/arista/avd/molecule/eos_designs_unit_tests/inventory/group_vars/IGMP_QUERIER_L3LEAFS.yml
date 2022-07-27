@@ -59,7 +59,7 @@ tenants:
         # Expected results:
         # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
           3:
-            name: "VLAN_2"
+            name: "VLAN_3"
             tags: ['test_l3']
             enabled: True
             ip_address_virtual: 10.0.3.1/24
@@ -154,7 +154,7 @@ tenants:
           # Expected results:
           # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
           22:
-            name: "VLAN_23"
+            name: "VLAN_22"
             tags: ['test_l3']
             enabled: True
             ip_address_virtual: 10.0.22.1/24
@@ -162,7 +162,7 @@ tenants:
           # Expected results:
           # igmp querier enable, querier address set to 2.2.2.2, and version set to 1
           23:
-            name: "VLAN_12"
+            name: "VLAN_23"
             tags: ['test_l3']
             enabled: True
             ip_address_virtual: 10.0.23.1/24

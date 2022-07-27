@@ -277,7 +277,7 @@ vlans:
     name: VLAN_2
   3:
     tenant: Tenant_A
-    name: VLAN_2
+    name: VLAN_3
   101:
     tenant: Tenant_A
     name: VLAN_101
@@ -307,10 +307,10 @@ vlans:
     name: VLAN_21
   22:
     tenant: Tenant_D
-    name: VLAN_23
+    name: VLAN_22
   23:
     tenant: Tenant_D
-    name: VLAN_12
+    name: VLAN_23
   121:
     tenant: Tenant_D
     name: VLAN_121
@@ -423,7 +423,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - test_l3
-    description: VLAN_2
+    description: VLAN_3
     shutdown: false
     vrf: IGMP_QUERIER_TEST_1
     ip_address_virtual: 10.0.3.1/24
@@ -455,7 +455,7 @@ vlan_interfaces:
     tenant: Tenant_D
     tags:
     - test_l3
-    description: VLAN_23
+    description: VLAN_22
     shutdown: false
     vrf: IGMP_QUERIER_TEST_3
     ip_address_virtual: 10.0.22.1/24
@@ -463,7 +463,7 @@ vlan_interfaces:
     tenant: Tenant_D
     tags:
     - test_l3
-    description: VLAN_12
+    description: VLAN_23
     shutdown: false
     vrf: IGMP_QUERIER_TEST_3
     ip_address_virtual: 10.0.23.1/24
