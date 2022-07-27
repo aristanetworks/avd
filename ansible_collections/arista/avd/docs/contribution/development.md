@@ -2,7 +2,7 @@
 
 ## Overview
 
-We can use two methods to get Ansible up and running quickly with all the requirements to leverage ansible-avd. A Python Virtual Environment or Docker container.
+Two methods can be used to get Ansible up and running quickly with all the requirements to leverage ansible-avd: a Python Virtual Environment or Docker container.
 
 The best way to use the development files is to copy them to the root directory where you have your repositories cloned. For example, see the file/folder structure below.
 
