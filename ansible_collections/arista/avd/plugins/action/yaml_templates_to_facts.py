@@ -11,6 +11,7 @@ from ansible.plugins.filter.core import combine
 from ansible.plugins.loader import lookup_loader
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 from datetime import datetime
+from deepmerge import Merger
 
 
 class ActionModule(ActionBase):
@@ -66,6 +67,9 @@ class ActionModule(ActionBase):
         if debug:
             avd_yaml_templates_to_facts_debug = template_vars.get('avd_yaml_templates_to_facts_debug', [])
 
+        my_merger = Merger([(list, ["override"]), (dict, ["merge"])], ["override"], ["override"])
+        my_merger2 = Merger([(list, ["append"]), (dict, ["merge"])], ["override"], ["override_if_not_empty"])
+
         for template_item in template_list:
             if debug:
                 debug_item = template_item
@@ -85,13 +89,15 @@ class ActionModule(ActionBase):
             if root_key:
                 template_vars[root_key] = output
             else:
-                template_vars = combine(task_vars, output, recursive=True)
+                my_merger.merge(template_vars, output)
+                # template_vars = combine(task_vars, output, recursive=True)
 
             if debug:
                 debug_item['timestamps']['run_template'] = datetime.now()
 
             # Here we parse the template, expecting the result to be a YAML formatted string
             template_result = template_lookup_module.run([template], template_vars)
+
             if debug:
                 debug_item['timestamps']['load_yaml'] = datetime.now()
 
@@ -110,8 +116,8 @@ class ActionModule(ActionBase):
                 if debug:
                     debug_item['timestamps']['combine_data'] = datetime.now()
 
-                output = combine(output, template_result_data, recursive=True, list_merge=list_merge)
-
+                my_merger2.merge(output, template_result_data)
+                # output = combine(output, template_result_data, recursive=True, list_merge=list_merge)
             if debug:
                 debug_item['timestamps']['done'] = datetime.now()
                 avd_yaml_templates_to_facts_debug.append(debug_item)
@@ -125,7 +131,8 @@ class ActionModule(ActionBase):
             if root_key:
                 template_vars[root_key] = output
             else:
-                template_vars = combine(task_vars, output, recursive=True)
+                my_merger.merge(template_vars, output)
+                # template_vars = combine(task_vars, output, recursive=True)
 
             if debug:
                 debug_item['timestamps']['templating'] = datetime.now()
