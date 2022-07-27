@@ -122,7 +122,7 @@ Execute eos_state_validation playbook once change control has been approved and 
 Running this playbook requires the following:
 
 - `ansible_host` **must** be configured in your inventory for every EOS device.
-- eAPI access **must** be configured and allowed in your networks.
+- eAPI access **must** be configured and allowed in your network.
 
 ```yaml
 # EOS eAPI state validation
