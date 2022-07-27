@@ -146,7 +146,7 @@ bgp_peer_groups:
 # Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
 evpn_vlan_aware_bundles: < boolean | default -> false >
 
-# BFD Multihop tunning | Required.
+# BFD Multihop tuning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
   min_rx: < | default -> 300 >

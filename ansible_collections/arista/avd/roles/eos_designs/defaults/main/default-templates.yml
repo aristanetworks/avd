@@ -53,7 +53,7 @@ default_templates:
 
   mpls:
     structured_config:
-      # Render Strucured Configuration
+      # Render Structured Configuration
       - template: "base/main.j2"
       # Underlay feature
       - template: "underlay/main.j2"

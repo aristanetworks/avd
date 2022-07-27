@@ -8,7 +8,7 @@ fabric_name: DC1_FABRIC
 # Assign range larger then total [ spines * total potential leafs * 2 ]
 # underlay_p2p_network_summary: 172.31.255.0/24
 
-# Point to Point Underlay with IPv6 Unumberred
+# Point to Point Underlay with IPv6 Unnumbered
 underlay_rfc5549: true
 
 # IP address range for evpn loopback for all switches in fabric, assigned as /32s
@@ -191,7 +191,7 @@ leaf_bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
 
-# Upodate p2p mtu 9000 -> 1500
+# Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
 
 # Adjust default bfd values

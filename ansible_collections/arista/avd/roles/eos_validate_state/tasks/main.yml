@@ -65,7 +65,7 @@
     - hardware
 
   #####################################
-  ## Load tasks for validaiton tests ##
+  ## Load tasks for validation tests ##
   #####################################
 
 - name: Load Hardware validation tasks

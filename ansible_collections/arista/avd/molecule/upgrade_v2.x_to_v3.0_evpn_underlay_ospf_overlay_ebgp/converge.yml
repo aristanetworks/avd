@@ -7,7 +7,7 @@
     root_dir: '{{playbook_dir}}'
   tasks:
 
-    - name: generate intented variables
+    - name: generate intended variables
       delegate_to: 127.0.0.1
       import_role:
         tasks_from: upgrade-and-run
