@@ -256,17 +256,11 @@ mac_address_table:
             # Requires "enable_trunk_groups: true"
             trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
 
-            # Explicitly enable or disable evpn_l2_multicast to overide setting of tenants.<tenant>.evpn_l2_multicast.enabled.
-            # When evpn_l2_multicast.enanble it set to true for a vlan or a tenant, "igmp snooping" and igmp snooping querier" will always be enabled - overriding those individual settings.
-            evpn_l2_multicast:
-              enabled: < true | false >
-
             # Enable IGMP Snooping
             igmp_snooping_enabled: < true | false | default true (eos) >
 
             # Enable igmp snooping querier, by default using IP address of Loopback 0.
             igmp_snooping_querier:
-              # Will be enabled automatically if "evpn_l2_multicast" is enabled.
               enabled: < true | false >
               source_address: < ipv4_address -> default ip address of Loopback0 >
               version: < 1, 2, 3 -> default 2 (EOS) >
@@ -553,17 +547,11 @@ mac_address_table:
         # Extend this L2VLAN over VXLAN
         vxlan: < true | false | default -> true >
 
-        # Explicitly enable or disable evpn_l2_multicast to overide setting of tenants.<tenant>.evpn_l2_multicast.enabled.
-        # When evpn_l2_multicast.enanble it set to true for a vlan or a tenant, "igmp snooping" and igmp snooping querier" will always be enabled - overriding those individual settings.
-        evpn_l2_multicast:
-          enabled: < true | false >
-
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
 
         # Enable igmp snooping querier, by default using IP address of Loopback 0.
         igmp_snooping_querier:
-          # Will be enabled automatically if "evpn_l2_multicast" is enabled.
           enabled: < true | false >
           source_address: < ipv4_address -> default ip address of Loopback0 >
           version: < 1, 2, 3 -> default 2 (EOS) >
