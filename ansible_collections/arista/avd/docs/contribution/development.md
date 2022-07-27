@@ -33,7 +33,7 @@ The Ansible version is passed in with the Docker build command using the **`ANSI
 
 Before you can use a container, you must install [**Docker CE**](https://www.docker.com/products/docker-desktop) and [**docker-compose**](https://docs.docker.com/compose/) on your workstation.
 
-Since Docker image is now automatically published on [**docker-hub**](https://hub.docker.com/repository/docker/avdteam/base), a dedicated repository is available on [**Arista NetDevOps Community**](https://github.com/arista-netdevops-community/docker-avd-base).
+Since the AVD Docker image is now automatically published on [**docker-hub**](https://hub.docker.com/repository/docker/avdteam/base), a dedicated repository is available on [**Arista NetDevOps Community**](https://github.com/arista-netdevops-community/docker-avd-base).
 
 ```shell
 # Start development stack
