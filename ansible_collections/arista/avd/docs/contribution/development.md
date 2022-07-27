@@ -25,11 +25,11 @@ Once installed, use `dev-start` command to bring up all the required containers:
 - An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or CVP documentation listening on port `localhost:8001`
 - An [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for Ansible execution
 
-## Docker things
+## Docker tips
 
 The Docker container approach for development can be used to ensure that everybody is using the same development environment while still being flexible enough to use the repository you are making changes to. You can inspect the Dockerfile to see what packages have been installed. The container will mount the current working directory so that you can work with your local files.
 
-The Ansible version is passed in with the Docker build command using the **`ANSIBLE_VERSION`** variable. If the ***ANSIBLE*** variable isn't used, the Dockerfile will, by default, set the Ansible version to describe in AVD requirements.
+The Ansible version is passed in with the Docker build command using the **`ANSIBLE_VERSION`** variable. If the variable isn't defined, the Dockerfile will, by default, set the Ansible version to what's specified in the AVD requirements.
 
 Before you can use a container, you must install [**Docker CE**](https://www.docker.com/products/docker-desktop) and [**docker-compose**](https://docs.docker.com/compose/) on your workstation.
 
