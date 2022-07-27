@@ -96,7 +96,7 @@ evpn_vlan_aware_bundles: < boolean | default -> false >
 # If set, it overrides per vlan settings
 default_igmp_snooping_enabled: < boolean | default -> true >
 
-# BFD Multihop tunning | Required.
+# BFD Multihop tuning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
   min_rx: < | default -> 300 >

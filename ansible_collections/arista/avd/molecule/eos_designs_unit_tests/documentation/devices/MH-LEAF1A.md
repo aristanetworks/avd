@@ -468,7 +468,7 @@ interface Ethernet23
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
 | Port-Channel12 | server03_AUTO_ESI_Auto-ESI PortChannel | switched | access | 310 | - | - | - | - | - | 0000:0000:fc87:ae24:2cb3 |
 | Port-Channel13 | server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile | switched | access | 310 | - | - | - | - | - | 0000:0000:29cc:4043:0a29 |
-| Port-Channel14 | server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server | switched | access | 310 | - | - | - | - | - | 0000:0000:010a:010a:010a |
+| Port-Channel14 | server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server | switched | access | 310 | - | - | - | - | - | 0000:0000:010a:010a:010a |
 | Port-Channel15 | server06_Single_Active_Port_Channel_Single-Active ESI | switched | trunk | 310 | - | - | - | - | - | 0000:0000:2873:c14b:64ec |
 | Port-Channel16 | server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:ec11:73f8:7361 |
 | Port-Channel20 | server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF | switched | trunk | 310 | - | - | - | - | - | 0000:0000:47cb:834e:c0c7 |
@@ -595,7 +595,7 @@ interface Port-Channel13
    link tracking group LT_GROUP1 downstream
 !
 interface Port-Channel14
-   description server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server
+   description server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server
    no shutdown
    switchport
    switchport access vlan 310

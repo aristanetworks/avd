@@ -77,7 +77,7 @@ The following options may be specified for this module:
 ## Examples:
 
     # tasks file for cvp_configlet_upload
-    - name: generate intented variables
+    - name: generate intended variables
       tags: [build, provision]
       configlet_build_config:
         configlet_dir: '{{ configlet_dir }}'

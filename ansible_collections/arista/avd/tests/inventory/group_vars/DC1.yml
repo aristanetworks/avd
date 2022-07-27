@@ -32,7 +32,7 @@ name_servers:
   - 192.168.2.1
   - 8.8.8.8
 
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
+# NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management VRF
 custom_structured_configuration_ntp:
   local_interface:
     name: Management1

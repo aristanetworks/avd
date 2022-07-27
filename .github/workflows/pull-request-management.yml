@@ -343,7 +343,7 @@ jobs:
           ansible-test units --requirements --docker -vv
 
   ansible_test_integration:
-    name: Run ansible-test intergration test cases
+    name: Run ansible-test integration test cases
     runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     steps:

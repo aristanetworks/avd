@@ -8,7 +8,7 @@ fabric_name: DC1_FABRIC
 # Assign range larger then total [ spines * total potential leafs * 2 ]
 # underlay_uplink_ipv4_pool: 172.31.255.0/24
 
-# Point to Point Underlay with IPv6 Unumberred
+# Point to Point Underlay with IPv6 Unnumbered
 underlay_rfc5549: true
 overlay_mlag_rfc5549: true
 
@@ -222,7 +222,7 @@ l2leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet8, Ethernet8 ]
 
-# Upodate p2p mtu 9000 -> 1500
+# Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
 
 # Adjust default bfd values

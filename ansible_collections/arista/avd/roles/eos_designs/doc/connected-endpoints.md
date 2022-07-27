@@ -280,7 +280,7 @@ Both data models support variable inheritance from profiles defined under [`port
         port_channel:
           description: < port_channel_description >
           mode: '< active | passive | on >'
-          # Note that short_esi defined here is overriden by short_esi defined under the ethernet_segment section.
+          # Note that short_esi defined here is overridden by short_esi defined under the ethernet_segment section.
           # This key will be deprecated in the next major version of AVD.
           short_esi: < xxxx:xxxx:xxxx | auto >
         ethernet_segment:
