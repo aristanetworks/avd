@@ -92,7 +92,7 @@ Repository implements following hooks:
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
 - `pylint`: Run python linting with settings defined in [`pylintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
 - `yamllint`: Validate all YAML files using configuration from [`yamllintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/.github/yamllintrc).
-- `ansible-lint`: Validate YAML files are valid against Ansible rules.
+- `ansible-lint`: Validate YAML files with Ansible proven practices, patters, and behaviors.
 
 #### Installation
 
