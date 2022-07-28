@@ -29,9 +29,7 @@ ip_igmp_snooping:
       querier:
         enabled: {{ svi_igmp_snooping_querier_enabled }}
         address: "{{ svi_igmp_snooping_querier_source_address }}"
-{%                         if svi_igmp_snooping_querier_version is arista.avd.defined %}
         version: {{ svi_igmp_snooping_querier_version }}
-{%                         endif %}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
@@ -55,9 +53,7 @@ ip_igmp_snooping:
       querier:
         enabled: {{ l2vlan_igmp_snooping_querier_enabled }}
         address: "{{ l2vlan_igmp_snooping_querier_source_address }}"
-{%                     if l2vlan_igmp_snooping_querier_version is arista.avd.defined %}
         version: {{ l2vlan_igmp_snooping_querier_version }}
-{%                     endif %}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
