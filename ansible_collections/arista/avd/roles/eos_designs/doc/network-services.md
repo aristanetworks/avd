@@ -131,6 +131,12 @@ mac_address_table:
         route_map_in: < route-map name >
         local_as: < local BGP ASN >
 
+    # Enable igmp snooping querier for each SVI/l2vlan x within tenant, by default using IP address of Loopback 0.
+    igmp_snooping_querier:
+       enabled: < true | false >
+       source_address: < ipv4_address -> default ip address of Loopback0 >
+       version: < 1, 2, 3 -> default 2 (EOS) >
+
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
@@ -252,6 +258,12 @@ mac_address_table:
 
             # Enable IGMP Snooping
             igmp_snooping_enabled: < true | false | default true (eos) >
+
+            # Enable igmp snooping querier, by default using IP address of Loopback 0.
+            igmp_snooping_querier:
+              enabled: < true | false >
+              source_address: < ipv4_address -> default ip address of Loopback0 >
+              version: < 1, 2, 3 -> default 2 (EOS) >
 
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
@@ -535,11 +547,14 @@ mac_address_table:
         # Extend this L2VLAN over VXLAN
         vxlan: < true | false | default -> true >
 
-      < 1-4096 >:
-        name: < description >
-        tags: [ < tag_1 >, < tag_2 > ]
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
+
+        # Enable igmp snooping querier, by default using IP address of Loopback 0.
+        igmp_snooping_querier:
+          enabled: < true | false >
+          source_address: < ipv4_address -> default ip address of Loopback0 >
+          version: < 1, 2, 3 -> default 2 (EOS) >
 
   < tenant_b >:
     mac_vrf_vni_base: < 10000-16770000 >
