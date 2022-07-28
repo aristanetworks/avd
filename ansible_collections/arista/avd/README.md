@@ -116,7 +116,7 @@ duplicate_dict_key=error
          name: arista.avd.eos_config_deploy_cvp
 ```
 
-Execute eos_state_validation playbook once change control has been approved and deployed to devices in CVP.
+Execute eos_validate_state playbook once change control has been approved and devices are deployed via CVP.
 
 !!! note
 Running this playbook requires the following:
