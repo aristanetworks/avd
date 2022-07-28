@@ -767,6 +767,8 @@ class EosDesignsFacts:
 
     @cached_property
     def evpn_multicast(self):
+        if "evpn" not in self.overlay_address_families:
+            return None
         if get(self._hostvars, "evpn_multicast") is True and self.vtep is True:
             if not (
                 self.underlay_multicast is True
