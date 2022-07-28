@@ -24,9 +24,7 @@ ip_igmp_snooping:
 {%                 endif %}
 {%                 if svi_igmp_snooping_enabled is arista.avd.defined or svi_igmp_snooping_querier_enabled is arista.avd.defined %}
     {{ svi.id | int }}:
-{%                     if svi_igmp_snooping_enabled is arista.avd.defined %}
       enabled: {{ svi_igmp_snooping_enabled }}
-{%                     endif %}
 {%                     if svi_igmp_snooping_querier_enabled is arista.avd.defined %}
       querier:
         enabled: {{ svi_igmp_snooping_querier_enabled }}
@@ -52,9 +50,7 @@ ip_igmp_snooping:
                                                           tenant.igmp_snooping_querier.version) %}
 {%             if l2vlan_igmp_snooping_enabled is arista.avd.defined or l2vlan_igmp_snooping_querier_enabled is arista.avd.defined %}
     {{ l2vlan.id | int }}:
-{%                 if l2vlan_igmp_snooping_enabled is arista.avd.defined %}
       enabled: {{ l2vlan_igmp_snooping_enabled }}
-{%                 endif %}
 {%                 if l2vlan_igmp_snooping_querier_enabled is arista.avd.defined %}
       querier:
         enabled: {{ l2vlan_igmp_snooping_querier_enabled }}
