@@ -15,7 +15,7 @@ Full documentation for the collection is available on read-the-docs:
 
 The arista.avd collection provides abstracted data models and framework to build, document, deploy and validate the following designs:
 
-The following table lists underlay and overlay combinations that can be leveraged to deploy a **layer three leaf spine (L3LS) Ethernet VPN (EVPN) fabric**:
+Below are the underlay and overlay combinations that can be leveraged to deploy a **layer three leaf spine (L3LS) Ethernet VPN (EVPN) fabric**:
 
 | Underlay | Overlay | Topology |
 | -------- | ------- | ---------- |
