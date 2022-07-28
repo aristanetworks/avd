@@ -66,8 +66,8 @@ class ActionModule(ActionBase):
         if debug:
             avd_yaml_templates_to_facts_debug = template_vars.get('avd_yaml_templates_to_facts_debug', [])
 
-        my_merger = deepmerge.Merger([(list, ["override"]), (dict, ["merge"])], ["override"], ["override_if_not_empty"])
-        my_merger2 = deepmerge.Merger([(list, ["append"]), (dict, ["merge"])], ["override"], ["override_if_not_empty"])
+        my_merger = deepmerge.Merger([(list, ["override"]), (dict, ["merge"])], ["override"], ["override"])
+        my_merger2 = deepmerge.Merger([(list, ["append"]), (dict, ["merge"])], ["override"], ["override"])
 
         for template_item in template_list:
             if debug:
