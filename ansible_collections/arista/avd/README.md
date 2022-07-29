@@ -32,7 +32,7 @@ Below are the underlay and overlay combinations that can be leveraged to deploy 
 
 ## Roles Overview
 
-This repository provides roles for Aristas's collection, **arista.avd**, with the following content:
+This repository provides content for Arista's **arista.avd** collection. The following roles are included.
 
 - [**arista.avd.eos_designs**](roles/eos_designs/README.md) - Opinionated Data model to assist with the deployment of Arista Validated Designs.
 - [**arista.avd.eos_cli_config_gen**](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
