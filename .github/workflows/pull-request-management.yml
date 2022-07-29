@@ -139,8 +139,8 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
         run: |
-          pip3 install -r ansible_collections/arista/avd/requirements.txt
-          pip3 install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -327,8 +327,8 @@ jobs:
           python-version: "3.8"
       - name: 'Install Python requirements'
         run: |
-          pip3 install -r ansible_collections/arista/avd/requirements.txt
-          pip3 install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
@@ -349,8 +349,8 @@ jobs:
           python-version: "3.8"
       - name: 'Install Python requirements'
         run: |
-          pip3 install -r ansible_collections/arista/avd/requirements.txt
-          pip3 install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'run ansible-test units test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -371,8 +371,8 @@ jobs:
           python-version: "3.8"
       - name: 'Install Python requirements'
         run: |
-          pip3 install -r ansible_collections/arista/avd/requirements.txt
-          pip3 install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/

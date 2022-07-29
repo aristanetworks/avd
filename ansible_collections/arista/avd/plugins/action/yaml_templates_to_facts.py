@@ -10,11 +10,22 @@ from ansible.utils.vars import isidentifier
 from ansible.plugins.loader import lookup_loader
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 from datetime import datetime
-import deepmerge
+
+try:
+    import deepmerge
+except ImportError as imp_exc:
+    DEEPMERGE_IMPORT_ERROR = imp_exc
+else:
+    DEEPMERGE_IMPORT_ERROR = None
 
 
 class ActionModule(ActionBase):
+
     def run(self, tmp=None, task_vars=None):
+
+        if DEEPMERGE_IMPORT_ERROR:
+            raise Exception('Python library "deepmerge" must be installed to use this plugin')
+
         if task_vars is None:
             task_vars = {}
 
