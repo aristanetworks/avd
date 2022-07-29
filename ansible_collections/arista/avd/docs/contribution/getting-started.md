@@ -7,7 +7,7 @@
 
 ## Pull requests
 
-- Be sure to open an issue **before** you start working on a pull request and discuss your ideas with the **ansible-avd** maintainers before beginning work. This will help prevent wasting time on something we might not be able to implement. When suggesting a new feature, ensure it won't conflict with any work already in progress.
+- **Before** you start working on a pull request, make sure to open an issue and discuss your ideas with the **ansible-avd** maintainers. This will help prevent wasting time on something we might not be able to implement. When suggesting a new feature, ensure it won't conflict with any work already in progress.
 
 - Any pull request which _doesn't_ relate to an accepted issue will not be approved.
 

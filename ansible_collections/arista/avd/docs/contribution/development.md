@@ -87,7 +87,7 @@ Repository implements following hooks:
 
 - `trailing-whitespace`: Fix trailing whitespace. If found, commit is stopped, and you must rerun the commit process.
 - `end-of-file-fixer`: Like `trailing-whitespace`, this hook fixes the wrong end of the file and stops your commit.
-- `check-yaml`: Check all YAML files are valid.
+- `check-yaml`: Checks that all YAML files are valid.
 - `check-added-large-files`: Check if there is no large file included in the repository.
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
 - `pylint`: Run python linting with settings defined in [`pylintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
