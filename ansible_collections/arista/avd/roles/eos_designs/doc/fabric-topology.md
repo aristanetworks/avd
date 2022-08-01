@@ -369,7 +369,7 @@ default_interfaces:
       # Useful for "border" leaf.
       always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
 
-      # Only configure VLANs in use by connected endpoints
+      # Only configure VLANs, SVIs, VRFs in use by connected endpoints
       # or downstream L2 switches.
       only_vlans_in_use: < true | false | default -> false >
 
