@@ -8,7 +8,7 @@
 
 Full documentation for the collection is available on read-the-docs:
 
-- [latest stable version](https://www.avd.sh/en/latest/)
+- [stable version](https://www.avd.sh/en/stable/)
 - [collection development version](https://www.avd.sh/en/devel/)
 
 ## Reference Designs
