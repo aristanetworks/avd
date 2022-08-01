@@ -708,7 +708,7 @@ class EosDesignsFacts:
                         continue
 
                     if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-                        vlans.extend(map(int, self._range_expand(adapter_settings["vlans"])))
+                        vlans.extend(map(int, self._range_expand(str(adapter_settings["vlans"]))))
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
                     elif "trunk" in adapter_settings.get("mode"):
