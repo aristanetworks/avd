@@ -55,11 +55,11 @@ This repository provides custom plugins for Arista's AVD collection:
 
 ### Collection Installation
 
-Ansible Galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming arista.avd content. Please follow [this](https://avd.sh/en/latest/docs/installation/collection-installation.html) guide.
+Ansible Galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming arista.avd content. Please follow [this](docs/installation/collection-installation.md) guide.
 
 ### Requirements
 
-Please follow the [requirements](https://avd.sh/en/latest/docs/installation/requirements.html) guide to install dependencies.
+Please follow the [requirements](docs/installation/requirements.md) guide to install dependencies.
 
 **Ansible Configuration INI file:**
 
