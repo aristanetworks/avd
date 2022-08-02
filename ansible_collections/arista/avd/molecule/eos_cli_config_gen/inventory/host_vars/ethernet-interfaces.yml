@@ -39,10 +39,10 @@ ethernet_interfaces:
       ipv4:
         static: true
         boundaries:
-          - name: ACL_MULTICAST
+          - boundary: ACL_MULTICAST
       ipv6:
         boundaries:
-          - ACL_V6_MULTICAST
+          - boundary: ACL_V6_MULTICAST
     storm_control:
       all:
         level: 10
@@ -110,13 +110,13 @@ ethernet_interfaces:
       ipv4:
         static: true
         boundaries:
-          - name: 224.0.1.0/24
+          - boundary: 224.0.1.0/24
             out: true
-          - name: 224.0.2.0/24
+          - boundary: 224.0.2.0/24
       ipv6:
         boundaries:
-          - ff00::/16
-          - ff01::/16
+          - boundary: ff00::/16
+          - boundary: ff01::/16
 
   Ethernet5:
     description: Molecule Routing
@@ -223,7 +223,7 @@ ethernet_interfaces:
     multicast:
       ipv4:
         boundaries:
-          - name: ACL_MULTICAST
+          - boundary: ACL_MULTICAST
             out: true
       ipv6:
         static: true

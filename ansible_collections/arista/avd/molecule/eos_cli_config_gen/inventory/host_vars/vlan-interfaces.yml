@@ -199,13 +199,13 @@ vlan_interfaces:
       ipv4:
         static: true
         boundaries:
-          - name: 224.0.1.0/24
+          - boundary: 224.0.1.0/24
             out: true
-          - name: 224.0.2.0/24
+          - boundary: 224.0.2.0/24
       ipv6:
         boundaries:
-          - ff00::/16
-          - ff01::/16
+          - boundary: ff00::/16
+          - boundary: ff01::/16
 
 # IPv6 + helpers + Mcast
 
@@ -236,11 +236,11 @@ vlan_interfaces:
         source_route_export:
           enabled: true
         boundaries:
-          - name: ACL_MULTICAST
+          - boundary: ACL_MULTICAST
       ipv6:
         static: true
         boundaries:
-          - ACL_V6_MULTICAST_WITH_OUT
+          - boundary: ACL_V6_MULTICAST_WITH_OUT
     pim:
       ipv4:
         sparse_mode: true
@@ -256,7 +256,7 @@ vlan_interfaces:
       ipv4:
         static: true
         boundaries:
-          - name: ACL_MULTICAST
+          - boundary: ACL_MULTICAST
             out: true
       ipv6:
         source_route_export:

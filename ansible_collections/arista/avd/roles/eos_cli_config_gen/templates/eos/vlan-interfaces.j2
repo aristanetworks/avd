@@ -94,7 +94,7 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.multicast is arista.avd.defined %}
 {%         if vlan_interface.multicast.ipv4.boundaries is arista.avd.defined %}
 {%             for boundary in vlan_interface.multicast.ipv4.boundaries %}
-{%                 set boundary_cli = "multicast ipv4 boundary " ~ boundary.name %}
+{%                 set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
 {%                 if boundary.out is arista.avd.defined(true) %}
 {%                     set boundary_cli = boundary_cli ~ " out" %}
 {%                 endif %}
@@ -103,7 +103,7 @@ interface {{ vlan_interface.name }}
 {%         endif %}
 {%         if vlan_interface.multicast.ipv6.boundaries is arista.avd.defined %}
 {%             for boundary in vlan_interface.multicast.ipv6.boundaries %}
-   multicast ipv6 boundary {{ boundary }} out
+   multicast ipv6 boundary {{ boundary.boundary }} out
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interface.multicast.ipv4.source_route_export.enabled is arista.avd.defined(true) %}

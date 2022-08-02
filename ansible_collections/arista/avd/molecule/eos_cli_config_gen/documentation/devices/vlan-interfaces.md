@@ -159,8 +159,8 @@ interface Management1
 
 #### Multicast Routing
 
-| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Routes From Source Traffic |
-| --------- | ---------- | --------------------- | -------------------- | --------------------------------- |
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
+| --------- | ---------- | --------------------- | -------------------- | ---------------------------------------- |
 | Vlan75 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 | - |
 | Vlan75 | IPv6 | - | ff00::/16, ff01::/16 | - |
 | Vlan89 | IPv4 | - | ACL_MULTICAST | True |
