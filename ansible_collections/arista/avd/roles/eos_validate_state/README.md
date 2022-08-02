@@ -94,7 +94,7 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 ```
 
-The variable `fabric_name` is required to generate the report. This variable is automatically set on eos_designs. The user can select their name if this role isn't used. If it's not defined, it will be set to all. Therefore it will accept all variables.
+The variable `fabric_name` is used to select the inventory group covering all devices in the report. This variable is also required for the role `eos_designs`, but the user can set a name if this role is not used. The default value is `all` pointing to the built-in inventory group `all`. Therefore all devices in the inventory will be selected for the report.
 
 The default accepted manufacturers are "Arastra, Inc." and "Arista Networks." If `validation_role.xcvr_own_manufacturers` is set, it takes precedence and overrides the defined default variables.
 
