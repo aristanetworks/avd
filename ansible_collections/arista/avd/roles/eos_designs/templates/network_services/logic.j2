@@ -55,9 +55,24 @@
 {%                                 endif %}
 {%                                 set tmp_svi = tmp_svi | ansible.builtin.combine(svi, recursive=true, list_merge='replace') %}
 {#                                 Structured config should not be merged recursively, but will be taken directly from the most specific level #}
-{%                                 do tmp_svi.update({"structured_config": svi.nodes[inventory_hostname].structured_config | arista.avd.default(
-                                                                           svi_profile.nodes[inventory_hostname].structured_config,
-                                                                           svi_parent_profile.nodes[inventory_hostname].structured_config,
+{%                                 set tmp_svi_struct_cfg = svi.nodes | arista.avd.default({}) |
+                                                                        arista.avd.convert_dicts('name') |
+                                                                        selectattr('name', 'arista.avd.defined', inventory_hostname) |
+                                                                        map(attribute='structured_config',) |
+                                                                        first %}
+{%                                 set tmp_svi_profile_struct_cfg = svi_profile.nodes | arista.avd.default({}) |
+                                                                        arista.avd.convert_dicts('name') |
+                                                                        selectattr('name', 'arista.avd.defined', inventory_hostname) |
+                                                                        map(attribute='structured_config',) |
+                                                                        first %}
+{%                                 set tmp_svi_parent_profile_struct_cfg = svi_parent_profile.nodes | arista.avd.default({}) |
+                                                                        arista.avd.convert_dicts('name') |
+                                                                        selectattr('name', 'arista.avd.defined', inventory_hostname) |
+                                                                        map(attribute='structured_config',) |
+                                                                        first %}
+{%                                 do tmp_svi.update({"structured_config": tmp_svi_struct_cfg | arista.avd.default(
+                                                                           tmp_svi_profile_struct_cfg,
+                                                                           tmp_svi_parent_profile_struct_cfg,
                                                                            svi.structured_config,
                                                                            svi_profile.structured_config,
                                                                            svi_parent_profile.structured_config)}) %}

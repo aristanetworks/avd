@@ -108,7 +108,7 @@ tenants:
             tags: ['erp2']
             enabled: True
             nodes:
-              DC1-LEAF1A:
+              - name: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
             ip_virtual_router_addresses:
               - 10.1.32.254
