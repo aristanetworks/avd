@@ -171,6 +171,7 @@ router_ospf:
       router_id: 192.168.255.37
       no_passive_interfaces:
       - Ethernet1
+      - Vlan4094
       max_lsa: 12000
 router_bfd:
   multihop:
