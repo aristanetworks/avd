@@ -139,6 +139,8 @@ router_ospf:
       passive_interface_default: true
       router_id: 192.168.255.2
       max_lsa: 12000
+      redistribute:
+        connected: {}
       no_passive_interfaces:
       - Ethernet5
 ip_igmp_snooping:
