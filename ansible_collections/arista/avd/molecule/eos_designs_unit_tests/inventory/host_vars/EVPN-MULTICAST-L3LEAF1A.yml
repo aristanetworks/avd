@@ -1,0 +1,4 @@
+---
+
+# Enable vlan aware bundle
+evpn_vlan_aware_bundles: true

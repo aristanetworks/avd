@@ -11,36 +11,149 @@ evpn_multicast: true
 # overlay_rd_type:
 #   admin_subfield: overlay_loopback_ip
 
-l3leaf:
-  defaults:
-    platform: vEOS-LAB
-    loopback_ipv4_pool: 192.168.255.0/24
-    loopback_ipv4_offset: 2
-    vtep_loopback_ipv4_pool: 192.168.254.0/24
-    uplink_interfaces: []
-    uplink_switches: []
-    uplink_ipv4_pool: 172.31.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    virtual_router_mac_address: 00:dc:00:00:00:0a
-    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
-    mlag_peer_ipv4_pool: 10.255.252.0/24
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 4096
-  node_groups:
-    DC1_LEAF1:
-      bgp_as: 65101
-      nodes:
-        EVPN-MULTICAST-L3LEAF1A:
-          id: 1
-          mgmt_ip: 192.168.200.105/24
-        EVPN-MULTICAST-L3LEAF1B:
-          id: 2
-          mgmt_ip: 192.168.200.106/24
-    DC1_LEAF2:
-      bgp_as: 65102
-      platform: "7050X3"
-      nodes:
-        EVPN-MULTICAST-L3LEAF2A:
-          id: 3
-          mgmt_ip: 192.168.200.107/24
+tenants:
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: true
+      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
+    vrfs:
+      MULTICAST_ENABLED_110_111:
+        description: "MULTICAST_ENABLED_110_111"
+        vrf_vni: 11
+        svis:
+          # Expected results:
+          # vlan 110 and 111 configured with Multicast
+          110:
+            name: "MULTICAST_ENABLED_110"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.1.10.1/24
+          111:
+            name: "MULTICAST_ENABLED_111"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.1.11.1/24
+      MULTICAST_ENABLED_210_DISABLED_211:
+        description: "MULTICAST_ENABLED_210_DISABLED_211"
+        vrf_vni: 12
+        svis:
+          # Expected results:
+          # vlan 210 configured with Multicast
+          # vlan 211 not configured with Multicast
+          210:
+            name: "MULTICAST_ENABLED_210"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.2.10.1/24
+          211:
+            name: "MULTICAST_DISABLED_211"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.2.11.1/24
+            evpn_l2_multicast:
+              enabled: false
+      MULTICAST_DISABLED_310_311:
+        description: "MULTICAST_DISABLED_310_311"
+        vrf_vni: 13
+        svis:
+          # Expected results:
+          # vlans 310 and 311 not configured with Multicast
+          310:
+            name: "MULTICAST_DISABLED_310"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.3.10.1/24
+            evpn_l2_multicast:
+              enabled: false
+          311:
+            name: "MULTICAST_DISABLED_311"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.3.11.1/24
+            evpn_l2_multicast:
+              enabled: false
+    l2vlans:
+      # Expected results:
+      # vlan 257 and 4096 configured with Multicast
+      # vlan 256 not configured with Multicast
+      256:
+        name: "MULTICAST_DISABLED_256"
+        tags: ['test_l2']
+        evpn_l2_multicast:
+          enabled: false
+      257:
+        name: "MULTICAST_ENABLED_257"
+        tags: ['test_l2']
+      4096:
+        name: "MULTICAST_ENABLED_4096"
+        tags: ['test_l2']
+
+# Test with underlay_l2_multicast_group_ipv4_pool_offset
+# Test with IGMP querier version
+  Tenant_B:
+    mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: false
+      underlay_l2_multicast_group_ipv4_pool: 232.0.16.0/20
+      underlay_l2_multicast_group_ipv4_pool_offset: 1
+    igmp_querier:
+      version: 3
+    vrfs:
+      MULTICAST_ENABLED_1_2:
+        description: "MULTICAST_ENABLED_1_2"
+        vrf_vni: 21
+        svis:
+          1:
+            name: "MULTICAST_ENABLED_1"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.1.1/24
+            evpn_l2_multicast:
+              enabled: true
+          2:
+            name: "MULTICAST_ENABLED_2"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.2.1/24
+            evpn_l2_multicast:
+              enabled: true
+      MULTICAST_ENABLED_3_DISABLED_4:
+        description: "MULTICAST_ENABLED_3_DISABLED_4"
+        vrf_vni: 22
+        svis:
+          3:
+            name: "MULTICAST_ENABLED_3"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.3.1/24
+            evpn_l2_multicast:
+              enabled: true
+          4:
+            name: "MULTICAST_DISABLED_4"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.4.1/24
+      MULTICAST_DISABLED_5_6:
+        description: "MULTICAST_DISABLED_5_6"
+        vrf_vni: 22
+        svis:
+          5:
+            name: "MULTICAST_DISABLED_5"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.5.1/24
+          6:
+            name: "MULTICAST_DISABLED_6"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.6.1/24
+    l2vlans:
+      7:
+        name: "MULTICAST_DISABLED_7"
+        tags: ['test_l2']
+      8:
+        name: "MULTICAST_ENABLED_8"
+        tags: ['test_l2']
+        evpn_l2_multicast:
+          enabled: true
