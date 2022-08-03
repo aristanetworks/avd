@@ -4,6 +4,7 @@ eos_config_deploy_cvp
 eos_designs_unit_tests
 eos_designs_unit_tests_v4.0
 eos_designs-twodc-5stage-clos
+eos_designs-l2ls
 eos_designs-mpls-isis-sr-ldp
 evpn_underlay_ebgp_overlay_ebgp
 evpn_underlay_isis_overlay_ibgp
