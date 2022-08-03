@@ -11,7 +11,7 @@ router_isis:
 {%     endif %}
 {% endfor %}
 {% if switch.mlag_l3 is arista.avd.defined(true) %}
-    - Vlan{{ switch.mlag_peer_l3_vlan }}
+    - Vlan{{ switch.mlag_peer_l3_vlan | arista.avd.default(switch.mlag_peer_vlan) }}
 {% endif %}
 {% if switch.vtep is arista.avd.defined(true) %}
     - {{ switch.vtep_loopback }}
