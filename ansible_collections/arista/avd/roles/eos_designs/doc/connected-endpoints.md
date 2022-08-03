@@ -308,7 +308,7 @@ network_ports:
     < any keys supported under connected_endpoints adapters >
 ```
 
-For more details and examples of the `range_expand` syntax, see the [arista.avd.range_expand documentation](https://avd.sh/en/latest/plugins/index.html#range_expand-filter)
+For more details and examples of the `range_expand` syntax, see the [arista.avd.range_expand documentation](../../../plugins/README.md#range_expand-filter)
 
 ### Port Profiles
 

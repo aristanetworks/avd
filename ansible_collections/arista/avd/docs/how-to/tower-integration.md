@@ -13,8 +13,8 @@ All these elements are part of a dedicated demo repository available at [arista-
 
 If you want to see how to build your inventory and all related variables, it's recommended to read the following documentation:
 
-- [How to start](https://www.avd.sh/en/latest/docs/how-to/first-project.html)
-- [L3LS EVPN Abstraction role](https://www.avd.sh/en/latest/roles/eos_designs/)
+- [How to start](first-project.md)
+- [L3LS EVPN Abstraction role](../../roles/eos_designs/README.md)
 
 ## Requirements
 
