@@ -1,4 +1,12 @@
 ---
+# Basic test scenarios for L2LS design.
+
+# One POD with OSPF and one POD with BGP underlay routing
+# No overlay or VRFs
+# SVIs only in default VRF
+# Two spine and two leaf switches per POD
+# Core interfaces to non-existing core switch. (to test the underlay routing)
+
 design:
   type: l2ls
 
