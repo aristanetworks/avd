@@ -1,4 +1,4 @@
-# OSPF-SPINE1
+# BGP-SPINE1
 # Table of Contents
 
 - [Management](#management)
@@ -28,10 +28,12 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router OSPF](#router-ospf)
+  - [Router BGP](#router-bgp)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
+  - [Prefix-lists](#prefix-lists)
+  - [Route-maps](#route-maps)
 - [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -76,7 +78,7 @@ management api http-commands
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| OSPF_SPINES | Vlan4094 | 192.168.254.1 | Port-Channel3 |
+| BGP_SPINES | Vlan4094 | 192.168.254.1 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -85,7 +87,7 @@ Dual primary detection is disabled.
 ```eos
 !
 mlag configuration
-   domain-id OSPF_SPINES
+   domain-id BGP_SPINES
    local-interface Vlan4094
    peer-address 192.168.254.1
    peer-link Port-Channel3
@@ -161,10 +163,10 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | OSPF-LEAF1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | OSPF-LEAF2_Ethernet1 | *trunk | *100 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_OSPF-SPINE2_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_OSPF-SPINE2_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet1 | BGP-LEAF1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
+| Ethernet2 | BGP-LEAF2_Ethernet1 | *trunk | *100 | *- | *- | 2 |
+| Ethernet3 | MLAG_PEER_BGP-SPINE2_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_BGP-SPINE2_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -172,40 +174,38 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/1 | routed | - | 192.168.253.0/31 | default | 9000 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9000 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description OSPF-LEAF1_Ethernet1
+   description BGP-LEAF1_Ethernet1
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description OSPF-LEAF2_Ethernet1
+   description BGP-LEAF2_Ethernet1
    no shutdown
    channel-group 2 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_OSPF-SPINE2_Ethernet3
+   description MLAG_PEER_BGP-SPINE2_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_OSPF-SPINE2_Ethernet4
+   description MLAG_PEER_BGP-SPINE2_Ethernet4
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet5
-   description P2P_LINK_TO_DUMMY-CORE_Ethernet1/1
+   description P2P_LINK_TO_DUMMY-CORE_Ethernet1/3
    no shutdown
    mtu 9000
    no switchport
-   ip address 192.168.253.0/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   ip address 192.168.253.4/31
 ```
 
 ## Port-Channel Interfaces
@@ -216,16 +216,16 @@ interface Ethernet5
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | OSPF-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
-| Port-Channel2 | OSPF-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_OSPF-SPINE2_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel1 | BGP-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
+| Port-Channel2 | BGP-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
+| Port-Channel3 | MLAG_PEER_BGP-SPINE2_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description OSPF-LEAF1_Po1
+   description BGP-LEAF1_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 100
@@ -233,7 +233,7 @@ interface Port-Channel1
    mlag 1
 !
 interface Port-Channel2
-   description OSPF-LEAF2_Po1
+   description BGP-LEAF2_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 100
@@ -241,7 +241,7 @@ interface Port-Channel2
    mlag 2
 !
 interface Port-Channel3
-   description MLAG_PEER_OSPF-SPINE2_Po3
+   description MLAG_PEER_BGP-SPINE2_Po3
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -274,7 +274,6 @@ interface Port-Channel3
 interface Loopback0
    no shutdown
    ip address 192.168.255.1/32
-   ip ospf area 0.0.0.0
 ```
 
 ## VLAN Interfaces
@@ -290,7 +289,7 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan100 |  default  |  -  |  10.0.100.1/24  |  -  |  -  |  -  |  -  |
+| Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  192.168.254.0/31  |  -  |  -  |  -  |  -  |  -  |
 
 ### VLAN Interfaces Device Configuration
@@ -300,7 +299,7 @@ interface Loopback0
 interface Vlan100
    description SVI_100
    no shutdown
-   ip address virtual 10.0.100.1/24
+   ip address virtual 10.1.100.1/24
 !
 interface Vlan4094
    description MLAG_PEER
@@ -308,8 +307,6 @@ interface Vlan4094
    mtu 9000
    no autostate
    ip address 192.168.254.0/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
 ```
 
 # Routing
@@ -375,31 +372,72 @@ no ip routing vrf MGMT
 ip route vrf MGMT 0.0.0.0/0
 ```
 
-## Router OSPF
+## Router BGP
 
-### Router OSPF Summary
+### Router BGP Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.1 | enabled | Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| BGP AS | Router ID |
+| ------ | --------- |
+| 65001|  192.168.255.1 |
 
-### OSPF Interfaces
+| BGP Tuning |
+| ---------- |
+| maximum-paths 4 ecmp 4 |
 
-| Interface | Area | Cost | Point To Point |
-| -------- | -------- | -------- | -------- |
-| Ethernet5 | 0.0.0.0 | - | True |
-| Vlan4094 | 0.0.0.0 | - | True |
-| Loopback0 | 0.0.0.0 | - | - |
+### Router BGP Peer Groups
 
-### Router OSPF Device Configuration
+#### IPv4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | all |
+| Maximum routes | 12000 |
+
+#### MLAG-IPv4-UNDERLAY-PEER
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote AS | 65001 |
+| Next-hop self | True |
+| Send community | all |
+| Maximum routes | 12000 |
+
+### BGP Neighbors
+
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
+| 192.168.253.5 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
+| 192.168.254.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
+
+### Router BGP Device Configuration
 
 ```eos
 !
-router ospf 100
+router bgp 65001
    router-id 192.168.255.1
-   passive-interface default
-   no passive-interface Ethernet5
-   max-lsa 12000
+   maximum-paths 4 ecmp 4
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER peer group
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65001
+   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
+   neighbor MLAG-IPv4-UNDERLAY-PEER description BGP-SPINE2
+   neighbor MLAG-IPv4-UNDERLAY-PEER send-community
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor 192.168.253.5 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.253.5 remote-as 65000
+   neighbor 192.168.253.5 description DUMMY-CORE
+   neighbor 192.168.254.1 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 192.168.254.1 description BGP-SPINE2
+   redistribute connected route-map RM-CONN-2-BGP
+   !
+   address-family ipv4
+      neighbor IPv4-UNDERLAY-PEERS activate
+      neighbor MLAG-IPv4-UNDERLAY-PEER activate
 ```
 
 # Multicast
@@ -418,6 +456,52 @@ router ospf 100
 ```
 
 # Filters
+
+## Prefix-lists
+
+### Prefix-lists Summary
+
+#### PL-LOOPBACKS-EVPN-OVERLAY
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 192.168.255.0/24 eq 32 |
+
+### Prefix-lists Device Configuration
+
+```eos
+!
+ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+   seq 10 permit 192.168.255.0/24 eq 32
+```
+
+## Route-maps
+
+### Route-maps Summary
+
+#### RM-CONN-2-BGP
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+
+#### RM-MLAG-PEER-IN
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set origin incomplete |
+
+### Route-maps Device Configuration
+
+```eos
+!
+route-map RM-CONN-2-BGP permit 10
+   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-MLAG-PEER-IN permit 10
+   description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+   set origin incomplete
+```
 
 # ACL
 

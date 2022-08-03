@@ -17,6 +17,10 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
+| L2LS_BGP | leaf | BGP-LEAF1 | - | - | Provisioned |
+| L2LS_BGP | leaf | BGP-LEAF2 | - | - | Provisioned |
+| L2LS_BGP | spine | BGP-SPINE1 | - | - | Provisioned |
+| L2LS_BGP | spine | BGP-SPINE2 | - | - | Provisioned |
 | L2LS_OSPF | leaf | OSPF-LEAF1 | - | - | Provisioned |
 | L2LS_OSPF | leaf | OSPF-LEAF2 | - | - | Provisioned |
 | L2LS_OSPF | spine | OSPF-SPINE1 | - | - | Provisioned |
@@ -32,6 +36,12 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| leaf | BGP-LEAF1 | Ethernet1 | spine | BGP-SPINE1 | Ethernet1 |
+| leaf | BGP-LEAF1 | Ethernet2 | spine | BGP-SPINE2 | Ethernet1 |
+| leaf | BGP-LEAF2 | Ethernet1 | spine | BGP-SPINE1 | Ethernet2 |
+| leaf | BGP-LEAF2 | Ethernet2 | spine | BGP-SPINE2 | Ethernet2 |
+| spine | BGP-SPINE1 | Ethernet3 | mlag_peer | BGP-SPINE2 | Ethernet3 |
+| spine | BGP-SPINE1 | Ethernet4 | mlag_peer | BGP-SPINE2 | Ethernet4 |
 | leaf | OSPF-LEAF1 | Ethernet1 | spine | OSPF-SPINE1 | Ethernet1 |
 | leaf | OSPF-LEAF1 | Ethernet2 | spine | OSPF-SPINE2 | Ethernet1 |
 | leaf | OSPF-LEAF2 | Ethernet1 | spine | OSPF-SPINE1 | Ethernet2 |
@@ -55,12 +65,14 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 2 | 0.79 % |
+| 192.168.255.0/24 | 256 | 4 | 1.57 % |
 
 ## Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
+| L2LS_BGP | BGP-SPINE1 | 192.168.255.1/32 |
+| L2LS_BGP | BGP-SPINE2 | 192.168.255.2/32 |
 | L2LS_OSPF | OSPF-SPINE1 | 192.168.255.1/32 |
 | L2LS_OSPF | OSPF-SPINE2 | 192.168.255.2/32 |
 

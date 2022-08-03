@@ -168,6 +168,12 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/2 | routed | - | 192.168.253.2/31 | default | 9000 | false | - | - |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -191,6 +197,15 @@ interface Ethernet4
    description MLAG_PEER_OSPF-SPINE1_Ethernet4
    no shutdown
    channel-group 3 mode active
+!
+interface Ethernet5
+   description P2P_LINK_TO_DUMMY-CORE_Ethernet1/2
+   no shutdown
+   mtu 9000
+   no switchport
+   ip address 192.168.253.2/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
 ```
 
 ## Port-Channel Interfaces
@@ -366,12 +381,13 @@ ip route vrf MGMT 0.0.0.0/0
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.2 | enabled |- | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 192.168.255.2 | enabled | Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
+| Ethernet5 | 0.0.0.0 | - | True |
 | Vlan4094 | 0.0.0.0 | - | True |
 | Loopback0 | 0.0.0.0 | - | - |
 
@@ -382,6 +398,7 @@ ip route vrf MGMT 0.0.0.0/0
 router ospf 100
    router-id 192.168.255.2
    passive-interface default
+   no passive-interface Ethernet5
    max-lsa 12000
 ```
 
