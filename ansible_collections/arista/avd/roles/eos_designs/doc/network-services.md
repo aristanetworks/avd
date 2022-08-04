@@ -47,7 +47,7 @@ mlag_ibgp_peering_vrfs:
 overlay_rd_type:
   admin_subfield: < "vtep_loopback" | "bgp_as" | "switch_id" | < IPv4_address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
   # Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".
-  # Total value of admin_subfield + admin_subfield_offsett must be <= 4294967295.
+  # Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.
   admin_subfield_offset: < int > | default -> 0 >
 
 # Specify RT type | Optional
