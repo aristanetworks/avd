@@ -55,6 +55,10 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merg
         ["override"]
     )
     for nxt in nxt_list:
-        merger.merge(base, nxt)
+        if isinstance(nxt, list):
+            for nxt_item in nxt:
+                merger.merge(base, nxt_item)
+        else:
+            merger.merge(base, nxt)
 
     return base
