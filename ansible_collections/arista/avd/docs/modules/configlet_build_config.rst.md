@@ -45,7 +45,7 @@ The following options may be specified for this module:
 <td>conf</td>
 <td></td>
 <td>
-    <div>File extensio to look for.</div>
+    <div>File extension to look for.</div>
 </td>
 </tr>
 
@@ -54,7 +54,7 @@ The following options may be specified for this module:
 <td>str</td>
 <td>yes</td>
 <td></td>
-<td></td>
+<td>None, "", and 'none' will not modify the name</td>
 <td>
     <div>Prefix to append on configlet.</div>
 </td>

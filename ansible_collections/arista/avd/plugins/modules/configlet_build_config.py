@@ -56,7 +56,7 @@ EXAMPLES = r'''
   tags: [build, provision]
   configlet_build_config:
     configlet_dir: '/path/to/configlets/folder/'
-    configlet_prefix: 'AVD_'
+    configlet_prefix: 'AVD'
     configlet_extension: 'cfg'
 '''
 
@@ -83,6 +83,7 @@ def get_configlet(src_folder="", prefix='AVD', extension='cfg'):
         Path where to find configlet, by default ""
     prefix : str, optional
         Prefix to append to configlet name, by default 'AVD'
+        Use None, "", or 'none' to not modify the configlet name
     extension : str, optional
         File extension to lookup configlet file, by default 'cfg'
 
@@ -94,7 +95,7 @@ def get_configlet(src_folder="", prefix='AVD', extension='cfg'):
     src_configlets = glob.glob(src_folder + '/*.' + extension)
     configlets = {}
     for file in src_configlets:
-        if prefix != 'none':
+        if prefix and prefix != 'none':
             name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
         else:
             name = os.path.splitext(os.path.basename(file))[0]
