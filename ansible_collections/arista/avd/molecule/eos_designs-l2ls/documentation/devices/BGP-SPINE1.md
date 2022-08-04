@@ -32,7 +32,6 @@
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
 - [VRF Instances](#vrf-instances)
@@ -433,7 +432,7 @@ router bgp 65001
    neighbor 192.168.253.5 description DUMMY-CORE
    neighbor 192.168.254.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 192.168.254.1 description BGP-SPINE2
-   redistribute connected route-map RM-CONN-2-BGP
+   redistribute connected
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
@@ -457,33 +456,9 @@ router bgp 65001
 
 # Filters
 
-## Prefix-lists
-
-### Prefix-lists Summary
-
-#### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 192.168.255.0/24 eq 32 |
-
-### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 eq 32
-```
-
 ## Route-maps
 
 ### Route-maps Summary
-
-#### RM-CONN-2-BGP
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 
 #### RM-MLAG-PEER-IN
 
@@ -494,9 +469,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ### Route-maps Device Configuration
 
 ```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
