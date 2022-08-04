@@ -58,17 +58,17 @@
 {%                                 set tmp_svi_struct_cfg = svi.nodes | arista.avd.default({}) |
                                                                         arista.avd.convert_dicts('name') |
                                                                         selectattr('name', 'arista.avd.defined', inventory_hostname) |
-                                                                        map(attribute='structured_config',) |
+                                                                        map(attribute='structured_config') |
                                                                         first %}
 {%                                 set tmp_svi_profile_struct_cfg = svi_profile.nodes | arista.avd.default({}) |
                                                                         arista.avd.convert_dicts('name') |
                                                                         selectattr('name', 'arista.avd.defined', inventory_hostname) |
-                                                                        map(attribute='structured_config',) |
+                                                                        map(attribute='structured_config') |
                                                                         first %}
 {%                                 set tmp_svi_parent_profile_struct_cfg = svi_parent_profile.nodes | arista.avd.default({}) |
                                                                         arista.avd.convert_dicts('name') |
                                                                         selectattr('name', 'arista.avd.defined', inventory_hostname) |
-                                                                        map(attribute='structured_config',) |
+                                                                        map(attribute='structured_config') |
                                                                         first %}
 {%                                 do tmp_svi.update({"structured_config": tmp_svi_struct_cfg | arista.avd.default(
                                                                            tmp_svi_profile_struct_cfg,
