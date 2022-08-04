@@ -45,7 +45,10 @@ mlag_ibgp_peering_vrfs:
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 # Old variable name "evpn_rd_type", supported for backward-compatibility.
 overlay_rd_type:
-  admin_subfield: < "vtep_loopback" | "bgp_as" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
+  admin_subfield: < "vtep_loopback" | "bgp_as" | "switch_id" | < IPv4_address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
+  # Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".
+  # Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.
+  admin_subfield_offset: < int > | default -> 0 >
 
 # Specify RT type | Optional
 # Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default

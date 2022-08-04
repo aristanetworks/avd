@@ -1,0 +1,13 @@
+---
+
+# Test with default values
+
+#Expected result: rd 192.168.255.1:*
+# overlay_rd_type:
+#   admin_subfield: overlay_loopback_ip
+
+# Expected results:
+# - vlan1: rt 10001:10001
+# - vlan2: rt 10002:10002
+# overlay_rt_type:
+#   admin_subfield: mac_vrf_id

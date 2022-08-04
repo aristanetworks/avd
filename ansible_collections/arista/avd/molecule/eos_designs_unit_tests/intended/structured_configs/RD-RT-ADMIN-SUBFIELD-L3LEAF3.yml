@@ -1,0 +1,159 @@
+router_bgp:
+  as: '65003'
+  router_id: 192.168.255.3
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  vrfs:
+    TEST1:
+      router_id: 192.168.255.3
+      rd: '65003:11'
+      route_targets:
+        import:
+          evpn:
+          - '15:11'
+        export:
+          evpn:
+          - '15:11'
+      redistribute_routes:
+      - connected
+  vlans:
+    1:
+      tenant: Tenant_A
+      rd: 65003:10001
+      route_targets:
+        both:
+        - 15:10001
+      redistribute_routes:
+      - learned
+    2:
+      tenant: Tenant_A
+      rd: 65003:10002
+      route_targets:
+        both:
+        - 15:10002
+      redistribute_routes:
+      - learned
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+  MGMT:
+    ip_routing: false
+  TEST1:
+    tenant: Tenant_A
+    ip_routing: true
+    description: TEST1
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.103/24
+    gateway: 192.168.200.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.3/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+vlans:
+  1:
+    tenant: Tenant_A
+    name: VLAN_1
+  2:
+    tenant: Tenant_A
+    name: VLAN_2
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vlan_interfaces:
+  Vlan1:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: VLAN_1
+    shutdown: false
+    vrf: TEST1
+    ip_address_virtual: 10.0.1.1/24
+  Vlan2:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: VLAN_2
+    shutdown: false
+    vrf: TEST1
+    ip_address_virtual: 10.0.2.1/24
+vxlan_interface:
+  Vxlan1:
+    description: RD-RT-ADMIN-SUBFIELD-L3LEAF3_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        1:
+          vni: 10001
+        2:
+          vni: 10002
+      vrfs:
+        TEST1:
+          vni: 11

@@ -1,0 +1,5 @@
+---
+
+overlay_rd_type:
+# Expected result: rd 4294967295:*
+  admin_subfield: 4294967295
