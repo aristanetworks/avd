@@ -131,7 +131,8 @@ mac_address_table:
         route_map_in: < route-map name >
         local_as: < local BGP ASN >
 
-    # Enable igmp snooping querier for each SVI/l2vlan x within tenant, by default using IP address of Loopback 0.
+    # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
+    # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
     igmp_snooping_querier:
        enabled: < true | false >
        source_address: < ipv4_address -> default ip address of Loopback0 >
@@ -260,6 +261,7 @@ mac_address_table:
             igmp_snooping_enabled: < true | false | default true (eos) >
 
             # Enable igmp snooping querier, by default using IP address of Loopback 0.
+            # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
             igmp_snooping_querier:
               enabled: < true | false >
               source_address: < ipv4_address -> default ip address of Loopback0 >
@@ -551,6 +553,7 @@ mac_address_table:
         igmp_snooping_enabled: < true | false >
 
         # Enable igmp snooping querier, by default using IP address of Loopback 0.
+        # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
         igmp_snooping_querier:
           enabled: < true | false >
           source_address: < ipv4_address -> default ip address of Loopback0 >
