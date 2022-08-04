@@ -97,44 +97,12 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-    101:
-      querier:
-        enabled: true
-        address: ''
-    102:
-      querier:
-        enabled: true
-        address: ''
-        version: 3
-    103:
-      querier:
-        enabled: false
-        address: ''
-    111:
-      querier:
-        enabled: true
-        address: 1.1.1.1
-        version: 3
-    112:
-      querier:
-        enabled: true
-        address: 1.1.1.1
-        version: 2
-    113:
-      querier:
-        enabled: false
-        address: 1.1.1.1
-        version: 3
-    121:
-      querier:
-        enabled: true
-        address: 2.2.2.2
-        version: 1
-    122:
-      querier:
-        enabled: true
-        address: ''
-    123:
-      querier:
-        enabled: false
-        address: ''
+    101: {}
+    102: {}
+    103: {}
+    111: {}
+    112: {}
+    113: {}
+    121: {}
+    122: {}
+    123: {}
