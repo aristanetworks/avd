@@ -1,2 +1,2 @@
 [testgroup]
-testhost ansible_connection="local" ansible_pipelining="yes" ansible_python_interpreter="/usr/bin/python3"
+testhost ansible_connection="local" ansible_pipelining="yes" ansible_python_interpreter="/home/holbech/ansible-avd/ansible_collections/arista/avd/tests/output/.tmp/delegation/python3.10/bin/python"

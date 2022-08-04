@@ -9,23 +9,13 @@ from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.plugins.loader import lookup_loader
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from datetime import datetime
-
-try:
-    import deepmerge
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
 
 
 class ActionModule(ActionBase):
 
     def run(self, tmp=None, task_vars=None):
-
-        if DEEPMERGE_IMPORT_ERROR:
-            raise Exception('Python library "deepmerge" must be installed to use this plugin')
-
         if task_vars is None:
             task_vars = {}
 
@@ -77,9 +67,6 @@ class ActionModule(ActionBase):
         if debug:
             avd_yaml_templates_to_facts_debug = template_vars.get('avd_yaml_templates_to_facts_debug', [])
 
-        my_merger = deepmerge.Merger([(list, ["override"]), (dict, ["merge"])], ["override"], ["override"])
-        my_merger2 = deepmerge.Merger([(list, ["append"]), (dict, ["merge"])], ["override"], ["override"])
-
         for template_item in template_list:
             if debug:
                 debug_item = template_item
@@ -92,14 +79,6 @@ class ActionModule(ActionBase):
             template_options = template_item.get('options', {})
             list_merge = template_options.get('list_merge', 'append')
 
-            if list_merge == "replace":
-                list_merge = "override"
-
-            list_strat = deepmerge.strategy.list.ListStrategies([list_merge])
-            dict_strat = deepmerge.strategy.dict.DictStrategies(["merge"])
-
-            my_merger2._type_strategies = [(list, list_strat), (dict, dict_strat)]
-
             strip_empty_keys = template_options.get('strip_empty_keys', True)
 
             # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
@@ -107,7 +86,7 @@ class ActionModule(ActionBase):
             if root_key:
                 template_vars[root_key] = output
             else:
-                my_merger.merge(template_vars, output)
+                merge(template_vars, output, list_merge="replace")
 
             if debug:
                 debug_item['timestamps']['run_template'] = datetime.now()
@@ -133,14 +112,7 @@ class ActionModule(ActionBase):
                 if debug:
                     debug_item['timestamps']['combine_data'] = datetime.now()
 
-                # for custom_structured_configuration, we are getting template_result_data as a list
-                # Adding the for loop here to parse the list of dictionary in template_result_data (if any) for merging
-                # In combine filter, flatten method is used to get dictionary elements from the list
-                if isinstance(template_result_data, list):
-                    for element in template_result_data:
-                        my_merger2.merge(output, element)
-                else:
-                    my_merger2.merge(output, template_result_data)
+                merge(output, template_result_data, list_merge=list_merge)
 
             if debug:
                 debug_item['timestamps']['done'] = datetime.now()
@@ -155,7 +127,7 @@ class ActionModule(ActionBase):
             if root_key:
                 template_vars[root_key] = output
             else:
-                my_merger.merge(template_vars, output)
+                merge(template_vars, output, list_merge="replace")
 
             if debug:
                 debug_item['timestamps']['templating'] = datetime.now()
