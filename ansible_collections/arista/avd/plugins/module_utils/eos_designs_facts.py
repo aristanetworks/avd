@@ -142,7 +142,7 @@ class EosDesignsFacts:
                 return node_type
 
         # Not found
-        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={type}")
+        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={self.type}")
 
     @cached_property
     def connected_endpoints(self):
