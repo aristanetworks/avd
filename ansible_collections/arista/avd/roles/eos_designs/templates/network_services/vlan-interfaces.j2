@@ -104,28 +104,26 @@ vlan_interfaces:
 {%             set configure_mlag_ibgp_peering = vrf.enable_mlag_ibgp_peering_vrfs | arista.avd.default(
                                                  tenant.enable_mlag_ibgp_peering_vrfs,
                                                  true) %}
-{%             if configure_mlag_ibgp_peering %}
+{%             if configure_mlag_ibgp_peering and vrf.name != 'default' %}
 {%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
-{%                 if vrf.name != 'default' %}
   Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
     type: underlay_peering
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf.name }}"
     vrf: {{ vrf.name }}
-{%                     if underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
+{%                 if underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
-{%                     elif vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
-{%                         if switch.mlag_role == 'primary' %}
+{%                 elif vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
+{%                     if switch.mlag_role == 'primary' %}
     ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}/31"
-{%                         else %}
-    ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}/31"
-{%                         endif %}
 {%                     else %}
-    ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
+    ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}/31"
 {%                     endif %}
-    mtu: {{ p2p_uplinks_mtu }}
+{%                 else %}
+    ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
 {%                 endif %}
+    mtu: {{ p2p_uplinks_mtu }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
