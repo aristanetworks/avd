@@ -31,31 +31,31 @@ router_bgp:
   vrfs:
     TEST1:
       router_id: 192.168.255.3
-      rd: 192.168.255.3:11
+      rd: '65003:11'
       route_targets:
         import:
           evpn:
-          - '11:11'
+          - '15:11'
         export:
           evpn:
-          - '11:11'
+          - '15:11'
       redistribute_routes:
       - connected
   vlans:
     1:
       tenant: Tenant_A
-      rd: 192.168.255.3:10001
+      rd: 65003:10001
       route_targets:
         both:
-        - 10001:10001
+        - 15:10001
       redistribute_routes:
       - learned
     2:
       tenant: Tenant_A
-      rd: 192.168.255.3:10002
+      rd: 65003:10002
       route_targets:
         both:
-        - 10002:10002
+        - 15:10002
       redistribute_routes:
       - learned
 static_routes:

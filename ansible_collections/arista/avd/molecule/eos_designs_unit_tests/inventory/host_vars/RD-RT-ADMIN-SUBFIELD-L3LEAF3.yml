@@ -1,0 +1,9 @@
+---
+
+# Expected result: rd 65003:*
+overlay_rd_type:
+  admin_subfield: bgp_as
+
+# Expected result: rt 15:*
+overlay_rt_type:
+  admin_subfield: 15

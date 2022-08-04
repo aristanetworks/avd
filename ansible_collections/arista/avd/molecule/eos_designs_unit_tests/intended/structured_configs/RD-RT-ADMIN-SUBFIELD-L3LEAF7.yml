@@ -31,7 +31,7 @@ router_bgp:
   vrfs:
     TEST1:
       router_id: 192.168.255.7
-      rd: 192.168.255.7:11
+      rd: '4294967295:11'
       route_targets:
         import:
           evpn:
@@ -44,7 +44,7 @@ router_bgp:
   vlans:
     1:
       tenant: Tenant_A
-      rd: 192.168.255.7:10001
+      rd: 4294967295:10001
       route_targets:
         both:
         - 10001:10001
@@ -52,7 +52,7 @@ router_bgp:
       - learned
     2:
       tenant: Tenant_A
-      rd: 192.168.255.7:10002
+      rd: 4294967295:10002
       route_targets:
         both:
         - 10002:10002
