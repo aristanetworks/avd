@@ -25,7 +25,7 @@ ip_igmp_snooping:
 {%                 if svi_igmp_snooping_enabled is arista.avd.defined or svi_igmp_snooping_querier_enabled is arista.avd.defined %}
     {{ svi.id | int }}:
       enabled: {{ svi_igmp_snooping_enabled }}
-{%                     if svi_igmp_snooping_querier_enabled is arista.avd.defined %}
+{%                     if svi_igmp_snooping_querier_enabled is arista.avd.defined and switch.uplink_type is arista.avd.defined("p2p") %}
       querier:
         enabled: {{ svi_igmp_snooping_querier_enabled }}
         address: "{{ svi_igmp_snooping_querier_source_address }}"
@@ -49,7 +49,7 @@ ip_igmp_snooping:
 {%             if l2vlan_igmp_snooping_enabled is arista.avd.defined or l2vlan_igmp_snooping_querier_enabled is arista.avd.defined %}
     {{ l2vlan.id | int }}:
       enabled: {{ l2vlan_igmp_snooping_enabled }}
-{%                 if l2vlan_igmp_snooping_querier_enabled is arista.avd.defined %}
+{%                 if l2vlan_igmp_snooping_querier_enabled is arista.avd.defined and switch.uplink_type is arista.avd.defined("p2p") %}
       querier:
         enabled: {{ l2vlan_igmp_snooping_querier_enabled }}
         address: "{{ l2vlan_igmp_snooping_querier_source_address }}"
