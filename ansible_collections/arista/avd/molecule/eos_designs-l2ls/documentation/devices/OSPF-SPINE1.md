@@ -376,7 +376,7 @@ ip route vrf MGMT 0.0.0.0/0
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.1 | enabled | Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 192.168.255.1 | enabled | Vlan4094 <br> Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -399,6 +399,7 @@ ip route vrf MGMT 0.0.0.0/0
 router ospf 100
    router-id 192.168.255.1
    passive-interface default
+   no passive-interface Vlan4094
    no passive-interface Ethernet5
    max-lsa 12000
    redistribute connected

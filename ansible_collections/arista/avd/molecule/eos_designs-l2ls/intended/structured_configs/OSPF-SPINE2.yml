@@ -133,11 +133,12 @@ router_ospf:
     100:
       passive_interface_default: true
       router_id: 192.168.255.2
+      no_passive_interfaces:
+      - Vlan4094
+      - Ethernet5
       max_lsa: 12000
       redistribute:
         connected: {}
-      no_passive_interfaces:
-      - Ethernet5
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
