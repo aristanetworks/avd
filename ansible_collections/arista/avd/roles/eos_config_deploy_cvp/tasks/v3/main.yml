@@ -11,7 +11,7 @@
   run_once: true
   failed_when: false
 
-- name: "Generate intented variables"
+- name: "Generate intended variables"
   tags: [always]
   arista.avd.inventory_to_container:
     inventory: "{{ inventory_file }}"

@@ -23,7 +23,7 @@ router_bgp:
     - prefix: 10.10.10.0/24
       peer_group: my-peer-group1
       peer_filter: my-peer-filter
-      # shouldnt render because neither peer-filter nor as-filter are defined
+      # It shouldn't render because neither peer-filter nor as-filter are defined
     - prefix: 11.10.10.0/24
       peer_group: my-peer-group2
       # should render with remote-as filter
@@ -36,6 +36,14 @@ router_bgp:
       peer_group: my-peer-group4
       peer_filter: my-peer-filter
       remote_as: 65444
+  peer_groups:
+    test-link-bandwidth1:
+      link_bandwidth:
+        enabled: true
+        default: 100G
+    test-link-bandwidth2:
+      link_bandwidth:
+        enabled: true
   aggregate_addresses:
     1.1.1.0/24:
       advertise_only: true
@@ -83,6 +91,9 @@ router_bgp:
     192.0.3.1:
       remote_as: 65432
       send_community: all
+      link_bandwidth:
+        enabled: true
+        default: 100G
       default_originate:
         enabled: true
         always: true
@@ -92,6 +103,8 @@ router_bgp:
       remote_as: 65433
       send_community: extended
       maximum_routes: 10000
+      link_bandwidth:
+        enabled: true
       default_originate:
         enabled: true
         route_map: RM-FOO-MATCH3

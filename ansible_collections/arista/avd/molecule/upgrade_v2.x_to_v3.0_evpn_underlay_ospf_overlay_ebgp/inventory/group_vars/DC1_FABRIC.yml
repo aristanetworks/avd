@@ -180,7 +180,7 @@ leaf_bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
 
-# Upodate p2p mtu 9000 -> 1500
+# Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
 
 # Adjust default bfd values

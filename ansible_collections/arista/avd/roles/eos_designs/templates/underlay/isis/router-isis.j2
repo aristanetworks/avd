@@ -36,3 +36,7 @@ router_isis:
 {% elif isis_ti_lfa.protection is arista.avd.defined("node") %}
     - fast-reroute ti-lfa mode node-protection
 {% endif %}
+{% if switch.overlay_routing_protocol == "none" %}
+  redistribute_routes:
+    source_protocol: connected
+{% endif %}

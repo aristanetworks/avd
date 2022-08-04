@@ -32,7 +32,7 @@ class ActionModule(ActionBase):
         set_avd_switch_facts = self._task.args.get('avd_switch_facts', False)
 
         groups = task_vars.get('groups', {})
-        fabric_name = task_vars.get('fabric_name', '')
+        fabric_name = self._templar.template(task_vars.get('fabric_name', ''))
         fabric_hosts = groups.get(fabric_name, [])
         ansible_play_hosts_all = task_vars.get('ansible_play_hosts_all', [])
 

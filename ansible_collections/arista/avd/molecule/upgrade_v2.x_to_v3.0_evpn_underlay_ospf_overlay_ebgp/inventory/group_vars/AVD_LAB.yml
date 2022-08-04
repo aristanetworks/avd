@@ -27,6 +27,6 @@ name_servers:
   - 192.168.200.5
   - 8.8.8.8
 
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
+# NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management
 ntp_servers:
   - 192.168.200.5

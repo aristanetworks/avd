@@ -9,7 +9,7 @@
 
 ## Variables and Options
 
-### Tenants Keys
+### Global Network Services Parameters
 
 ```yaml
 # Define network services keys, to define grouping of network services.
@@ -70,28 +70,11 @@ internal_vlan_order:
 # Use to change the EOS default of 300
 mac_address_table:
   aging_time: < time_in_seconds >
+```
 
-# Optional profiles to apply on SVI interfaces
-# Each profile can support all or some of the following keys according to your own needs.
-# Keys are the same used under SVI.
-# Svi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).
-svi_profiles:
-  < profile_name >:
-    parent_profile: < svi_profile_name >
-    mtu: < mtu >
-    enabled: < true | false >
-    ip_virtual_router_addresses:
-      - < IPv4_address/Mask | IPv4_address >
-    ip_address_virtual: < IPv4_address/Mask >
-    ipv6_address_virtual: < IPv6_address/Mask >
-    ip_address_virtual_secondaries:
-      - < IPv4_address/Mask >
-    igmp_snooping_enabled: < true | false | default true (eos) >
-    ip_helpers:
-      < IPv4 dhcp server IP >:
-        source_interface: < interface-name >
-        source_vrf: < VRF to originate DHCP relay packets to DHCP server >
+### Tenant Network Service Definitions
 
+```yaml
 # Dictionary of network services: L3 VRFs and L2 VLANS.
 # The network service key from network_services_keys
 < network_services_keys.key_1 >:
@@ -147,6 +130,12 @@ svi_profiles:
         route_map_out: < route-map name >
         route_map_in: < route-map name >
         local_as: < local BGP ASN >
+
+    # Enable igmp snooping querier for each SVI/l2vlan x within tenant, by default using IP address of Loopback 0.
+    igmp_snooping_querier:
+       enabled: < true | false >
+       source_address: < ipv4_address -> default ip address of Loopback0 >
+       version: < 1, 2, 3 -> default 2 (EOS) >
 
     # Define L3 network services organized by vrf.
     vrfs:
@@ -269,6 +258,12 @@ svi_profiles:
 
             # Enable IGMP Snooping
             igmp_snooping_enabled: < true | false | default true (eos) >
+
+            # Enable igmp snooping querier, by default using IP address of Loopback 0.
+            igmp_snooping_querier:
+              enabled: < true | false >
+              source_address: < ipv4_address -> default ip address of Loopback0 >
+              version: < 1, 2, 3 -> default 2 (EOS) >
 
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
@@ -552,11 +547,14 @@ svi_profiles:
         # Extend this L2VLAN over VXLAN
         vxlan: < true | false | default -> true >
 
-      < 1-4096 >:
-        name: < description >
-        tags: [ < tag_1 >, < tag_2 > ]
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
+
+        # Enable igmp snooping querier, by default using IP address of Loopback 0.
+        igmp_snooping_querier:
+          enabled: < true | false >
+          source_address: < ipv4_address -> default ip address of Loopback0 >
+          version: < 1, 2, 3 -> default 2 (EOS) >
 
   < tenant_b >:
     mac_vrf_vni_base: < 10000-16770000 >
@@ -617,6 +615,25 @@ svi_profiles:
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
+```
+
+### SVI Profiles
+
+```yaml
+# Optional profiles to share common settings for SVIs
+# Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+# Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+# 1. svi.nodes[inventory_hostname].structured_config
+# 2. svi_profile.nodes[inventory_hostname].structured_config
+# 3. svi_parent_profile.nodes[inventory_hostname].structured_config
+# 4. svi.structured_config
+# 5. svi_profile.structured_config
+# 6. svi_parent_profile.structured_config
+svi_profiles:
+  < profile_name >:
+    # Parent Profile | Optional
+    # svi_profiles can refer to another svi_profile to inherit settings in up to two levels (adapter->svi_profile->svi_parent_profile).
+    parent_profile: < svi_profile_name >
 ```
 
 ## Examples

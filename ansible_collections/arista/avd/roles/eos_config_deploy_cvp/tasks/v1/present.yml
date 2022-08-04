@@ -55,7 +55,7 @@
   when: "device_filter is string"
 
 # Load tasks when device_filter is list
-- name: Load conditional cv_device execution if device_filter is lsit.
+- name: Load conditional cv_device execution if device_filter is list.
   tags: [provision, apply]
   include_tasks: "./cv-device-filter-list.yml"
   when: "device_filter is not string"

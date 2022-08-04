@@ -489,7 +489,7 @@ port_channel_interfaces:
     - name: LT_GROUP1
       direction: downstream
   Port-Channel14:
-    description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overriden on server
+    description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server
     type: switched
     shutdown: false
     mode: access

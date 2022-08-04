@@ -2,7 +2,9 @@ loopback_interfaces:
 {% if switch.router_id is arista.avd.defined %}
 {# BGP Loopback #}
   Loopback0:
+{%     if switch.interface_descriptions.overlay_loopback_interface is arista.avd.defined %}
     description: "{% include switch.interface_descriptions.overlay_loopback_interface %}"
+{%     endif %}
     shutdown: false
     ip_address: {{ switch.router_id }}/32
 {%     if switch.ipv6_router_id is arista.avd.defined %}

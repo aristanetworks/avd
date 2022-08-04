@@ -17,3 +17,7 @@ router_ospf:
       bfd_enable: true
 {% endif %}
       max_lsa: {{ underlay_ospf_max_lsa }}
+{% if switch.overlay_routing_protocol == "none" %}
+      redistribute:
+        connected: {}
+{% endif %}

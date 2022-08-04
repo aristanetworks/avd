@@ -2656,24 +2656,39 @@ patch_panel:
 
 ```yaml
 ptp:
-  mode: < mode >
+  mode: < boundary | transparent >
   forward_unicast: < true | false >
-  clock_identity: < clock-id >
+  clock_identity: < "clock-id in xx:xx:xx:xx:xx:xx format" >
   source:
-    ip: < source-ip>
-  priority1: < priority1 >
-  priority2: < priority2 >
-  ttl: < ttl >
-  domain: < integer >
+    ip: < source-ip >
+  priority1: < 0-255 >
+  priority2: < 0-255 >
+  ttl: < 1-254 >
+  domain: < 0-255 >
   message_type:
     general:
       dscp: < dscp-value >
     event:
-      dscp: < dscp-Value >
+      dscp: < dscp-value >
   monitor:
+    enabled: < true | false | default -> true >
     threshold:
-      offset_from_master: < offset >
-      mean_path_delay: < delay >
+      offset_from_master: < 0-1000000000 >
+      mean_path_delay: < 0-1000000000 >
+      drop:
+        offset_from_master: < 0-1000000000 >
+        mean_path_delay: < 0-1000000000 >
+    missing_message:
+      intervals:
+        announce: < 2-255 >
+        follow_up: < 2-255 >
+        sync: < 2-255 >
+      sequence_ids:
+        enabled: < true | false | default -> false >
+        announce: < 2-255 >
+        delay_resp: < 2-255 >
+        follow_up: < 2-255 >
+        sync: < 2-255 >
 ```
 
 ### Prompt
@@ -2931,6 +2946,9 @@ router_bgp:
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
+      link_bandwidth:
+        enabled: < true | false >
+        default: < nn.nn(K|M|G)  Link speed in bits/second >
       allowas_in:
         enabled: < true | false >
         times: < 1-10 >
@@ -2982,6 +3000,9 @@ router_bgp:
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
+      link_bandwidth:
+        enabled: < true | false >
+        default: < nn.nn(K|M|G)  Link speed in bits/second >
       allowas_in:
         enabled: < true | false >
         times: < 1-10 >

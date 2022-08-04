@@ -1,5 +1,5 @@
 ---
-- name: generate intented variables
+- name: generate intended variables
   tags: [always]
   arista.avd.inventory_to_container:
     inventory: "{{ inventory_file }}"
