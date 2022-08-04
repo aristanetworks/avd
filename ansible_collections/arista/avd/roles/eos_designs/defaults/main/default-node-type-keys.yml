@@ -62,6 +62,8 @@ default_node_type_keys:
       network_services:
         l2: true
         l3: true
+      default_overlay_routing_protocol: none
+      default_underlay_routing_protocol: none
     leaf:
       type: leaf
       connected_endpoints: true

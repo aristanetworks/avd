@@ -383,6 +383,12 @@ ip route vrf MGMT 0.0.0.0/0
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
 | 100 | 192.168.255.2 | enabled | Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
 
+### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 100 | connected | - |
+
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
@@ -400,6 +406,7 @@ router ospf 100
    passive-interface default
    no passive-interface Ethernet5
    max-lsa 12000
+   redistribute connected
 ```
 
 # Multicast
