@@ -2,17 +2,17 @@
 
 ## Abstract
 
-In this post, we will see how to create a local environment to leverage AVD Collection to build EVPN/VXLAN configuration for a set of devices and how to deploy configuration using EOS eAPI through a NAT gateway.
+This post will show how to create a local environment to leverage AVD Collection to build EVPN/VXLAN configuration for a set of devices and deploy configuration using EOS eAPI through a NAT gateway.
 
-When we use a lab solution like [EVE-NG](https://www.eve-ng.net/) or GNS3, it might be complex to configure same vlans for your runner and your EOS devices. A NAT gateway can be used to expose eAPI port to your ansible runner consuming a single IP address.
+When we use a lab solution like [EVE-NG](https://www.eve-ng.net/) or GNS3, it might be complex to configure the same VLANs for your runner and your EOS devices. So instead, we can use a NAT gateway to expose the eAPI port to your Ansible runner consuming a single IP address.
 
-Below is a standard lab we use for development. And of course our laptop are not directly connected to EOS management plane.
+Below is a standard lab we use for development. And, of course, our laptops aren't directly connected to the EOS management plane.
 
 ![Standard EVE-NG lab with NAT](../_media/lab-nat-topology-example.png)
 
 ## Requirements
 
-- A dedicated vlan for EOS out of band management
+- A dedicated VLAN for EOS out of band management
 - A Linux server connected on both out of band management network and ansible-runner network.
   - This lab will be based on [Ubuntu 20.04](https://ubuntu.com/download/server)
   - SSH access to server enable.
@@ -34,7 +34,7 @@ management api http-commands
 
 ## Configure network interfaces
 
-First of all, we have to configure your network interfaces. Let's configure the following:
+First of all, we have to configure your network interfaces. So let's configure the following:
 
 - __`ens3`__: connected to ansible-runner
 - __`ens4`__: connected to out-of-band management network
@@ -61,22 +61,22 @@ network:
   version: 2
 ```
 
-And then apply your changes on your server:
+Then apply your changes on your server:
 
 ```shell
-$ sudo netplan apply
+sudo netplan apply
 ```
 
 ## Configure NAT access to eAPI
 
-We an now defined NAT rules to forward traffic coming from network-runner to your EOS devices. Here we will create a very small shell script to do:
+We can now define NAT rules to forward traffic from the network-runner to your EOS devices. Here we will create a minimal shell script to do:
 
 - Activate IP routing
 - Reset NAT tables
 - Configure forwarding to eAPI and SSH ports
 - Activate NAT masquerading IN and OUT
 
-Script below is an example and use `10.73.1.0/24` as OOB network
+The script below is an example and uses `10.73.1.0/24` as the OOB network
 
 ```shell
 $ vim expose-eos.sh
@@ -138,7 +138,7 @@ Activate masquerading
 
 ## Test remote access
 
-Before running an ansible script with eAPI, you can manually test end to end connectivity using either cURL or your own browser:
+Before running an Ansible script with eAPI, you can manually test end-to-end connectivity using either cURL or your browser:
 
 ```text
 $ curl -k -D - https://< NAT GATEWAY IP >:8001
@@ -149,7 +149,7 @@ Server: nginx
 
 ## Configure Ansible inventory
 
-So as we now have a single IP address to connect to all devices in our lab, we will leverage `ansible_port` for per device connectivity
+So as we now have a single IP address to connect to all devices in our lab, we will leverage `ansible_port` for per device connectivity.
 
 ```yaml
 ---

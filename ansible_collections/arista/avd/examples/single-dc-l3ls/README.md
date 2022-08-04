@@ -1,26 +1,4 @@
-# AVD example for a single data center using Layer 3 Leaf Spine (L3LS) <!-- omit in toc -->
-
-## Table of Contents <!-- omit in toc -->
-
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Overall design overview](#overall-design-overview)
-  - [Physical topology](#physical-topology)
-  - [IP ranges used](#ip-ranges-used)
-  - [BGP Design](#bgp-design)
-  - [Basic EOS config](#basic-eos-config)
-- [Ansible inventory, group vars and naming scheme](#ansible-inventory-group-vars-and-naming-scheme)
-  - [Content of the inventory.yml file](#content-of-the-inventoryyml-file)
-- [Defining device types](#defining-device-types)
-- [Setting fabric-wide configuration parameters](#setting-fabric-wide-configuration-parameters)
-- [Setting device specific configuration parameters](#setting-device-specific-configuration-parameters)
-- [Specifying network services (VRFs and VLANs) in the EVPN/VXLAN Fabric](#specifying-network-services-vrfs-and-vlans-in-the-evpnvxlan-fabric)
-- [Specifying endpoint connectivity in the EVPN/VXLAN Fabric](#specifying-endpoint-connectivity-in-the-evpnvxlan-fabric)
-- [The playbook](#the-playbook)
-  - [Testing AVD output without a lab](#testing-avd-output-without-a-lab)
-  - [Executing the playbook](#executing-the-playbook)
-- [Troubleshooting](#troubleshooting)
-  - [EVPN not working](#evpn-not-working)
+# AVD example for a single data center using Layer 3 Leaf Spine (L3LS)
 
 ## Introduction
 

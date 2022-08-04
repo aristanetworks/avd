@@ -17,7 +17,7 @@ The fabric topology variables define the connectivity between the various node t
 
 ## Supported designs
 
-`eos_designs` with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
+`eos_designs` with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) to create your own node type
 
 ### Arbitrary Mesh or L3LS Topology
 

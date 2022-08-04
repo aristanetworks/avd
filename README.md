@@ -46,18 +46,19 @@ The arista.avd collection provides abstracted data models and framework to build
 ## Project Documentation
 
 The documentation how to leverage ansible-avd collection is located here:
-  - **[Read The Docs](https://avd.sh/en/latest/)**
-  - **[GitHub](./ansible_collections/arista/avd/README.md)**
+
+- **[Read The Docs](https://avd.sh/en/latest/)**
+- **[GitHub](./ansible_collections/arista/avd/README.md)**
 
 ## Installation
 
 ### Collection Installation
 
-Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow [this](https://avd.sh/en/latest/docs/installation/collection-installation.html) guide.
+Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow [this](docs/installation/collection-installation.md) guide.
 
 ### Requirements
 
-To install requirements please follow [this](https://avd.sh/en/latest/docs/installation/requirements.html) guide.
+To install requirements please follow [this](docs/installation/requirements.md) guide.
 
 **Ansible Configuration INI file:**
 
@@ -170,9 +171,9 @@ You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issue
 
 ## Branching Model
 
-- The __`devel`__ branch corresponds to the release actively under development.
-- The __`releases/x.x.x`__ branches correspond to stable releases.
-- Fork repository and create a branch based on __`devel`__ to set up a dev environment if you want to open a PR.
+- The **`devel`** branch corresponds to the release actively under development.
+- The **`releases/x.x.x`** branches correspond to stable releases.
+- Fork repository and create a branch based on **`devel`** to set up a dev environment if you want to open a PR.
 - See the ansible-avd release for information about active branches.
 
 ## License

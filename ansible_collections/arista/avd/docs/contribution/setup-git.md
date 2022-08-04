@@ -1,22 +1,22 @@
-# Installation using GIT
+# Installation using Git
 
-Using GIT as source of collection in ansible provides an easy way to implement all the changes once they are part of the development branch without waiting for a new tagged version shipped to ansible-galaxy.
+Using Git as source of collection in Ansible provides an easy way to implement all the changes once they're part of the development branch without waiting for a new tagged version shipped to ansible-galaxy.
 
 ## Use Git as source of collection
 
-In this setup, git repository will be used by ansible as collection. It is useful when working on feature development as we can change git branch and test code lively.
+In this setup, Git repository will be used by Ansible as collection. It's useful when working on feature development as we can change Git branch and test code live.
 
 ### Get repository locally
 
 ```shell
 # Clone repository
-$ git clone https://github.com/aristanetworks/ansible-avd.git
+git clone https://github.com/aristanetworks/ansible-avd.git
 
 # Move to git folder
 cd ansible-avd
 ```
 
-### Update your ansible.cfg
+### Update your `ansible.cfg`
 
 In your project, update your `ansible.cfg` file to point __collection_paths__ to your local version of ansible-avd
 
@@ -39,15 +39,15 @@ collections_paths = /path/to/ansible/avd/collection_repository
 ...
 ```
 
-## Build & install collection from git
+## Build & install collection from Git
 
-In this approach, an ansible collection package is built from current git version and installed locally.
+In this approach, an Ansible collection package is built from current Git version and installed locally.
 
 ### Clone repository
 
 ```shell
-$ git clone https://github.com/aristanetworks/ansible-avd.git
-$ cd ansible-avd
+git clone https://github.com/aristanetworks/ansible-avd.git
+cd ansible-avd
 ```
 
 ### Build and install collection
@@ -55,6 +55,6 @@ $ cd ansible-avd
 This section should be used only to test collection packaging and to create an offline package to ship on your internal resources if required.
 
 ```shell
-$ ansible-galaxy collection build --force ansible_collections/arista/avd
-$ ansible-galaxy collection install arista-avd-<VERSION>.tar.gz
+ansible-galaxy collection build --force ansible_collections/arista/avd
+ansible-galaxy collection install arista-avd-<VERSION>.tar.gz
 ```
