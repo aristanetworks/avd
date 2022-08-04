@@ -37,6 +37,7 @@ options:
   configlet_prefix:
     description: Prefix to append on configlet.
     required: true
+    choices: ['none', <prefix to prepend>]
     type: str
   destination:
     description: File where to save information.
@@ -83,6 +84,7 @@ def get_configlet(src_folder="", prefix='AVD', extension='cfg'):
         Path where to find configlet, by default ""
     prefix : str, optional
         Prefix to append to configlet name, by default 'AVD'
+        Use 'none' to not modify the configlet name
     extension : str, optional
         File extension to lookup configlet file, by default 'cfg'
 
