@@ -134,7 +134,6 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 100 | SVI_100 | - |
-| 2999 | MLAG_iBGP_default | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
@@ -143,10 +142,6 @@ vlan internal order ascending range 1006 1199
 !
 vlan 100
    name SVI_100
-!
-vlan 2999
-   name MLAG_iBGP_default
-   trunk group LEAF_PEER_L3
 !
 vlan 4094
    name MLAG_PEER

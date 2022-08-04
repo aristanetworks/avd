@@ -61,11 +61,6 @@ vlans:
   100:
     tenant: L2LS_BGP
     name: SVI_100
-  2999:
-    tenant: L2LS_BGP
-    name: MLAG_iBGP_default
-    trunk_groups:
-    - LEAF_PEER_L3
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
