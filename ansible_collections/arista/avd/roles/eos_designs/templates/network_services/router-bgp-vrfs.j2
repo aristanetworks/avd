@@ -37,7 +37,7 @@
 {%                 endfor %}
     {{ vrf.name }}:
 {%                 if vrf.name == 'default' %}
-{%                     if default_vrf.svi_subnets %}
+{%                     if default_vrf.svi_subnets and switch.evpn_role in ["client", "server"] %}
 {%                         do route_targets.export.evpn.append('route-map RM-EVPN-EXPORT-VRF-DEFAULT') %}
       rd: "{{ switch.overlay_rd_type_admin_subfield }}:{{ bgp_vrf_id }}"
       route_targets:

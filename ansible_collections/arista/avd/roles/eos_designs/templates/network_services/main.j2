@@ -57,8 +57,7 @@
       switch.network_services_l1 is arista.avd.defined(true)) %}
 {%     include 'network_services/vtep-logic.j2' %}
 
-{%     if default_vrf.svi_subnets %}
-
+{%     if default_vrf.svi_subnets and switch.evpn_role in ["client", "server"] %}
 {%         include 'network_services/default-vrf-route-map.j2' %}
 
 {%     endif %}
