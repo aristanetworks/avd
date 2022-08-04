@@ -115,9 +115,11 @@ vlan internal order ascending range 1006 1199
 | Ethernet4 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet4 | routed | - | 100.64.48.6/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet5 | routed | - | 100.64.48.8/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet6 | routed | - | unnumbered loopback0 | default | 1602 | false | - | - |
-| Ethernet10 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet10 | routed | - | 100.64.48.12/31 | default | 1500 | false | - | - |
 | Ethernet12 | P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12 | *routed | 12 | *100.64.48.16/31 | **default | *1500 | *false | **- | **- |
 | Ethernet13 | P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12 | *routed | 12 | *100.64.48.16/31 | **default | *1500 | *false | **- | **- |
+| Ethernet14 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet14 | routed | - | 100.64.49.18/31 | default | 1600 | false | - | - |
+| Ethernet15 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet15 | routed | - | 100.64.48.20/31 | default | 1500 | false | - | - |
+| Ethernet16 | P2P_LINK_TO_core-2-ospf-ldp_Ethernet16 | routed | - | 100.64.49.24/31 | default | 1600 | false | - | - |
 *Inherited from Port-Channel Interface
 
 #### IPv6
@@ -146,6 +148,9 @@ vlan internal order ascending range 1006 1199
 | Ethernet10 | - | CORE | 50 | point-to-point | level-2 | True | - |
 | Ethernet12 | 12 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
 | Ethernet13 | 12 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet14 | - | CORE | 50 | point-to-point | level-2 | True | - |
+| Ethernet15 | - | CORE | 50 | point-to-point | level-2 | True | - |
+| Ethernet16 | - | CORE | 50 | point-to-point | level-2 | True | - |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -263,10 +268,8 @@ interface Ethernet6
 interface Ethernet10
    description P2P_LINK_TO_core-2-ospf-ldp_Ethernet10
    no shutdown
-   mtu 1500
-   speed forced 1000full
+   mtu 1600
    no switchport
-   ip address 100.64.48.12/31
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -285,6 +288,52 @@ interface Ethernet13
    description P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet14
+   description P2P_LINK_TO_core-2-ospf-ldp_Ethernet14
+   no shutdown
+   mtu 1600
+   no switchport
+   ip address 100.64.49.18/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CORE
+   isis circuit-type level-2
+   isis metric 50
+   isis hello padding
+   isis network point-to-point
+!
+interface Ethernet15
+   description P2P_LINK_TO_core-2-ospf-ldp_Ethernet15
+   no shutdown
+   mtu 1500
+   speed forced 1000full
+   no switchport
+   ip address 100.64.48.20/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CORE
+   isis circuit-type level-2
+   isis metric 50
+   isis hello padding
+   isis network point-to-point
+!
+interface Ethernet16
+   description P2P_LINK_TO_core-2-ospf-ldp_Ethernet16
+   no shutdown
+   mtu 1600
+   no switchport
+   ip address 100.64.49.24/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   isis enable CORE
+   isis circuit-type level-2
+   isis metric 50
+   isis hello padding
+   isis network point-to-point
 ```
 
 ## Port-Channel Interfaces
@@ -454,6 +503,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 | Ethernet5 | CORE | 60 | point-to-point |
 | Ethernet6 | CORE | 70 | point-to-point |
 | Ethernet10 | CORE | 50 | point-to-point |
+| Ethernet14 | CORE | 50 | point-to-point |
+| Ethernet15 | CORE | 50 | point-to-point |
+| Ethernet16 | CORE | 50 | point-to-point |
 | Loopback0 | CORE | - | passive |
 
 ### ISIS Segment-routing Node-SID
@@ -523,6 +575,9 @@ mpls ldp
 | Ethernet5 | True | - | - |
 | Ethernet6 | True | True | True |
 | Ethernet10 | True | True | True |
+| Ethernet14 | True | True | True |
+| Ethernet15 | True | True | True |
+| Ethernet16 | True | True | True |
 | Loopback0 | - | True | - |
 | Port-Channel12 | True | True | True |
 

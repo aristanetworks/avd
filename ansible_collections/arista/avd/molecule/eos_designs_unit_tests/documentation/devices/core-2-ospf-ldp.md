@@ -115,9 +115,11 @@ vlan internal order ascending range 1006 1199
 | Ethernet4 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4 | routed | - | 100.64.48.7/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5 | routed | - | 100.64.48.9/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6 | routed | - | unnumbered loopback0 | default | 1602 | false | - | - |
-| Ethernet10 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10 | routed | - | 100.64.48.13/31 | default | 1500 | false | - | - |
 | Ethernet12 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
 | Ethernet13 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
+| Ethernet14 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet14 | routed | - | 100.64.49.19/31 | default | 1600 | false | - | - |
+| Ethernet15 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet15 | routed | - | 100.64.48.21/31 | default | 1500 | false | - | - |
+| Ethernet16 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet16 | routed | - | 100.64.49.25/31 | default | 1600 | false | - | - |
 *Inherited from Port-Channel Interface
 
 #### IPv6
@@ -220,10 +222,8 @@ interface Ethernet6
 interface Ethernet10
    description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10
    no shutdown
-   mtu 1500
-   speed forced 1000full
+   mtu 1600
    no switchport
-   ip address 100.64.48.13/31
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -239,6 +239,50 @@ interface Ethernet13
    description P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet14
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet14
+   no shutdown
+   mtu 1600
+   no switchport
+   ip address 100.64.49.19/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 p2p_secure_key
+   ip ospf area 0.0.0.2
+!
+interface Ethernet15
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet15
+   no shutdown
+   mtu 1500
+   speed forced 1000full
+   no switchport
+   ip address 100.64.48.21/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 profile_secure_key
+   ip ospf area 0.0.0.1
+!
+interface Ethernet16
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet16
+   no shutdown
+   mtu 1600
+   no switchport
+   ip address 100.64.49.25/31
+   mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.2
+   ip ospf message-digest-key 1 md5 7 <md5key1>
+   ip ospf message-digest-key 2 md5 7 <md5key2>
 ```
 
 ## Port-Channel Interfaces
@@ -367,7 +411,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 101 | 10.0.0.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet10 <br> Port-Channel12 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
+| 101 | 10.0.0.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet10 <br> Ethernet14 <br> Ethernet15 <br> Ethernet16 <br> Port-Channel12 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### OSPF Interfaces
 
@@ -380,6 +424,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 | Ethernet5 | 0.0.0.0 | - | True |
 | Ethernet6 | 0.0.0.0 | - | True |
 | Ethernet10 | 0.0.0.0 | - | True |
+| Ethernet14 | 0.0.0.2 | - | True |
+| Ethernet15 | 0.0.0.1 | - | True |
+| Ethernet16 | 0.0.0.2 | - | True |
 | Port-Channel12 | 0.0.0.0 | - | True |
 | Loopback0 | 0.0.0.0 | - | - |
 
@@ -397,6 +444,9 @@ router ospf 101
    no passive-interface Ethernet5
    no passive-interface Ethernet6
    no passive-interface Ethernet10
+   no passive-interface Ethernet14
+   no passive-interface Ethernet15
+   no passive-interface Ethernet16
    no passive-interface Port-Channel12
    bfd default
    max-lsa 12000
@@ -439,6 +489,9 @@ mpls ldp
 | Ethernet5 | True | - | - |
 | Ethernet6 | True | True | True |
 | Ethernet10 | True | True | True |
+| Ethernet14 | True | True | True |
+| Ethernet15 | True | True | True |
+| Ethernet16 | True | True | True |
 | Loopback0 | - | True | - |
 | Port-Channel12 | True | True | True |
 

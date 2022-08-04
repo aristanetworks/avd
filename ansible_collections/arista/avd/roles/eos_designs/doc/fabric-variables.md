@@ -67,6 +67,14 @@ underlay_ospf_area: < ospf_area | default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | default -> 12000 >
 underlay_ospf_bfd_enable: < true | false | default -> false >
 
+# Global OSPF Auth. Parameters
+ospf_authentication: < simple | message-digest | default -> simple >
+ospf_authentication_key: "asfddja23452"
+ospf_message_digest_keys:
+  1:
+    hash_algorithm: < md5 >
+    key: "asfddja23452"
+
 # Underlay ISIS | Required when < underlay_routing_protocol > == ISIS variants
 isis_area_id: < isis area | default -> "49.0001" >
 
