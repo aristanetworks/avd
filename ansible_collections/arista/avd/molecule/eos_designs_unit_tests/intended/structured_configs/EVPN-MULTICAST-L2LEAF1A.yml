@@ -106,40 +106,4 @@ vlans:
     name: MULTICAST_ENABLED_8
 ip_igmp_snooping:
   globally_enabled: true
-  vlans:
-    110:
-      querier:
-        enabled: true
-        address: ''
-    111:
-      querier:
-        enabled: true
-        address: ''
-    210:
-      querier:
-        enabled: true
-        address: ''
-    257:
-      querier:
-        enabled: true
-        address: ''
-    4096:
-      querier:
-        enabled: true
-        address: ''
-    1:
-      querier:
-        enabled: true
-        address: ''
-    2:
-      querier:
-        enabled: true
-        address: ''
-    3:
-      querier:
-        enabled: true
-        address: ''
-    8:
-      querier:
-        enabled: true
-        address: ''
+  vlans: {}
