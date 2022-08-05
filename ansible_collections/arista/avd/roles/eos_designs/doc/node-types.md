@@ -19,6 +19,9 @@ node_type_keys:
     # Optional | Default evpn_role. Can be overridden in topology vars.
     default_evpn_role: < none | client | server | default -> none >
 
+    # Optional | Default PTP priority 1
+    default_ptp_priority1: < integer >
+
     # Optional | Set the default underlay routing_protocol.
     # Can be overridden by setting "underlay_routing_protocol" host/group_vars
     default_underlay_routing_protocol: < routing_protocol | default -> ebgp >
@@ -176,6 +179,7 @@ node_type_keys:
   spine:
     type: spine
     default_evpn_role: server
+    default_ptp_priority1: 20
   l3leaf:
     type: l3leaf
     connected_endpoints: true
@@ -185,6 +189,7 @@ node_type_keys:
       l2: true
       l3: true
     vtep: true
+    default_ptp_priority1: 30
   l2leaf:
     type: l2leaf
     connected_endpoints: true

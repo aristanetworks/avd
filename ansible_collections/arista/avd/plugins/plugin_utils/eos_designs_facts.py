@@ -429,6 +429,136 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "uplink_ptp")
 
     @cached_property
+    def default_ptp_priority1(self):
+        """
+        switch.default_ptp_priority1 set based on
+        node_type_keys.<node_type_key>.default_ptp_priority1
+        """
+        return get(self._node_type_key_data, "default_ptp_priority1", default=127)
+
+    @cached_property
+    def ptp(self):
+        '''
+        Generates PTP config on node level as well as for interfaces, using various defaults.
+        - The following are set in roles/eos_designs/defaults/main/default-node-type-keys.yml
+            default_node_type_keys:
+                "l3ls-evpn":
+                    spine:
+                     default_ptp_priority1: 20
+                   l3leaf:
+                      default_ptp_priority1: 30
+        PTP priority2 is set in the code below, calculated based on the node id:
+            default_priority2 = self.id % 256
+        '''
+        # Set defaults
+        default_ptp_enabled = get(self._hostvars, "ptp.enabled")
+        default_ptp_domain = get(self._hostvars, "ptp.domain", default=127)
+        default_ptp_profile = get(self._hostvars, "ptp.profile", default="aes67-r16-2016")
+        ptp = {}
+        ptp["enabled"] = get(self._switch_data_combined, "ptp.enabled", default=default_ptp_enabled)
+        if ptp["enabled"] is True:
+            auto_clock_identity = get(self._switch_data_combined, "ptp.auto_clock_identity", default=True)
+            priority1 = get(self._switch_data_combined, "ptp.priority1", default=self.default_ptp_priority1)
+            default_priority2 = self.id % 256
+            priority2 = get(self._switch_data_combined, "ptp.priority2", default=default_priority2)
+            if auto_clock_identity is True:
+                clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:00:00")
+                default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
+
+            ptp["device_config"] = {
+                "mode": get(self._switch_data_combined, "ptp.mode", default="boundary"),
+                "forward_unicast": get(self._switch_data_combined, "ptp.forward_unicast"),
+                "auto_clock_identity": auto_clock_identity,
+                "clock_identity_prefix": clock_identity_prefix,
+                "clock_identity": get(self._switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
+                "source": {
+                    "ip": get(self._switch_data_combined, "ptp.source.ip")
+                },
+                "priority1": priority1,
+                "priority2": priority2,
+                "ttl": get(self._switch_data_combined, "ptp.ttl"),
+                "domain": get(self._switch_data_combined, "ptp.domain", default=default_ptp_domain),
+                "message_type": {
+                    "general": {
+                        "dscp": get(self._switch_data_combined, "ptp.dscp.message_type.general.dscp"),
+                    },
+                    "event": {
+                        "dscp": get(self._switch_data_combined, "ptp.dscp.message_type.event.dscp"),
+                    },
+                },
+                "monitor": {
+                    "enabled": get(self._switch_data_combined, "ptp.monitor.enabled", default=True),
+                    "threshold": {
+                        "offset_from_master": get(self._switch_data_combined, "ptp.monitor.threshold.offset_from_master", default=250),
+                        "mean_path_delay": get(self._switch_data_combined, "ptp.monitor.threshold.mean_path_delay", default=1500),
+                        "drop": {
+                            "offset_from_master": get(self._switch_data_combined, "ptp.monitor.threshold.drop.offset_from_master"),
+                            "mean_path_delay": get(self._switch_data_combined, "ptp.monitor.threshold.drop.mean_path_delay"),
+                        },
+                    },
+                    "missing_message": {
+                        "intervals": {
+                            "announce": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.announce"),
+                            "follow_up": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.follow_up"),
+                            "sync": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.sync"),
+                        },
+                        "sequence_ids": {
+                            "announce": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.announce", default=3),
+                            "delay_resp": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.delay_resp", default=3),
+                            "follow_up": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.follow_up", default=3),
+                            "sync": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.sync", default=3),
+                        },
+                    },
+                },
+            }
+
+            ptp["profile"] = get(self._switch_data_combined, "ptp.profile", default_ptp_profile)
+            if ptp["profile"] == "aes67-r16-2016":
+                ptp["interface_config"] = {
+                    "enable": True,
+                    "announce": {
+                        "interval": 0,
+                        "timeout": 3,
+                    },
+                    "delay_req": -3,
+                    "sync_message": {
+                        "interval": -3,
+                    },
+                    "transport": "ipv4",
+                }
+
+            elif ptp["profile"] == "smpte2059-2":
+                ptp["interface_config"] = {
+                    "enable": True,
+                    "announce": {
+                        "interval": -1,
+                        "timeout": 3,
+                    },
+                    "delay_req": -4,
+                    "sync_message": {
+                        "interval": -4,
+                    },
+                    "transport": "ipv4",
+                }
+
+            elif ptp["profile"] == "aes67":
+                ptp["interface_config"] = {
+                    "enable": True,
+                    "announce": {
+                        "interval": 2,
+                        "timeout": 3,
+                    },
+                    "delay_req": 0,
+                    "sync_message": {
+                        "interval": 0,
+                    },
+                    "transport": "ipv4",
+                }
+
+            return ptp
+        return None
+
+    @cached_property
     def uplink_macsec(self):
         return get(self._switch_data_combined, "uplink_macsec")
 
@@ -1410,7 +1540,10 @@ class EosDesignsFacts(AvdFacts):
                 if self.uplink_bfd is True:
                     uplink["bfd"] = True
                 if self.uplink_ptp is not None:
-                    uplink["ptp"] = self.uplink_ptp
+                    uplink['ptp'] = self.uplink_ptp
+                elif self.ptp is not None:
+                    if self.ptp["enabled"] is True:
+                        uplink['ptp'] = self.ptp["interface_config"]
                 if self.uplink_macsec is not None:
                     uplink["mac_security"] = self.uplink_macsec
                 if self.underlay_multicast is True and uplink_switch_facts.underlay_multicast is True:
