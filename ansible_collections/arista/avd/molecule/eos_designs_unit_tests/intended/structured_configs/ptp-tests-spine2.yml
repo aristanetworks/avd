@@ -59,30 +59,37 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
-  source_ip: 10.255.0.1
-  ttl: 128
+  forward_unicast: true
+  auto_clock_identity: true
+  clock_identity_prefix: 01:02:03
+  clock_identity: 01:02:03:14:00:0a
+  source: {}
   priority1: 20
   priority2: 10
+  ttl: 128
   domain: 127
-  auto_clock_identity: true
-  clock_identity: 01:02:03:14:00:0a
   message_type:
-    enabled: true
     general:
       dscp: 46
     event:
       dscp: 48
-  forward_unicast: true
   monitor:
     enabled: true
     threshold:
       offset_from_master: 1234
       mean_path_delay: 4567
-      missing_message:
-        sync: 8
+      drop: {}
+    missing_message:
+      intervals:
+        announce: 10
         follow_up: 9
-        delay_resp: 10
+        sync: 8
+      sequence_ids:
+        enabled: true
         announce: 11
+        delay_resp: 12
+        follow_up: 13
+        sync: 14
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

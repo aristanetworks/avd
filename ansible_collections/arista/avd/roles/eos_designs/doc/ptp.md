@@ -266,6 +266,7 @@ ptp:
         follow_up: < 2-255 | Optional >
         sync: < 2-255 | Optional >
       sequence_ids:
+        enabled: < false | true | default -> true >
         announce: < 2-255 | default -> 3 >
         delay_resp: < 2-255 | default -> 3 >
         follow_up: < 2-255 | default -> 3 >
@@ -280,12 +281,8 @@ You can manually set the global DSCP values used for PTP messages if this is req
 ptp:
   enabled: true
   dscp:
-    enabled: true
-    message_type:
-      general:
-        dscp: 46
-      event:
-        dscp: 46
+    general_messages: 46
+    event_messages: 46
 ```
 
 ## PTP Settings for connected endpoints

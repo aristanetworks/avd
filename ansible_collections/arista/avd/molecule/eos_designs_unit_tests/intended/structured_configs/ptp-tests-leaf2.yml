@@ -99,30 +99,35 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
-  source_ip: 10.254.1.2
-  ttl: 16
+  forward_unicast: true
+  auto_clock_identity: true
+  clock_identity_prefix: '22:33:44'
+  clock_identity: '22:33:44:01:00:02'
+  source: {}
   priority1: 1
   priority2: 2
+  ttl: 16
   domain: 127
-  auto_clock_identity: true
-  clock_identity: '22:33:44:01:00:02'
   message_type:
-    enabled: true
-    general:
-      dscp: 36
-    event:
-      dscp: 56
-  forward_unicast: true
+    general: {}
+    event: {}
   monitor:
     enabled: true
     threshold:
       offset_from_master: 1234
       mean_path_delay: 4567
-      missing_message:
-        sync: 8
+      drop: {}
+    missing_message:
+      intervals:
+        announce: 10
         follow_up: 9
-        delay_resp: 10
+        sync: 8
+      sequence_ids:
+        enabled: true
         announce: 11
+        delay_resp: 12
+        follow_up: 13
+        sync: 14
 ethernet_interfaces:
   Ethernet1:
     peer: ptp-tests-spine1

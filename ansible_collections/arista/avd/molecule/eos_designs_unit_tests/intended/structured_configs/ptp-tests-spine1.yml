@@ -84,11 +84,30 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
+  auto_clock_identity: true
+  clock_identity_prefix: 00:00:00
+  clock_identity: 00:00:00:00:00:00
+  source: {}
   priority1: 20
   priority2: 1
   domain: 127
-  auto_clock_identity: true
-  clock_identity: 00:00:00:00:00:00
+  message_type:
+    general: {}
+    event: {}
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+      drop: {}
+    missing_message:
+      intervals: {}
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
 ethernet_interfaces:
   Ethernet1:
     peer: ptp-tests-leaf1

@@ -442,11 +442,11 @@ class EosDesignsFacts(AvdFacts):
         Generates PTP config on node level as well as for interfaces, using various defaults.
         - The following are set in roles/eos_designs/defaults/main/default-node-type-keys.yml
             default_node_type_keys:
-                "l3ls-evpn":
-                    spine:
-                     default_ptp_priority1: 20
-                   l3leaf:
-                      default_ptp_priority1: 30
+              "l3ls-evpn":
+                spine:
+                  default_ptp_priority1: 20
+                l3leaf:
+                  default_ptp_priority1: 30
         PTP priority2 is set in the code below, calculated based on the node id:
             default_priority2 = self.id % 256
         '''
@@ -480,10 +480,10 @@ class EosDesignsFacts(AvdFacts):
                 "domain": get(self._switch_data_combined, "ptp.domain", default=default_ptp_domain),
                 "message_type": {
                     "general": {
-                        "dscp": get(self._switch_data_combined, "ptp.dscp.message_type.general.dscp"),
+                        "dscp": get(self._switch_data_combined, "ptp.dscp.general_messages"),
                     },
                     "event": {
-                        "dscp": get(self._switch_data_combined, "ptp.dscp.message_type.event.dscp"),
+                        "dscp": get(self._switch_data_combined, "ptp.dscp.event_messages"),
                     },
                 },
                 "monitor": {
@@ -503,6 +503,7 @@ class EosDesignsFacts(AvdFacts):
                             "sync": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.sync"),
                         },
                         "sequence_ids": {
+                            "enabled": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.enabled", default=True),
                             "announce": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.announce", default=3),
                             "delay_resp": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.delay_resp", default=3),
                             "follow_up": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.follow_up", default=3),

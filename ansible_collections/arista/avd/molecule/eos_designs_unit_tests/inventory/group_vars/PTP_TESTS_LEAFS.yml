@@ -53,11 +53,17 @@ l3leaf:
           threshold:
             offset_from_master: 1234
             mean_path_delay: 4567
-            missing_message:
+          missing_message:
+            intervals:
               sync: 8
               follow_up: 9
-              delay_resp: 10
+              announce: 10
+            sequence_ids:
+              enabled: true
               announce: 11
+              delay_resp: 12
+              follow_up: 13
+              sync: 14
         clock_identity_prefix: "22:33:44"
         priority1: 1
         priority2: 2
