@@ -15,4 +15,3 @@ yamllint
 treelib
 md_toc
 natsort
-deepmerge>=1.0.1
