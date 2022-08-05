@@ -11,16 +11,18 @@ ip_igmp_snooping:
 {# Tenant VLANs w/SVIs #}
 {%             for svi in vrf.svis %}
 {%                 set svi_igmp_snooping_enabled = svi.igmp_snooping_enabled | arista.avd.default %}
-{%                 if switch.network_services_l3 is arista.avd.defined(true) %}
+{%                 if switch.network_services_l3 is arista.avd.defined(true) and switch.uplink_type is arista.avd.defined("p2p") %}
 {%                     set svi_igmp_snooping_querier_enabled = svi.igmp_snooping_querier.enabled | arista.avd.default(
                                                                tenant.igmp_snooping_querier.enabled) %}
 {%                 endif %}
-{%                 set svi_evpn_l2_multicast_enabled = svi.evpn_l2_multicast.enabled | arista.avd.default(
-                                                       tenant.evpn_l2_multicast.enabled) %}
-{%                 if switch.vtep is arista.avd.defined and svi_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
-{#                     Setting to none to avoid extra line of config as we already check and enforce global igmp snooping #}
-{%                     set svi_igmp_snooping_enabled = none %}
-{%                     set svi_igmp_snooping_querier_enabled = true %}
+{%                 if switch.vtep is arista.avd.defined %}
+{%                     set svi_evpn_l2_multicast_enabled = svi.evpn_l2_multicast.enabled | arista.avd.default(
+                                                           tenant.evpn_l2_multicast.enabled) %}
+{%                     if svi_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
+{#                         Setting to none to avoid extra line of config as we already check and enforce global igmp snooping #}
+{%                         set svi_igmp_snooping_enabled = none %}
+{%                         set svi_igmp_snooping_querier_enabled = true %}
+{%                     endif %}
 {%                 endif %}
 {%                 if svi_igmp_snooping_querier_enabled is arista.avd.defined %}
 {%                     set svi_igmp_snooping_querier_source_address = svi.igmp_snooping_querier.source_address | arista.avd.default(
