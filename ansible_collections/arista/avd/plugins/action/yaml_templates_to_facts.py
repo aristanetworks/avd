@@ -7,13 +7,14 @@ import yaml
 from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
-from ansible.plugins.filter.core import combine
 from ansible.plugins.loader import lookup_loader
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from datetime import datetime
 
 
 class ActionModule(ActionBase):
+
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
@@ -85,13 +86,14 @@ class ActionModule(ActionBase):
             if root_key:
                 template_vars[root_key] = output
             else:
-                template_vars = combine(task_vars, output, recursive=True)
+                merge(template_vars, output, list_merge="replace")
 
             if debug:
                 debug_item['timestamps']['run_template'] = datetime.now()
 
             # Here we parse the template, expecting the result to be a YAML formatted string
             template_result = template_lookup_module.run([template], template_vars)
+
             if debug:
                 debug_item['timestamps']['load_yaml'] = datetime.now()
 
@@ -110,7 +112,7 @@ class ActionModule(ActionBase):
                 if debug:
                     debug_item['timestamps']['combine_data'] = datetime.now()
 
-                output = combine(output, template_result_data, recursive=True, list_merge=list_merge)
+                merge(output, template_result_data, list_merge=list_merge)
 
             if debug:
                 debug_item['timestamps']['done'] = datetime.now()
@@ -125,7 +127,7 @@ class ActionModule(ActionBase):
             if root_key:
                 template_vars[root_key] = output
             else:
-                template_vars = combine(task_vars, output, recursive=True)
+                merge(template_vars, output, list_merge="replace")
 
             if debug:
                 debug_item['timestamps']['templating'] = datetime.now()

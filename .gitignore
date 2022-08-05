@@ -131,8 +131,5 @@ ansible_collections/arista/avd/molecule/*/config_backup
 # Examples config-backup folder
 ansible_collections/arista/avd/examples/*/config_backup
 
-# Ansible test folder
-ansible_collections/arista/avd/tests/
-
 # Ignore TAR GZ files
 *.tar.gz
