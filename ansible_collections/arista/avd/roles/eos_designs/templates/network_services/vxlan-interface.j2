@@ -14,7 +14,7 @@ vxlan_interface:
 {% endif %}
       udp_port: 4789
 {% if switch.overlay_routing_protocol == "her" and overlay_her_flood_list_per_vni is not arista.avd.defined(true) %}
-      flood_vteps: {{ network_services_data.common_flood_list | unique }}
+      flood_vteps: {{ network_services_data.common_flood_list | unique | arista.avd.natural_sort }}
 {% endif %}
       vlans:
 {% for tenant in network_services_data.tenants %}
@@ -39,7 +39,7 @@ vxlan_interface:
           multicast_group: {{ underlay_l2_multicast_group_ipv4_pool | ansible.netcommon.ipmath(svi_int - 1 + underlay_l2_multicast_group_ipv4_pool_offset) }}
 {%             endif %}
 {%             if switch.overlay_routing_protocol == "her" and overlay_her_flood_list_per_vni is arista.avd.defined(true) %}
-          flood_vteps: {{ network_services_data.vlan_flood_lists[svi_int] | arista.avd.default([]) | unique }}
+          flood_vteps: {{ network_services_data.vlan_flood_lists[svi_int] | arista.avd.default([]) | unique | arista.avd.natural_sort }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
@@ -57,7 +57,7 @@ vxlan_interface:
           multicast_group: {{ underlay_l2_multicast_group_ipv4_pool | ansible.netcommon.ipmath(l2vlan_int - 1 + underlay_l2_multicast_group_ipv4_pool_offset) }}
 {%         endif %}
 {%         if switch.overlay_routing_protocol == "her" and overlay_her_flood_list_per_vni is arista.avd.defined(true) %}
-          flood_vteps: {{ network_services_data.vlan_flood_lists[l2vlan_int] | arista.avd.default([]) | unique }}
+          flood_vteps: {{ network_services_data.vlan_flood_lists[l2vlan_int] | arista.avd.default([]) | unique | arista.avd.natural_sort }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
