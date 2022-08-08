@@ -15,9 +15,11 @@ vxlan_interface:
       udp_port: 4789
       vlans:
 {% for tenant in network_services_data.tenants %}
-{%     if tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool is arista.avd.defined(fail_action='error', var_name="'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: " ~ tenant.name) %}
-{%         set underlay_l2_multicast_group_ipv4_pool = tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool | ansible.netcommon.ipaddr('network') %}
-{%         set underlay_l2_multicast_group_ipv4_pool_offset = tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset | arista.avd.default(0) %}
+{%     if tenant.evpn_l2_multicast is arista.avd.defined %}
+{%         if tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool is arista.avd.defined(fail_action='error', var_name="'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: " ~ tenant.name) %}
+{%             set underlay_l2_multicast_group_ipv4_pool = tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool | ansible.netcommon.ipaddr('network') %}
+{%             set underlay_l2_multicast_group_ipv4_pool_offset = tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset | arista.avd.default(0) %}
+{%         endif %}
 {%     endif %}
 {%     for vrf in tenant.vrfs %}
 {%         for svi in vrf.svis %}
