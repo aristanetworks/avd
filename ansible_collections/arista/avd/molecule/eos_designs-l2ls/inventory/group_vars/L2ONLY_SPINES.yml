@@ -1,0 +1,14 @@
+---
+type: spine
+
+spine:
+  defaults:
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_priority: 4096
+  node_groups:
+    L2ONLY_SPINES:
+      nodes:
+        L2ONLY-SPINE1:
+          id: 1
+        L2ONLY-SPINE2:
+          id: 2
