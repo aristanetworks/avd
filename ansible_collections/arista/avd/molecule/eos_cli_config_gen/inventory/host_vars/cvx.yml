@@ -1,6 +1,6 @@
 ### CVX ###
 cvx:
-    shutdown: true
+    shutdown: false
     services:
         mcs:
             redis:

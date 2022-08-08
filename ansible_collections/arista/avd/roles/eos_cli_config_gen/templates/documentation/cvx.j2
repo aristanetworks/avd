@@ -11,7 +11,7 @@ cvx service is enabled
 | ------- | ------- | -------- |
 {%         set shut = cvx.services.mcs.shutdown | arista.avd.default('-') %}
 {%         set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
-| MCS     | {{ shut }}  | {{ encrypted }} |
+| MCS     | {{ shut }}  | {{ encryption }} |
 
 ### MCS service configuration
 ```eos

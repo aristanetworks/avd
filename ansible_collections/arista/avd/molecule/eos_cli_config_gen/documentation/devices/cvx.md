@@ -53,8 +53,7 @@ cvx service is enabled
 
 | Service | Enabled | Password |
 | ------- | ------- | -------- |
-| MCS     | False  | - |
-
+| MCS     | False  | True |
 ### MCS service configuration
 ```eos
 !
