@@ -101,9 +101,7 @@ markdown_extensions:
   - tables
   - toc:
       separator: "-"
-      # permalink: "#"
       permalink: true
-      baselevel: 3
 
 # TOC
 docs_dir: ansible_collections/arista/avd/
