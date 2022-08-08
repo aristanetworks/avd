@@ -279,7 +279,7 @@ mac_address_table:
               enabled: < true | false >
 
             # Enable IGMP Snooping
-            igmp_snooping_enabled: < true | false | default true (eos) >
+            igmp_snooping_enabled: < true | false | default true (EOS) >
 
             # Enable igmp snooping querier, by default using IP address of Loopback 0.
             # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
@@ -577,7 +577,7 @@ mac_address_table:
           enabled: < true | false >
 
         # Activate or deactivate IGMP snooping | Optional, default is true
-        igmp_snooping_enabled: < true | false >
+        igmp_snooping_enabled: < true | false | default true (EOS) >
 
         # Enable igmp snooping querier, by default using IP address of Loopback 0.
         # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.

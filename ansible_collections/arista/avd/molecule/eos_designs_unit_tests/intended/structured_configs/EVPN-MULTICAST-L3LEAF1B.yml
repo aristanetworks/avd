@@ -141,59 +141,34 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-  vlans:
-    310:
-      tenant: Tenant_A
-      rd: 192.168.255.4:10310
+  vlan_aware_bundles:
+    MULTICAST_DISABLED_310_311:
+      rd: 192.168.255.4:13
       route_targets:
         both:
-        - 10310:10310
+        - '13:13'
       redistribute_routes:
       - learned
-    311:
-      tenant: Tenant_A
-      rd: 192.168.255.4:10311
+      vlan: 310-311
+    MULTICAST_ENABLED_110_111:
+      rd: 192.168.255.4:11
       route_targets:
         both:
-        - 10311:10311
-      redistribute_routes:
-      - learned
-    110:
-      tenant: Tenant_A
-      rd: 192.168.255.4:10110
-      route_targets:
-        both:
-        - 10110:10110
+        - '11:11'
       redistribute_routes:
       - learned
       - igmp
-    111:
-      tenant: Tenant_A
-      rd: 192.168.255.4:10111
+      vlan: 110-111
+    MULTICAST_ENABLED_210_DISABLED_211:
+      rd: 192.168.255.4:12
       route_targets:
         both:
-        - 10111:10111
+        - '12:12'
       redistribute_routes:
       - learned
       - igmp
-    210:
-      tenant: Tenant_A
-      rd: 192.168.255.4:10210
-      route_targets:
-        both:
-        - 10210:10210
-      redistribute_routes:
-      - learned
-      - igmp
-    211:
-      tenant: Tenant_A
-      rd: 192.168.255.4:10211
-      route_targets:
-        both:
-        - 10211:10211
-      redistribute_routes:
-      - learned
-    256:
+      vlan: 210-211
+    MULTICAST_DISABLED_256:
       tenant: Tenant_A
       rd: 192.168.255.4:10256
       route_targets:
@@ -201,7 +176,8 @@ router_bgp:
         - 10256:10256
       redistribute_routes:
       - learned
-    257:
+      vlan: 256
+    MULTICAST_ENABLED_257:
       tenant: Tenant_A
       rd: 192.168.255.4:10257
       route_targets:
@@ -210,7 +186,8 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
-    4096:
+      vlan: 257
+    MULTICAST_ENABLED_4096:
       tenant: Tenant_A
       rd: 192.168.255.4:14096
       route_targets:
@@ -219,58 +196,34 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
-    5:
-      tenant: Tenant_B
-      rd: 192.168.255.4:10005
+      vlan: 4096
+    MULTICAST_DISABLED_5_6:
+      rd: 192.168.255.4:22
       route_targets:
         both:
-        - 10005:10005
+        - '22:22'
       redistribute_routes:
       - learned
-    6:
-      tenant: Tenant_B
-      rd: 192.168.255.4:10006
+      vlan: 5-6
+    MULTICAST_ENABLED_1_2:
+      rd: 192.168.255.4:21
       route_targets:
         both:
-        - 10006:10006
-      redistribute_routes:
-      - learned
-    1:
-      tenant: Tenant_B
-      rd: 192.168.255.4:10001
-      route_targets:
-        both:
-        - 10001:10001
+        - '21:21'
       redistribute_routes:
       - learned
       - igmp
-    2:
-      tenant: Tenant_B
-      rd: 192.168.255.4:10002
+      vlan: 1-2
+    MULTICAST_ENABLED_3_DISABLED_4:
+      rd: 192.168.255.4:22
       route_targets:
         both:
-        - 10002:10002
+        - '22:22'
       redistribute_routes:
       - learned
       - igmp
-    3:
-      tenant: Tenant_B
-      rd: 192.168.255.4:10003
-      route_targets:
-        both:
-        - 10003:10003
-      redistribute_routes:
-      - learned
-      - igmp
-    4:
-      tenant: Tenant_B
-      rd: 192.168.255.4:10004
-      route_targets:
-        both:
-        - 10004:10004
-      redistribute_routes:
-      - learned
-    7:
+      vlan: 3-4
+    MULTICAST_DISABLED_7:
       tenant: Tenant_B
       rd: 192.168.255.4:10007
       route_targets:
@@ -278,15 +231,17 @@ router_bgp:
         - 10007:10007
       redistribute_routes:
       - learned
-    8:
+      vlan: 7
+    MULTICAST_ENABLED_8:
       tenant: Tenant_B
-      rd: 192.168.255.4:10008
+      rd: 192.168.255.4:10009
       route_targets:
         both:
-        - 10008:10008
+        - 10009:10009
       redistribute_routes:
       - learned
       - igmp
+      vlan: 9
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -428,6 +383,9 @@ vlans:
     tenant: Tenant_B
     name: MULTICAST_DISABLED_7
   8:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
+  9:
     tenant: Tenant_B
     name: MULTICAST_ENABLED_8
 vlan_interfaces:
@@ -595,7 +553,7 @@ port_channel_interfaces:
     description: EVPN-MULTICAST-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 1-8,110-111,210-211,256-257,310-311,4096
+    vlans: 1-9,110-111,210-211,256-257,310-311,4096
     mode: trunk
     mlag: 6
 ethernet_interfaces:
@@ -709,19 +667,28 @@ ip_igmp_snooping:
     1:
       querier:
         enabled: true
-        address: 192.168.255.4
+        address: 1.1.1.1
+        version: 3
     2:
       querier:
         enabled: true
-        address: 192.168.255.4
+        address: 1.1.1.1
+        version: 3
     3:
       querier:
         enabled: true
-        address: 192.168.255.4
+        address: 2.2.2.2
+        version: 1
     8:
       querier:
         enabled: true
-        address: 192.168.255.4
+        address: 1.1.1.1
+        version: 3
+    9:
+      querier:
+        enabled: true
+        address: 2.2.2.2
+        version: 1
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
@@ -775,6 +742,9 @@ vxlan_interface:
         8:
           vni: 10008
           multicast_group: 232.0.16.8
+        9:
+          vni: 10009
+          multicast_group: 232.0.16.9
       vrfs:
         MULTICAST_DISABLED_310_311:
           vni: 13

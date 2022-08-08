@@ -234,14 +234,14 @@ router_bgp:
       vlan: 7
     MULTICAST_ENABLED_8:
       tenant: Tenant_B
-      rd: 192.168.255.3:10008
+      rd: 192.168.255.3:10009
       route_targets:
         both:
-        - 10008:10008
+        - 10009:10009
       redistribute_routes:
       - learned
       - igmp
-      vlan: 8
+      vlan: 9
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -383,6 +383,9 @@ vlans:
     tenant: Tenant_B
     name: MULTICAST_DISABLED_7
   8:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
+  9:
     tenant: Tenant_B
     name: MULTICAST_ENABLED_8
 vlan_interfaces:
@@ -550,7 +553,7 @@ port_channel_interfaces:
     description: EVPN-MULTICAST-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 1-8,110-111,210-211,256-257,310-311,4096
+    vlans: 1-9,110-111,210-211,256-257,310-311,4096
     mode: trunk
     mlag: 6
 ethernet_interfaces:
@@ -664,19 +667,28 @@ ip_igmp_snooping:
     1:
       querier:
         enabled: true
-        address: 192.168.255.3
+        address: 1.1.1.1
+        version: 3
     2:
       querier:
         enabled: true
-        address: 192.168.255.3
+        address: 1.1.1.1
+        version: 3
     3:
       querier:
         enabled: true
-        address: 192.168.255.3
+        address: 2.2.2.2
+        version: 1
     8:
       querier:
         enabled: true
-        address: 192.168.255.3
+        address: 1.1.1.1
+        version: 3
+    9:
+      querier:
+        enabled: true
+        address: 2.2.2.2
+        version: 1
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
@@ -730,6 +742,9 @@ vxlan_interface:
         8:
           vni: 10008
           multicast_group: 232.0.16.8
+        9:
+          vni: 10009
+          multicast_group: 232.0.16.9
       vrfs:
         MULTICAST_DISABLED_310_311:
           vni: 13

@@ -256,6 +256,15 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
+    9:
+      tenant: Tenant_B
+      rd: 192.168.255.5:10009
+      route_targets:
+        both:
+        - 10009:10009
+      redistribute_routes:
+      - learned
+      - igmp
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -406,6 +415,9 @@ vlans:
   8:
     tenant: Tenant_B
     name: MULTICAST_ENABLED_8
+  9:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -432,19 +444,28 @@ ip_igmp_snooping:
     1:
       querier:
         enabled: true
-        address: 192.168.255.5
+        address: 1.1.1.1
+        version: 3
     2:
       querier:
         enabled: true
-        address: 192.168.255.5
+        address: 1.1.1.1
+        version: 3
     3:
       querier:
         enabled: true
-        address: 192.168.255.5
+        address: 2.2.2.2
+        version: 1
     8:
       querier:
         enabled: true
-        address: 192.168.255.5
+        address: 1.1.1.1
+        version: 3
+    9:
+      querier:
+        enabled: true
+        address: 2.2.2.2
+        version: 1
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
   Vlan310:
@@ -593,6 +614,9 @@ vxlan_interface:
         8:
           vni: 10008
           multicast_group: 232.0.16.8
+        9:
+          vni: 10009
+          multicast_group: 232.0.16.9
       vrfs:
         MULTICAST_DISABLED_310_311:
           vni: 13
