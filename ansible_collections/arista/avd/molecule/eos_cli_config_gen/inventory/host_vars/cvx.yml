@@ -1,0 +1,9 @@
+### CVX ###
+cvx:
+    shutdown: true
+    services:
+        mcs:
+            redis:
+                password: 070E334ddD1D18
+                encryption: true
+            shutdown: false

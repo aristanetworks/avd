@@ -1,7 +1,5 @@
 {# Device Configuration #}
 {% include 'eos/rancid-content-type.j2' %}
-{# System Boot Configuration #}
-{% include 'eos/boot.j2' %}
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
 {# cli prompt #}
@@ -102,12 +100,8 @@
 {% include 'eos/local-users.j2' %}
 {# roles #}
 {% include 'eos/roles.j2' %}
-{# Tap Aggregation #}
-{% include 'eos/tap-aggregation.j2' %}
 {# clock #}
 {% include 'eos/clock.j2' %}
-{# CVX #}
-{% include 'eos/cvx.j2' %}
 {# VLANs #}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
@@ -164,14 +158,10 @@
 {% include 'eos/qos.j2' %}
 {# Community-lists #}
 {% include 'eos/community-lists.j2' %}
-{# Community-lists, improved data model #}
-{% include 'eos/ip-community-lists.j2' %}
 {# IP Extended Community Lists #}
 {% include 'eos/ip-extended-community-lists.j2' %}
 {# IP Extended Community Lists Regexp #}
 {% include 'eos/ip-extended-community-lists-regexp.j2' %}
-{# Dynmaic Prefix-lists #}
-{% include 'eos/dynamic-prefix-lists.j2' %}
 {# Prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
@@ -248,12 +238,8 @@
 {% include 'eos/management-defaults.j2' %}
 {# management api gnmi #}
 {% include 'eos/management-api-gnmi.j2' %}
-{# management api models #}
-{% include 'eos/management-api-models.j2' %}
 {# management security #}
 {% include 'eos/management-security.j2' %}
-{# 802.1x Global #}
-{% include 'eos/dot1x.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}
