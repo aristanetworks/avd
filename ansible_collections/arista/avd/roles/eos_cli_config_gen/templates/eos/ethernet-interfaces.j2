@@ -387,6 +387,28 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.mac_access_group_out is arista.avd.defined %}
    mac access-group {{ ethernet_interface.mac_access_group_out }} out
 {%         endif %}
+{%         if ethernet_interface.multicast is arista.avd.defined %}
+{%             if ethernet_interface.multicast.ipv4.boundaries is arista.avd.defined %}
+{%                 for boundary in ethernet_interface.multicast.ipv4.boundaries %}
+{%                     set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
+{%                     if boundary.out is arista.avd.defined(true) %}
+{%                         set boundary_cli = boundary_cli ~ " out" %}
+{%                     endif %}
+   {{ boundary_cli }}
+{%                 endfor %}
+{%             endif %}
+{%             if ethernet_interface.multicast.ipv6.boundaries is arista.avd.defined %}
+{%                 for boundary in ethernet_interface.multicast.ipv6.boundaries %}
+   multicast ipv6 boundary {{ boundary.boundary }} out
+{%                 endfor %}
+{%             endif %}
+{%             if ethernet_interface.multicast.ipv4.static is arista.avd.defined(true) %}
+   multicast ipv4 static
+{%             endif %}
+{%             if ethernet_interface.multicast.ipv6.static is arista.avd.defined(true) %}
+   multicast ipv6 static
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interface.mpls.ip is arista.avd.defined(true) %}
    mpls ip
 {%         elif ethernet_interface.mpls.ip is arista.avd.defined(false) %}

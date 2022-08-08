@@ -136,6 +136,12 @@ interface Management1
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
 | Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
 
+#### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
+| --------- | ---------- | --------------------- | -------------------- | ---------------------------------------- |
+| Vlan89 | IPv4 | - | - | True |
+
 ### VLAN Interfaces Device Configuration
 
 ```eos

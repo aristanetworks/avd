@@ -153,6 +153,17 @@ interface Management1
 | Ethernet1 | EVPN_MH_ES1 | upstream |
 | Ethernet3 | EVPN_MH_ES2 | downstream |
 
+#### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
+| Ethernet2 | IPv4 | True | ACL_MULTICAST |
+| Ethernet2 | IPv6 | - | ACL_V6_MULTICAST |
+| Ethernet4 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 |
+| Ethernet4 | IPv6 | - | ff00::/16, ff01::/16 |
+| Ethernet9 | IPv4 | - | ACL_MULTICAST |
+| Ethernet9 | IPv6 | True | - |
+
 #### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -239,6 +250,9 @@ interface Ethernet2
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   multicast ipv4 boundary ACL_MULTICAST
+   multicast ipv6 boundary ACL_V6_MULTICAST out
+   multicast ipv4 static
    priority-flow-control on
    priority-flow-control priority 5 no-drop
    storm-control all level 10
@@ -275,6 +289,11 @@ interface Ethernet4
    ipv6 nd managed-config-flag
    ipv6 access-group IPv6_ACL_IN in
    ipv6 access-group IPv6_ACL_OUT out
+   multicast ipv4 boundary 224.0.1.0/24 out
+   multicast ipv4 boundary 224.0.2.0/24
+   multicast ipv6 boundary ff00::/16 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
    priority-flow-control on
    spanning-tree guard none
 !
@@ -355,6 +374,8 @@ interface Ethernet9
    no switchport
    ip address 172.31.128.9/31
    mpls ldp interface
+   multicast ipv4 boundary ACL_MULTICAST out
+   multicast ipv6 static
    mpls ip
 !
 interface Ethernet10

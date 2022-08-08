@@ -837,6 +837,17 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     mac_access_group_in: < mac_access_list_name >
     mac_access_group_out: < mac_access_list_name >
+    multicast:
+      # boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
+      ipv4:
+        boundaries:
+          - boundary: < acl_name | multicast_ip_subnet >
+            out: < true | false >
+        static: < true | false >
+      ipv6:
+        boundaries:
+          - boundary: < acl_name | multicast_ip_subnet >
+        static: < true | false >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     ospf_cost: < ospf_cost >
@@ -1363,10 +1374,22 @@ vlan_interfaces:
     ipv6_access_group_in: < ipv6_access_list_name >
     ipv6_access_group_out: < ipv6_access_list_name >
     multicast:
+      # boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
       ipv4:
+        boundaries:
+          - boundary: < acl_name | multicast_ip_subnet >
+            out: < true | false >
         source_route_export:
           enabled: < true | false >
           administrative_distance: < 1-255 >
+        static: < true | false >
+      ipv6:
+        boundaries:
+          - boundary: < acl_name | multicast_ip_subnet >
+        source_route_export:
+          enabled: < true | false >
+          administrative_distance: < 1-255 >
+        static: < true | false >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     ospf_cost: < ospf_cost >

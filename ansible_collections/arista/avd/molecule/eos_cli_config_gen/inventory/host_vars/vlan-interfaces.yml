@@ -195,6 +195,17 @@ vlan_interfaces:
         preferred_lifetime: infinite
         no_autoconfig_flag: true
     ipv6_virtual_router_address: 1b11:3a00:22b0:1000::1
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: 224.0.1.0/24
+            out: true
+          - boundary: 224.0.2.0/24
+      ipv6:
+        boundaries:
+          - boundary: ff00::/16
+          - boundary: ff01::/16
 
 # IPv6 + helpers + Mcast
 
@@ -224,6 +235,12 @@ vlan_interfaces:
       ipv4:
         source_route_export:
           enabled: true
+        boundaries:
+          - boundary: ACL_MULTICAST
+      ipv6:
+        static: true
+        boundaries:
+          - boundary: ACL_V6_MULTICAST_WITH_OUT
     pim:
       ipv4:
         sparse_mode: true
@@ -235,6 +252,16 @@ vlan_interfaces:
     vrf: Tenant_A
     ip_address: 10.0.101.1/24
     pvlan_mapping: 111-112
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: ACL_MULTICAST
+            out: true
+      ipv6:
+        source_route_export:
+          enabled: true
+          administrative_distance: 20
 
 # VRRP
   Vlan667:

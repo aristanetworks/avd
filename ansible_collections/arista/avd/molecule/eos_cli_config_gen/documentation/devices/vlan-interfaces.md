@@ -157,6 +157,17 @@ interface Management1
 | Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
 | Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 
+#### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
+| --------- | ---------- | --------------------- | -------------------- | ---------------------------------------- |
+| Vlan75 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 | - |
+| Vlan75 | IPv6 | - | ff00::/16, ff01::/16 | - |
+| Vlan89 | IPv4 | - | ACL_MULTICAST | True |
+| Vlan89 | IPv6 | True | ACL_V6_MULTICAST_WITH_OUT | - |
+| Vlan110 | IPv4 | True | ACL_MULTICAST | - |
+| Vlan110 | IPv6 | - | - | True |
+
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -199,6 +210,11 @@ interface Vlan75
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
+   multicast ipv4 boundary 224.0.1.0/24 out
+   multicast ipv4 boundary 224.0.2.0/24
+   multicast ipv6 boundary ff00::/16 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
    ip address virtual 10.10.75.1/24
 !
@@ -259,7 +275,10 @@ interface Vlan89
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
+   multicast ipv4 boundary ACL_MULTICAST
+   multicast ipv6 boundary ACL_V6_MULTICAST_WITH_OUT out
    multicast ipv4 source route export
+   multicast ipv6 static
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
@@ -286,6 +305,9 @@ interface Vlan110
    no shutdown
    vrf Tenant_A
    ip address 10.0.101.1/24
+   multicast ipv4 boundary ACL_MULTICAST out
+   multicast ipv6 source route export 20
+   multicast ipv4 static
    pvlan mapping 111-112
 !
 interface Vlan333

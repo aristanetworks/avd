@@ -35,6 +35,14 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: ACL_MULTICAST
+      ipv6:
+        boundaries:
+          - boundary: ACL_V6_MULTICAST
     storm_control:
       all:
         level: 10
@@ -98,6 +106,17 @@ ethernet_interfaces:
     priority_flow_control:
       enabled: true
     spanning_tree_guard: disabled
+    multicast:
+      ipv4:
+        static: true
+        boundaries:
+          - boundary: 224.0.1.0/24
+            out: true
+          - boundary: 224.0.2.0/24
+      ipv6:
+        boundaries:
+          - boundary: ff00::/16
+          - boundary: ff01::/16
 
   Ethernet5:
     description: Molecule Routing
@@ -201,6 +220,13 @@ ethernet_interfaces:
     description: interface_with_mpls_enabled
     type: routed
     ip_address: 172.31.128.9/31
+    multicast:
+      ipv4:
+        boundaries:
+          - boundary: ACL_MULTICAST
+            out: true
+      ipv6:
+        static: true
     mpls:
       ip: true
       ldp:
