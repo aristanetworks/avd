@@ -12,4 +12,4 @@ design:
 
 fabric_name: L2LS
 
-mgmt_gateway: null
+mgmt_gateway: 172.31.0.1
