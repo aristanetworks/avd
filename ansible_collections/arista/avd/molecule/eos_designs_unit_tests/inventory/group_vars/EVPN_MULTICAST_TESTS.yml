@@ -150,7 +150,7 @@ tenants:
           # - vlan 3 configured with multicast:
           #   - Querier address configured with 2.2.2.2
           #   - Querier version 1
-          #   - vxlan vlan 2 multicast group 232.0.16.3
+          #   - vxlan vlan 3 multicast group 232.0.16.3
           #   - redistribute igmp on BGP vlan-aware-bundle 3-4 (LEAF1A/B)
           #   - redistribute igmp on BGP vlan based 3 (LEAF2A)
           3:
@@ -190,13 +190,13 @@ tenants:
       # - vlan 8 configured with multicast:
       #   - Querier address configured with 1.1.1.1
       #   - Querier version 3
-      #   - vxlan vlan 2 multicast group 232.0.16.8
+      #   - vxlan vlan 7 multicast group 232.0.16.8
       #   - redistribute igmp on BGP vlan-aware-bundle 8(LEAF1A/B)
       #   - redistribute igmp on BGP vlan based 8 (LEAF2A)
       # - vlan 9 configured with multicast:
       #   - Querier address configured with 2.2.2.2
       #   - Querier version 1
-      #   - vxlan vlan 2 multicast group 232.0.16.9
+      #   - vxlan vlan 9 multicast group 232.0.16.9
       #   - redistribute igmp on BGP vlan-aware-bundle 9 (LEAF1A/B)
       #   - redistribute igmp on BGP vlan based 9 (LEAF2A)
       7:
