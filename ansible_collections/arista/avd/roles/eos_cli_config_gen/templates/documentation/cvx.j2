@@ -9,9 +9,11 @@ cvx service is enabled
 
 | Service | Enabled | Password |
 | ------- | ------- | -------- |
-{%         set shut = cvx.services.mcs.shutdown | arista.avd.default('-') %}
-{%         set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
-| MCS     | {{ shut }}  | {{ encryption }} |
+{%         if cvx.services.mcs is arista.avd.defined %}
+{%             set shut = cvx.services.mcs.shutdown | arista.avd.default('-') %}
+{%             set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
+| MCS | {{ shut }} | {{ encryption }} |
+{%         endif %}
 
 ## MCS service configuration
 
