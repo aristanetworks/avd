@@ -3,7 +3,7 @@ vxlan_interface:
   Vxlan1:
     description: {{ inventory_hostname }}_VTEP
     vxlan:
-{% if switch.multi_vtep is arista.avd.defined(true)  %}
+{% if switch.multi_vtep is arista.avd.defined(true) %}
       source_interface: Loopback0
       mlag_source_interface: {{ switch.vtep_loopback }}
 {% else %}
@@ -47,7 +47,7 @@ vxlan_interface:
                   tenant.mac_vrf_vni_base + l2vlan_int) }}
 {%         set l2vlan_evpn_l2_multicast_enabled = l2vlan.evpn_l2_multicast.enabled | arista.avd.default(
                                                   tenant.evpn_l2_multicast.enabled) %}
-{%         if l2vlan_evpn_l2_multicast_enabled is arista.avd.defined(true)  %}
+{%         if l2vlan_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
           multicast_group: {{ underlay_l2_multicast_group_ipv4_pool | ansible.netcommon.ipmath(l2vlan_int - 1 + underlay_l2_multicast_group_ipv4_pool_offset) }}
 {%         endif %}
 {%     endfor %}

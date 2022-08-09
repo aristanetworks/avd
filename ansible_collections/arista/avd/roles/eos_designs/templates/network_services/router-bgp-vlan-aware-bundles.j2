@@ -43,7 +43,7 @@
 {%                 endif %}
       redistribute_routes:
         - learned
-{%                 if evpn_l2_multicast.redistribute_igmp  is arista.avd.defined(true) %}
+{%                 if evpn_l2_multicast.redistribute_igmp is arista.avd.defined(true) %}
         - igmp
 {%                 endif %}
       vlan: {{ svi_int_list | map('int') | arista.avd.list_compress }}
@@ -77,7 +77,7 @@
         - learned
 {%             set l2vlan_evpn_l2_multicast_enabled = l2vlan.evpn_l2_multicast.enabled | arista.avd.default(
                                                       tenant.evpn_l2_multicast.enabled) %}
-{%             if l2vlan_evpn_l2_multicast_enabled is arista.avd.defined(true)  %}
+{%             if l2vlan_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
         - igmp
 {%             endif %}
       vlan: {{ l2vlan_int }}
