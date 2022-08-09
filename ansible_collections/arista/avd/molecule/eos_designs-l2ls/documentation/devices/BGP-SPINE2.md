@@ -357,13 +357,13 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | - | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0
+ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 ```
 
 ## Router BGP

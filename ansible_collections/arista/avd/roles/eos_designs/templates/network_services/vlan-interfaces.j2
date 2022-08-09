@@ -3,7 +3,11 @@ vlan_interfaces:
 {% for tenant in network_services_data.tenants %}
 {%     for vrf in tenant.vrfs %}
 {%         for svi in vrf.svis %}
-{%             set svi_raw_eos_cli = svi.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
+{%             set svi_node = svi.nodes | arista.avd.default({}) |
+                                          arista.avd.convert_dicts('name') |
+                                          selectattr('name', 'arista.avd.defined', inventory_hostname) |
+                                          first %}
+{%             set svi_raw_eos_cli = svi_node.raw_eos_cli | arista.avd.default(
                                      svi.raw_eos_cli) %}
 {%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(vrf.ip_helpers) %}
   Vlan{{ svi.id | int }}:
@@ -18,19 +22,19 @@ vlan_interfaces:
 {%             if vrf.name != 'default' %}
     vrf: {{ vrf.name }}
 {%             else %}
-{%                 set svi_subnet = svi.nodes[inventory_hostname].ip_address | arista.avd.default(svi.ip_address_virtual) | ansible.netcommon.ipaddr('subnet') %}
+{%                 set svi_subnet = svi_node.ip_address | arista.avd.default(svi.ip_address_virtual) | ansible.netcommon.ipaddr('subnet') %}
 {%                 if svi_subnet is arista.avd.defined and svi_subnet %}
 {%                     do default_vrf.svi_subnets.append(svi_subnet) %}
 {%                 endif %}
 {%             endif %}
 {# IP address configuration #}
-{%             if svi.nodes[inventory_hostname].ip_address is arista.avd.defined %}
-    ip_address: {{ svi.nodes[inventory_hostname].ip_address }}
+{%             if svi_node.ip_address is arista.avd.defined %}
+    ip_address: {{ svi_node.ip_address }}
 {%             endif %}
 {# IPv6 address configuration #}
-{%             if svi.nodes[inventory_hostname].ipv6_address is arista.avd.defined %}
+{%             if svi_node.ipv6_address is arista.avd.defined %}
 {%                 do network_services_data.ipv6vrfs.update({vrf.name: True}) %}
-    ipv6_address: {{ svi.nodes[inventory_hostname].ipv6_address }}
+    ipv6_address: {{ svi_node.ipv6_address }}
 {%             endif %}
 {# Virtual Router IP Address #}
 {%             if svi.ip_virtual_router_addresses is arista.avd.defined %}

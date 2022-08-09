@@ -1,4 +1,4 @@
-# OSPF-LEAF1
+# L2ONLY-LEAF2
 # Table of Contents
 
 - [Management](#management)
@@ -81,14 +81,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 100 | SVI_100 | - |
+| 100 | L2VLAN_100 | - |
 
 ## VLANs Device Configuration
 
 ```eos
 !
 vlan 100
-   name SVI_100
+   name L2VLAN_100
 ```
 
 # Interfaces
@@ -101,8 +101,8 @@ vlan 100
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | OSPF-SPINE1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | OSPF-SPINE2_Ethernet1 | *trunk | *100 | *- | *- | 1 |
+| Ethernet1 | L2ONLY-SPINE1_Ethernet2 | *trunk | *100 | *- | *- | 1 |
+| Ethernet2 | L2ONLY-SPINE2_Ethernet2 | *trunk | *100 | *- | *- | 1 |
 | Ethernet10 |  Endpoint | access | 100 | - | - | - |
 | Ethernet11 |  Endpoint | access | 100 | - | - | - |
 
@@ -113,12 +113,12 @@ vlan 100
 ```eos
 !
 interface Ethernet1
-   description OSPF-SPINE1_Ethernet1
+   description L2ONLY-SPINE1_Ethernet2
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description OSPF-SPINE2_Ethernet1
+   description L2ONLY-SPINE2_Ethernet2
    no shutdown
    channel-group 1 mode active
 !
@@ -145,14 +145,14 @@ interface Ethernet11
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | OSPF_SPINES_Po1 | switched | trunk | 100 | - | - | - | - | - | - |
+| Port-Channel1 | L2ONLY_SPINES_Po2 | switched | trunk | 100 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description OSPF_SPINES_Po1
+   description L2ONLY_SPINES_Po2
    no shutdown
    switchport
    switchport trunk allowed vlan 100
