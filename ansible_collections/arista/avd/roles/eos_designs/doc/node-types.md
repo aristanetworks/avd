@@ -69,6 +69,9 @@ node_type_keys:
       connected_endpoints_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces >
       overlay_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface >
       vtep_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface >
+
+    # Optional | Extra hostvars to include in the template environment for custom ip_addressing and interface_descriptions templates
+    custom_templates_extra_vars: [<var_1>, <var_2>]
 ```
 
 ## Context for ip_addressing templates
