@@ -15,52 +15,6 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-  vrfs:
-    TEST:
-      router_id: 192.168.254.3
-      rd: '192.168.254.3:'
-      route_targets:
-        import:
-          evpn:
-          - None:None
-        export:
-          evpn:
-          - None:None
-      redistribute_routes:
-      - connected
-  vlans:
-    3900:
-      tenant: TEST
-      rd: 192.168.254.3:13900
-      route_targets:
-        both:
-        - 13900:13900
-      redistribute_routes:
-      - learned
-    3903:
-      tenant: TEST
-      rd: 192.168.254.3:13903
-      route_targets:
-        both:
-        - 13903:13903
-      redistribute_routes:
-      - learned
-    2900:
-      tenant: TEST
-      rd: 192.168.254.3:12900
-      route_targets:
-        both:
-        - 12900:12900
-      redistribute_routes:
-      - learned
-    2903:
-      tenant: TEST
-      rd: 192.168.254.3:12903
-      route_targets:
-        both:
-        - 12903:12903
-      redistribute_routes:
-      - learned
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

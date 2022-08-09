@@ -588,7 +588,9 @@ class EosDesignsFacts:
 
     @cached_property
     def overlay_address_families(self):
-        return get(self._switch_data_combined, "overlay_address_families", default=self.default_overlay_address_families)
+        if self.overlay_routing_protocol in ['ebgp', 'ibgp']:
+            return get(self._switch_data_combined, "overlay_address_families", default=self.default_overlay_address_families)
+        return []
 
     @cached_property
     def link_tracking_groups(self):
