@@ -1,10 +1,16 @@
-# OSPF-LEAF1
+# L2ONLY-SPINE1
 # Table of Contents
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
+- [MLAG](#mlag)
+  - [MLAG Summary](#mlag-summary)
+  - [MLAG Device Configuration](#mlag-device-configuration)
+- [Spanning Tree](#spanning-tree)
+  - [Spanning Tree Summary](#spanning-tree-summary)
+  - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
@@ -14,6 +20,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
@@ -60,6 +67,46 @@ management api http-commands
 
 # Monitoring
 
+# MLAG
+
+## MLAG Summary
+
+| Domain-id | Local-interface | Peer-address | Peer-link |
+| --------- | --------------- | ------------ | --------- |
+| L2ONLY_SPINES | Vlan4094 | 192.168.254.1 | Port-Channel3 |
+
+Dual primary detection is disabled.
+
+## MLAG Device Configuration
+
+```eos
+!
+mlag configuration
+   domain-id L2ONLY_SPINES
+   local-interface Vlan4094
+   peer-address 192.168.254.1
+   peer-link Port-Channel3
+   reload-delay mlag 300
+   reload-delay non-mlag 330
+```
+
+# Spanning Tree
+
+## Spanning Tree Summary
+
+STP mode: **mstp**
+
+### Global Spanning-Tree Settings
+
+- Spanning Tree disabled for VLANs: **4094**
+
+## Spanning Tree Device Configuration
+
+```eos
+!
+no spanning-tree vlan-id 4094
+```
+
 # Internal VLAN Allocation Policy
 
 ## Internal VLAN Allocation Policy Summary
@@ -81,14 +128,19 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 100 | SVI_100 | - |
+| 100 | L2VLAN_100 | - |
+| 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
 ```eos
 !
 vlan 100
-   name SVI_100
+   name L2VLAN_100
+!
+vlan 4094
+   name MLAG_PEER
+   trunk group MLAG
 ```
 
 # Interfaces
@@ -101,10 +153,10 @@ vlan 100
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | OSPF-SPINE1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | OSPF-SPINE2_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 100 | - | - | - |
-| Ethernet11 |  Endpoint | access | 100 | - | - | - |
+| Ethernet1 | L2ONLY-LEAF1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
+| Ethernet2 | L2ONLY-LEAF2_Ethernet1 | *trunk | *100 | *- | *- | 2 |
+| Ethernet3 | MLAG_PEER_L2ONLY-SPINE2_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_L2ONLY-SPINE2_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -113,28 +165,24 @@ vlan 100
 ```eos
 !
 interface Ethernet1
-   description OSPF-SPINE1_Ethernet1
+   description L2ONLY-LEAF1_Ethernet1
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description OSPF-SPINE2_Ethernet1
+   description L2ONLY-LEAF2_Ethernet1
    no shutdown
-   channel-group 1 mode active
+   channel-group 2 mode active
 !
-interface Ethernet10
-   description Endpoint
+interface Ethernet3
+   description MLAG_PEER_L2ONLY-SPINE2_Ethernet3
    no shutdown
-   switchport access vlan 100
-   switchport mode access
-   switchport
+   channel-group 3 mode active
 !
-interface Ethernet11
-   description Endpoint
+interface Ethernet4
+   description MLAG_PEER_L2ONLY-SPINE2_Ethernet4
    no shutdown
-   switchport access vlan 100
-   switchport mode access
-   switchport
+   channel-group 3 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -145,18 +193,63 @@ interface Ethernet11
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | OSPF_SPINES_Po1 | switched | trunk | 100 | - | - | - | - | - | - |
+| Port-Channel1 | L2ONLY-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
+| Port-Channel2 | L2ONLY-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
+| Port-Channel3 | MLAG_PEER_L2ONLY-SPINE2_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description OSPF_SPINES_Po1
+   description L2ONLY-LEAF1_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 100
    switchport mode trunk
+   mlag 1
+!
+interface Port-Channel2
+   description L2ONLY-LEAF2_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 100
+   switchport mode trunk
+   mlag 2
+!
+interface Port-Channel3
+   description MLAG_PEER_L2ONLY-SPINE2_Po3
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 2-4094
+   switchport mode trunk
+   switchport trunk group MLAG
+```
+
+## VLAN Interfaces
+
+### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4094 | MLAG_PEER | default | 9000 | false |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4094 |  default  |  192.168.254.0/31  |  -  |  -  |  -  |  -  |  -  |
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4094
+   description MLAG_PEER
+   no shutdown
+   mtu 9000
+   no autostate
+   ip address 192.168.254.0/31
 ```
 
 # Routing

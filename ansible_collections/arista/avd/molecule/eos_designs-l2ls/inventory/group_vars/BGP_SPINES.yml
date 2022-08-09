@@ -1,7 +1,7 @@
 ---
-type: spine
+type: l3spine
 
-spine:
+l3spine:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24
     mlag_peer_ipv4_pool: 192.168.254.0/24
