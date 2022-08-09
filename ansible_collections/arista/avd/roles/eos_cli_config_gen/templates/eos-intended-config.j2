@@ -98,6 +98,8 @@
 {% include 'eos/enable-password.j2' %}
 {# aaa root #}
 {% include 'eos/aaa-root.j2' %}
+{# CVX #}
+{% include 'eos/cvx.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# roles #}
@@ -106,8 +108,6 @@
 {% include 'eos/tap-aggregation.j2' %}
 {# clock #}
 {% include 'eos/clock.j2' %}
-{# CVX #}
-{% include 'eos/cvx.j2' %}
 {# VLANs #}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
