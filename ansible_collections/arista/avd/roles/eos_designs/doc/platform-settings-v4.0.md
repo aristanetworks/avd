@@ -1,4 +1,4 @@
-# Platform Specific settings
+# Platform Specific Settings
 
 - Set platform specific settings, TCAM profile and reload delay.
 - The reload delay values should be reviewed and tuned to the specific environment.

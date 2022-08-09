@@ -1,4 +1,4 @@
-# AVD & CVP Playbooks integration in AWX/Tower
+# AWX & Tower Integration
 
 ## About
 

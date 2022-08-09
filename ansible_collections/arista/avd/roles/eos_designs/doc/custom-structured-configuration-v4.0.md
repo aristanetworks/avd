@@ -1,4 +1,4 @@
-# Custom AVD Structured Configuration
+# Custom Structured Configuration
 
 With Custom Structured Configuration the user can override built-in `eos_designs` functionality or add extra knobs to be picked up by `eos_cli_config_gen` role.
 There are multiple ways of supplying Custom Structured Configuration and they can all be combined.

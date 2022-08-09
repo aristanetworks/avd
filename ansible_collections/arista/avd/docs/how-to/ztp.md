@@ -1,4 +1,6 @@
-# Configure management network
+# Configure ZTP Server With CVP Collection
+
+## Configure management network
 
 Because we want to be generic, let's configure a DHCP server on the NAT gateway to provide a fixed DHCP address to your devices. Thus you will be able to get access to them easily. To support that, we can leverage `arista.cvp.dhcp_configuration` to install and configure a DHCP server.
 

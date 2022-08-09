@@ -1,4 +1,4 @@
-# Collection installation
+# Collection Installation
 
 These instructions are for regular users to install via Ansible Galaxy. To setup a development environment use [these](../contribution/setup-environment.md) instructions.
 

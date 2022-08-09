@@ -1,4 +1,4 @@
-# How-To build your first AVD project
+# Build Your First AVD Project
 
 ## Abstract
 

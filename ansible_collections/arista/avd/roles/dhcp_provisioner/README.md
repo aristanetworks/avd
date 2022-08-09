@@ -1,4 +1,4 @@
-# Ansible Role: dhcp_provisioner
+# dhcp_provisioner
 
 ## Overview
 

@@ -1,4 +1,4 @@
-# AVD example for a single data center using Layer 3 Leaf Spine (L3LS)
+# AVD Example for a Single Data Center Using Layer 3 Leaf Spine (L3LS)
 
 ## Introduction
 

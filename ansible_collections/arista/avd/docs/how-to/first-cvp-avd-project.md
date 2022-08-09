@@ -1,4 +1,4 @@
-# How to build your first project with AVD and CVP
+# Build Your First Project With AVD and CVP
 
 This document explains how to customize demo information and set up an environment. A complete Git repository is available and can be used as support for this how-to document.
 

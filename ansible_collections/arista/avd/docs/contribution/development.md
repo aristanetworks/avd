@@ -1,4 +1,4 @@
-# Development tips & tricks
+# Development Tips & Tricks
 
 ## Overview
 

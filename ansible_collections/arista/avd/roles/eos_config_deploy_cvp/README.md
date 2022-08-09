@@ -1,4 +1,4 @@
-# Ansible Role: eos_config_deploy_cvp
+# eos_config_deploy_cvp
 
 ## Overview
 

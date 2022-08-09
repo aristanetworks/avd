@@ -1,4 +1,4 @@
-# Ansible Role: eos_designs
+# eos_designs
 
 ## Overview
 

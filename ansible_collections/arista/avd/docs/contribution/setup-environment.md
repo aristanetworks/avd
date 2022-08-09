@@ -1,4 +1,4 @@
-# Setup Ansible AVD environment
+# Setup Ansible AVD Environment
 
 Two methods can be used get Ansible up and running quickly with all the requirements to leverage __ansible-avd__:
 A Python Virtual Environment or [Docker container](https://hub.docker.com/repository/docker/avdteam/base).

@@ -1,4 +1,4 @@
-# AVD Coding style
+# AVD Coding Style
 
 This page provides a list of guidelines to apply when developing the Jinja2 template in the AVD context. These rules apply for either creation or update of any Jinja2 file available in a `aristanetworks/ansible-avd` repository.
 

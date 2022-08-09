@@ -1,4 +1,4 @@
-# Ansible Role: eos_validate_state
+# eos_validate_state
 
 ## Overview
 
