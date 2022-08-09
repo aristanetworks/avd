@@ -82,19 +82,19 @@ router_id:
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_pool }}`
 - `{{ loopback_ipv4_offset }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 mlag_ip_primary & mlag_ip_secondary:
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
 - `{{ switch.uplink_ipv4_pool }}`
@@ -102,19 +102,19 @@ p2p_uplinks_ip & p2p_uplinks_peer_ip:
 - `{{ switch.max_uplink_switches }}`
 - `{{ switch.max_parallel_uplinks }}`
 - `{{ uplink_switch_index }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 vtep_ip_mlag:
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ mlag_primary_id }}`
 - `{{ loopback_ipv4_offset }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 vtep_ip:
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_offset }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models, and may change without notice.
@@ -127,33 +127,33 @@ underlay_ethernet_interfaces:
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p or underlay_l2)`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 underlay_port_channel_interfaces:
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer_channel_group_id }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 mlag_ethernet_interfaces:
 - `{{ mlag_interface }}`
 - `{{ mlag_peer }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 mlag_port_channel_interfaces:
 - `{{ mlag_interfaces }}`
 - `{{ mlag_peer }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 connected_endpoints_ethernet_interfaces:
 - `{{ peer }}`
 - `{{ peer_interface }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 connected_endpoints_port_channel_interfaces:
 - `{{ peer }}`
 - `{{ adapter_port_channel_description }}`
-- `< custom_templates_extra_vars >`
+- `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models, and may change without notice.
