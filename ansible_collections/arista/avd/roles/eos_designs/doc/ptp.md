@@ -2,31 +2,32 @@
 
 Arista best practices are utilised, simplifying configuration of several global and interface-specific PTP settings:
 
-- PTP can be enabled on:
+- PTP can be enabled on various levels of the AVD configuration:
   - fabric level
   - per node_group
   - per node
 
--  Only when explicitly enabled, the global PTP settings will take effect:
+- Only when explicitly enabled, will the following global PTP settings take effect:
   - PTP mode boundary is used by default.
-  - You can specify one of three different PTP profiles:
+  - One of three different PTP profiles can be used:
     - AES67
     - SMPTE2059-2
     - AES67-R16-2016 (used by default if no profile is specified)
 
-        The profile will apply PTP parameters for all relevant interfaces which are:
-        - All links between leaf and spine switches
-        - Individual PTP-enabled links for connected endpoints
+        The profile will apply PTP parameters for the following interfaces:
+        - All interfaces between leaf and spine switches
+        - Individual PTP-enabled interfaces for connected endpoints
 
-  - By default all links between leaf and spine switches participates in the Best Master Clock Algorithm (BMCA).
-  - By default all interfaces used for endpoints use `ptp role master`, unless you specify that they should also participate in the BMCA.
-  - PTP Priorities are automatically set based on the node_type and switch_id.
-  - PTP Clock Identity is automatically set based on a prefix (00:00:00 by default) + PTP priority1 and PTP priority2.
+- Defaults used when PTP is enabled:
+  - All interfaces between leaf and spine switches participate in the Best Master Clock Algorithm (BMCA).
+  - All interfaces used for endpoints with ptp specifically enabled use `ptp role master`.
+  - PTP priority 1 and priority 2 are automatically set based on the node_type and switch_id.
+  - PTP Clock Identity is automatically set based on a prefix (00:00:00 by default) + PTP priority 1 and switch_id.
 
 ## Enabling PTP
 
-PTP must be specifically enabled on one of the following:
-- fabric level, for example FABRIC.yml
+PTP must be specifically enabled:
+- on the fabric level, for example FABRIC.yml
   ```yml
   ptp:
     enabled: true
@@ -155,7 +156,7 @@ By default PTP clock identity is generated and set automatically.
 
 ```yml
 auto_clock_identity = < true | false | default -> true >
-clock_identity = < (clock_identity_prefix = 00:00:00 (default)) + (PTP priority1 as HEX) + ":00:" + (switch_id as HEX) >
+clock_identity = < (clock_identity_prefix = 00:00:00 (default)) + (PTP priority 1 as HEX) + ":00:" + (switch_id as HEX) >
 ```
 
 #### PTP Clock Identity prefix
