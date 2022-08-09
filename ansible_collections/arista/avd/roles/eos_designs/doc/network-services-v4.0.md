@@ -265,7 +265,7 @@ svi_profiles:
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
-              < l3_leaf_inventory_hostname_1 >:
+              - name: < l3_leaf_inventory_hostname_1 >
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
 
@@ -278,7 +278,7 @@ svi_profiles:
                 # Overrides the setting on SVI level.
                 structured_config: < dictionary >
 
-              < l3_leaf_inventory_hostname_2 >:
+              - name: < l3_leaf_inventory_hostname_2 >
                 ip_address: < IPv4_address/Mask >
 
             # Defined interface MTU
@@ -562,18 +562,18 @@ dc1_tenants:
               - 10.1.12.1
               - 10.2.12.1/24
             nodes:
-              DC1-LEAF2A:
+              - name: DC1-LEAF2A
                 ip_address: 10.1.12.2/24
-              DC1-LEAF2B:
+              - name: DC1-LEAF2B
                 ip_address: 10.1.12.3/24
           - id: 113
             name: Tenant_A_OP_Zone_WAN
             tags: [ DC1_BL1 ]
             enabled: true
             nodes:
-              DC1-BL1A:
+              - name: DC1-BL1A
                 ip_address: 10.1.13.1/24
-              DC1-BL1B:
+              - name: DC1-BL1B
                 ip_address: 10.1.13.2/24
       - name: Tenant_A_WEB_Zone
         vrf_vni: 11
