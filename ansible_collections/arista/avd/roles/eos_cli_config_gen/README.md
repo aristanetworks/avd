@@ -1622,6 +1622,24 @@ lldp:
   run: < true | false >
 ```
 
+### MCS client
+
+```yaml
+mcs_client:
+  shutdown: false
+  cvx_secondary:
+    - name: blue
+      server_hosts:
+        - 10.90.224.188
+        - 10.90.224.189
+        - leaf2.atd.lab
+    - name: purple
+      server_hosts:
+        - 10.90.224.200
+        - 10.90.224.201
+        - leaf1.atd.lab
+```
+
 ### MACsec
 
 ```yaml
