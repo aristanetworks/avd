@@ -282,7 +282,7 @@ mac_address_table:
             igmp_snooping_enabled: < true | false | default true (EOS) >
 
             # Enable igmp snooping querier, by default using IP address of Loopback 0.
-            # When enabled, igmp snooping querier will only be configured on l3 devices, i.e. uplink_type: p2p.
+            # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
             igmp_snooping_querier:
               # Will be enabled automatically if "evpn_l2_multicast" is enabled.
               enabled: < true | false | default false >
