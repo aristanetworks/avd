@@ -46,8 +46,8 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: ubuntu18-04
-    image: ubuntu:18.04
+  - name: ubuntu20-04
+    image: ubuntu:20.04
 provisioner:
   name: ansible
   log: true

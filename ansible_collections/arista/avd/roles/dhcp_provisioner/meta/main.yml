@@ -10,6 +10,6 @@ galaxy_info:
     - name: EL
       versions: [7, 8]
     - name: Ubuntu
-      versions: [ 18.04 ]
+      versions: [ 20.04 ]
   dependencies:
     "arista.cvp": "*"
