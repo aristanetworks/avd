@@ -46,9 +46,10 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
 # CVX
 
-cvx service is enabled
+cvx is enabled
 
 ## CVX services
 
@@ -57,6 +58,7 @@ cvx service is enabled
 | MCS | False | True |
 
 ## MCS service configuration
+
 ```eos
 !
 cvx
