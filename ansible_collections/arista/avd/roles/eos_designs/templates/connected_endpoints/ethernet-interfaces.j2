@@ -146,7 +146,7 @@ ethernet_interfaces:
 {%                         if adapter_settings.ptp is arista.avd.defined %}
 {%                             if adapter_settings.ptp.enable is arista.avd.defined(true) %}
 {%                                 set ptp_config = switch.ptp["interface_config"] | arista.avd.default(adapter_settings.ptp) %}
-{%                                 if adapter_settings.ptp.role is not arista.avd.defined('bmca') %}
+{%                                 if adapter_settings.ptp.endpoint_role is not arista.avd.defined('bmca') %}
 {%                                     do ptp_config.update({"role": "master"}) %}
 {%                                 endif %}
 {%                                 if adapter_settings.ptp.profile is arista.avd.defined('aes67-r16-2016') %}

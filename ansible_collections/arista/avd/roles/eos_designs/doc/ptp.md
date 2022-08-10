@@ -290,12 +290,30 @@ ptp:
 
 By default all interfaces with connected endpoints does not have PTP enabled.
 
-It must be manually enabled. These are the default settings:
+It must be manually enabled.
+
+These are the default settings:
 
 - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
 - PTP role master is set to ensure control over the PTP topology.
 
-If you want to configure a routed interface with no IP address, for example to connect to a PTP Grandmaster, you can do as shown below. Please note in this example, the PTP role has been overridden, making the interface towards the PTP Grandmaster run BMCA. Depending on the topology, this interface will end up in PTP mode Slave or Passive.
+```yml
+servers:
+  <server-name>:
+    adapters:
+    - type: <type>
+      server_ports: [ <server-ports> ]
+      switch_ports: [ <switchports> ]
+      switches: [ <switches> ]
+      ptp:
+        enable: < false | true | default -> false >
+        endpoint_role: < slave | bmca | default -> slave | Optional >
+        profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 | Optional >
+```
+
+### Examples of connected endpoints
+
+If you want to configure a routed interface with no IP address, for example to connect to a PTP Grandmaster, you can do as shown below. Please note in this example, the default PTP role has been overridden, making the interface Ethernet5 on blue-spine1 towards the Blue PTP Grandmaster run BMCA. Depending on the topology, this interface will end up in PTP mode Slave or Passive.
 
 ```yml
 servers:
@@ -309,7 +327,7 @@ servers:
         type: routed
       ptp:
         enable: true
-        role: bmca
+        endpoint_role: bmca
 ```
 
 If you want to use a different PTP profile on an interface towards a connected endpoint, it can be set manually:
