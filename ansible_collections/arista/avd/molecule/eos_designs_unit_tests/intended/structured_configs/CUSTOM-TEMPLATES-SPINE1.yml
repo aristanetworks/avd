@@ -26,19 +26,19 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.31.255.1:
+    172.31.255.21:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
       description: CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
-    172.31.255.3:
+    172.31.255.23:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
       description: CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
-    192.168.255.1:
+    192.168.255.21:
       peer_group: EVPN-OVERLAY-PEERS
       description: CUSTOM-TEMPLATES-L3LEAF1A
       remote_as: '65101'
-    192.168.255.2:
+    192.168.255.22:
       peer_group: EVPN-OVERLAY-PEERS
       description: CUSTOM-TEMPLATES-L3LEAF1B
       remote_as: '65101'
@@ -79,23 +79,23 @@ ethernet_interfaces:
     peer: CUSTOM-TEMPLATES-L3LEAF1A
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
+    description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
     mtu: 9000
     type: routed
     shutdown: false
-    ip_address: 172.31.255.0/31
+    ip_address: 172.31.255.20/31
   Ethernet2:
     peer: CUSTOM-TEMPLATES-L3LEAF1B
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
+    description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
     mtu: 9000
     type: routed
     shutdown: false
-    ip_address: 172.31.255.2/31
+    ip_address: 172.31.255.22/31
 loopback_interfaces:
   Loopback0:
-    description: EVPN_Overlay_Peering
+    description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_SPINE
     shutdown: false
     ip_address: 192.168.255.1/32
 prefix_lists:
