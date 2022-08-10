@@ -138,7 +138,7 @@ mac_address_table:
     # - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication
     # - Configures binding between vxlan vlan and multicast group ipv4 address using the following formula:
     #   < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
-    # - Recommendation is to assign a /20 block within 232.0.0.0/8 Source Specific Multicast range.
+    # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
     # - Enables `redistribute igmp` on the router bgp MAC VRF.
     # - When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
     evpn_l2_multicast:
