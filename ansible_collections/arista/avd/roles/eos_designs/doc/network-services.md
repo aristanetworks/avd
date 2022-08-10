@@ -147,7 +147,7 @@ mac_address_table:
       underlay_l2_multicast_group_ipv4_pool_offset: < int >
 
     # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
-    # When enabled, igmp snooping querier will only be configured on l3 devices, i.e. uplink_type: p2p.
+    # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
     igmp_snooping_querier:
       # Will be enabled automatically if "evpn_l2_multicast" is enabled.
        enabled: < true | false | default false >
