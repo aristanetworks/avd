@@ -317,6 +317,8 @@ aaa_server_groups:
 
 #### CVX
 
+CVX cannot be enbled on a physical switch
+
 ```yaml
 cvx:
   shutdown: < true|false >
