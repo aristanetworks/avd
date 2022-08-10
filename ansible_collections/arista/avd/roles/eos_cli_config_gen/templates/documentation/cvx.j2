@@ -1,21 +1,24 @@
 {# CVX #}
 {% if cvx is arista.avd.defined %}
 # CVX
+{%     if cvx.shutdown is arista.avd.defined(true) %}
 
-{%     if cvx.shutdown is arista.avd.defined(false) %}
-cvx service is enabled
+cvx is disabled
+{%     elif cvx.shutdown is arista.avd.defined(false) %}
+
+cvx is enabled
+{%         if cvx.services is arista.avd.defined %}
 
 ## CVX services
 
 | Service | Enabled | Password |
 | ------- | ------- | -------- |
-{%         if cvx.services.mcs is arista.avd.defined %}
-{%             set shut = cvx.services.mcs.shutdown | arista.avd.default('-') %}
-{%             set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
+{%             if cvx.services.mcs is arista.avd.defined %}
+{%                 set shut = cvx.services.mcs.shutdown | arista.avd.default('-') %}
+{%                 set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
 | MCS | {{ shut }} | {{ encryption }} |
+{%             endif %}
 {%         endif %}
-{%     elif cvx.shutdown is arista.avd.defined(true) %}
-cvx service is disabled
 {%     endif %}
 
 ## MCS service configuration
