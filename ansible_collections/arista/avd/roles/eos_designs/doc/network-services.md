@@ -274,7 +274,7 @@ mac_address_table:
             trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
 
             # Explicitly enable or disable evpn_l2_multicast to overide setting of tenants.<tenant>.evpn_l2_multicast.enabled.
-            # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and igmp snooping querier" will always be enabled - overriding those individual settings.
+            # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
             evpn_l2_multicast:
               enabled: < true | false >
 
