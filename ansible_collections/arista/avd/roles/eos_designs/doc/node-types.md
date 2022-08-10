@@ -156,7 +156,7 @@ connected_endpoints_port_channel_interfaces:
 - `{{ < var_listed_in_custom_templates_extra_vars > }}`
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models, and may change without notice.
+the values are not part of the officially supported data models and may change without notice.
 
 The next output is an example based on the default definition:
 
