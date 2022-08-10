@@ -112,7 +112,7 @@ Both data models support variable inheritance from profiles defined under [`port
           enable: < true | false | default -> false | Required >
           # If role is set to "bmca", the interface will not run "ptp role master", but will participate in the BMCA algorithm.
           # This setting is useful on interfaces connected to PTP GMs for example.
-          role: < bmca | Optional >
+          role: < slave | bmca | default -> slave | Optional >
           profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 | Optional >
 
         # Configure the downstream interfaces of a respective Link Tracking Group | Optional
