@@ -135,19 +135,19 @@ mac_address_table:
         local_as: < local BGP ASN >
 
     # Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant | Optional
-    # Multicast group binding is created only for Mulitcast traffic. BULL traffic will use ingress-replication
-    # Configures binding between vxlan vlan and multicast group ipv4 address using the following formula: < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
-    # Recommendation is to assign a /20 block within 232.0.0.0/8 Source Specific Multicast range.
-    # Enables `redistribute igmp` on the router bgp MAC VRF.
-    # When evpn_l2_multicast.enanble is set to true for a vlan or a tenant, "igmp snooping" and igmp snooping querier" will always be enabled - overriding those individual settings.
-    # By default igmp snooping querier IP address is set to Loopback 0.
+    # - Multicast group binding is created only for Mulitcast traffic. BULL traffic will use ingress-replication
+    # - Configures binding between vxlan vlan and multicast group ipv4 address using the following formula:
+    #   < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
+    # - Recommendation is to assign a /20 block within 232.0.0.0/8 Source Specific Multicast range.
+    # - Enables `redistribute igmp` on the router bgp MAC VRF.
+    # - When evpn_l2_multicast.enanble is set to true for a vlan or a tenant, "igmp snooping" and igmp snooping querier" will always be enabled - overriding those individual settings.
     evpn_l2_multicast:
       enabled: < true | false >
       underlay_l2_multicast_group_ipv4_pool: < IPv4_address/Mask >
       underlay_l2_multicast_group_ipv4_pool_offset: < int >
 
     # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
-    # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
+    # When enabled, igmp snooping querier will only be configured on l3 devices, i.e. uplink_type: p2p.
     igmp_snooping_querier:
       # Will be enabled automatically if "evpn_l2_multicast" is enabled.
        enabled: < true | false | default false >
@@ -282,7 +282,7 @@ mac_address_table:
             igmp_snooping_enabled: < true | false | default true (EOS) >
 
             # Enable igmp snooping querier, by default using IP address of Loopback 0.
-            # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
+            # When enabled, igmp snooping querier will only be configured on l3 devices, i.e. uplink_type: p2p.
             igmp_snooping_querier:
               # Will be enabled automatically if "evpn_l2_multicast" is enabled.
               enabled: < true | false | default false >
@@ -580,7 +580,7 @@ mac_address_table:
         igmp_snooping_enabled: < true | false | default true (EOS) >
 
         # Enable igmp snooping querier, by default using IP address of Loopback 0.
-        # When enabled, igmp snooping querier will only be created on l3 device, i.e. uplink_type: p2p.
+        # When enabled, igmp snooping querier will only be configured on l3 devices, i.e. uplink_type: p2p.
         igmp_snooping_querier:
           # Will be enabled automatically if "evpn_l2_multicast" is enabled.
           enabled: < true | false | default false >
