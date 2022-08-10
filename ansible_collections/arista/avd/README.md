@@ -1,4 +1,4 @@
-# Ansible Collection For Arista Validated Designs
+# Ansible Collection for Arista Validated Designs
 
 <center><img src="media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 

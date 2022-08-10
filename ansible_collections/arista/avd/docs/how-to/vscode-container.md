@@ -1,4 +1,4 @@
-# Setup Ansible AVD with VSCode container
+# Setup Ansible AVD With VS Code Container
 
 Arista AVD provides an easy way to set up a lab or demo environment using a pre-configured [VScode container](https://github.com/arista-netdevops-community/docker-avd-vscode) with a web interface to connect and edit files.
 

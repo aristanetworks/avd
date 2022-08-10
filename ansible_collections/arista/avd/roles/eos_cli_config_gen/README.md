@@ -1,4 +1,4 @@
-# Ansible Role: eos_cli_config_gen
+# eos_cli_config_gen
 
 ## Overview
 

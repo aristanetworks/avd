@@ -1,4 +1,4 @@
-# Ansible Role: eos_config_deploy_eapi
+# eos_config_deploy_eapi
 
 ## Overview
 

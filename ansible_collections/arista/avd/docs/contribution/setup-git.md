@@ -1,4 +1,4 @@
-# Installation using Git
+# Git Installation
 
 Using Git as source of collection in Ansible provides an easy way to implement all the changes once they're part of the development branch without waiting for a new tagged version shipped to ansible-galaxy.
 

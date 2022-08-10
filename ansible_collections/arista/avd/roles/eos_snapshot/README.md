@@ -1,4 +1,4 @@
-# Ansible Role: eos_snapshot
+# eos_snapshot
 
 ## Overview
 

@@ -1,4 +1,4 @@
-# Ansible Role: cvp_configlet_upload
+# cvp_configlet_upload
 
 ## Overview
 

@@ -101,9 +101,7 @@ markdown_extensions:
   - tables
   - toc:
       separator: "-"
-      # permalink: "#"
       permalink: true
-      baselevel: 3
 
 # TOC
 docs_dir: ansible_collections/arista/avd/
@@ -116,13 +114,13 @@ nav:
       - Collection Installation: docs/installation/collection-installation.md
       - Requirements: docs/installation/requirements.md
   - How-To:
-      - Build your first AVD project: docs/how-to/first-project.md
-      - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
-      - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
+      - Build Your First AVD Project: docs/how-to/first-project.md
+      - Build Your First AVD & CVP Project: docs/how-to/first-cvp-avd-project.md
+      - Use NAT Gateway With eAPI: docs/how-to/lab-with-nat.md
       - AWX & Tower Integration: docs/how-to/tower-integration.md
-      - Configure ZTP server with CV collection: docs/how-to/ztp.md
-      - VScode Container: docs/how-to/vscode-container.md
-  - Roles documentation:
+      - Configure ZTP Server With CVP Collection: docs/how-to/ztp.md
+      - Setup Ansible AVD With VS Code Container: docs/how-to/vscode-container.md
+  - Roles Documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
           - Connected Endpoints: roles/eos_designs/doc/connected-endpoints.md
@@ -131,8 +129,8 @@ nav:
           - Fabric Variables: roles/eos_designs/doc/fabric-variables.md
           - Management Settings: roles/eos_designs/doc/management-settings.md
           - Network Services: roles/eos_designs/doc/network-services.md
-          - Node types: roles/eos_designs/doc/node-types.md
-          - Platform Settings: roles/eos_designs/doc/platform-settings.md
+          - Node Types: roles/eos_designs/doc/node-types.md
+          - Platform Specific Settings: roles/eos_designs/doc/platform-settings.md
           - Custom Structured Configuration: roles/eos_designs/doc/custom-structured-configuration.md
           - MPLS Design (BETA):
               - Fabric Topology MPLS (BETA): roles/eos_designs/doc/fabric-topology-mpls-BETA.md
@@ -148,28 +146,28 @@ nav:
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
-  - Modules documentation:
-      - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
-      - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
+  - Modules Documentation:
+      - Module Inventory to Containers: docs/modules/inventory_to_container.rst.md
+      - Module Configlet Build Configuration: docs/modules/configlet_build_config.rst.md
       - AVD Plugins & Filters: plugins/README.md
-      - CloudVision Module documentation: https://cvp.avd.sh/
+      - CloudVision Module Documentation: https://cvp.avd.sh/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
-      - Setup environment: docs/contribution/setup-environment.md
-      - Git installation: docs/contribution/setup-git.md
+      - Setup Environment: docs/contribution/setup-environment.md
+      - Git Installation: docs/contribution/setup-git.md
       - Getting Started: docs/contribution/getting-started.md
       - Code Style: docs/contribution/style-guide.md
-      - Development tips & tricks: docs/contribution/development.md
-  - External resources:
-      - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
-      - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
+      - Development Tips & Tricks: docs/contribution/development.md
+  - External Resources:
+      - Ansible Collection User Guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+      - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - Release Notes:
       - 3.x.x: docs/release-notes/3.x.x.md
       - 2.x.x: docs/release-notes/2.x.x.md
       - 1.1.x: docs/release-notes/1.1.x.md
       - 1.0.x: docs/release-notes/1.0.x.md
   - About:
-      - Ansible Galaxy page: https://galaxy.ansible.com/arista/avd
+      - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/
       - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install
       - Arista NetDevOps Community: https://aristanetworks.github.io/netdevops-examples/
