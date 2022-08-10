@@ -1,0 +1,51 @@
+---
+
+mgmt_gateway: 192.168.200.1
+
+node_type_keys:
+  spine:
+    type: spine
+    default_evpn_role: server
+  l3leaf:
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    # ip_addressing:
+    #   router_id: <path to J2 template - default inherited from templates.ip_addressing.router_id >
+    #   mlag_ip_primary: <path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary >
+    #   mlag_ip_secondary: <path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary >
+    #   mlag_l3_ip_primary: <path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary >
+    #   mlag_l3_ip_secondary: <path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary >
+    #   p2p_uplinks_ip: <path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip >
+    #   p2p_uplinks_peer_ip: <path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip >
+    #   vtep_ip_mlag: <path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag >
+    #   vtep_ip: <path to J2 template - default inherited from templates.ip_addressing.vtep_ip >
+
+    # interface_descriptions:
+    #   # Override interface description templates with our custom templates
+    #   underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
+    #   underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+    #   mlag_ethernet_interfaces: 'custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2'
+    #   mlag_port_channel_interfaces: 'custom_templates/interface_descriptions/mlag/port-channel-interfaces.j2'
+    #   connected_endpoints_ethernet_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+    #   connected_endpoints_port_channel_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+    #   overlay_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/overlay-loopback.j2'
+    #   vtep_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/vtep-loopback.j2'
+
+    # Optional | Names of extra hostvars to include in the template environment for custom ip_addressing and interface_descriptions templates
+    custom_templates_extra_vars:
+      - "router_id_offset"
+      - "mlag_ip_primary_offset"
+      - "mlag_ip_secondary_offset"
+      - "mlag_l3_ip_primary_offset"
+      - "mlag_l3_ip_secondary_offset"
+      - "p2p_uplinks_ip_offset"
+      - "p2p_uplinks_peer_ip_offset"
+      - "vtep_ip_mlag_offset"
+      - "vtep_ip_offset"
+      - "description_prefix"
