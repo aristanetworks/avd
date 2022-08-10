@@ -315,6 +315,18 @@ aaa_server_groups:
       - server: < host1_ip_address >
 ```
 
+#### CVX
+
+```yaml
+cvx:
+  shutdown: < true|false >
+  services:
+    mcs:
+      redis:
+        password: < password >
+        encryption: < true|false >
+      shutdown: < true|false >
+```
 
 #### Enable Password
 
