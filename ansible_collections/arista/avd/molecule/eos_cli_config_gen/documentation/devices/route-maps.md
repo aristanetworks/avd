@@ -104,7 +104,8 @@ interface Management1
 | 10 | deny | ip address prefix-list PL-MLAG | - | - | - |
 | 20 | permit | ip address prefix-list PL-SUBRM | - | RM-HIDE-ASPATH-IN | - |
 | 30 | permit | ip address prefix-list PL-CONTINUE | - | - | 40 |
-| 40 | permit | - | - | - | - |
+| 40 | permit | ip address prefix-list PL-CONTINUE | - | - | Next Sequence |
+| 50 | permit | - | - | - | - |
 
 #### RM-HIDE-ASPATH-IN
 
@@ -151,6 +152,10 @@ route-map RM-CONN-BL-BGP permit 30
    continue 40
 !
 route-map RM-CONN-BL-BGP permit 40
+   match ip address prefix-list PL-CONTINUE
+   continue
+!
+route-map RM-CONN-BL-BGP permit 50
 !
 route-map RM-HIDE-ASPATH-IN permit 10
    set as-path match all replacement auto
