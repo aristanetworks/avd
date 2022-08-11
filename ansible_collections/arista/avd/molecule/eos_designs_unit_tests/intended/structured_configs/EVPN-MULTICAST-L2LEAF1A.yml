@@ -1,0 +1,112 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.109/24
+    gateway: 192.168.200.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: EVPN-MULTICAST-L3LEAF1A
+    peer_interface: Ethernet6
+    peer_type: l3leaf
+    description: EVPN-MULTICAST-L3LEAF1A_Ethernet6
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: EVPN-MULTICAST-L3LEAF1B
+    peer_interface: Ethernet6
+    peer_type: l3leaf
+    description: EVPN-MULTICAST-L3LEAF1B_Ethernet6
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+port_channel_interfaces:
+  Port-Channel1:
+    description: EVPN_MULTICAST_L3LEAF1_Po6
+    type: switched
+    shutdown: false
+    vlans: 1-9,110-111,210-211,256-257,310-311,4096
+    mode: trunk
+vlans:
+  310:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_310
+  311:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_311
+  110:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_110
+  111:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_111
+  210:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_210
+  211:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_211
+  256:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_256
+  257:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_257
+  4096:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_4096
+  5:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_5
+  6:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_6
+  1:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_1
+  2:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_2
+  3:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_3
+  4:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_4
+  7:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_7
+  8:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
+  9:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans: {}
