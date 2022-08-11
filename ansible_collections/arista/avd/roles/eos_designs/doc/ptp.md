@@ -63,9 +63,9 @@ There are three settings that can be specified for the entire topology to greatl
 
 ```yml
 ptp:
-  enabled: < true | false | default -> false | Optional >
-  profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 | Optional >
-  domain: < 0-255 | default -> 127 | Optional >
+  enabled: < true | false | default -> false >
+  profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
+  domain: < 0-255 | default -> 127 >
 ```
 
 If `profile` or `domain` are not specified, but PTP is enabled, then the defaults will be used.
@@ -144,8 +144,8 @@ nodes:
   blue-leaf1:
     ptp:
       enabled: true
-      priority1: < 0-255 | default -> automatically set based on node_type | Optional >
-      priority2: < 0-255 | default -> (node_id modulus 256) | Optional >
+      priority1: < 0-255 | default -> automatically set based on node_type >
+      priority2: < 0-255 | default -> (node_id modulus 256) >
 ```
 
 ### PTP Clock Identity
@@ -205,7 +205,7 @@ With this feature enabled, multicast PTP packets will continue to be sent to the
 This feature enables the use of protocols such as Meinbergs NetSync to monitor downstream PTP slaves in the network without having the PTP packets dropped by Arista Switches acting as boundary clocks.
 
 ```yml
-forward_unicast: < true | false | default -> false | Optional >
+forward_unicast: < true | false | default -> false >
 ```
 
 ### PTP Source IP address
@@ -259,13 +259,13 @@ ptp:
       offset_from_master: < 0-1000000000 | default -> 250 >
       mean_path_delay: < 0-1000000000 | default -> 1500 >
       drop:
-        offset_from_master: < 0-1000000000 | Optional >
-        mean_path_delay: < 0-1000000000 | Optional >
+        offset_from_master: < 0-1000000000 >
+        mean_path_delay: < 0-1000000000 >
     missing_message:
       intervals:
-        announce: < 2-255 | Optional >
-        follow_up: < 2-255 | Optional >
-        sync: < 2-255 | Optional >
+        announce: < 2-255 >
+        follow_up: < 2-255 >
+        sync: < 2-255 >
       sequence_ids:
         enabled: < false | true | default -> true >
         announce: < 2-255 | default -> 3 >
@@ -295,7 +295,7 @@ It must be manually enabled.
 These are the default settings:
 
 - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
-- PTP role master is set to ensure control over the PTP topology.
+- `ptp role master` is set to ensure control over the PTP topology.
 
 ```yml
 servers:
@@ -307,8 +307,8 @@ servers:
       switches: [ <switches> ]
       ptp:
         enable: < false | true | default -> false >
-        endpoint_role: < slave | bmca | default -> slave | Optional >
-        profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 | Optional >
+        endpoint_role: < follower | bmca | default -> follower >
+        profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 >
 ```
 
 ### Examples of connected endpoints
