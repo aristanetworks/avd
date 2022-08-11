@@ -331,6 +331,14 @@ class EosDesignsFacts:
             return {}
 
     @cached_property
+    def _template_vars(self):
+        template_vars = {"ansible_search_path": self._ansible_search_path}
+        custom_templates_extra_vars = get(self._node_type_key_data, "custom_templates_extra_vars", default=[])
+        for extra_var in custom_templates_extra_vars:
+            template_vars[extra_var] = get(self._hostvars, extra_var)
+        return template_vars
+
+    @cached_property
     def _switch_data(self):
         """
         internal _switch_data containing inherited vars from fabric_topology data model
@@ -978,7 +986,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.underlay_router is True:
-            template_vars = {"ansible_search_path": self._ansible_search_path}
+            template_vars = self._template_vars
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
             template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
@@ -1220,7 +1228,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.underlay_ipv6 is True:
-            template_vars = {"ansible_search_path": self._ansible_search_path}
+            template_vars = self._template_vars
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
             template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
@@ -1422,7 +1430,7 @@ class EosDesignsFacts:
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
             inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
-            template_vars = {"ansible_search_path": self._ansible_search_path}
+            template_vars = self._template_vars
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
             template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
@@ -1604,7 +1612,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.vtep is True:
-            template_vars = {"ansible_search_path": self._ansible_search_path}
+            template_vars = self._template_vars
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
             template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
@@ -1637,7 +1645,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.mlag is True:
-            template_vars = {"ansible_search_path": self._ansible_search_path}
+            template_vars = self._template_vars
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
             template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
@@ -1678,7 +1686,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            template_vars = {"ansible_search_path": self._ansible_search_path}
+            template_vars = self._template_vars
             # Copying __dict__ will expose all switch facts cached up until this function is run.
             # TODO: We should probably find and document a list of supported context variables instead.
             template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
