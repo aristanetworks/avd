@@ -369,6 +369,11 @@ default_interfaces:
       # Useful for "border" leaf.
       always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
 
+      # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+      # Note! This feature only considers configuration managed by eos_designs.
+      # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+      only_vlans_in_use: < true | false | default -> false >
+
     # Activate or deactivate IGMP snooping | Optional, default is true
     igmp_snooping_enabled: < true | false >
 ```

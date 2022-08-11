@@ -35,7 +35,7 @@
                        "structured_config": peer_uplink.structured_config | arista.avd.default,
                    }) %}
 {#                 Add vlans to list of port_channel_uplinks trunk_groups #}
-{%                 if switch.enable_trunk_groups
+{%                 if switch.enable_trunk_groups is arista.avd.defined(true)
                            and peer_uplink.peer_trunk_groups is arista.avd.defined
                            and peer_uplink.vlans | arista.avd.default("none") != "none" %}
 {%                     do underlay_data.vlan_trunk_groups.append({"vlan_list": peer_uplink.vlans, "trunk_groups": peer_uplink.peer_trunk_groups}) %}

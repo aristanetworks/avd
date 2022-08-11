@@ -5,7 +5,7 @@ import re
 import ipaddress
 from functools import cached_property
 from hashlib import sha256
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError, get, default, template_var, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError, get, get_item, default, template_var, AristaAvdMissingVariableError
 
 
 class EosDesignsFacts:
@@ -644,6 +644,12 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def filter_only_vlans_in_use(self):
+        if self._any_network_services:
+            return get(self._switch_data_combined, "filter.only_vlans_in_use", default=False)
+        return None
+
+    @cached_property
     def virtual_router_mac_address(self):
         if self._any_network_services:
             return get(self._switch_data_combined, "virtual_router_mac_address")
@@ -651,13 +657,114 @@ class EosDesignsFacts:
 
     @cached_property
     def enable_trunk_groups(self):
-        return get(self._hostvars, "enable_trunk_groups", default=False)
+        if self._any_network_services:
+            return get(self._hostvars, "enable_trunk_groups", default=False)
+        return None
+
+    @cached_property
+    def only_local_vlan_trunk_groups(self):
+        if self.enable_trunk_groups:
+            return get(self._hostvars, "only_local_vlan_trunk_groups", default=False)
+        return None
+
+    @cached_property
+    def _endpoint_vlans_and_trunk_groups(self):
+        '''
+        Return list of vlans and list of trunk groups used by connected_endpoints
+        '''
+        if not (self._any_network_services and self.connected_endpoints):
+            return [], []
+
+        vlans = []
+        trunk_groups = []
+
+        port_profiles = get(self._hostvars, "port_profiles", default=[])
+        # Support legacy data model by converting nested dict to list of dict
+        port_profiles = self._convert_dicts(port_profiles, "profile")
+
+        connected_endpoints_keys = get(self._hostvars, "connected_endpoints_keys", default=[])
+        # Support legacy data model by converting nested dict to list of dict
+        connected_endpoints_keys = self._convert_dicts(connected_endpoints_keys, "key")
+        for connected_endpoints_key in connected_endpoints_keys:
+            connected_endpoints_key_key = connected_endpoints_key.get("key")
+            if connected_endpoints_key_key is None or get(self._hostvars, connected_endpoints_key_key) is None:
+                # Invalid connected_endpoints_key.key. Skipping.
+                continue
+
+            connected_endpoints = get(self._hostvars, connected_endpoints_key_key)
+            # Support legacy data model by converting nested dict to list of dict
+            connected_endpoints = self._convert_dicts(connected_endpoints, 'name')
+            for connected_endpoint in connected_endpoints:
+                for adapter in connected_endpoint.get("adapters", []):
+                    profile_name = adapter.get("profile")
+                    adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
+                    parent_profile_name = adapter_profile.get("parent_profile")
+                    parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
+
+                    adapter_settings = self._combine(parent_profile, adapter_profile, adapter, recursive=True, list_merge='replace')
+
+                    if self.hostname not in adapter_settings.get("switches", []):
+                        # This switch is not connected to this endpoint. Skipping.
+                        continue
+
+                    if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
+                        vlans.extend(map(int, self._range_expand(str(adapter_settings["vlans"]))))
+                        if adapter_settings.get("trunk_groups"):
+                            trunk_groups.extend(adapter_settings["trunk_groups"])
+                    elif "trunk" in adapter_settings.get("mode"):
+                        if adapter_settings.get("trunk_groups"):
+                            trunk_groups.extend(adapter_settings["trunk_groups"])
+                        else:
+                            # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
+                            # No need to check further, since the list is now containing all vlans.
+                            # The trunk group list may not be complete, but it will not matter, since we will
+                            # configure all vlans anyway.
+                            return list(range(1, 4094)), trunk_groups
+                    else:
+                        # No vlans or mode defined so this is an access port with only vlan 1 allowed
+                        vlans.append(1)
+
+                    if "native_vlan" in adapter_settings:
+                        vlans.append(int(adapter_settings["native_vlan"]))
+
+                    if get(adapter_settings, "port_channel.subinterfaces"):
+                        for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
+                            if "vlan_id" in subinterface:
+                                vlans.append(int(subinterface["vlan_id"]))
+                            elif "number" in subinterface:
+                                vlans.append(int(subinterface["number"]))
+        # At this point "vlans" contain the full list of vlans used by locally connected endpoints
+        # Next we traverse any downstream L2 switches so ensure we can provide connectivity to any
+        # vlans used by them.
+        for fabric_switch in get(self._hostvars, "avd_switch_facts", default=[]):
+            fabric_switch_facts: EosDesignsFacts = get(self._hostvars,
+                                                       f"avd_switch_facts..{fabric_switch}..switch",
+                                                       required=True,
+                                                       separator="..",
+                                                       org_key=f"avd_switch_facts.{fabric_switch}.switch")
+            if (
+                fabric_switch_facts.uplink_type == "port-channel"
+                and self.hostname in fabric_switch_facts.uplink_peers
+            ):
+                vlans.extend(fabric_switch_facts._vlans)
+
+        return list(set(vlans)), list(set(trunk_groups))
+
+    @cached_property
+    def endpoint_trunk_groups(self):
+        '''
+        Return list of trunk_groups in use by endpoints connected to this switch
+        '''
+        if self.only_local_vlan_trunk_groups:
+            vlans_in_use, trunk_groups_in_use = self._endpoint_vlans_and_trunk_groups
+            return list(set(trunk_groups_in_use))
+        return []
 
     @cached_property
     def _vlans(self):
         '''
         Return list of vlans after filtering network services.
-        The filter is based on filter.tenants, filter.tags
+        The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use
 
         Ex. [1, 2, 3 ,4 ,201, 3021]
         '''
@@ -666,6 +773,20 @@ class EosDesignsFacts:
             match_tags = self.filter_tags
             if self.group is not None:
                 match_tags.append(self.group)
+
+            if self.filter_only_vlans_in_use:
+                # Only include the vlans that are used by connected endpoints
+                vlans_in_use, trunk_groups_in_use = self._endpoint_vlans_and_trunk_groups
+                if self.mlag:
+                    # Make sure to also configure vlans used on the MLAG peer.
+                    # This could happen if a connected endpoint is only connected to one leaf.
+                    mlag_peer_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts..{self.mlag_peer}..switch", separator="..")
+                    if mlag_peer_facts:
+                        mlag_vlans_in_use, mlag_trunk_groups_in_use = mlag_peer_facts._endpoint_vlans_and_trunk_groups
+                        vlans_in_use.extend(mlag_vlans_in_use)
+                        trunk_groups_in_use.extend(mlag_trunk_groups_in_use)
+                vlans_in_use = set(vlans_in_use)
+                trunk_groups_in_use = set(trunk_groups_in_use)
 
             network_services_keys = get(self._hostvars, "network_services_keys", default=[])
             for network_services_key in self._natural_sort(network_services_keys, "name"):
@@ -692,6 +813,17 @@ class EosDesignsFacts:
                         for svi in self._natural_sort(svis, 'id'):
                             svi_tags = svi.get('tags', ['all'])
                             if "all" in match_tags or set(svi_tags).intersection(match_tags):
+                                if self.filter_only_vlans_in_use:
+                                    # Check if vlan is in use
+                                    if int(svi['id']) in vlans_in_use:
+                                        vlans.append(int(svi['id']))
+                                        continue
+                                    # Check if vlan has a trunk group defined which is in use
+                                    if self.enable_trunk_groups and svi.get("trunk_groups") and trunk_groups_in_use.intersection(svi["trunk_groups"]):
+                                        vlans.append(int(svi['id']))
+                                        continue
+                                    # Skip since the vlan is not in use
+                                    continue
                                 vlans.append(int(svi['id']))
 
                     l2vlans = tenant.get('l2vlans', [])
@@ -701,6 +833,17 @@ class EosDesignsFacts:
                     for l2vlan in self._natural_sort(l2vlans, 'id'):
                         l2vlan_tags = l2vlan.get('tags', ['all'])
                         if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):
+                            if self.filter_only_vlans_in_use:
+                                # Check if vlan is in use
+                                if int(l2vlan['id']) in vlans_in_use:
+                                    vlans.append(int(l2vlan['id']))
+                                    continue
+                                # Check if vlan has a trunk group defined which is in use
+                                if self.enable_trunk_groups and l2vlan.get("trunk_groups") and trunk_groups_in_use.intersection(l2vlan["trunk_groups"]):
+                                    vlans.append(int(l2vlan['id']))
+                                    continue
+                                # Skip since the vlan is not in use
+                                continue
                             vlans.append(int(l2vlan['id']))
             return vlans
         return []

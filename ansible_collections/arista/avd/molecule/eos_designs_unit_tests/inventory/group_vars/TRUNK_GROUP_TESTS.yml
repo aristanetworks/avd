@@ -77,9 +77,9 @@ servers:
         enabled: true
   server_with_tg_200:
     adapters:
-      - server_ports: [ Nic1 ]
-        switch_ports: [ Ethernet12 ]
-        switches: [ trunk-group-tests-l2leaf1b ]
+      - server_ports: [ Nic1, Nic2, Nic3 ]
+        switch_ports: [ Ethernet12, Ethernet12, Ethernet12 ]
+        switches: [ trunk-group-tests-l2leaf1b, trunk-group-tests-l2leaf3, trunk-group-tests-l2leaf4 ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_200 ]
         mode: trunk
         enabled: true

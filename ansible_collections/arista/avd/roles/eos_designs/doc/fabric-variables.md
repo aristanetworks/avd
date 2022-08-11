@@ -234,6 +234,14 @@ default_igmp_snooping_enabled: < boolean | default -> true >
 # If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
 # See "Details on enable_trunk_groups" below before enabling this feature
 enable_trunk_groups: < true | false | default -> false >
+
+# Only Configure VLAN Trunk Groups used by local endpoints | Optional
+# A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf
+# switches when a new trunk group is added, this feature will only configure the vlan trunk groups
+# matched with local connected_endpoints.
+# See "Details on only_local_vlan_trunk_groups" below.
+# Requires "enable_trunk_groups: true"
+only_local_vlan_trunk_groups: < true | false | default -> false >
 ```
 
 ## Details on `enable_trunk_groups`
@@ -244,16 +252,26 @@ Changes:
 - **Requires** Trunk Groups to be defined on all trunks towards connected endpoints
 - `MLAG` Trunk Group will be configured on all vlans on MLAG switches
 - Use Trunk Groups for uplinks to L2 switches instead of "switchport trunk allow vlan" lists.
-  - On the parent switch a Trunk Group with the name of the L2 switch
-    will be assigned on all vlans that are allowed towards the L2 switch.
+  - On the parent switch a Trunk Group with the name of the L2 switch will be assigned on all vlans
+    that are allowed towards the L2 switch.
   - The port-channel towards the L2 switch will be assigned to this trunk group only
-  - Add UPLINK Trunk Group to all vlans on the L2 Switch and assign this to the uplink port-channel
+  - Add `UPLINK` Trunk Group to all vlans on the L2 Switch and assign this to the uplink port-channel
 
 ![Figure: Enable Trunk Groups](../../../media/enable_trunk_groups.png)
 
-`enable_trunk_groups` can be set in group_vars or host_vars since trunk-groups are only local to a switch.
+While it is recommented for consistency to set `enable_trunk_groups` for all devices in the fabric,
+it can also be set in group_vars or host_vars since trunk-groups are only local to a switch.
 
 !!! warning
     Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
     *All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
     If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
+
+## Details on `only_local_vlan_trunk_groups`
+
+Enabling this feature will prevent unneeded trunk groups from being configured on vlans.
+
+Using the figure under [Details on `enable_trunk_groups`](#details-on-enabletrunkgroups) as basis
+enabling with feature would remove the unmatched trunk groups like this:
+
+![Figure: Enable only_local_vlan_trunk_groups](../../../media/only_local_vlan_trunk_groups.png)

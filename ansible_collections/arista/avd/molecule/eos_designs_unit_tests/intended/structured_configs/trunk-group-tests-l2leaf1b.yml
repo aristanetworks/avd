@@ -28,8 +28,6 @@ vlans:
     tenant: TRUNK_GROUP_TESTS
     name: svi100_with_trunk_groups
     trunk_groups:
-    - TG_100
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     - UPLINK
   200:
@@ -37,7 +35,6 @@ vlans:
     name: svi200_with_trunk_groups
     trunk_groups:
     - TG_200
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     - UPLINK
   300:
@@ -45,7 +42,6 @@ vlans:
     name: svi300_with_trunk_groups
     trunk_groups:
     - TG_300
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     - UPLINK
   398:
@@ -58,8 +54,6 @@ vlans:
     tenant: TRUNK_GROUP_TESTS
     name: l2vlan110_with_trunk_groups
     trunk_groups:
-    - TG_100
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     - UPLINK
   210:
@@ -67,7 +61,6 @@ vlans:
     name: l2vlan210_with_trunk_groups
     trunk_groups:
     - TG_200
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     - UPLINK
   310:
@@ -75,7 +68,6 @@ vlans:
     name: l2vlan310_with_trunk_groups
     trunk_groups:
     - TG_300
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     - UPLINK
   399:

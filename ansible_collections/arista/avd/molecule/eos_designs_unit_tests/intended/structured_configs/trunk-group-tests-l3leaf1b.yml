@@ -212,32 +212,26 @@ vlans:
   100:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
-    - TG_100
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     tenant: TRUNK_GROUP_TESTS
     name: svi100_with_trunk_groups
   110:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
-    - TG_100
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     tenant: TRUNK_GROUP_TESTS
     name: l2vlan110_with_trunk_groups
   200:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
-    - TG_200
-    - TG_NOT_MATCHING_ANY_SERVERS
+    - trunk-group-tests-l2leaf3
     - MLAG
     tenant: TRUNK_GROUP_TESTS
     name: svi200_with_trunk_groups
   210:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
-    - TG_200
-    - TG_NOT_MATCHING_ANY_SERVERS
+    - trunk-group-tests-l2leaf3
     - MLAG
     tenant: TRUNK_GROUP_TESTS
     name: l2vlan210_with_trunk_groups
@@ -245,7 +239,6 @@ vlans:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
     - TG_300
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     tenant: TRUNK_GROUP_TESTS
     name: svi300_with_trunk_groups
@@ -253,7 +246,6 @@ vlans:
     trunk_groups:
     - TRUNK_GROUP_TESTS_L2LEAF1
     - TG_300
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
     tenant: TRUNK_GROUP_TESTS
     name: l2vlan310_with_trunk_groups
@@ -284,7 +276,6 @@ vlans:
     name: svi301_with_trunk_groups_only_l3leaf
     trunk_groups:
     - TG_300
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
   3299:
     tenant: TRUNK_GROUP_TESTS
@@ -296,7 +287,6 @@ vlans:
     name: l2vlan310_with_trunk_groups_only_l3leaf
     trunk_groups:
     - TG_300
-    - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
 vlan_interfaces:
   Vlan4093:
@@ -396,6 +386,14 @@ port_channel_interfaces:
     - TRUNK_GROUP_TESTS_L2LEAF1
     mode: trunk
     mlag: 1
+  Port-Channel5:
+    description: TRUNK-GROUP-TESTS-L2LEAF3_Po1
+    type: switched
+    shutdown: false
+    trunk_groups:
+    - trunk-group-tests-l2leaf3
+    mode: trunk
+    mlag: 5
   Port-Channel13:
     description: server_with_tg_300_portchannel
     type: switched
@@ -445,6 +443,16 @@ ethernet_interfaces:
     shutdown: false
     channel_group:
       id: 1
+      mode: active
+  Ethernet5:
+    peer: trunk-group-tests-l2leaf3
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: TRUNK-GROUP-TESTS-L2LEAF3_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 5
       mode: active
   Ethernet13:
     peer: server_with_tg_300
