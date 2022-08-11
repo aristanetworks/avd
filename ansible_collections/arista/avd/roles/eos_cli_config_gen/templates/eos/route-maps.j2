@@ -14,7 +14,7 @@ route-map {{ route_map.name }} {{ sequence.type }} {{ sequence.sequence }}
 {%         if sequence.sub_route_map is arista.avd.defined %}
    sub-route-map {{ sequence.sub_route_map }}
 {%         endif %}
-{%         if sequence.continue.enabled is arista.avd.defined %}
+{%         if sequence.continue.enabled is arista.avd.defined(true) %}
 {%             set continue_cli = "continue" %}
 {%             if sequence.continue.sequence_number is arista.avd.defined %}
 {%                 set continue_cli = continue_cli ~ " " ~ sequence.continue.sequence_number %}
