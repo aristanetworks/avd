@@ -11,21 +11,20 @@ from deepmerge import always_merger
 
 
 script_dir = os.path.dirname(__file__)
-collection_dir = f"{script_dir}/../../../../.."
-with open(f"{collection_dir}/roles/eos_cli_config_gen/schemas/schema_fragments/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
+with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
     acl_schema = yaml.load(schema_file, Loader=yaml.SafeLoader)
-with open(f"{collection_dir}/roles/eos_cli_config_gen/schemas/schema_fragments/ipv6_standard_access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
+with open(f"{script_dir}/ipv6_standard_access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
     ipv6_acl_schema = yaml.load(schema_file, Loader=yaml.SafeLoader)
-with open(f"{collection_dir}/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml", "r", encoding="utf-8") as schema_file:
-    eos_cli_config_gen_schema = yaml.load(schema_file, Loader=yaml.SafeLoader)
-with open(f"{collection_dir}/molecule/eos_cli_config_gen_v4.0/inventory/host_vars/acl.yml", "r", encoding="utf-8") as data_file:
+with open(f"{script_dir}/combined.schema.yml", "r", encoding="utf-8") as schema_file:
+    combined_schema = yaml.load(schema_file, Loader=yaml.SafeLoader)
+with open(f"{script_dir}/acl.yml", "r", encoding="utf-8") as data_file:
     acl_test_data = yaml.load(data_file, Loader=yaml.SafeLoader)
-with open(f"{collection_dir}/molecule/eos_cli_config_gen_v4.0/inventory/host_vars/ipv6-access-lists.yml", "r", encoding="utf-8") as data_file:
+with open(f"{script_dir}/ipv6-access-lists.yml", "r", encoding="utf-8") as data_file:
     ipv6_acl_test_data = yaml.load(data_file, Loader=yaml.SafeLoader)
 
 INVALID_SCHEMA = {"type": "something_invalid"}
 
-VALID_TEST_SCHEMAS = [DEFAULT_SCHEMA, acl_schema, ipv6_acl_schema, eos_cli_config_gen_schema]
+VALID_TEST_SCHEMAS = [DEFAULT_SCHEMA, acl_schema, ipv6_acl_schema, combined_schema]
 
 combined_data = {}
 always_merger.merge(combined_data, acl_test_data)
@@ -41,7 +40,7 @@ TEST_DATA_PATHS = [
 
 # Expected responses for .subschema() when tested with TEST_DATA_PATHS
 EXPECTED_SUBSCHEMAS = {
-    "_empty": eos_cli_config_gen_schema,
+    "_empty": combined_schema,
     "access_lists.name":
         acl_schema['keys']['access_lists']['items']['keys']['name'],
     "access_lists.sequence_numbers.action":
@@ -142,10 +141,10 @@ class TestAvdSchema():
     @pytest.mark.parametrize("INVALID_DATA", INVALID_ACL_DATA)
     def test_avd_schema_validate_with_invalid_data(self, INVALID_DATA):
         try:
-            for validation_error in AvdSchema(eos_cli_config_gen_schema).validate(INVALID_DATA):
+            for validation_error in AvdSchema(combined_schema).validate(INVALID_DATA):
                 assert isinstance(validation_error, AvdValidationError)
         except Exception as e:
-            assert False, f"AvdSchema(eos_cli_config_gen_schema).validate(INVALID_DATA) raised an exception: {e}"
+            assert False, f"AvdSchema(combined_schema).validate(INVALID_DATA) raised an exception: {e}"
 
     def test_avd_schema_validate_with_missing_data(self):
         with pytest.raises(TypeError):
@@ -171,7 +170,7 @@ class TestAvdSchema():
 
     @pytest.mark.parametrize("INVALID_DATA", INVALID_ACL_DATA)
     def test_avd_schema_is_valid_with_invalid_data(self, INVALID_DATA):
-        assert AvdSchema(eos_cli_config_gen_schema).is_valid(INVALID_DATA) is False
+        assert AvdSchema(combined_schema).is_valid(INVALID_DATA) is False
 
     def test_avd_schema_is_valid_with_missing_data(self):
         with pytest.raises(TypeError):
@@ -215,9 +214,9 @@ class TestAvdSchema():
     def test_avd_schema_subschema_with_adhoc_schema(self, TEST_PATH):
         try:
             avdschema = AvdSchema()
-            subschema = avdschema.subschema(TEST_PATH, eos_cli_config_gen_schema)
+            subschema = avdschema.subschema(TEST_PATH, combined_schema)
         except Exception as e:
-            assert False, f"subschema(TEST_PATH, eos_cli_config_gen_schema) raised an exception: {e}"
+            assert False, f"subschema(TEST_PATH, combined_schema) raised an exception: {e}"
         if len(TEST_PATH) == 0:
             assert subschema == EXPECTED_SUBSCHEMAS['_empty']
         else:
@@ -226,7 +225,7 @@ class TestAvdSchema():
     @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
     def test_avd_schema_subschema_with_loaded_schema(self, TEST_PATH):
         try:
-            avdschema = AvdSchema(eos_cli_config_gen_schema)
+            avdschema = AvdSchema(combined_schema)
             subschema = avdschema.subschema(TEST_PATH)
         except Exception as e:
             assert False, f"subschema(TEST_PATH) raised an exception: {e}"
