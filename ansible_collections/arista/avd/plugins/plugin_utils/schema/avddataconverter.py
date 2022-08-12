@@ -26,7 +26,7 @@ else:
     DEEPMERGE_IMPORT_ERROR = None
 
 
-def _keys(validator: jsonschema.protocols.Validator, keys: dict, instance: dict, schema: dict):
+def _keys(validator, keys: dict, instance: dict, schema: dict):
     '''
     This function performs conversion on each key with the relevant subschema
     '''
@@ -53,7 +53,7 @@ def _keys(validator: jsonschema.protocols.Validator, keys: dict, instance: dict,
     yield from _resolve_and_convert_keys(validator, dynamic_keys, instance, schema)
 
 
-def _resolve_and_convert_keys(validator: jsonschema.protocols.Validator, keys: dict, instance: dict, schema: dict):
+def _resolve_and_convert_keys(validator, keys: dict, instance: dict, schema: dict):
     '''
     This function is run from _keys() and should not be run elsewhere
 
@@ -91,7 +91,7 @@ def _resolve_and_convert_keys(validator: jsonschema.protocols.Validator, keys: d
         )
 
 
-def _items(validator: jsonschema.protocols.Validator, items: dict, instance: list, schema: dict):
+def _items(validator, items: dict, instance: list, schema: dict):
     '''
     This function performs conversion on each item with the items subschema
     '''
@@ -126,7 +126,7 @@ def _items(validator: jsonschema.protocols.Validator, items: dict, instance: lis
         )
 
 
-def _ref(validator: jsonschema.protocols.Validator, ref: str, instance, schema: dict):
+def _ref(validator, ref: str, instance, schema: dict):
     '''
     This function resolves the $ref referenced schema,
     then merges with any schema defined at the same level
@@ -147,7 +147,7 @@ def _ref(validator: jsonschema.protocols.Validator, ref: str, instance, schema: 
         validator.resolver.pop_scope()
 
 
-def _convert_types(validator: jsonschema.protocols.Validator, convert_types: list, instance, schema: dict):
+def _convert_types(validator, convert_types: list, instance, schema: dict):
     '''
     This function performs type convertion if necessary on a single data instance.
     It is invoked for child keys during "keys" conversion and for child items during

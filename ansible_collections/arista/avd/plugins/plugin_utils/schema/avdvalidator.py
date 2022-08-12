@@ -29,7 +29,7 @@ with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:
     AVD_META_SCHEMA = json.load(file)
 
 
-def _primary_key_validator(validator: jsonschema.protocols.Validator, primary_key: str, instance: list, schema: dict):
+def _primary_key_validator(validator, primary_key: str, instance: list, schema: dict):
     if not validator.is_type(primary_key, "str"):
         return
 
@@ -51,7 +51,7 @@ def _primary_key_validator(validator: jsonschema.protocols.Validator, primary_ke
         yield jsonschema.ValidationError(f"Values of Primary key '{primary_key}' are not unique as required.")
 
 
-def _keys_validator(validator: jsonschema.protocols.Validator, keys: dict, instance: dict, schema: dict):
+def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
     '''
     This function validates each key with the relevant subschema
     It also includes various child key validations,
@@ -116,7 +116,7 @@ def _keys_validator(validator: jsonschema.protocols.Validator, keys: dict, insta
         )
 
 
-def _dynamic_keys_validator(validator: jsonschema.protocols.Validator, dynamic_keys: dict, instance: dict, schema: dict):
+def _dynamic_keys_validator(validator, dynamic_keys: dict, instance: dict, schema: dict):
     '''
     This function triggers the regular "keys" validator in case only dynamic_keys is set.
     '''
@@ -124,7 +124,7 @@ def _dynamic_keys_validator(validator: jsonschema.protocols.Validator, dynamic_k
         yield from _keys_validator(validator, {}, instance, schema)
 
 
-def _ref_validator(validator: jsonschema.protocols.Validator, ref, instance: dict, schema: dict):
+def _ref_validator(validator, ref, instance: dict, schema: dict):
     '''
     This function resolves the $ref referenced schema,
     then merges with any schema defined at the same level
@@ -145,7 +145,7 @@ def _ref_validator(validator: jsonschema.protocols.Validator, ref, instance: dic
         validator.resolver.pop_scope()
 
 
-def _valid_values_validator(validator: jsonschema.protocols.Validator, valid_values, instance, schema: dict):
+def _valid_values_validator(validator, valid_values, instance, schema: dict):
     '''
     This function validates if the instance conforms to the "valid_values"
     '''

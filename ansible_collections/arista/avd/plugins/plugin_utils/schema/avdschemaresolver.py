@@ -28,7 +28,7 @@ with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:
     AVD_META_SCHEMA = json.load(file)
 
 
-def _keys(validator: jsonschema.protocols.Validator, keys: dict, resolved_schema: dict, schema: dict):
+def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
     # Don't run resolver if $ref is part of the schema.
     # Instead $ref resolver will pop $ref and run all resolvers.
     if "$ref" in schema:
@@ -44,7 +44,7 @@ def _keys(validator: jsonschema.protocols.Validator, keys: dict, resolved_schema
         )
 
 
-def _dynamic_keys(validator: jsonschema.protocols.Validator, dynamic_keys: dict, resolved_schema: dict, schema: dict):
+def _dynamic_keys(validator, dynamic_keys: dict, resolved_schema: dict, schema: dict):
     # Don't run resolver if $ref is part of the schema.
     # Instead $ref resolver will pop $ref and run all resolvers.
     if "$ref" in schema:
@@ -60,7 +60,7 @@ def _dynamic_keys(validator: jsonschema.protocols.Validator, dynamic_keys: dict,
         )
 
 
-def _items(validator: jsonschema.protocols.Validator, items: dict, resolved_schema: dict, schema: dict):
+def _items(validator, items: dict, resolved_schema: dict, schema: dict):
     # Don't run resolver if $ref is part of the schema.
     # Instead $ref resolver will pop $ref and run all resolvers.
     if "$ref" in schema:
@@ -75,7 +75,7 @@ def _items(validator: jsonschema.protocols.Validator, items: dict, resolved_sche
     )
 
 
-def _ref(validator: jsonschema.protocols.Validator, ref, resolved_schema: dict, schema: dict):
+def _ref(validator, ref, resolved_schema: dict, schema: dict):
     '''
     This function resolves the $ref referenced schema,
     then merges with any schema defined at the same level
