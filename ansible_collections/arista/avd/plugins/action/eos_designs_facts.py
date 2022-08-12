@@ -3,10 +3,10 @@ __metaclass__ = type
 
 import cProfile
 import pstats
+from collections import ChainMap
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 from ansible.plugins.filter.core import combine
-from ansible.plugins.loader import lookup_loader
 from ansible.template import Templar
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
@@ -107,25 +107,28 @@ class ActionModule(ActionBase):
         '''
         avd_switch_facts = {}
         for host in fabric_hosts:
-            host_hostvars = default_vars.copy()
-            host_hostvars.update(hostvars.get(host))
+            # Using ChainMap to avoid copying data between defaults, hostvars and local template_vars
+            host_hostvars = ChainMap({}, hostvars.get(host), default_vars)
             avd_switch_facts[host] = {}
-            templar = Templar(variables=host_hostvars, loader=self._loader)
-            template_lookup_module = lookup_loader.get('ansible.builtin.template', loader=self._loader, templar=templar)
+            templar = Templar(variables={}, loader=self._loader)
             # Add reference to dict "avd_switch_facts".
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars['avd_switch_facts'] = avd_switch_facts
             avd_switch_facts[host] = {
                 "switch": EosDesignsFacts(
                     hostvars=host_hostvars,
-                    template_lookup_module=template_lookup_module,
                     combine=combine,
                     list_compress=list_compress,
                     range_expand=range_expand,
                     natural_sort=natural_sort,
                     convert_dicts=convert_dicts,
+                    templar=templar
                 )
             }
+            # Add reference to EosDesignsFacts object inside hostvars.
+            # This is used to allow templates to access the facts object directly with "switch.*"
+            host_hostvars['switch'] = avd_switch_facts[host]['switch']
+
         return avd_switch_facts
 
     def render_avd_switch_facts(self, avd_switch_facts_instances: dict):

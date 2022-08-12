@@ -35,6 +35,7 @@
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
     avd_switch_facts: true
+    #cprofile_file: "facts-{{inventory_hostname}}.prof"
   check_mode: false
   run_once: true
 
@@ -59,6 +60,7 @@
   arista.avd.yaml_templates_to_facts:
     templates: "{{ templates.structured_config }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    #cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
     remove_avd_switch_facts: true
   delegate_to: localhost

@@ -1,6 +1,9 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+from ansible.module_utils._text import to_text
+import os
+
 
 class AristaAvdError(Exception):
     def __init__(self, message="An Error has occured in an arista.avd plugin"):
@@ -102,20 +105,47 @@ def unique(in_list):
     return (list(list_set))
 
 
-def template_var(template_file, template_vars, template_lookup_module):
+def template_var(template_file, template_vars, templar, searchpath):
     """
-    Run Ansible Template Lookup Plugin
+    Wrap "template" for single values like IP addresses
 
     The result is forced into a string and leading/trailing newlines and whitespaces are removed.
 
     Parameters
     ----------
     template_file : str
-        Filename to pass to template_lookup_module
-    template_vars : any
-        Vars to pass to template_lookup_module
-    template_lookup_module : func
-        Instance of Ansible 'template' lookup module
+        Path containing template
+    extra_vars : any
+        Vars to pass to templar
+    templar : func
+        Instance of Ansible Templar class
+
+    Returns
+    -------
+    str
+        The rendered template
+    """
+    return str(template(template_file, template_vars, templar, searchpath)).strip()
+
+
+def template(template_file, template_vars, templar, searchpath):
+    """
+    Run Ansible Templar with template read from file
+
+    This function has does not support all Ansible features.
+    - No template_* vars
+    - The template file path is not inserted into searchpath, so "include" must be absolute from searchpath.
+    - Fixed convert_data=False
+    - ...
+
+    Parameters
+    ----------
+    template_file : str
+        Path containing template
+    extra_vars : any
+        Vars to pass to templar
+    templar : func
+        Instance of Ansible Templar class
 
     Returns
     -------
@@ -123,8 +153,22 @@ def template_var(template_file, template_vars, template_lookup_module):
         The rendered template
     """
 
-    result = template_lookup_module.run([template_file], template_vars)[0]
-    return str(result).strip()
+    loader = templar._loader
+    template_file_path = loader.path_dwim_relative_stack(searchpath, 'templates', template_file)
+    template_data, unused = loader._get_file_contents(template_file_path)
+    template_data = to_text(template_data)
+
+    templar.available_variables = template_vars
+    result = templar.template(template_data, convert_data=False, escape_backslashes=False)
+    return result
+
+
+def compile_searchpath(searchpath: list):
+    newsearchpath = []
+    for p in searchpath:
+        newsearchpath.append(os.path.join(p, 'templates'))
+        newsearchpath.append(p)
+    return newsearchpath
 
 
 def get_item(list_of_dicts: list, key, value, default=None, required=False, case_sensitive=False, var_name=None):
