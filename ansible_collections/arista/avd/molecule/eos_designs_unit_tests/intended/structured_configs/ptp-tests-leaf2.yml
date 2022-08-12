@@ -109,8 +109,10 @@ ptp:
   ttl: 16
   domain: 127
   message_type:
-    general: {}
-    event: {}
+    general:
+      dscp: 46
+    event:
+      dscp: 48
   monitor:
     enabled: true
     threshold:

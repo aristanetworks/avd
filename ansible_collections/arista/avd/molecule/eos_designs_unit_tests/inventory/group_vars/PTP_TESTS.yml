@@ -60,7 +60,7 @@ servers:
         mode: access
         ptp:
           enable: true
-          role: bmca
+          endpoint_role: bmca
 
   video-endpoint:
     adapters:
@@ -73,6 +73,7 @@ servers:
         spanning_tree_portfast: edge
         ptp:
           enable: true
+          endpoint_role: follower
 
   Endpoint-with-specific-PTP-profile:
     adapters:

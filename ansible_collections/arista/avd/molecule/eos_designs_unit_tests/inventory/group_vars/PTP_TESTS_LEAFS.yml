@@ -42,12 +42,8 @@ l3leaf:
         ttl: 16
         forward_unicast: true
         dscp:
-          enabled: true
-          message_type:
-            general:
-              dscp: 36
-            event:
-              dscp: 56
+          general_messages: 46
+          event_messages: 48
         monitor:
           enabled: true
           threshold:
