@@ -24,7 +24,7 @@ bgp_peer_groups:
 spine:
   defaults:
     platform: 7050SX3
-    bgp_as: 65001
+    bgp_as: "65001"
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
   nodes:
@@ -64,7 +64,7 @@ l3leaf:
     uplink_interface_speed: forced 100gfull
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
     platform: 7280R
-    bgp_as: 65101
+    bgp_as: "65101"
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
     mlag_interfaces_speed: 100g
     mlag_peer_l3_vlan: 4090
@@ -93,7 +93,7 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     - group: DC1_LEAF2
-      bgp_as: 65102
+      bgp_as: "65102"
       rack: "rackD"
       mlag: false
       nodes:
@@ -109,7 +109,7 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
     - group: DC1_SVC3
       platform: 7050SX3
-      bgp_as: 65103
+      bgp_as: "65103"
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -132,7 +132,7 @@ l3leaf:
       nodes:
         - name: DC1-BL1A
           id: 6
-          bgp_as: 65104
+          bgp_as: "65104"
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
@@ -146,7 +146,7 @@ l3leaf:
               inter_domain: true
         - name: DC1-BL1B
           id: 7
-          bgp_as: 65105
+          bgp_as: "65105"
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
@@ -154,7 +154,7 @@ l3leaf:
             remote_peers:
               - hostname: "MY_EVPN_GW_USER_DEFINED"
                 ip_address: 1.1.1.1
-                bgp_as: 65555
+                bgp_as: "65555"
             evpn_l2:
               enabled: true
             evpn_l3:
@@ -170,14 +170,14 @@ l3leaf:
         - name: DC1-BL2A
           platform: 7280R2
           id: 8
-          bgp_as: 65106
+          bgp_as: "65106"
           mgmt_ip: 192.168.200.117/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet8, Ethernet8, Ethernet8, Ethernet8 ]
         - name: DC1-BL2B
           platform: 7280R3
           id: 9
-          bgp_as: 65107
+          bgp_as: "65107"
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
@@ -191,12 +191,12 @@ l3leaf:
         - name: DC1-CL1A
           platform: 7368X4
           id: 10
-          bgp_as: 65108
+          bgp_as: "65108"
           mgmt_ip: 192.168.200.119/24
           uplink_switch_interfaces: [ Ethernet14, Ethernet14, Ethernet14, Ethernet14 ]
         - name: DC1-CL1B
           id: 11
-          bgp_as: 65109
+          bgp_as: "65109"
           mgmt_ip: 192.168.200.120/24
           uplink_switch_interfaces: [ Ethernet15, Ethernet15, Ethernet15, Ethernet15 ]
 

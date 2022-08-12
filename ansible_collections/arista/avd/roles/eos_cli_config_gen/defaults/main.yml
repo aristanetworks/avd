@@ -24,3 +24,7 @@ eos_config_dir_name: 'configs'
 eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
 
 avd_structured_config_file_format: "yml"
+
+# Input Variable Validation
+avd_validate_conversion_mode: "debug"
+avd_validate_validation_mode: "warning"

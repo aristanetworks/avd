@@ -22,12 +22,12 @@ l3leaf:
       nodes:
         - name: MH-LEAF1A
           id: 1
-          bgp_as: 65151
+          bgp_as: "65151"
           mgmt_ip: 192.168.201.104/24
           uplink_switch_interfaces: [Ethernet10]
         - name: MH-LEAF1B
           id: 2
-          bgp_as: 65152
+          bgp_as: "65152"
           mgmt_ip: 192.168.201.105/24
           uplink_switch_interfaces: [Ethernet11]
     - group: MH_L3LEAF2
@@ -44,6 +44,6 @@ l3leaf:
       nodes:
         - name: MH-LEAF2A
           id: 3
-          bgp_as: 65153
+          bgp_as: "65153"
           mgmt_ip: 192.168.201.106/24
           uplink_switch_interfaces: [Ethernet12]
