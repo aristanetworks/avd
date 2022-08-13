@@ -63,7 +63,7 @@ Type conversion is turned on by default but can be disabled or adjusted with the
 
 ## Validation Options
 
-By defauilt `arista.avd.validate` plugin runs type conversion first, and then performs validation of the converted data, reporting
+By default `arista.avd.validate` plugin runs type conversion first and then performs validation of the converted data, reporting
 validation issues as warnings - not blocking the playbook. This behavior can be adjusted by setting the variables described
 below.
 
