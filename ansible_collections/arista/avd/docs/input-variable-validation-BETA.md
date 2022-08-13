@@ -29,7 +29,7 @@ be converted to. The current implementation supports the following automatic con
 \* Conversion from `dict` to `list` is only supported when `primary_key` is set on the `list` schema.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be
-written with dot-notation ex. `"65001.10000"`. Most deployments only use 16-bit AS numbers ex. `bgp_as: 65001`, and this value
+written with dot-notation ex. `"65001.10000"`. Most deployments only use 16-bit AS numbers ex. `bgp_as: 65001`, this value
 will be interpreted as an integer in YAML, unless it is enclosed in quotes ex. `bgp_as: "65001"`. In the schema for `bgp_as` the
 `convert_types` option is configured to `['int']` which instructs the `arista.avd.validate` Action Plugin to automatically convert
 `bgp_as: 65001` to `bgp_as: "65001"`.
