@@ -29,9 +29,7 @@ be converted to. The current implementation supports the following automatic con
 \* Conversion from `dict` to `list` is only supported when `primary_key` is set on the `list` schema.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be
-written with dot-notation ex. `"65001.10000"`. Most deployments only use 16-bit AS numbers ex. `bgp_as: 65001`, this value
-will be interpreted as an integer in YAML, unless it is enclosed in quotes ex. `bgp_as: "65001"`. In the schema for `bgp_as` the
-`convert_types` option is configured to `['int']` which instructs the `arista.avd.validate` Action Plugin to automatically convert
+written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit AS numbers, where the setting `bgp_as: 65001` will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. In the schema for `bgp_as` the `convert_types` option is configured to `['int']` which instructs the `arista.avd.validate` Action Plugin to automatically convert
 `bgp_as: 65001` to `bgp_as: "65001"`.
 
 Type conversion is also used for introducing changes to the data models without affecting existing deployments. For example,
@@ -56,8 +54,7 @@ tenants:
         ...
 ```
 
-To allow a gracious introduction of this data-model change in late 3.x versions, the input data will be converted automatically
-and validated according to the new model.
+The input data will be converted automatically and validated according to the new model to allow for a gracious introduction of this data-model changes in late 3.x versions.
 
 Type conversion is turned on by default but can be disabled or adjusted with the options described in the next section.
 
@@ -128,8 +125,7 @@ schema options per variable type.
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
 conform to all the rules given by the schema options.
 This means that the validator may report multiple errors about the same piece of data if it violates more than on rule.
-This also means that a poorly written schema could have conflicting schema options, which may not allow any value in
-any value. Ex. `required: true`, `min_length: 10` and `max_length: 5` on the same `type: str` schema, would never be satisfied.
+This also means that a poorly written schema could have conflicting schema options, which may not allow any value. For example `type: str` schema with `min_length: 10` and `max_length: 5` would never be satisfied.
 
 ### Schema Options for type `int` (Integer)
 
