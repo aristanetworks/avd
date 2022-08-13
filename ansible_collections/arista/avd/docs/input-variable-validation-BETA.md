@@ -26,7 +26,7 @@ be converted to. The current implementation supports the following automatic con
 | `bool`, `int` | `str` |
 | `dict`* | `list` |
 
-*) Conversion from `dict` to `list` is only supported when `primary_key` is set on the `list` schema.
+\* Conversion from `dict` to `list` is only supported when `primary_key` is set on the `list` schema.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since a 32-bit AS numbers can be
 written with dot-notation ex. `"65001.10000"`. Most deployments only use 16-bit AS numbers ex. `bgp_as: 65001`, and this value
