@@ -59,7 +59,7 @@ tenants:
 To allow a gracious introduction of this data-model change in late 3.x versions, the input data will be converted automatically
 and validated according to the new model.
 
-Type conversion is turned on by default, but can be disabled or adjusted with the options described in the next section.
+Type conversion is turned on by default but can be disabled or adjusted with the options described in the next section.
 
 ## Validation Options
 
