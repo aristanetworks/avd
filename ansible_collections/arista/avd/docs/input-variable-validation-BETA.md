@@ -91,7 +91,7 @@ avd_validate_validation_mode: < "disabled" | "error" | "warning" | "info" | "deb
 
 ## Schema Details
 
-The AVD Schema format is a proprietary schema, inspired from JSON Shema, Ansible Argument Specificion and Arista
+The AVD Schema format is a proprietary schema inspired by JSON Schema, Ansible Argument Specification and Arista
 Cloudvision Studios formats.
 
 The AVD Schema have special features which are not supported or possible with any of the mentioned schema formats.
