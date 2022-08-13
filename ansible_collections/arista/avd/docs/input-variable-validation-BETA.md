@@ -117,7 +117,7 @@ For reference, the full Role Schemas can be found here:
 - [`eos_designs` AVD Schema](## "not ready yet - ../roles/eos_designs/schemas/eos_designs.schema.yml")
 - [`eos_cli_config_gen` AVD Schema](../roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml)
 
-The supported schema options depends of the type of variable that is described. The supported types are `int`, `bool`, `str`,
+The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned
 above, can address the usability aspect by helping the user with common mistakes.
 
