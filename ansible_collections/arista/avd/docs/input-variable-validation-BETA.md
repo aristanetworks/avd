@@ -34,7 +34,7 @@ will be interpreted as an integer in YAML, unless it is enclosed in quotes ex. `
 `convert_types` option is configured to `['int']` which instructs the `arista.avd.validate` Action Plugin to automatically convert
 `bgp_as: 65001` to `bgp_as: "65001"`.
 
-Type conversion is also used for introducing changes to the data models without affecting existing deployments. In AVD 4.0 the
+Type conversion is also used for introducing changes to the data models without affecting existing deployments. For example,
 data models using "Dictionaries with wildcard keys" will be changed to lists.
 Ex. the old data model:
 
