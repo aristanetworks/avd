@@ -35,7 +35,7 @@ will be interpreted as an integer in YAML, unless it is enclosed in quotes ex. `
 `bgp_as: 65001` to `bgp_as: "65001"`.
 
 Type conversion is also used for introducing changes to the data models without affecting existing deployments. For example,
-data models using "Dictionaries with wildcard keys" will be changed to lists.
+in AVD 4.0, the data models using "Dictionaries with wildcard keys" will be changed to lists.
 Ex. the old data model:
 
 ```yaml
