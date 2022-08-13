@@ -119,7 +119,7 @@ For reference, the full Role Schemas can be found here:
 
 The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned
-above, can address the usability aspect by helping the user with common mistakes.
+above can address the usability aspect by helping the user with common mistakes.
 
 The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft-7 format. The meta-schema
 can be seen [here](../plugins/plugin_utils/schema/avd_meta_schema.json). Below is a more detailed description of the supported
