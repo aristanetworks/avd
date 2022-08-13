@@ -1,0 +1,14 @@
+---
+- name: Create Documentation
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create Schema Documentation for eos_cli_config_gen
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+        tasks_from: build-documentation
+
+    - name: Create Schema Documentation for eos_designs
+      import_role:
+        name: arista.avd.eos_designs
+        tasks_from: build-documentation

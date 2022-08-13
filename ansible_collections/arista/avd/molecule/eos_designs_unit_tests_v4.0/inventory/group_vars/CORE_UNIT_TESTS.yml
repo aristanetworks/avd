@@ -8,7 +8,7 @@ node_type_keys:
 mgmt_gateway: 192.168.0.1
 
 overlay_routing_protocol: ibgp
-bgp_as: 65000
+bgp_as: "65000"
 
 # Update p2p mtu
 p2p_uplinks_mtu: 1600
@@ -40,7 +40,6 @@ core_router:
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
     node_sid_base: 200
     isis_system_id_prefix: "0000.0001"
-    core_interface_speed: "forced 100gfull"
   nodes:
     - name: core-1-isis-sr-ldp
       id: 1

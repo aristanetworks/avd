@@ -34,6 +34,14 @@
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
+- name: Validate & update input vars according to AVD eos_cli_config_gen schema
+  tags: [validate, build, provision]
+  arista.avd.validate:
+    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
+    conversion_mode: "{{ avd_validate_conversion_mode }}"
+    validation_mode: "{{ avd_validate_validation_mode }}"
+  delegate_to: localhost
+
 - name: Generate eos intended configuration
   tags: [build, provision]
   template:

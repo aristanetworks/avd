@@ -8,5 +8,5 @@ l3leaf:
   nodes:
     - name: evpn_services_l2_only_false
       id: 101
-      bgp_as: 101
+      bgp_as: "101"
       evpn_services_l2_only: false

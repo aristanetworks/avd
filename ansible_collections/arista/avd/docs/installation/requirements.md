@@ -15,7 +15,11 @@ If you leverage [CloudVision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Supported Ansible Versions
 
-- ansible-core from __2.11.3__ to __2.12.x__
+- ansible-core from __2.11.3__ to __2.12.x__ excluding __2.12.0__ to __2.12.5__
+
+Excluded versions have an [issue](## "plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).")
+in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.12.6/changelogs/CHANGELOG-v2.12.rst#bugfixes)
+in __2.12.6__ and __2.13.1__.
 
 ## Additional Python Libraries required
 

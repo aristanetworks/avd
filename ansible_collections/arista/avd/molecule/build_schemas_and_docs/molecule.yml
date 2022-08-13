@@ -1,0 +1,14 @@
+---
+scenario:
+  converge_sequence:
+    - converge
+  test_sequence:
+    - converge
+platforms:
+  - name: default
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
