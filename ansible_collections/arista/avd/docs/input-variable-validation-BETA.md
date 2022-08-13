@@ -113,7 +113,7 @@ keys:
 
 This fragment will be merged with other fragments during development, to form the complete role schema.
 
-For reference the full Role Schemas can be found here:
+For reference, the full Role Schemas can be found here:
 - [`eos_designs` AVD Schema](## "not ready yet - ../roles/eos_designs/schemas/eos_designs.schema.yml")
 - [`eos_cli_config_gen` AVD Schema](../roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml)
 
