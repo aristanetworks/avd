@@ -122,7 +122,7 @@ The supported schema options depend on the type of variable that is described. T
 above can address the usability aspect by helping the user with common mistakes.
 
 The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft-7 format. The meta-schema
-can be seen [here](../plugins/plugin_utils/schema/avd_meta_schema.json). Below is a more detailed description of the supported
+can be seen [here](../plugins/plugin_utils/schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
 schema options per variable type.
 
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
