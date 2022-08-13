@@ -127,7 +127,7 @@ schema options per variable type.
 
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
 conform to all the rules given by the schema options.
-This means that the validator may report multiple errors about the same piece of data, if it violates more than on rule.
+This means that the validator may report multiple errors about the same piece of data if it violates more than on rule.
 This also means that a poorly written schema could have conflicting schema options, which may not allow any value in
 any value. Ex. `required: true`, `min_length: 10` and `max_length: 5` on the same `type: str` schema, would never be satisfied.
 
