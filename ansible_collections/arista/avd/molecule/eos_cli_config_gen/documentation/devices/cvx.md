@@ -53,9 +53,9 @@ cvx is enabled
 
 ## CVX services
 
-| Service | Enabled | Password |
-| ------- | ------- | -------- |
-| MCS | False | True |
+| Service | Enabled | Password Encryption |
+| ------- | ------- | ------------------- |
+| MCS | True | True |
 
 ## MCS service configuration
 

@@ -12,10 +12,10 @@ cvx is enabled
 
 ## CVX services
 
-| Service | Enabled | Password |
-| ------- | ------- | -------- |
+| Service | Enabled | Password Encryption |
+| ------- | ------- | ------------------- |
 {%             if cvx.services.mcs is arista.avd.defined %}
-{%                 set shut = cvx.services.mcs.shutdown | arista.avd.default('-') %}
+{%                 set shut = not cvx.services.mcs.shutdown | arista.avd.default('-') %}
 {%                 set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
 | MCS | {{ shut }} | {{ encryption }} |
 {%             endif %}
