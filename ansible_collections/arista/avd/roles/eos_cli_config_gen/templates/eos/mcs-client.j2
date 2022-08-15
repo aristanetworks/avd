@@ -8,12 +8,13 @@ mcs client
     no shutdown
 {%     endif %}
 {%     if mcs_client.cvx_secondary is arista.avd.defined %}
-{%         for name in mcs_client.cvx_secondary | arista.avd.natural_sort %}
+{%         if mcs_client.cvx_secondary.name is arista.avd.defined %}
+{%             set name = mcs_client.cvx_secondary.name %}
     !
-    cvx secondary {{ name.name }}
-{%             for server_host in name.server_hosts | arista.avd.natural_sort %}
+    cvx secondary {{ name }}
+{%             for server_host in mcs_client.cvx_secondary.server_hosts | arista.avd.natural_sort %}
         server host {{ server_host }}
 {%             endfor %}
-{%         endfor %}
+{%         endif %}
 {%     endif %}
 {% endif %}

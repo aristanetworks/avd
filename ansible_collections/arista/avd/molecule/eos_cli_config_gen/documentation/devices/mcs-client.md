@@ -54,9 +54,8 @@ MCS client is running
 
 | Secondary CVX cluster | Server Hosts |
 | --------------------- | ------------ |
-| blue | 10.90.224.188,10.90.224.189,leaf2.atd.lab |
-| purple | 10.90.224.200,10.90.224.201,leaf1.atd.lab |
-
+| default | 10.90.224.188,10.90.224.189,leaf2.atd.lab |
+-
 ### MCS client configuration
 
 ```eos
@@ -64,15 +63,10 @@ MCS client is running
 mcs client
     no shutdown
     !
-    cvx secondary blue
+    cvx secondary default
         server host 10.90.224.188
         server host 10.90.224.189
         server host leaf2.atd.lab
-    !
-    cvx secondary purple
-        server host 10.90.224.200
-        server host 10.90.224.201
-        server host leaf1.atd.lab
 ```
 
 # Internal VLAN Allocation Policy

@@ -11,13 +11,11 @@ MCS client is running
 
 | Secondary CVX cluster | Server Hosts |
 | --------------------- | ------------ |
-{%         for name in mcs_client.cvx_secondary | arista.avd.natural_sort %}
-{%             set secondary = name.name %}
-{%             set servers = name.server_hosts | arista.avd.default('-') | join(',') %}
+{%         set secondary = mcs_client.cvx_secondary.name %}
+{%         set servers = mcs_client.cvx_secondary.server_hosts | arista.avd.default('-') | join(',') %}
 | {{ secondary }} | {{ servers }} |
-{%         endfor %}
 {%     endif %}
-
+-
 ### MCS client configuration
 
 ```eos
