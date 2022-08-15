@@ -590,9 +590,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.120.3:99110 | 99110:99110 | - | - | learned |
+| 110 | 172.16.120.3:99110 | 99110:99110 | - | - | learned<br>router-mac system |
 | 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned<br>router-mac system |
-| 112 | 172.16.120.3:20112 | 20112:20112 | - | - | learned |
+| 112 | 172.16.120.3:20112 | 20112:20112 | - | - | learned<br>router-mac system |
 | 2500 | 172.16.120.3:2500 | 2500:2500 | - | - | learned |
 | 2600 | 172.16.120.3:32600 | 32600:32600 | - | - | learned |
 
@@ -651,6 +651,12 @@ router bgp 65121
       rd 172.16.120.3:99110
       route-target both 99110:99110
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp vlan from svi profile
+      EOF
+
    !
    vlan 111
       rd 172.16.120.3:50111
@@ -659,7 +665,7 @@ router bgp 65121
       redistribute router-mac system
       !
       comment
-      comment created from raw_eos_cli under router bgp vlan 113
+      comment created from raw_eos_cli under router bgp vlan 111 from svi
       EOF
 
    !
@@ -667,6 +673,12 @@ router bgp 65121
       rd 172.16.120.3:20112
       route-target both 20112:20112
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp vlan from svi parent profile
+      EOF
+
    !
    vlan 2500
       rd 172.16.120.3:2500

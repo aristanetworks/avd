@@ -178,6 +178,17 @@ router_bgp:
         - 99110:99110
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp vlan from svi profile
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
     111:
       tenant: Tenant_A
       rd: 172.16.110.4:50111
@@ -189,7 +200,7 @@ router_bgp:
       - router-mac system
       eos_cli: 'comment
 
-        comment created from raw_eos_cli under router bgp vlan 113
+        comment created from raw_eos_cli under router bgp vlan 111 from svi
 
         EOF
 
@@ -205,6 +216,17 @@ router_bgp:
         - 20112:20112
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp vlan from svi parent profile
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
     2500:
       tenant: Tenant_A
       rd: 172.16.110.4:2500

@@ -1,4 +1,25 @@
 ---
+svi_profiles:
+  PARENT_PROFILE_STRUCT_CFG:
+    bgp:
+      structured_config:
+        redistribute_routes:
+          - router-mac system
+      raw_eos_cli: |
+        comment
+        comment created from raw_eos_cli under router bgp vlan from svi parent profile
+        EOF
+  TEST_PARENT_PROFILE_STRUCT_CFG:
+    parent_profile: PARENT_PROFILE_STRUCT_CFG
+  TEST_PROFILE_STRUCT_CFG:
+    bgp:
+      structured_config:
+        redistribute_routes:
+          - router-mac system
+      raw_eos_cli: |
+        comment
+        comment created from raw_eos_cli under router bgp vlan from svi profile
+        EOF
 # DC Tenants
 # Documentation of Tenant specific information - Vlans/VRFs
 tenants:
@@ -17,6 +38,7 @@ tenants:
             enabled: true
             rt_override: 99110 # RT would have been 20000 + 110.
             ip_address_virtual: 10.1.10.1/24
+            profile: TEST_PROFILE_STRUCT_CFG
             structured_config:
               description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
             nodes:
@@ -35,13 +57,14 @@ tenants:
                   - router-mac system
               raw_eos_cli: |
                 comment
-                comment created from raw_eos_cli under router bgp vlan 113
+                comment created from raw_eos_cli under router bgp vlan 111 from svi
                 EOF
           "112":
             name: Tenant_A_OP_Zone_3
             tags: [opzone]
             enabled: true
             ip_address_virtual: 10.1.12.1/24
+            profile: TEST_PARENT_PROFILE_STRUCT_CFG
             nodes:
               DC1-POD1-LEAF1A:
                 raw_eos_cli: |
