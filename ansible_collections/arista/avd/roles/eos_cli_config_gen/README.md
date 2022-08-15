@@ -1628,7 +1628,7 @@ lldp:
 mcs_client:
   shutdown: false
   cvx_secondary:
-      name: blue
+      name: default
       server_hosts:
         - 10.90.224.188
         - 10.90.224.189
