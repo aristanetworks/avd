@@ -1141,11 +1141,13 @@ class EosDesignsFacts:
                         if len(bgp_as_range_expanded) == 1:
                             return bgp_as_range_expanded[0]
                         elif self.mlag:
-                            return bgp_as_range_expanded[self._switch_data_node_group_nodes[0]["id"] - 1]
+                            return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
                         else:
                             return bgp_as_range_expanded[self.id - 1]
                     except IndexError as exc:
-                        raise AristaAvdError("Unable to allocate bgp as: bgp_as range is too small for number of devices") from exc
+                        raise AristaAvdError(
+                            "Unable to allocate BGP AS: bgp_as range is too small "
+                            f"({len(bgp_as_range_expanded)}) for the id of the device") from exc
 
             # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
             # TODO: Remove this as part of AVD4.0

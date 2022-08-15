@@ -334,7 +334,7 @@ default_interfaces:
 
   defaults:
     # Node BGP AS | Required.
-    # For eBGP topologies, bgp_as can be defined as a range of ASNs under defaults.  This range will be expanded and ASNs allocated
+    # For eBGP topologies, bgp_as can be defined as a range of ASNs.  This range will be expanded and ASNs allocated
     # according to the following rules:
     #  - Standalone nodes and Non-MLAG (i.e. EVPN A/A multi-homing) node groups will be allocated unique ASNs from the range based on
     #    the node's ID.
