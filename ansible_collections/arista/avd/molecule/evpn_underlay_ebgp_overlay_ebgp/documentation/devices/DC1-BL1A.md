@@ -862,21 +862,21 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### RM-CONN-2-BGP
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
 #### RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set ip next-hop 123.1.1.1 |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | ip next-hop 123.1.1.1 | - | - |
 
 #### RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set ipv6 next-hop fd5a:fe45:8831:06c5::1 |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | ipv6 next-hop fd5a:fe45:8831:06c5::1 | - | - |
 
 ### Route-maps Device Configuration
 

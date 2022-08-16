@@ -93,41 +93,44 @@ interface Management1
 
 #### RM-10.2.3.4-SET-NEXT-HOP-OUT
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set ip next-hop 10.2.3.4 |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | ip next-hop 10.2.3.4 | - | - |
 
 #### RM-CONN-BL-BGP
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match ip address prefix-list PL-MLAG |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG | - | - | - |
+| 20 | permit | ip address prefix-list PL-SUBRM | - | RM-HIDE-ASPATH-IN | - |
+| 30 | permit | ip address prefix-list PL-CONTINUE | - | - | 40 |
+| 40 | permit | ip address prefix-list PL-CONTINUE | - | - | Next Sequence |
+| 50 | permit | - | - | - | - |
 
 #### RM-HIDE-ASPATH-IN
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set as-path match all replacement auto |
-| 10 | permit | set community 65000:1 additive |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | as-path match all replacement auto<br>community 65000:1 additive | - | - |
 
 #### RM-HIDE-ASPATH-OUT
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match community LIST-COM |
-| 20 | permit | set as-path match all replacement auto |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | community LIST-COM | - | - | - |
+| 20 | permit | - | as-path match all replacement auto | - | - |
 
 #### RM-MLAG-PEER-IN
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set origin incomplete |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | origin incomplete | - | - |
 
 #### RM-STATIC-2-BGP
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set tag 65100 |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | tag 65100 | - | - |
 
 ### Route-maps Device Configuration
 
@@ -140,6 +143,19 @@ route-map RM-CONN-BL-BGP deny 10
    match ip address prefix-list PL-MLAG
 !
 route-map RM-CONN-BL-BGP permit 20
+   description sub-route-map test
+   match ip address prefix-list PL-SUBRM
+   sub-route-map RM-HIDE-ASPATH-IN
+!
+route-map RM-CONN-BL-BGP permit 30
+   match ip address prefix-list PL-CONTINUE
+   continue 40
+!
+route-map RM-CONN-BL-BGP permit 40
+   match ip address prefix-list PL-CONTINUE
+   continue
+!
+route-map RM-CONN-BL-BGP permit 50
 !
 route-map RM-HIDE-ASPATH-IN permit 10
    set as-path match all replacement auto

@@ -457,9 +457,9 @@ router bgp 65001
 
 #### RM-MLAG-PEER-IN
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set origin incomplete |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | origin incomplete | - | - |
 
 ### Route-maps Device Configuration
 

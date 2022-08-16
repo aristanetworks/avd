@@ -703,15 +703,16 @@ router bfd
 
 #### RM-EVPN-SOO-IN
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match extcommunity ECL-EVPN-SOO |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | extcommunity ECL-EVPN-SOO | - | - | - |
+| 20 | permit | - | - | - | - |
 
 #### RM-EVPN-SOO-OUT
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | permit | set extcommunity soo 192.168.254.10:1 additive |
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | extcommunity soo 192.168.254.10:1 additive | - | - |
 
 ### Route-maps Device Configuration
 
