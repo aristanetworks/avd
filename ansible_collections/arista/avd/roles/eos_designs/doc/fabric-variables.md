@@ -14,15 +14,15 @@
   - EBGP (default for l3ls-evpn)
   - IBGP (only with OSPF or ISIS variants in underlay)
   - none**
-  - her (head-end-replication)***
+  - HER (Head-End Replication)***
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 
-*Only supported with core_interfaces data model.
+*) Only supported with core_interfaces data model.
 
-** For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
+**) For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
 
-*** By setting `overlay_routing_protocol:her`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
+***) By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
 ## Flagging a Device as Not Deployed
 
@@ -49,7 +49,7 @@ shutdown_interfaces_towards_undeployed_peers: < true | false | default -> false 
 
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | none | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | none | her | default for l3ls-evpn -> EBGP >
+overlay_routing_protocol: < EBGP | IBGP | none | HER | default for l3ls-evpn -> EBGP >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
