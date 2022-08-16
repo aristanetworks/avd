@@ -66,9 +66,9 @@ interface Management1
 
 ## Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
-| ---------------- | --------------------- | -------------------- | ------------ |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - |
 
 ## Management Security Configuration
 

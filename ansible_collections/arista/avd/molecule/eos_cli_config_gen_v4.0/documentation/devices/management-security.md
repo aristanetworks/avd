@@ -6,6 +6,7 @@
 - [Authentication](#authentication)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
+  - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [Management Security Configuration](#management-security-configuration)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -60,6 +61,14 @@ interface Management1
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |
 
+## Management Security SSL Profiles
+
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
+| certificate-profile | - | eAPI.crt | eAPI.key | - |
+| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 |
+| tls-versions-profile | 1.0 1.1 | - | - | - |
+
 ## Management Security Configuration
 
 ```eos
@@ -69,6 +78,12 @@ management security
    password encryption-key common
    password encryption reversible aes-256-gcm
    password minimum length 17
+   ssl profile certificate-profile
+      certificate eAPI.crt key eAPI.key
+   ssl profile cipher-list-profile
+      cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+   ssl profile tls-versions-profile
+      tls versions 1.0 1.1
 ```
 
 # Monitoring
