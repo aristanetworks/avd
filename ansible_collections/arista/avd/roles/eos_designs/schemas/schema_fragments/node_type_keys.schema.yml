@@ -1,0 +1,147 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  node_type_keys:
+    display_name: Node Types Definition
+    description: "The node type definition is done under `node_type_keys`. This dictionary defines type of devices you can use in your topologies. Each node type can be configured to fit the role in the network."
+    type: list
+    primary_key: key
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+          required: true
+          description: "YAML Key used for defining Fabric Topology for this Node Type"
+        type:
+          type: str
+          required: true
+          description: "Value of `type` key on devices of this Node Type"
+        default_evpn_role:
+          type: str
+          valid_values:
+            - none
+            - client
+            - server
+          default: none
+          description: "Default evpn_role. Can be overridden in topology vars"
+        default_underlay_routing_protocol:
+          type: str
+          valid_values:
+            - ebgp
+            - ospf
+            - isis
+            - isis-sr
+            - isis-ldp
+            - isis-sr-ldp
+            - ospf-ldp
+          default: ebgp
+          description: "Set the default underlay routing_protocol.\nCan be overridden by setting `underlay_routing_protocol` host/group_vars"
+        connected_endpoints:
+          type: bool
+          default: false
+          description: "Support connected endpoints on this node type"
+        mlag_support:
+          type: bool
+          default: false
+          description: "Support MLAG on this node type"
+        network_services:
+          type: dict
+          description: "Support Network Services on this node type"
+          keys:
+            l2:
+              type: bool
+              default: false
+              description: "Support L2 Network Services (VLANs) for this node type"
+            l3:
+              type: bool
+              default: false
+              description: "Support L3 Network Services (VRFs, SVIs if `l2: true`) for this node type\nOnly supported with `underlay_router: true`"
+        underlay_router:
+          type: bool
+          default: true
+          description: "Is this node type a L3 device"
+        uplink_type:
+          type: str
+          valid_values:
+            - p2p
+            - port-channel
+          default: p2p
+          description: "`uplink_type` must be `p2p`` if `vtep: true` or `underlay_router: true`"
+        vtep:
+          type: bool
+          default: false
+          description: "Is this node type a VXLAN VTEP"
+        mpls_lsr:
+          type: bool
+          default: false
+          description: "Is this node type a MPLS LSR"
+
+        # Optional | Override ip_adressing templates
+        ip_addressing:
+          type: dict
+          description: "Override IP adressing templates.\nIf not set, the default templates are inherited from `templates.ip_addressing`"
+          keys:
+            router_id:
+              type: str
+              description: "Path to J2 template"
+            mlag_ip_primary:
+              type: str
+              description: "Path to J2 template"
+            mlag_ip_secondary:
+              type: str
+              description: "Path to J2 template"
+            mlag_l3_ip_primary:
+              type: str
+              description: "Path to J2 template"
+            mlag_l3_ip_secondary:
+              type: str
+              description: "Path to J2 template"
+            p2p_uplinks_ip:
+              type: str
+              description: "Path to J2 template"
+            p2p_uplinks_peer_ip:
+              type: str
+              description: "Path to J2 template"
+            vtep_ip_mlag:
+              type: str
+              description: "Path to J2 template"
+            vtep_ip:
+              type: str
+              description: "Path to J2 template"
+
+        # Optional | Override interface_descriptions templates
+        # If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks
+        interface_descriptions:
+          type: dict
+          description: "Override interface description templates.\nIf not set, the default templates are inherited from `templates.interface_descriptions`"
+          keys:
+            underlay_ethernet_interfaces:
+              type: str
+              description: "Path to J2 template"
+            underlay_port_channel_interfaces:
+              type: str
+              description: "Path to J2 template"
+            underlay_ethernet_mlag_interfaces:
+              type: str
+              description: "Path to J2 template"
+            underlay_port_channel_mlag_interfaces:
+              type: str
+              description: "Path to J2 template"
+            connected_endpoints_ethernet_interfaces:
+              type: str
+              description: "Path to J2 template"
+            connected_endpoints_port_channel_interfaces:
+              type: str
+              description: "Path to J2 template"
+            overlay_loopback_interface:
+              type: str
+              description: "Path to J2 template"
+            vtep_loopback_interface:
+              type: str
+              description: "Path to J2 template"
