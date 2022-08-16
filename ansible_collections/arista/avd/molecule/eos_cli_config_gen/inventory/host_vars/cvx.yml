@@ -5,5 +5,5 @@ cvx:
     mcs:
       redis:
         password: 070E334ddD1D18
-        encryption: true
+        password_type: 7
       shutdown: false

@@ -5,7 +5,7 @@
   - [Management Interfaces](#management-interfaces)
 - [CVX](#cvx)
   - [CVX services](#cvx-services)
-  - [MCS service configuration](#mcs-service-configuration)
+  - [CVX configuration](#cvx-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -53,11 +53,11 @@ cvx is enabled
 
 ## CVX services
 
-| Service | Enabled | Password Encryption |
-| ------- | ------- | ------------------- |
-| MCS | True | True |
+| Service | Enabled | settings |
+| ------- | ------- | -------- |
+| MCS | True | Redis Password Set |
 
-## MCS service configuration
+## CVX configuration
 
 ```eos
 !

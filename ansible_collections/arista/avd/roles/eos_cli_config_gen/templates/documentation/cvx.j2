@@ -12,17 +12,20 @@ cvx is enabled
 
 ## CVX services
 
-| Service | Enabled | Password Encryption |
-| ------- | ------- | ------------------- |
+| Service | Enabled | settings |
+| ------- | ------- | -------- |
 {%             if cvx.services.mcs is arista.avd.defined %}
-{%                 set shut = not cvx.services.mcs.shutdown | arista.avd.default('-') %}
-{%                 set encryption = cvx.services.mcs.redis.encryption | arista.avd.default('-') %}
-| MCS | {{ shut }} | {{ encryption }} |
+{%                 set enabled = not cvx.services.mcs.shutdown | arista.avd.default('-') %}
+{%                 set settings = [] %}
+{%                 if cvx.services.mcs.redis.password is arista.avd.defined %}
+{%                     do settings.append("Redis Password Set") %}
+{%                 endif %}
+| MCS | {{ enabled }} | {{ settings | join("<br") }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}
 
-## MCS service configuration
+## CVX configuration
 
 ```eos
 {%     include 'eos/cvx.j2' %}

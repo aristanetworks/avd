@@ -326,7 +326,7 @@ cvx:
     mcs:
       redis:
         password: < password >
-        encryption: < true|false >
+        password_type: <0 | 7 | 8a | default -> 7>
       shutdown: < true|false >
 ```
 
