@@ -62,8 +62,8 @@ if __name__ == "__main__":
     breaking_labels = []
     for scope in SCOPES:
         for cc_type, rn_title in CATEGORIES.items():
-            # This assumes that Doc and Bump cannot be breaking
-            if cc_type in ["Feat", "Fix", "Cut", "Revert", "Refactor"]:
+            # This assumes that Doc, Test and CI cannot be breaking
+            if cc_type in ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]:
                 if scope != "":
                     breaking_labels.append(f"rn: {cc_type}({scope})!")
                 else:
