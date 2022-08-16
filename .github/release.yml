@@ -26,7 +26,7 @@ changelog:
       - 'rn: Test'
       - 'rn: CI'
   categories:
-    - title: "Breaking Changes \U0001F6E0"
+    - title: Breaking Changes
       labels:
         - 'rn: Feat(build_output_folders)!'
         - 'rn: Fix(build_output_folders)!'
@@ -100,11 +100,11 @@ changelog:
         - 'rn: Bump!'
         - 'rn: Revert!'
         - 'rn: Refactor!'
-    - title: "Fixed issues in eos_cli_config_gen \U0001F41B"
+    - title: Fixed issues in eos_cli_config_gen
       labels: 'rn: Fix(eos_cli_config_gen)'
-    - title: "Fixed issues in eos_designs \U0001F41B"
+    - title: Fixed issues in eos_designs
       labels: 'rn: Fix(eos_designs)'
-    - title: "Other Fixed issues \U0001F41B"
+    - title: Other Fixed issues
       labels:
         - 'rn: Fix(build_output_folders)'
         - 'rn: Fix(cvp_configlet_upload)'
@@ -116,7 +116,7 @@ changelog:
         - 'rn: Fix(plugins)'
         - 'rn: Fix(requirements)'
         - 'rn: Fix'
-    - title: "Documentation \U0001F4DA"
+    - title: Documentation
       labels:
         - 'rn: Doc(build_output_folders)'
         - 'rn: Doc(cvp_configlet_upload)'
@@ -130,11 +130,11 @@ changelog:
         - 'rn: Doc(plugins)'
         - 'rn: Doc(requirements)'
         - 'rn: Doc'
-    - title: "New features and enhancements in eos_cli_config_gen \u2728"
+    - title: New features and enhancements in eos_cli_config_gen
       labels: 'rn: Feat(eos_cli_config_gen)'
-    - title: "New features and enhancements in eos_designs \u2728"
+    - title: New features and enhancements in eos_designs
       labels: 'rn: Feat(eos_designs)'
-    - title: "Other new features and enhancements \u2728"
+    - title: Other new features and enhancements
       labels:
         - 'rn: Feat(build_output_folders)'
         - 'rn: Feat(cvp_configlet_upload)'
@@ -146,6 +146,6 @@ changelog:
         - 'rn: Feat(plugins)'
         - 'rn: Feat(requirements)'
         - 'rn: Feat'
-    - title: "Other Changes \U0001F500"
+    - title: Other Changes
       labels:
         - '*'

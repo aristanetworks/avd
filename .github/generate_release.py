@@ -22,15 +22,15 @@ SCOPES = [
 
 # CI and Test are excluded from Release Notes
 CATEGORIES = {
-    "Feat": "Features ✨",
-    "Fix": "Bug Fixes 🐛",
-    "Cut": "Cut ✂️",
-    "Doc": "Documentation 📚",
-    # "CI": "CI 👷",
-    "Bump": "Bump ☝️",
-    # "Test": "Test 🚨",
-    "Revert": "Revert ⏪ ",
-    "Refactor": "Refactoring 🔨",
+    "Feat": "Features",
+    "Fix": "Bug Fixes",
+    "Cut": "Cut",
+    "Doc": "Documentation",
+    # "CI": "CI",
+    "Bump": "Bump",
+    # "Test": "Test",
+    "Revert": "Revert",
+    "Refactor": "Refactoring",
 }
 
 
@@ -70,21 +70,21 @@ if __name__ == "__main__":
                     breaking_labels.append(f"rn: {cc_type}!")
     categories_list.append(
         {
-            "title": "Breaking Changes 🛠",
+            "title": "Breaking Changes",
             "labels": breaking_labels,
         }
     )
     # Add fixes in eos_cli_config_gen
     categories_list.append(
         {
-            "title": "Fixed issues in eos_cli_config_gen 🐛",
+            "title": "Fixed issues in eos_cli_config_gen",
             "labels": "rn: Fix(eos_cli_config_gen)",
         }
     )
     # Add fixes in eos_designs
     categories_list.append(
         {
-            "title": "Fixed issues in eos_designs 🐛",
+            "title": "Fixed issues in eos_designs",
             "labels": "rn: Fix(eos_designs)",
         }
     )
@@ -97,7 +97,7 @@ if __name__ == "__main__":
             other_fixes_labels.append("rn: Fix")
     categories_list.append(
         {
-            "title": "Other Fixed issues 🐛",
+            "title": "Other Fixed issues",
             "labels": other_fixes_labels,
         }
     )
@@ -110,21 +110,21 @@ if __name__ == "__main__":
             doc_labels.append("rn: Doc")
     categories_list.append(
         {
-            "title": "Documentation 📚",
+            "title": "Documentation",
             "labels": doc_labels,
         }
     )
     # Add new features in eos_cli_config_gen
     categories_list.append(
         {
-            "title": "New features and enhancements in eos_cli_config_gen ✨",
+            "title": "New features and enhancements in eos_cli_config_gen",
             "labels": "rn: Feat(eos_cli_config_gen)",
         }
     )
     # Add new features in eos_designs
     categories_list.append(
         {
-            "title": "New features and enhancements in eos_designs ✨",
+            "title": "New features and enhancements in eos_designs",
             "labels": "rn: Feat(eos_designs)",
         }
     )
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             other_feat_labels.append("rn: Feat")
     categories_list.append(
         {
-            "title": "Other new features and enhancements ✨",
+            "title": "Other new features and enhancements",
             "labels": other_feat_labels,
         }
     )
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     # Add the catch all
     categories_list.append(
         {
-            "title": "Other Changes 🔀",
+            "title": "Other Changes",
             "labels": ["*"],
         }
     )
