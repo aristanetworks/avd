@@ -1,7 +1,7 @@
 ---
 type: l3leaf
 
-overlay_routing_protocol: her
+overlay_routing_protocol: HER
 # This will create per-vni flood-lists. Set to true for leaf 1-2 and to false (in hostvars) for leaf3.
 overlay_her_flood_list_per_vni: true
 # Expectation is to see per-vni flood-lists on leaf 1-2 and a single flood-list on leaf3
