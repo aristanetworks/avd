@@ -645,7 +645,9 @@ route_maps:
         set:
           - "< set as string >"
         sub_route_map: < sub-route-map name >
-        continue: < sequence number >
+        continue:
+          enabled: < true | false >
+          sequence_number: < integer >
       < sequence_id_2 >:
         type: < permit | deny >
         match:
