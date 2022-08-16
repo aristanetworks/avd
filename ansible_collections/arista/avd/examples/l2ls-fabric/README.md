@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This example is meant to explore using AVD with an L2LS (Layer 2 Leaf Spine) Topology. The example topology shown below contains 2 Spines and 2 Leaf Pairs. The L2LS Fabric is purely Layer 2 with no routing of SVIs in the Fabric.  In a later example, L3 routing functionality will be introduced on the Spines.
+This example is meant to explore using AVD with an L2LS (Layer 2 Leaf Spine) Topology. The example topology shown below contains 2 Spines and 2 Leaf Pairs. The L2LS Fabric is purely Layer 2 with no routing of SVIs in the Fabric.  Later we will add in L3 routing functionality to this example`.
 
 ![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.png)
 
@@ -116,4 +116,22 @@ leaf:
           id: 4
           mgmt_ip: 172.100.100.108/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
+```
+
+Add L2 VLANs to the Fabric by updating the DC1_NETWORK_SERVICES group_vars file.  Each VLAN will be given a name and tag ID.  The Tag can be used as a filter on your Leaf Pairs.
+
+```yaml
+### DC1_NETWORK_SERVICES.yml
+tenants:
+  VLANS:
+    l2vlans:
+      10:
+        name: 'BLUE-NET'
+        tags: [bluezone]
+      20:
+        name: 'GREEN-NET'
+        tags: [greenzone]
+      30:
+        name: 'ORANGE-NET'
+        tags: [orangezone]
 ```
