@@ -6,37 +6,29 @@ generate_release.py
 import yaml
 
 SCOPES = [
-    "eos_config_deploy_cvp",
-    "eos_config_deploy_eapi",
-    "eos_designs",
-    "eos_designs_to_containerlab",
-    "eos_l3ls_evpn",
-    "eos_snapshot",
-    "eos_validate_state",
     "build_output_folders",
     "cvp_configlet_upload",
     "dhcp_provisioner",
     "eos_cli_config_gen",
+    "eos_config_deploy_cvp",
+    "eos_config_deploy_eapi",
+    "eos_designs",
+    "eos_snapshot",
+    "eos_validate_state",
     "plugins",
-    "mkdoc",
-    "contribution",
-    "how-to",
-    "actions",
-    "molecule",
-    "ansible",
-    "github",
     "requirements",
     "",  # empty scope
 ]
 
+# CI and Test are excluded from Release Notes
 CATEGORIES = {
     "Feat": "Features ✨",
     "Fix": "Bug Fixes 🐛",
     "Cut": "Cut ✂️",
     "Doc": "Documentation 📚",
-    #    "CI": "CI 👷",
+    # "CI": "CI 👷",
     "Bump": "Bump ☝️",
-    #    "Test": "Test 🚨",
+    # "Test": "Test 🚨",
     "Revert": "Revert ⏪ ",
     "Refactor": "Refactoring 🔨",
 }
@@ -70,7 +62,12 @@ if __name__ == "__main__":
     breaking_labels = []
     for scope in SCOPES:
         for cc_type, rn_title in CATEGORIES.items():
-            breaking_labels.append(f"rn: {cc_type}({scope})!")
+            # This assumes that Doc and Bump cannot be breaking
+            if cc_type in ["Feat", "Fix", "Cut", "Revert", "Refactor"]:
+                if scope != "":
+                    breaking_labels.append(f"rn: {cc_type}({scope})!")
+                else:
+                    breaking_labels.append(f"rn: {cc_type}!")
     categories_list.append(
         {
             "title": "Breaking Changes 🛠",

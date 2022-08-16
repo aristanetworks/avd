@@ -46,21 +46,16 @@ jobs:
         with:
           # Configure which types are allowed.
           # Default: https://github.com/commitizen/conventional-commit-types
+          # Updated as part of PR 1930
           types: |
             Feat
             Fix
             Cut
             Doc
             CI
-            Start
-            Stop
             Bump
             Test
-            Make
             Refactor
-            Reformat
-            Optimize
-            License
             Revert
           # Configure which scopes are allowed.
           scopes: |
@@ -71,18 +66,9 @@ jobs:
             eos_config_deploy_cvp
             eos_config_deploy_eapi
             eos_designs
-            eos_designs_to_containerlab
-            eos_l3ls_evpn
             eos_snapshot
             eos_validate_state
             plugins
-            mkdoc
-            contribution
-            how-to
-            actions
-            molecule
-            ansible
-            github
             requirements
           # Configure that a scope must always be provided.
           requireScope: false
