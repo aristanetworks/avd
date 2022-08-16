@@ -317,7 +317,7 @@ aaa_server_groups:
 
 #### CVX
 
-CVX cannot be enbled on a physical switch
+CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
 
 ```yaml
 cvx:
