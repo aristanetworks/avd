@@ -47,5 +47,5 @@ router_isis:
     enabled: true
 {% if switch.overlay_routing_protocol == "none" %}
   redistribute_routes:
-    source_protocol: connected
+    - source_protocol: connected
 {% endif %}
