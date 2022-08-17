@@ -2,17 +2,19 @@
 {% if mcs_client is arista.avd.defined %}
 
 ## MCS client Summary
-{%     if shut is arista.avd.defined(true) %}
+{%     if mcs_client.shutdown is arista.avd.defined(true) %}
+
 MCS client is shutdown
-{%     elif shut is arista.avd.defined(false) %}
+{%     elif mcs_client.shutdown is arista.avd.defined(false) %}
 {%     endif %}
+
 MCS client is running
 {%     if mcs_client.cvx_secondary is arista.avd.defined %}
 
 | Secondary CVX cluster | Server Hosts |
 | --------------------- | ------------ |
 {%         set secondary = mcs_client.cvx_secondary.name %}
-{%         set servers = mcs_client.cvx_secondary.server_hosts | arista.avd.default('-') | join(',') %}
+{%         set servers = mcs_client.cvx_secondary.server_hosts | arista.avd.default('-') | join(', ') %}
 | {{ secondary }} | {{ servers }} |
 {%     endif %}
 -

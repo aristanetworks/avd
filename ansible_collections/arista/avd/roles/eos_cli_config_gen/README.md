@@ -1626,13 +1626,12 @@ lldp:
 
 ```yaml
 mcs_client:
-  shutdown: false
+  shutdown: < true | false >
   cvx_secondary:
-      name: default
+      name: < name >
       server_hosts:
-        - 10.90.224.188
-        - 10.90.224.189
-        - leaf2.atd.lab
+        - < IP | hostname >
+        - < IP | hostname >
 ```
 
 ### MACsec

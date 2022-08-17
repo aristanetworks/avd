@@ -50,11 +50,12 @@ interface Management1
 # Monitoring
 
 ## MCS client Summary
+
 MCS client is running
 
 | Secondary CVX cluster | Server Hosts |
 | --------------------- | ------------ |
-| default | 10.90.224.188,10.90.224.189,leaf2.atd.lab |
+| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab |
 -
 ### MCS client configuration
 
