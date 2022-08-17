@@ -321,13 +321,13 @@ CVX server features are not supported on physical switches. See `management_cvx`
 
 ```yaml
 cvx:
-  shutdown: < true|false >
+  shutdown: < true | false >
   services:
     mcs:
       redis:
         password: < password >
         password_type: < 0 | 7 | 8a | default -> 7 >
-      shutdown: < true|false >
+      shutdown: < true | false >
 ```
 
 #### Enable Password

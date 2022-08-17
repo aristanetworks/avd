@@ -4,15 +4,15 @@
 # CVX
 {%     if cvx.shutdown is arista.avd.defined(true) %}
 
-cvx is disabled
+CVX is disabled
 {%     elif cvx.shutdown is arista.avd.defined(false) %}
 
-cvx is enabled
+CVX is enabled
 {%         if cvx.services is arista.avd.defined %}
 
 ## CVX services
 
-| Service | Enabled | settings |
+| Service | Enabled | Settings |
 | ------- | ------- | -------- |
 {%             if cvx.services.mcs is arista.avd.defined %}
 {%                 set enabled = not cvx.services.mcs.shutdown | arista.avd.default('-') %}

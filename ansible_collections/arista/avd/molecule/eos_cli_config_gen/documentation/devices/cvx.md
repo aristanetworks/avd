@@ -49,11 +49,11 @@ interface Management1
 
 # CVX
 
-cvx is enabled
+CVX is enabled
 
 ## CVX services
 
-| Service | Enabled | settings |
+| Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
 
