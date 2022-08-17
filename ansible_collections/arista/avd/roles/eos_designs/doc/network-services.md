@@ -594,6 +594,13 @@ mac_address_table:
           source_address: < ipv4_address -> default ip address of Loopback0 >
           version: < 1, 2, 3 -> default 2 (EOS) >
 
+        # Structured configuration and eos cli commands rendered on router_bgp.vlans
+        # This configuration will not be applied to vlan aware bundles
+        bgp:
+          raw_eos_cli: |
+            < multiline eos cli >
+          structured_config: < dictionary >
+
   < tenant_b >:
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:

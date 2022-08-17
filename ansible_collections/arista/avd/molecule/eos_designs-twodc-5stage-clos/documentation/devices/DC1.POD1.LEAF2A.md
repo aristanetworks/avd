@@ -844,7 +844,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned<br>router-mac system |
 | 112 | 172.16.110.4:20112 | 20112:20112 | - | - | learned<br>router-mac system |
 | 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.110.4:32600 | 32600:32600 | - | - | learned |
+| 2600 | 172.16.110.4:32600 | 32600:32600 | - | - | learned<br>router-mac system |
 
 ### Router BGP VRFs
 
@@ -933,7 +933,7 @@ router bgp 65112.100
       redistribute router-mac system
       !
       comment
-      comment created from raw_eos_cli under router bgp vlan from svi profile
+      comment created from raw_eos_cli under router bgp svis inherited from svi profile
       EOF
 
    !
@@ -944,7 +944,7 @@ router bgp 65112.100
       redistribute router-mac system
       !
       comment
-      comment created from raw_eos_cli under router bgp vlan 111 from svi
+      comment created from raw_eos_cli under router bgp svi 111
       EOF
 
    !
@@ -955,7 +955,7 @@ router bgp 65112.100
       redistribute router-mac system
       !
       comment
-      comment created from raw_eos_cli under router bgp vlan from svi parent profile
+      comment created from raw_eos_cli under router bgp svis inherited from svi parent profile
       EOF
 
    !
@@ -968,6 +968,12 @@ router bgp 65112.100
       rd 172.16.110.4:32600
       route-target both 32600:32600
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp l2vlan 2600
+      EOF
+
    !
    address-family evpn
       neighbor EVPN-OVERLAY-CORE activate

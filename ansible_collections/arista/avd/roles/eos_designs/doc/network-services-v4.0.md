@@ -470,6 +470,13 @@ svi_profiles:
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
 
+        # Structured configuration and eos cli commands rendered on router_bgp.vlans
+        # This configuration will not be applied to vlan aware bundles
+        bgp:
+          raw_eos_cli: |
+            < multiline eos cli >
+          structured_config: < dictionary >
+
   - name: < tenant_b >
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:

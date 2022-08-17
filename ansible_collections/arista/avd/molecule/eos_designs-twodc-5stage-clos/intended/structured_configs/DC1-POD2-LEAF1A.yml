@@ -132,7 +132,7 @@ router_bgp:
       - router-mac system
       eos_cli: 'comment
 
-        comment created from raw_eos_cli under router bgp vlan from svi profile
+        comment created from raw_eos_cli under router bgp svis inherited from svi profile
 
         EOF
 
@@ -151,7 +151,7 @@ router_bgp:
       - router-mac system
       eos_cli: 'comment
 
-        comment created from raw_eos_cli under router bgp vlan 111 from svi
+        comment created from raw_eos_cli under router bgp svi 111
 
         EOF
 
@@ -170,7 +170,7 @@ router_bgp:
       - router-mac system
       eos_cli: 'comment
 
-        comment created from raw_eos_cli under router bgp vlan from svi parent profile
+        comment created from raw_eos_cli under router bgp svis inherited from svi parent profile
 
         EOF
 
@@ -194,6 +194,17 @@ router_bgp:
         - 32600:32600
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp l2vlan 2600
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
