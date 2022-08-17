@@ -1,0 +1,16 @@
+---
+
+type: leaf
+
+leaf:
+  defaults:
+    uplink_interfaces: ['Ethernet1']
+    uplink_switches: ['ISIS-SPINE1']
+    platform: vEOS-LAB
+  node_groups:
+    ISIS_LEAFS:
+      nodes:
+        ISIS-LEAF1:
+          id: 1
+          mgmt_ip: 192.168.200.105/24
+          uplink_switch_interfaces: ['Ethernet1']
