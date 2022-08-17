@@ -58,7 +58,7 @@ DC1:
 
 ## Define AVD Fabric Variables
 
-Using group names from the ansible inventory, you apply group variables (group_vars) to the nodes in the fabric.  How and where you define the variables is up to you.  Below is an example to get started and may be further developed and modified to your liking.
+Using group names from the Ansible inventory, you apply group variables (group_vars) to the nodes in the fabric.  How and where you define the variables is up to you.  Below is an example to get started and may be further developed and modified to your liking.
 
 ### DC1.yml
 
@@ -317,7 +317,9 @@ Here is a sample playbook
 ansible-playbook playbooks/run_avd.yml -i inventory.yml --tags build
 ```
 
-If you wish to build and deploy the configurations to your hardware or virtual network, add the `deploy` tag.  You will also need to supply connectivity parameters in your group_vars/DC1_FABRIC.yml.  Add in the following section and update as needed.
+If you wish to build and deploy the configurations to your hardware or virtual network, add the `deploy` tag.  You will also need to supply connectivity parameters in your **group_vars/DC1_FABRIC.yml** to communicate with devices.
+
+Add in the following section and update vars as needed.
 
 ```yaml
 # Add this section to your DC1_FABRIC.yml
