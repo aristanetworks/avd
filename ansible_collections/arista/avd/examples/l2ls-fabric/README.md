@@ -120,7 +120,7 @@ fabric_name: DC1_FABRIC
 
 # Set Design Type to l2ls
 design:
-  type: "l2ls"
+  type: l2ls
 
 # L2 Only Spine Switches
 spine:
