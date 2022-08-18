@@ -187,11 +187,18 @@ evpn_prevent_readvertise_to_server : < true | false | default -> false >
 # Configure prefix for "short_esi" values | Optional
 evpn_short_esi_prefix: < string | default -> "0000:0000:" >
 
-# When using head-end-replication, configure flood-lists per VNI.  | Optional
+# When using Head-End Replication, configure flood-lists per VNI. | Optional
 # By default HER will be configured with a common flood-list containing all VTEPs. This behavior can be changed
 # to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`. This will make `eos_designs` consider
 # configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
 overlay_her_flood_list_per_vni: < true | false | default -> false >
+
+# When using Head-End Replication, set the scope of flood-lists to Fabric or DC | Optional
+# By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added
+# to the flood-lists. This can be changed to all VTEPs in the DC (part of the inventory group referenced
+# by "dc_name")
+# This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
+overlay_her_flood_list_scope: < "fabric" | "dc" | default -> "fabric" >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
