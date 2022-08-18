@@ -21,6 +21,8 @@
 | L2LS_BGP | leaf | BGP-LEAF2 | - | - | Provisioned |
 | L2LS_BGP | l3spine | BGP-SPINE1 | - | - | Provisioned |
 | L2LS_BGP | l3spine | BGP-SPINE2 | - | - | Provisioned |
+| L2LS_ISIS | leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned |
+| L2LS_ISIS | l3spine | ISIS-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned |
 | L2LS_L2ONLY | leaf | L2ONLY-LEAF1 | - | - | Provisioned |
 | L2LS_L2ONLY | leaf | L2ONLY-LEAF2 | - | - | Provisioned |
 | L2LS_L2ONLY | spine | L2ONLY-SPINE1 | - | - | Provisioned |
@@ -46,6 +48,7 @@
 | leaf | BGP-LEAF2 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet2 |
 | l3spine | BGP-SPINE1 | Ethernet3 | mlag_peer | BGP-SPINE2 | Ethernet3 |
 | l3spine | BGP-SPINE1 | Ethernet4 | mlag_peer | BGP-SPINE2 | Ethernet4 |
+| leaf | ISIS-LEAF1 | Ethernet1 | l3spine | ISIS-SPINE1 | Ethernet1 |
 | leaf | L2ONLY-LEAF1 | Ethernet1 | spine | L2ONLY-SPINE1 | Ethernet1 |
 | leaf | L2ONLY-LEAF1 | Ethernet2 | spine | L2ONLY-SPINE2 | Ethernet1 |
 | leaf | L2ONLY-LEAF2 | Ethernet1 | spine | L2ONLY-SPINE1 | Ethernet2 |
@@ -75,7 +78,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 4 | 1.57 % |
+| 192.168.255.0/24 | 256 | 5 | 1.96 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -83,6 +86,7 @@
 | --- | ---- | --------- |
 | L2LS_BGP | BGP-SPINE1 | 192.168.255.1/32 |
 | L2LS_BGP | BGP-SPINE2 | 192.168.255.2/32 |
+| L2LS_ISIS | ISIS-SPINE1 | 192.168.255.1/32 |
 | L2LS_OSPF | OSPF-SPINE1 | 192.168.255.1/32 |
 | L2LS_OSPF | OSPF-SPINE2 | 192.168.255.2/32 |
 
