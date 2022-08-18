@@ -20,7 +20,7 @@ node_type_keys:
     default_evpn_role: < none | client | server | default -> none >
 
     # Optional | Default PTP priority 1
-    default_ptp_priority1: < integer >
+    default_ptp_priority1: < 0-255 | default 127 >
 
     # Optional | Set the default underlay routing_protocol.
     # Can be overridden by setting "underlay_routing_protocol" host/group_vars

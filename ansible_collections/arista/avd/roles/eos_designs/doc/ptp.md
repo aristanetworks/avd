@@ -1,6 +1,6 @@
 # PTP
 
-Arista best practices are utilised, simplifying configuration of several global and interface-specific PTP settings:
+Arista best practices are used, simplifying configuration of several global and interface-specific PTP settings:
 
 - PTP can be enabled on various levels of the AVD configuration:
   - fabric level
@@ -234,7 +234,7 @@ spine:
 
 ### PTP Monitor Threshold configuration
 
-PTP monitor thresholds is enabled by default, when PTP is enabled. Default parameters are provided:
+PTP monitor thresholds is enabled by default, when PTP is enabled. Default parameters are provided.
 
 This will result in the following configuration:
 
@@ -248,7 +248,7 @@ ptp monitor threshold missing-message follow-up 3 sequence-ids
 ptp monitor threshold missing-message sync 3 sequence-ids
 ```
 
-All parameters can be overridden manually if required:
+All parameters can be overridden if required:
 
 ```yml
 ptp:
@@ -288,10 +288,7 @@ ptp:
 
 ## PTP Settings for connected endpoints
 
-By default all interfaces with connected endpoints does not have PTP enabled.
-
-It must be manually enabled.
-
+By default all interfaces with connected endpoints do not have PTP enabled. It must be manually enabled.
 These are the default settings:
 
 - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
