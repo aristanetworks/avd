@@ -156,7 +156,7 @@ By default PTP clock identity is generated and set automatically.
 
 ```yml
 auto_clock_identity = < true | false | default -> true >
-clock_identity = < (clock_identity_prefix = 00:00:00 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 1 as HEX) >
+clock_identity = < (clock_identity_prefix = 00:00:00 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX) >
 ```
 
 #### PTP Clock Identity prefix
