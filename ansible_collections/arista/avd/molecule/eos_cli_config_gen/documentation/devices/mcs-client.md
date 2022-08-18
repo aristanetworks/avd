@@ -51,12 +51,12 @@ interface Management1
 
 ## MCS client Summary
 
-MCS client is running
+MCS client is enabled
 
 | Secondary CVX cluster | Server Hosts |
 | --------------------- | ------------ |
 | default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab |
--
+
 ### MCS client configuration
 
 ```eos
