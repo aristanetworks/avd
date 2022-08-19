@@ -92,7 +92,7 @@ spanning-tree bpduguard rate-limit count 100
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -104,7 +104,7 @@ spanning-tree bpduguard rate-limit count 100
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

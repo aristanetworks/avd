@@ -128,7 +128,7 @@ no sflow hardware acceleration module Linecard3
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -140,7 +140,7 @@ no sflow hardware acceleration module Linecard3
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

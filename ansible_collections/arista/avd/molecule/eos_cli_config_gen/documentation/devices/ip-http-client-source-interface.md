@@ -90,7 +90,7 @@ ip http client local-interface Ethernet10
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -102,7 +102,7 @@ ip http client local-interface Ethernet10
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

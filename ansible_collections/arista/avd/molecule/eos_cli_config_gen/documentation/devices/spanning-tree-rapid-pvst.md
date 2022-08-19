@@ -95,7 +95,7 @@ spanning-tree vlan-id 100-500 priority 16384
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -107,7 +107,7 @@ spanning-tree vlan-id 100-500 priority 16384
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

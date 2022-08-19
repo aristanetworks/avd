@@ -142,14 +142,14 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.11.1/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1 | routed | - | 172.16.11.65/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet1 | routed | - | 172.17.110.0/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet1 | routed | - | 172.17.110.8/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1 | routed | - | 172.17.110.16/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-RS1_Ethernet2 | routed | - | 172.17.10.2/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet11 | routed | - | 172.17.110.12/31 | default | 1500 | false | - | - |
-| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11 | routed | - | 172.17.110.20/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.11.1/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1 | routed | - | 172.16.11.65/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet1 | routed | - | 172.17.110.0/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet1 | routed | - | 172.17.110.8/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1 | routed | - | 172.17.110.16/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-RS1_Ethernet2 | routed | - | 172.17.10.2/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet11 | routed | - | 172.17.110.12/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11 | routed | - | 172.17.110.20/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -272,7 +272,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -288,7 +288,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes

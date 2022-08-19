@@ -580,7 +580,7 @@ interface Port-Channel114
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -592,7 +592,7 @@ interface Port-Channel114
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # BFD
 

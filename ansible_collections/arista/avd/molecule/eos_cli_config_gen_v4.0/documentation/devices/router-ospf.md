@@ -170,7 +170,7 @@ interface Vlan24
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -182,7 +182,7 @@ interface Vlan24
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ## Router OSPF
 

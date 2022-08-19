@@ -190,19 +190,19 @@ vlan 2020
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | 100.64.48.15/31 | default | 9178 | false | - | - |
-| Ethernet6 | TENANT_B_SITE_5_WAN_TEST | routed | - | 123.10.10.2/31 | TENANT_B_WAN | - | false | - | - |
-| Ethernet6.10 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | false | - | - |
-| Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 192.168.48.4/31 | TENANT_B_WAN | - | false | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *100.64.48.17/31 | **default | *9178 | *false | **- | **- |
+| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | 100.64.48.15/31 | default | 9178 | False | - | - |
+| Ethernet6 | TENANT_B_SITE_5_WAN_TEST | routed | - | 123.10.10.2/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *100.64.48.17/31 | **default | *9178 | *False | **- | **- |
 *Inherited from Port-Channel Interface
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | - | default | 9178 | false | - | - | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *- | *default | *9178 | *false | *- | *- | *- | *- |
+| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
  *Inherited from Port-Channel Interface
 
 #### ISIS
@@ -313,7 +313,7 @@ interface Ethernet11
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | routed | - | 100.64.48.17/31 | default | 9178 | false | - | - |
+| Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | routed | - | 100.64.48.17/31 | default | 9178 | False | - | - |
 
 #### ISIS
 
@@ -419,7 +419,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | false |
+| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
 
 #### IPv4
 
@@ -466,7 +466,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:00
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | TENANT_B_INTRA | true |
 | TENANT_B_WAN | true |
@@ -486,7 +486,7 @@ ip routing vrf TENANT_B_WAN
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | TENANT_B_INTRA | false |
 | TENANT_B_WAN | false |

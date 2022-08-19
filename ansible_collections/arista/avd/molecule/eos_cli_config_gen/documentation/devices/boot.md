@@ -84,7 +84,7 @@ boot secret 5 a153de6290ff1409257a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -96,7 +96,7 @@ boot secret 5 a153de6290ff1409257a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

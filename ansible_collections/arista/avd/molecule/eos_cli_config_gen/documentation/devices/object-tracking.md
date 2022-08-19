@@ -86,7 +86,7 @@ track MyTrackSetProperty interface Ethernet2/1 line-protocol
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -98,7 +98,7 @@ track MyTrackSetProperty interface Ethernet2/1 line-protocol
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 
