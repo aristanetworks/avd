@@ -87,7 +87,7 @@ event-handler tracking
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -99,7 +99,7 @@ event-handler tracking
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

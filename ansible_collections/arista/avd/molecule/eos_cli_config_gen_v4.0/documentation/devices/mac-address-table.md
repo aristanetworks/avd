@@ -94,7 +94,7 @@ mac address-table notification host-flap detection moves 2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -106,7 +106,7 @@ mac address-table notification host-flap detection moves 2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

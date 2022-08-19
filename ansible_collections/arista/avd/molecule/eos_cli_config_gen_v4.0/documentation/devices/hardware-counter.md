@@ -88,7 +88,7 @@ hardware counter feature gre out
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -100,7 +100,7 @@ hardware counter feature gre out
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

@@ -128,7 +128,7 @@ interface Loopback0
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -140,7 +140,7 @@ interface Loopback0
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # MPLS
 

@@ -245,7 +245,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -261,7 +261,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes

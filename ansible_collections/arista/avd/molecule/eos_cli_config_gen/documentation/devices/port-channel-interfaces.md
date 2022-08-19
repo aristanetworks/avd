@@ -607,7 +607,7 @@ interface Port-Channel115
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -619,7 +619,7 @@ interface Port-Channel115
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # BFD
 

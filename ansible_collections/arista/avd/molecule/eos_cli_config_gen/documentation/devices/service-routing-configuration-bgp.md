@@ -78,7 +78,7 @@ service routing configuration bgp no-equals-default
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -90,7 +90,7 @@ service routing configuration bgp no-equals-default
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

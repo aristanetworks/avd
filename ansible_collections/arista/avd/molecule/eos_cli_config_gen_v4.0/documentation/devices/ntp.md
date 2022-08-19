@@ -120,7 +120,7 @@ ntp server ie.pool.ntp.org iburst key 1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -132,7 +132,7 @@ ntp server ie.pool.ntp.org iburst key 1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

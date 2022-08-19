@@ -216,10 +216,10 @@ vlan 4092
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | routed | - | 172.17.210.1/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | routed | - | 172.17.210.3/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | routed | - | 11.1.0.39/31 | default | 1499 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | routed | - | 172.17.210.1/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | routed | - | 172.17.210.3/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | routed | - | 11.1.0.39/31 | default | 1499 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -343,7 +343,7 @@ interface Loopback101
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 | L2LEAF_INBAND_MGMT | default | 1500 | false |
+| Vlan4092 | L2LEAF_INBAND_MGMT | default | 1500 | False |
 
 #### IPv4
 
@@ -425,7 +425,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | Common_VRF | true |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | true |
@@ -449,7 +449,7 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | Common_VRF | false |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | false |

@@ -168,7 +168,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9000 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9000 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -276,8 +276,8 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan100 | SVI_100 | default | - | false |
-| Vlan4094 | MLAG_PEER | default | 9000 | false |
+| Vlan100 | SVI_100 | default | - | False |
+| Vlan4094 | MLAG_PEER | default | 9000 | False |
 
 #### IPv4
 
@@ -332,7 +332,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -348,7 +348,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes

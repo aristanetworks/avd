@@ -90,7 +90,7 @@ no spanning-tree edge-port bpdufilter default
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -102,7 +102,7 @@ no spanning-tree edge-port bpdufilter default
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

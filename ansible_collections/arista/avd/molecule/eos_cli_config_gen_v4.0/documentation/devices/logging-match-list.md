@@ -87,7 +87,7 @@ logging policy match match-list molecule discard
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -99,7 +99,7 @@ logging policy match match-list molecule discard
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

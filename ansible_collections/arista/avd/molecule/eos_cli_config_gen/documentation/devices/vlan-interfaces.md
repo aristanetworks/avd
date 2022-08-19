@@ -70,28 +70,28 @@ interface Management1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan24 | SVI Description | default | - | false |
-| Vlan25 | SVI Description | default | - | false |
-| Vlan41 | SVI Description | default | - | false |
-| Vlan42 | SVI Description | default | - | false |
-| Vlan75 | SVI Description | default | - | false |
+| Vlan24 | SVI Description | default | - | False |
+| Vlan25 | SVI Description | default | - | False |
+| Vlan41 | SVI Description | default | - | False |
+| Vlan42 | SVI Description | default | - | False |
+| Vlan75 | SVI Description | default | - | False |
 | Vlan81 | IPv6 Virtual Address | Tenant_C | - | - |
-| Vlan83 | SVI Description | default | - | false |
+| Vlan83 | SVI Description | default | - | False |
 | Vlan84 | SVI Description | default | - | - |
 | Vlan85 | SVI Description | default | - | - |
 | Vlan86 | SVI Description | default | - | - |
-| Vlan87 | SVI Description | default | - | true |
-| Vlan88 | SVI Description | default | - | true |
-| Vlan89 | SVI Description | default | - | false |
+| Vlan87 | SVI Description | default | - | True |
+| Vlan88 | SVI Description | default | - | True |
+| Vlan89 | SVI Description | default | - | False |
 | Vlan90 | SVI Description | default | - | - |
-| Vlan91 | PBR Description | default | - | true |
+| Vlan91 | PBR Description | default | - | True |
 | Vlan92 | SVI Description | default | - | - |
-| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
-| Vlan333 | Multiple VRIDs and tracking | default | - | false |
-| Vlan501 | SVI Description | default | - | false |
-| Vlan667 | Multiple VRIDs | default | - | false |
-| Vlan1001 | SVI Description | Tenant_A | - | false |
-| Vlan1002 | SVI Description | Tenant_A | - | false |
+| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
+| Vlan333 | Multiple VRIDs and tracking | default | - | False |
+| Vlan501 | SVI Description | default | - | False |
+| Vlan667 | Multiple VRIDs | default | - | False |
+| Vlan1001 | SVI Description | Tenant_A | - | False |
+| Vlan1002 | SVI Description | Tenant_A | - | False |
 | Vlan2001 | SVI Description | Tenant_B | - | - |
 | Vlan2002 | SVI Description | Tenant_B | - | - |
 | Vlan4094 | SVI Description | default | 9214 | - |
@@ -136,16 +136,16 @@ interface Management1
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - |
 | Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:17::15/64 | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
 | Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | true | - | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
 | Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | True | True | - | - |
 
 #### VRRP Details
 
@@ -403,7 +403,7 @@ interface Vlan4094
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -415,7 +415,7 @@ interface Vlan4094
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # BFD
 

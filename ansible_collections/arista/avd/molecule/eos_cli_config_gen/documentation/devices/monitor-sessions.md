@@ -133,7 +133,7 @@ monitor session myMonitoringSession2 sample 50
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -145,7 +145,7 @@ monitor session myMonitoringSession2 sample 50
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

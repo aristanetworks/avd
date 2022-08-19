@@ -271,16 +271,16 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
+| Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | - | default | 1500 | False | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -362,9 +362,9 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | false |
-| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | false |
-| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
+| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | False |
+| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | False |
+| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
 
 #### IPv4
 
@@ -467,7 +467,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_WAN_Zone | true |
@@ -489,7 +489,7 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_WAN_Zone | false |
