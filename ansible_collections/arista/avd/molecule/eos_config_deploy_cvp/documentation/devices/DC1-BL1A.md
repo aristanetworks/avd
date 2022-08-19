@@ -312,10 +312,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.41/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.43/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | 172.31.255.45/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | 172.31.255.47/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.41/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.43/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | 172.31.255.45/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | 172.31.255.47/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -424,14 +424,14 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | false |
-| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | false |
-| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | false |
-| Vlan3013 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | false |
-| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | false |
-| Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | false |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | false |
-| Vlan4094 | MLAG_PEER | default | 1500 | false |
+| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | False |
+| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | False |
+| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
+| Vlan3013 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
+| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
+| Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
+| Vlan4094 | MLAG_PEER | default | 1500 | False |
 
 #### IPv4
 
@@ -575,7 +575,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_WAN_Zone | true |
@@ -597,7 +597,7 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_WAN_Zone | false |

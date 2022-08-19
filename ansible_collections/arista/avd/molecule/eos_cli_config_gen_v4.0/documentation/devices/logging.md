@@ -112,7 +112,7 @@ logging vrf mgt source-interface Management0
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -124,7 +124,7 @@ logging vrf mgt source-interface Management0
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

@@ -216,7 +216,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 | SVI_110 | default | - | false |
+| Vlan110 | SVI_110 | default | - | False |
 
 #### IPv4
 
@@ -263,7 +263,7 @@ ip virtual-router mac-address 00:1c:73:00:00:9a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -279,7 +279,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes

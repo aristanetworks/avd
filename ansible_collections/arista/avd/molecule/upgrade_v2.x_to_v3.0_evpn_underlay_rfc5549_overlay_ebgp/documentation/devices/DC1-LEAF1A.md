@@ -276,10 +276,10 @@ vlan 131
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | - | default | 1500 | false | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -374,10 +374,10 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | false |
-| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | 1560 | true |
-| Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | false |
-| Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | false |
+| Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | False |
+| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | 1560 | True |
+| Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | False |
+| Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | False |
 
 #### IPv4
 
@@ -489,7 +489,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | Tenant_A_APP_Zone | true |
 | Tenant_A_WEB_Zone | true |
@@ -509,7 +509,7 @@ ip routing vrf Tenant_A_WEB_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | Tenant_A_APP_Zone | false |
 | Tenant_A_WEB_Zone | false |

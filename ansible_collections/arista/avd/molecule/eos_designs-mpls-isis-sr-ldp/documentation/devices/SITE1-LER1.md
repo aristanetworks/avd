@@ -188,16 +188,16 @@ vlan 2020
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | routed | - | 100.64.48.0/31 | default | 9178 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | routed | - | 100.64.48.4/31 | default | 9178 | false | - | - |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | l3dot1q | - | 123.1.1.0/31 | TENANT_B_INTRA | - | false | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | routed | - | 100.64.48.0/31 | default | 9178 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | routed | - | 100.64.48.4/31 | default | 9178 | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | l3dot1q | - | 123.1.1.0/31 | TENANT_B_INTRA | - | False | - | - |
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | routed | - | - | default | 9178 | false | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | routed | - | - | default | 9178 | False | - | - | - | - |
 
 #### ISIS
 
@@ -428,7 +428,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | false |
+| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
 
 #### IPv4
 
@@ -475,7 +475,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:00
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | TENANT_B_INTRA | true |
 
@@ -493,7 +493,7 @@ ip routing vrf TENANT_B_INTRA
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 | TENANT_B_INTRA | false |
 

@@ -90,7 +90,7 @@ ip radius source-interface loopback10
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -102,7 +102,7 @@ ip radius source-interface loopback10
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

@@ -74,7 +74,7 @@ vlan internal order ascending range 10 40
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -86,7 +86,7 @@ vlan internal order ascending range 10 40
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

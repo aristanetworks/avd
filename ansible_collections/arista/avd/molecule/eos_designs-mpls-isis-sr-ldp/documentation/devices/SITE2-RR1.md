@@ -140,13 +140,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet4 | P2P_LINK_TO_SITE2-LSR1_Ethernet4 | routed | - | 100.64.48.13/31 | default | 9178 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-LSR1_Ethernet4 | routed | - | 100.64.48.13/31 | default | 9178 | False | - | - |
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet4 | P2P_LINK_TO_SITE2-LSR1_Ethernet4 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-LSR1_Ethernet4 | routed | - | - | default | 9178 | False | - | - | - | - |
 
 #### ISIS
 
@@ -234,7 +234,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -250,7 +250,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IPv6 Routing Device Configuration

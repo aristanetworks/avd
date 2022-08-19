@@ -245,9 +245,9 @@ vlan 2601
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | routed | - | 172.17.120.1/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.17.120.3/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | routed | - | 172.17.10.12/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | routed | - | 172.17.120.1/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.17.120.3/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | routed | - | 172.17.10.12/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -336,13 +336,13 @@ interface Loopback101
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 | set from structured_config on svi (was Tenant_A_OP_Zone_1) | Common_VRF | - | false |
-| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | true |
-| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | false |
-| Vlan113 | SVI_with_no_vxlan | Common_VRF | - | false |
-| Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | false |
-| Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | false |
-| Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | false |
+| Vlan110 | set from structured_config on svi (was Tenant_A_OP_Zone_1) | Common_VRF | - | False |
+| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | True |
+| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | False |
+| Vlan113 | SVI_with_no_vxlan | Common_VRF | - | False |
+| Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | False |
+| Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | False |
+| Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | False |
 
 #### IPv4
 
@@ -483,7 +483,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | Common_VRF | true |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | true |
@@ -507,7 +507,7 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | Common_VRF | false |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | false |

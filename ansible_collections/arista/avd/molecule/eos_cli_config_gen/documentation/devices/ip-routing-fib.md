@@ -68,7 +68,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 
 ### IP Routing Device Configuration
 
@@ -83,7 +83,7 @@ ip hardware fib optimize prefixes profile urpf-internet
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

@@ -90,7 +90,7 @@ interface profile TEST-PROFILE-2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -102,7 +102,7 @@ interface profile TEST-PROFILE-2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

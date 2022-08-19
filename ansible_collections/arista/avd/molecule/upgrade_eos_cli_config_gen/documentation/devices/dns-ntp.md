@@ -139,7 +139,7 @@ ntp server vrf mgt 10.10.111.2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -151,7 +151,7 @@ ntp server vrf mgt 10.10.111.2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

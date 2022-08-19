@@ -88,7 +88,7 @@ ip ssh client source-interface Management0 vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -100,7 +100,7 @@ ip ssh client source-interface Management0 vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 
