@@ -130,20 +130,20 @@ def template_var(template_file, template_vars, templar, searchpath):
 
 def template(template_file, template_vars, templar, searchpath):
     """
-    Run Ansible Templar with template read from file
+    Run Ansible Templar with template file.
 
-    This function has does not support all Ansible features.
-    - No template_* vars
+    This function does not support the following Ansible features:
+    - No template_* vars (rarely used)
     - The template file path is not inserted into searchpath, so "include" must be absolute from searchpath.
-    - Fixed convert_data=False
-    - ...
+    - No configurable convert_data (we set it to False)
+    - Maybe something else we have not discovered yet...
 
     Parameters
     ----------
     template_file : str
-        Path containing template
-    extra_vars : any
-        Vars to pass to templar
+        Path to Jinja2 template file
+    template_vars : any
+        Variables to use when rendering template
     templar : func
         Instance of Ansible Templar class
 

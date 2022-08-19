@@ -33,7 +33,6 @@ provisioner:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-      callbacks_enabled: profile_tasks
 
   inventory:
     links:

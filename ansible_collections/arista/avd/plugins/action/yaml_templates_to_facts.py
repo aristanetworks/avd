@@ -61,7 +61,7 @@ class ActionModule(ActionBase):
         templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
 
         # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
-        # We use ChainMap to avoid large amounts of data around, mapping in avd_switch_facts and protecting task_vars from changes.
+        # We use ChainMap to avoid copying large amounts of data around, mapping in avd_switch_facts and protecting task_vars from changes.
         output = {}
         hostname = task_vars['inventory_hostname']
         switch_facts = get(task_vars, f"avd_switch_facts..{hostname}", default={}, separator="..")
@@ -72,7 +72,7 @@ class ActionModule(ActionBase):
 
         # If the argument 'debug' is set, a 'avd_yaml_templates_to_facts_debug' list will be added to the output.
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.
-        # Here we pull in the list from any previous tasks, so we can just add the the list.
+        # Here we pull in the list from any previous tasks, so we can just add to the list.
         if debug:
             avd_yaml_templates_to_facts_debug = task_vars.get('avd_yaml_templates_to_facts_debug', [])
 
