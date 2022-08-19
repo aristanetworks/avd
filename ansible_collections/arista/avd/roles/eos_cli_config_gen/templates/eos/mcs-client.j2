@@ -3,16 +3,15 @@
 !
 mcs client
 {%     if mcs_client.shutdown is arista.avd.defined(true) %}
-    shutdown
+   shutdown
 {%     elif mcs_client.shutdown is arista.avd.defined(false) %}
-    no shutdown
+   no shutdown
 {%     endif %}
 {%     if mcs_client.cvx_secondary.name is arista.avd.defined %}
-{%         set name = mcs_client.cvx_secondary.name %}
-    !
-    cvx secondary {{ name }}
+   !
+   cvx secondary {{ mcs_client.cvx_secondary.name }}
 {%         for server_host in mcs_client.cvx_secondary.server_hosts | arista.avd.natural_sort %}
-        server host {{ server_host }}
+      server host {{ server_host }}
 {%         endfor %}
 {%     endif %}
 {% endif %}
