@@ -1122,14 +1122,33 @@ class EosDesignsFacts:
         '''
         Get global bgp_as or fabric_topology bgp_as.
 
-        This will fail if none of these are found.
+        At least one of global bgp_as or fabric_topology bgp_as must be defined.
+
+        AS ranges in fabric_topology bgp_as will be expanded to a list and:
+         - For standalone or A/A MH devices, the node id will be used to index into the list to find the ASN.
+         - For MLAG devices, the node id of the first node in the node group will be used to index into the ASN list.
+         - If a bare ASN is used, that ASN will be used for all relevant devices (depending on whether defined
+           at the defaults, node_group or node level).
+         - Lower level definitions override higher level definitions as is standard with AVD.
         '''
         if self.underlay_router is True:
             if self.underlay_routing_protocol == 'ebgp' or self.evpn_role != 'none' or self.mpls_overlay_role != 'none':
                 if get(self._hostvars, "bgp_as") is not None:
                     return str(get(self._hostvars, "bgp_as"))
                 else:
-                    return str(get(self._switch_data_combined, "bgp_as", required=True))
+                    bgp_as_range_expanded = self._range_expand(str(get(self._switch_data_combined, "bgp_as", required=True)))
+                    try:
+                        if len(bgp_as_range_expanded) == 1:
+                            return bgp_as_range_expanded[0]
+                        elif self.mlag:
+                            return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
+                        else:
+                            return bgp_as_range_expanded[self.id - 1]
+                    except IndexError as exc:
+                        raise AristaAvdError(
+                            "Unable to allocate BGP AS: bgp_as range is too small "
+                            f"({len(bgp_as_range_expanded)}) for the id of the device") from exc
+
             # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
             # TODO: Remove this as part of AVD4.0
             elif (

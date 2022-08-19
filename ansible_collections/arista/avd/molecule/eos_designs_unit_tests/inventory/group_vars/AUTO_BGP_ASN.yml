@@ -1,0 +1,62 @@
+type: l3leaf
+mgmt_gateway: 192.168.202.1
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: []
+    uplink_switches: []
+    uplink_ipv4_pool: 172.31.255.0/24
+    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    bgp_as: 65101-65110
+  node_groups:
+    AUTO_BGP_ASN_LEAF1_AA:
+      mlag: false
+      nodes:
+        AUTO_BGP_ASN_LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.202.105/24
+        AUTO_BGP_ASN_LEAF1B:
+          id: 2
+          mgmt_ip: 192.168.202.106/24
+    AUTO_BGP_ASN_LEAF2_STANDALONE:
+      nodes:
+        AUTO_BGP_ASN_LEAF2:
+          id: 3
+          mgmt_ip: 192.168.202.107/24
+    AUTO_BGP_ASN_LEAF3_MLAG:
+      nodes:
+        AUTO_BGP_ASN_LEAF3A:
+          id: 5
+          mgmt_ip: 192.168.202.109/24
+        AUTO_BGP_ASN_LEAF3B:
+          id: 6
+          mgmt_ip: 192.168.202.110/24
+    AUTO_BGP_ASN_LEAF4_MLAG_OVERRIDE:
+      bgp_as: 65222
+      nodes:
+        AUTO_BGP_ASN_LEAF4A:
+          id: 7
+          mgmt_ip: 192.168.202.111/24
+        AUTO_BGP_ASN_LEAF4B:
+          id: 8
+          mgmt_ip: 192.168.202.112/24
+    AUTO_BGP_ASN_LEAF5_NODE_OVERRIDE:
+      nodes:
+        AUTO_BGP_ASN_LEAF5A:
+          id: 9
+          bgp_as: 65333
+          mgmt_ip: 192.168.202.113/24
+  nodes:
+    AUTO_BGP_UNGROUPED_LEAF6:
+      id: 10
+      mgmt_ip: 192.168.202.114/24
