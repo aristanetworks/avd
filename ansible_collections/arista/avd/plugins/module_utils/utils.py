@@ -155,15 +155,37 @@ def template(template_file, template_vars, templar, searchpath):
 
     loader = templar._loader
     template_file_path = loader.path_dwim_relative_stack(searchpath, 'templates', template_file)
-    template_data, unused = loader._get_file_contents(template_file_path)
-    template_data = to_text(template_data)
+    j2template, dummy = loader._get_file_contents(template_file_path)
+    j2template = to_text(j2template)
 
     templar.available_variables = template_vars
-    result = templar.template(template_data, convert_data=False, escape_backslashes=False)
+    result = templar.template(j2template, convert_data=False, escape_backslashes=False)
     return result
 
 
 def compile_searchpath(searchpath: list):
+    """
+    Create a new searchpath by inserting new items with <>/templates into the existing searchpath
+
+    This is copying the behavior of the "ansible.builtin.template" lookup module, and is necessary
+    to be able to load templates from all supported paths.
+
+    Example
+    -------
+    compile_searchpath(["patha", "pathb", "pathc"]) ->
+    ["patha", "patha/templates", "pathb", "pathb/templates", "pathc", "pathc/templates"]
+
+    Parameters
+    ----------
+    searchpath : list of str
+        List of Paths
+
+    Returns
+    -------
+    list of str
+        List of both original and extra paths with "/templates" added.
+    """
+
     newsearchpath = []
     for p in searchpath:
         newsearchpath.append(os.path.join(p, 'templates'))

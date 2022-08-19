@@ -1,4 +1,5 @@
 from __future__ import (absolute_import, division, print_function)
+from collections import ChainMap
 __metaclass__ = type
 
 import re
@@ -355,11 +356,6 @@ class EosDesignsFacts:
             return self._combine(hostvar_templates, node_type_templates, recursive=True, list_merge='replace')
         else:
             return {}
-
-    @cached_property
-    def _template_vars(self):
-        template_vars = self._hostvars
-        return template_vars
 
     @cached_property
     def _switch_data(self):
@@ -1007,7 +1003,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.underlay_router is True:
-            template_vars = self._template_vars
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['loopback_ipv4_pool'] = self.loopback_ipv4_pool
             template_vars['loopback_ipv4_offset'] = self.loopback_ipv4_offset
@@ -1265,7 +1261,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.underlay_ipv6 is True:
-            template_vars = self._template_vars
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['loopback_ipv6_pool'] = self.loopback_ipv6_pool
             template_vars['loopback_ipv6_offset'] = self.loopback_ipv6_offset
@@ -1464,7 +1460,7 @@ class EosDesignsFacts:
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
             inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
-            template_vars = self._template_vars
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
@@ -1643,7 +1639,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.vtep is True:
-            template_vars = self._template_vars
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['switch_vtep_loopback_ipv4_pool'] = self.vtep_loopback_ipv4_pool
             template_vars['loopback_ipv4_offset'] = self.loopback_ipv4_offset
@@ -1673,7 +1669,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.mlag is True:
-            template_vars = self._template_vars
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['switch_data'] = {
                 "combined": {
@@ -1710,7 +1706,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            template_vars = self._template_vars
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['switch_data'] = {
                 "combined": {
