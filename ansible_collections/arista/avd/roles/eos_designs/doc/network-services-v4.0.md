@@ -297,6 +297,13 @@ svi_profiles:
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
 
+            # Structured configuration and eos cli commands rendered on router_bgp.vlans
+            # This configuration will not be applied to vlan aware bundles
+            bgp:
+              raw_eos_cli: |
+                < multiline eos cli >
+              structured_config: < dictionary >
+
             # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
@@ -462,6 +469,13 @@ svi_profiles:
         tags: [ < tag_1 >, < tag_2 > ]
         # Activate or deactivate IGMP snooping | Optional, default is true
         igmp_snooping_enabled: < true | false >
+
+        # Structured configuration and eos cli commands rendered on router_bgp.vlans
+        # This configuration will not be applied to vlan aware bundles
+        bgp:
+          raw_eos_cli: |
+            < multiline eos cli >
+          structured_config: < dictionary >
 
   - name: < tenant_b >
     mac_vrf_vni_base: < 10000-16770000 >

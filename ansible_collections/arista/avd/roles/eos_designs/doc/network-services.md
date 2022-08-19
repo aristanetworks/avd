@@ -361,6 +361,13 @@ mac_address_table:
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
 
+            # Structured configuration and eos cli commands rendered on router_bgp.vlans
+            # This configuration will not be applied to vlan aware bundles
+            bgp:
+              raw_eos_cli: |
+                < multiline eos cli >
+              structured_config: < dictionary >
+
             # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
@@ -586,6 +593,13 @@ mac_address_table:
           enabled: < true | false | default false >
           source_address: < ipv4_address -> default ip address of Loopback0 >
           version: < 1, 2, 3 -> default 2 (EOS) >
+
+        # Structured configuration and eos cli commands rendered on router_bgp.vlans
+        # This configuration will not be applied to vlan aware bundles
+        bgp:
+          raw_eos_cli: |
+            < multiline eos cli >
+          structured_config: < dictionary >
 
   < tenant_b >:
     mac_vrf_vni_base: < 10000-16770000 >

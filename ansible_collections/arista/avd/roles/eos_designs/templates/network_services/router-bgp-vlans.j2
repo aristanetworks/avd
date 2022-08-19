@@ -36,6 +36,13 @@
 {%                 if svi_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
         - igmp
 {%                 endif %}
+{%                 if svi.bgp.raw_eos_cli is arista.avd.defined %}
+      eos_cli: |
+        {{ svi.bgp.raw_eos_cli | indent(8,false) }}
+{%                 endif %}
+{%                 if svi.bgp.structured_config is arista.avd.defined %}
+      struct_cfg: {{ svi.bgp.structured_config }}
+{%                 endif %}
 {%             endfor %}
 {%         endfor %}
 {%         for l2vlan in tenant.l2vlans %}
@@ -68,6 +75,13 @@
                                                       tenant.evpn_l2_multicast.enabled) %}
 {%             if l2vlan_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
         - igmp
+{%             endif %}
+{%             if l2vlan.bgp.raw_eos_cli is arista.avd.defined %}
+      eos_cli: |
+        {{ l2vlan.bgp.raw_eos_cli | indent(8,false) }}
+{%             endif %}
+{%             if l2vlan.bgp.structured_config is arista.avd.defined %}
+      struct_cfg: {{ l2vlan.bgp.structured_config }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

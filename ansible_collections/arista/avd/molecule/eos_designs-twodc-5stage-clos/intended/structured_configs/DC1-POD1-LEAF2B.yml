@@ -186,6 +186,17 @@ router_bgp:
           route_target: 99110:99110
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp svis inherited from svi profile
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
     111:
       tenant: Tenant_A
       rd: 172.16.110.5:50111
@@ -200,6 +211,17 @@ router_bgp:
           route_target: 50111:50111
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp svi 111
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
     112:
       tenant: Tenant_A
       rd: 172.16.110.5:20112
@@ -214,6 +236,17 @@ router_bgp:
           route_target: 20112:20112
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp svis inherited from svi parent profile
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
     2500:
       tenant: Tenant_A
       rd: 172.16.110.5:2500
@@ -242,6 +275,17 @@ router_bgp:
           route_target: 32600:32600
       redistribute_routes:
       - learned
+      - router-mac system
+      eos_cli: 'comment
+
+        comment created from raw_eos_cli under router bgp l2vlan 2600
+
+        EOF
+
+        '
+      struct_cfg:
+        redistribute_routes:
+        - router-mac system
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

@@ -44,6 +44,7 @@
                                                                         selectattr('name', 'arista.avd.defined', inventory_hostname) |
                                                                         map(attribute='structured_config') |
                                                                         first %}
+{%                                 set bgp_svi_struct_cfg = svi.bgp.structured_config | arista.avd.default %}
 {%                                 if svi.profile is arista.avd.defined %}
 {%                                     set svi_profile = svi_profiles | arista.avd.default({}) |
                                                                         arista.avd.convert_dicts('profile') |
@@ -54,6 +55,9 @@
                                                                                         selectattr('name', 'arista.avd.defined', inventory_hostname) |
                                                                                         map(attribute='structured_config') |
                                                                                         first %}
+{%                                     endif %}
+{%                                     if bgp_svi_struct_cfg is not arista.avd.defined and svi_profile.bgp.structured_config is arista.avd.defined %}
+{%                                         set bgp_svi_struct_cfg = svi_profile.bgp.structured_config %}
 {%                                     endif %}
 {%                                     if svi_profile.parent_profile is arista.avd.defined %}
 {%                                         set svi_parent_profile = svi_profiles | arista.avd.default({}) |
@@ -66,6 +70,9 @@
                                                                                                    map(attribute='structured_config') |
                                                                                                    first %}
 {%                                         endif %}
+{%                                         if bgp_svi_struct_cfg is not arista.avd.defined and svi_parent_profile.bgp.structured_config is arista.avd.defined %}
+{%                                             set bgp_svi_struct_cfg = svi_parent_profile.bgp.structured_config %}
+{%                                         endif %}
 {%                                         set tmp_svi = svi_parent_profile %}
 {%                                     endif %}
 {%                                     set tmp_svi = tmp_svi | ansible.builtin.combine(svi_profile, recursive=true, list_merge='replace') %}
@@ -77,6 +84,7 @@
                                                                            svi.structured_config,
                                                                            svi_profile.structured_config,
                                                                            svi_parent_profile.structured_config)}) %}
+{%                                 do tmp_svi.setdefault("bgp", {}).update({"structured_config": bgp_svi_struct_cfg}) %}
 {%                                 do tmp_svis.append(tmp_svi) %}
 {%                             endif %}
 {%                         endif %}

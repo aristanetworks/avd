@@ -864,11 +864,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.5:99110 | 99110:99110<br>remote 99110:99110 | - | - | learned |
-| 111 | 172.16.110.5:50111 | 50111:50111<br>remote 50111:50111 | - | - | learned |
-| 112 | 172.16.110.5:20112 | 20112:20112<br>remote 20112:20112 | - | - | learned |
+| 110 | 172.16.110.5:99110 | 99110:99110<br>remote 99110:99110 | - | - | learned<br>router-mac system |
+| 111 | 172.16.110.5:50111 | 50111:50111<br>remote 50111:50111 | - | - | learned<br>router-mac system |
+| 112 | 172.16.110.5:20112 | 20112:20112<br>remote 20112:20112 | - | - | learned<br>router-mac system |
 | 2500 | 172.16.110.5:2500 | 2500:2500<br>remote 2500:2500 | - | - | learned |
-| 2600 | 172.16.110.5:32600 | 32600:32600<br>remote 32600:32600 | - | - | learned |
+| 2600 | 172.16.110.5:32600 | 32600:32600<br>remote 32600:32600 | - | - | learned<br>router-mac system |
 
 ### Router BGP VRFs
 
@@ -958,6 +958,12 @@ router bgp 65112.100
       route-target both 99110:99110
       route-target import export evpn domain remote 99110:99110
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp svis inherited from svi profile
+      EOF
+
    !
    vlan 111
       rd 172.16.110.5:50111
@@ -965,6 +971,12 @@ router bgp 65112.100
       route-target both 50111:50111
       route-target import export evpn domain remote 50111:50111
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp svi 111
+      EOF
+
    !
    vlan 112
       rd 172.16.110.5:20112
@@ -972,6 +984,12 @@ router bgp 65112.100
       route-target both 20112:20112
       route-target import export evpn domain remote 20112:20112
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp svis inherited from svi parent profile
+      EOF
+
    !
    vlan 2500
       rd 172.16.110.5:2500
@@ -986,6 +1004,12 @@ router bgp 65112.100
       route-target both 32600:32600
       route-target import export evpn domain remote 32600:32600
       redistribute learned
+      redistribute router-mac system
+      !
+      comment
+      comment created from raw_eos_cli under router bgp l2vlan 2600
+      EOF
+
    !
    address-family evpn
       neighbor EVPN-OVERLAY-CORE activate

@@ -1,4 +1,25 @@
 ---
+svi_profiles:
+  PARENT_PROFILE_STRUCT_CFG:
+    bgp:
+      structured_config:
+        redistribute_routes:
+          - router-mac system
+      raw_eos_cli: |
+        comment
+        comment created from raw_eos_cli under router bgp svis inherited from svi parent profile
+        EOF
+  TEST_PARENT_PROFILE_STRUCT_CFG:
+    parent_profile: PARENT_PROFILE_STRUCT_CFG
+  TEST_PROFILE_STRUCT_CFG:
+    bgp:
+      structured_config:
+        redistribute_routes:
+          - router-mac system
+      raw_eos_cli: |
+        comment
+        comment created from raw_eos_cli under router bgp svis inherited from svi profile
+        EOF
 # DC Tenants
 # Documentation of Tenant specific information - Vlans/VRFs
 tenants:
@@ -17,6 +38,7 @@ tenants:
             enabled: true
             rt_override: 99110 # RT would have been 20000 + 110.
             ip_address_virtual: 10.1.10.1/24
+            profile: TEST_PROFILE_STRUCT_CFG
             structured_config:
               description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
             nodes:
@@ -28,11 +50,21 @@ tenants:
             name: Tenant_A_OP_Zone_2
             tags: [opzone]
             ip_address_virtual: 10.1.11.1/24
+            bgp:
+              structured_config:
+                # Will be merged with 'redistribute routes learned'
+                redistribute_routes:
+                  - router-mac system
+              raw_eos_cli: |
+                comment
+                comment created from raw_eos_cli under router bgp svi 111
+                EOF
           "112":
             name: Tenant_A_OP_Zone_3
             tags: [opzone]
             enabled: true
             ip_address_virtual: 10.1.12.1/24
+            profile: TEST_PARENT_PROFILE_STRUCT_CFG
             nodes:
               DC1-POD1-LEAF1A:
                 raw_eos_cli: |
@@ -118,6 +150,14 @@ tenants:
         rt_override: 32600
         name: web-l2-vlan-2
         tags: [web]
+        bgp:
+          structured_config:
+            redistribute_routes:
+              - router-mac system
+          raw_eos_cli: |
+            comment
+            comment created from raw_eos_cli under router bgp l2vlan 2600
+            EOF
       2601:
         name: l2vlan_with_no_vxlan
         tags: [web]
