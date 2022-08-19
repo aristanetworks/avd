@@ -2,14 +2,13 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-allow_other_keys: true
 keys:
   access_lists:
     type: list
     primary_key: name
     convert_types:
       - dict
-    display_name: IP Extended Access-Lists
+    display_name: IP Extended Access-Lists (legacy model)
     description: |
       AVD currently supports 2 different data models for extended ACLs:
 
@@ -19,14 +18,14 @@ keys:
       Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
       Access list names must be unique.
 
-      The legacy data model supports simplified ACL definition with `sequence_number` to `action_string` mapping:
+      The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: access_list_name
+          display_name: Access-list Name
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -41,10 +40,12 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: sequence_id
+                display_name: Sequence ID
                 convert_types:
                   - str
               action:
                 type: str
                 required: true
-                display_name: action as string
+                description: |
+                  Action as string
+                  Example: "deny ip any any"

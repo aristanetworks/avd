@@ -75,30 +75,41 @@ class AvdToDocumentationSchemaConverter:
             tables.remove(DEFAULT_TABLE)
 
         output = []
+        # Build tables for keys where "documentation_options.table" is set in their schema
         for table in tables:
-            display_name = table.replace("_", " ").title()
-            built_table = self.build_table(table, display_name, filename, schema)
+            built_table = self.build_table(table, filename, schema)
             # Only append if the table contain rows
             if built_table["table"]:
                 output.append(built_table)
 
-        # Build tables for all root keys if "table" is not set in their schema
+        # Build tables for all root keys if "documentation_options.table" is not set in their schema
         schema_keys = self._get_keys(schema)
         for key, childschema in schema_keys.items():
-            tmp_schema = {"keys": {key: childschema}}
-            display_name = childschema.get("display_name", key.replace("_", " ").title())
-            built_table = self.build_table(DEFAULT_TABLE, display_name, filename, tmp_schema)
+            table_schema = {"keys": {key: childschema}}
+            built_table = self.build_table(DEFAULT_TABLE, filename, table_schema)
             # Only append if the table contain rows
             if built_table["table"]:
                 output.append(built_table)
 
         return output
 
-    def build_table(self, table: str, display_name: str, filename: str, schema: dict):
+    def build_table(self, table: str, filename: str, schema: dict):
+        built_table = {}
+
+        if table == DEFAULT_TABLE:
+            # Single key table
+            main_key = list(schema["keys"].keys())[0]
+            main_key_schema = schema["keys"][main_key]
+            built_table["display_name"] = main_key_schema.get("display_name", main_key.replace("_", " ").title())
+            built_table["description"] = main_key_schema.get("description")
+        else:
+            # Combined table
+            built_table["display_name"] = table.replace("_", " ").title()
+
         schema_keys = self._get_keys(schema)
 
-        table_rows = []
-        yaml_rows = []
+        built_table["table"] = []
+        built_table["yaml"] = []
         for key, childschema in schema_keys.items():
             if filename not in self._get_filenames(childschema):
                 # Skip key if none of the underlying keys have the relevant filename
@@ -106,14 +117,10 @@ class AvdToDocumentationSchemaConverter:
             if table not in self._get_tables(childschema):
                 # Skip key if none of the underlying keys have the relevant table
                 continue
-            table_rows.extend(self.build_table_row(var_name=key, schema=childschema, indentation=0, var_path=[], table=table))
-            yaml_rows.extend(self.build_yaml_row(var_name=key, schema=childschema, indentation=0, table=table))
+            built_table["table"].extend(self.build_table_row(var_name=key, schema=childschema, indentation=0, var_path=[], table=table))
+            built_table["yaml"].extend(self.build_yaml_row(var_name=key, schema=childschema, indentation=0, table=table))
 
-        return {
-            "display_name": display_name,
-            "table": table_rows,
-            "yaml": yaml_rows,
-        }
+        return built_table
 
     def build_table_row(
         self, var_name: str,
@@ -147,7 +154,7 @@ class AvdToDocumentationSchemaConverter:
         if restrictions is not None:
             row["restrictions"] = restrictions
 
-        description = self.description(schema, indentation)
+        description = self.description(schema, indentation, table)
         if description is not None:
             row["description"] = description
 
@@ -341,12 +348,15 @@ class AvdToDocumentationSchemaConverter:
             return "<br>".join(restrictions)
         return None
 
-    def description(self, schema: dict, indentation: str):
+    def description(self, schema: dict, indentation: str, table: str):
         descriptions = []
         if schema.get("display_name"):
             descriptions.append(schema["display_name"])
-        if schema.get("description") and indentation:
-            descriptions.append(str(schema["description"]).replace("\n", "<br>"))
+        if schema.get("description"):
+            # Only append schema description field to the description if this is a combined table or if it is not the first row
+            # For the first row in a single-key table / DEFAULT_TABLE we will print the description as the table description.
+            if indentation or table != DEFAULT_TABLE:
+                descriptions.append(str(schema["description"]).replace("\n", "<br>"))
 
         if descriptions:
             return "<br>".join(descriptions)
