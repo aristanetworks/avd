@@ -24,7 +24,7 @@ CVX is enabled
 {%                 if cvx.services.mcs.redis.password is arista.avd.defined %}
 {%                     do settings.append("Redis Password Set") %}
 {%                 endif %}
-| MCS | {{ enabled }} | {{ settings | join("<br") }} |
+| MCS | {{ enabled }} | {{ settings | join("<br>") }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}
