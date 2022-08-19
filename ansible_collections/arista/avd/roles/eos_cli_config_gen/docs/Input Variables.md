@@ -15,7 +15,6 @@ Access list names must be unique.
 
 The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
 
-
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
