@@ -62,12 +62,12 @@ MCS client is enabled
 ```eos
 !
 mcs client
-    no shutdown
-    !
-    cvx secondary default
-        server host 10.90.224.188
-        server host 10.90.224.189
-        server host leaf2.atd.lab
+   no shutdown
+   !
+   cvx secondary default
+      server host 10.90.224.188
+      server host 10.90.224.189
+      server host leaf2.atd.lab
 ```
 
 # Internal VLAN Allocation Policy
