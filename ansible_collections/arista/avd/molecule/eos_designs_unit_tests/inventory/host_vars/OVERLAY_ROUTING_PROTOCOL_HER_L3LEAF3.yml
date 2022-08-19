@@ -5,6 +5,5 @@ overlay_her_flood_list_per_vni: false
 
 # This will limit the potential flood-list entries to those in the Inventory Group referenced in dc_name
 overlay_her_flood_list_scope: dc
-# By the single flood list would contain all the vteps under unit_tests since they use a single fabric name.
-# This would mean that every addition to unit_tests would change this config, so to avoid confusement, we limit
-# the scope to the "dc".
+# By default the single flood list would contain all the vteps under unit_tests since they use the same fabric_name.
+# This would mean that every addition to unit_tests would change this config, so to avoid confusion, the scope is limited to the "dc".

@@ -18,7 +18,7 @@
 {%     set network_services_data.common_flood_list = [] %}
 {%     set network_services_data.vlan_flood_lists = {} %}
 {%     set flood_list_scope = overlay_her_flood_list_scope | arista.avd.default('fabric') %}
-{%     if overlay_her_flood_list_scope is arista.avd.defined('dc') and dc_name is arista.avd.defined %}
+{%     if overlay_her_flood_list_scope is arista.avd.defined('dc') and dc_name is arista.avd.defined(fail_action='error', var_name="With 'overlay_her_flood_list_scope: dc', 'dc_name'") %}
 {%         set flood_list_scope = dc_name %}
 {%     else %}
 {%         set flood_list_scope = fabric_name %}
