@@ -15,9 +15,6 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

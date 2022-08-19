@@ -9,8 +9,6 @@ overlay_her_flood_list_per_vni: true
 # Expectation is to see per-vni flood-lists on leaf 1-2 and a single flood-list on leaf3
 # (the single flood list will contain all the vteps under unit_tests since they use a single fabric name)
 
-mgmt_gateway: null
-
 l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.254.0/24
