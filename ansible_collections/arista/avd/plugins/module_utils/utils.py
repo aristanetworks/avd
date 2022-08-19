@@ -113,12 +113,16 @@ def template_var(template_file, template_vars, templar, searchpath):
 
     Parameters
     ----------
+    Parameters
+    ----------
     template_file : str
-        Path containing template
-    extra_vars : any
-        Vars to pass to templar
+        Path to Jinja2 template file
+    template_vars : any
+        Variables to use when rendering template
     templar : func
         Instance of Ansible Templar class
+    searchpath : list of str
+        List of Paths
 
     Returns
     -------
@@ -146,6 +150,8 @@ def template(template_file, template_vars, templar, searchpath):
         Variables to use when rendering template
     templar : func
         Instance of Ansible Templar class
+    searchpath : list of str
+        List of Paths
 
     Returns
     -------
