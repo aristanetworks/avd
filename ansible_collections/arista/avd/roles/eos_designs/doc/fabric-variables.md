@@ -14,12 +14,15 @@
   - EBGP (default for l3ls-evpn)
   - IBGP (only with OSPF or ISIS variants in underlay)
   - none**
+  - HER (Head-End Replication)***
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 
-*Only supported with core_interfaces data model.
+*) Only supported with core_interfaces data model.
 
-** For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
+**) For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
+
+***) By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
 ## Flagging a Device as Not Deployed
 
@@ -46,7 +49,7 @@ shutdown_interfaces_towards_undeployed_peers: < true | false | default -> false 
 
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | none | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | none | default for l3ls-evpn -> EBGP >
+overlay_routing_protocol: < EBGP | IBGP | none | HER | default for l3ls-evpn -> EBGP >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
@@ -106,7 +109,6 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 # Default of 3, the recommended value for a 3 stage spine and leaf topology.
 # Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
-
 
 # EVPN GW ebgp-multihop | Optional
 # Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
@@ -184,6 +186,19 @@ evpn_prevent_readvertise_to_server : < true | false | default -> false >
 
 # Configure prefix for "short_esi" values | Optional
 evpn_short_esi_prefix: < string | default -> "0000:0000:" >
+
+# When using Head-End Replication, configure flood-lists per VNI. | Optional
+# By default HER will be configured with a common flood-list containing all VTEPs. This behavior can be changed
+# to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`. This will make `eos_designs` consider
+# configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
+overlay_her_flood_list_per_vni: < true | false | default -> false >
+
+# When using Head-End Replication, set the scope of flood-lists to Fabric or DC | Optional
+# By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added
+# to the flood-lists. This can be changed to all VTEPs in the DC (part of the inventory group referenced
+# by "dc_name")
+# This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
+overlay_her_flood_list_scope: < "fabric" | "dc" | default -> "fabric" >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
