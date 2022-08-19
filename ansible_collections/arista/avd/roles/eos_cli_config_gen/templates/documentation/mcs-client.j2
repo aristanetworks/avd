@@ -6,9 +6,9 @@
 
 MCS client is shutdown
 {%     elif mcs_client.shutdown is arista.avd.defined(false) %}
-{%     endif %}
 
 MCS client is enabled
+{%     endif %}
 {%     if mcs_client.cvx_secondary is arista.avd.defined %}
 
 | Secondary CVX cluster | Server Hosts |
