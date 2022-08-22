@@ -113,8 +113,6 @@ def template_var(template_file, template_vars, templar, searchpath):
 
     Parameters
     ----------
-    Parameters
-    ----------
     template_file : str
         Path to Jinja2 template file
     template_vars : any
