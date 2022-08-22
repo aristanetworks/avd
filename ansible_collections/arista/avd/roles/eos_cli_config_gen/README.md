@@ -1622,6 +1622,18 @@ lldp:
   run: < true | false >
 ```
 
+### MCS client
+
+```yaml
+mcs_client:
+  shutdown: < true | false >
+  cvx_secondary:
+    name: < name >
+    server_hosts:
+      - < IP | hostname >
+      - < IP | hostname >
+```
+
 ### MACsec
 
 ```yaml
