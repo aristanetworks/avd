@@ -2,9 +2,18 @@
 
 ## Introduction
 
-This example is meant to explore using AVD with an L2LS (Layer 2 Leaf Spine) Topology. The topology shown below contains 2 Spines and 2 Leaf Pairs. This L2LS Fabric is purely Layer 2 with no routing in the Fabric.  Routing is handled by an external Firewall/L3 Device.  Later, we will move Layer 3 routing to the Spines.  For now, we will focus on defining all the fabric variables to build out this L2LS Topology.
+This example is meant to be used as the logical next step introducing AVD to new users, directly following the Introduction to Ansible and AVD section. The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. This example can also be used to only generate configuration and documentation.
 
-![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.png)
+The example includes and describes all the AVD files used to build a Pure Layer 2 Leaf Spine, using the following:
+
+- Two (virtual) Spine switches (SPINE1/2).
+- Two pairs of (virtual) Leaf switches (LEAF1/2 and LEAF3/4), serving endpoints such as servers and hosts
+
+This L2LS Fabric is purely Layer 2 with no routing in the Fabric.  Routing is handled by an external Firewall/L3 Device.  Later in the example, we will move routing to the Spines.  For now, we will focus on defining all the fabric variables to build out this L2LS Topology.  Before we get started using the example, we need to ensure that we have installed AVD with necessary requirements.  These are covered next in the Installation section.
+
+The example is meant as a simple starting point, where more advanced examples will build upon this design.
+
+To keep things simple in this example, Arista eAPI will be used to communicate with the switches.  The configurations may also be applied with CloudVision with only a minbor change to the playbook.
 
 ## Installation
 
@@ -49,6 +58,14 @@ After the playbook has run successfully, the directory structure will look as sh
 
 > Please note: If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten.
 However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
+
+## Overall Design Overview
+
+### Physical L2lS Topology
+
+The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
+
+![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.png)
 
 ## AVD Setup
 
