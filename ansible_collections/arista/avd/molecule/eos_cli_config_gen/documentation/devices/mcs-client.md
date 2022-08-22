@@ -53,9 +53,9 @@ interface Management1
 
 MCS client is enabled
 
-| Secondary CVX cluster | Server Hosts |
-| --------------------- | ------------ |
-| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab |
+| Secondary CVX cluster | Server Hosts | Enabled |
+| --------------------- | ------------ | -------- |
+| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | False |
 
 ### MCS client configuration
 
@@ -65,6 +65,7 @@ mcs client
    no shutdown
    !
    cvx secondary default
+      no shutdown
       server host 10.90.224.188
       server host 10.90.224.189
       server host leaf2.atd.lab

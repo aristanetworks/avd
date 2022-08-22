@@ -11,11 +11,12 @@ MCS client is enabled
 {%     endif %}
 {%     if mcs_client.cvx_secondary is arista.avd.defined %}
 
-| Secondary CVX cluster | Server Hosts |
-| --------------------- | ------------ |
+| Secondary CVX cluster | Server Hosts | Enabled |
+| --------------------- | ------------ | -------- |
 {%         set secondary = mcs_client.cvx_secondary.name %}
 {%         set servers = mcs_client.cvx_secondary.server_hosts | arista.avd.default('-') | join(', ') %}
-| {{ secondary }} | {{ servers }} |
+{%         set enabled = mcs_client.cvx_secondary.shutdown | arista.avd.default('-') %}
+| {{ secondary }} | {{ servers }} | {{ enabled }} |
 {%     endif %}
 
 ### MCS client configuration
