@@ -61,9 +61,9 @@ firewalls:
 
   FIREWALL:
     adapters:
-      - endpoint_ports: [Eth1,Eth2]
-        switch_ports: [Ethernet5,Ethernet5]
-        switches: [SPINE1,SPINE2]
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet5, Ethernet5]
+        switches: [SPINE1, SPINE2]
         profile: PP-FIREWALL
         port_channel:
           mode: active

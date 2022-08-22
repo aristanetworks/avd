@@ -30,11 +30,11 @@ name_servers:
 # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
 ntp:
   servers:
-  - name: time.google.com
-    preferred: true
-    vrf: MGMT
-  - name: pool.ntp.org
-    vrf: MGMT
+    - name: time.google.com
+      preferred: true
+      vrf: MGMT
+    - name: pool.ntp.org
+      vrf: MGMT
 
 aaa_authorization:
   exec:
