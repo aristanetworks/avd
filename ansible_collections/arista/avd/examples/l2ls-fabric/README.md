@@ -44,17 +44,21 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
-- ansible-avd-examples/ (or wherever the playbook was run)
-  - l2ls-fabric
-    - documentation/
-    - group_vars/
-    - images/
-    - intended/
-    - switch-basic-configurations/
-    - ansible.cfg
-    - inventory.yml
-    - playbook.yml
-    - README.md (this document)
+```
+ansible-avd-examples/   # (directory where playbook was run)
+  ├── l2ls-fabric/
+    ├── documentation/
+    ├── group_vars/
+    ├── images/
+    ├── intended/
+    ├── switch-basic-configurations/
+    ├── ansible.cfg
+    ├── inventory.yml
+    ├── playbook.yml
+    └── README.md (this document)
+
+```
+
 
 > Please note: If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten.
 However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
