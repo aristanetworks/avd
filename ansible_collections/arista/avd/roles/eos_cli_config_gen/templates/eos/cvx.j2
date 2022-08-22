@@ -1,0 +1,23 @@
+{# cvx #}
+{% if cvx is arista.avd.defined %}
+!
+cvx
+{%     if cvx.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif cvx.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if cvx.services is arista.avd.defined %}
+{%         if cvx.services.mcs is arista.avd.defined %}
+   service mcs
+{%             if cvx.services.mcs.redis.password is arista.avd.defined %}
+      redis password {{ cvx.services.mcs.redis.password_type | arista.avd.default("7") }} {{ cvx.services.mcs.redis.password }}
+{%             endif %}
+{%             if cvx.services.mcs.shutdown is arista.avd.defined(false) %}
+      no shutdown
+{%             elif cvx.services.mcs.shutdown is arista.avd.defined(true) %}
+      shutdown
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}

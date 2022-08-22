@@ -315,6 +315,20 @@ aaa_server_groups:
       - server: < host1_ip_address >
 ```
 
+#### CVX
+
+CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
+
+```yaml
+cvx:
+  shutdown: < true | false >
+  services:
+    mcs:
+      redis:
+        password: < password >
+        password_type: < 0 | 7 | 8a | default -> 7 >
+      shutdown: < true | false >
+```
 
 #### Enable Password
 
