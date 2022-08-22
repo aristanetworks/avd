@@ -65,7 +65,7 @@ However, if any file in the example is ***deleted*** and the playbook is run aga
 
 ## Overall Design Overview
 
-### Physical L2lS Topology
+### Physical L2LS Topology
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
