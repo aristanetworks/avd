@@ -1864,6 +1864,8 @@ management_security:
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
+      # cipher_list syntax follows the openssl cipher strings format
+      cipher_list: < column separated list of allowed ciphers as a string >
       certificate:
         file: < certificate filename >
         key: < key filename >
