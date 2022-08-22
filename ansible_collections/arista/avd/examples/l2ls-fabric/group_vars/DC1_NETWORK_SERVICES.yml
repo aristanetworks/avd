@@ -11,4 +11,3 @@ tenants:
       30:
         name: 'ORANGE-NET'
         tags: [orangezone]
-
