@@ -6,6 +6,47 @@ This example is meant to explore using AVD with an L2LS (Layer 2 Leaf Spine) Top
 
 ![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.png)
 
+## Installation
+
+Requirements to use this example:
+
+- Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
+- Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
+
+`ansible-playbook arista.avd.install_examples`
+
+This will show the following:
+
+```shell
+ ~/ansible-avd-examples# ansible-playbook arista.avd.install_examples
+
+PLAY [Install Examples]***************************************************************************************************************************************************************************************************************************************************************
+
+TASK [Copy all examples to ~/ansible-avd-examples]*****************************************************************************************************************************************************
+changed: [localhost]
+
+PLAY RECAP
+****************************************************************************************************************************************************************************************************************************************************************************
+localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
+
+- ansible-avd-examples/ (or wherever the playbook was run)
+  - l2ls-fabric
+    - documentation/
+    - group_vars/
+    - images/
+    - intended/
+    - switch-basic-configurations/
+    - ansible.cfg
+    - inventory.yml
+    - playbook.yml
+    - README.md (this document)
+
+> Please note: If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten.
+However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
+
 ## AVD Setup
 
 Summary of Steps
