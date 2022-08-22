@@ -1,0 +1,14 @@
+---
+tenants:
+  VLANS:
+    l2vlans:
+      10:
+        name: 'BLUE-NET'
+        tags: [bluezone]
+      20:
+        name: 'GREEN-NET'
+        tags: [greenzone]
+      30:
+        name: 'ORANGE-NET'
+        tags: [orangezone]
+

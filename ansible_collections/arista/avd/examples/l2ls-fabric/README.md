@@ -10,10 +10,12 @@ This example is meant to explore using AVD with an L2LS (Layer 2 Leaf Spine) Top
 
 Requirements to use this example:
 
-- Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
-- Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
+1. Install AVD - Follow the installation guide found [here](../../docs/installation/collection-installation.md).
+2. Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
 
-`ansible-playbook arista.avd.install_examples`
+```bash
+ansible-playbook arista.avd.install_examples
+```
 
 This will show the following:
 
