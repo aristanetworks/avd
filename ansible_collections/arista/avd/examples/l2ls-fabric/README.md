@@ -69,14 +69,18 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.png)
 
-## AVD Setup
+### IP Ranges
 
-Summary of Steps
-
-1. Define Ansible Inventory (Hierarchical Groupings)
-2. Define AVD Fabric Variables (group_vars)
-3. Create Playbook
-4. Run Playbook to Build and Deploy EOS Configurations
+| OOB IP Pool         | 172.100.100.0/24 |
+|---------------------|------------------|
+| Default gateway     | 172.100.100.1    |
+| SPINE1              | 172.100.100.101  |
+| SPINE2              | 172.100.100.102  |
+| LEAF1               | 172.100.100.105  |
+| LEAF2               | 172.100.100.106  |
+| LEAF3               | 172.100.100.107  |
+| LEAF4               | 172.100.100.108  |
+| **MLAG IP Pool**    | 192.168.0.0/24   |
 
 ## Define Ansible Inventory
 
