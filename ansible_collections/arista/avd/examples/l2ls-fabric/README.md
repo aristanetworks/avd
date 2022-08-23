@@ -6,8 +6,8 @@ This example is meant to be used as the logical next step introducing AVD to new
 
 The example includes and describes all the AVD files used to build a Pure Layer 2 Leaf Spine, using the following:
 
-- Two (virtual) Spine switches (SPINE1/2).
-- Two pairs of (virtual) Leaf switches (LEAF1/2 and LEAF3/4), serving endpoints such as servers and hosts
+- Two (virtual) Spine switches (SPINE1 & 2).
+- Two pairs of (virtual) Leaf switches (LEAF1 & 2 and LEAF3 & 4), serving endpoints such as servers and hosts
 
 This L2LS Fabric is purely Layer 2 with no routing in the Fabric.  Routing is handled by an external Firewall/L3 Device.  Later in the example, we will move routing to the Spines.  For now, we will focus on defining all the fabric variables to build out this L2LS Topology.  Before we get started using the example, we need to ensure that we have installed AVD with necessary requirements.  These are covered next in the Installation section.
 
