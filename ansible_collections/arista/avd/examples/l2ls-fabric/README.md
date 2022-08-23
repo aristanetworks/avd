@@ -82,6 +82,54 @@ The drawing below shows the physical topology used in this example. The interfac
 | LEAF4               | 172.100.100.108  |
 | **MLAG IP Pool**    | 192.168.0.0/24   |
 
+## Basic EOS Switch Configuration
+
+Basic connectivity between the Ansible host and the switches must be established manually before Ansible can be used to push configuration. The following must be configured on all switches:
+
+- A hostname configured purely for ease of understanding.
+- An IP enabled interface - in this example the dedicated out-of-band management interface is used.
+- A username and password with the proper access privileges
+- eAPI Enabled
+
+Below is the basic configuration file for SPINE1:
+
+```shell
+! switch-basic-configurations/SPINE1.cfg
+! Basic EOS config
+!
+username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+!
+!
+hostname SPINE1
+!
+vrf instance MGMT
+!
+! Enables eAPI for vrf MGMT
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+!
+interface Management0
+   vrf MGMT
+   ip address 172.100.100.101/24
+!
+no ip routing
+no ip routing vrf MGMT
+!
+ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+!
+management ssh
+   vrf MGMT
+      no shutdown
+!
+```
+
+## Ansible inventory, group_vars and naming scheme
+
+![Figure: Ansible Inventory Groups](images/ansible_groups.png)
+
 ## Define Ansible Inventory
 
 ### inventory.yml
