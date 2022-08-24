@@ -58,10 +58,11 @@ ansible-avd-examples/     (directory where playbook was run)
     └── README.md (this document)
 ```
 
-> Please note: If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten.
-However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
+??? note
 
-## Overall Design Overview
+    If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
+
+## Design Overview
 
 ### Physical L2LS Topology
 
