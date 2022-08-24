@@ -69,22 +69,9 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.svg)
 
-???+ note
+???+ info
 
-    The FW/L3 Deivce and individual hosts are not managed by AVD.
-
-### IP Ranges
-
-| OOB IP Pool         | 172.100.100.0/24 |
-|---------------------|------------------|
-| Default gateway     | 172.100.100.1    |
-| SPINE1              | 172.100.100.101  |
-| SPINE2              | 172.100.100.102  |
-| LEAF1               | 172.100.100.105  |
-| LEAF2               | 172.100.100.106  |
-| LEAF3               | 172.100.100.107  |
-| LEAF4               | 172.100.100.108  |
-| **MLAG IP Pool**    | 192.168.0.0/24   |
+    The FW/L3 Device and individual hosts in this example are not managed by AVD.
 
 ## Basic EOS Switch Configuration
 
@@ -209,10 +196,224 @@ Using group names from the Ansible inventory, you apply group variables (group_v
 
 In an L2LS design, we have 3 types of nodes: spine, l3spine, and leaf. In AVD. the node type defines the functionality and the EOS Cli configuration to be generated.  For a pure L2LS design, we will use node types: spine and leaf.  Later we can add L3 functionality to the Spines by changing the node type to l3spine.
 
+=== "DC1_SPINES"
+
+    ``` yaml
+    type: spine    # Must be either spine|l3spine|leaf
+    ```
+
+=== "DC1_LEAFS"
+
+    ``` yaml
+    type: leaf     # Must be either spine|l3spine|leaf
+    ```
+
+=== "DC1"
+
+    ``` yaml
+    ### group_vars/DC1.yml
+    aaa_authentication:
+      policies:
+        local:
+          allow_nopassword: true
+
+    # local users
+    local_users:
+      # Username with no password configured
+      arista:
+        privilege: 15
+        role: network-admin
+        no_password: true
+
+      # Username with a password
+      admin:
+        privilege: 15
+        role: network-admin
+        sha512_password: "$6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/."
+
+    # OOB Management network default gateway.
+    mgmt_gateway: 172.100.100.1
+    mgmt_interface: Management0
+
+    # dns servers.
+    name_servers:
+      - 8.8.4.4
+      - 8.8.8.8
+
+    # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
+    ntp:
+      servers:
+      - name: time.google.com
+        preferred: true
+        vrf: MGMT
+      - name: pool.ntp.org
+        vrf: MGMT
+
+    aaa_authorization:
+      exec:
+        default: local
+    ```
+
+=== "DC1_FABRIC"
+
+    ``` yaml
+    ### group_vars/DC1_FABRIC.yml
+    fabric_name: DC1_FABRIC
+
+    # Set Design Type to l2ls
+    design:
+      type: l2ls
+
+    # L2 Only Spine Switches
+    spine:
+      defaults:
+        platform: cEOS-LAB
+        spanning_tree_mode: mstp
+        spanning_tree_priority: 4096
+        mlag_peer_ipv4_pool: 192.168.0.0/24
+        mlag_interfaces: [Ethernet47, Ethernet48]
+      node_groups:
+        SPINES:
+          nodes:
+            SPINE1:
+              id: 1
+              mgmt_ip: 172.100.100.101/24
+            SPINE2:
+              id: 2
+              mgmt_ip: 172.100.100.102/24
+
+    # Leaf Switches
+    leaf:
+      defaults:
+        platform: cEOS-LAB
+        mlag_peer_ipv4_pool: 192.168.0.0/24
+        uplink_switches: [SPINE1, SPINE2]
+        uplink_interfaces: [Ethernet1, Ethernet2]
+        mlag_interfaces: [Ethernet47, Ethernet48]
+        spanning_tree_mode: mstp
+        spanning_tree_priority: 16384
+
+      node_groups:
+        POD1:
+          mlag: true
+          nodes:
+            LEAF1:
+              id: 1
+              mgmt_ip: 172.100.100.105/24
+              uplink_switch_interfaces: [Ethernet1, Ethernet1]
+            LEAF2:
+              id: 2
+              mgmt_ip: 172.100.100.106/24
+              uplink_switch_interfaces: [Ethernet2, Ethernet2]
+        POD2:
+          mlag: true
+          nodes:
+            LEAF3:
+              id: 3
+              mgmt_ip: 172.100.100.107/24
+              uplink_switch_interfaces: [Ethernet3, Ethernet3]
+            LEAF4:
+              id: 4
+              mgmt_ip: 172.100.100.108/24
+              uplink_switch_interfaces: [Ethernet4, Ethernet4]
+    ```
+
+=== "DC1_NETWORK_SERVICES"
+
+    ``` yaml
+    ### group_vars/DC1_NETWORK_SERVICES.yml
+    tenants:
+      VLANS:
+        l2vlans:
+          10:
+            name: 'BLUE-NET'
+            tags: [bluezone]
+          20:
+            name: 'GREEN-NET'
+            tags: [greenzone]
+          30:
+            name: 'ORANGE-NET'
+            tags: [orangezone]
+    ```
+
+=== "DC1_NETWORK_PORTS"
+
+    ``` yaml
+    ### group_vars/DC1_NETWORK_PORTS.yml
+    connected_endpoints_keys:
+      servers:
+        type: server
+      firewalls:
+        type: firewall
+      routers:
+        type: router
+
+    port_profiles:
+      PP-DEFAULTS:
+        spanning_tree_portfast: edge
+      PP-BLUE:
+        mode: access
+        vlans: "10"
+        parent_profile: PP-DEFAULTS
+      PP-GREEN:
+        mode: access
+        vlans: "20"
+        parent_profile: PP-DEFAULTS
+      PP-ORANGE:
+        mode: access
+        vlans: "30"
+        parent_profile: PP-DEFAULTS
+      PP-FIREWALL:
+        mode: trunk
+        vlans: "10,20,30"
+
+    servers:
+
+      HostA:
+        rack: POD1
+        adapters:
+          - endpoint_ports: [Eth1]
+            switch_ports: [Ethernet3]
+            switches: [LEAF1]
+            profile: PP-BLUE
+      HostB:
+        rack: POD1
+        adapters:
+          - endpoint_ports: [Eth1]
+            switch_ports: [Ethernet3]
+            switches: [LEAF2]
+            profile: PP-GREEN
+      HostC:
+        rack: POD2
+        adapters:
+          - endpoint_ports: [Eth1]
+            switch_ports: [Ethernet3]
+            switches: [LEAF3]
+            profile: PP-BLUE
+      Host2:
+        rack: POD2
+        adapters:
+          - endpoint_ports: [Eth1]
+            switch_ports: [Ethernet3]
+            switches: [LEAF4]
+            profile: PP-ORANGE
+
+    firewalls:
+
+      FIREWALL:
+        adapters:
+          - endpoint_ports: [Eth1, Eth2]
+            switch_ports: [Ethernet5, Ethernet5]
+            switches: [SPINE1, SPINE2]
+            profile: PP-FIREWALL
+            port_channel:
+              mode: active
+    ```
+
 #### DC1_SPINES.yml
 
 ```yaml
-type: spine     # Must be either spine|l3spine|leaf
+type: spine       # Must be either spine|l3spine|leaf
 ```
 
 #### DC1_LEAFS.yml

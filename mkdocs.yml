@@ -20,6 +20,7 @@ theme:
     - search.highlight
     - header.autohide
     - content.code.annotate
+    - content.tabs.link
   highlightjs: true
   icon:
     repo: fontawesome/brands/github
