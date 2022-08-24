@@ -127,7 +127,7 @@ defaults <- node_group <- node_group.node <- node
     - name: <node inventory hostname>
       # Vars defined per node
 
-      # Unique identifier | Required.
+      # Unique identifier per node_type | Required.
       id: < integer >
 
       # Node management IP address | Optional.
