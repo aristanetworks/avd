@@ -44,7 +44,7 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
-```
+```shell
 ansible-avd-examples/     (directory where playbook was run)
   ├── l2ls-fabric/
     ├── documentation/
@@ -57,6 +57,7 @@ ansible-avd-examples/     (directory where playbook was run)
     ├── playbook.yml
     └── README.md (this document)
 ```
+
 ??? note
 
     If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
@@ -183,14 +184,14 @@ DC1:
 
 To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice.  The below table of group_vars is one example of how to layout the fabric variables.
 
-| group_vars           | Description                                   |
-| -------------------- | --------------------------------------------- |
-| DC1                  | Global settings for all devices               |
-| DC1_FABRIC           | Fabric, Topology and Device settings          |
-| DC1_SPINES           | Device type for Spines                        |
-| DC1_LEAFS            | Device type for Leafs                         |
-| DC1_NETWORK_SERVICES | VLANs                                         |
-| DC1_NETWORK_PORTS    | Port Profiles and Connected Endpoint settings |
+| Group Variable                      | Description                                   |
+| ----------------------------------- | --------------------------------------------- |
+| group_vars/DC1.yml                  | Global settings for all devices               |
+| group_vars/DC1_FABRIC.yml           | Fabric, Topology and Device settings          |
+| group_vars/DC1_SPINES.yml           | Device type for Spines                        |
+| group_vars/DC1_LEAFS.yml            | Device type for Leafs                         |
+| group_vars/DC1_NETWORK_SERVICES.yml | VLANs                                         |
+| group_vars/DC1_NETWORK_PORTS.yml    | Port Profiles and Connected Endpoint settings |
 
 ### DC1.yml
 
