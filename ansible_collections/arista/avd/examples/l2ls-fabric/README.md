@@ -471,6 +471,800 @@ The below playbook is all that is needed to run AVD and push configurations to y
 ansible-playbook playbooks/run_avd.yml -i inventory.yml --tags build
 ```
 
+#### Generated Configurations
+
+EOS CLI intended configuration files are written to `intended/configs`
+
+=== "SPINE1"
+
+    ```shell
+    !RANCID-CONTENT-TYPE: arista
+    !
+    vlan internal order ascending range 1006 1199
+    !
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname SPINE1
+    ip name-server vrf MGMT 8.8.4.4
+    ip name-server vrf MGMT 8.8.8.8
+    !
+    ntp server vrf MGMT pool.ntp.org
+    ntp server vrf MGMT time.google.com prefer
+    !
+    spanning-tree mode mstp
+    no spanning-tree vlan-id 4094
+    spanning-tree mst 0 priority 4096
+    !
+    aaa authentication policy local allow-nopassword-remote-login
+    aaa authorization exec default local
+    !
+    no enable password
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+    username arista privilege 15 role network-admin nopassword
+    !
+    vlan 10
+      name BLUE-NET
+    !
+    vlan 20
+      name GREEN-NET
+    !
+    vlan 30
+      name ORANGE-NET
+    !
+    vlan 4094
+      name MLAG_PEER
+      trunk group MLAG
+    !
+    vrf instance MGMT
+    !
+    interface Port-Channel1
+      description POD1_Po1
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,20
+      switchport mode trunk
+      mlag 1
+    !
+    interface Port-Channel3
+      description POD2_Po1
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,30
+      switchport mode trunk
+      mlag 3
+    !
+    interface Port-Channel5
+      description FIREWALL
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,20,30
+      switchport mode trunk
+      mlag 5
+    !
+    interface Port-Channel47
+      description MLAG_PEER_SPINE2_Po47
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 2-4094
+      switchport mode trunk
+      switchport trunk group MLAG
+    !
+    interface Ethernet1
+      description LEAF1_Ethernet1
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet2
+      description LEAF2_Ethernet1
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet3
+      description LEAF3_Ethernet1
+      no shutdown
+      channel-group 3 mode active
+    !
+    interface Ethernet4
+      description LEAF4_Ethernet1
+      no shutdown
+      channel-group 3 mode active
+    !
+    interface Ethernet5
+      description FIREWALL_Eth1
+      no shutdown
+      channel-group 5 mode active
+    !
+    interface Ethernet47
+      description MLAG_PEER_SPINE2_Ethernet47
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Ethernet48
+      description MLAG_PEER_SPINE2_Ethernet48
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Management0
+      description oob_management
+      no shutdown
+      vrf MGMT
+      ip address 172.100.100.101/24
+    !
+    interface Vlan4094
+      description MLAG_PEER
+      no shutdown
+      mtu 1500
+      no autostate
+      ip address 192.168.0.0/31
+    !
+    ip routing
+    no ip routing vrf MGMT
+    !
+    mlag configuration
+      domain-id SPINES
+      local-interface Vlan4094
+      peer-address 192.168.0.1
+      peer-link Port-Channel47
+      reload-delay mlag 300
+      reload-delay non-mlag 330
+    !
+    ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+    !
+    management api http-commands
+      protocol https
+      no shutdown
+      !
+      vrf MGMT
+          no shutdown
+    !
+    end
+    ```
+
+=== "SPINE2"
+
+    ``` shell
+    !RANCID-CONTENT-TYPE: arista
+    !
+    vlan internal order ascending range 1006 1199
+    !
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname SPINE2
+    ip name-server vrf MGMT 8.8.4.4
+    ip name-server vrf MGMT 8.8.8.8
+    !
+    ntp server vrf MGMT pool.ntp.org
+    ntp server vrf MGMT time.google.com prefer
+    !
+    spanning-tree mode mstp
+    no spanning-tree vlan-id 4094
+    spanning-tree mst 0 priority 4096
+    !
+    aaa authentication policy local allow-nopassword-remote-login
+    aaa authorization exec default local
+    !
+    no enable password
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+    username arista privilege 15 role network-admin nopassword
+    !
+    vlan 10
+      name BLUE-NET
+    !
+    vlan 20
+      name GREEN-NET
+    !
+    vlan 30
+      name ORANGE-NET
+    !
+    vlan 4094
+      name MLAG_PEER
+      trunk group MLAG
+    !
+    vrf instance MGMT
+    !
+    interface Port-Channel1
+      description POD1_Po1
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,20
+      switchport mode trunk
+      mlag 1
+    !
+    interface Port-Channel3
+      description POD2_Po1
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,30
+      switchport mode trunk
+      mlag 3
+    !
+    interface Port-Channel5
+      description FIREWALL
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,20,30
+      switchport mode trunk
+      mlag 5
+    !
+    interface Port-Channel47
+      description MLAG_PEER_SPINE1_Po47
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 2-4094
+      switchport mode trunk
+      switchport trunk group MLAG
+    !
+    interface Ethernet1
+      description LEAF1_Ethernet2
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet2
+      description LEAF2_Ethernet2
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet3
+      description LEAF3_Ethernet2
+      no shutdown
+      channel-group 3 mode active
+    !
+    interface Ethernet4
+      description LEAF4_Ethernet2
+      no shutdown
+      channel-group 3 mode active
+    !
+    interface Ethernet5
+      description FIREWALL_Eth2
+      no shutdown
+      channel-group 5 mode active
+    !
+    interface Ethernet47
+      description MLAG_PEER_SPINE1_Ethernet47
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Ethernet48
+      description MLAG_PEER_SPINE1_Ethernet48
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Management0
+      description oob_management
+      no shutdown
+      vrf MGMT
+      ip address 172.100.100.102/24
+    !
+    interface Vlan4094
+      description MLAG_PEER
+      no shutdown
+      mtu 1500
+      no autostate
+      ip address 192.168.0.1/31
+    !
+    ip routing
+    no ip routing vrf MGMT
+    !
+    mlag configuration
+      domain-id SPINES
+      local-interface Vlan4094
+      peer-address 192.168.0.0
+      peer-link Port-Channel47
+      reload-delay mlag 300
+      reload-delay non-mlag 330
+    !
+    ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+    !
+    management api http-commands
+      protocol https
+      no shutdown
+      !
+      vrf MGMT
+          no shutdown
+    !
+    end
+    ```
+
+=== "LEAF1"
+
+    ``` shell
+    !RANCID-CONTENT-TYPE: arista
+    !
+    vlan internal order ascending range 1006 1199
+    !
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname LEAF1
+    ip name-server vrf MGMT 8.8.4.4
+    ip name-server vrf MGMT 8.8.8.8
+    !
+    ntp server vrf MGMT pool.ntp.org
+    ntp server vrf MGMT time.google.com prefer
+    !
+    spanning-tree mode mstp
+    no spanning-tree vlan-id 4094
+    spanning-tree mst 0 priority 16384
+    !
+    aaa authentication policy local allow-nopassword-remote-login
+    aaa authorization exec default local
+    !
+    no enable password
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+    username arista privilege 15 role network-admin nopassword
+    !
+    vlan 10
+      name BLUE-NET
+    !
+    vlan 20
+      name GREEN-NET
+    !
+    vlan 4094
+      name MLAG_PEER
+      trunk group MLAG
+    !
+    vrf instance MGMT
+    !
+    interface Port-Channel1
+      description SPINES_Po1
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,20
+      switchport mode trunk
+      mlag 1
+    !
+    interface Port-Channel47
+      description MLAG_PEER_LEAF2_Po47
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 2-4094
+      switchport mode trunk
+      switchport trunk group MLAG
+    !
+    interface Ethernet1
+      description SPINE1_Ethernet1
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet2
+      description SPINE2_Ethernet1
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet3
+      description HostA_Eth1
+      no shutdown
+      switchport access vlan 10
+      switchport mode access
+      switchport
+      spanning-tree portfast
+    !
+    interface Ethernet47
+      description MLAG_PEER_LEAF2_Ethernet47
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Ethernet48
+      description MLAG_PEER_LEAF2_Ethernet48
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Management0
+      description oob_management
+      no shutdown
+      vrf MGMT
+      ip address 172.100.100.105/24
+    !
+    interface Vlan4094
+      description MLAG_PEER
+      no shutdown
+      mtu 1500
+      no autostate
+      ip address 192.168.0.0/31
+    !
+    ip routing
+    no ip routing vrf MGMT
+    !
+    mlag configuration
+      domain-id POD1
+      local-interface Vlan4094
+      peer-address 192.168.0.1
+      peer-link Port-Channel47
+      reload-delay mlag 300
+      reload-delay non-mlag 330
+    !
+    ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+    !
+    management api http-commands
+      protocol https
+      no shutdown
+      !
+      vrf MGMT
+          no shutdown
+    !
+    end
+    ```
+
+=== "LEAF2"
+
+    ``` shell
+    !RANCID-CONTENT-TYPE: arista
+    !
+    vlan internal order ascending range 1006 1199
+    !
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname LEAF2
+    ip name-server vrf MGMT 8.8.4.4
+    ip name-server vrf MGMT 8.8.8.8
+    !
+    ntp server vrf MGMT pool.ntp.org
+    ntp server vrf MGMT time.google.com prefer
+    !
+    spanning-tree mode mstp
+    no spanning-tree vlan-id 4094
+    spanning-tree mst 0 priority 16384
+    !
+    aaa authentication policy local allow-nopassword-remote-login
+    aaa authorization exec default local
+    !
+    no enable password
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+    username arista privilege 15 role network-admin nopassword
+    !
+    vlan 10
+      name BLUE-NET
+    !
+    vlan 20
+      name GREEN-NET
+    !
+    vlan 4094
+      name MLAG_PEER
+      trunk group MLAG
+    !
+    vrf instance MGMT
+    !
+    interface Port-Channel1
+      description SPINES_Po1
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,20
+      switchport mode trunk
+      mlag 1
+    !
+    interface Port-Channel47
+      description MLAG_PEER_LEAF1_Po47
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 2-4094
+      switchport mode trunk
+      switchport trunk group MLAG
+    !
+    interface Ethernet1
+      description SPINE1_Ethernet2
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet2
+      description SPINE2_Ethernet2
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet3
+      description HostB_Eth1
+      no shutdown
+      switchport access vlan 20
+      switchport mode access
+      switchport
+      spanning-tree portfast
+    !
+    interface Ethernet47
+      description MLAG_PEER_LEAF1_Ethernet47
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Ethernet48
+      description MLAG_PEER_LEAF1_Ethernet48
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Management0
+      description oob_management
+      no shutdown
+      vrf MGMT
+      ip address 172.100.100.106/24
+    !
+    interface Vlan4094
+      description MLAG_PEER
+      no shutdown
+      mtu 1500
+      no autostate
+      ip address 192.168.0.1/31
+    !
+    ip routing
+    no ip routing vrf MGMT
+    !
+    mlag configuration
+      domain-id POD1
+      local-interface Vlan4094
+      peer-address 192.168.0.0
+      peer-link Port-Channel47
+      reload-delay mlag 300
+      reload-delay non-mlag 330
+    !
+    ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+    !
+    management api http-commands
+      protocol https
+      no shutdown
+      !
+      vrf MGMT
+          no shutdown
+    !
+    end
+    ```
+
+=== "LEAF3"
+
+    ``` shell
+    !RANCID-CONTENT-TYPE: arista
+    !
+    vlan internal order ascending range 1006 1199
+    !
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname LEAF3
+    ip name-server vrf MGMT 8.8.4.4
+    ip name-server vrf MGMT 8.8.8.8
+    !
+    ntp server vrf MGMT pool.ntp.org
+    ntp server vrf MGMT time.google.com prefer
+    !
+    spanning-tree mode mstp
+    no spanning-tree vlan-id 4094
+    spanning-tree mst 0 priority 16384
+    !
+    aaa authentication policy local allow-nopassword-remote-login
+    aaa authorization exec default local
+    !
+    no enable password
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+    username arista privilege 15 role network-admin nopassword
+    !
+    vlan 10
+      name BLUE-NET
+    !
+    vlan 30
+      name ORANGE-NET
+    !
+    vlan 4094
+      name MLAG_PEER
+      trunk group MLAG
+    !
+    vrf instance MGMT
+    !
+    interface Port-Channel1
+      description SPINES_Po3
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,30
+      switchport mode trunk
+      mlag 1
+    !
+    interface Port-Channel47
+      description MLAG_PEER_LEAF4_Po47
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 2-4094
+      switchport mode trunk
+      switchport trunk group MLAG
+    !
+    interface Ethernet1
+      description SPINE1_Ethernet3
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet2
+      description SPINE2_Ethernet3
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet3
+      description HostC_Eth1
+      no shutdown
+      switchport access vlan 10
+      switchport mode access
+      switchport
+      spanning-tree portfast
+    !
+    interface Ethernet47
+      description MLAG_PEER_LEAF4_Ethernet47
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Ethernet48
+      description MLAG_PEER_LEAF4_Ethernet48
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Management0
+      description oob_management
+      no shutdown
+      vrf MGMT
+      ip address 172.100.100.107/24
+    !
+    interface Vlan4094
+      description MLAG_PEER
+      no shutdown
+      mtu 1500
+      no autostate
+      ip address 192.168.0.4/31
+    !
+    ip routing
+    no ip routing vrf MGMT
+    !
+    mlag configuration
+      domain-id POD2
+      local-interface Vlan4094
+      peer-address 192.168.0.5
+      peer-link Port-Channel47
+      reload-delay mlag 300
+      reload-delay non-mlag 330
+    !
+    ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+    !
+    management api http-commands
+      protocol https
+      no shutdown
+      !
+      vrf MGMT
+          no shutdown
+    !
+    end
+    ```
+
+=== "LEAF4"
+
+    ``` shell
+    !RANCID-CONTENT-TYPE: arista
+    !
+    vlan internal order ascending range 1006 1199
+    !
+    transceiver qsfp default-mode 4x10G
+    !
+    service routing protocols model multi-agent
+    !
+    hostname LEAF4
+    ip name-server vrf MGMT 8.8.4.4
+    ip name-server vrf MGMT 8.8.8.8
+    !
+    ntp server vrf MGMT pool.ntp.org
+    ntp server vrf MGMT time.google.com prefer
+    !
+    spanning-tree mode mstp
+    no spanning-tree vlan-id 4094
+    spanning-tree mst 0 priority 16384
+    !
+    aaa authentication policy local allow-nopassword-remote-login
+    aaa authorization exec default local
+    !
+    no enable password
+    no aaa root
+    !
+    username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+    username arista privilege 15 role network-admin nopassword
+    !
+    vlan 10
+      name BLUE-NET
+    !
+    vlan 30
+      name ORANGE-NET
+    !
+    vlan 4094
+      name MLAG_PEER
+      trunk group MLAG
+    !
+    vrf instance MGMT
+    !
+    interface Port-Channel1
+      description SPINES_Po3
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 10,30
+      switchport mode trunk
+      mlag 1
+    !
+    interface Port-Channel47
+      description MLAG_PEER_LEAF3_Po47
+      no shutdown
+      switchport
+      switchport trunk allowed vlan 2-4094
+      switchport mode trunk
+      switchport trunk group MLAG
+    !
+    interface Ethernet1
+      description SPINE1_Ethernet4
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet2
+      description SPINE2_Ethernet4
+      no shutdown
+      channel-group 1 mode active
+    !
+    interface Ethernet3
+      description Host2_Eth1
+      no shutdown
+      switchport access vlan 30
+      switchport mode access
+      switchport
+      spanning-tree portfast
+    !
+    interface Ethernet47
+      description MLAG_PEER_LEAF3_Ethernet47
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Ethernet48
+      description MLAG_PEER_LEAF3_Ethernet48
+      no shutdown
+      channel-group 47 mode active
+    !
+    interface Management0
+      description oob_management
+      no shutdown
+      vrf MGMT
+      ip address 172.100.100.108/24
+    !
+    interface Vlan4094
+      description MLAG_PEER
+      no shutdown
+      mtu 1500
+      no autostate
+      ip address 192.168.0.5/31
+    !
+    ip routing
+    no ip routing vrf MGMT
+    !
+    mlag configuration
+      domain-id POD2
+      local-interface Vlan4094
+      peer-address 192.168.0.4
+      peer-link Port-Channel47
+      reload-delay mlag 300
+      reload-delay non-mlag 330
+    !
+    ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+    !
+    management api http-commands
+      protocol https
+      no shutdown
+      !
+      vrf MGMT
+          no shutdown
+    !
+    end
+    ```
+
 If you wish to build and deploy the configurations to your hardware or virtual network, add the `deploy` tag.  You will also need to supply connectivity parameters in your **group_vars/DC1_FABRIC.yml** to communicate with devices.
 
 Add in the following section and update vars as needed.
