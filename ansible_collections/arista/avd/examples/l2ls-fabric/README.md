@@ -57,7 +57,6 @@ ansible-avd-examples/     (directory where playbook was run)
     ├── playbook.yml
     └── README.md (this document)
 ```
-
 ??? note
 
     If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
@@ -68,7 +67,11 @@ ansible-avd-examples/     (directory where playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
-![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.png)
+![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.svg)
+
+???+ note
+
+    The FW/L3 Deivce and individual hosts are not managed by AVD.
 
 ### IP Ranges
 
