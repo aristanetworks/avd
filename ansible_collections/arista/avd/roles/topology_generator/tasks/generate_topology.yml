@@ -1,0 +1,11 @@
+---
+- name: topology
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate topology diagram from structure config in svg format
+      tags: [always]
+      topology_generator:
+        structured_config: "./structured_configs1"
+      delegate_to: localhost
+
