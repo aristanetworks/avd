@@ -1629,6 +1629,7 @@ mcs_client:
   shutdown: < true | false >
   cvx_secondary:
     name: < name >
+    shutdown: < true | false >
     server_hosts:
       - < IP | hostname >
       - < IP | hostname >
