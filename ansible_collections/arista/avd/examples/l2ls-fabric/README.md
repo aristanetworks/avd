@@ -2,25 +2,21 @@
 
 ## Introduction
 
-This example is meant to be used as the logical next step introducing AVD to new users, directly following the Introduction to Ansible and AVD section. The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. This example can also be used to only generate configuration and documentation.
+The example includes and describes all the AVD files used to build a Layer 2 Leaf Spine (L2LS) Fabric, with the following nodes:
 
-The example includes and describes all the AVD files used to build a Pure Layer 2 Leaf Spine, using the following:
+- 2 Spine switches (SPINE1 & 2)
+- 4 Leaf switches (LEAF1 & 2 and LEAF3 & 4)
 
-- Two (virtual) Spine switches (SPINE1 & 2).
-- Two pairs of (virtual) Leaf switches (LEAF1 & 2 and LEAF3 & 4), serving endpoints such as servers and hosts
+This L2LS Fabric is purely Layer 2.  Routing is handled by an external Firewall/L3 Device.  Later in the example, we will move routing to the Spines.  For now, we will focus on defining the fabric variables to build out this L2LS Topology.  Before we get started, we need to ensure that we have installed AVD with necessary requirements.  These are covered next in the Installation section.
 
-This L2LS Fabric is purely Layer 2 with no routing in the Fabric.  Routing is handled by an external Firewall/L3 Device.  Later in the example, we will move routing to the Spines.  For now, we will focus on defining all the fabric variables to build out this L2LS Topology.  Before we get started using the example, we need to ensure that we have installed AVD with necessary requirements.  These are covered next in the Installation section.
+The example is meant as a basic starting point. You may build advanced examples which are based this design. To keep things simple, the Arista eAPI will be used to communicate with the switches.  The configurations may also be applied with CloudVision with a minor change to the playbook.
 
-The example is meant as a simple starting point, where more advanced examples will build upon this design.
-
-To keep things simple in this example, Arista eAPI will be used to communicate with the switches.  The configurations may also be applied with CloudVision with only a minbor change to the playbook.
-
-## Installation
+## Installation & Requirements
 
 Requirements to use this example:
 
-1. Install AVD - Follow the installation guide found [here](../../docs/installation/collection-installation.md).
-2. Install module [requirements](../../docs/installation/requirements.md).
+1. Install AVD - Installation guide found [here](../../docs/installation/collection-installation.md).
+2. Install Ansible module requirements - Instructions found [here](../../docs/installation/requirements.md).
 3. Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
 
 ```bash
@@ -44,6 +40,10 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
+!!! info inline end
+
+    If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
+
 ```shell
 ansible-avd-examples/     (directory where playbook was run)
   ├── l2ls-fabric/
@@ -57,10 +57,6 @@ ansible-avd-examples/     (directory where playbook was run)
     ├── playbook.yml
     └── README.md (this document)
 ```
-
-??? note
-
-    If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
 
 ## Design Overview
 
