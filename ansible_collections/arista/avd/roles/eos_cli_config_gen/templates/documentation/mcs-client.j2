@@ -15,7 +15,11 @@ MCS client is enabled
 | --------------------- | ------------ | -------- |
 {%         set secondary = mcs_client.cvx_secondary.name %}
 {%         set servers = mcs_client.cvx_secondary.server_hosts | arista.avd.default('-') | join(', ') %}
-{%         set enabled = mcs_client.cvx_secondary.shutdown | arista.avd.default('-') %}
+{%         if mcs_client.cvx_secondary.shutdown is arista.avd.defined %}
+{%             set enabled = not mcs_client.cvx_secondary.shutdown %}
+{%         else %}
+{%             set enabled = '-' %}
+{%         endif %}
 | {{ secondary }} | {{ servers }} | {{ enabled }} |
 {%     endif %}
 
