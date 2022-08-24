@@ -471,9 +471,9 @@ The below playbook is all that is needed to run AVD and push configurations to y
 ansible-playbook playbooks/run_avd.yml -i inventory.yml --tags build
 ```
 
-#### Generated Configurations
+After the playbook run finishes, EOS CLI intended configuration files are written to `intended/configs`.
 
-EOS CLI intended configuration files are written to `intended/configs`
+### Generated Configurations
 
 === "SPINE1"
 
