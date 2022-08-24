@@ -442,10 +442,16 @@ The below playbook is all that is needed to run AVD and push configurations to y
 
 ### Playbook Run
 
+To run the playbook and build the configurations files, tun the following ansible command.
+
 ```bash
 ### Build configurations
 ansible-playbook playbooks/run_avd.yml -i inventory.yml --tags build
 ```
+
+???+ note
+
+    The `-tags build` only builds the intended configuration files.  Later the `deploy` tag will be used to push the configurations to the switches.
 
 After the playbook run finishes, EOS CLI intended configuration files are written to `intended/configs`.
 
