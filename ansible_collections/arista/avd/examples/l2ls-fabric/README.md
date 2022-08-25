@@ -9,7 +9,7 @@ The example includes and describes all the AVD files used to build a Layer 2 Lea
 
 This L2LS Fabric is purely Layer 2.  Routing is handled by an external Firewall/L3 Device.  Later in the example, we will move routing to the Spines.  For now, we will focus on defining the fabric variables to build out this L2LS Topology.  Before we get started, we need to ensure that we have installed AVD with necessary requirements.  These are covered next in the Installation section.
 
-The example is meant as a basic starting point. You may build advanced examples which are based this design. To keep things simple, the Arista eAPI will be used to communicate with the switches.  The configurations may also be applied with CloudVision with a minor change to the playbook.
+The example is meant as a basic starting point. You may build more advanced examples which are based on this design. To keep things simple, the Arista eAPI will be used to communicate with the switches.  The configurations may also be applied with CloudVision with a minor change to the playbook.
 
 ## Installation & Requirements
 
@@ -116,9 +116,9 @@ management ssh
 
 ## Ansible Inventory
 
-The following is a graphical representation of the Ansible inventory, group variables and naming scheme used in this example:
+The following is a graphical representation of the Ansible inventory group variables and naming scheme used in this example:
 
-![Figure: Ansible Inventory Groups](images/ansible_groups.png)
+![Figure: Ansible Inventory Groups](images/ansible_groups.svg)
 
 Group names use uppercase and underscores.
 
@@ -194,48 +194,9 @@ Ansible **groups_vars** used in this example
 === "DC1"
     At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**.  These variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface.  Update the user names and passwords for your environment.
     ``` yaml
-    ### group_vars/DC1.yml
-
-    aaa_authentication:
-      policies:
-        local:
-          allow_nopassword: true
-
-    # local users
-    local_users:
-      # Username with no password configured
-      arista:
-        privilege: 15
-        role: network-admin
-        no_password: true
-
-      # Username with a password
-      admin:
-        privilege: 15
-        role: network-admin
-        sha512_password: "$6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/."
-
-    # OOB Management network default gateway.
-    mgmt_gateway: 172.100.100.1
-    mgmt_interface: Management0
-
-    # dns servers.
-    name_servers:
-      - 8.8.4.4
-      - 8.8.8.8
-
-    # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
-    ntp:
-      servers:
-      - name: time.google.com
-        preferred: true
-        vrf: MGMT
-      - name: pool.ntp.org
-        vrf: MGMT
-
-    aaa_authorization:
-      exec:
-        default: local
+    --8<--
+    examples/l2ls-fabric/group_vars/DC1.yml
+    --8<--
     ```
 
 === "DC1_FABRIC"
@@ -243,176 +204,41 @@ Ansible **groups_vars** used in this example
 
     Variables applied under the defaults section apply to all the nodes and the same variable may be overwritten under the node itself.  Each leaf will have **uplink_switch_interfaces** variable defined.  This variable defines what interface on the uplink switch (in the case Spine1/2) the leaf is connected to. The default leaf variables `uplink_switches: [SPINE1, SPINE2]` and `uplink_interfaces: [Ethernet1, Ethernet2]` define the uplink switches and local interfaces are used on the each Leaf. LEAF2 has unique variable `uplink_switch_interfaces: [Ethernet2, Ethernet2]` defined.  This means that LEAF2 is connected to SPINE1's Ethernet2 and SPINE2's Ethernet2, respectively.
     ``` yaml
-    ### group_vars/DC1_FABRIC.yml
-
-    fabric_name: DC1_FABRIC
-
-    # Set Design Type to l2ls
-    design:
-      type: l2ls
-
-    # L2 Only Spine Switches
-    spine:
-      defaults:
-        platform: cEOS-LAB
-        spanning_tree_mode: mstp
-        spanning_tree_priority: 4096
-        mlag_peer_ipv4_pool: 192.168.0.0/24
-        mlag_interfaces: [Ethernet47, Ethernet48]
-      node_groups:
-        SPINES:
-          nodes:
-            SPINE1:
-              id: 1
-              mgmt_ip: 172.100.100.101/24
-            SPINE2:
-              id: 2
-              mgmt_ip: 172.100.100.102/24
-
-    # Leaf Switches
-    leaf:
-      defaults:
-        platform: cEOS-LAB
-        mlag_peer_ipv4_pool: 192.168.0.0/24
-        uplink_switches: [SPINE1, SPINE2]
-        uplink_interfaces: [Ethernet1, Ethernet2]
-        mlag_interfaces: [Ethernet47, Ethernet48]
-        spanning_tree_mode: mstp
-        spanning_tree_priority: 16384
-
-      node_groups:
-        POD1:
-          mlag: true
-          nodes:
-            LEAF1:
-              id: 1
-              mgmt_ip: 172.100.100.105/24
-              uplink_switch_interfaces: [Ethernet1, Ethernet1]
-            LEAF2:
-              id: 2
-              mgmt_ip: 172.100.100.106/24
-              uplink_switch_interfaces: [Ethernet2, Ethernet2]
-        POD2:
-          mlag: true
-          nodes:
-            LEAF3:
-              id: 3
-              mgmt_ip: 172.100.100.107/24
-              uplink_switch_interfaces: [Ethernet3, Ethernet3]
-            LEAF4:
-              id: 4
-              mgmt_ip: 172.100.100.108/24
-              uplink_switch_interfaces: [Ethernet4, Ethernet4]
+    --8<--
+    examples/l2ls-fabric/group_vars/DC1_FABRIC.yml
+    --8<--
     ```
 
 === "DC1_SPINES"
     In an L2LS design, we have 2 types of spine nodes: `spine` and `l3spine`. In AVD. the node type defines the functionality and the EOS Cli configuration to be generated.  For an L2LS design, we will use node type: spine. Later we can add L3 functionality to the Spines by changing the node type to l3spine.
     ``` yaml
-    ### group_vars/DC1_SPINES.yml
-
-    type: spine    # Must be either < spine | l3spine >
+    --8<--
+    examples/l2ls-fabric/group_vars/DC1_SPINES.yml
+    --8<--
     ```
 
 === "DC1_LEAFS"
     In an L2LS design, we have 1 type of leaf node: `leaf`.
     ``` yaml
-    ### group_vars/DC1_LEAFS.yml
-
-    type: leaf     # Must be < leaf >
+    --8<--
+    examples/l2ls-fabric/group_vars/DC1_LEAFS.yml
+    --8<--
     ```
 
 === "DC1_NETWORK_SERVICES"
     Add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**.  Each VLAN will be given a name and tag ID.  The Tag can be used to filter the VLAN to specific Leaf Pairs (PODs).  These variables are applied to spine and leaf nodes since they are a part of this inventory group.
     ``` yaml
-    ### group_vars/DC1_NETWORK_SERVICES.yml
-
-    tenants:
-      VLANS:
-        l2vlans:
-          10:
-            name: 'BLUE-NET'
-            tags: [bluezone]
-          20:
-            name: 'GREEN-NET'
-            tags: [greenzone]
-          30:
-            name: 'ORANGE-NET'
-            tags: [orangezone]
+    --8<--
+    examples/l2ls-fabric/group_vars/DC1_NETWORK_SERVICES.yml
+    --8<--
     ```
 
 === "DC1_NETWORK_PORTS"
     Our fabric would not be complete without connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**.  Each endpoint's adapter defines which switch port(s) and port profile to use.  In our example, we have servers/hosts and a firewall connected to the fabric.  The connected endpoints keys are used for logical separation and apply to interface descriptions.  These variables are applied to spine and leaf nodes since they are a part of this inventory group.
     ``` yaml
-    ### group_vars/DC1_NETWORK_PORTS.yml
-
-    connected_endpoints_keys:
-      servers:
-        type: server
-      firewalls:
-        type: firewall
-      routers:
-        type: router
-
-    port_profiles:
-      PP-DEFAULTS:
-        spanning_tree_portfast: edge
-      PP-BLUE:
-        mode: access
-        vlans: "10"
-        parent_profile: PP-DEFAULTS
-      PP-GREEN:
-        mode: access
-        vlans: "20"
-        parent_profile: PP-DEFAULTS
-      PP-ORANGE:
-        mode: access
-        vlans: "30"
-        parent_profile: PP-DEFAULTS
-      PP-FIREWALL:
-        mode: trunk
-        vlans: "10,20,30"
-
-    servers:
-
-      HostA:
-        rack: POD1
-        adapters:
-          - endpoint_ports: [Eth1]
-            switch_ports: [Ethernet3]
-            switches: [LEAF1]
-            profile: PP-BLUE
-      HostB:
-        rack: POD1
-        adapters:
-          - endpoint_ports: [Eth1]
-            switch_ports: [Ethernet3]
-            switches: [LEAF2]
-            profile: PP-GREEN
-      HostC:
-        rack: POD2
-        adapters:
-          - endpoint_ports: [Eth1]
-            switch_ports: [Ethernet3]
-            switches: [LEAF3]
-            profile: PP-BLUE
-      Host2:
-        rack: POD2
-        adapters:
-          - endpoint_ports: [Eth1]
-            switch_ports: [Ethernet3]
-            switches: [LEAF4]
-            profile: PP-ORANGE
-
-    firewalls:
-
-      FIREWALL:
-        adapters:
-          - endpoint_ports: [Eth1, Eth2]
-            switch_ports: [Ethernet5, Ethernet5]
-            switches: [SPINE1, SPINE2]
-            profile: PP-FIREWALL
-            port_channel:
-              mode: active
+    --8<--
+    examples/l2ls-fabric/group_vars/DC1_NETWORK_PORTS.yml
+    --8<--
     ```
 
 ## The Playbook
