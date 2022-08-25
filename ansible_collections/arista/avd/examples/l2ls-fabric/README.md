@@ -40,10 +40,6 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
-!!! info inline end
-
-    If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
-
 ```shell
 ansible-avd-examples/     (directory where playbook was run)
   ├── l2ls-fabric/
@@ -57,6 +53,10 @@ ansible-avd-examples/     (directory where playbook was run)
     ├── playbook.yml
     └── README.md (this document)
 ```
+
+???+ info
+
+    If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
 
 ## Design Overview
 
@@ -79,39 +79,16 @@ Basic connectivity between the Ansible host and the switches must be established
 - A username and password with the proper access privileges
 - eAPI Enabled
 
+???+ info
+
+    When using vEOS/cEOS virtual switches, `Management0` is used.  When using actual hardware switches, `Management1` is used.  The included basic config files may need to be updated for your environment.
+
 Below is the basic configuration file for SPINE1:
 
 ```shell
-! switch-basic-configurations/SPINE1.cfg
-! Basic EOS config
-!
-username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-!
-!
-hostname SPINE1
-!
-vrf instance MGMT
-!
-! Enables eAPI for vrf MGMT
-management api http-commands
-   no shutdown
-   !
-   vrf MGMT
-      no shutdown
-!
-interface Management0
-   vrf MGMT
-   ip address 172.100.100.101/24
-!
-no ip routing
-no ip routing vrf MGMT
-!
-ip route vrf MGMT 0.0.0.0/0 172.100.100.1
-!
-management ssh
-   vrf MGMT
-      no shutdown
-!
+--8<--
+examples/l2ls-fabric/switch-basic-configurations/SPINE1.cfg
+--8<--
 ```
 
 ## Ansible Inventory
@@ -142,38 +119,9 @@ It is important that the hostnames specified in the inventory exist either in DN
 Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define ansible_host to be an IP address or FQDN for each device - see below for an example:
 
 ```yaml
-DC1:
-  children:
-    DC1_FABRIC:
-      children:
-        DC1_SPINES:
-          hosts:
-            SPINE1:
-              ansible_host: 172.100.100.101
-            SPINE2:
-              ansible_host: 172.100.100.102
-        DC1_LEAFS:
-          children:
-            POD1:
-              hosts:
-                LEAF1:
-                  ansible_host: 172.100.100.105
-                LEAF2:
-                  ansible_host: 172.100.100.106
-            POD2:
-              hosts:
-                LEAF3:
-                  ansible_host: 172.100.100.107
-                LEAF4:
-                  ansible_host: 172.100.100.108
-    DC1_NETWORK_SERVICES:
-      children:
-        DC1_LEAFS:
-        DC1_SPINES:
-    DC1_NETWORK_PORTS:
-      children:
-        DC1_LEAFS:
-        DC1_SPINES:
+--8<--
+examples/l2ls-fabric/inventory.yml
+--8<--
 ```
 
 ## AVD Fabric Variables
@@ -272,14 +220,21 @@ To run the playbook and build the configurations files, tun the following ansibl
 
 ```bash
 ### Build configurations
-ansible-playbook playbooks/run_avd.yml -i inventory.yml --tags build
+ansible-playbook playbooks/run_avd.yml --tags build
 ```
 
 ???+ note
 
-    The `-tags build` only builds the intended configuration files.  Later the `deploy` tag will be used to push the configurations to the switches.
+    The `-tags build` only builds the intended configuration files.
 
 After the playbook run finishes, EOS CLI intended configuration files are written to `intended/configs`.
+
+To build and push the configurations to your switches add the `deploy` tag.
+
+```bash
+### Build configurations & Push Configs to switches
+ansible-playbook playbooks/run_avd.yml --tags build,deploy
+```
 
 ### Generated Configurations
 
@@ -330,32 +285,3 @@ After the playbook run finishes, EOS CLI intended configuration files are writte
     examples/l2ls-fabric/intended/configs/LEAF4.cfg
     --8<--
     ```
-
-If you wish to build and deploy the configurations to your hardware or virtual network, add the `deploy` tag.  You will also need to supply connectivity parameters in your **group_vars/DC1_FABRIC.yml** to communicate with devices.
-
-Add in the following section and update vars as needed.
-
-```yaml
-# Add this section to your group_vars/DC1_FABRIC.yml
-# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
-ansible_connection: ansible.netcommon.httpapi
-# Specifies that we are indeed using Arista EOS
-ansible_network_os: arista.eos.eos
-# This user/password must exist on the switches to enable Ansible access
-ansible_user: admin
-ansible_password: admin
-# User escalation (to enter enable mode)
-ansible_become: true
-ansible_become_method: enable
-# Use SSL (HTTPS)
-ansible_httpapi_use_ssl: true
-# Do not try to validate certs
-ansible_httpapi_validate_certs: false
-```
-
-Then you can build and deploy configurations to your network.
-
-```bash
-### Build and Deploy configurations
-ansible-playbook playbooks/run_avd.yml -i inventory.yml --tags build,deploy
-```

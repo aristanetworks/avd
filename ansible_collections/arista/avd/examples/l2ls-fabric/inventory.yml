@@ -1,4 +1,4 @@
- # DC1_Fabric - EVPN Fabric running in home lab
+ # inventory.yml
 DC1:
   children:
     DC1_FABRIC:
