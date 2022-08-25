@@ -11,6 +11,20 @@
   run_once: true
   failed_when: false
 
+- name: "Verify Requirements"
+  tags: [debug, avd_req]
+  arista.avd.verify_requirements:
+    dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: requirements
+
+- name: "Print requirements"
+  tags: [debug, avd_req]
+  debug: msg="{{ requirements }}"
+  run_once: true
+
 - name: Create required output directories if not present
   tags: [build, provision]
   ansible.builtin.file:
