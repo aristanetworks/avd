@@ -6,11 +6,15 @@ import importlib.metadata
 import re
 import sys
 
-from pip._vendor.packaging.specifiers import SpecifierSet
-
 from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
+
+HAS_PIP = True
+try:
+    from pip._vendor.packaging.specifiers import SpecifierSet
+except ImportError:
+    HAS_PIP = False
 
 python_version_info = dict(
     major=sys.version_info[0],
@@ -28,7 +32,16 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
-        dependencies_dict = {"not_found": {}, "valid": {}, "mismatched": {}}
+
+        if not HAS_PIP:
+            raise AnsibleActionFail("pip is required to run this plugin")
+
+        dependencies_dict = {
+            "not_found": {},
+            "valid": {},
+            "mismatched": {},
+            "parsing_failed": [],
+        }
 
         if not (self._task.args and "dependencies" in self._task.args):
             raise AnsibleActionFail("The argument 'dependencies' must be set")
@@ -47,7 +60,8 @@ class ActionModule(ActionBase):
         for dep in dependencies:
             match = req_re.match(dep)
             if not match:
-                raise AnsibleActionFail(f"Failed to parse {dep}")
+                dependencies_dict["parsing_failed"].append(dep)
+                continue
             pkg, label, specifiers_str, extra = match.groups()
             specifiers_set = SpecifierSet(specifiers_str)
 
