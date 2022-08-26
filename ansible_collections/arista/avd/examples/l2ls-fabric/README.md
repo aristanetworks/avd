@@ -285,3 +285,77 @@ ansible-playbook playbooks/run_avd.yml --tags build,deploy
     examples/l2ls-fabric/intended/configs/LEAF4.cfg
     --8<--
     ```
+
+## Add Routing to Spines
+
+In our example, we used an external L3/FW Device to route between subnets.  This is very typical in a layer 2 only environment.  If we want to route those subnets on our spines there are a few updates we need to make to our existing group_vars.
+
+Update the DC1_SPINES.yml to use `l3spine`.
+
+``` yaml
+---
+### group_vars/DC1_SPINES.yml
+
+type: l3spine
+```
+
+Update DC1_NETWORK_SERVICES to use L3 SVIs.
+
+???+ Note
+
+    To create L3 SVIs on the spines, we need to utilize an L3 VRF.  In our case, we will use the default VRF.  `TENANT_1` is simply a name to organize VRFs and SVIs.  You may change it to your liking.
+
+``` yaml
+---
+tenants:
+  TENANT_1:
+    vrfs:
+      default:
+        svis:
+          10:
+            name: 'BLUE-NET'
+            tags: [bluezone]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.10.10.1
+            nodes:
+              SPINE1:
+                ip_address: 10.10.10.2/24
+              SPINE2:
+                ip_address: 10.10.10.3/24
+          20:
+            name: 'GREEN-NET'
+            tags: [greenzone]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.20.20.1
+            nodes:
+              SPINE1:
+                ip_address: 10.20.20.2/24
+              SPINE2:
+                ip_address: 10.20.20.3/24
+          30:
+            name: 'ORANGE-NET'
+            tags: [orangezone]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.30.30.1
+            nodes:
+              SPINE1:
+                ip_address: 10.30.30.2/24
+              SPINE2:
+                ip_address: 10.30.30.3/24
+```
+
+Now re-run your playbook and push the new configs.  The intended/configs for the spines will have been updated with L3 SVIs.
+
+```bash
+ansible-playbook playbooks/run_avd.yml --tags build,deploy
+```
+
+## Next steps
+
+Try building your own topology and define the variables to support your own network.
+
+## Reference Links
+
