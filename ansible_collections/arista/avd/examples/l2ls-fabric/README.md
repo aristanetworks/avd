@@ -64,7 +64,7 @@ ansible-avd-examples/     (directory where playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
-![Figure: Arista L2LS physical topology](images/pure_L2LS_topo.svg)
+![Figure: 1](images/pure_L2LS_topo.svg)
 
 ???+ info
 
@@ -95,7 +95,7 @@ examples/l2ls-fabric/switch-basic-configurations/SPINE1.cfg
 
 The following is a graphical representation of the Ansible inventory group variables and naming scheme used in this example:
 
-![Figure: Ansible Inventory Groups](images/ansible_groups.svg)
+![Figure: 2](images/ansible_groups.svg)
 
 Group names use uppercase and underscores.
 
@@ -189,30 +189,23 @@ Ansible **groups_vars** used in this example
     --8<--
     ```
 
-## The Playbook
+## The Playbooks
 
-The below playbook is all that is needed to run AVD and push configurations to your switches.
+To make things simple, we provide 2 playbooks.  One playbook will allow you to just build and view EOS Cli intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches.  The playbooks are provided in the tabs below.
 
-```yaml
-### playbook.yml
----
-- name: Build Switch configuration
-  hosts: DC1_FABRIC
-  tasks:
+=== "build.yml"
+    ```yaml
+    --8<--
+    examples/l2ls-fabric/build.yml
+    --8<--
+    ```
 
-    - name: Generate Structured Variables per Device
-      import_role:
-        name: arista.avd.eos_designs
-
-    - name: Generate Intended Config and Documentation
-      import_role:
-        name: arista.avd.eos_cli_config_gen
-
-    - name: Deploy Configuration to Device
-      tags: [deploy]
-      import_role:
-         name: arista.avd.eos_config_deploy_eapi
-```
+=== "deploy.yml"
+    ```yaml
+    --8<--
+    examples/l2ls-fabric/deploy.yml
+    --8<--
+    ```
 
 ### Playbook Run
 
@@ -284,7 +277,9 @@ ansible-playbook playbooks/deploy.yml
 
 ## Add Routing to Spines
 
-In our example, we used an external L3/FW Device to route between subnets.  This is very typical in a layer 2 only environment.  If we want to route those subnets on our spines there are a few updates we need to make to our existing group_vars.
+In our example, we used an external L3/FW Device to route between subnets.  This is very typical in a Layer 2 only environment.  If we want to route those subnets on our spines there are a few updates we need to make to our existing group_vars.  The SVIs on the external L3/FIREWALL are now moved to the Spines.
+
+![Figure: 3](images/L2LS_Spine_routing.svg)
 
 Update the DC1_SPINES.yml to use `l3spine`.
 
@@ -293,6 +288,32 @@ Update the DC1_SPINES.yml to use `l3spine`.
 ### group_vars/DC1_SPINES.yml
 
 type: l3spine
+```
+
+Update DC1_FABRIC.yml with the following changes and additions.
+
+- Change the node key **spine** to **l3spine** to match the node type set previously in DC1_SPINES.yml.
+- Add **loopback_ipv4_pool**
+- Add **mlag_peer_l3_ipv4_pool**
+- Add **virtual_router_mac_address**
+
+Here is the update DC1_FABRIC.yml with suggested changes.
+
+``` yaml
+# Node Key must be spine or l3spine
+l3spine:
+  defaults:
+    platform: cEOS-LAB
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    # Loopback is used to generate a router-id
+    loopback_ipv4_pool: 1.1.1.0/24
+    mlag_peer_ipv4_pool: 192.168.0.0/24
+    # Needed for L3 peering across the MLAG Trunk
+    mlag_peer_l3_ipv4_pool: 10.1.1.0/24
+    # Used for SVI  Virual MAC address
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    mlag_interfaces: [Ethernet47, Ethernet48]
 ```
 
 Update DC1_NETWORK_SERVICES to use L3 SVIs.
@@ -304,7 +325,7 @@ Update DC1_NETWORK_SERVICES to use L3 SVIs.
 ``` yaml
 ---
 tenants:
-  TENANT_1:
+  VLANS:
     vrfs:
       default:
         svis:
@@ -343,7 +364,13 @@ tenants:
                 ip_address: 10.30.30.3/24
 ```
 
-Now re-run your playbook and push the new configs.  The intended/configs for the spines will have been updated with L3 SVIs.
+Now re-run your playbook and build the new configs.  The intended/configs for the spines will have been updated with L3 SVIs.
+
+```bash
+ansible-playbook playbooks/build.yml
+```
+
+If you wish to deploy these changes, then simply run the deploy playbook.
 
 ```bash
 ansible-playbook playbooks/deploy.yml
