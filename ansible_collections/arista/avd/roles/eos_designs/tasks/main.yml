@@ -12,7 +12,7 @@
   failed_when: false
 
 - name: "Verify Requirements"
-  tags: [debug, avd_req]
+  tags: [debug, avd_req, never]
   arista.avd.verify_requirements:
     dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
   vars:
@@ -21,7 +21,7 @@
   register: requirements
 
 - name: "Print requirements"
-  tags: [debug, avd_req]
+  tags: [debug, avd_req, never]
   debug: msg="{{ requirements }}"
   run_once: true
 

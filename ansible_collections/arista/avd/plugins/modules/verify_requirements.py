@@ -34,8 +34,8 @@ EXAMPLES = r"""
 - name: Verify python requirements
   arista.avd.verify_requirements:
     dependencies:
-      - jinja2 >= 2.9
-      - ansible == 2.13
+      - Jinja2 >= 2.9
+      - paramiko == 2.7.1
   check_mode: False
   run_once: True
 """
