@@ -13,6 +13,5 @@
         name: arista.avd.eos_cli_config_gen
 
     - name: Deploy Configurations to Devices
-      tags: [deploy]
       import_role:
         name: arista.avd.eos_config_deploy_eapi

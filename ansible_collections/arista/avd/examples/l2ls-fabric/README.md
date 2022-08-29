@@ -1,5 +1,7 @@
 # Example for L2LS Fabric
 
+**TESTING ANNOTATION -----**
+
 Lorem ipsum dolor sit amet, (1) consectetur adipiscing elit.
 { .annotate }
 
@@ -222,24 +224,20 @@ The below playbook is all that is needed to run AVD and push configurations to y
 
 ### Playbook Run
 
-To run the playbook and build the configurations files, tun the following ansible command.
+To build the configurations files, run the following playbook called `build.yml`.
 
 ```bash
 ### Build configurations
-ansible-playbook playbooks/run_avd.yml --tags build
+ansible-playbook playbooks/build.yml
 ```
-
-???+ note
-
-    The `-tags build` only builds the intended configuration files.
 
 After the playbook run finishes, EOS CLI intended configuration files are written to `intended/configs`.
 
-To build and push the configurations to your switches add the `deploy` tag.
+To build and push the configurations to your switches, run the following playbook called `deploy.yml`.
 
 ```bash
 ### Build configurations & Push Configs to switches
-ansible-playbook playbooks/run_avd.yml --tags build,deploy
+ansible-playbook playbooks/deploy.yml
 ```
 
 ### Generated Configurations
@@ -356,7 +354,7 @@ tenants:
 Now re-run your playbook and push the new configs.  The intended/configs for the spines will have been updated with L3 SVIs.
 
 ```bash
-ansible-playbook playbooks/run_avd.yml --tags build,deploy
+ansible-playbook playbooks/deploy.yml
 ```
 
 ## Next steps
@@ -364,4 +362,3 @@ ansible-playbook playbooks/run_avd.yml --tags build,deploy
 Try building your own topology and define the variables to support your own network.
 
 ## Reference Links
-
