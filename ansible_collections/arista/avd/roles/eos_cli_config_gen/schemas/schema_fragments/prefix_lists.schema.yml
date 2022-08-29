@@ -2,6 +2,7 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
+allow_other_keys: true
 keys:
   prefix_lists:
     type: list
@@ -9,14 +10,13 @@ keys:
     convert_types:
       - dict
     display_name: Prefix Lists
-    description: Prefix Lists
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Prefix-list Name
+          display_name: prefix_litss_name
         sequence_numbers:
           type: list
           required: true
@@ -35,6 +35,4 @@ keys:
               action:
                 type: str
                 required: true
-                description: |
-                  Action as string
-                  Example: "permit 192.168.254.0/24 eq 32"
+                display_name: action as string
