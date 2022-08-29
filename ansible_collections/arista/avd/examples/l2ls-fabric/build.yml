@@ -11,4 +11,3 @@
     - name: Generate Device Configurations and Documentation
       import_role:
         name: arista.avd.eos_cli_config_gen
-
