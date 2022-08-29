@@ -225,7 +225,7 @@ To build and push the configurations to your switches, run the following playboo
 ansible-playbook playbooks/deploy.yml
 ```
 
-### Generated Configurations
+### EOS Intended Configurations
 
 === "SPINE1"
 
