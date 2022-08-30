@@ -4,10 +4,10 @@ vlans:
     tenant: system
     name: LEAF_PEER_L3
     trunk_groups:
-      - LEAF_PEER_L3
+      - {{ switch.trunk_groups.mlag_l3.name }}
 {% endif %}
   {{ switch.mlag_peer_vlan }}:
     tenant: system
     name: MLAG_PEER
     trunk_groups:
-      - MLAG
+      - {{ switch.trunk_groups.mlag.name }}

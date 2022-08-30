@@ -257,6 +257,19 @@ enable_trunk_groups: < true | false | default -> false >
 # See "Details on only_local_vlan_trunk_groups" below.
 # Requires "enable_trunk_groups: true"
 only_local_vlan_trunk_groups: < true | false | default -> false >
+
+# Trunk Group Names | Optional
+trunk_groups:
+  # "mlag" is the Trunk Group used for MLAG VLAN (Typically VLAN 4094).
+  mlag:
+    name: < trunk_group_name | default -> "MLAG" >
+  # "mlag_l3" is the Trunk Group used for MLAG L3 peering VLAN (Typically VLAN 4093).
+  # "mlag_l3" is also the Trunk Group used for VRF L3 peering VLANs
+  mlag_l3:
+    name: < trunk_group_name | default -> "LEAF_PEER_L3" >
+  # "uplink" is the Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.
+  uplink:
+    name: < trunk_group_name | default -> "UPLINK" >
 ```
 
 ## Details on `enable_trunk_groups`
