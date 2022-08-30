@@ -1,7 +1,7 @@
 {# eos - local users #}
 {% if local_users is arista.avd.defined %}
 !
-{%     for local_user in local_users | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for local_user in local_users | arista.avd.natural_sort('name') %}
 {%         set local_user_cli = "username " ~ local_user.name %}
 {%         if local_user.privilege is arista.avd.defined %}
 {%             set local_user_cli = local_user_cli ~ " privilege " ~ local_user.privilege %}

@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  local_users:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    display_name: Local-Users
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Local-user Name
+        privilege:
+          type: int
+          required: true
+          display_name: Privilege
+        role:
+          type: int
+          required: true
+          display_name: Role
+        sha512_password:
+          type: str
+          required: true
+          display_name: Password
+        no_password:
+          type: bool
+          required: true
+          display_name: No Password
+          description: |
+            < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+        ssh_key:
+          type: str
+          required: true
+          display_name: SSH-Key

@@ -332,6 +332,43 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"'
+  local_users:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: Local-Users
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Local-user Name
+        privilege:
+          type: int
+          required: true
+          display_name: Privilege
+        role:
+          type: int
+          required: true
+          display_name: Role
+        sha512_password:
+          type: str
+          required: true
+          display_name: Password
+        no_password:
+          type: bool
+          required: true
+          display_name: No Password
+          description: '< true | do not configure a password for given username. sha512_password
+            MUST not be defined for this user. >
+
+            '
+        ssh_key:
+          type: str
+          required: true
+          display_name: SSH-Key
   match_list_input:
     type: dict
     display_name: Match Lists

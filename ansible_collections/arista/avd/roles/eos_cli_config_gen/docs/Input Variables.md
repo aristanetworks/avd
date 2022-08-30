@@ -265,6 +265,32 @@ ipv6_prefix_lists:
         action: <str>
 ```
 
+## Local-Users
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>local_users</samp>](## "local_users") | List, items: Dictionary |  |  |  | Local-Users |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "local_users.[].name") | String | Required, Unique |  |  | Local-user Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "local_users.[].privilege") | Integer | Required |  |  | Privilege |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | Integer | Required |  |  | Role |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "local_users.[].sha512_password") | String | Required |  |  | Password |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean | Required |  |  | No Password<br>< true | do not configure a password for given username. sha512_password MUST not be defined for this user. ><br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "local_users.[].ssh_key") | String | Required |  |  | SSH-Key |
+
+### YAML
+
+```yaml
+local_users:
+  - name: <str>
+    privilege: <int>
+    role: <int>
+    sha512_password: <str>
+    no_password: <bool>
+    ssh_key: <str>
+```
+
 ## Match Lists
 
 ### Variables
