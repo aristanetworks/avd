@@ -31,4 +31,4 @@ keys:
           required: true
           description: |
             Action as string
-            Example: "permit any any"
+            Example: "permit GSHUT 65123:123"
