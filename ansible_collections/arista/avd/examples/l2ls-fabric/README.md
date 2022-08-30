@@ -297,7 +297,7 @@ Update DC1_FABRIC.yml with the following changes and additions.
 - Add **mlag_peer_l3_ipv4_pool**
 - Add **virtual_router_mac_address**
 
-Here is the update DC1_FABRIC.yml with suggested changes.
+Here is the updated DC1_FABRIC.yml with suggested changes.
 
 ``` yaml
 # Node Key must be spine or l3spine
