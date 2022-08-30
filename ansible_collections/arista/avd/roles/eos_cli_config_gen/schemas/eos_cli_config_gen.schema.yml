@@ -97,7 +97,7 @@ keys:
     type: list
     primary_key: name
     convert_types:
-      - dict
+    - dict
     display_name: Standard Access-Lists
     items:
       type: dict
@@ -113,7 +113,7 @@ keys:
           required: true
           primary_key: sequence
           convert_types:
-            - dict
+          - dict
           items:
             type: dict
             keys:
@@ -122,9 +122,9 @@ keys:
                 required: true
                 display_name: Sequence ID
                 convert_types:
-                  - str
+                - str
               action:
                 type: str
                 required: true
                 description: 'Action as string
-                    Example: "deny ip any any"'
+                  Example: "deny ip any any"'
