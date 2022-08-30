@@ -127,4 +127,5 @@ keys:
                 type: str
                 required: true
                 description: 'Action as string
+
                   Example: "deny ip any any"'
