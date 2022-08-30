@@ -666,6 +666,23 @@ class EosDesignsFacts:
         return None
 
     @cached_property
+    def trunk_groups(self):
+        if not self._any_network_services:
+            return None
+
+        return {
+            'mlag': {
+                'name': get(self._hostvars, "trunk_groups.mlag.name", default="MLAG")
+            },
+            'mlag_l3': {
+                'name': get(self._hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3")
+            },
+            'uplink': {
+                'name': get(self._hostvars, "trunk_groups.uplink.name", default="UPLINK")
+            }
+        }
+
+    @cached_property
     def enable_trunk_groups(self):
         if self._any_network_services:
             return get(self._hostvars, "enable_trunk_groups", default=False)
