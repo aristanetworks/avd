@@ -38,6 +38,7 @@ ntp:
     - name: pool.ntp.org
       vrf: MGMT
 
+# Establish exec/enable role when logging in to switch
 aaa_authorization:
   exec:
     default: local

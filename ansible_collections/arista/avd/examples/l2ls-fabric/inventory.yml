@@ -1,4 +1,4 @@
- # inventory.yml
+# inventory.yml
 DC1:
   children:
     DC1_FABRIC:
