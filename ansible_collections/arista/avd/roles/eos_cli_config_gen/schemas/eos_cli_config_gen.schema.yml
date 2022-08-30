@@ -96,6 +96,8 @@ keys:
                   '
               communities:
                 type: list
+                items:
+                  type: str
                 description: '[ "< a_community as string >", "< another_community
                   as string >", ... ]
 

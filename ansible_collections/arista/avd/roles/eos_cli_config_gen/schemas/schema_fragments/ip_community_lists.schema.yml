@@ -47,13 +47,14 @@ keys:
                 required: true
                 valid_values: ["permit", "deny"]
                 description: |
-                  "< permit or deny >"
+                  Can be either permit or deny
                   Example: "permit"
               communities:
                 type: list
+                items:
+                  type: str
                 description: "If defined, a standard community-list will be configured"
               regexp:
                 type: str
-
                 display_name: Regular Expression
                 description: "If defined, a regex community-list will be configured"
