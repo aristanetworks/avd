@@ -45,18 +45,17 @@ keys:
               action:
                 type: str
                 required: true
+                valid_values: ["permit", "deny"]
                 description: |
                   "< permit or deny >"
                   Example: "permit"
               communities:
-                type: str
-                required: false
+                type: list
                 description: |
                   [ "< a_community as string >", "< another_community as string >", ... ]
                   This is optional, if defined - standard community list will be configured
               regexp:
                 type: str
-                required: false
                 description: |
                   "< regular expression >"
                   If defined, regex community list will be configured
