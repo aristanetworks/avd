@@ -7,7 +7,7 @@ This example includes and describes all the AVD files used to build a Layer 2 Le
 - 2 Spine nodes
 - 4 Leaf nodes
 
-The network fabric in this example is purely Layer 2.  Routing is handled by an external Firewall/L3 Device.  Later, in this example, we will discuss moving routing to the Spines.  For now, we will focus on defining the fabric variables to build out this L2LS Topology.  Before we get started, we need to ensure that we have installed AVD, with necessary requirements, which are covered in the Installation & Requirements section.
+The network fabric in this example is purely Layer 2. Routing is handled by an external Firewall/L3 Device. Later, in this example, we will discuss adding L3 routing to the Spines. For now, we will focus on defining the fabric variables to build out this L2LS Topology. Before we get started, we need to ensure that we have installed AVD, with necessary requirements, which are covered in the Installation & Requirements section.
 
 The example is meant as a starting foundation. You may build more advanced fabrics based on this design. To keep things simple, the Arista eAPI will be used to communicate with the switches.
 
@@ -26,7 +26,7 @@ The example is meant as a starting foundation. You may build more advanced fabri
 ansible-playbook arista.avd.install_examples
 ```
 
-Output will show something similar to the following.  If not, check to ensure that AVD and all requirement modules are installed properly.  Also very that your ansible.cfg file has the proper Ansible collections_paths set.
+Output will show something similar to the following. If not, please make sure that AVD and all requirements are installed properly. Also verify that the collections_paths in the ansible.cfg file is correct.
 
 ```shell
  ~/ansible-avd-examples# ansible-playbook arista.avd.install_examples
@@ -84,7 +84,7 @@ Basic connectivity between the Ansible controller host and the switches must be 
 
 ???+ info
 
-    When using vEOS/cEOS virtual switches, `Management0` is used.  When using actual hardware switches, `Management1` is used.  The included basic switch configurations may need to be adjusted for your environment.
+    When using vEOS/cEOS virtual switches, `Management0` is used. When using actual hardware switches, `Management1` is used. The included basic switch configurations may need to be adjusted for your environment.
 
 Below is the basic configuration file for SPINE1:
 
@@ -107,7 +107,7 @@ Now that we understand the L2LS topology being used, we need to create the Ansib
       - POD2
 ```
 
-DC1 represents the highest level within the hierarchical grouping.  Ansible variables defined at this level will be applied to all nodes in the fabric.  Ansible groups have parent and child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC.  Groups of Groups are possible and allows variables to be shared at any level within the hierarchy.  DC1_NETWORK_SERVICES is a group that has 2 other groups defined as children:  DC1_SPINES and DC1_LEAFS.  The same applies to group named DC1_NETWORK_PORTS.  You will see these groups listed at the bottom of the inventory file.
+DC1 represents the highest level within the hierarchical grouping. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent and child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allows variables to be shared at any level within the hierarchy. DC1_NETWORK_SERVICES is a group that has 2 other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
 
 This naming convention makes it possible to easily extend anything, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
 
@@ -115,11 +115,11 @@ This naming convention makes it possible to easily extend anything, but as alway
 
 ### inventory.yml
 
-The below inventory file represents 2 Spines and 2 Leaf Pairs (POD1 & POD2).  The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively.  We apply group variables (group_vars) to these groups to define their functionality and configurations.
+The below inventory file represents 2 Spines and 2 Leaf Pairs (POD1 & POD2). The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively. We apply group variables (group_vars) to these groups to define their functionality and configurations.
 
 ???+ note
 
-    The Leaf nodes belong to subgroups POD1 and POD2.  Leaf nodes defined as a pair in this manner will have MLAG configured between them. In addition, you can filter the VLANs that are applied to the POD.
+    The Leaf nodes belong to subgroups POD1 and POD2. Leaf nodes defined as a pair in this manner will have MLAG configured between them. In addition, you can filter the VLANs that are applied to the POD.
 
 It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host allows to verify name resolution (e.g. ping SPINE1).
 
@@ -133,7 +133,7 @@ examples/l2ls-fabric/inventory.yml
 
 ## AVD Fabric Variables
 
-To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice.  The below table of group_vars is one example of how to layout the fabric variables.
+To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The below table of group_vars is one example of how to layout the fabric variables.
 
 | group_vars/              | Description                                   |
 | ------------------------ | --------------------------------------------- |
@@ -147,7 +147,7 @@ To apply AVD variables to the nodes in the fabric, we make use of Ansible group_
 Here are the Ansible **group_vars** used in this example.
 
 === "DC1"
-    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**.  These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface.  Update local_users and passwords for your environment.
+    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface. Update local_users and passwords for your environment.
 
     You can create a sha512_password by creating a username and password on a switch and copy/paste it within double quotes here.
 
@@ -158,11 +158,11 @@ Here are the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_FABRIC"
-    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**.  At this level, you define fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links.  Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool.
+    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. At this level, you define fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links. Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool.
 
     Variables applied under the node key type (spine/leaf) defaults section are inherited to nodes under each type. These variables may be overwritten under the node itself.
 
-    The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`.  For example, LEAF2 has unique variable `uplink_switch_interfaces: [Ethernet2, Ethernet2]` defined.  This means that LEAF2 is connected to SPINE1's Ethernet2 and SPINE2's Ethernet2, respectively.
+    The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2 has unique variable `uplink_switch_interfaces: [Ethernet2, Ethernet2]` defined. This means that LEAF2 is connected to SPINE1's Ethernet2 and SPINE2's Ethernet2, respectively.
 
     ``` yaml
     --8<--
@@ -171,7 +171,7 @@ Here are the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_SPINES"
-    In an L2LS design, we have 2 types of spine nodes: `spine` and `l3spine`. In AVD. the node type defines the functionality and the EOS Cli configuration to be generated.  For an L2LS design, we will use node type: spine. Later, we will add routing to the Spines by changing the node type to l3spine.
+    In an L2LS design, we have 2 types of spine nodes: `spine` and `l3spine`. In AVD. the node type defines the functionality and the EOS Cli configuration to be generated. For an L2LS design, we will use node type: spine. Later, we will add routing to the Spines by changing the node type to l3spine.
 
     ``` yaml
     --8<--
@@ -189,7 +189,7 @@ Here are the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**.  Each VLAN will be given a name and a list of tags.  The Tags can be used to filter the VLAN to specific Leaf Pairs (PODs).  These variables are applied to spine and leaf nodes since they are a part of this inventory group of groups.
+    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The Tags can be used to filter the VLAN to specific Leaf Pairs (PODs). These variables are applied to spine and leaf nodes since they are a part of this inventory group of groups.
 
     ``` yaml
     --8<--
@@ -198,7 +198,7 @@ Here are the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_PORTS"
-    Our fabric would not be complete without connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**.  Each endpoint's adapter defines which switch port(s) and port profile to use.  In our example, we have servers/hosts and a firewall connected to the fabric.  The connected endpoints keys are used for logical separation and apply to interface descriptions.  These variables are applied to spine and leaf nodes since they are a part of this inventory group.
+    Our fabric would not be complete without connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**. Each endpoint's adapter defines which switch port(s) and port profile to use. In our example, we have servers/hosts and a firewall connected to the fabric. The connected endpoints keys are used for logical separation and apply to interface descriptions. These variables are applied to spine and leaf nodes since they are a part of this inventory group.
     ``` yaml
     --8<--
     examples/l2ls-fabric/group_vars/DC1_NETWORK_PORTS.yml
@@ -207,7 +207,7 @@ Here are the Ansible **group_vars** used in this example.
 
 ## The Playbooks
 
-Now that we have all of our Ansible variables (AVD inputs) defined, it is time to generate some configs.  To make things simple, we provide 2 playbooks.  One playbook will allow you to just build and view EOS Cli intended configurations per device. The second playbook has an additional task to also deploy the configurations to your switches.  The playbooks are provided in the tabs below.  The playbook is very simple as it imports 2 AVD roles: eos_designs and eos_cli_config_gen that do all the heavy lifting.  The combination of these 2 roles produce recommended configurations that are part of Arista's Design Guides.
+Now that we have all of our Ansible variables (AVD inputs) defined, it is time to generate some configs. To make things simple, we provide 2 playbooks. One playbook will allow you to just build and view EOS Cli intended configurations per device. The second playbook has an additional task to also deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is very simple as it imports 2 AVD roles: eos_designs and eos_cli_config_gen that do all the heavy lifting. The combination of these 2 roles produce recommended configurations that are part of Arista's Design Guides.
 
 === "build.yml"
     ```yaml
@@ -232,9 +232,9 @@ To build the configurations files, run the playbook called `build.yml`.
 ansible-playbook playbooks/build.yml
 ```
 
-After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.  Take a look.
+After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`. Take a look.
 
-To build and deploy the configurations to your switches, run the playbook called `deploy.yml`.  This assumes that your Ansible host has access and authentication rights to the switches.  Those auth variables were defined in DC1_FABRIC.yml.
+To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables were defined in DC1_FABRIC.yml.
 
 ```bash
 ### Build configurations & Push Configs to switches
@@ -295,7 +295,7 @@ You configuration files should be similar to these.
 
 ## Add Routing to Spines
 
-In our example, we used an external L3/FW Device to route between subnets.  This is very typical in a Layer 2 only environment.  To route on the spines, we remove the L3/FW device from the topology and shift the SVIs to the Spines.
+In our example, we used an external L3/FW Device to route between subnets. This is very typical in a Layer 2 only environment. To route on the spines, we remove the L3/FW device from the topology and shift the SVIs to the Spines.
 
 ![Figure: 3](images/L2LS_Spine_routing.svg)
 
@@ -303,7 +303,7 @@ The following group_vars need updated to account for this shift in routing.
 
 === "DC1_SPINES.yml"
 
-    Update type to `l3spine`.  This makes it a routing device.
+    Update type to `l3spine`. This makes it a routing device.
 
     ``` yaml
     ---
@@ -321,7 +321,7 @@ The following group_vars need updated to account for this shift in routing.
     - Add **mlag_peer_l3_ipv4_pool**
     - Add **virtual_router_mac_address**
 
-    Here are needed updates to DC1_FABRIC.yml.  Use your own IP pools.
+    Here are needed updates to DC1_FABRIC.yml. Use your own IP pools.
 
     ``` yaml
     # Node Key must be l3spine
@@ -346,7 +346,7 @@ Update to use L3 SVIs.
 
 ???+ Note
 
-    To create L3 SVIs on the spines, we need to utilize an L3 VRF.  In our case, we will use the default VRF.  `VLANS` is simply a name to organize VRFs and SVIs.  You may change it to your liking.
+    To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `VLANS` is simply a name to organize VRFs and SVIs. You may change it to your liking.
 
 ``` yaml
 ---
@@ -390,7 +390,7 @@ tenants:
                 ip_address: 10.30.30.3/24
 ```
 
-Now re-run your playbook and build the new configs.  The intended/configs for the spines will have been updated with L3 SVIs.
+Now re-run your playbook and build the new configs. The intended/configs for the spines will have been updated with L3 SVIs.
 
 ```bash
 ansible-playbook playbooks/build.yml
