@@ -55,43 +55,6 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
-
-  match_list_input:
-    type: dict
-    display_name: Match Lists
-    keys:
-      string:
-        type: list
-        primary_key: name
-        convert_types:
-        - dict
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              required: true
-              display_name: Match-list Name
-            sequence_numbers:
-              type: list
-              required: true
-              primary_key: sequence
-              convert_types:
-              - dict
-              items:
-                type: dict
-                keys:
-                  sequence:
-                    type: int
-                    required: true
-                    display_name: Sequence ID
-                    convert_types:
-                    - str
-                  match_regex:
-                    type: str
-                    required: true
-                    display_name: Regular Expression
-=======
   community_lists:
     type: list
     primary_key: name
@@ -130,6 +93,41 @@ keys:
           description: 'Action as string
 
             Example: "permit GSHUT 65123:123"'
+  match_list_input:
+    type: dict
+    display_name: Match Lists
+    keys:
+      string:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Match-list Name
+            sequence_numbers:
+              type: list
+              required: true
+              primary_key: sequence
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  sequence:
+                    type: int
+                    required: true
+                    display_name: Sequence ID
+                    convert_types:
+                    - str
+                  match_regex:
+                    type: str
+                    required: true
+                    display_name: Regular Expression
   standard_access_lists:
     type: list
     primary_key: name
@@ -166,4 +164,3 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
-

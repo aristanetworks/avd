@@ -67,20 +67,36 @@ community_lists:
     action: <str>
 ```
 
-## Standard Access-Lists
+## Match Lists
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-
 | [<samp>match_list_input</samp>](## "match_list_input") | Dictionary |  |  |  | Match Lists |
 | [<samp>&nbsp;&nbsp;string</samp>](## "match_list_input.string") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "match_list_input.string.[].name") | String | Required, Unique |  |  | Match-list Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "match_list_input.string.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "match_list_input.string.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_regex</samp>](## "match_list_input.string.[].sequence_numbers.[].match_regex") | String | Required |  |  | Regular Expression |
-=======
+
+### YAML
+
+```yaml
+match_list_input:
+  string:
+    - name: <str>
+      sequence_numbers:
+        - sequence: <int>
+          match_regex: <str>
+```
+
+## Standard Access-Lists
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>standard_access_lists</samp>](## "standard_access_lists") | List, items: Dictionary |  |  |  | Standard Access-Lists |
 | [<samp>&nbsp;&nbsp;- name</samp>](## "standard_access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "standard_access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
@@ -88,23 +104,13 @@ community_lists:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "standard_access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string<br>Example: "deny ip any any" |
 
-
 ### YAML
 
 ```yaml
-
-match_list_input:
-  string:
-    - name: <str>
-      sequence_numbers:
-        - sequence: <int>
-          match_regex: <str>
-
 standard_access_lists:
   - name: <str>
     counters_per_entry: <bool>
     sequence_numbers:
       - sequence: <int>
         action: <str>
-
 ```
