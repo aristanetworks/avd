@@ -348,53 +348,53 @@ The updates changes are noted in the tabs below.
 
 === "DC1_NETWORK_SERVICES.yml"
 
-Update to use L3 SVIs.
+    Update Network Services to use L3 SVIs.
 
-???+ Note
+    ???+ Note
 
-    To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `VLANS` is simply a name to organize VRFs and SVIs. You may change it to your liking.
+        To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `VLANS` is simply a name to organize VRFs and SVIs. You may change it to your liking.
 
-``` yaml
----
-tenants:
-  VLANS:
-    vrfs:
-      default:
-        svis:
-          10:
-            name: 'BLUE-NET'
-            tags: [bluezone]
-            enabled: true
-            ip_virtual_router_addresses:
-              - 10.10.10.1
-            nodes:
-              SPINE1:
-                ip_address: 10.10.10.2/24
-              SPINE2:
-                ip_address: 10.10.10.3/24
-          20:
-            name: 'GREEN-NET'
-            tags: [greenzone]
-            enabled: true
-            ip_virtual_router_addresses:
-              - 10.20.20.1
-            nodes:
-              SPINE1:
-                ip_address: 10.20.20.2/24
-              SPINE2:
-                ip_address: 10.20.20.3/24
-          30:
-            name: 'ORANGE-NET'
-            tags: [orangezone]
-            enabled: true
-            ip_virtual_router_addresses:
-              - 10.30.30.1
-            nodes:
-              SPINE1:
-                ip_address: 10.30.30.2/24
-              SPINE2:
-                ip_address: 10.30.30.3/24
-```
+    ``` yaml
+    ---
+    tenants:
+      VLANS:
+        vrfs:
+          default:
+            svis:
+              10:
+                name: 'BLUE-NET'
+                tags: [bluezone]
+                enabled: true
+                ip_virtual_router_addresses:
+                  - 10.10.10.1
+                nodes:
+                  SPINE1:
+                    ip_address: 10.10.10.2/24
+                  SPINE2:
+                    ip_address: 10.10.10.3/24
+              20:
+                name: 'GREEN-NET'
+                tags: [greenzone]
+                enabled: true
+                ip_virtual_router_addresses:
+                  - 10.20.20.1
+                nodes:
+                  SPINE1:
+                    ip_address: 10.20.20.2/24
+                  SPINE2:
+                    ip_address: 10.20.20.3/24
+              30:
+                name: 'ORANGE-NET'
+                tags: [orangezone]
+                enabled: true
+                ip_virtual_router_addresses:
+                  - 10.30.30.1
+                nodes:
+                  SPINE1:
+                    ip_address: 10.30.30.2/24
+                  SPINE2:
+                    ip_address: 10.30.30.3/24
+    ```
 
 Now re-run your playbook and build the new configs. The intended/configs for the spines will have been updated with L3 SVIs.
 
