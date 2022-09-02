@@ -5,21 +5,6 @@ fabric_name: PTP_TESTS
 
 mgmt_gateway: 192.168.0.1
 
-# node_type_keys:
-#   spine:
-#     type: spine
-#     connected_endpoints: true
-#   leaf:
-#     type: leaf
-#     connected_endpoints: true
-#     network_services:
-#       l2: true
-#       l3: true
-
-# ptp_profile: aes67-r16-2016
-# ptp_profile: smpte2059-2
-# ptp_domain: 10
-
 # P2P links between leaf switches, connecting to the PTP Grandmaster.
 # Note that the config below will result in interfaces being configured as "no switchport", without an IP address.
 # This makes it possible to only forward PTP packets and nothing more.

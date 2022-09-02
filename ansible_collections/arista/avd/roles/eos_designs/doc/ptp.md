@@ -15,7 +15,7 @@ Arista best practices are used, simplifying configuration of several global and 
     - AES67-R16-2016 (used by default if no profile is specified)
 
         The profile will apply PTP parameters for the following interfaces:
-        - All interfaces between leaf and spine switches
+        - All routed interfaces
         - Individual PTP-enabled interfaces for connected endpoints
 
 - Defaults used when PTP is enabled:
@@ -68,7 +68,6 @@ ptp:
   domain: < 0-255 | default -> 127 >
 ```
 
-If `profile` or `domain` are not specified, but PTP is enabled, then the defaults will be used.
 All can also be defined on a more specific level, if the network design requires this.
 
 ### PTP Profiles
@@ -93,7 +92,7 @@ Based on the PTP profile selection the following parameters are applied to all i
  - ptp announce timeout 3
  - ptp delay-req interval -4 (16 messages every second)
 
-`profile: aes67-r16-2016` is the ***default*** PTP profile setting the following interface parameters:
+`profile: aes67-r16-2016` is the ***default*** PTP profile, setting the following interface parameters:
 
  - ptp enable
  - ptp sync-message interval -3 (8 messages every second)
