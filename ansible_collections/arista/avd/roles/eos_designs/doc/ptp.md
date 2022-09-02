@@ -343,9 +343,9 @@ servers:
 
 ## Interfaces only used for PTP traffic
 
-In a Media and Entertainment Layer 3 Leaf Spine network topology with redundant connectivity to either a single or dual PTP GrandMasters, you might require network connectivity between Amber and Blue parts of the network ***only*** for PTP traffic.
+In a Media and Entertainment Layer 3 Leaf Spine network topology with redundant connectivity to either a single or dual PTP GrandMasters, you might require network connectivity between parts of the network ***only*** for PTP traffic.
 
-Such switch-to-switch links must be defined on a fabric level, for example using two links between leaf-blue1 and leaf-blue2 as shown here:
+Such switch-to-switch links must be defined on a fabric level, for example using two links between blue-leaf1 and blue-leaf2 as shown here:
 
 ```yml
 core_interfaces:
