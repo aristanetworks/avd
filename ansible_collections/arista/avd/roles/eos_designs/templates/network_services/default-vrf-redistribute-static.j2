@@ -6,7 +6,7 @@ router_bgp:
 {% elif switch.underlay_routing_protocol in ['isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp'] %}
 router_isis:
   redistribute_routes:
-    source_protocol: static
+    - source_protocol: static
 {% elif switch.underlay_routing_protocol in ['ospf', 'ospf-ldp'] %}
 router_ospf:
   process_ids:

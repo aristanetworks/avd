@@ -289,12 +289,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
+| default | 10.1.0.0/16 | 10.1.100.100 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.31.0.1
+ip route 10.1.0.0/16 10.1.100.100
 ```
 
 ## Router ISIS
@@ -315,6 +317,7 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 | Route Type | Route-Map | Include Leaked |
 | ---------- | --------- | -------------- |
 | connected | - | - |
+| static | - | - |
 
 ### ISIS Interfaces Summary
 
@@ -330,6 +333,7 @@ router isis EVPN_UNDERLAY
    net 49.0001.0001.0000.0001.00
    is-type level-2
    redistribute connected
+   redistribute static
    router-id ipv4 192.168.255.1
    log-adjacency-changes
    !
