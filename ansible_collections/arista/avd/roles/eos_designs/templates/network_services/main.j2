@@ -1,7 +1,7 @@
 {# Add one blank line after each included template #}
 {% if switch.network_services_l2 is arista.avd.defined(true) or switch.network_services_l3 is arista.avd.defined(true) or switch.network_services_l1 is arista.avd.defined(true) %}
 {%     set network_services_data = namespace(ipv6vrfs = {}) %}
-{%     set default_vrf = namespace(svi_subnets = []) %}
+{%     set default_vrf = namespace(svi_subnets = [], static_routes = []) %}
 {%     include 'network_services/logic.j2' %}
 
 {% endif %}
@@ -57,9 +57,10 @@
       switch.network_services_l1 is arista.avd.defined(true)) %}
 {%     include 'network_services/vtep-logic.j2' %}
 
-{%     if default_vrf.svi_subnets and switch.evpn_role in ["client", "server"] %}
+{%     if (default_vrf.svi_subnets or default_vrf.static_routes) and switch.evpn_role in ["client", "server"] %}
 {%         include 'network_services/default-vrf-route-map.j2' %}
 
+{%         set default_vrf.static_routes = [] %}
 {%     endif %}
 
 {%     include 'network_services/router-bgp.j2' %}
@@ -75,5 +76,12 @@
       switch.network_services_l2 is arista.avd.defined(true) and
       switch.network_services_l3 is arista.avd.defined(true) %}
 {%     include 'network_services/virtual-source-nat-vrfs.j2' %}
+
+{% endif %}
+
+{% if default_vrf.static_routes | arista.avd.default(false) %}
+{# since we cannot update BGP in multiple templates, the case for underlay BGP #}
+{# is handled inside router-bgp.j2 and redistribute_static is reset to false #}
+{%     include 'network_services/default-vrf-redistribute-static.j2' %}
 
 {% endif %}

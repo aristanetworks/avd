@@ -24,3 +24,6 @@ tenants:
             tags: [default_vrf]
             enabled: true
             ip_address_virtual: 10.2.10.1/24
+        static_routes:
+          - destination_address_prefix: 10.0.0.0/8
+            gateway: 10.2.10.100
