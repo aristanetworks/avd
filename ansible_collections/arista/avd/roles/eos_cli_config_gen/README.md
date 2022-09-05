@@ -2717,8 +2717,15 @@ qos_profiles:
 
 ```yaml
 queue_monitor_length:
+  # "enabled: true" will be required in AVD4.0. In AVD3.x default is true as long as queue_monitor_length is defined and not None
+  enabled: < true | false >
   log: < seconds >
   notifying: < true | false - should only be used for platforms supporting the "queue-monitor length notifying" CLI >
+  cpu:
+    thresholds:
+      # "high" threshold is mandatory
+      high: < integer >
+      low: < integer >
 ```
 
 #### Queue Monitor Streaming
