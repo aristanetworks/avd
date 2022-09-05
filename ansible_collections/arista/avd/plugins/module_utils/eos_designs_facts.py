@@ -1,11 +1,14 @@
 from __future__ import (absolute_import, division, print_function)
+from collections import ChainMap
 __metaclass__ = type
 
 import re
 import ipaddress
 from functools import cached_property
 from hashlib import sha256
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError, get, get_item, default, template_var, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.module_utils.utils import (
+    AristaAvdError, AristaAvdMissingVariableError,
+    compile_searchpath, get, get_item, default, template_var)
 
 
 class EosDesignsFacts:
@@ -17,7 +20,7 @@ class EosDesignsFacts:
         range_expand=None,
         convert_dicts=None,
         natural_sort=None,
-        template_lookup_module=None
+        templar=None
     ):
         if hostvars:
             self._hostvars = hostvars
@@ -31,8 +34,8 @@ class EosDesignsFacts:
             self._convert_dicts = convert_dicts
         if natural_sort:
             self._natural_sort = natural_sort
-        if template_lookup_module:
-            self._template_lookup_module = template_lookup_module
+        if templar:
+            self._templar = templar
 
     @classmethod
     def keys(cls):
@@ -42,7 +45,6 @@ class EosDesignsFacts:
         Actually the returned list are the names of attributes not starting with "_" and using cached_property class.
         The "_" check is added to allow support for "internal" cached_properties storing temporary values.
         '''
-
         return [key for key in dir(cls) if not key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
 
     @classmethod
@@ -53,8 +55,34 @@ class EosDesignsFacts:
         Actually the returned list are the names of attributes starting with "_" and using cached_property class.
         The "_" check is added to only include "internal" cached_properties storing temporary values.
         '''
-
         return [key for key in dir(cls) if key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
+
+    @cached_property
+    def _searchpath(self):
+        '''
+        Add a '<>/templates' entry for every entry in "ansible_search_path"
+        similar to is done in the Ansible "template" lookup module.
+        '''
+        ansible_search_path = get(self._hostvars, "ansible_search_path", required=True)
+        return compile_searchpath(ansible_search_path)
+
+    def template_var(self, template_file, template_vars):
+        '''
+        Run the simplified templater using the passed Ansible "templar" engine.
+
+        Note that the "templar" was initialized in the calling action module with
+        the following variables per device:
+        - Ansible hostvars for that device
+        - "avd_switch_facts" pointer to dictionary containing instances of this
+           class for every device
+        - "switch" pointer to this instance of this class
+        The pointers mean that templates can leverage any fact method on any device
+        during templating, even if those facts have not yet been calculated.
+        '''
+        try:
+            return template_var(template_file, template_vars, self._templar, self._searchpath)
+        except Exception as e:
+            raise AristaAvdError(f"[{self.hostname}] Error during templating of template: {template_file} with data: {template_vars}") from e
 
     def get(self, key, default_value=None):
         '''
@@ -68,7 +96,6 @@ class EosDesignsFacts:
         '''
         Reset the cached attribute values
         '''
-
         self.__dict__ = {}
 
     def render(self):
@@ -329,14 +356,6 @@ class EosDesignsFacts:
             return self._combine(hostvar_templates, node_type_templates, recursive=True, list_merge='replace')
         else:
             return {}
-
-    @cached_property
-    def _template_vars(self):
-        template_vars = {"ansible_search_path": self._ansible_search_path}
-        custom_templates_extra_vars = get(self._node_type_key_data, "custom_templates_extra_vars", default=[])
-        for extra_var in custom_templates_extra_vars:
-            template_vars[extra_var] = get(self._hostvars, extra_var)
-        return template_vars
 
     @cached_property
     def _switch_data(self):
@@ -993,10 +1012,6 @@ class EosDesignsFacts:
         return None
 
     @cached_property
-    def _ansible_search_path(self):
-        return get(self._hostvars, "ansible_search_path", required=True)
-
-    @cached_property
     def router_id(self):
         '''
         Run template lookup to render ipv4 address for router_id
@@ -1005,15 +1020,12 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.underlay_router is True:
-            template_vars = self._template_vars
-            # Copying __dict__ will expose all switch facts cached up until this function is run.
-            # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['loopback_ipv4_pool'] = self.loopback_ipv4_pool
             template_vars['loopback_ipv4_offset'] = self.loopback_ipv4_offset
             template_path = get(self.ip_addressing, "router_id", required=True)
-            return template_var(template_path, template_vars, self._template_lookup_module)
+            return self.template_var(template_path, template_vars)
         return None
 
     @cached_property
@@ -1266,15 +1278,12 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.underlay_ipv6 is True:
-            template_vars = self._template_vars
-            # Copying __dict__ will expose all switch facts cached up until this function is run.
-            # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['loopback_ipv6_pool'] = self.loopback_ipv6_pool
             template_vars['loopback_ipv6_offset'] = self.loopback_ipv6_offset
             template_path = get(self.ip_addressing, "ipv6_router_id", required=True)
-            return template_var(template_path, template_vars, self._template_lookup_module)
+            return self.template_var(template_path, template_vars)
         return None
 
     @cached_property
@@ -1468,10 +1477,7 @@ class EosDesignsFacts:
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
             inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
-            template_vars = self._template_vars
-            # Copying __dict__ will expose all switch facts cached up until this function is run.
-            # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
@@ -1511,9 +1517,9 @@ class EosDesignsFacts:
                 else:
                     template_vars['uplink_switch_index'] = uplink_index
                     template_path = get(self.ip_addressing, "p2p_uplinks_ip", required=True)
-                    uplink['ip_address'] = template_var(template_path, template_vars, self._template_lookup_module)
+                    uplink['ip_address'] = self.template_var(template_path, template_vars)
                     template_path = get(self.ip_addressing, "p2p_uplinks_peer_ip", required=True)
-                    uplink['peer_ip_address'] = template_var(template_path, template_vars, self._template_lookup_module)
+                    uplink['peer_ip_address'] = self.template_var(template_path, template_vars)
 
                 if self.link_tracking_groups is not None:
                     uplink['link_tracking_groups'] = []
@@ -1650,10 +1656,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.vtep is True:
-            template_vars = self._template_vars
-            # Copying __dict__ will expose all switch facts cached up until this function is run.
-            # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['switch_vtep_loopback_ipv4_pool'] = self.vtep_loopback_ipv4_pool
             template_vars['loopback_ipv4_offset'] = self.loopback_ipv4_offset
@@ -1667,10 +1670,10 @@ class EosDesignsFacts:
                     template_vars['mlag_primary_id'] = self._mlag_peer_id
 
                 template_path = get(self.ip_addressing, "vtep_ip_mlag", required=True)
-                return template_var(template_path, template_vars, self._template_lookup_module)
+                return self.template_var(template_path, template_vars)
             else:
                 template_path = get(self.ip_addressing, "vtep_ip", required=True)
-                return template_var(template_path, template_vars, self._template_lookup_module)
+                return self.template_var(template_path, template_vars)
 
         return None
 
@@ -1683,10 +1686,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.mlag is True:
-            template_vars = self._template_vars
-            # Copying __dict__ will expose all switch facts cached up until this function is run.
-            # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['switch_data'] = {
                 "combined": {
@@ -1701,8 +1701,7 @@ class EosDesignsFacts:
                 template_vars['mlag_secondary_id'] = self.id
                 template_vars['mlag_primary_id'] = self._mlag_peer_id
                 template_path = get(self.ip_addressing, "mlag_ip_secondary", required=True)
-
-            return template_var(template_path, template_vars, self._template_lookup_module)
+            return self.template_var(template_path, template_vars)
         return None
 
     @cached_property
@@ -1724,10 +1723,7 @@ class EosDesignsFacts:
         those are mapped from the switch.* model
         '''
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            template_vars = self._template_vars
-            # Copying __dict__ will expose all switch facts cached up until this function is run.
-            # TODO: We should probably find and document a list of supported context variables instead.
-            template_vars['switch'] = {key: self.__dict__.get(key) for key in self.keys()}
+            template_vars = ChainMap({}, self._hostvars)
             template_vars['switch_id'] = self.id
             template_vars['switch_data'] = {
                 "combined": {
@@ -1743,7 +1739,7 @@ class EosDesignsFacts:
                 template_vars['mlag_primary_id'] = self._mlag_peer_id
                 template_path = get(self.ip_addressing, "mlag_l3_ip_secondary", required=True)
 
-            return template_var(template_path, template_vars, self._template_lookup_module)
+            return self.template_var(template_path, template_vars)
         return None
 
     @cached_property

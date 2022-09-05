@@ -69,9 +69,6 @@ node_type_keys:
       connected_endpoints_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces >
       overlay_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface >
       vtep_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface >
-
-    # Optional | Names of extra hostvars to include in the template environment for custom ip_addressing and interface_descriptions templates
-    custom_templates_extra_vars: [<var_1>, <var_2>]
 ```
 
 ## Context for ip_addressing templates
@@ -82,19 +79,19 @@ router_id:
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_pool }}`
 - `{{ loopback_ipv4_offset }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 mlag_ip_primary & mlag_ip_secondary:
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
 - `{{ switch.uplink_ipv4_pool }}`
@@ -102,19 +99,19 @@ p2p_uplinks_ip & p2p_uplinks_peer_ip:
 - `{{ switch.max_uplink_switches }}`
 - `{{ switch.max_parallel_uplinks }}`
 - `{{ uplink_switch_index }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 vtep_ip_mlag:
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ mlag_primary_id }}`
 - `{{ loopback_ipv4_offset }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 vtep_ip:
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_offset }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models, and may change without notice.
@@ -127,33 +124,33 @@ underlay_ethernet_interfaces:
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p or underlay_l2)`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 underlay_port_channel_interfaces:
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer_channel_group_id }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 mlag_ethernet_interfaces:
 - `{{ mlag_interface }}`
 - `{{ mlag_peer }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 mlag_port_channel_interfaces:
 - `{{ mlag_interfaces }}`
 - `{{ mlag_peer }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 connected_endpoints_ethernet_interfaces:
 - `{{ peer }}`
 - `{{ peer_interface }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 connected_endpoints_port_channel_interfaces:
 - `{{ peer }}`
 - `{{ adapter_port_channel_description }}`
-- `{{ < var_listed_in_custom_templates_extra_vars > }}`
+- All group/hostvars
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models and may change without notice.
