@@ -35,15 +35,9 @@
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
     avd_switch_facts: true
+    #cprofile_file: "eos_designs_facts.prof"
   check_mode: false
   run_once: true
-
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: false
 
 - name: Generate YAML file with hostvars (only for debugging)
   tags: [debug, never]
@@ -59,8 +53,8 @@
   arista.avd.yaml_templates_to_facts:
     templates: "{{ templates.structured_config }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    #cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
-    remove_avd_switch_facts: true
   delegate_to: localhost
   check_mode: false
   register: structured_config
@@ -92,5 +86,12 @@
     dest: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
     mode: 0664
   delegate_to: localhost
+  run_once: true
+  check_mode: false
+
+- name: Remove avd_switch_facts
+  tags: [build, provision, facts, remove_avd_switch_facts]
+  ansible.builtin.set_fact:
+    avd_switch_facts: null
   run_once: true
   check_mode: false

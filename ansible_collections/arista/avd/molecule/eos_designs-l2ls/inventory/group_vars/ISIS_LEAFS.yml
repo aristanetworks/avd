@@ -6,9 +6,12 @@ leaf:
   defaults:
     uplink_interfaces: ['Ethernet1']
     uplink_switches: ['ISIS-SPINE1']
+    isis_system_id_prefix: '0001.0001'
+    isis_maximum_paths: 4
     platform: vEOS-LAB
   node_groups:
     ISIS_LEAFS:
+      vtep_loopback: Loopback0
       nodes:
         ISIS-LEAF1:
           id: 1

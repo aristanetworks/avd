@@ -47,6 +47,9 @@ static_routes:
 {%         if vrf.static_routes is arista.avd.defined %}
 {%             for static_route in vrf.static_routes %}
 {%                 if inventory_hostname in static_route.nodes | arista.avd.default([inventory_hostname]) %}
+{%                     if vrf.name == "default" %}
+{%                         do default_vrf.static_routes.append(static_route.destination_address_prefix) %}
+{%                     endif %}
   - destination_address_prefix: {{ static_route.destination_address_prefix }}
     vrf: {{ vrf.name }}
 {%                     if static_route.gateway is arista.avd.defined %}

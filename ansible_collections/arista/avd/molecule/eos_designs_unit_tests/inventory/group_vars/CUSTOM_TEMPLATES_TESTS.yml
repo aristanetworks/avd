@@ -48,12 +48,6 @@ node_type_keys:
       overlay_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/overlay-loopback.j2'
       vtep_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/vtep-loopback.j2'
 
-    # Optional | Names of extra hostvars to include in the template environment for custom ip_addressing and interface_descriptions templates
-    custom_templates_extra_vars:
-      - "ip_offset_10"
-      - "ip_offset_20"
-      - "description_prefix"
-
 ip_offset_10: 10
 ip_offset_20: 20
 

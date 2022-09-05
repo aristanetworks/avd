@@ -44,16 +44,10 @@ class ActionModule(ActionBase):
                                     f"Must be one of {VALID_VALIDATION_MODES}")
 
         # ########
-        # READ ANSIBLE VARIABLES AND PERFORM TEMPLATING TO SUPPORT INLINE JINJA
+        # BUILD DATA FROM HOSTVARS AND DEFAULT_VARS
         hostname = task_vars['inventory_hostname']
-        data = {}
-        for var in task_vars:
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
-                continue
-            try:
-                data[var] = self._templar.template(task_vars[var])
-            except Exception as e:
-                raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+        data = self._templar.template(self._task._role.get_default_vars())
+        data.update(task_vars['hostvars'].get(hostname))
 
         try:
             avd_schema = AvdSchema(schema)
