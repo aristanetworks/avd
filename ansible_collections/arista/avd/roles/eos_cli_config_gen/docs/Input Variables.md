@@ -67,6 +67,26 @@ community_lists:
     action: <str>
 ```
 
+## Domain Lookup
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ip_domain_lookup</samp>](## "ip_domain_lookup") | Dictionary |  |  |  | Domain Lookup |
+| [<samp>&nbsp;&nbsp;source_interfaces</samp>](## "ip_domain_lookup.source_interfaces") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_domain_lookup.source_interfaces.[].name") | String | Required, Unique |  |  | Name of Source Interface<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_domain_lookup.source_interfaces.[].vrf") | String |  |  |  | Name of vrf |
+
+### YAML
+
+```yaml
+ip_domain_lookup:
+  source_interfaces:
+    - name: <str>
+      vrf: <str>
+```
+
 ## Standard Access-Lists
 
 ### Variables
