@@ -3,6 +3,7 @@ mcs_client:
   shutdown: false
   cvx_secondary:
     name: default
+    shutdown: false
     server_hosts:
       - 10.90.224.188
       - 10.90.224.189
