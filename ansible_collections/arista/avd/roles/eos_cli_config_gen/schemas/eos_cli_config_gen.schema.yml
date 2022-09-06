@@ -108,12 +108,12 @@ keys:
             name:
               type: str
               required: true
-              description: 'Name of Source Interface
+              description: 'Source Interface
 
                 '
             vrf:
               type: str
-              description: Name of vrf
+              display_name: VRF
   standard_access_lists:
     type: list
     primary_key: name

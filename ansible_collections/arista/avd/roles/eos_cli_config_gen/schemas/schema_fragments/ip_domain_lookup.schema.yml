@@ -19,8 +19,7 @@ keys:
               type: str
               required: true
               description: |
-                Name of Source Interface
+                Source Interface
             vrf:
               type: str
-              description: |
-                Name of vrf
+              display_name: VRF
