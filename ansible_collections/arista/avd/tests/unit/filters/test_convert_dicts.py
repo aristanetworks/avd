@@ -28,13 +28,14 @@ class TestConvertDicts():
 
     def test_convert_dicts_with_nested_dict_secondary_key(self):
         resp = convert_dicts(nested_dict, secondary_key='types')
-        assert resp == [{'action': 'permit 1000:1000', 'name': 'TEST1'},
-                        {'action': 'permit 2000:3000', 'name': 'TEST2'}]
+        assert resp == [{'name': 'TEST1', 'types': {'action': 'permit 1000:1000'}},
+                        {'name': 'TEST2', 'types': {'action': 'permit 2000:3000'}}]
 
     def test_convert_dicts_with_nested_dict_primary_and_secondary_key(self):
         resp = convert_dicts(nested_dict, 'id', 'types')
-        assert resp == [{'action': 'permit 1000:1000', 'id': 'TEST1'},
-                        {'action': 'permit 2000:3000', 'id': 'TEST2'}]
+        print(resp)
+        assert resp == [{'id': 'TEST1', 'types': {'action': 'permit 1000:1000'}},
+                        {'id': 'TEST2', 'types': {'action': 'permit 2000:3000'}}]
 
     def test_convert_dicts_with_listofdict_default(self):
         resp = convert_dicts(nested_list_of_dict)

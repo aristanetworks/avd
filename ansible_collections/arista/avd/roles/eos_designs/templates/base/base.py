@@ -282,7 +282,7 @@ class AVDStructConfig(AvdFacts):
             snmp_server['location'] = snmp_location
         users = snmp_settings.get('users')
         if users is not None:
-            snmp_server['users']: []
+            snmp_server['users'] = []
             for user in users:
                 version = get(user, 'version')
                 user_dict = {
@@ -298,42 +298,40 @@ class AVDStructConfig(AvdFacts):
                             compute_v3_user_localized_key is True
                     ):
                         user_dict['localized'] = local_engine_id
-                        auth = user.get('auth')
-                        auth_passphrase = user.get('auth_passphrase')
+                    auth = user.get('auth')
+                    auth_passphrase = user.get('auth_passphrase')
+                    if (
+                            auth is not None and
+                            auth_passphrase is not None
+                    ):
+                        user_dict['auth'] = auth
+                        hash_filter = {}
                         if (
-                                auth is not None and
-                                auth_passphrase is not None
+                                compute_local_engineid is True and
+                                compute_v3_user_localized_key is True
                         ):
-                            user_dict['auth'] = auth
-                            hash_filter = {"passphrase": auth_passphrase, "auth": auth, "engine_id": local_engine_id}
+                            hash_filter.update({"passphrase": auth_passphrase,
+                                                "auth": auth,
+                                                "engine_id": local_engine_id})
                             user_dict['auth_passphrase'] = hash_passphrase(hash_filter)
-
-                            priv = user.get('priv')
-                            priv_passphrase = user.get('priv_passphrase')
-                            if (
-                                    priv is not None and
-                                    priv_passphrase is not None
-                            ):
-                                user_dict['priv'] = priv
-                                hash_filter["passphrase"] = priv_passphrase,
-                                hash_filter["priv"] = priv
-                                user_dict['priv_passphrase'] = hash_passphrase(hash_filter)
-                    else:
-                        auth = user.get('auth')
-                        auth_passphrase = user.get('auth_passphrase')
-                        if (
-                                auth is not None and
-                                auth_passphrase is not None
-                        ):
-                            user_dict['auth'] = auth
+                        else:
                             user_dict['auth_passphrase'] = auth_passphrase
-                            priv = user.get('priv')
-                            priv_passphrase = user.get('priv_passphrase')
+
+                        priv = user.get('priv')
+                        priv_passphrase = user.get('priv_passphrase')
+                        if (
+                                priv is not None and
+                                priv_passphrase is not None
+                        ):
+                            user_dict['priv'] = priv
                             if (
-                                    priv is not None and
-                                    priv_passphrase is not None
+                                    compute_local_engineid is True and
+                                    compute_v3_user_localized_key is True
                             ):
-                                user_dict['priv'] = priv
+                                hash_filter.update({"passphrase": priv_passphrase,
+                                                    "priv": priv})
+                                user_dict['priv_passphrase'] = hash_passphrase(hash_filter)
+                            else:
                                 user_dict['priv_passphrase'] = priv_passphrase
                 snmp_server['users'].append(user_dict)
         return snmp_server
@@ -342,7 +340,7 @@ class AVDStructConfig(AvdFacts):
     def spanning_tree(self):
         spanning_tree_root_super = get(self._switch, 'spanning_tree_root_super')
         spanning_tree_mode = get(self._switch, 'spanning_tree_mode')
-        if spanning_tree_root_super is False and spanning_tree_mode is None:
+        if spanning_tree_root_super is not True and spanning_tree_mode is None:
             return None
         spanning_tree = {}
         if spanning_tree_root_super is True:
