@@ -182,7 +182,13 @@ evpn_import_pruning: < true | false | default -> false >
 # Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
 # This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
-evpn_prevent_readvertise_to_server : < true | false | default -> false >
+evpn_prevent_readvertise_to_server: < true | false | default -> false >
+
+# Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
+# This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
+# all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
+# Note this key is ignored when EVPN is configured.
+underlay_filter_peer_as: < true | false | default -> false >
 
 # Configure prefix for "short_esi" values | Optional
 evpn_short_esi_prefix: < string | default -> "0000:0000:" >
