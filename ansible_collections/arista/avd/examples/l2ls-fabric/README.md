@@ -322,7 +322,7 @@ The updated changes are noted in the tabs below.
 
     Update with the following changes and additions.
 
-    - Change the node key **spine** to **l3spine** to match the node type set previously in DC1_SPINES.yml.
+    - Change the node key **spine** to **l3spine** to match the node type set previously in DC1_SPINES.yml
     - Add **loopback_ipv4_pool**
     - Add **mlag_peer_l3_ipv4_pool**
     - Add **virtual_router_mac_address**
