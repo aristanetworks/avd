@@ -93,6 +93,27 @@ keys:
           description: 'Action as string
 
             Example: "permit GSHUT 65123:123"'
+  ip_domain_lookup:
+    type: dict
+    display_name: Domain Lookup
+    keys:
+      source_interfaces:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: 'Source Interface
+
+                '
+            vrf:
+              type: str
+              display_name: VRF
   standard_access_lists:
     type: list
     primary_key: name
