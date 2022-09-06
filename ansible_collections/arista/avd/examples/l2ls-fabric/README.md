@@ -158,7 +158,7 @@ Here are the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_FABRIC"
-    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. At this level, you define fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links. Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool.
+    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. You define fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links at this level. Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool.
 
     Variables applied under the node key type (spine/leaf) defaults section are inherited to nodes under each type. These variables may be overwritten under the node itself.
 
