@@ -5,13 +5,18 @@ import cProfile
 import pstats
 import yaml
 from collections import ChainMap
+import importlib
 from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.module_utils.utils import template as templater, compile_searchpath, get
 from datetime import datetime
+
+
+DEFAULT_PYTHON_CLASS_NAME = "AVDStructConfig"
 
 
 class ActionModule(ActionBase):
@@ -76,38 +81,51 @@ class ActionModule(ActionBase):
         if debug:
             avd_yaml_templates_to_facts_debug = task_vars.get('avd_yaml_templates_to_facts_debug', [])
 
+        # template_list can contain templates or python_modules
         for template_item in template_list:
             if debug:
                 debug_item = template_item
                 debug_item['timestamps'] = {"starting": datetime.now()}
-
-            template = template_item.get('template')
-            if not template:
-                raise AnsibleActionFail("Invalid template data")
 
             template_options = template_item.get('options', {})
             list_merge = template_options.get('list_merge', 'append')
 
             strip_empty_keys = template_options.get('strip_empty_keys', True)
 
-            if debug:
-                debug_item['timestamps']['run_template'] = datetime.now()
+            if 'template' in template_item:
+                template = template_item['template']
 
-            # Here we parse the template, expecting the result to be a YAML formatted string
-            template_result = templater(template, template_vars, templar, searchpath)
-
-            if debug:
-                debug_item['timestamps']['load_yaml'] = datetime.now()
-
-            # Load data from the template result.
-            template_result_data = yaml.safe_load(template_result)
-
-            # If the argument 'strip_empty_keys' is set, remove keys with value of null / None from the resulting dict (recursively).
-            if strip_empty_keys:
                 if debug:
-                    debug_item['timestamps']['strip_empty_keys'] = datetime.now()
+                    debug_item['timestamps']['run_template'] = datetime.now()
 
-                template_result_data = strip_null_from_data(template_result_data)
+                # Here we parse the template, expecting the result to be a YAML formatted string
+                template_result = templater(template, template_vars, templar, searchpath)
+
+                if debug:
+                    debug_item['timestamps']['load_yaml'] = datetime.now()
+
+                # Load data from the template result.
+                template_result_data = yaml.safe_load(template_result)
+
+                # If the argument 'strip_empty_keys' is set, remove keys with value of null / None from the resulting dict (recursively).
+                if strip_empty_keys:
+                    if debug:
+                        debug_item['timestamps']['strip_empty_keys'] = datetime.now()
+
+                    template_result_data = strip_null_from_data(template_result_data)
+
+            elif 'python_module' in template_item:
+                module_path = template_item.get('python_module')
+                class_name = template_item.get('python_class_name', DEFAULT_PYTHON_CLASS_NAME)
+                cls = getattr(importlib.import_module(module_path), class_name)
+                cls_instance = cls(hostvars=template_vars, templar=templar)
+
+                if debug:
+                    debug_item['timestamps']['render_python_class'] = datetime.now()
+
+                template_result_data = cls_instance.render()
+            else:
+                raise AnsibleActionFail("Invalid template data")
 
             # If there is any data produced by the template, combine it on top of previous output.
             if template_result_data:
@@ -123,9 +141,6 @@ class ActionModule(ActionBase):
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
-            if debug:
-                debug_item = {'action': 'template_output', 'timestamps': {'combine_data': datetime.now()}}
-
             if debug:
                 debug_item['timestamps']['templating'] = datetime.now()
 
@@ -150,7 +165,7 @@ class ActionModule(ActionBase):
             # Depending on the file suffix of 'dest' (default: 'json') we will format the data to yaml or just write the output data directly.
             # The Copy module used in 'write_file' will convert the output data to json automatically.
             if dest.split('.')[-1] in ["yml", "yaml"]:
-                write_file_result = self.write_file(yaml.dump(output, indent=2, sort_keys=False, width=130), task_vars)
+                write_file_result = self.write_file(yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130), task_vars)
             else:
                 write_file_result = self.write_file(output, task_vars)
 

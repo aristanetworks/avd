@@ -5,7 +5,7 @@ default_templates:
     structured_config:
       # Render Structured Configuration
       # Base features
-      - template: "base/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.templates.base.base"
       # MLAG feature
       - template: "mlag/main.j2"
       # Underlay feature
@@ -27,6 +27,7 @@ default_templates:
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
+
     ip_addressing:
       router_id: 'ip_addressing/router-id.j2'
       ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
@@ -54,7 +55,7 @@ default_templates:
   mpls:
     structured_config:
       # Render Structured Configuration
-      - template: "base/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.templates.base.base"
       # Underlay feature
       - template: "underlay/main.j2"
       # Core Interfaces Feature
@@ -89,7 +90,7 @@ default_templates:
     structured_config:
       # Render Structured Configuration
       # Base features
-      - template: "base/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.templates.base.base"
       # MLAG feature
       - template: "mlag/main.j2"
       # Underlay feature
