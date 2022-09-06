@@ -7,7 +7,12 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible.plugins.filter.core import combine
+try:
+    from ansible.plugins.filter.core import combine
+except ImportError as imp_exc:
+    FILTER_IMPORT_ERROR = imp_exc
+else:
+    FILTER_IMPORT_ERROR = None
 
 
 class AvdFacts:

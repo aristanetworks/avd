@@ -12,7 +12,8 @@ from ansible.utils.vars import isidentifier
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.module_utils.utils import template as templater, compile_searchpath, get
+from ansible_collections.arista.avd.plugins.module_utils.utils import template as templater, compile_searchpath, get, AristaAvdError
+from ansible_collections.arista.avd.plugins.module_utils.eos_designs import AvdFacts
 from datetime import datetime
 
 
@@ -130,12 +131,20 @@ class ActionModule(ActionBase):
                 module_path = template_item.get('python_module')
                 class_name = template_item.get('python_class_name', DEFAULT_PYTHON_CLASS_NAME)
                 cls = getattr(importlib.import_module(module_path), class_name)
-                cls_instance = cls(hostvars=template_vars, templar=templar)
+                if issubclass(cls, AvdFacts):
+                    cls_instance = cls(hostvars=template_vars, templar=templar)
+                    if debug:
+                        debug_item['timestamps']['render_python_class'] = datetime.now()
+                    if getattr(cls_instance, 'render'):
+                        try:
+                            template_result_data = cls_instance.render()
+                        except Exception as error:
+                            raise AnsibleActionFail(error) from error
+                    else:
+                        raise AristaAvdError(f'{cls_instance} has no attribute render')
+                else:
+                    raise AnsibleActionFail(f"{cls} is not an instance of AvdFacts class")
 
-                if debug:
-                    debug_item['timestamps']['render_python_class'] = datetime.now()
-
-                template_result_data = cls_instance.render()
             else:
                 raise AnsibleActionFail("Invalid template data")
 
