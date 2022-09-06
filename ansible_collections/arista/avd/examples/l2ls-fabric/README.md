@@ -299,7 +299,7 @@ In our example, we used an external L3/FW Device to route between subnets. This 
 
 ![Figure: 3](images/L2LS_Spine_routing.svg)
 
-The following group_vars need updated to enable L3 routing on the Spines.
+The following group_vars need updating to enable L3 routing on the Spines.
 
 - DC1_SPINES.yml
 - DC1_FABRIC.yml
