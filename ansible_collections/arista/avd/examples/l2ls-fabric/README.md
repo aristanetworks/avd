@@ -171,7 +171,7 @@ Here are the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_SPINES"
-    In an L2LS design, we have 2 types of spine nodes: `spine` and `l3spine`. In AVD. the node type defines the functionality and the EOS Cli configuration to be generated. For an L2LS design, we will use node type: spine. Later, we will add routing to the Spines by changing the node type to l3spine.
+    In an L2LS design, we have two types of spine nodes: `spine` and `l3spine`. In AVD. the node type defines the functionality and the EOS Cli configuration to be generated. For an L2LS design, we will use node type: spine. Later, we will add routing to the Spines by changing the node type to l3spine.
 
     ``` yaml
     --8<--
