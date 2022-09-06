@@ -352,7 +352,7 @@ The updated changes are noted in the tabs below.
 
     ???+ Note
 
-        To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `VLANS` is simply a name to organize VRFs and SVIs. You may change it to your liking.
+        To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `VLANS` is simply a name for organizing VRFs and SVIs. You may change it to your liking.
 
     ``` yaml
     ---
