@@ -96,7 +96,7 @@ examples/l2ls-fabric/switch-basic-configurations/SPINE1.cfg
 
 ## Ansible Inventory
 
-Now that we understand the L2LS topology being used, we need to create the Ansible inventory that respresents this topology. The following is a textual and graphical representation of the Ansible inventory group variables and naming scheme used in this example:
+Now that we understand the L2LS topology being used, we need to create the Ansible inventory that represents this topology. The following is a textual and graphical representation of the Ansible inventory group variables and naming scheme used in this example:
 
 ``` text
 - DC1
