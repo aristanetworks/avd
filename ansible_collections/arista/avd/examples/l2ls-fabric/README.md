@@ -207,7 +207,7 @@ Here are the Ansible **group_vars** used in this example.
 
 ## The Playbooks
 
-Now that we have all of our Ansible variables (AVD inputs) defined, it is time to generate some configs. To make things simple, we provide 2 playbooks. One playbook will allow you to just build and view EOS Cli intended configurations per device. The second playbook has an additional task to also deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is very simple as it imports 2 AVD roles: eos_designs and eos_cli_config_gen that do all the heavy lifting. The combination of these 2 roles produce recommended configurations that are part of Arista's Design Guides.
+Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook also has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. The combination of these two roles produces recommended configurations that are part of Arista's Design Guides.
 
 === "build.yml"
     ```yaml
