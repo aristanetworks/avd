@@ -367,8 +367,8 @@ struct_cfg:
     vrfs:
       OOB:
         destinations:
-          192.168.200.10: None
-          10.0.200.90: None
+          192.168.200.10: null
+          10.0.200.90: null
         source_interface: Management1
 ethernet_interfaces:
   Ethernet1:
@@ -579,7 +579,7 @@ sflow:
   vrfs:
     OOB:
       destinations:
-        192.168.200.10: None
-        10.0.200.90: None
+        192.168.200.10: null
+        10.0.200.90: null
       source_interface: Management1
 ntp: null

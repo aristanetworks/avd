@@ -30,7 +30,7 @@ class AvdFacts:
         The "_" check is added to allow support for "internal" cached_properties storing temporary values.
         '''
 
-        return [key for key in dir(cls) if not key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
+        return [key for key in cls.__dict__ if not key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
 
     @classmethod
     def internal_keys(cls):
@@ -38,7 +38,7 @@ class AvdFacts:
         Return a list containing the names of attributes starting with "_" and using cached_property class.
         '''
 
-        return [key for key in dir(cls) if key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
+        return [key for key in cls.__dict__ if key.startswith('_') and isinstance(getattr(cls, key), cached_property)]
 
     def get(self, key, default_value=None):
         '''
@@ -57,7 +57,6 @@ class AvdFacts:
         If the value is not cached, it will be resolved by the attribute function first.
         Empty values are removed from the returned data.
         '''
-
         return {key: getattr(self, key) for key in self.keys() if getattr(self, key) is not None}
 
     @cached_property
