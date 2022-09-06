@@ -107,7 +107,7 @@ Now that we understand the L2LS topology being used, we need to create the Ansib
       - POD2
 ```
 
-DC1 represents the highest level within the hierarchical grouping. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent and child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allows variables to be shared at any level within the hierarchy. DC1_NETWORK_SERVICES is a group that has 2 other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
+DC1 represents the highest level within the hierarchical grouping. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent and child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, DC1_NETWORK_SERVICES is a group with two other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to the group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
 
 This naming convention makes it possible to easily extend anything, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
 
