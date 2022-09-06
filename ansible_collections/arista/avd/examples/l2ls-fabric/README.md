@@ -305,7 +305,7 @@ The following group_vars need updating to enable L3 routing on the Spines.
 - DC1_FABRIC.yml
 - DC1_NETWORK_SERVICES.yml
 
-The updates changes are noted in the tabs below.
+The updated changes are noted in the tabs below.
 
 === "DC1_SPINES.yml"
 
