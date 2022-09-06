@@ -133,7 +133,7 @@ examples/l2ls-fabric/inventory.yml
 
 ## AVD Fabric Variables
 
-To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The below table of group_vars is one example of how to layout the fabric variables.
+To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The table below of group_vars is one example of the layout of the fabric variables.
 
 | group_vars/              | Description                                   |
 | ------------------------ | --------------------------------------------- |
