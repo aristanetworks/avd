@@ -123,7 +123,7 @@ The below inventory file represents 2 Spines and 2 Leaf Pairs (POD1 & POD2). The
 
 The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host allows for verified name resolution (e.g., ping SPINE1).
 
-Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define variable ansible_host to be an IP address for each device.
+Alternatively, if no DNS is available or devices need to be reached using a fully-qualified domain-name (FQDN), define the variable ansible_host to be an IP address for each device.
 
 ```yaml
 --8<--
