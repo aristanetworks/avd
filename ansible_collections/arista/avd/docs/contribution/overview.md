@@ -13,6 +13,7 @@ The following individuals are on the AVD Core Team:
 - Carl Buchmann ([@carlbuchmann](https://github.com/carlbuchmann))
 - Claus Holbech ([@ClausHolbechArista](https://github.com/ClausHolbechArista))
 - Tony Goda ([@tgodaA](https://github.com/tgodaA))
+- Julio Perez ([@JulioPDX](https://github.com/JulioPDX))
 
 ## Contributing
 
