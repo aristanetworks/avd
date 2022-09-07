@@ -18,7 +18,8 @@
 {#                 Create list of inventory_hostname once per interface to be compatible with existing adapters style #}
 {%                 set adapters = [] %}
 {%                 for switch_port in switch_ports %}
-{%                     set adapter_overrides = {"switch_ports": [switch_port], "switches": [inventory_hostname]} %}
+{#                     Inserting a blank in switches to always trigger the check for mlag/esi for network_ports data model #}
+{%                     set adapter_overrides = {"switch_ports": [switch_port], "switches": [inventory_hostname, ""]} %}
 {%                     set adapter = network_port_item | ansible.builtin.combine(adapter_overrides) %}
 {%                     do adapters.append(adapter) %}
 {%                 endfor %}
