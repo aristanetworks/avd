@@ -62,31 +62,33 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
+        # Read ansible variables and perform templating to support inline jinja
+        for var in task_vars:
+            if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
+                continue
+            try:
+                task_vars[var] = self._templar.template(task_vars[var])
+            except Exception as e:
+                raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+
         # Create a new Ansible "templar" instance to be passed along to our simplified "templater"
         searchpath = compile_searchpath(task_vars.get('ansible_search_path'))
         templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
 
-        # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
-        hostvars = task_vars['hostvars']
-
-        default_vars = self._templar.template(self._task._role.get_default_vars())
         hostname = task_vars['inventory_hostname']
-        host_hostvars = hostvars.get(hostname)
         switch_facts = get(task_vars, f"avd_switch_facts..{hostname}", default={}, separator="..")
 
         # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
         # We use ChainMap to avoid copying large amounts of data around, mapping in
         #  - output or { root_key: output }
-        #  - avd_switch_facts
-        #  - hostvars for one host
-        #  - the "hostvars" object
-        #  - role default vars
+        #  - eos_designs_facts for this switch
+        #  - templated version of all other vars
         # Any var assignments will end up in output, so all other objects are protected.
         output = {}
         if root_key:
-            template_vars = ChainMap({root_key: output}, switch_facts, host_hostvars, {"hostvars": hostvars}, default_vars)
+            template_vars = ChainMap({root_key: output}, switch_facts, task_vars)
         else:
-            template_vars = ChainMap(output, switch_facts, host_hostvars, {"hostvars": hostvars}, default_vars)
+            template_vars = ChainMap(output, switch_facts, task_vars)
 
         # If the argument 'debug' is set, a 'avd_yaml_templates_to_facts_debug' list will be added to the output.
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.
@@ -163,10 +165,10 @@ class ActionModule(ActionBase):
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
             if debug:
-                debug_item['timestamps']['templating'] = datetime.now()
+                debug_item = {'action': 'template_output', 'timestamps': {'templating': datetime.now()}}
 
-            templar.available_variables = template_vars
-            output = templar.template(output)
+            # templar.available_variables = template_vars
+            # output = templar.template(output)
 
             if debug:
                 debug_item['timestamps']['done'] = datetime.now()
