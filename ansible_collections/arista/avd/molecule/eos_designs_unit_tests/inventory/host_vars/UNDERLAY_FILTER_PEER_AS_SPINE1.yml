@@ -1,0 +1,13 @@
+---
+type: spine
+
+# This device is not participating in EVPN, so we _will_ see a RM added to underlay from "underlay_filter_peer_as"
+underlay_filter_peer_as: true
+
+spine:
+  nodes:
+    UNDERLAY_FILTER_PEER_AS_SPINE1:
+      evpn_role: none
+      bgp_as: 65000
+      loopback_ipv4_pool: 192.168.255.0/24
+      id: 1
