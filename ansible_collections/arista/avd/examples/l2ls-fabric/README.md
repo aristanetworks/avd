@@ -250,7 +250,7 @@ ansible-playbook playbooks/deploy.yml
 
 ### EOS Intended Configurations
 
-You configuration files should be similar to these.
+Your configuration files should be similar to these.
 
 === "SPINE1"
 
