@@ -6,7 +6,7 @@ import re
 import ipaddress
 from functools import cached_property
 from hashlib import sha256
-from ansible_collections.arista.avd.plugins.module_utils.utils import (
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AristaAvdError, AristaAvdMissingVariableError,
     compile_searchpath, get, get_item, default, template_var)
 

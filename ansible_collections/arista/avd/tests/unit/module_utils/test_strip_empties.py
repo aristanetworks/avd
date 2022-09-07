@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 import pytest
 
 STRIP_EMPTIES_LIST = {

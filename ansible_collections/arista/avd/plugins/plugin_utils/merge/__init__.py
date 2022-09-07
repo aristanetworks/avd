@@ -1,5 +1,5 @@
 import copy
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError
 try:
     import deepmerge
 except ImportError as imp_exc:

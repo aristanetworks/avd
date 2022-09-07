@@ -12,8 +12,8 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.module_utils.eos_designs_facts import EosDesignsFacts
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError
 
 
 class ActionModule(ActionBase):

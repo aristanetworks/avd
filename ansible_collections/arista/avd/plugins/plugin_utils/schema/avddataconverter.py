@@ -3,7 +3,7 @@ __metaclass__ = type
 
 import copy
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.module_utils.utils import get_all
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA
 
 
