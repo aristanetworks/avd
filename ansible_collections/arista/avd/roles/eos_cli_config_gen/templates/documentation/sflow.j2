@@ -8,9 +8,9 @@
 | VRF | SFlow Source Interface | SFlow Destination | Port |
 | --- | ---------------------- | ----------------- | ---- |
 {%         if sflow.vrfs is arista.avd.defined %}
-{%             for vrf in sflow.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for vrf in sflow.vrfs | arista.avd.natural_sort('name') %}
 {%                 if vrf.destinations is arista.avd.defined %}
-{%                     for destination in vrf.destinations | arista.avd.convert_dicts('destination') | arista.avd.natural_sort('destination') %}
+{%                     for destination in vrf.destinations | arista.avd.natural_sort('destination') %}
 {%                         set port = destination.port | arista.avd.default('6343') %}
 | {{ vrf.name }} | - | {{ destination.destination }} | {{ port }} |
 {%                     endfor %}
@@ -21,7 +21,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if sflow.destinations is arista.avd.defined %}
-{%             for destination in sflow.destinations | arista.avd.convert_dicts('destination') %}
+{%             for destination in sflow.destinations  %}
 {%                 set port = destination.port | arista.avd.default('6343') %}
 | default | - | {{ destination.destination }} | {{ port }} |
 {%             endfor %}
