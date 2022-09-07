@@ -44,6 +44,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
   ```bash
   ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
   ```
+
 - The output will be rendered at the end of the configuration.
 - The order of custom templates in the list can be important if they overlap.
 - It is recommenended to use a `!` delimiter at the top of each custom template.
@@ -313,21 +314,6 @@ aaa_server_groups:
     type: < tacacs+ | radius | ladp >
     servers:
       - server: < host1_ip_address >
-```
-
-#### CVX
-
-CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
-
-```yaml
-cvx:
-  shutdown: < true | false >
-  services:
-    mcs:
-      redis:
-        password: < password >
-        password_type: < 0 | 7 | 8a | default -> 7 >
-      shutdown: < true | false >
 ```
 
 #### Enable Password
@@ -1862,6 +1848,7 @@ management_console:
 ```
 
 #### Management CVX
+
 ```yaml
 management_cvx:
   shutdown: < true | false >

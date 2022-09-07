@@ -2,11 +2,11 @@
 
 These instructions are for regular users to install via Ansible Galaxy. To setup a development environment use [these](../contribution/setup-environment.md) instructions.
 
-__arista.avd__ can also be consumed using the ["AVD All-in-one" container](https://github.com/arista-netdevops-community/avd-all-in-one-container).
+**arista.avd** can also be consumed using the ["AVD All-in-one" container](https://github.com/arista-netdevops-community/avd-all-in-one-container).
 
 ## Install from Ansible Galaxy
 
-The __arista.avd__ collection is available on [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
+The **arista.avd** collection is available on [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
 
 Make sure to install [Python requirements](requirements.md#additional-python-libraries-required) afterwards.
 

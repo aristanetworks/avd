@@ -76,24 +76,28 @@ node_type_keys:
 To help calculate the custom IP addressing, the following contextual variables are available to the custom templates:
 
 router_id:
+
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_pool }}`
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
 mlag_ip_primary & mlag_ip_secondary:
+
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
 - All group/hostvars
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:
+
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
 - All group/hostvars
 
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
+
 - `{{ switch.uplink_ipv4_pool }}`
 - `{{ switch.id }}`
 - `{{ switch.max_uplink_switches }}`
@@ -102,12 +106,14 @@ p2p_uplinks_ip & p2p_uplinks_peer_ip:
 - All group/hostvars
 
 vtep_ip_mlag:
+
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ mlag_primary_id }}`
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
 vtep_ip:
+
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_offset }}`
@@ -121,33 +127,39 @@ the values are not part of the officially supported data models, and may change 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
 underlay_ethernet_interfaces:
+
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p or underlay_l2)`
 - All group/hostvars
 
 underlay_port_channel_interfaces:
+
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer_channel_group_id }}`
 - All group/hostvars
 
 mlag_ethernet_interfaces:
+
 - `{{ mlag_interface }}`
 - `{{ mlag_peer }}`
 - All group/hostvars
 
 mlag_port_channel_interfaces:
+
 - `{{ mlag_interfaces }}`
 - `{{ mlag_peer }}`
 - All group/hostvars
 
 connected_endpoints_ethernet_interfaces:
+
 - `{{ peer }}`
 - `{{ peer_interface }}`
 - All group/hostvars
 
 connected_endpoints_port_channel_interfaces:
+
 - `{{ peer }}`
 - `{{ adapter_port_channel_description }}`
 - All group/hostvars

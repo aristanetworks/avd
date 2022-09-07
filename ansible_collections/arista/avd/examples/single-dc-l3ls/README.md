@@ -271,7 +271,6 @@ The `NETWORK_SERVICES` section does two things:
 1. It creates a group named "NETWORK_SERVICES". Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml`).
 2. The contents of the file, which in this case are specifications of VRFs and VLANs, are then applied to the children of the group, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`
 
-
 The `CONNECTED_ENDPOINTS` section also does two things:
 
 1. It creates a group named "CONNECTED_ENDPOINTS". Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml`).

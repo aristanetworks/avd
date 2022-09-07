@@ -2,7 +2,7 @@
 
 The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
 
-# Fabric Topology Variables for MPLS Design
+## Fabric Topology Variables for MPLS Design
 
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 

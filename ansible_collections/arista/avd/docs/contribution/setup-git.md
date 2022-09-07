@@ -18,7 +18,7 @@ cd ansible-avd
 
 ### Update your `ansible.cfg`
 
-In your project, update your `ansible.cfg` file to point __collection_paths__ to your local version of ansible-avd
+In your project, update your `ansible.cfg` file to point **collection_paths** to your local version of ansible-avd
 
 - Get full path to your newly cloned AVD repository.
 

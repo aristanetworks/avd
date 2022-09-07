@@ -38,7 +38,7 @@
 - If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.
 - To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests. Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.
 
-## Variables and Options:
+## Variables and Options
 
 Note: The variables should be applied to all devices in the fabric.
 
@@ -283,6 +283,7 @@ trunk_groups:
 Enabling the use of trunk groups will change the behavior of several components in AVD.
 
 Changes:
+
 - **Requires** Trunk Groups to be defined on all trunks towards connected endpoints
 - `MLAG` Trunk Group will be configured on all vlans on MLAG switches
 - Use Trunk Groups for uplinks to L2 switches instead of "switchport trunk allow vlan" lists.
@@ -293,7 +294,7 @@ Changes:
 
 ![Figure: Enable Trunk Groups](../../../media/enable_trunk_groups.png)
 
-While it is recommented for consistency to set `enable_trunk_groups` for all devices in the fabric,
+While it is recommended for consistency to set `enable_trunk_groups` for all devices in the fabric,
 it can also be set in group_vars or host_vars since trunk-groups are only local to a switch.
 
 !!! warning
@@ -305,7 +306,7 @@ it can also be set in group_vars or host_vars since trunk-groups are only local 
 
 Enabling this feature will prevent unneeded trunk groups from being configured on vlans.
 
-Using the figure under [Details on `enable_trunk_groups`](#details-on-enabletrunkgroups) as basis
+Using the figure under [Details on `enable_trunk_groups`](#details-on-enable_trunk_groups) as basis
 enabling with feature would remove the unmatched trunk groups like this:
 
 ![Figure: Enable only_local_vlan_trunk_groups](../../../media/only_local_vlan_trunk_groups.png)

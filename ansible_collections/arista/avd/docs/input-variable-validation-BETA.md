@@ -111,7 +111,8 @@ keys:
 This fragment will be merged with other fragments during development, to form the complete role schema.
 
 For reference, the full Role Schemas can be found here:
-- [`eos_designs` AVD Schema](## "not ready yet - ../roles/eos_designs/schemas/eos_designs.schema.yml")
+
+- [`eos_designs` AVD Schema, not ready yet](../roles/eos_designs/schemas/eos_designs.schema.yml)
 - [`eos_cli_config_gen` AVD Schema](../roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml)
 
 The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
@@ -147,7 +148,6 @@ This also means that a poorly written schema could have conflicting schema optio
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
 | <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is _not_ possible to override 'filename' on a child key, if set on the parent. |
 | <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all parent keys are automatically included in the table.<br>If 'table' is set on a parent key, all child keys will be included in the same table.<br>It is _not_ possible to override 'table' on a child key, if set on the parent. |
-
 
 The meta-schema does not allow for other keys to be set in the schema.
 

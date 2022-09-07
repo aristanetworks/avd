@@ -222,7 +222,7 @@ Plugins documentation is available [here](../../plugins/README.md)
 
 - _Description_
 
-  All tests to check if a variable is defined shall be done with __`arista.avd.defined`__. This test also does a deep test and doesn't require a test at an upper level.
+  All tests to check if a variable is defined shall be done with **`arista.avd.defined`**. This test also does a deep test and doesn't require a test at an upper level.
 
 - _Example_
 
@@ -234,11 +234,11 @@ Plugins documentation is available [here](../../plugins/README.md)
   {% if router_bgp.vrfs[vrf].rd is arista.avd.defined %}
   ```
 
-### PLUGIN-2 - Test if variable exists with a given value
+### PLUGIN-2 Test if variable exists with a given value
 
 - _Description_
 
-  To test if a variable is defined and has a specific value, the test __`arista.avd.defined`__ shall be used.
+  To test if a variable is defined and has a specific value, the test **`arista.avd.defined`** shall be used.
 
 - _Example_
 

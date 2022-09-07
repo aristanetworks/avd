@@ -2,7 +2,7 @@
 
 The Core Interfaces feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the Core Interfaces should be expected.
 
-# Core Interfaces
+## Core Interfaces
 
 The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
 
@@ -91,7 +91,7 @@ core_interfaces:
           < node2 >: [ '< node2 interface1 >', '< node2 interface2 >' ]
 ```
 
-# Fabric Level Variables
+## Fabric Level Variables
 
 These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level:
 
