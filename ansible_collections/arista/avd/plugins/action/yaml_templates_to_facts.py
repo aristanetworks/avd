@@ -167,8 +167,8 @@ class ActionModule(ActionBase):
             if debug:
                 debug_item = {'action': 'template_output', 'timestamps': {'templating': datetime.now()}}
 
-            # templar.available_variables = template_vars
-            # output = templar.template(output)
+            templar.available_variables = template_vars
+            output = templar.template(output)
 
             if debug:
                 debug_item['timestamps']['done'] = datetime.now()
