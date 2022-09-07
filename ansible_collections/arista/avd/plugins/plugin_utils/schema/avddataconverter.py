@@ -182,7 +182,7 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
                 and "primary_key" in schema
             ):
                 try:
-                    converted_instance = convert_dicts(instance, schema["primary_key"])
+                    converted_instance = convert_dicts(instance, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                 except Exception:
                     # Ignore errors and return original
                     converted_instance = instance
