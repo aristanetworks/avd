@@ -116,7 +116,7 @@ Now that we understand the physical L2LS topology, we need to create the Ansible
 
 DC1 represents the highest level within the hierarchy. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent and child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, DC1_NETWORK_SERVICES is a group with two other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to the group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
 
-This naming convention makes it possible to extend anything quickly, but can be changed based on your preferences. The names of all groups and hosts are must be unique.
+This naming convention makes it possible to extend anything quickly but can be changed based on your preferences. The names of all groups and hosts must be unique.
 
 ![Figure: 2](images/ansible_groups.svg)
 
