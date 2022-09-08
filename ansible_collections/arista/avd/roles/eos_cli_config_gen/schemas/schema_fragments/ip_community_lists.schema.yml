@@ -5,6 +5,7 @@ type: dict
 keys:
   ip_community_lists:
     type: list
+    secondary_key: entries
     primary_key: name
     convert_types:
       - dict
