@@ -3,7 +3,7 @@ __metaclass__ = type
 
 import copy
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.module_utils.utils import get_all
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA
 
 
@@ -182,7 +182,7 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
                 and "primary_key" in schema
             ):
                 try:
-                    converted_instance = convert_dicts(instance, schema["primary_key"])
+                    converted_instance = convert_dicts(instance, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                 except Exception:
                     # Ignore errors and return original
                     converted_instance = instance

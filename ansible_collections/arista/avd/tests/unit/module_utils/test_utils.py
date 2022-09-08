@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.module_utils.utils import get, AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, AristaAvdError
 from contextlib import contextmanager
 import pytest
 import re

@@ -199,6 +199,12 @@
                             "pattern": "^[a-z][a-z0-9_]*$",
                             "description": "Name of a primary key in a list of dictionaries.\nThe configured key is implicitly required and must have unique values between the list elements"
                         },
+                        "secondary_key": {
+                            "type": "string",
+                            "$comment": "The regex here matches valid key names",
+                            "pattern": "^[a-z][a-z0-9_]*$",
+                            "description": "Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."
+                        },
                         "display_name": { "$ref": "#/$def/display_name" },
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },
