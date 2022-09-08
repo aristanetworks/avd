@@ -196,7 +196,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The Tags can be used to filter the VLAN to specific Leaf Pairs (PODs). These variables are applied to both spine and leaf nodes since they are a part of this group.
+    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs (PODs). These variables are applied to spine and leaf nodes since they are a part of this group.
 
     ``` yaml
     --8<--
