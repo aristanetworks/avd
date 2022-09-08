@@ -1,13 +1,15 @@
-from __future__ import (absolute_import, division, print_function)
-from collections import ChainMap
-__metaclass__ = type
-
 import re
 import ipaddress
+from collections import ChainMap
 from functools import cached_property
 from hashlib import sha256
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, get, get_item, default
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible.plugins.filter.core import combine
 
 
 class EosDesignsFacts(AvdFacts):
@@ -67,7 +69,7 @@ class EosDesignsFacts(AvdFacts):
         internal _node_type_key_data containing settings for this node_type.
         """
         node_type_keys = get(self._hostvars, "node_type_keys", required=True)
-        node_type_keys = self._convert_dicts(node_type_keys, 'key')
+        node_type_keys = convert_dicts(node_type_keys, 'key')
         for node_type in node_type_keys:
             if node_type['type'] == self.type:
                 return node_type
@@ -88,7 +90,7 @@ class EosDesignsFacts(AvdFacts):
         """
         internal switch.default_downlink_interfaces set based on default_interfaces
         """
-        return self._range_expand(get(self.default_interfaces, "downlink_interfaces", default=[]))
+        return range_expand(get(self.default_interfaces, "downlink_interfaces", default=[]))
 
     @cached_property
     def default_evpn_role(self):
@@ -243,7 +245,7 @@ class EosDesignsFacts(AvdFacts):
         hostvar_templates = get(self._hostvars, "templates.ip_addressing", default={})
         node_type_templates = get(self._node_type_key_data, "ip_addressing", default={})
         if hostvar_templates or node_type_templates:
-            return self._combine(hostvar_templates, node_type_templates, recursive=True, list_merge='replace')
+            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge='replace')
         else:
             return {}
 
@@ -257,7 +259,7 @@ class EosDesignsFacts(AvdFacts):
         hostvar_templates = get(self._hostvars, "templates.interface_descriptions", default={})
         node_type_templates = get(self._node_type_key_data, "interface_descriptions", default={})
         if hostvar_templates or node_type_templates:
-            return self._combine(hostvar_templates, node_type_templates, recursive=True, list_merge='replace')
+            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge='replace')
         else:
             return {}
 
@@ -287,16 +289,16 @@ class EosDesignsFacts(AvdFacts):
         node_config = {}
         hostname = self.hostname
         node_type_config = get(self._hostvars, f"{self.node_type_key}", required=True)
-        nodes = self._convert_dicts(node_type_config.get('nodes', []), 'name')
+        nodes = convert_dicts(node_type_config.get('nodes', []), 'name')
 
         for node in nodes:
             if hostname == node['name']:
                 node_config = node
                 break
         if not node_config:
-            node_groups = self._convert_dicts(node_type_config.get('node_groups', []), 'group')
+            node_groups = convert_dicts(node_type_config.get('node_groups', []), 'group')
             for node_group in node_groups:
-                nodes = self._convert_dicts(node_group.get('nodes', []), 'name')
+                nodes = convert_dicts(node_group.get('nodes', []), 'name')
                 node_group['nodes'] = nodes
                 for node in nodes:
                     if hostname == node['name']:
@@ -310,9 +312,9 @@ class EosDesignsFacts(AvdFacts):
         # Load defaults
         defaults_config = node_type_config.get('defaults', {})
         # Merge node_group data on top of defaults into combined
-        switch_data['combined'] = self._combine(defaults_config, switch_data['node_group'], recursive=True, list_merge='replace')
+        switch_data['combined'] = combine(defaults_config, switch_data['node_group'], recursive=True, list_merge='replace')
         # Merge node data on top of combined
-        switch_data['combined'] = self._combine(switch_data['combined'], node_config, recursive=True, list_merge='replace')
+        switch_data['combined'] = combine(switch_data['combined'], node_config, recursive=True, list_merge='replace')
 
         return switch_data
 
@@ -361,7 +363,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def uplink_interfaces(self):
-        return self._range_expand(default(
+        return range_expand(default(
             get(self._switch_data_combined, "uplink_interfaces"),
             get(self.default_interfaces, "uplink_interfaces"),
             [])
@@ -630,11 +632,11 @@ class EosDesignsFacts(AvdFacts):
 
         port_profiles = get(self._hostvars, "port_profiles", default=[])
         # Support legacy data model by converting nested dict to list of dict
-        port_profiles = self._convert_dicts(port_profiles, "profile")
+        port_profiles = convert_dicts(port_profiles, "profile")
 
         connected_endpoints_keys = get(self._hostvars, "connected_endpoints_keys", default=[])
         # Support legacy data model by converting nested dict to list of dict
-        connected_endpoints_keys = self._convert_dicts(connected_endpoints_keys, "key")
+        connected_endpoints_keys = convert_dicts(connected_endpoints_keys, "key")
         for connected_endpoints_key in connected_endpoints_keys:
             connected_endpoints_key_key = connected_endpoints_key.get("key")
             if connected_endpoints_key_key is None or get(self._hostvars, connected_endpoints_key_key) is None:
@@ -643,7 +645,7 @@ class EosDesignsFacts(AvdFacts):
 
             connected_endpoints = get(self._hostvars, connected_endpoints_key_key)
             # Support legacy data model by converting nested dict to list of dict
-            connected_endpoints = self._convert_dicts(connected_endpoints, 'name')
+            connected_endpoints = convert_dicts(connected_endpoints, 'name')
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
                     profile_name = adapter.get("profile")
@@ -651,14 +653,14 @@ class EosDesignsFacts(AvdFacts):
                     parent_profile_name = adapter_profile.get("parent_profile")
                     parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
 
-                    adapter_settings = self._combine(parent_profile, adapter_profile, adapter, recursive=True, list_merge='replace')
+                    adapter_settings = combine(parent_profile, adapter_profile, adapter, recursive=True, list_merge='replace')
 
                     if self.hostname not in adapter_settings.get("switches", []):
                         # This switch is not connected to this endpoint. Skipping.
                         continue
 
                     if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-                        vlans.extend(map(int, self._range_expand(str(adapter_settings["vlans"]))))
+                        vlans.extend(map(int, range_expand(str(adapter_settings["vlans"]))))
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
                     elif "trunk" in adapter_settings.get("mode"):
@@ -739,7 +741,7 @@ class EosDesignsFacts(AvdFacts):
                 trunk_groups_in_use = set(trunk_groups_in_use)
 
             network_services_keys = get(self._hostvars, "network_services_keys", default=[])
-            for network_services_key in self._natural_sort(network_services_keys, "name"):
+            for network_services_key in natural_sort(network_services_keys, "name"):
                 network_services_key_name = network_services_key.get("name")
                 if network_services_key_name is None or get(self._hostvars, network_services_key_name) is None:
                     # Invalid network_services_key.name. Skipping.
@@ -747,20 +749,20 @@ class EosDesignsFacts(AvdFacts):
 
                 tenants = get(self._hostvars, network_services_key_name)
                 # Support legacy data model by converting nested dict to list of dict
-                tenants = self._convert_dicts(tenants, 'name')
-                for tenant in self._natural_sort(tenants, 'name'):
+                tenants = convert_dicts(tenants, 'name')
+                for tenant in natural_sort(tenants, 'name'):
                     if not set(self.filter_tenants).intersection([tenant['name'], 'all']):
                         # Not matching tenant filters. Skipping this tenant.
                         continue
 
                     vrfs = tenant.get('vrfs', [])
                     # Support legacy data model by converting nested dict to list of dict
-                    vrfs = self._convert_dicts(vrfs, 'name')
-                    for vrf in self._natural_sort(vrfs, 'name'):
+                    vrfs = convert_dicts(vrfs, 'name')
+                    for vrf in natural_sort(vrfs, 'name'):
                         svis = vrf.get('svis', [])
                         # Support legacy data model by converting nested dict to list of dict
-                        svis = self._convert_dicts(svis, 'id')
-                        for svi in self._natural_sort(svis, 'id'):
+                        svis = convert_dicts(svis, 'id')
+                        for svi in natural_sort(svis, 'id'):
                             svi_tags = svi.get('tags', ['all'])
                             if "all" in match_tags or set(svi_tags).intersection(match_tags):
                                 if self.filter_only_vlans_in_use:
@@ -778,9 +780,9 @@ class EosDesignsFacts(AvdFacts):
 
                     l2vlans = tenant.get('l2vlans', [])
                     # Support legacy data model by converting nested dict to list of dict
-                    l2vlans = self._convert_dicts(l2vlans, 'id')
+                    l2vlans = convert_dicts(l2vlans, 'id')
 
-                    for l2vlan in self._natural_sort(l2vlans, 'id'):
+                    for l2vlan in natural_sort(l2vlans, 'id'):
                         l2vlan_tags = l2vlan.get('tags', ['all'])
                         if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):
                             if self.filter_only_vlans_in_use:
@@ -805,7 +807,7 @@ class EosDesignsFacts(AvdFacts):
 
         Ex. "1-100, 201-202"
         '''
-        return self._list_compress(self._vlans)
+        return list_compress(self._vlans)
 
     @cached_property
     def spanning_tree_mode(self):
@@ -1071,7 +1073,7 @@ class EosDesignsFacts(AvdFacts):
                 if get(self._hostvars, "bgp_as") is not None:
                     return str(get(self._hostvars, "bgp_as"))
                 else:
-                    bgp_as_range_expanded = self._range_expand(str(get(self._switch_data_combined, "bgp_as", required=True)))
+                    bgp_as_range_expanded = range_expand(str(get(self._switch_data_combined, "bgp_as", required=True)))
                     try:
                         if len(bgp_as_range_expanded) == 1:
                             return bgp_as_range_expanded[0]
@@ -1225,7 +1227,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_interfaces(self):
         if self.mlag is True:
-            return self._range_expand(default(
+            return range_expand(default(
                 get(self._switch_data_combined, "mlag_interfaces"),
                 get(self.default_interfaces, "mlag_interfaces"),
                 [])
@@ -1502,7 +1504,7 @@ class EosDesignsFacts(AvdFacts):
                     uplink_vlans.append(int(self.inband_management_vlan))
 
                 if uplink_vlans:
-                    uplink['vlans'] = self._list_compress(uplink_vlans)
+                    uplink['vlans'] = list_compress(uplink_vlans)
                 else:
                     uplink['vlans'] = 'none'
 

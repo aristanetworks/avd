@@ -1,21 +1,8 @@
-from __future__ import (absolute_import, division, print_function)
-__metaclass__ = type
-
 from functools import cached_property
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath, get, template_var
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible.plugins.filter.core import combine
 
 
 class AvdFacts:
-    _list_compress = list_compress
-    _range_expand = range_expand
-    _convert_dicts = convert_dicts
-    _natural_sort = natural_sort
-    _combine = combine
 
     def __init__(self, hostvars, templar):
         self._hostvars = hostvars

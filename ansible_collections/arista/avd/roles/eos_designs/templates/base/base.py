@@ -1,8 +1,10 @@
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
 from functools import cached_property
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from hashlib import sha1
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 
 
 class AVDStructConfig(AvdFacts):
@@ -173,17 +175,17 @@ class AVDStructConfig(AvdFacts):
         tmp_speed_groups = {}
         if (switch_platform := get(self._switch, 'platform')) is not None:
             # converting nested dict to list of dict to support avd_v4.0
-            platform_speed_groups = self._convert_dicts(platform_speed_groups, 'platform', 'speeds')
+            platform_speed_groups = convert_dicts(platform_speed_groups, 'platform', 'speeds')
             for platform_item in platform_speed_groups:
                 if platform_item['platform'] == switch_platform:
                     # converting nested dict to list of dict to support avd_v4.0
-                    speeds = self._convert_dicts(platform_item.get('speeds'), 'speed', 'speed_groups')
-                    for speed in self._natural_sort(speeds, 'speed'):
+                    speeds = convert_dicts(platform_item.get('speeds'), 'speed', 'speed_groups')
+                    for speed in natural_sort(speeds, 'speed'):
                         for speed_group in speed['speed_groups']:
                             tmp_speed_groups[speed_group] = speed['speed']
         if tmp_speed_groups:
             hardware = {'speed_groups': {}}
-            for speed_group in self._natural_sort(tmp_speed_groups):
+            for speed_group in natural_sort(tmp_speed_groups):
                 hardware['speed_groups'][speed_group] = {'serdes': tmp_speed_groups[speed_group]}
             return hardware
 
@@ -263,7 +265,7 @@ class AVDStructConfig(AvdFacts):
         """
         if (event_handlers := get(self._hostvars, 'event_handlers')) is None:
             return None
-        event_handlers = self._convert_dicts(event_handlers, 'name')
+        event_handlers = convert_dicts(event_handlers, 'name')
         event_handler = {}
         for handler in event_handlers:
             handler_name = get(handler, 'name')
@@ -473,9 +475,9 @@ class AVDStructConfig(AvdFacts):
         """
         if (local_users := get(self._hostvars, 'local_users')) is None:
             return None
-        local_users = self._convert_dicts(local_users, 'name')
+        local_users = convert_dicts(local_users, 'name')
         local_users_dict = {}
-        for local_user in self._natural_sort(local_users, 'name'):
+        for local_user in natural_sort(local_users, 'name'):
             name = local_user.get('name')
             local_users_dict[name] = {'privilege': get(local_user, 'privilege')}
             if (role := local_user.get('role')) is not None:
