@@ -1,6 +1,6 @@
-from ansible_collections.arista.avd.plugins.module_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
 from functools import cached_property
-from ansible_collections.arista.avd.plugins.module_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from hashlib import sha1
 
