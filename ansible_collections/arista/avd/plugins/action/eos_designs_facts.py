@@ -7,8 +7,8 @@ from collections import ChainMap
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 from ansible.template import Templar
-from ansible_collections.arista.avd.plugins.module_utils.eos_designs_facts import EosDesignsFacts
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError
 
 
 class ActionModule(ActionBase):

@@ -10,10 +10,10 @@ from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.module_utils.utils import template as templater, compile_searchpath, get, AristaAvdError
-from ansible_collections.arista.avd.plugins.module_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater, compile_searchpath, get, AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
 from datetime import datetime
 
 

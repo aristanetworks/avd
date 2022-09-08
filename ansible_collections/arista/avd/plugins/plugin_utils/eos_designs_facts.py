@@ -6,8 +6,8 @@ import re
 import ipaddress
 from functools import cached_property
 from hashlib import sha256
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError, AristaAvdMissingVariableError, get, get_item, default
-from ansible_collections.arista.avd.plugins.module_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, get, get_item, default
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
 
 
 class EosDesignsFacts(AvdFacts):

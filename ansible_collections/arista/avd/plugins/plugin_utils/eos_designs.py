@@ -2,17 +2,12 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 from functools import cached_property
-from ansible_collections.arista.avd.plugins.module_utils.utils import AristaAvdError, compile_searchpath, get, template_var
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath, get, template_var
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-try:
-    from ansible.plugins.filter.core import combine
-except ImportError as imp_exc:
-    FILTER_IMPORT_ERROR = imp_exc
-else:
-    FILTER_IMPORT_ERROR = None
+from ansible.plugins.filter.core import combine
 
 
 class AvdFacts:
