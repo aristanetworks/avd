@@ -239,7 +239,7 @@ To build the configurations files, run the playbook called `build.yml`.
 ansible-playbook playbooks/build.yml
 ```
 
-After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`. Take a look.
+After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
 
 To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables were defined in DC1_FABRIC.yml.
 
