@@ -89,6 +89,9 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+- destination_address_prefix: 10.0.0.0/8
+  vrf: default
+  gateway: 10.2.10.100
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -220,6 +223,10 @@ prefix_lists:
     sequence_numbers:
       10:
         action: permit 10.2.10.0/24
+  PL-STATIC-VRF-DEFAULT:
+    sequence_numbers:
+      10:
+        action: permit 10.0.0.0/8
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -237,12 +244,20 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-SVI-VRF-DEFAULT
+      20:
+        type: permit
+        match:
+        - ip address prefix-list PL-STATIC-VRF-DEFAULT
   RM-BGP-UNDERLAY-PEERS-OUT:
     sequence_numbers:
       10:
         type: deny
         match:
         - ip address prefix-list PL-SVI-VRF-DEFAULT
+      15:
+        type: deny
+        match:
+        - ip address prefix-list PL-STATIC-VRF-DEFAULT
       20:
         type: permit
 router_bfd:

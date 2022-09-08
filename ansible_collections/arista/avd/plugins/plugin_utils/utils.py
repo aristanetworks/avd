@@ -1,6 +1,9 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+from ansible.module_utils._text import to_text
+import os
+
 
 class AristaAvdError(Exception):
     def __init__(self, message="An Error has occured in an arista.avd plugin"):
@@ -102,20 +105,51 @@ def unique(in_list):
     return (list(list_set))
 
 
-def template_var(template_file, template_vars, template_lookup_module):
+def template_var(template_file, template_vars, templar, searchpath):
     """
-    Run Ansible Template Lookup Plugin
+    Wrap "template" for single values like IP addresses
 
     The result is forced into a string and leading/trailing newlines and whitespaces are removed.
 
     Parameters
     ----------
     template_file : str
-        Filename to pass to template_lookup_module
+        Path to Jinja2 template file
     template_vars : any
-        Vars to pass to template_lookup_module
-    template_lookup_module : func
-        Instance of Ansible 'template' lookup module
+        Variables to use when rendering template
+    templar : func
+        Instance of Ansible Templar class
+    searchpath : list of str
+        List of Paths
+
+    Returns
+    -------
+    str
+        The rendered template
+    """
+    return str(template(template_file, template_vars, templar, searchpath)).strip()
+
+
+def template(template_file, template_vars, templar, searchpath):
+    """
+    Run Ansible Templar with template file.
+
+    This function does not support the following Ansible features:
+    - No template_* vars (rarely used)
+    - The template file path is not inserted into searchpath, so "include" must be absolute from searchpath.
+    - No configurable convert_data (we set it to False)
+    - Maybe something else we have not discovered yet...
+
+    Parameters
+    ----------
+    template_file : str
+        Path to Jinja2 template file
+    template_vars : any
+        Variables to use when rendering template
+    templar : func
+        Instance of Ansible Templar class
+    searchpath : list of str
+        List of Paths
 
     Returns
     -------
@@ -123,8 +157,44 @@ def template_var(template_file, template_vars, template_lookup_module):
         The rendered template
     """
 
-    result = template_lookup_module.run([template_file], template_vars)[0]
-    return str(result).strip()
+    loader = templar._loader
+    template_file_path = loader.path_dwim_relative_stack(searchpath, 'templates', template_file)
+    j2template, dummy = loader._get_file_contents(template_file_path)
+    j2template = to_text(j2template)
+
+    templar.available_variables = template_vars
+    result = templar.template(j2template, convert_data=False, escape_backslashes=False)
+    return result
+
+
+def compile_searchpath(searchpath: list):
+    """
+    Create a new searchpath by inserting new items with <>/templates into the existing searchpath
+
+    This is copying the behavior of the "ansible.builtin.template" lookup module, and is necessary
+    to be able to load templates from all supported paths.
+
+    Example
+    -------
+    compile_searchpath(["patha", "pathb", "pathc"]) ->
+    ["patha", "patha/templates", "pathb", "pathb/templates", "pathc", "pathc/templates"]
+
+    Parameters
+    ----------
+    searchpath : list of str
+        List of Paths
+
+    Returns
+    -------
+    list of str
+        List of both original and extra paths with "/templates" added.
+    """
+
+    newsearchpath = []
+    for p in searchpath:
+        newsearchpath.append(os.path.join(p, 'templates'))
+        newsearchpath.append(p)
+    return newsearchpath
 
 
 def get_item(list_of_dicts: list, key, value, default=None, required=False, case_sensitive=False, var_name=None):

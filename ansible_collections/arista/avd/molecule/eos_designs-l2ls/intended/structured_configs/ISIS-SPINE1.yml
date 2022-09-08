@@ -2,6 +2,9 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.31.0.1
+- destination_address_prefix: 10.1.0.0/16
+  vrf: default
+  gateway: 10.1.100.100
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -68,6 +71,7 @@ router_isis:
   - maximum-paths 4
   redistribute_routes:
   - source_protocol: connected
+  - source_protocol: static
 vlans:
   110:
     tenant: L2LS_ISIS

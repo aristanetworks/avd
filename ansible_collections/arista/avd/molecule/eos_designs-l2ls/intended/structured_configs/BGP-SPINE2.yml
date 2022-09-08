@@ -32,10 +32,14 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
   redistribute_routes:
     connected: {}
+    static: {}
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.31.0.1
+- destination_address_prefix: 10.0.0.0/8
+  vrf: default
+  gateway: 10.1.100.100
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

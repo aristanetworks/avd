@@ -159,7 +159,7 @@ mac_address_table:
       # VRF name | Required
       # vrf "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
       # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
-      # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
+      # Static-routes and vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
       < tenant_a_vrf_1 >:
 
         # Optional

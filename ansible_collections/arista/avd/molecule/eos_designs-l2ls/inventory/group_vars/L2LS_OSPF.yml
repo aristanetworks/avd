@@ -13,6 +13,10 @@ tenants:
             name: SVI_100
             ip_address_virtual: 10.0.100.1/24
             enabled: true
+        static_routes: # Testing creation of static route in default VRF including redistribute static under the underlay protocol
+          - destination_address_prefix: 10.0.0.0/8
+            gateway: 10.1.100.100
+            nodes: [ OSPF-SPINE2 ]
 
 network_ports:
   - switches:

@@ -13,10 +13,10 @@ vlans:
 {%                     set trunk_groups = trunk_groups | intersect(switch.endpoint_trunk_groups) %}
 {%                 endif %}
 {%                 if switch.mlag is arista.avd.defined(true) %}
-{%                     do trunk_groups.append('MLAG') %}
+{%                     do trunk_groups.append(switch.trunk_groups.mlag.name) %}
 {%                 endif %}
 {%                 if switch.uplink_type == "port-channel" %}
-{%                     do trunk_groups.append('UPLINK') %}
+{%                     do trunk_groups.append(switch.trunk_groups.uplink.name) %}
 {%                 endif %}
     trunk_groups: {{ trunk_groups | unique }}
 {%             endif %}
@@ -32,7 +32,7 @@ vlans:
     tenant: {{ tenant.name }}
     name: MLAG_iBGP_{{ vrf.name }}
     trunk_groups:
-      - LEAF_PEER_L3
+      - {{ switch.trunk_groups.mlag_l3.name }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
@@ -47,10 +47,10 @@ vlans:
 {%                 set trunk_groups = trunk_groups | intersect(switch.endpoint_trunk_groups) %}
 {%             endif %}
 {%             if switch.mlag is arista.avd.defined(true) %}
-{%                 do trunk_groups.append('MLAG') %}
+{%                 do trunk_groups.append(switch.trunk_groups.mlag.name) %}
 {%             endif %}
 {%             if switch.uplink_type == "port-channel" %}
-{%                 do trunk_groups.append('UPLINK') %}
+{%                 do trunk_groups.append(switch.trunk_groups.uplink.name) %}
 {%             endif %}
     trunk_groups: {{ trunk_groups | unique }}
 {%         endif %}
