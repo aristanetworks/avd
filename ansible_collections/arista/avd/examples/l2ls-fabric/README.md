@@ -187,7 +187,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_LEAFS"
-    In an L2LS design, we have 1 type of leaf node: `leaf`.
+    In an L2LS design, we have one type of leaf node: `leaf`.
 
     ``` yaml
     --8<--
