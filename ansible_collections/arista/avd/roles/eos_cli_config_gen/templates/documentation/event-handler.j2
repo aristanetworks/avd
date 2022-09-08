@@ -7,7 +7,7 @@
 
 | Handler | Action Type | Action | Trigger |
 | ------- | ----------- | ------ | ------- |
-{%     for handler in event_handlers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for handler in event_handlers | arista.avd.natural_sort('name') %}
 | {{ handler.name }} | {{ handler.action_type }} | {{ handler.action }} | {{ handler.trigger }} |
 {%     endfor %}
 
