@@ -11,15 +11,15 @@ from ansible.plugins.filter.core import combine
 
 
 class AvdFacts:
+    _list_compress = list_compress
+    _range_expand = range_expand
+    _convert_dicts = convert_dicts
+    _natural_sort = natural_sort
+    _combine = combine
 
     def __init__(self, hostvars, templar):
         self._hostvars = hostvars
         self._templar = templar
-        self._list_compress = list_compress
-        self._range_expand = range_expand
-        self._convert_dicts = convert_dicts
-        self._natural_sort = natural_sort
-        self._combine = combine
 
     @classmethod
     def keys(cls):
