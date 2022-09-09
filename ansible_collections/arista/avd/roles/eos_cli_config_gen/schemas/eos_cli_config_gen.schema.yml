@@ -185,3 +185,29 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  vlan_internal_order:
+    type: dict
+    display_name: Internal VLAN Order
+    keys:
+      allocation:
+        type: str
+        required: true
+        valid_values:
+        - ascending
+        - descending
+      range:
+        type: dict
+        required: true
+        keys:
+          beginning:
+            type: int
+            required: true
+            display_name: Vlan ID
+            convert_types:
+            - str
+          ending:
+            type: int
+            required: true
+            display_name: Vlan ID
+            convert_types:
+            - str
