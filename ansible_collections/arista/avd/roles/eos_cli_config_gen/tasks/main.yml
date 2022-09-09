@@ -27,7 +27,8 @@
 
 - name: Include device intended structure configuration variables
   tags: [build, provision]
-  include_vars: "{{ filename }}"
+  arista.avd.include_vars:
+    file: "{{ filename }}"
   delegate_to: localhost
   # errors='ignore' is needed for compatibility with ansible-core < 2.12
   when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
