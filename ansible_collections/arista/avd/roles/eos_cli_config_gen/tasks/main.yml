@@ -35,7 +35,9 @@
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
 - name: Validate & update input vars according to AVD eos_cli_config_gen schema
-  tags: [validate, build, provision]
+  # This task should not be skipped when using AVD v3.x input data,
+  # since it is responsible for upgrading input data to v4.0 models.
+  tags: [always, validate]
   arista.avd.validate:
     schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
     conversion_mode: "{{ avd_validate_conversion_mode }}"

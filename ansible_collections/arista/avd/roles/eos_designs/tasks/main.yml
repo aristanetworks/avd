@@ -24,7 +24,7 @@
   run_once: true
 
 - name: Validate & update input vars according to AVD eos_designs schema
-  tags: [validate, never]
+  tags: [never, validate]
   arista.avd.validate:
     schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
     conversion_mode: "{{ avd_validate_conversion_mode }}"
