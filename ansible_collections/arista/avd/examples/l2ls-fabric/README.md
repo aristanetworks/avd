@@ -145,7 +145,7 @@ To apply AVD variables to the nodes in the fabric, we make use of Ansible group_
 | group_vars/              | Description                                   |
 | ------------------------ | --------------------------------------------- |
 | DC1.yml                  | Global settings for all devices               |
-| DC1_FABRIC.yml           | Fabric, Topology, and Device settings          |
+| DC1_FABRIC.yml           | Fabric, Topology, and Device settings         |
 | DC1_SPINES.yml           | Device type for Spines                        |
 | DC1_LEAFS.yml            | Device type for Leafs                         |
 | DC1_NETWORK_SERVICES.yml | VLANs                                         |
