@@ -33,11 +33,13 @@ keys:
                 keys:
                   destination:
                     type: str
+                    display_name: Sflow Destination IP
                   port:
                     type: int
                     display_name: Port Number
             source_interface:
               type: str
+              display_name: Source Interface
       destinations:
         type: list
         primary_key: destination
@@ -61,10 +63,7 @@ keys:
           disable:
             type: dict
             keys:
-              disable:
-                type: dict
-                keys:
-                  default:
-                    type: bool
+              default:
+                type: bool
       run:
         type: bool
