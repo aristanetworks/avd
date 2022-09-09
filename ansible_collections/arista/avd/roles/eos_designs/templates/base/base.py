@@ -270,34 +270,7 @@ class AVDStructConfig(AvdFacts):
         """
         event_handlers set based on event_handlers data-model
         """
-        if (event_handlers := get(self._hostvars, 'event_handlers')) is None:
-            return None
-
-        event_handlers = convert_dicts(event_handlers, 'name')
-        event_handler = {}
-        for handler in event_handlers:
-            handler_name = get(handler, 'name')
-            event_handler[handler_name] = {}
-            action = handler.get('action')
-            action_type = handler.get('action_type')
-
-            if action is not None and action_type is not None:
-                event_handler[handler_name]['action_type'] = action_type
-                event_handler[handler_name]['action'] = action
-
-            if (delay := handler.get('delay')) is not None:
-                event_handler[handler_name]['delay'] = delay
-
-            if (asynchronous := get(handler, 'asynchronous')) is True:
-                event_handler[handler_name]['asynchronous'] = asynchronous
-
-            if (trigger := handler.get('trigger')) is not None:
-                event_handler[handler_name]['trigger'] = trigger
-
-            if (regex := handler.get('regex')) is not None:
-                event_handler[handler_name]['regex'] = regex
-
-        return event_handler
+        return get(self._hostvars, 'event_handlers')
 
     @cached_property
     def load_interval(self):
