@@ -55,4 +55,4 @@ verifier:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
   ansible_args:
-    - --tags=build, validate
+    - --skip-tags=documentation
