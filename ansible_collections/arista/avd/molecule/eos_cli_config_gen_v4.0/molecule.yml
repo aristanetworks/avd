@@ -37,7 +37,6 @@ provisioner:
       group_vars: 'inventory/group_vars/'
   ansible_args:
     - --inventory=inventory/hosts.ini
-    - --tags=build, validate
 verifier:
   name: ansible
   inventory:
@@ -47,7 +46,6 @@ verifier:
       group_vars: 'inventory/group_vars/'
   ansible_args:
     - --inventory=inventory/hosts.ini
-    - --tags=build, validate
   config_options:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
