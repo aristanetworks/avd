@@ -289,7 +289,7 @@ event_handlers:
     action_type: bash
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
-    asynchronous: handler.asynchronous
+    asynchronous: true
     trigger: on-logging
     regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
 name_server:

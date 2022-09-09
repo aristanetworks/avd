@@ -4,7 +4,7 @@ from collections import ChainMap
 from functools import cached_property
 from hashlib import sha256
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, get, get_item, default
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand

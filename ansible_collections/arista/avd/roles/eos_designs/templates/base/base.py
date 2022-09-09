@@ -1,6 +1,6 @@
 from functools import cached_property
 from hashlib import sha1
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
@@ -68,6 +68,7 @@ class AVDStructConfig(AvdFacts):
             if (bgp_ecmp := get(self._hostvars, 'bgp_ecmp')) is not None:
                 max_paths_str += f" ecmp {bgp_ecmp}"
             bgp_defaults.append(max_paths_str)
+
         return {
             'as': bgp_as,
             'router_id': get(self._switch, 'router_id'),
@@ -96,6 +97,7 @@ class AVDStructConfig(AvdFacts):
                 'destination_address_prefix': '0.0.0.0/0',
                 'gateway': self._mgmt_gateway,
             })
+
         return static_routes
 
     @cached_property
@@ -118,20 +120,20 @@ class AVDStructConfig(AvdFacts):
         ipv6_unicast_routing set based on underlay_rfc5549 and underlay_ipv6 variables
         """
         if (
-                get(self._hostvars, 'underlay_rfc5549') is not True and
-                get(self._switch, 'underlay_ipv6') is not True
+                get(self._hostvars, 'underlay_rfc5549') is True or
+                get(self._switch, 'underlay_ipv6') is True
         ):
-            return None
-        return True
+            return True
+        return None
 
     @cached_property
     def ip_routing_ipv6_interfaces(self):
         """
         ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
         """
-        if get(self._hostvars, 'underlay_rfc5549') is not True:
-            return None
-        return True
+        if get(self._hostvars, 'underlay_rfc5549') is True:
+            return True
+        return None
 
     @cached_property
     def router_multicast(self):
@@ -144,6 +146,7 @@ class AVDStructConfig(AvdFacts):
                 get(self._switch, 'underlay_router') is not True
         ):
             return None
+
         router_multicast = {
             'ipv4': {
                 'routing': True
@@ -151,6 +154,7 @@ class AVDStructConfig(AvdFacts):
         }
         if get(self._switch, 'evpn_multicast') is True:
             router_multicast['ipv4']['software_forwarding'] = 'sfe'
+
         return router_multicast
 
     @cached_property
@@ -160,6 +164,7 @@ class AVDStructConfig(AvdFacts):
         """
         if (hardware_counter_features := get(self._hostvars, 'hardware_counters.features')) is None:
             return None
+
         features = [{feature: direction} for feature, direction in hardware_counter_features.items()]
         return {"features": features}
 
@@ -169,20 +174,25 @@ class AVDStructConfig(AvdFacts):
         hardware set based on platform_speed_groups variable and switch.platform fact.
         Converting nested dict to list of dict to support avd_v4.0
         """
-        if (platform_speed_groups := get(self._hostvars, 'platform_speed_groups')) is None:
+        platform_speed_groups = get(self._hostvars, 'platform_speed_groups')
+        switch_platform = get(self._switch, 'platform')
+        if (
+                platform_speed_groups is None or
+                switch_platform is None
+        ):
             return None
 
         tmp_speed_groups = {}
-        if (switch_platform := get(self._switch, 'platform')) is not None:
-            # converting nested dict to list of dict to support avd_v4.0
-            platform_speed_groups = convert_dicts(platform_speed_groups, 'platform', 'speeds')
-            for platform_item in platform_speed_groups:
-                if platform_item['platform'] == switch_platform:
-                    # converting nested dict to list of dict to support avd_v4.0
-                    speeds = convert_dicts(platform_item.get('speeds'), 'speed', 'speed_groups')
-                    for speed in natural_sort(speeds, 'speed'):
-                        for speed_group in speed['speed_groups']:
-                            tmp_speed_groups[speed_group] = speed['speed']
+        # converting nested dict to list of dict to support avd_v4.0
+        platform_speed_groups = convert_dicts(platform_speed_groups, 'platform', 'speeds')
+        for platform_item in platform_speed_groups:
+            if platform_item['platform'] == switch_platform:
+                # converting nested dict to list of dict to support avd_v4.0
+                speeds = convert_dicts(platform_item.get('speeds'), 'speed', 'speed_groups')
+                for speed in natural_sort(speeds, 'speed'):
+                    for speed_group in speed['speed_groups']:
+                        tmp_speed_groups[speed_group] = speed['speed']
+
         if tmp_speed_groups:
             hardware = {'speed_groups': {}}
             for speed_group in natural_sort(tmp_speed_groups):
@@ -202,38 +212,35 @@ class AVDStructConfig(AvdFacts):
                  <updating as cvp_on_prem ip>
         """
         cvp_instance_ip = get(self._hostvars, 'cvp_instance_ip')
-        cvp_instance_ips = get(self._hostvars, 'cvp_instance_ips')
-        if cvp_instance_ip is None and cvp_instance_ips is None:
-            return None
-        cvp_instance_ip_list = []
+        cvp_instance_ip_list = get(self._hostvars, 'cvp_instance_ips', [])
         if cvp_instance_ip is not None:
             cvp_instance_ip_list.append(cvp_instance_ip)
-        elif cvp_instance_ips is not None:
-            for cvp_ip in cvp_instance_ips:
-                cvp_instance_ip_list.append(cvp_ip)
+        if not cvp_instance_ip_list:
+            return None
 
-        if cvp_instance_ip_list:
-            daemon_terminattr = {'cvaddrs': []}
-            for cvp_instance_ip in cvp_instance_ip_list:
-                if "arista.io" in cvp_instance_ip:
-                    # updating for cvaas_ips
-                    daemon_terminattr['cvaddrs'].append(f"{cvp_instance_ip}:443")
-                    daemon_terminattr['cvauth'] = {
-                        'method': 'token-secure',
-                        'token_file': get(self._hostvars, 'cvp_token_file', '/tmp/cv-onboarding-token'),
-                    }
-                else:
-                    # updating for cvp_on_prem_ips
-                    cv_address = f"{cvp_instance_ip}:{get(self._hostvars, 'terminattr_ingestgrpcurl_port')}"
-                    daemon_terminattr['cvaddrs'].append(cv_address)
-                    daemon_terminattr['cvauth'] = {
-                        'method': 'key',
-                        'key': get(self._hostvars, 'cvp_ingestauth_key'),
-                    }
+        daemon_terminattr = {'cvaddrs': []}
+        for cvp_instance_ip in cvp_instance_ip_list:
+            if "arista.io" in cvp_instance_ip:
+                # updating for cvaas_ips
+                daemon_terminattr['cvaddrs'].append(f"{cvp_instance_ip}:443")
+                daemon_terminattr['cvauth'] = {
+                    'method': 'token-secure',
+                    'token_file': get(self._hostvars, 'cvp_token_file', '/tmp/cv-onboarding-token'),
+                }
+            else:
+                # updating for cvp_on_prem_ips
+                cv_address = f"{cvp_instance_ip}:{get(self._hostvars, 'terminattr_ingestgrpcurl_port')}"
+                daemon_terminattr['cvaddrs'].append(cv_address)
+                daemon_terminattr['cvauth'] = {
+                    'method': 'key',
+                    'key': get(self._hostvars, 'cvp_ingestauth_key'),
+                }
+
         daemon_terminattr['cvvrf'] = self._mgmt_interface_vrf
         daemon_terminattr['smashexcludes'] = get(self._hostvars, 'terminattr_smashexcludes')
         daemon_terminattr['ingestexclude'] = get(self._hostvars, 'terminattr_ingestexclude')
         daemon_terminattr['disable_aaa'] = get(self._hostvars, 'terminattr_disable_aaa', False)
+
         return daemon_terminattr
 
     @cached_property
@@ -254,9 +261,9 @@ class AVDStructConfig(AvdFacts):
         """
         event_monitor set based on event_monitor data-model
         """
-        if get(self._hostvars, 'event_monitor') is not True:
-            return None
-        return {'enabled': 'true'}
+        if get(self._hostvars, 'event_monitor') is True:
+            return {'enabled': 'true'}
+        return None
 
     @cached_property
     def event_handlers(self):
@@ -265,6 +272,7 @@ class AVDStructConfig(AvdFacts):
         """
         if (event_handlers := get(self._hostvars, 'event_handlers')) is None:
             return None
+
         event_handlers = convert_dicts(event_handlers, 'name')
         event_handler = {}
         for handler in event_handlers:
@@ -272,17 +280,23 @@ class AVDStructConfig(AvdFacts):
             event_handler[handler_name] = {}
             action = handler.get('action')
             action_type = handler.get('action_type')
+
             if action is not None and action_type is not None:
                 event_handler[handler_name]['action_type'] = action_type
                 event_handler[handler_name]['action'] = action
+
             if (delay := handler.get('delay')) is not None:
                 event_handler[handler_name]['delay'] = delay
-            if get(handler, 'asynchronous') is True:
-                event_handler[handler_name]['asynchronous'] = 'handler.asynchronous'
+
+            if (asynchronous := get(handler, 'asynchronous')) is True:
+                event_handler[handler_name]['asynchronous'] = asynchronous
+
             if (trigger := handler.get('trigger')) is not None:
                 event_handler[handler_name]['trigger'] = trigger
+
             if (regex := handler.get('regex')) is not None:
                 event_handler[handler_name]['regex'] = regex
+
         return event_handler
 
     @cached_property
@@ -290,9 +304,9 @@ class AVDStructConfig(AvdFacts):
         """
         load_interval set based on load_interval_default variable
         """
-        if (load_interval_default := get(self._hostvars, 'load_interval_default')) is None:
-            return None
-        return {'default': load_interval_default}
+        if (load_interval_default := get(self._hostvars, 'load_interval_default')) is not None:
+            return {'default': load_interval_default}
+        return None
 
     @cached_property
     def queue_monitor_length(self):
@@ -311,8 +325,10 @@ class AVDStructConfig(AvdFacts):
                 notify_supported is not False
         ):
             queue_monitor_length_dict['notifying'] = queue_monitor_length_notifying
+
         if get(queue_monitor_length, 'log') is not None:
             queue_monitor_length_dict['log'] = queue_monitor_length.get('log')
+
         return queue_monitor_length_dict
 
     @cached_property
@@ -320,24 +336,25 @@ class AVDStructConfig(AvdFacts):
         """
         name_server set based on name_servers data-model and mgmt_interface_vrf
         """
-        if (name_servers := get(self._hostvars, 'name_servers')) is None:
-            return None
-        return {
-            'source':
-                {
-                    'vrf': self._mgmt_interface_vrf
-                },
-            'nodes': name_servers
-        }
+        if (name_servers := get(self._hostvars, 'name_servers')) is not None:
+            return {
+                'source':
+                    {
+                        'vrf': self._mgmt_interface_vrf
+                    },
+                'nodes': name_servers
+            }
+
+        return None
 
     @cached_property
     def redundancy(self):
         """
         redundancy set based on redundancy data-model
         """
-        if get(self._hostvars, 'redundancy') is None:
-            return None
-        return {'protocol': get(self._hostvars, 'redundancy.protocol')}
+        if get(self._hostvars, 'redundancy') is not None:
+            return {'protocol': get(self._hostvars, 'redundancy.protocol')}
+        return None
 
     @cached_property
     def snmp_server(self):
@@ -353,13 +370,15 @@ class AVDStructConfig(AvdFacts):
         """
         if (snmp_settings := get(self._hostvars, 'snmp_settings')) is None:
             return None
-        snmp_server = {}
 
+        snmp_server = {}
         if (compute_local_engineid := snmp_settings.get('compute_local_engineid')) is True:
             local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode('utf-8')).hexdigest()
             snmp_server['engineid'] = {'local': local_engine_id}
+
         if (contact := snmp_settings.get('contact')) is not None:
             snmp_server['contact'] = contact
+
         if snmp_settings.get('location') is not None:
             location_elements = [get(self._hostvars, 'fabric_name'),
                                  get(self._hostvars, 'dc_name'),
@@ -369,6 +388,7 @@ class AVDStructConfig(AvdFacts):
             location_elements = [location for location in location_elements if location is not None]
             snmp_location = " ".join(location_elements)
             snmp_server['location'] = snmp_location
+
         users = snmp_settings.get('users')
         if users is not None:
             snmp_server['users'] = []
@@ -380,13 +400,13 @@ class AVDStructConfig(AvdFacts):
                     'version': version
                 }
                 compute_v3_user_localized_key = snmp_settings.get('compute_v3_user_localized_key')
-
                 if version == 'v3':
                     if (
                             compute_local_engineid is True and
                             compute_v3_user_localized_key is True
                     ):
                         user_dict['localized'] = local_engine_id
+
                     auth = user.get('auth')
                     auth_passphrase = user.get('auth_passphrase')
                     if (
@@ -422,6 +442,7 @@ class AVDStructConfig(AvdFacts):
                             else:
                                 user_dict['priv_passphrase'] = priv_passphrase
                 snmp_server['users'].append(user_dict)
+
         return snmp_server
 
     @cached_property
@@ -434,9 +455,11 @@ class AVDStructConfig(AvdFacts):
         spanning_tree_mode = get(self._switch, 'spanning_tree_mode')
         if spanning_tree_root_super is not True and spanning_tree_mode is None:
             return None
+
         spanning_tree = {}
         if spanning_tree_root_super is True:
             spanning_tree['root_super'] = True
+
         if spanning_tree_mode is not None:
             spanning_tree['mode'] = spanning_tree_mode
             priority = get(self._switch, 'spanning_tree_priority', '32768')
@@ -454,6 +477,7 @@ class AVDStructConfig(AvdFacts):
                 }
             elif spanning_tree_mode == "rstp":
                 spanning_tree['rstp_priority'] = priority
+
         return spanning_tree
 
     @cached_property
@@ -461,12 +485,13 @@ class AVDStructConfig(AvdFacts):
         """
         service_unsupported_transceiver based on unsupported_transceiver data-model
         """
-        if (unsupported_transceiver := get(self._hostvars, 'unsupported_transceiver')) is None:
-            return None
-        return {
-            'license_name': unsupported_transceiver.get('license_name'),
-            'license_key': unsupported_transceiver.get('license_key')
-        }
+        if (unsupported_transceiver := get(self._hostvars, 'unsupported_transceiver')) is not None:
+            return {
+                'license_name': unsupported_transceiver.get('license_name'),
+                'license_key': unsupported_transceiver.get('license_key')
+            }
+
+        return None
 
     @cached_property
     def local_users(self):
@@ -475,6 +500,7 @@ class AVDStructConfig(AvdFacts):
         """
         if (local_users := get(self._hostvars, 'local_users')) is None:
             return None
+
         local_users = convert_dicts(local_users, 'name')
         local_users_dict = {}
         for local_user in natural_sort(local_users, 'name'):
@@ -482,12 +508,15 @@ class AVDStructConfig(AvdFacts):
             local_users_dict[name] = {'privilege': get(local_user, 'privilege')}
             if (role := local_user.get('role')) is not None:
                 local_users_dict[name]['role'] = role
+
             if (sha512_password := local_user.get('sha512_password')) is not None:
                 local_users_dict[name]['sha512_password'] = sha512_password
             elif (no_password := local_user.get('no_password')) is not None:
                 local_users_dict[name]['no_password'] = no_password
+
             if (ssh_key := local_user.get('ssh_key')) is not None:
                 local_users_dict[name]['ssh_key'] = ssh_key
+
         return local_users_dict
 
     @cached_property
@@ -495,9 +524,9 @@ class AVDStructConfig(AvdFacts):
         """
         clock set based on timezone variable
         """
-        if (timezone := get(self._hostvars, 'timezone')) is None:
-            return None
-        return {'timezone': timezone}
+        if (timezone := get(self._hostvars, 'timezone')) is not None:
+            return {'timezone': timezone}
+        return None
 
     @cached_property
     def vrfs(self):
@@ -518,31 +547,32 @@ class AVDStructConfig(AvdFacts):
         """
         mgmt_interface = get(self._switch, 'mgmt_interface')
         if (
-                mgmt_interface is None or
-                self._mgmt_ip is None or
-                self._mgmt_interface_vrf is None or
-                self._mgmt_gateway is None
+                mgmt_interface is not None and
+                self._mgmt_ip is not None and
+                self._mgmt_interface_vrf is not None and
+                self._mgmt_gateway is not None
         ):
-            return None
-        return {
-            mgmt_interface: {
-                'description': 'oob_management',
-                'shutdown': False,
-                'vrf': self._mgmt_interface_vrf,
-                'ip_address': self._mgmt_ip,
-                'gateway': self._mgmt_gateway,
-                'type': 'oob'
+            return {
+                mgmt_interface: {
+                    'description': 'oob_management',
+                    'shutdown': False,
+                    'vrf': self._mgmt_interface_vrf,
+                    'ip_address': self._mgmt_ip,
+                    'gateway': self._mgmt_gateway,
+                    'type': 'oob'
+                }
             }
-        }
+
+        return None
 
     @cached_property
     def tcam_profile(self):
         """
         tcam_profile set based on switch.platform_settings.tcam_profile fact
         """
-        if (tcam_profile := get(self._platform_settings, 'tcam_profile')) is None:
-            return None
-        return {'system': tcam_profile}
+        if (tcam_profile := get(self._platform_settings, 'tcam_profile')) is not None:
+            return {'system': tcam_profile}
+        return None
 
     @cached_property
     def platform(self):
@@ -553,12 +583,14 @@ class AVDStructConfig(AvdFacts):
         platform = {}
         if (lag_hardware_only := get(self._platform_settings, 'lag_hardware_only')) is not None:
             platform['sand'] = {'lag': {'hardware_only': lag_hardware_only}}
+
         trident_forwarding_table_partition = get(self._platform_settings, 'trident_forwarding_table_partition')
         if (
                 trident_forwarding_table_partition is not None and
                 get(self._switch, 'evpn_multicast') is True
         ):
             platform['trident'] = {'forwarding_table_partition': trident_forwarding_table_partition}
+
         if platform:
             return platform
         return None
@@ -568,9 +600,9 @@ class AVDStructConfig(AvdFacts):
         """
         mac_address_table set based on mac_address_table data-model
         """
-        if aging_time := get(self._hostvars, 'mac_address_table.aging_time') is None:
-            return None
-        return {'aging_time': aging_time}
+        if aging_time := get(self._hostvars, 'mac_address_table.aging_time') is not None:
+            return {'aging_time': aging_time}
+        return None
 
     @cached_property
     def queue_monitor_streaming(self):
@@ -588,8 +620,10 @@ class AVDStructConfig(AvdFacts):
         queue_monitor = {}
         if enable is True:
             queue_monitor['enable'] = enable
+
         if vrf is not None:
             queue_monitor['vrf'] = vrf
+
         return queue_monitor
 
     @cached_property
@@ -599,6 +633,7 @@ class AVDStructConfig(AvdFacts):
         """
         if (management_eapi := get(self._hostvars, 'management_eapi')) is None:
             return None
+
         management_api_http = {'enable_vrfs': {self._mgmt_interface_vrf: {}}}
         management_api = management_eapi.fromkeys(['enable_http', 'enable_https', 'default_services'])
         for key in dict(management_api).keys():
@@ -606,6 +641,7 @@ class AVDStructConfig(AvdFacts):
                 management_api[key] = value
             else:
                 del management_api[key]
+
         management_api_http.update(management_api)
         return management_api_http
 
@@ -614,27 +650,29 @@ class AVDStructConfig(AvdFacts):
         """
         link_tracking_groups set based on switch.link_tracking_groups fact
         """
-        if (link_tracking_groups := get(self._switch, 'link_tracking_groups')) is None:
-            return None
-        return link_tracking_groups
+        if (link_tracking_groups := get(self._switch, 'link_tracking_groups')) is not None:
+            return link_tracking_groups
+        return None
 
     @cached_property
     def lacp(self):
         """
         lacp set based on switch.lacp_port_id fact
         """
+
         begin = get(self._switch, 'lacp_port_id.begin')
         end = get(self._switch, 'lacp_port_id.end')
-        if begin is None or end is None:
-            return None
-        return {
-            'port_id':
-                {'range':
-                    {'begin': begin,
-                     'end': end,
+        if begin is not None and end is not None:
+            return {
+                'port_id':
+                    {'range':
+                        {'begin': begin,
+                         'end': end,
+                         }
                      }
-                 }
-        }
+            }
+
+        return None
 
     @cached_property
     def eos_cli(self):
@@ -644,17 +682,17 @@ class AVDStructConfig(AvdFacts):
         raw_eos_cli = get(self._switch, 'raw_eos_cli')
         platform_raw_eos_cli = get(self._platform_settings, 'raw_eos_cli')
         if (
-                raw_eos_cli is None and
-                platform_raw_eos_cli is None
+                raw_eos_cli is not None or
+                platform_raw_eos_cli is not None
         ):
-            return None
-        return "\n".join(filter(None, [raw_eos_cli, platform_raw_eos_cli]))
+            return "\n".join(filter(None, [raw_eos_cli, platform_raw_eos_cli]))
+        return None
 
     @cached_property
     def struct_cfg(self):
         """
         struct_cfg set based on switch.struct_cfg facts
         """
-        if (struct_cfg := get(self._switch, 'struct_cfg')) is None:
-            return None
-        return struct_cfg
+        if (struct_cfg := get(self._switch, 'struct_cfg')) is not None:
+            return struct_cfg
+        return None
