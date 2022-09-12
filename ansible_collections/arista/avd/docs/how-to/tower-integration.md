@@ -178,9 +178,9 @@ Go to **Resources > Templates**.
 
 In this section you have to provide at least:
 
-- Name of your Template: _Build Fabric Configuration -- no-deploy_
-- Which inventory to use: _EMEA Demo_
-- Which project to use to get playbook: _AVD Demo with CVP_
+- Name of your Template: *Build Fabric Configuration -- no-deploy*
+- Which inventory to use: *EMEA Demo*
+- Which project to use to get playbook: *AVD Demo with CVP*
 - Which playbook to use: [`playbooks/dc1-fabric-deploy-cvp.yml`](https://github.com/arista-netdevops-community/avd-with-ansible-tower-awx/blob/master/playbooks/dc1-fabric-deploy-cvp.yml)
 - Virtual Environment to use when running the playbook
 

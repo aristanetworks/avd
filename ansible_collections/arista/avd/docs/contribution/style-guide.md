@@ -10,11 +10,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### SYNTAX-1 - Use variable in Jinja
 
-- _Description_
+- *Description*
 
   A single space shall be added between Jinja2 curly brackets and a variable's name
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ ethernet_interface }}
@@ -22,11 +22,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### SYNTAX-2 - Filter syntax
 
-- _Description_
+- *Description*
 
   When variables are used in combination with a filter, `|` shall be enclosed by space
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ my_value | to_json }}
@@ -34,7 +34,7 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### SYNTAX-3 - Indentation for statement blocks
 
-- _Description_
+- *Description*
 
   Nested jinja code block shall follow the next rules:
 
@@ -43,7 +43,7 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
   - To close a control, the end tag must have the same indentation level as the opening tag
   - Indentation must be 4 spaces and NOT tabulation
 
-- _Example_
+- *Example*
 
   ```jinja
   {# Initial block indentation #}
@@ -60,11 +60,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### SYNTAX-4 - Expand list on a single line
 
-- _Description_
+- *Description*
 
   Instead of doing a for loop on a single line, the `join` filter should be leveraged as much as possible
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ ciphers | join(", ") }}
@@ -72,11 +72,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### SYNTAX-5 - Test if a variable in a list
 
-- _Description_
+- *Description*
 
   To test if a variable is part of a list, the `in` operator should be used as much as possible to avoid long `if/elif/else` block.
 
-- _Example_
+- *Example*
 
   ```jinja
   {% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol in ['isis', 'ospf'] %}
@@ -84,11 +84,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### SYNTAX-6 - Render long CLI
 
-- _Description_
+- *Description*
 
   When a long CLI with multiple options needs to be built, use pure J2 logic and then print
 
-- _Example_
+- *Example*
 
   ```jinja
   {% for ip_helper in vlan_interfaces[vlan_interface].ip_helpers | arista.avd.natural_sort %}
@@ -107,11 +107,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-1 - Variable name case
 
-- _Description_
+- *Description*
 
   All variables shall use lower case
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ variable }}
@@ -119,11 +119,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-2 - Variable name format
 
-- _Description_
+- *Description*
 
   If a variable is multi-words, underscore `_` shall be used as a separator.
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ my_variable_name }}
@@ -131,11 +131,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-3 - Iterable variables
 
-- _Description_
+- *Description*
 
   For an iterable variable, the plural form shall be used
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ ethernet_interfaces }}
@@ -143,11 +143,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-4 - Variables in a For Loop
 
-- _Description_
+- *Description*
 
   For variables in a for loop, the singular form shall be used
 
-- _Example_
+- *Example*
 
   ```jinja
   {{ ethernet_interfaces[ethernet_interface] }}
@@ -155,11 +155,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-5 - Variables concatenation
 
-- _Description_
+- *Description*
 
   Tilde `~` should be used for string concatenation as it automatically converts variables to a string.
 
-- _Example_
+- *Example*
 
   ```jinja
   {% set ip_helper_cli = ip_helper_cli ~ " source-interface " ~ vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface %}
@@ -167,11 +167,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-6 - Variable type comparison
 
-- _Description_
+- *Description*
 
   To test the type of a variable, it's recommended to use `is`/`is not` keywords
 
-- _Example_
+- *Example*
 
   ```jinja
   {# Test if variable is string #}
@@ -183,11 +183,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-7 - Variable content comparison
 
-- _Description_
+- *Description*
 
   To test the content of a variable, it's recommended to use `==`/`!=` keywords
 
-- _Example_
+- *Example*
 
   ```jinja
   {# Test if variable is equal to 'Ethernet1' #}
@@ -202,11 +202,11 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 
 ### VAR-8 - String comparison
 
-- _Description_
+- *Description*
 
   All strings should be compared based on lowercase format.
 
-- _Example_
+- *Example*
 
   ```jinja
   {% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
@@ -220,11 +220,11 @@ Plugins documentation is available [here](../../plugins/README.md)
 
 ### PLUGIN-1 - Test if a variable exists
 
-- _Description_
+- *Description*
 
   All tests to check if a variable is defined shall be done with **`arista.avd.defined`**. This test also does a deep test and doesn't require a test at an upper level.
 
-- _Example_
+- *Example*
 
   ```jinja
   {# Simple test #}
@@ -236,11 +236,11 @@ Plugins documentation is available [here](../../plugins/README.md)
 
 ### PLUGIN-2 Test if variable exists with a given value
 
-- _Description_
+- *Description*
 
   To test if a variable is defined and has a specific value, the test **`arista.avd.defined`** shall be used.
 
-- _Example_
+- *Example*
 
   ```jinja
   {% if vlan.name is arista.avd.defined('test') %}
@@ -248,11 +248,11 @@ Plugins documentation is available [here](../../plugins/README.md)
 
 ### PLUGIN-3 - Default value
 
-- _Description_
+- *Description*
 
   If a default value must be used, the `arista.avd.default` plugin shall be used instead of a `if/else` block. The plugin can be used to fallback to different values until one of them is defined and valid.
 
-- _Example_
+- *Example*
 
   ```jinja
   {# Simple default test with one default value #}

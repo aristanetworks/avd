@@ -53,11 +53,11 @@ For complete list of authentication options available with CloudVision Ansible c
 
 - **`configlet_directory`**: Folder where local configlets are stored. Default: `configlets`.
 - **`file_extension`**: File extension to look for configlet in their local folder. Default: `conf`.
-- **`configlets_cvp_prefix`**: Prefix to use for configlet on CV side. Default: _Not set_ and it's required.
+- **`configlets_cvp_prefix`**: Prefix to use for configlet on CV side. Default: *Not set* and it's required.
 - **`execute_tasks`**:  `true` / `false`. Support automatically excuting pending tasks. Default: `false`.
 - **`cv_collection`**: Version of CloudVision collection to use. Can be `v1` or `v3`. Default is `v1`.
 
-_Example_:
+*Example*:
 
 ```yaml
 tasks:

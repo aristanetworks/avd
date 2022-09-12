@@ -55,12 +55,12 @@ The following documents the lifecycle of work within AVD:
   b. If feature request or enhancement, continue.
 2. Open a GitHub Issue
   a. The issue will be reviewed. Based on the request, it will get labeled as  `current`, `near-term`, `future`.
-  b. It will likely only stay in _current_ if it's trivial and quick work.
-  c. If it gets labeled as _future_, the issue will be closed in the next batch of issues that get migrated and converted to GitHub discussions.
+  b. It will likely only stay in *current* if it's trivial and quick work.
+  c. If it gets labeled as *future*, the issue will be closed in the next batch of issues that get migrated and converted to GitHub discussions.
 
 If you follow these steps, there **will** be a GitHub Issue opened before submitting a Pull Request (PR). However, we're quite aware that a PR may come in without ever being discussed in an Issue or Discussion. While we don't advocate for this, you should be aware of the process that will be followed for those circumstances.
 
-Should this happen, and if you followed the project guidelines, have sample tests, and code quality, you will first be acknowledged for your work; thank you in advance. After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project and to gauge the work effort or issues with merging into _devel_.  If the effort required by the core team isn't trivial, it'll likely still be a few weeks before it gets thoroughly reviewed and merged.  After that, it will just depend on the current backlog.
+Should this happen, and if you followed the project guidelines, have sample tests, and code quality, you will first be acknowledged for your work; thank you in advance. After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project and to gauge the work effort or issues with merging into *devel*.  If the effort required by the core team isn't trivial, it'll likely still be a few weeks before it gets thoroughly reviewed and merged.  After that, it will just depend on the current backlog.
 
 ### Contributing to Arista Validated Design
 
@@ -86,7 +86,7 @@ Should this happen, and if you followed the project guidelines, have sample test
 
 - First, check the GitHub [issues list](https://github.com/aristanetworks/ansible-avd/issues) and [Discussions](https://github.com/aristanetworks/ansible-avd/discussions) to see if the feature you're requesting is already listed. If the feature you'd like to see has already been requested and is open, click "add a reaction" in the top right corner of the issue and add a thumbs up (+1). This ensures that the issue has a better chance of receiving attention. Also feel free to add a comment with any additional justification for the feature. However, note that comments with no substance other than a "+1" will be deleted. Please use GitHub's reactions feature to indicate your support.
 
-- Before filing a new feature request, consider starting with a GitHub Discussion. Feedback you receive there will help validate and shape the proposed feature before filing a formal issue. If the feature request doesn't get accepted into the _current_ or _near term_ backlog, it will get converted to a discussion anyway.
+- Before filing a new feature request, consider starting with a GitHub Discussion. Feedback you receive there will help validate and shape the proposed feature before filing a formal issue. If the feature request doesn't get accepted into the *current* or *near term* backlog, it will get converted to a discussion anyway.
 
 - Good feature requests are very narrowly defined. Be sure to thoroughly describe the functionality and data models being proposed. The more effort you put into writing a feature request, the better its chance is of being implemented. Overly broad feature requests will be closed.
 
@@ -150,4 +150,4 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 ## Project Structure
 
-All development of the current AVD release occurs in the `devel` branch; releases are packaged from the `releases/*` branches. A `releases/v*` branch should _always_ represent a stable release in its entirety, such that installing AVD by either downloading a packaged release or cloning the `releases/v*` branch provides the same code base.
+All development of the current AVD release occurs in the `devel` branch; releases are packaged from the `releases/*` branches. A `releases/v*` branch should *always* represent a stable release in its entirety, such that installing AVD by either downloading a packaged release or cloning the `releases/v*` branch provides the same code base.

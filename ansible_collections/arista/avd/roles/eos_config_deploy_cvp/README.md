@@ -175,7 +175,7 @@ cv_configlets:
       - GLOBAL-ALIASES
 ```
 
-_Notes:_
+*Notes:*
 
 - These configlets **must** be created previously on CloudVision server and won't be managed by AVD roles.
 - Current version **doesn't** support configlets unbound from container for safety reason. In such case, configlets should be removed from variables and manually unbind from containers on CloudVision.

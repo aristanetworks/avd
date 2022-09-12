@@ -416,7 +416,7 @@ port_profiles:
     vlans: "110"
 ```
 
-> This section uses vlan-id so all of these entries must be configured in the _TENANTS_ file
+> This section uses vlan-id so all of these entries must be configured in the *TENANTS* file
 
 Then, create port mapping on a per server.
 
