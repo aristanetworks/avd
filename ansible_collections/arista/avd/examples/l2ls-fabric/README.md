@@ -124,10 +124,6 @@ This naming convention makes it possible to extend anything quickly but can be c
 
 The below inventory file represents 2 Spines and 2 Leaf Pairs (POD1 & POD2). The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively. We apply group variables (group_vars) to these groups to define their functionality and configurations.
 
-???+ note
-
-    The Leaf nodes belong to subgroups POD1 and POD2. Leaf nodes defined as a pair in this manner will have MLAG configured between them. In addition, you can filter the VLANs that are applied to the POD.
-
 The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution (e.g., ping SPINE1).
 
 Alternatively, if DNS is not available, define the variable ansible_host to be an IP address for each device.
