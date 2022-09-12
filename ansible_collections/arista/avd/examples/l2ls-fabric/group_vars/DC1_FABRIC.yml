@@ -24,11 +24,7 @@ ansible_httpapi_use_ssl: true
 # Do not try to validate certs
 ansible_httpapi_validate_certs: false
 
-
-## set to none for pure L2LS - no routing or svis
-# underlay_routing_protocol: none
-
-# L2 Only Spine Switches
+# Spine Switches (L2 only)
 spine:
   defaults:
     platform: cEOS-LAB

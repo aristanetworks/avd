@@ -335,7 +335,7 @@ The updated changes are noted in the tabs below.
     Update DC1_FABRIC.yml with the following recommended settings. Use your own IP pools.
 
     ``` yaml
-    # Node Key must be l3spine
+    # Node Key must be l3spine to match type
     l3spine:
       defaults:
         platform: cEOS-LAB
