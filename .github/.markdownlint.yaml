@@ -79,6 +79,11 @@ MD048:
   # Code fence style
   style: "backtick"
 
+# MD049/Emphasis style should be consistent
+MD049:
+  # Emphasis style should be consistent
+  style: "asterisk"
+
 # MD050/Strong style should be consistent
 MD050:
   # Strong style should be consistent
