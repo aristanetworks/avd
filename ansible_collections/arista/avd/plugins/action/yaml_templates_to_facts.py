@@ -132,7 +132,12 @@ class ActionModule(ActionBase):
             elif 'python_module' in template_item:
                 module_path = template_item.get('python_module')
                 class_name = template_item.get('python_class_name', DEFAULT_PYTHON_CLASS_NAME)
-                cls = getattr(importlib.import_module(module_path), class_name)
+
+                try:
+                    cls = getattr(importlib.import_module(module_path), class_name)
+                except ImportError as imp_exc:
+                    raise AnsibleActionFail(imp_exc) from imp_exc
+
                 if issubclass(cls, AvdFacts):
                     cls_instance = cls(hostvars=template_vars, templar=templar)
                     if debug:
