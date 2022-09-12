@@ -2,7 +2,7 @@
 ### group_vars/DC1_NETWORK_SERVICES.yml
 
 tenants:
-  VLANS:
+  MY_FABRIC:
     l2vlans:
       10:
         name: 'BLUE-NET'
