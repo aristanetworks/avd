@@ -21,14 +21,14 @@ The example is meant as a starting foundation. You may build more advanced fabri
 2. Install Ansible module requirements - Instructions found [here](../../docs/installation/requirements.md).
 3. Run the following playbook which will copy Getting Started examples to your current working directory.
 
-```bash
+``` bash
 # current working directory: ~/ansible-avd-examples
 ansible-playbook arista.avd.install_examples
 ```
 
 The output will show something similar to the following. If not, please ensure that AVD and all requirements are correctly installed.
 
-```shell
+``` shell
  ~/ansible-avd-examples# ansible-playbook arista.avd.install_examples
 
 PLAY [Install Examples]***************************************************************************************************************************************************************************************************************************************************************
@@ -43,7 +43,7 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the following directory structure will be created.
 
-```shell
+``` shell
 ansible-avd-examples/     (directory where playbook was run)
   ├── l2ls-fabric/
     ├── documentation/
@@ -89,7 +89,7 @@ Basic connectivity between the Ansible controller host and the switches must be 
 
 Below is the basic configuration file for SPINE1:
 
-```shell
+``` shell
 --8<--
 examples/l2ls-fabric/switch-basic-configurations/SPINE1.cfg
 --8<--
@@ -126,7 +126,7 @@ The hostnames specified in the inventory must exist either in DNS or in the host
 
 Alternatively, if DNS is not available, define the variable ansible_host to be an IP address for each device.
 
-```yaml
+``` yaml
 --8<--
 examples/l2ls-fabric/inventory.yml
 --8<--
@@ -148,7 +148,7 @@ To apply AVD variables to the nodes in the fabric, we make use of Ansible group_
 The tabs below show the Ansible **group_vars** used in this example.
 
 === "DC1"
-    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface. Update local_users and passwords for your environment.
+    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
 
     You can create a sha512_password by creating a username and password on a switch and copy/paste it within double quotes here.
 
@@ -200,6 +200,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
 === "DC1_NETWORK_PORTS"
     Our fabric would not be complete without connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**. Each endpoint's adapter defines which switch port(s) and port profile to use. In our example, we have four hosts and a firewall connected to the fabric. The connected endpoints keys are used for logical separation and apply to interface descriptions. These variables are applied to spine and leaf nodes since they are a part of this inventory group.
+
     ``` yaml
     --8<--
     examples/l2ls-fabric/group_vars/DC1_NETWORK_PORTS.yml
@@ -211,14 +212,16 @@ The tabs below show the Ansible **group_vars** used in this example.
 Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
 
 === "build.yml"
-    ```yaml
+
+    ``` yaml
     --8<--
     examples/l2ls-fabric/build.yml
     --8<--
     ```
 
 === "deploy.yml"
-    ```yaml
+
+    ``` yaml
     --8<--
     examples/l2ls-fabric/deploy.yml
     --8<--
@@ -228,7 +231,7 @@ Now that we have defined all of our Ansible variables (AVD inputs), it is time t
 
 To build the configurations files, run the playbook called `build.yml`.
 
-```bash
+``` bash
 ### Build configurations
 ansible-playbook playbooks/build.yml
 ```
@@ -237,7 +240,7 @@ After the playbook run finishes, EOS CLI intended configuration files were writt
 
 To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables were defined in DC1_FABRIC.yml.
 
-```bash
+``` bash
 ### Build configurations & Push Configs to switches
 ansible-playbook playbooks/deploy.yml
 ```
@@ -248,7 +251,7 @@ Your configuration files should be similar to these.
 
 === "SPINE1"
 
-    ```shell
+    ``` shell
     --8<--
     examples/l2ls-fabric/intended/configs/SPINE1.cfg
     --8<--
@@ -256,7 +259,7 @@ Your configuration files should be similar to these.
 
 === "SPINE2"
 
-    ```shell
+    ``` shell
     --8<--
     examples/l2ls-fabric/intended/configs/SPINE2.cfg
     --8<--
@@ -264,7 +267,7 @@ Your configuration files should be similar to these.
 
 === "LEAF1"
 
-    ```shell
+    ``` shell
     --8<--
     examples/l2ls-fabric/intended/configs/LEAF1.cfg
     --8<--
@@ -272,7 +275,7 @@ Your configuration files should be similar to these.
 
 === "LEAF2"
 
-    ```shell
+    ``` shell
     --8<--
     examples/l2ls-fabric/intended/configs/LEAF2.cfg
     --8<--
@@ -280,7 +283,7 @@ Your configuration files should be similar to these.
 
 === "LEAF3"
 
-    ```shell
+    ``` shell
     --8<--
     examples/l2ls-fabric/intended/configs/LEAF3.cfg
     --8<--
@@ -288,7 +291,7 @@ Your configuration files should be similar to these.
 
 === "LEAF4"
 
-    ```shell
+    ``` shell
     --8<--
     examples/l2ls-fabric/intended/configs/LEAF4.cfg
     --8<--
@@ -403,13 +406,13 @@ The updated changes are noted in the tabs below.
 
 Now re-run your playbook and build the new configs. The intended/configs for the spines will have been updated with L3 SVIs.
 
-```bash
+``` bash
 ansible-playbook playbooks/build.yml
 ```
 
 If you wish to deploy these changes, then simply run the deploy playbook.
 
-```bash
+``` bash
 ansible-playbook playbooks/deploy.yml
 ```
 
