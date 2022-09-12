@@ -71,7 +71,7 @@ jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
 
-> **_NOTE:_** When using ansible-cvp modules, the user who is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
+> ***NOTE:*** When using ansible-cvp modules, the user who is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
 
 ## Example Playbooks
 

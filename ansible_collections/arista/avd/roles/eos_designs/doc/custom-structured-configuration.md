@@ -5,9 +5,9 @@ There are multiple ways of supplying Custom Structured Configuration and they ca
 
 ## Variables Precedence
 
-_**TL;DR:** eos_cli_config_gen variables in the input files will be overwritten
+***TL;DR:*** eos_cli_config_gen variables in the input files will be overwritten
 by the eos_designs generated facts when the role produces a value for the same
-key, use custom_strutcured_configuration to make sure the values make it in the intended configurations._
+key, use custom_structured_configuration to make sure the values make it in the intended configurations._
 
 ### Overview
 
@@ -128,7 +128,7 @@ ip name-server vrf CUSTOM_STRUCT 1.1.1.1
 ip name-server vrf CUSTOM_STRUCT 2.2.2.2
 ```
 
-_NOTE:_ as described in the custom_sturctured_configuration secion, it is possible to leverage a merge on lists in this case. This example describes the default behavior
+*NOTE:* as described in the custom_sturctured_configuration secion, it is possible to leverage a merge on lists in this case. This example describes the default behavior
 
 #### eos_cli_config_gen variables overwritten by eos_designs custom_structured_configuration
 

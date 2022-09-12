@@ -20,23 +20,23 @@ This document explains how to customize demo information and set up an environme
 
 #### IP Address management
 
-- _**CloudVision IP address**_:
+- ***CloudVision IP address***:
   - Cluster interface: eth0 / Should use your own IP address
   - Device interface: eth1 / `10.255.0.1/24`
-- _**Management Network**_: `10.255.0.0/24`
-  - _DC1-SPINE1_: `10.255.0.11/24`
-  - _DC1-SPINE2_: `10.255.0.12/24`
-  - _DC1-LEAF1A_: `10.255.0.13/24`
-  - _DC1-LEAF1B_: `10.255.0.14/24`
-  - _DC1-LEAF2A_: `10.255.0.15/24`
-  - _DC1-LEAF2B_: `10.255.0.16/24`
-  - _DC1-L2LEAF1A_: `10.255.0.17/24`
-  - _DC1-L2LEAF2B_: `10.255.0.18/24`
-- _**Default Username & Password**_:
+- ***Management Network***: `10.255.0.0/24`
+  - *DC1-SPINE1*: `10.255.0.11/24`
+  - *DC1-SPINE2*: `10.255.0.12/24`
+  - *DC1-LEAF1A*: `10.255.0.13/24`
+  - *DC1-LEAF1B*: `10.255.0.14/24`
+  - *DC1-LEAF2A*: `10.255.0.15/24`
+  - *DC1-LEAF2B*: `10.255.0.16/24`
+  - *DC1-L2LEAF1A*: `10.255.0.17/24`
+  - *DC1-L2LEAF2B*: `10.255.0.18/24`
+- ***Default Username & Password***:
   - admin / arista123
   - cvpdamin / arista123
   - ansible / ansible
-- _**Servers configuration**_:
+- ***Servers configuration***:
   - Server 01: eth0 / `10.1.10.11/24`
   - Server 02: eth0 / `10.1.10.12/24`
 
@@ -415,7 +415,7 @@ $ ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags provision
 
 ##### Execute Pending tasks using a change control
 
-Go to _Provisioning > Change Control_ to create a new change control
+Go to *Provisioning > Change Control* to create a new change control
 
 ![Change Control Example](../_media/figure-2-cloudvision-change-control.png)
 

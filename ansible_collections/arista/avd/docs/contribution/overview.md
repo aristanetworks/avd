@@ -129,21 +129,21 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
   - **Types**:
 
-    * `Feat`: Create a capability e.g. feature, test, dependency.
-    * `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
-    * `Cut`: Remove a capability e.g. feature, test, dependency.
-    * `Doc`: Refactor of documentation, e.g. help files.
-    * `CI`: Update CI components, e.g. molecule files or Github Actions.
-    * `Bump`: Increase the version of something e.g. dependency.
-    * `Test`: Add or refactor anything regarding test, e.g add a new testCases.
-    * `Refactor`: A code change that MUST be just a refactoring.
-    * `Revert`: Change back to the previous commit
+    - `Feat`: Create a capability e.g. feature, test, dependency.
+    - `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
+    - `Cut`: Remove a capability e.g. feature, test, dependency.
+    - `Doc`: Refactor of documentation, e.g. help files.
+    - `CI`: Update CI components, e.g. molecule files or Github Actions.
+    - `Bump`: Increase the version of something e.g. dependency.
+    - `Test`: Add or refactor anything regarding test, e.g add a new testCases.
+    - `Refactor`: A code change that MUST be just a refactoring.
+    - `Revert`: Change back to the previous commit
 
   - **Scopes**:
 
-    * `{{ role_name }}`: AVD role impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
-    * `plugins`: To use when AVD plugin is impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
-    * `requirements`: To use when using `Bump` type and when any AVD requirement is updated
+    - `{{ role_name }}`: AVD role impacted by PR. **Required** for `Feat`, `Cut` and `Fix` types
+    - `plugins`: To use when AVD plugin is impacted by PR. **Required** for `Feat`, `Cut` and `Fix` types
+    - `requirements`: To use when using `Bump` type and when any AVD requirement is updated
 
     !!! info "Scopes"
         Scope is an optional field and can be ignore safely if your PR covers an undefined scope.
