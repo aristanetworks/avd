@@ -128,34 +128,21 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
   * **Types**:
 
-    * `Feat`: Create a capability, for example, feature, test, or dependency.
-    * `Fix`: Fix an issue, for example, bug, typo, accident, or misstatement.
-    * `Cut`: Remove a capability, for example,  feature, test, or dependency.
-    * `Doc`: Refactor documentation, for example, help files.
-    * `CI`: Update CI components, for example,  molecule files or GitHub Actions.
-    * `Start`: Begin doing something, for example, create a feature flag.
-    * `Stop`: End doing something, for example, remove a feature flag.
-    * `Bump`: Increase the version of something (dependency).
-    * `Test`: Add or refactor anything regarding a test, for example, add a new test case.
-    * `Make`: Change the build process, tooling, or infrastructure.
-    * `Refactor`: A code change that only contains refactoring.
-    * `Reformat`: Refactor of formatting, for example, omit whitespace.
-    * `Optimize`: Refactor of performance, for example, speed up code.
-    * `License`: Edits regarding licensing; no production code change.
-    * `Revert`: Change back to the previous commit.
+    * `Feat`: Create a capability e.g. feature, test, dependency.
+    * `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
+    * `Cut`: Remove a capability e.g. feature, test, dependency.
+    * `Doc`: Refactor of documentation, e.g. help files.
+    * `CI`: Update CI components, e.g. molecule files or Github Actions.
+    * `Bump`: Increase the version of something e.g. dependency.
+    * `Test`: Add or refactor anything regarding test, e.g add a new testCases.
+    * `Refactor`: A code change that MUST be just a refactoring.
+    * `Revert`: Change back to the previous commit
 
   * **Scopes**:
 
-    * `{{ role_name }}`: AVD role impacted by PR. **Required** for `Feat`, `Cut` and `Fix` types.
-    * `plugins`: To use when AVD plugin is impacted by PR. **Required** for `Feat`, `Cut` and `Fix` types.
-    * `requirements`: To use when using `Bump` type and when any AVD requirement is updated.
-    * `mkdoc`: Represents generic documentation published on [avd.sh](https://avd.sh/en/stable/).
-    * `contribution`: Documentation related to contribution.
-    * `how-to`: Documentation in the how-to section of AVD.
-    * `actions`: Represents GitHub Actions update.
-    * `molecule`: Represents Molecule CI update.
-    * `ansible`: For any Ansible information update like `galaxy.yml` or Ansible requirements.
-    * `github`: For any content related to GitHub processes.
+    * `{{ role_name }}`: AVD role impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
+    * `plugins`: To use when AVD plugin is impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
+    * `requirements`: To use when using `Bump` type and when any AVD requirement is updated
 
 !!! info "Scopes"
     Scope is an optional field and can be ignore safely if your PR covers an undefined scope.
