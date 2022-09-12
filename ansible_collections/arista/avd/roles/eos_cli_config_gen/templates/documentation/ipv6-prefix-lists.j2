@@ -9,7 +9,7 @@
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in ipv6_prefix_list.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%         for sequence in ipv6_prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
 {%         endfor %}
 
