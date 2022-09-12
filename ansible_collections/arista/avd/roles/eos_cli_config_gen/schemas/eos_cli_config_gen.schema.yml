@@ -93,6 +93,50 @@ keys:
           description: 'Action as string
 
             Example: "permit GSHUT 65123:123"'
+  ip_community_lists:
+    type: list
+    secondary_key: entries
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: IP Community Lists
+    description: "AVD supports 2 different data models for community lists:\n\n- The
+      legacy `community_lists` data model that can be used for compatibility with
+      the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth
+      data models can coexist without conflicts, as different keys are used: `community_lists`
+      vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved
+      data model has a better design documented below:\n\ncommunities and regexp MUST
+      not be configured together in the same entry\npossible community strings are
+      (case insensitive):\n - GSHUT\n - internet\n - local-as\n - no-advertise\n -
+      no-export\n - <1-4294967040>\n - aa:nn\n"
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: IP Community-list Name
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              action:
+                type: str
+                required: true
+                valid_values:
+                - permit
+                - deny
+              communities:
+                type: list
+                items:
+                  type: str
+                description: If defined, a standard community-list will be configured
+              regexp:
+                type: str
+                display_name: Regular Expression
+                description: If defined, a regex community-list will be configured
   ip_domain_lookup:
     type: dict
     display_name: Domain Lookup
@@ -114,6 +158,42 @@ keys:
             vrf:
               type: str
               display_name: VRF
+  ipv6_access_lists:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: IPv6 Extended Access-Lists
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: IPv6 Access-list Name
+        counters_per_entry:
+          type: bool
+        sequence_numbers:
+          type: list
+          required: true
+          primary_key: sequence
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                display_name: Sequence ID
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string
+
+                  Example: "deny ipv6 any any"'
   match_list_input:
     type: dict
     display_name: Match Lists
