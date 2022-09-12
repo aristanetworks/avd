@@ -104,8 +104,6 @@ Now that we understand the physical L2LS topology, we need to create the Ansible
   - DC1_FABRIC
     - DC1_SPINES
     - DC1_LEAFS
-      - POD1
-      - POD2
   - DC1_NETWORK_SERVICES
     - DC1_SPINES
     - DC1_LEAFS
@@ -122,7 +120,7 @@ This naming convention makes it possible to extend anything quickly but can be c
 
 ### inventory.yml
 
-The below inventory file represents 2 Spines and 2 Leaf Pairs (POD1 & POD2). The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively. We apply group variables (group_vars) to these groups to define their functionality and configurations.
+The below inventory file represents two Spines and four Leafs. The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively. We apply group variables (group_vars) to these groups to define their functionality and configurations.
 
 The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution (e.g., ping SPINE1).
 
@@ -192,7 +190,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs (PODs). These variables are applied to spine and leaf nodes since they are a part of this group.
+    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs. These variables are applied to spine and leaf nodes since they are a part of this group.
 
     ``` yaml
     --8<--
@@ -359,12 +357,12 @@ The updated changes are noted in the tabs below.
 
     ???+ Note
 
-        To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `VLANS` is simply a name for organizing VRFs and SVIs. You may change it to your liking.
+        To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `MY_FABRIC` is simply a tenant name for organizing VRFs and SVIs.
 
     ``` yaml
     ---
     tenants:
-      VLANS:
+      MY_FABRIC:
         vrfs:
           default:
             svis:

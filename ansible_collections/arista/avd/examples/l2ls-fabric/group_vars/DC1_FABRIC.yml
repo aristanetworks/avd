@@ -58,7 +58,7 @@ leaf:
     spanning_tree_priority: 16384
 
   node_groups:
-    POD1:
+    RACK1:
       mlag: true
       filter:
         tags: [bluezone, greenzone]
@@ -71,7 +71,7 @@ leaf:
           id: 2
           mgmt_ip: 172.100.100.106/24
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
-    POD2:
+    RACK2:
       mlag: true
       filter:
         tags: [bluezone, orangezone]

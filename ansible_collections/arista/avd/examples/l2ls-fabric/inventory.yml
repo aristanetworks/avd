@@ -10,19 +10,15 @@ DC1:
             SPINE2:
               ansible_host: 172.100.100.102
         DC1_LEAFS:
-          children:
-            POD1:
-              hosts:
-                LEAF1:
-                  ansible_host: 172.100.100.105
-                LEAF2:
-                  ansible_host: 172.100.100.106
-            POD2:
-              hosts:
-                LEAF3:
-                  ansible_host: 172.100.100.107
-                LEAF4:
-                  ansible_host: 172.100.100.108
+          hosts:
+            LEAF1:
+              ansible_host: 172.100.100.105
+            LEAF2:
+              ansible_host: 172.100.100.106
+            LEAF3:
+              ansible_host: 172.100.100.107
+            LEAF4:
+              ansible_host: 172.100.100.108
     DC1_NETWORK_SERVICES:
       children:
         DC1_LEAFS:

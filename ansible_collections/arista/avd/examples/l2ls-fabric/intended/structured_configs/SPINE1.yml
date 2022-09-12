@@ -52,13 +52,13 @@ vlans:
     trunk_groups:
     - MLAG
   10:
-    tenant: VLANS
+    tenant: MY_FABRIC
     name: BLUE-NET
   20:
-    tenant: VLANS
+    tenant: MY_FABRIC
     name: GREEN-NET
   30:
-    tenant: VLANS
+    tenant: MY_FABRIC
     name: ORANGE-NET
 vlan_interfaces:
   Vlan4094:
@@ -77,14 +77,14 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: POD1_Po1
+    description: RACK1_Po1
     type: switched
     shutdown: false
     vlans: 10,20
     mode: trunk
     mlag: 1
   Port-Channel3:
-    description: POD2_Po1
+    description: RACK2_Po1
     type: switched
     shutdown: false
     vlans: 10,30
