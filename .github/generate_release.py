@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 """
 generate_release.py
+
+This script is used to generate the release.yml file as per
+https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
 """
 
 import yaml
@@ -17,7 +20,6 @@ SCOPES = [
     "eos_validate_state",
     "plugins",
     "requirements",
-    "",  # empty scope
 ]
 
 # CI and Test are excluded from Release Notes
@@ -34,7 +36,7 @@ CATEGORIES = {
 }
 
 
-class Dumper(yaml.Dumper):
+class SafeDumper(yaml.SafeDumper):
     """
     Make yamllint happy
     https://github.com/yaml/pyyaml/issues/234#issuecomment-765894586
@@ -49,25 +51,23 @@ class Dumper(yaml.Dumper):
 if __name__ == "__main__":
     exclude_list = []
     categories_list = []
+
     # First add exclude labels
     for scope in SCOPES:
-        if scope != "":
-            exclude_list.append(f"rn: Test({scope})")
-            exclude_list.append(f"rn: CI({scope})")
-        else:
-            exclude_list.append("rn: Test")
-            exclude_list.append("rn: CI")
+        exclude_list.append(f"rn: Test({scope})")
+        exclude_list.append(f"rn: CI({scope})")
+    exclude_list.extend(["rn: Test", "rn: CI"])
+
     # Then add the categories
     # First add Breaking Changes
-    breaking_labels = []
-    for scope in SCOPES:
-        for cc_type, rn_title in CATEGORIES.items():
-            # This assumes that Doc, Test and CI cannot be breaking
-            if cc_type in ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]:
-                if scope != "":
-                    breaking_labels.append(f"rn: {cc_type}({scope})!")
-                else:
-                    breaking_labels.append(f"rn: {cc_type}!")
+    breaking_label_categories = ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]
+    breaking_labels = [
+        f"rn: {cc_type}({scope})!"
+        for cc_type in breaking_label_categories
+        for scope in SCOPES
+    ]
+    breaking_labels.extend([f"rn: {cc_type}!" for cc_type in breaking_label_categories])
+
     categories_list.append(
         {
             "title": "Breaking Changes",
@@ -81,6 +81,7 @@ if __name__ == "__main__":
             "labels": "rn: Fix(eos_cli_config_gen)",
         }
     )
+
     # Add fixes in eos_designs
     categories_list.append(
         {
@@ -88,32 +89,33 @@ if __name__ == "__main__":
             "labels": "rn: Fix(eos_designs)",
         }
     )
+
     # Add other fixes
-    other_fixes_labels = []
-    for scope in SCOPES:
-        if scope not in ["eos_cli_config_gen", "eos_designs", ""]:
-            other_fixes_labels.append(f"rn: Fix({scope})")
-        elif scope == "":
-            other_fixes_labels.append("rn: Fix")
+    other_fixes_labels = [
+        f"rn: Fix({scope})"
+        for scope in SCOPES
+        if scope not in ["eos_cli_config_gen", "eos_designs"]
+    ]
+    other_fixes_labels.append("rn: Fix")
+
     categories_list.append(
         {
             "title": "Other Fixed issues",
             "labels": other_fixes_labels,
         }
     )
+
     # Add Documentation
-    doc_labels = []
-    for scope in SCOPES:
-        if scope != "":
-            doc_labels.append(f"rn: Doc({scope})")
-        elif scope == "":
-            doc_labels.append("rn: Doc")
+    doc_labels = [f"rn: Doc({scope})" for scope in SCOPES]
+    doc_labels.append("rn: Doc")
+
     categories_list.append(
         {
             "title": "Documentation",
             "labels": doc_labels,
         }
     )
+
     # Add new features in eos_cli_config_gen
     categories_list.append(
         {
@@ -121,6 +123,7 @@ if __name__ == "__main__":
             "labels": "rn: Feat(eos_cli_config_gen)",
         }
     )
+
     # Add new features in eos_designs
     categories_list.append(
         {
@@ -128,13 +131,15 @@ if __name__ == "__main__":
             "labels": "rn: Feat(eos_designs)",
         }
     )
+
     # Add other new features
-    other_feat_labels = []
-    for scope in SCOPES:
-        if scope not in ["eos_cli_config_gen", "eos_designs", ""]:
-            other_feat_labels.append(f"rn: Feat({scope})")
-        elif scope == "":
-            other_feat_labels.append("rn: Feat")
+    other_feat_labels = [
+        f"rn: Feat({scope})"
+        for scope in SCOPES
+        if scope not in ["eos_cli_config_gen", "eos_designs"]
+    ]
+    other_feat_labels.append("rn: Feat")
+
     categories_list.append(
         {
             "title": "Other new features and enhancements",
@@ -158,6 +163,6 @@ if __name__ == "__main__":
                 }
             },
             release_file,
-            Dumper=Dumper,
+            Dumper=SafeDumper,
             sort_keys=False,
         )
