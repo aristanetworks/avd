@@ -4,13 +4,13 @@ scenario:
     - syntax
     - create
     - converge
-    #- verify       # Removed verify since it will fail with disabled convert_dicts filter
+    - verify       # Removed verify since it will fail with disabled convert_dicts filter
   test_sequence:
     - syntax
     - create
     - converge
     - idempotence
-    #- verify       # Removed verify since it will fail with disabled convert_dicts filter
+    - verify       # Removed verify since it will fail with disabled convert_dicts filter
   cleanup_sequence:
     - destroy
 dependency:
@@ -33,8 +33,8 @@ provisioner:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-  env:
-    AVD_DISABLE_CONVERT_DICTS: "TRUE"
+  # env:
+  #   AVD_DISABLE_CONVERT_DICTS: "TRUE"
   inventory:
     links:
       hosts: 'inventory/hosts.yml'
