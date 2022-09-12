@@ -171,7 +171,7 @@ ntp:
 
 Fabric topology is configured under `inventories/eapi-example/group_vars/AVD_FABRIC.yml`, which is a file that covers `AVD_FABRIC` group we defined in the [inventory](#inventory-file). This file contains all the base information to create the initial configuration:
 
-You can also refer to the [__Arista Validated Design__ documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md#fabric-topology-variables) to get a description of every single option available.
+You can also refer to the [**Arista Validated Design** documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md#fabric-topology-variables) to get a description of every single option available.
 
 Then, you have to describe devices for each role. Don't forget to set management IP here.
 
@@ -244,7 +244,7 @@ l3leaf:
 [... output truncated ...]
 ```
 
-Complete documentation of all available variables is available in the [__Arista Validated Design documentation__](../../roles/eos_designs/README.md). You can also look at the [variables part of the demo repository](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
+Complete documentation of all available variables is available in the [**Arista Validated Design documentation**](../../roles/eos_designs/README.md). You can also look at the [variables part of the demo repository](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
 
 #### Configure device type
 
@@ -282,7 +282,7 @@ tenants:
         tags: [DC1]
 ```
 
-The tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this VLAN. To configure device `TAGS` and `TENANTS` options, go to [__Arista Validated Design__ documentation](../../roles/eos_designs/README.md#fabric-topology-variables)
+The tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this VLAN. To configure device `TAGS` and `TENANTS` options, go to [**Arista Validated Design** documentation](../../roles/eos_designs/README.md#fabric-topology-variables)
 
 In this configuration, VLAN 201 will be created with a tag of `201` and it's attached VNI will be configured with `20201`.
 
@@ -364,7 +364,7 @@ If you deployed this VRF on an MLAG VTEP, additional VLANs are created to allow 
 {{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}
 ```
 
-In addition to that, each EOS device will allocate a dynamic VLAN per VRF to support __L3 VNI__.
+In addition to that, each EOS device will allocate a dynamic VLAN per VRF to support **L3 VNI**.
 
 ```eos
 AVD-LEAF1A#show vlan
@@ -397,7 +397,7 @@ VNI         VLAN        Source       Interface           802.1Q Tag
                                      Vxlan1              201
 ```
 
-In `TENANT_A_PROJECT02`, we can also see an optional feature named __`vtep_diagnostic`__. This option allows you to create a loopback in this VRF and do some connectivity tests.
+In `TENANT_A_PROJECT02`, we can also see an optional feature named **`vtep_diagnostic`**. This option allows you to create a loopback in this VRF and do some connectivity tests.
 
 #### Configure downlinks
 
@@ -416,7 +416,7 @@ port_profiles:
     vlans: "110"
 ```
 
-> This section uses vlan-id so all of these entries must be configured in the _TENANTS_ file
+> This section uses vlan-id so all of these entries must be configured in the *TENANTS* file
 
 Then, create port mapping on a per server.
 
@@ -480,7 +480,7 @@ tasks:
 
 ### Transform EVPN data model to device data model
 
-AVD provides the [__`eos_designs`__](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md) role to generate intended YAML device configuration:
+AVD provides the [**`eos_designs`**](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md) role to generate intended YAML device configuration:
 
 ```yaml
   tasks:
@@ -508,7 +508,7 @@ The topology and device documentation can be accessed under `documentation` in t
 
 ### Deploy your configuration to EOS devices
 
-Once your configuration files have been generated, you can use [`arista.avd.eos_config_deploy_eapi`](../../roles/eos_config_deploy_eapi/README.md) to deploy your configuration in replace mode. Because we want to make this deployment explicit, we position tags `deploy` and `never`, meaning you __must__ set this tag in your CLI.
+Once your configuration files have been generated, you can use [`arista.avd.eos_config_deploy_eapi`](../../roles/eos_config_deploy_eapi/README.md) to deploy your configuration in replace mode. Because we want to make this deployment explicit, we position tags `deploy` and `never`, meaning you **must** set this tag in your CLI.
 
 ```yaml
   tasks:

@@ -2,7 +2,7 @@
 
 ## Arista EOS version
 
-- EOS __4.21.8M__ or later
+- EOS **4.21.8M** or later
 - Roles validated with eAPI transport -> `ansible_connection: httpapi`
 
 ## Arista CloudVision
@@ -11,15 +11,16 @@ If you leverage [CloudVision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Python
 
-- Python __3.8__ or later
+- Python **3.8** or later
 
 ## Supported Ansible Versions
 
-- ansible-core from __2.11.3__ to __2.12.x__ excluding __2.12.0__ to __2.12.5__
+- ansible-core from **2.11.3** to **2.12.x** excluding **2.12.0** to **2.12.5**
 
-Excluded versions have an [issue](## "plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).")
-in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.12.6/changelogs/CHANGELOG-v2.12.rst#bugfixes)
-in __2.12.6__ and __2.13.1__.
+Excluded versions have an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.12.6/changelogs/CHANGELOG-v2.12.rst#bugfixes) in **2.12.6** and **2.13.1**.
+
+!!! note
+    Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
 
 ## Additional Python Libraries required
 

@@ -76,21 +76,25 @@ node_type_keys:
 To help calculate the custom IP addressing, the following contextual variables are available to the custom templates:
 
 router_id:
+
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_pool }}`
 - `{{ loopback_ipv4_offset }}`
 
 mlag_ip_primary & mlag_ip_secondary:
+
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:
+
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
 
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
+
 - `{{ switch.uplink_ipv4_pool }}`
 - `{{ switch.id }}`
 - `{{ switch.max_uplink_switches }}`
@@ -98,11 +102,13 @@ p2p_uplinks_ip & p2p_uplinks_peer_ip:
 - `{{ uplink_switch_index }}`
 
 vtep_ip_mlag:
+
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ mlag_primary_id }}`
 - `{{ loopback_ipv4_offset }}`
 
 vtep_ip:
+
 - `{{ switch_vtep_loopback_ipv4_pool }}`
 - `{{ switch_id }}`
 - `{{ loopback_ipv4_offset }}`
@@ -111,6 +117,7 @@ vtep_ip:
 All other templates can only leverage the input variables and variables set in switch facts template.
 
 For more information about the available contextual properties, see the following links:
+
 - [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
 - [switch facts](../templates/facts/switch/switch.j2)
 
@@ -119,34 +126,41 @@ For more information about the available contextual properties, see the followin
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
 underlay_ethernet_interfaces:
+
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p or underlay_l2)`
 
 underlay_port_channel_interfaces:
+
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer_channel_group_id }}`
 
 mlag_ethernet_interfaces:
+
 - `{{ mlag_interface }}`
 - `{{ mlag_peer }}`
 
 mlag_port_channel_interfaces:
+
 - `{{ mlag_interfaces }}`
 - `{{ mlag_peer }}`
 
 connected_endpoints_ethernet_interfaces:
+
 - `{{ peer }}`
 - `{{ peer_interface }}`
 
 connected_endpoints_port_channel_interfaces:
+
 - `{{ peer }}`
 - `{{ adapter_port_channel_description }}`
 
 All templates can leverage the switch facts (switch.*) to customize the interface descriptions.
 
 For more information about the available contextual properties, see the following links:
+
 - [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
 - [underlay_port_channel_interfaces facts](../templates/facts/topology/port-channel-uplinks.j2)
 - [mlag_ethernet_interfaces facts](../templates/mlag/ethernet-interfaces.j2)

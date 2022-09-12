@@ -12,20 +12,20 @@ This container comes with a set of options available to let you customize your e
 
 ### Generic settings
 
-- __`AVD_MODE`__: If set to `demo`, container will install AVD content to test it from `get.avd.sh`. (Supported mode: `['demo', 'toi']`).
-- __`AVD_PASSWORD`__: Allow user to set a password for VScode authentication. If not set, access isn't protected by any password.
-- __`AVD_GIT_USER`__: Username to configure in `.gitconfig` file.
-- __`AVD_GIT_EMAIL`__: Email to configure in `.gitconfig` file.
-- __`AVD_USER_EXTENSIONS_FILE`__: Allow user to install additional VScode extensions.
-- __`AVD_USER_REPOS`__: Path to a text file in your container with a list of repository to clone (one repository per line).
-- __`AVD_USER_SCRIPT`__: Path to a shell script to execute during entrypoint execution.
+- **`AVD_MODE`**: If set to `demo`, container will install AVD content to test it from `get.avd.sh`. (Supported mode: `['demo', 'toi']`).
+- **`AVD_PASSWORD`**: Allow user to set a password for VScode authentication. If not set, access isn't protected by any password.
+- **`AVD_GIT_USER`**: Username to configure in `.gitconfig` file.
+- **`AVD_GIT_EMAIL`**: Email to configure in `.gitconfig` file.
+- **`AVD_USER_EXTENSIONS_FILE`**: Allow user to install additional VScode extensions.
+- **`AVD_USER_REPOS`**: Path to a text file in your container with a list of repository to clone (one repository per line).
+- **`AVD_USER_SCRIPT`**: Path to a shell script to execute during entrypoint execution.
 
 ### User settings
 
 These settings must be used to mount and edit file from your physical host.
 
-- __`AVD_UID`__: Set uid for AVD user in container.
-- __`AVD_GID`__: Set gid for AVD user in container.
+- **`AVD_UID`**: Set uid for AVD user in container.
+- **`AVD_GID`**: Set gid for AVD user in container.
 
 The container also comes with Docker installed, and in case you want to run Docker from your container, you can expose your local Docker socket from your host to your container:
 
@@ -108,7 +108,7 @@ docker run --rm -it -d \
 
 ### Install additional repositories
 
-Now, you want to ship your own demo in your container with Git clone instead of local file sharing, you can leverage the following option: __`AVD_USER_REPOS`__
+Now, you want to ship your own demo in your container with Git clone instead of local file sharing, you can leverage the following option: **`AVD_USER_REPOS`**
 
 ```bash
 docker run --rm -it -d \
@@ -130,4 +130,4 @@ https://github.com/aristanetworks/ansible-cvp.git
 !!! note Repository file path
     By default, Docker can't load a file from your host. The path you provide in `AVD_USER_REPOS` must be configured using a shared volume.
 
-For more details and options, you can check our repository for this container: __[arista-netdevops-community/docker-avd-vscode](https://github.com/arista-netdevops-community/docker-avd-vscode)__
+For more details and options, you can check our repository for this container: **[arista-netdevops-community/docker-avd-vscode](https://github.com/arista-netdevops-community/docker-avd-vscode)**

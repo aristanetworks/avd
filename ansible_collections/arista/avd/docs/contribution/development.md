@@ -81,7 +81,7 @@ Removing development_webdoc_1  ... done
 
 ### Pre-commit hook
 
-[`pre-commit`](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
+[pre-commit](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
 
 Repository implements following hooks:
 
@@ -90,9 +90,11 @@ Repository implements following hooks:
 - `check-yaml`: Checks that all YAML files are valid.
 - `check-added-large-files`: Check if there is no large file included in the repository.
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
-- `pylint`: Run python linting with settings defined in [`pylintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
-- `yamllint`: Validate all YAML files using configuration from [`yamllintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/.github/yamllintrc).
+- `pylint`: Run python linting with settings defined in [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
+- `yamllint`: Validate all YAML files using configuration from [yamllintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/.github/yamllintrc).
 - `ansible-lint`: Validate YAML files with Ansible proven practices, patters, and behaviors.
+- `Flake8`: Style guide enforcement for Python code base.
+- `markdownlint-cli`: Validates markdown files for common errors as referenced [here](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md).
 
 #### Installation
 

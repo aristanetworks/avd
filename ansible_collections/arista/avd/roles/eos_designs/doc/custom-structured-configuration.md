@@ -5,9 +5,9 @@ There are multiple ways of supplying Custom Structured Configuration and they ca
 
 ## Variables Precedence
 
-_**TL;DR:** eos_cli_config_gen variables in the input files will be overwritten
+***TL;DR:*** eos_cli_config_gen variables in the input files will be overwritten
 by the eos_designs generated facts when the role produces a value for the same
-key, use custom_strutcured_configuration to make sure the values make it in the intended configurations._
+key, use custom_structured_configuration to make sure the values make it in the intended configurations._
 
 ### Overview
 
@@ -40,7 +40,7 @@ A good example to demonstrate the various behaviors is to use the `ip name-serve
 
 #### eos_designs variables only
 
-```
+```yaml
 ---
 # Only eos_designs name_servers variables
 name_servers:
@@ -50,13 +50,14 @@ name_servers:
 
 will generate as intended config:
 
-```
+```eos
 ip name-server vrf MGMT 192.168.42.10
 ip name-server vrf MGMT 192.168.42.40
 ```
 
 #### eos_cli_config_gen variables ONLY
-```
+
+```yaml
 ---
 # Only name_server from eos_ci_config_gen.
 # The variables will make it to the intended config
@@ -71,14 +72,14 @@ name_server:
 
 will generate as intended config:
 
-```
+```eos
 ip name-server vrf EOS_CLI 4.4.4.4
 ip name-server vrf EOS_CLI 8.8.8.8
 ```
 
 #### eos_cli_config_gen variables overwritten by eos_designs variables
 
-```
+```yaml
 # Both name_servers from eos_designs and name_server from
 # eos_ci_config_gen. The second ones WON'T be displayed
 # as they are overwritten by the generated structured_configuration
@@ -96,15 +97,14 @@ name_server:
 
 will generate as intended config:
 
-```
+```eos
 ip name-server vrf MGMT 192.168.42.10
 ip name-server vrf MGMT 192.168.42.40
 ```
 
-
 #### eos_designs variables overwritten by custom_structured_configuration
 
-```
+```yaml
 ---
 # Both name_servers from eos_designs and leveraging the
 # custom_structured_configuration ONLY custom_struct will make it
@@ -122,17 +122,17 @@ custom_structured_configuration_name_server:
 ```
 
 will generate as intended config:
-```
+
+```eos
 ip name-server vrf CUSTOM_STRUCT 1.1.1.1
 ip name-server vrf CUSTOM_STRUCT 2.2.2.2
 ```
 
-
-_NOTE:_ as described in the custom_sturctured_configuration secion, it is possible to leverage a merge on lists in this case. This example describes the default behavior
+*NOTE:* as described in the custom_structured_configuration section, it is possible to leverage a merge on lists in this case. This example describes the default behavior
 
 #### eos_cli_config_gen variables overwritten by eos_designs custom_structured_configuration
 
-```
+```yaml
 ---
 # Both name_server from eos_cli_config_gen and leveraging the
 # custom_structured_configuration only custom_struct  will make it
@@ -152,7 +152,8 @@ custom_structured_configuration_name_server:
 ```
 
 will generate as intended config:
-```
+
+```eos
 ip name-server vrf CUSTOM_STRUCT 1.1.1.1
 ip name-server vrf CUSTOM_STRUCT 2.2.2.2
 ```

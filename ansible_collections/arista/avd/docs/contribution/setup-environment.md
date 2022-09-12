@@ -1,6 +1,6 @@
 # Setup Ansible AVD Environment
 
-Two methods can be used get Ansible up and running quickly with all the requirements to leverage __ansible-avd__:
+Two methods can be used get Ansible up and running quickly with all the requirements to leverage **ansible-avd**:
 A Python Virtual Environment or [Docker container](https://hub.docker.com/repository/docker/avdteam/base).
 
 In both scenario, this document will leverage git approach to create a local environment with collections installed in their respective folders and additional folders for all your content. It means, all examples will be based on the following folder structure:
@@ -248,7 +248,7 @@ This section describes how to configure python to run the ansible-AVD.
 
 As a requirement, we consider python3 as the default python interpreter and pip3 as package manager for python3. Some differences can be spotted depending on your own operating system and how they package python.
 
-__Disclaimer__: Not a preferred method. If you aren't an experienced user, please use docker approach.
+**Disclaimer**: Not a preferred method. If you aren't an experienced user, please use docker approach.
 
 In a shell, install `virtualenv` package:
 

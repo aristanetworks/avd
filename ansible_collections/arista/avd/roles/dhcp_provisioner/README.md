@@ -46,7 +46,7 @@ all:
 - **`ztp_mac_source`**: Define which mac-address field is used for identification: interface mac-address (`interface`) or system-mac-address (`system`). Default: `system`
 - **`ztp_mode`**: Define how role works either `offline` or `online` (Default `offline`).
 
-_Example_:
+*Example*:
 
 ```yaml
 ---

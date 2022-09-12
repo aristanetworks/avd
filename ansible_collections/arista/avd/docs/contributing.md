@@ -24,7 +24,7 @@ patches and features.
 ## Reporting Bugs
 
 - First, ensure that you've installed the [latest stable version](https://github.com/aristanetworks/ansible-avd/releases)
-of __ansible-avd__. If you're running an older version, it's possible that the bug has
+of **ansible-avd**. If you're running an older version, it's possible that the bug has
 already been fixed.
 
 - Next, check the GitHub [issues list](https://github.com/aristanetworks/ansible-avd/issues)
@@ -35,14 +35,14 @@ up (+1). You might also want to add a comment describing how it's affecting your
 installation. This will allow us to prioritize bugs based on how many users are
 affected.
 
-- If you haven't found an existing issue that describes your suspected bug, **Do not** file an issue until you
+- If you haven't found an existing issue that describes your suspected bug, **do not** file an issue until you
 have received confirmation that it is in fact a bug. Invalid issues are very
-distracting and slow the pace at which __ansible-avd__ is developed.
+distracting and slow the pace at which **ansible-avd** is developed.
 
 - When submitting an issue, please be as descriptive as possible. Be sure to
 include:
 
-  - The environment in which __ansible-avd__ is running
+  - The environment in which **ansible-avd** is running
   - The exact steps that can be taken to reproduce the issue (if applicable)
   - Any error messages generated
   - Screenshots (if applicable)
@@ -81,7 +81,7 @@ following:
 
   - A detailed description of the proposed functionality
   - A use case for the feature; who would use it and what value it would add
-    to __ansible-avd__
+    to **ansible-avd**
   - A rough description of changes necessary
   - Any third-party libraries or other resources which would be involved
 
@@ -91,9 +91,9 @@ appropriate labels will be applied for categorization.
 
 ## Using the issue tracker
 
-The issue tracker is the preferred channel for [__bug reports__](#reporting-bugs),
-[__features requests__](#feature-requests) and [__submitting pull
-requests__](#pull-requests), but please respect the following restrictions:
+The issue tracker is the preferred channel for [**bug reports**](#reporting-bugs),
+[**features requests**](#feature-requests) and [**submitting pull
+requests**](#pull-requests), but please respect the following restrictions:
 
 - Please **do not** use the issue tracker for personal support requests.
 
@@ -102,18 +102,18 @@ requests__](#pull-requests), but please respect the following restrictions:
 
 ## Branches
 
-- Current development branch: __`devel`__
+- Current development branch: **`devel`**
 - Branch namespace for release & development: `releases/<release_id>`
 
 ## Pull requests
 
 - Be sure to open an issue **before** starting work on a pull request, and
-discuss your idea with the __ansible-avd__ maintainers before beginning work. This will
+discuss your idea with the **ansible-avd** maintainers before beginning work. This will
 help prevent wasting time on something that might we might not be able to
 implement. When suggesting a new feature, also make sure it won't conflict with
 any work that's already in progress.
 
-- Any pull request which does _not_ relate to an accepted issue will be closed.
+- Any pull request which does *not* relate to an accepted issue will be closed.
 
 - All major new functionality must include relevant tests where applicable.
 

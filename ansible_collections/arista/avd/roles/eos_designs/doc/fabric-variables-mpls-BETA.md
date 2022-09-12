@@ -2,7 +2,7 @@
 
 The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
 
-# Fabric Variables for MPLS Design
+## Fabric Variables for MPLS Design
 
 - The MPLS design supports any fabric variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
 - Additionally the MPLS design supports several new fabric variables that are outlined in this document.

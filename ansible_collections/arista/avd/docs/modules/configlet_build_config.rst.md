@@ -76,13 +76,15 @@ The following options may be specified for this module:
 
 ## Examples
 
-    # tasks file for cvp_configlet_upload
-    - name: generate intended variables
-      tags: [build, provision]
-      configlet_build_config:
-        configlet_dir: '{{ configlet_dir }}'
-        configlet_prefix: '{{ configlets_prefix }}'
-        configlet_extension: '{{configlet_extension}}'
+```yaml
+# tasks file for cvp_configlet_upload
+- name: generate intended variables
+    tags: [build, provision]
+    configlet_build_config:
+    configlet_dir: '{{ configlet_dir }}'
+    configlet_prefix: '{{ configlets_prefix }}'
+    configlet_extension: '{{configlet_extension}}'
+```
 
 ### Author
 

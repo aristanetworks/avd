@@ -44,6 +44,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
   ```bash
   ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
   ```
+
 - The output will be rendered at the end of the configuration.
 - The order of custom templates in the list can be important if they overlap.
 - It is recommenended to use a `!` delimiter at the top of each custom template.
@@ -1862,6 +1863,7 @@ management_console:
 ```
 
 #### Management CVX
+
 ```yaml
 management_cvx:
   shutdown: < true | false >

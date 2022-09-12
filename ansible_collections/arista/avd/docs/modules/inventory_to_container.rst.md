@@ -100,31 +100,33 @@ The following options may be specified for this module:
 
 ## Examples
 
-    - name: generate intended variables
-      inventory_to_container:
-        inventory: 'inventory.yml'
-        container_root: 'DC1_FABRIC'
-        configlet_dir: 'intended_configs'
-        configlet_prefix: 'AVD'
-        device_filter: ['DC1-LE']
-        # destination: 'generated_vars/{{inventory_hostname}}.yml'
-      register: CVP_VARS
+```yaml
+- name: generate intended variables
+  inventory_to_container:
+    inventory: 'inventory.yml'
+    container_root: 'DC1_FABRIC'
+    configlet_dir: 'intended_configs'
+    configlet_prefix: 'AVD'
+    device_filter: ['DC1-LE']
+    # destination: 'generated_vars/{{inventory_hostname}}.yml'
+  register: CVP_VARS
 
-    - name: 'Collecting facts from CVP {{inventory_hostname}}.'
-      arista.cvp.cv_facts:
-      register: CVP_FACTS
+- name: 'Collecting facts from CVP {{inventory_hostname}}.'
+  arista.cvp.cv_facts:
+  register: CVP_FACTS
 
-    - name: 'Create configlets on CVP {{inventory_hostname}}.'
-      arista.cvp.cv_configlet:
-        cvp_facts: "{{CVP_FACTS.ansible_facts}}"
-        configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
-        configlet_filter: ["AVD"]
+- name: 'Create configlets on CVP {{inventory_hostname}}.'
+  arista.cvp.cv_configlet:
+    cvp_facts: "{{CVP_FACTS.ansible_facts}}"
+    configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
+    configlet_filter: ["AVD"]
 
-    - name: "Building Container topology on {{inventory_hostname}}"
-      arista.cvp.cv_container:
-        topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
-        cvp_facts: '{{CVP_FACTS.ansible_facts}}'
-        save_topology: true
+- name: "Building Container topology on {{inventory_hostname}}"
+  arista.cvp.cv_container:
+    topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
+    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+    save_topology: true
+```
 
 ### Author
 

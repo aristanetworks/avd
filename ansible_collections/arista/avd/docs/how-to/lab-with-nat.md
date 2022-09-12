@@ -36,8 +36,8 @@ management api http-commands
 
 First of all, we have to configure your network interfaces. So let's configure the following:
 
-- __`ens3`__: connected to ansible-runner
-- __`ens4`__: connected to out-of-band management network
+- **`ens3`**: connected to ansible-runner
+- **`ens4`**: connected to out-of-band management network
 
 With latest Ubuntu, this configuration is part of netplan configuration file:
 
@@ -124,7 +124,7 @@ iptables -A FORWARD -p tcp -d 10.73.1.0/24 --dport ${_SSH_PORT} -m state --state
 echo "-> Configuration done"
 ```
 
-Then, copy this script on your NAT gateway and run it using __sudo__ or with root permission:
+Then, copy this script on your NAT gateway and run it using **sudo** or with root permission:
 
 ```shell
 $ sudo sh expose-eos.sh
@@ -140,7 +140,7 @@ Activate masquerading
 
 Before running an Ansible script with eAPI, you can manually test end-to-end connectivity using either cURL or your browser:
 
-```text
+```bash
 $ curl -k -D - https://< NAT GATEWAY IP >:8001
 HTTP/1.1 301 Moved Permanently
 Server: nginx

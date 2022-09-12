@@ -9,7 +9,7 @@
 
 - **Before** you start working on a pull request, make sure to open an issue and discuss your ideas with the **ansible-avd** maintainers. This will help prevent wasting time on something we might not be able to implement. When suggesting a new feature, ensure it won't conflict with any work already in progress.
 
-- Any pull request which _doesn't_ relate to an accepted issue will not be approved.
+- Any pull request which *doesn't* relate to an accepted issue will not be approved.
 
 - All major new functionality must include relevant molecule tests where applicable.
 

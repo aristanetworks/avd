@@ -390,6 +390,7 @@ default_interfaces:
 ```
 
 ### BGP & EVPN Multi-Domain Gateway
+
 ```yaml
 < node_type_key >:
 

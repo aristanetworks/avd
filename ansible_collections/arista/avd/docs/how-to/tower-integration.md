@@ -2,7 +2,7 @@
 
 ## About
 
-This example shows how to deploy basic __EVPN/VXLAN Fabric__ based on __[Arista Validated Design roles](https://github.com/aristanetworks/ansible-avd)__ using Ansible Tower/AWX. This repository will be used as a project on AWX, and we will describe how to configure Tower for the following topics:
+This example shows how to deploy basic **EVPN/VXLAN Fabric** based on **[Arista Validated Design roles](https://github.com/aristanetworks/ansible-avd)** using Ansible Tower/AWX. This repository will be used as a project on AWX, and we will describe how to configure Tower for the following topics:
 
 - Create a project
 - Create inventory
@@ -66,7 +66,7 @@ $ cd /opt/my-envs/
 $ python3 -m venv avd-venv
 ```
 
-> This configuration [__MUST__](https://github.com/ansible/awx/issues/4140) be replicated on both container `awx_task` and `awx_web`
+> This configuration [**MUST**](https://github.com/ansible/awx/issues/4140) be replicated on both container `awx_task` and `awx_web`
 
 Instruct AWX to register our new Virtual Environment folder:
 
@@ -124,7 +124,7 @@ From here, you have a clean python environment with all the expected requirement
 
 ### Create a project resource
 
-First go to __Resources > Projects__ and create a new one using:
+First go to **Resources > Projects** and create a new one using:
 
 - SCM Type: `Git`
 - SCM Branch: `master`
@@ -144,7 +144,7 @@ Next action is to create an inventory in AWX. This requires two additional steps
 
 #### Create Inventory
 
-Go to __Resources > Inventory__
+Go to **Resources > Inventory**
 
 ![AWX create inventory](../_media/awx-create-inventory.png)
 
@@ -152,7 +152,7 @@ Once ready, you need to add a source to your inventory.
 
 #### Add source
 
-In your inventory, select __Sources__.
+In your inventory, select **Sources**.
 
 ![AWX add sources](../_media/awx-inventory-add-source.png)
 
@@ -162,11 +162,11 @@ Then add a source using your existing project.
 
 In our example, our inventory file is part of a subdirectory. In this case, we had to type the path manually as it wasn't part of the suggestion list. Also, don't forget to specify virtual-env to use with this inventory.
 
-Once you click on the `Save` button, select __SYNC-ALL__ button to get all hosts part of your inventory:
+Once you click on the `Save` button, select **SYNC-ALL** button to get all hosts part of your inventory:
 
 ![AWX sync sources](../_media/awx-inventory-add-source.png)
 
-You should get all your devices in __Resources > Inventory > Your inventory Name__
+You should get all your devices in **Resources > Inventory > Your inventory Name**
 
 ![AWX inventory list](../_media/awx-inventory-list-devices.png)
 
@@ -174,13 +174,13 @@ Now we can focus on the playbook itself.
 
 ### Create Playbook resource
 
-Go to __Resources > Templates__.
+Go to **Resources > Templates**.
 
 In this section you have to provide at least:
 
-- Name of your Template: _Build Fabric Configuration -- no-deploy_
-- Which inventory to use: _EMEA Demo_
-- Which project to use to get playbook: _AVD Demo with CVP_
+- Name of your Template: *Build Fabric Configuration -- no-deploy*
+- Which inventory to use: *EMEA Demo*
+- Which project to use to get playbook: *AVD Demo with CVP*
 - Which playbook to use: [`playbooks/dc1-fabric-deploy-cvp.yml`](https://github.com/arista-netdevops-community/avd-with-ansible-tower-awx/blob/master/playbooks/dc1-fabric-deploy-cvp.yml)
 - Virtual Environment to use when running the playbook
 
@@ -254,6 +254,6 @@ inventory_file: '/tmp/inventory.yml'
 
 ## Run your playbook
 
-Under __Resources > Templates__ click on the rocket icon to start playbook execution
+Under **Resources > Templates** click on the rocket icon to start playbook execution
 
 ![AWX run a playbook](../_media/awx-playbook-run.png)
