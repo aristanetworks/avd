@@ -27,9 +27,6 @@ keys:
                 type: str
                 required: true
                 valid_values: ["permit", "deny"]
-                description: |
-                  Can be either permit or deny
-                  Example: "permit"
               extcommunities:
                 type: str
                 required: true
