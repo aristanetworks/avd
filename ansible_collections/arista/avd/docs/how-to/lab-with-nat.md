@@ -140,7 +140,7 @@ Activate masquerading
 
 Before running an Ansible script with eAPI, you can manually test end-to-end connectivity using either cURL or your browser:
 
-```text
+```bash
 $ curl -k -D - https://< NAT GATEWAY IP >:8001
 HTTP/1.1 301 Moved Permanently
 Server: nginx
