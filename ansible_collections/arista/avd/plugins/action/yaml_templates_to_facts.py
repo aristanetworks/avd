@@ -67,7 +67,7 @@ class ActionModule(ActionBase):
             if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
                 continue
             try:
-                task_vars[var] = self._templar.template(task_vars[var])
+                task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
             except Exception as e:
                 raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
