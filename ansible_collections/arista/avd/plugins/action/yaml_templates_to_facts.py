@@ -17,7 +17,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 from datetime import datetime
 
 
-DEFAULT_PYTHON_CLASS_NAME = "AVDStructConfig"
+DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
 
 
 class ActionModule(ActionBase):

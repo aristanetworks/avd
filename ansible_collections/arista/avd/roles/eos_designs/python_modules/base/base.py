@@ -7,7 +7,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 
 
-class AVDStructConfig(AvdFacts):
+class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def _mgmt_interface_vrf(self):
