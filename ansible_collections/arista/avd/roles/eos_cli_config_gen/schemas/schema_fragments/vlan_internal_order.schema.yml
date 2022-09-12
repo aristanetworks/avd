@@ -17,12 +17,16 @@ keys:
         keys:
           beginning:
             type: int
+            min: 1
+            max: 4094
             required: true
             display_name: Vlan ID
             convert_types:
               - str
           ending:
             type: int
+            min: 1
+            max: 4094
             required: true
             display_name: Vlan ID
             convert_types:
