@@ -7,7 +7,7 @@ This example includes and describes all the AVD files used to build a Layer 2 Le
 - 2 Spine nodes
 - 4 Leaf nodes
 
-The network fabric in this example is layer 2; an external firewall (FW) or layer 3 (L3) device will handle routing. Later, in this example, we will discuss adding L3 routing to the Spines. First, we will focus on defining the fabric variables to build this L2LS Topology. Before we get started, we need to ensure that we have installed AVD with the requirements covered in the Installation & Requirements section.
+The network fabric in this example is layer 2; an external firewall (FW) or layer 3 (L3) device will handle routing. Later, in this example, we will discuss adding L3 routing to the Spines. But, first, we will focus on defining the fabric variables to build this L2LS Topology. Before we start, we must ensure that we have installed AVD with the requirements covered in the Installation & Requirements section.
 
 The example is meant as a starting foundation. You may build more advanced fabrics based on this design. To keep things simple, the Arista eAPI will be used to communicate with the switches.
 
