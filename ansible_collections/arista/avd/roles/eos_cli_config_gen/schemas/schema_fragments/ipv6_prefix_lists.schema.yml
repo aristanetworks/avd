@@ -9,14 +9,14 @@ keys:
     primary_key: name
     convert_types:
       - dict
-    display_name: Prefix Lists
+    display_name: IPv6 Prefix Lists
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Ip-Prefix-list Name
+          display_name: Prefix-list Name
         sequence_numbers:
           type: list
           required: true
@@ -35,4 +35,6 @@ keys:
               action:
                 type: str
                 required: true
-                display_name: action as string
+                description: |
+                  Action as string
+                  Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"
