@@ -47,6 +47,9 @@ keys:
                 type: list
                 items:
                   type: str
+              sub_route_map:
+                type: str
+                display_name: Sub-route name
               continue:
                 type: dict
                 keys:
