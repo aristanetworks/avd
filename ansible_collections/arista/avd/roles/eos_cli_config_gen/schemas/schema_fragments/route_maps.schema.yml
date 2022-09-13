@@ -40,16 +40,23 @@ keys:
                 display_name: Description
               match:
                 type: list
-                description: Match as a string
+                description: List of "match" statements
                 items:
                   type: str
+                  description: |
+                    Match as string
+                    Example: "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
               set:
                 type: list
+                description: List of "set" statements
                 items:
                   type: str
+                  description: |
+                    Set as string
+                    Example: "origin incomplete"
               sub_route_map:
                 type: str
-                display_name: Sub-route name
+                description: Name of Sub-Route-map
               continue:
                 type: dict
                 keys:
