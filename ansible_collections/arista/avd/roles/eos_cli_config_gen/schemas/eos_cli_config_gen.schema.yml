@@ -318,7 +318,6 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Peer Filters
     items:
       type: dict
       keys:
