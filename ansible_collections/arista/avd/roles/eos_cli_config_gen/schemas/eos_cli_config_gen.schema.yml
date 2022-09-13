@@ -98,7 +98,6 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Interface Profiles
     items:
       type: dict
       keys:
@@ -111,6 +110,9 @@ keys:
           required: true
           items:
             type: str
+            description: 'EOS CLI interface command
+
+              Example: "switchport mode access"'
   ip_community_lists:
     type: list
     secondary_key: entries
