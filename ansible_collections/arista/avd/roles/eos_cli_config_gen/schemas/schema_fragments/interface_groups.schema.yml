@@ -8,14 +8,13 @@ keys:
     primary_key: name
     convert_types:
       - dict
-    display_name: Interface Groups
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Group-name
+          display_name: Interface-Group name
         interfaces:
           type: list
           items:
