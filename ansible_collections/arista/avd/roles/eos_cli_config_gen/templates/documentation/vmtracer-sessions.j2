@@ -6,7 +6,7 @@
 
 | Session | URL | Username | Autovlan | Source Interface |
 | ------- | --- | -------- | -------- | ---------------- |
-{%     for session in vmtracer_sessions | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for session in vmtracer_sessions | arista.avd.natural_sort('name') %}
 {%         set url = session.url | arista.avd.default('-') %}
 {%         if session.autovlan_disable is arista.avd.defined(true) %}
 {%             set autovlan = 'disabled' %}
