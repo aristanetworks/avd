@@ -189,7 +189,7 @@ It is important that the hostnames specified in the inventory exist either in DN
 
 Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
 
-```yml
+```yaml
 ---
 all:
   children:
@@ -233,7 +233,7 @@ all:
 The above is what is included in this example, *purely* to make it as simple as possible to get started.
 However, going forward please do not to carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
 
-```yml
+```yaml
 ---
 all:
   children:
@@ -282,21 +282,21 @@ Since this example covers building a L3LS network, AVD must know about the devic
 
 `ansible-avd-examples/single-dc-l3ls/group_vars/DC1_SPINES.yml`
 
-```yml
+```yaml
 ---
 type: spine
 ```
 
 `ansible-avd-examples/single-dc-l3ls/group_vars/DC1_L3_LEAVES.yml`
 
-```yml
+```yaml
 ---
 type: l3leaf
 ```
 
 `ansible-avd-examples/single-dc-l3ls/group_vars/DC1_L2_LEAVES.yml`
 
-```yml
+```yaml
 ---
 type: l2leaf
 ```
@@ -309,7 +309,7 @@ The `ansible-avd-examples/single-dc-l3ls/group_vars/FABRIC.yml` file defines gen
 
 The first section defines how the Ansible host connects to the devices:
 
-```yml
+```yaml
 ansible_connection: ansible.netcommon.httpapi
 ansible_network_os: arista.eos.eos
 ansible_user: ansible
@@ -329,7 +329,7 @@ ansible_httpapi_validate_certs: false
 
 The next section specifies variables that generate configuration to be applied to all devices in the fabric:
 
-```yml
+```yaml
 fabric_name: FABRIC
 
 underlay_routing_protocol: EBGP
@@ -365,7 +365,7 @@ p2p_uplinks_mtu: 1500
 
 The `ansible-avd-examples/single-dc-l3ls/group_vars/DC1.yml` file defines settings that apply to all children of the `DC1` group as defined in the inventory described earlier. This time the settings defined are no longer fabric-wide, but are limited to DC1. In this example with only a single data center this is of limited benefit, but it allows to scale the configuration to a scenario with multiple data centers in the future.
 
-```yml
+```yaml
 ---
 mgmt_gateway: 172.16.1.1
 
@@ -405,7 +405,7 @@ The following section defines the spine layer:
 
 The next section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
 
-```yml
+```yaml
 l3leaf:
   defaults:
     platform: vEOS-lab
@@ -481,7 +481,7 @@ l3leaf:
 
 Finally more of the same, but this time for the L2 leaf switches:
 
-```yml
+```yaml
 l2leaf:
   defaults:
     platform: vEOS-lab
@@ -516,7 +516,7 @@ As should be clear, a L2 leaf switch is much simpler than a L3 switch, hence the
 
 The `ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml` file is shown below.
 
-```yml
+```yaml
 ---
 tenants:
   TENANT1:
@@ -567,7 +567,7 @@ A single tenant called `TENANT1` is specified. The first setting is the base num
 Next, two VRFs are defined, each with two VLANs.
 For example:
 
-```yml
+```yaml
       VRF10:
         vrf_vni: 10
         vtep_diagnostic:
@@ -589,7 +589,7 @@ Each VLAN has a name and a virtual IP address assigned, which will be used as th
 
 This configuration is also defined under `VRF10`:
 
-```yml
+```yaml
         vtep_diagnostic:
           loopback: 10
           loopback_ip_range: 10.255.10.0/27
@@ -609,7 +609,7 @@ ip address virtual source-nat vrf VRF10 address 10.255.10.3
 
 At the very bottom of the `NETWORK_SERVICES.yml` file two layer2-only VLANs (`VLAN3401` and `VLAN3402`) are defined. These VLANs are only bridged across the fabric, but never routed anywhere:
 
-```yml
+```yaml
     l2vlans:
       "3401":
         name: L2_VLAN3401
@@ -621,7 +621,7 @@ At the very bottom of the `NETWORK_SERVICES.yml` file two layer2-only VLANs (`VL
 
 After the previous section, all VRFs and VLANs across the fabric are now defined. The `ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
 
-```yml
+```yaml
 ---
 servers:
   dc1-leaf1-server1:
@@ -673,7 +673,7 @@ This defines the settings for the relevant switch ports to which the endpoints c
 
 As an example, here is the configuration for `dc1-leaf1-server1`:
 
-```yml
+```yaml
   dc1-leaf1-server1:
     adapters:
     - type: server
@@ -712,7 +712,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
 
 In this example, the playbook looks like the following:
 
-```yml
+```yaml
 - name: Run AVD
   hosts: FABRIC
   gather_facts: false
@@ -740,7 +740,7 @@ This playbook has three tasks that use three roles:
 
 To use this example without a lab, the playbook can be modified as follows:
 
-```yml
+```yaml
 - name: Run AVD
   hosts: FABRIC
   gather_facts: false
