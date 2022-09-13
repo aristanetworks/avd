@@ -8,7 +8,6 @@ keys:
     primary_key: name
     convert_types:
       - dict
-    display_name: Route Maps
     items:
       type: dict
       keys:
@@ -37,7 +36,6 @@ keys:
                 valid_values: [ "permit", "deny" ]
               description:
                 type: str
-                display_name: Description
               match:
                 type: list
                 description: List of "match" statements
