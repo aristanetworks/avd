@@ -5,6 +5,7 @@ type: dict
 keys:
   interface_groups:
     type: list
+    display_name: Maintenance Interface Groups
     primary_key: name
     convert_types:
       - dict
@@ -19,11 +20,14 @@ keys:
           type: list
           items:
             type: str
+            description: Interface Name
         bgp_maintenance_profiles:
           type: list
           items:
             type: str
+            description: Name of BGP Maintenance Profile
         interface_maintenance_profiles:
           type: list
           items:
             type: str
+            description: Name of Interface Maintenance Profile
