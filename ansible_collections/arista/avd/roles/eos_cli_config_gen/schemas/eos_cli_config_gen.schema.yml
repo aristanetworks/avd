@@ -313,6 +313,40 @@ keys:
                     type: str
                     required: true
                     display_name: Regular Expression
+  peer_filters:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: Peer Filters
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Peer-filter Name
+        sequence_numbers:
+          type: list
+          required: true
+          primary_key: sequence
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                display_name: Sequence ID
+                convert_types:
+                - str
+              match:
+                type: str
+                required: true
+                description: 'Match as string
+
+                  Example: "as-range 1-100 result accept"'
   sflow:
     type: dict
     display_name: Sflow
