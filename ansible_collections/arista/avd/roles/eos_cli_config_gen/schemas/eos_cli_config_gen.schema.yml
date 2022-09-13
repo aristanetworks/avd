@@ -229,6 +229,73 @@ keys:
                     type: str
                     required: true
                     display_name: Regular Expression
+  sflow:
+    type: dict
+    display_name: Sflow
+    keys:
+      sample:
+        type: str
+      dangerous:
+        type: bool
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VRF
+            destinations:
+              type: list
+              primary_key: destination
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  destination:
+                    type: str
+                    display_name: Sflow Destination IP
+                  port:
+                    type: int
+                    display_name: Port Number
+                    convert_types:
+                    - str
+            source_interface:
+              type: str
+              display_name: Source Interface
+      destinations:
+        type: list
+        primary_key: destination
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            destination:
+              type: str
+              display_name: Sflow Destination IP
+            port:
+              type: int
+              display_name: Port Number
+              convert_types:
+              - str
+      source_interface:
+        type: str
+        display_name: Source Interface
+      interface:
+        type: dict
+        keys:
+          disable:
+            type: dict
+            keys:
+              default:
+                type: bool
+      run:
+        type: bool
   standard_access_lists:
     type: list
     primary_key: name
