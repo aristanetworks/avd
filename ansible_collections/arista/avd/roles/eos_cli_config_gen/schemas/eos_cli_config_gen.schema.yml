@@ -95,6 +95,7 @@ keys:
             Example: "permit GSHUT 65123:123"'
   daemons:
     type: list
+    display_name: Maintenance Interface Groups
     primary_key: name
     convert_types:
     - dict
