@@ -38,7 +38,7 @@ IGMP snooping is globally disabled
 
 | Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
 | ---- | ------------- | ---------- | ---------- | ----- |
-{%             for vlan in ip_igmp_snooping.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort('id') %}
 {%                 set vlan_snooping = vlan.enabled | arista.avd.default('-') %}
 {%                 set fast_leave = vlan.fast_leave | arista.avd.default('-') %}
 {%                 set max_groups = vlan.max_groups | arista.avd.default('-') %}
