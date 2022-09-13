@@ -23,7 +23,7 @@ keys:
           type: str
         password:
           type: str
-          description: Encrypted Password
+          description: Type 7 Password Hash
         autovlan_disable:
           type: bool
         source_interface:
