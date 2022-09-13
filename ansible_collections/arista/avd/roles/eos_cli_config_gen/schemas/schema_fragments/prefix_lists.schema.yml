@@ -9,7 +9,6 @@ keys:
     primary_key: name
     convert_types:
       - dict
-    display_name: Prefix Lists
     items:
       type: dict
       keys:

@@ -405,7 +405,6 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Prefix Lists
     items:
       type: dict
       keys:
@@ -431,7 +430,9 @@ keys:
               action:
                 type: str
                 required: true
-                display_name: action as string
+                description: 'Action as string
+
+                  Example: "permit 10.255.0.0/27 eq 32"'
   sflow:
     type: dict
     display_name: Sflow
