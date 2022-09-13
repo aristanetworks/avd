@@ -262,6 +262,8 @@ keys:
                   port:
                     type: int
                     display_name: Port Number
+                    convert_types:
+                    - str
             source_interface:
               type: str
               display_name: Source Interface
@@ -279,6 +281,8 @@ keys:
             port:
               type: int
               display_name: Port Number
+              convert_types:
+              - str
       source_interface:
         type: str
         display_name: Source Interface
