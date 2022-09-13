@@ -1,0 +1,71 @@
+---
+### group_vars/DC1_NETWORK_PORTS.yml
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+
+port_profiles:
+  PP-DEFAULTS:
+    spanning_tree_portfast: edge
+  PP-BLUE:
+    mode: access
+    vlans: "10"
+    parent_profile: PP-DEFAULTS
+  PP-GREEN:
+    mode: access
+    vlans: "20"
+    parent_profile: PP-DEFAULTS
+  PP-ORANGE:
+    mode: access
+    vlans: "30"
+    parent_profile: PP-DEFAULTS
+  PP-FIREWALL:
+    mode: trunk
+    vlans: "10,20,30"
+
+servers:
+
+  HostA:
+    rack: POD1
+    adapters:
+      - endpoint_ports: [Eth1]
+        switch_ports: [Ethernet3]
+        switches: [LEAF1]
+        profile: PP-BLUE
+  HostB:
+    rack: POD1
+    adapters:
+      - endpoint_ports: [Eth1]
+        switch_ports: [Ethernet3]
+        switches: [LEAF2]
+        profile: PP-GREEN
+  HostC:
+    rack: POD2
+    adapters:
+      - endpoint_ports: [Eth1]
+        switch_ports: [Ethernet3]
+        switches: [LEAF3]
+        profile: PP-BLUE
+  Host2:
+    rack: POD2
+    adapters:
+      - endpoint_ports: [Eth1]
+        switch_ports: [Ethernet3]
+        switches: [LEAF4]
+        profile: PP-ORANGE
+
+firewalls:
+
+  FIREWALL:
+    adapters:
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet5, Ethernet5]
+        switches: [SPINE1, SPINE2]
+        profile: PP-FIREWALL
+        port_channel:
+          mode: active

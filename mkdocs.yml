@@ -20,6 +20,7 @@ theme:
     - search.highlight
     - header.autohide
     - content.code.annotate
+    - content.tabs.link
   highlightjs: true
   icon:
     repo: fontawesome/brands/github
@@ -110,6 +111,7 @@ nav:
   - Getting Started:
       - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
       - Example for Single DC L3LS: examples/single-dc-l3ls/README.md
+      - Example for L2LS Fabric: examples/l2ls-fabric/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
       - Requirements: docs/installation/requirements.md
