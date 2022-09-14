@@ -3178,6 +3178,128 @@
       },
       "additionalProperties": false
     },
+    "router_pim_sparse_mode": {
+      "type": "object",
+      "title": "Routing PIM Sparse Mode",
+      "properties": {
+        "ipv4": {
+          "type": "object",
+          "properties": {
+            "ssm_range": {
+              "type": "string",
+              "title": "Ssm Range"
+            },
+            "rp_addresses": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "title": "RP Address"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Groups"
+                  }
+                },
+                "required": [
+                  "address"
+                ],
+                "additionalProperties": false
+              },
+              "title": "Rp Addresses"
+            },
+            "anycast_rps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "title": "Anycast RP Address"
+                  },
+                  "other_anycast_rp_addresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "title": "Other Anycast RP Address"
+                        },
+                        "register_count": {
+                          "type": "integer",
+                          "title": "Register Count"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "title": "Other Anycast Rp Addresses"
+                  }
+                },
+                "required": [
+                  "address"
+                ],
+                "additionalProperties": false
+              },
+              "title": "Anycast Rps"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Ipv4"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VRF Name"
+              },
+              "ipv4": {
+                "type": "object",
+                "properties": {
+                  "rp_addresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "title": "RP Address"
+                        },
+                        "groups": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Groups"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Rp Addresses"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Ipv4"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Vrfs"
+        }
+      },
+      "additionalProperties": false
+    },
     "service_routing_protocols_model": {
       "type": "string",
       "enum": [
