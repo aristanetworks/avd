@@ -18,7 +18,7 @@ Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profi
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-{%         for vrf in management_api_http.enable_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort('name') %}
 | {{ vrf.name }} | {{ vrf.access_group | arista.avd.default('-') }} | {{ vrf.ipv6_access_group | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
