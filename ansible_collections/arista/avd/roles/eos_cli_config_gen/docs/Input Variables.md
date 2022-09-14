@@ -577,6 +577,28 @@ standard_access_lists:
         action: <str>
 ```
 
+## Hardware TCAM Profiles
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>tcam_profile</samp>](## "tcam_profile") | Dictionary |  |  |  | Hardware TCAM Profiles |
+| [<samp>&nbsp;&nbsp;system</samp>](## "tcam_profile.system") | String | Required |  |  | Tcam profile name to activate<br> |
+| [<samp>&nbsp;&nbsp;profiles</samp>](## "tcam_profile.profiles") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "tcam_profile.profiles.[].name") | String | Required, Unique |  |  | Tcam-Profile Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config</samp>](## "tcam_profile.profiles.[].config") | String | Required |  |  | Config file path<br>Example: "{{lookup('file', '{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf')}}" |
+
+### YAML
+
+```yaml
+tcam_profile:
+  system: <str>
+  profiles:
+    - name: <str>
+      config: <str>
+```
+
 ## Internal VLAN Order
 
 ### Variables
