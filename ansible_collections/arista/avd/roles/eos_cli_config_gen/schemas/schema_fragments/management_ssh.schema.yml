@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  management_ssh:
+    type: dict
+    display_name: Management SSH
+    keys:
+      access_groups:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Standard ACL Name
+            vrf:
+              type: str
+              display_name: VRF Name
+      ipv6_access_groups:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Standard ACL Name
+            vrf:
+              type: str
+              display_name: VRF Name
+      idle_timeout:
+        type: int
+        convert_types:
+        - str
+        min: 0
+        max: 86400
+        description: |
+          idle timeout in minutes
+
+      cipher:
+        type: list
+        items:
+          type: str
+      key_exchange:
+        type: list
+        items:
+          type: str
+      mac:
+        type: list
+        items:
+          type: str
+      hostkey:
+        type: dict
+        keys:
+          server:
+            type: list
+            items:
+              type: str
+      enable:
+        type: bool
+      connection:
+        type: dict
+        keys:
+          limit:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 100
+            description: |
+              1-100 SSH Connections
+          per_host:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 20
+            description: |
+              1-20 max sessions from a host
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: VRF Name
+            enable:
+              type: bool
+      log_level:
+        type: str
+        description: |
+          SSH daemon log level
