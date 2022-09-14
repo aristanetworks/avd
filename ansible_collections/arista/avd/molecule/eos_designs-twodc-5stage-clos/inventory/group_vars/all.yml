@@ -1,2 +1,4 @@
 ---
 root_dir: '{{playbook_dir}}'
+
+avd_validate_validation_mode: "error"
