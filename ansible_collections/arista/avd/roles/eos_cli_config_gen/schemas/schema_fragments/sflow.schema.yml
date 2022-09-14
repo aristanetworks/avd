@@ -9,7 +9,9 @@ keys:
     display_name: Sflow
     keys:
       sample:
-        type: str
+        type: int
+        convert_types:
+        - str
       dangerous:
         type: bool
       vrfs:
