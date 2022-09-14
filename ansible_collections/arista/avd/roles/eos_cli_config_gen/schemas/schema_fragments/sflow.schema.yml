@@ -73,3 +73,23 @@ keys:
                 type: bool
       run:
         type: bool
+      hardware_acceleration:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          sample:
+            type: int
+            convert_types:
+            - str
+          modules:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                enabled:
+                  type: bool
+                  default: true
