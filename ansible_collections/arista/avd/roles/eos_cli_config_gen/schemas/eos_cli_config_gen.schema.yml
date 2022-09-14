@@ -595,7 +595,6 @@ keys:
           type: bool
         vrf:
           type: str
-          required: true
           display_name: VRF Name
         ip_address:
           type: str
@@ -605,11 +604,9 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          required: true
           display_name: IPv6_address/Mask
         type:
           type: str
-          required: true
           valid_values:
           - oob
           - inband
@@ -620,7 +617,6 @@ keys:
           description: IPv4 address of default gateway in management VRF
         ipv6_gateway:
           type: str
-          required: true
           description: IPv6 address of default gateway in management VRF
   match_list_input:
     type: dict
