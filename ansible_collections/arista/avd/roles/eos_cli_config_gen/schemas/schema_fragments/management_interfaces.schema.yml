@@ -22,6 +22,10 @@ keys:
           type: bool
         vrf:
           type: str
+<<<<<<< HEAD
+=======
+          required: true
+>>>>>>> a154a79d8 (Feat(eos_cli_config_gen): Add schema for management_interfaces)
           display_name: VRF Name
         ip_address:
           type: str
@@ -31,9 +35,17 @@ keys:
           type: bool
         ipv6_address:
           type: str
+<<<<<<< HEAD
           display_name: IPv6_address/Mask
         type:
           type: str
+=======
+          required: true
+          display_name: IPv6_address/Mask
+        type:
+          type: str
+          required: true
+>>>>>>> a154a79d8 (Feat(eos_cli_config_gen): Add schema for management_interfaces)
           valid_values: ["oob", "inband"]
           default: "oob"
         gateway:
@@ -42,4 +54,8 @@ keys:
           description: IPv4 address of default gateway in management VRF
         ipv6_gateway:
           type: str
+<<<<<<< HEAD
+=======
+          required: true
+>>>>>>> a154a79d8 (Feat(eos_cli_config_gen): Add schema for management_interfaces)
           description: IPv6 address of default gateway in management VRF
