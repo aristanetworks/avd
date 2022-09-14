@@ -16,7 +16,7 @@ FIPS restrictions enabled.
 
 ### MACsec Profiles Summary
 {%     if mac_security.profiles is arista.avd.defined %}
-{%         for profile in mac_security.profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
 
 **Profile {{ profile.name }}:**
 
@@ -34,7 +34,7 @@ Keys:
 {%             if profile.connection_keys is arista.avd.defined %}
 | Key ID | Encrypted (Type 7) Key | Fallback |
 | ------ | ---------------------- | -------- |
-{%                 for connection_key in profile.connection_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                 for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%                     if connection_key.encrypted_key is arista.avd.defined %}
 {%                         set encrypted_key = connection_key.encrypted_key %}
 {%                         set fallback = connection_key.fallback | arista.avd.default('-') %}

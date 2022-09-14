@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mac_security:
+    type: dict
+    display_name: MACsec
+    keys:
+      license:
+        type: dict
+        required: true
+        keys:
+          license_name:
+            type: str
+            required: true
+          license_key:
+            type: int
+            convert_types:
+              - str
+            required: true
+            display_name: License-Number
+      fips_restrictions:
+        type: bool
+        required: true
+      profiles:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Profile-Name
+            cipher:
+              type: str
+              description: valid-cipher-string
+            connection_keys:
+              type: list
+              primary_key: id
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                  encrypted_key:
+                    type: str
+                  fallback:
+                    type: bool
+            mka:
+              type: dict
+              keys:
+                session:
+                 type: dict
+                 keys:
+                   rekey_period:
+                     type: int
+                     convert_types:
+                       - str
+                     description: 30-100000 in seconds
+            sci:
+              type: bool
