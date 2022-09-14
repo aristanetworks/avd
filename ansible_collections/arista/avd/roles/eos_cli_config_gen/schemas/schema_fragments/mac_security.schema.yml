@@ -56,12 +56,12 @@ keys:
               type: dict
               keys:
                 session:
-                 type: dict
-                 keys:
-                   rekey_period:
-                     type: int
-                     convert_types:
-                       - str
-                     description: 30-100000 in seconds
+                  type: dict
+                  keys:
+                    rekey_period:
+                      type: int
+                      convert_types:
+                        - str
+                      description: 30-100000 in seconds
             sci:
               type: bool
