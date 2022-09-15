@@ -1207,6 +1207,92 @@ keys:
                 description: 'Match as string
 
                   Example: "as-range 1-100 result accept"'
+  policy_maps:
+    type: dict
+    display_name: QOS Policy-map
+    keys:
+      pbr:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Class Name
+                  index:
+                    type: int
+                    convert_types:
+                    - str
+                  drop:
+                    type: bool
+                  set:
+                    type: dict
+                    keys:
+                      nexthop:
+                        type: dict
+                        keys:
+                          ip_address:
+                            type: str
+                            description: IPv4_address | IPv6_address
+                          recursive:
+                            type: bool
+      qos:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Class Name
+                  set:
+                    type: dict
+                    keys:
+                      cos:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: COS-Value
+                      dscp:
+                        type: str
+                        display_name: DSCP-Code
+                      traffic_class:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: Traffic-class ID
+                      drop_precedence:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: Drop-precedence Value
   prefix_lists:
     type: list
     primary_key: name
