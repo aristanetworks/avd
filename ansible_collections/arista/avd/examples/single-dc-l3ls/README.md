@@ -1,19 +1,16 @@
-# AVD Example for a Single Data Center Using Layer 3 Leaf Spine (L3LS)
+# AVD example for a single data center using layer 3 leaf spine (L3LS)
 
 ## Introduction
 
-This example is meant to be used as the logical second step introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section.
-The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, fear not! This example can also be used to only generate the output from AVD if required.
+This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section. The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can also be used to only generate the output from AVD if required.
 
-The example includes and describes all the AVD files and their content used to build a Layer 3 Leaf Spine (L3LS) EVPN/VXLAN Symmetric IRB network covering a single DC, using the following:
+The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering a single DC, using the following:
 
 - Two (virtual) spine switches.
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
 - Two (virtual) layer2-only switches often used for management connectivity to the servers.
 
-The example is meant as a simple starting point and more advanced examples will build upon this design to hopefully reduce any confusion when progressing.
-
-Integration with CloudVision is not included in this example to keep everything as simple as possible, hence the Ansible host will communicate directly with the switches using eAPI.
+Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the switches using eAPI.
 
 ## Installation
 
@@ -41,20 +38,22 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 
 After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
 
-- ansible-avd-examples/ (or wherever the playbook was run)
-  - single-dc-l3ls
-    - documentation/
-    - group_vars/
-    - images/
-    - intended/
-    - switch-basic-configurations/
-    - ansible.cfg
-    - inventory.yml
-    - playbook.yml
-    - README.md (this document)
+```shell
+ansible-avd-examples/ (or wherever the playbook was run)
+  |── single-dc-l3ls
+    ├── ansible.cfg
+    ├── documentation
+    ├── group_vars
+    ├── images
+    ├── intended
+    ├── inventory.yml
+    ├── playbook.yml
+    ├── README.md
+    └── switch-basic-configurations
+```
 
-> Please note: If the content of any file in the example is ***modified*** and the playbook is run again, the file ***will not*** be overwritten.
-However, if any file in the example is ***deleted*** and the playbook is run again, the file will be re-created.
+!!! info
+    If the content of any file is ***modified*** and the playbook is rerun, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is rerun, Ansible will re-create the file.
 
 ## Overall design overview
 
@@ -92,15 +91,15 @@ The drawing below shows the physical topology used in this example. The interfac
 | **MLAG iBGP Peering (interface vlan 4093)**         | **(Leaf switches)**         |
 | DC1                                                 | 10.255.1.96/27              |
 
-### BGP Design
+### BGP design
 
-The following drawing shows the BGP Design used in this example. The orange dashed lines illustrate the eBGP point-to-point peerings used for the underlay, while the blue dotted lines illustrate the eBGP multi-hop peerings between Loopback0 interfaces used for the EVPN overlay. Finally, the green dashed lines illustrate the iBGP peerings between MLAG peers:
+The following drawing shows the BGP Design used in this example. The orange dashed lines illustrate the eBGP point-to-point peerings used for the underlay, while the blue dotted lines illustrate the eBGP multi-hop peerings between Loopback0 interfaces used for the EVPN overlay. Finally, the green dashed lines represent the iBGP peerings between MLAG peers:
 
 ![Figure: Arista BGP Design](images/single-dc-bgp.png)
 
 ### Basic EOS config
 
-Basic connectivity between the Ansible host and the switches must be established manually before Ansible can be used to push configuration. The following must be configured on all switches:
+Basic connectivity between the Ansible host and the switches must be established before Ansible can be used to push configurations. You must configure the following on all switches:
 
 - A hostname configured purely for ease of understanding.
 - An IP enabled interface - in this example the dedicated out-of-band management interface is used.
@@ -108,55 +107,25 @@ Basic connectivity between the Ansible host and the switches must be established
 
 Below is the basic configuration file for `dc1-leaf1a`:
 
-```shell
-! ansible-avd-examples/single-dc-l3ls/switch-basic-configurations/dc1-leaf1a-basic-configuration.txt
-! Basic EOS config
-!
-! Hostname of the device
-hostname dc1-leaf1a
-!
-! Configures username and password for the ansible user
-username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-!
-! Defines the VRF for MGMT
-vrf instance MGMT
-!
-! Defines the settings for the Management1 interface through which Ansible reaches the device
-interface Management1
-   description oob_management
-   no shutdown
-   vrf MGMT
-   ! IP address - must be set uniquely per device
-   ip address 172.16.1.101/24
-!
-! Static default route for VRF MGMT
-ip route vrf MGMT 0.0.0.0/0 172.16.1.1
-!
-! Enables API access in VRF MGMT
-management api http-commands
-   protocol https
-   no shutdown
-   !
-   vrf MGMT
-      no shutdown
-!
-end
-!
-! Save configuration to flash
-copy running-config startup-config
+```eos
+--8<--
+examples/single-dc-l3ls/switch-basic-configurations/dc1-leaf1a-basic-configuration.txt
+--8<--
 ```
 
-The folder `single-dc-l3ls/switch-basic-configurations/` contains a file per device for the initial configuration.
+!!! note
+    The folder `single-dc-l3ls/switch-basic-configurations/` contains a file per device for the initial configurations.
 
 ## Ansible inventory, group vars and naming scheme
 
-The following drawing shows a graphic overview of the Ansible inventory, group variables and naming scheme used in this example:
+The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
 ![Figure: Ansible inventory and vars](images/single-dc-inventory-and-vars.png)
 
-Please note, the two servers `dc1-leaf1-server1` and `dc1-leaf2-server1` at the bottom **are not** configured by AVD, but the switch ports used to connect to the servers are.
+!!! note
+    The two servers `dc1-leaf1-server1` and `dc1-leaf2-server1` at the bottom are **not** configured by AVD, but the switch ports used to connect to the servers are.
 
-Group names use uppercase and underscores:
+Group names use uppercase and underscore syntax:
 
 - FABRIC
 - DC1
@@ -164,7 +133,7 @@ Group names use uppercase and underscores:
 - DC1_L3_LEAVES
 - DC1_L2_LEAVES
 
-All hostnames use lowercase and dashes for example:
+All hostnames use lowercase and dashes, for example:
 
 - dc1-spine1
 - dc1-leaf1a
@@ -174,20 +143,20 @@ The drawing also shows the relationships between groups and their children:
 
 - For example, `dc1-spine1` and `dc1-spine2` are both children of the group called `DC1_SPINES`.
 
-Additionally groups themselves can be children of another group for example:
+Additionally, groups themselves can be children of another group, for example:
 
 - `DC1_L3_LEAVES` is a group consisting of the groups `DC1_LEAF1` and `DC1_LEAF2`
 - `DC1_L3_LEAVES` is also a child of the group `DC1`.
 
-This naming convention makes it possible to easily extend anything, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
+This naming convention makes it possible to extend anything easily, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
 
 ### Content of the inventory.yml file
 
-This section describes the full `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to represent the topology shown above.
+This section describes the entire `ansible-avd-examples/single-dc-l3ls/inventory.yml` file used to represent the above topology.
 
-It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host allows to verify name resolution (e.g. `ping dc1-spine1`).
+It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping dc1-spine1`).
 
-Alternatively, if there is no DNS available, or if devices need to be reached using a fully-qualified domain-name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
+Alternatively, if there is no DNS available, or if devices need to be reached using a fully qualified domain name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
 
 ```yaml
 ---
@@ -230,8 +199,7 @@ all:
             DC1_L2_LEAVES:
 ```
 
-The above is what is included in this example, *purely* to make it as simple as possible to get started.
-However, going forward please do not to carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
+The above is what is included in this example, *purely* to make it as simple as possible to get started. However, in the future, please do not carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
 
 ```yaml
 ---
@@ -268,17 +236,17 @@ all:
 
 The `NETWORK_SERVICES` section does two things:
 
-1. It creates a group named "NETWORK_SERVICES". Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml`).
-2. The contents of the file, which in this case are specifications of VRFs and VLANs, are then applied to the children of the group, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`
+1. It creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml`).
+2. The file's contents, which in this case are specifications of VRFs and VLANs, are then applied to the group's children. In this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
 The `CONNECTED_ENDPOINTS` section also does two things:
 
-1. It creates a group named "CONNECTED_ENDPOINTS". Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml`).
-2. The contents of the file, which in this case are specifications of connected endpoints (typically servers), are then applied to the children of the group, in this case the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`
+1. It creates a group named `CONNECTED_ENDPOINTS`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml`).
+2. The file's contents, which in this case are specifications of connected endpoints (typically servers), are then applied to the children of the group, in this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
 ## Defining device types
 
-Since this example covers building a L3LS network, AVD must know about the device types, for example spines, L3 leaves, L2 leaves etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
+Since this example covers building an L3LS network, AVD must know about the device types, for example, spines, L3 leaves, L2 leaves, etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
 
 `ansible-avd-examples/single-dc-l3ls/group_vars/DC1_SPINES.yml`
 
@@ -512,7 +480,7 @@ l2leaf:
 
 As should be clear, a L2 leaf switch is much simpler than a L3 switch, hence there are fewer settings to define.
 
-## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN Fabric
+## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
 The `ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml` file is shown below.
 
@@ -617,7 +585,7 @@ At the very bottom of the `NETWORK_SERVICES.yml` file two layer2-only VLANs (`VL
         name: L2_VLAN3402
 ```
 
-## Specifying endpoint connectivity in the EVPN/VXLAN Fabric
+## Specifying endpoint connectivity in the EVPN/VXLAN fabric
 
 After the previous section, all VRFs and VLANs across the fabric are now defined. The `ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
 
