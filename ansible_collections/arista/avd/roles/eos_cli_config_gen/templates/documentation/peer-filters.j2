@@ -9,7 +9,7 @@
 
 | Sequence | Match |
 | -------- | ----- |
-{%         for sequence in peer_filter.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%         for sequence in peer_filter.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.match }} |
 {%         endfor %}
 {%     endfor %}
