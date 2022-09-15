@@ -93,6 +93,28 @@ keys:
           description: 'Action as string
 
             Example: "permit GSHUT 65123:123"'
+  daemons:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: Custom Daemons
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Daemon Name
+        exec:
+          type: str
+          required: true
+          description: 'command to run as a daemon
+
+            '
+        enabled:
+          type: bool
+          default: true
   interface_profiles:
     type: list
     primary_key: name
@@ -178,6 +200,38 @@ keys:
             vrf:
               type: str
               display_name: VRF
+  ip_extcommunity_lists:
+    type: list
+    primary_key: name
+    secondary_key: entries
+    convert_types:
+    - dict
+    display_name: IP Extended Community Lists
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Community-list Name
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              type:
+                type: str
+                required: true
+                valid_values:
+                - permit
+                - deny
+              extcommunities:
+                type: str
+                required: true
+                description: 'Communities as string
+
+                  Example: "65000:65000"'
   ip_extcommunity_lists_regexp:
     type: list
     primary_key: name
@@ -351,7 +405,9 @@ keys:
     display_name: Sflow
     keys:
       sample:
-        type: str
+        type: int
+        convert_types:
+        - str
       dangerous:
         type: bool
       vrfs:
@@ -413,6 +469,26 @@ keys:
                 type: bool
       run:
         type: bool
+      hardware_acceleration:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          sample:
+            type: int
+            convert_types:
+            - str
+          modules:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                enabled:
+                  type: bool
+                  default: true
   standard_access_lists:
     type: list
     primary_key: name
@@ -479,3 +555,28 @@ keys:
             display_name: Vlan ID
             convert_types:
             - str
+  vmtracer_sessions:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: VM Tracer Sessions
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Vmtracer Session Name
+        url:
+          type: str
+          display_name: URL
+        username:
+          type: str
+        password:
+          type: str
+          description: Type 7 Password Hash
+        autovlan_disable:
+          type: bool
+        source_interface:
+          type: str
