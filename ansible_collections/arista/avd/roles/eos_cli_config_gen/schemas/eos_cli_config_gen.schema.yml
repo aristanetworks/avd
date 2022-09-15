@@ -522,3 +522,28 @@ keys:
             display_name: Vlan ID
             convert_types:
             - str
+  vmtracer_sessions:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: VM Tracer Sessions
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Vmtracer Session Name
+        url:
+          type: str
+          display_name: URL
+        username:
+          type: str
+        password:
+          type: str
+          description: Type 7 Password Hash
+        autovlan_disable:
+          type: bool
+        source_interface:
+          type: str
