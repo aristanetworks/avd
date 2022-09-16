@@ -5,13 +5,19 @@ import cProfile
 import pstats
 import yaml
 from collections import ChainMap
+import importlib
 from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater, compile_searchpath, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater, compile_searchpath, get, AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from datetime import datetime
+
+
+DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
 
 
 class ActionModule(ActionBase):
@@ -56,15 +62,29 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
+        # Read ansible variables and perform templating to support inline jinja
+        for var in task_vars:
+            if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
+                continue
+            try:
+                task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
+            except Exception as e:
+                raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+
         # Create a new Ansible "templar" instance to be passed along to our simplified "templater"
         searchpath = compile_searchpath(task_vars.get('ansible_search_path'))
         templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
 
-        # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
-        # We use ChainMap to avoid copying large amounts of data around, mapping in avd_switch_facts and protecting task_vars from changes.
-        output = {}
         hostname = task_vars['inventory_hostname']
         switch_facts = get(task_vars, f"avd_switch_facts..{hostname}", default={}, separator="..")
+
+        # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
+        # We use ChainMap to avoid copying large amounts of data around, mapping in
+        #  - output or { root_key: output }
+        #  - eos_designs_facts for this switch
+        #  - templated version of all other vars
+        # Any var assignments will end up in output, so all other objects are protected.
+        output = {}
         if root_key:
             template_vars = ChainMap({root_key: output}, switch_facts, task_vars)
         else:
@@ -76,38 +96,64 @@ class ActionModule(ActionBase):
         if debug:
             avd_yaml_templates_to_facts_debug = task_vars.get('avd_yaml_templates_to_facts_debug', [])
 
+        # template_list can contain templates or python_modules
         for template_item in template_list:
             if debug:
                 debug_item = template_item
                 debug_item['timestamps'] = {"starting": datetime.now()}
-
-            template = template_item.get('template')
-            if not template:
-                raise AnsibleActionFail("Invalid template data")
 
             template_options = template_item.get('options', {})
             list_merge = template_options.get('list_merge', 'append')
 
             strip_empty_keys = template_options.get('strip_empty_keys', True)
 
-            if debug:
-                debug_item['timestamps']['run_template'] = datetime.now()
+            if 'template' in template_item:
+                template = template_item['template']
 
-            # Here we parse the template, expecting the result to be a YAML formatted string
-            template_result = templater(template, template_vars, templar, searchpath)
-
-            if debug:
-                debug_item['timestamps']['load_yaml'] = datetime.now()
-
-            # Load data from the template result.
-            template_result_data = yaml.safe_load(template_result)
-
-            # If the argument 'strip_empty_keys' is set, remove keys with value of null / None from the resulting dict (recursively).
-            if strip_empty_keys:
                 if debug:
-                    debug_item['timestamps']['strip_empty_keys'] = datetime.now()
+                    debug_item['timestamps']['run_template'] = datetime.now()
 
-                template_result_data = strip_null_from_data(template_result_data)
+                # Here we parse the template, expecting the result to be a YAML formatted string
+                template_result = templater(template, template_vars, templar, searchpath)
+
+                if debug:
+                    debug_item['timestamps']['load_yaml'] = datetime.now()
+
+                # Load data from the template result.
+                template_result_data = yaml.safe_load(template_result)
+
+                # If the argument 'strip_empty_keys' is set, remove keys with value of null / None from the resulting dict (recursively).
+                if strip_empty_keys:
+                    if debug:
+                        debug_item['timestamps']['strip_empty_keys'] = datetime.now()
+
+                    template_result_data = strip_null_from_data(template_result_data)
+
+            elif 'python_module' in template_item:
+                module_path = template_item.get('python_module')
+                class_name = template_item.get('python_class_name', DEFAULT_PYTHON_CLASS_NAME)
+
+                try:
+                    cls = getattr(importlib.import_module(module_path), class_name)
+                except ImportError as imp_exc:
+                    raise AnsibleActionFail(imp_exc) from imp_exc
+
+                if issubclass(cls, AvdFacts):
+                    cls_instance = cls(hostvars=template_vars, templar=templar)
+                    if debug:
+                        debug_item['timestamps']['render_python_class'] = datetime.now()
+                    if getattr(cls_instance, 'render'):
+                        try:
+                            template_result_data = cls_instance.render()
+                        except Exception as error:
+                            raise AnsibleActionFail(error) from error
+                    else:
+                        raise AristaAvdError(f'{cls_instance} has no attribute render')
+                else:
+                    raise AnsibleActionFail(f"{cls} is not an instance of AvdFacts class")
+
+            else:
+                raise AnsibleActionFail("Invalid template data")
 
             # If there is any data produced by the template, combine it on top of previous output.
             if template_result_data:
@@ -124,10 +170,7 @@ class ActionModule(ActionBase):
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
             if debug:
-                debug_item = {'action': 'template_output', 'timestamps': {'combine_data': datetime.now()}}
-
-            if debug:
-                debug_item['timestamps']['templating'] = datetime.now()
+                debug_item = {'action': 'template_output', 'timestamps': {'templating': datetime.now()}}
 
             templar.available_variables = template_vars
             output = templar.template(output)
@@ -150,7 +193,7 @@ class ActionModule(ActionBase):
             # Depending on the file suffix of 'dest' (default: 'json') we will format the data to yaml or just write the output data directly.
             # The Copy module used in 'write_file' will convert the output data to json automatically.
             if dest.split('.')[-1] in ["yml", "yaml"]:
-                write_file_result = self.write_file(yaml.dump(output, indent=2, sort_keys=False, width=130), task_vars)
+                write_file_result = self.write_file(yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130), task_vars)
             else:
                 write_file_result = self.write_file(output, task_vars)
 
