@@ -9,9 +9,8 @@ keys:
     keys:
       system:
         type: str
-        required: true
         description: |
-          Tcam profile name to activate
+          TCAM profile name to activate
       profiles:
         type: list
         secondary_key: config
@@ -29,5 +28,5 @@ keys:
               type: str
               required: true
               description: |
-                Config file path
+                TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.
                 Example: "{{lookup('file', '{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf')}}"
