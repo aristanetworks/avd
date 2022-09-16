@@ -2453,10 +2453,10 @@ qos_profiles:
     cos: < cos-value >
     dscp: < dscp-value >
     tx_queues:
-      id: < tx-queue-id >
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
-      id: < tx-queue-id >
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
 ```

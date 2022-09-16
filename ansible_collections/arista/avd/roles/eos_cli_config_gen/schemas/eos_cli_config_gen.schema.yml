@@ -2877,6 +2877,163 @@ keys:
                   Example: "permit 10.255.0.0/27 eq 32"'
   prompt:
     type: str
+  qos_profiles:
+    type: list
+    display_name: QOS Profiles
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Profile-Name
+        trust:
+          type: str
+          valid_values:
+          - cos
+          - dscp
+          - disabled
+        cos:
+          type: int
+          convert_types:
+          - str
+          display_name: COS-Value
+        dscp:
+          type: int
+          convert_types:
+          - str
+          display_name: DSCP-Value
+        shape:
+          type: dict
+          keys:
+            rate:
+              type: str
+              description: 'Supported options are platform dependent
+
+                Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                '
+        service_policy:
+          type: dict
+          keys:
+            type:
+              type: dict
+              keys:
+                qos_input:
+                  type: str
+                  display_name: Policy_map Name
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                required: true
+                convert_types:
+                - str
+                display_name: Tx-Queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                - str
+              priority:
+                type: str
+                valid_values:
+                - priority strict
+                - no priority
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: 'Supported options are platform dependent
+
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                      '
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                required: true
+                convert_types:
+                - str
+                display_name: UC-Tx-Queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                - str
+              priority:
+                type: str
+                valid_values:
+                - priority strict
+                - no priority
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: 'Supported options are platform dependent
+
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                      '
+        mc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                required: true
+                convert_types:
+                - str
+                display_name: MC-Tx-Queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                - str
+              priority:
+                type: str
+                valid_values:
+                - priority strict
+                - no priority
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: 'Supported options are platform dependent
+
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"'
   queue_monitor_length:
     type: dict
     keys:

@@ -3808,6 +3808,205 @@
       "type": "string",
       "title": "Prompt"
     },
+    "qos_profiles": {
+      "type": "array",
+      "title": "QOS Profiles",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Profile-Name"
+          },
+          "trust": {
+            "type": "string",
+            "enum": [
+              "cos",
+              "dscp",
+              "disabled"
+            ],
+            "title": "Trust"
+          },
+          "cos": {
+            "type": "integer",
+            "title": "COS-Value"
+          },
+          "dscp": {
+            "type": "integer",
+            "title": "DSCP-Value"
+          },
+          "shape": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "string",
+                "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
+                "title": "Rate"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Shape"
+          },
+          "service_policy": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "object",
+                "properties": {
+                  "qos_input": {
+                    "type": "string",
+                    "title": "Policy_map Name"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Type"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Service Policy"
+          },
+          "tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "Tx-Queue ID"
+                },
+                "bandwidth_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Percent"
+                },
+                "bandwidth_guaranteed_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Guaranteed Percent"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "priority strict",
+                    "no priority"
+                  ],
+                  "title": "Priority"
+                },
+                "shape": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "type": "string",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
+                      "title": "Rate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Shape"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "title": "Tx Queues"
+          },
+          "uc_tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "UC-Tx-Queue ID"
+                },
+                "bandwidth_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Percent"
+                },
+                "bandwidth_guaranteed_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Guaranteed Percent"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "priority strict",
+                    "no priority"
+                  ],
+                  "title": "Priority"
+                },
+                "shape": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "type": "string",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
+                      "title": "Rate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Shape"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "title": "Uc Tx Queues"
+          },
+          "mc_tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "MC-Tx-Queue ID"
+                },
+                "bandwidth_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Percent"
+                },
+                "bandwidth_guaranteed_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Guaranteed Percent"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "priority strict",
+                    "no priority"
+                  ],
+                  "title": "Priority"
+                },
+                "shape": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "type": "string",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"",
+                      "title": "Rate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Shape"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "title": "Mc Tx Queues"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
     "queue_monitor_length": {
       "type": "object",
       "properties": {
