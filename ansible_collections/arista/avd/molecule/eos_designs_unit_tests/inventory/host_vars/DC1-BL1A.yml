@@ -27,3 +27,8 @@ event_handlers:
     trigger: on-logging
     regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
+
+# Testing with inline jinja - targeting base.py loaded in yaml_templates_to_facts.
+# Since base.py is not performing any templating, the vars must be templated before handed over to the python class.
+template_timezone: "correctly_templated_timezone"
+timezone: "{{ template_timezone }}"
