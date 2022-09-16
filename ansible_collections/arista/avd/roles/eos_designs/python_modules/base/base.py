@@ -340,7 +340,7 @@ class AvdStructuredConfig(AvdFacts):
         snmp_server = {}
         if (compute_local_engineid := snmp_settings.get('compute_local_engineid')) is True:
             local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode('utf-8')).hexdigest()
-            snmp_server['engineid'] = {'local': local_engine_id}
+            snmp_server['engine_ids'] = {'local': local_engine_id}
 
         if (contact := snmp_settings.get('contact')) is not None:
             snmp_server['contact'] = contact
