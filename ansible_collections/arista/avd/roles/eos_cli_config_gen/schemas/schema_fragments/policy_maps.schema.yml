@@ -34,8 +34,12 @@ keys:
                     convert_types:
                       - str
                   drop:
+                    description: Only one of "drop" and "set" can be set simultaneously
+                    display_name: Drop Packets
                     type: bool
                   set:
+                    description: Only one of "set" and "drop" can be set simultaneously
+                    display_name: Set Values
                     type: dict
                     keys:
                       nexthop:
