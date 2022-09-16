@@ -81,7 +81,7 @@ snmp_settings:
   # matching the value they would take in EOS cli the algorithm requires
   # a local engineId which is unknown to AVD hence the necessity to generate
   # one beforehand.
-  compute_v3_localized_key: < boolean | default -> false >
+  compute_v3_user_localized_key: < boolean | default -> false >
   users:
     - name: < username >
       group: < group >
