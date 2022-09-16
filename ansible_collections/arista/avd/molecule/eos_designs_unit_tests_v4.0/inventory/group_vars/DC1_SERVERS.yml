@@ -510,6 +510,19 @@ servers:
           - name: MonitoringSessionServer18WithDest
             role: destination
 
+  - name: server22_port_channel_with_custom_id
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet29, Ethernet29 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        port_channel:
+          description: server22_port_channel_with_custom_id
+          mode: active
+          enabled: true
+          channel_id: 1291
+
 firewalls:
   - name: FIREWALL01
     rack: RackB
