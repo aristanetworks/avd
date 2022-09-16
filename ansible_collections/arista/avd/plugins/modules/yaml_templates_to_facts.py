@@ -33,21 +33,37 @@ options:
     elements: dict
     suboptions:
       template:
-        description: Template file
-        required: true
+        description: |
+          Template file.
+          Either template or python_module must be set.
+        required: false
         type: str
+      python_module:
+        description: |
+          Python module to import
+          Either template or python_module must be set.
+        required: false
+        type: str
+      python_class_name:
+        description: |
+          Name of Python Class to import
+        required: false
+        type: str
+        default: "AvdStructuredConfig"
       options:
         description: Template options
         required: false
         type: dict
         suboptions:
           list_merge:
-            description: Merge strategy for lists for Ansible Combine filter
+            description: Merge strategy for lists
             required: false
             default: 'append'
             type: str
           strip_empty_keys:
-            description: "Filter out keys from the generated output if value is null/none/undefined"
+            description: |
+              Filter out keys from the generated output if value is null/none/undefined
+              Only applies to templates.
             required: false
             default: true
             type: bool
@@ -75,7 +91,8 @@ EXAMPLES = r'''
   yaml_templates_to_facts:
     root_key: structured_config
     templates:
-      - template: "base/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+        python_class_name: "AvdStructuredConfig"
       - template: "mlag/main.j2"
       - template: "designs/underlay/main.j2"
       - template: "designs/overlay/main.j2"

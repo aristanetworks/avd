@@ -26,7 +26,7 @@ name_server:
   - 192.168.200.5
   - 8.8.8.8
 snmp_server:
-  engineid:
+  engine_ids:
     local: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_default

@@ -6,12 +6,7 @@ import pstats
 from collections import ChainMap
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
-from ansible.plugins.filter.core import combine
 from ansible.template import Templar
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError
 
@@ -117,11 +112,6 @@ class ActionModule(ActionBase):
             avd_switch_facts[host] = {
                 "switch": EosDesignsFacts(
                     hostvars=host_hostvars,
-                    combine=combine,
-                    list_compress=list_compress,
-                    range_expand=range_expand,
-                    natural_sort=natural_sort,
-                    convert_dicts=convert_dicts,
                     templar=templar
                 )
             }
