@@ -23,7 +23,7 @@ keys:
               keys:
                 access_group:
                   type: str
-                  display_name: Standard access-list Name
+                  display_name: Standard Access-List Name
       qos:
         type: list
         primary_key: name
@@ -39,23 +39,21 @@ keys:
               type: int
               convert_types:
                 - str
-              description: |
-                VLAN value(s) or range(s) of VLAN values
+              description: VLAN value(s) or range(s) of VLAN values
             cos:
               type: int
               convert_types:
                 - str
-              description: |
-                CoS value(s) or range(s) of CoS values
+              description: CoS value(s) or range(s) of CoS values
             ip:
               type: dict
               keys:
                 access_group:
                   type: str
-                  display_name: IPv4 access-list Name
+                  display_name: IPv4 Access-List Name
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
-                  display_name: IPv6 access-list Name
+                  display_name: IPv6 Access-List Name
