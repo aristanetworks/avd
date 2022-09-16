@@ -72,7 +72,7 @@ keys:
               type: dict
               keys:
                 route_map_inout:
-                  type: int
+                  type: str
                   display_name: Route Map
       unit_profiles:
         type: list
