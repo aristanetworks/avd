@@ -927,6 +927,13 @@ port_channel_interfaces:
     mode: access
     vlans: 110
     mlag: 42
+  Port-Channel1291:
+    description: server22_port_channel_with_custom_id_server22_port_channel_with_custom_id
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 1291
 ethernet_interfaces:
   Ethernet53/1:
     peer: DC1-SVC3A
@@ -1352,6 +1359,18 @@ ethernet_interfaces:
     vlans: 110
     channel_group:
       id: 42
+      mode: active
+  Ethernet29:
+    peer: server22_port_channel_with_custom_id
+    peer_interface: Eth2
+    peer_type: server
+    description: server22_port_channel_with_custom_id_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 1291
       mode: active
 mlag_configuration:
   domain_id: DC1_SVC3

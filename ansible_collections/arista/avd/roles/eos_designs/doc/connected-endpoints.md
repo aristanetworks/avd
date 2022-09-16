@@ -228,6 +228,10 @@ Both data models support variable inheritance from profiles defined under [`port
           # Port-Channel Mode | Required
           mode: < "active" | "passive" | "on" >
 
+          # Port-Channel ID | Optional
+          # If no channel_id is specified, an id is generated from the first switch port in the port channel
+          channel_id : < port_channel_id >
+
           # Port-Channel Description - added after endpoint name in the description | Optional
           description: < port_channel_description >
 
