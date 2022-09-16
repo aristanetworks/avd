@@ -1209,7 +1209,6 @@ keys:
                   Example: "as-range 1-100 result accept"'
   policy_maps:
     type: dict
-    display_name: QOS Policy-map
     keys:
       pbr:
         type: list
@@ -1238,8 +1237,12 @@ keys:
                     convert_types:
                     - str
                   drop:
+                    description: Only one of "drop" and "set" can be set simultaneously
+                    display_name: Drop Packets
                     type: bool
                   set:
+                    description: Only one of "set" and "drop" can be set simultaneously
+                    display_name: Set Values
                     type: dict
                     keys:
                       nexthop:

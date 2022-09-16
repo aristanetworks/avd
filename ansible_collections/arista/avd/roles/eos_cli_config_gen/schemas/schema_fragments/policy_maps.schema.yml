@@ -5,7 +5,6 @@ type: dict
 keys:
   policy_maps:
     type: dict
-    display_name: QOS Policy-map
     keys:
       pbr:
         type: list
