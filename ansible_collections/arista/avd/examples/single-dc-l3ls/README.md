@@ -561,16 +561,16 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
 
 ```yaml
   dc1-leaf1-server1:
-    adapters: # (1)
+    adapters: # (1)!
     - type: server
-      server_ports: [ PCI1, PCI2 ] # (2)
-      switch_ports: [ Ethernet5, Ethernet5 ] # (3)
-      switches: [ dc1-leaf1a, dc1-leaf1b ] # (4)
-      vlans: 11-12,21-22 #(5)
-      native_vlan: 4092 #(6)
-      mode: trunk #(7)
-      spanning_tree_portfast: edge #(8)
-      port_channel: #(9)
+      server_ports: [ PCI1, PCI2 ] # (2)!
+      switch_ports: [ Ethernet5, Ethernet5 ] # (3)!
+      switches: [ dc1-leaf1a, dc1-leaf1b ] # (4)!
+      vlans: 11-12,21-22 # (5)!
+      native_vlan: 4092 # (6)!
+      mode: trunk # (7)
+      spanning_tree_portfast: edge # (8)!
+      port_channel: # (9)!
         description: PortChannel dc1-leaf1-server1
         mode: active
 
