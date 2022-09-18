@@ -115,6 +115,34 @@ keys:
         enabled:
           type: bool
           default: true
+  interface_groups:
+    type: list
+    display_name: Maintenance Interface Groups
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Interface-Group name
+        interfaces:
+          type: list
+          items:
+            type: str
+            description: Interface Name
+        bgp_maintenance_profiles:
+          type: list
+          items:
+            type: str
+            description: Name of BGP Maintenance Profile
+        interface_maintenance_profiles:
+          type: list
+          items:
+            type: str
+            description: Name of Interface Maintenance Profile
   interface_profiles:
     type: list
     primary_key: name
