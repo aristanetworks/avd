@@ -332,6 +332,50 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"'
+  local_users:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          display_name: Username
+          type: str
+          required: true
+        privilege:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 15
+          description: 'Initial privilege level with local EXEC authorization.
+
+            '
+        role:
+          type: str
+          description: 'EOS RBAC Role to be assigned to the user such as "network-admin"
+            or "network-operator"
+
+            '
+        sha512_password:
+          display_name: SHA512 Hash of Password
+          type: str
+          description: 'Must be the hash of the password. By default EOS salts the
+            password with the username, so the simplest is to generate the hash on
+            an EOS device using the same username.
+
+            '
+        no_password:
+          type: bool
+          description: 'If set a password will not be configured for this user. "sha512_password"
+            MUST not be defined for this user.
+
+            '
+        ssh_key:
+          display_name: SSH Key
+          type: str
   match_list_input:
     type: dict
     display_name: Match Lists
