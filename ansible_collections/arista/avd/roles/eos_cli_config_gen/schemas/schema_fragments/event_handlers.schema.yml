@@ -8,7 +8,7 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Event Handler
+    display_name: Event Handlers
     items:
       type: dict
       keys:
