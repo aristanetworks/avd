@@ -3143,6 +3143,267 @@ keys:
               keys:
                 routing:
                   type: bool
+  router_ospf:
+    type: dict
+    display_name: Router OSPF Configuration
+    keys:
+      process_ids:
+        type: list
+        primary_key: id
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+              display_name: Process ID
+            vrf:
+              type: str
+              display_name: VRF Name for Process ID
+            passive_interface_default:
+              type: bool
+            router_id:
+              type: str
+              display_name: IPv4 Address
+            distance:
+              type: dict
+              keys:
+                external:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Integer 1-255
+                inter_area:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Integer 1-255
+                intra_area:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Integer 1-255
+            log_adjacency_changes_detail:
+              type: bool
+            network_prefixes:
+              type: list
+              primary_key: ipv4_prefix
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  ipv4_prefix:
+                    type: str
+                    display_name: IPv4 Subnet/Netmask
+                  area:
+                    type: str
+            bfd_enable:
+              type: bool
+            bfd_adjacency_state_any:
+              type: bool
+            no_passive_interfaces:
+              type: list
+              items:
+                type: str
+            distribute_list_in:
+              type: dict
+              keys:
+                route_map:
+                  type: str
+            max_lsa:
+              type: int
+              convert_types:
+              - str
+            timers:
+              type: dict
+              keys:
+                lsa:
+                  type: dict
+                  keys:
+                    rx_min_interval:
+                      type: int
+                      convert_types:
+                      - str
+                      description: 0-600000 - Min interval in msecs between accepting
+                        the same LSA
+                    tx_delay:
+                      type: dict
+                      keys:
+                        initial:
+                          type: int
+                          convert_types:
+                          - str
+                          description: 0-600000 - Delay to generate first occurrence
+                            of LSA in msecs
+                        min:
+                          type: int
+                          convert_types:
+                          - str
+                          description: 1-600000 Min delay between originating the
+                            same LSA in msecs
+                        max:
+                          type: int
+                          convert_types:
+                          - str
+                          description: 1-600000 Maximum delay between originating
+                            the same LSA in msec
+                spf_delay:
+                  type: dict
+                  keys:
+                    initial:
+                      type: int
+                      convert_types:
+                      - str
+                      description: 0-600000 - Initial SPF schedule delay in msecs
+                    min:
+                      type: int
+                      convert_types:
+                      - str
+                      description: 0-65535000  Min Hold time between two SPFs in msecs
+                    max:
+                      type: int
+                      convert_types:
+                      - str
+                      description: 0-65535000  Max wait time between two SPFs in msecs
+            default_information_originate:
+              type: dict
+              keys:
+                always:
+                  type: bool
+            summary_addresses:
+              type: list
+              items:
+                type: dict
+                keys:
+                  prefix:
+                    type: str
+                    display_name: Summary Prefix Address
+                  tag:
+                    type: int
+                  attribute_map:
+                    type: str
+                  not_advertise:
+                    type: bool
+            redistribute:
+              type: dict
+              keys:
+                static:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      display_name: Route Map Name
+                connected:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      display_name: Route Map Name
+                bgp:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      display_name: Route Map Name
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              description: Bandwidth in mbps
+            areas:
+              type: list
+              primary_key: id
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                  filter:
+                    type: dict
+                    keys:
+                      networks:
+                        type: list
+                        items:
+                          type: str
+                          display_name: IPv4 Subnet/Netmask
+                      prefix_list:
+                        type: str
+                        display_name: Prefix-List Name
+                  type:
+                    type: str
+                    valid_values:
+                    - normal
+                    - stub
+                    - nssa
+                    default: normal
+                  no_summary:
+                    type: bool
+                  nssa_only:
+                    type: bool
+                  default_information_originate:
+                    type: dict
+                    keys:
+                      metric:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Integer 1-65535 - Value of the route metric
+                      metric_type:
+                        type: int
+                        convert_types:
+                        - str
+                        valid_values:
+                        - 1
+                        - 2
+                        description: OSPF metric type
+            maximum_paths:
+              type: int
+              convert_types:
+              - str
+              description: Integer 1-32
+            max_metric:
+              type: dict
+              description: Not expected to produce config. Just here to test proper
+                variable checks.
+              keys:
+                router_lsa:
+                  type: dict
+                  keys:
+                    external_lsa:
+                      type: dict
+                      keys:
+                        override_metric:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Integer 1-16777215
+                    include_stub:
+                      type: bool
+                    on_startup:
+                      type: str
+                      convert_types:
+                      - int
+                      description: 'wait-for-bgp or Integer 5-86400
+
+                        Example: "wait-for-bgp" Or "222"
+
+                        '
+                    summary_lsa:
+                      type: dict
+                      keys:
+                        override_metric:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Integer 1-16777215
+            mpls_ldp_sync_default:
+              type: bool
   router_pim_sparse_mode:
     type: dict
     display_name: Routing PIM Sparse Mode
