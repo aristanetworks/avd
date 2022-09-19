@@ -55,16 +55,18 @@ interface Management1
 
 | Handler | Action Type | Action | Trigger |
 | ------- | ----------- | ------ | ------- |
-| tracking | bash | /mnt/flash/tracking.sh | on-boot |
+| evpn-blacklist-recovery | bash | FastCli -p 15 -c "clear bgp evpn host-flap" | on-logging |
 
 ### Event Handler Device Configuration
 
 ```eos
 !
-event-handler tracking
-   trigger on-boot
-   action bash /mnt/flash/tracking.sh
+event-handler evpn-blacklist-recovery
+   trigger on-logging
+      regex EVPN-3-BLACKLISTED_DUPLICATE_MAC
+   action bash FastCli -p 15 -c "clear bgp evpn host-flap"
    delay 300
+   asynchronous
 ```
 
 # Internal VLAN Allocation Policy
