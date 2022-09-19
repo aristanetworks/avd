@@ -19,7 +19,6 @@ port_channel_interfaces:
                                                adapter, recursive=true, list_merge='replace') %}
 {%         if adapter_settings.port_channel.mode is arista.avd.defined %}
 {%             set channel_group_id = (adapter_settings.port_channel.channel_id | arista.avd.default(adapter_settings.switch_ports[0] | regex_findall("\d") | join)) %}
-
 {%             set adapter_port_channel_description = adapter_settings.port_channel.description | arista.avd.default %}
 {%             for adapter_switch in adapter_settings.switches | arista.avd.natural_sort %}
 {%                 if adapter_switch == inventory_hostname %}
