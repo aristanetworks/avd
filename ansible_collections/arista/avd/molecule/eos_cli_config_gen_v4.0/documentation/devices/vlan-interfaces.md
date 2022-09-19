@@ -136,6 +136,12 @@ interface Management1
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
 | Vlan1002 | Tenant_A | a2::1/64 | - | - | - | True | True | - | - |
 
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ----------- | ---- |
+| Vlan2002 | EVPN_UNDERLAY | - | - |
+
 #### Multicast Routing
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
@@ -297,6 +303,7 @@ interface Vlan2002
    description SVI Description
    no autostate
    vrf Tenant_B
+   isis enable EVPN_UNDERLAY
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094

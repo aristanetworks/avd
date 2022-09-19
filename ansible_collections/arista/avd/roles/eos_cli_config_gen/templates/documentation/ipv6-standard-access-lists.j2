@@ -4,7 +4,7 @@
 
 ### IPv6 Standard Access-lists Summary
 
-{%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort('name') %}
 #### {{ ipv6_standard_access_list.name }}
 {%         if ipv6_standard_access_list.counters_per_entry is arista.avd.defined(true) %}
 
@@ -13,7 +13,7 @@ ACL has counting mode `counters per-entry` enabled!
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in ipv6_standard_access_list.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%         for sequence in ipv6_standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
 {%         endfor %}
 
