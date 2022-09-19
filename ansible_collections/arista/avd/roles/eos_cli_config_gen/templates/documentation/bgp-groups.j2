@@ -6,7 +6,7 @@
 
 | BGP group | VRF Name | Neighbors | BGP maintenance profiles |
 | --------- | -------- | --------- | ------------------------ |
-{%     for bgp_group in bgp_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for bgp_group in bgp_groups | arista.avd.natural_sort('name') %}
 {%         set vrf = bgp_group.vrf | arista.avd.default('-') %}
 {%         if bgp_group.neighbors is arista.avd.defined %}
 {%             set neighbors = bgp_group.neighbors | arista.avd.natural_sort | join('<br>') %}
