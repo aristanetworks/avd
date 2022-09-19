@@ -12,9 +12,11 @@ keys:
       enable_https:
         type: bool
       https_ssl_profile:
+        display_name: SSL Profile Name
         type: str
       default_services:
         type: bool
+        description: "Enable default services: capi-doc and tapagg"
       enable_vrfs:
         type: list
         primary_key: name
@@ -38,5 +40,7 @@ keys:
         keys:
           certificate:
             type: str
+            description: Name of certificate; private key must also be specified
           private_key:
             type: str
+            description: Name of private key; certificate must also be specified
