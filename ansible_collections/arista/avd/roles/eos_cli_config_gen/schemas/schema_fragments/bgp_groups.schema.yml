@@ -27,6 +27,3 @@ keys:
           items:
             type: str
             display_name: Profile Name
-
-
-  
