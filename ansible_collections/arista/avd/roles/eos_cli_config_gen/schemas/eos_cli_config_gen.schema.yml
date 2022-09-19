@@ -593,6 +593,8 @@ keys:
           required: true
         shutdown:
           type: bool
+        mtu:
+          type: int
         vrf:
           type: str
           display_name: VRF Name
