@@ -29,7 +29,7 @@ ethernet_interfaces:
 {%                         do monitor_sessions_data.append(monitor_session) %}
 {%                     endfor %}
 {%                 endif %}
-+{%                 set channel_group_id = adapter_settings.port_channel.channel_id | arista.avd.default(adapter_settings.switch_ports[0] | regex_findall("\d") | join) %}
+{%                 set channel_group_id = (adapter_settings.port_channel.channel_id | arista.avd.default(adapter_settings.switch_ports[0] | regex_findall("\d") | join)) %}
 
 {%                 set peer_interface = endpoint_ports[loop.index0] | arista.avd.default %}
   {{ adapter_settings.switch_ports[loop.index0] }}:
