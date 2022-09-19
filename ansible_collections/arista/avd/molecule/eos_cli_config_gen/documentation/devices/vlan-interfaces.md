@@ -157,6 +157,12 @@ interface Management1
 | Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
 | Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ----------- | ---- |
+| Vlan2002 | EVPN_UNDERLAY | - | - |
+
 #### Multicast Routing
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
@@ -384,6 +390,7 @@ interface Vlan2002
    description SVI Description
    no autostate
    vrf Tenant_B
+   isis enable EVPN_UNDERLAY
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094

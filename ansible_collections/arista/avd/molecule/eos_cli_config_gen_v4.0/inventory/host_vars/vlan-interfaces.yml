@@ -15,6 +15,7 @@ vlan_interfaces:
     vrf: Tenant_B
     ip_address_virtual: 10.2.2.1/24
     no_autostate: true
+    isis_enable: "EVPN_UNDERLAY"
 
   - name: Vlan81
     description: IPv6 Virtual Address
