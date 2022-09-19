@@ -6,7 +6,7 @@
 
 | Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
 | --------------- | ---------- | ----------------------------- | ------------------------ |
-{%     for interface_group in interface_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for interface_group in interface_groups | arista.avd.natural_sort('name') %}
 {%         set interfaces = interface_group.interfaces | arista.avd.natural_sort | join('<br>') %}
 {%         if interface_group.interface_maintenance_profiles is arista.avd.defined %}
 {%             set interface_profile = interface_group.interface_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}

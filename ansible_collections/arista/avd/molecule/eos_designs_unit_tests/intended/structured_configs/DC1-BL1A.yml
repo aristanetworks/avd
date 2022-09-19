@@ -295,9 +295,9 @@ event_handlers:
     action_type: bash
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
-    asynchronous: handler.asynchronous
     trigger: on-logging
     regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+    asynchronous: true
 name_server:
   source:
     vrf: MGMT
@@ -325,6 +325,8 @@ local_users:
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
     ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
       cvpadmin@hostmachine.local
+clock:
+  timezone: correctly_templated_timezone
 vrfs:
   MGMT:
     ip_routing: false
@@ -367,8 +369,8 @@ struct_cfg:
     vrfs:
       OOB:
         destinations:
-          192.168.200.10: None
-          10.0.200.90: None
+          192.168.200.10: null
+          10.0.200.90: null
         source_interface: Management1
 ethernet_interfaces:
   Ethernet1:
@@ -579,7 +581,7 @@ sflow:
   vrfs:
     OOB:
       destinations:
-        192.168.200.10: None
-        10.0.200.90: None
+        192.168.200.10: null
+        10.0.200.90: null
       source_interface: Management1
 ntp: null

@@ -115,6 +115,34 @@ keys:
         enabled:
           type: bool
           default: true
+  interface_groups:
+    type: list
+    display_name: Maintenance Interface Groups
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Interface-Group name
+        interfaces:
+          type: list
+          items:
+            type: str
+            description: Interface Name
+        bgp_maintenance_profiles:
+          type: list
+          items:
+            type: str
+            description: Name of BGP Maintenance Profile
+        interface_maintenance_profiles:
+          type: list
+          items:
+            type: str
+            description: Name of Interface Maintenance Profile
   interface_profiles:
     type: list
     primary_key: name
@@ -332,6 +360,186 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"'
+  local_users:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          display_name: Username
+          type: str
+          required: true
+        privilege:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 15
+          description: 'Initial privilege level with local EXEC authorization.
+
+            '
+        role:
+          type: str
+          description: 'EOS RBAC Role to be assigned to the user such as "network-admin"
+            or "network-operator"
+
+            '
+        sha512_password:
+          display_name: SHA512 Hash of Password
+          type: str
+          description: 'Must be the hash of the password. By default EOS salts the
+            password with the username, so the simplest is to generate the hash on
+            an EOS device using the same username.
+
+            '
+        no_password:
+          type: bool
+          description: 'If set a password will not be configured for this user. "sha512_password"
+            MUST not be defined for this user.
+
+            '
+        ssh_key:
+          display_name: SSH Key
+          type: str
+  maintenance:
+    type: dict
+    display_name: Maintenance Mode
+    keys:
+      default_interface_profile:
+        type: str
+        description: 'Name of default Interface Profile
+
+          '
+      default_bgp_profile:
+        type: str
+        description: 'Name of default BGP Profile
+
+          '
+      default_unit_profile:
+        type: str
+        description: 'Name of default Unit Profile
+
+          '
+      interface_profiles:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            rate_monitoring:
+              type: dict
+              keys:
+                load_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  description: 'Load Interval in Seconds
+
+                    '
+                threshold:
+                  type: int
+                  convert_types:
+                  - str
+                  description: 'Threshold in kbps
+
+                    '
+            shutdown:
+              type: dict
+              keys:
+                max_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: 'Max delay in seconds
+
+                    '
+      bgp_profiles:
+        type: list
+        display_name: BGP Profiles
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: BGP Profile Name
+            initiator:
+              type: dict
+              keys:
+                route_map_inout:
+                  type: str
+                  display_name: Route Map
+      unit_profiles:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Unit Profile Name
+            on_boot:
+              type: dict
+              keys:
+                duration:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 300
+                  max: 3600
+                  description: 'On-boot in seconds
+
+                    '
+      units:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Unit Name
+            quiesce:
+              type: bool
+            profile:
+              type: str
+              required: true
+              description: 'Name of Unit Profile
+
+                '
+            groups:
+              type: dict
+              keys:
+                bgp_groups:
+                  type: list
+                  display_name: BGP Groups
+                  items:
+                    type: str
+                    description: 'Name of BGP Group
+
+                      '
+                interface_groups:
+                  type: list
+                  items:
+                    type: str
+                    description: Name of Interface Group
   match_list_input:
     type: dict
     display_name: Match Lists
@@ -400,6 +608,106 @@ keys:
                 description: 'Match as string
 
                   Example: "as-range 1-100 result accept"'
+  prefix_lists:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Prefix-list Name
+        sequence_numbers:
+          type: list
+          required: true
+          primary_key: sequence
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                display_name: Sequence ID
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string
+
+                  Example: "permit 10.255.0.0/27 eq 32"'
+  route_maps:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Route-map Name
+        sequence_numbers:
+          type: list
+          required: true
+          primary_key: sequence
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                display_name: Sequence ID
+                convert_types:
+                - str
+              type:
+                type: str
+                required: true
+                valid_values:
+                - permit
+                - deny
+              description:
+                type: str
+              match:
+                type: list
+                description: List of "match" statements
+                items:
+                  type: str
+                  description: 'Match as string
+
+                    Example: "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+
+                    '
+              set:
+                type: list
+                description: List of "set" statements
+                items:
+                  type: str
+                  description: 'Set as string
+
+                    Example: "origin incomplete"
+
+                    '
+              sub_route_map:
+                type: str
+                description: Name of Sub-Route-map
+              continue:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  sequence_number:
+                    type: int
+                    convert_types:
+                    - str
   sflow:
     type: dict
     display_name: Sflow
