@@ -611,6 +611,7 @@ keys:
           - oob
           - inband
           default: oob
+          description: For documentation purposes only
         gateway:
           type: str
           required: true
