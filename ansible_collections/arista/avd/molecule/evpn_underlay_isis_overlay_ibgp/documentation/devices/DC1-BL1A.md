@@ -290,6 +290,7 @@ vlan 4094
 | Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.43/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | 172.31.255.45/31 | default | 1500 | False | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | 172.31.255.47/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_ROUTERX_Ethernet8 | routed | - | 100.64.0.0/31 | default | 1500 | False | - | - |
 
 #### ISIS
 
@@ -299,6 +300,7 @@ vlan 4094
 | Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
 | Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
 | Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet8 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | True | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -353,6 +355,18 @@ interface Ethernet6
    description MLAG_PEER_DC1-BL1B_Ethernet6
    no shutdown
    channel-group 5 mode active
+!
+interface Ethernet8
+   description P2P_LINK_TO_ROUTERX_Ethernet8
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 100.64.0.0/31
+   isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
+   isis metric 50
+   isis hello padding
+   isis network point-to-point
 ```
 
 ## Port-Channel Interfaces
@@ -571,6 +585,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet3 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet4 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet8 | EVPN_UNDERLAY | 50 | point-to-point |
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
