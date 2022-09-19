@@ -171,3 +171,11 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
+
+# Test core_interfaces ISIS for non-mpls fabric
+core_interfaces:
+  p2p_links:
+    - id: 1
+      ip: [ 100.64.0.0/31, 100.64.0.1/31 ]
+      nodes: [ DC1-BL1A, ROUTERX ]
+      interfaces: [ Ethernet8, Ethernet8 ]
