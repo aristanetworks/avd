@@ -41,4 +41,4 @@ keys:
           type: bool
           default: False
           description: |
-            Set the action to be non-blocking. if unset, default is False
+            Set the action to be non-blocking.
