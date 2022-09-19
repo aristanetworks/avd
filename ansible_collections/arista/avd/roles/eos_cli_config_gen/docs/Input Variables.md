@@ -87,6 +87,34 @@ daemons:
     enabled: <bool>
 ```
 
+## Event Handlers
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Event Handlers |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String |  |  |  | Event Handler Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment<br>- log | Action Type<br>Type of action<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to execute<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- on-logging | Configure event trigger condition.<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | False |  | Set the action to be non-blocking. |
+
+### YAML
+
+```yaml
+event_handlers:
+  - name: <str>
+    action_type: <str>
+    action: <str>
+    delay: <int>
+    trigger: <str>
+    regex: <str>
+    asynchronous: <bool>
+```
+
 ## Maintenance Interface Groups
 
 ### Variables

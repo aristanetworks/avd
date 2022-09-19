@@ -32,7 +32,8 @@ keys:
         trigger:
           type: str
           description: |
-            Configure event trigger condition. Only supports on-logging
+            Configure event trigger condition.
+          valid_values: ["on-logging"]
         regex:
           type: str
           description: |
