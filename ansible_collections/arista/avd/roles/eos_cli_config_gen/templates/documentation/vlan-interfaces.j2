@@ -146,9 +146,11 @@
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
 {%                 if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
-{%                     set mode = 'point-to-point' | arista.avd.default('-') %}
+{%                     set mode = "point-to-point" %}
 {%                 elif vlan_interface.isis_passive is arista.avd.defined %}
-{%                     set mode = 'passive' | arista.avd.default('-') %}
+{%                     set mode = "passive" %}
+{%                 else %}
+{%                     set mode = "-" %}
 {%                 endif %}
 | {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ isis_metric }} | {{ mode }} |
 {%             endif %}
