@@ -278,7 +278,7 @@ Since this example covers building an L3LS network, AVD must know about the devi
     --8<--
     ```
 
-For example, all switches that are children of the DC1_SPINES group defined in the inventory will be of the type `spine`.
+For example, all switches that are children of the DC1_SPINES group defined in the inventory will be of type `spine`.
 
 ## Setting fabric-wide configuration parameters
 
