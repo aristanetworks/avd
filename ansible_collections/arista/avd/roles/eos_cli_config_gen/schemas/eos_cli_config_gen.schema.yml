@@ -4201,6 +4201,238 @@ keys:
           type: str
           default: line-protocol
           description: Property to track
+  traffic_policies:
+    type: dict
+    keys:
+      options:
+        type: dict
+        keys:
+          counter_per_interface:
+            type: bool
+      field_sets:
+        type: dict
+        keys:
+          ipv4:
+            type: list
+            secondary_key: prefixes
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Ipv4 Prefix Field Set Name
+                prefixes:
+                  type: list
+                  items:
+                    type: str
+                    display_name: IPv4 Prefix
+          ipv6:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Ipv6 Prefix Field Set Name
+                prefixes:
+                  type: list
+                  items:
+                    type: str
+                    display_name: IPv6 Prefix
+          ports:
+            type: list
+            primary_key: name
+            secondary_key: port_range
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: L4 Port Field Set Name
+                port_range:
+                  type: str
+                  display_name: Vlan Range
+                  description: 'Example: "10,20,80,440-450"
+
+                    '
+      policies:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Traffic Policy Name
+            matches:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Traffic Policy Item
+                  type:
+                    type: str
+                    display_name: Ipv4/Ipv6
+                  source:
+                    type: dict
+                    keys:
+                      prefixes:
+                        type: list
+                        items:
+                          type: str
+                      prefix_lists:
+                        type: list
+                        items:
+                          type: str
+                          display_name: Field Set List
+                  destination:
+                    type: dict
+                    keys:
+                      prefixes:
+                        type: list
+                        items:
+                          type: str
+                      prefix_lists:
+                        type: list
+                        items:
+                          type: str
+                          display_name: Field Set List
+                  ttl:
+                    type: str
+                    display_name: TTL Range
+                  fragment:
+                    type: dict
+                    description: 'The ''fragment'' command is not supported when ''source
+                      port''
+
+                      or ''destination port'' command is configured
+
+                      '
+                    keys:
+                      offset:
+                        type: str
+                        display_name: Fragment Offset Range
+                  protocols:
+                    type: list
+                    primary_key: protocol
+                    convert_types:
+                    - dict
+                    items:
+                      type: dict
+                      keys:
+                        protocol:
+                          type: str
+                        src_port:
+                          type: str
+                          description: Port range
+                        dst_port:
+                          type: str
+                          description: Port range
+                        src_field:
+                          type: str
+                          description: L4 port range field set
+                        dst_field:
+                          type: str
+                          description: L4 port range field set
+                        flags:
+                          type: list
+                          items:
+                            type: str
+                            valid_values:
+                            - established
+                            - initial
+                        icmp_type:
+                          type: list
+                          items:
+                            type: str
+                          display_name: ICMP Message Type
+                  actions:
+                    type: dict
+                    keys:
+                      dscp:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: DSCP Code Value
+                      traffic_class:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: Traffic Class ID
+                      count:
+                        type: str
+                        display_name: Counter Name
+                      drop:
+                        type: bool
+                        default: false
+                      log:
+                        type: bool
+                        default: false
+                        description: Only supported when action is set to drop
+            default_actions:
+              type: dict
+              keys:
+                ipv4:
+                  type: dict
+                  keys:
+                    dscp:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: DSCP Code Value
+                    traffic_class:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: Traffic Class ID
+                    count:
+                      type: str
+                      display_name: Counter Name
+                    drop:
+                      type: bool
+                      default: false
+                    log:
+                      type: bool
+                      default: false
+                      description: Only supported when action is set to drop
+                ipv6:
+                  type: dict
+                  keys:
+                    dscp:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: DSCP Code Value
+                    traffic_class:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: Traffic Class ID
+                    count:
+                      type: str
+                      display_name: Counter Name
+                    drop:
+                      type: bool
+                      default: false
+                    log:
+                      type: bool
+                      default: false
+                      description: Only supported when action is set to drop
   virtual_source_nat_vrfs:
     type: list
     primary_key: name

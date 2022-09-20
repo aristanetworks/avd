@@ -8,7 +8,7 @@
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefixes') %}
+{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
 {%                 if field_set_ipv4 | length > 1 %}
 {%                     set value = field_set_ipv4.prefixes | join('<br/>') %}
 {%                 else %}
@@ -25,7 +25,7 @@ No IPv4 field-set configured.
 {%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefixes') %}
+{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
 {%                 if field_set_ipv6 | length > 1 %}
 {%                     set value = field_set_ipv6.prefixes | join('<br/>') %}
 {%                 else %}
@@ -42,7 +42,7 @@ No IPv6 field-set configured.
 {%         if traffic_policies.field_sets.ports is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','port_range') %}
+{%             for field_set_port in traffic_policies.field_sets.ports %}
 | {{ field_set_port.name }} | {{ field_set_port.port_range }}|
 {%             endfor %}
 {%         else %}
@@ -54,14 +54,14 @@ No Field-set configured on device.
 {%     if traffic_policies.policies is arista.avd.defined %}
 
 ### Traffic Policies
-{%         for policy in traffic_policies.policies | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
 
 **{{ policy.name }}:**
 
 {%             if policy.matches is arista.avd.defined %}
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
-{%                 for match in policy.matches | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 for match in policy.matches | arista.avd.natural_sort('name') %}
 {%                     set row = namespace() %}
 {%                     set row.match_set = match.name %}
 {%                     set row.type = match.type | lower %}
@@ -86,14 +86,14 @@ No Field-set configured on device.
 {#                     -- Protocol #}
 {%                     set row.protocols = "" %}
 {%                     if match.protocols is arista.avd.defined %}
-{%                         set row.protocols = match.protocols | arista.avd.convert_dicts('protocol') | map(attribute='protocol') | join('<br/>') %}
+{%                         set row.protocols = match.protocols | map(attribute='protocol') | join('<br/>') %}
 {%                     else %}
 {%                         set row.protocols = "ANY" %}
 {%                     endif %}
 {#                     -- Source Port #}
 {%                     set row.src_port = "" %}
 {%                     if match.protocols is arista.avd.defined %}
-{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
+{%                         for protocol in match.protocols %}
 {%                             if protocol.src_field is arista.avd.defined %}
 {%                                 set row.src_port = protocol.src_field %}
 {%                             elif protocol.src_port is arista.avd.defined %}
@@ -107,7 +107,7 @@ No Field-set configured on device.
 {#                     -- Destination Port #}
 {%                     set row.dst_port = "" %}
 {%                     if match.protocols is arista.avd.defined %}
-{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
+{%                         for protocol in match.protocols %}
 {%                             if protocol.dst_field is arista.avd.defined %}
 {%                                 set row.dst_port = protocol.dst_field %}
 {%                             elif protocol.dst_port is arista.avd.defined %}

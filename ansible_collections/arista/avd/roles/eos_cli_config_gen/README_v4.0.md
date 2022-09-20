@@ -3334,7 +3334,7 @@ traffic_policies:
             - protocol: vrrp
             # The 'protocol neighbors' subcommand is not supported when any
             # other match subcommands are configured
-            neighbors:
+            - protocol: neighbors
           actions:
             dscp: < dscp code value >
             traffic_class: < traffic class id >
