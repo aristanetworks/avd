@@ -76,14 +76,6 @@ keys:
             description: |
               Token file path
               e.g. "/tmp/token"
-
-
-
-
-
-
-
-
       cvobscurekeyfile:
         type: bool
         description: |
