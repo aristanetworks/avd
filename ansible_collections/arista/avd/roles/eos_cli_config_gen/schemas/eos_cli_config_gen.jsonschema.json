@@ -2266,6 +2266,176 @@
       },
       "title": "Local Users"
     },
+    "logging": {
+      "type": "object",
+      "properties": {
+        "console": {
+          "type": "string",
+          "description": "\"<severity_level>\" | \"disabled\"\ne.g. console: error\n",
+          "title": "Console"
+        },
+        "monitor": {
+          "type": "string",
+          "description": "\"<severity_level>\" | \"disabled\"\ne.g. monitor: debugging\n",
+          "title": "Monitor"
+        },
+        "buffered": {
+          "type": "object",
+          "properties": {
+            "size": {
+              "type": "integer",
+              "minimum": 10,
+              "title": "Size"
+            },
+            "level": {
+              "type": "string",
+              "description": "\"<severity_level>\" | \"disabled\"\ne.g. monitor: warnings\n",
+              "title": "Level"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Buffered"
+        },
+        "trap": {
+          "type": "string",
+          "description": "\"<severity_level>\" | \"disabled\"\ne.g. trap: disabled\n",
+          "title": "Trap"
+        },
+        "synchronous": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "string",
+              "description": "\"<severity_level>\" | \"disabled\"\n",
+              "default": "critical",
+              "title": "Level"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Synchronous"
+        },
+        "format": {
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "description": "< high-resolution | traditional >\n",
+              "title": "Timestamp"
+            },
+            "hostname": {
+              "type": "string",
+              "description": "< fqdn | ipv4 >\n",
+              "title": "Hostname"
+            },
+            "sequence_numbers": {
+              "type": "boolean",
+              "title": "Sequence Numbers"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Format"
+        },
+        "facility": {
+          "type": "string",
+          "title": "Facility"
+        },
+        "source_interface": {
+          "type": "string",
+          "title": "Source Interface Name"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VRF Name"
+              },
+              "source_interface": {
+                "type": "string",
+                "title": "Source Interface Name"
+              },
+              "hosts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Syslog Server Name"
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "enum": [
+                        "tcp",
+                        "udp"
+                      ],
+                      "default": "udp",
+                      "title": "Protocol"
+                    },
+                    "ports": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "title": "Ports"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": false
+                },
+                "title": "Hosts"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Vrfs"
+        },
+        "policy": {
+          "type": "object",
+          "properties": {
+            "match": {
+              "type": "object",
+              "properties": {
+                "match_lists": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "Match list"
+                      },
+                      "action": {
+                        "type": "string",
+                        "title": "Action"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "title": "Match Lists"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Match"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Policy"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Logging"
+    },
     "mac_access_lists": {
       "type": "array",
       "items": {

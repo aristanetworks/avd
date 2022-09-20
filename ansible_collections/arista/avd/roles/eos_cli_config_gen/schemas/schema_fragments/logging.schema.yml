@@ -1,0 +1,119 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  logging:
+    type: dict
+    keys:
+      console:
+        type: str
+        description: |
+          "<severity_level>" | "disabled"
+          e.g. console: error
+      monitor:
+        type: str
+        description: |
+          "<severity_level>" | "disabled"
+          e.g. monitor: debugging
+      buffered:
+        type: dict
+        keys:
+          size:
+            type: int
+            convert_types:
+            - str
+            min: 10
+          level:
+            type: str
+            description: |
+              "<severity_level>" | "disabled"
+              e.g. monitor: warnings
+      trap:
+        type: str
+        description: |
+          "<severity_level>" | "disabled"
+          e.g. trap: disabled
+      synchronous:
+        type: dict
+        keys:
+          level:
+            type: str
+            description: |
+              "<severity_level>" | "disabled"
+            default: critical
+      format:
+        type: dict
+        keys:
+          timestamp:
+            type: str
+            description: |
+              < high-resolution | traditional >
+          hostname:
+            type: str
+            description: |
+              < fqdn | ipv4 >
+          sequence_numbers:
+            type: bool
+      facility:
+        type: str
+      source_interface:
+        type: str
+        display_name: Source Interface Name
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: VRF Name
+            source_interface:
+              type: str
+              display_name: Source Interface Name
+            hosts:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    required: true
+                    display_name: Syslog Server Name
+                  protocol:
+                    type: str
+                    valid_values: ["tcp", "udp"]
+                    default: udp
+                  ports:
+                    type: list
+                    items:
+                      type: int
+                      convert_types:
+                      - str
+      policy:
+        type: dict
+        keys:
+          match:
+            type: dict
+            keys:
+              match_lists:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      display_name: Match list
+                    action:
+                      type: str
