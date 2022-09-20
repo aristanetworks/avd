@@ -1,5 +1,5 @@
 {# eos - VRFs #}
-{% for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for vrf in vrfs | arista.avd.natural_sort('name') %}
 {%     if vrf.name != 'default' %}
 !
 vrf instance {{ vrf.name }}
