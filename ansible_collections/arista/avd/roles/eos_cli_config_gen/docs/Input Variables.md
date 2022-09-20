@@ -205,7 +205,11 @@ Address of the gRPC server on CloudVision
 | [<samp>&nbsp;&nbsp;ipfix</samp>](## "daemon_terminattr.ipfix") | Boolean |  |  |  | Enable IPFIX provider (default true).<br>This flag is enabled by default and does not have to be added to the daemon configuration.<br> |
 | [<samp>&nbsp;&nbsp;ipfixaddr</samp>](## "daemon_terminattr.ipfixaddr") | String |  |  |  | ECO IPFIX Collector address to listen on to receive IPFIX packets (default "127.0.0.1:4739").<br>This flag is enabled by default and does not have to be added to the daemon configuration<br> |
 | [<samp>&nbsp;&nbsp;sflow</samp>](## "daemon_terminattr.sflow") | Boolean |  |  |  | Enable sFlow provider (default true).<br>This flag is enabled by default and does not have to be added to the daemon configuration<br> |
-| [<samp>&nbsp;&nbsp;sflowaddr</samp>](## "daemon_terminattr.sflowaddr") | String |  |  |  | ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343").<br>This flag is enabled by default and does not have to be added to the daemon configuration. |
+| [<samp>&nbsp;&nbsp;sflowaddr</samp>](## "daemon_terminattr.sflowaddr") | String |  |  |  | ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343").<br>This flag is enabled by default and does not have to be added to the daemon configuration.<br> |
+| [<samp>&nbsp;&nbsp;cvcompression</samp>](## "daemon_terminattr.cvcompression") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;ingestauth_key</samp>](## "daemon_terminattr.ingestauth_key") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;ingestgrpcurl</samp>](## "daemon_terminattr.ingestgrpcurl") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;ingestvrf</samp>](## "daemon_terminattr.ingestvrf") | String |  |  |  |  |
 
 ### YAML
 
@@ -245,6 +249,10 @@ daemon_terminattr:
   ipfixaddr: <str>
   sflow: <bool>
   sflowaddr: <str>
+  cvcompression: <str>
+  ingestauth_key: <str>
+  ingestgrpcurl: <str>
+  ingestvrf: <str>
 ```
 
 ## Custom Daemons
