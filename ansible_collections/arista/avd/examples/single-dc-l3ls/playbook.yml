@@ -1,4 +1,5 @@
 ---
+# Please note, comments below are intended for site documentation only
 - name: Run AVD # (1)!
   hosts: FABRIC
   gather_facts: false

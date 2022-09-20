@@ -297,7 +297,7 @@ ansible_httpapi_use_ssl: true # (5)!
 ansible_httpapi_validate_certs: false # (6)!
 ```
 
-1. The Ansible host must use eAPI via HTTPS
+1. The Ansible host must use eAPI
 2. Network OS which in this case is Arista EOS
 3. The username/password combo
 4. How to escalate privileges to get write access
