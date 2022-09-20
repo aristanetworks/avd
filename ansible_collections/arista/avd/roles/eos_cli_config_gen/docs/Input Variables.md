@@ -208,7 +208,10 @@ Address of the gRPC server on CloudVision
 | [<samp>&nbsp;&nbsp;sflowaddr</samp>](## "daemon_terminattr.sflowaddr") | String |  |  |  | ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343").<br>This flag is enabled by default and does not have to be added to the daemon configuration.<br> |
 | [<samp>&nbsp;&nbsp;cvcompression</samp>](## "daemon_terminattr.cvcompression") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;ingestauth_key</samp>](## "daemon_terminattr.ingestauth_key") | String |  |  |  |  |
-| [<samp>&nbsp;&nbsp;ingestgrpcurl</samp>](## "daemon_terminattr.ingestgrpcurl") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;ingestgrpcurl</samp>](## "daemon_terminattr.ingestgrpcurl") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ips</samp>](## "daemon_terminattr.ingestgrpcurl.ips") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "daemon_terminattr.ingestgrpcurl.ips.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "daemon_terminattr.ingestgrpcurl.port") | Integer |  |  |  |  |
 | [<samp>&nbsp;&nbsp;ingestvrf</samp>](## "daemon_terminattr.ingestvrf") | String |  |  |  |  |
 
 ### YAML
@@ -251,7 +254,10 @@ daemon_terminattr:
   sflowaddr: <str>
   cvcompression: <str>
   ingestauth_key: <str>
-  ingestgrpcurl: <str>
+  ingestgrpcurl:
+    ips:
+      - <str>
+    port: <int>
   ingestvrf: <str>
 ```
 

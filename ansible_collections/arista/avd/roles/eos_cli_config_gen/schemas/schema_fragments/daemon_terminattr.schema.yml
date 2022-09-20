@@ -160,6 +160,15 @@ keys:
       ingestauth_key:
         type: str
       ingestgrpcurl:
-        type: str
+        type: dict
+        keys:
+          ips:
+            type: list
+            items:
+              type: str
+          port:
+            type: int
+            convert_types:
+            - str
       ingestvrf:
         type: str
