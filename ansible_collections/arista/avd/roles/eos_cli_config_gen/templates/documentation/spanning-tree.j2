@@ -16,7 +16,7 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 
 | Instance(s) | Priority |
 | -------- | -------- |
-{%         for mst_instance in spanning_tree.mst_instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort('id') %}
 | {{ mst_instance.id }} | {{ mst_instance.priority | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
@@ -33,7 +33,7 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 | Revision | {{ spanning_tree.mst.configuration.revision }} |
 {%         endif %}
 {%         if spanning_tree.mst.configuration.instances is arista.avd.defined %}
-{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort('id') %}
 | Instance {{ instance.id }} | VLAN(s) {{ instance.vlans | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
@@ -45,7 +45,7 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 | Instance(s) | Priority |
 | -------- | -------- |
 {%         if spanning_tree.rapid_pvst_instances is arista.avd.defined  %}
-{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort('id') %}
 | {{ vlan_id.id }} | {{ vlan_id.priority | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
