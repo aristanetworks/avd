@@ -318,9 +318,7 @@ router_ospf:
       - Vlan511
       - Vlan512
       max_lsa: 15000
-      redistribute:
-        bgp:
-          enabled: true
+      redistribute: {}
 vxlan_interface:
   Vxlan1:
     description: SVI_PROFILE_NODE_2_VTEP

@@ -981,9 +981,7 @@ router_ospf:
       router_id: 192.168.255.11
       no_passive_interfaces:
       - Ethernet24
-      redistribute:
-        bgp:
-          enabled: true
+      redistribute: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP
