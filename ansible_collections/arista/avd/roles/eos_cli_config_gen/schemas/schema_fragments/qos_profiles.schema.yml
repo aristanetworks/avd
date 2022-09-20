@@ -56,9 +56,9 @@ keys:
             keys:
               id:
                 type: int
-                required: true
                 convert_types:
                   - str
+                required: true
                 display_name: Tx-Queue ID
               bandwidth_percent:
                 type: int
@@ -89,9 +89,9 @@ keys:
             keys:
               id:
                 type: int
-                required: true
                 convert_types:
                   - str
+                required: true
                 display_name: UC-Tx-Queue ID
               bandwidth_percent:
                 type: int
@@ -122,9 +122,9 @@ keys:
             keys:
               id:
                 type: int
-                required: true
                 convert_types:
                   - str
+                required: true
                 display_name: MC-Tx-Queue ID
               bandwidth_percent:
                 type: int
