@@ -1642,13 +1642,13 @@ sflow:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;revision</samp>](## "spanning_tree.mst.configuration.revision") | Integer |  |  |  | 0-65535 |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instances</samp>](## "spanning_tree.mst.configuration.instances") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "spanning_tree.mst.configuration.instances.[].id") | Integer |  |  |  | Instance ID |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "spanning_tree.mst.configuration.instances.[].vlans") | String |  |  |  | Vlan ID<br>"< vlan_id >, < vlan_id >-< vlan_id >"<br>Example: 15,16,17,18<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "spanning_tree.mst.configuration.instances.[].vlans") | String |  |  |  | "< vlan_id >, < vlan_id >-< vlan_id >"<br>Example: 15,16,17,18<br> |
 | [<samp>&nbsp;&nbsp;mst_instances</samp>](## "spanning_tree.mst_instances") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "spanning_tree.mst_instances.[].id") | String |  |  |  | Instance ID |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "spanning_tree.mst_instances.[].priority") | Integer |  |  |  |  |
-| [<samp>&nbsp;&nbsp;no_spanning_tree_vlan</samp>](## "spanning_tree.no_spanning_tree_vlan") | String |  |  |  | Vlan ID<br>"< vlan_id >, < vlan_id >-< vlan_id >"<br>Example: 105,202,505-506<br> |
+| [<samp>&nbsp;&nbsp;no_spanning_tree_vlan</samp>](## "spanning_tree.no_spanning_tree_vlan") | String |  |  |  | "< vlan_id >, < vlan_id >-< vlan_id >"<br>Example: 105,202,505-506<br> |
 | [<samp>&nbsp;&nbsp;rapid_pvst_instances</samp>](## "spanning_tree.rapid_pvst_instances") | List, items: Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "spanning_tree.rapid_pvst_instances.[].id") | String |  |  |  | Vlan ID |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "spanning_tree.rapid_pvst_instances.[].id") | String |  |  |  | "< vlan_id >, < vlan_id >-< vlan_id >"<br>Example: 105,202,505-506<br> |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "spanning_tree.rapid_pvst_instances.[].priority") | Integer |  |  |  |  |
 
 ### YAML

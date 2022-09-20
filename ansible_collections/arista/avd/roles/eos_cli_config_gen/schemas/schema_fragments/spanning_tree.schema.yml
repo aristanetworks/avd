@@ -64,7 +64,6 @@ keys:
                       type: str
                       convert_types:
                         - int
-                      display_name: Vlan ID
                       description: |
                         "< vlan_id >, < vlan_id >-< vlan_id >"
                         Example: 15,16,17,18
@@ -89,7 +88,6 @@ keys:
         type: str
         convert_types:
           - int
-        display_name: Vlan ID
         description: |
           "< vlan_id >, < vlan_id >-< vlan_id >"
           Example: 105,202,505-506
@@ -105,7 +103,9 @@ keys:
               type: str
               convert_types:
                 - int
-              display_name: Vlan ID
+              description: |
+                "< vlan_id >, < vlan_id >-< vlan_id >"
+                Example: 105,202,505-506
             priority:
               type: int
               convert_types:
