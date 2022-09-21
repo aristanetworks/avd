@@ -89,6 +89,7 @@ keys:
               required: true
               display_name: VRF Name
             enable:
+              description: Enable SSH in VRF
               type: bool
       log_level:
         type: str
