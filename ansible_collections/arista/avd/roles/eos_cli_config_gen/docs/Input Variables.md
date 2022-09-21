@@ -1828,6 +1828,64 @@ logging:
           action: <str>
 ```
 
+## Loopback Interfaces
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>loopback_interfaces</samp>](## "loopback_interfaces") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "loopback_interfaces.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "loopback_interfaces.[].description") | String |  |  |  | description |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "loopback_interfaces.[].shutdown") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "loopback_interfaces.[].vrf") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "loopback_interfaces.[].ip_address") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "loopback_interfaces.[].ip_address_secondaries") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "loopback_interfaces.[].ip_address_secondaries.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "loopback_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "loopback_interfaces.[].ipv6_address") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "loopback_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_area</samp>](## "loopback_interfaces.[].ospf_area") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "loopback_interfaces.[].mpls") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldp</samp>](## "loopback_interfaces.[].mpls.ldp") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "loopback_interfaces.[].mpls.ldp.interface") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "loopback_interfaces.[].eos_cli") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_enable</samp>](## "loopback_interfaces.[].isis_enable") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_passive</samp>](## "loopback_interfaces.[].isis_passive") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "loopback_interfaces.[].isis_metric") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "loopback_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_segment</samp>](## "loopback_interfaces.[].node_segment") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_index</samp>](## "loopback_interfaces.[].node_segment.ipv4_index") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_index</samp>](## "loopback_interfaces.[].node_segment.ipv6_index") | Integer |  |  |  |  |
+
+### YAML
+
+```yaml
+loopback_interfaces:
+  - name: <str>
+    description: <str>
+    shutdown: <bool>
+    vrf: <str>
+    ip_address: <str>
+    ip_address_secondaries:
+      - <str>
+    ipv6_enable: <bool>
+    ipv6_address: <str>
+    ip_proxy_arp: <bool>
+    ospf_area: <str>
+    mpls:
+      ldp:
+        interface: <bool>
+    eos_cli: <str>
+    isis_enable: <str>
+    isis_passive: <bool>
+    isis_metric: <int>
+    isis_network_point_to_point: <bool>
+    node_segment:
+      ipv4_index: <int>
+      ipv6_index: <int>
+```
+
 ## MAC Access Lists
 
 ### Variables

@@ -2994,6 +2994,117 @@
       "additionalProperties": false,
       "title": "Logging"
     },
+    "loopback_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Loopback Interface"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "title": "Description"
+          },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
+          "vrf": {
+            "type": "string",
+            "title": "VRF"
+          },
+          "ip_address": {
+            "type": "string",
+            "title": "IPv4 Address"
+          },
+          "ip_address_secondaries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "IPv4 Address"
+            },
+            "title": "IP Address Secondaries"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "title": "IPv6 Enable"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "title": "IPv6 Address"
+          },
+          "ip_proxy_arp": {
+            "type": "boolean",
+            "title": "IP Proxy ARP"
+          },
+          "ospf_area": {
+            "type": "string",
+            "title": "OSPF Area"
+          },
+          "mpls": {
+            "type": "object",
+            "properties": {
+              "ldp": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "boolean",
+                    "title": "Interface"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "LDP"
+              }
+            },
+            "additionalProperties": false,
+            "title": "MPLS"
+          },
+          "eos_cli": {
+            "type": "string",
+            "title": "Multiline eos cli"
+          },
+          "isis_enable": {
+            "type": "string",
+            "title": "ISIS Instance"
+          },
+          "isis_passive": {
+            "type": "boolean",
+            "title": "ISIS Passive"
+          },
+          "isis_metric": {
+            "type": "integer",
+            "title": "ISIS Metric"
+          },
+          "isis_network_point_to_point": {
+            "type": "boolean",
+            "title": "ISIS Network Point To Point"
+          },
+          "node_segment": {
+            "type": "object",
+            "properties": {
+              "ipv4_index": {
+                "type": "integer",
+                "title": "IPv4 Index"
+              },
+              "ipv6_index": {
+                "type": "integer",
+                "title": "IPv6 Index"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Node Segment"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Loopback Interfaces"
+    },
     "mac_access_lists": {
       "type": "array",
       "items": {
