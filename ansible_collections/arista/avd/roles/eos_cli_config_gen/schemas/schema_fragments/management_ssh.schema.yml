@@ -57,6 +57,7 @@ keys:
             items:
               type: str
       enable:
+        description: Enable SSH daemon
         type: bool
       connection:
         type: dict
