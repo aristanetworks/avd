@@ -15,9 +15,7 @@ keys:
             type: str
             required: true
           license_key:
-            type: int
-            convert_types:
-              - str
+            type: str
             required: true
             display_name: License-Number
       fips_restrictions:
