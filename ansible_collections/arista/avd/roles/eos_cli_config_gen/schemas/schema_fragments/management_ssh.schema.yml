@@ -43,6 +43,7 @@ keys:
         items:
           type: str
       key_exchange:
+        description: Cryptographic key exchange methods for SSH to use
         type: list
         items:
           type: str
