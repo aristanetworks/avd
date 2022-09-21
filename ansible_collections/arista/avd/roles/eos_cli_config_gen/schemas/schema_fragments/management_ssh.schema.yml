@@ -75,8 +75,7 @@ keys:
             - str
             min: 1
             max: 20
-            description: |
-              1-20 max sessions from a host
+            description: Maximum number of SSH sessions to device from a single host
       vrfs:
         type: list
         primary_key: name
