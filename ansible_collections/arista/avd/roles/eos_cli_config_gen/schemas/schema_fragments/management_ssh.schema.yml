@@ -68,8 +68,7 @@ keys:
             - str
             min: 1
             max: 100
-            description: |
-              1-100 SSH Connections
+            description: Maximum total number of SSH sessions to device
           per_host:
             type: int
             convert_types:
