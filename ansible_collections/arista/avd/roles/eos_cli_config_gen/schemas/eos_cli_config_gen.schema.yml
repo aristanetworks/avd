@@ -115,6 +115,55 @@ keys:
         enabled:
           type: bool
           default: true
+  event_handlers:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: Event Handlers
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          display_name: Event Handler Name
+        action_type:
+          type: str
+          display_name: Action Type
+          description: 'Type of action
+
+            '
+          valid_values:
+          - bash
+          - increment
+          - log
+        action:
+          type: str
+          description: 'Command to execute
+
+            '
+        delay:
+          type: int
+          description: 'Event-handler delay in seconds
+
+            '
+        trigger:
+          type: str
+          description: 'Configure event trigger condition.
+
+            '
+          valid_values:
+          - on-logging
+        regex:
+          type: str
+          description: 'Regular expression to use for searching log messages. Required
+            for on-logging trigger
+
+            '
+        asynchronous:
+          type: bool
+          default: false
+          description: Set the action to be non-blocking.
   interface_groups:
     type: list
     display_name: Maintenance Interface Groups

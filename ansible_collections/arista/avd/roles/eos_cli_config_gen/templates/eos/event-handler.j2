@@ -1,6 +1,6 @@
 {# eos - Event handlers #}
 {% if event_handlers is arista.avd.defined %}
-{%     for handler in event_handlers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for handler in event_handlers | arista.avd.natural_sort('name') %}
 !
 event-handler {{ handler.name }}
 {%         if handler.trigger is arista.avd.defined %}
