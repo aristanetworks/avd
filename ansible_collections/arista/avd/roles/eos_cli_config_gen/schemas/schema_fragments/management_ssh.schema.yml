@@ -36,9 +36,7 @@ keys:
         - str
         min: 0
         max: 86400
-        description: |
-          idle timeout in minutes
-
+        description: Idle timeout in minutes
       cipher:
         type: list
         items:
