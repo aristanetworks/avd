@@ -56,6 +56,7 @@ keys:
         type: dict
         keys:
           server:
+            description: SSH host key settings
             type: list
             items:
               type: str
