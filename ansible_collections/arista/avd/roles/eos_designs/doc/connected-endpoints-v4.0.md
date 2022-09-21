@@ -210,6 +210,10 @@ port_profiles:
           # Port-Channel Description.
           description: < port_channel_description >
 
+          # Port-Channel ID | Optional
+          # If no channel_id is specified, an id is generated from the first switch port in the port channel
+          channel_id : < port_channel_id >
+
           # Port-Channel administrative state | Optional - default is true
           # setting to false will set port to 'shutdown' in intended configuration
           enabled: < true | false >

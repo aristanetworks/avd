@@ -34,7 +34,7 @@ ethernet_interfaces:
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%         endif %}
-{%         if switch.mpls_lsr is arista.avd.defined(true) and switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
+{%         if switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
     isis_enable: {{ switch.isis_instance_name }}
     isis_metric: {{ p2p_interface.isis_metric }}
 {%             if p2p_interface.isis_network_type == "point-to-point" %}
