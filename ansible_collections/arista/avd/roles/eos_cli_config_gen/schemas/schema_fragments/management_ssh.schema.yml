@@ -38,6 +38,7 @@ keys:
         max: 86400
         description: Idle timeout in minutes
       cipher:
+        description: Cryptographic ciphers for SSH to use
         type: list
         items:
           type: str
