@@ -93,5 +93,4 @@ keys:
               type: bool
       log_level:
         type: str
-        description: |
-          SSH daemon log level
+        description: SSH daemon log level
