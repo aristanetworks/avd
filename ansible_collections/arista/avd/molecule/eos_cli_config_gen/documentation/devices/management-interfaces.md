@@ -47,6 +47,7 @@ interface Management1
 !
 interface Vlan123
    description inband_management
+   mtu 1500
    ip address 10.73.0.123/24
 ```
 

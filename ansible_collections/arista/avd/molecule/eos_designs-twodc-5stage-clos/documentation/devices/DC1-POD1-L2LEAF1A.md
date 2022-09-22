@@ -60,6 +60,7 @@
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
+   mtu 1500
    ip address 172.21.110.4/24
 ```
 
