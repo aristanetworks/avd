@@ -30,12 +30,8 @@ default_templates:
           strip_empty_keys: false
 
     ip_addressing:
-      router_id: 'ip_addressing/router-id.j2'
-      ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
-      mlag_ip_primary: 'ip_addressing/mlag-ip-primary.j2'
-      mlag_ip_secondary: 'ip_addressing/mlag-ip-secondary.j2'
-      mlag_l3_ip_primary: 'ip_addressing/mlag-l3-ip-primary.j2'
-      mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
+      python_module: 'ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing'
+      python_class_name: 'AvdIpAddressing'
       mlag_ibgp_peering_ip_primary: 'ip_addressing/mlag-ibgp-peering-ip-primary.j2'
       mlag_ibgp_peering_ip_secondary: 'ip_addressing/mlag-ibgp-peering-ip-secondary.j2'
       p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
@@ -44,6 +40,8 @@ default_templates:
       vtep_ip: 'ip_addressing/vtep-ip.j2'
 
     interface_descriptions:
+      python_module: 'ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions'
+      python_class_name: 'AvdInterfaceDescriptions'
       underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
       underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
       mlag_ethernet_interfaces: 'interface_descriptions/mlag/ethernet-interfaces.j2'
@@ -77,11 +75,11 @@ default_templates:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
     ip_addressing:
-      router_id: 'ip_addressing/router-id.j2'
-      p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
-      ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
+      python_module: 'ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing'
+      python_class_name: 'AvdIpAddressing'
     interface_descriptions:
+      python_module: 'ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions'
+      python_class_name: 'AvdInterfaceDescriptions'
       underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
       underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
       connected_endpoints_ethernet_interfaces: 'interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
@@ -116,16 +114,12 @@ default_templates:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
     ip_addressing:
-      router_id: 'ip_addressing/router-id.j2'
-      ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
-      mlag_ip_primary: 'ip_addressing/mlag-ip-primary.j2'
-      mlag_ip_secondary: 'ip_addressing/mlag-ip-secondary.j2'
-      mlag_l3_ip_primary: 'ip_addressing/mlag-l3-ip-primary.j2'
-      mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
-      p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
+      python_module: 'ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing'
+      python_class_name: 'AvdIpAddressing'
 
     interface_descriptions:
+      python_module: 'ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions'
+      python_class_name: 'AvdInterfaceDescriptions'
       underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
       underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
       mlag_ethernet_interfaces: 'interface_descriptions/mlag/ethernet-interfaces.j2'
