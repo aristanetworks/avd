@@ -60,7 +60,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         self,
         link_peer: str,
         link_peer_channel_group_id: int,
-        link_channel_description: str | None,
+        link_channel_description: str,
     ) -> str:
         if template_path := get(self._hostvars, "switch.interface_descriptions.underlay_port_channel_interfaces"):
             template_vars = ChainMap({}, self._hostvars)
