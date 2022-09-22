@@ -25,8 +25,8 @@
     schema_files: "{{ query('ansible.builtin.fileglob', role_schema_fragments_glob) | arista.avd.natural_sort }}"
 
 - name: Convert AVD Schema to JSON Schema
-  tags: [never, jsonschema]
+  tags: [eos_cli_config_gen]
   run_once: true
   ansible.builtin.copy:
     content: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='jsonschema') }}"
-    dest: "{{ role_schema_dir ~ '/' ~ role_name ~ '.jsonschema.json' }}"
+    dest: "{{ role_schema_json_schema_file }}"
