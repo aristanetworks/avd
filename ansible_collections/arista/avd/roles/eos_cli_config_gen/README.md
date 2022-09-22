@@ -1771,6 +1771,7 @@ management_interfaces:
   < Management_interface_1 >:
     description: < description >
     shutdown: < true | false >
+    mtu: < mtu >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
