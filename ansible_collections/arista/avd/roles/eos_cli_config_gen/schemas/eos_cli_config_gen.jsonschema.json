@@ -9220,6 +9220,399 @@
       "additionalProperties": false,
       "title": "Sflow"
     },
+    "snmp_server": {
+      "title": "SNMP Server",
+      "type": "object",
+      "properties": {
+        "engine_ids": {
+          "title": "Engine IDs",
+          "type": "object",
+          "properties": {
+            "local": {
+              "type": "string",
+              "description": "Engine id in hexadecimal\n",
+              "title": "Local"
+            },
+            "remotes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "title": "ID",
+                    "type": "string",
+                    "description": "Engine ID In Hexadecimal\n"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Hostname or IP Of Remote Engine\n",
+                    "title": "Address"
+                  },
+                  "udp_port": {
+                    "title": "UDP Port",
+                    "type": "integer"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Remotes"
+            }
+          },
+          "additionalProperties": false
+        },
+        "contact": {
+          "type": "string",
+          "title": "Contact Name"
+        },
+        "location": {
+          "type": "string",
+          "title": "Location"
+        },
+        "communities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Community Name"
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "ro",
+                  "rw"
+                ],
+                "title": "Access"
+              },
+              "access_list_ipv4": {
+                "title": "Access List IPv4",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "ACL IPv4 Name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "access_list_ipv6": {
+                "title": "Access List IPv6",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "ACL IPv6 Name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "view": {
+                "type": "string",
+                "title": "View Name"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Communities"
+        },
+        "ipv4_acls": {
+          "title": "IPv4 ACLs",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "IPv4 Access List"
+              },
+              "vrf": {
+                "title": "VRF",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "ipv6_acls": {
+          "title": "IPv6 ACLs",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "IPv4 Access List"
+              },
+              "vrf": {
+                "title": "VRF",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "local_interfaces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Interface Name"
+              },
+              "vrf": {
+                "title": "VRF",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Local Interfaces"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "View Name"
+              },
+              "MIB_family_name": {
+                "title": "MIB Family Name",
+                "type": "string"
+              },
+              "included": {
+                "type": "boolean",
+                "title": "Included"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Views"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Group name"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "authentication": {
+                "type": "string",
+                "enum": [
+                  "auth",
+                  "noauth",
+                  "priv"
+                ],
+                "title": "Authentication"
+              },
+              "read": {
+                "type": "string",
+                "title": "Read View"
+              },
+              "write": {
+                "type": "string",
+                "title": "Write View"
+              },
+              "notify": {
+                "type": "string",
+                "title": "Notify View"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Groups"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Username"
+              },
+              "group": {
+                "type": "string",
+                "title": "Group Name"
+              },
+              "remote_address": {
+                "type": "string",
+                "description": "Hostname or ip of remote engine. The remote_address and udp_port are used for remote users.\n",
+                "title": "Remote Address"
+              },
+              "udp_port": {
+                "title": "UDP Port",
+                "type": "integer",
+                "description": "udp_port will not be used if no remote_address is configured.\n"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "localized": {
+                "type": "string",
+                "description": "Engine ID in hexadecimal\n",
+                "title": "Localized"
+              },
+              "auth": {
+                "type": "string",
+                "description": "Hash Algorithm\n",
+                "title": "Auth"
+              },
+              "auth_passphrase": {
+                "type": "string",
+                "description": "hashed_auth_passphrase if localized is used else cleartext auth_passphrase.\n",
+                "title": "Auth Passphrase"
+              },
+              "priv": {
+                "type": "string",
+                "description": "Encryption Algorithm\n",
+                "title": "Priv"
+              },
+              "priv_passphrase": {
+                "type": "string",
+                "description": "hashed_priv_passphrase if localized is used else cleartext priv_passphrase.\n",
+                "title": "Priv Passphrase"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Users"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF Name"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "1",
+                  "2c",
+                  "3"
+                ],
+                "title": "Version"
+              },
+              "community": {
+                "type": "string",
+                "title": "Community Name"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "title": "Username"
+                    },
+                    "authentication_level": {
+                      "type": "string",
+                      "enum": [
+                        "auth",
+                        "noauth",
+                        "priv"
+                      ],
+                      "title": "Authentication Level"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Users"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Hosts"
+        },
+        "traps": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable or disable all snmp-traps\n",
+              "title": "Enable"
+            },
+            "snmp_traps": {
+              "title": "SNMP Traps",
+              "type": "array",
+              "description": "Enable or disable specific snmp-traps and their sub_traps\n",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "snmp_trap_type | snmp_trap_type snmp_sub_trap_type\n",
+                    "title": "Name"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false,
+          "title": "Traps"
+        },
+        "vrfs": {
+          "title": "VRFs",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VRF Name"
+              },
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "spanning_tree": {
       "type": "object",
       "properties": {

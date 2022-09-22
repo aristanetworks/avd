@@ -6208,6 +6208,294 @@ keys:
                 enabled:
                   type: bool
                   default: true
+  snmp_server:
+    display_name: SNMP Server
+    type: dict
+    keys:
+      engine_ids:
+        display_name: Engine IDs
+        type: dict
+        keys:
+          local:
+            type: str
+            convert_types:
+            - int
+            description: 'Engine id in hexadecimal
+
+              '
+          remotes:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  display_name: ID
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Engine ID In Hexadecimal
+
+                    '
+                address:
+                  type: str
+                  description: 'Hostname or IP Of Remote Engine
+
+                    '
+                udp_port:
+                  display_name: UDP Port
+                  type: int
+                  convert_types:
+                  - str
+      contact:
+        type: str
+        display_name: Contact Name
+      location:
+        type: str
+      communities:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Community Name
+            access:
+              type: str
+              valid_values:
+              - ro
+              - rw
+            access_list_ipv4:
+              display_name: Access List IPv4
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: ACL IPv4 Name
+            access_list_ipv6:
+              display_name: Access List IPv6
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: ACL IPv6 Name
+            view:
+              type: str
+              display_name: View Name
+      ipv4_acls:
+        display_name: IPv4 ACLs
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: IPv4 Access List
+            vrf:
+              display_name: VRF
+              type: str
+      ipv6_acls:
+        display_name: IPv6 ACLs
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: IPv4 Access List
+            vrf:
+              display_name: VRF
+              type: str
+      local_interfaces:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Interface Name
+            vrf:
+              display_name: VRF
+              type: str
+      views:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: View Name
+            MIB_family_name:
+              display_name: MIB Family Name
+              type: str
+            included:
+              type: bool
+      groups:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Group name
+            version:
+              type: str
+              valid_values:
+              - v1
+              - v2c
+              - v3
+            authentication:
+              type: str
+              valid_values:
+              - auth
+              - noauth
+              - priv
+            read:
+              type: str
+              display_name: Read View
+            write:
+              type: str
+              display_name: Write View
+            notify:
+              type: str
+              display_name: Notify View
+      users:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Username
+            group:
+              type: str
+              display_name: Group Name
+            remote_address:
+              type: str
+              description: 'Hostname or ip of remote engine. The remote_address and
+                udp_port are used for remote users.
+
+                '
+            udp_port:
+              display_name: UDP Port
+              type: int
+              convert_types:
+              - str
+              description: 'udp_port will not be used if no remote_address is configured.
+
+                '
+            version:
+              type: str
+              valid_values:
+              - v1
+              - v2c
+              - v3
+            localized:
+              type: str
+              convert_types:
+              - int
+              description: 'Engine ID in hexadecimal
+
+                '
+            auth:
+              type: str
+              description: 'Hash Algorithm
+
+                '
+            auth_passphrase:
+              type: str
+              description: 'hashed_auth_passphrase if localized is used else cleartext
+                auth_passphrase.
+
+                '
+            priv:
+              type: str
+              description: 'Encryption Algorithm
+
+                '
+            priv_passphrase:
+              type: str
+              description: 'hashed_priv_passphrase if localized is used else cleartext
+                priv_passphrase.
+
+                '
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+            vrf:
+              type: str
+              display_name: VRF Name
+            version:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '1'
+              - 2c
+              - '3'
+            community:
+              type: str
+              display_name: Community Name
+            users:
+              type: list
+              items:
+                type: dict
+                keys:
+                  username:
+                    type: str
+                  authentication_level:
+                    type: str
+                    valid_values:
+                    - auth
+                    - noauth
+                    - priv
+      traps:
+        type: dict
+        keys:
+          enable:
+            type: bool
+            default: false
+            description: 'Enable or disable all snmp-traps
+
+              '
+          snmp_traps:
+            display_name: SNMP Traps
+            type: list
+            description: 'Enable or disable specific snmp-traps and their sub_traps
+
+              '
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: 'snmp_trap_type | snmp_trap_type snmp_sub_trap_type
+
+                    '
+                enabled:
+                  type: bool
+                  default: true
+      vrfs:
+        display_name: VRFs
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VRF Name
+            enable:
+              type: bool
   spanning_tree:
     type: dict
     keys:
