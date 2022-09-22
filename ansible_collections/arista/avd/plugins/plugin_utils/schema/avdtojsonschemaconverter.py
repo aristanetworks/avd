@@ -73,6 +73,11 @@ class AvdToJsonSchemaConverter:
         required = []
         for key in keys:
             output['properties'][key] = self.convert_schema(keys[key])
+
+            # Add an auto-generated title in case one is not set
+            if 'title' not in output['properties'][key]:
+                output['properties'][key]['title'] = str(key).replace('_', ' ').title()
+
             if keys[key].get('required') is True:
                 required.append(key)
 

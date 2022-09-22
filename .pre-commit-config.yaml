@@ -7,7 +7,7 @@ repos:
       - id: trailing-whitespace
         exclude: ansible_collections/arista/avd/molecule
       - id: end-of-file-fixer
-        exclude_types: [svg]
+        exclude_types: [svg, json]
         exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
         exclude: ansible_collections/arista/avd/molecule
