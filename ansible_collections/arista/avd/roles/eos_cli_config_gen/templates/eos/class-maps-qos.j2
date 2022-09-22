@@ -1,5 +1,5 @@
 {# QOS class-map #}
-{% for class_map in class_maps.qos | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for class_map in class_maps.qos | arista.avd.natural_sort('name') %}
 !
 class-map type qos match-any {{ class_map.name }}
 {%     if class_map.vlan is arista.avd.defined %}
@@ -13,7 +13,7 @@ class-map type qos match-any {{ class_map.name }}
 {%     endif %}
 {% endfor %}
 {# PBR class-map #}
-{% for class_map in class_maps.pbr | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for class_map in class_maps.pbr | arista.avd.natural_sort('name') %}
 !
 class-map type pbr match-any {{ class_map.name }}
 {%     if class_map.ip.access_group is arista.avd.defined %}
