@@ -16,6 +16,7 @@ class AvdToJsonSchemaConverter:
     of the way JSON Schema is organized compared to AVD Schema.
     - "required"
     - "primary_key"
+    - "allow_other_keys"
 
     Some features of AVD Schema are not supported by JSON Schema:
     - Enforcing uniqueness of "primary_key" in list of dicts
@@ -41,7 +42,6 @@ class AvdToJsonSchemaConverter:
             "items": self.convert_items,
             "keys": self.convert_keys,
             # "dynamic_keys": self.convert_dynamic_keys,
-            "allow_other_keys": self.convert_allow_other_keys,
         }
 
     def convert_schema(self, schema: dict = None) -> dict:
@@ -83,6 +83,9 @@ class AvdToJsonSchemaConverter:
 
         if required:
             output['required'] = required
+
+        output['additionalProperties'] = parent_schema.get('allow_other_keys', False)
+
         return output
 
     def convert_max(self, max: int, parent_schema: dict) -> dict:
@@ -143,9 +146,6 @@ class AvdToJsonSchemaConverter:
 
     def convert_description(self, description: str, parent_schema: dict) -> dict:
         return {'description': description}
-
-    def convert_allow_other_keys(self, allow_other_keys: bool, parent_schema: dict) -> dict:
-        return {'additionalProperties': allow_other_keys}
 
     def convert_ref(self, ref: str, parent_schema: dict) -> dict:
         return {'$ref': ref}
