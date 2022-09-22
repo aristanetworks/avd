@@ -4,6 +4,7 @@ __metaclass__ = type
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import AvdToDocumentationSchemaConverter
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
 
 
 def convert_schema(schema: dict, type: str):
@@ -14,12 +15,12 @@ def convert_schema(schema: dict, type: str):
     ----------
     schema : dict
         Input AVD Schema
-    type : str, ["documentation"]
+    type : str, ["documentation", "jsonschema"]
         Type of schema to convert to
 
     Returns
     -------
-    dict
+    dict |
         Schema of the requested type
 
     Raises
@@ -30,6 +31,8 @@ def convert_schema(schema: dict, type: str):
     avdschema = AvdSchema(schema)
     if type == "documentation":
         schemaconverter = AvdToDocumentationSchemaConverter(avdschema)
+    elif type == "jsonschema":
+        schemaconverter = AvdToJsonSchemaConverter(avdschema)
     else:
         raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation'. Got {type}")
 
