@@ -2328,12 +2328,8 @@ keys:
           keys:
             ipv4_index:
               type: int
-              convert_types:
-              - str
             ipv6_index:
               type: int
-              convert_types:
-              - str
   mac_access_lists:
     type: list
     primary_key: name
