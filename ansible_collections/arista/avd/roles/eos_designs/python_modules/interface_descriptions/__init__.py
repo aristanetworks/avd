@@ -104,14 +104,12 @@ class AvdInterfaceDescriptions(AvdFacts):
             self._hostvars,
             "switch.interface_descriptions.connected_endpoints_ethernet_interfaces",
         ):
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["peer"] = peer
-            template_vars["peer_interface"] = peer_interface
-            return self.template_var(template_path, template_vars)
+            return self._template(
+                template_path, peer=peer, peer_interface=peer_interface
+            )
 
         elements = [peer, peer_interface]
-        elements = [str(element) for element in elements if element is not None]
-        return "_".join(elements)
+        return "_".join([str(element) for element in elements if element is not None])
 
     def connected_endpoints_port_channel_interfaces(self, peer: str = None, adapter_port_channel_description: str = None) -> str:
         if template_path := get(
@@ -125,8 +123,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             )
 
         elements = [peer, adapter_port_channel_description]
-        elements = [str(element) for element in elements if element is not None]
-        return "_".join(elements)
+        return "_".join([str(element) for element in elements if element is not None])
 
     def overlay_loopback_interface(self, overlay_loopback_description) -> str:
         if template_path := get(self._hostvars, "switch.interface_descriptions.overlay_loopback_interface"):
@@ -172,6 +169,8 @@ def load_interfacedescriptions(hostvars, templar) -> AvdInterfaceDescriptions:
 
     # if not isinstance(cls, AvdInterfaceDescriptions):
     if not issubclass(cls, AvdInterfaceDescriptions):
-        raise AristaAvdError(f"{cls} is not an instance of AvdFacts class")
+        raise AristaAvdError(
+            f"{cls} is not a subclass of AvdInterfaceDescriptions class"
+        )
 
     return cls(hostvars=hostvars, templar=templar)

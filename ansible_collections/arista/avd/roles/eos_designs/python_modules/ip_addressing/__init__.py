@@ -322,7 +322,7 @@ def load_ip_addressing(hostvars, templar) -> AvdIpAddressing:
     except ImportError as imp_exc:
         raise AristaAvdError(imp_exc) from imp_exc
 
-    if not issubclass(cls, AvdFacts):
-        raise AristaAvdError(f"{cls} is not an instance of AvdFacts class")
+    if not issubclass(cls, AvdIpAddressing):
+        raise AristaAvdError(f"{cls} is not a subclass of AvdIpAddressing class")
 
     return cls(hostvars=hostvars, templar=templar)
