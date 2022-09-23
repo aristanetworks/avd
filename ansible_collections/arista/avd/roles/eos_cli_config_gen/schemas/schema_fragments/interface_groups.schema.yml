@@ -30,4 +30,3 @@ keys:
           type: list
           items:
             type: str
-            description: Name of Interface Maintenance Profile

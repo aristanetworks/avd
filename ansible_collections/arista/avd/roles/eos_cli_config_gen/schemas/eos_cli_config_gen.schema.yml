@@ -1230,7 +1230,6 @@ keys:
           type: list
           items:
             type: str
-            description: Name of Interface Maintenance Profile
   interface_profiles:
     type: list
     primary_key: name
