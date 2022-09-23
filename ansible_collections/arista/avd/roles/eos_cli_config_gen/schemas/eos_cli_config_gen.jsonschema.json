@@ -7727,6 +7727,162 @@
         ]
       },
       "title": "VRFs"
+    },
+    "vxlan_interface": {
+      "title": "VxLAN Interface",
+      "type": "object",
+      "properties": {
+        "Vxlan1": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "vxlan": {
+              "title": "VxLAN",
+              "type": "object",
+              "properties": {
+                "source_interface": {
+                  "type": "string",
+                  "title": "Source Interface Name"
+                },
+                "mlag_source_interface": {
+                  "title": "MLAG Source Interface",
+                  "type": "string"
+                },
+                "udp_port": {
+                  "title": "UDP Port",
+                  "type": "integer"
+                },
+                "virtual_router_encapsulation_mac_address": {
+                  "title": "Virtual Router Encapsulation MAC Address",
+                  "type": "string",
+                  "description": "mlag-system-id or ethernet_address (H.H.H)\n"
+                },
+                "bfd_vtep_evpn": {
+                  "title": "BFD VTEP EVPN",
+                  "type": "object",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "title": "MIN RX",
+                      "type": "integer"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    },
+                    "prefix_list": {
+                      "type": "string",
+                      "title": "Prefix List"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "qos": {
+                  "title": "QOS",
+                  "type": "object",
+                  "properties": {
+                    "dscp_propagation_encapsulation": {
+                      "title": "DSCP Propagation Encapsulation",
+                      "type": "boolean",
+                      "description": "For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in \"DSCP Trust\" mode.\n!!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.\n"
+                    },
+                    "map_dscp_to_traffic_class_decapsulation": {
+                      "title": "Map DSCP To Traffic Class Decapsulation",
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "vlans": {
+                  "title": "VLANs",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "title": "VLAN ID"
+                      },
+                      "vni": {
+                        "title": "VNI",
+                        "type": "integer"
+                      },
+                      "multicast_group": {
+                        "type": "string",
+                        "title": "IP Multicast Group Address"
+                      },
+                      "flood_vteps": {
+                        "title": "Flood VTEPs",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "vrfs": {
+                  "title": "VRFs",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "VRF Name"
+                      },
+                      "vni": {
+                        "title": "VNI",
+                        "type": "integer"
+                      },
+                      "multicast_group": {
+                        "type": "string",
+                        "title": "IP Multicast Group Address"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "flood_vteps": {
+                  "title": "Flood VTEPs",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "flood_vtep_learned_data_plane": {
+                  "title": "Flood VTEP Learned Data Plane",
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            },
+            "eos_cli": {
+              "type": "string",
+              "title": "Multiline EOS CLI",
+              "description": "EOS CLI rendered directly on the Vxlan interface in the final EOS configuration."
+            }
+          },
+          "additionalProperties": false,
+          "title": "Vxlan1"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": true
