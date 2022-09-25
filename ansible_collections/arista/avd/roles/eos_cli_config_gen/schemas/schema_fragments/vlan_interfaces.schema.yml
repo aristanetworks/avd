@@ -23,11 +23,15 @@ keys:
           type: str
         arp_aging_timeout:
           type: int
-          description: in seconds
+          convert_types:
+          - str
+          description: In seconds
           min: 1
           max: 65535
         arp_cache_dynamic_capacity:
           type: int
+          convert_types:
+          - str
           min: 0
           max: 4294967295
         arp_gratuitous_accept:
@@ -127,12 +131,12 @@ keys:
                 description: IPv6 address/mask
               valid_lifetime:
                 type: str
-                description: in seconds <0-4294967295> or infinite
+                description: In seconds <0-4294967295> or infinite
                 convert_types:
                 - int
               preferred_lifetime:
                 type: str
-                description: in seconds <0-4294967295> or infinite
+                description: In seconds <0-4294967295> or infinite
                 convert_types:
                 - int
               no_autoconfig_flag:
@@ -345,6 +349,8 @@ keys:
                       description: Tracked object name
                     decrement:
                       type: int
+                      convert_types:
+                      - str
                       min: 1
                       max: 254
                       description: Decrement VRRP priority by 1-254
@@ -359,6 +365,8 @@ keys:
                     description: Virtual IPv4 address
                   version:
                     type: int
+                    convert_types:
+                    - str
                     valid_values:
                     - 2
                     - 3

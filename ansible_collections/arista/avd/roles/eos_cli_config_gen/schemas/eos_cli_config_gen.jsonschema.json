@@ -11313,7 +11313,7 @@
           },
           "arp_aging_timeout": {
             "type": "integer",
-            "description": "in seconds",
+            "description": "In seconds",
             "minimum": 1,
             "maximum": 65535,
             "title": "ARP Aging Timeout"
@@ -11469,12 +11469,12 @@
                 },
                 "valid_lifetime": {
                   "type": "string",
-                  "description": "in seconds <0-4294967295> or infinite",
+                  "description": "In seconds <0-4294967295> or infinite",
                   "title": "Valid Lifetime"
                 },
                 "preferred_lifetime": {
                   "type": "string",
-                  "description": "in seconds <0-4294967295> or infinite",
+                  "description": "In seconds <0-4294967295> or infinite",
                   "title": "Preferred Lifetime"
                 },
                 "no_autoconfig_flag": {
