@@ -1172,6 +1172,56 @@ keys:
                     type: int
                     convert_types:
                     - str
+  router_general:
+    type: dict
+    display_name: Router General configuration
+    keys:
+      router_id:
+        type: dict
+        keys:
+          ipv4:
+            type: str
+            display_name: IPv4 Address
+          ipv6:
+            type: str
+            display_name: IPv6 Address
+      nexthop_fast_failover:
+        type: bool
+        default: false
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Destination-VRF
+            leak_routes:
+              type: list
+              items:
+                type: dict
+                keys:
+                  source_vrf:
+                    type: str
+                    display_name: Source-VRF
+                  subscribe_policy:
+                    type: str
+                    display_name: Route-Map Policy
+            routes:
+              type: dict
+              keys:
+                dynamic_prefix_lists:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        display_name: Dynamic Prefix List Name
   sflow:
     type: dict
     display_name: Sflow
