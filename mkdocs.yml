@@ -72,6 +72,7 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - attr_list
   - fontawesome_markdown
   - mdx_truly_sane_lists
   - smarty
@@ -81,12 +82,16 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
-  - pymdownx.smartsymbols
+  - pymdownx.smartsymbols:
+      fractions: false
   - pymdownx.snippets:
       base_path: 'ansible_collections/arista/avd/'
   - pymdownx.superfences:
