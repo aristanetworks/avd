@@ -1,4 +1,4 @@
-{% for bgp_group in bgp_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for bgp_group in bgp_groups | arista.avd.natural_sort('name') %}
 !
 group bgp {{ bgp_group.name }}
 {%     if bgp_group.vrf is arista.avd.defined %}

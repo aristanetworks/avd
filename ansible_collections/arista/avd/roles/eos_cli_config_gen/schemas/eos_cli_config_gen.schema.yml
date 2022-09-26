@@ -55,6 +55,30 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  bgp_groups:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Group Name
+        vrf:
+          type: str
+          display_name: VRF
+        neighbors:
+          type: list
+          items:
+            type: str
+        bgp_maintenance_profiles:
+          type: list
+          items:
+            type: str
+            display_name: Profile Name
   class_maps:
     type: dict
     display_name: QOS Class-maps
