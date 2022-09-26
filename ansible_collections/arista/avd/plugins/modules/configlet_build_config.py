@@ -16,7 +16,8 @@
 # limitations under the License.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 DOCUMENTATION = r'''
@@ -58,10 +59,12 @@ EXAMPLES = r'''
     configlet_extension: 'cfg'
 '''
 
-from ansible.module_utils.basic import AnsibleModule
-import traceback
-import os
 import glob
+import os
+import traceback
+
+from ansible.module_utils.basic import AnsibleModule
+
 YAML_IMP_ERR = None
 try:
     import yaml

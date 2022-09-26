@@ -1,12 +1,15 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import cProfile
 import pstats
 from collections import ChainMap
+
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 from ansible.template import Templar
+
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError
 

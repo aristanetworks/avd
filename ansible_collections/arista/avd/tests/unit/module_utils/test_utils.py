@@ -1,10 +1,13 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, AristaAvdError
-from contextlib import contextmanager
-import pytest
 import re
+from contextlib import contextmanager
+
+import pytest
+
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, get
 
 
 @contextmanager

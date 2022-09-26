@@ -1,14 +1,24 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.modules.inventory_to_container import is_in_filter, isIterable, get_device_option_value
-from ansible_collections.arista.avd.plugins.modules.inventory_to_container import serialize, get_devices, isLeaf, get_containers
-import os
-import logging
-import pytest
-import yaml
-import treelib
 import json
+import logging
+import os
+
+import pytest
+import treelib
+import yaml
+
+from ansible_collections.arista.avd.plugins.modules.inventory_to_container import (
+    get_containers,
+    get_device_option_value,
+    get_devices,
+    is_in_filter,
+    isIterable,
+    isLeaf,
+    serialize,
+)
 
 IS_ITERABLE_VALID = [
     ("string1", "string2", "string3", "string4"),

@@ -18,12 +18,13 @@
 # {% if C is arista.avd.defined("c") %}  =>  true
 # {% if D is arista.avd.defined("c") %}  =>  false
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from jinja2.runtime import Undefined
-from ansible.utils.display import Display
 from ansible.errors import AnsibleError
+from ansible.utils.display import Display
+from jinja2.runtime import Undefined
 
 
 def defined(value, test_value=None, var_type=None, fail_action=None, var_name=None, run_tests=False):

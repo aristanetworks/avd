@@ -1,13 +1,15 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
-import pytest
-import md_toc
-import re
 import os
+import re
+
+import md_toc
+import pytest
 from jinja2.runtime import Undefined
 
+from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
 
 DIR_PATH = os.path.dirname(os.path.realpath(
     __file__)) + '/toc_files'

@@ -1,10 +1,11 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.default import default, FilterModule
 import pytest
 from jinja2.runtime import Undefined
 
+from ansible_collections.arista.avd.plugins.filter.default import FilterModule, default
 
 PRIMARY_VALUE_LIST = [1, 'ABC', None, Undefined, {}, {"key": "value"}, [1, 2]]
 DEFAULT_VALUE_LIST = [["default"], [None, 1], [

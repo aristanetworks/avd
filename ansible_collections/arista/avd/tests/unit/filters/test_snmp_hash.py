@@ -2,17 +2,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import (
-    get_hash_object,
-    key_from_passphrase,
-    localize_passphrase,
-    PRIV_KEY_LENGTH,
-    FilterModule,
-)
-import pytest
 from contextlib import contextmanager
+
+import pytest
 from ansible.errors import AnsibleFilterError
 
+from ansible_collections.arista.avd.plugins.filter.snmp_hash import PRIV_KEY_LENGTH, FilterModule, get_hash_object, key_from_passphrase, localize_passphrase
 
 f = FilterModule()
 

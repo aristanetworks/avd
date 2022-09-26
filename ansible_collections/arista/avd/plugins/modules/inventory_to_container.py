@@ -16,7 +16,8 @@
 # limitations under the License.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 DOCUMENTATION = r'''
@@ -93,8 +94,10 @@ EXAMPLES = r'''
 import glob
 import os
 import traceback
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.errors import AnsibleValidationError
+
 TREELIB_IMP_ERR = None
 try:
     from treelib import Tree

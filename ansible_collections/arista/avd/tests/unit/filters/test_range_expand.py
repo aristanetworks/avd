@@ -1,8 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import FilterModule, AnsibleFilterError, range_expand
 import pytest
+
+from ansible_collections.arista.avd.plugins.filter.range_expand import AnsibleFilterError, FilterModule, range_expand
 
 RANGE_TO_EXPAND_INVALID_VALUES = [True, {"key": "value"}, 33]
 RANGE_TO_EXPAND_VALID_VALUES = [

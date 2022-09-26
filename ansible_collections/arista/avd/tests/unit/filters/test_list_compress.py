@@ -1,8 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import FilterModule, AnsibleFilterError, list_compress
 import pytest
+
+from ansible_collections.arista.avd.plugins.filter.list_compress import AnsibleFilterError, FilterModule, list_compress
 
 LIST_TO_COMPRESS_INVALID_VALUES = ["1-3", {"key": "value"}, 33]
 LIST_TO_COMPRESS_VALID_VALUES = [[1, 2, 3, 4], [1, 2, 3, 7, 8]]

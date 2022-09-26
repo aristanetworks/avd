@@ -5,8 +5,9 @@
 __metaclass__ = type
 
 import hashlib
-from ansible.module_utils._text import to_native
+
 from ansible.errors import AnsibleFilterError
+from ansible.module_utils._text import to_native
 
 PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 

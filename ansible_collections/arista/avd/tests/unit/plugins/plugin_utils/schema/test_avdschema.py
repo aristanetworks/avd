@@ -1,14 +1,15 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
+
+import os
+
+import pytest
+import yaml
+from deepmerge import always_merger
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AvdValidationError
-
-import yaml
-import pytest
-import os
-from deepmerge import always_merger
-
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:

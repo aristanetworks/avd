@@ -1,10 +1,13 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert, natural_sort as _natural_sort
-from jinja2.runtime import Undefined
-from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natural_sort
 import pytest
+from jinja2.runtime import Undefined
+
+from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort as _natural_sort
+from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natural_sort
 
 f = FilterModule()
 

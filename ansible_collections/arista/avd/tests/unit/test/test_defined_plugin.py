@@ -1,10 +1,12 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.test.defined import defined, TestModule
-from jinja2.runtime import Undefined
-from ansible.errors import AnsibleError
 import pytest
+from ansible.errors import AnsibleError
+from jinja2.runtime import Undefined
+
+from ansible_collections.arista.avd.plugins.test.defined import TestModule, defined
 
 VALUE_LIST = ['ab', None, 1, True, {"key": "value"}]
 TEST_VALUE_LIST = [None, 'ab', True, 1, True]

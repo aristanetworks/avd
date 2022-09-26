@@ -1,8 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.markdown_rendering import FilterModule
 import pytest
+
+from ansible_collections.arista.avd.plugins.filter.markdown_rendering import FilterModule
 
 STATE_STRINGS = ['PASS', 'FAIL']
 RENDERING_VALID = 'github'

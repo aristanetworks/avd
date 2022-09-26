@@ -1,12 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import copy
-from ansible.plugins.action import ActionBase
+
 from ansible.errors import AnsibleActionFail
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
+from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
 
 VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug"]
 VALID_VALIDATION_MODES = ["disabled", "error", "warning", "info", "debug"]

@@ -17,7 +17,8 @@
 # {% if C is arista.avd.contains(2) %}  =>  true
 # {% if D is arista.avd.contains(3) %}  =>  false <- Protecting against undefined gracefully.
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 from jinja2.runtime import Undefined

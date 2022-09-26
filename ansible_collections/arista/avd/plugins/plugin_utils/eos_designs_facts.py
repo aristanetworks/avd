@@ -1,15 +1,17 @@
-import re
 import ipaddress
+import re
 from collections import ChainMap
 from functools import cached_property
 from hashlib import sha256
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, get, get_item, default
-from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+
+from ansible.plugins.filter.core import combine
+
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible.plugins.filter.core import combine
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, default, get, get_item
 
 
 class EosDesignsFacts(AvdFacts):

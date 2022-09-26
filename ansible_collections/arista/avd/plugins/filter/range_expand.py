@@ -1,10 +1,12 @@
 #
 # range_expand filter
 #
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import re
+
 from ansible.errors import AnsibleFilterError
 
 

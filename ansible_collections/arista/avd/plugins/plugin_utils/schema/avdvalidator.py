@@ -1,17 +1,19 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-import os
-import json
 import copy
+import json
+import os
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 try:
-    import jsonschema.validators
-    import jsonschema._validators
-    import jsonschema._types
-    import jsonschema.protocols
     import jsonschema
+    import jsonschema._types
+    import jsonschema._validators
+    import jsonschema.protocols
+    import jsonschema.validators
 except ImportError as imp_exc:
     JSONSCHEMA_IMPORT_ERROR = imp_exc
 else:

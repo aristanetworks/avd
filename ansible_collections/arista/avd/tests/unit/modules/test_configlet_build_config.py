@@ -1,9 +1,12 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 import os
+
 import pytest
+
+from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 
 CONFIGLETS_DIR = os.path.dirname(os.path.realpath(
     __file__)) + "../../inventory/intended/configs"

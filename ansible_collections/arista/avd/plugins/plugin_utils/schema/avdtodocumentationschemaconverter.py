@@ -1,6 +1,7 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError
+
 __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema

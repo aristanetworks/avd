@@ -1,13 +1,16 @@
 #
 # def arista.avd.add_md_toc
 #
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from jinja2.runtime import Undefined
-from io import StringIO
-import sys
 import re
+import sys
+from io import StringIO
+
+from jinja2.runtime import Undefined
+
 try:
     import md_toc
     HAS_MD_TOC = True

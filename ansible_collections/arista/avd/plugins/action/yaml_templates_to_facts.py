@@ -1,21 +1,24 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import cProfile
-import pstats
-import yaml
-from collections import ChainMap
 import importlib
-from ansible.plugins.action import ActionBase
-from ansible.errors import AnsibleActionFail
-from ansible.utils.vars import isidentifier
-from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater, compile_searchpath, get, AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+import pstats
+from collections import ChainMap
 from datetime import datetime
 
+import yaml
+from ansible.errors import AnsibleActionFail
+from ansible.parsing.yaml.dumper import AnsibleDumper
+from ansible.plugins.action import ActionBase
+from ansible.utils.vars import isidentifier
+
+from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
 
