@@ -104,9 +104,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             self._hostvars,
             "switch.interface_descriptions.connected_endpoints_ethernet_interfaces",
         ):
-            return self._template(
-                template_path, peer=peer, peer_interface=peer_interface
-            )
+            return self._template(template_path, peer=peer, peer_interface=peer_interface)
 
         elements = [peer, peer_interface]
         return "_".join([str(element) for element in elements if element is not None])
@@ -169,8 +167,6 @@ def load_interfacedescriptions(hostvars, templar) -> AvdInterfaceDescriptions:
 
     # if not isinstance(cls, AvdInterfaceDescriptions):
     if not issubclass(cls, AvdInterfaceDescriptions):
-        raise AristaAvdError(
-            f"{cls} is not a subclass of AvdInterfaceDescriptions class"
-        )
+        raise AristaAvdError(f"{cls} is not a subclass of AvdInterfaceDescriptions class")
 
     return cls(hostvars=hostvars, templar=templar)
