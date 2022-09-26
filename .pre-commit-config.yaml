@@ -24,15 +24,15 @@ repos:
     hooks:
       - id: isort
 
-  # - repo: https://github.com/psf/black
-  #   rev: 22.8.0
-  #   hooks:
-  #     - id: black
-  #       # It is recommended to specify the latest version of Python
-  #       # supported by your project here, or alternatively use
-  #       # pre-commit's default_language_version, see
-  #       # https://pre-commit.com/#top_level-default_language_version
-  #       language_version: python3.10
+  - repo: https://github.com/psf/black
+    rev: 22.8.0
+    hooks:
+      - id: black
+        # It is recommended to specify the latest version of Python
+        # supported by your project here, or alternatively use
+        # pre-commit's default_language_version, see
+        # https://pre-commit.com/#top_level-default_language_version
+        language_version: python3.10
 
   - repo: https://github.com/pycqa/flake8
     rev: 4.0.1 # Note ansible-test uses pycodestyle 2.8.0 which is part of this tagged release of flake8
