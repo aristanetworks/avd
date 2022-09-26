@@ -8,7 +8,7 @@ import pytest
 
 from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 
-CONFIGLETS_DIR = os.path.dirname(os.path.realpath(__file__)) + "../../inventory/intended/configs"
+CONFIGLETS_DIR = f"{os.path.dirname(os.path.realpath(__file__))}../../inventory/intended/configs"
 
 CONFIGLETS_DATA = {
     "valid_source": {"src_folder": CONFIGLETS_DIR, "prefix": "AVD"},

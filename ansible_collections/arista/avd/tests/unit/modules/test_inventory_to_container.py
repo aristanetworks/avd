@@ -51,7 +51,7 @@ PARENT_CONTAINER = {
     "non_default_parent": {"parent": "CVP", "expected_output": {"CVP": {"parent_container": "Tenant"}}},
 }
 
-INVENTORY_FILE = os.path.dirname(os.path.realpath(__file__)) + "/../../inventory/inventory.yml"
+INVENTORY_FILE = f"{os.path.dirname(os.path.realpath(__file__))}/../../inventory/inventory.yml"
 
 ROOT_CONTAINER = "Tenant"
 NON_DEFAULT_PARENT_CONTAINER = "DC2"
