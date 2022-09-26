@@ -44,6 +44,8 @@ keys:
         mpls:
           type: dict
           keys:
+            ip:
+              type: bool
             ldp:
               type: dict
               keys:
