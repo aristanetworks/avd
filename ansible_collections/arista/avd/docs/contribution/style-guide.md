@@ -15,10 +15,10 @@ Furthermore the CI Pipeline (& pre-commit) for AVD enforces:
 
 Configurations for above tools can be found in:
 
-- [pyproject.toml](../../../../../pyproject.toml)
-- [.pre-commit-config.yaml](../../../../../.pre-commit-config.yaml)
-- [.flake8](../../../../../.flake8)
-- [pylintrc](../../../../../pylintrc)
+- [pyproject.toml](https://github.com/aristanetworks/ansible-avd/blob/devel/pyproject.toml)
+- [.pre-commit-config.yaml](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml)
+- [.flake8](https://github.com/aristanetworks/ansible-avd/blob/devel/.flake8)
+- [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc)
 
 ## Jinja2 Syntax guidelines
 
