@@ -48,5 +48,5 @@ def default(primary_value, *default_values):
 class FilterModule(object):
     def filters(self):
         return {
-            'default': default,
+            "default": default,
         }

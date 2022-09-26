@@ -185,13 +185,9 @@ class TestSNMPHashFilter:
             ),
         ],
     )
-    def test_localize_passphrase(
-        self, passphrase, auth_type, engine_id, priv_type, result, expectation
-    ):
+    def test_localize_passphrase(self, passphrase, auth_type, engine_id, priv_type, result, expectation):
         with expectation:
-            localized_passphrase = localize_passphrase(
-                passphrase, auth_type, engine_id, priv_type=priv_type
-            )
+            localized_passphrase = localize_passphrase(passphrase, auth_type, engine_id, priv_type=priv_type)
             assert localized_passphrase == result
             if priv_type:
                 assert len(localized_passphrase) * 4 == PRIV_KEY_LENGTH[priv_type]

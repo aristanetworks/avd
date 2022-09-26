@@ -12,11 +12,10 @@ from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natur
 f = FilterModule()
 
 STRINGS_VALID = ["100", "200", "ABC"]
-ITEMS_TO_NATURAL_SORT = [None, [], {}, "", ["1,2,3,4", "11,2,3,4", "5.6.7.8"], {
-    'a1': 123, 'a2': 2, 'a10': 333, 'a11': 4456}]
+ITEMS_TO_NATURAL_SORT = [None, [], {}, "", ["1,2,3,4", "11,2,3,4", "5.6.7.8"], {"a1": 123, "a2": 2, "a10": 333, "a11": 4456}]
 
 
-class TestNaturalSortFilter():
+class TestNaturalSortFilter:
     @pytest.mark.parametrize("STRING_VALID", STRINGS_VALID)
     def test_convert_function(self, STRING_VALID):
         resp = convert(STRING_VALID)
@@ -37,4 +36,4 @@ class TestNaturalSortFilter():
     def test_natural_sort_filter(self):
         resp = f.filters()
         assert isinstance(resp, dict)
-        assert 'natural_sort' in resp.keys()
+        assert "natural_sort" in resp.keys()

@@ -42,13 +42,12 @@ EXPECTED_RESULT_VALID_VALUES = [
 f = FilterModule()
 
 
-class TestListCompressFilter():
+class TestListCompressFilter:
     @pytest.mark.parametrize("RANGE_TO_EXPAND_INVALID", RANGE_TO_EXPAND_INVALID_VALUES)
     def test_range_expand_invalid(self, RANGE_TO_EXPAND_INVALID):
         with pytest.raises(AnsibleFilterError) as exc_info:
             range_expand(RANGE_TO_EXPAND_INVALID)
-        assert str(
-            exc_info.value) == f"value must be of type list or str, got {type(RANGE_TO_EXPAND_INVALID)}"
+        assert str(exc_info.value) == f"value must be of type list or str, got {type(RANGE_TO_EXPAND_INVALID)}"
 
     @pytest.mark.parametrize("RANGE_TO_EXPAND_VALID", RANGE_TO_EXPAND_VALID_VALUES)
     def test_range_expand_valid(self, RANGE_TO_EXPAND_VALID):
@@ -58,4 +57,4 @@ class TestListCompressFilter():
     def test_range_expand_filter(self):
         resp = f.filters()
         assert isinstance(resp, dict)
-        assert 'range_expand' in resp.keys()
+        assert "range_expand" in resp.keys()

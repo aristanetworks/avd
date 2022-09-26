@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import Ar
 
 
 def convert_schema(schema: dict, type: str):
-    '''
+    """
     The `arista.avd.convert_schema` filter will convert AVD Schema to a chosen output format.
 
     Parameters
@@ -28,7 +28,7 @@ def convert_schema(schema: dict, type: str):
     ------
     AvdSchemaError, AvdValidationError
         If the input schema is not valid, exceptions will be raised accordingly.
-    '''
+    """
     avdschema = AvdSchema(schema)
     if type == "documentation":
         schemaconverter = AvdToDocumentationSchemaConverter(avdschema)
@@ -43,5 +43,5 @@ def convert_schema(schema: dict, type: str):
 class FilterModule(object):
     def filters(self):
         return {
-            'convert_schema': convert_schema,
+            "convert_schema": convert_schema,
         }

@@ -14,13 +14,12 @@ EXPECTED_RESULT_VALID_VALUES = ["1-4", "1-3,7-8"]
 f = FilterModule()
 
 
-class TestListCompressFilter():
+class TestListCompressFilter:
     @pytest.mark.parametrize("LIST_TO_COMPRESS_INVALID", LIST_TO_COMPRESS_INVALID_VALUES)
     def test_list_compress_invalid(self, LIST_TO_COMPRESS_INVALID):
         with pytest.raises(AnsibleFilterError) as exc_info:
             list_compress(LIST_TO_COMPRESS_INVALID)
-        assert str(
-            exc_info.value) == f"value must be of type list, got {type(LIST_TO_COMPRESS_INVALID)}"
+        assert str(exc_info.value) == f"value must be of type list, got {type(LIST_TO_COMPRESS_INVALID)}"
 
     @pytest.mark.parametrize("LIST_TO_COMPRESS_VALID", LIST_TO_COMPRESS_VALID_VALUES)
     def test_list_compress_valid(self, LIST_TO_COMPRESS_VALID):
@@ -30,4 +29,4 @@ class TestListCompressFilter():
     def test_list_compress_filter(self):
         resp = f.filters()
         assert isinstance(resp, dict)
-        assert 'list_compress' in resp.keys()
+        assert "list_compress" in resp.keys()

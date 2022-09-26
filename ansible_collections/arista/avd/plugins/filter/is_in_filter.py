@@ -7,7 +7,6 @@ __metaclass__ = type
 
 
 class FilterModule(object):
-
     def is_in_filter(self, hostname, hostname_filter):
         if hostname_filter is None:
             hostname_filter = ["all"]
@@ -19,5 +18,5 @@ class FilterModule(object):
 
     def filters(self):
         return {
-            'is_in_filter': self.is_in_filter,
+            "is_in_filter": self.is_in_filter,
         }

@@ -11,7 +11,7 @@ DEFAULT_TABLE = "_default_table_value_if_not_set"
 
 
 class AvdToDocumentationSchemaConverter:
-    '''
+    """
     This converter will convert a regular avdschema to a documentation schema.
 
     The documentation schema is a flatter representation of the AVD schema
@@ -38,7 +38,7 @@ class AvdToDocumentationSchemaConverter:
           yaml:
             - 'foo:'
             - '  - bar: "<str>"'
-    '''
+    """
 
     def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
@@ -61,10 +61,7 @@ class AvdToDocumentationSchemaConverter:
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output.append({
-                "filename": filename,
-                "tables": self.build_tables(filename, schema)
-            })
+            output.append({"filename": filename, "tables": self.build_tables(filename, schema)})
 
         return output
 
@@ -124,13 +121,7 @@ class AvdToDocumentationSchemaConverter:
         return built_table
 
     def build_table_row(
-        self, var_name: str,
-        schema: dict,
-        indentation: int,
-        var_path: list,
-        table: str,
-        parent_schema: dict = None,
-        first_list_item_key: bool = False
+        self, var_name: str, schema: dict, indentation: int, var_path: list, table: str, parent_schema: dict = None, first_list_item_key: bool = False
     ):
         output = []
 
@@ -161,9 +152,9 @@ class AvdToDocumentationSchemaConverter:
 
         output.append(row)
 
-        if schema.get('keys') or schema.get('dynamic_keys'):
+        if schema.get("keys") or schema.get("dynamic_keys"):
             output.extend(self.keys(schema, indentation, var_path + [var_name], table))
-        elif schema.get('items'):
+        elif schema.get("items"):
             output.extend(self.items(schema, indentation, var_path + [var_name], table))
 
         return output
@@ -177,14 +168,14 @@ class AvdToDocumentationSchemaConverter:
             row_indentation = f"{row_indentation[:-2]}- "
 
         row = f"{row_indentation}{var_name}:"
-        var_type = schema.get('type')
-        if var_type not in ['list', 'dict']:
+        var_type = schema.get("type")
+        if var_type not in ["list", "dict"]:
             row = f"{row} <{var_type}>"
 
         output.append(row)
 
         schema_keys = self._get_keys(schema)
-        schema_items = schema.get('items')
+        schema_items = schema.get("items")
 
         if schema_keys:
             for key, childschema in schema_keys.items():
@@ -200,7 +191,7 @@ class AvdToDocumentationSchemaConverter:
                 )
                 output.extend(rows)
         elif schema_items:
-            schema_items_type = schema_items.get('type')
+            schema_items_type = schema_items.get("type")
             if schema_items_type == "dict":
                 schema_keys = self._get_keys(schema_items)
                 first = True
@@ -238,7 +229,7 @@ class AvdToDocumentationSchemaConverter:
             "dict": "Dictionary",
             "list": "List",
         }
-        schema_type = schema.get('type')
+        schema_type = schema.get("type")
         if not schema_type:
             raise AristaAvdError(f"'type' key not defined in schema: {schema}")
 
@@ -247,7 +238,7 @@ class AvdToDocumentationSchemaConverter:
             raise AristaAvdError(f"Unknown 'type': {schema_type}")
 
         if schema_type == "list":
-            schema_items_type = schema.get('items', {}).get('type')
+            schema_items_type = schema.get("items", {}).get("type")
             if not schema_items_type:
                 return output
             items_type = type_converters.get(schema_items_type)
@@ -278,8 +269,8 @@ class AvdToDocumentationSchemaConverter:
 
     def items(self, schema: dict, indentation: int, var_path: list, table: str):
         output = []
-        schema_items = schema.get('items', {})
-        schema_items_type = schema_items.get('type')
+        schema_items = schema.get("items", {})
+        schema_items_type = schema_items.get("type")
         if schema_items_type == "dict":
             schema_keys = self._get_keys(schema_items)
             first = True
@@ -313,36 +304,36 @@ class AvdToDocumentationSchemaConverter:
 
     def required(self, schema: dict, var_name: str, parent_schema: dict):
         output = None
-        if schema.get('required'):
+        if schema.get("required"):
             output = "Required"
-            if parent_schema and parent_schema.get('primary_key') == var_name:
+            if parent_schema and parent_schema.get("primary_key") == var_name:
                 output = "Required, Unique"
         return output
 
     def default(self, schema: dict):
-        return schema.get('default')
+        return schema.get("default")
 
     def restrictions(self, schema: dict):
         restrictions = []
-        if schema.get('min'):
+        if schema.get("min"):
             restrictions.append(f"Min: {schema['min']}")
-        if schema.get('max'):
+        if schema.get("max"):
             restrictions.append(f"Max: {schema['max']}")
-        if schema.get('min_length'):
+        if schema.get("min_length"):
             restrictions.append(f"Min Length: {schema['min_length']}")
-        if schema.get('max_length'):
+        if schema.get("max_length"):
             restrictions.append(f"Max Length: {schema['max_length']}")
-        if schema.get('format'):
+        if schema.get("format"):
             restrictions.append(f"Format: {schema['format']}")
-        if schema.get('dynamic_valid_values'):
+        if schema.get("dynamic_valid_values"):
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"
             schema["valid_values"].append(valid_value)
-        if schema.get('valid_values'):
+        if schema.get("valid_values"):
             restrictions.append("Valid Values:")
-            for valid_value in schema['valid_values']:
+            for valid_value in schema["valid_values"]:
                 restrictions.append(f"- {valid_value}")
-        if schema.get('pattern'):
+        if schema.get("pattern"):
             restrictions.append(f"Pattern: {schema['pattern']}")
 
         if restrictions:
@@ -409,7 +400,7 @@ class AvdToDocumentationSchemaConverter:
         return list(set(filenames))
 
     def _get_keys(self, schema: dict):
-        keys = schema.get('keys', {})
-        dynamic_keys = schema.get('dynamic_keys', {})
+        keys = schema.get("keys", {})
+        dynamic_keys = schema.get("dynamic_keys", {})
         keys.update({f"<{dynamic_key}>": subschema for dynamic_key, subschema in dynamic_keys.items()})
         return keys

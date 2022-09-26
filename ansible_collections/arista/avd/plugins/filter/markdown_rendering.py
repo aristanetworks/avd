@@ -7,9 +7,9 @@ class FilterModule(object):
     # STATIC EMOJI CODE
     GH_CODE = {}
     # Github MD code for Emoji checked box
-    GH_CODE['PASS'] = ':white_check_mark:'
+    GH_CODE["PASS"] = ":white_check_mark:"
     # GH MD code for Emoji Fail
-    GH_CODE['FAIL'] = ':x:'
+    GH_CODE["FAIL"] = ":x:"
 
     def status_render(self, state_string, rendering):
         """
@@ -27,12 +27,10 @@ class FilterModule(object):
         str
             Value to render in markdown
         """
-        if rendering == 'github':
+        if rendering == "github":
             return self.GH_CODE[state_string.upper()]
         else:
             return state_string
 
     def filters(self):
-        return {
-            'status_render': self.status_render
-        }
+        return {"status_render": self.status_render}

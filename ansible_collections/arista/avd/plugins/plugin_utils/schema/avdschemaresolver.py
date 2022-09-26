@@ -77,7 +77,7 @@ def _items(validator, items: dict, resolved_schema: dict, schema: dict):
 
 
 def _ref(validator, ref, resolved_schema: dict, schema: dict):
-    '''
+    """
     This function resolves the $ref referenced schema,
     then merges with any schema defined at the same level
     Then performs other actions on the resolved+merged schema.
@@ -88,7 +88,7 @@ def _ref(validator, ref, resolved_schema: dict, schema: dict):
 
     This is the only function where the schema actully changes,
     so this is also where the resolved_schema is updated.
-    '''
+    """
     scope, resolved = validator.resolver.resolve(ref)
     validator.resolver.push_scope(scope)
     merged_schema = copy.deepcopy(resolved)
@@ -103,7 +103,7 @@ def _ref(validator, ref, resolved_schema: dict, schema: dict):
         validator.resolver.pop_scope()
 
 
-'''
+"""
 AvdSchemaResolver is used to resolve $ref in AVD Schemas.
 
 It is used to generate full documentation convering all nested schemas.
@@ -113,7 +113,7 @@ Instead we use the "instance" of jsonschema - the variable normally holding
 the data to be validated - called "resolved_schema" above.
 The "resolved_schema" must contain a copy of the original schema, and then
 the $ref resolver will merge in the resolved schema and do in-place update.
-'''
+"""
 if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
     AvdSchemaResolver = None
 else:
@@ -124,5 +124,5 @@ else:
             "items": _items,
             "keys": _keys,
             "dynamic_keys": _dynamic_keys,
-        }
+        },
     )

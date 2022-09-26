@@ -20,7 +20,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: inventory_to_container
 version_added: "1.0.0"
@@ -61,9 +61,9 @@ options:
     default: ['all']
     type: list
     elements: str
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: generate intended variables
   inventory_to_container:
     inventory: 'inventory.yml'
@@ -89,7 +89,7 @@ EXAMPLES = r'''
     topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
     save_topology: true
-'''
+"""
 
 import glob
 import os
@@ -101,6 +101,7 @@ from ansible.module_utils.errors import AnsibleValidationError
 TREELIB_IMP_ERR = None
 try:
     from treelib import Tree
+
     HAS_TREELIB = True
 except ImportError:
     HAS_TREELIB = False
@@ -108,6 +109,7 @@ except ImportError:
 YAML_IMP_ERR = None
 try:
     import yaml
+
     HAS_YAML = True
 except ImportError:
     HAS_YAML = False
@@ -116,7 +118,7 @@ except ImportError:
 
 # Root container on CloudVision.
 # Shall not be changed unless CloudVision changes it in the core.
-CVP_ROOT_CONTAINER = 'Tenant'
+CVP_ROOT_CONTAINER = "Tenant"
 
 
 def is_in_filter(hostname_filter=None, hostname="eos"):
@@ -187,7 +189,7 @@ def isLeaf(tree, nid):
         return False
 
 
-def get_configlet(src_folder="", prefix='AVD', extension='cfg', device_filter=None):
+def get_configlet(src_folder="", prefix="AVD", extension="cfg", device_filter=None):
     """
     Get available configlets to deploy to CVP.
 
@@ -211,16 +213,16 @@ def get_configlet(src_folder="", prefix='AVD', extension='cfg', device_filter=No
     if device_filter is None:
         device_filter = ["all"]
 
-    src_configlets = glob.glob(src_folder + '/*.' + extension)
+    src_configlets = glob.glob(src_folder + "/*." + extension)
     configlets = {}
     for file in src_configlets:
         # Build structure only if configlet match device_filter.
         if is_in_filter(hostname=os.path.splitext(os.path.basename(file))[0], hostname_filter=device_filter):
-            if prefix != 'none':
-                name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
+            if prefix != "none":
+                name = prefix + "_" + os.path.splitext(os.path.basename(file))[0]
             else:
                 name = os.path.splitext(os.path.basename(file))[0]
-            with open(file, 'r', encoding='utf8') as file:
+            with open(file, "r", encoding="utf8") as file:
                 data = file.read()
             configlets[name] = data
     return configlets
@@ -276,31 +278,23 @@ def serialize(dict_inventory, parent_container=None, tree_topology=None):
             # initiate tree topology and add ROOT under Tenant
             tree_topology = Tree()
             tree_topology.create_node("Tenant", "Tenant")
-            parent_container = 'Tenant'
+            parent_container = "Tenant"
 
         # Recursive Inventory read
         for k1, v1 in dict_inventory.items():
             # Read a leaf
-            if isIterable(v1) and 'children' not in v1:
+            if isIterable(v1) and "children" not in v1:
                 tree_topology.create_node(k1, k1, parent=parent_container)
             # If subgroup has kids
-            if isIterable(v1) and 'children' in v1:
+            if isIterable(v1) and "children" in v1:
                 tree_topology.create_node(k1, k1, parent=parent_container)
-                serialize(
-                    dict_inventory=v1['children'],
-                    parent_container=k1,
-                    tree_topology=tree_topology
-                )
-            elif k1 == 'children' and isIterable(v1):
+                serialize(dict_inventory=v1["children"], parent_container=k1, tree_topology=tree_topology)
+            elif k1 == "children" and isIterable(v1):
                 # Extract sub-group information
                 for k2, v2 in v1.items():
                     # Add subgroup to tree
                     tree_topology.create_node(k2, k2, parent=parent_container)
-                    serialize(
-                        dict_inventory=v2,
-                        parent_container=k2,
-                        tree_topology=tree_topology
-                    )
+                    serialize(dict_inventory=v2, parent_container=k2, tree_topology=tree_topology)
         return tree_topology
 
 
@@ -332,32 +326,20 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
 
     for k1, v1 in dict_inventory.items():
         # Read a leaf
-        if k1 == search_container and isIterable(v1) and 'hosts' in v1:
-            for dev, data in v1['hosts'].items():
-                if is_in_filter(
-                    hostname_filter=device_filter,
-                    hostname=dev
-                ) and get_device_option_value(
-                        device_data_dict=data,
-                        option_name='is_deployed') is not False:
+        if k1 == search_container and isIterable(v1) and "hosts" in v1:
+            for dev, data in v1["hosts"].items():
+                if (
+                    is_in_filter(hostname_filter=device_filter, hostname=dev)
+                    and get_device_option_value(device_data_dict=data, option_name="is_deployed") is not False
+                ):
                     devices.append(dev)
         # If subgroup has kids
-        if isIterable(v1) and 'children' in v1:
-            get_devices(
-                dict_inventory=v1['children'],
-                search_container=search_container,
-                devices=devices,
-                device_filter=device_filter
-            )
-        elif k1 == 'children' and isIterable(v1):
+        if isIterable(v1) and "children" in v1:
+            get_devices(dict_inventory=v1["children"], search_container=search_container, devices=devices, device_filter=device_filter)
+        elif k1 == "children" and isIterable(v1):
             # Extract sub-group information
             for k2, v2 in v1.items():
-                get_devices(
-                    dict_inventory=v2,
-                    search_container=search_container,
-                    devices=devices,
-                    device_filter=device_filter
-                )
+                get_devices(dict_inventory=v2, search_container=search_container, devices=devices, device_filter=device_filter)
     return devices
 
 
@@ -388,71 +370,64 @@ def get_containers(inventory_content, parent_container, device_filter):
         if container != CVP_ROOT_CONTAINER:
             parent = tree_dc.parent(container)
             if container == parent_container:
-                data['parent_container'] = CVP_ROOT_CONTAINER
+                data["parent_container"] = CVP_ROOT_CONTAINER
             elif parent.tag != CVP_ROOT_CONTAINER:
                 if isLeaf(tree=tree_dc, nid=container):
-                    devices = get_devices(dict_inventory=inventory_content,
-                                          search_container=container,
-                                          devices=[],
-                                          device_filter=device_filter)
-                    data['devices'] = devices
-                data['parent_container'] = parent.tag
+                    devices = get_devices(dict_inventory=inventory_content, search_container=container, devices=[], device_filter=device_filter)
+                    data["devices"] = devices
+                data["parent_container"] = parent.tag
             container_json[container] = data
     return container_json
 
 
 def main():
-    """ Main entry point for module execution."""
+    """Main entry point for module execution."""
     argument_spec = dict(
-        inventory=dict(type='str', required=True),
-        container_root=dict(type='str', required=True),
-        configlet_dir=dict(type='str', required=False),
-        configlet_prefix=dict(type='str', required=False, default="AVD"),
-        destination=dict(type='str', required=False),
-        device_filter=dict(type="list", elements='str', default="all")
+        inventory=dict(type="str", required=True),
+        container_root=dict(type="str", required=True),
+        configlet_dir=dict(type="str", required=False),
+        configlet_prefix=dict(type="str", required=False, default="AVD"),
+        destination=dict(type="str", required=False),
+        device_filter=dict(type="list", elements="str", default="all"),
     )
 
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=False)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=False)
     result = dict(changed=False)
 
     if not HAS_YAML:
-        module.fail_json(msg='yaml lib is required for this module')
+        module.fail_json(msg="yaml lib is required for this module")
 
     if not HAS_TREELIB:
-        module.fail_json(msg='Treelib lib is required for this module')
+        module.fail_json(msg="Treelib lib is required for this module")
 
     # Build cv_container structure from YAML inventory.
-    if (module.params['inventory'] is not None and
-            module.params['container_root'] is not None):
+    if module.params["inventory"] is not None and module.params["container_root"] is not None:
         # "ansible-avd/examples/evpn-l3ls-cvp-deployment/inventory.yml"
-        inventory_file = module.params['inventory']
-        parent_container = module.params['container_root']
+        inventory_file = module.params["inventory"]
+        parent_container = module.params["container_root"]
         # Build containers & devices topology
         inventory_content = ""
-        with open(inventory_file, 'r', encoding='utf8') as stream:
+        with open(inventory_file, "r", encoding="utf8") as stream:
             try:
                 # add a constructor to return "!VAULT" for inline vault variables
                 # to avoid the parse
                 yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
-                raise AnsibleValidationError(
-                    "Failed to parse inventory file"
-                ) from exc
-        result["CVP_TOPOLOGY"] = get_containers(inventory_content=inventory_content,
-                                                parent_container=parent_container,
-                                                device_filter=module.params['device_filter'])
+                raise AnsibleValidationError("Failed to parse inventory file") from exc
+        result["CVP_TOPOLOGY"] = get_containers(
+            inventory_content=inventory_content, parent_container=parent_container, device_filter=module.params["device_filter"]
+        )
 
     # If set, build configlet topology
-    if module.params['configlet_dir'] is not None:
-        result['CVP_CONFIGLETS'] = get_configlet(src_folder=module.params['configlet_dir'],
-                                                 prefix=module.params['configlet_prefix'],
-                                                 device_filter=module.params['device_filter'])
+    if module.params["configlet_dir"] is not None:
+        result["CVP_CONFIGLETS"] = get_configlet(
+            src_folder=module.params["configlet_dir"], prefix=module.params["configlet_prefix"], device_filter=module.params["device_filter"]
+        )
 
     # Write vars to file if set by user
-    if module.params['destination'] is not None:
-        with open(module.params['destination'], 'w', encoding='utf8') as file:
+    if module.params["destination"] is not None:
+        with open(module.params["destination"], "w", encoding="utf8") as file:
             yaml.dump(result, file)
 
     module.exit_json(**result)

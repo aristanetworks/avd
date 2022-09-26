@@ -42,10 +42,8 @@ TEST_DATA_PATHS = [
 # Expected responses for .subschema() when tested with TEST_DATA_PATHS
 EXPECTED_SUBSCHEMAS = {
     "_empty": combined_schema,
-    "access_lists.name":
-        acl_schema['keys']['access_lists']['items']['keys']['name'],
-    "access_lists.sequence_numbers.action":
-        acl_schema['keys']['access_lists']['items']['keys']['sequence_numbers']['items']['keys']['action'],
+    "access_lists.name": acl_schema["keys"]["access_lists"]["items"]["keys"]["name"],
+    "access_lists.sequence_numbers.action": acl_schema["keys"]["access_lists"]["items"]["keys"]["sequence_numbers"]["items"]["keys"]["action"],
 }
 
 # Testing invalid data for "access-lists" data model
@@ -71,7 +69,7 @@ INVALID_ACL_DATA = [
 ]
 
 
-class TestAvdSchema():
+class TestAvdSchema:
     def test_avd_schema_init_without_schema(self):
         avdschema = AvdSchema()
         assert isinstance(avdschema, AvdSchema)
@@ -219,9 +217,9 @@ class TestAvdSchema():
         except Exception as e:
             assert False, f"subschema(TEST_PATH, combined_schema) raised an exception: {e}"
         if len(TEST_PATH) == 0:
-            assert subschema == EXPECTED_SUBSCHEMAS['_empty']
+            assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
         else:
-            assert subschema == EXPECTED_SUBSCHEMAS['.'.join(TEST_PATH)]
+            assert subschema == EXPECTED_SUBSCHEMAS[".".join(TEST_PATH)]
 
     @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
     def test_avd_schema_subschema_with_loaded_schema(self, TEST_PATH):
@@ -231,9 +229,9 @@ class TestAvdSchema():
         except Exception as e:
             assert False, f"subschema(TEST_PATH) raised an exception: {e}"
         if len(TEST_PATH) == 0:
-            assert subschema == EXPECTED_SUBSCHEMAS['_empty']
+            assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
         else:
-            assert subschema == EXPECTED_SUBSCHEMAS['.'.join(TEST_PATH)]
+            assert subschema == EXPECTED_SUBSCHEMAS[".".join(TEST_PATH)]
 
     def test_avd_schema_subschema_empty_list_invalid_adhoc_schema(self):
         with pytest.raises(AvdValidationError):

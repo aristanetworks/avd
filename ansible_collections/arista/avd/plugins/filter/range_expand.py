@@ -26,7 +26,7 @@ def range_expand(range_to_expand):
         prefix = ""
 
         # Unpack list in string
-        for one_range in range_to_expand.split(','):
+        for one_range in range_to_expand.split(","):
             if one_range is None:
                 continue
 
@@ -138,5 +138,5 @@ def range_expand(range_to_expand):
 class FilterModule(object):
     def filters(self):
         return {
-            'range_expand': range_expand,
+            "range_expand": range_expand,
         }

@@ -13,12 +13,13 @@ from jinja2.runtime import Undefined
 
 try:
     import md_toc
+
     HAS_MD_TOC = True
 except ImportError:
     HAS_MD_TOC = False
 
 
-def add_md_toc(md_input, skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->'):
+def add_md_toc(md_input, skip_lines=0, toc_levels=2, toc_marker="<!-- toc -->"):
     """
     add_md_toc will parse the input MarkDown and add a TOC between the toc_markers
 
@@ -61,12 +62,12 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->'):
     with StringIO(md_input) as md:
         stdin = sys.stdin
         sys.stdin = md
-        toc = md_toc.build_toc('-', keep_header_levels=toc_levels, skip_lines=skip_lines)
+        toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines)
         sys.stdin = stdin
 
     # Insert TOC between markers
     toc_marker = re.escape(toc_marker)
-    toc_pattern = re.compile(fr"{toc_marker}[\S\s]*?{toc_marker}")
+    toc_pattern = re.compile(rf"{toc_marker}[\S\s]*?{toc_marker}")
 
     return toc_pattern.sub(toc, md_input, count=1)
 
@@ -74,5 +75,5 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->'):
 class FilterModule(object):
     def filters(self):
         return {
-            'add_md_toc': add_md_toc,
+            "add_md_toc": add_md_toc,
         }

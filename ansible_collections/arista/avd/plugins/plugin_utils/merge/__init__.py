@@ -29,7 +29,7 @@ MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
     "append": "append",
     "prepend": "prepend",
     "append_rp": "append_unique",
-    "prepend_rp": _strategy_prepend_unique
+    "prepend_rp": _strategy_prepend_unique,
 }
 
 
@@ -46,15 +46,11 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merg
 
     merger = deepmerge.Merger(
         # List of tuples with strategies for each type
-        [
-            (list, [list_strategy]),
-            (dict, [dict_strategy]),
-            (set, ["union"])
-        ],
+        [(list, [list_strategy]), (dict, [dict_strategy]), (set, ["union"])],
         # Fallback strategy applied to all other types
         ["override"],
         # Strategy for type conflict
-        ["override"]
+        ["override"],
     )
     for nxt in nxt_list:
         if isinstance(nxt, list):

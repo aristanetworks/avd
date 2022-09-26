@@ -72,5 +72,5 @@ def contains(value, test_value=None):
 class TestModule(object):
     def tests(self):
         return {
-            'contains': contains,
+            "contains": contains,
         }
