@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 160
+
+# Default in black is "false", but the code generator for Pydantic needs this forced.
+skip-string-normalization = false
+
+# Version is locked to 22.8.0 where preview features are all something we like.
+# If the version is changed later, we have to reconsider preview.
+preview = true
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+line_length = 160

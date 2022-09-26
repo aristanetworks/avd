@@ -1,10 +1,11 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AvdSchemaError, AvdValidationError, AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA, AvdValidator
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avddataconverter import AvdDataConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA, AvdValidator
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError, AvdSchemaError, AvdValidationError
 
 try:
     import jsonschema
@@ -26,7 +27,7 @@ DEFAULT_SCHEMA = {
 }
 
 
-class AvdSchema():
+class AvdSchema:
     def __init__(self, schema: dict = None):
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
@@ -53,7 +54,7 @@ class AvdSchema():
             self._dataconverter = AvdDataConverter(schema)
             self._schemaresolver = AvdSchemaResolver(schema)
         except Exception as e:
-            raise AristaAvdError('An error occured during creation of the validator') from e
+            raise AristaAvdError("An error occured during creation of the validator") from e
 
     def extend_schema(self, schema: dict):
         for validation_error in self.validate_schema(schema):
@@ -95,12 +96,12 @@ class AvdSchema():
             yield self._error_handler(error)
 
     def resolve(self, resolved_schema: dict, schema: dict = None):
-        '''
+        """
         resolved_schema is a placeholder for the resulting schema where all $ref has been resolved recursively
         schema is the schema to resolve
 
         returns a Generator of resolve errors
-        '''
+        """
         if schema:
             for schema_validation_error in self.validate_schema(schema):
                 yield schema_validation_error
@@ -139,7 +140,7 @@ class AvdSchema():
             raise self._error_handler(error) from error
 
     def subschema(self, datapath: list, schema: dict = None):
-        '''
+        """
         Takes datapath elements as a list and returns the subschema for this datapath.
         Optionally the schema can be supplied. This is primarily used for recursive calls.
 
@@ -184,7 +185,7 @@ class AvdSchema():
 
         subschema(['a'], <invalid_schema>)
         >> raises AvdSchemaError
-        '''
+        """
 
         if not isinstance(datapath, list):
             raise AvdSchemaError(f"The datapath argument must be a list. Got {type(datapath)}")
@@ -203,11 +204,11 @@ class AvdSchema():
         if not isinstance(key, str):
             raise AvdSchemaError(f"All datapath items must be strings. Got {type(key)}")
 
-        if schema['type'] == 'dict' and key in schema.get('keys', []):
-            return self.subschema(datapath[1:], schema['keys'][key])
+        if schema["type"] == "dict" and key in schema.get("keys", []):
+            return self.subschema(datapath[1:], schema["keys"][key])
 
-        if schema['type'] == 'list' and key in schema.get('items', {}).get('keys', []):
-            return self.subschema(datapath[1:], schema['items']['keys'][key])
+        if schema["type"] == "list" and key in schema.get("items", {}).get("keys", []):
+            return self.subschema(datapath[1:], schema["items"]["keys"][key])
 
         # Falling through here in case the schema is not covering the requested datapath
         raise AvdSchemaError(f"The datapath '{datapath}' could not be found in the schema")

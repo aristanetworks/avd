@@ -61,11 +61,7 @@ if __name__ == "__main__":
     # Then add the categories
     # First add Breaking Changes
     breaking_label_categories = ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]
-    breaking_labels = [
-        f"rn: {cc_type}({scope})!"
-        for cc_type in breaking_label_categories
-        for scope in SCOPES
-    ]
+    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES]
     breaking_labels.extend([f"rn: {cc_type}!" for cc_type in breaking_label_categories])
 
     categories_list.append(
@@ -91,11 +87,7 @@ if __name__ == "__main__":
     )
 
     # Add other fixes
-    other_fixes_labels = [
-        f"rn: Fix({scope})"
-        for scope in SCOPES
-        if scope not in ["eos_cli_config_gen", "eos_designs"]
-    ]
+    other_fixes_labels = [f"rn: Fix({scope})" for scope in SCOPES if scope not in ["eos_cli_config_gen", "eos_designs"]]
     other_fixes_labels.append("rn: Fix")
 
     categories_list.append(
@@ -133,11 +125,7 @@ if __name__ == "__main__":
     )
 
     # Add other new features
-    other_feat_labels = [
-        f"rn: Feat({scope})"
-        for scope in SCOPES
-        if scope not in ["eos_cli_config_gen", "eos_designs"]
-    ]
+    other_feat_labels = [f"rn: Feat({scope})" for scope in SCOPES if scope not in ["eos_cli_config_gen", "eos_designs"]]
     other_feat_labels.append("rn: Feat")
 
     categories_list.append(

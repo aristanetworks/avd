@@ -2,17 +2,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import (
-    get_hash_object,
-    key_from_passphrase,
-    localize_passphrase,
-    PRIV_KEY_LENGTH,
-    FilterModule,
-)
-import pytest
 from contextlib import contextmanager
+
+import pytest
 from ansible.errors import AnsibleFilterError
 
+from ansible_collections.arista.avd.plugins.filter.snmp_hash import PRIV_KEY_LENGTH, FilterModule, get_hash_object, key_from_passphrase, localize_passphrase
 
 f = FilterModule()
 
@@ -190,13 +185,9 @@ class TestSNMPHashFilter:
             ),
         ],
     )
-    def test_localize_passphrase(
-        self, passphrase, auth_type, engine_id, priv_type, result, expectation
-    ):
+    def test_localize_passphrase(self, passphrase, auth_type, engine_id, priv_type, result, expectation):
         with expectation:
-            localized_passphrase = localize_passphrase(
-                passphrase, auth_type, engine_id, priv_type=priv_type
-            )
+            localized_passphrase = localize_passphrase(passphrase, auth_type, engine_id, priv_type=priv_type)
             assert localized_passphrase == result
             if priv_type:
                 assert len(localized_passphrase) * 4 == PRIV_KEY_LENGTH[priv_type]

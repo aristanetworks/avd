@@ -1,8 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible.module_utils._text import to_text
 import os
+
+from ansible.module_utils._text import to_text
 
 
 class AristaAvdError(Exception):
@@ -102,7 +104,7 @@ def unique(in_list):
     """
 
     list_set = set(in_list)
-    return (list(list_set))
+    return list(list_set)
 
 
 def template_var(template_file, template_vars, templar, searchpath):
@@ -158,7 +160,7 @@ def template(template_file, template_vars, templar, searchpath):
     """
 
     loader = templar._loader
-    template_file_path = loader.path_dwim_relative_stack(searchpath, 'templates', template_file)
+    template_file_path = loader.path_dwim_relative_stack(searchpath, "templates", template_file)
     j2template, dummy = loader._get_file_contents(template_file_path)
     j2template = to_text(j2template)
 
@@ -192,7 +194,7 @@ def compile_searchpath(searchpath: list):
 
     newsearchpath = []
     for p in searchpath:
-        newsearchpath.append(os.path.join(p, 'templates'))
+        newsearchpath.append(os.path.join(p, "templates"))
         newsearchpath.append(p)
     return newsearchpath
 
@@ -236,12 +238,7 @@ def get_item(list_of_dicts: list, key, value, default=None, required=False, case
     if var_name is None:
         var_name = key
 
-    if (
-        (not isinstance(list_of_dicts, list))
-        or list_of_dicts == []
-        or value is None
-        or key is None
-    ):
+    if (not isinstance(list_of_dicts, list)) or list_of_dicts == [] or value is None or key is None:
         if required is True:
             raise AristaAvdMissingVariableError(var_name)
         return default
@@ -292,7 +289,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
     if org_path is None:
         org_path = path
 
-    path_elements = str(path).split('.')
+    path_elements = str(path).split(".")
     if isinstance(data, list):
         output = []
         for data_item in data:
@@ -310,7 +307,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
             return []
 
         if len(path_elements) > 1:
-            return get_all(value, '.'.join(path_elements[1:]), required=required, org_path=org_path)
+            return get_all(value, ".".join(path_elements[1:]), required=required, org_path=org_path)
 
         else:
             return [value]

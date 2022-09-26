@@ -5,8 +5,9 @@
 __metaclass__ = type
 
 import hashlib
-from ansible.module_utils._text import to_native
+
 from ansible.errors import AnsibleFilterError
+from ansible.module_utils._text import to_native
 
 PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 
@@ -24,9 +25,7 @@ def get_hash_object(auth_type: str) -> hashlib._hashlib.HASH:
     try:
         return hashlib.new(auth)
     except ValueError:
-        raise AnsibleFilterError(
-            to_native((f"{auth_type} is not a valid Auth algorithm for SNMPv3"))
-        ) from ValueError
+        raise AnsibleFilterError(to_native(f"{auth_type} is not a valid Auth algorithm for SNMPv3")) from ValueError
 
 
 def key_from_passphrase(passphrase: str, auth_type: str) -> str:
@@ -59,9 +58,7 @@ def key_from_passphrase(passphrase: str, auth_type: str) -> str:
     return hash_object.hexdigest()
 
 
-def localize_passphrase(
-    passphrase: str, auth_type: str, engine_id: str, priv_type: str = None
-) -> str:
+def localize_passphrase(passphrase: str, auth_type: str, engine_id: str, priv_type: str = None) -> str:
     """
     Key localization as described in RFC 2574, section 2.6
     https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6
@@ -88,9 +85,7 @@ def localize_passphrase(
     try:
         hash_object.update(key + bytes.fromhex(engine_id) + key)
     except ValueError as error:
-        raise AnsibleFilterError(
-            f"engine ID {engine_id} is not an hexadecimal string"
-        ) from error
+        raise AnsibleFilterError(f"engine ID {engine_id} is not an hexadecimal string") from error
     localized_key = hash_object.hexdigest()
     if priv_type is not None:
         try:
@@ -101,9 +96,7 @@ def localize_passphrase(
             # Truncate ithe key if required
             localized_key = localized_key[: PRIV_KEY_LENGTH[priv_type] // 4]
         except KeyError as error:
-            raise AnsibleFilterError(
-                f"{priv_type} is not a valid Priv algorithm for SNMPv3"
-            ) from error
+            raise AnsibleFilterError(f"{priv_type} is not a valid Priv algorithm for SNMPv3") from error
     return localized_key
 
 

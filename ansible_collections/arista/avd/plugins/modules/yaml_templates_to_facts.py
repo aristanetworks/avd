@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: yaml_templates_to_facts
 version_added: "1.0.0"
@@ -83,9 +83,9 @@ options:
       This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 # tasks file for configlet_build_config
 - name: Generate device configuration in structured format
   yaml_templates_to_facts:
@@ -105,4 +105,4 @@ EXAMPLES = r'''
           strip_empty_keys: false
   check_mode: no
   changed_when: False
-'''
+"""

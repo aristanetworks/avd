@@ -16,7 +16,8 @@
 # limitations under the License.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 
@@ -41,7 +42,15 @@ def strip_null_from_data(data, strip_values_tuple=(None,)):
     return data
 
 
-def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {},)):
+def strip_empties_from_list(
+    data,
+    strip_values_tuple=(
+        None,
+        "",
+        [],
+        {},
+    ),
+):
     """
     strip_empties_from_list Remove entries with null value from a list
 
@@ -68,7 +77,15 @@ def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {},)):
     return new_data
 
 
-def strip_empties_from_dict(data, strip_values_tuple=(None, "", [], {},)):
+def strip_empties_from_dict(
+    data,
+    strip_values_tuple=(
+        None,
+        "",
+        [],
+        {},
+    ),
+):
     """
     strip_empties_from_dict Remove entries with null value from a dict
 

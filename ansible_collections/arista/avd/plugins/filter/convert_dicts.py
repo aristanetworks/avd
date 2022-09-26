@@ -1,7 +1,8 @@
 #
 # def arista.avd.convert_dicts
 #
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 
@@ -53,7 +54,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     any
         Returns list of dictionaries or input variable untouched if not a nested dictionary/list.
     """
-    if not isinstance(dictionary, (dict, list)) or os.environ.get('AVD_DISABLE_CONVERT_DICTS'):
+    if not isinstance(dictionary, (dict, list)) or os.environ.get("AVD_DISABLE_CONVERT_DICTS"):
         # Not a dictionary/list, return the original
         return dictionary
     elif isinstance(dictionary, list):
@@ -90,5 +91,5 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
 class FilterModule(object):
     def filters(self):
         return {
-            'convert_dicts': convert_dicts,
+            "convert_dicts": convert_dicts,
         }

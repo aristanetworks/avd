@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: eos_designs_facts
 version_added: "3.5.0"
@@ -37,13 +37,13 @@ options:
       - Calculate and set 'avd_switch_facts.<devices>.switch', 'avd_overlay_peers' and 'avd_topology_peers' facts
     required: False
     type: bool
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
     avd_switch_facts: True
   check_mode: False
   run_once: True
-'''
+"""

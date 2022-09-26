@@ -19,24 +19,32 @@ repos:
   #   hooks:
   #   -   id: autopep8
 
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: Check for changes when running isort on all python files
+
+  - repo: https://github.com/psf/black
+    rev: 22.8.0
+    hooks:
+      - id: black
+        name: Check for changes when running Black on all python files
+
   - repo: https://github.com/pycqa/flake8
-    rev: 4.0.1  # Note ansible-test uses pycodestyle 2.8.0 which is part of this tagged release of flake8
+    rev: 4.0.1 # Note ansible-test uses pycodestyle 2.8.0 which is part of this tagged release of flake8
     hooks:
       - id: flake8
-        name: Check for PEP8 error on Python files
+        name: Check for Flake8 errors on Python files
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
-        args:
-          - --ignore=E402,W503,W504,E741
-          - --max-line-length=160
-          - --config=/dev/null
         types: [python]
 
   - repo: https://github.com/pycqa/pylint
-    rev: 'pylint-2.6.0'
+    rev: "pylint-2.6.0"
     hooks:
       - id: pylint # Use pylintrc file in repository
-        name: Check for Linting error on Python files
+        name: Check for Linting errors on Python files
         description: This hook runs pylint.
         types: [python]
         args:
@@ -44,10 +52,10 @@ repos:
           - -d duplicate-code
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: 'v1.23.0'
+    rev: "v1.23.0"
     hooks:
       - id: yamllint
-        name: Check for Linting error on YAML files
+        name: Check for Linting errors on YAML files
         description: This hook runs yamllint.
         entry: yamllint
         language: python
@@ -58,11 +66,13 @@ repos:
     rev: "v0.1.0-alpha"
     hooks:
       - id: j2lint
+        name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.1
     hooks:
       - id: markdownlint
+        name: Check for Linting errors on MarkDown files
         args:
           - --config=.github/.markdownlint.yaml
           - --ignore-path=.github/.markdownlintignore

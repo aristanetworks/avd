@@ -1,18 +1,19 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import copy
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA
 
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 try:
-    import jsonschema.validators
-    import jsonschema._validators
-    import jsonschema._types
-    import jsonschema.protocols
     import jsonschema
+    import jsonschema._types
+    import jsonschema._validators
+    import jsonschema.protocols
+    import jsonschema.validators
 except ImportError as imp_exc:
     JSONSCHEMA_IMPORT_ERROR = imp_exc
 else:
@@ -27,9 +28,9 @@ else:
 
 
 def _keys(validator, keys: dict, instance: dict, schema: dict):
-    '''
+    """
     This function performs conversion on each key with the relevant subschema
-    '''
+    """
     if not validator.is_type(instance, "object"):
         return
 
@@ -44,7 +45,7 @@ def _keys(validator, keys: dict, instance: dict, schema: dict):
 
     # Compile "dynamic_keys"
     dynamic_keys = {}
-    schema_dynamic_keys = schema.get('dynamic_keys', {})
+    schema_dynamic_keys = schema.get("dynamic_keys", {})
     for dynamic_key, childschema in schema_dynamic_keys.items():
         resolved_keys = get_all(instance, dynamic_key)
         for resolved_key in resolved_keys:
@@ -54,13 +55,13 @@ def _keys(validator, keys: dict, instance: dict, schema: dict):
 
 
 def _resolve_and_convert_keys(validator, keys: dict, instance: dict, schema: dict):
-    '''
+    """
     This function is run from _keys() and should not be run elsewhere
 
     First time with regular keys, and next with resolved dynamic_keys
     We run through all the regular keys first, to ensure that all data has been converted
     in case some of it is referenced in "dynamic_keys"
-    '''
+    """
 
     # Run over each child key and perform resolving of $ref, data conversion before
     # descending into conversion of the child schema
@@ -92,9 +93,9 @@ def _resolve_and_convert_keys(validator, keys: dict, instance: dict, schema: dic
 
 
 def _items(validator, items: dict, instance: list, schema: dict):
-    '''
+    """
     This function performs conversion on each item with the items subschema
-    '''
+    """
     if not validator.is_type(instance, "array"):
         return
 
@@ -127,7 +128,7 @@ def _items(validator, items: dict, instance: list, schema: dict):
 
 
 def _ref(validator, ref: str, instance, schema: dict):
-    '''
+    """
     This function resolves the $ref referenced schema,
     then merges with any schema defined at the same level
     Then performs validation on the resolved+merged schema.
@@ -135,7 +136,7 @@ def _ref(validator, ref: str, instance, schema: dict):
     Since this will run all validation tasks on the same level,
     a check for $ref has been added to the other validators, to
     avoid duplicate validation (and duplicate errors)
-    '''
+    """
     scope, resolved = validator.resolver.resolve(ref)
     validator.resolver.push_scope(scope)
     merged_schema = copy.deepcopy(resolved)
@@ -148,14 +149,14 @@ def _ref(validator, ref: str, instance, schema: dict):
 
 
 def _convert_types(validator, convert_types: list, instance, schema: dict):
-    '''
+    """
     This function performs type convertion if necessary on a single data instance.
     It is invoked for child keys during "keys" conversion and for child items during
     "items" conversion
     Returns the converted value is returned to the calling converter.
     Any convertion errors are ignored and the original value is returned
-    '''
-    schema_type = schema.get('type')
+    """
+    schema_type = schema.get("type")
     # Skip conversion if the value is of the correct type already
     if validator.is_type(instance, schema_type):
         return instance
@@ -176,11 +177,7 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
                     converted_instance = instance
                     pass
                 return converted_instance
-            elif (
-                convert_type == "dict"
-                and schema_type == "list"
-                and "primary_key" in schema
-            ):
+            elif convert_type == "dict" and schema_type == "list" and "primary_key" in schema:
                 try:
                     converted_instance = convert_dicts(instance, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                 except Exception:
@@ -191,35 +188,33 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
     return instance
 
 
-'''
+"""
 AvdDataConverter is used to convert AVD Data Types based on schema options.
 We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
 since the same TypeChecker is used by the converters themselves.
-'''
+"""
 if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
     AvdDataConverter = None
 else:
     AvdDataConverter = jsonschema.validators.create(
         meta_schema=AVD_META_SCHEMA,
-        validators={
-            "$ref": _ref,
-            "items": _items,
-            "keys": _keys
-        },
-        type_checker=jsonschema.TypeChecker({
-            "any": jsonschema._types.is_any,
-            "array": jsonschema._types.is_array,
-            "boolean": jsonschema._types.is_bool,
-            "integer": jsonschema._types.is_integer,
-            "object": jsonschema._types.is_object,
-            "null": jsonschema._types.is_null,
-            "None": jsonschema._types.is_null,
-            "number": jsonschema._types.is_number,
-            "string": jsonschema._types.is_string,
-            "dict": jsonschema._types.is_object,
-            "str": jsonschema._types.is_string,
-            "bool": jsonschema._types.is_bool,
-            "list": jsonschema._types.is_array,
-            "int": jsonschema._types.is_integer,
-        })
+        validators={"$ref": _ref, "items": _items, "keys": _keys},
+        type_checker=jsonschema.TypeChecker(
+            {
+                "any": jsonschema._types.is_any,
+                "array": jsonschema._types.is_array,
+                "boolean": jsonschema._types.is_bool,
+                "integer": jsonschema._types.is_integer,
+                "object": jsonschema._types.is_object,
+                "null": jsonschema._types.is_null,
+                "None": jsonschema._types.is_null,
+                "number": jsonschema._types.is_number,
+                "string": jsonschema._types.is_string,
+                "dict": jsonschema._types.is_object,
+                "str": jsonschema._types.is_string,
+                "bool": jsonschema._types.is_bool,
+                "list": jsonschema._types.is_array,
+                "int": jsonschema._types.is_integer,
+            }
+        ),
     )

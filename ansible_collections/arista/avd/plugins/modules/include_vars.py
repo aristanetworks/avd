@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: include_vars
 version_added: "3.8.0"
@@ -32,9 +32,9 @@ description:
     with structured_config or the automatic input variable conversion.
 
     Ref. https://github.com/ansible/ansible/blob/v2.13.3/lib/ansible/plugins/strategy/__init__.py#L738
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - arista.avd.include_vars:
     file: "{{ filename }}"
-'''
+"""

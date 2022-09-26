@@ -1,7 +1,7 @@
-import os
 import json
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+import os
 
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:
@@ -9,7 +9,7 @@ with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:
 
 
 class AvdToJsonSchemaConverter:
-    '''
+    """
     This class will convert the proprietary AVD Schema to JSON Schema
 
     A few keywords are converted as part of another keyword, simply because
@@ -23,7 +23,8 @@ class AvdToJsonSchemaConverter:
     - "dynamic_keys" based on values of data
     - "dynamic_valid_values" based on values of data
     - Most options under str "format"
-    '''
+    """
+
     def __init__(self, avdschema: AvdSchema):
         self.avdschema = avdschema
         self.converters = {
@@ -60,42 +61,42 @@ class AvdToJsonSchemaConverter:
 
     def convert_type(self, type: str, parent_schema: dict) -> dict:
         TYPE_MAP = {
-            'str': 'string',
-            'int': 'integer',
-            'bool': 'boolean',
-            'list': 'array',
-            'dict': 'object',
+            "str": "string",
+            "int": "integer",
+            "bool": "boolean",
+            "list": "array",
+            "dict": "object",
         }
-        return {'type': TYPE_MAP[type]}
+        return {"type": TYPE_MAP[type]}
 
     def convert_keys(self, keys: dict, parent_schema: dict) -> dict:
-        output = {'properties': {}}
+        output = {"properties": {}}
         required = []
         for key in keys:
-            output['properties'][key] = self.convert_schema(keys[key])
+            output["properties"][key] = self.convert_schema(keys[key])
 
             # Add an auto-generated title in case one is not set
-            if 'title' not in output['properties'][key]:
-                output['properties'][key]['title'] = str(key).replace('_', ' ').title()
+            if "title" not in output["properties"][key]:
+                output["properties"][key]["title"] = str(key).replace("_", " ").title()
 
-            if keys[key].get('required') is True:
+            if keys[key].get("required") is True:
                 required.append(key)
 
         if required:
-            output['required'] = required
+            output["required"] = required
 
-        output['additionalProperties'] = parent_schema.get('allow_other_keys', False)
+        output["additionalProperties"] = parent_schema.get("allow_other_keys", False)
 
         return output
 
     def convert_max(self, max: int, parent_schema: dict) -> dict:
-        return {'maximum': max}
+        return {"maximum": max}
 
     def convert_min(self, min: int, parent_schema: dict) -> dict:
-        return {'minimum': min}
+        return {"minimum": min}
 
     def convert_valid_values(self, valid_values: list, parent_schema: dict) -> dict:
-        return {'enum': valid_values}
+        return {"enum": valid_values}
 
     def convert_format(self, format: str, parent_schema: dict) -> dict:
         FORMAT_MAP = {
@@ -110,42 +111,42 @@ class AvdToJsonSchemaConverter:
         if (newformat := FORMAT_MAP[format]) is None:
             return {}
 
-        return {'format': newformat}
+        return {"format": newformat}
 
     def convert_max_length(self, max: int, parent_schema: dict) -> dict:
-        vartype = parent_schema['type']
-        if vartype == 'str':
-            return {'maxLength': max}
-        if vartype == 'list':
-            return {'maxItems': max}
+        vartype = parent_schema["type"]
+        if vartype == "str":
+            return {"maxLength": max}
+        if vartype == "list":
+            return {"maxItems": max}
         return {}
 
     def convert_min_length(self, min: int, parent_schema: dict) -> dict:
-        vartype = parent_schema['type']
-        if vartype == 'str':
-            return {'minLength': min}
-        if vartype == 'list':
-            return {'minItems': min}
+        vartype = parent_schema["type"]
+        if vartype == "str":
+            return {"minLength": min}
+        if vartype == "list":
+            return {"minItems": min}
         return {}
 
     def convert_pattern(self, pattern: str, parent_schema: dict) -> dict:
-        return {'pattern': pattern}
+        return {"pattern": pattern}
 
     def convert_default(self, default, parent_schema: dict) -> dict:
-        return {'default': default}
+        return {"default": default}
 
     def convert_items(self, items: dict, parent_schema: dict) -> dict:
-        output = {'items': {}}
-        output['items'] = self.convert_schema(items)
-        if (primary_key := parent_schema.get('primary_key')) and output['items']['type'] == 'dict':
-            output['items']['keys'][primary_key]['required'] = True
+        output = {"items": {}}
+        output["items"] = self.convert_schema(items)
+        if (primary_key := parent_schema.get("primary_key")) and output["items"]["type"] == "dict":
+            output["items"]["keys"][primary_key]["required"] = True
         return output
 
     def convert_display_name(self, display_name: str, parent_schema: dict) -> dict:
-        return {'title': display_name}
+        return {"title": display_name}
 
     def convert_description(self, description: str, parent_schema: dict) -> dict:
-        return {'description': description}
+        return {"description": description}
 
     def convert_ref(self, ref: str, parent_schema: dict) -> dict:
-        return {'$ref': ref}
+        return {"$ref": ref}

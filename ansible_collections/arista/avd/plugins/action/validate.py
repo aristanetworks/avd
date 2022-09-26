@@ -1,12 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import copy
-from ansible.plugins.action import ActionBase
+
 from ansible.errors import AnsibleActionFail
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
+from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
 
 VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug"]
 VALID_VALIDATION_MODES = ["disabled", "error", "warning", "info", "debug"]
@@ -33,21 +35,19 @@ class ActionModule(ActionBase):
         if not isinstance(conversion_mode, str):
             raise AnsibleActionFail("The argument 'conversion_mode' must be a string")
         if conversion_mode not in VALID_CONVERSION_MODES:
-            raise AnsibleActionFail(f"Invalid value '{conversion_mode}' for the argument 'conversion_mode'."
-                                    f"Must be one of {VALID_CONVERSION_MODES}")
+            raise AnsibleActionFail(f"Invalid value '{conversion_mode}' for the argument 'conversion_mode'.Must be one of {VALID_CONVERSION_MODES}")
 
         validation_mode = self._task.args.get("validation_mode", "warning")
         if not isinstance(validation_mode, str):
             raise AnsibleActionFail("The argument 'validation_mode' must be a string")
         if validation_mode not in VALID_VALIDATION_MODES:
-            raise AnsibleActionFail(f"Invalid value '{validation_mode}' for the argument 'validation_mode'."
-                                    f"Must be one of {VALID_VALIDATION_MODES}")
+            raise AnsibleActionFail(f"Invalid value '{validation_mode}' for the argument 'validation_mode'.Must be one of {VALID_VALIDATION_MODES}")
 
         # ########
         # BUILD DATA FROM HOSTVARS AND DEFAULT_VARS
-        hostname = task_vars['inventory_hostname']
+        hostname = task_vars["inventory_hostname"]
         data = self._templar.template(self._task._role.get_default_vars())
-        data.update(task_vars['hostvars'].get(hostname))
+        data.update(task_vars["hostvars"].get(hostname))
 
         try:
             avd_schema = AvdSchema(schema)
@@ -68,10 +68,10 @@ class ActionModule(ActionBase):
                 # Idempotency checks fail when we set the changed flag on auto upgrade.
                 # Uncomment this when all data models and molecule tests have been updated.
                 # result['changed'] = True
-                result.setdefault('ansible_facts', {})
+                result.setdefault("ansible_facts", {})
                 for key, value in data.items():
                     if key not in preconversion_data or value != preconversion_data[key]:
-                        result['ansible_facts'][key] = value
+                        result["ansible_facts"][key] = value
             if conversion_counter:
                 result_messages.append(f"{conversion_counter} conversions done. Check converted facts with -v or -vvv.")
 
@@ -82,14 +82,14 @@ class ActionModule(ActionBase):
             exceptions = self.validate_data(data, avd_schema)
             validation_counter = self.handle_exceptions(exceptions, validation_mode, hostname)
             if validation_counter and validation_mode == "error":
-                result['failed'] = True
+                result["failed"] = True
             if validation_counter:
                 result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")
 
         # ########
         # RETURN RESULTS
         if result_messages:
-            result['msg'] = " ".join(result_messages)
+            result["msg"] = " ".join(result_messages)
 
         return result
 

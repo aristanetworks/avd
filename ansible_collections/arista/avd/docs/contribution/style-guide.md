@@ -1,12 +1,27 @@
 # AVD Coding Style
 
-This page provides a list of guidelines to apply when developing the Jinja2 template in the AVD context. These rules apply for either creation or update of any Jinja2 file available in a `aristanetworks/ansible-avd` repository.
+This page provides a list of guidelines to apply when developing Python code or Jinja2 template in the AVD context. These rules apply for either creation or update of any Python or Jinja2 file available in a `aristanetworks/ansible-avd` repository.
 
 ## Python code style
 
 As AVD is an Ansible collection, we're required to follow guidelines from the official [Ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
 
-## YAML Syntax guidelines
+Furthermore the CI Pipeline (& pre-commit) for AVD enforces:
+
+- Maximum line length 160
+- [Black](https://black.readthedocs.io/en/stable/index.html) version 22.8.0
+- [isort](https://pycqa.github.io/isort/) version 5.10.1
+- [Flake-8](https://flake8.pycqa.org/en/4.0.1/index.html) version 4.0.1
+- [pylint](https://pylint.pycqa.org/en/2.6/) version 2.6.0
+
+Configurations for above tools can be found in:
+
+- [pyproject.toml](https://github.com/aristanetworks/ansible-avd/blob/devel/pyproject.toml)
+- [.pre-commit-config.yaml](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml)
+- [.flake8](https://github.com/aristanetworks/ansible-avd/blob/devel/.flake8)
+- [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc)
+
+## Jinja2 Syntax guidelines
 
 ### SYNTAX-1 - Use variable in Jinja
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: validate
 version_added: "3.7.0"
@@ -57,9 +57,9 @@ options:
     default: "warning"
     type: str
     choices: [ "error", "warning", "info", "debug", "disabled" ]
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Validate input vars according to AVD eos_designs schema
   tags: [validate]
   arista.avd.validate:
@@ -67,4 +67,4 @@ EXAMPLES = r'''
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
   delegate_to: localhost
-'''
+"""

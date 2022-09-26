@@ -1,12 +1,15 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import cProfile
 import pstats
 from collections import ChainMap
+
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 from ansible.template import Templar
+
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError
 
@@ -24,26 +27,28 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
-        set_avd_switch_facts = self._task.args.get('avd_switch_facts', False)
+        set_avd_switch_facts = self._task.args.get("avd_switch_facts", False)
 
-        groups = task_vars.get('groups', {})
-        fabric_name = self._templar.template(task_vars.get('fabric_name', ''))
+        groups = task_vars.get("groups", {})
+        fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
         fabric_hosts = groups.get(fabric_name, [])
-        ansible_play_hosts_all = task_vars.get('ansible_play_hosts_all', [])
+        ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
         # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
-            raise AnsibleActionFail("Invalid/missing 'fabric_name' variable."
-                                    "All hosts in the play must have the same 'fabric_name' value"
-                                    "which must point to an Ansible Group containing the hosts.")
+            raise AnsibleActionFail(
+                "Invalid/missing 'fabric_name' variable."
+                "All hosts in the play must have the same 'fabric_name' value"
+                "which must point to an Ansible Group containing the hosts."
+            )
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
-        hostvars = task_vars['hostvars']
+        hostvars = task_vars["hostvars"]
 
         # Caveat: Since we load default vars only once, it will be templated based on the vars of the random host triggering this task
         #         This should not be too bad, since all hosts are within the same fabric - hence they should also use the same "design"
         default_vars = self._templar.template(self._task._role.get_default_vars())
-        default_vars['ansible_search_path'] = task_vars.get('ansible_search_path')
+        default_vars["ansible_search_path"] = task_vars.get("ansible_search_path")
 
         if set_avd_switch_facts:
             avd_overlay_peers = {}
@@ -53,33 +58,33 @@ class ActionModule(ActionBase):
             avd_switch_facts = self.render_avd_switch_facts(avd_switch_facts_instances)
 
             for host in fabric_hosts:
-                host_evpn_route_servers = avd_switch_facts[host]['switch'].get('evpn_route_servers', [])
+                host_evpn_route_servers = avd_switch_facts[host]["switch"].get("evpn_route_servers", [])
                 for peer in host_evpn_route_servers:
                     avd_overlay_peers.setdefault(peer, []).append(host)
 
-                host_mpls_route_reflectors = avd_switch_facts[host]['switch'].get('mpls_route_reflectors', [])
+                host_mpls_route_reflectors = avd_switch_facts[host]["switch"].get("mpls_route_reflectors", [])
                 for peer in host_mpls_route_reflectors:
                     avd_overlay_peers.setdefault(peer, []).append(host)
 
-                host_topology_peers = avd_switch_facts[host]['switch'].get('uplink_peers', [])
+                host_topology_peers = avd_switch_facts[host]["switch"].get("uplink_peers", [])
 
                 for peer in host_topology_peers:
                     avd_topology_peers.setdefault(peer, []).append(host)
 
-            result['ansible_facts'] = {}
-            result['ansible_facts']['avd_switch_facts'] = avd_switch_facts
-            result['ansible_facts']['avd_overlay_peers'] = avd_overlay_peers
-            result['ansible_facts']['avd_topology_peers'] = avd_topology_peers
+            result["ansible_facts"] = {}
+            result["ansible_facts"]["avd_switch_facts"] = avd_switch_facts
+            result["ansible_facts"]["avd_overlay_peers"] = avd_overlay_peers
+            result["ansible_facts"]["avd_topology_peers"] = avd_topology_peers
 
         if cprofile_file:
             profiler.disable()
-            stats = pstats.Stats(profiler).sort_stats('cumtime')
+            stats = pstats.Stats(profiler).sort_stats("cumtime")
             stats.dump_stats(cprofile_file)
 
         return result
 
     def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, default_vars: dict):
-        '''
+        """
         Create "avd_switch_facts_instances" dictionary
 
         Parameters
@@ -99,7 +104,7 @@ class ActionModule(ActionBase):
             hostname2 : dict
                 switch : <EosDesignsFacts object>,
             ...
-        '''
+        """
         avd_switch_facts = {}
         for host in fabric_hosts:
             # Using ChainMap to avoid copying data between defaults, hostvars and local template_vars
@@ -108,16 +113,11 @@ class ActionModule(ActionBase):
             templar = Templar(variables={}, loader=self._loader)
             # Add reference to dict "avd_switch_facts".
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
-            host_hostvars['avd_switch_facts'] = avd_switch_facts
-            avd_switch_facts[host] = {
-                "switch": EosDesignsFacts(
-                    hostvars=host_hostvars,
-                    templar=templar
-                )
-            }
+            host_hostvars["avd_switch_facts"] = avd_switch_facts
+            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=templar)}
             # Add reference to EosDesignsFacts object inside hostvars.
             # This is used to allow templates to access the facts object directly with "switch.*"
-            host_hostvars['switch'] = avd_switch_facts[host]['switch']
+            host_hostvars["switch"] = avd_switch_facts[host]["switch"]
 
         return avd_switch_facts
 
@@ -140,7 +140,7 @@ class ActionModule(ActionBase):
         rendered_facts = {}
         try:
             for host in avd_switch_facts_instances:
-                rendered_facts[host] = {"switch": avd_switch_facts_instances[host]['switch'].render()}
+                rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
         except AristaAvdMissingVariableError as e:
             raise AnsibleActionFail(f"{e} is required but was not found for host '{host}'") from e
         return rendered_facts
