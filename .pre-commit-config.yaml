@@ -36,11 +36,6 @@ repos:
         name: Check for PEP8 error on Python files
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
-        args:
-          - --ignore=E402,W503,W504,E741
-          - --extend-ignore=E203 # Required for compatibility with Black
-          - --max-line-length=160
-          - --config=/dev/null
         types: [python]
 
   - repo: https://github.com/pycqa/pylint
