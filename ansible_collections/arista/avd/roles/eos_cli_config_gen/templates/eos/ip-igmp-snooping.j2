@@ -23,7 +23,7 @@ no ip igmp snooping fast-leave
 ip igmp snooping fast-leave
 {%         endif %}
 {%         if ip_igmp_snooping.vlans is arista.avd.defined %}
-{%             for vlan in ip_igmp_snooping.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort('id') %}
 {%                 if vlan.enabled is arista.avd.defined(false) %}
 no ip igmp snooping vlan {{ vlan.id }}
 {%                 elif vlan.enabled is arista.avd.defined(true) %}
