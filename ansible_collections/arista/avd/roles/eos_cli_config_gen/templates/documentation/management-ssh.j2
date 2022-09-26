@@ -55,7 +55,7 @@
 
 | VRF | Status |
 | --- | ------ |
-{%         for vrf in management_ssh.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in management_ssh.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.enable %}
 {%                 set status = 'Enabled' %}
 {%             else %}
