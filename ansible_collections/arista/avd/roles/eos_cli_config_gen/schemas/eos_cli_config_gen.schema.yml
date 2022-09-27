@@ -1376,6 +1376,21 @@ keys:
                 is often a good idea to import the config from a file.
 
                 Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+  virtual_source_nat_vrfs:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: Virtual Source NAT
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          display_name: VRF Name
+        ip_address:
+          type: str
+          display_name: IPv4 Address
   vlan_internal_order:
     type: dict
     display_name: Internal VLAN Order
