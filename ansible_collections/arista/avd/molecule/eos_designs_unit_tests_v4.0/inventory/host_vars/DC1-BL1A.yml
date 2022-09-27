@@ -27,3 +27,7 @@ event_handlers:
   trigger: on-logging
   regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
   asynchronous: true
+
+# Test Mac address table variables
+mac_address_table:
+  aging_time: 42
