@@ -642,7 +642,7 @@ class EosDesignsFacts(AvdFacts):
                         vlans.extend(map(int, range_expand(str(adapter_settings["vlans"]))))
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
-                    elif "trunk" in adapter_settings.get("mode"):
+                    elif "trunk" in adapter_settings.get("mode", ""):
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
                         else:
@@ -685,7 +685,7 @@ class EosDesignsFacts(AvdFacts):
                     vlans.extend(map(int, range_expand(str(adapter_settings["vlans"]))))
                     if adapter_settings.get("trunk_groups"):
                         trunk_groups.extend(adapter_settings["trunk_groups"])
-                elif "trunk" in adapter_settings.get("mode"):
+                elif "trunk" in adapter_settings.get("mode", ""):
                     if adapter_settings.get("trunk_groups"):
                         trunk_groups.extend(adapter_settings["trunk_groups"])
                     else:
