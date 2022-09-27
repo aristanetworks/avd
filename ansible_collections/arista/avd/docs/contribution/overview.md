@@ -14,6 +14,7 @@ The following individuals are on the AVD Core Team:
 - Claus Holbech ([@ClausHolbechArista](https://github.com/ClausHolbechArista))
 - Tony Goda ([@tgodaA](https://github.com/tgodaA))
 - Julio Perez ([@JulioPDX](https://github.com/JulioPDX))
+- Guillaume Mulocher ([@gmuloc](https://github.com/gmuloc))
 
 ## Contributing
 
