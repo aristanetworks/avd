@@ -101,9 +101,11 @@ changelog:
         - 'rn: Refactor!'
         - 'rn: Bump!'
     - title: Fixed issues in eos_cli_config_gen
-      labels: 'rn: Fix(eos_cli_config_gen)'
+      labels:
+        - 'rn: Fix(eos_cli_config_gen)'
     - title: Fixed issues in eos_designs
-      labels: 'rn: Fix(eos_designs)'
+      labels:
+        - 'rn: Fix(eos_designs)'
     - title: Other Fixed issues
       labels:
         - 'rn: Fix(build_output_folders)'
@@ -131,9 +133,11 @@ changelog:
         - 'rn: Doc(requirements)'
         - 'rn: Doc'
     - title: New features and enhancements in eos_cli_config_gen
-      labels: 'rn: Feat(eos_cli_config_gen)'
+      labels:
+        - 'rn: Feat(eos_cli_config_gen)'
     - title: New features and enhancements in eos_designs
-      labels: 'rn: Feat(eos_designs)'
+      labels:
+        - 'rn: Feat(eos_designs)'
     - title: Other new features and enhancements
       labels:
         - 'rn: Feat(build_output_folders)'
