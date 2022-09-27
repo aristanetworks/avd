@@ -505,7 +505,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         mac_address_table set based on mac_address_table data-model
         """
-        if aging_time := get(self._hostvars, "mac_address_table.aging_time") is not None:
+        if (aging_time := get(self._hostvars, "mac_address_table.aging_time")) is not None:
             return {"aging_time": aging_time}
         return None
 
