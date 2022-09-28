@@ -20,7 +20,7 @@ keys:
         shutdown:
           type: bool
         vrf:
-          type: str
+          type: str 
         arp_aging_timeout:
           type: int
           convert_types:
@@ -85,6 +85,10 @@ keys:
                 description: VRF where DHCP server can be reached
         ipv6_enable:
           type: bool
+        ipv6_virtual_router_addresses:
+          type: list
+          items:
+            type: str  
         ipv6_address:
           type: str
           description: IPv6 address/mask
@@ -141,6 +145,8 @@ keys:
                 - int
               no_autoconfig_flag:
                 type: bool
+        ip_router_virtual_address:
+          type: str        
         access_group_in:
           type: str
           description: IPv4 access-list name
@@ -408,6 +414,8 @@ keys:
         ip_attached_host_route_export:
           type: dict
           keys:
+            test:
+              type: int
             distance:
               type: int
               convert_types:

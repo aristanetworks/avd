@@ -80,7 +80,11 @@ interface {{ vlan_interface.name }}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_prefixes is arista.avd.defined %}
+<<<<<<< HEAD
 {%         for prefix in vlan_interface.ipv6_nd_prefixes %}
+=======
+{%         for prefix in vlan_interface.ipv6_nd_prefixes  %}
+>>>>>>> ea266059 (resolving errors)
 {%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
 {%             if prefix.valid_lifetime is arista.avd.defined %}
 {%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}

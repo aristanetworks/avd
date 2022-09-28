@@ -11411,6 +11411,15 @@
             "type": "boolean",
             "title": "IPv6 Enable"
           },
+          "ipv6_virtual_router_addresses": {
+            "type": "array",
+            "description": "New improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
+            "items": {
+              "type": "string",
+              "description": "IPv6 address or IPv6 address/mask"
+            },
+            "title": "IPv6 Virtual Router Addresses"
+          },
           "ipv6_address": {
             "type": "string",
             "description": "IPv6 address/mask",
@@ -11439,15 +11448,6 @@
             "type": "string",
             "description": "\"ipv6_virtual_router_address\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n",
             "title": "IPv6 Virtual Router Address"
-          },
-          "ipv6_virtual_router_addresses": {
-            "type": "array",
-            "description": "New improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
-            "items": {
-              "type": "string",
-              "description": "IPv6 address or IPv6 address/mask"
-            },
-            "title": "IPv6 Virtual Router Addresses"
           },
           "ipv6_nd_ra_disabled": {
             "type": "boolean",
@@ -11488,6 +11488,10 @@
               ]
             },
             "title": "IPv6 ND Prefixes"
+          },
+          "ip_router_virtual_address": {
+            "type": "string",
+            "title": "IP Router Virtual Address"
           },
           "access_group_in": {
             "type": "string",
@@ -11920,6 +11924,10 @@
           "ip_attached_host_route_export": {
             "type": "object",
             "properties": {
+              "test": {
+                "type": "integer",
+                "title": "Test"
+              },
               "distance": {
                 "type": "integer",
                 "minimum": 1,
