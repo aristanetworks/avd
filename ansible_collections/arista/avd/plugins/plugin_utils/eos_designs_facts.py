@@ -1631,7 +1631,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def overlay(self):
-        if self.evpn_role != "none" or self.mpls_overlay_role != "none":
+        if self.underlay_router and (self.evpn_role != "none" or self.mpls_overlay_role != "none"):
             if self.overlay_routing_protocol_address_family == "ipv6":
                 peering_address = self.ipv6_router_id
             else:
