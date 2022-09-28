@@ -257,6 +257,14 @@ class EosDesignsFacts(AvdFacts):
         return get(self._node_type_key_data, "vtep", default=False)
 
     @cached_property
+    def mpls_ler(self):
+        """
+        switch.mpls_ler set based on
+        node_type_keys.<node_type_key>.mpls_ler
+        """
+        return get(self._node_type_key_data, "mpls_ler", default=False)
+
+    @cached_property
     def ip_addressing(self):
         """
         switch.ip_addressing.* set based on
