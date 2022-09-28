@@ -88,7 +88,7 @@ keys:
         ipv6_virtual_router_addresses:
           type: list
           items:
-            type: str  
+            type: str
         ipv6_address:
           type: str
           description: IPv6 address/mask
@@ -146,7 +146,7 @@ keys:
               no_autoconfig_flag:
                 type: bool
         ip_router_virtual_address:
-          type: str        
+          type: str
         access_group_in:
           type: str
           description: IPv4 access-list name
