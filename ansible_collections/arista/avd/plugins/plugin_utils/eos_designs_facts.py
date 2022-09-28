@@ -1638,10 +1638,10 @@ class EosDesignsFacts(AvdFacts):
                 peering_address = self.router_id
             ler = get(self._node_type_key_data, "mpls_ler", default=False)
             vtep = get(self._node_type_key_data, "vtep", default=False)
-            evpn = "evpn" in self.overlay_address_families
+            evpn = "evpn" in self.overlay_address_families and self.evpn_role != "none"
             evpn_encapsulation = get(self._node_type_key_data, "default_evpn_encapsulation", default="vxlan")
-            vpn_ipv4 = "vpn-ipv4" in self.overlay_address_families
-            vpn_ipv6 = "vpn-ipv6" in self.overlay_address_families
+            vpn_ipv4 = "vpn-ipv4" in self.overlay_address_families and self.mpls_overlay_role != "none"
+            vpn_ipv6 = "vpn-ipv6" in self.overlay_address_families and self.mpls_overlay_role != "none"
 
             return {
                 "peering_address": peering_address,

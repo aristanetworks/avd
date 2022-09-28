@@ -1,7 +1,13 @@
   address_family_ipv4:
     peer_groups:
-      {{ overlay_data.overlay_peer_group.name }}:
+{% if overlay_data.mpls_overlay_peer_group is arista.avd.defined %}
+      {{ overlay_data.mpls_overlay_peer_group.name }}:
         activate: false
+{% endif %}
+{% if overlay_data.evpn_overlay_peer_group is arista.avd.defined %}
+      {{ overlay_data.evpn_overlay_peer_group.name }}:
+        activate: false
+{% endif %}
 {% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
       {{ overlay_data.rr_peers_peer_group.name }}:
         activate: false
