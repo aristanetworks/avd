@@ -41,6 +41,17 @@ network_ports:
     profile: pc
     description: PCs
 
+# Only creating network services required to test the filter "only_vlans_in_use" combined with network ports
+tenants:
+  TEST:
+    l2vlans:
+      # Vlan 100 will be configured on both devices since it is in use
+      100:
+        name: VLAN100_ON_L2LEAF_1_AND_2
+      # Vlan 200 will only be configured on L2LEAF_1 since it is not in use
+      200:
+        name: VLAN200_ON_L2LEAF_1_ONLY
+
 l2leaf:
   node_groups:
     mlag:
@@ -50,4 +61,6 @@ l2leaf:
         network-ports-tests.1:
           id: 1
         network-ports-tests-2:
+          filter:
+            only_vlans_in_use: true
           id: 2

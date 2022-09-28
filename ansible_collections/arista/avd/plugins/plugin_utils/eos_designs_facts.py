@@ -642,7 +642,7 @@ class EosDesignsFacts(AvdFacts):
                         vlans.extend(map(int, range_expand(str(adapter_settings["vlans"]))))
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
-                    elif "trunk" in adapter_settings.get("mode"):
+                    elif "trunk" in adapter_settings.get("mode", ""):
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
                         else:
@@ -664,6 +664,50 @@ class EosDesignsFacts(AvdFacts):
                                 vlans.append(int(subinterface["vlan_id"]))
                             elif "number" in subinterface:
                                 vlans.append(int(subinterface["number"]))
+
+        network_ports = get(self._hostvars, "network_ports", default=[])
+        for network_port_item in network_ports:
+            for switch_regex in network_port_item.get("switches", []):
+                # The match test is built on Python re.match which tests from the beginning of the string #}
+                # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
+                switch_regex = rf"^{switch_regex}$"
+                if not re.match(switch_regex, self.hostname):
+                    # Skip entry if no match
+                    continue
+
+                profile_name = network_port_item.get("profile")
+                adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
+                parent_profile_name = adapter_profile.get("parent_profile")
+                parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
+                adapter_settings = combine(parent_profile, adapter_profile, network_port_item, recursive=True, list_merge="replace")
+
+                if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
+                    vlans.extend(map(int, range_expand(str(adapter_settings["vlans"]))))
+                    if adapter_settings.get("trunk_groups"):
+                        trunk_groups.extend(adapter_settings["trunk_groups"])
+                elif "trunk" in adapter_settings.get("mode", ""):
+                    if adapter_settings.get("trunk_groups"):
+                        trunk_groups.extend(adapter_settings["trunk_groups"])
+                    else:
+                        # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
+                        # No need to check further, since the list is now containing all vlans.
+                        # The trunk group list may not be complete, but it will not matter, since we will
+                        # configure all vlans anyway.
+                        return list(range(1, 4094)), trunk_groups
+                else:
+                    # No vlans or mode defined so this is an access port with only vlan 1 allowed
+                    vlans.append(1)
+
+                if "native_vlan" in adapter_settings:
+                    vlans.append(int(adapter_settings["native_vlan"]))
+
+                if get(adapter_settings, "port_channel.subinterfaces"):
+                    for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
+                        if "vlan_id" in subinterface:
+                            vlans.append(int(subinterface["vlan_id"]))
+                        elif "number" in subinterface:
+                            vlans.append(int(subinterface["number"]))
+
         # At this point "vlans" contain the full list of vlans used by locally connected endpoints
         # Next we traverse any downstream L2 switches so ensure we can provide connectivity to any
         # vlans used by them.
