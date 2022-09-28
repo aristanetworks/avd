@@ -6119,7 +6119,7 @@
                 "title": "No Redistribute Routes"
               },
               "vlan": {
-                "type": "integer",
+                "type": "string",
                 "title": "VLAN"
               }
             },
@@ -6135,6 +6135,11 @@
               "id": {
                 "type": "integer",
                 "title": "VLAN ID"
+              },
+              "tenant": {
+                "type": "string",
+                "description": "Unused key set by eos_designs",
+                "title": "Tenant"
               },
               "rd": {
                 "type": "string",
@@ -7214,6 +7219,10 @@
                     "peer_filter": {
                       "type": "string",
                       "title": "Peer Filter"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "Description As String"
                     }
                   },
                   "additionalProperties": false

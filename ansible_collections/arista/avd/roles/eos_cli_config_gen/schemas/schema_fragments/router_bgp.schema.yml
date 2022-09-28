@@ -501,9 +501,9 @@ keys:
                 type: str
                 display_name: Host-Route
             vlan:
-              type: int
+              type: str
               convert_types:
-                - str
+                - int
       vlans:
         type: list
         primary_key: id
@@ -517,6 +517,9 @@ keys:
               convert_types:
                 - str
               display_name: VLAN ID
+            tenant:
+              type: str
+              description: Unused key set by eos_designs
             rd:
               type: str
               display_name: Route Distinguisher
@@ -1224,6 +1227,9 @@ keys:
                     display_name: Peer Group Name
                   peer_filter:
                     type: str
+                  description:
+                    type: str
+                    display_name: Description As String
             address_families:
               type: list
               primary_key: address_family
