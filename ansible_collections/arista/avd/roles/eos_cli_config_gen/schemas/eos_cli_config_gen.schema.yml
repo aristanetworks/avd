@@ -3891,8 +3891,11 @@ keys:
             peer_filter:
               type: str
               display_name: Name Of Peer-Filter
-              description: "peer_filter or remote_as is required but mutually exclusive.\
-                \ \nIf both are defined, peer_filter takes precedence\n"
+              description: 'peer_filter or remote_as is required but mutually exclusive.
+
+                If both are defined, peer_filter takes precedence
+
+                '
             remote_as:
               type: int
               convert_types:
@@ -4214,6 +4217,7 @@ keys:
         primary_key: source_protocol
         convert_types:
         - dict
+        - list
         items:
           type: dict
           keys:
@@ -4989,8 +4993,12 @@ keys:
                   peer_filter:
                     type: str
                     display_name: Name Of Peer-Filter
-                    description: "peer_filter or remote_as is required but mutually\
-                      \ exclusive. \nIf both are defined, peer_filter takes precedence\n"
+                    description: 'peer_filter or remote_as is required but mutually
+                      exclusive.
+
+                      If both are defined, peer_filter takes precedence
+
+                      '
                   remote_as:
                     type: int
                     convert_types:
@@ -5001,6 +5009,7 @@ keys:
               primary_key: source_protocol
               convert_types:
               - dict
+              - list
               items:
                 type: dict
                 keys:

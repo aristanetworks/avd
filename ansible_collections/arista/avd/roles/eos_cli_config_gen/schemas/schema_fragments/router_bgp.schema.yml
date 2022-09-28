@@ -90,7 +90,7 @@ keys:
               type: str
               display_name: Name Of Peer-Filter
               description: |
-                peer_filter or remote_as is required but mutually exclusive. 
+                peer_filter or remote_as is required but mutually exclusive.
                 If both are defined, peer_filter takes precedence
             remote_as:
               type: int
@@ -405,6 +405,7 @@ keys:
         primary_key: source_protocol
         convert_types:
           - dict
+          - list
         items:
           type: dict
           keys:
@@ -467,7 +468,7 @@ keys:
                     keys:
                       domain:
                         type: str
-                        valid_values: [ "remote", "all" ]
+                        valid_values: ["remote", "all"]
                       route_target:
                         type: str
                 export_evpn_domains:
@@ -477,7 +478,7 @@ keys:
                     keys:
                       domain:
                         type: str
-                        valid_values: [ "remote", "all" ]
+                        valid_values: ["remote", "all"]
                       route_target:
                         type: str
                 import_export_evpn_domains:
@@ -487,7 +488,7 @@ keys:
                     keys:
                       domain:
                         type: str
-                        valid_values: [ "remote", "all" ]
+                        valid_values: ["remote", "all"]
                       route_target:
                         type: str
             redistribute_routes:
@@ -524,7 +525,7 @@ keys:
               keys:
                 domain:
                   type: str
-                  valid_values: [ "remote", "all" ]
+                  valid_values: ["remote", "all"]
                 rd:
                   type: str
                   display_name: Route Distinguisher
@@ -551,7 +552,7 @@ keys:
                   keys:
                     domain:
                       type: str
-                      valid_values: [ "remote", "all" ]
+                      valid_values: ["remote", "all"]
                     route_target:
                       type: str
                 export_evpn_domains:
@@ -559,7 +560,7 @@ keys:
                   keys:
                     domain:
                       type: str
-                      valid_values: [ "remote", "all" ]
+                      valid_values: ["remote", "all"]
                     route_target:
                       type: str
                 import_export_evpn_domains:
@@ -567,7 +568,7 @@ keys:
                   keys:
                     domain:
                       type: str
-                      valid_values: [ "remote", "all" ]
+                      valid_values: ["remote", "all"]
                     route_target:
                       type: str
             redistribute_routes:
@@ -1157,7 +1158,7 @@ keys:
                     type: str
                     display_name: Name Of Peer-Filter
                     description: |
-                      peer_filter or remote_as is required but mutually exclusive. 
+                      peer_filter or remote_as is required but mutually exclusive.
                       If both are defined, peer_filter takes precedence
                   remote_as:
                     type: int
@@ -1169,6 +1170,7 @@ keys:
               primary_key: source_protocol
               convert_types:
                 - dict
+                - list
               items:
                 type: dict
                 keys:
@@ -1243,7 +1245,7 @@ keys:
                             valid_values: ["deny", "deny-in-out", "permit"]
                           direction_out_action:
                             type: str
-                            valid_values: [ "deny", "deny-in-out", "permit" ]
+                            valid_values: ["deny", "deny-in-out", "permit"]
                       additional_paths:
                         type: list
                         items:

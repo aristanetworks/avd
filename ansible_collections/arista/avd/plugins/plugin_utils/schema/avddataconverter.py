@@ -3,17 +3,19 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import copy
-
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import (
+    AVD_META_SCHEMA,
+)
+
 
 try:
-    import jsonschema
-    import jsonschema._types
-    import jsonschema._validators
-    import jsonschema.protocols
     import jsonschema.validators
+    import jsonschema._validators
+    import jsonschema._types
+    import jsonschema.protocols
+    import jsonschema
 except ImportError as imp_exc:
     JSONSCHEMA_IMPORT_ERROR = imp_exc
 else:
@@ -81,7 +83,9 @@ def _resolve_and_convert_keys(validator, keys: dict, instance: dict, schema: dic
 
         # Perform type conversion of the instance data for the child key if required based on "convert_types"
         if "convert_types" in childschema:
-            instance[key] = _convert_types(validator, childschema["convert_types"], instance[key], childschema)
+            instance[key] = _convert_types(
+                validator, childschema["convert_types"], instance[key], childschema
+            )
 
         # Descend to the child schema with instance data for the child key.
         yield from validator.descend(
@@ -115,7 +119,9 @@ def _items(validator, items: dict, instance: list, schema: dict):
     # Perform type conversion of instance items if required based on "convert_types"
     if "convert_types" in items:
         for index, instance_item in enumerate(instance):
-            instance[index] = _convert_types(validator, items["convert_types"], instance_item, items)
+            instance[index] = _convert_types(
+                validator, items["convert_types"], instance_item, items
+            )
 
     # Perform regular validation of child elements.
     # Using schema ["items"] to use the original schema instead of the $ref merged one.
@@ -178,9 +184,17 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
                     converted_instance = instance
                     pass
                 return converted_instance
-            elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
+            elif (
+                convert_type in ["dict", "list"]
+                and schema_type == "list"
+                and "primary_key" in schema
+            ):
                 try:
-                    converted_instance = convert_dicts(instance, schema["primary_key"], secondary_key=schema.get("secondary_key"))
+                    converted_instance = convert_dicts(
+                        instance,
+                        schema["primary_key"],
+                        secondary_key=schema.get("secondary_key"),
+                    )
                 except Exception:
                     # Ignore errors and return original
                     converted_instance = instance

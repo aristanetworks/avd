@@ -5473,7 +5473,7 @@
               "peer_filter": {
                 "type": "string",
                 "title": "Name Of Peer-Filter",
-                "description": "peer_filter or remote_as is required but mutually exclusive. \nIf both are defined, peer_filter takes precedence\n"
+                "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n"
               },
               "remote_as": {
                 "type": "integer",
@@ -7129,7 +7129,7 @@
                     "peer_filter": {
                       "type": "string",
                       "title": "Name Of Peer-Filter",
-                      "description": "peer_filter or remote_as is required but mutually exclusive. \nIf both are defined, peer_filter takes precedence\n"
+                      "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n"
                     },
                     "remote_as": {
                       "type": "integer",
