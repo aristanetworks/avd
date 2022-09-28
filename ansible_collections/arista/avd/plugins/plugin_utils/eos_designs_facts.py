@@ -132,7 +132,11 @@ class EosDesignsFacts(AvdFacts):
         switch.default_underlay_routing_protocol set based on
         node_type_keys.<node_type_key>.default_underlay_routing_protocol
         """
-        return get(self._node_type_key_data, "default_underlay_routing_protocol", default="ebgp")
+        return get(
+            self._node_type_key_data,
+            "default_underlay_routing_protocol",
+            default="ebgp",
+        )
 
     @cached_property
     def default_overlay_routing_protocol(self):
@@ -148,7 +152,11 @@ class EosDesignsFacts(AvdFacts):
         switch.default_overlay_address_families set based on
         node_type_keys.<node_type_key>.default_overlay_address_families
         """
-        return get(self._node_type_key_data, "default_overlay_address_families", default=["evpn"])
+        return get(
+            self._node_type_key_data,
+            "default_overlay_address_families",
+            default=["evpn"],
+        )
 
     @cached_property
     def default_mpls_overlay_role(self):
@@ -742,13 +750,23 @@ class EosDesignsFacts(AvdFacts):
 
             if self.filter_only_vlans_in_use:
                 # Only include the vlans that are used by connected endpoints
-                vlans_in_use, trunk_groups_in_use = self._endpoint_vlans_and_trunk_groups
+                (
+                    vlans_in_use,
+                    trunk_groups_in_use,
+                ) = self._endpoint_vlans_and_trunk_groups
                 if self.mlag:
                     # Make sure to also configure vlans used on the MLAG peer.
                     # This could happen if a connected endpoint is only connected to one leaf.
-                    mlag_peer_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts..{self.mlag_peer}..switch", separator="..")
+                    mlag_peer_facts: EosDesignsFacts = get(
+                        self._hostvars,
+                        f"avd_switch_facts..{self.mlag_peer}..switch",
+                        separator="..",
+                    )
                     if mlag_peer_facts:
-                        mlag_vlans_in_use, mlag_trunk_groups_in_use = mlag_peer_facts._endpoint_vlans_and_trunk_groups
+                        (
+                            mlag_vlans_in_use,
+                            mlag_trunk_groups_in_use,
+                        ) = mlag_peer_facts._endpoint_vlans_and_trunk_groups
                         vlans_in_use.extend(mlag_vlans_in_use)
                         trunk_groups_in_use.extend(mlag_trunk_groups_in_use)
                 vlans_in_use = set(vlans_in_use)
@@ -902,7 +920,11 @@ class EosDesignsFacts(AvdFacts):
     def igmp_snooping_enabled(self):
         if self.network_services_l2 is True:
             default_igmp_snooping_enabled = get(self._hostvars, "default_igmp_snooping_enabled")
-            return get(self._switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled)
+            return get(
+                self._switch_data_combined,
+                "igmp_snooping_enabled",
+                default=default_igmp_snooping_enabled,
+            )
         return None
 
     @cached_property
@@ -935,19 +957,31 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def evpn_gateway_vxlan_l2(self):
         if self.underlay_router is True:
-            return get(self._switch_data_combined, "evpn_gateway.evpn_l2.enabled", default=False)
+            return get(
+                self._switch_data_combined,
+                "evpn_gateway.evpn_l2.enabled",
+                default=False,
+            )
         return None
 
     @cached_property
     def evpn_gateway_vxlan_l3(self):
         if self.underlay_router is True:
-            return get(self._switch_data_combined, "evpn_gateway.evpn_l3.enabled", default=False)
+            return get(
+                self._switch_data_combined,
+                "evpn_gateway.evpn_l3.enabled",
+                default=False,
+            )
         return None
 
     @cached_property
     def evpn_gateway_vxlan_l3_inter_domain(self):
         if self.underlay_router is True:
-            return get(self._switch_data_combined, "evpn_gateway.evpn_l3.inter_domain", default=True)
+            return get(
+                self._switch_data_combined,
+                "evpn_gateway.evpn_l3.inter_domain",
+                default=True,
+            )
         return None
 
     @cached_property
@@ -1021,19 +1055,40 @@ class EosDesignsFacts(AvdFacts):
                     ),
                 },
                 "evpn_overlay_core": {
-                    "name": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.name", default="EVPN-OVERLAY-CORE"),
+                    "name": get(
+                        self._hostvars,
+                        "bgp_peer_groups.evpn_overlay_core.name",
+                        default="EVPN-OVERLAY-CORE",
+                    ),
                     "password": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.password"),
-                    "structured_config": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.structured_config"),
+                    "structured_config": get(
+                        self._hostvars,
+                        "bgp_peer_groups.evpn_overlay_core.structured_config",
+                    ),
                 },
                 "mpls_overlay_peers": {
-                    "name": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.name", default="MPLS-OVERLAY-PEERS"),
+                    "name": get(
+                        self._hostvars,
+                        "bgp_peer_groups.mpls_overlay_peers.name",
+                        default="MPLS-OVERLAY-PEERS",
+                    ),
                     "password": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.password"),
-                    "structured_config": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.structured_config"),
+                    "structured_config": get(
+                        self._hostvars,
+                        "bgp_peer_groups.mpls_overlay_peers.structured_config",
+                    ),
                 },
                 "rr_overlay_peers": {
-                    "name": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.name", default="RR-OVERLAY-PEERS"),
+                    "name": get(
+                        self._hostvars,
+                        "bgp_peer_groups.rr_overlay_peers.name",
+                        default="RR-OVERLAY-PEERS",
+                    ),
                     "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
-                    "structured_config": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
+                    "structured_config": get(
+                        self._hostvars,
+                        "bgp_peer_groups.rr_overlay_peers.structured_config",
+                    ),
                 },
             }
         return None
@@ -1047,7 +1102,11 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mpls_overlay_role(self):
         if self.underlay_router is True:
-            return get(self._switch_data_combined, "mpls_overlay_role", default=self.default_mpls_overlay_role)
+            return get(
+                self._switch_data_combined,
+                "mpls_overlay_role",
+                default=self.default_mpls_overlay_role,
+            )
         return None
 
     @cached_property
@@ -1096,7 +1155,11 @@ class EosDesignsFacts(AvdFacts):
         """
         if self.underlay_router is True:
             if self.evpn_role == "client":
-                return get(self._switch_data_combined, "evpn_route_servers", default=self.uplink_switches)
+                return get(
+                    self._switch_data_combined,
+                    "evpn_route_servers",
+                    default=self.uplink_switches,
+                )
             else:
                 return get(self._switch_data_combined, "evpn_route_servers")
         return []
@@ -1138,7 +1201,11 @@ class EosDesignsFacts(AvdFacts):
                     default_isis_instance_name = "CORE"
                 else:
                     default_isis_instance_name = "EVPN_UNDERLAY"
-                return get(self._hostvars, "underlay_isis_instance_name", default=default_isis_instance_name)
+                return get(
+                    self._hostvars,
+                    "underlay_isis_instance_name",
+                    default=default_isis_instance_name,
+                )
         return None
 
     @cached_property
@@ -1195,7 +1262,11 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_peer_link_allowed_vlans(self):
         if self.mlag is True:
-            return get(self._switch_data_combined, "mlag_peer_link_allowed_vlans", default="2-4094")
+            return get(
+                self._switch_data_combined,
+                "mlag_peer_link_allowed_vlans",
+                default="2-4094",
+            )
         return None
 
     @cached_property
@@ -1636,7 +1707,7 @@ class EosDesignsFacts(AvdFacts):
                 "evpn": evpn,
                 "evpn_encapsulation": evpn_encapsulation,
                 "vpn_ipv4": vpn_ipv4,
-                "vpn_ipv6": vpn_ipv6
+                "vpn_ipv6": vpn_ipv6,
             }
 
         return None
