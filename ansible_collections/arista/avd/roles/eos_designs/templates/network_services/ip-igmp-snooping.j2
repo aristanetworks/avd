@@ -15,7 +15,7 @@ ip_igmp_snooping:
 {%                     set svi_igmp_snooping_querier_enabled = svi.igmp_snooping_querier.enabled | arista.avd.default(
                                                                tenant.igmp_snooping_querier.enabled) %}
 {%                 endif %}
-{%                 if switch.vtep is arista.avd.defined %}
+{%                 if switch.overlay.vtep is arista.avd.defined %}
 {%                     set svi_evpn_l2_multicast_enabled = svi.evpn_l2_multicast.enabled | arista.avd.default(
                                                            tenant.evpn_l2_multicast.enabled) %}
 {%                     if svi_evpn_l2_multicast_enabled is arista.avd.defined(true) %}

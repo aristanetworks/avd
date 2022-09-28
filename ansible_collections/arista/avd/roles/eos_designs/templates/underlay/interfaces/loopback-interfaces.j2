@@ -33,7 +33,7 @@ loopback_interfaces:
 {%         endif %}
 {%     endif %}
 {% endif %}
-{% if switch.vtep is arista.avd.defined(true) and switch.vtep_loopback | lower != 'loopback0' %}
+{% if switch.overlay.vtep is arista.avd.defined(true) and switch.vtep_loopback | lower != 'loopback0' %}
 {# Leaf VTEP vxlan tunnel loopback source interface #}
   {{ switch.vtep_loopback }}:
     description: "{% include switch.interface_descriptions.vtep_loopback_interface %}"

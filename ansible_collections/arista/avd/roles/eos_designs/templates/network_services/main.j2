@@ -51,7 +51,7 @@
 {% endif %}
 
 {# VTEP and (L1 or L2 or L3) #}
-{% if (switch.vtep is arista.avd.defined(true) or switch.mpls_ler is arista.avd.defined(true)) and
+{% if (switch.overlay.vtep is arista.avd.defined(true) or switch.overlay.ler is arista.avd.defined(true)) and
       (switch.network_services_l2 is arista.avd.defined(true) or
       switch.network_services_l3 is arista.avd.defined(true) or
       switch.network_services_l1 is arista.avd.defined(true)) %}
@@ -65,14 +65,14 @@
 
 {%     include 'network_services/router-bgp.j2' %}
 
-{%     if switch.vtep is arista.avd.defined(true) %}
+{%     if switch.overlay.vtep is arista.avd.defined(true) %}
 {%         include 'network_services/vxlan-interface.j2' %}
 
 {%     endif %}
 {% endif %}
 
 {# VTEP and L2 and L3 #}
-{% if switch.vtep is arista.avd.defined(true) and
+{% if switch.overlay.vtep is arista.avd.defined(true) and
       switch.network_services_l2 is arista.avd.defined(true) and
       switch.network_services_l3 is arista.avd.defined(true) %}
 {%     include 'network_services/virtual-source-nat-vrfs.j2' %}

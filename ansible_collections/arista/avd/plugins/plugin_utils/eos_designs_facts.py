@@ -1628,3 +1628,29 @@ class EosDesignsFacts(AvdFacts):
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
         return self.router_id
+
+    @cached_property
+    def overlay(self):
+        if self.evpn_role != "none" or self.mpls_overlay_role != "none":
+            if self.overlay_routing_protocol_address_family == "ipv6":
+                peering_address = self.ipv6_router_id
+            else:
+                peering_address = self.router_id
+            ler = get(self._node_type_key_data, "mpls_ler", default=False)
+            vtep = get(self._node_type_key_data, "vtep", default=False)
+            evpn = "evpn" in self.overlay_address_families
+            evpn_encapsulation = get(self._node_type_key_data, "default_evpn_encapsulation", default="vxlan")
+            vpn_ipv4 = "vpn-ipv4" in self.overlay_address_families
+            vpn_ipv6 = "vpn-ipv6" in self.overlay_address_families
+
+            return {
+                "peering_address": peering_address,
+                "ler": ler,
+                "vtep": vtep,
+                "evpn": evpn,
+                "evpn_encapsulation": evpn_encapsulation,
+                "vpn_ipv4": vpn_ipv4,
+                "vpn_ipv6": vpn_ipv6
+            }
+
+        return None

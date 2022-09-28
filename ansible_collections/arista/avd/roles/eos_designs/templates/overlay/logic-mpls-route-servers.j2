@@ -12,7 +12,7 @@
 {# Found a matching server. Gathering information for this server #}
 {%             set server = namespace() %}
 {%             set server.bgp_as = peer_facts.switch.bgp_as %}
-{%             set server.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
+{%             set server.ip_address = peer_facts.switch.overlay.peering_address %}
 {%             if switch.mpls_overlay_role == "client" %}
 {%                 do overlay_data.mpls_route_reflectors.update({ route_reflector: server }) %}
 {%             elif switch.mpls_overlay_role == "server" %}
@@ -29,7 +29,7 @@
 {%             if peer_facts.switch.mpls_overlay_role is arista.avd.defined('client') %}
 {%                 set peer_pe = namespace() %}
 {%                 set peer_pe.bgp_as = peer_facts.switch.bgp_as %}
-{%                 set peer_pe.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
+{%                 set peer_pe.ip_address = peer_facts.switch.overlay.peering_address %}
 {%                 do overlay_data.mpls_mesh_pes.update({ fabric_switch: peer_pe }) %}
 {%             endif %}
 {%         endif %}
