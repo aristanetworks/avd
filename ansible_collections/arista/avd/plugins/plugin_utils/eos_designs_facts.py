@@ -228,14 +228,6 @@ class EosDesignsFacts(AvdFacts):
         return get(self._node_type_key_data, "vtep", default=False)
 
     @cached_property
-    def mpls_ler(self):
-        """
-        switch.mpls_ler set based on
-        node_type_keys.<node_type_key>.mpls_ler
-        """
-        return get(self._node_type_key_data, "mpls_ler", default=False)
-
-    @cached_property
     def ip_addressing(self):
         """
         switch.ip_addressing.* set based on
@@ -1622,12 +1614,6 @@ class EosDesignsFacts(AvdFacts):
                     "'overlay_routing_protocol_address_family: ipv6' is only supported incombination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
                 )
         return overlay_routing_protocol_address_family
-
-    @cached_property
-    def overlay_routing_protocol_peering_address(self):
-        if self.overlay_routing_protocol_address_family == "ipv6":
-            return self.ipv6_router_id
-        return self.router_id
 
     @cached_property
     def overlay(self):
