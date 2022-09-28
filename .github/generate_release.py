@@ -74,7 +74,7 @@ if __name__ == "__main__":
     categories_list.append(
         {
             "title": "Fixed issues in eos_cli_config_gen",
-            "labels": "rn: Fix(eos_cli_config_gen)",
+            "labels": ["rn: Fix(eos_cli_config_gen)"],
         }
     )
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     categories_list.append(
         {
             "title": "Fixed issues in eos_designs",
-            "labels": "rn: Fix(eos_designs)",
+            "labels": ["rn: Fix(eos_designs)"],
         }
     )
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     categories_list.append(
         {
             "title": "New features and enhancements in eos_cli_config_gen",
-            "labels": "rn: Feat(eos_cli_config_gen)",
+            "labels": ["rn: Feat(eos_cli_config_gen)"],
         }
     )
 
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     categories_list.append(
         {
             "title": "New features and enhancements in eos_designs",
-            "labels": "rn: Feat(eos_designs)",
+            "labels": ["rn: Feat(eos_designs)"],
         }
     )
 
