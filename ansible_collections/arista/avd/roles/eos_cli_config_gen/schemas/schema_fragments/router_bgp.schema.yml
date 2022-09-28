@@ -1,0 +1,1428 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_bgp:
+    type: dict
+    display_name: Router BGP Configuration
+    keys:
+      as:
+        type: int
+        convert_types:
+          - str
+        display_name: BGP AS
+      router_id:
+        type: str
+        display_name: IPv4 Address
+      distance:
+        type: dict
+        keys:
+          external_routes:
+            type: int
+            convert_types:
+              - str
+            description: 1-255
+          internal_routes:
+            type: int
+            convert_types:
+              - str
+            description: 1-255
+          local_routes:
+            type: int
+            convert_types:
+              - str
+            description: 1-255
+      maximum_paths:
+        type: dict
+        keys:
+          paths:
+            type: int
+            convert_types:
+              - str
+            description: 1-600
+          ecmp:
+            type: int
+            convert_types:
+              - str
+            description: 1-600
+      updates:
+        type: dict
+        keys:
+          wait_for_convergence:
+            type: bool
+          wait_install:
+            type: bool
+      bgp_cluster_id:
+        type: str
+        display_name: IPv4 Address
+      bgp_defaults:
+        type: list
+        items:
+          type: str
+          display_name: BGP Command As String
+      bgp:
+        type: dict
+        keys:
+          bestpath:
+            type: dict
+            keys:
+              d_path:
+                type: bool
+      listen_ranges:
+        type: list
+        description: |
+          New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+        items:
+          type: dict
+          keys:
+            prefix:
+              type: str
+              description: |
+                "A.B.C.D/E" | "A:B:C:D:E:F:G:H/I"
+            peer_id_include_router_id:
+              type: bool
+              description: Include router ID as part of peer filter
+            peer_group:
+              type: str
+              display_name: Name Of Peer-Group
+            peer_filter:
+              type: str
+              display_name: Name Of Peer-Filter
+              description: |
+                peer_filter or remote_as is required but mutually exclusive. 
+                If both are defined, peer_filter takes precedence
+            remote_as:
+              type: int
+              convert_types:
+                - str
+              description: Remote ASN in plain or dot notation
+      peer_groups:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Peer-Group Name
+            type:
+              type: str
+              description: |
+                [ "ipv4", "evpn" ]
+                Example- "vpn-ipv4, vpn-ipv6"
+            remote_as:
+              type: int
+              convert_types:
+                - str
+              display_name: BGP AS
+            local_as:
+              type: int
+              convert_types:
+                - str
+              display_name: BGP AS
+            description:
+              type: str
+              display_name: Description As String
+            shutdown:
+              type: bool
+            remove_private_as:
+              type: dict
+              description: Remove private AS numbers in outbound AS path
+              keys:
+                enabled:
+                  type: bool
+                all:
+                  type: bool
+                replace_as:
+                  type: bool
+            remove_private_as_ingress:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                replace_as:
+                  type: bool
+            peer_filter:
+              type: str
+            next_hop_unchanged:
+              type: bool
+            update_source:
+              type: str
+              display_name: Interface
+            route_reflector_client:
+              type: bool
+            bfd:
+              type: bool
+            ebgp_multihop:
+              type: int
+              convert_types:
+                - str
+            next_hop_self:
+              type: bool
+            password:
+              type: str
+              display_name: Encrypted Password
+            default_originate:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                always:
+                  type: bool
+                route_map:
+                  type: str
+                  display_name: Route-Map Name
+            send_community:
+              type: str
+              description: |
+                [ "standard", "extended", "large", "all" ]
+                Example: "standard large"
+            maximum_routes:
+              type: int
+              convert_types:
+                - str
+            maximum_routes_warning_limit:
+              type: str
+              convert_types:
+                - int
+              description: |
+                "<integer>" | "<0-100> percent"
+            maximum_routes_warning_only:
+              type: bool
+            link_bandwidth:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                default:
+                  type: str
+                  description: nn.nn(K|M|G)  Link speed in bits/second
+            allowas_in:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                times:
+                  type: int
+                  description: 1-10
+            weight:
+              type: int
+              convert_types:
+                - str
+              display_name: Weight Value
+            timers:
+              type: str
+              description: keepalive hold timer values
+            rib_in_pre_policy_retain:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                all:
+                  type: bool
+            route_map_in:
+              type: str
+              description: Inbound Route-Map
+            route_map_out:
+              type: str
+              description: Outbound Route-Map
+            bgp_listen_range_prefix:
+              type: str
+              description: IP Prefix Range
+      neighbors:
+        type: list
+        primary_key: ip_address
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            ip_address:
+              type: str
+              display_name: IPv4 Address
+            peer_group:
+              type: str
+              display_name: Peer-Group Name
+            remote_as:
+              type: int
+              convert_types:
+                - str
+              display_name: BGP AS
+            local_as:
+              type: int
+              convert_types:
+                - str
+              display_name: BGP AS
+            description:
+              type: str
+              display_name: Description As String
+            shutdown:
+              type: bool
+            update_source:
+              type: str
+              display_name: Interface
+            bfd:
+              type: bool
+            weight:
+              type: int
+              convert_types:
+                - str
+              display_name: Weight Value
+            timers:
+              type: str
+              description: keepalive hold timer values
+            route_map_in:
+              type: str
+              description: Inbound Route-Map
+            route_map_out:
+              type: str
+              description: Outbound Route-Map
+            default_originate:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                always:
+                  type: bool
+                route_map:
+                  type: str
+                  display_name: Route-Map Name
+            send_community:
+              type: str
+              description: |
+                [ "standard", "extended", "large", "all" ]
+                Example: "standard large"
+            maximum_routes:
+              type: int
+              convert_types:
+                - str
+            maximum_routes_warning_limit:
+              type: str
+              convert_types:
+                - int
+              description: |
+                "<integer>" | "<0-100> percent"
+            maximum_routes_warning_only:
+              type: bool
+            allowas_in:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                times:
+                  type: int
+                  description: 1-10
+            ebgp_multihop:
+              type: int
+              convert_types:
+                - str
+            next_hop_self:
+              type: bool
+            link_bandwidth:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                default:
+                  type: str
+                  description: nn.nn(K|M|G)  Link speed in bits/second
+            rib_in_pre_policy_retain:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                all:
+                  type: bool
+            remove_private_as:
+              type: dict
+              description: Remove private AS numbers in outbound AS path
+              keys:
+                enabled:
+                  type: bool
+                all:
+                  type: bool
+                replace_as:
+                  type: bool
+            remove_private_as_ingress:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                replace_as:
+                  type: bool
+      neighbor_interfaces:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Interface
+            remote_as:
+              type: int
+              convert_types:
+                - str
+              display_name: BGP AS
+            peer_group:
+              type: str
+              display_name: Peer Group Name
+            description:
+              type: str
+              display_name: Description As String
+            peer_filter:
+              type: str
+      aggregate_addresses:
+        type: list
+        primary_key: prefix
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            prefix:
+              type: str
+              description: Aggregate Address/Mask
+            advertise_only:
+              type: bool
+            as_set:
+              type: bool
+            summary_only:
+              type: bool
+            attribute_map:
+              type: str
+              display_name: Route Map Name
+            match_map:
+              type: str
+              display_name: Route Map Name
+      redistribute_routes:
+        type: list
+        primary_key: source_protocol
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            source_protocol:
+              type: str
+              display_name: Source Protocol
+            route_map:
+              type: str
+              display_name: Route Map Name
+      vlan_aware_bundles:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VLAN Aware Bundle Name
+            tenant:
+              type: str
+            description:
+              type: str
+              display_name: Description As String
+            rd:
+              type: str
+              display_name: Route Distinguisher
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values: ["remote", "all"]
+                rd:
+                  type: str
+                  display_name: Route Distinguisher
+            route_targets:
+              type: dict
+              keys:
+                both:
+                  type: list
+                  items:
+                    type: str
+                    display_name: Route Target
+                import:
+                  type: list
+                  items:
+                    type: str
+                    display_name: Route Target
+                export:
+                  type: list
+                  items:
+                    type: str
+                    display_name: Route Target
+                import_evpn_domains:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values: [ "remote", "all" ]
+                      route_target:
+                        type: str
+                export_evpn_domains:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values: [ "remote", "all" ]
+                      route_target:
+                        type: str
+                import_export_evpn_domains:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values: [ "remote", "all" ]
+                      route_target:
+                        type: str
+            redistribute_routes:
+              type: list
+              items:
+                type: str
+            no_redistribute_routes:
+              type: list
+              items:
+                type: str
+                display_name: Host-Route
+            vlan:
+              type: int
+              convert_types:
+                - str
+      vlans:
+        type: list
+        primary_key: id
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+                - str
+              display_name: VLAN ID
+            rd:
+              type: str
+              display_name: Route Distinguisher
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values: [ "remote", "all" ]
+                rd:
+                  type: str
+                  display_name: Route Distinguisher
+            route_targets:
+              type: dict
+              keys:
+                both:
+                  type: list
+                  items:
+                    type: str
+                    display_name: Route Target
+                import:
+                  type: list
+                  items:
+                    type: str
+                    display_name: Route Target
+                export:
+                  type: list
+                  items:
+                    type: str
+                    display_name: Route Target
+                import_evpn_domains:
+                  type: dict
+                  keys:
+                    domain:
+                      type: str
+                      valid_values: [ "remote", "all" ]
+                    route_target:
+                      type: str
+                export_evpn_domains:
+                  type: dict
+                  keys:
+                    domain:
+                      type: str
+                      valid_values: [ "remote", "all" ]
+                    route_target:
+                      type: str
+                import_export_evpn_domains:
+                  type: dict
+                  keys:
+                    domain:
+                      type: str
+                      valid_values: [ "remote", "all" ]
+                    route_target:
+                      type: str
+            redistribute_routes:
+              type: list
+              items:
+                type: str
+            no_redistribute_routes:
+              type: list
+              items:
+                type: str
+                display_name: Host-Route
+      vpws:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VPWS Instance Name
+            rd:
+              type: str
+              display_name: Route Distinguisher
+            route_targets:
+              type: dict
+              keys:
+                import_export:
+                  type: str
+                  display_name: Route Target
+            mpls_control_word:
+              type: bool
+              default: false
+            label_flow:
+              type: bool
+              default: false
+            mtu:
+              type: int
+              convert_types:
+                - str
+            pseudowires:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Pseudowire Name
+                  id_local:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Must match id_remote on other pe
+                  id_remote:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Must match id_local on other pe
+      address_family_evpn:
+        type: dict
+        keys:
+          domain_identifier:
+            type: str
+            convert_types:
+              - int
+          neighbor_default:
+            type: dict
+            keys:
+              encapsulation:
+                type: str
+                valid_values: ["vxlan", "mpls"]
+              next_hop_self_source_interface:
+                type: str
+                display_name: Source Interface
+              next_hop_self_received_evpn_routes:
+                type: dict
+                keys:
+                  enable:
+                    type: bool
+                  inter_domain:
+                    type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+                domain_remote:
+                  type: bool
+          evpn_hostflap_detection:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              window:
+                type: int
+                convert_types:
+                  - str
+                description: Time in seconds
+              threshold:
+                type: int
+                convert_types:
+                  - str
+                description: Minimum number of MAC moves that indicate a MAC Duplication issue
+              expiry_timeout:
+                type: int
+                convert_types:
+                  - str
+                description: Timeout in seconds
+          route:
+            type: dict
+            keys:
+              import_match_failure_action:
+                type: str
+                description: |
+                  Example: "discard"
+      address_family_rtc:
+        type: dict
+        keys:
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                default_route_target:
+                  type: dict
+                  keys:
+                    only:
+                      type: bool
+                    encoding_origin_as_omit:
+                      type: str
+      address_family_ipv4:
+        type: dict
+        keys:
+          networks:
+            type: list
+            primary_key: prefix
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                  display_name: Prefix IPV4
+                route_map:
+                  type: str
+                  display_name: Route-Map Name
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                    route_map:
+                      type: str
+                      display_name: Route-Map Name
+                next_hop:
+                  type: dict
+                  keys:
+                    address_family_ipv6_originate:
+                      type: bool
+                prefix_list_in:
+                  type: str
+                  description: Prefix List Name
+                prefix_list_out:
+                  type: str
+                  description: Prefix List Name
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                  display_name: Neighbor IP Address
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+                prefix_list_in:
+                  type: str
+                  description: Prefix List Name
+                prefix_list_out:
+                  type: str
+                  description: Prefix List Name
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                    route_map:
+                      type: str
+                      display_name: Route-Map Name
+      address_family_ipv4_multicast:
+        type: dict
+        keys:
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                  display_name: Neighbor IP Address
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                  display_name: Source Protocol
+                route_map:
+                  type: str
+                  display_name: Route Map Name
+      address_family_ipv6:
+        type: dict
+        keys:
+          networks:
+            type: list
+            primary_key: prefix
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                  display_name: Prefix IPV4
+                route_map:
+                  type: str
+                  display_name: Route-Map Name
+
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+                prefix_list_in:
+                  type: str
+                  description: Prefix List Name
+                prefix_list_out:
+                  type: str
+                  description: Prefix List Name
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                  display_name: Neighbor IP Address
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+                prefix_list_in:
+                  type: str
+                  description: Prefix List Name
+                prefix_list_out:
+                  type: str
+                  description: Prefix List Name
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                  display_name: Source Protocol
+                route_map:
+                  type: str
+                  display_name: Route Map Name
+      address_family_vpn_ipv4:
+        type: dict
+        keys:
+          domain_identifier:
+            type: str
+            convert_types:
+              - int
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+          route:
+            type: dict
+            keys:
+              import_match_failure_action:
+                type: str
+                description: |
+                  Example: "discard"
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                  display_name: Neighbor IP Address
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+          neighbor_default_encapsulation_mpls_next_hop_self:
+            type: dict
+            keys:
+              source_interface:
+                type: str
+                display_name: Interface
+      address_family_vpn_ipv6:
+        type: dict
+        keys:
+          domain_identifier:
+            type: str
+            convert_types:
+              - int
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  display_name: Peer-Group Name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+          route:
+            type: dict
+            keys:
+              import_match_failure_action:
+                type: str
+                description: |
+                  Example: "discard"
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                  display_name: Neighbor IP Address
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Route-Map Name
+                route_map_out:
+                  type: str
+                  description: Route-Map Name
+          neighbor_default_encapsulation_mpls_next_hop_self:
+            type: dict
+            keys:
+              source_interface:
+                type: str
+                display_name: Interface
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VRF Name
+            rd:
+              type: str
+              display_name: Route Distinguisher
+            evpn_multicast:
+              type: bool
+            route_targets:
+              type: dict
+              keys:
+                import:
+                  type: list
+                  primary_key: address_family
+                  secondary_key: route_targets
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      address_family:
+                        type: str
+                      route_targets:
+                        type: list
+                        items:
+                          type: str
+                          display_name: Route Target
+                export:
+                  type: list
+                  primary_key: address_family
+                  secondary_key: route_targets
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      address_family:
+                        type: str
+                      route_targets:
+                        type: list
+                        items:
+                          type: str
+                          display_name: Route Target
+            router_id:
+              type: str
+              display_name: IPv4 Address
+            timers:
+              type: str
+              description: Keep alive hold timer values
+            networks:
+              type: list
+              primary_key: prefix
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  prefix:
+                    type: str
+                    display_name: Prefix IPV4
+                  route_map:
+                    type: str
+                    display_name: Route-Map Name
+            listen_ranges:
+              type: list
+              description: |
+                New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+              items:
+                type: dict
+                keys:
+                  prefix:
+                    type: str
+                    description: |
+                      "A.B.C.D/E" | "A:B:C:D:E:F:G:H/I"
+                  peer_id_include_router_id:
+                    type: bool
+                    description: Include router ID as part of peer filter
+                  peer_group:
+                    type: str
+                    display_name: Name Of Peer-Group
+                  peer_filter:
+                    type: str
+                    display_name: Name Of Peer-Filter
+                    description: |
+                      peer_filter or remote_as is required but mutually exclusive. 
+                      If both are defined, peer_filter takes precedence
+                  remote_as:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Remote ASN in plain or dot notation
+            redistribute_routes:
+              type: list
+              primary_key: source_protocol
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  source_protocol:
+                    type: str
+                    display_name: Source Protocol
+                  route_map:
+                    type: str
+                    display_name: Route Map Name
+            aggregate_addresses:
+              type: list
+              primary_key: prefix
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  prefix:
+                    type: str
+                    description: Aggregate Address/Mask
+                  advertise_only:
+                    type: bool
+                  as_set:
+                    type: bool
+                  summary_only:
+                    type: bool
+                  attribute_map:
+                    type: str
+                    display_name: Route Map Name
+                  match_map:
+                    type: str
+                    display_name: Route Map Name
+            neighbor_interfaces:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Interface
+                  remote_as:
+                    type: int
+                    convert_types:
+                      - str
+                    display_name: BGP AS
+                  peer_group:
+                    type: str
+                    display_name: Peer Group Name
+                  peer_filter:
+                    type: str
+            address_families:
+              type: list
+              primary_key: address_family
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  address_family:
+                    type: str
+                  bgp:
+                    type: dict
+                    keys:
+                      missing_policy:
+                        type: dict
+                        keys:
+                          direction_in_action:
+                            type: str
+                            valid_values: ["deny", "deny-in-out", "permit"]
+                          direction_out_action:
+                            type: str
+                            valid_values: [ "deny", "deny-in-out", "permit" ]
+                      additional_paths:
+                        type: list
+                        items:
+                          type: str
+                  neighbors:
+                    type: list
+                    primary_key: ip_address
+                    convert_types:
+                      - dict
+                    items:
+                      type: dict
+                      keys:
+                        ip_address:
+                          type: str
+                          display_name: Neighbor IP Address
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Route-Map Name
+                        route_map_out:
+                          type: str
+                          description: Route-Map Name
+                  peer_groups:
+                    type: list
+                    primary_key: name
+                    convert_types:
+                      - dict
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                          display_name: Peer-Group Name
+                        activate:
+                          type: bool
+                        next_hop:
+                          type: dict
+                          keys:
+                            address_family_ipv6_originate:
+                              type: bool
+                  networks:
+                    type: list
+                    primary_key: prefix
+                    convert_types:
+                      - dict
+                    items:
+                      type: dict
+                      keys:
+                        prefix:
+                          type: str
+                          display_name: Prefix IPV4
+                        route_map:
+                          type: str
+                          display_name: Route-Map Name
+            eos_cli:
+              type: str
+              display_name: Multiline EOS CLI
+              description: |
+                EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+            neighbors:
+              type: list
+              primary_key: ip_address
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                    display_name: IPv4 Address
+                  peer_group:
+                    type: str
+                    display_name: Peer-Group Name
+                  remote_as:
+                    type: int
+                    convert_types:
+                      - str
+                    display_name: BGP AS
+                  password:
+                    type: str
+                    display_name: Encrypted Password
+                  local_as:
+                    type: int
+                    convert_types:
+                      - str
+                    display_name: BGP AS
+                  description:
+                    type: str
+                    display_name: Description As String
+                  shutdown:
+                    type: bool
+                  update_source:
+                    type: str
+                    display_name: Interface
+                  bfd:
+                    type: bool
+                  weight:
+                    type: int
+                    convert_types:
+                      - str
+                    display_name: Weight Value
+                  timers:
+                    type: str
+                    description: keepalive hold timer values
+                  route_map_in:
+                    type: str
+                    description: Inbound Route-Map
+                  route_map_out:
+                    type: str
+                    description: Outbound Route-Map
+                  default_originate:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      always:
+                        type: bool
+                      route_map:
+                        type: str
+                        display_name: Route-Map Name
+                  send_community:
+                    type: str
+                    description: |
+                      [ "standard", "extended", "large", "all" ]
+                      Example: "standard large"
+                  maximum_routes:
+                    type: int
+                    convert_types:
+                      - str
+                  maximum_routes_warning_limit:
+                    type: str
+                    convert_types:
+                      - int
+                    description: |
+                      "<integer>" | "<0-100> percent"
+                  maximum_routes_warning_only:
+                    type: bool
+                  allowas_in:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      times:
+                        type: int
+                        description: 1-10
+                  ebgp_multihop:
+                    type: int
+                    convert_types:
+                      - str
+                  next_hop_self:
+                    type: bool
+                  prefix_list_in:
+                    type: str
+                    description: Prefix List Name
+                  prefix_list_out:
+                    type: str
+                    description: Prefix List Name
+                  rib_in_pre_policy_retain:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      all:
+                        type: bool
+                  remove_private_as:
+                    type: dict
+                    description: Remove private AS numbers in outbound AS path
+                    keys:
+                      enabled:
+                        type: bool
+                      all:
+                        type: bool
+                      replace_as:
+                        type: bool
+                  remove_private_as_ingress:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      replace_as:
+                        type: bool

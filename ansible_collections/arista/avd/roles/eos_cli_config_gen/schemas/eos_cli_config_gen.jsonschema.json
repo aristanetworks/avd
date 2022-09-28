@@ -5354,6 +5354,2199 @@
       "additionalProperties": false,
       "title": "Router BFD"
     },
+    "router_bgp": {
+      "type": "object",
+      "title": "Router BGP Configuration",
+      "properties": {
+        "as": {
+          "type": "integer",
+          "title": "BGP AS"
+        },
+        "router_id": {
+          "type": "string",
+          "title": "IPv4 Address"
+        },
+        "distance": {
+          "type": "object",
+          "properties": {
+            "external_routes": {
+              "type": "integer",
+              "description": "1-255",
+              "title": "External Routes"
+            },
+            "internal_routes": {
+              "type": "integer",
+              "description": "1-255",
+              "title": "Internal Routes"
+            },
+            "local_routes": {
+              "type": "integer",
+              "description": "1-255",
+              "title": "Local Routes"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Distance"
+        },
+        "maximum_paths": {
+          "type": "object",
+          "properties": {
+            "paths": {
+              "type": "integer",
+              "description": "1-600",
+              "title": "Paths"
+            },
+            "ecmp": {
+              "type": "integer",
+              "description": "1-600",
+              "title": "Ecmp"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Maximum Paths"
+        },
+        "updates": {
+          "type": "object",
+          "properties": {
+            "wait_for_convergence": {
+              "type": "boolean",
+              "title": "Wait For Convergence"
+            },
+            "wait_install": {
+              "type": "boolean",
+              "title": "Wait Install"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Updates"
+        },
+        "bgp_cluster_id": {
+          "type": "string",
+          "title": "IPv4 Address"
+        },
+        "bgp_defaults": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "title": "BGP Command As String"
+          },
+          "title": "BGP Defaults"
+        },
+        "bgp": {
+          "type": "object",
+          "properties": {
+            "bestpath": {
+              "type": "object",
+              "properties": {
+                "d_path": {
+                  "type": "boolean",
+                  "title": "D Path"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Bestpath"
+            }
+          },
+          "additionalProperties": false,
+          "title": "BGP"
+        },
+        "listen_ranges": {
+          "type": "array",
+          "description": "New improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "description": "\"A.B.C.D/E\" | \"A:B:C:D:E:F:G:H/I\"\n",
+                "title": "Prefix"
+              },
+              "peer_id_include_router_id": {
+                "type": "boolean",
+                "description": "Include router ID as part of peer filter",
+                "title": "Peer ID Include Router ID"
+              },
+              "peer_group": {
+                "type": "string",
+                "title": "Name Of Peer-Group"
+              },
+              "peer_filter": {
+                "type": "string",
+                "title": "Name Of Peer-Filter",
+                "description": "peer_filter or remote_as is required but mutually exclusive. \nIf both are defined, peer_filter takes precedence\n"
+              },
+              "remote_as": {
+                "type": "integer",
+                "description": "Remote ASN in plain or dot notation",
+                "title": "Remote As"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Listen Ranges"
+        },
+        "peer_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Peer-Group Name"
+              },
+              "type": {
+                "type": "string",
+                "description": "[ \"ipv4\", \"evpn\" ]\nExample- \"vpn-ipv4, vpn-ipv6\"\n",
+                "title": "Type"
+              },
+              "remote_as": {
+                "type": "integer",
+                "title": "BGP AS"
+              },
+              "local_as": {
+                "type": "integer",
+                "title": "BGP AS"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description As String"
+              },
+              "shutdown": {
+                "type": "boolean",
+                "title": "Shutdown"
+              },
+              "remove_private_as": {
+                "type": "object",
+                "description": "Remove private AS numbers in outbound AS path",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "all": {
+                    "type": "boolean",
+                    "title": "All"
+                  },
+                  "replace_as": {
+                    "type": "boolean",
+                    "title": "Replace As"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Remove Private As"
+              },
+              "remove_private_as_ingress": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "replace_as": {
+                    "type": "boolean",
+                    "title": "Replace As"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Remove Private As Ingress"
+              },
+              "peer_filter": {
+                "type": "string",
+                "title": "Peer Filter"
+              },
+              "next_hop_unchanged": {
+                "type": "boolean",
+                "title": "Next Hop Unchanged"
+              },
+              "update_source": {
+                "type": "string",
+                "title": "Interface"
+              },
+              "route_reflector_client": {
+                "type": "boolean",
+                "title": "Route Reflector Client"
+              },
+              "bfd": {
+                "type": "boolean",
+                "title": "BFD"
+              },
+              "ebgp_multihop": {
+                "type": "integer",
+                "title": "Ebgp Multihop"
+              },
+              "next_hop_self": {
+                "type": "boolean",
+                "title": "Next Hop Self"
+              },
+              "password": {
+                "type": "string",
+                "title": "Encrypted Password"
+              },
+              "default_originate": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route-Map Name"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Default Originate"
+              },
+              "send_community": {
+                "type": "string",
+                "description": "[ \"standard\", \"extended\", \"large\", \"all\" ]\nExample: \"standard large\"\n",
+                "title": "Send Community"
+              },
+              "maximum_routes": {
+                "type": "integer",
+                "title": "Maximum Routes"
+              },
+              "maximum_routes_warning_limit": {
+                "type": "string",
+                "description": "\"<integer>\" | \"<0-100> percent\"\n",
+                "title": "Maximum Routes Warning Limit"
+              },
+              "maximum_routes_warning_only": {
+                "type": "boolean",
+                "title": "Maximum Routes Warning Only"
+              },
+              "link_bandwidth": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "default": {
+                    "type": "string",
+                    "description": "nn.nn(K|M|G)  Link speed in bits/second",
+                    "title": "Default"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Link Bandwidth"
+              },
+              "allowas_in": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "times": {
+                    "type": "integer",
+                    "description": "1-10",
+                    "title": "Times"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Allowas In"
+              },
+              "weight": {
+                "type": "integer",
+                "title": "Weight Value"
+              },
+              "timers": {
+                "type": "string",
+                "description": "keepalive hold timer values",
+                "title": "Timers"
+              },
+              "rib_in_pre_policy_retain": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "all": {
+                    "type": "boolean",
+                    "title": "All"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Rib In Pre Policy Retain"
+              },
+              "route_map_in": {
+                "type": "string",
+                "description": "Inbound Route-Map",
+                "title": "Route Map In"
+              },
+              "route_map_out": {
+                "type": "string",
+                "description": "Outbound Route-Map",
+                "title": "Route Map Out"
+              },
+              "bgp_listen_range_prefix": {
+                "type": "string",
+                "description": "IP Prefix Range",
+                "title": "BGP Listen Range Prefix"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Peer Groups"
+        },
+        "neighbors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ip_address": {
+                "type": "string",
+                "title": "IPv4 Address"
+              },
+              "peer_group": {
+                "type": "string",
+                "title": "Peer-Group Name"
+              },
+              "remote_as": {
+                "type": "integer",
+                "title": "BGP AS"
+              },
+              "local_as": {
+                "type": "integer",
+                "title": "BGP AS"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description As String"
+              },
+              "shutdown": {
+                "type": "boolean",
+                "title": "Shutdown"
+              },
+              "update_source": {
+                "type": "string",
+                "title": "Interface"
+              },
+              "bfd": {
+                "type": "boolean",
+                "title": "BFD"
+              },
+              "weight": {
+                "type": "integer",
+                "title": "Weight Value"
+              },
+              "timers": {
+                "type": "string",
+                "description": "keepalive hold timer values",
+                "title": "Timers"
+              },
+              "route_map_in": {
+                "type": "string",
+                "description": "Inbound Route-Map",
+                "title": "Route Map In"
+              },
+              "route_map_out": {
+                "type": "string",
+                "description": "Outbound Route-Map",
+                "title": "Route Map Out"
+              },
+              "default_originate": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route-Map Name"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Default Originate"
+              },
+              "send_community": {
+                "type": "string",
+                "description": "[ \"standard\", \"extended\", \"large\", \"all\" ]\nExample: \"standard large\"\n",
+                "title": "Send Community"
+              },
+              "maximum_routes": {
+                "type": "integer",
+                "title": "Maximum Routes"
+              },
+              "maximum_routes_warning_limit": {
+                "type": "string",
+                "description": "\"<integer>\" | \"<0-100> percent\"\n",
+                "title": "Maximum Routes Warning Limit"
+              },
+              "maximum_routes_warning_only": {
+                "type": "boolean",
+                "title": "Maximum Routes Warning Only"
+              },
+              "allowas_in": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "times": {
+                    "type": "integer",
+                    "description": "1-10",
+                    "title": "Times"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Allowas In"
+              },
+              "ebgp_multihop": {
+                "type": "integer",
+                "title": "Ebgp Multihop"
+              },
+              "next_hop_self": {
+                "type": "boolean",
+                "title": "Next Hop Self"
+              },
+              "link_bandwidth": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "default": {
+                    "type": "string",
+                    "description": "nn.nn(K|M|G)  Link speed in bits/second",
+                    "title": "Default"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Link Bandwidth"
+              },
+              "rib_in_pre_policy_retain": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "all": {
+                    "type": "boolean",
+                    "title": "All"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Rib In Pre Policy Retain"
+              },
+              "remove_private_as": {
+                "type": "object",
+                "description": "Remove private AS numbers in outbound AS path",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "all": {
+                    "type": "boolean",
+                    "title": "All"
+                  },
+                  "replace_as": {
+                    "type": "boolean",
+                    "title": "Replace As"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Remove Private As"
+              },
+              "remove_private_as_ingress": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "replace_as": {
+                    "type": "boolean",
+                    "title": "Replace As"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Remove Private As Ingress"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Neighbors"
+        },
+        "neighbor_interfaces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Interface"
+              },
+              "remote_as": {
+                "type": "integer",
+                "title": "BGP AS"
+              },
+              "peer_group": {
+                "type": "string",
+                "title": "Peer Group Name"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description As String"
+              },
+              "peer_filter": {
+                "type": "string",
+                "title": "Peer Filter"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Neighbor Interfaces"
+        },
+        "aggregate_addresses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "description": "Aggregate Address/Mask",
+                "title": "Prefix"
+              },
+              "advertise_only": {
+                "type": "boolean",
+                "title": "Advertise Only"
+              },
+              "as_set": {
+                "type": "boolean",
+                "title": "As Set"
+              },
+              "summary_only": {
+                "type": "boolean",
+                "title": "Summary Only"
+              },
+              "attribute_map": {
+                "type": "string",
+                "title": "Route Map Name"
+              },
+              "match_map": {
+                "type": "string",
+                "title": "Route Map Name"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Aggregate Addresses"
+        },
+        "redistribute_routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_protocol": {
+                "type": "string",
+                "title": "Source Protocol"
+              },
+              "route_map": {
+                "type": "string",
+                "title": "Route Map Name"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Redistribute Routes"
+        },
+        "vlan_aware_bundles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VLAN Aware Bundle Name"
+              },
+              "tenant": {
+                "type": "string",
+                "title": "Tenant"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description As String"
+              },
+              "rd": {
+                "type": "string",
+                "title": "Route Distinguisher"
+              },
+              "rd_evpn_domain": {
+                "type": "object",
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "enum": [
+                      "remote",
+                      "all"
+                    ],
+                    "title": "Domain"
+                  },
+                  "rd": {
+                    "type": "string",
+                    "title": "Route Distinguisher"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Rd Evpn Domain"
+              },
+              "route_targets": {
+                "type": "object",
+                "properties": {
+                  "both": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "Route Target"
+                    },
+                    "title": "Both"
+                  },
+                  "import": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "Route Target"
+                    },
+                    "title": "Import"
+                  },
+                  "export": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "Route Target"
+                    },
+                    "title": "Export"
+                  },
+                  "import_evpn_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string",
+                          "enum": [
+                            "remote",
+                            "all"
+                          ],
+                          "title": "Domain"
+                        },
+                        "route_target": {
+                          "type": "string",
+                          "title": "Route Target"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Import Evpn Domains"
+                  },
+                  "export_evpn_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string",
+                          "enum": [
+                            "remote",
+                            "all"
+                          ],
+                          "title": "Domain"
+                        },
+                        "route_target": {
+                          "type": "string",
+                          "title": "Route Target"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Export Evpn Domains"
+                  },
+                  "import_export_evpn_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string",
+                          "enum": [
+                            "remote",
+                            "all"
+                          ],
+                          "title": "Domain"
+                        },
+                        "route_target": {
+                          "type": "string",
+                          "title": "Route Target"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Import Export Evpn Domains"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Route Targets"
+              },
+              "redistribute_routes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Redistribute Routes"
+              },
+              "no_redistribute_routes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Host-Route"
+                },
+                "title": "No Redistribute Routes"
+              },
+              "vlan": {
+                "type": "integer",
+                "title": "VLAN"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "VLAN Aware Bundles"
+        },
+        "vlans": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "title": "VLAN ID"
+              },
+              "rd": {
+                "type": "string",
+                "title": "Route Distinguisher"
+              },
+              "rd_evpn_domain": {
+                "type": "object",
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "enum": [
+                      "remote",
+                      "all"
+                    ],
+                    "title": "Domain"
+                  },
+                  "rd": {
+                    "type": "string",
+                    "title": "Route Distinguisher"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Rd Evpn Domain"
+              },
+              "route_targets": {
+                "type": "object",
+                "properties": {
+                  "both": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "Route Target"
+                    },
+                    "title": "Both"
+                  },
+                  "import": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "Route Target"
+                    },
+                    "title": "Import"
+                  },
+                  "export": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "Route Target"
+                    },
+                    "title": "Export"
+                  },
+                  "import_evpn_domains": {
+                    "type": "object",
+                    "properties": {
+                      "domain": {
+                        "type": "string",
+                        "enum": [
+                          "remote",
+                          "all"
+                        ],
+                        "title": "Domain"
+                      },
+                      "route_target": {
+                        "type": "string",
+                        "title": "Route Target"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Import Evpn Domains"
+                  },
+                  "export_evpn_domains": {
+                    "type": "object",
+                    "properties": {
+                      "domain": {
+                        "type": "string",
+                        "enum": [
+                          "remote",
+                          "all"
+                        ],
+                        "title": "Domain"
+                      },
+                      "route_target": {
+                        "type": "string",
+                        "title": "Route Target"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Export Evpn Domains"
+                  },
+                  "import_export_evpn_domains": {
+                    "type": "object",
+                    "properties": {
+                      "domain": {
+                        "type": "string",
+                        "enum": [
+                          "remote",
+                          "all"
+                        ],
+                        "title": "Domain"
+                      },
+                      "route_target": {
+                        "type": "string",
+                        "title": "Route Target"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Import Export Evpn Domains"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Route Targets"
+              },
+              "redistribute_routes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Redistribute Routes"
+              },
+              "no_redistribute_routes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Host-Route"
+                },
+                "title": "No Redistribute Routes"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "VLANs"
+        },
+        "vpws": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VPWS Instance Name"
+              },
+              "rd": {
+                "type": "string",
+                "title": "Route Distinguisher"
+              },
+              "route_targets": {
+                "type": "object",
+                "properties": {
+                  "import_export": {
+                    "type": "string",
+                    "title": "Route Target"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Route Targets"
+              },
+              "mpls_control_word": {
+                "type": "boolean",
+                "default": false,
+                "title": "MPLS Control Word"
+              },
+              "label_flow": {
+                "type": "boolean",
+                "default": false,
+                "title": "Label Flow"
+              },
+              "mtu": {
+                "type": "integer",
+                "title": "MTU"
+              },
+              "pseudowires": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Pseudowire Name"
+                    },
+                    "id_local": {
+                      "type": "integer",
+                      "description": "Must match id_remote on other pe",
+                      "title": "ID Local"
+                    },
+                    "id_remote": {
+                      "type": "integer",
+                      "description": "Must match id_local on other pe",
+                      "title": "ID Remote"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Pseudowires"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Vpws"
+        },
+        "address_family_evpn": {
+          "type": "object",
+          "properties": {
+            "domain_identifier": {
+              "type": "string",
+              "title": "Domain Identifier"
+            },
+            "neighbor_default": {
+              "type": "object",
+              "properties": {
+                "encapsulation": {
+                  "type": "string",
+                  "enum": [
+                    "vxlan",
+                    "mpls"
+                  ],
+                  "title": "Encapsulation"
+                },
+                "next_hop_self_source_interface": {
+                  "type": "string",
+                  "title": "Source Interface"
+                },
+                "next_hop_self_received_evpn_routes": {
+                  "type": "object",
+                  "properties": {
+                    "enable": {
+                      "type": "boolean",
+                      "title": "Enable"
+                    },
+                    "inter_domain": {
+                      "type": "boolean",
+                      "title": "Inter Domain"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Next Hop Self Received Evpn Routes"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Neighbor Default"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  },
+                  "domain_remote": {
+                    "type": "boolean",
+                    "title": "Domain Remote"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            },
+            "evpn_hostflap_detection": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "window": {
+                  "type": "integer",
+                  "description": "Time in seconds",
+                  "title": "Window"
+                },
+                "threshold": {
+                  "type": "integer",
+                  "description": "Minimum number of MAC moves that indicate a MAC Duplication issue",
+                  "title": "Threshold"
+                },
+                "expiry_timeout": {
+                  "type": "integer",
+                  "description": "Timeout in seconds",
+                  "title": "Expiry Timeout"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Evpn Hostflap Detection"
+            },
+            "route": {
+              "type": "object",
+              "properties": {
+                "import_match_failure_action": {
+                  "type": "string",
+                  "description": "Example: \"discard\"\n",
+                  "title": "Import Match Failure Action"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Route"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family Evpn"
+        },
+        "address_family_rtc": {
+          "type": "object",
+          "properties": {
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "default_route_target": {
+                    "type": "object",
+                    "properties": {
+                      "only": {
+                        "type": "boolean",
+                        "title": "Only"
+                      },
+                      "encoding_origin_as_omit": {
+                        "type": "string",
+                        "title": "Encoding Origin As Omit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Default Route Target"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family Rtc"
+        },
+        "address_family_ipv4": {
+          "type": "object",
+          "properties": {
+            "networks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "title": "Prefix IPV4"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route-Map Name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Networks"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  },
+                  "default_originate": {
+                    "type": "object",
+                    "properties": {
+                      "always": {
+                        "type": "boolean",
+                        "title": "Always"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route-Map Name"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Default Originate"
+                  },
+                  "next_hop": {
+                    "type": "object",
+                    "properties": {
+                      "address_family_ipv6_originate": {
+                        "type": "boolean",
+                        "title": "Address Family IPv6 Originate"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Next Hop"
+                  },
+                  "prefix_list_in": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List In"
+                  },
+                  "prefix_list_out": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "Neighbor IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  },
+                  "prefix_list_in": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List In"
+                  },
+                  "prefix_list_out": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List Out"
+                  },
+                  "default_originate": {
+                    "type": "object",
+                    "properties": {
+                      "always": {
+                        "type": "boolean",
+                        "title": "Always"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route-Map Name"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Default Originate"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Neighbors"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family IPv4"
+        },
+        "address_family_ipv4_multicast": {
+          "type": "object",
+          "properties": {
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "Neighbor IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Neighbors"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "title": "Source Protocol"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map Name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Redistribute Routes"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family IPv4 Multicast"
+        },
+        "address_family_ipv6": {
+          "type": "object",
+          "properties": {
+            "networks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "title": "Prefix IPV4"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route-Map Name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Networks"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  },
+                  "prefix_list_in": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List In"
+                  },
+                  "prefix_list_out": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "Neighbor IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  },
+                  "prefix_list_in": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List In"
+                  },
+                  "prefix_list_out": {
+                    "type": "string",
+                    "description": "Prefix List Name",
+                    "title": "Prefix List Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Neighbors"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "title": "Source Protocol"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map Name"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Redistribute Routes"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family IPv6"
+        },
+        "address_family_vpn_ipv4": {
+          "type": "object",
+          "properties": {
+            "domain_identifier": {
+              "type": "string",
+              "title": "Domain Identifier"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            },
+            "route": {
+              "type": "object",
+              "properties": {
+                "import_match_failure_action": {
+                  "type": "string",
+                  "description": "Example: \"discard\"\n",
+                  "title": "Import Match Failure Action"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Route"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "Neighbor IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Neighbors"
+            },
+            "neighbor_default_encapsulation_mpls_next_hop_self": {
+              "type": "object",
+              "properties": {
+                "source_interface": {
+                  "type": "string",
+                  "title": "Interface"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Neighbor Default Encapsulation MPLS Next Hop Self"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family VPN IPv4"
+        },
+        "address_family_vpn_ipv6": {
+          "type": "object",
+          "properties": {
+            "domain_identifier": {
+              "type": "string",
+              "title": "Domain Identifier"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Peer-Group Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Peer Groups"
+            },
+            "route": {
+              "type": "object",
+              "properties": {
+                "import_match_failure_action": {
+                  "type": "string",
+                  "description": "Example: \"discard\"\n",
+                  "title": "Import Match Failure Action"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Route"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "Neighbor IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Route-Map Name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Neighbors"
+            },
+            "neighbor_default_encapsulation_mpls_next_hop_self": {
+              "type": "object",
+              "properties": {
+                "source_interface": {
+                  "type": "string",
+                  "title": "Interface"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Neighbor Default Encapsulation MPLS Next Hop Self"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family VPN IPv6"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VRF Name"
+              },
+              "rd": {
+                "type": "string",
+                "title": "Route Distinguisher"
+              },
+              "evpn_multicast": {
+                "type": "boolean",
+                "title": "Evpn Multicast"
+              },
+              "route_targets": {
+                "type": "object",
+                "properties": {
+                  "import": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address_family": {
+                          "type": "string",
+                          "title": "Address Family"
+                        },
+                        "route_targets": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "title": "Route Target"
+                          },
+                          "title": "Route Targets"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Import"
+                  },
+                  "export": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address_family": {
+                          "type": "string",
+                          "title": "Address Family"
+                        },
+                        "route_targets": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "title": "Route Target"
+                          },
+                          "title": "Route Targets"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Export"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Route Targets"
+              },
+              "router_id": {
+                "type": "string",
+                "title": "IPv4 Address"
+              },
+              "timers": {
+                "type": "string",
+                "description": "Keep alive hold timer values",
+                "title": "Timers"
+              },
+              "networks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "title": "Prefix IPV4"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "title": "Route-Map Name"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Networks"
+              },
+              "listen_ranges": {
+                "type": "array",
+                "description": "New improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "description": "\"A.B.C.D/E\" | \"A:B:C:D:E:F:G:H/I\"\n",
+                      "title": "Prefix"
+                    },
+                    "peer_id_include_router_id": {
+                      "type": "boolean",
+                      "description": "Include router ID as part of peer filter",
+                      "title": "Peer ID Include Router ID"
+                    },
+                    "peer_group": {
+                      "type": "string",
+                      "title": "Name Of Peer-Group"
+                    },
+                    "peer_filter": {
+                      "type": "string",
+                      "title": "Name Of Peer-Filter",
+                      "description": "peer_filter or remote_as is required but mutually exclusive. \nIf both are defined, peer_filter takes precedence\n"
+                    },
+                    "remote_as": {
+                      "type": "integer",
+                      "description": "Remote ASN in plain or dot notation",
+                      "title": "Remote As"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Listen Ranges"
+              },
+              "redistribute_routes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source_protocol": {
+                      "type": "string",
+                      "title": "Source Protocol"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "title": "Route Map Name"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Redistribute Routes"
+              },
+              "aggregate_addresses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "description": "Aggregate Address/Mask",
+                      "title": "Prefix"
+                    },
+                    "advertise_only": {
+                      "type": "boolean",
+                      "title": "Advertise Only"
+                    },
+                    "as_set": {
+                      "type": "boolean",
+                      "title": "As Set"
+                    },
+                    "summary_only": {
+                      "type": "boolean",
+                      "title": "Summary Only"
+                    },
+                    "attribute_map": {
+                      "type": "string",
+                      "title": "Route Map Name"
+                    },
+                    "match_map": {
+                      "type": "string",
+                      "title": "Route Map Name"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Aggregate Addresses"
+              },
+              "neighbor_interfaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Interface"
+                    },
+                    "remote_as": {
+                      "type": "integer",
+                      "title": "BGP AS"
+                    },
+                    "peer_group": {
+                      "type": "string",
+                      "title": "Peer Group Name"
+                    },
+                    "peer_filter": {
+                      "type": "string",
+                      "title": "Peer Filter"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Neighbor Interfaces"
+              },
+              "address_families": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address_family": {
+                      "type": "string",
+                      "title": "Address Family"
+                    },
+                    "bgp": {
+                      "type": "object",
+                      "properties": {
+                        "missing_policy": {
+                          "type": "object",
+                          "properties": {
+                            "direction_in_action": {
+                              "type": "string",
+                              "enum": [
+                                "deny",
+                                "deny-in-out",
+                                "permit"
+                              ],
+                              "title": "Direction In Action"
+                            },
+                            "direction_out_action": {
+                              "type": "string",
+                              "enum": [
+                                "deny",
+                                "deny-in-out",
+                                "permit"
+                              ],
+                              "title": "Direction Out Action"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "title": "Missing Policy"
+                        },
+                        "additional_paths": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Additional Paths"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "BGP"
+                    },
+                    "neighbors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ip_address": {
+                            "type": "string",
+                            "title": "Neighbor IP Address"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "route_map_in": {
+                            "type": "string",
+                            "description": "Route-Map Name",
+                            "title": "Route Map In"
+                          },
+                          "route_map_out": {
+                            "type": "string",
+                            "description": "Route-Map Name",
+                            "title": "Route Map Out"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "title": "Neighbors"
+                    },
+                    "peer_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Peer-Group Name"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "next_hop": {
+                            "type": "object",
+                            "properties": {
+                              "address_family_ipv6_originate": {
+                                "type": "boolean",
+                                "title": "Address Family IPv6 Originate"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "title": "Next Hop"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "title": "Peer Groups"
+                    },
+                    "networks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "title": "Prefix IPV4"
+                          },
+                          "route_map": {
+                            "type": "string",
+                            "title": "Route-Map Name"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "title": "Networks"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Address Families"
+              },
+              "eos_cli": {
+                "type": "string",
+                "title": "Multiline EOS CLI",
+                "description": "EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration\n"
+              },
+              "neighbors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ip_address": {
+                      "type": "string",
+                      "title": "IPv4 Address"
+                    },
+                    "peer_group": {
+                      "type": "string",
+                      "title": "Peer-Group Name"
+                    },
+                    "remote_as": {
+                      "type": "integer",
+                      "title": "BGP AS"
+                    },
+                    "password": {
+                      "type": "string",
+                      "title": "Encrypted Password"
+                    },
+                    "local_as": {
+                      "type": "integer",
+                      "title": "BGP AS"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "Description As String"
+                    },
+                    "shutdown": {
+                      "type": "boolean",
+                      "title": "Shutdown"
+                    },
+                    "update_source": {
+                      "type": "string",
+                      "title": "Interface"
+                    },
+                    "bfd": {
+                      "type": "boolean",
+                      "title": "BFD"
+                    },
+                    "weight": {
+                      "type": "integer",
+                      "title": "Weight Value"
+                    },
+                    "timers": {
+                      "type": "string",
+                      "description": "keepalive hold timer values",
+                      "title": "Timers"
+                    },
+                    "route_map_in": {
+                      "type": "string",
+                      "description": "Inbound Route-Map",
+                      "title": "Route Map In"
+                    },
+                    "route_map_out": {
+                      "type": "string",
+                      "description": "Outbound Route-Map",
+                      "title": "Route Map Out"
+                    },
+                    "default_originate": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "always": {
+                          "type": "boolean",
+                          "title": "Always"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route-Map Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Default Originate"
+                    },
+                    "send_community": {
+                      "type": "string",
+                      "description": "[ \"standard\", \"extended\", \"large\", \"all\" ]\nExample: \"standard large\"\n",
+                      "title": "Send Community"
+                    },
+                    "maximum_routes": {
+                      "type": "integer",
+                      "title": "Maximum Routes"
+                    },
+                    "maximum_routes_warning_limit": {
+                      "type": "string",
+                      "description": "\"<integer>\" | \"<0-100> percent\"\n",
+                      "title": "Maximum Routes Warning Limit"
+                    },
+                    "maximum_routes_warning_only": {
+                      "type": "boolean",
+                      "title": "Maximum Routes Warning Only"
+                    },
+                    "allowas_in": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "times": {
+                          "type": "integer",
+                          "description": "1-10",
+                          "title": "Times"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Allowas In"
+                    },
+                    "ebgp_multihop": {
+                      "type": "integer",
+                      "title": "Ebgp Multihop"
+                    },
+                    "next_hop_self": {
+                      "type": "boolean",
+                      "title": "Next Hop Self"
+                    },
+                    "prefix_list_in": {
+                      "type": "string",
+                      "description": "Prefix List Name",
+                      "title": "Prefix List In"
+                    },
+                    "prefix_list_out": {
+                      "type": "string",
+                      "description": "Prefix List Name",
+                      "title": "Prefix List Out"
+                    },
+                    "rib_in_pre_policy_retain": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "all": {
+                          "type": "boolean",
+                          "title": "All"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Rib In Pre Policy Retain"
+                    },
+                    "remove_private_as": {
+                      "type": "object",
+                      "description": "Remove private AS numbers in outbound AS path",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "all": {
+                          "type": "boolean",
+                          "title": "All"
+                        },
+                        "replace_as": {
+                          "type": "boolean",
+                          "title": "Replace As"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Remove Private As"
+                    },
+                    "remove_private_as_ingress": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "replace_as": {
+                          "type": "boolean",
+                          "title": "Replace As"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Remove Private As Ingress"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Neighbors"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false
+    },
     "router_general": {
       "type": "object",
       "title": "Router General configuration",
