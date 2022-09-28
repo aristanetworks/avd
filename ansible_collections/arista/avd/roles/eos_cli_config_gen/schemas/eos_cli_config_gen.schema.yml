@@ -2267,7 +2267,7 @@ keys:
               type: str
               convert_types:
               - int
-              display_name: Instance Range
+              display_name: Instance ID
             priority:
               type: int
               convert_types:
@@ -2291,7 +2291,6 @@ keys:
           keys:
             id:
               type: str
-              display_name: VLAN ID Range
               convert_types:
               - int
               description: '"< vlan_id >, < vlan_id >-< vlan_id >"
