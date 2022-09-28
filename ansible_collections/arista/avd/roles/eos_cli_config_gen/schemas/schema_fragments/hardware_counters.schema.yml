@@ -8,17 +8,17 @@ keys:
     keys:
       features:
         type: list
-        secondary_key: direction
         primary_key: name
+        secondary_key: direction
         convert_types:
-          - dict
+          - list
         items:
           type: dict
           keys:
             name:
               type: str
               required: true
-              display_name: Name of the feature
+              display_name: Name of feature
             direction:
               type: str
               required: true

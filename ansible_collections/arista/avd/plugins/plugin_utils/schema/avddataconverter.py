@@ -157,15 +157,16 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
     Any convertion errors are ignored and the original value is returned
     """
     schema_type = schema.get("type")
-    # Skip conversion if the value is of the correct type already
-    if validator.is_type(instance, schema_type):
-        return instance
 
     simple_converters = {
         "str": str,
         "int": int,
         "bool": bool,
     }
+
+    # For simple conversions, skip conversion if the value is of the correct type
+    if validator.is_type(instance, schema_type) and schema_type in simple_converters:
+        return instance
 
     for convert_type in convert_types:
         if validator.is_type(instance, convert_type):
@@ -177,7 +178,7 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
                     converted_instance = instance
                     pass
                 return converted_instance
-            elif convert_type == "dict" and schema_type == "list" and "primary_key" in schema:
+            elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
                 try:
                     converted_instance = convert_dicts(instance, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                 except Exception:

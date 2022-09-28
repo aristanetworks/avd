@@ -174,7 +174,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "dict"
+                                    "dict",
+                                    "list"
                                 ]
                             }
                         },

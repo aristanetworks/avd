@@ -1374,7 +1374,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Name of the feature"
+                "title": "Name of feature"
               },
               "direction": {
                 "type": "string",
