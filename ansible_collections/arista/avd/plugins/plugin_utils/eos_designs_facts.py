@@ -934,10 +934,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def router_id(self):
         """
-        Run template lookup to render ipv4 address for router_id
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for router_id using dynamically loaded python module.
         """
         if self.underlay_router is True:
             return self.avd_ip_addressing.router_id()
@@ -1181,10 +1178,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def ipv6_router_id(self):
         """
-        Run template lookup to render ipv6 address for router_id
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv6 address for router_id using dynamically loaded python module.
         """
         if self.underlay_ipv6 is True:
             return self.avd_ip_addressing.ipv6_router_id()
@@ -1547,10 +1541,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def vtep_ip(self):
         """
-        Run template lookup to render ipv4 address for vtep_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for vtep_ip using dynamically loaded python module.
         """
         if self.vtep is True:
             if self.mlag is True:
@@ -1564,10 +1555,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_ip(self):
         """
-        Run template lookup to render ipv4 address for mlag_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for mlag_ip using dynamically loaded python module.
         """
         if self.mlag is True:
             if self.mlag_role == "primary":
@@ -1591,10 +1579,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_l3_ip(self):
         """
-        Run template lookup to render ipv4 address for mlag_l3_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
         """
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
             if self.mlag_role == "primary":
