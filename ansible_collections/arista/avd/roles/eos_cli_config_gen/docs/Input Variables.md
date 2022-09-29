@@ -2367,6 +2367,56 @@ route_maps:
           sequence_number: <int>
 ```
 
+## Router Bfd
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>router_bfd</samp>](## "router_bfd") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;interval</samp>](## "router_bfd.interval") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;min_rx</samp>](## "router_bfd.min_rx") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;multiplier</samp>](## "router_bfd.multiplier") | Integer |  |  |  | 3-50 |
+| [<samp>&nbsp;&nbsp;multihop</samp>](## "router_bfd.multihop") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bfd.multihop.interval") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bfd.multihop.min_rx") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bfd.multihop.multiplier") | Integer |  |  |  | 3-50 |
+| [<samp>&nbsp;&nbsp;sbfd</samp>](## "router_bfd.sbfd") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "router_bfd.sbfd.local_interface") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_bfd.sbfd.local_interface.name") | String |  |  |  | Interface Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "router_bfd.sbfd.local_interface.protocols") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_bfd.sbfd.local_interface.protocols.ipv4") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "router_bfd.sbfd.local_interface.protocols.ipv6") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;initiator_interval</samp>](## "router_bfd.initiator_interval") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;initiator_multiplier</samp>](## "router_bfd.initiator_multiplier") | Integer |  |  |  | 3-50 |
+| [<samp>&nbsp;&nbsp;reflector</samp>](## "router_bfd.reflector") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bfd.reflector.min_rx") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_discriminator</samp>](## "router_bfd.reflector.local_discriminator") | String |  |  |  | IPv4_address in u32 format |
+
+### YAML
+
+```yaml
+router_bfd:
+  interval: <int>
+  min_rx: <int>
+  multiplier: <int>
+  multihop:
+    interval: <int>
+    min_rx: <int>
+    multiplier: <int>
+  sbfd:
+    local_interface:
+      name: <str>
+      protocols:
+        ipv4: <bool>
+        ipv6: <bool>
+  initiator_interval: <int>
+  initiator_multiplier: <int>
+  reflector:
+    min_rx: <int>
+    local_discriminator: <str>
+```
+
 ## Router General configuration
 
 ### Variables

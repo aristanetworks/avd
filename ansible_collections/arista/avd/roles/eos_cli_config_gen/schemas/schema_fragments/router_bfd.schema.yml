@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_bfd:
+    type: dict
+    keys:
+      interval:
+        type: int
+        display_name: Rate In Milliseconds
+      min_rx:
+        type: int
+        display_name: Rate In Milliseconds
+      multiplier:
+        type: int
+        description: 3-50
+      multihop:
+        type: dict
+        keys:
+          interval:
+            type: int
+            display_name: Rate In Milliseconds
+          min_rx:
+            type: int
+            display_name: Rate In Milliseconds
+          multiplier:
+            type: int
+            description: 3-50
+      sbfd:
+        type: dict
+        keys:
+          local_interface:
+            type: dict
+            keys:
+              name:
+                type: str
+                display_name: Interface Name
+              protocols:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                  ipv6:
+                    type: bool
+      initiator_interval:
+        type: int
+        display_name: Rate In Milliseconds
+      initiator_multiplier:
+        type: int
+        description: 3-50
+      reflector:
+        type: dict
+        keys:
+          min_rx:
+            type: int
+            display_name: Rate In Milliseconds
+          local_discriminator:
+            type: str
+            description: IPv4_address in u32 format
