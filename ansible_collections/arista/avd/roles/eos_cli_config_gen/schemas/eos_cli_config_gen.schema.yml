@@ -4588,6 +4588,40 @@ keys:
                   type: str
                 vrf:
                   type: str
+  tacacs_servers:
+    type: dict
+    keys:
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              display_name: Host IP Address Or Name
+            vrf:
+              type: str
+              display_name: VRF Name
+            key:
+              type: str
+              display_name: Encrypted Key
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
+            single_connection:
+              type: bool
+            timeout:
+              type: int
+              convert_types:
+              - str
+      policy_unknown_mandatory_attribute_ignore:
+        type: bool
   tap_aggregation:
     type: dict
     keys:
