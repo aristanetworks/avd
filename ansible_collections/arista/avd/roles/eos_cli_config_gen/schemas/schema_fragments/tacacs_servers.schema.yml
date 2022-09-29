@@ -24,7 +24,7 @@ keys:
               type: str
               convert_types:
                 - int
-              valid_values: ["0","7","8a"]
+              valid_values: ["0", "7", "8a"]
               default: "7"
             single_connection:
               type: bool
