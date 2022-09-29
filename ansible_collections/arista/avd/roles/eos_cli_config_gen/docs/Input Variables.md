@@ -2371,6 +2371,26 @@ queue_monitor_streaming:
   vrf: <str>
 ```
 
+## Radius Servers
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>radius_servers</samp>](## "radius_servers") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- host</samp>](## "radius_servers.[].host") | String |  |  |  | Host IP Address Or Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "radius_servers.[].vrf") | String |  |  |  | VRF Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_servers.[].key") | String |  |  |  | Encrypted Key |
+
+### YAML
+
+```yaml
+radius_servers:
+  - host: <str>
+    vrf: <str>
+    key: <str>
+```
+
 ## Redundancy
 
 ### Variables

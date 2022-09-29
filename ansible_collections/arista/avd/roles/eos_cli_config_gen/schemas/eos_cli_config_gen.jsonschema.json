@@ -3886,6 +3886,28 @@
       "additionalProperties": false,
       "title": "Queue Monitor Streaming"
     },
+    "radius_servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host IP Address Or Name"
+          },
+          "vrf": {
+            "type": "string",
+            "title": "VRF Name"
+          },
+          "key": {
+            "type": "string",
+            "title": "Encrypted Key"
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Radius Servers"
+    },
     "redundancy": {
       "type": "object",
       "properties": {
