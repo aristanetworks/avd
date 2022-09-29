@@ -429,6 +429,11 @@
         "additionalProperties": false
       }
     },
+    "aliases": {
+      "type": "string",
+      "description": "Multiline string with one or more multiple alias commands.\nExample:\n```\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
+      "title": "Aliases"
+    },
     "arp": {
       "title": "ARP",
       "type": "object",

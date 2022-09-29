@@ -217,6 +217,29 @@ access_lists:
         action: <str>
 ```
 
+## Aliases
+
+### Description
+
+Multiline string with one or more multiple alias commands.
+Example:
+```
+aliases: |
+  alias wr copy running-config startup-config
+  alias siib show ip interface brief
+```
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>aliases</samp>](## "aliases") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+aliases: <str>
+```
+
 ## ARP
 
 ### Variables
