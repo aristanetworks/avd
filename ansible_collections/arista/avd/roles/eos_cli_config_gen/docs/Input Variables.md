@@ -83,6 +83,24 @@ as_path:
           origin: <str>
 ```
 
+## Banners
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>banners</samp>](## "banners") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;login</samp>](## "banners.login") | String |  |  |  | Text ending with EOF |
+| [<samp>&nbsp;&nbsp;motd</samp>](## "banners.motd") | String |  |  |  | Text ending with EOF |
+
+### YAML
+
+```yaml
+banners:
+  login: <str>
+  motd: <str>
+```
+
 ## Bgp Groups
 
 ### Variables

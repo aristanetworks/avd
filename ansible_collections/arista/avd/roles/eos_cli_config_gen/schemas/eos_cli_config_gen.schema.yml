@@ -101,6 +101,15 @@ keys:
                     - igp
                     - incomplete
                     default: any
+  banners:
+    type: dict
+    keys:
+      login:
+        type: str
+        description: Text ending with EOF
+      motd:
+        type: str
+        description: Text ending with EOF
   bgp_groups:
     type: list
     primary_key: name
