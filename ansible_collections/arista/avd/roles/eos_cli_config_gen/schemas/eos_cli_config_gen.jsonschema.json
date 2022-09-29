@@ -3921,6 +3921,51 @@
       "additionalProperties": false,
       "title": "Redundancy"
     },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Role Name"
+          },
+          "sequence_numbers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sequence": {
+                  "type": "integer",
+                  "title": "Sequence Number"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "permit",
+                    "deny"
+                  ],
+                  "title": "Action"
+                },
+                "mode": {
+                  "type": "string",
+                  "description": "[\"config\", \"config-all\", \"exec\", mode]\nExample: \"config\"\n",
+                  "title": "Mode"
+                },
+                "command": {
+                  "type": "string",
+                  "title": "Command As String"
+                }
+              },
+              "additionalProperties": false
+            },
+            "title": "Sequence Numbers"
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Roles"
+    },
     "route_maps": {
       "type": "array",
       "items": {

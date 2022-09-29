@@ -2407,6 +2407,32 @@ redundancy:
   protocol: <str>
 ```
 
+## Roles
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>roles</samp>](## "roles") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "roles.[].name") | String |  |  |  | Role Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "roles.[].sequence_numbers") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "roles.[].sequence_numbers.[].sequence") | Integer |  |  |  | Sequence Number |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "roles.[].sequence_numbers.[].action") | String |  |  | Valid Values:<br>- permit<br>- deny |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "roles.[].sequence_numbers.[].mode") | String |  |  |  | ["config", "config-all", "exec", mode]<br>Example: "config"<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command</samp>](## "roles.[].sequence_numbers.[].command") | String |  |  |  | Command As String |
+
+### YAML
+
+```yaml
+roles:
+  - name: <str>
+    sequence_numbers:
+      - sequence: <int>
+        action: <str>
+        mode: <str>
+        command: <str>
+```
+
 ## Route Maps
 
 ### Variables
