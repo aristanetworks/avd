@@ -3885,35 +3885,35 @@
               },
               "additionalProperties": false,
               "title": "Local Interface"
+            },
+            "initiator_interval": {
+              "type": "integer",
+              "title": "Rate In Milliseconds"
+            },
+            "initiator_multiplier": {
+              "type": "integer",
+              "description": "3-50",
+              "title": "Initiator Multiplier"
+            },
+            "reflector": {
+              "type": "object",
+              "properties": {
+                "min_rx": {
+                  "type": "integer",
+                  "title": "Rate In Milliseconds"
+                },
+                "local_discriminator": {
+                  "type": "string",
+                  "description": "IPv4_address in u32 format",
+                  "title": "Local Discriminator"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Reflector"
             }
           },
           "additionalProperties": false,
           "title": "Sbfd"
-        },
-        "initiator_interval": {
-          "type": "integer",
-          "title": "Rate In Milliseconds"
-        },
-        "initiator_multiplier": {
-          "type": "integer",
-          "description": "3-50",
-          "title": "Initiator Multiplier"
-        },
-        "reflector": {
-          "type": "object",
-          "properties": {
-            "min_rx": {
-              "type": "integer",
-              "title": "Rate In Milliseconds"
-            },
-            "local_discriminator": {
-              "type": "string",
-              "description": "IPv4_address in u32 format",
-              "title": "Local Discriminator"
-            }
-          },
-          "additionalProperties": false,
-          "title": "Reflector"
         }
       },
       "additionalProperties": false,

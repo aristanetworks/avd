@@ -2387,11 +2387,11 @@ route_maps:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "router_bfd.sbfd.local_interface.protocols") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_bfd.sbfd.local_interface.protocols.ipv4") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "router_bfd.sbfd.local_interface.protocols.ipv6") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;initiator_interval</samp>](## "router_bfd.initiator_interval") | Integer |  |  |  | Rate In Milliseconds |
-| [<samp>&nbsp;&nbsp;initiator_multiplier</samp>](## "router_bfd.initiator_multiplier") | Integer |  |  |  | 3-50 |
-| [<samp>&nbsp;&nbsp;reflector</samp>](## "router_bfd.reflector") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bfd.reflector.min_rx") | Integer |  |  |  | Rate In Milliseconds |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_discriminator</samp>](## "router_bfd.reflector.local_discriminator") | String |  |  |  | IPv4_address in u32 format |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;initiator_interval</samp>](## "router_bfd.sbfd.initiator_interval") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;initiator_multiplier</samp>](## "router_bfd.sbfd.initiator_multiplier") | Integer |  |  |  | 3-50 |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;reflector</samp>](## "router_bfd.sbfd.reflector") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bfd.sbfd.reflector.min_rx") | Integer |  |  |  | Rate In Milliseconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_discriminator</samp>](## "router_bfd.sbfd.reflector.local_discriminator") | String |  |  |  | IPv4_address in u32 format |
 
 ### YAML
 
@@ -2410,11 +2410,11 @@ router_bfd:
       protocols:
         ipv4: <bool>
         ipv6: <bool>
-  initiator_interval: <int>
-  initiator_multiplier: <int>
-  reflector:
-    min_rx: <int>
-    local_discriminator: <str>
+    initiator_interval: <int>
+    initiator_multiplier: <int>
+    reflector:
+      min_rx: <int>
+      local_discriminator: <str>
 ```
 
 ## Router General configuration
