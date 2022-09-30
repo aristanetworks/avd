@@ -1688,6 +1688,12 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  redundancy:
+    type: dict
+    keys:
+      protocol:
+        type: str
+        display_name: Redundancy Protocol
   route_maps:
     type: list
     primary_key: name
