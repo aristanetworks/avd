@@ -20,7 +20,7 @@ keys:
             type: list
             items:
               type: str
-      interval:
-        type: int
-        display_name: Seconds
-        default: 300
+          interval:
+            type: int
+            display_name: Seconds
+            default: 300
