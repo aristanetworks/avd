@@ -1655,6 +1655,8 @@ keys:
         keys:
           forwarding_table_partition:
             type: str
+            convert_types:
+            - int
       sand:
         type: dict
         description: Most of the platform sand options are hardware dependant and
