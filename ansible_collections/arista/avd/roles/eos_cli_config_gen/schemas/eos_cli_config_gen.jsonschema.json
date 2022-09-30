@@ -523,6 +523,25 @@
         "additionalProperties": false
       }
     },
+    "dhcp_relay": {
+      "type": "object",
+      "title": "DHCP Relay",
+      "properties": {
+        "servers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "title": "Server IP or Hostname"
+          },
+          "title": "Servers"
+        },
+        "tunnel_requests_disabled": {
+          "type": "boolean",
+          "title": "Tunnel Requests Disabled"
+        }
+      },
+      "additionalProperties": false
+    },
     "dns_domain": {
       "type": "string",
       "title": "DNS Domain",

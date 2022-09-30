@@ -497,6 +497,17 @@ keys:
         enabled:
           type: bool
           default: true
+  dhcp_relay:
+    type: dict
+    display_name: DHCP Relay
+    keys:
+      servers:
+        type: list
+        items:
+          type: str
+          display_name: Server IP or Hostname
+      tunnel_requests_disabled:
+        type: bool
   dns_domain:
     type: str
     display_name: DNS Domain
