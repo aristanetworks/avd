@@ -466,7 +466,7 @@ generate_device_documentation: <bool>
 | [<samp>interface_defaults</samp>](## "interface_defaults") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;ethernet</samp>](## "interface_defaults.ethernet") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "interface_defaults.ethernet.shutdown") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;mtu</samp>](## "interface_defaults.mtu") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;mtu</samp>](## "interface_defaults.mtu") | Integer |  |  |  |  |
 
 ### YAML
 
@@ -474,7 +474,7 @@ generate_device_documentation: <bool>
 interface_defaults:
   ethernet:
     shutdown: <bool>
-  mtu: <str>
+  mtu: <int>
 ```
 
 ## Maintenance Interface Groups

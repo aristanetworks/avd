@@ -616,7 +616,9 @@ keys:
           shutdown:
             type: bool
       mtu:
-        type: str
+        type: int
+        convert_types:
+        - str
   interface_groups:
     type: list
     display_name: Maintenance Interface Groups
