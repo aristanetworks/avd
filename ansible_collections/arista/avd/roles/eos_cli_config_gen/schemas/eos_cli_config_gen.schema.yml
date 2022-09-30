@@ -1647,6 +1647,50 @@ keys:
                 description: 'Match as string
 
                   Example: "as-range 1-100 result accept"'
+  platform:
+    type: dict
+    keys:
+      trident:
+        type: dict
+        keys:
+          forwarding_table_partition:
+            type: str
+      sand:
+        type: dict
+        description: Most of the platform sand options are hardware dependant and
+          optional
+        keys:
+          qos_maps:
+            type: list
+            display_name: QOS Maps
+            items:
+              type: dict
+              keys:
+                traffic_class:
+                  type: int
+                  description: 0-7
+                to_network_qos:
+                  type: int
+                  display_name: To Network QOS
+                  description: 0-63
+          lag:
+            type: dict
+            display_name: LAG
+            keys:
+              hardware_only:
+                type: bool
+              mode:
+                type: str
+          forwarding_mode:
+            type: str
+          multicast_replication:
+            type: dict
+            keys:
+              default:
+                type: str
+                valid_values:
+                - ingress
+                - egress
   policy_maps:
     type: dict
     display_name: Policy-Maps
