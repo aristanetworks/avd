@@ -333,6 +333,12 @@
         "additionalProperties": false
       }
     },
+    "generate_default_config": {
+      "type": "boolean",
+      "default": true,
+      "description": "The `generate_default_config` knob allows to omit default EOS configuration.\nThis can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.\n\nThe following commands will be omitted when `generate_default_config` is set to `false`:\n\n- RANCID Content Type\n- Hostname\n- Default configuration for `aaa`\n- Default configuration for `enable password`\n- Transceiver qsfp default mode\n- End of configuration delimiter",
+      "title": "Generate Default Config"
+    },
     "generate_device_documentation": {
       "type": "boolean",
       "default": true,
