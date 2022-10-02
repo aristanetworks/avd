@@ -165,6 +165,22 @@ class_maps:
         access_group: <str>
 ```
 
+## Clock
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>clock</samp>](## "clock") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;timezone</samp>](## "clock.timezone") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+clock:
+  timezone: <str>
+```
+
 ## Community Lists (legacy model)
 
 ### Description
