@@ -1849,6 +1849,20 @@ keys:
         description: Set local system LACP priority.
         min: 0
         max: 65535
+  link_tracking_groups:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        links_minimum:
+          type: int
+        recovery_delay:
+          type: int
   lldp:
     type: dict
     keys:

@@ -2426,6 +2426,31 @@
       "additionalProperties": false,
       "title": "Lacp"
     },
+    "link_tracking_groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "links_minimum": {
+            "type": "integer",
+            "title": "Links Minimum"
+          },
+          "recovery_delay": {
+            "type": "integer",
+            "title": "Recovery Delay"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Link Tracking Groups"
+    },
     "lldp": {
       "type": "object",
       "properties": {
