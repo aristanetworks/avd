@@ -1216,6 +1216,26 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  lacp:
+    type: dict
+    keys:
+      port_id:
+        type: dict
+        keys:
+          range:
+            type: dict
+            keys:
+              begin:
+                type: int
+              end:
+                type: int
+      rate_limit:
+        type: dict
+        keys:
+          default:
+            type: bool
+      system_priority:
+        type: int
   local_users:
     type: list
     primary_key: name

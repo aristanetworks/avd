@@ -943,6 +943,34 @@ ipv6_standard_access_lists:
         action: <str>
 ```
 
+## Lacp
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>lacp</samp>](## "lacp") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;port_id</samp>](## "lacp.port_id") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "lacp.port_id.range") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin</samp>](## "lacp.port_id.range.begin") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "lacp.port_id.range.end") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;rate_limit</samp>](## "lacp.rate_limit") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "lacp.rate_limit.default") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;system_priority</samp>](## "lacp.system_priority") | Integer |  |  |  |  |
+
+### YAML
+
+```yaml
+lacp:
+  port_id:
+    range:
+      begin: <int>
+      end: <int>
+  rate_limit:
+    default: <bool>
+  system_priority: <int>
+```
+
 ## Local Users
 
 ### Variables

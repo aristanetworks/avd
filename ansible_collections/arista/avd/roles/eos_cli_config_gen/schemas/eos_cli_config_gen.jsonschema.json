@@ -1403,6 +1403,50 @@
         "additionalProperties": false
       }
     },
+    "lacp": {
+      "type": "object",
+      "properties": {
+        "port_id": {
+          "type": "object",
+          "properties": {
+            "range": {
+              "type": "object",
+              "properties": {
+                "begin": {
+                  "type": "integer",
+                  "title": "Begin"
+                },
+                "end": {
+                  "type": "integer",
+                  "title": "End"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Range"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Port Id"
+        },
+        "rate_limit": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "boolean",
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Rate Limit"
+        },
+        "system_priority": {
+          "type": "integer",
+          "title": "System Priority"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Lacp"
+    },
     "local_users": {
       "type": "array",
       "items": {
