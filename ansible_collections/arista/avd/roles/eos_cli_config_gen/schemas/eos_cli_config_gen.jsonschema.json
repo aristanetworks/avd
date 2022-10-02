@@ -523,6 +523,10 @@
         "additionalProperties": false
       }
     },
+    "dns_domain": {
+      "type": "string",
+      "title": "Domain Name"
+    },
     "eos_cli": {
       "type": "string",
       "title": "EOS CLI",
