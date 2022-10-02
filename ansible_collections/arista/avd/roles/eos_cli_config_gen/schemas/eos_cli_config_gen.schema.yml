@@ -3572,6 +3572,396 @@ keys:
                         type: int
                         convert_types:
                         - str
+  port_channel_interfaces:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Port Channel Interface
+        description:
+          type: str
+          display_name: Description
+        logging:
+          type: dict
+          keys:
+            event:
+              type: dict
+              keys:
+                link_status:
+                  type: bool
+        shutdown:
+          type: bool
+        vlans:
+          type: str
+          convert_types:
+          - int
+        snmp_trap_link_change:
+          type: bool
+        type:
+          type: str
+        encapsulation_dot1q_vlan:
+          type: int
+        vrf:
+          type: str
+        encapsulation_vlan:
+          type: dict
+          keys:
+            client:
+              type: dict
+              keys:
+                dot1q:
+                  type: dict
+                  keys:
+                    vlan:
+                      type: str
+                      convert_types:
+                      - int
+                    outer:
+                      type: int
+                    inner:
+                      type: int
+                unmatched:
+                  type: bool
+            network:
+              type: dict
+              keys:
+                dot1q:
+                  type: dict
+                  keys:
+                    vlan:
+                      type: str
+                      convert_types:
+                      - int
+                    outer:
+                      type: int
+                    inner:
+                      type: int
+                client:
+                  type: bool
+        vlan_id:
+          type: int
+        mode:
+          type: str
+        native_vlan:
+          type: int
+          display_name: Native VLAN Number
+        native_vlan_tag:
+          type: bool
+        link_tracking_groups:
+          type: list
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                display_name: Group Name
+              direction:
+                type: str
+        phone:
+          type: dict
+          keys:
+            trunk:
+              type: str
+            vlan:
+              type: int
+        l2_protocol:
+          type: dict
+          keys:
+            encapsulation_dot1q_vlan:
+              type: int
+        mtu:
+          type: int
+        mlag:
+          type: int
+          display_name: MLAG id
+        trunk_groups:
+          type: list
+          items:
+            type: str
+            display_name: Trunk Group
+        lacp_fallback_timeout:
+          type: int
+        lacp_fallback_mode:
+          type: str
+        qos:
+          type: dict
+          keys:
+            trust:
+              type: str
+            dscp:
+              type: str
+            cos:
+              type: int
+        bfd:
+          type: dict
+          keys:
+            echo:
+              type: bool
+            interval:
+              type: int
+            min_rx:
+              type: int
+            multiplier:
+              type: int
+        service_policy:
+          type: dict
+          keys:
+            pbr:
+              type: dict
+              keys:
+                input:
+                  type: str
+        mpls:
+          type: dict
+          keys:
+            ip:
+              type: bool
+            ldp:
+              type: dict
+              keys:
+                interface:
+                  type: bool
+                igp_sync:
+                  type: bool
+        trunk_private_vlan_secondary:
+          type: bool
+        pvlan_mapping:
+          type: int
+        vlan_translations:
+          type: list
+          items:
+            type: dict
+            keys:
+              from:
+                type: str
+              to:
+                type: int
+              direction:
+                type: str
+        shape:
+          type: dict
+          keys:
+            rate:
+              type: str
+        storm_control:
+          type: dict
+          keys:
+            all:
+              type: dict
+              keys:
+                level:
+                  type: int
+                unit:
+                  type: int
+            broadcast:
+              type: dict
+              keys:
+                level:
+                  type: int
+                unit:
+                  type: str
+            multicast:
+              type: dict
+              keys:
+                level:
+                  type: int
+                unit:
+                  type: str
+            unknown_unicast:
+              type: dict
+              keys:
+                level:
+                  type: int
+                unit:
+                  type: str
+        ip_proxy_arp:
+          type: bool
+        isis_enable:
+          type: str
+          display_name: ISIS Instance
+        isis_passive:
+          type: bool
+        isis_metric:
+          type: int
+        isis_network_point_to_point:
+          type: bool
+        isis_circuit_type:
+          type: str
+        isis_hello_padding:
+          type: bool
+        isis_authentication_mode:
+          type: str
+        isis_authentication_key:
+          type: str
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+            output:
+              type: str
+        eos_cli:
+          type: str
+        evpn_ethernet_segment:
+          type: dict
+          keys:
+            redundancy:
+              type: str
+            designated_forwarder_election:
+              type: dict
+              keys:
+                algorithm:
+                  type: str
+                preference_value:
+                  type: int
+                dont_preempt:
+                  type: bool
+                hold_time:
+                  type: int
+                subsequent_hold_time:
+                  type: int
+                candidate_reachability_required:
+                  type: bool
+            mpls:
+              type: dict
+              keys:
+                shared_index:
+                  type: int
+                tunnel_flood_filter_time:
+                  type: int
+            route_target:
+              type: str
+            identifier:
+              type: str
+        esi:
+          type: str
+        rt:
+          type: str
+        lacp_id:
+          type: str
+        spanning_tree_bpdufilter:
+          type: str
+          convert_types:
+          - bool
+        spanning_tree_bpduguard:
+          type: str
+          convert_types:
+          - bool
+        spanning_tree_guard:
+          type: str
+        spanning_tree_portfast:
+          type: str
+        vmtracer:
+          type: bool
+        ptp:
+          type: dict
+          keys:
+            enable:
+              type: bool
+            announce:
+              type: dict
+              keys:
+                interval:
+                  type: int
+                timeout:
+                  type: int
+            delay_req:
+              type: int
+            delay_mechanism:
+              type: str
+            sync_message:
+              type: dict
+              keys:
+                interval:
+                  type: int
+            role:
+              type: str
+            vlan:
+              type: int
+            transport:
+              type: str
+        ip_address:
+          type: str
+        ipv6_enable:
+          type: bool
+        ipv6_address:
+          type: str
+        ipv6_address_link_local:
+          type: str
+        ipv6_nd_ra_disabled:
+          type: bool
+        ipv6_nd_managed_config_flag:
+          type: bool
+        ipv6_nd_prefixes:
+          type: list
+          primary_key: ipv6_prefix
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              ipv6_prefix:
+                type: str
+              valid_lifetime:
+                type: str
+              preferred_lifetime:
+                type: str
+              no_autoconfig_flag:
+                type: bool
+        access_group_in:
+          type: str
+        access_group_out:
+          type: str
+        ipv6_access_group_in:
+          type: str
+        ipv6_access_group_out:
+          type: str
+        mac_access_group_in:
+          type: str
+        mac_access_group_out:
+          type: str
+        pim:
+          type: dict
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                sparse_mode:
+                  type: bool
+                dr_priority:
+                  type: int
+        service_profile:
+          type: str
+        ospf_network_point_to_point:
+          type: bool
+        ospf_area:
+          type: str
+        ospf_cost:
+          type: int
+        ospf_authentication:
+          type: str
+        ospf_authentication_key:
+          type: str
+        ospf_message_digest_keys:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+              hash_algorithm:
+                type: str
+              key:
+                type: str
   prefix_lists:
     type: list
     primary_key: name
