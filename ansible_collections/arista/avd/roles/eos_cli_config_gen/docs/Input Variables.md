@@ -151,16 +151,16 @@ daemons:
     enabled: <bool>
 ```
 
-## Multiline EOS CLI
+## EOS CLI
 
 ### Description
 
-EOS CLI rendered directly on the root level of the final EOS configuration
+Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>eos_cli</samp>](## "eos_cli") | String |  |  |  | Multiline EOS CLI |
+| [<samp>eos_cli</samp>](## "eos_cli") | String |  |  |  | EOS CLI |
 
 ### YAML
 

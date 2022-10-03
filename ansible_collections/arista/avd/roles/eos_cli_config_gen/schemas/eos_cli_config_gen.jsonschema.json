@@ -215,8 +215,8 @@
     },
     "eos_cli": {
       "type": "string",
-      "title": "Multiline EOS CLI",
-      "description": "EOS CLI rendered directly on the root level of the final EOS configuration"
+      "title": "EOS CLI",
+      "description": "Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration"
     },
     "event_handlers": {
       "type": "array",
