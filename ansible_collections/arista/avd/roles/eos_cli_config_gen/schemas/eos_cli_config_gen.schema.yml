@@ -4339,7 +4339,7 @@ keys:
               display_name: VLAN ID
             tenant:
               type: str
-              description: Unused key set by eos_designs
+              description: Key only used for documentation or validation purposes
             rd:
               type: str
               display_name: Route Distinguisher

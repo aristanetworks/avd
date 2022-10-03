@@ -6138,7 +6138,7 @@
               },
               "tenant": {
                 "type": "string",
-                "description": "Unused key set by eos_designs",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Tenant"
               },
               "rd": {
