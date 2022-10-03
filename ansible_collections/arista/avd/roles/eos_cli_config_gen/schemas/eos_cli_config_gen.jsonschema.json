@@ -1591,6 +1591,125 @@
       },
       "title": "Peer Filters"
     },
+    "policy_maps": {
+      "type": "object",
+      "title": "Policy-Maps",
+      "properties": {
+        "pbr": {
+          "type": "array",
+          "title": "PBR Policy-Maps",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Policy-Map Name"
+              },
+              "classes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Class Name"
+                    },
+                    "index": {
+                      "type": "integer",
+                      "title": "Index"
+                    },
+                    "drop": {
+                      "description": "'drop' and 'set' are mutually exclusive",
+                      "title": "Drop",
+                      "type": "boolean"
+                    },
+                    "set": {
+                      "description": "'drop' and 'set' are mutually exclusive",
+                      "title": "Set Nexthop",
+                      "type": "object",
+                      "properties": {
+                        "nexthop": {
+                          "type": "object",
+                          "properties": {
+                            "ip_address": {
+                              "type": "string",
+                              "description": "IPv4 or IPv6 Address",
+                              "title": "Ip Address"
+                            },
+                            "recursive": {
+                              "type": "boolean",
+                              "title": "Recursive"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "title": "Nexthop"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Classes"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "qos": {
+          "type": "array",
+          "title": "QOS Policy-Maps",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Policy-Map Name"
+              },
+              "classes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Class Name"
+                    },
+                    "set": {
+                      "type": "object",
+                      "properties": {
+                        "cos": {
+                          "type": "integer",
+                          "title": "COS"
+                        },
+                        "dscp": {
+                          "type": "string",
+                          "title": "DSCP"
+                        },
+                        "traffic_class": {
+                          "type": "integer",
+                          "title": "Traffic-class"
+                        },
+                        "drop_precedence": {
+                          "type": "integer",
+                          "title": "Drop-precedence"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Set"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Classes"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "prefix_lists": {
       "type": "array",
       "items": {

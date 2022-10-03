@@ -5,9 +5,11 @@ type: dict
 keys:
   policy_maps:
     type: dict
+    display_name: Policy-Maps
     keys:
       pbr:
         type: list
+        display_name: PBR Policy-Maps
         primary_key: name
         convert_types:
           - dict
@@ -33,12 +35,12 @@ keys:
                     convert_types:
                       - str
                   drop:
-                    description: Only one of "drop" and "set" can be set simultaneously
-                    display_name: Drop Packets
+                    description: "'drop' and 'set' are mutually exclusive"
+                    display_name: Drop
                     type: bool
                   set:
-                    description: Only one of "set" and "drop" can be set simultaneously
-                    display_name: Set Values
+                    description: "'drop' and 'set' are mutually exclusive"
+                    display_name: Set Nexthop
                     type: dict
                     keys:
                       nexthop:
@@ -46,11 +48,12 @@ keys:
                         keys:
                           ip_address:
                             type: str
-                            description: IPv4_address | IPv6_address
+                            description: IPv4 or IPv6 Address
                           recursive:
                             type: bool
       qos:
         type: list
+        display_name: QOS Policy-Maps
         primary_key: name
         convert_types:
           - dict
@@ -78,17 +81,17 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        display_name: COS-Value
+                        display_name: COS
                       dscp:
                         type: str
-                        display_name: DSCP-Code
+                        display_name: DSCP
                       traffic_class:
                         type: int
                         convert_types:
                           - str
-                        display_name: Traffic-class ID
+                        display_name: Traffic-class
                       drop_precedence:
                         type: int
                         convert_types:
                           - str
-                        display_name: Drop-precedence Value
+                        display_name: Drop-precedence
