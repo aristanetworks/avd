@@ -1,6 +1,61 @@
 {
   "type": "object",
   "properties": {
+    "aaa_authorization": {
+      "type": "object",
+      "properties": {
+        "exec": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string",
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Exec"
+        },
+        "config_commands": {
+          "type": "boolean",
+          "title": "Config Commands"
+        },
+        "serial_console": {
+          "type": "boolean",
+          "title": "Serial Console"
+        },
+        "commands": {
+          "type": "object",
+          "properties": {
+            "all_default": {
+              "type": "string",
+              "title": "All Default"
+            },
+            "privilege": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "string",
+                    "title": "Level"
+                  },
+                  "default": {
+                    "type": "string",
+                    "title": "Default"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Privilege"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Commands"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Aaa Authorization"
+    },
     "aaa_root": {
       "type": "object",
       "title": "AAA Root",
@@ -659,7 +714,7 @@
           "title": "Ethernet"
         },
         "mtu": {
-          "type": "string",
+          "type": "integer",
           "title": "Mtu"
         }
       },

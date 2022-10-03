@@ -1,6 +1,32 @@
 type: dict
 allow_other_keys: true
 keys:
+  aaa_authorization:
+    type: dict
+    keys:
+      exec:
+        type: dict
+        keys:
+          default:
+            type: str
+      config_commands:
+        type: bool
+      serial_console:
+        type: bool
+      commands:
+        type: dict
+        keys:
+          all_default:
+            type: str
+          privilege:
+            type: list
+            items:
+              type: dict
+              keys:
+                level:
+                  type: str
+                default:
+                  type: str
   aaa_root:
     type: dict
     display_name: AAA Root
