@@ -1118,6 +1118,10 @@
         "additionalProperties": false
       }
     },
+    "ipv6_icmp_redirect": {
+      "type": "boolean",
+      "title": "IPv6 ICMP Redirect"
+    },
     "ipv6_prefix_lists": {
       "type": "array",
       "title": "IPv6 Prefix Lists",

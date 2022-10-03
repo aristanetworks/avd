@@ -966,6 +966,9 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  ipv6_icmp_redirect:
+    type: bool
+    display_name: IPv6 ICMP Redirect
   ipv6_prefix_lists:
     type: list
     primary_key: name
