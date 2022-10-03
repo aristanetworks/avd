@@ -17,7 +17,6 @@ keys:
           license_key:
             type: str
             required: true
-            display_name: License-Number
       fips_restrictions:
         type: bool
         required: true
@@ -35,7 +34,11 @@ keys:
               display_name: Profile-Name
             cipher:
               type: str
-              description: valid-cipher-string
+              valid_values:
+                - aes128-gcm
+                - aes128-gcm-xpn
+                - aes256-gcm
+                - aes256-gcm-xpn
             connection_keys:
               type: list
               primary_key: id
@@ -60,6 +63,8 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: 30-100000 in seconds
+                      min: 30
+                      max: 100000
+                      description: Rekey period in seconds
             sci:
               type: bool
