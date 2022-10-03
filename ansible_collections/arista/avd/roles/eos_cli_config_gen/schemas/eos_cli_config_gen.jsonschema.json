@@ -831,6 +831,114 @@
       },
       "title": "Local Users"
     },
+    "mac_security": {
+      "type": "object",
+      "title": "MACsec",
+      "properties": {
+        "license": {
+          "type": "object",
+          "properties": {
+            "license_name": {
+              "type": "string",
+              "title": "License Name"
+            },
+            "license_key": {
+              "type": "string",
+              "title": "License Key"
+            }
+          },
+          "required": [
+            "license_name",
+            "license_key"
+          ],
+          "additionalProperties": false,
+          "title": "License"
+        },
+        "fips_restrictions": {
+          "type": "boolean",
+          "title": "Fips Restrictions"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Profile-Name"
+              },
+              "cipher": {
+                "type": "string",
+                "enum": [
+                  "aes128-gcm",
+                  "aes128-gcm-xpn",
+                  "aes256-gcm",
+                  "aes256-gcm-xpn"
+                ],
+                "title": "Cipher"
+              },
+              "connection_keys": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "Id"
+                    },
+                    "encrypted_key": {
+                      "type": "string",
+                      "title": "Encrypted Key"
+                    },
+                    "fallback": {
+                      "type": "boolean",
+                      "title": "Fallback"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Connection Keys"
+              },
+              "mka": {
+                "type": "object",
+                "properties": {
+                  "session": {
+                    "type": "object",
+                    "properties": {
+                      "rekey_period": {
+                        "type": "integer",
+                        "minimum": 30,
+                        "maximum": 100000,
+                        "description": "Rekey period in seconds",
+                        "title": "Rekey Period"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Session"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Mka"
+              },
+              "sci": {
+                "type": "boolean",
+                "title": "Sci"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Profiles"
+        }
+      },
+      "required": [
+        "license",
+        "fips_restrictions"
+      ],
+      "additionalProperties": false
+    },
     "maintenance": {
       "type": "object",
       "title": "Maintenance Mode",
