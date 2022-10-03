@@ -1378,8 +1378,18 @@ vlan_interfaces:
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
     ipv6_address_virtual: < IPv6_address/Mask >
+    ipv6_address_virtuals:
+      - < IPv6_address/Mask >
+      - < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
+    # The below "ipv6_virtual_router_address" key will be deprecated in AVD v4.0 - These should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
+    ipv6_virtual_router_address: < IPv6_address >
+    # New improved "VARPv6" data model to support multiple VARPv6 addresses.
+    ipv6_virtual_router_addresses:
+      - < IPv6_address >
+      - < IPv6_address >
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
@@ -1423,12 +1433,6 @@ vlan_interfaces:
         dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
-    # The below "ipv6_virtual_router_address" key will be deprecated in AVD v4.0 - These should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
-    ipv6_virtual_router_address: < IPv6_address >
-    # New improved "VARPv6" data model to support multiple VARPv6 addresses.
-    ipv6_virtual_router_addresses:
-      - < IPv6_address >
-      - < IPv6_address >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >

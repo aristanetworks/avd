@@ -297,6 +297,7 @@ mac_address_table:
               - < IPv4_address/Mask >
 
             # ipv6 address virtual(s) to configure VXLAN Anycast IP address
+            # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
             # Optional
             ipv6_address_virtual: < IPv6_address/Mask >
             ipv6_address_virtuals:
