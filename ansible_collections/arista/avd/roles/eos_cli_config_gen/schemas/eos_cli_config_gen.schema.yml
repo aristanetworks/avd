@@ -744,6 +744,17 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_http_client_source_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          display_name: Interface Name
+          type: str
+        vrf:
+          display_name: VRF Name
+          type: str
   ip_igmp_snooping:
     type: dict
     display_name: IP IGMP Snooping
