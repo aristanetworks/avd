@@ -712,6 +712,17 @@
         "additionalProperties": false
       }
     },
+    "ip_dhcp_relay": {
+      "type": "object",
+      "properties": {
+        "information_option": {
+          "type": "boolean",
+          "title": "Information Option"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Ip Dhcp Relay"
+    },
     "ip_domain_lookup": {
       "type": "object",
       "title": "Domain Lookup",
