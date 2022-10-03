@@ -23,6 +23,9 @@ vlan_interfaces:
     ip_address_virtual: 10.10.81.1/24
     ipv6_enable: true
     ipv6_address_virtual: fc00:10:10:81::1/64
+    ipv6_address_virtuals:
+      - fc00:10:11:81::1/64
+      - fc00:10:12:81::1/64
 
   Vlan83:
     description: SVI Description
@@ -168,8 +171,7 @@ vlan_interfaces:
     ipv6_address: 1b11:3a00:22b0:16::16/64
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:16::15
-      - 1b11:3a00:22b0:17::15/64
-
+      - 1b11:3a00:22b0:16::14
   Vlan1002:
     description: SVI Description
     shutdown: false

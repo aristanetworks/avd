@@ -1427,8 +1427,8 @@ vlan_interfaces:
     ipv6_virtual_router_address: < IPv6_address >
     # New improved "VARPv6" data model to support multiple VARPv6 addresses.
     ipv6_virtual_router_addresses:
-      - < IPv6_address/Mask | IPv6_address >
-      - < IPv6_address/Mask | IPv6_address >
+      - < IPv6_address >
+      - < IPv6_address >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >

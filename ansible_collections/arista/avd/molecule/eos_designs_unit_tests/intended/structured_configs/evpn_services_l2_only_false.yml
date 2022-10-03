@@ -683,7 +683,7 @@ vlan_interfaces:
     vrf: Tenant_D_OP_Zone
     ip_address_virtual: 10.3.10.1/24
     ipv6_address_virtual: 2001:db8:310::1/64
-    ipv6_address_virtual_secondaries:
+    ipv6_address_virtuals:
     - 2001:db8:311::1/64
     - 2001:db8:312::1/64
   Vlan411:
@@ -696,7 +696,7 @@ vlan_interfaces:
     ip_virtual_router_addresses:
     - 10.3.11.1/24
     ipv6_virtual_router_addresses:
-    - 2001:db8:311::1/64
+    - 2001:db8:311::1
   Vlan412:
     tenant: Tenant_D
     tags:
@@ -734,11 +734,6 @@ vlan_interfaces:
     ip_address_virtual: 10.4.12.254/24
     ipv6_address_virtual: 2001:db8:412::1/64
     mtu: 1560
-ipv6_static_routes:
-- destination_address_prefix: 2001:db8:311::/64
-  vrf: Tenant_D_OP_Zone
-  name: VARPv6
-  interface: Vlan411
 vxlan_interface:
   Vxlan1:
     description: evpn_services_l2_only_false_VTEP
