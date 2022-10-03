@@ -15,7 +15,7 @@
 
 DOCUMENTATION = r"""
 ---
-module: validate
+module: validate_and_template
 version_added: "3.8.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Validate input data according to Schema, render Jinja2 template and write result to a file.
@@ -62,7 +62,7 @@ options:
       - conversion_mode:info will produce regular log messages.
       - conversion_mode:debug will produce hidden messages viewable with -v.
       - The converted data is set as facts which can be seen with -v, but is more readable with -vvv.
-    required: False
+    required: false
     default: "debug"
     type: str
     choices: [ "warning", "info", "debug", "disabled" ]
@@ -76,7 +76,7 @@ options:
       - validation_mode:warning will produce warning messages.
       - validation_mode:info will produce regular log messages.
       - validation_mode:debug will produce hidden messages viewable with -v.
-    required: False
+    required: false
     default: "warning"
     type: str
     choices: [ "error", "warning", "info", "debug", "disabled" ]
