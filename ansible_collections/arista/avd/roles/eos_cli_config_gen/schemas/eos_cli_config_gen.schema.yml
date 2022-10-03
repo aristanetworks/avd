@@ -1222,6 +1222,12 @@ keys:
                       name:
                         type: str
                         display_name: Dynamic Prefix List Name
+  router_igmp:
+    type: dict
+    display_name: Router IGMP Configuration
+    keys:
+      ssm_aware:
+        type: bool
   sflow:
     type: dict
     display_name: Sflow
