@@ -1,6 +1,65 @@
 {
   "type": "object",
   "properties": {
+    "aaa_authorization": {
+      "type": "object",
+      "title": "AAA Authorization",
+      "properties": {
+        "exec": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string",
+              "description": "Exec authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group radius group MYGROUP local\"\n",
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Exec"
+        },
+        "config_commands": {
+          "type": "boolean",
+          "title": "Config Commands"
+        },
+        "serial_console": {
+          "type": "boolean",
+          "title": "Serial Console"
+        },
+        "commands": {
+          "type": "object",
+          "properties": {
+            "all_default": {
+              "type": "string",
+              "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\n",
+              "title": "All Default"
+            },
+            "privilege": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "string",
+                    "description": "Privilege level(s) 0-15",
+                    "title": "Level"
+                  },
+                  "default": {
+                    "type": "string",
+                    "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\"",
+                    "title": "Default"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Privilege"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Commands"
+        }
+      },
+      "additionalProperties": false
+    },
     "aaa_root": {
       "type": "object",
       "title": "AAA Root",
@@ -659,7 +718,7 @@
           "title": "Ethernet"
         },
         "mtu": {
-          "type": "string",
+          "type": "integer",
           "title": "Mtu"
         }
       },
