@@ -2367,13 +2367,13 @@ route_maps:
           sequence_number: <int>
 ```
 
-## Router Bfd
+## Router BFD
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>router_bfd</samp>](## "router_bfd") | Dictionary |  |  |  |  |
+| [<samp>router_bfd</samp>](## "router_bfd") | Dictionary |  |  |  | Router BFD |
 | [<samp>&nbsp;&nbsp;interval</samp>](## "router_bfd.interval") | Integer |  |  |  | Rate In Milliseconds |
 | [<samp>&nbsp;&nbsp;min_rx</samp>](## "router_bfd.min_rx") | Integer |  |  |  | Rate In Milliseconds |
 | [<samp>&nbsp;&nbsp;multiplier</samp>](## "router_bfd.multiplier") | Integer |  |  |  | 3-50 |

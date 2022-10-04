@@ -3823,6 +3823,7 @@
     },
     "router_bfd": {
       "type": "object",
+      "title": "Router BFD",
       "properties": {
         "interval": {
           "type": "integer",
@@ -3916,8 +3917,7 @@
           "title": "Sbfd"
         }
       },
-      "additionalProperties": false,
-      "title": "Router Bfd"
+      "additionalProperties": false
     },
     "router_general": {
       "type": "object",

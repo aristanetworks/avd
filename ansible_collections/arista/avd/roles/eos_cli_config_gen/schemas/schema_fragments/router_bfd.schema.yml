@@ -5,6 +5,7 @@ type: dict
 keys:
   router_bfd:
     type: dict
+    display_name: Router BFD
     keys:
       interval:
         type: int
