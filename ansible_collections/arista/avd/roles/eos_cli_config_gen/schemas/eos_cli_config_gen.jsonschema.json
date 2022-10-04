@@ -1405,19 +1405,24 @@
     },
     "lacp": {
       "type": "object",
+      "title": "LACP",
+      "description": "Set Link Aggregation Control Protocol (LACP) parameters.",
       "properties": {
         "port_id": {
           "type": "object",
+          "description": "LACP port-ID range configuration.",
           "properties": {
             "range": {
               "type": "object",
               "properties": {
                 "begin": {
                   "type": "integer",
+                  "description": "Minimum LACP port-ID range.",
                   "title": "Begin"
                 },
                 "end": {
                   "type": "integer",
+                  "description": "Maximum LACP port-ID range.",
                   "title": "End"
                 }
               },
@@ -1430,9 +1435,11 @@
         },
         "rate_limit": {
           "type": "object",
+          "description": "Set LACPDU rate limit options.",
           "properties": {
             "default": {
               "type": "boolean",
+              "description": "Enable LACPDU rate limiting by default on all ports.",
               "title": "Default"
             }
           },
@@ -1441,11 +1448,13 @@
         },
         "system_priority": {
           "type": "integer",
+          "description": "Set local system LACP priority.",
+          "minimum": 0,
+          "maximum": 65535,
           "title": "System Priority"
         }
       },
-      "additionalProperties": false,
-      "title": "Lacp"
+      "additionalProperties": false
     },
     "local_users": {
       "type": "array",
