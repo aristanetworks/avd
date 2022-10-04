@@ -644,6 +644,28 @@
       "default": true,
       "title": "Generate Device Documentation"
     },
+    "interface_defaults": {
+      "type": "object",
+      "properties": {
+        "ethernet": {
+          "type": "object",
+          "properties": {
+            "shutdown": {
+              "type": "boolean",
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Ethernet"
+        },
+        "mtu": {
+          "type": "string",
+          "title": "Mtu"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Interface Defaults"
+    },
     "interface_groups": {
       "type": "array",
       "title": "Maintenance Interface Groups",

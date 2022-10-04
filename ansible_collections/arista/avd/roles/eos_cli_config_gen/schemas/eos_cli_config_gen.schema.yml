@@ -607,6 +607,18 @@ keys:
   generate_device_documentation:
     type: bool
     default: true
+  interface_defaults:
+    type: dict
+    keys:
+      ethernet:
+        type: dict
+        keys:
+          shutdown:
+            type: bool
+      mtu:
+        type: int
+        convert_types:
+        - str
   interface_groups:
     type: list
     display_name: Maintenance Interface Groups

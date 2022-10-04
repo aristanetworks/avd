@@ -457,6 +457,26 @@ generate_default_config: <bool>
 generate_device_documentation: <bool>
 ```
 
+## Interface Defaults
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>interface_defaults</samp>](## "interface_defaults") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;ethernet</samp>](## "interface_defaults.ethernet") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "interface_defaults.ethernet.shutdown") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;mtu</samp>](## "interface_defaults.mtu") | Integer |  |  |  |  |
+
+### YAML
+
+```yaml
+interface_defaults:
+  ethernet:
+    shutdown: <bool>
+  mtu: <int>
+```
+
 ## Maintenance Interface Groups
 
 ### Variables
