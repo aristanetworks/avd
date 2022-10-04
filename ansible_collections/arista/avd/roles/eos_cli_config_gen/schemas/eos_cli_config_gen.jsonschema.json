@@ -280,6 +280,46 @@
       "title": "EOS CLI",
       "description": "Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration"
     },
+    "errdisable": {
+      "type": "object",
+      "properties": {
+        "detect": {
+          "type": "object",
+          "properties": {
+            "causes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Causes"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Detect"
+        },
+        "recovery": {
+          "type": "object",
+          "properties": {
+            "causes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Causes"
+            },
+            "interval": {
+              "type": "integer",
+              "title": "Seconds",
+              "default": 300
+            }
+          },
+          "additionalProperties": false,
+          "title": "Recovery"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Errdisable"
+    },
     "event_handlers": {
       "type": "array",
       "title": "Event Handlers",

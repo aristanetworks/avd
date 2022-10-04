@@ -235,6 +235,27 @@ keys:
     display_name: EOS CLI
     description: Multiline string with EOS CLI rendered directly on the root level
       of the final EOS configuration
+  errdisable:
+    type: dict
+    keys:
+      detect:
+        type: dict
+        keys:
+          causes:
+            type: list
+            items:
+              type: str
+      recovery:
+        type: dict
+        keys:
+          causes:
+            type: list
+            items:
+              type: str
+          interval:
+            type: int
+            display_name: Seconds
+            default: 300
   event_handlers:
     type: list
     primary_key: name

@@ -196,6 +196,34 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
 eos_cli: <str>
 ```
 
+## Errdisable
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>errdisable</samp>](## "errdisable") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;detect</samp>](## "errdisable.detect") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;causes</samp>](## "errdisable.detect.causes") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "errdisable.detect.causes.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;recovery</samp>](## "errdisable.recovery") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;causes</samp>](## "errdisable.recovery.causes") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "errdisable.recovery.causes.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery.interval") | Integer |  | 300 |  | Seconds |
+
+### YAML
+
+```yaml
+errdisable:
+  detect:
+    causes:
+      - <str>
+  recovery:
+    causes:
+      - <str>
+    interval: <int>
+```
+
 ## Event Handlers
 
 ### Variables
