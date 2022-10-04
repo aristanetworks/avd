@@ -2944,6 +2944,37 @@ keys:
         type: list
         items:
           type: str
+  patch_panel:
+    type: dict
+    keys:
+      patches:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            enabled:
+              type: bool
+            connectors:
+              type: list
+              primary_key: id
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    convert_types:
+                    - str
+                  type:
+                    type: str
+                  endpoint:
+                    type: str
   peer_filters:
     type: list
     primary_key: name

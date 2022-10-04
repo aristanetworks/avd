@@ -4082,6 +4082,53 @@
       "additionalProperties": false,
       "title": "Name Server"
     },
+    "patch_panel": {
+      "type": "object",
+      "properties": {
+        "patches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "connectors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "title": "Id"
+                    },
+                    "type": {
+                      "type": "string",
+                      "title": "Type"
+                    },
+                    "endpoint": {
+                      "type": "string",
+                      "title": "Endpoint"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Connectors"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Patches"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Patch Panel"
+    },
     "peer_filters": {
       "type": "array",
       "items": {
