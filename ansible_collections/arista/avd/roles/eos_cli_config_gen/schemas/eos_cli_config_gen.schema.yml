@@ -886,6 +886,19 @@ keys:
               type: bool
               description: Global proxy settings should be enabled before enabling
                 per-vlan
+  ip_ssh_client_source_interfaces:
+    type: list
+    display_name: IP SSH Client Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          display_name: Interface Name
+          type: str
+        vrf:
+          display_name: VRF
+          type: str
+          default: default
   ipv6_access_lists:
     type: list
     primary_key: name
