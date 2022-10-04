@@ -27,11 +27,15 @@ keys:
                   type: int
                   min: 0
                   max: 7
+                  convert_types:
+                    - "str"
                 to_network_qos:
                   type: int
                   display_name: To Network QOS
                   min: 0
                   max: 63
+                  convert_types:
+                    - "str"
           lag:
             type: dict
             display_name: LAG
