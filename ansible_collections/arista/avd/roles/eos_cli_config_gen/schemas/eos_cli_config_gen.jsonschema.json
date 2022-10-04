@@ -2218,6 +2218,88 @@
       },
       "title": "Peer Filters"
     },
+    "platform": {
+      "type": "object",
+      "properties": {
+        "trident": {
+          "type": "object",
+          "properties": {
+            "forwarding_table_partition": {
+              "type": "string",
+              "title": "Forwarding Table Partition"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Trident"
+        },
+        "sand": {
+          "type": "object",
+          "description": "Most of the platform sand options are hardware dependant and optional",
+          "properties": {
+            "qos_maps": {
+              "type": "array",
+              "title": "QOS Maps",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "traffic_class": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 7,
+                    "title": "Traffic Class"
+                  },
+                  "to_network_qos": {
+                    "type": "integer",
+                    "title": "To Network QOS",
+                    "minimum": 0,
+                    "maximum": 63
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "lag": {
+              "type": "object",
+              "title": "LAG",
+              "properties": {
+                "hardware_only": {
+                  "type": "boolean",
+                  "title": "Hardware Only"
+                },
+                "mode": {
+                  "type": "string",
+                  "title": "Mode"
+                }
+              },
+              "additionalProperties": false
+            },
+            "forwarding_mode": {
+              "type": "string",
+              "title": "Forwarding Mode"
+            },
+            "multicast_replication": {
+              "type": "object",
+              "properties": {
+                "default": {
+                  "type": "string",
+                  "enum": [
+                    "ingress",
+                    "egress"
+                  ],
+                  "title": "Default"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Multicast Replication"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Sand"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Platform"
+    },
     "policy_maps": {
       "type": "object",
       "title": "Policy-Maps",
