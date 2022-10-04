@@ -20,7 +20,7 @@ version_added: "3.8.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Validate input data according to Schema, render Jinja2 template and write result to a file.
 description:
-  - The `arista.avd.validate_and_template` Action Plugin performs data conversions and validation according to the supplied Schema
+  - The `arista.avd.validate_and_template` Action Plugin performs data conversions and validation according to the supplied Schema.
   - The converted data is then used to render a Jinja2 template and writing the result to a file.
   - The Action Plugin supports different modes for conversion and validation, to either block the playbook or just warn the user if
   - the input data is not valid.
@@ -61,7 +61,6 @@ options:
       - conversion_mode:warning will produce warning messages.
       - conversion_mode:info will produce regular log messages.
       - conversion_mode:debug will produce hidden messages viewable with -v.
-      - The converted data is set as facts which can be seen with -v, but is more readable with -vvv.
     required: false
     default: "debug"
     type: str
