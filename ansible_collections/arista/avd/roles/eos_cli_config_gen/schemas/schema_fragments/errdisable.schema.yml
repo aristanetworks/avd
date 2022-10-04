@@ -22,5 +22,5 @@ keys:
               type: str
           interval:
             type: int
-            display_name: Seconds
+            display_name: Interval in seconds
             default: 300

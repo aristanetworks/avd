@@ -309,7 +309,7 @@
             },
             "interval": {
               "type": "integer",
-              "title": "Seconds",
+              "title": "Interval in seconds",
               "default": 300
             }
           },
