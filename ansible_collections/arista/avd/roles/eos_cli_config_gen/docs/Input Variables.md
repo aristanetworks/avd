@@ -482,6 +482,22 @@ ip_community_lists:
         regexp: <str>
 ```
 
+## IP DHCP Relay
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ip_dhcp_relay</samp>](## "ip_dhcp_relay") | Dictionary |  |  |  | IP DHCP Relay |
+| [<samp>&nbsp;&nbsp;information_option</samp>](## "ip_dhcp_relay.information_option") | Boolean |  |  |  | Insert Option-82 information |
+
+### YAML
+
+```yaml
+ip_dhcp_relay:
+  information_option: <bool>
+```
+
 ## Domain Lookup
 
 ### Variables

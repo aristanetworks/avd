@@ -670,6 +670,13 @@ keys:
                 type: str
                 display_name: Regular Expression
                 description: If defined, a regex community-list will be configured
+  ip_dhcp_relay:
+    type: dict
+    display_name: IP DHCP Relay
+    keys:
+      information_option:
+        type: bool
+        description: Insert Option-82 information
   ip_domain_lookup:
     type: dict
     display_name: Domain Lookup
