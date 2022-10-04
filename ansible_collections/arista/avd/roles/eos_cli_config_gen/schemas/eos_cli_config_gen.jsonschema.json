@@ -891,6 +891,180 @@
       },
       "title": "Interface Profiles"
     },
+    "ip_access_lists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Access-list Name"
+          },
+          "counters_per_entry": {
+            "type": "boolean",
+            "title": "Counters Per Entry"
+          },
+          "entries": {
+            "type": "array",
+            "title": "Remark Entry",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sequence": {
+                  "type": "integer",
+                  "description": "ACL entry sequence number\n",
+                  "title": "Sequence"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Comment up to 100 characters\n",
+                  "title": "Remark"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "permit",
+                    "deny"
+                  ],
+                  "title": "Action"
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "ip | tcp | udp | icmp | other protocol name or number.\n",
+                  "title": "Protocol"
+                },
+                "source": {
+                  "type": "string",
+                  "description": "NOTE: A.B.C.D without a mask means host\n",
+                  "title": "Source"
+                },
+                "source_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Source Ports Match"
+                },
+                "source_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "description": "tcp/udp port name or number\n"
+                  },
+                  "title": "Source Ports"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "NOTE: A.B.C.D without a mask means host\n",
+                  "title": "Destination"
+                },
+                "destination_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Destination Ports Match"
+                },
+                "destination_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "description": "TCP/UDP port name or number\n"
+                  },
+                  "title": "Destination Ports"
+                },
+                "tcp_flags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "title": "TCP Flag Name"
+                  },
+                  "title": "Tcp Flags"
+                },
+                "fragments": {
+                  "type": "boolean",
+                  "description": "Match non-head fragment packets\n",
+                  "title": "Fragments"
+                },
+                "log": {
+                  "type": "boolean",
+                  "description": "Log matches against this rule\n",
+                  "title": "Log"
+                },
+                "ttl": {
+                  "type": "integer",
+                  "title": "TTL value"
+                },
+                "ttl_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq"
+                  ],
+                  "default": "eq",
+                  "title": "Ttl Match"
+                },
+                "icmp_type": {
+                  "type": "string",
+                  "description": "Message type name/number for ICMP packets.\n",
+                  "title": "Icmp Type"
+                },
+                "icmp_code": {
+                  "type": "string",
+                  "description": "Message code for ICMP packets\n",
+                  "title": "Icmp Code"
+                },
+                "nexthop_group": {
+                  "type": "string",
+                  "title": "Nexthop-Group Name"
+                },
+                "tracked": {
+                  "type": "boolean",
+                  "description": "Match packets in existing ICMP/UDP/TCP connections.\n",
+                  "title": "Tracked"
+                },
+                "dscp": {
+                  "type": "string",
+                  "title": "DSCP Name"
+                },
+                "vlan_number": {
+                  "type": "integer",
+                  "title": "Vlan Number"
+                },
+                "vlan_inner": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Vlan Inner"
+                },
+                "vlan_mask": {
+                  "type": "string",
+                  "description": "0x000-0xFFF  Vlan mask",
+                  "title": "Vlan Mask"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Ip Access Lists"
+    },
     "ip_community_lists": {
       "type": "array",
       "title": "IP Community Lists",
