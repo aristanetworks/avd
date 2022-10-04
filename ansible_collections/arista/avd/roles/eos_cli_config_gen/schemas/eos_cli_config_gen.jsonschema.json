@@ -2127,6 +2127,17 @@
       },
       "title": "Prefix Lists"
     },
+    "redundancy": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "title": "Redundancy Protocol"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Redundancy"
+    },
     "route_maps": {
       "type": "array",
       "items": {
