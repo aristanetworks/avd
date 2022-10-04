@@ -33,4 +33,4 @@ keys:
                 type:
                   type: str
                 endpoint:
-                  type: str       
+                  type: str
