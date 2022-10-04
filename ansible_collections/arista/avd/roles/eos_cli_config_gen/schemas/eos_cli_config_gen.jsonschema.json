@@ -333,6 +333,11 @@
         "additionalProperties": false
       }
     },
+    "generate_device_documentation": {
+      "type": "boolean",
+      "default": true,
+      "title": "Generate Device Documentation"
+    },
     "interface_groups": {
       "type": "array",
       "title": "Maintenance Interface Groups",

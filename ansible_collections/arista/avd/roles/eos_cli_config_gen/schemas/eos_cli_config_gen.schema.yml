@@ -284,6 +284,9 @@ keys:
           type: bool
           default: false
           description: Set the action to be non-blocking.
+  generate_device_documentation:
+    type: bool
+    default: true
   interface_groups:
     type: list
     display_name: Maintenance Interface Groups
