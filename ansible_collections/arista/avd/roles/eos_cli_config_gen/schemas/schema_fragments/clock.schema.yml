@@ -7,5 +7,4 @@ keys:
     type: dict
     keys:
       timezone:
-        type: str  
-
+        type: str
