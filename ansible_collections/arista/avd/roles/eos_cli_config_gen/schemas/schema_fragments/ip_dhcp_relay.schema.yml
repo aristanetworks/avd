@@ -5,6 +5,8 @@ type: dict
 keys:
   ip_dhcp_relay:
     type: dict
+    display_name: IP DHCP Relay
     keys:
       information_option:
         type: bool
+        description: Insert Option-82 information
