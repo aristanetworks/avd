@@ -497,6 +497,10 @@ keys:
         enabled:
           type: bool
           default: true
+  dns_domain:
+    type: str
+    display_name: DNS Domain
+    description: Domain Name
   eos_cli:
     type: str
     display_name: EOS CLI

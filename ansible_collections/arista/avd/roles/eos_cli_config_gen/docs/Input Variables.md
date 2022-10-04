@@ -300,6 +300,23 @@ daemons:
     enabled: <bool>
 ```
 
+## DNS Domain
+
+### Description
+
+Domain Name
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>dns_domain</samp>](## "dns_domain") | String |  |  |  | DNS Domain |
+
+### YAML
+
+```yaml
+dns_domain: <str>
+```
+
 ## EOS CLI
 
 ### Description
