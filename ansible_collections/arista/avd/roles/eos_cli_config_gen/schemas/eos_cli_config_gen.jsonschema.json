@@ -903,6 +903,45 @@
       },
       "title": "Local Users"
     },
+    "mac_access_lists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "MAC Access-list Name"
+          },
+          "counters_per_entry": {
+            "type": "boolean",
+            "title": "Counters Per Entry"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sequence": {
+                  "type": "integer",
+                  "title": "Sequence"
+                },
+                "action": {
+                  "type": "string",
+                  "title": "Action"
+                }
+              },
+              "additionalProperties": false
+            },
+            "title": "Entries"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Mac Access Lists"
+    },
     "mac_security": {
       "type": "object",
       "title": "MACsec",
