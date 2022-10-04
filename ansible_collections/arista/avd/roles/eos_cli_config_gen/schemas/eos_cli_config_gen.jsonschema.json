@@ -258,6 +258,17 @@
       },
       "additionalProperties": false
     },
+    "clock": {
+      "type": "object",
+      "properties": {
+        "timezone": {
+          "type": "string",
+          "title": "Timezone"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Clock"
+    },
     "community_lists": {
       "type": "array",
       "title": "Community Lists (legacy model)",
