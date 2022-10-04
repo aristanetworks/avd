@@ -8,9 +8,9 @@ keys:
     display_name: Router BGP Configuration
     keys:
       as:
-        type: int
+        type: str
         convert_types:
-          - str
+          - int
         display_name: BGP AS
       router_id:
         type: str
@@ -93,9 +93,9 @@ keys:
                 peer_filter or remote_as is required but mutually exclusive.
                 If both are defined, peer_filter takes precedence
             remote_as:
-              type: int
+              type: str
               convert_types:
-                - str
+                - int
               description: Remote ASN in plain or dot notation
       peer_groups:
         type: list
@@ -114,9 +114,9 @@ keys:
                 [ "ipv4", "evpn" ]
                 Example- "vpn-ipv4, vpn-ipv6"
             remote_as:
-              type: int
+              type: str
               convert_types:
-                - str
+                - int
               display_name: BGP AS
             local_as:
               type: int
@@ -247,9 +247,9 @@ keys:
               type: str
               display_name: Peer-Group Name
             remote_as:
-              type: int
+              type: str
               convert_types:
-                - str
+                - int
               display_name: BGP AS
             local_as:
               type: int
@@ -365,9 +365,9 @@ keys:
               type: str
               display_name: Interface
             remote_as:
-              type: int
+              type: str
               convert_types:
-                - str
+                - int
               display_name: BGP AS
             peer_group:
               type: str
@@ -532,6 +532,18 @@ keys:
                 rd:
                   type: str
                   display_name: Route Distinguisher
+            eos_cli:
+              type: str
+              description: |
+                Key only used for documentation or validation purposes
+            struct_cfg:
+              type: dict
+              description: Key only used for documentation or validation purposes
+              keys:
+                redistribute_routes:
+                  type: list
+                  items:
+                    type: str
             route_targets:
               type: dict
               keys:
@@ -551,29 +563,35 @@ keys:
                     type: str
                     display_name: Route Target
                 import_evpn_domains:
-                  type: dict
-                  keys:
-                    domain:
-                      type: str
-                      valid_values: ["remote", "all"]
-                    route_target:
-                      type: str
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values: ["remote", "all"]
+                      route_target:
+                        type: str
                 export_evpn_domains:
-                  type: dict
-                  keys:
-                    domain:
-                      type: str
-                      valid_values: ["remote", "all"]
-                    route_target:
-                      type: str
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values: ["remote", "all"]
+                      route_target:
+                        type: str
                 import_export_evpn_domains:
-                  type: dict
-                  keys:
-                    domain:
-                      type: str
-                      valid_values: ["remote", "all"]
-                    route_target:
-                      type: str
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values: ["remote", "all"]
+                      route_target:
+                        type: str
             redistribute_routes:
               type: list
               items:
@@ -1164,9 +1182,9 @@ keys:
                       peer_filter or remote_as is required but mutually exclusive.
                       If both are defined, peer_filter takes precedence
                   remote_as:
-                    type: int
+                    type: str
                     convert_types:
-                      - str
+                      - int
                     description: Remote ASN in plain or dot notation
             redistribute_routes:
               type: list
@@ -1218,9 +1236,9 @@ keys:
                     type: str
                     display_name: Interface
                   remote_as:
-                    type: int
+                    type: str
                     convert_types:
-                      - str
+                      - int
                     display_name: BGP AS
                   peer_group:
                     type: str
@@ -1309,9 +1327,8 @@ keys:
                           display_name: Route-Map Name
             eos_cli:
               type: str
-              display_name: Multiline EOS CLI
               description: |
-                EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+                Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
             neighbors:
               type: list
               primary_key: ip_address
@@ -1327,9 +1344,9 @@ keys:
                     type: str
                     display_name: Peer-Group Name
                   remote_as:
-                    type: int
+                    type: str
                     convert_types:
-                      - str
+                      - int
                     display_name: BGP AS
                   password:
                     type: str

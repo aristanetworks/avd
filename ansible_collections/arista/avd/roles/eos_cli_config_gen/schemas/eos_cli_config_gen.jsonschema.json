@@ -5359,7 +5359,7 @@
       "title": "Router BGP Configuration",
       "properties": {
         "as": {
-          "type": "integer",
+          "type": "string",
           "title": "BGP AS"
         },
         "router_id": {
@@ -5476,7 +5476,7 @@
                 "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n"
               },
               "remote_as": {
-                "type": "integer",
+                "type": "string",
                 "description": "Remote ASN in plain or dot notation",
                 "title": "Remote As"
               }
@@ -5500,7 +5500,7 @@
                 "title": "Type"
               },
               "remote_as": {
-                "type": "integer",
+                "type": "string",
                 "title": "BGP AS"
               },
               "local_as": {
@@ -5709,7 +5709,7 @@
                 "title": "Peer-Group Name"
               },
               "remote_as": {
-                "type": "integer",
+                "type": "string",
                 "title": "BGP AS"
               },
               "local_as": {
@@ -5893,7 +5893,7 @@
                 "title": "Interface"
               },
               "remote_as": {
-                "type": "integer",
+                "type": "string",
                 "title": "BGP AS"
               },
               "peer_group": {
@@ -6164,6 +6164,26 @@
                 "additionalProperties": false,
                 "title": "Rd Evpn Domain"
               },
+              "eos_cli": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes\n",
+                "title": "EOS CLI"
+              },
+              "struct_cfg": {
+                "type": "object",
+                "description": "Key only used for documentation or validation purposes",
+                "properties": {
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Redistribute Routes"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Struct Cfg"
+              },
               "route_targets": {
                 "type": "object",
                 "properties": {
@@ -6192,60 +6212,69 @@
                     "title": "Export"
                   },
                   "import_evpn_domains": {
-                    "type": "object",
-                    "properties": {
-                      "domain": {
-                        "type": "string",
-                        "enum": [
-                          "remote",
-                          "all"
-                        ],
-                        "title": "Domain"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string",
+                          "enum": [
+                            "remote",
+                            "all"
+                          ],
+                          "title": "Domain"
+                        },
+                        "route_target": {
+                          "type": "string",
+                          "title": "Route Target"
+                        }
                       },
-                      "route_target": {
-                        "type": "string",
-                        "title": "Route Target"
-                      }
+                      "additionalProperties": false
                     },
-                    "additionalProperties": false,
                     "title": "Import Evpn Domains"
                   },
                   "export_evpn_domains": {
-                    "type": "object",
-                    "properties": {
-                      "domain": {
-                        "type": "string",
-                        "enum": [
-                          "remote",
-                          "all"
-                        ],
-                        "title": "Domain"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string",
+                          "enum": [
+                            "remote",
+                            "all"
+                          ],
+                          "title": "Domain"
+                        },
+                        "route_target": {
+                          "type": "string",
+                          "title": "Route Target"
+                        }
                       },
-                      "route_target": {
-                        "type": "string",
-                        "title": "Route Target"
-                      }
+                      "additionalProperties": false
                     },
-                    "additionalProperties": false,
                     "title": "Export Evpn Domains"
                   },
                   "import_export_evpn_domains": {
-                    "type": "object",
-                    "properties": {
-                      "domain": {
-                        "type": "string",
-                        "enum": [
-                          "remote",
-                          "all"
-                        ],
-                        "title": "Domain"
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string",
+                          "enum": [
+                            "remote",
+                            "all"
+                          ],
+                          "title": "Domain"
+                        },
+                        "route_target": {
+                          "type": "string",
+                          "title": "Route Target"
+                        }
                       },
-                      "route_target": {
-                        "type": "string",
-                        "title": "Route Target"
-                      }
+                      "additionalProperties": false
                     },
-                    "additionalProperties": false,
                     "title": "Import Export Evpn Domains"
                   }
                 },
@@ -7137,7 +7166,7 @@
                       "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n"
                     },
                     "remote_as": {
-                      "type": "integer",
+                      "type": "string",
                       "description": "Remote ASN in plain or dot notation",
                       "title": "Remote As"
                     }
@@ -7209,7 +7238,7 @@
                       "title": "Interface"
                     },
                     "remote_as": {
-                      "type": "integer",
+                      "type": "string",
                       "title": "BGP AS"
                     },
                     "peer_group": {
@@ -7359,8 +7388,8 @@
               },
               "eos_cli": {
                 "type": "string",
-                "title": "Multiline EOS CLI",
-                "description": "EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration\n"
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration\n",
+                "title": "EOS CLI"
               },
               "neighbors": {
                 "type": "array",
@@ -7376,7 +7405,7 @@
                       "title": "Peer-Group Name"
                     },
                     "remote_as": {
-                      "type": "integer",
+                      "type": "string",
                       "title": "BGP AS"
                     },
                     "password": {
