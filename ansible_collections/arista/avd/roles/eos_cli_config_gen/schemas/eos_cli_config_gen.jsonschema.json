@@ -47,6 +47,68 @@
         "additionalProperties": false
       }
     },
+    "as_path": {
+      "type": "object",
+      "properties": {
+        "regex_mode": {
+          "type": "string",
+          "enum": [
+            "asn",
+            "string"
+          ],
+          "title": "Regex Mode"
+        },
+        "access_lists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Access List Name"
+              },
+              "entries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "permit",
+                        "deny"
+                      ],
+                      "title": "Type"
+                    },
+                    "match": {
+                      "type": "string",
+                      "title": "Regex To Match"
+                    },
+                    "origin": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "egp",
+                        "igp",
+                        "incomplete"
+                      ],
+                      "default": "any",
+                      "title": "Origin"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Entries"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Access Lists"
+        }
+      },
+      "additionalProperties": false,
+      "title": "As Path"
+    },
     "bgp_groups": {
       "type": "array",
       "items": {

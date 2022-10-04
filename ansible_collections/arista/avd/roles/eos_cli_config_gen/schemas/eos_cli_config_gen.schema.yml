@@ -55,6 +55,43 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  as_path:
+    type: dict
+    keys:
+      regex_mode:
+        type: str
+        valid_values:
+        - asn
+        - string
+      access_lists:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Access List Name
+            entries:
+              type: list
+              items:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values:
+                    - permit
+                    - deny
+                  match:
+                    type: str
+                    display_name: Regex To Match
+                  origin:
+                    type: str
+                    valid_values:
+                    - any
+                    - egp
+                    - igp
+                    - incomplete
+                    default: any
   bgp_groups:
     type: list
     primary_key: name
