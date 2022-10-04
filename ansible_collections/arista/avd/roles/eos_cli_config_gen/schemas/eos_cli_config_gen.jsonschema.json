@@ -1,6 +1,105 @@
 {
   "type": "object",
   "properties": {
+    "aaa_authentication": {
+      "type": "object",
+      "title": "AAA Authentication",
+      "properties": {
+        "login": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string",
+              "description": "Login authentication method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group radius group MYGROUP local\"\n",
+              "title": "Default"
+            },
+            "console": {
+              "type": "string",
+              "description": "Console authentication method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group radius group MYGROUP local\"\n",
+              "title": "Console"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Login"
+        },
+        "enable": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string",
+              "description": "Enable authentication method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group radius group MYGROUP local\"\n",
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Enable"
+        },
+        "dot1x": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "string",
+              "description": "802.1x authentication method(s) as a string.\nExamples:\n- \"group radius\"\n- \"group MYGROUP group radius\"\n",
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Dot1X"
+        },
+        "policies": {
+          "type": "object",
+          "properties": {
+            "on_failure_log": {
+              "type": "boolean",
+              "title": "On Failure Log"
+            },
+            "on_success_log": {
+              "type": "boolean",
+              "title": "On Success Log"
+            },
+            "local": {
+              "type": "object",
+              "properties": {
+                "allow_nopassword": {
+                  "type": "boolean",
+                  "title": "Allow Nopassword"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Local"
+            },
+            "lockout": {
+              "type": "object",
+              "properties": {
+                "failure": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255,
+                  "title": "Failure"
+                },
+                "duration": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "title": "Duration"
+                },
+                "window": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "title": "Window"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Lockout"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Policies"
+        }
+      },
+      "additionalProperties": false
+    },
     "aaa_authorization": {
       "type": "object",
       "title": "AAA Authorization",
