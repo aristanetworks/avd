@@ -3117,6 +3117,63 @@
       ],
       "additionalProperties": false
     },
+    "vlans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Vlan ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Vlan Name"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "active",
+              "suspend"
+            ],
+            "title": "State"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "Trunk Group Name"
+            },
+            "title": "Trunk Groups"
+          },
+          "private_vlan": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "community",
+                  "isolated"
+                ],
+                "title": "Type"
+              },
+              "primary_vlan": {
+                "type": "integer",
+                "title": "Vlan ID"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Private Vlan"
+          },
+          "tenant": {
+            "type": "string",
+            "title": "Tenant Name"
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Vlans"
+    },
     "vmtracer_sessions": {
       "type": "array",
       "title": "VM Tracer Sessions",
