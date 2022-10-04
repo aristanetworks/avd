@@ -1938,6 +1938,7 @@
     },
     "ip_tacacs_source_interfaces": {
       "type": "array",
+      "title": "IP Tacacs Source Interfaces",
       "items": {
         "type": "object",
         "properties": {
@@ -1951,8 +1952,7 @@
           }
         },
         "additionalProperties": false
-      },
-      "title": "Ip Tacacs Source Interfaces"
+      }
     },
     "ip_virtual_router_mac_address": {
       "title": "IP Virtual Router MAC Address",

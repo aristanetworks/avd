@@ -5,6 +5,7 @@ type: dict
 keys:
   ip_tacacs_source_interfaces:
     type: list
+    display_name: IP Tacacs Source Interfaces
     items:
       type: dict
       keys:
