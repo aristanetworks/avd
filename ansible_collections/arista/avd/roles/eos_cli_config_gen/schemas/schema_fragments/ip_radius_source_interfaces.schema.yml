@@ -5,6 +5,7 @@ type: dict
 keys:
   ip_radius_source_interfaces:
     type: list
+    display_name: IP RADIUS Source Interfaces
     items:
       type: dict
       keys:

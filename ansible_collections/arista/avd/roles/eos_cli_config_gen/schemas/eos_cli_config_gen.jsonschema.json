@@ -1499,6 +1499,7 @@
     },
     "ip_radius_source_interfaces": {
       "type": "array",
+      "title": "IP RADIUS Source Interfaces",
       "items": {
         "type": "object",
         "properties": {
@@ -1512,8 +1513,7 @@
           }
         },
         "additionalProperties": false
-      },
-      "title": "Ip Radius Source Interfaces"
+      }
     },
     "ip_routing": {
       "type": "boolean",
