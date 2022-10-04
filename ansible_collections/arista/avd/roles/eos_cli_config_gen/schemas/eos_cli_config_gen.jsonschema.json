@@ -815,6 +815,7 @@
     },
     "ip_http_client_source_interfaces": {
       "type": "array",
+      "title": "IP HTTP Client Source Interfaces",
       "items": {
         "type": "object",
         "properties": {
@@ -823,13 +824,12 @@
             "type": "string"
           },
           "vrf": {
-            "title": "VRF Name",
+            "title": "VRF",
             "type": "string"
           }
         },
         "additionalProperties": false
-      },
-      "title": "Ip Http Client Source Interfaces"
+      }
     },
     "ip_igmp_snooping": {
       "type": "object",

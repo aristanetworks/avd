@@ -5,6 +5,7 @@ type: dict
 keys:
   ip_http_client_source_interfaces:
     type: list
+    display_name: IP HTTP Client Source Interfaces
     items:
       type: dict
       keys:
@@ -12,5 +13,5 @@ keys:
           display_name: Interface Name
           type: str
         vrf:
-          display_name: VRF Name
+          display_name: VRF
           type: str
