@@ -831,6 +831,24 @@
         "additionalProperties": false
       }
     },
+    "ip_http_client_source_interfaces": {
+      "type": "array",
+      "title": "IP HTTP Client Source Interfaces",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Interface Name",
+            "type": "string"
+          },
+          "vrf": {
+            "title": "VRF",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "ip_igmp_snooping": {
       "type": "object",
       "title": "IP IGMP Snooping",
