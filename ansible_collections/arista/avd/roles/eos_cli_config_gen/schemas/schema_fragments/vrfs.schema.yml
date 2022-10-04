@@ -5,6 +5,7 @@ type: dict
 keys:
   vrfs:
     type: list
+    display_name: VRF Instances
     primary_key: name
     convert_types:
       - dict
@@ -22,3 +23,4 @@ keys:
           type: bool
         tenant:
           type: str
+          description: Key only used for documentation or validation purposes

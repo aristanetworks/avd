@@ -3868,18 +3868,18 @@ vmtracer_sessions:
     source_interface: <str>
 ```
 
-## Vrfs
+## VRF Instances
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  |  |
+| [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | VRF Instances |
 | [<samp>&nbsp;&nbsp;- name</samp>](## "vrfs.[].name") | String |  |  |  | Vrf Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vrfs.[].tenant") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vrfs.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes |
 
 ### YAML
 
