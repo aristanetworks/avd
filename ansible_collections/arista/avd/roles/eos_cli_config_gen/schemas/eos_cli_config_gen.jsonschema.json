@@ -2074,13 +2074,15 @@
                 "properties": {
                   "traffic_class": {
                     "type": "integer",
-                    "description": "0-7",
+                    "minimum": 0,
+                    "maximum": 7,
                     "title": "Traffic Class"
                   },
                   "to_network_qos": {
                     "type": "integer",
                     "title": "To Network QOS",
-                    "description": "0-63"
+                    "minimum": 0,
+                    "maximum": 63
                   }
                 },
                 "additionalProperties": false

@@ -1670,11 +1670,13 @@ keys:
               keys:
                 traffic_class:
                   type: int
-                  description: 0-7
+                  min: 0
+                  max: 7
                 to_network_qos:
                   type: int
                   display_name: To Network QOS
-                  description: 0-63
+                  min: 0
+                  max: 63
           lag:
             type: dict
             display_name: LAG
