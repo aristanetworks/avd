@@ -1,6 +1,24 @@
 {
   "type": "object",
   "properties": {
+    "aaa_root": {
+      "type": "object",
+      "title": "AAA Root",
+      "properties": {
+        "secret": {
+          "type": "object",
+          "properties": {
+            "sha512_password": {
+              "type": "string",
+              "title": "Sha512 Password"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Secret"
+        }
+      },
+      "additionalProperties": false
+    },
     "access_lists": {
       "type": "array",
       "title": "IP Extended Access-Lists (legacy model)",

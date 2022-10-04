@@ -1,6 +1,24 @@
 !!! warning
     This document describes the data model for AVD 4.x. It may or may not work in previous versions.
 
+## AAA Root
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>aaa_root</samp>](## "aaa_root") | Dictionary |  |  |  | AAA Root |
+| [<samp>&nbsp;&nbsp;secret</samp>](## "aaa_root.secret") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "aaa_root.secret.sha512_password") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+aaa_root:
+  secret:
+    sha512_password: <str>
+```
+
 ## IP Extended Access-Lists (legacy model)
 
 ### Description

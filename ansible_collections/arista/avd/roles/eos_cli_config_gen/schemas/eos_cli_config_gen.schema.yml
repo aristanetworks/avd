@@ -1,6 +1,15 @@
 type: dict
 allow_other_keys: true
 keys:
+  aaa_root:
+    type: dict
+    display_name: AAA Root
+    keys:
+      secret:
+        type: dict
+        keys:
+          sha512_password:
+            type: str
   access_lists:
     type: list
     primary_key: name
