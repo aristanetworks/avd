@@ -93,7 +93,7 @@ router_bgp:
           maximum_routes: 0
           default_originate:
             always: false
-            route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+            route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
           update_source: Loopback123
           ebgp_multihop: 3
           local_as: 123
