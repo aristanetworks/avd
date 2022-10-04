@@ -17,7 +17,7 @@ from ansible.utils.vars import isidentifier
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -79,20 +79,16 @@ class ActionModule(ActionBase):
         searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
         templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
 
-        hostname = task_vars["inventory_hostname"]
-        switch_facts = get(task_vars, f"avd_switch_facts..{hostname}", default={}, separator="..")
-
         # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
         # We use ChainMap to avoid copying large amounts of data around, mapping in
         #  - output or { root_key: output }
-        #  - eos_designs_facts for this switch
         #  - templated version of all other vars
         # Any var assignments will end up in output, so all other objects are protected.
         output = {}
         if root_key:
-            template_vars = ChainMap({root_key: output}, switch_facts, task_vars)
+            template_vars = ChainMap({root_key: output}, task_vars)
         else:
-            template_vars = ChainMap(output, switch_facts, task_vars)
+            template_vars = ChainMap(output, task_vars)
 
         # If the argument 'debug' is set, a 'avd_yaml_templates_to_facts_debug' list will be added to the output.
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.
