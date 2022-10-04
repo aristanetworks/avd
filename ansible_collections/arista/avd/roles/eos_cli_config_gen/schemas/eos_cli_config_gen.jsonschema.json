@@ -902,6 +902,10 @@
         "additionalProperties": false
       }
     },
+    "ip_icmp_redirect": {
+      "type": "boolean",
+      "title": "IP ICMP Redirect"
+    },
     "ip_igmp_snooping": {
       "type": "object",
       "title": "IP IGMP Snooping",

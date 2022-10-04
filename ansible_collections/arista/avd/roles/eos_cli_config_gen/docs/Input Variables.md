@@ -635,6 +635,20 @@ ip_http_client_source_interfaces:
     vrf: <str>
 ```
 
+## IP ICMP Redirect
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ip_icmp_redirect</samp>](## "ip_icmp_redirect") | Boolean |  |  |  | IP ICMP Redirect |
+
+### YAML
+
+```yaml
+ip_icmp_redirect: <bool>
+```
+
 ## IP IGMP Snooping
 
 ### Variables
