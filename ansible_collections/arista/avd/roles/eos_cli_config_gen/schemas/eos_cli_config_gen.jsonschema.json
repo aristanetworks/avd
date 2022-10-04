@@ -893,6 +893,8 @@
     },
     "ip_access_lists": {
       "type": "array",
+      "title": "IP Extended Access-Lists (improved model)",
+      "description": "AVD currently supports 2 different data models for extended ACLs:\n\n- The legacy `access_lists` data model, for compatibility with existing deployments\n- The improved `ip_access_lists` data model, for access to more EOS features\n\nBoth data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.\nAccess list names must be unique.\n\nThe improved data model has a more sophisticated design documented below:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -906,18 +908,18 @@
           },
           "entries": {
             "type": "array",
-            "title": "Remark Entry",
+            "title": "ACL Entries",
             "items": {
               "type": "object",
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "description": "ACL entry sequence number\n",
+                  "description": "ACL entry sequence number.\n",
                   "title": "Sequence"
                 },
                 "remark": {
                   "type": "string",
-                  "description": "Comment up to 100 characters\n",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in acl entry will be ignored.\n",
                   "title": "Remark"
                 },
                 "action": {
@@ -926,16 +928,17 @@
                     "permit",
                     "deny"
                   ],
+                  "description": "ACL action.\nRequired for standard entry.\n",
                   "title": "Action"
                 },
                 "protocol": {
                   "type": "string",
-                  "description": "ip | tcp | udp | icmp | other protocol name or number.\n",
+                  "description": "ip, tcp, udp, icmp or other protocol name or number.\nRequired for standard entry.\n",
                   "title": "Protocol"
                 },
                 "source": {
                   "type": "string",
-                  "description": "NOTE: A.B.C.D without a mask means host\n",
+                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
                   "title": "Source"
                 },
                 "source_ports_match": {
@@ -953,14 +956,14 @@
                 "source_ports": {
                   "type": "array",
                   "items": {
-                    "type": "integer",
-                    "description": "tcp/udp port name or number\n"
+                    "type": "string",
+                    "description": "TCP/UDP source port name or number."
                   },
                   "title": "Source Ports"
                 },
                 "destination": {
                   "type": "string",
-                  "description": "NOTE: A.B.C.D without a mask means host\n",
+                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
                   "title": "Destination"
                 },
                 "destination_ports_match": {
@@ -978,8 +981,8 @@
                 "destination_ports": {
                   "type": "array",
                   "items": {
-                    "type": "integer",
-                    "description": "TCP/UDP port name or number\n"
+                    "type": "string",
+                    "description": "TCP/UDP destination port name or number."
                   },
                   "title": "Destination Ports"
                 },
@@ -993,17 +996,19 @@
                 },
                 "fragments": {
                   "type": "boolean",
-                  "description": "Match non-head fragment packets\n",
+                  "description": "Match non-head fragment packets.",
                   "title": "Fragments"
                 },
                 "log": {
                   "type": "boolean",
-                  "description": "Log matches against this rule\n",
+                  "description": "Log matches against this rule.",
                   "title": "Log"
                 },
                 "ttl": {
                   "type": "integer",
-                  "title": "TTL value"
+                  "title": "TTL value",
+                  "minimum": 0,
+                  "maximum": 254
                 },
                 "ttl_match": {
                   "type": "string",
@@ -1018,26 +1023,28 @@
                 },
                 "icmp_type": {
                   "type": "string",
-                  "description": "Message type name/number for ICMP packets.\n",
+                  "description": "Message type name/number for ICMP packets.",
                   "title": "Icmp Type"
                 },
                 "icmp_code": {
                   "type": "string",
-                  "description": "Message code for ICMP packets\n",
+                  "description": "Message code for ICMP packets.",
                   "title": "Icmp Code"
                 },
                 "nexthop_group": {
                   "type": "string",
-                  "title": "Nexthop-Group Name"
+                  "description": "nexthop-group name.",
+                  "title": "Nexthop Group"
                 },
                 "tracked": {
                   "type": "boolean",
-                  "description": "Match packets in existing ICMP/UDP/TCP connections.\n",
+                  "description": "Match packets in existing ICMP/UDP/TCP connections.",
                   "title": "Tracked"
                 },
                 "dscp": {
                   "type": "string",
-                  "title": "DSCP Name"
+                  "description": "DSCP value or name.",
+                  "title": "Dscp"
                 },
                 "vlan_number": {
                   "type": "integer",
@@ -1050,7 +1057,7 @@
                 },
                 "vlan_mask": {
                   "type": "string",
-                  "description": "0x000-0xFFF  Vlan mask",
+                  "description": "0x000-0xFFF VLAN mask.",
                   "title": "Vlan Mask"
                 }
               },
@@ -1062,8 +1069,7 @@
           "name"
         ],
         "additionalProperties": false
-      },
-      "title": "Ip Access Lists"
+      }
     },
     "ip_community_lists": {
       "type": "array",
