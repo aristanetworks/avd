@@ -247,6 +247,236 @@
         "additionalProperties": false
       }
     },
+    "daemon_terminattr": {
+      "type": "object",
+      "title": "Daemon TerminAttr",
+      "description": "You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming to multiple clusters both on-prem and cloud service is supported.\n> Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes\n  which always contain the latest recommended versions and minimum required versions per EOS release.\n",
+      "properties": {
+        "cvaddrs": {
+          "type": "array",
+          "description": "Streaming address(es) for CloudVision single cluster\n- TCP 9910 is used for CV on-prem\n- TCP 443 is used for CV as a Service\n",
+          "items": {
+            "type": "string",
+            "description": "Server address in the format `<ip/fqdn>:<port>`"
+          },
+          "title": "Cvaddrs"
+        },
+        "clusters": {
+          "type": "array",
+          "description": "Multiple CloudVision clusters\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Cluster Name"
+              },
+              "cvaddrs": {
+                "type": "array",
+                "description": "Streaming address(es) for CloudVision cluster\n- TCP 9910 is used for CV on-prem\n- TCP 443 is used for CV as a Service\n",
+                "items": {
+                  "type": "string",
+                  "description": "Server address in the format `<ip/fqdn>:<port>`"
+                },
+                "title": "Cvaddrs"
+              },
+              "cvauth": {
+                "type": "object",
+                "description": "Authentication scheme used to connect to CloudVision\n",
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "token",
+                      "token-secure",
+                      "key"
+                    ],
+                    "title": "Method"
+                  },
+                  "key": {
+                    "type": "string",
+                    "title": "Key"
+                  },
+                  "token_file": {
+                    "type": "string",
+                    "description": "Token file path\ne.g. \"/tmp/token\"\n",
+                    "title": "Token File"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Cvauth"
+              },
+              "cvobscurekeyfile": {
+                "type": "boolean",
+                "title": "Obscure Key File",
+                "description": "Encrypt the private key used for authentication to CloudVision\n"
+              },
+              "cvproxy": {
+                "type": "string",
+                "title": "Proxy URL",
+                "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n"
+              },
+              "cvsourceip": {
+                "type": "string",
+                "title": "Source IP Address",
+                "description": "Set source IP address in case of in-band managament\n"
+              },
+              "cvvrf": {
+                "type": "string",
+                "title": "VRF",
+                "description": "The VRF to use to connect to CloudVision\n"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Clusters"
+        },
+        "cvauth": {
+          "type": "object",
+          "description": "Authentication scheme used to connect to CloudVision\n",
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": [
+                "token",
+                "token-secure",
+                "key"
+              ],
+              "title": "Method"
+            },
+            "key": {
+              "type": "string",
+              "title": "Key"
+            },
+            "token_file": {
+              "type": "string",
+              "description": "Token file path\ne.g. \"/tmp/token\"\n",
+              "title": "Token File"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Cvauth"
+        },
+        "cvobscurekeyfile": {
+          "type": "boolean",
+          "title": "Obscure Key File",
+          "description": "Encrypt the private key used for authentication to CloudVision\n"
+        },
+        "cvproxy": {
+          "type": "string",
+          "title": "Proxy URL",
+          "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n"
+        },
+        "cvsourceip": {
+          "type": "string",
+          "title": "Source IP Address",
+          "description": "Set source IP address in case of in-band managament\n"
+        },
+        "cvvrf": {
+          "type": "string",
+          "title": "VRF",
+          "description": "The VRF to use to connect to CloudVision\n"
+        },
+        "cvgnmi": {
+          "type": "boolean",
+          "description": "Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
+          "title": "Cvgnmi"
+        },
+        "disable_aaa": {
+          "type": "boolean",
+          "description": "Disable AAA authorization and accounting.\nWhen setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization\n",
+          "title": "Disable Aaa"
+        },
+        "grpcaddr": {
+          "type": "string",
+          "description": "Set the gRPC server address, the default is 127.0.0.1:6042\ne.g. \"MGMT/0.0.0.0:6042\"\n",
+          "title": "Grpcaddr"
+        },
+        "grpcreadonly": {
+          "type": "boolean",
+          "description": "gNMI read-only mode - Disable gnmi.Set()\n",
+          "title": "Grpcreadonly"
+        },
+        "ingestexclude": {
+          "type": "string",
+          "description": "Exclude paths from Sysdb on the ingest side.\ne.g. \"/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\"\n",
+          "title": "Ingestexclude"
+        },
+        "smashexcludes": {
+          "type": "string",
+          "description": "Exclude paths from the shared memory table.\ne.g. \"ale,flexCounter,hardware,kni,pulse,strata\"\n",
+          "title": "Smashexcludes"
+        },
+        "taillogs": {
+          "type": "string",
+          "description": "Enable log file collection; /var/log/messages is streamed by default if no path is set.\ne.g. \"/var/log/messages\"\n",
+          "title": "Taillogs"
+        },
+        "ecodhcpaddr": {
+          "type": "string",
+          "description": "ECO DHCP Collector address or ECO DHCP Fingerprint listening address in standalone mode (default \"127.0.0.1:67\")\n",
+          "title": "Ecodhcpaddr"
+        },
+        "ipfix": {
+          "type": "boolean",
+          "description": "Enable IPFIX provider (TerminAttr default is true).\nThis flag is enabled by default and does not have to be added to the daemon configuration.\n",
+          "title": "Ipfix"
+        },
+        "ipfixaddr": {
+          "type": "string",
+          "description": "ECO IPFIX Collector address to listen on to receive IPFIX packets (TerminAttr default \"127.0.0.1:4739\").\n",
+          "title": "Ipfixaddr"
+        },
+        "sflow": {
+          "type": "boolean",
+          "description": "Enable sFlow provider (TerminAttr default is true).\n",
+          "title": "Sflow"
+        },
+        "sflowaddr": {
+          "type": "string",
+          "description": "ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default \"127.0.0.1:6343\").\n",
+          "title": "Sflowaddr"
+        },
+        "cvcompression": {
+          "type": "string",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n",
+          "title": "Cvcompression"
+        },
+        "ingestauth_key": {
+          "type": "string",
+          "description": "Deprecated key. Use `cvauth` instead.\n",
+          "title": "Ingestauth Key"
+        },
+        "ingestgrpcurl": {
+          "type": "object",
+          "description": "Deprecated key. Use `cvaddrs` instead.\n",
+          "properties": {
+            "ips": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Ips"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Port"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Ingestgrpcurl"
+        },
+        "ingestvrf": {
+          "description": "Deprecated key. Use `cvvrf` instead.\n",
+          "type": "string",
+          "title": "Ingestvrf"
+        }
+      },
+      "additionalProperties": false
+    },
     "daemons": {
       "type": "array",
       "title": "Custom Daemons",
