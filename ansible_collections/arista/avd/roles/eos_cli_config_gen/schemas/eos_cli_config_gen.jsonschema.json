@@ -5062,6 +5062,175 @@
       "type": "string",
       "title": "Prompt"
     },
+    "ptp": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "title": "Mode"
+        },
+        "forward_unicast": {
+          "type": "boolean",
+          "title": "Forward Unicast"
+        },
+        "clock_identity": {
+          "type": "string",
+          "title": "Clock Identity"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "ip": {
+              "type": "string",
+              "title": "IP"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Source"
+        },
+        "priority1": {
+          "type": "integer",
+          "title": "Priority1"
+        },
+        "priority2": {
+          "type": "integer",
+          "title": "Priority2"
+        },
+        "ttl": {
+          "type": "integer",
+          "title": "TTL"
+        },
+        "domain": {
+          "type": "integer",
+          "title": "Domain"
+        },
+        "message_type": {
+          "type": "object",
+          "properties": {
+            "general": {
+              "type": "object",
+              "properties": {
+                "dscp": {
+                  "type": "integer",
+                  "title": "DSCP"
+                }
+              },
+              "additionalProperties": false,
+              "title": "General"
+            },
+            "event": {
+              "type": "object",
+              "properties": {
+                "dscp": {
+                  "type": "integer",
+                  "title": "DSCP"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Event"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Message Type"
+        },
+        "monitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "threshold": {
+              "type": "object",
+              "properties": {
+                "offset_from_master": {
+                  "type": "integer",
+                  "title": "Offset From Master"
+                },
+                "mean_path_delay": {
+                  "type": "integer",
+                  "title": "Mean Path Delay"
+                },
+                "drop": {
+                  "type": "object",
+                  "properties": {
+                    "offset_from_master": {
+                      "type": "integer",
+                      "title": "Offset From Master"
+                    },
+                    "mean_path_delay": {
+                      "type": "integer",
+                      "title": "Mean Path Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Drop"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Threshold"
+            },
+            "missing_message": {
+              "type": "object",
+              "properties": {
+                "intervals": {
+                  "type": "object",
+                  "properties": {
+                    "announce": {
+                      "type": "integer",
+                      "title": "Announce"
+                    },
+                    "follow_up": {
+                      "type": "integer",
+                      "title": "Follow Up"
+                    },
+                    "sync": {
+                      "type": "integer",
+                      "title": "Sync"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Intervals"
+                },
+                "sequence_ids": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "announce": {
+                      "type": "integer",
+                      "title": "Announce"
+                    },
+                    "delay_resp": {
+                      "type": "integer",
+                      "title": "Delay Resp"
+                    },
+                    "follow_up": {
+                      "type": "integer",
+                      "title": "Follow Up"
+                    },
+                    "sync": {
+                      "type": "integer",
+                      "title": "Sync"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Sequence IDs"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Missing Message"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Monitor"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Ptp"
+    },
     "qos": {
       "type": "object",
       "properties": {

@@ -3588,6 +3588,85 @@ keys:
                   Example: "permit 10.255.0.0/27 eq 32"'
   prompt:
     type: str
+  ptp:
+    type: dict
+    keys:
+      mode:
+        type: str
+      forward_unicast:
+        type: bool
+      clock_identity:
+        type: str
+      source:
+        type: dict
+        keys:
+          ip:
+            type: str
+      priority1:
+        type: int
+      priority2:
+        type: int
+      ttl:
+        type: int
+      domain:
+        type: int
+      message_type:
+        type: dict
+        keys:
+          general:
+            type: dict
+            keys:
+              dscp:
+                type: int
+          event:
+            type: dict
+            keys:
+              dscp:
+                type: int
+      monitor:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          threshold:
+            type: dict
+            keys:
+              offset_from_master:
+                type: int
+              mean_path_delay:
+                type: int
+              drop:
+                type: dict
+                keys:
+                  offset_from_master:
+                    type: int
+                  mean_path_delay:
+                    type: int
+          missing_message:
+            type: dict
+            keys:
+              intervals:
+                type: dict
+                keys:
+                  announce:
+                    type: int
+                  follow_up:
+                    type: int
+                  sync:
+                    type: int
+              sequence_ids:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  announce:
+                    type: int
+                  delay_resp:
+                    type: int
+                  follow_up:
+                    type: int
+                  sync:
+                    type: int
   qos:
     type: dict
     keys:
