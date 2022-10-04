@@ -101,6 +101,15 @@ keys:
                     - igp
                     - incomplete
                     default: any
+  banners:
+    type: dict
+    keys:
+      login:
+        type: str
+        description: Multiline string ending with EOF on the last line
+      motd:
+        type: str
+        description: Multiline string ending with EOF on the last line
   bgp_groups:
     type: list
     primary_key: name
