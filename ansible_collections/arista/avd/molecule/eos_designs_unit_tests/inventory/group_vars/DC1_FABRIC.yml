@@ -157,7 +157,9 @@ l3leaf:
               destinations:
                 192.168.200.10:
                 10.0.200.90:
-              source_interface: Management1
+              # Testing custom_structured_configuration using inline jinja with switch.x facts.
+              # Common customer use case, so we should make sure this does not break.
+              source_interface: "{{ switch.mgmt_interface }}"
       # NB - uplink_switch_interfaces Ethernet19-21 are used by MH_LEAF1A, 1B and 2A.
       nodes:
         DC1-BL1A:
