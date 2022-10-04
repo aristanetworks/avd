@@ -188,6 +188,11 @@ keys:
                 access_group:
                   type: str
                   display_name: IPv6 Access-List Name
+  clock:
+    type: dict
+    keys:
+      timezone:
+        type: str
   community_lists:
     type: list
     primary_key: name
