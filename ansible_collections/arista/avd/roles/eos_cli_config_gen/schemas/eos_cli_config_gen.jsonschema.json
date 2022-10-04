@@ -525,7 +525,8 @@
     },
     "dns_domain": {
       "type": "string",
-      "title": "Domain Name"
+      "title": "DNS Domain",
+      "description": "Domain Name"
     },
     "eos_cli": {
       "type": "string",
