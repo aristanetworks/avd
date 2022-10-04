@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ntp:
+    type: dict
+    keys:
+      local_interface:
+        type: dict
+        keys:
+          name:
+            display_name: Source Interface
+            type: str
+          vrf:
+            type: str
+            display_name: VRF Name
+      servers:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            burst:
+              type: bool
+            iburst:
+              type: bool
+            key:
+              type: int
+              min: 1
+              max: 65535
+              convert_types:
+              - str
+            local_interface:
+              type: str
+            maxpoll:
+              type: int
+              min: 3
+              max: 17
+              convert_types:
+              - str
+            minpoll:
+              type: int
+              min: 3
+              max: 17
+              convert_types:
+              - str
+            preferred:
+              type: bool
+            version:
+              type: int
+              convert_types:
+              - str
+            vrf:
+              type: str
+              display_name: VRF Name
+      authenticate:
+        type: bool
+      authenticate_servers_only:
+        type: bool
+      authentication_keys:
+        type: list
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              display_name: Key Identifier
+              type: int
+              min: 1
+              max: 65534
+              convert_types:
+              - str
+            hash_algorithm:
+              type: str
+              valid_values: ["md5", "sha1"]
+            key:
+              type: str
+      trusted_keys:
+        type: str

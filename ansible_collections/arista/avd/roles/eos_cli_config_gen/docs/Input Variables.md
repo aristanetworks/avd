@@ -2582,12 +2582,17 @@ name_server:
     - <str>
 ```
 
+<<<<<<< HEAD
 ## Patch Panel
+=======
+## Ntp
+>>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+<<<<<<< HEAD
 | [<samp>patch_panel</samp>](## "patch_panel") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;patches</samp>](## "patch_panel.patches") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "patch_panel.patches.[].name") | String | Required, Unique |  |  |  |
@@ -2596,10 +2601,35 @@ name_server:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "patch_panel.patches.[].connectors.[].id") | String | Required, Unique |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "patch_panel.patches.[].connectors.[].type") | String | Required |  | Valid Values:<br>- interface<br>- pseudowire |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint</samp>](## "patch_panel.patches.[].connectors.[].endpoint") | String | Required |  |  | String with relevant endpoint depending on type.<br>Examples:<br>- "Ethernet1"<br>- "Ethernet1 dot1q vlan 123"<br>- "bgp vpws TENANT_A pseudowire VPWS_PW_1"<br>- "ldp LDP_PW_1"<br> |
+=======
+| [<samp>ntp</samp>](## "ntp") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;local_interface</samp>](## "ntp.local_interface") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "ntp.local_interface.name") | String |  |  |  | Source Interface |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ntp.local_interface.vrf") | String |  |  |  | VRF Name |
+| [<samp>&nbsp;&nbsp;servers</samp>](## "ntp.servers") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ntp.servers.[].name") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;burst</samp>](## "ntp.servers.[].burst") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iburst</samp>](## "ntp.servers.[].iburst") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ntp.servers.[].key") | Integer |  |  | Min: 1<br>Max: 65535 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "ntp.servers.[].local_interface") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxpoll</samp>](## "ntp.servers.[].maxpoll") | Integer |  |  | Min: 3<br>Max: 17 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minpoll</samp>](## "ntp.servers.[].minpoll") | Integer |  |  | Min: 3<br>Max: 17 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred</samp>](## "ntp.servers.[].preferred") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ntp.servers.[].version") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ntp.servers.[].vrf") | String |  |  |  | VRF Name |
+| [<samp>&nbsp;&nbsp;authenticate</samp>](## "ntp.authenticate") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;authenticate_servers_only</samp>](## "ntp.authenticate_servers_only") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;authentication_keys</samp>](## "ntp.authentication_keys") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "ntp.authentication_keys.[].id") | Integer |  |  | Min: 1<br>Max: 65534 | Key Identifier |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "ntp.authentication_keys.[].hash_algorithm") | String |  |  | Valid Values:<br>- md5<br>- sha1 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ntp.authentication_keys.[].key") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;trusted_keys</samp>](## "ntp.trusted_keys") | String |  |  |  |  |
+>>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
 
 ### YAML
 
 ```yaml
+<<<<<<< HEAD
 patch_panel:
   patches:
     - name: <str>
@@ -2608,6 +2638,30 @@ patch_panel:
         - id: <str>
           type: <str>
           endpoint: <str>
+=======
+ntp:
+  local_interface:
+    name: <str>
+    vrf: <str>
+  servers:
+    - name: <str>
+      burst: <bool>
+      iburst: <bool>
+      key: <int>
+      local_interface: <str>
+      maxpoll: <int>
+      minpoll: <int>
+      preferred: <bool>
+      version: <int>
+      vrf: <str>
+  authenticate: <bool>
+  authenticate_servers_only: <bool>
+  authentication_keys:
+    - id: <int>
+      hash_algorithm: <str>
+      key: <str>
+  trusted_keys: <str>
+>>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
 ```
 
 ## Peer Filters

@@ -3199,6 +3199,7 @@ keys:
         type: list
         items:
           type: str
+<<<<<<< HEAD
   patch_panel:
     type: dict
     keys:
@@ -3207,11 +3208,28 @@ keys:
         primary_key: name
         convert_types:
         - dict
+=======
+  ntp:
+    type: dict
+    keys:
+      local_interface:
+        type: dict
+        keys:
+          name:
+            display_name: Source Interface
+            type: str
+          vrf:
+            type: str
+            display_name: VRF Name
+      servers:
+        type: list
+>>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
         items:
           type: dict
           keys:
             name:
               type: str
+<<<<<<< HEAD
               required: true
             enabled:
               type: bool
@@ -3254,6 +3272,68 @@ keys:
 
                       '
                     required: true
+=======
+            burst:
+              type: bool
+            iburst:
+              type: bool
+            key:
+              type: int
+              min: 1
+              max: 65535
+              convert_types:
+              - str
+            local_interface:
+              type: str
+            maxpoll:
+              type: int
+              min: 3
+              max: 17
+              convert_types:
+              - str
+            minpoll:
+              type: int
+              min: 3
+              max: 17
+              convert_types:
+              - str
+            preferred:
+              type: bool
+            version:
+              type: int
+              convert_types:
+              - str
+            vrf:
+              type: str
+              display_name: VRF Name
+      authenticate:
+        type: bool
+      authenticate_servers_only:
+        type: bool
+      authentication_keys:
+        type: list
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              display_name: Key Identifier
+              type: int
+              min: 1
+              max: 65534
+              convert_types:
+              - str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - md5
+              - sha1
+            key:
+              type: str
+      trusted_keys:
+        type: str
+>>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
   peer_filters:
     type: list
     primary_key: name
