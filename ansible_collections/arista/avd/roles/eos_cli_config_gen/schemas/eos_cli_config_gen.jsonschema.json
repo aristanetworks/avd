@@ -4434,6 +4434,71 @@
       "additionalProperties": false,
       "title": "Switchport Default"
     },
+    "system": {
+      "type": "object",
+      "properties": {
+        "control_plane": {
+          "type": "object",
+          "properties": {
+            "tcp_mss": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "integer",
+                  "title": "Ipv4"
+                },
+                "ipv6": {
+                  "type": "integer",
+                  "title": "Ipv6"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Tcp Mss"
+            },
+            "ipv4_access_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "acl_name": {
+                    "type": "string",
+                    "title": "Acl Name"
+                  },
+                  "vrf": {
+                    "type": "string",
+                    "title": "Vrf"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Ipv4 Access Groups"
+            },
+            "ipv6_access_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "acl_name": {
+                    "type": "string",
+                    "title": "Acl Name"
+                  },
+                  "vrf": {
+                    "type": "string",
+                    "title": "Vrf"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Ipv6 Access Groups"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Control Plane"
+        }
+      },
+      "additionalProperties": false,
+      "title": "System"
+    },
     "tcam_profile": {
       "type": "object",
       "title": "Hardware TCAM Profiles",
