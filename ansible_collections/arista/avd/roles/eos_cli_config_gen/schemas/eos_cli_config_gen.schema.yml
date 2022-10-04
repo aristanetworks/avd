@@ -733,6 +733,31 @@ keys:
         ssh_key:
           display_name: SSH Key
           type: str
+  mac_access_lists:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: MAC Access-list Name
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+              action:
+                type: str
   mac_security:
     type: dict
     display_name: MACsec
