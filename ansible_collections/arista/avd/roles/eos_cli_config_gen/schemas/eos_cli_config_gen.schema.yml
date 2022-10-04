@@ -3,12 +3,24 @@ allow_other_keys: true
 keys:
   aaa_authorization:
     type: dict
+    display_name: AAA Authorization
     keys:
       exec:
         type: dict
         keys:
           default:
             type: str
+            description: 'Exec authorization method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group radius group MYGROUP local"
+
+              '
       config_commands:
         type: bool
       serial_console:
@@ -18,6 +30,17 @@ keys:
         keys:
           all_default:
             type: str
+            description: 'Command authorization method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group tacacs+ group MYGROUP local
+
+              '
           privilege:
             type: list
             items:
@@ -25,6 +48,9 @@ keys:
               keys:
                 level:
                   type: str
+                  description: Privilege level(s) 0-15
+                  convert_types:
+                  - int
                 default:
                   type: str
   aaa_root:

@@ -3,12 +3,14 @@
   "properties": {
     "aaa_authorization": {
       "type": "object",
+      "title": "AAA Authorization",
       "properties": {
         "exec": {
           "type": "object",
           "properties": {
             "default": {
               "type": "string",
+              "description": "Exec authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group radius group MYGROUP local\"\n",
               "title": "Default"
             }
           },
@@ -28,6 +30,7 @@
           "properties": {
             "all_default": {
               "type": "string",
+              "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\n",
               "title": "All Default"
             },
             "privilege": {
@@ -37,6 +40,7 @@
                 "properties": {
                   "level": {
                     "type": "string",
+                    "description": "Privilege level(s) 0-15",
                     "title": "Level"
                   },
                   "default": {
@@ -53,8 +57,7 @@
           "title": "Commands"
         }
       },
-      "additionalProperties": false,
-      "title": "Aaa Authorization"
+      "additionalProperties": false
     },
     "aaa_root": {
       "type": "object",
