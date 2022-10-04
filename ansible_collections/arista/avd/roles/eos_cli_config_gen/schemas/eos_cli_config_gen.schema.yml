@@ -787,6 +787,9 @@ keys:
         vrf:
           display_name: VRF
           type: str
+  ip_icmp_redirect:
+    type: bool
+    display_name: IP ICMP Redirect
   ip_igmp_snooping:
     type: dict
     display_name: IP IGMP Snooping
