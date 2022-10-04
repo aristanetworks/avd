@@ -1529,6 +1529,19 @@
       },
       "additionalProperties": false
     },
+    "management_console": {
+      "type": "object",
+      "properties": {
+        "idle_timeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400,
+          "title": "Idle Timeout"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management Console"
+    },
     "management_interfaces": {
       "type": "array",
       "items": {

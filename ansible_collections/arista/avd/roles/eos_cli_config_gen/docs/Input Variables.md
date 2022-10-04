@@ -874,6 +874,22 @@ management_api_http:
     private_key: <str>
 ```
 
+## Management Console
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>management_console</samp>](## "management_console") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "management_console.idle_timeout") | Integer |  |  | Max: 86400 |  |
+
+### YAML
+
+```yaml
+management_console:
+  idle_timeout: <int>
+```
+
 ## Management Interfaces
 
 ### Variables
