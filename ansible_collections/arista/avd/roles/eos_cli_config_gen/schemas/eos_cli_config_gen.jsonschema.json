@@ -659,7 +659,7 @@
           "title": "Ethernet"
         },
         "mtu": {
-          "type": "string",
+          "type": "integer",
           "title": "Mtu"
         }
       },
@@ -1789,6 +1789,7 @@
         },
         "ssl_profiles": {
           "type": "array",
+          "title": "SSL Profiles",
           "items": {
             "type": "object",
             "properties": {
@@ -1798,12 +1799,12 @@
               },
               "tls_versions": {
                 "type": "string",
-                "description": "List of allowed tls versions as string\n",
-                "title": "Tls Versions"
+                "title": "TLS Versions",
+                "description": "List of allowed TLS versions as string\n"
               },
               "cipher_list": {
                 "type": "string",
-                "description": "cipher_list syntax follows the openssl cipher strings format.\nColumn separated list of allowed ciphers as a string\n",
+                "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
                 "title": "Cipher List"
               },
               "certificate": {
@@ -1823,8 +1824,7 @@
               }
             },
             "additionalProperties": false
-          },
-          "title": "Ssl Profiles"
+          }
         }
       },
       "additionalProperties": false,

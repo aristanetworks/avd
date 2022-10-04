@@ -1444,6 +1444,7 @@ keys:
             type: str
       ssl_profiles:
         type: list
+        display_name: SSL Profiles
         items:
           type: dict
           keys:
@@ -1451,7 +1452,8 @@ keys:
               type: str
             tls_versions:
               type: str
-              description: 'List of allowed tls versions as string
+              display_name: TLS Versions
+              description: 'List of allowed TLS versions as string
 
                 '
             cipher_list:
@@ -1459,7 +1461,7 @@ keys:
               description: 'cipher_list syntax follows the openssl cipher strings
                 format.
 
-                Column separated list of allowed ciphers as a string
+                Colon (:) separated list of allowed ciphers as a string
 
                 '
             certificate:
