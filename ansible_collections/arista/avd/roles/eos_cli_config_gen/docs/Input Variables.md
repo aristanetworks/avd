@@ -90,8 +90,8 @@ as_path:
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>banners</samp>](## "banners") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;login</samp>](## "banners.login") | String |  |  |  | Text ending with EOF |
-| [<samp>&nbsp;&nbsp;motd</samp>](## "banners.motd") | String |  |  |  | Text ending with EOF |
+| [<samp>&nbsp;&nbsp;login</samp>](## "banners.login") | String |  |  |  | Multiline string ending with EOF on the last line |
+| [<samp>&nbsp;&nbsp;motd</samp>](## "banners.motd") | String |  |  |  | Multiline string ending with EOF on the last line |
 
 ### YAML
 

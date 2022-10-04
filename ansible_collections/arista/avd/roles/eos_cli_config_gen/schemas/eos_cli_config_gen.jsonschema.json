@@ -132,12 +132,12 @@
       "properties": {
         "login": {
           "type": "string",
-          "description": "Text ending with EOF",
+          "description": "Multiline string ending with EOF on the last line",
           "title": "Login"
         },
         "motd": {
           "type": "string",
-          "description": "Text ending with EOF",
+          "description": "Multiline string ending with EOF on the last line",
           "title": "Motd"
         }
       },
