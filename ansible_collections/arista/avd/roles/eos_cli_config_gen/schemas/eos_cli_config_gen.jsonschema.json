@@ -45,6 +45,7 @@
                   },
                   "default": {
                     "type": "string",
+                    "description": "Command authorization method(s) as a string.\nExamples:\n- \"group tacacs+ local\"\n- \"group MYGROUP none\"\n- \"group tacacs+ group MYGROUP local\"",
                     "title": "Default"
                   }
                 },

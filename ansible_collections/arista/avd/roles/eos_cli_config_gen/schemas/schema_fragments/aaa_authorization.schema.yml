@@ -45,3 +45,9 @@ keys:
                     - int
                 default:
                   type: str
+                  description: |
+                    Command authorization method(s) as a string.
+                    Examples:
+                    - "group tacacs+ local"
+                    - "group MYGROUP none"
+                    - "group tacacs+ group MYGROUP local"
