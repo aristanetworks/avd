@@ -769,6 +769,20 @@ ipv6_access_lists:
         action: <str>
 ```
 
+## IPv6 ICMP Redirect
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ipv6_icmp_redirect</samp>](## "ipv6_icmp_redirect") | Boolean |  |  |  | IPv6 ICMP Redirect |
+
+### YAML
+
+```yaml
+ipv6_icmp_redirect: <bool>
+```
+
 ## IPv6 Prefix Lists
 
 ### Variables
