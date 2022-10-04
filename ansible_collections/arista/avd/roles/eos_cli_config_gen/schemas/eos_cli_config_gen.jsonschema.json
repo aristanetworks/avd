@@ -1917,6 +1917,77 @@
       },
       "title": "Management Interfaces"
     },
+    "management_security": {
+      "type": "object",
+      "properties": {
+        "entropy_source": {
+          "type": "string",
+          "title": "Entropy Source"
+        },
+        "password": {
+          "type": "object",
+          "properties": {
+            "minimum_length": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32,
+              "title": "Minimum Length"
+            },
+            "encryption_key_common": {
+              "type": "boolean",
+              "title": "Encryption Key Common"
+            },
+            "encryption_reversible": {
+              "type": "string",
+              "title": "Encryption Reversible"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Password"
+        },
+        "ssl_profiles": {
+          "type": "array",
+          "title": "SSL Profiles",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "tls_versions": {
+                "type": "string",
+                "title": "TLS Versions",
+                "description": "List of allowed TLS versions as string\n"
+              },
+              "cipher_list": {
+                "type": "string",
+                "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
+                "title": "Cipher List"
+              },
+              "certificate": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "title": "File"
+                  },
+                  "key": {
+                    "type": "string",
+                    "title": "Key"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Certificate"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management Security"
+    },
     "management_ssh": {
       "type": "object",
       "title": "Management SSH",
