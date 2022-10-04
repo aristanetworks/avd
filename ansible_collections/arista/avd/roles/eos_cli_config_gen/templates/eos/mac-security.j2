@@ -9,12 +9,12 @@ mac security
    fips restrictions
 {%     endif %}
    !
-{%     for profile in mac_security.profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
    profile {{ profile.name }}
 {%         if profile.cipher is arista.avd.defined %}
       cipher {{ profile.cipher }}
 {%         endif %}
-{%         for connection_key in profile.connection_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%             if connection_key.encrypted_key is arista.avd.defined %}
 {%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key %}
 {%                 if connection_key.fallback is arista.avd.defined %}
