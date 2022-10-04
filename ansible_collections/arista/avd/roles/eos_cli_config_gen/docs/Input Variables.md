@@ -1798,13 +1798,13 @@ vlan_internal_order:
     ending: <int>
 ```
 
-## Vlans
+## VLANs
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>vlans</samp>](## "vlans") | List, items: Dictionary |  |  |  |  |
+| [<samp>vlans</samp>](## "vlans") | List, items: Dictionary |  |  |  | VLANs |
 | [<samp>&nbsp;&nbsp;- id</samp>](## "vlans.[].id") | Integer |  |  |  | Vlan ID |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "vlans.[].name") | String |  |  |  | Vlan Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;state</samp>](## "vlans.[].state") | String |  |  | Valid Values:<br>- active<br>- suspend |  |

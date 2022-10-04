@@ -3119,6 +3119,7 @@
     },
     "vlans": {
       "type": "array",
+      "title": "VLANs",
       "items": {
         "type": "object",
         "properties": {
@@ -3171,8 +3172,7 @@
           }
         },
         "additionalProperties": false
-      },
-      "title": "Vlans"
+      }
     },
     "vmtracer_sessions": {
       "type": "array",
