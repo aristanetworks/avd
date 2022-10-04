@@ -146,8 +146,10 @@ class ActionModule(ActionBase):
         return write_file_result
 
     def write_file(self, content, task_vars):
-        # The write_file function is implementing the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
-        # Reuse task data
+        """
+        This function implements the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
+        Reuse task data
+        """
         new_task = self._task.copy()
         new_task.args = {
             "dest": self.dest,
