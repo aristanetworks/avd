@@ -2,7 +2,7 @@ mac_security:
   fips_restrictions: true
   license:
     license_name: license1
-    license_key: 123456
+    license_key: "123456"
   profiles:
     A1:
       sci: true

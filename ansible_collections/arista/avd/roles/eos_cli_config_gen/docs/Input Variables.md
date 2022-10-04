@@ -37,6 +37,34 @@ access_lists:
         action: <str>
 ```
 
+## As Path
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>as_path</samp>](## "as_path") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;regex_mode</samp>](## "as_path.regex_mode") | String |  |  | Valid Values:<br>- asn<br>- string |  |
+| [<samp>&nbsp;&nbsp;access_lists</samp>](## "as_path.access_lists") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "as_path.access_lists.[].name") | String |  |  |  | Access List Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "as_path.access_lists.[].entries") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- type</samp>](## "as_path.access_lists.[].entries.[].type") | String |  |  | Valid Values:<br>- permit<br>- deny |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match</samp>](## "as_path.access_lists.[].entries.[].match") | String |  |  |  | Regex To Match |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;origin</samp>](## "as_path.access_lists.[].entries.[].origin") | String |  | any | Valid Values:<br>- any<br>- egp<br>- igp<br>- incomplete |  |
+
+### YAML
+
+```yaml
+as_path:
+  regex_mode: <str>
+  access_lists:
+    - name: <str>
+      entries:
+        - type: <str>
+          match: <str>
+          origin: <str>
+```
+
 ## Bgp Groups
 
 ### Variables
@@ -151,6 +179,23 @@ daemons:
     enabled: <bool>
 ```
 
+## EOS CLI
+
+### Description
+
+Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>eos_cli</samp>](## "eos_cli") | String |  |  |  | EOS CLI |
+
+### YAML
+
+```yaml
+eos_cli: <str>
+```
+
 ## Event Handlers
 
 ### Variables
@@ -177,6 +222,20 @@ event_handlers:
     trigger: <str>
     regex: <str>
     asynchronous: <bool>
+```
+
+## Generate Device Documentation
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>generate_device_documentation</samp>](## "generate_device_documentation") | Boolean |  | True |  |  |
+
+### YAML
+
+```yaml
+generate_device_documentation: <bool>
 ```
 
 ## Maintenance Interface Groups
@@ -511,6 +570,74 @@ local_users:
     sha512_password: <str>
     no_password: <bool>
     ssh_key: <str>
+```
+
+## Mac Access Lists
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mac_access_lists</samp>](## "mac_access_lists") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "mac_access_lists.[].name") | String | Required, Unique |  |  | MAC Access-list Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "mac_access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "mac_access_lists.[].entries") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "mac_access_lists.[].entries.[].sequence") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "mac_access_lists.[].entries.[].action") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+mac_access_lists:
+  - name: <str>
+    counters_per_entry: <bool>
+    entries:
+      - sequence: <int>
+        action: <str>
+```
+
+## MACsec
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mac_security</samp>](## "mac_security") | Dictionary |  |  |  | MACsec |
+| [<samp>&nbsp;&nbsp;license</samp>](## "mac_security.license") | Dictionary | Required |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;license_name</samp>](## "mac_security.license.license_name") | String | Required |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;license_key</samp>](## "mac_security.license.license_key") | String | Required |  |  |  |
+| [<samp>&nbsp;&nbsp;fips_restrictions</samp>](## "mac_security.fips_restrictions") | Boolean | Required |  |  |  |
+| [<samp>&nbsp;&nbsp;profiles</samp>](## "mac_security.profiles") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "mac_security.profiles.[].name") | String | Required, Unique |  |  | Profile-Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cipher</samp>](## "mac_security.profiles.[].cipher") | String |  |  | Valid Values:<br>- aes128-gcm<br>- aes128-gcm-xpn<br>- aes256-gcm<br>- aes256-gcm-xpn |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_keys</samp>](## "mac_security.profiles.[].connection_keys") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "mac_security.profiles.[].connection_keys.[].id") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encrypted_key</samp>](## "mac_security.profiles.[].connection_keys.[].encrypted_key") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback</samp>](## "mac_security.profiles.[].connection_keys.[].fallback") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mka</samp>](## "mac_security.profiles.[].mka") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session</samp>](## "mac_security.profiles.[].mka.session") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rekey_period</samp>](## "mac_security.profiles.[].mka.session.rekey_period") | Integer |  |  | Min: 30<br>Max: 100000 | Rekey period in seconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sci</samp>](## "mac_security.profiles.[].sci") | Boolean |  |  |  |  |
+
+### YAML
+
+```yaml
+mac_security:
+  license:
+    license_name: <str>
+    license_key: <str>
+  fips_restrictions: <bool>
+  profiles:
+    - name: <str>
+      cipher: <str>
+      connection_keys:
+        - id: <str>
+          encrypted_key: <str>
+          fallback: <bool>
+      mka:
+        session:
+          rekey_period: <int>
+      sci: <bool>
 ```
 
 ## Maintenance Mode
@@ -859,6 +986,22 @@ router_general:
       routes:
         dynamic_prefix_lists:
           - name: <str>
+```
+
+## Router IGMP Configuration
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>router_igmp</samp>](## "router_igmp") | Dictionary |  |  |  | Router IGMP Configuration |
+| [<samp>&nbsp;&nbsp;ssm_aware</samp>](## "router_igmp.ssm_aware") | Boolean |  |  |  |  |
+
+### YAML
+
+```yaml
+router_igmp:
+  ssm_aware: <bool>
 ```
 
 ## Sflow

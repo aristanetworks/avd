@@ -90,7 +90,7 @@
 {%                                 do bgp_peer.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                 if bgp_peer.default_originate is arista.avd.defined %}
 {%                                     if bgp_peer.default_originate.route_map is not arista.avd.defined %}
-{%                                         do bgp_peer.default_originate.update({ 'route_map_out':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                         do bgp_peer.default_originate.update({ 'route_map':'RM-' ~ vrf.name ~ '-' ~ bgp_peer.ip_address ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                     endif %}
 {%                                 endif %}
 {%                                 if bgp_peer.set_ipv4_next_hop is arista.avd.defined %}
