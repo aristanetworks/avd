@@ -1081,6 +1081,28 @@ keys:
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"
+  hardware_counters:
+    type: dict
+    keys:
+      features:
+        type: list
+        secondary_key: direction
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Name of the feature
+            direction:
+              type: str
+              required: true
+              valid_values:
+              - in
+              - out
   interface_defaults:
     type: dict
     keys:

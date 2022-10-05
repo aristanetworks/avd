@@ -1364,6 +1364,39 @@
       "additionalProperties": false,
       "title": "Hardware"
     },
+    "hardware_counters": {
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name of the feature"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out"
+                ],
+                "title": "Direction"
+              }
+            },
+            "required": [
+              "name",
+              "direction"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Features"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Hardware Counters"
+    },
     "interface_defaults": {
       "type": "object",
       "properties": {

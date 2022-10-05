@@ -5,7 +5,7 @@
 {%         if 'name' in feature %}
 hardware counter feature {{ feature.name }} {{ feature.direction }}
 {%         else %}
-{%             for feat in feature | arista.avd.convert_dicts('name','direction') %}
+{%             for feat in feature %}
 hardware counter feature {{ feat.name }} {{ feat.direction }}
 {%             endfor %}
 {%         endif %}
