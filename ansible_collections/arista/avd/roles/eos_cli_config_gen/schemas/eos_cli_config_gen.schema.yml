@@ -3821,17 +3821,20 @@ keys:
             type: int
             convert_types:
             - str
-            description: 1-255
+            min: 1
+            max: 255
           internal_routes:
             type: int
             convert_types:
             - str
-            description: 1-255
+            min: 1
+            max: 255
           local_routes:
             type: int
             convert_types:
             - str
-            description: 1-255
+            min: 1
+            max: 255
       maximum_paths:
         type: dict
         keys:
@@ -3839,12 +3842,14 @@ keys:
             type: int
             convert_types:
             - str
-            description: 1-600
+            min: 1
+            max: 600
           ecmp:
             type: int
             convert_types:
             - str
-            description: 1-600
+            min: 1
+            max: 600
       updates:
         type: dict
         keys:
@@ -3996,7 +4001,9 @@ keys:
               type: str
               convert_types:
               - int
-              description: '"<integer>" | "<0-100> percent"
+              description: '["<integer>", "<0-100> percent"]
+
+                Example: 40 percent
 
                 '
             maximum_routes_warning_only:
@@ -4016,7 +4023,8 @@ keys:
                   type: bool
                 times:
                   type: int
-                  description: 1-10
+                  min: 1
+                  max: 10
             weight:
               type: int
               convert_types:
@@ -4041,6 +4049,14 @@ keys:
             bgp_listen_range_prefix:
               type: str
               description: IP Prefix Range
+            struct_cfg:
+              type: dict
+              description: Key only used for documentation or validation purposes
+              keys:
+                description:
+                  type: str
+            set_ipv4_next_hop:
+              type: str
       neighbors:
         type: list
         primary_key: ip_address
@@ -4114,7 +4130,9 @@ keys:
               type: str
               convert_types:
               - int
-              description: '"<integer>" | "<0-100> percent"
+              description: '["<integer>", "<0-100> percent"]
+
+                Example: 40 percent
 
                 '
             maximum_routes_warning_only:
@@ -4140,7 +4158,7 @@ keys:
                   type: bool
                 default:
                   type: str
-                  description: nn.nn(K|M|G)  Link speed in bits/second
+                  description: Link speed in bits/second
             rib_in_pre_policy_retain:
               type: dict
               keys:
@@ -5253,7 +5271,9 @@ keys:
                     type: str
                     convert_types:
                     - int
-                    description: '"<integer>" | "<0-100> percent"
+                    description: '["<integer>", "<0-100> percent"]
+
+                      Example: 40 percent
 
                       '
                   maximum_routes_warning_only:
@@ -5304,6 +5324,41 @@ keys:
                         type: bool
                       replace_as:
                         type: bool
+                  address_families:
+                    type: list
+                    description: Key only used for documentation or validation purposes
+                    primary_key: address_family
+                    convert_types:
+                    - dict
+                    items:
+                      type: dict
+                      keys:
+                        address_family:
+                          type: str
+                        bgp:
+                          type: dict
+                          keys:
+                            missing_policy:
+                              type: dict
+                              keys:
+                                direction_in_action:
+                                  type: str
+                                  valid_values:
+                                  - deny
+                                  - deny-in-out
+                                  - permit
+                                direction_out_action:
+                                  type: str
+                                  valid_values:
+                                  - deny
+                                  - deny-in-out
+                                  - permit
+                            additional_paths:
+                              type: list
+                              items:
+                                type: str
+                        activate:
+                          type: bool
   router_general:
     type: dict
     display_name: Router General configuration

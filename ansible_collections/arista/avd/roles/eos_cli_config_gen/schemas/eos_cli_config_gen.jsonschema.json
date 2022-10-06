@@ -5371,17 +5371,20 @@
           "properties": {
             "external_routes": {
               "type": "integer",
-              "description": "1-255",
+              "minimum": 1,
+              "maximum": 255,
               "title": "External Routes"
             },
             "internal_routes": {
               "type": "integer",
-              "description": "1-255",
+              "minimum": 1,
+              "maximum": 255,
               "title": "Internal Routes"
             },
             "local_routes": {
               "type": "integer",
-              "description": "1-255",
+              "minimum": 1,
+              "maximum": 255,
               "title": "Local Routes"
             }
           },
@@ -5393,12 +5396,14 @@
           "properties": {
             "paths": {
               "type": "integer",
-              "description": "1-600",
+              "minimum": 1,
+              "maximum": 600,
               "title": "Paths"
             },
             "ecmp": {
               "type": "integer",
-              "description": "1-600",
+              "minimum": 1,
+              "maximum": 600,
               "title": "Ecmp"
             }
           },
@@ -5612,7 +5617,7 @@
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "\"<integer>\" | \"<0-100> percent\"\n",
+                "description": "[\"<integer>\", \"<0-100> percent\"]\nExample: 40 percent\n",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5644,7 +5649,8 @@
                   },
                   "times": {
                     "type": "integer",
-                    "description": "1-10",
+                    "minimum": 1,
+                    "maximum": 10,
                     "title": "Times"
                   }
                 },
@@ -5689,6 +5695,22 @@
                 "type": "string",
                 "description": "IP Prefix Range",
                 "title": "BGP Listen Range Prefix"
+              },
+              "struct_cfg": {
+                "type": "object",
+                "description": "Key only used for documentation or validation purposes",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "title": "Description"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Struct Cfg"
+              },
+              "set_ipv4_next_hop": {
+                "type": "string",
+                "title": "Set IPv4 Next Hop"
               }
             },
             "additionalProperties": false
@@ -5781,7 +5803,7 @@
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "\"<integer>\" | \"<0-100> percent\"\n",
+                "description": "[\"<integer>\", \"<0-100> percent\"]\nExample: 40 percent\n",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5821,7 +5843,7 @@
                   },
                   "default": {
                     "type": "string",
-                    "description": "nn.nn(K|M|G)  Link speed in bits/second",
+                    "description": "Link speed in bits/second",
                     "title": "Default"
                   }
                 },
@@ -7481,7 +7503,7 @@
                     },
                     "maximum_routes_warning_limit": {
                       "type": "string",
-                      "description": "\"<integer>\" | \"<0-100> percent\"\n",
+                      "description": "[\"<integer>\", \"<0-100> percent\"]\nExample: 40 percent\n",
                       "title": "Maximum Routes Warning Limit"
                     },
                     "maximum_routes_warning_only": {
@@ -7575,6 +7597,64 @@
                       },
                       "additionalProperties": false,
                       "title": "Remove Private As Ingress"
+                    },
+                    "address_families": {
+                      "type": "array",
+                      "description": "Key only used for documentation or validation purposes",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address_family": {
+                            "type": "string",
+                            "title": "Address Family"
+                          },
+                          "bgp": {
+                            "type": "object",
+                            "properties": {
+                              "missing_policy": {
+                                "type": "object",
+                                "properties": {
+                                  "direction_in_action": {
+                                    "type": "string",
+                                    "enum": [
+                                      "deny",
+                                      "deny-in-out",
+                                      "permit"
+                                    ],
+                                    "title": "Direction In Action"
+                                  },
+                                  "direction_out_action": {
+                                    "type": "string",
+                                    "enum": [
+                                      "deny",
+                                      "deny-in-out",
+                                      "permit"
+                                    ],
+                                    "title": "Direction Out Action"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "title": "Missing Policy"
+                              },
+                              "additional_paths": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Additional Paths"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "title": "BGP"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "title": "Address Families"
                     }
                   },
                   "additionalProperties": false
