@@ -221,6 +221,14 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  arp:
+    type: dict
+    keys:
+      aging:
+        type: dict
+        keys:
+          timeout_default:
+            type: int
   as_path:
     type: dict
     keys:

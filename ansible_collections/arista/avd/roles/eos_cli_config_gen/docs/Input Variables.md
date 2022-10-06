@@ -133,6 +133,24 @@ access_lists:
         action: <str>
 ```
 
+## Arp
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>arp</samp>](## "arp") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;aging</samp>](## "arp.aging") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeout_default</samp>](## "arp.aging.timeout_default") | Integer |  |  |  |  |
+
+### YAML
+
+```yaml
+arp:
+  aging:
+    timeout_default: <int>
+```
+
 ## As Path
 
 ### Variables

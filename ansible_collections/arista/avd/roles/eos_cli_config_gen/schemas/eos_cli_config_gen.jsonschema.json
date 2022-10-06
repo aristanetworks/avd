@@ -223,6 +223,24 @@
         "additionalProperties": false
       }
     },
+    "arp": {
+      "type": "object",
+      "properties": {
+        "aging": {
+          "type": "object",
+          "properties": {
+            "timeout_default": {
+              "type": "integer",
+              "title": "Timeout Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Aging"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Arp"
+    },
     "as_path": {
       "type": "object",
       "properties": {
