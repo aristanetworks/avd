@@ -4585,6 +4585,25 @@
       },
       "additionalProperties": false
     },
+    "terminal": {
+      "type": "object",
+      "title": "Terminal Settings",
+      "properties": {
+        "length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32767,
+          "title": "Length"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32767,
+          "title": "Width"
+        }
+      },
+      "additionalProperties": false
+    },
     "trackers": {
       "type": "array",
       "items": {

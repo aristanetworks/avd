@@ -3441,6 +3441,18 @@ keys:
                 is often a good idea to import the config from a file.
 
                 Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+  terminal:
+    type: dict
+    display_name: Terminal Settings
+    keys:
+      length:
+        type: int
+        min: 1
+        max: 32767
+      width:
+        type: int
+        min: 1
+        max: 32767
   trackers:
     type: list
     primary_key: name
