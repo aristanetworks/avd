@@ -1497,6 +1497,10 @@
       },
       "additionalProperties": false
     },
+    "ip_routing": {
+      "type": "boolean",
+      "title": "Ip Routing"
+    },
     "ip_routing_ipv6_interfaces": {
       "type": "boolean",
       "title": "IP Routing IPv6 Interfaces"
