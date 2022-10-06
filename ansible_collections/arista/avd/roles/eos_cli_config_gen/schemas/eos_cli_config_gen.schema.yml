@@ -1770,6 +1770,8 @@ keys:
           - str
           min: 0
           max: 4294967295
+  ipv6_unicast_routing:
+    type: bool
   lacp:
     type: dict
     display_name: LACP
