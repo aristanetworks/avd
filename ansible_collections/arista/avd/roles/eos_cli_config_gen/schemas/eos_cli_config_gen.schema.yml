@@ -1845,16 +1845,32 @@ keys:
     keys:
       console:
         type: str
-        description: '"<severity_level>" | "disabled"
-
-          e.g. console: error
+        valid_values:
+        - debugging
+        - informational
+        - notifications
+        - warnings
+        - errors
+        - critical
+        - alerts
+        - emergencies
+        - disabled
+        description: 'Console logging severity level
 
           '
       monitor:
         type: str
-        description: '"<severity_level>" | "disabled"
-
-          e.g. monitor: debugging
+        valid_values:
+        - debugging
+        - informational
+        - notifications
+        - warnings
+        - errors
+        - critical
+        - alerts
+        - emergencies
+        - disabled
+        description: 'Monitor logging severity level
 
           '
       buffered:
@@ -1865,18 +1881,35 @@ keys:
             convert_types:
             - str
             min: 10
+            max: 2147483647
           level:
             type: str
-            description: '"<severity_level>" | "disabled"
-
-              e.g. monitor: warnings
+            valid_values:
+            - debugging
+            - informational
+            - notifications
+            - warnings
+            - errors
+            - critical
+            - alerts
+            - emergencies
+            - disabled
+            description: 'Buffer logging severity level
 
               '
       trap:
         type: str
-        description: '"<severity_level>" | "disabled"
-
-          e.g. trap: disabled
+        valid_values:
+        - debugging
+        - informational
+        - notifications
+        - warnings
+        - errors
+        - critical
+        - alerts
+        - emergencies
+        - disabled
+        description: 'Trap logging severity level
 
           '
       synchronous:
@@ -1884,7 +1917,17 @@ keys:
         keys:
           level:
             type: str
-            description: '"<severity_level>" | "disabled"
+            valid_values:
+            - debugging
+            - informational
+            - notifications
+            - warnings
+            - errors
+            - critical
+            - alerts
+            - emergencies
+            - disabled
+            description: 'Synchronous logging severity level
 
               '
             default: critical
@@ -1893,18 +1936,48 @@ keys:
         keys:
           timestamp:
             type: str
-            description: '< high-resolution | traditional >
-
-              '
+            valid_values:
+            - high-resolution
+            - traditional
+            display_name: Timestamp format
           hostname:
             type: str
-            description: '< fqdn | ipv4 >
-
-              '
+            valid_values:
+            - fqdn
+            - ipv4
+            display_name: Hostname format
           sequence_numbers:
             type: bool
+            description: 'Add sequence numbers to log messages
+
+              '
       facility:
         type: str
+        valid_values:
+        - auth
+        - cron
+        - daemon
+        - kern
+        - local0
+        - local1
+        - local2
+        - local3
+        - local4
+        - local5
+        - local6
+        - local7
+        - lpr
+        - mail
+        - news
+        - sys9
+        - sys10
+        - sys11
+        - sys12
+        - sys13
+        - sys14
+        - syslog
+        - user
+        - uucp
       source_interface:
         type: str
         display_name: Source Interface Name
@@ -1967,6 +2040,8 @@ keys:
                       display_name: Match list
                     action:
                       type: str
+                      valid_values:
+                      - discard
   mac_access_lists:
     type: list
     primary_key: name

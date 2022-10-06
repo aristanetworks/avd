@@ -2271,12 +2271,34 @@
       "properties": {
         "console": {
           "type": "string",
-          "description": "\"<severity_level>\" | \"disabled\"\ne.g. console: error\n",
+          "enum": [
+            "debugging",
+            "informational",
+            "notifications",
+            "warnings",
+            "errors",
+            "critical",
+            "alerts",
+            "emergencies",
+            "disabled"
+          ],
+          "description": "Console logging severity level\n",
           "title": "Console"
         },
         "monitor": {
           "type": "string",
-          "description": "\"<severity_level>\" | \"disabled\"\ne.g. monitor: debugging\n",
+          "enum": [
+            "debugging",
+            "informational",
+            "notifications",
+            "warnings",
+            "errors",
+            "critical",
+            "alerts",
+            "emergencies",
+            "disabled"
+          ],
+          "description": "Monitor logging severity level\n",
           "title": "Monitor"
         },
         "buffered": {
@@ -2285,11 +2307,23 @@
             "size": {
               "type": "integer",
               "minimum": 10,
+              "maximum": 2147483647,
               "title": "Size"
             },
             "level": {
               "type": "string",
-              "description": "\"<severity_level>\" | \"disabled\"\ne.g. monitor: warnings\n",
+              "enum": [
+                "debugging",
+                "informational",
+                "notifications",
+                "warnings",
+                "errors",
+                "critical",
+                "alerts",
+                "emergencies",
+                "disabled"
+              ],
+              "description": "Buffer logging severity level\n",
               "title": "Level"
             }
           },
@@ -2298,7 +2332,18 @@
         },
         "trap": {
           "type": "string",
-          "description": "\"<severity_level>\" | \"disabled\"\ne.g. trap: disabled\n",
+          "enum": [
+            "debugging",
+            "informational",
+            "notifications",
+            "warnings",
+            "errors",
+            "critical",
+            "alerts",
+            "emergencies",
+            "disabled"
+          ],
+          "description": "Trap logging severity level\n",
           "title": "Trap"
         },
         "synchronous": {
@@ -2306,7 +2351,18 @@
           "properties": {
             "level": {
               "type": "string",
-              "description": "\"<severity_level>\" | \"disabled\"\n",
+              "enum": [
+                "debugging",
+                "informational",
+                "notifications",
+                "warnings",
+                "errors",
+                "critical",
+                "alerts",
+                "emergencies",
+                "disabled"
+              ],
+              "description": "Synchronous logging severity level\n",
               "default": "critical",
               "title": "Level"
             }
@@ -2319,16 +2375,23 @@
           "properties": {
             "timestamp": {
               "type": "string",
-              "description": "< high-resolution | traditional >\n",
-              "title": "Timestamp"
+              "enum": [
+                "high-resolution",
+                "traditional"
+              ],
+              "title": "Timestamp format"
             },
             "hostname": {
               "type": "string",
-              "description": "< fqdn | ipv4 >\n",
-              "title": "Hostname"
+              "enum": [
+                "fqdn",
+                "ipv4"
+              ],
+              "title": "Hostname format"
             },
             "sequence_numbers": {
               "type": "boolean",
+              "description": "Add sequence numbers to log messages\n",
               "title": "Sequence Numbers"
             }
           },
@@ -2337,6 +2400,32 @@
         },
         "facility": {
           "type": "string",
+          "enum": [
+            "auth",
+            "cron",
+            "daemon",
+            "kern",
+            "local0",
+            "local1",
+            "local2",
+            "local3",
+            "local4",
+            "local5",
+            "local6",
+            "local7",
+            "lpr",
+            "mail",
+            "news",
+            "sys9",
+            "sys10",
+            "sys11",
+            "sys12",
+            "sys13",
+            "sys14",
+            "syslog",
+            "user",
+            "uucp"
+          ],
           "title": "Facility"
         },
         "source_interface": {
@@ -2414,6 +2503,9 @@
                       },
                       "action": {
                         "type": "string",
+                        "enum": [
+                          "discard"
+                        ],
                         "title": "Action"
                       }
                     },
