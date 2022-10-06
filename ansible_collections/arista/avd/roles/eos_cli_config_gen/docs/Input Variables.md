@@ -1151,6 +1151,20 @@ ip_ssh_client_source_interfaces:
     vrf: <str>
 ```
 
+## Ip Virtual Router Mac Address
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ip_virtual_router_mac_address</samp>](## "ip_virtual_router_mac_address") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+ip_virtual_router_mac_address: <str>
+```
+
 ## IPv6 Extended Access-Lists
 
 ### Variables

@@ -1408,6 +1408,8 @@ keys:
           display_name: VRF
           type: str
           default: default
+  ip_virtual_router_mac_address:
+    type: str
   ipv6_access_lists:
     type: list
     primary_key: name

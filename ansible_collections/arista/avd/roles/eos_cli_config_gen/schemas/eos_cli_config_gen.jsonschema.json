@@ -1627,6 +1627,10 @@
         "additionalProperties": false
       }
     },
+    "ip_virtual_router_mac_address": {
+      "type": "string",
+      "title": "Ip Virtual Router Mac Address"
+    },
     "ipv6_access_lists": {
       "type": "array",
       "title": "IPv6 Extended Access-Lists",
