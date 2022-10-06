@@ -3551,6 +3551,33 @@
       "additionalProperties": false,
       "title": "Queue Monitor Length"
     },
+    "queue_monitor_streaming": {
+      "type": "object",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "title": "Enable"
+        },
+        "ip_access_group": {
+          "type": "string",
+          "title": "Ip Access Group"
+        },
+        "ipv6_access_group": {
+          "type": "string",
+          "title": "Ipv6 Access Group"
+        },
+        "max_connections": {
+          "type": "integer",
+          "title": "Max Connections"
+        },
+        "vrf": {
+          "type": "string",
+          "title": "VRF"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Queue Monitor Streaming"
+    },
     "redundancy": {
       "type": "object",
       "properties": {
