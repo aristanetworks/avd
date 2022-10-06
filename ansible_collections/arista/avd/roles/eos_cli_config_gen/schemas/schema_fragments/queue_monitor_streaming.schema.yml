@@ -16,4 +16,4 @@ keys:
         type: int
       vrf:
         type: str
-        display_name: VRF          
+        display_name: VRF
