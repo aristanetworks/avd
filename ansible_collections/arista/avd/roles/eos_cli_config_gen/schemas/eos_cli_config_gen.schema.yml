@@ -1996,6 +1996,23 @@ keys:
                     type: str
                     required: true
                     display_name: Regular Expression
+  mpls:
+    type: dict
+    keys:
+      ip:
+        type: bool
+      ldp:
+        type: dict
+        keys:
+          interface_disabled_default:
+            type: bool
+          router_id:
+            type: str
+          shutdown:
+            type: bool
+          transport_address_interface:
+            display_name: Interface Name
+            type: str
   peer_filters:
     type: list
     primary_key: name

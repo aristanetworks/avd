@@ -2459,6 +2459,40 @@
       },
       "additionalProperties": false
     },
+    "mpls": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "boolean",
+          "title": "Ip"
+        },
+        "ldp": {
+          "type": "object",
+          "properties": {
+            "interface_disabled_default": {
+              "type": "boolean",
+              "title": "Interface Disabled Default"
+            },
+            "router_id": {
+              "type": "string",
+              "title": "Router Id"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "title": "Shutdown"
+            },
+            "transport_address_interface": {
+              "title": "Interface Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Ldp"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Mpls"
+    },
     "peer_filters": {
       "type": "array",
       "items": {
