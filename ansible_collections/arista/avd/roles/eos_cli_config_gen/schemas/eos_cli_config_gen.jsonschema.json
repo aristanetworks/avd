@@ -3362,6 +3362,47 @@
       },
       "title": "Prefix Lists"
     },
+    "queue_monitor_length": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "log": {
+          "type": "integer",
+          "title": "Log"
+        },
+        "notifying": {
+          "type": "boolean",
+          "title": "Notifying"
+        },
+        "cpu": {
+          "type": "object",
+          "properties": {
+            "thresholds": {
+              "type": "object",
+              "properties": {
+                "high": {
+                  "type": "integer",
+                  "title": "High"
+                },
+                "low": {
+                  "type": "integer",
+                  "title": "Low"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Thresholds"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Cpu"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Queue Monitor Length"
+    },
     "redundancy": {
       "type": "object",
       "properties": {

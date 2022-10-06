@@ -2583,6 +2583,25 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  queue_monitor_length:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      log:
+        type: int
+      notifying:
+        type: bool
+      cpu:
+        type: dict
+        keys:
+          thresholds:
+            type: dict
+            keys:
+              high:
+                type: int
+              low:
+                type: int
   redundancy:
     type: dict
     keys:
