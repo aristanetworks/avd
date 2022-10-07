@@ -2459,6 +2459,144 @@
       },
       "additionalProperties": false
     },
+    "monitor_connectivity": {
+      "type": "object",
+      "properties": {
+        "shutdown": {
+          "type": "boolean",
+          "title": "Shutdown"
+        },
+        "interval": {
+          "type": "integer",
+          "title": "Interval"
+        },
+        "interface_sets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "interfaces": {
+                "type": "string",
+                "description": "Interface range(s) should be of same type, Ethernet, Loopback, Management etc.\nMultiple interface ranges can be specified separated by \",\"\n",
+                "title": "Interfaces"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Interface Sets"
+        },
+        "local_interfaces": {
+          "type": "string",
+          "title": "Local Interfaces"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "Host Name",
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description"
+              },
+              "ip": {
+                "type": "string",
+                "title": "Ip"
+              },
+              "local_interfaces": {
+                "type": "string",
+                "title": "Local Interfaces"
+              },
+              "url": {
+                "type": "string",
+                "title": "Url"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Hosts"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "VRF Name",
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description"
+              },
+              "interface_sets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "interfaces": {
+                      "type": "string",
+                      "title": "Interfaces"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Interface Sets"
+              },
+              "local_interfaces": {
+                "type": "string",
+                "title": "Local Interfaces"
+              },
+              "hosts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "title": "Host name",
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "Description"
+                    },
+                    "ip": {
+                      "type": "string",
+                      "title": "Ip"
+                    },
+                    "local_interfaces": {
+                      "type": "string",
+                      "title": "Local Interfaces"
+                    },
+                    "url": {
+                      "type": "string",
+                      "title": "Url"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Hosts"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Vrfs"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Monitor Connectivity"
+    },
     "mpls": {
       "type": "object",
       "title": "MPLS",
