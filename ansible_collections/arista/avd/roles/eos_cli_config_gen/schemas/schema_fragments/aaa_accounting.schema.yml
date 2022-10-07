@@ -4,4 +4,91 @@
 type: dict
 keys:
   aaa_accounting:
-    type:
+    display_name: AAA Accounting
+    type: dict
+    keys:
+      exec:
+        type: dict
+        keys:
+          console:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values: ["none", "start-stop", "stop-only"]
+              group:
+                display_name: Group Name
+                type: str
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values: ["none", "start-stop", "stop-only"]
+              group:
+                display_name: Group Name
+                type: str
+      system:
+        type: dict
+        keys:
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values: ["none", "start-stop", "stop-only"]
+              group:
+                display_name: Group Name
+                type: str
+      commands:
+        type: dict
+        keys:
+          console:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                type:
+                  type: str
+                  valid_values: ["none", "start-stop", "stop-only"]
+                group:
+                  display_name: Group Name
+                  type: str
+                logging:
+                  type: bool
+          default:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                type:
+                  type: str
+                  valid_values: ["none", "start-stop", "stop-only"]
+                group:
+                  display_name: Group Name
+                  type: str
+                logging:
+                  type: bool
+          commands_default:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                type:
+                  type: str
+                group:
+                  type: str
+                logging:
+                  type: bool
