@@ -1378,8 +1378,10 @@ vlan_interfaces:
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    # The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
     # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
     ipv6_address_virtual: < IPv6_address/Mask >
+    # The new "ipv6_address_virtuals" key support multiple virtual ip addresses.
     ipv6_address_virtuals:
       - < IPv6_address/Mask >
       - < IPv6_address/Mask >
