@@ -2780,6 +2780,150 @@
       },
       "additionalProperties": false
     },
+    "spanning_tree": {
+      "type": "object",
+      "properties": {
+        "root_super": {
+          "type": "boolean",
+          "title": "Root Super"
+        },
+        "edge_port": {
+          "type": "object",
+          "properties": {
+            "bpdufilter_default": {
+              "type": "boolean",
+              "title": "Bpdufilter Default"
+            },
+            "bpduguard_default": {
+              "type": "boolean",
+              "title": "Bpduguard Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Edge Port"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "mstp",
+            "rstp",
+            "rapid-pvst",
+            "none"
+          ],
+          "title": "Mode"
+        },
+        "bpduguard_rate_limit": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "boolean",
+              "title": "Default"
+            },
+            "count": {
+              "type": "integer",
+              "description": "Maximum number of BPDUs per timer interval",
+              "title": "Count"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Bpduguard Rate Limit"
+        },
+        "rstp_priority": {
+          "type": "integer",
+          "title": "Rstp Priority"
+        },
+        "mst": {
+          "type": "object",
+          "properties": {
+            "pvst_border": {
+              "type": "boolean",
+              "title": "Pvst Border"
+            },
+            "configuration": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "revision": {
+                  "type": "integer",
+                  "description": "0-65535",
+                  "title": "Revision"
+                },
+                "instances": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "title": "Instance ID"
+                      },
+                      "vlans": {
+                        "type": "string",
+                        "description": "\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18\n",
+                        "title": "Vlans"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "title": "Instances"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Configuration"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Mst"
+        },
+        "mst_instances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "title": "Instance ID"
+              },
+              "priority": {
+                "type": "integer",
+                "title": "Priority"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Mst Instances"
+        },
+        "no_spanning_tree_vlan": {
+          "type": "string",
+          "description": "\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 105,202,505-506\n",
+          "title": "No Spanning Tree Vlan"
+        },
+        "rapid_pvst_instances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 105,202,505-506\n",
+                "title": "Id"
+              },
+              "priority": {
+                "type": "integer",
+                "title": "Priority"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Rapid Pvst Instances"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Spanning Tree"
+    },
     "standard_access_lists": {
       "type": "array",
       "title": "Standard Access-Lists",
