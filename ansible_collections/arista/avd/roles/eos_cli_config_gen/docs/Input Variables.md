@@ -1581,6 +1581,28 @@ mpls:
     transport_address_interface: <str>
 ```
 
+## Name Server
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>name_server</samp>](## "name_server") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;source</samp>](## "name_server.source") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "name_server.source.vrf") | String |  |  |  | VRF Name |
+| [<samp>&nbsp;&nbsp;nodes</samp>](## "name_server.nodes") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "name_server.nodes.[].&lt;str&gt;") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+name_server:
+  source:
+    vrf: <str>
+  nodes:
+    - <str>
+```
+
 ## Peer Filters
 
 ### Variables
