@@ -683,6 +683,10 @@ keys:
     type: str
     display_name: DNS Domain
     description: Domain Name
+  domain_list:
+    type: list
+    items:
+      type: str
   eos_cli:
     type: str
     display_name: EOS CLI

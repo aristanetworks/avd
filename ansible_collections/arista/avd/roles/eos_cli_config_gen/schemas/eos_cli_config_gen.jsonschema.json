@@ -733,6 +733,13 @@
       "title": "DNS Domain",
       "description": "Domain Name"
     },
+    "domain_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Domain List"
+    },
     "eos_cli": {
       "type": "string",
       "title": "EOS CLI",
