@@ -1002,13 +1002,13 @@ ip_igmp_snooping:
       proxy: <bool>
 ```
 
-## Ip Routing
+## IP Routing
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>ip_routing</samp>](## "ip_routing") | Boolean |  |  |  |  |
+| [<samp>ip_routing</samp>](## "ip_routing") | Boolean |  |  |  | IP Routing |
 
 ### YAML
 
