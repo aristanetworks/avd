@@ -1249,6 +1249,10 @@
       },
       "additionalProperties": false
     },
+    "ip_routing_ipv6_interfaces": {
+      "type": "boolean",
+      "title": "IP Routing IPv6 Interfaces"
+    },
     "ip_ssh_client_source_interfaces": {
       "type": "array",
       "title": "IP SSH Client Source Interfaces",
