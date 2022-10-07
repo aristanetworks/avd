@@ -1216,6 +1216,36 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  lacp:
+    type: dict
+    display_name: LACP
+    description: Set Link Aggregation Control Protocol (LACP) parameters.
+    keys:
+      port_id:
+        type: dict
+        description: LACP port-ID range configuration.
+        keys:
+          range:
+            type: dict
+            keys:
+              begin:
+                type: int
+                description: Minimum LACP port-ID range.
+              end:
+                type: int
+                description: Maximum LACP port-ID range.
+      rate_limit:
+        type: dict
+        description: Set LACPDU rate limit options.
+        keys:
+          default:
+            type: bool
+            description: Enable LACPDU rate limiting by default on all ports.
+      system_priority:
+        type: int
+        description: Set local system LACP priority.
+        min: 0
+        max: 65535
   local_users:
     type: list
     primary_key: name
