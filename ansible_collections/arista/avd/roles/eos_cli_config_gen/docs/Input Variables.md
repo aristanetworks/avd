@@ -492,6 +492,24 @@ domain_list:
   - <str>
 ```
 
+## Enable Password
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>enable_password</samp>](## "enable_password") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;hash_algorithm</samp>](## "enable_password.hash_algorithm") | String |  |  | Valid Values:<br>- md5<br>- sha512 |  |
+| [<samp>&nbsp;&nbsp;key</samp>](## "enable_password.key") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+enable_password:
+  hash_algorithm: <str>
+  key: <str>
+```
+
 ## EOS CLI
 
 ### Description

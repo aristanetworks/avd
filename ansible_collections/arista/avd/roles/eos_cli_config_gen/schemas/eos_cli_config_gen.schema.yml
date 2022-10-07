@@ -708,6 +708,16 @@ keys:
     items:
       type: str
       description: Domain name
+  enable_password:
+    type: dict
+    keys:
+      hash_algorithm:
+        type: str
+        valid_values:
+        - md5
+        - sha512
+      key:
+        type: str
   eos_cli:
     type: str
     display_name: EOS CLI
