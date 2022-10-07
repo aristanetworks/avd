@@ -791,6 +791,17 @@
         "additionalProperties": false
       }
     },
+    "event_monitor": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Event Monitor"
+    },
     "generate_default_config": {
       "type": "boolean",
       "default": true,

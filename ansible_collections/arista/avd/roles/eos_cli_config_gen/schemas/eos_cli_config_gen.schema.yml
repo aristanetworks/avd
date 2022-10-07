@@ -737,6 +737,11 @@ keys:
           type: bool
           default: false
           description: Set the action to be non-blocking.
+  event_monitor:
+    type: dict
+    keys:
+      enabled:
+        type: bool
   generate_default_config:
     type: bool
     default: true
