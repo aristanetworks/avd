@@ -1953,6 +1953,8 @@ keys:
                         display_name: COS
                       dscp:
                         type: str
+                        convert_types:
+                        - int
                         display_name: DSCP
                       traffic_class:
                         type: int
