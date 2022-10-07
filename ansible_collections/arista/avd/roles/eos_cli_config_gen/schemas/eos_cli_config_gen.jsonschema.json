@@ -2748,6 +2748,72 @@
       },
       "additionalProperties": false
     },
+    "mlag_configuration": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "title": "Domain Id"
+        },
+        "heartbeat_interval": {
+          "type": "integer",
+          "title": "Heartbeat Interval"
+        },
+        "local_interface": {
+          "title": "Interface Name",
+          "type": "string"
+        },
+        "peer_address": {
+          "type": "string",
+          "title": "Peer Address"
+        },
+        "peer_address_heartbeat": {
+          "type": "object",
+          "properties": {
+            "peer_ip": {
+              "type": "string",
+              "title": "Peer Ip"
+            },
+            "vrf": {
+              "title": "VRF Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Peer Address Heartbeat"
+        },
+        "dual_primary_detection_delay": {
+          "type": "integer",
+          "title": "Dual Primary Detection Delay"
+        },
+        "dual_primary_recovery_delay_mlag": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000,
+          "title": "Dual Primary Recovery Delay Mlag"
+        },
+        "dual_primary_recovery_delay_non_mlag": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000,
+          "title": "Dual Primary Recovery Delay Non Mlag"
+        },
+        "peer_link": {
+          "title": "Port-Channel ID",
+          "type": "string"
+        },
+        "reload_delay_mlag": {
+          "type": "integer",
+          "title": "Reload Delay Mlag"
+        },
+        "reload_delay_non_mlag": {
+          "type": "integer",
+          "title": "Reload Delay Non Mlag"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Mlag Configuration"
+    },
     "monitor_connectivity": {
       "type": "object",
       "properties": {
