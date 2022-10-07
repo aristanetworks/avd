@@ -296,10 +296,13 @@ mac_address_table:
             ip_address_virtual_secondaries:
               - < IPv4_address/Mask >
 
-            # ipv6 address virtual to configure VXLAN Anycast IP address
-            # Optional
+            # ipv6 address virtuals to configure VXLAN Anycast IP address | Optional
+            # The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
+            # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
             ipv6_address_virtual: < IPv6_address/Mask >
-            ipv6_address_virtual_secondaries:
+            # The new "ipv6_address_virtuals" key support multiple virtual ip addresses.
+            ipv6_address_virtuals:
+              - < IPv6_address/Mask >
               - < IPv6_address/Mask >
 
             # ip virtual-router address
@@ -312,7 +315,7 @@ mac_address_table:
             # note, also requires an IPv6 address to be configured on the SVI where it is applied.
             # Optional
             ipv6_virtual_router_addresses:
-              - < IPv6_address/Mask | IPv6_address >
+              - < IPv6_address >
 
             # IP Helper for DHCP relay
             ip_helpers:
@@ -829,7 +832,7 @@ dc1_tenants:
             tags: [ DC1_BL1, DC1_BL2 ]
             enabled: true
             ipv6_virtual_router_addresses:
-              - 2001:db8:253::/64
+              - 2001:db8:253::1
             nodes:
               DC1-BL1A:
                 ip_address: 2001:db8:253::2/64
