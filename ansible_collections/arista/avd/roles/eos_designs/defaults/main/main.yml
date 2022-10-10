@@ -55,6 +55,8 @@ evpn_ebgp_gateway_inter_domain: true
 
 evpn_short_esi_prefix: "0000:0000:"
 
+fabric_evpn_encapsulation: "vxlan"
+
 # Underlay OSPF Defaults
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0

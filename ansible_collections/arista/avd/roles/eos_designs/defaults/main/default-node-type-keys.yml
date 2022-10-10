@@ -3,7 +3,6 @@ default_node_type_keys:
     spine:
       type: spine
       default_evpn_role: server
-      default_evpn_encapsulation: vxlan
     l3leaf:
       type: l3leaf
       connected_endpoints: true
@@ -13,7 +12,6 @@ default_node_type_keys:
         l2: true
         l3: true
       vtep: true
-      default_evpn_encapsulation: vxlan
     l2leaf:
       type: l2leaf
       connected_endpoints: true
@@ -27,7 +25,6 @@ default_node_type_keys:
     overlay_controller:
       type: overlay-controller
       default_evpn_role: server
-      default_evpn_encapsulation: vxlan
 
   "mpls":
     p:
@@ -60,7 +57,6 @@ default_node_type_keys:
       default_overlay_routing_protocol: ibgp
       default_underlay_routing_protocol: isis-sr
       default_overlay_address_families: [ vpn-ipv4 ]
-      default_evpn_encapsulation: mpls
 
   "l2ls":
     l3spine:
