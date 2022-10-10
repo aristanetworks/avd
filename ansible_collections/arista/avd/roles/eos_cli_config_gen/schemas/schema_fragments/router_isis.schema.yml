@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_isis:
+    type: dict
+    keys:
+      instance:
+        type: str
+      net:
+        type: str
+      router_id:
+        type: str
+      is_type:
+        type: str
+      log_adjacency_changes:
+        type: bool
+      mpls_ldp_sync_default:
+        type: bool
+      timers:
+        type: dict
+        keys:
+          local_convergence:
+            type: dict
+            keys:
+              protected_prefixes:
+                type: bool
+              delay:
+                type: int
+      advertise:
+        type: dict
+        keys:
+          passive_only:
+            type: bool
+      address_family:
+        type: str
+      isis_af_defaults:
+        type: int
+      redistribute_routes:
+        type: list
+        items:
+          type: dict
+          keys:
+            source_protocol:
+              type: str
+            route_map:
+              type: str
+            include_leaked:
+              type: bool
+            ospf_route_type:
+              type: str
+      address_family_ipv4:
+        type: dict
+        keys:
+          maximum_paths:
+            type: int
+          fast_reroute_ti_lfa:
+            type: dict
+            keys:
+              mode:
+                type: str
+              level:
+                type: str
+              srlg:
+                type: dict
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+          tunnel_source_labeled_unicast:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              rcf:
+                type: str
+      address_family_ipv6:
+        type: dict
+        keys:
+          maximum_paths:
+            type: int
+          fast_reroute_ti_lfa:
+            type: dict
+            keys:
+              mode:
+                type: str
+              level:
+                type: str
+              srlg:
+                type: dict
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+      segment_routing_mpls:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          router_id:
+            type: str
+          prefix_segments:
+            type: list
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                index:
+                  type: int

@@ -3553,6 +3553,234 @@
       },
       "additionalProperties": false
     },
+    "router_isis": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "type": "string",
+          "title": "Instance"
+        },
+        "net": {
+          "type": "string",
+          "title": "Net"
+        },
+        "router_id": {
+          "type": "string",
+          "title": "Router Id"
+        },
+        "is_type": {
+          "type": "string",
+          "title": "Is Type"
+        },
+        "log_adjacency_changes": {
+          "type": "boolean",
+          "title": "Log Adjacency Changes"
+        },
+        "mpls_ldp_sync_default": {
+          "type": "boolean",
+          "title": "Mpls Ldp Sync Default"
+        },
+        "timers": {
+          "type": "object",
+          "properties": {
+            "local_convergence": {
+              "type": "object",
+              "properties": {
+                "protected_prefixes": {
+                  "type": "boolean",
+                  "title": "Protected Prefixes"
+                },
+                "delay": {
+                  "type": "integer",
+                  "title": "Delay"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Local Convergence"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Timers"
+        },
+        "advertise": {
+          "type": "object",
+          "properties": {
+            "passive_only": {
+              "type": "boolean",
+              "title": "Passive Only"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Advertise"
+        },
+        "address_family": {
+          "type": "string",
+          "title": "Address Family"
+        },
+        "isis_af_defaults": {
+          "type": "integer",
+          "title": "Isis Af Defaults"
+        },
+        "redistribute_routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_protocol": {
+                "type": "string",
+                "title": "Source Protocol"
+              },
+              "route_map": {
+                "type": "string",
+                "title": "Route Map"
+              },
+              "include_leaked": {
+                "type": "boolean",
+                "title": "Include Leaked"
+              },
+              "ospf_route_type": {
+                "type": "string",
+                "title": "Ospf Route Type"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Redistribute Routes"
+        },
+        "address_family_ipv4": {
+          "type": "object",
+          "properties": {
+            "maximum_paths": {
+              "type": "integer",
+              "title": "Maximum Paths"
+            },
+            "fast_reroute_ti_lfa": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "title": "Mode"
+                },
+                "level": {
+                  "type": "string",
+                  "title": "Level"
+                },
+                "srlg": {
+                  "type": "object",
+                  "properties": {
+                    "enable": {
+                      "type": "boolean",
+                      "title": "Enable"
+                    },
+                    "strict": {
+                      "type": "boolean",
+                      "title": "Strict"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Srlg"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Fast Reroute Ti Lfa"
+            },
+            "tunnel_source_labeled_unicast": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "rcf": {
+                  "type": "string",
+                  "title": "Rcf"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Tunnel Source Labeled Unicast"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family Ipv4"
+        },
+        "address_family_ipv6": {
+          "type": "object",
+          "properties": {
+            "maximum_paths": {
+              "type": "integer",
+              "title": "Maximum Paths"
+            },
+            "fast_reroute_ti_lfa": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "title": "Mode"
+                },
+                "level": {
+                  "type": "string",
+                  "title": "Level"
+                },
+                "srlg": {
+                  "type": "object",
+                  "properties": {
+                    "enable": {
+                      "type": "boolean",
+                      "title": "Enable"
+                    },
+                    "strict": {
+                      "type": "boolean",
+                      "title": "Strict"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Srlg"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Fast Reroute Ti Lfa"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family Ipv6"
+        },
+        "segment_routing_mpls": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "router_id": {
+              "type": "string",
+              "title": "Router Id"
+            },
+            "prefix_segments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "title": "Prefix"
+                  },
+                  "index": {
+                    "type": "integer",
+                    "title": "Index"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Prefix Segments"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Segment Routing Mpls"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Router Isis"
+    },
     "router_l2_vpn": {
       "type": "object",
       "title": "Router L2 VPN",
