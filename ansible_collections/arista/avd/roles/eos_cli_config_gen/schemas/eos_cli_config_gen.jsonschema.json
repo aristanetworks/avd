@@ -891,6 +891,186 @@
       },
       "title": "Interface Profiles"
     },
+    "ip_access_lists": {
+      "type": "array",
+      "title": "IP Extended Access-Lists (improved model)",
+      "description": "AVD currently supports 2 different data models for extended ACLs:\n\n- The legacy `access_lists` data model, for compatibility with existing deployments\n- The improved `ip_access_lists` data model, for access to more EOS features\n\nBoth data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.\nAccess list names must be unique.\n\nThe improved data model has a more sophisticated design documented below:\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Access-list Name"
+          },
+          "counters_per_entry": {
+            "type": "boolean",
+            "title": "Counters Per Entry"
+          },
+          "entries": {
+            "type": "array",
+            "title": "ACL Entries",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sequence": {
+                  "type": "integer",
+                  "description": "ACL entry sequence number.\n",
+                  "title": "Sequence"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Comment up to 100 characters.\nIf remark is defined, other keys in acl entry will be ignored.\n",
+                  "title": "Remark"
+                },
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "permit",
+                    "deny"
+                  ],
+                  "description": "ACL action.\nRequired for standard entry.\n",
+                  "title": "Action"
+                },
+                "protocol": {
+                  "type": "string",
+                  "description": "ip, tcp, udp, icmp or other protocol name or number.\nRequired for standard entry.\n",
+                  "title": "Protocol"
+                },
+                "source": {
+                  "type": "string",
+                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "title": "Source"
+                },
+                "source_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Source Ports Match"
+                },
+                "source_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP source port name or number."
+                  },
+                  "title": "Source Ports"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "any, A.B.C.D/E or A.B.C.D.\nA.B.C.D without a mask means host.\nRequired for standard entry.\n",
+                  "title": "Destination"
+                },
+                "destination_ports_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq",
+                    "range"
+                  ],
+                  "default": "eq",
+                  "title": "Destination Ports Match"
+                },
+                "destination_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TCP/UDP destination port name or number."
+                  },
+                  "title": "Destination Ports"
+                },
+                "tcp_flags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "title": "TCP Flag Name"
+                  },
+                  "title": "Tcp Flags"
+                },
+                "fragments": {
+                  "type": "boolean",
+                  "description": "Match non-head fragment packets.",
+                  "title": "Fragments"
+                },
+                "log": {
+                  "type": "boolean",
+                  "description": "Log matches against this rule.",
+                  "title": "Log"
+                },
+                "ttl": {
+                  "type": "integer",
+                  "title": "TTL value",
+                  "minimum": 0,
+                  "maximum": 254
+                },
+                "ttl_match": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "gt",
+                    "lt",
+                    "neq"
+                  ],
+                  "default": "eq",
+                  "title": "Ttl Match"
+                },
+                "icmp_type": {
+                  "type": "string",
+                  "description": "Message type name/number for ICMP packets.",
+                  "title": "Icmp Type"
+                },
+                "icmp_code": {
+                  "type": "string",
+                  "description": "Message code for ICMP packets.",
+                  "title": "Icmp Code"
+                },
+                "nexthop_group": {
+                  "type": "string",
+                  "description": "nexthop-group name.",
+                  "title": "Nexthop Group"
+                },
+                "tracked": {
+                  "type": "boolean",
+                  "description": "Match packets in existing ICMP/UDP/TCP connections.",
+                  "title": "Tracked"
+                },
+                "dscp": {
+                  "type": "string",
+                  "description": "DSCP value or name.",
+                  "title": "Dscp"
+                },
+                "vlan_number": {
+                  "type": "integer",
+                  "title": "Vlan Number"
+                },
+                "vlan_inner": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Vlan Inner"
+                },
+                "vlan_mask": {
+                  "type": "string",
+                  "description": "0x000-0xFFF VLAN mask.",
+                  "title": "Vlan Mask"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
     "ip_community_lists": {
       "type": "array",
       "title": "IP Community Lists",
