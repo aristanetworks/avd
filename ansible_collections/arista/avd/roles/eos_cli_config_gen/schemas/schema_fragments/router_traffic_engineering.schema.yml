@@ -44,7 +44,7 @@ keys:
                       sbfd_remote_discriminator:
                         type: str
                         convert_types:
-                        - int  
+                        - int
                       path_group:
                         type: list
                         items:
