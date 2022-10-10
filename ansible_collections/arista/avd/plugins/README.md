@@ -176,6 +176,21 @@ To use this filter:
 !!! note
     This isn't using the same range syntax as EOS for modular or break-out ports. For example, on EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD, the same range would be `et1-2/1-4`.
 
+#### bgp_encrypt / bgp_decrypt filters
+
+The `arista.avd.bgp_encrypt` and `arista.avd.bgp_decrypt` filters are used to encrypt or decrypt BGP passwords based on the Neighbor IP or the BGP Peer Group Name as is expected in EOS.
+
+An example usage for `arista.avd.bgp_encrypt` filter it ot use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+
+**example:**
+
+```jinja
+bgp_peer_groups:
+  ipv4_underlay_peers:
+      name: IPv4-UNDERLAY-PEERS
+          password: "{{ bgp_vault_password | bgp_encrypt(key=IPv4-UNDERLAY-PEERS)
+```
+
 ## Plugin Tests
 
 Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates.
@@ -307,6 +322,23 @@ switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
+
+### bgp_valid_password test
+
+The `arista.avd.bgp_valid_password` test will test if an encrypted BGP password provided is valid against the Neighbor IP or Peer Group Name against which it is applied.
+It allows to detect early in the configuration generation step if there will be an issue when applying the configuration on the device.
+
+The test accepts either a single value and takes as input the `key` either Neighbor IP or BGP Peer Group Name.
+
+To use this test:
+
+```jinja
+{% if bgp_password is arista.avd.bgp_valid_password(key="My-Awesome-Peer-Group-Name %}
+  neighbor My-Awesome-Peer-Group-Name password bgp_password
+{% endif %}
+```
+
+If the password is not valid, an Exception is raised
 
 ## Modules
 
