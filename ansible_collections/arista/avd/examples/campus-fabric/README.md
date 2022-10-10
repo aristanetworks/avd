@@ -1,11 +1,11 @@
-# Example for L2LS Fabric
+# Example for L2LS Campus Fabric
 
 ## Introduction
 
 This example includes and describes all the AVD files used to build a Layer 2 Leaf Spine (L2LS) Fabric, with the following nodes:
 
 - 2 Spine nodes
-- 4 Leaf nodes
+- 8 Leaf nodes
 
 The network fabric in this example is layer 2; an external firewall (FW) or layer 3 (L3) device will handle routing. Later, in this example, we will discuss adding L3 routing to the Spines. But, first, we will focus on defining the fabric variables to build this L2LS Topology. Before we start, we must ensure that we have installed AVD with the requirements covered in the Installation & Requirements section.
 
@@ -68,7 +68,7 @@ ansible-avd-examples/     (directory where playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
-![Figure: 1](images/pure_L2LS_topo.svg)
+![Figure: 1](images/campus_topo.svg)
 
 ???+ note
 
