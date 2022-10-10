@@ -2126,6 +2126,85 @@ keys:
                     type: str
                   url:
                     type: str
+  monitor_sessions:
+    type: list
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Session Name
+        sources:
+          type: list
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+              direction:
+                type: str
+                valid_values:
+                - rx
+                - tx
+                - both
+              access_group:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values:
+                    - ip
+                    - ipv6
+                    - mac
+                  name:
+                    display_name: ACL Name
+                    type: str
+                  priority:
+                    type: int
+                    convert_types:
+                    - str
+        destinations:
+          type: list
+          items:
+            type: str
+        encapsulation_gre_metadata_tx:
+          type: bool
+        header_remove_size:
+          type: int
+          convert_types:
+          - str
+        access_group:
+          type: dict
+          keys:
+            type:
+              type: str
+              valid_values:
+              - ip
+              - ipv6
+              - mac
+            name:
+              display_name: ACL Name
+              type: str
+        rate_limit_per_ingress_chip:
+          type: str
+        rate_limit_per_egress_chip:
+          type: str
+        sample:
+          type: int
+          convert_types:
+          - str
+        truncate:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            size:
+              type: int
+              convert_types:
+              - str
   mpls:
     type: dict
     display_name: MPLS
