@@ -23,6 +23,10 @@ bfd_multihop:
 
 ## BGP AS
 
+### Description
+
+AS number to use to configure overlay when "overlay_routing_protocol" == IBGP
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -36,6 +40,10 @@ bgp_as: <str>
 ```
 
 ## Bgp Ecmp
+
+### Description
+
+Maximum ECMP for BGP multi-path
 
 ### Variables
 
@@ -51,6 +59,10 @@ bgp_ecmp: <int>
 
 ## Bgp Maximum Paths
 
+### Description
+
+Maximum Paths for BGP multi-path
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -64,6 +76,11 @@ bgp_maximum_paths: <int>
 ```
 
 ## BGP peer group names and encrypted password
+
+### Description
+
+Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
+Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 
 ### Variables
 
@@ -121,6 +138,11 @@ bgp_peer_groups:
 
 ## DC Name
 
+### Description
+
+Optional DC Name, only used in SNMP location and Fabric Documentation.
+Recommended to be common between all devices within a Site
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -134,6 +156,11 @@ dc_name: <str>
 ```
 
 ## Default IGMP Snooping enabled
+
+### Description
+
+Disable IGMP snooping at fabric level.
+If set, it overrides per vlan settings
 
 ### Variables
 
@@ -149,6 +176,11 @@ default_igmp_snooping_enabled: <bool>
 
 ## EVPN Gateway EBGP Multihop
 
+### Description
+
+Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
+Adapt the value for your specific topology.
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -162,6 +194,11 @@ evpn_ebgp_gateway_multihop: <int>
 ```
 
 ## EVPN EBGP Multihop
+
+### Description
+
+Default of 3, the recommended value for a 3 stage spine and leaf topology.
+Set to a higher value to allow for very large and complex topologies.
 
 ### Variables
 
@@ -199,6 +236,13 @@ evpn_hostflap_detection:
 
 ## EVPN Import Pruning
 
+### Description
+
+Enable VPN import pruning (Min. EOS 4.24.2F)
+The Route Target extended communities carried by incoming VPN paths will
+be examined. If none of those Route Targets have been configured for import,
+the path will be immediately discarded
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -212,6 +256,11 @@ evpn_import_pruning: <bool>
 ```
 
 ## EVPN Overlay BGP RTC
+
+### Description
+
+Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+Requires use eBGP as overlay protocol.
 
 ### Variables
 
@@ -227,6 +276,12 @@ evpn_overlay_bgp_rtc: <bool>
 
 ## EVPN Prevent Readvertise to Server
 
+### Description
+
+Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
+This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
+from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -240,6 +295,10 @@ evpn_prevent_readvertise_to_server: <bool>
 ```
 
 ## EVPN Short ESI Prefix
+
+### Description
+
+Configure prefix for "short_esi" values
 
 ### Variables
 
@@ -255,6 +314,10 @@ evpn_short_esi_prefix: <str>
 
 ## EVPN VLAN-Aware Bundles
 
+### Description
+
+Enable vlan aware bundles for EVPN MAC-VRF
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -268,6 +331,10 @@ evpn_vlan_aware_bundles: <bool>
 ```
 
 ## Fabric Name
+
+### Description
+
+Fabric Name, required to match Ansible Group name covering all devices in the Fabric
 
 ### Variables
 
@@ -359,6 +426,10 @@ mgmt_gateway: <str>
 
 ## Node Types Definition
 
+### Description
+
+The node type definition is done under `node_type_keys`. This dictionary defines type of devices you can use in your topologies. Each node type can be configured to fit the role in the network.
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -394,7 +465,7 @@ mgmt_gateway: <str>
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3</samp>](## "node_type_keys.[].network_services.l3") | Boolean |  | False |  | Support L3 Network Services (VRFs, SVIs if `l2: true`) for this node type<br>Only supported with `underlay_router: true` |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "node_type_keys.[].type") | String | Required |  |  | Value of `type` key on devices of this Node Type |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "node_type_keys.[].underlay_router") | Boolean |  | True |  | Is this node type a L3 device |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | p2p | Valid Values:<br>- p2p<br>- port-channel | `uplink_type` must be `p2p`` if `vtep: true` or `underlay_router: true` |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | p2p | Valid Values:<br>- p2p<br>- port-channel | `uplink_type` must be `p2p`` if`vtep: true`or`underlay_router: true` |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "node_type_keys.[].vtep") | Boolean |  | False |  | Is this node type a VXLAN VTEP |
 
 ### YAML
@@ -437,6 +508,10 @@ node_type_keys:
 
 ## Overlay Loopback Description
 
+### Description
+
+Customizable overlay loopback description
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -450,6 +525,12 @@ overlay_loopback_description: <str>
 ```
 
 ## Overlay Routing Protocol
+
+### Description
+
+- The following overlay routing protocols are supported:
+  - EBGP (default for l3ls-evpn)
+  - IBGP (only with OSPF or ISIS variants in underlay)
 
 ### Variables
 
@@ -479,6 +560,10 @@ p2p_uplinks_mtu: <int>
 
 ## P2P Uplinks QoS Profile
 
+### Description
+
+QOS Profile assigned on all infrastructure links
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -492,6 +577,11 @@ p2p_uplinks_qos_profile: <str>
 ```
 
 ## POD Name
+
+### Description
+
+POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name.
+Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ### Variables
 
@@ -591,6 +681,11 @@ underlay_ospf_process_id: <int>
 
 ## Enable RFC5549 in Underlay
 
+### Description
+
+Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered
+Requires "underlay_routing_protocol: ebgp"
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -605,6 +700,20 @@ underlay_rfc5549: <bool>
 
 ## Underlay Routing Protocol
 
+### Description
+
+- The following underlay routing protocols are supported:
+  - EBGP (default for l3ls-evpn)
+  - OSPF.
+  - ISIS.
+  - ISIS-SR*.
+  - ISIS-LDP*.
+  - ISIS-SR-LDP*.
+  - OSPF-LDP*.
+- The variables should be applied to all devices in the fabric.
+
+*Only supported with core_interfaces data model.
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -618,6 +727,10 @@ underlay_routing_protocol: <str>
 ```
 
 ## Uplink PTP
+
+### Description
+
+Enable PTP on all infrastructure links
 
 ### Variables
 
@@ -634,6 +747,11 @@ uplink_ptp:
 ```
 
 ## Virtual VTEP IP
+
+### Description
+
+IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1
+This is only needed for centralized routing designs
 
 ### Variables
 

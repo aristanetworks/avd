@@ -2,7 +2,6 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-allow_other_keys: true
 keys:
   p2p_uplinks_mtu:
     display_name: Point to Point Links MTU

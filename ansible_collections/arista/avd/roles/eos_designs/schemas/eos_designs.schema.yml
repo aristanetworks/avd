@@ -470,8 +470,6 @@ dynamic_keys:
             type: bool
           structured_config:
             description: Custom structured config for eos_cli_config_gen
-            studios_options:
-              exclude: true
             type: dict
           uplink_interface_speed:
             description: 'Point-to-Point interface speed - will apply to uplinks on
@@ -618,7 +616,6 @@ keys:
         studios_options:
           exclude: true
         type: dict
-        unsupported_from_version: 4.0
       IPv4_UNDERLAY_PEERS:
         keys:
           name:
@@ -630,7 +627,6 @@ keys:
         studios_options:
           exclude: true
         type: dict
-        unsupported_from_version: 4.0
       MLAG_IPv4_UNDERLAY_PEER:
         keys:
           name:
@@ -642,7 +638,6 @@ keys:
         studios_options:
           exclude: true
         type: dict
-        unsupported_from_version: 4.0
       evpn_overlay_core:
         keys:
           name:

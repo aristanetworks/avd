@@ -2,7 +2,6 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-allow_other_keys: true
 keys:
   bgp_peer_groups:
     display_name: BGP peer group names and encrypted password
@@ -49,7 +48,7 @@ keys:
             display_name: Encrypted Password
       IPv4_UNDERLAY_PEERS:
         type: dict
-        unsupported_from_version: 4.0
+        #unsupported_from_version: 4.0
         keys:
           name:
             type: str
@@ -61,7 +60,7 @@ keys:
           exclude: True
       MLAG_IPv4_UNDERLAY_PEER:
         type: dict
-        unsupported_from_version: 4.0
+        #unsupported_from_version: 4.0
         keys:
           name:
             type: str
@@ -73,7 +72,7 @@ keys:
           exclude: True
       EVPN_OVERLAY_PEERS:
         type: dict
-        unsupported_from_version: 4.0
+        #unsupported_from_version: 4.0
         keys:
           name:
             type: str

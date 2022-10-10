@@ -2,7 +2,6 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-allow_other_keys: true
 dynamic_keys:
   "node_type_keys.key":
     documentation_options:
@@ -136,8 +135,8 @@ dynamic_keys:
           structured_config:
             description: Custom structured config for eos_cli_config_gen
             type: dict
-            studios_options:
-              exclude: True
+            #studios_options:
+            #  exclude: True
 
           uplink_ipv4_pool:
             display_name: Uplink IPv4 Pool

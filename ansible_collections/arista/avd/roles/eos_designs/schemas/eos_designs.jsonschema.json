@@ -1,3 +1,621 @@
 {
+  "properties": {
+    "bfd_multihop": {
+      "title": "BFD Multihop tunning",
+      "properties": {
+        "interval": {
+          "default": 300,
+          "type": "integer",
+          "title": "Interval"
+        },
+        "min_rx": {
+          "default": 300,
+          "type": "integer",
+          "title": "Min Rx"
+        },
+        "multiplier": {
+          "default": 3,
+          "type": "integer",
+          "title": "Multiplier"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "bgp_as": {
+      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == IBGP",
+      "title": "BGP AS",
+      "type": "string"
+    },
+    "bgp_ecmp": {
+      "description": "Maximum ECMP for BGP multi-path",
+      "type": "integer",
+      "title": "Bgp Ecmp"
+    },
+    "bgp_maximum_paths": {
+      "default": 4,
+      "description": "Maximum Paths for BGP multi-path",
+      "type": "integer",
+      "title": "Bgp Maximum Paths"
+    },
+    "bgp_peer_groups": {
+      "description": "Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.\nNote that the name of the peer groups use '-' instead of '_' in EOS configuration.\n",
+      "title": "BGP peer group names and encrypted password",
+      "properties": {
+        "EVPN_OVERLAY_PEERS": {
+          "properties": {
+            "name": {
+              "default": "EVPN-OVERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Evpn Overlay Peers"
+        },
+        "IPv4_UNDERLAY_PEERS": {
+          "properties": {
+            "name": {
+              "default": "IPv4-UNDERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Ipv4 Underlay Peers"
+        },
+        "MLAG_IPv4_UNDERLAY_PEER": {
+          "properties": {
+            "name": {
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Mlag Ipv4 Underlay Peer"
+        },
+        "evpn_overlay_core": {
+          "properties": {
+            "name": {
+              "default": "EVPN-OVERLAY-CORE",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Evpn Overlay Core"
+        },
+        "evpn_overlay_peers": {
+          "properties": {
+            "name": {
+              "default": "EVPN-OVERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Evpn Overlay Peers"
+        },
+        "ipv4_underlay_peers": {
+          "properties": {
+            "name": {
+              "default": "IPv4-UNDERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Ipv4 Underlay Peers"
+        },
+        "mlag_ipv4_underlay_peer": {
+          "properties": {
+            "name": {
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Mlag Ipv4 Underlay Peer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "dc_name": {
+      "description": "Optional DC Name, only used in SNMP location and Fabric Documentation.\nRecommended to be common between all devices within a Site\n",
+      "title": "DC Name",
+      "type": "string"
+    },
+    "default_igmp_snooping_enabled": {
+      "default": true,
+      "description": "Disable IGMP snooping at fabric level.\nIf set, it overrides per vlan settings\n",
+      "title": "Default IGMP Snooping enabled",
+      "type": "boolean"
+    },
+    "evpn_ebgp_gateway_multihop": {
+      "default": 15,
+      "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
+      "title": "EVPN Gateway EBGP Multihop",
+      "type": "integer"
+    },
+    "evpn_ebgp_multihop": {
+      "default": 3,
+      "description": "Default of 3, the recommended value for a 3 stage spine and leaf topology.\nSet to a higher value to allow for very large and complex topologies.\n",
+      "title": "EVPN EBGP Multihop",
+      "type": "integer"
+    },
+    "evpn_hostflap_detection": {
+      "title": "EVPN Host Flapping Settings",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "If set to false it will disable EVPN host-flap detection",
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "expiry_timeout": {
+          "description": "Time (in seconds) to purge a MAC duplication issue",
+          "type": "integer",
+          "title": "Expiry Timeout"
+        },
+        "threshold": {
+          "default": 5,
+          "description": "Minimum number of MAC moves that indicate a MAC duplication issue",
+          "type": "integer",
+          "title": "Threshold"
+        },
+        "window": {
+          "default": 180,
+          "description": "Time (in seconds) to detect a MAC duplication issue",
+          "type": "integer",
+          "title": "Window"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "evpn_import_pruning": {
+      "default": false,
+      "description": "Enable VPN import pruning (Min. EOS 4.24.2F)\nThe Route Target extended communities carried by incoming VPN paths will\nbe examined. If none of those Route Targets have been configured for import,\nthe path will be immediately discarded\n",
+      "title": "EVPN Import Pruning",
+      "type": "boolean"
+    },
+    "evpn_overlay_bgp_rtc": {
+      "default": false,
+      "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)\nRequires use eBGP as overlay protocol.\n",
+      "title": "EVPN Overlay BGP RTC",
+      "type": "boolean"
+    },
+    "evpn_prevent_readvertise_to_server": {
+      "default": false,
+      "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
+      "title": "EVPN Prevent Readvertise to Server",
+      "type": "boolean"
+    },
+    "evpn_short_esi_prefix": {
+      "default": "0000:0000:",
+      "description": "Configure prefix for \"short_esi\" values",
+      "title": "EVPN Short ESI Prefix",
+      "type": "string"
+    },
+    "evpn_vlan_aware_bundles": {
+      "default": false,
+      "description": "Enable vlan aware bundles for EVPN MAC-VRF",
+      "title": "EVPN VLAN-Aware Bundles",
+      "type": "boolean"
+    },
+    "fabric_name": {
+      "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric",
+      "title": "Fabric Name",
+      "type": "string"
+    },
+    "isis_advertise_passive_only": {
+      "default": false,
+      "title": "ISIS Advertise Passive Only",
+      "type": "boolean"
+    },
+    "isis_area_id": {
+      "default": "49.0001",
+      "title": "Underlay ISIS Area",
+      "type": "string"
+    },
+    "isis_default_is_type": {
+      "default": "level-2",
+      "title": "ISIS Default IS Type",
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ]
+    },
+    "isis_ti_lfa": {
+      "title": "ISIS TI-LFA",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "local_convergence_delay": {
+          "default": 10000,
+          "description": "Local convergence delay in mpls",
+          "type": "integer",
+          "title": "Local Convergence Delay"
+        },
+        "protection": {
+          "type": "string",
+          "enum": [
+            "link",
+            "node"
+          ],
+          "title": "Protection"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "mgmt_gateway": {
+      "title": "OOB Management Gateway IP",
+      "format": "ipv4",
+      "type": "string"
+    },
+    "node_type_keys": {
+      "description": "The node type definition is done under `node_type_keys`. This dictionary defines type of devices you can use in your topologies. Each node type can be configured to fit the role in the network.",
+      "title": "Node Types Definition",
+      "items": {
+        "properties": {
+          "connected_endpoints": {
+            "default": false,
+            "description": "Support connected endpoints on this node type",
+            "type": "boolean",
+            "title": "Connected Endpoints"
+          },
+          "default_evpn_role": {
+            "default": "none",
+            "description": "Default evpn_role. Can be overridden in topology vars",
+            "type": "string",
+            "enum": [
+              "none",
+              "client",
+              "server"
+            ],
+            "title": "Default Evpn Role"
+          },
+          "default_underlay_routing_protocol": {
+            "default": "ebgp",
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting `underlay_routing_protocol` host/group_vars",
+            "type": "string",
+            "enum": [
+              "ebgp",
+              "ospf",
+              "isis",
+              "isis-sr",
+              "isis-ldp",
+              "isis-sr-ldp",
+              "ospf-ldp"
+            ],
+            "title": "Default Underlay Routing Protocol"
+          },
+          "interface_descriptions": {
+            "description": "Override interface description templates.\nIf not set, the default templates are inherited from `templates.interface_descriptions`",
+            "properties": {
+              "connected_endpoints_ethernet_interfaces": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Connected Endpoints Ethernet Interfaces"
+              },
+              "connected_endpoints_port_channel_interfaces": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Connected Endpoints Port Channel Interfaces"
+              },
+              "overlay_loopback_interface": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Overlay Loopback Interface"
+              },
+              "underlay_ethernet_interfaces": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Underlay Ethernet Interfaces"
+              },
+              "underlay_ethernet_mlag_interfaces": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Underlay Ethernet Mlag Interfaces"
+              },
+              "underlay_port_channel_interfaces": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Underlay Port Channel Interfaces"
+              },
+              "underlay_port_channel_mlag_interfaces": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Underlay Port Channel Mlag Interfaces"
+              },
+              "vtep_loopback_interface": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Vtep Loopback Interface"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Interface Descriptions"
+          },
+          "ip_addressing": {
+            "description": "Override IP adressing templates.\nIf not set, the default templates are inherited from `templates.ip_addressing`",
+            "properties": {
+              "mlag_ip_primary": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Mlag Ip Primary"
+              },
+              "mlag_ip_secondary": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Mlag Ip Secondary"
+              },
+              "mlag_l3_ip_primary": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Mlag L3 Ip Primary"
+              },
+              "mlag_l3_ip_secondary": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Mlag L3 Ip Secondary"
+              },
+              "p2p_uplinks_ip": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "P2P Uplinks Ip"
+              },
+              "p2p_uplinks_peer_ip": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "P2P Uplinks Peer Ip"
+              },
+              "router_id": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Router Id"
+              },
+              "vtep_ip": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Vtep Ip"
+              },
+              "vtep_ip_mlag": {
+                "description": "Path to J2 template",
+                "type": "string",
+                "title": "Vtep Ip Mlag"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Ip Addressing"
+          },
+          "key": {
+            "description": "YAML Key used for defining Fabric Topology for this Node Type",
+            "type": "string",
+            "title": "Key"
+          },
+          "mlag_support": {
+            "default": false,
+            "description": "Support MLAG on this node type",
+            "type": "boolean",
+            "title": "Mlag Support"
+          },
+          "mpls_lsr": {
+            "default": false,
+            "description": "Is this node type a MPLS LSR",
+            "type": "boolean",
+            "title": "Mpls Lsr"
+          },
+          "network_services": {
+            "description": "Support Network Services on this node type",
+            "properties": {
+              "l2": {
+                "default": false,
+                "description": "Support L2 Network Services (VLANs) for this node type",
+                "type": "boolean",
+                "title": "L2"
+              },
+              "l3": {
+                "default": false,
+                "description": "Support L3 Network Services (VRFs, SVIs if `l2: true`) for this node type\nOnly supported with `underlay_router: true`",
+                "type": "boolean",
+                "title": "L3"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Network Services"
+          },
+          "type": {
+            "description": "Value of `type` key on devices of this Node Type",
+            "type": "string",
+            "title": "Type"
+          },
+          "underlay_router": {
+            "default": true,
+            "description": "Is this node type a L3 device",
+            "type": "boolean",
+            "title": "Underlay Router"
+          },
+          "uplink_type": {
+            "default": "p2p",
+            "description": "`uplink_type` must be `p2p`` if `vtep: true` or `underlay_router: true`",
+            "type": "string",
+            "enum": [
+              "p2p",
+              "port-channel"
+            ],
+            "title": "Uplink Type"
+          },
+          "vtep": {
+            "default": false,
+            "description": "Is this node type a VXLAN VTEP",
+            "type": "boolean",
+            "title": "Vtep"
+          }
+        },
+        "required": [
+          "key",
+          "type"
+        ],
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "overlay_loopback_description": {
+      "description": "Customizable overlay loopback description",
+      "type": "string",
+      "title": "Overlay Loopback Description"
+    },
+    "overlay_routing_protocol": {
+      "default": "ebgp",
+      "description": "- The following overlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n",
+      "type": "string",
+      "enum": [
+        "ebgp",
+        "ibgp",
+        "BGP"
+      ],
+      "title": "Overlay Routing Protocol"
+    },
+    "p2p_uplinks_mtu": {
+      "default": 9000,
+      "title": "Point to Point Links MTU",
+      "type": "integer"
+    },
+    "p2p_uplinks_qos_profile": {
+      "description": "QOS Profile assigned on all infrastructure links",
+      "title": "P2P Uplinks QoS Profile",
+      "type": "string"
+    },
+    "pod_name": {
+      "description": "POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines, Leafs within a POD (One l3ls topology)\n",
+      "title": "POD Name",
+      "type": "string"
+    },
+    "type": {
+      "title": "Device Type",
+      "type": "string"
+    },
+    "underlay_isis_instance_name": {
+      "default": "EVPN_UNDERLAY",
+      "title": "Underlay ISIS Instance Name",
+      "type": "string"
+    },
+    "underlay_ospf_area": {
+      "default": "0.0.0.0",
+      "title": "Underlay OSPF Area",
+      "format": "ipv4",
+      "type": "string"
+    },
+    "underlay_ospf_bfd_enable": {
+      "default": false,
+      "title": "Enable Underlay OSPF BFD",
+      "type": "boolean"
+    },
+    "underlay_ospf_max_lsa": {
+      "default": 12000,
+      "title": "Underlay OSPF Max LSA",
+      "type": "integer"
+    },
+    "underlay_ospf_process_id": {
+      "default": 100,
+      "title": "Underlay OSPF Process ID",
+      "type": "integer"
+    },
+    "underlay_rfc5549": {
+      "default": false,
+      "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered\nRequires \"underlay_routing_protocol: ebgp\"\n",
+      "title": "Enable RFC5549 in Underlay",
+      "type": "boolean"
+    },
+    "underlay_routing_protocol": {
+      "default": "ebgp",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n\n*Only supported with core_interfaces data model.\n",
+      "type": "string",
+      "enum": [
+        "ebgp",
+        "ospf",
+        "isis",
+        "isis-sr",
+        "isis-ldp",
+        "isis-sr-ldp",
+        "ospf-ldp",
+        "BGP"
+      ],
+      "title": "Underlay Routing Protocol"
+    },
+    "uplink_ptp": {
+      "description": "Enable PTP on all infrastructure links",
+      "title": "Uplink PTP",
+      "properties": {
+        "enable": {
+          "default": false,
+          "type": "boolean",
+          "title": "Enable"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "vtep_vvtep_ip": {
+      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1\nThis is only needed for centralized routing designs\n",
+      "title": "Virtual VTEP IP",
+      "type": "string"
+    }
+  },
+  "required": [
+    "fabric_name",
+    "mgmt_gateway",
+    "type"
+  ],
+  "additionalProperties": true,
   "type": "object"
 }

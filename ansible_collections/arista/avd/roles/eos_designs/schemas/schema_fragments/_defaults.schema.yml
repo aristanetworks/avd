@@ -2,10 +2,4 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-keys:
-  bgp_as:
-    display_name: BGP AS
-    description: AS number to use to configure overlay when "overlay_routing_protocol" == IBGP
-    type: str
-    convert_types:
-      - int
+allow_other_keys: true
