@@ -2,18 +2,16 @@
 
 ## Introduction
 
-This example includes and describes all the AVD files used to build a Layer 2 Leaf Spine (L2LS) Fabric, with the following nodes:
+This example includes and describes all the AVD files used to build an L2LS Campus Fabric, with the following nodes:
 
-- 2 Spine nodes
-- 8 Leaf nodes
+- MDF
+  - 2 Spine nodes
+- IDFs
+  - IDF1 supporting 192 users with a 2 leafs
+  - IDF2 supporting 240 users with a Modular 5 slot chassis
+  - IDF3 supporting 480 users with 5 leafs
 
-The network fabric in this example is layer 2; an external firewall (FW) or layer 3 (L3) device will handle routing. Later, in this example, we will discuss adding L3 routing to the Spines. But, first, we will focus on defining the fabric variables to build this L2LS Topology. Before we start, we must ensure that we have installed AVD with the requirements covered in the Installation & Requirements section.
-
-The example is meant as a starting foundation. You may build more advanced fabrics based on this design. To keep things simple, the Arista eAPI will be used to communicate with the switches.
-
-???+ info
-
-    The configurations may also be applied with CloudVision with a few updates to your playbook and Ansible variables.
+The Campus Fabric builds upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Nwetwork Access Control (NAC) and port ranges.
 
 ## Installation & Requirements
 
@@ -64,7 +62,7 @@ ansible-avd-examples/     (directory where playbook was run)
 
 ## Design Overview
 
-### Physical L2LS Topology
+### Physical L2LS Campus Topology
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
@@ -297,125 +295,6 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-## Add Routing to Spines
-
-In our example, we used an external L3/FW Device to route between subnets. This is very typical in a Layer 2 only environment. To route on the spines, we remove the L3/FW device from the topology and create the SVIs on the Spines. The updated topology is shown below.
-
-???+ note
-
-    The spine type has been changed to **l3spine**.
-
-![Figure: 3](images/L2LS_Spine_routing.svg)
-
-The following group_vars need updating to enable L3 routing on the Spines.
-
-- DC1_SPINES.yml
-- DC1_FABRIC.yml
-- DC1_NETWORK_SERVICES.yml
-
-The updated changes are noted in the tabs below.
-
-=== "DC1_SPINES.yml"
-
-    Update type to `l3spine`. This makes it a routing device.
-
-    ``` yaml
-    ---
-    ### group_vars/DC1_SPINES.yml
-
-    type: l3spine
-    ```
-
-=== "DC1_FABRIC.yml"
-
-    Update with the following changes and additions.
-
-    - Change the node key **spine** to **l3spine** to match the node type set previously in DC1_SPINES.yml
-    - Add **loopback_ipv4_pool**
-    - Add **mlag_peer_l3_ipv4_pool**
-    - Add **virtual_router_mac_address**
-
-    Update DC1_FABRIC.yml with the following recommended settings. Use your own IP pools.
-
-    ``` yaml
-    # Node Key must be l3spine to match type
-    l3spine:
-      defaults:
-        platform: cEOS-LAB
-        spanning_tree_mode: mstp
-        spanning_tree_priority: 4096
-        # Loopback is used to generate a router-id
-        loopback_ipv4_pool: 1.1.1.0/24
-        mlag_peer_ipv4_pool: 192.168.0.0/24
-        # Needed for L3 peering across the MLAG Trunk
-        mlag_peer_l3_ipv4_pool: 10.1.1.0/24
-        # Used for SVI Virual MAC address
-        virtual_router_mac_address: 00:1c:73:00:dc:01
-        mlag_interfaces: [Ethernet47, Ethernet48]
-    ```
-
-=== "DC1_NETWORK_SERVICES.yml"
-
-    Update Network Services to use L3 SVIs.
-
-    ???+ Note
-
-        To create L3 SVIs on the spines, we need to utilize an L3 VRF. In our case, we will use the default VRF. `MY_FABRIC` is simply a tenant name for organizing VRFs and SVIs.
-
-    ``` yaml
-    ---
-    tenants:
-      MY_FABRIC:
-        vrfs:
-          default:
-            svis:
-              10:
-                name: 'BLUE-NET'
-                tags: [bluezone]
-                enabled: true
-                ip_virtual_router_addresses:
-                  - 10.10.10.1
-                nodes:
-                  SPINE1:
-                    ip_address: 10.10.10.2/24
-                  SPINE2:
-                    ip_address: 10.10.10.3/24
-              20:
-                name: 'GREEN-NET'
-                tags: [greenzone]
-                enabled: true
-                ip_virtual_router_addresses:
-                  - 10.20.20.1
-                nodes:
-                  SPINE1:
-                    ip_address: 10.20.20.2/24
-                  SPINE2:
-                    ip_address: 10.20.20.3/24
-              30:
-                name: 'ORANGE-NET'
-                tags: [orangezone]
-                enabled: true
-                ip_virtual_router_addresses:
-                  - 10.30.30.1
-                nodes:
-                  SPINE1:
-                    ip_address: 10.30.30.2/24
-                  SPINE2:
-                    ip_address: 10.30.30.3/24
-    ```
-
-Now re-run your playbook and build the new configs. The intended/configs for the spines will have been updated with L3 SVIs.
-
-``` bash
-ansible-playbook playbooks/build.yml
-```
-
-If you wish to deploy these changes, then simply run the deploy playbook.
-
-``` bash
-ansible-playbook playbooks/deploy.yml
-```
-
 ## Next steps
 
-Try building your own topology.
+Try building your own Campus topology.
