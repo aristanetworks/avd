@@ -2584,6 +2584,11 @@ keys:
                         type: list
                         items:
                           type: str
+  service_routing_configuration_bgp:
+    type: dict
+    keys:
+      no_equals_default:
+        type: bool
   service_routing_protocols_model:
     type: str
     valid_values:
