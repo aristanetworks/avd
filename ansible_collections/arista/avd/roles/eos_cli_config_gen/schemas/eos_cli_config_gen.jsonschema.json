@@ -338,6 +338,34 @@
       },
       "title": "Bgp Groups"
     },
+    "boot": {
+      "title": "System Boot Settings",
+      "description": "Set the Aboot password\n",
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "object",
+          "properties": {
+            "hash_algorithm": {
+              "type": "string",
+              "enum": [
+                "md5",
+                "sha512"
+              ],
+              "default": "sha512",
+              "title": "Hash Algorithm"
+            },
+            "key": {
+              "title": "Hashed Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Secret"
+        }
+      },
+      "additionalProperties": false
+    },
     "class_maps": {
       "type": "object",
       "title": "QOS Class-maps",
