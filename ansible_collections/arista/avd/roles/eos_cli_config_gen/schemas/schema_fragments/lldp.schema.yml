@@ -29,6 +29,6 @@ keys:
             name:
               type: str
             transmit:
-              type: bool 
+              type: bool
       run:
-        type: bool                       
+        type: bool
