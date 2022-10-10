@@ -2230,6 +2230,59 @@
       },
       "additionalProperties": false
     },
+    "lldp": {
+      "type": "object",
+      "properties": {
+        "timer": {
+          "type": "integer",
+          "title": "Timer"
+        },
+        "timer_reinitialization": {
+          "type": "string",
+          "title": "Timer Reinitialization"
+        },
+        "holdtime": {
+          "type": "integer",
+          "title": "Holdtime"
+        },
+        "management_address": {
+          "type": "string",
+          "title": "Management Address"
+        },
+        "vrf": {
+          "type": "string",
+          "title": "Vrf"
+        },
+        "receive_packet_tagged_drop": {
+          "type": "string",
+          "title": "Receive Packet Tagged Drop"
+        },
+        "tlvs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "transmit": {
+                "type": "boolean",
+                "title": "Transmit"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Tlvs"
+        },
+        "run": {
+          "type": "boolean",
+          "title": "Run"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Lldp"
+    },
     "load_interval": {
       "type": "object",
       "properties": {
