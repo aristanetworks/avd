@@ -7159,6 +7159,37 @@
         ],
         "additionalProperties": false
       }
+    },
+    "vrfs": {
+      "type": "array",
+      "title": "VRF Instances",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "VRF Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "ip_routing": {
+            "type": "boolean",
+            "title": "IP Routing"
+          },
+          "ipv6_routing": {
+            "type": "boolean",
+            "title": "IPv6 Routing"
+          },
+          "tenant": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Tenant"
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": true

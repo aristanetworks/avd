@@ -3875,10 +3875,10 @@ vmtracer_sessions:
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | VRF Instances |
-| [<samp>&nbsp;&nbsp;- name</samp>](## "vrfs.[].name") | String |  |  |  | Vrf Name |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "vrfs.[].name") | String |  |  |  | VRF Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  | IP Routing |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  | IPv6 Routing |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vrfs.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes |
 
 ### YAML
