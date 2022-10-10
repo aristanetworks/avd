@@ -4387,6 +4387,10 @@ keys:
                         type: str
                       name:
                         type: str
+                      sbfd_remote_discriminator:
+                        type: str
+                        convert_types:
+                        - int
                       path_group:
                         type: list
                         items:
@@ -4402,7 +4406,7 @@ keys:
                                 type: dict
                                 keys:
                                   label_stack:
-                                    type: int
+                                    type: str
                                   weight:
                                     type: int
                                   index:

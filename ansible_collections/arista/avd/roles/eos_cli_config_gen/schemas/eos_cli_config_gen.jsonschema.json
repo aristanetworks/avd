@@ -6309,6 +6309,10 @@
                           "type": "string",
                           "title": "Name"
                         },
+                        "sbfd_remote_discriminator": {
+                          "type": "string",
+                          "title": "Sbfd Remote Discriminator"
+                        },
                         "path_group": {
                           "type": "array",
                           "items": {
@@ -6328,7 +6332,7 @@
                                   "type": "object",
                                   "properties": {
                                     "label_stack": {
-                                      "type": "integer",
+                                      "type": "string",
                                       "title": "Label Stack"
                                     },
                                     "weight": {
