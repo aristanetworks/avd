@@ -16,4 +16,4 @@ keys:
         links_minimum:
           type: int
         recovery_delay:
-          type: int    
+          type: int
