@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_traffic_engineering:
+    type: dict
+    keys:
+      router_id:
+        type: dict
+        keys:
+          ipv4:
+            type: str
+          ipv6:
+            type: str
+      segment_routing:
+        type: dict
+        keys:
+          colored_tunnel_rib:
+            type: bool
+          policy_endpoints:
+            type: list
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                colors:
+                  type: list
+                  primary_key: value
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      value:
+                        type: int
+                      binding_sid:
+                        type: int
+                      description:
+                        type: str
+                      name:
+                        type: str
+                      path_group:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            preference:
+                              type: int
+                            explicit_null:
+                              type: str
+                            segment_list:
+                              type: list
+                              items:
+                                type: dict
+                                keys:
+                                  label_stack:
+                                    type: int
+                                  weight:
+                                    type: int
+                                  index:
+                                    type: int
