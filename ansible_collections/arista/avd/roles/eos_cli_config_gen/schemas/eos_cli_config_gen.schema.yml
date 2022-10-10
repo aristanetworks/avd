@@ -2304,6 +2304,11 @@ keys:
     keys:
       ssm_aware:
         type: bool
+  service_routing_protocols_model:
+    type: str
+    valid_values:
+    - multi-agent
+    - ribd
   sflow:
     type: dict
     display_name: Sflow
