@@ -421,6 +421,33 @@ keys:
     items:
       type: str
       description: Template relative path below playbook directory
+  cvx:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      services:
+        type: dict
+        keys:
+          mcs:
+            type: dict
+            keys:
+              redis:
+                type: dict
+                keys:
+                  password:
+                    type: str
+                  password_type:
+                    type: str
+                    convert_types:
+                    - int
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
+                    default: '7'
+              shutdown:
+                type: bool
   daemon_terminattr:
     type: dict
     display_name: Daemon TerminAttr

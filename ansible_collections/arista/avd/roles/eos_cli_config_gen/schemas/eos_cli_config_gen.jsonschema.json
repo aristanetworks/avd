@@ -488,6 +488,56 @@
         "description": "Template relative path below playbook directory"
       }
     },
+    "cvx": {
+      "type": "object",
+      "properties": {
+        "shutdown": {
+          "type": "boolean",
+          "title": "Shutdown"
+        },
+        "services": {
+          "type": "object",
+          "properties": {
+            "mcs": {
+              "type": "object",
+              "properties": {
+                "redis": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string",
+                      "title": "Password"
+                    },
+                    "password_type": {
+                      "type": "string",
+                      "enum": [
+                        "0",
+                        "7",
+                        "8a"
+                      ],
+                      "default": "7",
+                      "title": "Password Type"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Redis"
+                },
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Mcs"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Services"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Cvx"
+    },
     "daemon_terminattr": {
       "type": "object",
       "title": "Daemon TerminAttr",
