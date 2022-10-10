@@ -2457,10 +2457,10 @@ keys:
           type: int
           convert_types:
           - str
-          display_name: Vlan ID
+          display_name: VLAN ID
         name:
           type: str
-          display_name: Vlan Name
+          display_name: VLAN Name
         state:
           type: str
           valid_values:
@@ -2483,10 +2483,10 @@ keys:
               type: int
               convert_types:
               - str
-              display_name: Vlan ID
+              display_name: Primary VLAN ID
         tenant:
           type: str
-          display_name: Tenant Name
+          description: Key only used for documentation or validation purposes
   vmtracer_sessions:
     type: list
     primary_key: name

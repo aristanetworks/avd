@@ -3125,11 +3125,11 @@
         "properties": {
           "id": {
             "type": "integer",
-            "title": "Vlan ID"
+            "title": "VLAN ID"
           },
           "name": {
             "type": "string",
-            "title": "Vlan Name"
+            "title": "VLAN Name"
           },
           "state": {
             "type": "string",
@@ -3160,7 +3160,7 @@
               },
               "primary_vlan": {
                 "type": "integer",
-                "title": "Vlan ID"
+                "title": "Primary VLAN ID"
               }
             },
             "additionalProperties": false,
@@ -3168,7 +3168,8 @@
           },
           "tenant": {
             "type": "string",
-            "title": "Tenant Name"
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Tenant"
           }
         },
         "additionalProperties": false
