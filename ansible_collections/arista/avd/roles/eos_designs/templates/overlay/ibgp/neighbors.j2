@@ -1,5 +1,5 @@
   neighbors:
-{% if switch.overlay.vpn_ipv4 or switch.overlay.vpn_ipv6 or switch.overlay.evpn_encapsulation is arista.avd.defined("mpls") %}
+{% if switch.overlay.vpn_ipv4 or switch.overlay.vpn_ipv6 or switch.overlay.evpn_mpls %}
 {%     for mpls_route_reflector in overlay_data.mpls_route_reflectors | arista.avd.natural_sort %}
     {{ overlay_data.mpls_route_reflectors[mpls_route_reflector].ip_address }}:
       peer_group: {{ overlay_data.mpls_overlay_peer_group.name }}
@@ -25,7 +25,7 @@
 {%         endfor %}
 {%     endif %}
 {% endif %}
-{% if switch.overlay.evpn and switch.overlay.evpn_encapsulation is arista.avd.defined("vxlan") %}
+{% if switch.overlay.evpn_vxlan %}
 {%     for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
     {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
       peer_group: {{ overlay_data.evpn_overlay_peer_group.name }}

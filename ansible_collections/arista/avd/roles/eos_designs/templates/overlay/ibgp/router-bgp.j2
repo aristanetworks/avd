@@ -8,7 +8,7 @@ router_bgp:
 
 {% include 'overlay/ibgp/address-family-ipv4.j2' %}
 
-{% if "evpn" in switch.overlay_address_families %}
+{% if switch.overlay.evpn %}
 {%     include 'overlay/ibgp/address-family-evpn.j2' %}
 
 {% endif %}
@@ -16,11 +16,11 @@ router_bgp:
 {%     include 'overlay/ibgp/address-family-rtc.j2' %}
 
 {% endif %}
-{% if "vpn-ipv4" in switch.overlay_address_families %}
+{% if switch.overlay.vpn_ipv4 %}
 {%     include 'overlay/ibgp/address-family-vpn-ipv4.j2' %}
 
 {% endif %}
-{% if "vpn-ipv6" in switch.overlay_address_families %}
+{% if switch.overlay.vpn_ipv6 %}
 {%     include 'overlay/ibgp/address-family-vpn-ipv6.j2' %}
 
 {% endif %}

@@ -1627,27 +1627,123 @@ class EosDesignsFacts(AvdFacts):
         return overlay_routing_protocol_address_family
 
     @cached_property
+    def bgp(self):
+        if self.underlay_routing_protocol == "ebgp":
+            return True
+        elif (
+            self.overlay_routing_protocol in ["ebgp", "ibgp"]
+            and (
+                self.evpn_role in ["client", "server"]
+                or self.mpls_overlay_role in ["client", "server"]
+            )
+        ):
+            return True
+        else:
+            return False
+
+        # return (
+        #     (self.underlay_routing_protocol == "ebgp" or self.overlay_routing_protocol in ["ebgp", "ibgp"])
+        #     and self.underlay_router
+        #     and self.uplink_type == "p2p"
+        # )
+
+    @cached_property
+    def underlay(self):
+        bgp = self.bgp and self.underlay_routing_protocol == "ebgp"
+        mpls = (
+            self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"]
+            and self.underlay_router
+            and self.uplink_type == "p2p"
+            and self.mpls_lsr
+        )
+        ospf = (
+            self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
+            and self.underlay_router
+            and self.uplink_type == "p2p"
+        )
+        isis = (
+            self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
+        )
+        return {
+            "bgp": bgp,
+            "mpls": mpls,
+            "ospf": ospf,
+            "isis": isis
+        }
+
+    @cached_property
     def overlay(self):
-        if self.underlay_router and (self.evpn_role != "none" or self.mpls_overlay_role != "none"):
-            if self.overlay_routing_protocol_address_family == "ipv6":
-                peering_address = self.ipv6_router_id
-            else:
-                peering_address = self.router_id
-            ler = get(self._node_type_key_data, "mpls_ler", default=False)
-            vtep = get(self._node_type_key_data, "vtep", default=False)
-            evpn = "evpn" in self.overlay_address_families and self.evpn_role != "none"
-            evpn_encapsulation = get(self._node_type_key_data, "default_evpn_encapsulation", default="vxlan")
-            vpn_ipv4 = "vpn-ipv4" in self.overlay_address_families and self.mpls_overlay_role != "none"
-            vpn_ipv6 = "vpn-ipv6" in self.overlay_address_families and self.mpls_overlay_role != "none"
+        """
+        Set overlay.peering_address
+        """
+        if self.overlay_routing_protocol_address_family == "ipv6":
+            peering_address = self.ipv6_router_id
+        else:
+            peering_address = self.router_id
+        """
+        Set overlay.ler
+        """
+        ler = (
+            self.underlay["mpls"]
+            and self.mpls_overlay_role in ["client", "server"]
+            and (
+                self.network_services_l1
+                or self.network_services_l2
+                or self.network_services_l3
+            )
+        )
+        """
+        Set overlay.vtep based on criteria
+        """
+        vtep = (
+            self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
+            and (self.network_services_l2 or self.network_services_l3)
+            and self.underlay_router == True
+            and self.uplink_type == "p2p"
+            and self.vtep
+        )
+        """
+        Set overlay.evpn based on criteria
+        """
+        evpn = (
+            self.bgp
+            and (
+                self.evpn_role in ["client", "server"] # This was causing evpn_mpls not to get set properly
+                or self.mpls_overlay_role in ["client", "server"]
+            )
+            and self.overlay_routing_protocol in ["ebgp", "ibgp"]
+            and "evpn" in self.overlay_address_families
+        )
+        evpn_vxlan = (
+            vtep
+            and evpn
+            and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "vxlan"
+        )
+        evpn_mpls = (
+            ler
+            and evpn
+            and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "mpls"
+        )
+        vpn_ipv4 = (
+            self.bgp
+            and self.overlay_routing_protocol == "ibgp" # Will not work for gateway use case as will be ebgp
+            and ler
+            and "vpn-ipv4" in self.overlay_address_families
+        )
+        vpn_ipv6 = (
+            self.bgp
+            and self.overlay_routing_protocol == "ibgp" # Will not work for gateway use case as will be ebgp
+            and ler
+            and "vpn-ipv6" in self.overlay_address_families
+        )
+        return {
+            "peering_address": peering_address,
+            "ler": ler,
+            "vtep": vtep,
+            "evpn": evpn,
+            "evpn_vxlan": evpn_vxlan,
+            "evpn_mpls": evpn_mpls,
+            "vpn_ipv4": vpn_ipv4,
+            "vpn_ipv6": vpn_ipv6
+        }
 
-            return {
-                "peering_address": peering_address,
-                "ler": ler,
-                "vtep": vtep,
-                "evpn": evpn,
-                "evpn_encapsulation": evpn_encapsulation,
-                "vpn_ipv4": vpn_ipv4,
-                "vpn_ipv6": vpn_ipv6
-            }
-
-        return None

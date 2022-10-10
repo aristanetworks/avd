@@ -1,5 +1,5 @@
   address_family_evpn:
-{% if switch.overlay.evpn_encapsulation is arista.avd.defined("mpls") %}
+{% if switch.overlay.evpn_mpls %}
     neighbor_default:
       encapsulation: mpls
 {%     if switch.overlay.ler %}
@@ -7,7 +7,7 @@
 {%     endif %}
 {% endif %}
     peer_groups:
-{% if switch.overlay.evpn_encapsulation is arista.avd.defined("mpls") %}
+{% if switch.overlay.evpn_mpls %}
       {{ overlay_data.mpls_overlay_peer_group.name }}:
 {% else %}
       {{ overlay_data.evpn_overlay_peer_group.name }}:
