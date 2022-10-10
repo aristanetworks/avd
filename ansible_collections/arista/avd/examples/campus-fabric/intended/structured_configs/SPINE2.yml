@@ -1,0 +1,181 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.100.100.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 8.8.4.4
+  - 8.8.8.8
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+  no_spanning_tree_vlan: 4094
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+  arista:
+    privilege: 15
+    role: network-admin
+    no_password: true
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management0:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 172.100.100.102/24
+    gateway: 172.100.100.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+vlans:
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+    - MLAG
+  10:
+    tenant: MY_FABRIC
+    name: BLUE-NET
+  20:
+    tenant: MY_FABRIC
+    name: GREEN-NET
+  30:
+    tenant: MY_FABRIC
+    name: ORANGE-NET
+vlan_interfaces:
+  Vlan4094:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: 192.168.0.1/31
+    no_autostate: true
+    mtu: 1500
+port_channel_interfaces:
+  Port-Channel47:
+    description: MLAG_PEER_SPINE1_Po47
+    type: switched
+    shutdown: false
+    vlans: 2-4094
+    mode: trunk
+    trunk_groups:
+    - MLAG
+  Port-Channel1:
+    description: RACK1_Po1
+    type: switched
+    shutdown: false
+    vlans: 10,20
+    mode: trunk
+    mlag: 1
+  Port-Channel3:
+    description: RACK2_Po1
+    type: switched
+    shutdown: false
+    vlans: 10,30
+    mode: trunk
+    mlag: 3
+  Port-Channel5:
+    description: FIREWALL
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 10,20,30
+    mlag: 5
+ethernet_interfaces:
+  Ethernet47:
+    peer: SPINE1
+    peer_interface: Ethernet47
+    peer_type: mlag_peer
+    description: MLAG_PEER_SPINE1_Ethernet47
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 47
+      mode: active
+  Ethernet48:
+    peer: SPINE1
+    peer_interface: Ethernet48
+    peer_type: mlag_peer
+    description: MLAG_PEER_SPINE1_Ethernet48
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 47
+      mode: active
+  Ethernet1:
+    peer: LEAF1
+    peer_interface: Ethernet2
+    peer_type: leaf
+    description: LEAF1_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: LEAF2
+    peer_interface: Ethernet2
+    peer_type: leaf
+    description: LEAF2_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet3:
+    peer: LEAF3
+    peer_interface: Ethernet2
+    peer_type: leaf
+    description: LEAF3_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet4:
+    peer: LEAF4
+    peer_interface: Ethernet2
+    peer_type: leaf
+    description: LEAF4_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet5:
+    peer: FIREWALL
+    peer_interface: Eth2
+    peer_type: firewall
+    description: FIREWALL_Eth2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 10,20,30
+    channel_group:
+      id: 5
+      mode: active
+mlag_configuration:
+  domain_id: SPINES
+  local_interface: Vlan4094
+  peer_address: 192.168.0.0
+  peer_link: Port-Channel47
+  reload_delay_mlag: 300
+  reload_delay_non_mlag: 330
+ip_igmp_snooping:
+  globally_enabled: true
