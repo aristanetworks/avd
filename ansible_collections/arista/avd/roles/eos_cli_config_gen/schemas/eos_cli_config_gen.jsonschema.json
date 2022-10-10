@@ -955,6 +955,50 @@
       "default": true,
       "title": "Generate Device Documentation"
     },
+    "hardware": {
+      "title": "Speed-Group Settings",
+      "type": "object",
+      "properties": {
+        "access_list": {
+          "type": "object",
+          "properties": {
+            "mechanism": {
+              "type": "string",
+              "enum": [
+                "algomatch",
+                "none",
+                "tcam"
+              ],
+              "title": "Mechanism"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Access List"
+        },
+        "speed_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "speed_group": {
+                "type": "integer",
+                "title": "Speed Group"
+              },
+              "serdes": {
+                "type": "string",
+                "title": "Serdes"
+              }
+            },
+            "required": [
+              "speed_group"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Speed Groups"
+        }
+      },
+      "additionalProperties": false
+    },
     "interface_defaults": {
       "type": "object",
       "properties": {
