@@ -3613,12 +3613,25 @@
           "additionalProperties": false,
           "title": "Advertise"
         },
+        "no_passive_interfaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "No Passive Interfaces"
+        },
         "address_family": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "Address Family"
         },
         "isis_af_defaults": {
-          "type": "integer",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "title": "Isis Af Defaults"
         },
         "redistribute_routes": {

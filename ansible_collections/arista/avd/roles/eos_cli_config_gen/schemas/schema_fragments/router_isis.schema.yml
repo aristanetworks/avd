@@ -33,10 +33,18 @@ keys:
         keys:
           passive_only:
             type: bool
+      no_passive_interfaces:
+        type: list
+        items:
+          type: str
       address_family:
-        type: str
+        type: list
+        items:
+          type: str
       isis_af_defaults:
-        type: int
+        type: list
+        items:
+          type: str
       redistribute_routes:
         type: list
         items:
