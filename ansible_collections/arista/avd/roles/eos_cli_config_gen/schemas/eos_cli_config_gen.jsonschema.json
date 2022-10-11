@@ -3184,13 +3184,16 @@
       "properties": {
         "ipv4": {
           "type": "object",
+          "title": "IPv4",
           "properties": {
             "ssm_range": {
               "type": "string",
+              "description": "IPv4 Prefix associated with SSM",
               "title": "Ssm Range"
             },
             "rp_addresses": {
               "type": "array",
+              "title": "RP Addresses",
               "items": {
                 "type": "object",
                 "properties": {
@@ -3210,11 +3213,11 @@
                   "address"
                 ],
                 "additionalProperties": false
-              },
-              "title": "Rp Addresses"
+              }
             },
             "anycast_rps": {
               "type": "array",
+              "title": "Anycast RPs",
               "items": {
                 "type": "object",
                 "properties": {
@@ -3224,6 +3227,7 @@
                   },
                   "other_anycast_rp_addresses": {
                     "type": "array",
+                    "title": "Other Anycast RP Addresses",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -3240,23 +3244,21 @@
                         "address"
                       ],
                       "additionalProperties": false
-                    },
-                    "title": "Other Anycast Rp Addresses"
+                    }
                   }
                 },
                 "required": [
                   "address"
                 ],
                 "additionalProperties": false
-              },
-              "title": "Anycast Rps"
+              }
             }
           },
-          "additionalProperties": false,
-          "title": "Ipv4"
+          "additionalProperties": false
         },
         "vrfs": {
           "type": "array",
+          "title": "VRFs",
           "items": {
             "type": "object",
             "properties": {
@@ -3269,6 +3271,7 @@
                 "properties": {
                   "rp_addresses": {
                     "type": "array",
+                    "title": "RP Addresses",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -3285,8 +3288,7 @@
                         }
                       },
                       "additionalProperties": false
-                    },
-                    "title": "Rp Addresses"
+                    }
                   }
                 },
                 "additionalProperties": false,
@@ -3294,8 +3296,7 @@
               }
             },
             "additionalProperties": false
-          },
-          "title": "Vrfs"
+          }
         }
       },
       "additionalProperties": false

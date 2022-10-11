@@ -2493,11 +2493,14 @@ keys:
     keys:
       ipv4:
         type: dict
+        display_name: IPv4
         keys:
           ssm_range:
             type: str
+            description: IPv4 Prefix associated with SSM
           rp_addresses:
             type: list
+            display_name: RP Addresses
             primary_key: address
             convert_types:
             - dict
@@ -2510,10 +2513,13 @@ keys:
                   display_name: RP Address
                 groups:
                   type: list
+                  convert_types:
+                  - dict
                   items:
                     type: str
           anycast_rps:
             type: list
+            display_name: Anycast RPs
             primary_key: address
             convert_types:
             - dict
@@ -2526,6 +2532,7 @@ keys:
                   display_name: Anycast RP Address
                 other_anycast_rp_addresses:
                   type: list
+                  display_name: Other Anycast RP Addresses
                   primary_key: address
                   convert_types:
                   - dict
@@ -2542,6 +2549,7 @@ keys:
                         - str
       vrfs:
         type: list
+        display_name: VRFs
         items:
           type: dict
           keys:
@@ -2553,6 +2561,7 @@ keys:
               keys:
                 rp_addresses:
                   type: list
+                  display_name: RP Addresses
                   items:
                     type: dict
                     keys:
