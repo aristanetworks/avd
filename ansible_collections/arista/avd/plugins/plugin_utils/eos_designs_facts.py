@@ -2,14 +2,9 @@ import ipaddress
 import re
 from functools import cached_property
 from hashlib import sha256
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
-    AristaAvdError,
-    AristaAvdMissingVariableError,
-    get,
-    get_item,
-    default,
-)
-from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+
+from ansible.plugins.filter.core import combine
+
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
@@ -101,9 +96,7 @@ class EosDesignsFacts(AvdFacts):
         """
         internal switch.default_downlink_interfaces set based on default_interfaces
         """
-        return range_expand(
-            get(self.default_interfaces, "downlink_interfaces", default=[])
-        )
+        return range_expand(get(self.default_interfaces, "downlink_interfaces", default=[]))
 
     @cached_property
     def default_evpn_role(self):
@@ -122,17 +115,13 @@ class EosDesignsFacts(AvdFacts):
         # First look for a matching default interface set that matches our platform and type
         for default_interface in default_interfaces:
             for platform in default_interface.get("platforms", []):
-                if re.search(
-                    f"^{platform}$", device_platform
-                ) and self.type in default_interface.get("types", []):
+                if re.search(f"^{platform}$", device_platform) and self.type in default_interface.get("types", []):
                     return default_interface
 
         # If not found, then look for a default default_interface that matches our type
         for default_interface in default_interfaces:
             for platform in default_interface.get("platforms", []):
-                if re.search(
-                    f"^{platform}$", "default"
-                ) and self.type in default_interface.get("types", []):
+                if re.search(f"^{platform}$", "default") and self.type in default_interface.get("types", []):
                     return default_interface
 
         return {}
@@ -155,9 +144,7 @@ class EosDesignsFacts(AvdFacts):
         switch.default_overlay_routing_protocol set based on
         node_type_keys.<node_type_key>.default_overlay_routing_protocol
         """
-        return get(
-            self._node_type_key_data, "default_overlay_routing_protocol", default="ebgp"
-        )
+        return get(self._node_type_key_data, "default_overlay_routing_protocol", default="ebgp")
 
     @cached_property
     def default_overlay_address_families(self):
@@ -177,9 +164,7 @@ class EosDesignsFacts(AvdFacts):
         switch.default_mpls_overlay_role set based on
         node_type_keys.<node_type_key>.default_mpls_overlay_role
         """
-        return get(
-            self._node_type_key_data, "default_mpls_overlay_role", default="none"
-        )
+        return get(self._node_type_key_data, "default_mpls_overlay_role", default="none")
 
     @cached_property
     def mpls_lsr(self):
@@ -276,12 +261,8 @@ class EosDesignsFacts(AvdFacts):
         templates.interface_descriptions.* combined with (overridden by)
         node_type_keys.<node_type_key>.interface_descriptions.*
         """
-        hostvar_templates = get(
-            self._hostvars, "templates.interface_descriptions", default={}
-        )
-        node_type_templates = get(
-            self._node_type_key_data, "interface_descriptions", default={}
-        )
+        hostvar_templates = get(self._hostvars, "templates.interface_descriptions", default={})
+        node_type_templates = get(self._node_type_key_data, "interface_descriptions", default={})
         if hostvar_templates or node_type_templates:
             return combine(
                 hostvar_templates,
@@ -325,9 +306,7 @@ class EosDesignsFacts(AvdFacts):
                 node_config = node
                 break
         if not node_config:
-            node_groups = convert_dicts(
-                node_type_config.get("node_groups", []), "group"
-            )
+            node_groups = convert_dicts(node_type_config.get("node_groups", []), "group")
             for node_group in node_groups:
                 nodes = convert_dicts(node_group.get("nodes", []), "name")
                 node_group["nodes"] = nodes
@@ -350,9 +329,7 @@ class EosDesignsFacts(AvdFacts):
             list_merge="replace",
         )
         # Merge node data on top of combined
-        switch_data["combined"] = combine(
-            switch_data["combined"], node_config, recursive=True, list_merge="replace"
-        )
+        switch_data["combined"] = combine(switch_data["combined"], node_config, recursive=True, list_merge="replace")
 
         return switch_data
 
@@ -411,9 +388,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def uplink_switch_interfaces(self):
-        uplink_switch_interfaces = get(
-            self._switch_data_combined, "uplink_switch_interfaces"
-        )
+        uplink_switch_interfaces = get(self._switch_data_combined, "uplink_switch_interfaces")
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces
 
@@ -432,21 +407,15 @@ class EosDesignsFacts(AvdFacts):
             )
 
             # Count the number of instances the current switch was processed
-            uplink_switch_counter[uplink_switch] = (
-                uplink_switch_counter.get(uplink_switch, 0) + 1
-            )
+            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
             index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
 
             # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
             # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
             # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
-            downlink_index = (
-                self.id - 1
-            ) * self.max_parallel_uplinks + index_of_parallel_uplinks
+            downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
             if len(uplink_switch_facts.default_downlink_interfaces) > downlink_index:
-                uplink_switch_interfaces.append(
-                    uplink_switch_facts.default_downlink_interfaces[downlink_index]
-                )
+                uplink_switch_interfaces.append(uplink_switch_facts.default_downlink_interfaces[downlink_index])
             else:
                 raise AristaAvdError(
                     f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
@@ -487,9 +456,7 @@ class EosDesignsFacts(AvdFacts):
             esi_seed_2 = "".join(default(self.uplink_switch_interfaces, [])[:2])
             esi_seed_3 = "".join(default(self.uplink_interfaces, [])[:2])
             esi_seed_4 = default(self.group, "")
-            esi_hash = sha256(
-                f"{esi_seed_1}{esi_seed_2}{esi_seed_3}{esi_seed_4}".encode("utf-8")
-            ).hexdigest()
+            esi_hash = sha256(f"{esi_seed_1}{esi_seed_2}{esi_seed_3}{esi_seed_4}".encode("utf-8")).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", r"\1:", esi_hash)[:14]
         return short_esi
 
@@ -598,23 +565,15 @@ class EosDesignsFacts(AvdFacts):
     def link_tracking_groups(self):
         if get(self._switch_data_combined, "link_tracking.enabled") is True:
             link_tracking_groups = []
-            default_recovery_delay = get(
-                self.platform_settings, "reload_delay.mlag", 300
-            )
-            lt_groups = get(
-                self._switch_data_combined, "link_tracking.groups", default=[]
-            )
+            default_recovery_delay = get(self.platform_settings, "reload_delay.mlag", 300)
+            lt_groups = get(self._switch_data_combined, "link_tracking.groups", default=[])
 
             if len(lt_groups) > 0:
                 for lt_group in lt_groups:
-                    lt_group["recovery_delay"] = lt_group.get(
-                        "recovery_delay", default_recovery_delay
-                    )
+                    lt_group["recovery_delay"] = lt_group.get("recovery_delay", default_recovery_delay)
                     link_tracking_groups.append(lt_group)
             else:
-                link_tracking_groups.append(
-                    {"name": "LT_GROUP1", "recovery_delay": default_recovery_delay}
-                )
+                link_tracking_groups.append({"name": "LT_GROUP1", "recovery_delay": default_recovery_delay})
 
             return link_tracking_groups
 
@@ -626,18 +585,10 @@ class EosDesignsFacts(AvdFacts):
             node_group_length = max(len(self._switch_data_node_group_nodes), 1)
             lacp_port_id = {}
             switch_id = self.id
-            port_range = int(
-                get(self._switch_data_combined, "lacp_port_id_range.size", default=128)
-            )
-            port_offset = int(
-                get(self._switch_data_combined, "lacp_port_id_range.offset", default=0)
-            )
-            lacp_port_id["begin"] = (
-                1 + (((switch_id - 1) % node_group_length) * port_range) + port_offset
-            )
-            lacp_port_id["end"] = (
-                ((switch_id - 1) % node_group_length + 1) * port_range
-            ) + port_offset
+            port_range = int(get(self._switch_data_combined, "lacp_port_id_range.size", default=128))
+            port_offset = int(get(self._switch_data_combined, "lacp_port_id_range.offset", default=0))
+            lacp_port_id["begin"] = 1 + (((switch_id - 1) % node_group_length) * port_range) + port_offset
+            lacp_port_id["end"] = (((switch_id - 1) % node_group_length + 1) * port_range) + port_offset
             return lacp_port_id
 
         return None
@@ -647,11 +598,7 @@ class EosDesignsFacts(AvdFacts):
         """
         Returns True if either L1, L2 or L3 network_services are enabled
         """
-        return (
-            self.network_services_l1 is True
-            or self.network_services_l2 is True
-            or self.network_services_l3 is True
-        )
+        return self.network_services_l1 is True or self.network_services_l2 is True or self.network_services_l3 is True
 
     @cached_property
     def filter_tenants(self):
@@ -662,9 +609,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def always_include_vrfs_in_tenants(self):
         if self._any_network_services:
-            return get(
-                self._switch_data_combined, "filter.always_include_vrfs_in_tenants"
-            )
+            return get(self._switch_data_combined, "filter.always_include_vrfs_in_tenants")
         return None
 
     @cached_property
@@ -676,9 +621,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def filter_only_vlans_in_use(self):
         if self._any_network_services:
-            return get(
-                self._switch_data_combined, "filter.only_vlans_in_use", default=False
-            )
+            return get(self._switch_data_combined, "filter.only_vlans_in_use", default=False)
         return None
 
     @cached_property
@@ -693,19 +636,9 @@ class EosDesignsFacts(AvdFacts):
             return None
 
         return {
-            "mlag": {
-                "name": get(self._hostvars, "trunk_groups.mlag.name", default="MLAG")
-            },
-            "mlag_l3": {
-                "name": get(
-                    self._hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3"
-                )
-            },
-            "uplink": {
-                "name": get(
-                    self._hostvars, "trunk_groups.uplink.name", default="UPLINK"
-                )
-            },
+            "mlag": {"name": get(self._hostvars, "trunk_groups.mlag.name", default="MLAG")},
+            "mlag_l3": {"name": get(self._hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3")},
+            "uplink": {"name": get(self._hostvars, "trunk_groups.uplink.name", default="UPLINK")},
         }
 
     @cached_property
@@ -735,17 +668,12 @@ class EosDesignsFacts(AvdFacts):
         # Support legacy data model by converting nested dict to list of dict
         port_profiles = convert_dicts(port_profiles, "profile")
 
-        connected_endpoints_keys = get(
-            self._hostvars, "connected_endpoints_keys", default=[]
-        )
+        connected_endpoints_keys = get(self._hostvars, "connected_endpoints_keys", default=[])
         # Support legacy data model by converting nested dict to list of dict
         connected_endpoints_keys = convert_dicts(connected_endpoints_keys, "key")
         for connected_endpoints_key in connected_endpoints_keys:
             connected_endpoints_key_key = connected_endpoints_key.get("key")
-            if (
-                connected_endpoints_key_key is None
-                or get(self._hostvars, connected_endpoints_key_key) is None
-            ):
+            if connected_endpoints_key_key is None or get(self._hostvars, connected_endpoints_key_key) is None:
                 # Invalid connected_endpoints_key.key. Skipping.
                 continue
 
@@ -755,13 +683,9 @@ class EosDesignsFacts(AvdFacts):
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
                     profile_name = adapter.get("profile")
-                    adapter_profile = get_item(
-                        port_profiles, "profile", profile_name, default={}
-                    )
+                    adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
                     parent_profile_name = adapter_profile.get("parent_profile")
-                    parent_profile = get_item(
-                        port_profiles, "profile", parent_profile_name, default={}
-                    )
+                    parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
 
                     adapter_settings = combine(
                         parent_profile,
@@ -775,12 +699,8 @@ class EosDesignsFacts(AvdFacts):
                         # This switch is not connected to this endpoint. Skipping.
                         continue
 
-                    if "vlans" in adapter_settings and adapter_settings[
-                        "vlans"
-                    ] not in ["all", "", None]:
-                        vlans.extend(
-                            map(int, range_expand(str(adapter_settings["vlans"])))
-                        )
+                    if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
+                        vlans.extend(map(int, range_expand(str(adapter_settings["vlans"]))))
                         if adapter_settings.get("trunk_groups"):
                             trunk_groups.extend(adapter_settings["trunk_groups"])
                     elif "trunk" in adapter_settings.get("mode", ""):
@@ -800,9 +720,7 @@ class EosDesignsFacts(AvdFacts):
                     vlans.append(int(adapter_settings["native_vlan"]))
 
                     if get(adapter_settings, "port_channel.subinterfaces"):
-                        for subinterface in get(
-                            adapter_settings, "port_channel.subinterfaces"
-                        ):
+                        for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
                             if "vlan_id" in subinterface:
                                 vlans.append(int(subinterface["vlan_id"]))
                             elif "number" in subinterface:
@@ -862,10 +780,7 @@ class EosDesignsFacts(AvdFacts):
                 separator="..",
                 org_key=f"avd_switch_facts.{fabric_switch}.switch",
             )
-            if (
-                fabric_switch_facts.uplink_type == "port-channel"
-                and self.hostname in fabric_switch_facts.uplink_peers
-            ):
+            if fabric_switch_facts.uplink_type == "port-channel" and self.hostname in fabric_switch_facts.uplink_peers:
                 vlans.extend(fabric_switch_facts._vlans)
 
         return list(set(vlans)), list(set(trunk_groups))
@@ -918,15 +833,10 @@ class EosDesignsFacts(AvdFacts):
                 vlans_in_use = set(vlans_in_use)
                 trunk_groups_in_use = set(trunk_groups_in_use)
 
-            network_services_keys = get(
-                self._hostvars, "network_services_keys", default=[]
-            )
+            network_services_keys = get(self._hostvars, "network_services_keys", default=[])
             for network_services_key in natural_sort(network_services_keys, "name"):
                 network_services_key_name = network_services_key.get("name")
-                if (
-                    network_services_key_name is None
-                    or get(self._hostvars, network_services_key_name) is None
-                ):
+                if network_services_key_name is None or get(self._hostvars, network_services_key_name) is None:
                     # Invalid network_services_key.name. Skipping.
                     continue
 
@@ -934,9 +844,7 @@ class EosDesignsFacts(AvdFacts):
                 # Support legacy data model by converting nested dict to list of dict
                 tenants = convert_dicts(tenants, "name")
                 for tenant in natural_sort(tenants, "name"):
-                    if not set(self.filter_tenants).intersection(
-                        [tenant["name"], "all"]
-                    ):
+                    if not set(self.filter_tenants).intersection([tenant["name"], "all"]):
                         # Not matching tenant filters. Skipping this tenant.
                         continue
 
@@ -949,22 +857,14 @@ class EosDesignsFacts(AvdFacts):
                         svis = convert_dicts(svis, "id")
                         for svi in natural_sort(svis, "id"):
                             svi_tags = svi.get("tags", ["all"])
-                            if "all" in match_tags or set(svi_tags).intersection(
-                                match_tags
-                            ):
+                            if "all" in match_tags or set(svi_tags).intersection(match_tags):
                                 if self.filter_only_vlans_in_use:
                                     # Check if vlan is in use
                                     if int(svi["id"]) in vlans_in_use:
                                         vlans.append(int(svi["id"]))
                                         continue
                                     # Check if vlan has a trunk group defined which is in use
-                                    if (
-                                        self.enable_trunk_groups
-                                        and svi.get("trunk_groups")
-                                        and trunk_groups_in_use.intersection(
-                                            svi["trunk_groups"]
-                                        )
-                                    ):
+                                    if self.enable_trunk_groups and svi.get("trunk_groups") and trunk_groups_in_use.intersection(svi["trunk_groups"]):
                                         vlans.append(int(svi["id"]))
                                         continue
                                     # Skip since the vlan is not in use
@@ -977,22 +877,14 @@ class EosDesignsFacts(AvdFacts):
 
                     for l2vlan in natural_sort(l2vlans, "id"):
                         l2vlan_tags = l2vlan.get("tags", ["all"])
-                        if "all" in match_tags or set(l2vlan_tags).intersection(
-                            match_tags
-                        ):
+                        if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):
                             if self.filter_only_vlans_in_use:
                                 # Check if vlan is in use
                                 if int(l2vlan["id"]) in vlans_in_use:
                                     vlans.append(int(l2vlan["id"]))
                                     continue
                                 # Check if vlan has a trunk group defined which is in use
-                                if (
-                                    self.enable_trunk_groups
-                                    and l2vlan.get("trunk_groups")
-                                    and trunk_groups_in_use.intersection(
-                                        l2vlan["trunk_groups"]
-                                    )
-                                ):
+                                if self.enable_trunk_groups and l2vlan.get("trunk_groups") and trunk_groups_in_use.intersection(l2vlan["trunk_groups"]):
                                     vlans.append(int(l2vlan["id"]))
                                     continue
                                 # Skip since the vlan is not in use
@@ -1051,15 +943,8 @@ class EosDesignsFacts(AvdFacts):
             return self.bgp_as
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
-        if (
-            isinstance(tmp_overlay_rd_type_admin_subfield, int)
-            and tmp_overlay_rd_type_admin_subfield > 0
-            and tmp_overlay_rd_type_admin_subfield <= 4294967295
-        ):
-            return (
-                tmp_overlay_rd_type_admin_subfield
-                + tmp_overlay_rd_type_admin_subfield_offset
-            )
+        if isinstance(tmp_overlay_rd_type_admin_subfield, int) and tmp_overlay_rd_type_admin_subfield > 0 and tmp_overlay_rd_type_admin_subfield <= 4294967295:
+            return tmp_overlay_rd_type_admin_subfield + tmp_overlay_rd_type_admin_subfield_offset
         if isinstance(tmp_overlay_rd_type_admin_subfield, str):
             try:
                 ipaddress.ip_address(tmp_overlay_rd_type_admin_subfield)
@@ -1084,10 +969,7 @@ class EosDesignsFacts(AvdFacts):
                     org_key=f"avd_switch_facts.({self.mlag_peer}).switch.overlay_rd_type_admin_subfield",
                     separator="..",
                 )
-                if (
-                    self.overlay_rd_type_admin_subfield
-                    == peer_overlay_rd_type_admin_subfield
-                ):
+                if self.overlay_rd_type_admin_subfield == peer_overlay_rd_type_admin_subfield:
                     raise AristaAvdError(
                         "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
                     )
@@ -1103,9 +985,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def igmp_snooping_enabled(self):
         if self.network_services_l2 is True:
-            default_igmp_snooping_enabled = get(
-                self._hostvars, "default_igmp_snooping_enabled"
-            )
+            default_igmp_snooping_enabled = get(self._hostvars, "default_igmp_snooping_enabled")
             return get(
                 self._switch_data_combined,
                 "igmp_snooping_enabled",
@@ -1298,9 +1178,7 @@ class EosDesignsFacts(AvdFacts):
                         "bgp_peer_groups.evpn_overlay_core.name",
                         default="EVPN-OVERLAY-CORE",
                     ),
-                    "password": get(
-                        self._hostvars, "bgp_peer_groups.evpn_overlay_core.password"
-                    ),
+                    "password": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.password"),
                     "structured_config": get(
                         self._hostvars,
                         "bgp_peer_groups.evpn_overlay_core.structured_config",
@@ -1312,9 +1190,7 @@ class EosDesignsFacts(AvdFacts):
                         "bgp_peer_groups.mpls_overlay_peers.name",
                         default="MPLS-OVERLAY-PEERS",
                     ),
-                    "password": get(
-                        self._hostvars, "bgp_peer_groups.mpls_overlay_peers.password"
-                    ),
+                    "password": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.password"),
                     "structured_config": get(
                         self._hostvars,
                         "bgp_peer_groups.mpls_overlay_peers.structured_config",
@@ -1326,9 +1202,7 @@ class EosDesignsFacts(AvdFacts):
                         "bgp_peer_groups.rr_overlay_peers.name",
                         default="RR-OVERLAY-PEERS",
                     ),
-                    "password": get(
-                        self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"
-                    ),
+                    "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
                     "structured_config": get(
                         self._hostvars,
                         "bgp_peer_groups.rr_overlay_peers.structured_config",
@@ -1340,9 +1214,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def evpn_role(self):
         if self.underlay_router is True:
-            return get(
-                self._switch_data_combined, "evpn_role", default=self.default_evpn_role
-            )
+            return get(self._switch_data_combined, "evpn_role", default=self.default_evpn_role)
         return None
 
     @cached_property
@@ -1370,39 +1242,26 @@ class EosDesignsFacts(AvdFacts):
          - Lower level definitions override higher level definitions as is standard with AVD.
         """
         if self.underlay_router is True:
-            if (
-                self.underlay_routing_protocol == "ebgp"
-                or self.evpn_role != "none"
-                or self.mpls_overlay_role != "none"
-            ):
+            if self.underlay_routing_protocol == "ebgp" or self.evpn_role != "none" or self.mpls_overlay_role != "none":
                 if get(self._hostvars, "bgp_as") is not None:
                     return str(get(self._hostvars, "bgp_as"))
                 else:
-                    bgp_as_range_expanded = range_expand(
-                        str(get(self._switch_data_combined, "bgp_as", required=True))
-                    )
+                    bgp_as_range_expanded = range_expand(str(get(self._switch_data_combined, "bgp_as", required=True)))
                     try:
                         if len(bgp_as_range_expanded) == 1:
                             return bgp_as_range_expanded[0]
                         elif self.mlag:
-                            return bgp_as_range_expanded[
-                                self.mlag_switch_ids["primary"] - 1
-                            ]
+                            return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
                         else:
                             return bgp_as_range_expanded[self.id - 1]
                     except IndexError as exc:
                         raise AristaAvdError(
-                            "Unable to allocate BGP AS: bgp_as range is too small "
-                            f"({len(bgp_as_range_expanded)}) for the id of the device"
+                            f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
                         ) from exc
 
             # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
             # TODO: Remove this as part of AVD4.0
-            elif (
-                self.underlay_routing_protocol in ["isis", "ospf"]
-                and self.evpn_role == "none"
-                and get(self._hostvars, "bgp_as") is not None
-            ):
+            elif self.underlay_routing_protocol in ["isis", "ospf"] and self.evpn_role == "none" and get(self._hostvars, "bgp_as") is not None:
                 return str(get(self._hostvars, "bgp_as"))
         return None
 
@@ -1439,9 +1298,7 @@ class EosDesignsFacts(AvdFacts):
                 "isis-sr",
                 "isis-sr-ldp",
             ]:
-                isis_system_id_prefix = get(
-                    self._switch_data_combined, "isis_system_id_prefix"
-                )
+                isis_system_id_prefix = get(self._switch_data_combined, "isis_system_id_prefix")
                 if isis_system_id_prefix is not None:
                     isis_area_id = get(self._hostvars, "isis_area_id", required=True)
                     switch_id = self.id
@@ -1457,12 +1314,8 @@ class EosDesignsFacts(AvdFacts):
                 "isis-sr",
                 "isis-sr-ldp",
             ]:
-                default_is_type = get(
-                    self._hostvars, "isis_default_is_type", default="level-2"
-                )
-                is_type = str(
-                    get(self._switch_data_combined, "is_type", default=default_is_type)
-                ).lower()
+                default_is_type = get(self._hostvars, "isis_default_is_type", default="level-2")
+                is_type = str(get(self._switch_data_combined, "is_type", default=default_is_type)).lower()
                 if is_type not in ["level-1", "level-2", "level-1-2"]:
                     is_type = "level-2"
                 return is_type
@@ -1538,9 +1391,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_ibgp_origin_incomplete(self):
         if self.mlag is True:
-            return get(
-                self._switch_data_combined, "mlag_ibgp_origin_incomplete", default=True
-            )
+            return get(self._switch_data_combined, "mlag_ibgp_origin_incomplete", default=True)
         return None
 
     @cached_property
@@ -1562,9 +1413,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_dual_primary_detection(self):
         if self.mlag is True:
-            return get(
-                self._switch_data_combined, "mlag_dual_primary_detection", default=False
-            )
+            return get(self._switch_data_combined, "mlag_dual_primary_detection", default=False)
         return None
 
     @cached_property
@@ -1600,9 +1449,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_port_channel_structured_config(self):
         if self.mlag is True:
-            return get(
-                self._switch_data_combined, "mlag_port_channel_structured_config"
-            )
+            return get(self._switch_data_combined, "mlag_port_channel_structured_config")
         return None
 
     @cached_property
@@ -1614,9 +1461,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_peer_l3_vlan_structured_config(self):
         if self.mlag is True:
-            return get(
-                self._switch_data_combined, "mlag_peer_l3_vlan_structured_config"
-            )
+            return get(self._switch_data_combined, "mlag_peer_l3_vlan_structured_config")
         return None
 
     @cached_property
@@ -1647,9 +1492,7 @@ class EosDesignsFacts(AvdFacts):
     def mlag_peer_l3_vlan(self):
         if self.mlag_l3 is True:
             mlag_peer_vlan = self.mlag_peer_vlan
-            mlag_peer_l3_vlan = get(
-                self._switch_data_combined, "mlag_peer_l3_vlan", default=4093
-            )
+            mlag_peer_l3_vlan = get(self._switch_data_combined, "mlag_peer_l3_vlan", default=4093)
             if mlag_peer_l3_vlan not in [None, False, mlag_peer_vlan]:
                 return mlag_peer_l3_vlan
         return None
@@ -1657,9 +1500,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_port_channel_id(self):
         if self.mlag is True:
-            default_mlag_port_channel_id = "".join(
-                re.findall(r"\d", self.mlag_interfaces[0])
-            )
+            default_mlag_port_channel_id = "".join(re.findall(r"\d", self.mlag_interfaces[0]))
             return get(
                 self._switch_data_combined,
                 "mlag_port_channel_id",
@@ -1670,9 +1511,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def vtep_loopback_ipv4_pool(self):
         if self.vtep is True:
-            return get(
-                self._switch_data_combined, "vtep_loopback_ipv4_pool", required=True
-            )
+            return get(self._switch_data_combined, "vtep_loopback_ipv4_pool", required=True)
         return None
 
     @cached_property
@@ -1686,10 +1525,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def inband_management_role(self):
-        if (
-            self.inband_management_subnet is not None
-            and self.uplink_type == "port-channel"
-        ):
+        if self.inband_management_subnet is not None and self.uplink_type == "port-channel":
             return "child"
         return None
 
@@ -1702,9 +1538,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def inband_management_vlan(self):
         if self.inband_management_role == "child":
-            return get(
-                self._switch_data_combined, "inband_management_vlan", default=4092
-            )
+            return get(self._switch_data_combined, "inband_management_vlan", default=4092)
         return None
 
     @cached_property
@@ -1746,16 +1580,11 @@ class EosDesignsFacts(AvdFacts):
             uplink_switches = default(self.uplink_switches, [])
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
-            inventory_group = get(
-                self._hostvars, f"groups.{fabric_name}", required=True
-            )
+            inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
             template_vars = ChainMap({}, self._hostvars)
             template_vars["switch_id"] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
-                if (
-                    len(uplink_switches) <= uplink_index
-                    or len(uplink_switch_interfaces) <= uplink_index
-                ):
+                if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
                     continue
 
@@ -1787,34 +1616,21 @@ class EosDesignsFacts(AvdFacts):
                     uplink["ptp"] = self.uplink_ptp
                 if self.uplink_macsec is not None:
                     uplink["mac_security"] = self.uplink_macsec
-                if (
-                    self.underlay_multicast is True
-                    and uplink_switch_facts.underlay_multicast is True
-                ):
+                if self.underlay_multicast is True and uplink_switch_facts.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
                 if get(self._hostvars, "underlay_rfc5549") is True:
                     uplink["ipv6_enable"] = True
                 else:
                     template_vars["uplink_switch_index"] = uplink_index
-                    template_path = get(
-                        self.ip_addressing, "p2p_uplinks_ip", required=True
-                    )
-                    uplink["ip_address"] = self.template_var(
-                        template_path, template_vars
-                    )
-                    template_path = get(
-                        self.ip_addressing, "p2p_uplinks_peer_ip", required=True
-                    )
-                    uplink["peer_ip_address"] = self.template_var(
-                        template_path, template_vars
-                    )
+                    template_path = get(self.ip_addressing, "p2p_uplinks_ip", required=True)
+                    uplink["ip_address"] = self.template_var(template_path, template_vars)
+                    template_path = get(self.ip_addressing, "p2p_uplinks_peer_ip", required=True)
+                    uplink["peer_ip_address"] = self.template_var(template_path, template_vars)
 
                 if self.link_tracking_groups is not None:
                     uplink["link_tracking_groups"] = []
                     for lt_group in self.link_tracking_groups:
-                        uplink["link_tracking_groups"].append(
-                            {"name": lt_group["name"], "direction": "upstream"}
-                        )
+                        uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
                 if self.uplink_structured_config is not None:
                     uplink["structured_config"] = self.uplink_structured_config
@@ -1827,15 +1643,10 @@ class EosDesignsFacts(AvdFacts):
             uplink_switches = default(self.uplink_switches, [])
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
-            inventory_group = get(
-                self._hostvars, f"groups.{fabric_name}", required=True
-            )
+            inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
 
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
-                if (
-                    len(uplink_switches) <= uplink_index
-                    or len(uplink_switch_interfaces) <= uplink_index
-                ):
+                if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
                     continue
 
@@ -1877,21 +1688,11 @@ class EosDesignsFacts(AvdFacts):
                         required=True,
                     )
 
-                    uplink["channel_group_id"] = "".join(
-                        re.findall(r"\d", mlag_peer_switch_facts.uplink_interfaces[0])
-                    )
-                    uplink["peer_channel_group_id"] = "".join(
-                        re.findall(
-                            r"\d", mlag_peer_switch_facts.uplink_switch_interfaces[0]
-                        )
-                    )
+                    uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_interfaces[0]))
+                    uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_switch_interfaces[0]))
                 else:
-                    uplink["channel_group_id"] = "".join(
-                        re.findall(r"\d", uplink_interfaces[0])
-                    )
-                    uplink["peer_channel_group_id"] = "".join(
-                        re.findall(r"\d", uplink_switch_interfaces[0])
-                    )
+                    uplink["channel_group_id"] = "".join(re.findall(r"\d", uplink_interfaces[0]))
+                    uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", uplink_switch_interfaces[0]))
 
                 # Remove vlans if upstream switch does not have them #}
                 if self.enable_trunk_groups:
@@ -1919,9 +1720,7 @@ class EosDesignsFacts(AvdFacts):
                 if self.link_tracking_groups is not None:
                     uplink["link_tracking_groups"] = []
                     for lt_group in self.link_tracking_groups:
-                        uplink["link_tracking_groups"].append(
-                            {"name": lt_group["name"], "direction": "upstream"}
-                        )
+                        uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
                 if self.uplink_structured_config is not None:
                     uplink["structured_config"] = self.uplink_structured_config
@@ -1939,11 +1738,7 @@ class EosDesignsFacts(AvdFacts):
         fabric_name = get(self._hostvars, "fabric_name", required=True)
         inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
         uplink_switches = default(self.uplink_switches, [])
-        return [
-            uplink_switch
-            for uplink_switch in uplink_switches
-            if uplink_switch in inventory_group
-        ]
+        return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in inventory_group]
 
     @cached_property
     def _mlag_peer_id(self):
@@ -1977,9 +1772,7 @@ class EosDesignsFacts(AvdFacts):
         if self.vtep is True:
             template_vars = ChainMap({}, self._hostvars)
             template_vars["switch_id"] = self.id
-            template_vars[
-                "switch_vtep_loopback_ipv4_pool"
-            ] = self.vtep_loopback_ipv4_pool
+            template_vars["switch_vtep_loopback_ipv4_pool"] = self.vtep_loopback_ipv4_pool
             template_vars["loopback_ipv4_offset"] = self.loopback_ipv4_offset
 
             if self.mlag is True:
@@ -2008,21 +1801,15 @@ class EosDesignsFacts(AvdFacts):
         if self.mlag is True:
             template_vars = ChainMap({}, self._hostvars)
             template_vars["switch_id"] = self.id
-            template_vars["switch_data"] = {
-                "combined": {"mlag_peer_ipv4_pool": self.mlag_peer_ipv4_pool}
-            }
+            template_vars["switch_data"] = {"combined": {"mlag_peer_ipv4_pool": self.mlag_peer_ipv4_pool}}
             if self.mlag_role == "primary":
                 template_vars["mlag_primary_id"] = self.id
                 template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                template_path = get(
-                    self.ip_addressing, "mlag_ip_primary", required=True
-                )
+                template_path = get(self.ip_addressing, "mlag_ip_primary", required=True)
             elif self.mlag_role == "secondary":
                 template_vars["mlag_secondary_id"] = self.id
                 template_vars["mlag_primary_id"] = self._mlag_peer_id
-                template_path = get(
-                    self.ip_addressing, "mlag_ip_secondary", required=True
-                )
+                template_path = get(self.ip_addressing, "mlag_ip_secondary", required=True)
             return self.template_var(template_path, template_vars)
         return None
 
@@ -2049,21 +1836,15 @@ class EosDesignsFacts(AvdFacts):
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
             template_vars = ChainMap({}, self._hostvars)
             template_vars["switch_id"] = self.id
-            template_vars["switch_data"] = {
-                "combined": {"mlag_peer_l3_ipv4_pool": self.mlag_peer_l3_ipv4_pool}
-            }
+            template_vars["switch_data"] = {"combined": {"mlag_peer_l3_ipv4_pool": self.mlag_peer_l3_ipv4_pool}}
             if self.mlag_role == "primary":
                 template_vars["mlag_primary_id"] = self.id
                 template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                template_path = get(
-                    self.ip_addressing, "mlag_l3_ip_primary", required=True
-                )
+                template_path = get(self.ip_addressing, "mlag_l3_ip_primary", required=True)
             elif self.mlag_role == "secondary":
                 template_vars["mlag_secondary_id"] = self.id
                 template_vars["mlag_primary_id"] = self._mlag_peer_id
-                template_path = get(
-                    self.ip_addressing, "mlag_l3_ip_secondary", required=True
-                )
+                template_path = get(self.ip_addressing, "mlag_l3_ip_secondary", required=True)
 
             return self.template_var(template_path, template_vars)
         return None
@@ -2095,9 +1876,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def overlay_routing_protocol_address_family(self):
-        overlay_routing_protocol_address_family = get(
-            self._hostvars, "overlay_routing_protocol_address_family", default="ipv4"
-        )
+        overlay_routing_protocol_address_family = get(self._hostvars, "overlay_routing_protocol_address_family", default="ipv4")
         if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self._hostvars, "underlay_ipv6") is True and get(self._hostvars, "underlay_rfc5549") is True):
                 raise AristaAvdError(
@@ -2109,12 +1888,8 @@ class EosDesignsFacts(AvdFacts):
     def bgp(self):
         if self.underlay_routing_protocol == "ebgp":
             return True
-        elif (  # had to do this to fix switch.bgp not becoming true on P node.
-            self.overlay_routing_protocol in ["ebgp", "ibgp"]
-            and (
-                self.evpn_role in ["client", "server"]
-                or self.mpls_overlay_role in ["client", "server"]
-            )
+        elif self.overlay_routing_protocol in ["ebgp", "ibgp"] and (  # had to do this to fix switch.bgp not becoming true on P node.
+            self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"]
         ):
             return True
         else:
@@ -2124,17 +1899,12 @@ class EosDesignsFacts(AvdFacts):
     def underlay(self):
         bgp = self.bgp and self.underlay_routing_protocol == "ebgp"
         mpls = (
-            self.underlay_routing_protocol
-            in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"]
+            self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"]
             and self.underlay_router
             and self.uplink_type == "p2p"
             and self.mpls_lsr
         )
-        ospf = (
-            self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
-            and self.underlay_router
-            and self.uplink_type == "p2p"
-        )
+        ospf = self.underlay_routing_protocol in ["ospf", "ospf-ldp"] and self.underlay_router and self.uplink_type == "p2p"
         isis = self.underlay_routing_protocol in [
             "isis",
             "isis-sr",
@@ -2157,15 +1927,8 @@ class EosDesignsFacts(AvdFacts):
         """
         ler = (
             self.underlay["mpls"]
-            and (
-                self.mpls_overlay_role in ["client", "server"]
-                or self.evpn_role in ["client", "server"]
-            )
-            and (
-                self.network_services_l1
-                or self.network_services_l2
-                or self.network_services_l3
-            )
+            and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
+            and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
         )
         """
         Set overlay.vtep based on criteria
@@ -2193,26 +1956,16 @@ class EosDesignsFacts(AvdFacts):
             and self.overlay_routing_protocol in ["ebgp", "ibgp"]
             and "evpn" in self.overlay_address_families
         )
-        evpn_vxlan = (
-            evpn
-            and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan")
-            == "vxlan"
-        )
-        evpn_mpls = (
-            evpn
-            and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan")
-            == "mpls"
-        )
+        evpn_vxlan = evpn and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "vxlan"
+        evpn_mpls = evpn and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "mpls"
         vpn_ipv4 = (
             self.bgp
-            and self.overlay_routing_protocol
-            == "ibgp"  # Will not work for gateway use case as will be ebgp
+            and self.overlay_routing_protocol == "ibgp"  # Will not work for gateway use case as will be ebgp
             and "vpn-ipv4" in self.overlay_address_families
         )
         vpn_ipv6 = (
             self.bgp
-            and self.overlay_routing_protocol
-            == "ibgp"  # Will not work for gateway use case as will be ebgp
+            and self.overlay_routing_protocol == "ibgp"  # Will not work for gateway use case as will be ebgp
             and "vpn-ipv6" in self.overlay_address_families
         )
         return {
