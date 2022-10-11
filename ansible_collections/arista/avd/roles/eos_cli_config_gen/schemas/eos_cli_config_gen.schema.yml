@@ -1996,6 +1996,85 @@ keys:
                     type: str
                     required: true
                     display_name: Regular Expression
+  monitor_connectivity:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      interval:
+        type: int
+        convert_types:
+        - str
+      interface_sets:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            interfaces:
+              type: str
+              description: 'Interface range(s) should be of same type, Ethernet, Loopback,
+                Management etc.
+
+                Multiple interface ranges can be specified separated by ","
+
+                '
+      local_interfaces:
+        type: str
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              display_name: Host Name
+              type: str
+            description:
+              type: str
+            ip:
+              type: str
+            local_interfaces:
+              type: str
+            url:
+              type: str
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              display_name: VRF Name
+              type: str
+            description:
+              type: str
+            interface_sets:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  interfaces:
+                    type: str
+            local_interfaces:
+              type: str
+            hosts:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    display_name: Host name
+                    type: str
+                  description:
+                    type: str
+                  ip:
+                    type: str
+                  local_interfaces:
+                    type: str
+                  url:
+                    type: str
   mpls:
     type: dict
     display_name: MPLS
