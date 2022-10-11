@@ -2293,6 +2293,24 @@
       "additionalProperties": false,
       "title": "Management Console"
     },
+    "management_cvx": {
+      "type": "object",
+      "properties": {
+        "shutdown": {
+          "type": "boolean",
+          "title": "Shutdown"
+        },
+        "server_hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Server Hosts"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management Cvx"
+    },
     "management_defaults": {
       "type": "object",
       "properties": {

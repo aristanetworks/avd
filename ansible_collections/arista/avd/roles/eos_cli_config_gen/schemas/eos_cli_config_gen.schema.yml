@@ -1878,6 +1878,15 @@ keys:
         max: 86400
         convert_types:
         - str
+  management_cvx:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      server_hosts:
+        type: list
+        items:
+          type: str
   management_defaults:
     type: dict
     keys:
