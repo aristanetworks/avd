@@ -2937,6 +2937,7 @@ keys:
                 type: int
                 convert_types:
                 - str
+                required: true
                 display_name: Tx-Queue ID
               bandwidth_percent:
                 type: int

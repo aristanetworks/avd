@@ -109,7 +109,7 @@ keys:
                 keys:
                   rate:
                     type: str
-                    description: | 
+                    description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
         mc_tx_queues:
@@ -144,4 +144,4 @@ keys:
                     type: str
                     description: |
                       Supported options are platform dependent
-                      Example: "< rate > kbps", "1-100 percent", "< rate > pps" 
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
