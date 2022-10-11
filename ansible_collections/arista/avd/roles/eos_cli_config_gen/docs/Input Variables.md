@@ -1543,7 +1543,7 @@ local_users:
 | [<samp>&nbsp;&nbsp;synchronous</samp>](## "logging.synchronous") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "logging.synchronous.level") | String |  | critical | Valid Values:<br>- debugging<br>- informational<br>- notifications<br>- warnings<br>- errors<br>- critical<br>- alerts<br>- emergencies<br>- disabled | Synchronous logging severity level<br> |
 | [<samp>&nbsp;&nbsp;format</samp>](## "logging.format") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timestamp</samp>](## "logging.format.timestamp") | String |  |  | Valid Values:<br>- high-resolution<br>- traditional | Timestamp format |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timestamp</samp>](## "logging.format.timestamp") | String |  |  | Valid Values:<br>- high-resolution<br>- traditional<br>- traditional timezone<br>- traditional year<br>- traditional timezone year<br>- traditional year timezone | Timestamp format |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "logging.format.hostname") | String |  |  | Valid Values:<br>- fqdn<br>- ipv4 | Hostname format |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "logging.format.sequence_numbers") | Boolean |  |  |  | Add sequence numbers to log messages<br> |
 | [<samp>&nbsp;&nbsp;facility</samp>](## "logging.facility") | String |  |  | Valid Values:<br>- auth<br>- cron<br>- daemon<br>- kern<br>- local0<br>- local1<br>- local2<br>- local3<br>- local4<br>- local5<br>- local6<br>- local7<br>- lpr<br>- mail<br>- news<br>- sys9<br>- sys10<br>- sys11<br>- sys12<br>- sys13<br>- sys14<br>- syslog<br>- user<br>- uucp |  |

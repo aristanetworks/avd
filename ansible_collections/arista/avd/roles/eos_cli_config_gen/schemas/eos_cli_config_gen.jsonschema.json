@@ -2377,7 +2377,11 @@
               "type": "string",
               "enum": [
                 "high-resolution",
-                "traditional"
+                "traditional",
+                "traditional timezone",
+                "traditional year",
+                "traditional timezone year",
+                "traditional year timezone"
               ],
               "title": "Timestamp format"
             },

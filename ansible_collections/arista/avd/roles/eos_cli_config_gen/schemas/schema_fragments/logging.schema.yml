@@ -49,7 +49,7 @@ keys:
         keys:
           timestamp:
             type: str
-            valid_values: ["high-resolution", "traditional"]
+            valid_values: ["high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"]
             display_name: Timestamp format
           hostname:
             type: str
