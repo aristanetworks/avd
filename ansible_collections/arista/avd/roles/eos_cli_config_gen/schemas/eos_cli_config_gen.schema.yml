@@ -2304,6 +2304,20 @@ keys:
     keys:
       ssm_aware:
         type: bool
+  router_l2_vpn:
+    type: dict
+    keys:
+      nd_rs_flooding_disabled:
+        type: bool
+      virtual_router_nd_ra_flooding_disabled:
+        type: bool
+      arp_selective_install:
+        type: bool
+      arp_proxy:
+        type: dict
+        keys:
+          prefix_list:
+            type: str
   sflow:
     type: dict
     display_name: Sflow
