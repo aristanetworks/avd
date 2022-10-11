@@ -3293,6 +3293,55 @@
         "additionalProperties": false
       }
     },
+    "static_routes": {
+      "type": "array",
+      "title": "Static Routes",
+      "items": {
+        "type": "object",
+        "properties": {
+          "vrf": {
+            "type": "string",
+            "title": "VRF Name",
+            "description": "If vrf_name = default the route will be placed in the GRT"
+          },
+          "destination_address_prefix": {
+            "type": "string",
+            "title": "IPv4_network/Mask"
+          },
+          "interface": {
+            "type": "string",
+            "title": "Interface"
+          },
+          "gateway": {
+            "type": "string",
+            "title": "IPv4 Address"
+          },
+          "distance": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 255,
+            "title": "Distance"
+          },
+          "tag": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295,
+            "title": "Tag"
+          },
+          "name": {
+            "type": "string",
+            "title": "Description"
+          },
+          "metric": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295,
+            "title": "Metric"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "tcam_profile": {
       "type": "object",
       "title": "Hardware TCAM Profiles",
