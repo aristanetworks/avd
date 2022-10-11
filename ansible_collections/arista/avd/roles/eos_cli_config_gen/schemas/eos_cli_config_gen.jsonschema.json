@@ -1641,6 +1641,7 @@
       "properties": {
         "default": {
           "type": "integer",
+          "description": "Default load interval in seconds",
           "title": "Default"
         }
       },

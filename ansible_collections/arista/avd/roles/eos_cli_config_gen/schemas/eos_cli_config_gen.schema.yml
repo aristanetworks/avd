@@ -1427,6 +1427,7 @@ keys:
     keys:
       default:
         type: int
+        description: Default load interval in seconds
         convert_types:
         - str
   local_users:
