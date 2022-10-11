@@ -2069,6 +2069,50 @@
       },
       "additionalProperties": false
     },
+    "management_api_models": {
+      "title": "Management API Models",
+      "type": "object",
+      "properties": {
+        "providers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "sysdb",
+                  "smash"
+                ],
+                "title": "Name"
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "title": "Path"
+                    },
+                    "disabled": {
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Disabled"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Paths"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Providers"
+        }
+      },
+      "additionalProperties": false
+    },
     "management_console": {
       "type": "object",
       "properties": {
