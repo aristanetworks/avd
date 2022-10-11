@@ -781,6 +781,7 @@
     },
     "dot1x": {
       "type": "object",
+      "title": "Global 802.1x Authentication",
       "properties": {
         "system_auth_control": {
           "type": "boolean",
@@ -795,8 +796,7 @@
           "title": "Dynamic Authorization"
         }
       },
-      "additionalProperties": false,
-      "title": "Dot1X"
+      "additionalProperties": false
     },
     "enable_password": {
       "type": "object",

@@ -724,6 +724,7 @@ keys:
       description: Domain name
   dot1x:
     type: dict
+    display_name: Global 802.1x Authentication
     keys:
       system_auth_control:
         type: bool

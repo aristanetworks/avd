@@ -5,6 +5,7 @@ type: dict
 keys:
   dot1x:
     type: dict
+    display_name: Global 802.1x Authentication
     keys:
       system_auth_control:
         type: bool
@@ -12,4 +13,3 @@ keys:
         type: bool
       dynamic_authorization:
         type: bool
-        
