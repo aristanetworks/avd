@@ -855,6 +855,39 @@
       },
       "additionalProperties": false
     },
+    "dynamic_prefix_lists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Dynamic Prefix List Name"
+          },
+          "match_map": {
+            "type": "string",
+            "title": "Route Map"
+          },
+          "prefix_list": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "string",
+                "title": "IPv4 Prefix List"
+              },
+              "ipv6": {
+                "type": "string",
+                "title": "IPv6 Prefix List"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Prefix List"
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Dynamic Prefix Lists"
+    },
     "enable_password": {
       "type": "object",
       "properties": {

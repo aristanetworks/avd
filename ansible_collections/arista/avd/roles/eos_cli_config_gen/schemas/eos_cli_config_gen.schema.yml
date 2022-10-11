@@ -771,6 +771,26 @@ keys:
         display_name: Protocol LLDP Bypass
       dynamic_authorization:
         type: bool
+  dynamic_prefix_lists:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          display_name: Dynamic Prefix List Name
+        match_map:
+          type: str
+          display_name: Route Map
+        prefix_list:
+          type: dict
+          keys:
+            ipv4:
+              type: str
+              display_name: IPv4 Prefix List
+            ipv6:
+              type: str
+              display_name: IPv6 Prefix List
   enable_password:
     type: dict
     keys:
