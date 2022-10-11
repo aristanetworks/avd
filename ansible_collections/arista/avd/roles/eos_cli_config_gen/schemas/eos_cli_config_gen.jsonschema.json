@@ -2461,6 +2461,7 @@
     },
     "mpls": {
       "type": "object",
+      "title": "MPLS",
       "properties": {
         "ip": {
           "type": "boolean",
@@ -2475,7 +2476,7 @@
             },
             "router_id": {
               "type": "string",
-              "title": "Router Id"
+              "title": "Router ID"
             },
             "shutdown": {
               "type": "boolean",
@@ -2490,8 +2491,7 @@
           "title": "Ldp"
         }
       },
-      "additionalProperties": false,
-      "title": "Mpls"
+      "additionalProperties": false
     },
     "peer_filters": {
       "type": "array",
