@@ -2967,6 +2967,14 @@
       },
       "additionalProperties": false
     },
+    "service_routing_protocols_model": {
+      "type": "string",
+      "enum": [
+        "multi-agent",
+        "ribd"
+      ],
+      "title": "Service Routing Protocols Model"
+    },
     "sflow": {
       "type": "object",
       "title": "Sflow",
