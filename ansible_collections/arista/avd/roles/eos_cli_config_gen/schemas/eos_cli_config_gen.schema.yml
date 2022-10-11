@@ -1449,6 +1449,25 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_hardware:
+    display_name: IP Hardware
+    type: dict
+    keys:
+      fib:
+        display_name: FIB
+        type: dict
+        keys:
+          optimize:
+            type: dict
+            keys:
+              prefixes:
+                type: dict
+                keys:
+                  profile:
+                    type: str
+                    valid_values:
+                    - internet
+                    - urpf-internet
   ip_http_client_source_interfaces:
     type: list
     items:

@@ -1816,6 +1816,42 @@
         "additionalProperties": false
       }
     },
+    "ip_hardware": {
+      "title": "IP Hardware",
+      "type": "object",
+      "properties": {
+        "fib": {
+          "title": "FIB",
+          "type": "object",
+          "properties": {
+            "optimize": {
+              "type": "object",
+              "properties": {
+                "prefixes": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "enum": [
+                        "internet",
+                        "urpf-internet"
+                      ],
+                      "title": "Profile"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Prefixes"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Optimize"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "ip_http_client_source_interfaces": {
       "type": "array",
       "items": {
