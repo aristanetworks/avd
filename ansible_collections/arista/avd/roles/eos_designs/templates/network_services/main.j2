@@ -51,10 +51,7 @@
 {% endif %}
 
 {# VTEP and (L1 or L2 or L3) #}
-{% if (switch.overlay.vtep is arista.avd.defined(true) or switch.overlay.ler is arista.avd.defined(true)) and
-      (switch.network_services_l2 is arista.avd.defined(true) or
-      switch.network_services_l3 is arista.avd.defined(true) or
-      switch.network_services_l1 is arista.avd.defined(true)) %}
+{% if switch.overlay.vtep or switch.overlay.ler %}
 {%     include 'network_services/vtep-logic.j2' %}
 
 {%     if (default_vrf.svi_subnets or default_vrf.static_routes) and switch.evpn_role in ["client", "server"] %}
