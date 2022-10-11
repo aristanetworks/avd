@@ -2558,6 +2558,39 @@
       },
       "additionalProperties": false
     },
+    "mcs_client": {
+      "type": "object",
+      "properties": {
+        "shutdown": {
+          "type": "boolean",
+          "title": "Shutdown"
+        },
+        "cvx_secondary": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "title": "Shutdown"
+            },
+            "server_hosts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Server Hosts"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Cvx Secondary"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Mcs Client"
+    },
     "monitor_connectivity": {
       "type": "object",
       "properties": {

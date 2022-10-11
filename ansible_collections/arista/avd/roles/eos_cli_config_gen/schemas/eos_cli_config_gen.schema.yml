@@ -2064,6 +2064,22 @@ keys:
                     type: str
                     required: true
                     display_name: Regular Expression
+  mcs_client:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      cvx_secondary:
+        type: dict
+        keys:
+          name:
+            type: str
+          shutdown:
+            type: bool
+          server_hosts:
+            type: list
+            items:
+              type: str
   monitor_connectivity:
     type: dict
     keys:
