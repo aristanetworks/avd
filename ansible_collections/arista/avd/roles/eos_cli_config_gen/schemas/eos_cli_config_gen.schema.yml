@@ -1428,6 +1428,14 @@ keys:
         description: Set local system LACP priority.
         min: 0
         max: 65535
+  load_interval:
+    type: dict
+    keys:
+      default:
+        type: int
+        description: Default load interval in seconds
+        convert_types:
+        - str
   local_users:
     type: list
     primary_key: name

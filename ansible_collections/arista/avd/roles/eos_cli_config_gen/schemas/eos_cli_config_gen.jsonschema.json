@@ -1645,6 +1645,18 @@
       },
       "additionalProperties": false
     },
+    "load_interval": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "integer",
+          "description": "Default load interval in seconds",
+          "title": "Default"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Load Interval"
+    },
     "local_users": {
       "type": "array",
       "items": {
