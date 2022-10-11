@@ -1630,7 +1630,7 @@ class EosDesignsFacts(AvdFacts):
     def bgp(self):
         if self.underlay_routing_protocol == "ebgp":
             return True
-        elif (
+        elif (                  # had to do this to fix switch.bgp not becoming true on P node.
             self.overlay_routing_protocol in ["ebgp", "ibgp"]
             and (
                 self.evpn_role in ["client", "server"]
@@ -1640,12 +1640,6 @@ class EosDesignsFacts(AvdFacts):
             return True
         else:
             return False
-
-        # return (
-        #     (self.underlay_routing_protocol == "ebgp" or self.overlay_routing_protocol in ["ebgp", "ibgp"])
-        #     and self.underlay_router
-        #     and self.uplink_type == "p2p"
-        # )
 
     @cached_property
     def underlay(self):
@@ -1685,7 +1679,10 @@ class EosDesignsFacts(AvdFacts):
         """
         ler = (
             self.underlay["mpls"]
-            and self.mpls_overlay_role in ["client", "server"]
+            and (
+                self.mpls_overlay_role in ["client", "server"]
+                or self.evpn_role in ["client", "server"]
+            )
             and (
                 self.network_services_l1
                 or self.network_services_l2
@@ -1715,25 +1712,21 @@ class EosDesignsFacts(AvdFacts):
             and "evpn" in self.overlay_address_families
         )
         evpn_vxlan = (
-            vtep
-            and evpn
+            evpn
             and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "vxlan"
         )
         evpn_mpls = (
-            ler
-            and evpn
+            evpn
             and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "mpls"
         )
         vpn_ipv4 = (
             self.bgp
             and self.overlay_routing_protocol == "ibgp" # Will not work for gateway use case as will be ebgp
-            and ler
             and "vpn-ipv4" in self.overlay_address_families
         )
         vpn_ipv6 = (
             self.bgp
             and self.overlay_routing_protocol == "ibgp" # Will not work for gateway use case as will be ebgp
-            and ler
             and "vpn-ipv6" in self.overlay_address_families
         )
         return {
