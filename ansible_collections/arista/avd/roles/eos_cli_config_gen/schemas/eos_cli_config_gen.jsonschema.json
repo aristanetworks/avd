@@ -783,6 +783,7 @@
         },
         "key": {
           "type": "string",
+          "description": "Must be the hash of the password using the specified algorithm.\nBy default EOS salts the password, so the simplest is to generate the hash on an EOS device.",
           "title": "Key"
         }
       },

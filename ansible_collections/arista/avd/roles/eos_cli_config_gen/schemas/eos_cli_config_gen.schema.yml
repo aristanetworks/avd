@@ -718,6 +718,10 @@ keys:
         - sha512
       key:
         type: str
+        description: 'Must be the hash of the password using the specified algorithm.
+
+          By default EOS salts the password, so the simplest is to generate the hash
+          on an EOS device.'
   eos_cli:
     type: str
     display_name: EOS CLI
