@@ -3528,6 +3528,52 @@
       "additionalProperties": false,
       "title": "Management SSH"
     },
+    "management_tech_support": {
+      "type": "object",
+      "properties": {
+        "policy_show_tech_support": {
+          "type": "object",
+          "properties": {
+            "exclude_commands": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "title": "Command"
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "Type"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Exclude Commands"
+            },
+            "include_commands": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "title": "Command"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Include Commands"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Policy Show Tech Support"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management Tech Support"
+    },
     "match_list_input": {
       "type": "object",
       "title": "Match Lists",
