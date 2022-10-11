@@ -722,6 +722,15 @@ keys:
     items:
       type: str
       description: Domain name
+  dot1x:
+    type: dict
+    keys:
+      system_auth_control:
+        type: bool
+      protocol_lldp_bypass:
+        type: bool
+      dynamic_authorization:
+        type: bool
   enable_password:
     type: dict
     keys:
