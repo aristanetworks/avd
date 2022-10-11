@@ -3237,6 +3237,28 @@
       },
       "additionalProperties": false
     },
+    "trackers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "interface": {
+            "type": "string",
+            "title": "Interface"
+          },
+          "tracked_property": {
+            "type": "string",
+            "title": "Tracked Property"
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Trackers"
+    },
     "virtual_source_nat_vrfs": {
       "type": "array",
       "title": "Virtual Source NAT",

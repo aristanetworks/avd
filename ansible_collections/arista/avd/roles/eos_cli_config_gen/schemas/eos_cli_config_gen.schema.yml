@@ -2575,6 +2575,17 @@ keys:
                 is often a good idea to import the config from a file.
 
                 Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+  trackers:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        interface:
+          type: str
+        tracked_property:
+          type: str
   virtual_source_nat_vrfs:
     type: list
     primary_key: name
