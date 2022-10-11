@@ -5,5 +5,7 @@ type: dict
 keys:
   domain_list:
     type: list
+    description: Search list of DNS domains
     items:
       type: str
+      description: Domain name

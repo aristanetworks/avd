@@ -685,8 +685,10 @@ keys:
     description: Domain Name
   domain_list:
     type: list
+    description: Search list of DNS domains
     items:
       type: str
+      description: Domain name
   eos_cli:
     type: str
     display_name: EOS CLI

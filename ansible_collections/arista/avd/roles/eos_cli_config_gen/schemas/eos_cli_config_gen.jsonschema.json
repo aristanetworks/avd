@@ -735,8 +735,10 @@
     },
     "domain_list": {
       "type": "array",
+      "description": "Search list of DNS domains",
       "items": {
-        "type": "string"
+        "type": "string",
+        "description": "Domain name"
       },
       "title": "Domain List"
     },
