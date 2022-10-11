@@ -449,6 +449,25 @@ Domain Name
 dns_domain: <str>
 ```
 
+## Domain List
+
+### Description
+
+Search list of DNS domains
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>domain_list</samp>](## "domain_list") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "domain_list.[].&lt;str&gt;") | String |  |  |  | Domain name |
+
+### YAML
+
+```yaml
+domain_list:
+  - <str>
+```
+
 ## EOS CLI
 
 ### Description
