@@ -1663,12 +1663,19 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def bgp(self):
+<<<<<<< HEAD
         """
         Boolean telling if BGP Routing should be configured.
         """
         return (
             self.underlay_router
             and self.uplink_type == "p2p"
+=======
+        if self.underlay_routing_protocol == "ebgp":
+            return True
+        elif (                  # had to do this to fix switch.bgp not becoming true on P node.
+            self.overlay_routing_protocol in ["ebgp", "ibgp"]
+>>>>>>> 06c17b108 (more refactoring of overlay logic + molecule runs)
             and (
                 self.underlay_routing_protocol == "ebgp"
                 or (
@@ -1678,6 +1685,7 @@ class EosDesignsFacts(AvdFacts):
             )
         )
 
+<<<<<<< HEAD
     @cached_property
     def evpn_encapsulation(self):
         """
@@ -1685,6 +1693,8 @@ class EosDesignsFacts(AvdFacts):
         """
         return get(self._hostvars, "fabric_evpn_encapsulation", default=get(self._node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
 
+=======
+>>>>>>> 06c17b108 (more refactoring of overlay logic + molecule runs)
     @cached_property
     def underlay(self):
         """
