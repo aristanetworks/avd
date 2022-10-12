@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This example includes and describes all the AVD files used to build an L2LS Campus Fabric by building upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Nwetwork Access Control (NAC) and port ranges.
+This example includes and describes all the AVD files used to build an L2LS Campus Fabric by building upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Network Access Control (NAC) and port ranges.
 
 ## Installation & Requirements
 
@@ -130,7 +130,7 @@ examples/l2ls-fabric/inventory.yml
 
 ## Build Fabric Topology
 
-AVD Fabric Variables
+AVD Fabric Input Variables
 
 To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
 
@@ -207,7 +207,15 @@ The tabs below show the Ansible **group_vars** used in this example.
 
 ## Add Network Services
 
-Add Table for IDF VLAN assignment
+Each IDF will have 3 unique VLANs to support Data, Voice and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
+
+IDF VLAN/IP assignments
+
+| IDF  | Data                 | Voice                 | Guest                 |
+| ---- | -------------------- | --------------------- | --------------------- |
+| IDF1 | 110 - (10.1.10.0/23) | 120 - (10.1.20.0/23)  | 130 - (10.1.30.0/23)  |
+| IDF2 | 210 - (10.2.10.0/23) | 220 - (10.2.20.0/23)  | 230 - (10.2.30.0/23)  |
+| IDF3 | 310 - (10.3.10.0/23) | 320 - (10.3.20.0/23)  | 330 - (10.3.30.0/23)  |
 
 ## Build Port Profiles and Network Ports
 
@@ -293,7 +301,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/cmapus-fabric/intended/configs/LEAF2A.cfg
+    examples/campus-fabric/intended/configs/LEAF2A.cfg
     --8<--
     ```
 
