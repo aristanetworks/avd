@@ -1605,14 +1605,17 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def bgp(self):
-        if self.underlay_routing_protocol == "ebgp":
-            return True
-        elif self.overlay_routing_protocol in ["ebgp", "ibgp"] and (  # had to do this to fix switch.bgp not becoming true on P node.
-            self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"]
-        ):
-            return True
-        else:
-            return False
+        return (
+            self.underlay_router
+            and self.uplink_type == "p2p"
+            and (
+                self.underlay_routing_protocol == "ebgp"
+                or (
+                    self.overlay_routing_protocol in ["ebgp", "ibgp"]
+                    and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
+                )
+            )
+        )
 
     @cached_property
     def underlay(self):
