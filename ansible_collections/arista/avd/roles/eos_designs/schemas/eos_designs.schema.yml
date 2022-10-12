@@ -1,3 +1,4 @@
+allow_other_keys: true
 keys:
   bfd_multihop:
     display_name: BFD Multihop tunning
