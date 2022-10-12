@@ -398,7 +398,7 @@ keys:
       \ ```\n\n- The output will be rendered at the end of the configuration.\n- The
       order of custom templates in the list can be important if they overlap.\n- It
       is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd
-      custom template to group/host variables:\n"
+      `custom_templates` to group/host variables:\n"
     items:
       type: str
       description: Template relative path below playbook directory

@@ -19,7 +19,7 @@ keys:
       - The order of custom templates in the list can be important if they overlap.
       - It is recommenended to use a `!` delimiter at the top of each custom template.
 
-      Add custom template to group/host variables:
+      Add `custom_templates` to group/host variables:
     items:
       type: str
       description: Template relative path below playbook directory
