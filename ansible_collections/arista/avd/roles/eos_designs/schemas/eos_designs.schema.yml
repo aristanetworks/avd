@@ -1,1 +1,21 @@
-{}
+keys:
+  bfd_multihop:
+    display_name: BFD Multihop tunning
+    keys:
+      interval:
+        convert_types:
+        - str
+        default: 300
+        type: int
+      min_rx:
+        convert_types:
+        - str
+        default: 300
+        type: int
+      multiplier:
+        convert_types:
+        - str
+        default: 3
+        type: int
+    type: dict
+type: dict

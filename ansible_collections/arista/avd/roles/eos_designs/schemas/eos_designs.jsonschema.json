@@ -1,3 +1,28 @@
 {
+  "properties": {
+    "bfd_multihop": {
+      "title": "BFD Multihop tunning",
+      "properties": {
+        "interval": {
+          "default": 300,
+          "type": "integer",
+          "title": "Interval"
+        },
+        "min_rx": {
+          "default": 300,
+          "type": "integer",
+          "title": "Min Rx"
+        },
+        "multiplier": {
+          "default": 3,
+          "type": "integer",
+          "title": "Multiplier"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
   "type": "object"
 }
