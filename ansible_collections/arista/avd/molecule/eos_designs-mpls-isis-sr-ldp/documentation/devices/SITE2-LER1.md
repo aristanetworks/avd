@@ -710,7 +710,7 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
    neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+   neighbor MPLS-OVERLAY-PEERS password 7 SHsTgDgjVUU5a9blyxSt3Q==
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS
@@ -790,7 +790,7 @@ router bgp 65000
       route-target export vpn-ipv6 65000:20
       router-id 100.70.0.7
       neighbor 192.168.48.3 remote-as 65202
-      neighbor 192.168.48.3 password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+      neighbor 192.168.48.3 password 7 OajzUG59/YF0NkgvOQyRnQ==
       neighbor 192.168.48.3 description TENANT_B_CPE_SITE5
       redistribute connected
       redistribute ospf

@@ -11,7 +11,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65000'
       bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
+      password: 64fqSH5CFUNLRHErezMrRg==
       send_community: all
       maximum_routes: 0
   address_family_ipv4:

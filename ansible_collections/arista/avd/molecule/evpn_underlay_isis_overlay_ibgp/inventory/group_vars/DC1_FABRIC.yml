@@ -19,7 +19,7 @@ bgp_peer_groups:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   evpn_overlay_peers:
     name: OVERLAY-PEERS
-    password: "q+VNViP5i4rVjW1cxFv2wA=="
+    password: "64fqSH5CFUNLRHErezMrRg=="
   mlag_ipv4_underlay_peer:
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 

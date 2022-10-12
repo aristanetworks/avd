@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY_PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: af6F4WLl4wUrWRZcwbEwkQ==
       maximum_routes: 12000
       send_community: all
       remote_as: 65001

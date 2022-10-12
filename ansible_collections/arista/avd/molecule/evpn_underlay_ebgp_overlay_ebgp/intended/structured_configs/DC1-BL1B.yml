@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -92,7 +92,7 @@ router_bgp:
       neighbors:
         123.1.1.10:
           remote_as: 1234
-          password: AQQvKeimxJu+uGQ/yYvv9w==
+          password: oBztv71m2uhR7hh58/OCNA==
           description: External IPv4 BGP peer
           send_community: standard extended
           maximum_routes: 0
@@ -106,7 +106,7 @@ router_bgp:
           local_as: 123
         123.1.1.11:
           remote_as: 1234
-          password: AQQvKeimxJu+uGQ/yYvv9w==
+          password: oBztv71m2uhR7hh58/OCNA==
           description: External IPv4 BGP peer
           send_community: standard extended
           maximum_routes: 0
