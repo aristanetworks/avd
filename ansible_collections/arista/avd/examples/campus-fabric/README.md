@@ -207,7 +207,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
 ## Add Network Services
 
-Each IDF will have 3 unique VLANs to support Data, Voice and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
+The Network Services data model is stored in the **DC1_NETWORK_SERVICES** tab above. Each IDF will have 3 unique VLANs to support Data, Voice and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
 
 IDF VLAN/IP assignments
 
@@ -217,9 +217,34 @@ IDF VLAN/IP assignments
 | IDF2 | 210 - (10.2.10.0/23) | 220 - (10.2.20.0/23)  | 230 - (10.2.30.0/23)  |
 | IDF3 | 310 - (10.3.10.0/23) | 320 - (10.3.20.0/23)  | 330 - (10.3.30.0/23)  |
 
-## Build Port Profiles and Network Ports
+## Build Network Ports
 
-Add graphic for 802.1x port config - showing phones, PC, APs, printers, etc...
+The Network Ports data model is stored in the **DC1_NETWORK_PORTS** tab above. Each port is enabled to support NAC and dynamically assigns the proper vlan based on 802.1x authentication.
+
+![Figure: 3](images/dot1x_ports.svg)
+
+The following sample port configuration accounts for a number of end devices including: IP Phones, Workstations, Printers, Access Points, etc... AVD provides a way to standardize and reuse port profiles through a compact data model that can be utilized across the network.
+
+Sample port config:
+
+``` shell
+interface Ethernet1
+  switchport trunk native vlan 110
+  switchport phone vlan 120
+  switchport phone trunk untagged
+  switchport mode trunk phone
+  spanning-tree portfast
+  spanning-tree bpduguard enable
+  dot1x pae authenticator
+  dot1x authentication failure action traffic allow vlan 130
+  dot1x reauthentication
+  dot1x port-control auto
+  dot1x host-mode multi-host authenticated
+  dot1x mac based authentication
+  dot1x timeout tx-period 3
+  dot1x timeout reauth-period server
+  dot1x reauthorization request limit 3
+```
 
 ## Deploy Fabric
 
