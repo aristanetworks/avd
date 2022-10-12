@@ -9,6 +9,19 @@ class AvdFacts:
         self._templar = templar
 
     @classmethod
+    def __keys(cls):  # pylint: disable=bad-option-value, unused-private-member # CH Sep-22: Some pylint bug.
+        """
+        Get all class attributes including those of base Classes and Mixins.
+        Using MRO, which is the same way Python resolves attributes.
+        """
+        keys = []
+        for c in cls.mro():
+            c_keys = [key for key in c.__dict__ if key not in keys]
+            keys.extend(c_keys)
+
+        return keys
+
+    @classmethod
     def keys(cls):
         """
         Return the list of "keys"
@@ -17,7 +30,7 @@ class AvdFacts:
         The "_" check is added to allow support for "internal" cached_properties storing temporary values.
         """
 
-        return [key for key in cls.__dict__ if not key.startswith("_") and isinstance(getattr(cls, key), cached_property)]
+        return [key for key in cls.__keys() if not key.startswith("_") and isinstance(getattr(cls, key), cached_property)]
 
     @classmethod
     def internal_keys(cls):
@@ -25,7 +38,7 @@ class AvdFacts:
         Return a list containing the names of attributes starting with "_" and using cached_property class.
         """
 
-        return [key for key in cls.__dict__ if key.startswith("_") and isinstance(getattr(cls, key), cached_property)]
+        return [key for key in cls.__keys() if key.startswith("_") and isinstance(getattr(cls, key), cached_property)]
 
     def get(self, key, default_value=None):
         """

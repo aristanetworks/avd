@@ -324,8 +324,8 @@ vlan_interfaces:
   Vlan4090:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 10.255.251.19/31
     mtu: 1500
+    ip_address: 10.255.251.19/31
   Vlan4092:
     description: MLAG_PEER
     shutdown: false
