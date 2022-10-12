@@ -2631,6 +2631,31 @@
       },
       "additionalProperties": false
     },
+    "name_server": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "vrf": {
+              "title": "VRF Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Source"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Nodes"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Name Server"
+    },
     "peer_filters": {
       "type": "array",
       "items": {

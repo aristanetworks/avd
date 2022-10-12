@@ -2094,6 +2094,19 @@ keys:
           transport_address_interface:
             display_name: Interface Name
             type: str
+  name_server:
+    type: dict
+    keys:
+      source:
+        type: dict
+        keys:
+          vrf:
+            display_name: VRF Name
+            type: str
+      nodes:
+        type: list
+        items:
+          type: str
   peer_filters:
     type: list
     primary_key: name
