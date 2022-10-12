@@ -770,6 +770,26 @@
       },
       "title": "Domain List"
     },
+    "enable_password": {
+      "type": "object",
+      "properties": {
+        "hash_algorithm": {
+          "type": "string",
+          "enum": [
+            "md5",
+            "sha512"
+          ],
+          "title": "Hash Algorithm"
+        },
+        "key": {
+          "type": "string",
+          "description": "Must be the hash of the password using the specified algorithm.\nBy default EOS salts the password, so the simplest is to generate the hash on an EOS device.",
+          "title": "Key"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Enable Password"
+    },
     "eos_cli": {
       "type": "string",
       "title": "EOS CLI",
