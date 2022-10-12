@@ -1314,6 +1314,9 @@ keys:
               type: bool
               description: Global proxy settings should be enabled before enabling
                 per-vlan
+  ip_routing:
+    type: bool
+    display_name: IP Routing
   ip_routing_ipv6_interfaces:
     type: bool
     display_name: IP Routing IPv6 Interfaces
