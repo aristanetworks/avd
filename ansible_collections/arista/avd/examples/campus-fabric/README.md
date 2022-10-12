@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This example includes and describes all the AVD files used to build an L2LS Campus Fabric by building upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Network Access Control (NAC) and port ranges.
+This example includes and describes all the AVD files used to build an L2LS Campus Fabric by building upon the previous [L2LS Fabric](../../examples/campus-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Network Access Control (NAC) and port ranges.
 
 ## Installation & Requirements
 
@@ -34,7 +34,7 @@ After the playbook has run successfully, the following directory structure will 
 
 ``` shell
 ansible-avd-examples/     (directory where playbook was run)
-  ├── l2ls-fabric/
+  ├── campus-fabric/
     ├── documentation/
     ├── group_vars/
     ├── images/
@@ -87,7 +87,7 @@ Below is the basic configuration file for SPINE1:
 
 ``` shell
 --8<--
-examples/l2ls-fabric/switch-basic-configurations/SPINE1.cfg
+examples/campus-fabric/switch-basic-configurations/SPINE1.cfg
 --8<--
 ```
 
@@ -124,7 +124,7 @@ Alternatively, if DNS is not available, define the variable ansible_host to be a
 
 ``` yaml
 --8<--
-examples/l2ls-fabric/inventory.yml
+examples/campus-fabric/inventory.yml
 --8<--
 ```
 
@@ -152,7 +152,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/group_vars/DC1.yml
+    examples/campus-fabric/group_vars/DC1.yml
     --8<--
     ```
 
@@ -219,11 +219,9 @@ IDF VLAN/IP assignments
 
 ## Build Network Ports
 
-The Network Ports data model is stored in the **DC1_NETWORK_PORTS** tab above. Each port is enabled to support NAC and dynamically assigns the proper vlan based on 802.1x authentication.
+AVD provides a way to standardize and reuse port profiles through a compact data model that can be utilized across the network. The Network Ports data model is stored in the **DC1_NETWORK_PORTS** tab above. Each port is enabled to support NAC and dynamically assigns the proper vlan based on 802.1x authentication. Multiple device types (IP Phone, Workstations, Printers, Access Points, etc...) can share the same port configuration.
 
 ![Figure: 3](images/dot1x_ports.svg)
-
-The following sample port configuration accounts for a number of end devices including: IP Phones, Workstations, Printers, Access Points, etc... AVD provides a way to standardize and reuse port profiles through a compact data model that can be utilized across the network.
 
 Sample port config:
 
@@ -245,6 +243,8 @@ interface Ethernet1
   dot1x timeout reauth-period server
   dot1x reauthorization request limit 3
 ```
+
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in port_profiles, while network_ports defines which switches and port ranges to be applied.  The network_ports data model allows the use of regex to match switches and an expand_range filter to cover a range of ports. For details, see documentation for [port_profiles](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [network_ports](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
 
 ## Deploy Fabric
 
