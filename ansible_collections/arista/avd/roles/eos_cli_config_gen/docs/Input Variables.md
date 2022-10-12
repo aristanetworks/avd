@@ -986,6 +986,20 @@ ip_igmp_snooping:
       proxy: <bool>
 ```
 
+## IP Routing IPv6 Interfaces
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ip_routing_ipv6_interfaces</samp>](## "ip_routing_ipv6_interfaces") | Boolean |  |  |  | IP Routing IPv6 Interfaces |
+
+### YAML
+
+```yaml
+ip_routing_ipv6_interfaces: <bool>
+```
+
 ## IP SSH Client Source Interfaces
 
 ### Variables
