@@ -2,16 +2,7 @@
 
 ## Introduction
 
-This example includes and describes all the AVD files used to build an L2LS Campus Fabric, with the following nodes:
-
-- MDF
-  - 2 Spine nodes
-- IDFs
-  - IDF1 supporting 192 users with a 2 leafs
-  - IDF2 supporting 240 users with a Modular 5 slot chassis
-  - IDF3 supporting 480 users with 5 leafs
-
-The Campus Fabric builds upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Nwetwork Access Control (NAC) and port ranges.
+This example includes and describes all the AVD files used to build an L2LS Campus Fabric by building upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Nwetwork Access Control (NAC) and port ranges.
 
 ## Installation & Requirements
 
@@ -63,6 +54,13 @@ ansible-avd-examples/     (directory where playbook was run)
 ## Design Overview
 
 ### Physical L2LS Campus Topology
+
+- MDF
+  - 2 Spine nodes
+- IDFs
+  - IDF1 supporting 192 users with a 2 leafs
+  - IDF2 supporting 240 users with a Modular 5 slot chassis
+  - IDF3 supporting 480 users with 5 leafs
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
@@ -130,7 +128,9 @@ examples/l2ls-fabric/inventory.yml
 --8<--
 ```
 
-## AVD Fabric Variables
+## Build Fabric Topology
+
+AVD Fabric Variables
 
 To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
 
@@ -205,6 +205,16 @@ The tabs below show the Ansible **group_vars** used in this example.
     --8<--
     ```
 
+## Add Network Services
+
+Add Table for IDF VLAN assignment
+
+## Build Port Profiles and Network Ports
+
+Add graphic for 802.1x port config - showing phones, PC, APs, printers, etc...
+
+## Deploy Fabric
+
 ## The Playbooks
 
 Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
@@ -213,7 +223,7 @@ Now that we have defined all of our Ansible variables (AVD inputs), it is time t
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/build.yml
+    examples/campus-fabric/build.yml
     --8<--
     ```
 
@@ -221,7 +231,7 @@ Now that we have defined all of our Ansible variables (AVD inputs), it is time t
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/deploy.yml
+    examples/campus-fabric/deploy.yml
     --8<--
     ```
 
@@ -231,7 +241,7 @@ To build the configurations files, run the playbook called `build.yml`.
 
 ``` bash
 ### Build configurations
-ansible-playbook playbooks/build.yml
+ansible-playbook build.yml
 ```
 
 After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
@@ -240,7 +250,7 @@ To build and deploy the configurations to your switches, run the playbook called
 
 ``` bash
 ### Build configurations & Push Configs to switches
-ansible-playbook playbooks/deploy.yml
+ansible-playbook deploy.yml
 ```
 
 ### EOS Intended Configurations
@@ -251,7 +261,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/SPINE1.cfg
+    examples/campus-fabric/intended/configs/SPINE1.cfg
     --8<--
     ```
 
@@ -259,39 +269,71 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/SPINE2.cfg
+    examples/campus-fabric/intended/configs/SPINE2.cfg
     --8<--
     ```
 
-=== "LEAF1"
+=== "LEAF1A"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF1.cfg
+    examples/campus-fabric/intended/configs/LEAF1A.cfg
     --8<--
     ```
 
-=== "LEAF2"
+=== "LEAF1B"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF2.cfg
+    examples/campus-fabric/intended/configs/LEAF1B.cfg
     --8<--
     ```
 
-=== "LEAF3"
+=== "LEAF2A"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF3.cfg
+    examples/cmapus-fabric/intended/configs/LEAF2A.cfg
     --8<--
     ```
 
-=== "LEAF4"
+=== "LEAF3A"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF4.cfg
+    examples/campus-fabric/intended/configs/LEAF3A.cfg
+    --8<--
+    ```
+
+=== "LEAF3B"
+
+    ``` shell
+    --8<--
+    examples/campus-fabric/intended/configs/LEAF3B.cfg
+    --8<--
+    ```
+
+=== "LEAF3C"
+
+    ``` shell
+    --8<--
+    examples/campus-fabric/intended/configs/LEAF3C.cfg
+    --8<--
+    ```
+
+=== "LEAF3D"
+
+    ``` shell
+    --8<--
+    examples/campus-fabric/intended/configs/LEAF3D.cfg
+    --8<--
+    ```
+
+=== "LEAF3E"
+
+    ``` shell
+    --8<--
+    examples/campus-fabric/intended/configs/LEAF3E.cfg
     --8<--
     ```
 
