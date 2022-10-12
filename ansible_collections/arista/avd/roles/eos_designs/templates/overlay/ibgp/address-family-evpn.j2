@@ -17,7 +17,7 @@
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
 {% endif %}
-{% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
+{% if (switch.mpls_overlay_role == "server" or (switch.evpn_role == "server" and switch.overlay.evpn_mpls)) and overlay_data.mpls_rr_peers is arista.avd.defined %}
       {{ overlay_data.rr_peers_peer_group.name }}:
         activate: true
 {% endif %}

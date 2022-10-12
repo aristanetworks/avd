@@ -1094,7 +1094,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mpls_route_reflectors(self):
         if self.underlay_router is True:
-            if self.mpls_overlay_role in ["client", "server"]:
+            if self.mpls_overlay_role in ["client", "server"] or (self.evpn_role in ["client", "server"] and self.overlay["evpn_mpls"]):
                 return get(self._switch_data_combined, "mpls_route_reflectors")
         return None
 

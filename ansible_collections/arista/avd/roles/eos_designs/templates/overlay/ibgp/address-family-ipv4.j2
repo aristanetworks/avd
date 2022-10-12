@@ -8,7 +8,7 @@
       {{ overlay_data.evpn_overlay_peer_group.name }}:
         activate: false
 {% endif %}
-{% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
+{% if (switch.mpls_overlay_role == "server" or switch.evpn_role == "server" and switch.overlay.evpn_mpls) and overlay_data.mpls_rr_peers is arista.avd.defined %}
       {{ overlay_data.rr_peers_peer_group.name }}:
         activate: false
 {% endif %}

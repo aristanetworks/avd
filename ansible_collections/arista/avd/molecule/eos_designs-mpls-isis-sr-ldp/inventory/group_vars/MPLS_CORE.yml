@@ -101,6 +101,8 @@ pe:
       nodes:
         SITE1-LER1:
           id: 5
+          mpls_overlay_role: none
+          evpn_role: client
           overlay_address_families: [ evpn ]
           mgmt_ip: 192.168.200.105/24
         SITE1-LER2:

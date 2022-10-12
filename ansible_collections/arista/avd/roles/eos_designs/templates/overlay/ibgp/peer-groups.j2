@@ -10,7 +10,7 @@
 {%     endif %}
       send_community: all
       maximum_routes: 0
-{%     if switch.mpls_overlay_role == "server" %}
+{%     if switch.mpls_overlay_role == "server" or (switch.evpn_role == "server" and switch.overlay.evpn_mpls) %}
       route_reflector_client: true
 {%     endif %}
       struct_cfg: {{ overlay_data.mpls_overlay_peer_group.structured_config | arista.avd.default }}
@@ -31,7 +31,7 @@
 {%     endif %}
       struct_cfg: {{ overlay_data.evpn_overlay_peer_group.structured_config | arista.avd.default }}
 {% endif %}
-{% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
+{% if (switch.mpls_overlay_role == "server" or (switch.evpn_role == "server" and switch.overlay.evpn_mpls)) and overlay_data.mpls_rr_peers is arista.avd.defined %}
     {{ overlay_data.rr_peers_peer_group.name }}:
       type: mpls
       update_source: Loopback0
