@@ -26,10 +26,8 @@ class EosDesignsFacts(AvdFacts):
         "switch.foo" fact set based on "bar" data model
         """
         return get(self._hostvars, "bar.foo", default="zoo")
-
     -----------------------------------------------------------------------------------------------------
     Example function to set a fact based on a required key under ex "l3leaf.node_groups.<>.nodes.<>.<key>
-
     Notice the variable _switch_data_combined starts with _ meaning it is an internal variable which will
     not be returned as part of the facts. We can load such variables with commonly used data, leveraged
     by multiple facts functions.
@@ -38,7 +36,6 @@ class EosDesignsFacts(AvdFacts):
     def foo(self):
         """
         "switch.foo" fact set based on "<node_type_key>.*" data model
-
         Example l3leaf.defaults.foo -> switch.foo
         """
         return get(self._switch_data_combined, "foo", required=True)
@@ -132,11 +129,7 @@ class EosDesignsFacts(AvdFacts):
         switch.default_underlay_routing_protocol set based on
         node_type_keys.<node_type_key>.default_underlay_routing_protocol
         """
-        return get(
-            self._node_type_key_data,
-            "default_underlay_routing_protocol",
-            default="ebgp",
-        )
+        return get(self._node_type_key_data, "default_underlay_routing_protocol", default="ebgp")
 
     @cached_property
     def default_overlay_routing_protocol(self):
@@ -152,11 +145,7 @@ class EosDesignsFacts(AvdFacts):
         switch.default_overlay_address_families set based on
         node_type_keys.<node_type_key>.default_overlay_address_families
         """
-        return get(
-            self._node_type_key_data,
-            "default_overlay_address_families",
-            default=["evpn"],
-        )
+        return get(self._node_type_key_data, "default_overlay_address_families", default=["evpn"])
 
     @cached_property
     def default_mpls_overlay_role(self):
@@ -245,12 +234,7 @@ class EosDesignsFacts(AvdFacts):
         hostvar_templates = get(self._hostvars, "templates.ip_addressing", default={})
         node_type_templates = get(self._node_type_key_data, "ip_addressing", default={})
         if hostvar_templates or node_type_templates:
-            return combine(
-                hostvar_templates,
-                node_type_templates,
-                recursive=True,
-                list_merge="replace",
-            )
+            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge="replace")
         else:
             return {}
 
@@ -264,12 +248,7 @@ class EosDesignsFacts(AvdFacts):
         hostvar_templates = get(self._hostvars, "templates.interface_descriptions", default={})
         node_type_templates = get(self._node_type_key_data, "interface_descriptions", default={})
         if hostvar_templates or node_type_templates:
-            return combine(
-                hostvar_templates,
-                node_type_templates,
-                recursive=True,
-                list_merge="replace",
-            )
+            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge="replace")
         else:
             return {}
 
@@ -277,13 +256,11 @@ class EosDesignsFacts(AvdFacts):
     def _switch_data(self):
         """
         internal _switch_data containing inherited vars from fabric_topology data model
-
         Vars are inherited like:
         <node_type_key>.defaults ->
             <node_type_key>.node_groups.[<node_group>] ->
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
-
         Returns
         -------
         dict
@@ -322,12 +299,7 @@ class EosDesignsFacts(AvdFacts):
         # Load defaults
         defaults_config = node_type_config.get("defaults", {})
         # Merge node_group data on top of defaults into combined
-        switch_data["combined"] = combine(
-            defaults_config,
-            switch_data["node_group"],
-            recursive=True,
-            list_merge="replace",
-        )
+        switch_data["combined"] = combine(defaults_config, switch_data["node_group"], recursive=True, list_merge="replace")
         # Merge node data on top of combined
         switch_data["combined"] = combine(switch_data["combined"], node_config, recursive=True, list_merge="replace")
 
@@ -378,13 +350,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def uplink_interfaces(self):
-        return range_expand(
-            default(
-                get(self._switch_data_combined, "uplink_interfaces"),
-                get(self.default_interfaces, "uplink_interfaces"),
-                [],
-            )
-        )
+        return range_expand(default(get(self._switch_data_combined, "uplink_interfaces"), get(self.default_interfaces, "uplink_interfaces"), []))
 
     @cached_property
     def uplink_switch_interfaces(self):
@@ -477,10 +443,7 @@ class EosDesignsFacts(AvdFacts):
         """
         max_uplink_switches will default to the length of uplink_switches
         """
-        return default(
-            get(self._switch_data_combined, "max_uplink_switches"),
-            len(get(self._switch_data_combined, "uplink_switches", default=[])),
-        )
+        return default(get(self._switch_data_combined, "max_uplink_switches"), len(get(self._switch_data_combined, "uplink_switches", default=[])))
 
     @cached_property
     def is_deployed(self):
@@ -511,42 +474,19 @@ class EosDesignsFacts(AvdFacts):
             Fabric Topology data model mgmt_interface
         """
         return default(
-            get(self._switch_data_combined, "mgmt_interface"),
-            self.platform_settings.get("management_interface"),
-            get(self._hostvars, "mgmt_interface"),
+            get(self._switch_data_combined, "mgmt_interface"), self.platform_settings.get("management_interface"), get(self._hostvars, "mgmt_interface")
         )
 
     @cached_property
     def underlay_routing_protocol(self):
-        underlay_routing_protocol = str(
-            get(
-                self._hostvars,
-                "underlay_routing_protocol",
-                default=self.default_underlay_routing_protocol,
-            )
-        ).lower()
-        if underlay_routing_protocol not in [
-            "ebgp",
-            "isis",
-            "isis-ldp",
-            "isis-sr",
-            "isis-sr-ldp",
-            "ospf",
-            "ospf-ldp",
-            "none",
-        ]:
+        underlay_routing_protocol = str(get(self._hostvars, "underlay_routing_protocol", default=self.default_underlay_routing_protocol)).lower()
+        if underlay_routing_protocol not in ["ebgp", "isis", "isis-ldp", "isis-sr", "isis-sr-ldp", "ospf", "ospf-ldp", "none"]:
             underlay_routing_protocol = self.default_underlay_routing_protocol
         return underlay_routing_protocol
 
     @cached_property
     def overlay_routing_protocol(self):
-        overlay_routing_protocol = str(
-            get(
-                self._hostvars,
-                "overlay_routing_protocol",
-                default=self.default_overlay_routing_protocol,
-            )
-        ).lower()
+        overlay_routing_protocol = str(get(self._hostvars, "overlay_routing_protocol", default=self.default_overlay_routing_protocol)).lower()
         if overlay_routing_protocol not in ["ebgp", "ibgp", "her", "none"]:
             overlay_routing_protocol = self.default_overlay_routing_protocol
         return overlay_routing_protocol
@@ -554,11 +494,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def overlay_address_families(self):
         if self.overlay_routing_protocol in ["ebgp", "ibgp"]:
-            return get(
-                self._switch_data_combined,
-                "overlay_address_families",
-                default=self.default_overlay_address_families,
-            )
+            return get(self._switch_data_combined, "overlay_address_families", default=self.default_overlay_address_families)
         return []
 
     @cached_property
@@ -687,13 +623,7 @@ class EosDesignsFacts(AvdFacts):
                     parent_profile_name = adapter_profile.get("parent_profile")
                     parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
 
-                    adapter_settings = combine(
-                        parent_profile,
-                        adapter_profile,
-                        adapter,
-                        recursive=True,
-                        list_merge="replace",
-                    )
+                    adapter_settings = combine(parent_profile, adapter_profile, adapter, recursive=True, list_merge="replace")
 
                     if self.hostname not in adapter_settings.get("switches", []):
                         # This switch is not connected to this endpoint. Skipping.
@@ -716,8 +646,8 @@ class EosDesignsFacts(AvdFacts):
                         # No vlans or mode defined so this is an access port with only vlan 1 allowed
                         vlans.append(1)
 
-                if "native_vlan" in adapter_settings:
-                    vlans.append(int(adapter_settings["native_vlan"]))
+                    if "native_vlan" in adapter_settings:
+                        vlans.append(int(adapter_settings["native_vlan"]))
 
                     if get(adapter_settings, "port_channel.subinterfaces"):
                         for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
@@ -774,11 +704,7 @@ class EosDesignsFacts(AvdFacts):
         # vlans used by them.
         for fabric_switch in get(self._hostvars, "avd_switch_facts", default=[]):
             fabric_switch_facts: EosDesignsFacts = get(
-                self._hostvars,
-                f"avd_switch_facts..{fabric_switch}..switch",
-                required=True,
-                separator="..",
-                org_key=f"avd_switch_facts.{fabric_switch}.switch",
+                self._hostvars, f"avd_switch_facts..{fabric_switch}..switch", required=True, separator="..", org_key=f"avd_switch_facts.{fabric_switch}.switch"
             )
             if fabric_switch_facts.uplink_type == "port-channel" and self.hostname in fabric_switch_facts.uplink_peers:
                 vlans.extend(fabric_switch_facts._vlans)
@@ -800,7 +726,6 @@ class EosDesignsFacts(AvdFacts):
         """
         Return list of vlans after filtering network services.
         The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use
-
         Ex. [1, 2, 3 ,4 ,201, 3021]
         """
         if self._any_network_services:
@@ -811,23 +736,13 @@ class EosDesignsFacts(AvdFacts):
 
             if self.filter_only_vlans_in_use:
                 # Only include the vlans that are used by connected endpoints
-                (
-                    vlans_in_use,
-                    trunk_groups_in_use,
-                ) = self._endpoint_vlans_and_trunk_groups
+                vlans_in_use, trunk_groups_in_use = self._endpoint_vlans_and_trunk_groups
                 if self.mlag:
                     # Make sure to also configure vlans used on the MLAG peer.
                     # This could happen if a connected endpoint is only connected to one leaf.
-                    mlag_peer_facts: EosDesignsFacts = get(
-                        self._hostvars,
-                        f"avd_switch_facts..{self.mlag_peer}..switch",
-                        separator="..",
-                    )
+                    mlag_peer_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts..{self.mlag_peer}..switch", separator="..")
                     if mlag_peer_facts:
-                        (
-                            mlag_vlans_in_use,
-                            mlag_trunk_groups_in_use,
-                        ) = mlag_peer_facts._endpoint_vlans_and_trunk_groups
+                        mlag_vlans_in_use, mlag_trunk_groups_in_use = mlag_peer_facts._endpoint_vlans_and_trunk_groups
                         vlans_in_use.extend(mlag_vlans_in_use)
                         trunk_groups_in_use.extend(mlag_trunk_groups_in_use)
                 vlans_in_use = set(vlans_in_use)
@@ -897,7 +812,6 @@ class EosDesignsFacts(AvdFacts):
     def vlans(self):
         """
         Return the compressed list of vlans to be defined on this switch
-
         Ex. "1-100, 201-202"
         """
         return list_compress(self._vlans)
@@ -926,14 +840,9 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def overlay_rd_type_admin_subfield(self):
-        tmp_overlay_rd_type_admin_subfield = default(
-            get(self._hostvars, "evpn_rd_type.admin_subfield"),
-            get(self._hostvars, "overlay_rd_type.admin_subfield"),
-        )
+        tmp_overlay_rd_type_admin_subfield = default(get(self._hostvars, "evpn_rd_type.admin_subfield"), get(self._hostvars, "overlay_rd_type.admin_subfield"))
         tmp_overlay_rd_type_admin_subfield_offset = default(
-            get(self._hostvars, "evpn_rd_type.admin_subfield_offset"),
-            get(self._hostvars, "overlay_rd_type.admin_subfield_offset"),
-            0,
+            get(self._hostvars, "evpn_rd_type.admin_subfield_offset"), get(self._hostvars, "overlay_rd_type.admin_subfield_offset"), 0
         )
         if tmp_overlay_rd_type_admin_subfield is None:
             return self.router_id
@@ -986,11 +895,7 @@ class EosDesignsFacts(AvdFacts):
     def igmp_snooping_enabled(self):
         if self.network_services_l2 is True:
             default_igmp_snooping_enabled = get(self._hostvars, "default_igmp_snooping_enabled")
-            return get(
-                self._switch_data_combined,
-                "igmp_snooping_enabled",
-                default=default_igmp_snooping_enabled,
-            )
+            return get(self._switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled)
         return None
 
     @cached_property
@@ -1014,48 +919,28 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def router_id(self):
         """
-        Run template lookup to render ipv4 address for router_id
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for router_id using dynamically loaded python module.
         """
         if self.underlay_router is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["loopback_ipv4_pool"] = self.loopback_ipv4_pool
-            template_vars["loopback_ipv4_offset"] = self.loopback_ipv4_offset
-            template_path = get(self.ip_addressing, "router_id", required=True)
-            return self.template_var(template_path, template_vars)
+            return self.avd_ip_addressing.router_id()
         return None
 
     @cached_property
     def evpn_gateway_vxlan_l2(self):
         if self.underlay_router is True:
-            return get(
-                self._switch_data_combined,
-                "evpn_gateway.evpn_l2.enabled",
-                default=False,
-            )
+            return get(self._switch_data_combined, "evpn_gateway.evpn_l2.enabled", default=False)
         return None
 
     @cached_property
     def evpn_gateway_vxlan_l3(self):
         if self.underlay_router is True:
-            return get(
-                self._switch_data_combined,
-                "evpn_gateway.evpn_l3.enabled",
-                default=False,
-            )
+            return get(self._switch_data_combined, "evpn_gateway.evpn_l3.enabled", default=False)
         return None
 
     @cached_property
     def evpn_gateway_vxlan_l3_inter_domain(self):
         if self.underlay_router is True:
-            return get(
-                self._switch_data_combined,
-                "evpn_gateway.evpn_l3.inter_domain",
-                default=True,
-            )
+            return get(self._switch_data_combined, "evpn_gateway.evpn_l3.inter_domain", default=True)
         return None
 
     @cached_property
@@ -1080,7 +965,6 @@ class EosDesignsFacts(AvdFacts):
     def bgp_peer_groups(self):
         """
         Get bgp_peer_groups configurations or fallback to defaults
-
         Supporting legacy uppercase keys as well.
         """
         if self.underlay_router is True:
@@ -1092,57 +976,26 @@ class EosDesignsFacts(AvdFacts):
                         "IPv4-UNDERLAY-PEERS",
                     ),
                     "password": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.ipv4_underlay_peers.password",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.IPv4_UNDERLAY_PEERS.password",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.password"), get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.password")
                     ),
                     "structured_config": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.ipv4_underlay_peers.structured_config",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.IPv4_UNDERLAY_PEERS.structured_config",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.structured_config"),
+                        get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.structured_config"),
                     ),
                 },
                 "mlag_ipv4_underlay_peer": {
                     "name": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.mlag_ipv4_underlay_peer.name",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.name"),
+                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name"),
                         "MLAG-IPv4-UNDERLAY-PEER",
                     ),
                     "password": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.mlag_ipv4_underlay_peer.password",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
+                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password"),
                     ),
                     "structured_config": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.structured_config",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
+                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.structured_config"),
                     ),
                 },
                 "evpn_overlay_peers": {
@@ -1152,61 +1005,27 @@ class EosDesignsFacts(AvdFacts):
                         "EVPN-OVERLAY-PEERS",
                     ),
                     "password": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.evpn_overlay_peers.password",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.EVPN_OVERLAY_PEERS.password",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.password"), get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.password")
                     ),
                     "structured_config": default(
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.evpn_overlay_peers.structured_config",
-                        ),
-                        get(
-                            self._hostvars,
-                            "bgp_peer_groups.EVPN_OVERLAY_PEERS.structured_config",
-                        ),
+                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.structured_config"),
+                        get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.structured_config"),
                     ),
                 },
                 "evpn_overlay_core": {
-                    "name": get(
-                        self._hostvars,
-                        "bgp_peer_groups.evpn_overlay_core.name",
-                        default="EVPN-OVERLAY-CORE",
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.name", default="EVPN-OVERLAY-CORE"),
                     "password": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.password"),
-                    "structured_config": get(
-                        self._hostvars,
-                        "bgp_peer_groups.evpn_overlay_core.structured_config",
-                    ),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.structured_config"),
                 },
                 "mpls_overlay_peers": {
-                    "name": get(
-                        self._hostvars,
-                        "bgp_peer_groups.mpls_overlay_peers.name",
-                        default="MPLS-OVERLAY-PEERS",
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.name", default="MPLS-OVERLAY-PEERS"),
                     "password": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.password"),
-                    "structured_config": get(
-                        self._hostvars,
-                        "bgp_peer_groups.mpls_overlay_peers.structured_config",
-                    ),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.mpls_overlay_peers.structured_config"),
                 },
                 "rr_overlay_peers": {
-                    "name": get(
-                        self._hostvars,
-                        "bgp_peer_groups.rr_overlay_peers.name",
-                        default="RR-OVERLAY-PEERS",
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.name", default="RR-OVERLAY-PEERS"),
                     "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
-                    "structured_config": get(
-                        self._hostvars,
-                        "bgp_peer_groups.rr_overlay_peers.structured_config",
-                    ),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
                 },
             }
         return None
@@ -1220,20 +1039,14 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mpls_overlay_role(self):
         if self.underlay_router is True:
-            return get(
-                self._switch_data_combined,
-                "mpls_overlay_role",
-                default=self.default_mpls_overlay_role,
-            )
+            return get(self._switch_data_combined, "mpls_overlay_role", default=self.default_mpls_overlay_role)
         return None
 
     @cached_property
     def bgp_as(self):
         """
         Get global bgp_as or fabric_topology bgp_as.
-
         At least one of global bgp_as or fabric_topology bgp_as must be defined.
-
         AS ranges in fabric_topology bgp_as will be expanded to a list and:
          - For standalone or A/A MH devices, the node id will be used to index into the list to find the ASN.
          - For MLAG devices, the node id of the first node in the node group will be used to index into the ASN list.
@@ -1273,11 +1086,7 @@ class EosDesignsFacts(AvdFacts):
         """
         if self.underlay_router is True:
             if self.evpn_role == "client":
-                return get(
-                    self._switch_data_combined,
-                    "evpn_route_servers",
-                    default=self.uplink_switches,
-                )
+                return get(self._switch_data_combined, "evpn_route_servers", default=self.uplink_switches)
             else:
                 return get(self._switch_data_combined, "evpn_route_servers")
         return []
@@ -1292,12 +1101,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def isis_net(self):
         if self.underlay_router is True:
-            if self.underlay_routing_protocol in [
-                "isis",
-                "isis-ldp",
-                "isis-sr",
-                "isis-sr-ldp",
-            ]:
+            if self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
                 isis_system_id_prefix = get(self._switch_data_combined, "isis_system_id_prefix")
                 if isis_system_id_prefix is not None:
                     isis_area_id = get(self._hostvars, "isis_area_id", required=True)
@@ -1308,12 +1112,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def is_type(self):
         if self.underlay_router is True:
-            if self.underlay_routing_protocol in [
-                "isis",
-                "isis-ldp",
-                "isis-sr",
-                "isis-sr-ldp",
-            ]:
+            if self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
                 default_is_type = get(self._hostvars, "isis_default_is_type", default="level-2")
                 is_type = str(get(self._switch_data_combined, "is_type", default=default_is_type)).lower()
                 if is_type not in ["level-1", "level-2", "level-1-2"]:
@@ -1324,21 +1123,12 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def isis_instance_name(self):
         if self.underlay_router is True:
-            if self.underlay_routing_protocol in [
-                "isis",
-                "isis-ldp",
-                "isis-sr",
-                "isis-sr-ldp",
-            ]:
+            if self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
                 if self.mpls_lsr is True:
                     default_isis_instance_name = "CORE"
                 else:
                     default_isis_instance_name = "EVPN_UNDERLAY"
-                return get(
-                    self._hostvars,
-                    "underlay_isis_instance_name",
-                    default=default_isis_instance_name,
-                )
+                return get(self._hostvars, "underlay_isis_instance_name", default=default_isis_instance_name)
         return None
 
     @cached_property
@@ -1370,18 +1160,10 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def ipv6_router_id(self):
         """
-        Run template lookup to render ipv6 address for router_id
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv6 address for router_id using dynamically loaded python module.
         """
         if self.underlay_ipv6 is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["loopback_ipv6_pool"] = self.loopback_ipv6_pool
-            template_vars["loopback_ipv6_offset"] = self.loopback_ipv6_offset
-            template_path = get(self.ip_addressing, "ipv6_router_id", required=True)
-            return self.template_var(template_path, template_vars)
+            return self.avd_ip_addressing.ipv6_router_id()
         return None
 
     @cached_property
@@ -1403,11 +1185,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_peer_link_allowed_vlans(self):
         if self.mlag is True:
-            return get(
-                self._switch_data_combined,
-                "mlag_peer_link_allowed_vlans",
-                default="2-4094",
-            )
+            return get(self._switch_data_combined, "mlag_peer_link_allowed_vlans", default="2-4094")
         return None
 
     @cached_property
@@ -1419,13 +1197,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_interfaces(self):
         if self.mlag is True:
-            return range_expand(
-                default(
-                    get(self._switch_data_combined, "mlag_interfaces"),
-                    get(self.default_interfaces, "mlag_interfaces"),
-                    [],
-                )
-            )
+            return range_expand(default(get(self._switch_data_combined, "mlag_interfaces"), get(self.default_interfaces, "mlag_interfaces"), []))
         return None
 
     @cached_property
@@ -1501,11 +1273,7 @@ class EosDesignsFacts(AvdFacts):
     def mlag_port_channel_id(self):
         if self.mlag is True:
             default_mlag_port_channel_id = "".join(re.findall(r"\d", self.mlag_interfaces[0]))
-            return get(
-                self._switch_data_combined,
-                "mlag_port_channel_id",
-                default_mlag_port_channel_id,
-            )
+            return get(self._switch_data_combined, "mlag_port_channel_id", default_mlag_port_channel_id)
         return None
 
     @cached_property
@@ -1569,7 +1337,6 @@ class EosDesignsFacts(AvdFacts):
     def uplinks(self):
         """
         List of uplinks with all parameters
-
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
@@ -1581,8 +1348,6 @@ class EosDesignsFacts(AvdFacts):
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
             inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
@@ -1621,11 +1386,8 @@ class EosDesignsFacts(AvdFacts):
                 if get(self._hostvars, "underlay_rfc5549") is True:
                     uplink["ipv6_enable"] = True
                 else:
-                    template_vars["uplink_switch_index"] = uplink_index
-                    template_path = get(self.ip_addressing, "p2p_uplinks_ip", required=True)
-                    uplink["ip_address"] = self.template_var(template_path, template_vars)
-                    template_path = get(self.ip_addressing, "p2p_uplinks_peer_ip", required=True)
-                    uplink["peer_ip_address"] = self.template_var(template_path, template_vars)
+                    uplink["ip_address"] = self.avd_ip_addressing.p2p_uplinks_ip(uplink_index)
+                    uplink["peer_ip_address"] = self.avd_ip_addressing.p2p_uplinks_peer_ip(uplink_index)
 
                 if self.link_tracking_groups is not None:
                     uplink["link_tracking_groups"] = []
@@ -1682,11 +1444,7 @@ class EosDesignsFacts(AvdFacts):
                     uplink["peer_channel_description"] = self.group
 
                 if self.mlag_role == "secondary":
-                    mlag_peer_switch_facts: EosDesignsFacts = get(
-                        self._hostvars,
-                        f"avd_switch_facts.{self.mlag_peer}.switch",
-                        required=True,
-                    )
+                    mlag_peer_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
 
                     uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_interfaces[0]))
                     uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_switch_interfaces[0]))
@@ -1732,7 +1490,6 @@ class EosDesignsFacts(AvdFacts):
     def uplink_peers(self):
         """
         List of all uplink peers
-
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
         fabric_name = get(self._hostvars, "fabric_name", required=True)
@@ -1764,27 +1521,12 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def vtep_ip(self):
         """
-        Run template lookup to render ipv4 address for vtep_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for vtep_ip using dynamically loaded python module.
         """
         if self.vtep is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["switch_vtep_loopback_ipv4_pool"] = self.vtep_loopback_ipv4_pool
-            template_vars["loopback_ipv4_offset"] = self.loopback_ipv4_offset
-
             if self.mlag is True:
-                if self.mlag_role == "primary":
-                    template_vars["mlag_primary_id"] = self.id
-                    template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                elif self.mlag_role == "secondary":
-                    template_vars["mlag_secondary_id"] = self.id
-                    template_vars["mlag_primary_id"] = self._mlag_peer_id
+                return self.avd_ip_addressing.vtep_ip_mlag()
 
-                template_path = get(self.ip_addressing, "vtep_ip_mlag", required=True)
-                return self.template_var(template_path, template_vars)
             else:
                 return self.avd_ip_addressing.vtep_ip()
 
@@ -1793,24 +1535,13 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_ip(self):
         """
-        Run template lookup to render ipv4 address for mlag_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for mlag_ip using dynamically loaded python module.
         """
         if self.mlag is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["switch_data"] = {"combined": {"mlag_peer_ipv4_pool": self.mlag_peer_ipv4_pool}}
             if self.mlag_role == "primary":
-                template_vars["mlag_primary_id"] = self.id
-                template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_ip_primary", required=True)
+                return self.avd_ip_addressing.mlag_ip_primary()
             elif self.mlag_role == "secondary":
-                template_vars["mlag_secondary_id"] = self.id
-                template_vars["mlag_primary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_ip_secondary", required=True)
-            return self.template_var(template_path, template_vars)
+                return self.avd_ip_addressing.mlag_ip_secondary()
         return None
 
     @cached_property
@@ -1828,25 +1559,13 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_l3_ip(self):
         """
-        Run template lookup to render ipv4 address for mlag_l3_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
         """
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["switch_data"] = {"combined": {"mlag_peer_l3_ipv4_pool": self.mlag_peer_l3_ipv4_pool}}
             if self.mlag_role == "primary":
-                template_vars["mlag_primary_id"] = self.id
-                template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_l3_ip_primary", required=True)
+                return self.avd_ip_addressing.mlag_l3_ip_primary()
             elif self.mlag_role == "secondary":
-                template_vars["mlag_secondary_id"] = self.id
-                template_vars["mlag_primary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_l3_ip_secondary", required=True)
-
-            return self.template_var(template_path, template_vars)
+                return self.avd_ip_addressing.mlag_l3_ip_secondary()
         return None
 
     @cached_property
