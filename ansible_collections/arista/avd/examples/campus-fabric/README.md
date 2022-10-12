@@ -165,7 +165,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/group_vars/DC1_FABRIC.yml
+    examples/campus-fabric/group_vars/DC1_FABRIC.yml
     --8<--
     ```
 
@@ -174,7 +174,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/group_vars/DC1_SPINES.yml
+    examples/campus-fabric/group_vars/DC1_SPINES.yml
     --8<--
     ```
 
@@ -183,7 +183,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/group_vars/DC1_LEAFS.yml
+    examples/campus-fabric/group_vars/DC1_LEAFS.yml
     --8<--
     ```
 
@@ -192,7 +192,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/group_vars/DC1_NETWORK_SERVICES.yml
+    examples/campus-fabric/group_vars/DC1_NETWORK_SERVICES.yml
     --8<--
     ```
 
@@ -201,7 +201,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
     ``` yaml
     --8<--
-    examples/l2ls-fabric/group_vars/DC1_NETWORK_PORTS.yml
+    examples/campus-fabric/group_vars/DC1_NETWORK_PORTS.yml
     --8<--
     ```
 
