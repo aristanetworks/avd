@@ -9,7 +9,7 @@ design:
 
 # Ansible connectivity definitions
 # eAPI connectivity via HTTPS is specified (as opposed to network_cli via SSH)
-ansible_connection: ansible.netcommon.network_cli
+ansible_connection: ansible.netcommon.httpapi
 # Specifies that we are indeed using Arista EOS
 ansible_network_os: arista.eos.eos
 # This user/password must exist on the switches to enable Ansible access

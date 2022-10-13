@@ -1,8 +1,8 @@
-# Example for L2LS Campus Fabric
+# Example for Campus Fabric
 
 ## Introduction
 
-This example includes and describes all the AVD files used to build an L2LS Campus Fabric by building upon the previous [L2LS Fabric](../../examples/campus-fabric/README.md) example. The spines will provide routing between the SVIs.  The leaf switches support 802.1x Network Access Control (NAC) and port ranges.
+This example describes and includes all the AVD files used to build an Campus Fabric by building upon the previous [L2LS Fabric](../../examples/campus-fabric/README.md) example. The spine nodes provide L3 routing of SVIs and the L2 leaf nodes support 802.1x Network Access Control (NAC) with port ranges.
 
 ## Installation & Requirements
 
@@ -53,22 +53,20 @@ ansible-avd-examples/     (directory where playbook was run)
 
 ## Design Overview
 
-### Physical L2LS Campus Topology
+### Physical Campus Fabric Topology
+
+In a Campus network it is common to refer to the location of the switches as **MDF** (Main Distribution Frame) and **IDFs** (Independent Distribution Frame). Throughtout this example we refer to the spine nodes as the MDF and the leaf nodes as the IDFs. This example shows various switch types and common ways of cabling the IDF to the MDF.
 
 - MDF
   - 2 Spine nodes
 - IDFs
-  - IDF1 supporting 192 users with a 2 leafs
-  - IDF2 supporting 240 users with a Modular 5 slot chassis
-  - IDF3 supporting 480 users with 5 leafs
+  - IDF1 supporting 192 users with a 2 leafs (2RU - 96 ports each)
+  - IDF2 supporting 240 users with a Modular 5 slot chassis (48 ports per module)
+  - IDF3 supporting 480 users with 5 leafs (2RU - 96 ports each)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
 ![Figure: 1](images/campus_topo.svg)
-
-???+ note
-
-    The FW/L3 Device and individual hosts (A-D) in this example are not managed by AVD, but the switch ports connecting to these devices are.
 
 ## Basic EOS Switch Configuration
 
@@ -110,7 +108,7 @@ Now that we understand the physical L2LS topology, we need to create the Ansible
 
 DC1 represents the highest level within the hierarchy. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent and child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, DC1_NETWORK_SERVICES is a group with two other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to the group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
 
-This naming convention makes it possible to extend anything quickly but can be changed based on your preferences. The names of all groups and hosts must be unique.
+This naming convention makes it possible to extend anything quickly and can be changed based on your preferences. The names of all groups and hosts must be unique.
 
 ![Figure: 2](images/ansible_groups.svg)
 
@@ -132,7 +130,7 @@ examples/campus-fabric/inventory.yml
 
 AVD Fabric Input Variables
 
-To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
+To apply AVD input variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
 
 | group_vars/              | Description                                   |
 | ------------------------ | --------------------------------------------- |
@@ -140,8 +138,8 @@ To apply AVD variables to the nodes in the fabric, we make use of Ansible group_
 | DC1_FABRIC.yml           | Fabric, Topology, and Device settings         |
 | DC1_SPINES.yml           | Device type for Spines                        |
 | DC1_LEAFS.yml            | Device type for Leafs                         |
-| DC1_NETWORK_SERVICES.yml | VLANs                                         |
-| DC1_NETWORK_PORTS.yml    | Port Profiles and Connected Endpoint settings |
+| DC1_NETWORK_SERVICES.yml | VLANs/SVIs                                    |
+| DC1_NETWORK_PORTS.yml    | Port Profiles and Network Port Ranges         |
 
 The tabs below show the Ansible **group_vars** used in this example.
 
@@ -157,11 +155,11 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_FABRIC"
-    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. The fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool.
+    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. The fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool.  Typically, and IDF has a unique set of VLANs. You may use the `filter.tags` variable to constrain which vlans are built on an IDF node.
 
     Variables applied under the node key type (spine/leaf) defaults section are inherited to nodes under each type. These variables may be overwritten under the node itself.
 
-    The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2 has a unique variable `uplink_switch_interfaces: [Ethernet2, Ethernet2]` defined. This means that LEAF2 is connected to SPINE1's Ethernet2 and SPINE2's Ethernet2, respectively.
+    The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2A has a unique variable `uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]` defined. This means that LEAF2A is connected to SPINE1's Ethernet49/1 and SPINE2's Ethernet49/1, respectively.
 
     ``` yaml
     --8<--
@@ -188,7 +186,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs. These variables are applied to spine and leaf nodes since they are a part of this group.
+    You add VLANs and SVIs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs. These variables are applied to spine and leaf nodes since they are a part of this group.
 
     ``` yaml
     --8<--
@@ -197,7 +195,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_PORTS"
-    Our fabric would not be complete without connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**. Each endpoint's adapter defines which switch port(s) and port profile to use. In our example, we have four hosts and a firewall connected to the fabric. The connected endpoints keys are used for logical separation and apply to interface descriptions. These variables are applied to spine and leaf nodes since they are a part of this inventory group.
+    Our fabric would not be complete without connecting some devices to it. We define port profiles and network port ranges in **group_vars/DC1_NETWORKS_PORTS.yml**. A single port_profile may be used across a number of switches and port ranges.  In our example we create a port_profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The network_ports data model is where we define which switches and ports to apply the port profile.  This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. Details of the range_expand filter can be viewed [here](https://avd.sh/en/stable/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
 
     ``` yaml
     --8<--
@@ -205,11 +203,11 @@ The tabs below show the Ansible **group_vars** used in this example.
     --8<--
     ```
 
-## Add Network Services
+## Network Services
 
-The Network Services data model is stored in the **DC1_NETWORK_SERVICES** tab above. Each IDF will have 3 unique VLANs to support Data, Voice and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
+The Network Services data model is stored in the **DC1_NETWORK_SERVICES** group_var tab above. Each IDF will have 3 unique VLANs to support Data, Voice and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
 
-IDF VLAN/IP assignments
+### VLAN/IP Subnet Assignment
 
 | IDF  | Data                 | Voice                 | Guest                 |
 | ---- | -------------------- | --------------------- | --------------------- |
@@ -217,34 +215,13 @@ IDF VLAN/IP assignments
 | IDF2 | 210 - (10.2.10.0/23) | 220 - (10.2.20.0/23)  | 230 - (10.2.30.0/23)  |
 | IDF3 | 310 - (10.3.10.0/23) | 320 - (10.3.20.0/23)  | 330 - (10.3.30.0/23)  |
 
-## Build Network Ports
+## Port Profiles and Network Ports
 
-AVD provides a way to standardize and reuse port profiles through a compact data model that can be utilized across the network. The Network Ports data model is stored in the **DC1_NETWORK_PORTS** tab above. Each port is enabled to support NAC and dynamically assigns the proper vlan based on 802.1x authentication. Multiple device types (IP Phone, Workstations, Printers, Access Points, etc...) can share the same port configuration.
+AVD provides a way to standardize and reuse port profiles through a compact data model that can be utilized across the network. The Network Ports data model is stored in the **DC1_NETWORK_PORTS** group_vars tab above. Each port is configured to support NAC and dynamically assigns the proper vlan based on 802.1x authentication. Multiple device types (IP Phone, Workstations, Printers, Access Points, etc...) can share the same port configuration below.
 
 ![Figure: 3](images/dot1x_ports.svg)
 
-Sample port config:
-
-``` shell
-interface Ethernet1
-  switchport trunk native vlan 110
-  switchport phone vlan 120
-  switchport phone trunk untagged
-  switchport mode trunk phone
-  spanning-tree portfast
-  spanning-tree bpduguard enable
-  dot1x pae authenticator
-  dot1x authentication failure action traffic allow vlan 130
-  dot1x reauthentication
-  dot1x port-control auto
-  dot1x host-mode multi-host authenticated
-  dot1x mac based authentication
-  dot1x timeout tx-period 3
-  dot1x timeout reauth-period server
-  dot1x reauthorization request limit 3
-```
-
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in port_profiles, while network_ports defines which switches and port ranges to be applied.  The network_ports data model allows the use of regex to match switches and an expand_range filter to cover a range of ports. For details, see documentation for [port_profiles](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [network_ports](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in port_profiles, while network_ports defines which switches and port ranges to be applied. The network_ports data model allows the use of regex to match switches and an expand_range filter to cover a range of ports. For details, see documentation for [port_profiles](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [network_ports](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
 
 ## Deploy Fabric
 
@@ -372,4 +349,4 @@ Your configuration files should be similar to these.
 
 ## Next steps
 
-Try building your own Campus topology.
+Modify this example and expand the features to match your Campus topology.
