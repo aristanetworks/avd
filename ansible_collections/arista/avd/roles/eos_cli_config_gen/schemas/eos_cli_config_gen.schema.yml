@@ -1395,6 +1395,23 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  ipv6_hardware:
+    display_name: IPv6 Hardware
+    type: dict
+    keys:
+      fib:
+        type: dict
+        keys:
+          optimize:
+            type: dict
+            keys:
+              prefixes:
+                type: dict
+                keys:
+                  profile:
+                    type: str
+                    description: Pre-defined profile 'internet' or user-defined profile
+                      name
   ipv6_icmp_redirect:
     type: bool
     display_name: IPv6 ICMP Redirect

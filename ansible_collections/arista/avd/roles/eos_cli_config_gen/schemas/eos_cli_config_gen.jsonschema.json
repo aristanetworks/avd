@@ -1596,6 +1596,39 @@
         "additionalProperties": false
       }
     },
+    "ipv6_hardware": {
+      "title": "IPv6 Hardware",
+      "type": "object",
+      "properties": {
+        "fib": {
+          "type": "object",
+          "properties": {
+            "optimize": {
+              "type": "object",
+              "properties": {
+                "prefixes": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Pre-defined profile 'internet' or user-defined profile name",
+                      "title": "Profile"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Prefixes"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Optimize"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Fib"
+        }
+      },
+      "additionalProperties": false
+    },
     "ipv6_icmp_redirect": {
       "type": "boolean",
       "title": "IPv6 ICMP Redirect"
