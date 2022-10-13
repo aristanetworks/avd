@@ -10,8 +10,8 @@ __metaclass__ = type
 
 from jinja2.runtime import Undefined
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_check_password
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError
 
 
 def bgp_valid_password(value, key):

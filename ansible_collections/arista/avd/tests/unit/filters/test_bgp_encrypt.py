@@ -4,7 +4,7 @@ __metaclass__ = type
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.bgp_encrypt import FilterModule, _parse_input, bgp_encrypt, bgp_decrypt
+from ansible_collections.arista.avd.plugins.filter.bgp_encrypt import FilterModule, _parse_input, bgp_decrypt, bgp_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
 
 # NOTE: for now not testing anything with use_base64 False as this should not bew widely used

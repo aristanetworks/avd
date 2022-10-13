@@ -5,8 +5,8 @@ __metaclass__ = type
 import pytest
 from jinja2.runtime import Undefined
 
-from ansible_collections.arista.avd.plugins.test.bgp_valid_password import TestModule, bgp_valid_password
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError
+from ansible_collections.arista.avd.plugins.test.bgp_valid_password import TestModule, bgp_valid_password
 
 MISSING_VALUES = [(Undefined, "blah"), (None, "blah"), (42, "blah"), ("blah", Undefined), ("blah", None), ("blah", 42)]
 # password used is "arista"
