@@ -100,8 +100,6 @@ leaf:
       mlag: false
       uplink_switches: [LEAF3A, LEAF3B]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
-      filter:
-        tags: [ 310, 320, 330 ]
       nodes:
         LEAF3C:
           id: 8
