@@ -3718,6 +3718,7 @@
                     "level-1",
                     "level-2"
                   ],
+                  "description": "Optional, default is to protect all levels",
                   "title": "Level"
                 },
                 "srlg": {
