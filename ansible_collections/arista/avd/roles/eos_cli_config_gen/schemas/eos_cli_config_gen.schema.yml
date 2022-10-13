@@ -18,7 +18,7 @@ keys:
                 - start-stop
                 - stop-only
               group:
-                display_name: Group Name
+                description: Group Name
                 type: str
           default:
             type: dict
@@ -30,7 +30,7 @@ keys:
                 - start-stop
                 - stop-only
               group:
-                display_name: Group Name
+                description: Group Name
                 type: str
       system:
         type: dict
@@ -45,7 +45,7 @@ keys:
                 - start-stop
                 - stop-only
               group:
-                display_name: Group Name
+                description: Group Name
                 type: str
       commands:
         type: dict
@@ -59,6 +59,7 @@ keys:
                   type: str
                   convert_types:
                   - int
+                  description: Privelege level 'all' or 0-15
                 type:
                   type: str
                   valid_values:
@@ -66,7 +67,7 @@ keys:
                   - start-stop
                   - stop-only
                 group:
-                  display_name: Group Name
+                  description: Group Name
                   type: str
                 logging:
                   type: bool
@@ -79,6 +80,7 @@ keys:
                   type: str
                   convert_types:
                   - int
+                  description: Privelege level 'all' or 0-15
                 type:
                   type: str
                   valid_values:
@@ -86,25 +88,13 @@ keys:
                   - start-stop
                   - stop-only
                 group:
-                  display_name: Group Name
+                  description: Group Name
                   type: str
                 logging:
                   type: bool
           commands_default:
             type: list
-            items:
-              type: dict
-              keys:
-                commands:
-                  type: str
-                  convert_types:
-                  - int
-                type:
-                  type: str
-                group:
-                  type: str
-                logging:
-                  type: bool
+            description: Deprecated and removed key from AVD 2.x
   aaa_authentication:
     type: dict
     display_name: AAA Authentication

@@ -21,8 +21,9 @@
                   "title": "Type"
                 },
                 "group": {
-                  "title": "Group Name",
-                  "type": "string"
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
                 }
               },
               "additionalProperties": false,
@@ -41,8 +42,9 @@
                   "title": "Type"
                 },
                 "group": {
-                  "title": "Group Name",
-                  "type": "string"
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
                 }
               },
               "additionalProperties": false,
@@ -68,8 +70,9 @@
                   "title": "Type"
                 },
                 "group": {
-                  "title": "Group Name",
-                  "type": "string"
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
                 }
               },
               "additionalProperties": false,
@@ -89,6 +92,7 @@
                 "properties": {
                   "commands": {
                     "type": "string",
+                    "description": "Privelege level 'all' or 0-15",
                     "title": "Commands"
                   },
                   "type": {
@@ -101,8 +105,9 @@
                     "title": "Type"
                   },
                   "group": {
-                    "title": "Group Name",
-                    "type": "string"
+                    "description": "Group Name",
+                    "type": "string",
+                    "title": "Group"
                   },
                   "logging": {
                     "type": "boolean",
@@ -120,6 +125,7 @@
                 "properties": {
                   "commands": {
                     "type": "string",
+                    "description": "Privelege level 'all' or 0-15",
                     "title": "Commands"
                   },
                   "type": {
@@ -132,8 +138,9 @@
                     "title": "Type"
                   },
                   "group": {
-                    "title": "Group Name",
-                    "type": "string"
+                    "description": "Group Name",
+                    "type": "string",
+                    "title": "Group"
                   },
                   "logging": {
                     "type": "boolean",
@@ -146,28 +153,7 @@
             },
             "commands_default": {
               "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "commands": {
-                    "type": "string",
-                    "title": "Commands"
-                  },
-                  "type": {
-                    "type": "string",
-                    "title": "Type"
-                  },
-                  "group": {
-                    "type": "string",
-                    "title": "Group"
-                  },
-                  "logging": {
-                    "type": "boolean",
-                    "title": "Logging"
-                  }
-                },
-                "additionalProperties": false
-              },
+              "description": "Deprecated and removed key from AVD 2.x",
               "title": "Commands Default"
             }
           },
