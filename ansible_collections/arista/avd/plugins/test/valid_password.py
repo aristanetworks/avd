@@ -1,8 +1,8 @@
 #
-# arista.avd.bgp_valid_password
+# arista.avd.valid_password
 #
 # Jinja test examples:
-# {% if bgp_password is arista.avd.bgp_valid_password(neighbor_or_peer_group_name) %}  =>  True / False
+# {% if bgp_password is arista.avd.valid_password(passwd_type=bgp, key=neighbor_or_peer_group_name) %}  =>  True / False
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,10 +11,13 @@ __metaclass__ = type
 from jinja2.runtime import Undefined
 
 from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_check_password
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
 
 
-def bgp_valid_password(value, key):
+##############
+# BGP
+##############
+def bgp_valid_password(value, key=None):
     """
     bgp_valid_password - Ansible Test
 
@@ -52,8 +55,30 @@ def bgp_valid_password(value, key):
     raise AristaAvdError(f"The BGP encrypted password {value} cannot be decrypted for {key}!")
 
 
+##############
+# GENERIC
+##############
+METHODS_DIR = {"bgp": bgp_valid_password}
+
+
+def validate(value, passwd_type=None, key=None) -> str:
+    """
+    Umbrella function to execute the correct validation method based on the input type
+
+    Overloading type ..
+    """
+    if not passwd_type:
+        raise AristaAvdMissingVariableError("type keyword must be present to use this test")
+    try:
+        validate_method = METHODS_DIR[passwd_type.lower()]
+    except KeyError as exc:
+        raise AristaAvdError("Type {passwd_type} is not supported for the valid_password test") from exc
+
+    return validate_method(value, key=key)
+
+
 class TestModule(object):
     def tests(self):
         return {
-            "bgp_valid_password": bgp_valid_password,
+            "valid_password": validate,
         }

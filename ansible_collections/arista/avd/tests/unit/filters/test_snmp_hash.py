@@ -2,19 +2,14 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from contextlib import contextmanager
-
 import pytest
 from ansible.errors import AnsibleFilterError
 
 from ansible_collections.arista.avd.plugins.filter.snmp_hash import PRIV_KEY_LENGTH, FilterModule, get_hash_object, key_from_passphrase, localize_passphrase
 
+from ..conftest import does_not_raise
+
 f = FilterModule()
-
-
-@contextmanager
-def does_not_raise():
-    yield
 
 
 class TestSNMPHashFilter:

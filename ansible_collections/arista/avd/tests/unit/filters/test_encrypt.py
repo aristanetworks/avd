@@ -4,10 +4,15 @@ __metaclass__ = type
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.bgp_encrypt import FilterModule, _parse_input, bgp_decrypt, bgp_encrypt
+from ansible_collections.arista.avd.plugins.filter.password_filter import FilterModule, _parse_bgp_input, bgp_decrypt, bgp_encrypt, encrypt, decrypt, _get_type
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
 
-# NOTE: for now not testing anything with use_base64 False as this should not bew widely used
+from ..conftest import does_not_raise
+
+##########
+# BGP
+##########
+# NOTE: for now not testing anything with use_base64 for BGP False as this should not bew widely used
 
 INCOMPLETE_DICT = [{"key": "only-key"}, {"password": "only-password"}, {"dummy": "only-other"}]
 INPUT_DICT_ENCRYPT_EXPECTED = [
@@ -52,24 +57,24 @@ f = FilterModule()
 
 
 @pytest.mark.parametrize("input_dict", INCOMPLETE_DICT)
-def test__parse_input_missing_arg(input_dict):
+def test__parse_bgp_input_missing_arg(input_dict):
     """
     Missing values - expect AristaAvdMissingVariableError
     """
     with pytest.raises(AristaAvdMissingVariableError):
-        _parse_input(input_dict)
+        _parse_bgp_input(input_dict)
 
 
 @pytest.mark.parametrize("input_dict, expected", INPUT_DICT_ENCRYPT_EXPECTED)
-def test__parse_input_correct_args(input_dict, expected):
+def test__parse_bgp_input_correct_args(input_dict, expected):
     """
-    Test that _parse_input returns the expected values
+    Test that _parse_bgp_input returns the expected values
     """
     expected_key = bytes(f"{input_dict['key']}_passwd", encoding="utf-8")
     expected_password = bytes(input_dict["password"], encoding="utf-8")
-    assert _parse_input(input_dict) == (expected_key, expected_password, True)
+    assert _parse_bgp_input(input_dict) == (expected_key, expected_password, True)
     input_dict["use_base64"] = False
-    assert _parse_input(input_dict) == (expected_key, expected_password, False)
+    assert _parse_bgp_input(input_dict) == (expected_key, expected_password, False)
 
 
 @pytest.mark.parametrize("input_dict, expected", INPUT_DICT_ENCRYPT_EXPECTED)
@@ -97,22 +102,70 @@ def test_bgp_decrypt_failure(input_dict):
         bgp_decrypt(input_dict)
 
 
-def test_bgp_encrypt_module():
-    """
-    Assert:
-      * bgp_encrypt
-      * bgp_decrypt
-    filters are part of the module
-    """
-    resp = f.filters()
-    assert isinstance(resp, dict)
-    assert "bgp_encrypt" in resp.keys()
-    assert "bgp_decrypt" in resp.keys()
-
-
 @pytest.mark.parametrize("input_dict, expected", MOLECULE_PASSWORDS_TEST)
-def test_molucule_bgp_encrypt(input_dict, expected):
+def test_molecule_bgp_encrypt(input_dict, expected):
     """
     Test bgp_encrypt
     """
     assert bgp_encrypt(input_dict) == expected
+
+
+##########
+# GENERIC
+##########
+@pytest.mark.parametrize(
+    "input_dict, expected_type, expected_raise",
+    [
+        pytest.param({"key": "test", "password": "dummy"}, None, pytest.raises(AristaAvdMissingVariableError), id="Missing Type"),
+        pytest.param({"type": "bgp"}, "bgp", does_not_raise(), id="Success"),
+    ],
+)
+def test__get_type(input_dict, expected_type, expected_raise):
+    """
+    Test _get_type method
+    """
+    with expected_raise:
+        _get_type(input_dict) == expected_type
+
+
+@pytest.mark.parametrize(
+    "input_dict, expected_raise",
+    [
+        pytest.param({"type": "ospf", "key": "test", "password": "dummy"}, pytest.raises(AristaAvdError), id="Wrong Type"),
+        pytest.param({"type": "bgp", "key": "42.42.42.42", "password": "arista"}, does_not_raise(), id="Implemented Type"),
+    ],
+)
+def test_encrypt(input_dict, expected_raise):
+    """
+    Test encrypt method for non existing and existing type
+    """
+    with expected_raise:
+        encrypt(input_dict)
+
+
+@pytest.mark.parametrize(
+    "input_dict, expected_raise",
+    [
+        pytest.param({"type": "ospf", "key": "test", "password": "dummy"}, pytest.raises(AristaAvdError), id="Wrong Type"),
+        pytest.param({"type": "bgp", "key": "42.42.42.42", "password": "3QGcqpU2YTwKh2jVQ4Vj/A=="}, does_not_raise(), id="Implemented Type"),
+    ],
+)
+def test_decrypt(input_dict, expected_raise):
+    """
+    Test decrypt method for non existing and existing type
+    """
+    with expected_raise:
+        decrypt(input_dict)
+
+
+def test_encrypt_module():
+    """
+    Assert:
+      * encrypt
+      * decrypt
+    filters are part of the module
+    """
+    resp = f.filters()
+    assert isinstance(resp, dict)
+    assert "encrypt" in resp.keys()
+    assert "decrypt" in resp.keys()
