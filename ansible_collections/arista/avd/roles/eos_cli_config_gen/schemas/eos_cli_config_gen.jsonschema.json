@@ -956,7 +956,6 @@
       "title": "Generate Device Documentation"
     },
     "hardware": {
-      "title": "Speed-Group Settings",
       "type": "object",
       "properties": {
         "access_list": {
@@ -986,6 +985,7 @@
               },
               "serdes": {
                 "type": "string",
+                "description": "Serdes speed like \"10g\" or \"25g\"",
                 "title": "Serdes"
               }
             },
@@ -997,7 +997,8 @@
           "title": "Speed Groups"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Hardware"
     },
     "interface_defaults": {
       "type": "object",

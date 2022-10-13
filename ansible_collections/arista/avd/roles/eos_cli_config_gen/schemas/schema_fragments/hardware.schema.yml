@@ -4,7 +4,6 @@
 type: dict
 keys:
   hardware:
-    display_name: Speed-Group Settings
     type: dict
     keys:
       access_list:
@@ -28,3 +27,4 @@ keys:
               required: true
             serdes:
               type: str
+              description: Serdes speed like "10g" or "25g"
