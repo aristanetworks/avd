@@ -1911,12 +1911,12 @@
         "properties": {
           "vrf": {
             "type": "string",
-            "title": "VRF Name",
-            "description": "If vrf_name = default the route will be placed in the GRT"
+            "title": "VRF Name"
           },
           "destination_address_prefix": {
             "type": "string",
-            "title": "IPv6_network/Mask"
+            "description": "IPv6 Network/Mask",
+            "title": "Destination Address Prefix"
           },
           "interface": {
             "type": "string",

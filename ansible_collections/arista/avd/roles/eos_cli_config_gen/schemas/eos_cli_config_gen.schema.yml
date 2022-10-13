@@ -1609,10 +1609,9 @@ keys:
         vrf:
           type: str
           display_name: VRF Name
-          description: If vrf_name = default the route will be placed in the GRT
         destination_address_prefix:
           type: str
-          display_name: IPv6_network/Mask
+          description: IPv6 Network/Mask
         interface:
           type: str
         gateway:
