@@ -407,6 +407,20 @@ keys:
           description: 'Action as string
 
             Example: "permit GSHUT 65123:123"'
+  custom_templates:
+    type: list
+    display_name: Extensibility with Custom Templates
+    description: "- Custom templates can be added below the playbook directory.\n-
+      If a location above the directory is desired, a symbolic link can be used.\n-
+      Example under the `playbooks` directory create symbolic link with the following
+      command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n
+      \ ```\n\n- The output will be rendered at the end of the configuration.\n- The
+      order of custom templates in the list can be important if they overlap.\n- It
+      is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd
+      `custom_templates` to group/host variables:\n"
+    items:
+      type: str
+      description: Template relative path below playbook directory
   daemon_terminattr:
     type: dict
     display_name: Daemon TerminAttr
@@ -1314,6 +1328,18 @@ keys:
               type: bool
               description: Global proxy settings should be enabled before enabling
                 per-vlan
+  ip_radius_source_interfaces:
+    type: list
+    display_name: IP RADIUS Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          display_name: Interface Name
+        vrf:
+          type: str
+          display_name: VRF Name
   ip_routing:
     type: bool
     display_name: IP Routing
@@ -1369,6 +1395,23 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  ipv6_hardware:
+    display_name: IPv6 Hardware
+    type: dict
+    keys:
+      fib:
+        type: dict
+        keys:
+          optimize:
+            type: dict
+            keys:
+              prefixes:
+                type: dict
+                keys:
+                  profile:
+                    type: str
+                    description: Pre-defined profile 'internet' or user-defined profile
+                      name
   ipv6_icmp_redirect:
     type: bool
     display_name: IPv6 ICMP Redirect
@@ -2473,6 +2516,91 @@ keys:
     keys:
       ssm_aware:
         type: bool
+  router_pim_sparse_mode:
+    type: dict
+    display_name: Routing PIM Sparse Mode
+    keys:
+      ipv4:
+        type: dict
+        display_name: IPv4
+        keys:
+          ssm_range:
+            type: str
+            description: IPv4 Prefix associated with SSM
+          rp_addresses:
+            type: list
+            display_name: RP Addresses
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  display_name: RP Address
+                groups:
+                  type: list
+                  convert_types:
+                  - dict
+                  items:
+                    type: str
+          anycast_rps:
+            type: list
+            display_name: Anycast RPs
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  display_name: Anycast RP Address
+                other_anycast_rp_addresses:
+                  type: list
+                  display_name: Other Anycast RP Addresses
+                  primary_key: address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        required: true
+                        display_name: Other Anycast RP Address
+                      register_count:
+                        type: int
+                        convert_types:
+                        - str
+      vrfs:
+        type: list
+        display_name: VRFs
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VRF Name
+            ipv4:
+              type: dict
+              keys:
+                rp_addresses:
+                  type: list
+                  display_name: RP Addresses
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        display_name: RP Address
+                      groups:
+                        type: list
+                        items:
+                          type: str
   service_routing_protocols_model:
     type: str
     valid_values:

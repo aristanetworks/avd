@@ -479,6 +479,15 @@
         "additionalProperties": false
       }
     },
+    "custom_templates": {
+      "type": "array",
+      "title": "Extensibility with Custom Templates",
+      "description": "- Custom templates can be added below the playbook directory.\n- If a location above the directory is desired, a symbolic link can be used.\n- Example under the `playbooks` directory create symbolic link with the following command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n  ```\n\n- The output will be rendered at the end of the configuration.\n- The order of custom templates in the list can be important if they overlap.\n- It is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd `custom_templates` to group/host variables:\n",
+      "items": {
+        "type": "string",
+        "description": "Template relative path below playbook directory"
+      }
+    },
     "daemon_terminattr": {
       "type": "object",
       "title": "Daemon TerminAttr",
@@ -1497,6 +1506,24 @@
       },
       "additionalProperties": false
     },
+    "ip_radius_source_interfaces": {
+      "type": "array",
+      "title": "IP RADIUS Source Interfaces",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Interface Name"
+          },
+          "vrf": {
+            "type": "string",
+            "title": "VRF Name"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "ip_routing": {
       "type": "boolean",
       "title": "IP Routing"
@@ -1568,6 +1595,39 @@
         ],
         "additionalProperties": false
       }
+    },
+    "ipv6_hardware": {
+      "title": "IPv6 Hardware",
+      "type": "object",
+      "properties": {
+        "fib": {
+          "type": "object",
+          "properties": {
+            "optimize": {
+              "type": "object",
+              "properties": {
+                "prefixes": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string",
+                      "description": "Pre-defined profile 'internet' or user-defined profile name",
+                      "title": "Profile"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Prefixes"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Optimize"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Fib"
+        }
+      },
+      "additionalProperties": false
     },
     "ipv6_icmp_redirect": {
       "type": "boolean",
@@ -3165,6 +3225,129 @@
         "ssm_aware": {
           "type": "boolean",
           "title": "Ssm Aware"
+        }
+      },
+      "additionalProperties": false
+    },
+    "router_pim_sparse_mode": {
+      "type": "object",
+      "title": "Routing PIM Sparse Mode",
+      "properties": {
+        "ipv4": {
+          "type": "object",
+          "title": "IPv4",
+          "properties": {
+            "ssm_range": {
+              "type": "string",
+              "description": "IPv4 Prefix associated with SSM",
+              "title": "Ssm Range"
+            },
+            "rp_addresses": {
+              "type": "array",
+              "title": "RP Addresses",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "title": "RP Address"
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Groups"
+                  }
+                },
+                "required": [
+                  "address"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "anycast_rps": {
+              "type": "array",
+              "title": "Anycast RPs",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "title": "Anycast RP Address"
+                  },
+                  "other_anycast_rp_addresses": {
+                    "type": "array",
+                    "title": "Other Anycast RP Addresses",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "title": "Other Anycast RP Address"
+                        },
+                        "register_count": {
+                          "type": "integer",
+                          "title": "Register Count"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "address"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "vrfs": {
+          "type": "array",
+          "title": "VRFs",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "VRF Name"
+              },
+              "ipv4": {
+                "type": "object",
+                "properties": {
+                  "rp_addresses": {
+                    "type": "array",
+                    "title": "RP Addresses",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "title": "RP Address"
+                        },
+                        "groups": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Groups"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Ipv4"
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
       "additionalProperties": false
