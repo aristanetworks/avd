@@ -532,7 +532,7 @@ domain_list:
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>dot1x</samp>](## "dot1x") | Dictionary |  |  |  | Global 802.1x Authentication |
 | [<samp>&nbsp;&nbsp;system_auth_control</samp>](## "dot1x.system_auth_control") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  | Protocol LLDP Bypass |
 | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  |  |
 
 ### YAML

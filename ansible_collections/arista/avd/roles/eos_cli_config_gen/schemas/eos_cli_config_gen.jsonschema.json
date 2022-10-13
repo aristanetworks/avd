@@ -789,7 +789,7 @@
         },
         "protocol_lldp_bypass": {
           "type": "boolean",
-          "title": "Protocol Lldp Bypass"
+          "title": "Protocol LLDP Bypass"
         },
         "dynamic_authorization": {
           "type": "boolean",

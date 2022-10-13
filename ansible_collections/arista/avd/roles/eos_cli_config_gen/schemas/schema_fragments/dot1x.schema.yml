@@ -11,5 +11,6 @@ keys:
         type: bool
       protocol_lldp_bypass:
         type: bool
+        display_name: Protocol LLDP Bypass
       dynamic_authorization:
         type: bool
