@@ -190,6 +190,7 @@ management_api_http:
   enable_https: true
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
@@ -202,6 +203,11 @@ eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cl
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
 >>>>>>> f07090f1c (Test: fix further molecule scenarios password)
+=======
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n\
+  \  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback\
+  \ created from raw_eos_cli under VRF Common_VRF\n"
+>>>>>>> ffc31ddc2 (Fix(eos_cli_config_gen): change the router-bgp.j2 template to match new test name)
 struct_cfg:
   router_bgp:
     peer_groups:
