@@ -2295,6 +2295,7 @@
     },
     "management_cvx": {
       "type": "object",
+      "title": "Management CVX",
       "properties": {
         "shutdown": {
           "type": "boolean",
@@ -2303,13 +2304,13 @@
         "server_hosts": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "description": "IP or hostname"
           },
           "title": "Server Hosts"
         }
       },
-      "additionalProperties": false,
-      "title": "Management Cvx"
+      "additionalProperties": false
     },
     "management_defaults": {
       "type": "object",

@@ -5,6 +5,7 @@ type: dict
 keys:
   management_cvx:
     type: dict
+    display_name: Management CVX
     keys:
       shutdown:
         type: bool
@@ -12,3 +13,4 @@ keys:
         type: list
         items:
           type: str
+          description: IP or hostname

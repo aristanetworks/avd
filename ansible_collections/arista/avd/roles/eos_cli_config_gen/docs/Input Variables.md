@@ -1509,16 +1509,16 @@ management_console:
   idle_timeout: <int>
 ```
 
-## Management Cvx
+## Management CVX
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>management_cvx</samp>](## "management_cvx") | Dictionary |  |  |  |  |
+| [<samp>management_cvx</samp>](## "management_cvx") | Dictionary |  |  |  | Management CVX |
 | [<samp>&nbsp;&nbsp;shutdown</samp>](## "management_cvx.shutdown") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;server_hosts</samp>](## "management_cvx.server_hosts") | List, items: String |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "management_cvx.server_hosts.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "management_cvx.server_hosts.[].&lt;str&gt;") | String |  |  |  | IP or hostname |
 
 ### YAML
 

@@ -1880,6 +1880,7 @@ keys:
         - str
   management_cvx:
     type: dict
+    display_name: Management CVX
     keys:
       shutdown:
         type: bool
@@ -1887,6 +1888,7 @@ keys:
         type: list
         items:
           type: str
+          description: IP or hostname
   management_defaults:
     type: dict
     keys:
