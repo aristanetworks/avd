@@ -14,6 +14,7 @@ keys:
         keys:
           cos:
             type: int
+            display_name: COS
             convert_types:
               - str
             min: 0
@@ -23,6 +24,7 @@ keys:
             valid_values: ["tagged", "untagged"]
           vlan:
             type: int
+            display_name: VLAN ID
             convert_types:
               - str
             min: 1

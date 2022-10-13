@@ -3710,9 +3710,9 @@
           "properties": {
             "cos": {
               "type": "integer",
+              "title": "COS",
               "minimum": 0,
-              "maximum": 7,
-              "title": "Cos"
+              "maximum": 7
             },
             "trunk": {
               "type": "string",
@@ -3724,9 +3724,9 @@
             },
             "vlan": {
               "type": "integer",
+              "title": "VLAN ID",
               "minimum": 1,
-              "maximum": 4094,
-              "title": "Vlan"
+              "maximum": 4094
             }
           },
           "additionalProperties": false,
