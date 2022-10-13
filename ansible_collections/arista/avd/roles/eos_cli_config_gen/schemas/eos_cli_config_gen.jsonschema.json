@@ -3555,22 +3555,31 @@
     },
     "router_isis": {
       "type": "object",
+      "title": "Router ISIS",
       "properties": {
         "instance": {
           "type": "string",
+          "description": "ISIS Instance Name",
           "title": "Instance"
         },
         "net": {
           "type": "string",
+          "description": "CLNS Address like \"49.0001.0001.0000.0001.00\"",
           "title": "Net"
         },
         "router_id": {
           "type": "string",
-          "title": "Router Id"
+          "title": "Router ID",
+          "description": "IPv4 Address"
         },
         "is_type": {
           "type": "string",
-          "title": "Is Type"
+          "title": "IS Type",
+          "enum": [
+            "level-1",
+            "level-1-2",
+            "level-2"
+          ]
         },
         "log_adjacency_changes": {
           "type": "boolean",
@@ -3578,7 +3587,7 @@
         },
         "mpls_ldp_sync_default": {
           "type": "boolean",
-          "title": "Mpls Ldp Sync Default"
+          "title": "MPLS LDP Sync Default"
         },
         "timers": {
           "type": "object",
@@ -3592,6 +3601,8 @@
                 },
                 "delay": {
                   "type": "integer",
+                  "default": 10000,
+                  "description": "Delay in milliseconds.",
                   "title": "Delay"
                 }
               },
@@ -3613,26 +3624,27 @@
           "additionalProperties": false,
           "title": "Advertise"
         },
-        "no_passive_interfaces": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "No Passive Interfaces"
-        },
         "address_family": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "ipv4",
+              "ipv6",
+              "ipv4 unicast",
+              "ipv6 unicast"
+            ],
+            "description": "Address Family"
           },
           "title": "Address Family"
         },
         "isis_af_defaults": {
           "type": "array",
+          "title": "ISIS AF Defaults",
           "items": {
-            "type": "string"
-          },
-          "title": "Isis Af Defaults"
+            "type": "string",
+            "description": "EOS CLI rendered under the address families\nExample \"maximum-paths 64\"\n"
+          }
         },
         "redistribute_routes": {
           "type": "array",
@@ -3641,10 +3653,19 @@
             "properties": {
               "source_protocol": {
                 "type": "string",
+                "enum": [
+                  "bgp",
+                  "connected",
+                  "isis",
+                  "ospf",
+                  "ospfv3",
+                  "static"
+                ],
                 "title": "Source Protocol"
               },
               "route_map": {
                 "type": "string",
+                "description": "Route-map name",
                 "title": "Route Map"
               },
               "include_leaked": {
@@ -3653,33 +3674,56 @@
               },
               "ospf_route_type": {
                 "type": "string",
-                "title": "Ospf Route Type"
+                "title": "OSPF Route Type",
+                "enum": [
+                  "external",
+                  "internal",
+                  "nssa-external"
+                ],
+                "description": "ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'"
               }
             },
+            "required": [
+              "source_protocol"
+            ],
             "additionalProperties": false
           },
           "title": "Redistribute Routes"
         },
         "address_family_ipv4": {
           "type": "object",
+          "title": "Address Family IPv4",
           "properties": {
             "maximum_paths": {
               "type": "integer",
+              "minimum": 1,
+              "maximum": 128,
               "title": "Maximum Paths"
             },
             "fast_reroute_ti_lfa": {
               "type": "object",
+              "title": "Fast Reroute TI LFA",
               "properties": {
                 "mode": {
                   "type": "string",
+                  "enum": [
+                    "link-protection",
+                    "node_protection"
+                  ],
                   "title": "Mode"
                 },
                 "level": {
                   "type": "string",
+                  "enum": [
+                    "level-1",
+                    "level-2"
+                  ],
                   "title": "Level"
                 },
                 "srlg": {
                   "type": "object",
+                  "title": "SRLG",
+                  "description": "Shared Risk Link Group",
                   "properties": {
                     "enable": {
                       "type": "boolean",
@@ -3690,12 +3734,10 @@
                       "title": "Strict"
                     }
                   },
-                  "additionalProperties": false,
-                  "title": "Srlg"
+                  "additionalProperties": false
                 }
               },
-              "additionalProperties": false,
-              "title": "Fast Reroute Ti Lfa"
+              "additionalProperties": false
             },
             "tunnel_source_labeled_unicast": {
               "type": "object",
@@ -3706,36 +3748,50 @@
                 },
                 "rcf": {
                   "type": "string",
-                  "title": "Rcf"
+                  "title": "RCF",
+                  "description": "Route Control Function"
                 }
               },
               "additionalProperties": false,
               "title": "Tunnel Source Labeled Unicast"
             }
           },
-          "additionalProperties": false,
-          "title": "Address Family Ipv4"
+          "additionalProperties": false
         },
         "address_family_ipv6": {
           "type": "object",
+          "title": "Address Family IPv6",
           "properties": {
             "maximum_paths": {
               "type": "integer",
+              "minimum": 1,
+              "maximum": 128,
               "title": "Maximum Paths"
             },
             "fast_reroute_ti_lfa": {
               "type": "object",
+              "title": "Fast Reroute TI LFA",
               "properties": {
                 "mode": {
                   "type": "string",
+                  "enum": [
+                    "link-protection",
+                    "node_protection"
+                  ],
                   "title": "Mode"
                 },
                 "level": {
                   "type": "string",
+                  "enum": [
+                    "level-1",
+                    "level-2"
+                  ],
                   "title": "Level"
                 },
                 "srlg": {
                   "type": "object",
+                  "title": "SRLG",
+                  "description": "Shared Risk Link Group",
                   "properties": {
                     "enable": {
                       "type": "boolean",
@@ -3746,19 +3802,17 @@
                       "title": "Strict"
                     }
                   },
-                  "additionalProperties": false,
-                  "title": "Srlg"
+                  "additionalProperties": false
                 }
               },
-              "additionalProperties": false,
-              "title": "Fast Reroute Ti Lfa"
+              "additionalProperties": false
             }
           },
-          "additionalProperties": false,
-          "title": "Address Family Ipv6"
+          "additionalProperties": false
         },
         "segment_routing_mpls": {
           "type": "object",
+          "title": "Segment Routing MPLS",
           "properties": {
             "enabled": {
               "type": "boolean",
@@ -3766,7 +3820,7 @@
             },
             "router_id": {
               "type": "string",
-              "title": "Router Id"
+              "title": "Router ID"
             },
             "prefix_segments": {
               "type": "array",
@@ -3787,12 +3841,15 @@
               "title": "Prefix Segments"
             }
           },
-          "additionalProperties": false,
-          "title": "Segment Routing Mpls"
+          "additionalProperties": false
+        },
+        "no_passive_interfaces": {
+          "type": "array",
+          "description": "Unused key - to be removed from eos_designs.",
+          "title": "No Passive Interfaces"
         }
       },
-      "additionalProperties": false,
-      "title": "Router Isis"
+      "additionalProperties": false
     },
     "router_l2_vpn": {
       "type": "object",
