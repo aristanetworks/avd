@@ -18,4 +18,4 @@ keys:
                 keys:
                   profile:
                     type: str
-                    valid_values: [ "internet"]
+                    description: "Pre-defined profile 'internet' or user-defined profile name"

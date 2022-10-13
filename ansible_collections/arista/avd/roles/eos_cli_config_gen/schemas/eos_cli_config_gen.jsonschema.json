@@ -1508,9 +1508,7 @@
                   "properties": {
                     "profile": {
                       "type": "string",
-                      "enum": [
-                        "internet"
-                      ],
+                      "description": "Pre-defined profile 'internet' or user-defined profile name",
                       "title": "Profile"
                     }
                   },

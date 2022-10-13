@@ -1334,8 +1334,8 @@ keys:
                 keys:
                   profile:
                     type: str
-                    valid_values:
-                    - internet
+                    description: Pre-defined profile 'internet' or user-defined profile
+                      name
   ipv6_icmp_redirect:
     type: bool
     display_name: IPv6 ICMP Redirect
