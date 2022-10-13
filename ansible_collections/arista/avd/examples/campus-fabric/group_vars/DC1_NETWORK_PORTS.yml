@@ -2,7 +2,6 @@
 ### group_vars/DC1_NETWORK_PORTS.yml
 
 port_profiles:
-
   PP-DOT1X:
     mode: "trunk phone"
     spanning_tree_portfast: edge
@@ -23,9 +22,7 @@ port_profiles:
       reauthorization_request_limit: 3
 
 network_ports:
-
 # ---------------- IDF1 ----------------
-
   - switches:
       - LEAF1[AB] # regex match LEAF1A & LEAF1B
     switch_ports:
@@ -40,9 +37,7 @@ network_ports:
       authentication_failure:
         action: allow
         allow_vlan: 130
-
 # ---------------- IDF2 ----------------
-
   - switches:
       - LEAF2A
     switch_ports:
@@ -57,9 +52,7 @@ network_ports:
       authentication_failure:
         action: allow
         allow_vlan: 230
-
 # ---------------- IDF3 ----------------
-
   - switches:
       - LEAF3[ABCDE] # regex match LEAF3A, LEAF3B, LEAF3C, LEAF3D, LEAF3E
     switch_ports:

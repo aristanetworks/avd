@@ -51,7 +51,6 @@ leaf:
     mlag_peer_ipv4_pool: 192.168.0.0/24
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
-
   node_groups:
     IDF1:
       mlag: true
