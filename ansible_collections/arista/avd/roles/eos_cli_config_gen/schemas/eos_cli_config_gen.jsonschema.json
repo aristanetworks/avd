@@ -2670,7 +2670,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Session Name"
+            "description": "Session Name",
+            "title": "Name"
           },
           "sources": {
             "type": "array",
@@ -2679,6 +2680,7 @@
               "properties": {
                 "name": {
                   "type": "string",
+                  "description": "Interface name, range or comma separated list",
                   "title": "Name"
                 },
                 "direction": {
@@ -2703,8 +2705,9 @@
                       "title": "Type"
                     },
                     "name": {
-                      "title": "ACL Name",
-                      "type": "string"
+                      "description": "ACL Name",
+                      "type": "string",
+                      "title": "Name"
                     },
                     "priority": {
                       "type": "integer",
@@ -2722,16 +2725,18 @@
           "destinations": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "'cpu' or interface name, range or comma separated list"
             },
             "title": "Destinations"
           },
           "encapsulation_gre_metadata_tx": {
             "type": "boolean",
-            "title": "Encapsulation Gre Metadata Tx"
+            "title": "Encapsulation GRE metadata TX"
           },
           "header_remove_size": {
             "type": "integer",
+            "description": "Number of bytes to remove from header",
             "title": "Header Remove Size"
           },
           "access_group": {
@@ -2756,10 +2761,12 @@
           },
           "rate_limit_per_ingress_chip": {
             "type": "string",
+            "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
             "title": "Rate Limit Per Ingress Chip"
           },
           "rate_limit_per_egress_chip": {
             "type": "string",
+            "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
             "title": "Rate Limit Per Egress Chip"
           },
           "sample": {
@@ -2775,6 +2782,7 @@
               },
               "size": {
                 "type": "integer",
+                "description": "Size in bytes",
                 "title": "Size"
               }
             },
