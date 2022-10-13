@@ -2009,13 +2009,13 @@ router_pim_sparse_mode:
               - <str>
 ```
 
-## Service Routing Configuration Bgp
+## Service Routing Configuration BGP
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>service_routing_configuration_bgp</samp>](## "service_routing_configuration_bgp") | Dictionary |  |  |  |  |
+| [<samp>service_routing_configuration_bgp</samp>](## "service_routing_configuration_bgp") | Dictionary |  |  |  | Service Routing Configuration BGP |
 | [<samp>&nbsp;&nbsp;no_equals_default</samp>](## "service_routing_configuration_bgp.no_equals_default") | Boolean |  |  |  |  |
 
 ### YAML

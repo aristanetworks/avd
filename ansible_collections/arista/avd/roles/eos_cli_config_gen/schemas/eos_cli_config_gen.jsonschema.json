@@ -3321,14 +3321,14 @@
     },
     "service_routing_configuration_bgp": {
       "type": "object",
+      "title": "Service Routing Configuration BGP",
       "properties": {
         "no_equals_default": {
           "type": "boolean",
           "title": "No Equals Default"
         }
       },
-      "additionalProperties": false,
-      "title": "Service Routing Configuration Bgp"
+      "additionalProperties": false
     },
     "service_routing_protocols_model": {
       "type": "string",

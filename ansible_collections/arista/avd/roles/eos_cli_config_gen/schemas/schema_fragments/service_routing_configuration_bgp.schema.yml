@@ -5,6 +5,7 @@ type: dict
 keys:
   service_routing_configuration_bgp:
     type: dict
+    display_name: Service Routing Configuration BGP
     keys:
       no_equals_default:
         type: bool
