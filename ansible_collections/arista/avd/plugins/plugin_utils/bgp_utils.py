@@ -212,7 +212,8 @@ def cbc_decrypt(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
     pad = result[3] >> 4
     if result[0:3] != ENC_SIG or pad >= 8 or len(result[4:]) < pad:
         raise Exception("Invalid Encrypted String")
-    return result[4 : len(result) - pad]
+    password_len = len(result) - pad
+    return result[4:password_len]
 
 
 def cbc_check_password(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
