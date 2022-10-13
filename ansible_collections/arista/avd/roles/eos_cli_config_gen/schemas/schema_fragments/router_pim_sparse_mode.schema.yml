@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_pim_sparse_mode:
+    type: dict
+    display_name: Routing PIM Sparse Mode
+    keys:
+      ipv4:
+        type: dict
+        display_name: IPv4
+        keys:
+          ssm_range:
+            type: str
+            description: IPv4 Prefix associated with SSM
+          rp_addresses:
+            type: list
+            display_name: RP Addresses
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  display_name: RP Address
+                groups:
+                  type: list
+                  convert_types:
+                  - dict
+                  items:
+                    type: str
+          anycast_rps:
+            type: list
+            display_name: Anycast RPs
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  display_name: Anycast RP Address
+                other_anycast_rp_addresses:
+                  type: list
+                  display_name: Other Anycast RP Addresses
+                  primary_key: address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        required: true
+                        display_name: Other Anycast RP Address
+                      register_count:
+                        type: int
+                        convert_types:
+                        - str
+      vrfs:
+        type: list
+        display_name: VRFs
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VRF Name
+            ipv4:
+              type: dict
+              keys:
+                rp_addresses:
+                  type: list
+                  display_name: RP Addresses
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        display_name: RP Address
+                      groups:
+                        type: list
+                        items:
+                          type: str

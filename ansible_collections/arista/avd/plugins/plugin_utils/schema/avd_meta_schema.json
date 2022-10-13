@@ -170,7 +170,7 @@
                         },
                         "convert_types": {
                             "type": "array",
-                            "description": "List of types to auto-convert from.\nFor 'list' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema",
+                            "description": "List of types to auto-convert from.\nFor 'list of dicts' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema\nFor other list item types conversion from dict will use the keys as list items.",
                             "items": {
                                 "type": "string",
                                 "enum": [
