@@ -4,7 +4,7 @@ __metaclass__ = type
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.password_filter import FilterModule, _parse_bgp_input, bgp_decrypt, bgp_encrypt, encrypt, decrypt, _get_type
+from ansible_collections.arista.avd.plugins.filter.password_filter import FilterModule, _get_type, _parse_bgp_input, bgp_decrypt, bgp_encrypt, decrypt, encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
 
 from ..conftest import does_not_raise
