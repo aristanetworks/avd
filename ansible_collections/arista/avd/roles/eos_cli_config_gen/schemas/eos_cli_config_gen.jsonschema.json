@@ -2560,6 +2560,7 @@
     },
     "mcs_client": {
       "type": "object",
+      "title": "MCS Client",
       "properties": {
         "shutdown": {
           "type": "boolean",
@@ -2567,6 +2568,7 @@
         },
         "cvx_secondary": {
           "type": "object",
+          "title": "CVX Secondary",
           "properties": {
             "name": {
               "type": "string",
@@ -2579,17 +2581,16 @@
             "server_hosts": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "description": "IP or hostname"
               },
               "title": "Server Hosts"
             }
           },
-          "additionalProperties": false,
-          "title": "Cvx Secondary"
+          "additionalProperties": false
         }
       },
-      "additionalProperties": false,
-      "title": "Mcs Client"
+      "additionalProperties": false
     },
     "monitor_connectivity": {
       "type": "object",
