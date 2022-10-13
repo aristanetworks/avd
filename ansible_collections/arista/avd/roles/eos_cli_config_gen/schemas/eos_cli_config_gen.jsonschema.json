@@ -490,6 +490,8 @@
     },
     "cvx": {
       "type": "object",
+      "title": "CVX",
+      "description": "CVX server features are not supported on physical switches. See `management_cvx` for client configurations.",
       "properties": {
         "shutdown": {
           "type": "boolean",
@@ -500,12 +502,14 @@
           "properties": {
             "mcs": {
               "type": "object",
+              "title": "MCS",
               "properties": {
                 "redis": {
                   "type": "object",
                   "properties": {
                     "password": {
                       "type": "string",
+                      "description": "Hashed password using the password_type",
                       "title": "Password"
                     },
                     "password_type": {
@@ -527,16 +531,14 @@
                   "title": "Shutdown"
                 }
               },
-              "additionalProperties": false,
-              "title": "Mcs"
+              "additionalProperties": false
             }
           },
           "additionalProperties": false,
           "title": "Services"
         }
       },
-      "additionalProperties": false,
-      "title": "Cvx"
+      "additionalProperties": false
     },
     "daemon_terminattr": {
       "type": "object",

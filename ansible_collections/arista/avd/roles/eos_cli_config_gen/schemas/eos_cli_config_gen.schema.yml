@@ -423,6 +423,9 @@ keys:
       description: Template relative path below playbook directory
   cvx:
     type: dict
+    display_name: CVX
+    description: CVX server features are not supported on physical switches. See `management_cvx`
+      for client configurations.
     keys:
       shutdown:
         type: bool
@@ -431,12 +434,14 @@ keys:
         keys:
           mcs:
             type: dict
+            display_name: MCS
             keys:
               redis:
                 type: dict
                 keys:
                   password:
                     type: str
+                    description: Hashed password using the password_type
                   password_type:
                     type: str
                     convert_types:
