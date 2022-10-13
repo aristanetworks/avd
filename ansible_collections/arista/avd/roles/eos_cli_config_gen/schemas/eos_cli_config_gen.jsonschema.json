@@ -1506,6 +1506,24 @@
       },
       "additionalProperties": false
     },
+    "ip_radius_source_interfaces": {
+      "type": "array",
+      "title": "IP RADIUS Source Interfaces",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Interface Name"
+          },
+          "vrf": {
+            "type": "string",
+            "title": "VRF Name"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "ip_routing": {
       "type": "boolean",
       "title": "IP Routing"
