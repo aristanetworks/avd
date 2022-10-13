@@ -11,7 +11,7 @@ router_bgp:
       remote_as: '65106'
       next_hop_self: true
       description: DC1-LEAF3B
-      password: vnEaG8gMeQf3d3cN6PktXQ==
+      password: arwUnrq9ydqIhjfTwRhAlg==
       maximum_routes: 12000
       send_community: all
       route_map_in: RM-MLAG-PEER-IN

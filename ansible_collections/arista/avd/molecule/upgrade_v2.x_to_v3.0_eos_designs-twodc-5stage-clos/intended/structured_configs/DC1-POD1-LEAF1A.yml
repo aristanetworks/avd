@@ -114,11 +114,16 @@ management_api_http:
     MGMT: {}
   enable_https: true
 <<<<<<< HEAD
+<<<<<<< HEAD
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 =======
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A\n\ninterface Loopback1111\n\
   \  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+=======
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A\n\ninterface Loopback1111\n
+  \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+>>>>>>> f07090f1c (Test: fix further molecule scenarios password)
 struct_cfg:
   router_bgp:
     peer_groups:

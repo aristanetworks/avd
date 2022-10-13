@@ -31,7 +31,7 @@ bgp_peer_groups:
     password: "q+VNViP5i4rVjW1cxFv2wA=="
   mlag_ipv4_underlay_peer:
     name: "MLAG_PEER"
-    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    password: "arwUnrq9ydqIhjfTwRhAlg=="
 
 # Spine Switches
 spine:
