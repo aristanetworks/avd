@@ -2197,6 +2197,28 @@
       "additionalProperties": false,
       "title": "Management Console"
     },
+    "management_defaults": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "object",
+          "properties": {
+            "hash": {
+              "type": "string",
+              "enum": [
+                "md5",
+                "sha512"
+              ],
+              "title": "Hash"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Secret"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management Defaults"
+    },
     "management_interfaces": {
       "type": "array",
       "items": {
