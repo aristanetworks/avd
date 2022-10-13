@@ -176,7 +176,7 @@ To use this filter:
 !!! note
     This isn't using the same range syntax as EOS for modular or break-out ports. For example, on EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD, the same range would be `et1-2/1-4`.
 
-#### encrypt / decrypt filters
+#### Password filters
 
 The `arista.avd.encrypt` and `arista.avd.decrypt` filters are used to encrypt or decrypt supported passwords.
 It takes as input a `type`
@@ -199,7 +199,7 @@ An example usage for `arista.avd.encrypt` filter for BGP it ot use it in conjunc
 bgp_peer_groups:
   ipv4_underlay_peers:
       name: IPv4-UNDERLAY-PEERS
-          password: "{{ bgp_vault_password | bgp_encrypt(type="bgp", key="IPv4-UNDERLAY-PEERS")
+          password: "{{ bgp_vault_password | bgp_encrypt(passwd_type="bgp", key="IPv4-UNDERLAY-PEERS")
 ```
 
 ## Plugin Tests
