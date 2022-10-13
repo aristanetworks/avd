@@ -3244,17 +3244,25 @@
         "properties": {
           "name": {
             "type": "string",
+            "description": "Name of tracker object",
             "title": "Name"
           },
           "interface": {
             "type": "string",
+            "description": "Name of tracked interface",
             "title": "Interface"
           },
           "tracked_property": {
             "type": "string",
+            "default": "line-protocol",
+            "description": "Property to track",
             "title": "Tracked Property"
           }
         },
+        "required": [
+          "name",
+          "interface"
+        ],
         "additionalProperties": false
       },
       "title": "Trackers"
