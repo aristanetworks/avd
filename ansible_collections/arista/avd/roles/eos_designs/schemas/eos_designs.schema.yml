@@ -1945,6 +1945,17 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
+  p2p_uplinks_mtu:
+    description: Point to Point Links MTU
+    type: int
+    convert_types:
+    - str
+    min: 0
+    max: 9216
+    default: 9000
+  p2p_uplinks_qos_profile:
+    description: QOS Profile assigned on all infrastructure links
+    type: str
   platform_settings:
     documentation_options:
       filename: Platform Specific Settings
@@ -2074,6 +2085,107 @@ keys:
       fabric.
 
       This is leveraged to load the appropriate template to generate the configuration.'
+  underlay_filter_peer_as:
+    type: bool
+    description: 'Configure route-map on eBGP sessions towards underlay peers, where
+      prefixes with the peer''s ASN in the AS Path are filtered away.
+
+      This is very useful in very large scale networks not using EVPN overlays, where
+      convergence will be quicker by not having to return
+
+      all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them
+      away because of AS Path loop detection.
+
+      Note this key is ignored when EVPN is configured.
+
+      '
+    default: false
+  underlay_ipv6:
+    description: 'This feature allows IPv6 underlay routing protocol with RFC5549
+      addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
+
+      Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric
+      Topology"
+
+      '
+    type: bool
+    default: false
+  underlay_isis_instance_name:
+    description: Additional underlay ISIS parameters
+    type: str
+    default: EVPN_UNDERLAY
+  underlay_multicast:
+    type: bool
+    description: 'Enable Multicast in the underlay on all p2p uplink interfaces and
+      mlag l3 peer interface.
+
+      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
+
+      No other configuration is added, so the underlay will only support Source-Specific
+      Multicast (SSM)
+
+      The configuration is intended to be used as multicast underlay for EVPN OISM
+      overlay
+
+      '
+    default: false
+  underlay_ospf_area:
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
+    type: str
+    format: ipv4
+    default: 0.0.0.0
+  underlay_ospf_bfd_enable:
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
+    type: bool
+    default: false
+  underlay_ospf_max_lsa:
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
+    type: int
+    convert_types:
+    - str
+    default: 12000
+  underlay_ospf_process_id:
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
+    type: int
+    convert_types:
+    - str
+    default: 100
+  underlay_rfc5549:
+    description: 'Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered
+
+      Requires "underlay_routing_protocol: ebgp"
+
+      '
+    type: bool
+    default: false
+  underlay_routing_protocol:
+    type: str
+    description: "- The following underlay routing protocols are supported:\n  - EBGP
+      (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
+      \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
+      devices in the fabric.\n\n*Only supported with core_interfaces data model.\n"
+    valid_values:
+    - ebgp
+    - ospf
+    - isis
+    - isis-sr
+    - isis-ldp
+    - isis-sr-ldp
+    - ospf-ldp
+    - BGP
+    case_sensitive: false
+    default: ebgp
+  uplink_ptp:
+    description: Enable PTP on all infrastructure links
+    type: dict
+    keys:
+      enable:
+        type: bool
+        default: false
 dynamic_keys:
   node_type_keys.key:
     $ref: '#/keys/node_type'
