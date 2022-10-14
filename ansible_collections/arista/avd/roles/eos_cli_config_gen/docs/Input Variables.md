@@ -2125,6 +2125,30 @@ router_igmp:
   ssm_aware: <bool>
 ```
 
+## Router L2 VPN
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>router_l2_vpn</samp>](## "router_l2_vpn") | Dictionary |  |  |  | Router L2 VPN |
+| [<samp>&nbsp;&nbsp;nd_rs_flooding_disabled</samp>](## "router_l2_vpn.nd_rs_flooding_disabled") | Boolean |  |  |  | ND RS Flooding Disabled |
+| [<samp>&nbsp;&nbsp;virtual_router_nd_ra_flooding_disabled</samp>](## "router_l2_vpn.virtual_router_nd_ra_flooding_disabled") | Boolean |  |  |  | Virtual Router ND RA Flooding Disabled |
+| [<samp>&nbsp;&nbsp;arp_selective_install</samp>](## "router_l2_vpn.arp_selective_install") | Boolean |  |  |  | ARP Selective Install |
+| [<samp>&nbsp;&nbsp;arp_proxy</samp>](## "router_l2_vpn.arp_proxy") | Dictionary |  |  |  | ARP Proxy |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_l2_vpn.arp_proxy.prefix_list") | String |  |  |  | Prefix-list Name |
+
+### YAML
+
+```yaml
+router_l2_vpn:
+  nd_rs_flooding_disabled: <bool>
+  virtual_router_nd_ra_flooding_disabled: <bool>
+  arp_selective_install: <bool>
+  arp_proxy:
+    prefix_list: <str>
+```
+
 ## Routing PIM Sparse Mode
 
 ### Variables

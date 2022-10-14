@@ -2669,6 +2669,26 @@ keys:
     keys:
       ssm_aware:
         type: bool
+  router_l2_vpn:
+    type: dict
+    display_name: Router L2 VPN
+    keys:
+      nd_rs_flooding_disabled:
+        type: bool
+        display_name: ND RS Flooding Disabled
+      virtual_router_nd_ra_flooding_disabled:
+        type: bool
+        display_name: Virtual Router ND RA Flooding Disabled
+      arp_selective_install:
+        type: bool
+        display_name: ARP Selective Install
+      arp_proxy:
+        type: dict
+        display_name: ARP Proxy
+        keys:
+          prefix_list:
+            type: str
+            description: Prefix-list Name
   router_pim_sparse_mode:
     type: dict
     display_name: Routing PIM Sparse Mode

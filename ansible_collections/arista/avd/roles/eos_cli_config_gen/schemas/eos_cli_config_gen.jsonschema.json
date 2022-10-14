@@ -3482,6 +3482,37 @@
       },
       "additionalProperties": false
     },
+    "router_l2_vpn": {
+      "type": "object",
+      "title": "Router L2 VPN",
+      "properties": {
+        "nd_rs_flooding_disabled": {
+          "type": "boolean",
+          "title": "ND RS Flooding Disabled"
+        },
+        "virtual_router_nd_ra_flooding_disabled": {
+          "type": "boolean",
+          "title": "Virtual Router ND RA Flooding Disabled"
+        },
+        "arp_selective_install": {
+          "type": "boolean",
+          "title": "ARP Selective Install"
+        },
+        "arp_proxy": {
+          "type": "object",
+          "title": "ARP Proxy",
+          "properties": {
+            "prefix_list": {
+              "type": "string",
+              "description": "Prefix-list Name",
+              "title": "Prefix List"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "router_pim_sparse_mode": {
       "type": "object",
       "title": "Routing PIM Sparse Mode",
