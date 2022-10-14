@@ -3846,6 +3846,48 @@
         "additionalProperties": false
       }
     },
+    "switchport_default": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "routed",
+            "access"
+          ],
+          "title": "Mode"
+        },
+        "phone": {
+          "type": "object",
+          "properties": {
+            "cos": {
+              "type": "integer",
+              "title": "COS",
+              "minimum": 0,
+              "maximum": 7
+            },
+            "trunk": {
+              "type": "string",
+              "enum": [
+                "tagged",
+                "untagged"
+              ],
+              "title": "Trunk"
+            },
+            "vlan": {
+              "type": "integer",
+              "title": "VLAN ID",
+              "minimum": 1,
+              "maximum": 4094
+            }
+          },
+          "additionalProperties": false,
+          "title": "Phone"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Switchport Default"
+    },
     "tcam_profile": {
       "type": "object",
       "title": "Hardware TCAM Profiles",

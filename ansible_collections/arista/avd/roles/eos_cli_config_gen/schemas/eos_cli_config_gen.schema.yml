@@ -2952,6 +2952,36 @@ keys:
           - str
           min: 0
           max: 4294967295
+  switchport_default:
+    type: dict
+    keys:
+      mode:
+        type: str
+        valid_values:
+        - routed
+        - access
+      phone:
+        type: dict
+        keys:
+          cos:
+            type: int
+            display_name: COS
+            convert_types:
+            - str
+            min: 0
+            max: 7
+          trunk:
+            type: str
+            valid_values:
+            - tagged
+            - untagged
+          vlan:
+            type: int
+            display_name: VLAN ID
+            convert_types:
+            - str
+            min: 1
+            max: 4094
   tcam_profile:
     type: dict
     display_name: Hardware TCAM Profiles
