@@ -250,6 +250,21 @@ keys:
     type: str
     default: /tmp/cv-onboarding-token
     description: cvp_token_file is the path to the token file on the switch.
+  dc_name:
+    description: 'Optional DC Name, only used in SNMP location and Fabric Documentation.
+
+      Recommended to be common between all devices within a Site
+
+      '
+    type: str
+  default_igmp_snooping_enabled:
+    description: 'Disable IGMP snooping at fabric level.
+
+      If set, it overrides per vlan settings
+
+      '
+    type: bool
+    default: true
   default_interfaces:
     type: list
     documentation_options:
@@ -341,6 +356,38 @@ keys:
             required: true
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements).
+  design:
+    type: dict
+    keys:
+      type:
+        type: str
+        description: 'By setting the `design.type` to `mpls`,
+
+          the default node-types and templates described in these documents will be
+          used.
+
+          '
+        valid_values:
+        - l3ls-evpn
+        - mpls
+        default: l3ls-evpn
+  enable_trunk_groups:
+    type: bool
+    description: 'Enable Trunk Group support across eos_designs
+
+      Warning: Because of the nature of the EOS Trunk Group feature, enabling this
+      is "all or nothing".
+
+      *All* vlans and *all* trunks towards connected endpoints must be using trunk
+      groups as well.
+
+      If trunk groups are not assigned to a trunk, no vlans will be enabled on that
+      trunk.
+
+      See "Details on enable_trunk_groups" below before enabling this feature
+
+      '
+    default: false
   evpn_ebgp_gateway_multihop:
     documentation_options:
       filename: Fabric Variables
@@ -494,6 +541,37 @@ keys:
       '
     type: bool
     default: false
+  fabric_name:
+    description: Fabric Name, required to match Ansible Group name covering all devices
+      in the Fabric, **must** be an inventory group name.
+    type: str
+    required: true
+  internal_vlan_order:
+    type: dict
+    description: Internal vlan allocation order and range
+    required: true
+    keys:
+      allocation:
+        type: str
+        valid_values:
+        - ascending
+        - descending
+        default: ascending
+      range:
+        type: dict
+        keys:
+          beginning:
+            type: int
+            convert_types:
+            - str
+            default: 1006
+            description: VLAN ID
+          ending:
+            type: int
+            convert_types:
+            - str
+            description: VLAN ID
+            default: 1199
   isis_advertise_passive_only:
     documentation_options:
       filename: Fabric Variables
@@ -561,6 +639,42 @@ keys:
         convert_types:
         - str
         default: 10000
+  mac_address_table:
+    type: dict
+    description: 'MAC address-table aging time
+
+      Use to change the EOS default of 300.
+
+      '
+    keys:
+      aging_time:
+        type: int
+        convert_types:
+        - str
+        description: Time in seconds
+  mlag_ibgp_peering_vrfs:
+    type: dict
+    description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
+      iBGP peering (required when mlag leafs in topology)
+
+      The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan
+      + (vrf_id or vrf_vni) - 1
+
+      Depending on the values of vrf_id / vrf_id it may be required to adjust the
+      base_vlan to avoid overlaps or invalid vlan ids.
+
+      The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all
+      iBGP peerings.
+
+      '
+    keys:
+      base_vlan:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 4000
+        default: 3000
   node_type:
     documentation_options:
       filename: Fabric Topology
@@ -2199,6 +2313,22 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
+  only_local_vlan_trunk_groups:
+    type: bool
+    description: 'A vlan can have many trunk_groups assigned. To avoid unneeded configuration
+      changes on all leaf
+
+      switches when a new trunk group is added, this feature will only configure the
+      vlan trunk groups
+
+      matched with local connected_endpoints.
+
+      See "Details on only_local_vlan_trunk_groups" below.
+
+      Requires "enable_trunk_groups: true"
+
+      '
+    default: false
   overlay_her_flood_list_per_vni:
     documentation_options:
       filename: Fabric Variables
@@ -2459,6 +2589,14 @@ keys:
                   type: int
                   convert_types:
                   - str
+  pod_name:
+    description: 'POD Name, only used in Fabric Documentation (Optional), fallback
+      to dc_name and then to fabric_name.
+
+      Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+
+      '
+    type: str
   redundancy:
     documentation_options:
       filename: Platform Specific Settings
@@ -2470,6 +2608,38 @@ keys:
         valid_values:
         - sso
         - rpr
+  shutdown_interfaces_towards_undeployed_peers:
+    type: bool
+    default: false
+    description: '- It is possible to provision configurations for a complete topology
+      but flag devices as undeployed using the host level variable `is_deployed: false`.
+
+
+      ```yaml
+
+      # Use at the host level
+
+      is_deployed: < true or false or default -> true >
+
+      ```
+
+
+      - By default, this will have no impact within the `eos_designs` role. Configs
+      will still be generated by the `eos_cli_config_gen` role and will still be pushed
+      by the `eos_config_deploy_eapi` directly to devices if used.
+
+      - However, if the `eos_config_deploy_cvp` role is used to push configurations,
+      CloudVision will ignore the devices flagged  as `is_deployed: false` and not
+      attempt to configure them.
+
+      - If the device is not present in the network due to CloudVision not configuring
+      the device, `eos_validate_state` role will fail tests on peers of the undeployed
+      device trying to verify that interfaces are up.
+
+      - To overcome this and shutdown interfaces towards undeployed peers, the variable
+      `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state`
+      role interface tests. Again, this is only an issue if `eos_config_deploy_cvp`
+      is used and the devices are not present in the network.'
   terminattr_disable_aaa:
     documentation_options:
       filename: Management Settings
@@ -2497,6 +2667,41 @@ keys:
       table: CloudVision Settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
+  trunk_groups:
+    type: dict
+    keys:
+      mlag:
+        type: dict
+        description: '"mlag" is the Trunk Group used for MLAG VLAN (Typically VLAN
+          4094)
+
+          '
+        keys:
+          name:
+            type: str
+            default: MLAG
+      mlag_l3:
+        type: dict
+        description: '"mlag_l3" is the Trunk Group used for MLAG L3 peering VLAN (Typically
+          VLAN 4093)
+
+          "mlag_l3" is also the Trunk Group used for VRF L3 peering VLANs
+
+          '
+        keys:
+          name:
+            type: str
+            default: LEAF_PEER_L3
+      uplink:
+        type: dict
+        description: '"uplink" is the Trunk Group used on L2 Leaf switches when "enable_trunk_groups"
+          is set
+
+          '
+        keys:
+          name:
+            type: str
+            default: UPLINK
   type:
     documentation_options:
       filename: Fabric Topology
