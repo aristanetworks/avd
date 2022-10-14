@@ -1981,6 +1981,126 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
+  overlay_her_flood_list_per_vni:
+    type: bool
+    description: 'When using Head-End Replication, configure flood-lists per VNI.
+      | Optional
+
+      By default HER will be configured with a common flood-list containing all VTEPs.
+      This behavior can be changed
+
+      to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`. This
+      will make `eos_designs` consider
+
+      configured VLANs per VTEP, and only include the relevant VTEPs to each VNI''s
+      flood-list.
+
+      '
+    default: false
+  overlay_her_flood_list_scope:
+    type: str
+    description: 'When using Head-End Replication, set the scope of flood-lists to
+      Fabric or DC
+
+      By default all VTEPs in the Fabric (part of the inventory group referenced by
+      "fabric_name") are added
+
+      to the flood-lists. This can be changed to all VTEPs in the DC (part of the
+      inventory group referenced
+
+      by "dc_name")
+
+      This is useful if Border Leaf switches are dividing the VXLAN overlay into separate
+      domains.
+
+      '
+    valid_values:
+    - fabric
+    - dc
+    default: fabric
+  overlay_loopback_description:
+    description: Customizable overlay loopback description
+    type: str
+  overlay_mlag_rfc5549:
+    description: 'IPv6 Unnumbered for MLAG iBGP connections.
+
+      Requires "underlay_rfc5549: true"
+
+      '
+    type: bool
+    default: false
+  overlay_rd_type:
+    type: dict
+    description: 'Specify RD type
+
+      Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni>
+      per default.
+
+      By configuring overlay_rd_type the Administrator subfield (first part of RD)
+      can be set to other values.
+
+      '
+    keys:
+      admin_subfield:
+        type: str
+        convert_types:
+        - int
+        description: < "vtep_loopback" or "bgp_as" or < IPv4 Address > or <0-65535>
+          or <0-4294967295>, default -> <overlay_loopback_ip> >
+  overlay_routing_protocol:
+    description: "- The following overlay routing protocols are supported:\n  - EBGP
+      (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n"
+    type: str
+    valid_values:
+    - ebgp
+    - ibgp
+    - BGP
+    case_sensitive: false
+    default: ebgp
+  overlay_routing_protocol_address_family:
+    type: str
+    description: 'Enable overlay EVPN peering with IPv6 addresses | Optional
+
+      This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is
+      capable to transport IPv6 in the underlay.
+
+      '
+    valid_values:
+    - ipv4
+    - ipv6
+    default: ipv4
+  overlay_rt_type:
+    type: dict
+    description: 'Specify RT type
+
+      Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
+
+      By configuring overlay_rt_type the Administrator subfield (first part of RT)
+      can be set to other values.
+
+      Note: structured configuration is not merged recursively and will be taken directly
+      from the most specific level in the following order:
+
+      1. svi.nodes[inventory_hostname].structured_config
+
+      2. svi_profile.nodes[inventory_hostname].structured_config
+
+      3. svi_parent_profile.nodes[inventory_hostname].structured_config
+
+      4. svi.structured_config
+
+      5. svi_profile.structured_config
+
+      6. svi_parent_profile.structured_config
+
+      '
+    keys:
+      admin_subfield:
+        type: str
+        convert_types:
+        - int
+        description: < "bgp_as" or <0-65535> or <0-4294967295>, default -> <mac_vrf_id>
+          >
   p2p_uplinks_mtu:
     documentation_options:
       filename: Fabric Variables
@@ -2252,6 +2372,15 @@ keys:
       enable:
         type: bool
         default: false
+  vtep_vvtep_ip:
+    description: 'IP Address used as Virtual VTEP. Will be configured as secondary
+      IP on loopback1
+
+      This is only needed for centralized routing designs
+
+      '
+    type: str
+    format: ipv4_cidr
 dynamic_keys:
   node_type_keys.key:
     $ref: '#/keys/node_type'
