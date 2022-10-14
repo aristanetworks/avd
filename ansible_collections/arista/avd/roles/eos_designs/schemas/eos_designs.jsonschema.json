@@ -88,7 +88,856 @@
         "additionalProperties": false
       },
       "title": "Default Node Types"
+    },
+    "node_type": {
+      "type": "object",
+      "properties": {
+        "node_groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/keys/node_type/keys/defaults",
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": "string",
+                "description": "The Node Group Name is used for MLAG domain",
+                "title": "Group"
+              },
+              "nodes": {
+                "$ref": "#/keys/node_type/keys/nodes",
+                "title": "Nodes"
+              }
+            },
+            "required": [
+              "group"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Node Groups"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/keys/node_type/keys/defaults",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The Node Name is used as \"hostname\"",
+                "title": "Name"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "`mac_address` can only be set under the node and is used by the `arista.avd.dhcp_provisioner` role",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Nodes"
+        },
+        "defaults": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "Unique identifier used for IP addressing and other algorithms",
+              "type": "integer",
+              "title": "ID"
+            },
+            "mgmt_ip": {
+              "description": "Management Interface IP Address",
+              "type": "string",
+              "title": "Mgmt IP"
+            },
+            "platform": {
+              "description": "Arista platform family",
+              "type": "string",
+              "title": "Platform"
+            },
+            "mgmt_interface": {
+              "description": "Management Interface Name\nDefault -> platform_management_interface -> mgmt_interface -> \"Management1\"\n",
+              "type": "string",
+              "title": "Mgmt Interface"
+            },
+            "rack": {
+              "description": "Rack that the switch is located in (only used in snmp_settings location)",
+              "type": "string",
+              "title": "Rack"
+            },
+            "link_tracking": {
+              "description": "This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.\nUseful in EVPN multhoming designs.\n",
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enabled"
+                },
+                "groups": {
+                  "type": "array",
+                  "description": "Link Tracking Groups\nBy default a single group named \"LT_GROUP1\" is defined with default values.\nAny groups defined under \"groups\" will replace the default.\n",
+                  "default": [
+                    {
+                      "name": "LT_GROUP1"
+                    }
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Tracking group name",
+                        "title": "Name"
+                      },
+                      "recovery_delay": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 3600,
+                        "description": "default -> platform_settings_mlag_reload_delay -> 300",
+                        "title": "Recovery Delay"
+                      },
+                      "links_minimum": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100000,
+                        "title": "Links Minimum"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "title": "Groups"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Link Tracking"
+            },
+            "lacp_port_id_range": {
+              "description": "This will generate the \"lacp port-id range\", \"begin\" and \"end\" values based on node \"id\" and the number of nodes in the \"node_group\".\nUnique LACP port-id ranges are recommended for EVPN Multihoming designs.\n",
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enabled"
+                },
+                "size": {
+                  "description": "Recommended size > = number of ports in the switch.",
+                  "type": "integer",
+                  "default": 128,
+                  "title": "Size"
+                },
+                "offset": {
+                  "description": "Offset is used to avoid overlapping port-id ranges of different switches\nUseful when a \"connected-endpoint\" is connected to switches in different \"node_groups\".\n",
+                  "type": "integer",
+                  "default": 0,
+                  "title": "Offset"
+                }
+              },
+              "additionalProperties": false,
+              "title": "LACP Port ID Range"
+            },
+            "raw_eos_cli": {
+              "description": "EOS CLI rendered directly on the root level of the final EOS configuration",
+              "type": "string",
+              "title": "Raw EOS CLI"
+            },
+            "structured_config": {
+              "description": "Custom structured config for eos_cli_config_gen",
+              "type": "object",
+              "title": "Structured Config"
+            },
+            "uplink_ipv4_pool": {
+              "description": "IPv4 subnet to use to connect to uplink switches",
+              "type": "string",
+              "title": "Uplink IPv4 Pool"
+            },
+            "uplink_interfaces": {
+              "description": "Local uplink interfaces\nIf uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.\nPlease note that default_interfaces are not defined by default - you should define these yourself.\n",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "Ethernet[\\d/]+"
+              },
+              "title": "Uplink Interfaces"
+            },
+            "uplink_switches": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Hostname of uplink switch\nIf parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times\ne.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ]\n"
+              },
+              "title": "Uplink Switches"
+            },
+            "max_uplink_switches": {
+              "type": "integer",
+              "description": "Maximum number of uplink switches.\nChanging this value may change IP Addressing on uplinks.\nCan be used to reserve IP space for future expansions.\n",
+              "title": "Max Uplink Switches"
+            },
+            "max_parallel_uplinks": {
+              "type": "integer",
+              "description": "Number of parallel links towards uplink switches\nChanging this value may change interface naming on uplinks (and corresponding downlinks)\nCan be used to reserve interfaces for future parallel uplinks\n",
+              "title": "Max Parallel Uplinks"
+            },
+            "uplink_ptp": {
+              "description": "Enable PTP on all infrastructure links",
+              "type": "object",
+              "properties": {
+                "enable": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enable"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Uplink PTP"
+            },
+            "uplink_macsec": {
+              "description": "Enable MacSec on all uplinks",
+              "type": "object",
+              "properties": {
+                "profile": {
+                  "type": "string",
+                  "title": "Profile"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Uplink Macsec"
+            },
+            "uplink_interface_speed": {
+              "description": "Point-to-Point interface speed - will apply to uplinks on both ends\n< interface_speed or forced interface_speed or auto interface_speed >\n",
+              "type": "string",
+              "title": "Uplink Interface Speed"
+            },
+            "uplink_switch_interfaces": {
+              "description": "Interfaces located on uplink switches",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "Ethernet[\\d/]+"
+              },
+              "title": "Uplink Switch Interfaces"
+            },
+            "short_esi": {
+              "description": "short_esi only valid for l2leaf devices using port-channel uplink\nSetting short_esi to \"auto\" generates the short_esi automatically using a hash of configuration elements.\n< 0000:0000:0000 | auto >\n",
+              "type": "string",
+              "title": "Short Esi"
+            },
+            "isis_system_id_prefix": {
+              "description": "(4.4 hexadecimal)",
+              "type": "string",
+              "pattern": "[0-9a-f]{4}\\.[0-9a-f]{4}",
+              "title": "ISIS System ID Prefix"
+            },
+            "isis_maximum_paths": {
+              "description": "Number of path to configure in ECMP for ISIS",
+              "type": "integer",
+              "title": "ISIS Maximum Paths"
+            },
+            "is_type": {
+              "type": "string",
+              "enum": [
+                "level-1-2",
+                "level-1",
+                "level-2"
+              ],
+              "default": "level-2",
+              "title": "IS Type"
+            },
+            "node_sid_base": {
+              "description": "Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.",
+              "type": "integer",
+              "default": 0,
+              "title": "Node Sid Base"
+            },
+            "loopback_ipv4_pool": {
+              "description": "IPv4 subnet for Loopback0 allocation",
+              "type": "string",
+              "title": "Loopback IPv4 Pool"
+            },
+            "vtep_loopback_ipv4_pool": {
+              "description": "IPv4 subnet for VTEP-Loopback allocation",
+              "type": "string",
+              "title": "Vtep Loopback IPv4 Pool"
+            },
+            "loopback_ipv4_offset": {
+              "description": "Offset all assigned loopback IP addresses.\nRequired when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.\nFor example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.\n",
+              "type": "integer",
+              "default": 0,
+              "title": "Loopback IPv4 Offset"
+            },
+            "loopback_ipv6_pool": {
+              "description": "IPv6 subnet for Loopback0 allocation",
+              "type": "string",
+              "title": "Loopback IPv6 Pool"
+            },
+            "loopback_ipv6_offset": {
+              "description": "Offset all assigned loopback IPv6 addresses.\nRequired when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.\nFor example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.\n",
+              "type": "integer",
+              "default": 0,
+              "title": "Loopback IPv6 Offset"
+            },
+            "vtep_loopback": {
+              "description": "Set VXLAN source interface.",
+              "type": "string",
+              "pattern": "Loopback[\\d/]+",
+              "title": "Vtep Loopback"
+            },
+            "bgp_as": {
+              "description": "Required with eBGP",
+              "type": "string",
+              "title": "BGP As"
+            },
+            "bgp_defaults": {
+              "description": "List of EOS commands to apply to BGP daemon",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "BGP Defaults"
+            },
+            "evpn_role": {
+              "type": "string",
+              "description": "Acting role in EVPN control plane. Default is set in node_type definition from node_type_keys.",
+              "enum": [
+                "client",
+                "server",
+                "none"
+              ],
+              "title": "EVPN Role"
+            },
+            "evpn_route_servers": {
+              "description": "List of nodes acting as EVPN Route-Servers / Route-Reflectors",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "EVPN Route Servers"
+            },
+            "evpn_services_l2_only": {
+              "description": "Possibility to prevent configuration of Tenant VRFs and SVIs\nOverride node definition \"network_services_l3\" from node_type_keys\nThis allows support for centralized routing.\n",
+              "type": "boolean",
+              "default": false,
+              "title": "EVPN Services L2 Only"
+            },
+            "filter": {
+              "description": "Filter L3 and L2 network services based on tenant and tags (and operation filter)\nIf filter is not defined it will default to all\n",
+              "type": "object",
+              "properties": {
+                "tenants": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [
+                    "all"
+                  ],
+                  "title": "Tenants"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [
+                    "all"
+                  ],
+                  "title": "Tags"
+                },
+                "always_include_vrfs_in_tenants": {
+                  "description": "List of tenants where VRFs will be configured even if VLANs are not included in tags\nUseful for L3 \"border\" leaf.\n",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Always Include VRFs In Tenants"
+                },
+                "only_vlans_in_use": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.\nNote! This feature only considers configuration managed by eos_designs.\nThis excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.\n",
+                  "title": "Only VLANs In Use"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Filter"
+            },
+            "igmp_snooping_enabled": {
+              "description": "Activate or deactivate IGMP snooping on device level",
+              "type": "boolean",
+              "default": true,
+              "title": "IGMP Snooping Enabled"
+            },
+            "evpn_gateway": {
+              "description": "Node is acting as EVPN Multi-Domain Gateway\nNew BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers. Name can be changed under \"bgp_peer_groups.evpn_overlay_core\" variable\nL3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.\n",
+              "type": "object",
+              "properties": {
+                "remote_peers": {
+                  "description": "Define remote peers of the EVPN VXLAN Gateway.\nIf the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.\nIf the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.\n",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "hostname": {
+                        "description": "Hostname of remote EVPN GW server",
+                        "type": "string",
+                        "title": "Hostname"
+                      },
+                      "ip_address": {
+                        "description": "Peering IP of remote Route Server",
+                        "type": "string",
+                        "format": "ipv4",
+                        "title": "IP Address"
+                      },
+                      "bgp_as": {
+                        "description": "BGP ASN of remote Route Server",
+                        "type": "string",
+                        "title": "BGP As"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "title": "Remote Peers"
+                },
+                "evpn_l2": {
+                  "description": "Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET)",
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "EVPN L2"
+                },
+                "evpn_l3": {
+                  "description": "Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX)",
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": false,
+                      "title": "Enabled"
+                    },
+                    "inter_domain": {
+                      "type": "boolean",
+                      "default": true,
+                      "title": "Inter Domain"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "EVPN L3"
+                }
+              },
+              "additionalProperties": false,
+              "title": "EVPN Gateway"
+            },
+            "ipvpn_gateway": {
+              "description": "Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is \"bgp_peer_groups.ipvpn_gateway_peers\".\nL3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.\n",
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "evpn_domain_id": {
+                  "description": "Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.",
+                  "type": "string",
+                  "default": "0:1",
+                  "title": "EVPN Domain ID"
+                },
+                "ipvpn_domain_id": {
+                  "description": "Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.",
+                  "type": "string",
+                  "default": "0:2",
+                  "title": "Ipvpn Domain ID"
+                },
+                "enable_d_path": {
+                  "description": "Enable D-path for use with BGP bestpath selection algorithm.",
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Enable D Path"
+                },
+                "maximum_routes": {
+                  "description": "Maximum routes to accept from IPVPN remote peers.",
+                  "type": "integer",
+                  "default": 0,
+                  "title": "Maximum Routes"
+                },
+                "local_as": {
+                  "description": "Apply local-as to peering with IPVPN remote peers.",
+                  "type": "string",
+                  "default": "none",
+                  "title": "Local As"
+                },
+                "address_families": {
+                  "description": "IPVPN address families to enable for remote peers.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [
+                    "vpn-ipv4"
+                  ],
+                  "title": "Address Families"
+                },
+                "remote_peers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "hostname": {
+                        "description": "Hostname of remote IPVPN Peer.",
+                        "type": "string",
+                        "title": "Hostname"
+                      },
+                      "ip_address": {
+                        "description": "Peering IP of remote IPVPN Peer.",
+                        "type": "string",
+                        "format": "ipv4",
+                        "title": "IP Address"
+                      },
+                      "bgp_as": {
+                        "description": "BGP ASN of remote IPVPN Peer.",
+                        "type": "string",
+                        "title": "BGP As"
+                      }
+                    },
+                    "required": [
+                      "hostname",
+                      "ip_address",
+                      "bgp_as"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "title": "Remote Peers"
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "additionalProperties": false,
+              "title": "Ipvpn Gateway"
+            },
+            "mlag": {
+              "description": "Enable / Disable auto MLAG, when two nodes are defined in node group.",
+              "type": "boolean",
+              "default": true,
+              "title": "MLAG"
+            },
+            "mlag_dual_primary_detection": {
+              "description": "Enable / Disable MLAG dual primary detection",
+              "type": "boolean",
+              "default": false,
+              "title": "MLAG Dual Primary Detection"
+            },
+            "mlag_interfaces": {
+              "description": "Required when MLAG leafs are present in the topology",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "Ethernet[\\d/]+"
+              },
+              "title": "MLAG Interfaces"
+            },
+            "mlag_interfaces_speed": {
+              "description": "< interface_speed or forced interface_speed or auto interface_speed >",
+              "type": "string",
+              "title": "MLAG Interfaces Speed"
+            },
+            "mlag_peer_l3_vlan": {
+              "description": "Underlay L3 peering SVI interface id\nIf set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering\n",
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4094,
+              "default": 4093,
+              "title": "MLAG Peer L3 VLAN"
+            },
+            "mlag_peer_l3_ipv4_pool": {
+              "description": "IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.\nRequired when MLAG leafs present in topology and they are using a separate L3 peering VLAN.\n",
+              "type": "string",
+              "title": "MLAG Peer L3 IPv4 Pool"
+            },
+            "mlag_peer_vlan": {
+              "description": "MLAG Peer Link (control link) SVI interface id",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4094,
+              "default": 4094,
+              "title": "MLAG Peer VLAN"
+            },
+            "mlag_peer_link_allowed_vlans": {
+              "type": "string",
+              "default": "2-4094",
+              "title": "MLAG Peer Link Allowed VLANs"
+            },
+            "mlag_peer_ipv4_pool": {
+              "description": "IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.\nRequired when MLAG leafs present in topology.\n",
+              "type": "string",
+              "title": "MLAG Peer IPv4 Pool"
+            },
+            "mlag_port_channel_id": {
+              "description": "If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'. Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.",
+              "type": "integer",
+              "title": "MLAG Port Channel ID"
+            },
+            "spanning_tree_mode": {
+              "type": "string",
+              "enum": [
+                "mstp",
+                "rstp",
+                "rapid-pvst",
+                "none"
+              ],
+              "title": "Spanning Tree Mode"
+            },
+            "spanning_tree_priority": {
+              "type": "integer",
+              "default": 32768,
+              "title": "Spanning Tree Priority"
+            },
+            "spanning_tree_root_super": {
+              "type": "boolean",
+              "default": false,
+              "title": "Spanning Tree Root Super"
+            },
+            "virtual_router_mac_address": {
+              "description": "Virtual router mac address for anycast gateway",
+              "type": "string",
+              "title": "Virtual Router MAC Address"
+            },
+            "inband_management_subnet": {
+              "description": "Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.\nParent l3leafs will have SVI with \"ip virtual-router\" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet\nSVI IP address will be assigned as follows:\nvirtual-router: <subnet> + 1\nl3leaf A      : <subnet> + 2 (same IP on all l3leaf A)\nl3leaf B      : <subnet> + 3 (same IP on all l3leaf B)\nl2leafs       : <subnet> + 3 + <l2leaf id>\nGW on l2leafs : <subnet> + 1\nAssign range larger than total l2leafs + 5\n",
+              "type": "string",
+              "title": "Inband Management Subnet"
+            },
+            "inband_management_vlan": {
+              "description": "VLAN number assigned to Inband Management SVI on l2leafs in default VRF",
+              "type": "integer",
+              "default": 4092,
+              "title": "Inband Management VLAN"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Defaults"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Node Type"
+    },
+    "node_type_keys": {
+      "type": "array",
+      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type value matching this node_type_key",
+            "title": "Type"
+          },
+          "connected_endpoints": {
+            "type": "boolean",
+            "default": false,
+            "description": "Are endpoints connected to this node type",
+            "title": "Connected Endpoints"
+          },
+          "default_evpn_role": {
+            "type": "string",
+            "enum": [
+              "none",
+              "client",
+              "server"
+            ],
+            "default": "none",
+            "description": "Default evpn_role. Can be overridden in topology vars.",
+            "title": "Default EVPN Role"
+          },
+          "default_underlay_routing_protocol": {
+            "type": "string",
+            "default": "ebgp",
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars\n",
+            "title": "Default Underlay Routing Protocol"
+          },
+          "mlag_support": {
+            "type": "boolean",
+            "default": false,
+            "description": "Can this node type support mlag",
+            "title": "MLAG Support"
+          },
+          "network_services": {
+            "description": "Will network services be deployed on this node type",
+            "type": "object",
+            "properties": {
+              "l2": {
+                "type": "boolean",
+                "default": false,
+                "description": "Vlans",
+                "title": "L2"
+              },
+              "l3": {
+                "type": "boolean",
+                "default": false,
+                "description": "VRFs, SVIs (if l2 is true)\nOnly supported with underlay_router\n",
+                "title": "L3"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Network Services"
+          },
+          "underlay_router": {
+            "type": "boolean",
+            "default": true,
+            "description": "Is this node type a L3 device",
+            "title": "Underlay Router"
+          },
+          "uplink_type": {
+            "type": "string",
+            "enum": [
+              "p2p",
+              "port-channel"
+            ],
+            "default": "p2p",
+            "description": "Uplinks must be p2p if \"vtep\" or \"underlay_router\" is true.",
+            "title": "Uplink Type"
+          },
+          "vtep": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this switch an EVPN VTEP",
+            "title": "Vtep"
+          },
+          "mpls_lsr": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this switch an MPLS LSR",
+            "title": "MPLS Lsr"
+          },
+          "ip_addressing": {
+            "type": "object",
+            "description": "Override ip_addressing templates",
+            "properties": {
+              "router_id": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id",
+                "title": "Router ID"
+              },
+              "mlag_ip_primary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary",
+                "title": "MLAG IP Primary"
+              },
+              "mlag_ip_secondary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary",
+                "title": "MLAG IP Secondary"
+              },
+              "mlag_l3_ip_primary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary",
+                "title": "MLAG L3 IP Primary"
+              },
+              "mlag_l3_ip_secondary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary",
+                "title": "MLAG L3 IP Secondary"
+              },
+              "p2p_uplinks_ip": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip",
+                "title": "P2P Uplinks IP"
+              },
+              "p2p_uplinks_peer_ip": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip",
+                "title": "P2P Uplinks Peer IP"
+              },
+              "vtep_ip_mlag": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag",
+                "title": "Vtep IP MLAG"
+              },
+              "vtep_ip": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip",
+                "title": "Vtep IP"
+              }
+            },
+            "additionalProperties": false,
+            "title": "IP Addressing"
+          },
+          "interface_descriptions": {
+            "type": "object",
+            "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks\n",
+            "properties": {
+              "underlay_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces",
+                "title": "Underlay Ethernet Interfaces"
+              },
+              "underlay_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces",
+                "title": "Underlay Port Channel Interfaces"
+              },
+              "underlay_ethernet_mlag_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces",
+                "title": "Underlay Ethernet MLAG Interfaces"
+              },
+              "underlay_port_channel_mlag_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces",
+                "title": "Underlay Port Channel MLAG Interfaces"
+              },
+              "connected_endpoints_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces",
+                "title": "Connected Endpoints Ethernet Interfaces"
+              },
+              "connected_endpoints_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces",
+                "title": "Connected Endpoints Port Channel Interfaces"
+              },
+              "overlay_loopback_interface": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface",
+                "title": "Overlay Loopback Interface"
+              },
+              "vtep_loopback_interface": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface",
+                "title": "Vtep Loopback Interface"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Interface Descriptions"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "key"
+        ]
+      },
+      "title": "Node Type Keys"
+    },
+    "type": {
+      "type": "string",
+      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.\n",
+      "title": "Type"
     }
   },
+  "required": [
+    "type"
+  ],
   "additionalProperties": true
 }
