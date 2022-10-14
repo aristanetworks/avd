@@ -89,6 +89,84 @@
       },
       "title": "Default Node Types"
     },
+    "evpn_ebgp_gateway_multihop": {
+      "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
+      "type": "integer",
+      "default": 15,
+      "title": "EVPN Ebgp Gateway Multihop"
+    },
+    "evpn_ebgp_multihop": {
+      "description": "Default of 3, the recommended value for a 3 stage spine and leaf topology.\nSet to a higher value to allow for very large and complex topologies.\n",
+      "type": "integer",
+      "default": 3,
+      "title": "EVPN Ebgp Multihop"
+    },
+    "evpn_hostflap_detection": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "If set to false it will disable EVPN host-flap detection",
+          "type": "boolean",
+          "default": true,
+          "title": "Enabled"
+        },
+        "threshold": {
+          "description": "Minimum number of MAC moves that indicate a MAC duplication issue",
+          "type": "integer",
+          "default": 5,
+          "title": "Threshold"
+        },
+        "window": {
+          "description": "Time (in seconds) to detect a MAC duplication issue",
+          "type": "integer",
+          "default": 180,
+          "title": "Window"
+        },
+        "expiry_timeout": {
+          "description": "Time (in seconds) to purge a MAC duplication issue",
+          "type": "integer",
+          "title": "Expiry Timeout"
+        }
+      },
+      "additionalProperties": false,
+      "title": "EVPN Hostflap Detection"
+    },
+    "evpn_import_pruning": {
+      "description": "Enable VPN import pruning (Min. EOS 4.24.2F)\nThe Route Target extended communities carried by incoming VPN paths will\nbe examined. If none of those Route Targets have been configured for import,\nthe path will be immediately discarded\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN Import Pruning"
+    },
+    "evpn_multicast": {
+      "type": "boolean",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "default": false,
+      "title": "EVPN Multicast"
+    },
+    "evpn_overlay_bgp_rtc": {
+      "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)\nRequires use eBGP as overlay protocol.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN Overlay BGP Rtc"
+    },
+    "evpn_prevent_readvertise_to_server": {
+      "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN Prevent Readvertise To Server"
+    },
+    "evpn_short_esi_prefix": {
+      "description": "Configure prefix for \"short_esi\" values",
+      "type": "string",
+      "default": "0000:0000:",
+      "title": "EVPN Short Esi Prefix"
+    },
+    "evpn_vlan_aware_bundles": {
+      "description": "Enable vlan aware bundles for EVPN MAC-VRF\nOld variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN VLAN Aware Bundles"
+    },
     "node_type": {
       "type": "object",
       "properties": {

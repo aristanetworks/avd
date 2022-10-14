@@ -93,6 +93,112 @@ keys:
             required: true
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements).
+  evpn_ebgp_gateway_multihop:
+    description: 'Default of 15, considering a large value to avoid BGP reachability
+      issues in very complex DCI networks.
+
+      Adapt the value for your specific topology.
+
+      '
+    type: int
+    convert_types:
+    - str
+    default: 15
+  evpn_ebgp_multihop:
+    description: 'Default of 3, the recommended value for a 3 stage spine and leaf
+      topology.
+
+      Set to a higher value to allow for very large and complex topologies.
+
+      '
+    type: int
+    convert_types:
+    - str
+    default: 3
+  evpn_hostflap_detection:
+    type: dict
+    keys:
+      enabled:
+        description: If set to false it will disable EVPN host-flap detection
+        type: bool
+        default: true
+      threshold:
+        description: Minimum number of MAC moves that indicate a MAC duplication issue
+        type: int
+        convert_types:
+        - str
+        default: 5
+      window:
+        description: Time (in seconds) to detect a MAC duplication issue
+        type: int
+        convert_types:
+        - str
+        default: 180
+      expiry_timeout:
+        description: Time (in seconds) to purge a MAC duplication issue
+        type: int
+        convert_types:
+        - str
+  evpn_import_pruning:
+    description: 'Enable VPN import pruning (Min. EOS 4.24.2F)
+
+      The Route Target extended communities carried by incoming VPN paths will
+
+      be examined. If none of those Route Targets have been configured for import,
+
+      the path will be immediately discarded
+
+      '
+    type: bool
+    default: false
+  evpn_multicast:
+    type: bool
+    description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
+      must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
+      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
+      Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning
+      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The
+      Following default platform setting will be configured: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All
+      forwarding agents will be restarted when this configuration is applied.\n  You
+      can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      \ Please contact an Arista representative for help with determining the appropriate
+      values for your environment.\n"
+    default: false
+  evpn_overlay_bgp_rtc:
+    description: 'Enable Route Target Membership Constraint Address Family on EVPN
+      overlay BGP peerings (Min. EOS 4.25.1F)
+
+      Requires use eBGP as overlay protocol.
+
+      '
+    type: bool
+    default: false
+  evpn_prevent_readvertise_to_server:
+    description: 'Configure route-map on eBGP sessions towards route-servers, where
+      prefixes with the peer''s ASN in the AS Path are filtered away.
+
+      This is very useful in very large scale networks, where convergence will be
+      quicker by not having to return all updates received
+
+      from Route-server-1 to Router-server-2 just for Route-server-2 to throw them
+      away because of AS Path loop detection.
+
+      '
+    type: bool
+    default: false
+  evpn_short_esi_prefix:
+    description: Configure prefix for "short_esi" values
+    type: str
+    default: '0000:0000:'
+  evpn_vlan_aware_bundles:
+    description: 'Enable vlan aware bundles for EVPN MAC-VRF
+
+      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
+
+      '
+    type: bool
+    default: false
   node_type:
     documentation_options:
       filename: Fabric Topology
