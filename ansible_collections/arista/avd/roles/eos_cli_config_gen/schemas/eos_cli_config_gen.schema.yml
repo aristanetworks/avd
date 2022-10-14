@@ -1867,6 +1867,17 @@ keys:
         max: 86400
         convert_types:
         - str
+  management_defaults:
+    type: dict
+    keys:
+      secret:
+        type: dict
+        keys:
+          hash:
+            type: str
+            valid_values:
+            - md5
+            - sha512
   management_interfaces:
     type: list
     primary_key: name
