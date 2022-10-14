@@ -2667,6 +2667,1645 @@
       },
       "title": "Network Ports"
     },
+    "network_services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Specify a tenant name.\nTenant provide a construct to group L3 VRFs and L2 VLANs.\nNetworks services can be filtered by tenant name.\n",
+            "title": "Name"
+          },
+          "mac_vrf_vni_base": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16770000,
+            "description": "Base number for MAC VRF VXLAN Network Identifier (Required with VXLAN)\nVXLAN VNI is derived from the base number with simple addition.\ne.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.\n",
+            "title": "MAC VRF Vni Base"
+          },
+          "mac_vrf_id_base": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16770000,
+            "description": "If not set, \"mac_vrf_vni_base\" will be used.\nBase number for MAC VRF RD/RT ID (Required unless mac_vrf_vni_base is set)\nID is derived from the base number with simple addition.\ne.g. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.\n",
+            "title": "MAC VRF ID Base"
+          },
+          "vlan_aware_bundle_number_base": {
+            "type": "integer",
+            "default": 0,
+            "description": "Base number for vlan_aware_bundle.\nThe \"Assigned Number\" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.\n",
+            "title": "VLAN Aware Bundle Number Base"
+          },
+          "enable_mlag_ibgp_peering_vrfs": {
+            "type": "boolean",
+            "description": "MLAG IBGP peering per VRF.\nBy default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.\nSetting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.\nThis setting can be overridden per VRF.\n",
+            "title": "Enable MLAG Ibgp Peering VRFs"
+          },
+          "bgp_peer_groups": {
+            "type": "array",
+            "description": "Dictionary of BGP peer groups definitions (Optional).\nThis will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.\nSince BGP peer groups are configured at higher BGP level, shared between VRFs,\npeer_group names should not overlap between VRFs.\n",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "BGP peer group name",
+                  "title": "Name"
+                },
+                "remote_as": {
+                  "type": "integer",
+                  "description": "Remote ASN",
+                  "title": "Remote As"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "send_community": {
+                  "type": "string",
+                  "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'\n",
+                  "title": "Send Community"
+                },
+                "next_hop_self": {
+                  "type": "boolean",
+                  "title": "Next Hop Self"
+                },
+                "maximum_routes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967294,
+                  "title": "Maximum Routes"
+                },
+                "default_originate": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "always": {
+                      "type": "boolean",
+                      "title": "Always"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Default Originate"
+                },
+                "update_source": {
+                  "type": "string",
+                  "title": "Update Source"
+                },
+                "ebgp_multihop": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255,
+                  "title": "Ebgp Multihop"
+                },
+                "nodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.\nIf not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.\n",
+                  "title": "Nodes"
+                },
+                "set_ipv4_next_hop": {
+                  "type": "string",
+                  "description": "IPv4_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                  "title": "Set IPv4 Next Hop"
+                },
+                "set_ipv6_next_hop": {
+                  "type": "string",
+                  "description": "IPv6_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                  "title": "Set IPv6 Next Hop"
+                },
+                "route_map_out": {
+                  "type": "string",
+                  "description": "Route-map name",
+                  "title": "Route Map Out"
+                },
+                "route_map_in": {
+                  "type": "string",
+                  "description": "Route-map name",
+                  "title": "Route Map In"
+                },
+                "local_as": {
+                  "type": "string",
+                  "description": "Local BGP ASN\neg. \"65001.1200\"\n",
+                  "title": "Local As"
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535,
+                  "title": "Weight"
+                },
+                "bfd": {
+                  "type": "boolean",
+                  "title": "BFD"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "BGP Peer Groups"
+          },
+          "evpn_l2_multicast": {
+            "description": "Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant | Optional\n- Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication\n- Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n  < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.\n- Enables `redistribute igmp` on the router bgp MAC VRF.\n- When evpn_l2_multicast.enabled is true for a VLAN or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled - overriding those individual settings.\n",
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "underlay_l2_multicast_group_ipv4_pool": {
+                "type": "string",
+                "description": "IPv4_address/Mask",
+                "title": "Underlay L2 Multicast Group IPv4 Pool"
+              },
+              "underlay_l2_multicast_group_ipv4_pool_offset": {
+                "type": "integer",
+                "title": "Underlay L2 Multicast Group IPv4 Pool Offset"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "EVPN L2 Multicast"
+          },
+          "evpn_l3_multicast": {
+            "description": "Enable L3 Multicast for all SVIs and l3vlans within Tenant | Optional\n- In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)\n- Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication\n- Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n  < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.\n- If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.\n- Enables `evpn multicast` on the router bgp VRF.\n- When enabled on an SVI:\n     - If switch is part of an MLAG pair, enables \"pim ipv4 sparse-mode\" on the SVI.\n     - If switch is standalone or A-A MH, enables \"ip igmp\" on the SVI.\n     - If \"ip address virtual\" is configured, enables \"pim ipv4 local-interface\" and uses the diagnostic Loopback defined in the VRF\n",
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "evpn_underlay_l3_multicast_group_ipv4_pool": {
+                "type": "string",
+                "description": "IPv4_address/Mask",
+                "title": "EVPN Underlay L3 Multicast Group IPv4 Pool"
+              },
+              "evpn_underlay_l3_multicast_group_ipv4_pool_offset": {
+                "type": "integer",
+                "title": "EVPN Underlay L3 Multicast Group IPv4 Pool Offset"
+              },
+              "evpn_peg": {
+                "type": "array",
+                "description": "For each group of nodes, allow configuration of EVPN PEG options (Optional)\nThe first group of settings where the device's hostname is present in the 'nodes' list will be used.\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "nodes": {
+                      "description": "(Optional) will apply to all nodes with RP addresses configured if not set.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "Nodes"
+                    },
+                    "transit": {
+                      "description": "Enable EVPN PEG transit mode",
+                      "type": "boolean",
+                      "title": "Transit"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "EVPN Peg"
+              }
+            },
+            "required": [
+              "evpn_underlay_l3_multicast_group_ipv4_pool"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "EVPN L3 Multicast"
+          },
+          "pim_rp_addresses": {
+            "description": "For each group of nodes, allow configuration of RP Addresses & associated groups\n",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "rps": {
+                  "description": "A minimum of one RP must be specified",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "RP address"
+                  },
+                  "title": "RPs"
+                },
+                "nodes": {
+                  "description": "(Optional) will apply to all nodes with RP addresses configured if not set.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Nodes"
+                },
+                "groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Group_prefix/mask"
+                  },
+                  "title": "Groups"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "PIM RP Addresses"
+          },
+          "igmp_snooping_querier": {
+            "description": "Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.\nWhen enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.\n",
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Will be enabled automatically if \"evpn_l2_multicast\" is enabled.",
+                "title": "Enabled"
+              },
+              "source_address": {
+                "type": "string",
+                "format": "ipv4",
+                "description": "Default IP address of Loopback0",
+                "title": "Source Address"
+              },
+              "version": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  3
+                ],
+                "default": 2,
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IGMP Snooping Querier"
+          },
+          "vrfs": {
+            "type": "array",
+            "description": "vrf \"default\" is supported under network-services. Currently the supported options for \"default\" vrf are route-target,\nroute-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.\nVlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.\n",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "VRF description",
+                  "title": "Description"
+                },
+                "vrf_vni": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1024,
+                  "description": "Required if \"vrf_id\" is not set.\nThe VRF VNI range is not limited, but if vrf_id is not set, \"vrf_vni\" is used for calculating MLAG IBGP peering vlan id.\nSee \"mlag_ibgp_peering_vrfs.base_vlan\" for details.\nIf vrf_vni > 10000 make sure to adjust \"mac_vrf_vni_base\" accordingly to avoid overlap.\n",
+                  "title": "VRF Vni"
+                },
+                "vrf_id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1024,
+                  "description": "Required if \"vrf_vni\" is not set.\n\"vrf_id\" is used as default value for \"vrf_vni\" and \"ospf.process_id\" unless those are set.\n\"vrf_id\" is preferred over \"vrf_vni\" for VRF RD/RT ID before vrf_vni\n\"vrf_id\" is preferred over \"vrf_vni\" for MLAG IBGP peering vlan, see \"mlag_ibgp_peering_vrfs.base_vlan\" for details\n",
+                  "title": "VRF ID"
+                },
+                "mlag_ibgp_peering_ipv4_pool": {
+                  "type": "string",
+                  "description": "IPv4_address/Mask\nThe subnet used for iBGP peering in the VRF.\nEach MLAG pair will be assigned a subnet based on the ID of the primary MLAG switch\nIf not set, \"mlag_peer_l3_ipv4_pool\" or \"mlag_peer_ipv4_pool\" will be used\n",
+                  "title": "MLAG Ibgp Peering IPv4 Pool"
+                },
+                "ip_helpers": {
+                  "type": "array",
+                  "description": "IP helper for DHCP relay",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip_helper": {
+                        "type": "string",
+                        "description": "IPv4 DHCP server IP",
+                        "title": "IP Helper"
+                      },
+                      "source_interface": {
+                        "type": "string",
+                        "description": "Interface name",
+                        "title": "Source Interface"
+                      },
+                      "source_vrf": {
+                        "type": "string",
+                        "description": "VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF",
+                        "title": "Source VRF"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "ip_helper"
+                    ]
+                  },
+                  "title": "IP Helpers"
+                },
+                "enable_mlag_ibgp_peering_vrfs": {
+                  "type": "boolean",
+                  "description": "MLAG IBGP peering per VRF (optional)\nBy default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.\nSetting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting\n",
+                  "title": "Enable MLAG Ibgp Peering VRFs"
+                },
+                "mlag_ibgp_peering_vlan": {
+                  "type": "integer",
+                  "description": "Manually define the VLAN used on the MLAG pair for the iBGP session (optional)\nBy default this parameter is calculated using the following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1\n",
+                  "minimum": 1,
+                  "maximum": 4096,
+                  "title": "MLAG Ibgp Peering VLAN"
+                },
+                "vtep_diagnostic": {
+                  "type": "object",
+                  "description": "Enable VTEP Network diagnostics (Optional)\nThis will create a loopback with virtual source-nat enable to perform diagnostics from the switch\n",
+                  "properties": {
+                    "loopback": {
+                      "type": "integer",
+                      "description": "Loopback interface number, required (when vtep_diagnotics defined)\n",
+                      "minimum": 2,
+                      "maximum": 2100,
+                      "title": "Loopback"
+                    },
+                    "loopback_ip_range": {
+                      "type": "string",
+                      "description": "IPv4_address/Mask\nLoopback ip range, a unique ip is derived from this ranged and assigned\nto each l3 leaf based on it's unique id, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set)\n",
+                      "title": "Loopback IP Range"
+                    },
+                    "loopback_ip_pools": {
+                      "type": "array",
+                      "description": "For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.\nThis only takes effect when loopback_ip_range is not defined, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set)\n",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "pod": {
+                            "type": "string",
+                            "description": "POD name",
+                            "title": "Pod"
+                          },
+                          "ipv4_pool": {
+                            "type": "string",
+                            "description": "IPv4_address/Mask",
+                            "title": "IPv4 Pool"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        }
+                      },
+                      "title": "Loopback IP Pools"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Vtep Diagnostic"
+                },
+                "ospf": {
+                  "type": "object",
+                  "description": "Dictionary for router OSPF configuration (optional)\nThis will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be\ncreated on all leafs where the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless\nexplicitly turned off with \"redistribute_ospf: false\".\n",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "process_id": {
+                      "type": "integer",
+                      "description": "If not set, \"vrf_id\" will be used.",
+                      "title": "Process ID"
+                    },
+                    "router_id": {
+                      "type": "string",
+                      "description": "If not set, switch router_id will be used.",
+                      "title": "Router ID"
+                    },
+                    "max_lsa": {
+                      "type": "integer",
+                      "title": "Max LSA"
+                    },
+                    "bfd": {
+                      "type": "boolean",
+                      "default": false,
+                      "title": "BFD"
+                    },
+                    "redistribute_bgp": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "default": true,
+                          "title": "Enabled"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "description": "Route-map name",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Redistribute BGP"
+                    },
+                    "nodes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Hostname"
+                      },
+                      "title": "Nodes"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "OSPF"
+                },
+                "redistribute_ospf": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Non-selectively enabling or disabling redistribute ospf inside the VRF (optional)",
+                  "title": "Redistribute OSPF"
+                },
+                "svis": {
+                  "type": "array",
+                  "description": "Dictionary of SVIs\nThis will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.\n",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "SVI interface id and VLAN id.",
+                        "minimum": 1,
+                        "maximum": 4096,
+                        "title": "ID"
+                      },
+                      "vni_override": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 16777215,
+                        "description": "By default the vni will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+                        "title": "Vni Override"
+                      },
+                      "rt_override": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 16777215,
+                        "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
+                        "title": "Rt Override"
+                      },
+                      "profile": {
+                        "type": "string",
+                        "description": "SVI profile name to apply\nIf variables are configured in profile AND SVI, SVI information will overwrite profile\n",
+                        "title": "Profile"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "VLAN name",
+                        "title": "Name"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "SVI description\n",
+                        "default": "VLAN name",
+                        "title": "Description"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+                        "items": {
+                          "type": "string",
+                          "default": "all"
+                        },
+                        "title": "Tags"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Enable or disable interface",
+                        "title": "Enabled"
+                      },
+                      "trunk_groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group\nRequires \"enable_trunk_groups: true\"\n"
+                        },
+                        "title": "Trunk Groups"
+                      },
+                      "evpn_l2_multicast": {
+                        "type": "boolean",
+                        "description": "Explicitly enable or disable evpn_l2_multicast to override setting of tenants.<tenant>.evpn_l2_multicast.enabled.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled - overriding those individual settings.\n",
+                        "title": "EVPN L2 Multicast"
+                      },
+                      "igmp_snooping_enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable IGMP Snooping",
+                        "title": "IGMP Snooping Enabled"
+                      },
+                      "igmp_snooping_querier": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "Will be enabled automatically if evpn_l2_multicast is enabled.",
+                            "title": "Enabled"
+                          },
+                          "source_address": {
+                            "type": "string",
+                            "description": "IPv4_address\nIf not set, IP address of \"Loopback0\" will be used.\n",
+                            "title": "Source Address"
+                          },
+                          "version": {
+                            "type": "integer",
+                            "enum": [
+                              1,
+                              2,
+                              3
+                            ],
+                            "default": 2,
+                            "title": "Version"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "IGMP Snooping Querier"
+                      },
+                      "ip_address_virtual": {
+                        "type": "string",
+                        "description": "IPv4_address/Mask\nip address virtual to configure VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
+                        "title": "IP Address Virtual"
+                      },
+                      "ipv6_address_virtual": {
+                        "type": "string",
+                        "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+                        "title": "IPv6 Address Virtual"
+                      },
+                      "ipv6_address_virtuals": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "IPv6_address/Mask"
+                        },
+                        "title": "IPv6 Address Virtuals"
+                      },
+                      "ip_address_virtual_secondaries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "IPv4_address/Mask"
+                        },
+                        "title": "IP Address Virtual Secondaries"
+                      },
+                      "ip_virtual_router_addresses": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "IPv4_address/Mask or IPv4_address\nnote, also requires an IP address to be configured on the SVI where it is applied.\n",
+                        "title": "IP Virtual Router Addresses"
+                      },
+                      "ipv6_virtual_router_addresses": {
+                        "type": "string",
+                        "description": "IPv6_address",
+                        "title": "IPv6 Virtual Router Addresses"
+                      },
+                      "ip_helpers": {
+                        "type": "array",
+                        "description": "IP helper for DHCP relay",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "ip_helper": {
+                              "type": "string",
+                              "description": "IPv4 DHCP server IP",
+                              "title": "IP Helper"
+                            },
+                            "source_interface": {
+                              "type": "string",
+                              "description": "Interface name",
+                              "title": "Source Interface"
+                            },
+                            "source_vrf": {
+                              "type": "string",
+                              "description": "VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF",
+                              "title": "Source VRF"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "ip_helper"
+                          ]
+                        },
+                        "title": "IP Helpers"
+                      },
+                      "vxlan": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Extend this SVI over VXLAN",
+                        "title": "VxLAN"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "description": "Define node specific configuration, such as unique IP addresses.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "node": {
+                              "type": "string",
+                              "description": "l3_leaf inventory hostname",
+                              "title": "Node"
+                            },
+                            "ip_helpers": {
+                              "type": "array",
+                              "description": "IP helper for DHCP relay",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "ip_helper": {
+                                    "type": "string",
+                                    "description": "IPv4 DHCP server IP",
+                                    "title": "IP Helper"
+                                  },
+                                  "source_interface": {
+                                    "type": "string",
+                                    "description": "Interface name",
+                                    "title": "Source Interface"
+                                  },
+                                  "source_vrf": {
+                                    "type": "string",
+                                    "description": "VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF",
+                                    "title": "Source VRF"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "required": [
+                                  "ip_helper"
+                                ]
+                              },
+                              "title": "IP Helpers"
+                            },
+                            "ip_address": {
+                              "type": "string",
+                              "description": "IPv4_address/Mask\nDevice unique IP address for node.\n",
+                              "title": "IP Address"
+                            },
+                            "ipv6_address": {
+                              "type": "string",
+                              "description": "IPv6_address/Mask\nDevice unique IPv6 address for node.\n",
+                              "title": "IPv6 Address"
+                            },
+                            "ip_address_virtual_secondaries": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "description": "IPv4_address/Mask"
+                              },
+                              "title": "IP Address Virtual Secondaries"
+                            },
+                            "ip_virtual_router_addresses": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "IPv4_address/Mask or IPv4_address\nnote, also requires an IP address to be configured on the SVI where it is applied.\n",
+                              "title": "IP Virtual Router Addresses"
+                            },
+                            "structured_config": {
+                              "type": "object",
+                              "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                              "title": "Structured Config"
+                            },
+                            "raw_eos_cli": {
+                              "type": "string",
+                              "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                              "title": "Raw EOS CLI"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "required": [
+                            "node"
+                          ]
+                        },
+                        "title": "Nodes"
+                      },
+                      "mtu": {
+                        "type": "integer",
+                        "description": "Defined interface MTU",
+                        "title": "MTU"
+                      },
+                      "ospf": {
+                        "type": "object",
+                        "description": "OSPF interface configuration",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "point_to_point": {
+                            "type": "boolean",
+                            "default": true,
+                            "title": "Point To Point"
+                          },
+                          "area": {
+                            "type": "integer",
+                            "description": "OSPF area id",
+                            "default": 0,
+                            "title": "Area"
+                          },
+                          "cost": {
+                            "type": "integer",
+                            "description": "OSPF link cost",
+                            "title": "Cost"
+                          },
+                          "authentication": {
+                            "type": "string",
+                            "enum": [
+                              "simple",
+                              "message-digest"
+                            ],
+                            "title": "Authentication"
+                          },
+                          "simple_auth_key": {
+                            "type": "string",
+                            "description": "Password used with simple authentication",
+                            "title": "Simple Auth Key"
+                          },
+                          "message_digest_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "title": "ID"
+                                },
+                                "hash_algorithm": {
+                                  "type": "string",
+                                  "enum": [
+                                    "md5",
+                                    "sha1",
+                                    "sha256",
+                                    "sha384",
+                                    "sha512"
+                                  ],
+                                  "default": "sha512",
+                                  "title": "Hash Algorithm"
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "Key password",
+                                  "title": "Key"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              }
+                            },
+                            "title": "Message Digest Keys"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "OSPF"
+                      },
+                      "bgp": {
+                        "type": "object",
+                        "description": "Structured configuration and eos cli commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
+                        "properties": {
+                          "structured_config": {
+                            "type": "object",
+                            "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                            "title": "Structured Config"
+                          },
+                          "raw_eos_cli": {
+                            "type": "string",
+                            "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                            "title": "Raw EOS CLI"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
+                      },
+                      "raw_eos_cli": {
+                        "type": "string",
+                        "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level\n",
+                        "title": "Raw EOS CLI"
+                      },
+                      "structured_config": {
+                        "type": "object",
+                        "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                        "title": "Structured Config"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Svis"
+                },
+                "l3_interfaces": {
+                  "type": "array",
+                  "description": "List of L3 interfaces (Optional)\nThis will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match\n",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "interfaces": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Interface name"
+                        },
+                        "title": "Interfaces"
+                      },
+                      "ip_addresses": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "IPv4_address/Mask"
+                        },
+                        "title": "IP Addresses"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Node"
+                        },
+                        "title": "Nodes"
+                      },
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "descriptions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "\"descriptions\" has precedence over \"description\"\n",
+                        "title": "Descriptions"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "mtu": {
+                        "type": "integer",
+                        "title": "MTU"
+                      },
+                      "raw_eos_cli": {
+                        "type": "string",
+                        "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                        "title": "Raw EOS CLI"
+                      },
+                      "structured_config": {
+                        "type": "object",
+                        "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                        "title": "Structured Config"
+                      },
+                      "ospf": {
+                        "type": "object",
+                        "description": "OSPF interface configuration",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "point_to_point": {
+                            "type": "boolean",
+                            "default": false,
+                            "title": "Point To Point"
+                          },
+                          "area": {
+                            "type": "integer",
+                            "description": "OSPF area id",
+                            "default": 0,
+                            "title": "Area"
+                          },
+                          "cost": {
+                            "type": "integer",
+                            "description": "OSPF link cost",
+                            "title": "Cost"
+                          },
+                          "authentication": {
+                            "type": "string",
+                            "enum": [
+                              "simple",
+                              "message-digest"
+                            ],
+                            "title": "Authentication"
+                          },
+                          "simple_auth_key": {
+                            "type": "string",
+                            "description": "Password used with simple authentication",
+                            "title": "Simple Auth Key"
+                          },
+                          "message_digest_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "title": "ID"
+                                },
+                                "hash_algorithm": {
+                                  "type": "string",
+                                  "enum": [
+                                    "md5",
+                                    "sha1",
+                                    "sha256",
+                                    "sha384",
+                                    "sha512"
+                                  ],
+                                  "default": "sha512",
+                                  "title": "Hash Algorithm"
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "Key password",
+                                  "title": "Key"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              }
+                            },
+                            "title": "Message Digest Keys"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "OSPF"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "L3 Interfaces"
+                },
+                "static_routes": {
+                  "type": "array",
+                  "description": "Dictionary of static routes for v4 and/or v6 (Optional).\nThis will create static routes inside the tenant VRF.\nIf nodes are not specified, all l3leafs that carry the VRF will also be applied the static routes.\nIf a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF.\nThis automatic behavior can be overridden non-selectively with the redistribute_static knob for the VRF.\n",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "destination_address_prefix": {
+                        "type": "string",
+                        "description": "IPv4_address/Mask",
+                        "title": "Destination Address Prefix"
+                      },
+                      "gateway": {
+                        "type": "string",
+                        "description": "IPv4_address",
+                        "title": "Gateway"
+                      },
+                      "distance": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 255,
+                        "title": "Distance"
+                      },
+                      "tag": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295,
+                        "title": "Tag"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "description",
+                        "title": "Name"
+                      },
+                      "metric": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295,
+                        "title": "Metric"
+                      },
+                      "interface": {
+                        "type": "string",
+                        "title": "Interface"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Nodes"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Static Routes"
+                },
+                "ipv6_static_routes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "destination_address_prefix": {
+                        "type": "string",
+                        "description": "IPv4_address/Mask",
+                        "title": "Destination Address Prefix"
+                      },
+                      "gateway": {
+                        "type": "string",
+                        "format": "ipv6",
+                        "title": "Gateway"
+                      },
+                      "distance": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 255,
+                        "title": "Distance"
+                      },
+                      "tag": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295,
+                        "title": "Tag"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "description",
+                        "title": "Name"
+                      },
+                      "metric": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295,
+                        "title": "Metric"
+                      },
+                      "interface": {
+                        "type": "string",
+                        "title": "Interface"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Nodes"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "IPv6 Static Routes"
+                },
+                "redistribute_static": {
+                  "type": "boolean",
+                  "description": "Non-selectively enabling or disabling redistribute static inside the VRF (Optional).",
+                  "title": "Redistribute Static"
+                },
+                "bgp_peers": {
+                  "type": "array",
+                  "description": "Dictionary of BGP peer definitions (Optional).\nThis will configure BGP neighbors inside the tenant VRF for peering with external devices.\nThe configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.\nNote, only ipv4 and ipv6 address families are currently supported in eos_designs.\nFor other address families, use custom_structured configuration with eos_cli_config_gen.\n",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip_address": {
+                        "type": "string",
+                        "description": "IPv4_address or IPv6_address",
+                        "title": "IP Address"
+                      },
+                      "remote_as": {
+                        "type": "integer",
+                        "description": "Remote ASN",
+                        "title": "Remote As"
+                      },
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "password": {
+                        "type": "string",
+                        "description": "Encrypted password",
+                        "title": "Password"
+                      },
+                      "send_community": {
+                        "type": "string",
+                        "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'\n",
+                        "title": "Send Community"
+                      },
+                      "next_hop_self": {
+                        "type": "boolean",
+                        "title": "Next Hop Self"
+                      },
+                      "timers": {
+                        "type": "string",
+                        "description": "BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>",
+                        "title": "Timers"
+                      },
+                      "maximum_routes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967294,
+                        "description": "Maximum number of routes (0 means unlimited)",
+                        "title": "Maximum Routes"
+                      },
+                      "default_originate": {
+                        "type": "object",
+                        "properties": {
+                          "always": {
+                            "type": "boolean",
+                            "title": "Always"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Default Originate"
+                      },
+                      "update_source": {
+                        "type": "string",
+                        "title": "Update Source"
+                      },
+                      "ebgp_multihop": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 255,
+                        "description": "Time-to-live in range of hops",
+                        "title": "Ebgp Multihop"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.",
+                        "title": "Nodes"
+                      },
+                      "set_ipv4_next_hop": {
+                        "type": "string",
+                        "description": "IPv4_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                        "title": "Set IPv4 Next Hop"
+                      },
+                      "set_ipv6_next_hop": {
+                        "type": "string",
+                        "description": "IPv6_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                        "title": "Set IPv6 Next Hop"
+                      },
+                      "route_map_out": {
+                        "type": "string",
+                        "description": "Route-map name",
+                        "title": "Route Map Out"
+                      },
+                      "route_map_in": {
+                        "type": "string",
+                        "description": "Route-map name",
+                        "title": "Route Map In"
+                      },
+                      "prefix_list_in": {
+                        "type": "string",
+                        "description": "Prefix list name",
+                        "title": "Prefix List In"
+                      },
+                      "prefix_list_out": {
+                        "type": "string",
+                        "description": "Prefix list name",
+                        "title": "Prefix List Out"
+                      },
+                      "local_as": {
+                        "type": "string",
+                        "description": "Local BGP ASN\neg. \"65001.1200\"\n",
+                        "title": "Local As"
+                      },
+                      "weight": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 65535,
+                        "title": "Weight"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "title": "BFD"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "ip_address"
+                    ]
+                  },
+                  "title": "BGP Peers"
+                },
+                "bgp": {
+                  "type": "object",
+                  "properties": {
+                    "raw_eos_cli": {
+                      "type": "string",
+                      "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                      "title": "Raw EOS CLI"
+                    },
+                    "structured_config": {
+                      "type": "object",
+                      "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                      "title": "Structured Config"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BGP"
+                },
+                "bgp_peer_groups": {
+                  "type": "array",
+                  "description": "Dictionary of BGP peer groups definitions (Optional).\nThis will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.\nSince BGP peer groups are configured at higher BGP level, shared between VRFs,\npeer_group names should not overlap between VRFs.\n",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "BGP peer group name",
+                        "title": "Name"
+                      },
+                      "remote_as": {
+                        "type": "integer",
+                        "description": "Remote ASN",
+                        "title": "Remote As"
+                      },
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "send_community": {
+                        "type": "string",
+                        "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'\n",
+                        "title": "Send Community"
+                      },
+                      "next_hop_self": {
+                        "type": "boolean",
+                        "title": "Next Hop Self"
+                      },
+                      "maximum_routes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967294,
+                        "title": "Maximum Routes"
+                      },
+                      "default_originate": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "always": {
+                            "type": "boolean",
+                            "title": "Always"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Default Originate"
+                      },
+                      "update_source": {
+                        "type": "string",
+                        "title": "Update Source"
+                      },
+                      "ebgp_multihop": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 255,
+                        "title": "Ebgp Multihop"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.\nIf not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.\n",
+                        "title": "Nodes"
+                      },
+                      "set_ipv4_next_hop": {
+                        "type": "string",
+                        "description": "IPv4_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                        "title": "Set IPv4 Next Hop"
+                      },
+                      "set_ipv6_next_hop": {
+                        "type": "string",
+                        "description": "IPv6_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                        "title": "Set IPv6 Next Hop"
+                      },
+                      "route_map_out": {
+                        "type": "string",
+                        "description": "Route-map name",
+                        "title": "Route Map Out"
+                      },
+                      "route_map_in": {
+                        "type": "string",
+                        "description": "Route-map name",
+                        "title": "Route Map In"
+                      },
+                      "local_as": {
+                        "type": "string",
+                        "description": "Local BGP ASN\neg. \"65001.1200\"\n",
+                        "title": "Local As"
+                      },
+                      "weight": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 65535,
+                        "title": "Weight"
+                      },
+                      "bfd": {
+                        "type": "boolean",
+                        "title": "BFD"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "BGP Peer Groups"
+                },
+                "additional_route_targets": {
+                  "type": "array",
+                  "description": "Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "import",
+                          "export"
+                        ],
+                        "title": "Type"
+                      },
+                      "address_family": {
+                        "type": "string",
+                        "title": "Address Family"
+                      },
+                      "route_target": {
+                        "type": "string",
+                        "title": "Route Target"
+                      },
+                      "nodes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.\n",
+                        "title": "Nodes"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Additional Route Targets"
+                },
+                "raw_eos_cli": {
+                  "type": "string",
+                  "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                  "title": "Raw EOS CLI"
+                },
+                "structured_config": {
+                  "type": "object",
+                  "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                  "title": "Structured Config"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "title": "VRFs"
+          },
+          "l2vlans": {
+            "type": "array",
+            "description": "Define L2 network services organized by vlan id.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4096,
+                  "description": "VLAN id",
+                  "title": "ID"
+                },
+                "vni_override": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16777215,
+                  "description": "By default the vni will be derived from mac_vrf_vni_base\nThe vni_override, allows to override this value and statically define it.\n",
+                  "title": "Vni Override"
+                },
+                "rt_override": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16777215,
+                  "description": "By default the MAC VRF RD/RT ID will be derived from mac_vrf_id_base\nThe rt_override allows us to override this value and statically define it (Optional)\n",
+                  "title": "Rt Override"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "VLAN name",
+                  "title": "Name"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Tags leveraged for networks services filtering\nTags are matched against filter.tags defined under Fabric Topology variables\nTags are also matched against the node_group name under Fabric Topology variables\n",
+                  "items": {
+                    "type": "string",
+                    "default": "all"
+                  },
+                  "title": "Tags"
+                },
+                "vxlan": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Extend this L2VLAN over VXLAN",
+                  "title": "VxLAN"
+                },
+                "trunk_groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group\nRequires enable_trunk_groups: true\n"
+                  },
+                  "title": "Trunk Groups"
+                },
+                "evpn_l2_multicast": {
+                  "type": "boolean",
+                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of tenants.<tenant>.evpn_l2_multicast.enabled.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled - overriding those individual settings.\n",
+                  "title": "EVPN L2 Multicast"
+                },
+                "igmp_snooping_enabled": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Activate or deactivate IGMP snooping",
+                  "title": "IGMP Snooping Enabled"
+                },
+                "igmp_snooping_querier": {
+                  "type": "object",
+                  "description": "Enable igmp snooping querier, by default using IP address of Loopback 0.\nWhen enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.\n",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Will be enabled automatically if evpn_l2_multicast is enabled.",
+                      "title": "Enabled"
+                    },
+                    "source_address": {
+                      "type": "string",
+                      "description": "IPv4_address\nIf not set, IP address of \"Loopback0\" will be used.\n",
+                      "title": "Source Address"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "enum": [
+                        1,
+                        2,
+                        3
+                      ],
+                      "default": 2,
+                      "title": "Version"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IGMP Snooping Querier"
+                },
+                "bgp": {
+                  "type": "object",
+                  "properties": {
+                    "raw_eos_cli": {
+                      "type": "string",
+                      "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level",
+                      "title": "Raw EOS CLI"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BGP"
+                }
+              },
+              "required": [
+                "name",
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "L2Vlans"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Network Services"
+    },
+    "network_services_keys": {
+      "type": "array",
+      "description": "Define network services keys, to define grouping of network services.\nThis provides the ability to define various keys of your choice to better organize/group your data.\nThis should be defined in top level group_var for the fabric.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Network Services Keys"
+    },
     "node_type_keys": {
       "type": "array",
       "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
@@ -4209,6 +5848,178 @@
         "^_.+$": {}
       },
       "title": "Snmp Settings"
+    },
+    "svi_profiles": {
+      "type": "array",
+      "description": "Optional profiles to apply on SVI interfaces\nEach profile can support all or some of the following keys according to your own needs.\nKeys are the same used under SVI.\nSvi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string",
+            "description": "Profile name",
+            "title": "Profile"
+          },
+          "parent_profile": {
+            "type": "string",
+            "description": "SVI profile name",
+            "title": "Parent Profile"
+          },
+          "name": {
+            "type": "string",
+            "description": "VLAN name",
+            "title": "Name"
+          },
+          "mtu": {
+            "type": "integer",
+            "title": "MTU"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "ip_virtual_router_addresses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask or IPv4_address"
+            },
+            "title": "IP Virtual Router Addresses"
+          },
+          "ip_address_virtual": {
+            "type": "string",
+            "description": "IPv4_address/Mask",
+            "title": "IP Address Virtual"
+          },
+          "ip_address_virtual_secondaries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask"
+            },
+            "title": "IP Address Virtual Secondaries"
+          },
+          "igmp_snooping_enabled": {
+            "type": "boolean",
+            "default": true,
+            "title": "IGMP Snooping Enabled"
+          },
+          "ip_helpers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ip_helper": {
+                  "type": "string",
+                  "description": "IPv4 DHCP server IP",
+                  "title": "IP Helper"
+                },
+                "source_interface": {
+                  "type": "string",
+                  "description": "Interface name",
+                  "title": "Source Interface"
+                },
+                "source_vrf": {
+                  "type": "string",
+                  "description": "VRF to originate DHCP relay packets to DHCP server",
+                  "title": "Source VRF"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "IP Helpers"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "title": "IP Address"
+                },
+                "ipv6_address": {
+                  "type": "string",
+                  "title": "IPv6 Address"
+                },
+                "ip_address_virtual_secondaries": {
+                  "type": "array",
+                  "description": "Should take config from svis[svi].nodes[node]",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "IP Address Virtual Secondaries"
+                },
+                "ip_virtual_router_addresses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "IP Virtual Router Addresses"
+                },
+                "ipv6_virtual_router_addresses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "IPv6 Virtual Router Addresses"
+                },
+                "ip_helpers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip_helper": {
+                        "type": "string",
+                        "description": "IPv4 DHCP server IP",
+                        "title": "IP Helper"
+                      },
+                      "source_interface": {
+                        "type": "string",
+                        "description": "Interface name",
+                        "title": "Source Interface"
+                      },
+                      "source_vrf": {
+                        "type": "string",
+                        "description": "VRF to originate DHCP relay packets to DHCP server",
+                        "title": "Source VRF"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "IP Helpers"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "title": "Nodes"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "title": "Svi Profiles"
     },
     "system_mac_address": {
       "type": "string",
