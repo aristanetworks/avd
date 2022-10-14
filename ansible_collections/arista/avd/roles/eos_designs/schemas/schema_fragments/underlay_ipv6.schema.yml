@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_ipv6:
+    display_name: Enable IPv6 Address Family on underlay
+    description: |
+      This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
+      Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric Topology"
+    type: bool
+    default: false

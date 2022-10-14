@@ -1,5 +1,170 @@
 {
   "properties": {
+    "bfd_multihop": {
+      "title": "BFD Multihop tuning",
+      "properties": {
+        "interval": {
+          "default": 300,
+          "type": "integer",
+          "title": "Interval"
+        },
+        "min_rx": {
+          "default": 300,
+          "type": "integer",
+          "title": "Min RX"
+        },
+        "multiplier": {
+          "default": 3,
+          "type": "integer",
+          "title": "Multiplier"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "bgp_as": {
+      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == IBGP",
+      "title": "BGP AS",
+      "type": "string"
+    },
+    "bgp_ecmp": {
+      "default": 4,
+      "description": "Maximum ECMP for BGP multi-path",
+      "title": "BGP ECMP",
+      "type": "integer"
+    },
+    "bgp_maximum_paths": {
+      "default": 4,
+      "description": "Maximum Paths for BGP multi-path",
+      "title": "BGP Maximum Paths",
+      "type": "integer"
+    },
+    "bgp_peer_groups": {
+      "description": "Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.\nNote that the name of the peer groups use '-' instead of '_' in EOS configuration.\n",
+      "title": "BGP peer group names and encrypted password",
+      "properties": {
+        "EVPN_OVERLAY_PEERS": {
+          "properties": {
+            "name": {
+              "default": "EVPN-OVERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Evpn Overlay Peers"
+        },
+        "IPv4_UNDERLAY_PEERS": {
+          "properties": {
+            "name": {
+              "default": "IPv4-UNDERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "IPv4 Underlay Peers"
+        },
+        "MLAG_IPv4_UNDERLAY_PEER": {
+          "properties": {
+            "name": {
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "MLAG IPv4 Underlay Peer"
+        },
+        "evpn_overlay_core": {
+          "properties": {
+            "name": {
+              "default": "EVPN-OVERLAY-CORE",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Evpn Overlay Core"
+        },
+        "evpn_overlay_peers": {
+          "properties": {
+            "name": {
+              "default": "EVPN-OVERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Evpn Overlay Peers"
+        },
+        "ipv4_underlay_peers": {
+          "properties": {
+            "name": {
+              "default": "IPv4-UNDERLAY-PEERS",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "IPv4 Underlay Peers"
+        },
+        "mlag_ipv4_underlay_peer": {
+          "properties": {
+            "name": {
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "type": "string",
+              "title": "Name"
+            },
+            "password": {
+              "title": "Encrypted Password",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "MLAG IPv4 Underlay Peer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "default_igmp_snooping_enabled": {
+      "default": true,
+      "description": "Disable IGMP snooping at fabric level.\nIf set, it overrides per vlan settings\n",
+      "title": "Default IGMP Snooping enabled",
+      "type": "boolean"
+    },
     "default_node_types": {
       "description": "Uses hostname matches against a regular expression to determine the node type.",
       "items": {
@@ -28,6 +193,348 @@
       },
       "type": "array",
       "title": "Default Node Types"
+    },
+    "enable_trunk_groups": {
+      "default": false,
+      "description": "Warning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature\n",
+      "title": "Enable Trunk Group support across eos_designs",
+      "type": "boolean"
+    },
+    "evpn_ebgp_gateway_multihop": {
+      "default": 15,
+      "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
+      "title": "EVPN Gateway EBGP Multihop",
+      "type": "integer"
+    },
+    "evpn_ebgp_multihop": {
+      "default": 3,
+      "description": "Default of 3, the recommended value for a 3 stage spine and leaf topology.\nSet to a higher value to allow for very large and complex topologies.\n",
+      "title": "EVPN EBGP Multihop",
+      "type": "integer"
+    },
+    "evpn_hostflap_detection": {
+      "title": "EVPN Host Flapping Settings",
+      "properties": {
+        "enabled": {
+          "default": true,
+          "description": "If set to false it will disable EVPN host-flap detection",
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "expiry_timeout": {
+          "description": "Time (in seconds) to purge a MAC duplication issue",
+          "type": "integer",
+          "title": "Expiry Timeout"
+        },
+        "threshold": {
+          "default": 5,
+          "description": "Minimum number of MAC moves that indicate a MAC duplication issue",
+          "type": "integer",
+          "title": "Threshold"
+        },
+        "window": {
+          "default": 180,
+          "description": "Time (in seconds) to detect a MAC duplication issue",
+          "type": "integer",
+          "title": "Window"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "evpn_import_pruning": {
+      "default": false,
+      "description": "Enable VPN import pruning (Min. EOS 4.24.2F)\nThe Route Target extended communities carried by incoming VPN paths will\nbe examined. If none of those Route Targets have been configured for import,\nthe path will be immediately discarded\n",
+      "title": "EVPN Import Pruning",
+      "type": "boolean"
+    },
+    "evpn_multicast": {
+      "default": false,
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "title": "Enable Fabric to support EVPN Multicast",
+      "type": "boolean"
+    },
+    "evpn_overlay_bgp_rtc": {
+      "default": false,
+      "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)\nRequires use eBGP as overlay protocol.\n",
+      "title": "EVPN Overlay BGP RTC",
+      "type": "boolean"
+    },
+    "evpn_prevent_readvertise_to_server": {
+      "default": false,
+      "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
+      "title": "EVPN Prevent Readvertise to Server",
+      "type": "boolean"
+    },
+    "evpn_short_esi_prefix": {
+      "default": "0000:0000:",
+      "description": "Configure prefix for \"short_esi\" values",
+      "title": "EVPN Short ESI Prefix",
+      "type": "string"
+    },
+    "evpn_vlan_aware_bundles": {
+      "default": false,
+      "description": "Enable vlan aware bundles for EVPN MAC-VRF",
+      "title": "EVPN VLAN-Aware Bundles",
+      "type": "boolean"
+    },
+    "inband_management_subnet": {
+      "description": "Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.\nParent l3leafs will have SVI with \"ip virtual-router\" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet\nSVI IP address will be assigned as follows:\nvirtual-router: <subnet> + 1\nl3leaf A      : <subnet> + 2 (same IP on all l3leaf A)\nl3leaf B      : <subnet> + 3 (same IP on all l3leaf B)\nl2leafs       : <subnet> + 3 + <l2leaf id>\nGW on l2leafs : <subnet> + 1\nAssign range larger than total l2leafs + 5",
+      "title": "IPv4 Network/Mask assigned to Inband Management",
+      "type": "string"
+    },
+    "inband_management_vlan": {
+      "default": 4092,
+      "description": "VLAN number assigned to Inband Management SVI on l2leafs in default VRF.\n",
+      "title": "Inband Management VLAN",
+      "type": "integer"
+    },
+    "isis_advertise_passive_only": {
+      "default": false,
+      "title": "ISIS Advertise Passive Only",
+      "type": "boolean"
+    },
+    "isis_area_id": {
+      "default": "49.0001",
+      "description": "Required when \"underlay_routing_protocol\" == ISIS variants",
+      "title": "Underlay ISIS Area",
+      "type": "string"
+    },
+    "isis_default_is_type": {
+      "default": "level-2",
+      "title": "ISIS Default IS Type",
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ]
+    },
+    "isis_ti_lfa": {
+      "title": "ISIS TI-LFA",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "local_convergence_delay": {
+          "default": 10000,
+          "description": "Local convergence delay in mpls",
+          "type": "integer",
+          "title": "Local Convergence Delay"
+        },
+        "protection": {
+          "type": "string",
+          "enum": [
+            "link",
+            "node"
+          ],
+          "title": "Protection"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "only_local_vlan_trunk_groups": {
+      "default": false,
+      "description": "A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf\nswitches when a new trunk group is added, this feature will only configure the vlan trunk groups\nmatched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\"\n",
+      "title": "Only Configure VLAN Trunk Groups used by local endpoints",
+      "type": "boolean"
+    },
+    "overlay_her_flood_list_per_vni": {
+      "default": false,
+      "description": "When using Head-End Replication, configure flood-lists per VNI. | Optional\nBy default HER will be configured with a common flood-list containing all VTEPs. This behavior can be changed\nto per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`. This will make `eos_designs` consider\nconfigured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.\n",
+      "title": "Overlay Her Flood List Per VNI",
+      "type": "boolean"
+    },
+    "overlay_her_flood_list_scope": {
+      "default": "fabric",
+      "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added\nto the flood-lists. This can be changed to all VTEPs in the DC (part of the inventory group referenced\nby \"dc_name\")\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
+      "title": "Overlay HER Flood List Scope",
+      "type": "string",
+      "enum": [
+        "fabric",
+        "dc"
+      ]
+    },
+    "overlay_loopback_description": {
+      "description": "Customizable overlay loopback description",
+      "type": "string",
+      "title": "Overlay Loopback Description"
+    },
+    "overlay_mlag_rfc5549": {
+      "default": false,
+      "description": "IPv6 Unnumbered for MLAG iBGP connections.\nRequires \"underlay_rfc5549: true\"\n",
+      "title": "Enable RFC 5549(iBGP)",
+      "type": "boolean"
+    },
+    "overlay_routing_protocol": {
+      "default": "ebgp",
+      "description": "- The following overlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n",
+      "type": "string",
+      "enum": [
+        "ebgp",
+        "ibgp",
+        "BGP"
+      ],
+      "title": "Overlay Routing Protocol"
+    },
+    "overlay_routing_protocol_address_family": {
+      "default": "ipv4",
+      "description": "Enable overlay EVPN peering with IPv6 addresses | Optional\nThis feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.\n",
+      "type": "string",
+      "enum": [
+        "ipv4",
+        "ipv6"
+      ],
+      "title": "Overlay Routing Protocol Address Family"
+    },
+    "p2p_uplinks_mtu": {
+      "default": 9000,
+      "title": "Point to Point Links MTU",
+      "type": "integer"
+    },
+    "p2p_uplinks_qos_profile": {
+      "description": "QOS Profile assigned on all infrastructure links",
+      "title": "P2P Uplinks QoS Profile",
+      "type": "string"
+    },
+    "shutdown_interfaces_towards_undeployed_peers": {
+      "default": false,
+      "description": "- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.\n\n```yaml\n# Use at the host level\nis_deployed: < true | false | default -> true >\n```\n\n- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.\n- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.\n- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.\n- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests. Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.",
+      "type": "boolean",
+      "title": "Shutdown Interfaces Towards Undeployed Peers"
+    },
+    "trunk_groups": {
+      "title": "Trunk Group Names",
+      "properties": {
+        "mlag": {
+          "description": "\"mlag\" is the Trunk Group used for MLAG VLAN (Typically VLAN 4094)\n",
+          "title": "MLAG",
+          "properties": {
+            "name": {
+              "default": "MLAG",
+              "title": "Trunk Group Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        "mlag_l3": {
+          "description": "\"mlag_l3\" is the Trunk Group used for MLAG L3 peering VLAN (Typically VLAN 4093)\n\"mlag_l3\" is also the Trunk Group used for VRF L3 peering VLANs\n",
+          "title": "MLAG L3",
+          "properties": {
+            "name": {
+              "default": "LEAF_PEER_L3",
+              "title": "Trunk Group Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        "uplink": {
+          "description": "\"uplink\" is the Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set\n",
+          "title": "UPLINK",
+          "properties": {
+            "name": {
+              "default": "UPLINK",
+              "title": "Trunk Group Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "underlay_filter_peer_as": {
+      "default": "0000:0000:",
+      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
+      "title": "Underlay Filter Peer AS",
+      "type": "string"
+    },
+    "underlay_ipv6": {
+      "default": false,
+      "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the \"Fabric Topology\"\n",
+      "title": "Enable IPv6 Address Family on underlay",
+      "type": "boolean"
+    },
+    "underlay_isis_instance_name": {
+      "default": "EVPN_UNDERLAY",
+      "title": "Underlay ISIS Instance Name",
+      "type": "string"
+    },
+    "underlay_multicast": {
+      "default": false,
+      "description": "Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.\nSpecifically PIM Sparse-Mode will be configured on all routed underlay interfaces.\nNo other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)\nThe configuration is intended to be used as multicast underlay for EVPN OISM overlay\n",
+      "type": "boolean",
+      "title": "Underlay Multicast"
+    },
+    "underlay_ospf_area": {
+      "default": "0.0.0.0",
+      "title": "Underlay OSPF Area",
+      "format": "ipv4",
+      "type": "string"
+    },
+    "underlay_ospf_bfd_enable": {
+      "default": false,
+      "title": "Enable Underlay OSPF BFD",
+      "type": "boolean"
+    },
+    "underlay_ospf_max_lsa": {
+      "default": 12000,
+      "title": "Underlay OSPF Max LSA",
+      "type": "integer"
+    },
+    "underlay_ospf_process_id": {
+      "default": 100,
+      "title": "Underlay OSPF Process ID",
+      "type": "integer"
+    },
+    "underlay_rfc5549": {
+      "default": false,
+      "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered\nRequires \"underlay_routing_protocol: ebgp\"\n",
+      "title": "Enable RFC5549 in Underlay",
+      "type": "boolean"
+    },
+    "underlay_routing_protocol": {
+      "default": "ebgp",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n\n*Only supported with core_interfaces data model.\n",
+      "type": "string",
+      "enum": [
+        "ebgp",
+        "ospf",
+        "isis",
+        "isis-sr",
+        "isis-ldp",
+        "isis-sr-ldp",
+        "ospf-ldp",
+        "BGP"
+      ],
+      "title": "Underlay Routing Protocol"
+    },
+    "uplink_ptp": {
+      "description": "Enable PTP on all infrastructure links",
+      "title": "Uplink PTP",
+      "properties": {
+        "enable": {
+          "default": false,
+          "type": "boolean",
+          "title": "Enable"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "vtep_vvtep_ip": {
+      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1\nThis is only needed for centralized routing designs\n",
+      "title": "Virtual VTEP IP",
+      "type": "string"
     }
   },
   "additionalProperties": true,
