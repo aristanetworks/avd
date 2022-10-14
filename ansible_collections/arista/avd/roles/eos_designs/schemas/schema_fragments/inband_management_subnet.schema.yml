@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  inband_management_subnet:
+    type: str
+    description: |
+      Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
+      Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
+      SVI IP address will be assigned as follows:
+      virtual-router: <subnet> + 1
+      l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+      l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+      l2leafs       : <subnet> + 3 + <l2leaf id>
+      GW on l2leafs : <subnet> + 1
+      Assign range larger than total l2leafs + 5
