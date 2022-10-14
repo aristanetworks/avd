@@ -779,6 +779,25 @@
       },
       "title": "Domain List"
     },
+    "dot1x": {
+      "type": "object",
+      "title": "Global 802.1x Authentication",
+      "properties": {
+        "system_auth_control": {
+          "type": "boolean",
+          "title": "System Auth Control"
+        },
+        "protocol_lldp_bypass": {
+          "type": "boolean",
+          "title": "Protocol LLDP Bypass"
+        },
+        "dynamic_authorization": {
+          "type": "boolean",
+          "title": "Dynamic Authorization"
+        }
+      },
+      "additionalProperties": false
+    },
     "enable_password": {
       "type": "object",
       "properties": {
