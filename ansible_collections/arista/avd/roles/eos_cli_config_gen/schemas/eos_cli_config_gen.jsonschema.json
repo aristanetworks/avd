@@ -4228,17 +4228,20 @@
                 "properties": {
                   "external": {
                     "type": "integer",
-                    "description": "Integer 1-255",
+                    "minimum": 1,
+                    "maximum": 255,
                     "title": "External"
                   },
                   "inter_area": {
                     "type": "integer",
-                    "description": "Integer 1-255",
+                    "minimum": 1,
+                    "maximum": 255,
                     "title": "Inter Area"
                   },
                   "intra_area": {
                     "type": "integer",
-                    "description": "Integer 1-255",
+                    "minimum": 1,
+                    "maximum": 255,
                     "title": "Intra Area"
                   }
                 },
@@ -4305,7 +4308,9 @@
                     "properties": {
                       "rx_min_interval": {
                         "type": "integer",
-                        "description": "0-600000 - Min interval in msecs between accepting the same LSA",
+                        "description": "Min interval in msecs between accepting the same LSA",
+                        "minimum": 0,
+                        "maximum": 600000,
                         "title": "Rx Min Interval"
                       },
                       "tx_delay": {
@@ -4313,17 +4318,23 @@
                         "properties": {
                           "initial": {
                             "type": "integer",
-                            "description": "0-600000 - Delay to generate first occurrence of LSA in msecs",
+                            "description": "Delay to generate first occurrence of LSA in msecs",
+                            "minimum": 0,
+                            "maximum": 600000,
                             "title": "Initial"
                           },
                           "min": {
                             "type": "integer",
-                            "description": "1-600000 Min delay between originating the same LSA in msecs",
+                            "description": "Min delay between originating the same LSA in msecs",
+                            "minimum": 1,
+                            "maximum": 600000,
                             "title": "Min"
                           },
                           "max": {
                             "type": "integer",
                             "description": "1-600000 Maximum delay between originating the same LSA in msec",
+                            "minimum": 1,
+                            "maximum": 600000,
                             "title": "Max"
                           }
                         },
@@ -4339,17 +4350,23 @@
                     "properties": {
                       "initial": {
                         "type": "integer",
-                        "description": "0-600000 - Initial SPF schedule delay in msecs",
+                        "description": "Initial SPF schedule delay in msecs",
+                        "minimum": 0,
+                        "maximum": 600000,
                         "title": "Initial"
                       },
                       "min": {
                         "type": "integer",
-                        "description": "0-65535000  Min Hold time between two SPFs in msecs",
+                        "description": "Min Hold time between two SPFs in msecs",
+                        "minimum": 0,
+                        "maximum": 65535000,
                         "title": "Min"
                       },
                       "max": {
                         "type": "integer",
-                        "description": "0-65535000  Max wait time between two SPFs in msecs",
+                        "description": "Max wait time between two SPFs in msecs",
+                        "minimum": 0,
+                        "maximum": 65535000,
                         "title": "Max"
                       }
                     },
@@ -4493,7 +4510,9 @@
                       "properties": {
                         "metric": {
                           "type": "integer",
-                          "description": "Integer 1-65535 - Value of the route metric",
+                          "description": "Value of the route metric",
+                          "minimum": 1,
+                          "maximum": 65535,
                           "title": "Metric"
                         },
                         "metric_type": {
@@ -4516,7 +4535,8 @@
               },
               "maximum_paths": {
                 "type": "integer",
-                "description": "Integer 1-32",
+                "minimum": 1,
+                "maximum": 32,
                 "title": "Maximum Paths"
               },
               "max_metric": {
@@ -4531,7 +4551,8 @@
                         "properties": {
                           "override_metric": {
                             "type": "integer",
-                            "description": "Integer 1-16777215",
+                            "minimum": 1,
+                            "maximum": 16777215,
                             "title": "Override Metric"
                           }
                         },
@@ -4552,7 +4573,8 @@
                         "properties": {
                           "override_metric": {
                             "type": "integer",
-                            "description": "Integer 1-16777215",
+                            "minimum": 1,
+                            "maximum": 16777215,
                             "title": "Override Metric"
                           }
                         },

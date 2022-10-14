@@ -3175,17 +3175,20 @@ keys:
                   type: int
                   convert_types:
                   - str
-                  description: Integer 1-255
+                  min: 1
+                  max: 255
                 inter_area:
                   type: int
                   convert_types:
                   - str
-                  description: Integer 1-255
+                  min: 1
+                  max: 255
                 intra_area:
                   type: int
                   convert_types:
                   - str
-                  description: Integer 1-255
+                  min: 1
+                  max: 255
             log_adjacency_changes_detail:
               type: bool
             network_prefixes:
@@ -3228,8 +3231,10 @@ keys:
                       type: int
                       convert_types:
                       - str
-                      description: 0-600000 - Min interval in msecs between accepting
-                        the same LSA
+                      description: Min interval in msecs between accepting the same
+                        LSA
+                      min: 0
+                      max: 600000
                     tx_delay:
                       type: dict
                       keys:
@@ -3237,20 +3242,26 @@ keys:
                           type: int
                           convert_types:
                           - str
-                          description: 0-600000 - Delay to generate first occurrence
-                            of LSA in msecs
+                          description: Delay to generate first occurrence of LSA in
+                            msecs
+                          min: 0
+                          max: 600000
                         min:
                           type: int
                           convert_types:
                           - str
-                          description: 1-600000 Min delay between originating the
-                            same LSA in msecs
+                          description: Min delay between originating the same LSA
+                            in msecs
+                          min: 1
+                          max: 600000
                         max:
                           type: int
                           convert_types:
                           - str
                           description: 1-600000 Maximum delay between originating
                             the same LSA in msec
+                          min: 1
+                          max: 600000
                 spf_delay:
                   type: dict
                   keys:
@@ -3258,17 +3269,23 @@ keys:
                       type: int
                       convert_types:
                       - str
-                      description: 0-600000 - Initial SPF schedule delay in msecs
+                      description: Initial SPF schedule delay in msecs
+                      min: 0
+                      max: 600000
                     min:
                       type: int
                       convert_types:
                       - str
-                      description: 0-65535000  Min Hold time between two SPFs in msecs
+                      description: Min Hold time between two SPFs in msecs
+                      min: 0
+                      max: 65535000
                     max:
                       type: int
                       convert_types:
                       - str
-                      description: 0-65535000  Max wait time between two SPFs in msecs
+                      description: Max wait time between two SPFs in msecs
+                      min: 0
+                      max: 65535000
             default_information_originate:
               type: dict
               keys:
@@ -3353,7 +3370,9 @@ keys:
                         type: int
                         convert_types:
                         - str
-                        description: Integer 1-65535 - Value of the route metric
+                        description: Value of the route metric
+                        min: 1
+                        max: 65535
                       metric_type:
                         type: int
                         convert_types:
@@ -3366,7 +3385,8 @@ keys:
               type: int
               convert_types:
               - str
-              description: Integer 1-32
+              min: 1
+              max: 32
             max_metric:
               type: dict
               description: Not expected to produce config. Just here to test proper
@@ -3382,7 +3402,8 @@ keys:
                           type: int
                           convert_types:
                           - str
-                          description: Integer 1-16777215
+                          min: 1
+                          max: 16777215
                     include_stub:
                       type: bool
                     on_startup:
@@ -3401,7 +3422,8 @@ keys:
                           type: int
                           convert_types:
                           - str
-                          description: Integer 1-16777215
+                          min: 1
+                          max: 16777215
             mpls_ldp_sync_default:
               type: bool
   router_pim_sparse_mode:
