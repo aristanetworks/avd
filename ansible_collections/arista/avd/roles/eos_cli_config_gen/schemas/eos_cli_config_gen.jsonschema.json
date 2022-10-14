@@ -2815,6 +2815,140 @@
       "additionalProperties": false,
       "title": "Monitor Connectivity"
     },
+    "monitor_sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Session Name",
+            "title": "Name"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Interface name, range or comma separated list",
+                  "title": "Name"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "rx",
+                    "tx",
+                    "both"
+                  ],
+                  "title": "Direction"
+                },
+                "access_group": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "ip",
+                        "ipv6",
+                        "mac"
+                      ],
+                      "title": "Type"
+                    },
+                    "name": {
+                      "description": "ACL Name",
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "priority": {
+                      "type": "integer",
+                      "title": "Priority"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Access Group"
+                }
+              },
+              "additionalProperties": false
+            },
+            "title": "Sources"
+          },
+          "destinations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "'cpu' or interface name, range or comma separated list"
+            },
+            "title": "Destinations"
+          },
+          "encapsulation_gre_metadata_tx": {
+            "type": "boolean",
+            "title": "Encapsulation GRE metadata TX"
+          },
+          "header_remove_size": {
+            "type": "integer",
+            "description": "Number of bytes to remove from header",
+            "title": "Header Remove Size"
+          },
+          "access_group": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ip",
+                  "ipv6",
+                  "mac"
+                ],
+                "title": "Type"
+              },
+              "name": {
+                "title": "ACL Name",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Access Group"
+          },
+          "rate_limit_per_ingress_chip": {
+            "type": "string",
+            "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+            "title": "Rate Limit Per Ingress Chip"
+          },
+          "rate_limit_per_egress_chip": {
+            "type": "string",
+            "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+            "title": "Rate Limit Per Egress Chip"
+          },
+          "sample": {
+            "type": "integer",
+            "title": "Sample"
+          },
+          "truncate": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "size": {
+                "type": "integer",
+                "description": "Size in bytes",
+                "title": "Size"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Truncate"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Monitor Sessions"
+    },
     "mpls": {
       "type": "object",
       "title": "MPLS",
