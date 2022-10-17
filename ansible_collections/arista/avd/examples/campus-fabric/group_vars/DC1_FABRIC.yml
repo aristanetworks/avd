@@ -26,7 +26,7 @@ ansible_httpapi_validate_certs: false
 # Spine Switches (L2 Only)
 l3spine:
   defaults:
-    platform: cEOS-LAB
+    platform: cEOSLab
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     loopback_ipv4_pool: 1.1.1.0/24
@@ -47,10 +47,12 @@ l3spine:
 # IDF - Leaf Switches
 leaf:
   defaults:
-    platform: cEOS-LAB
+    platform: cEOSLab
     mlag_peer_ipv4_pool: 192.168.0.0/24
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
+    inband_management_subnet: 10.0.0.0/24
+    inband_management_vlan: 10
   node_groups:
     IDF1:
       mlag: true

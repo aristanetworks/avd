@@ -50,12 +50,14 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.108/24 | 172.100.100.1 |
+| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.0.0.11/24 | 10.0.0.1 |
 
 #### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management0 | oob_management | oob | MGMT | -  | - |
+| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -66,6 +68,12 @@ interface Management0
    no shutdown
    vrf MGMT
    ip address 172.100.100.108/24
+!
+interface Vlan10
+   description L2LEAF_INBAND_MGMT
+   no shutdown
+   mtu 1500
+   ip address 10.0.0.11/24
 ```
 
 ## Name Servers
@@ -224,6 +232,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 10 | L2LEAF_INBAND_MGMT | - |
 | 310 | IDF3-Data | - |
 | 320 | IDF3-Voice | - |
 | 330 | IDF3-Guest | - |
@@ -231,6 +240,9 @@ vlan internal order ascending range 1006 1199
 ## VLANs Device Configuration
 
 ```eos
+!
+vlan 10
+   name L2LEAF_INBAND_MGMT
 !
 vlan 310
    name IDF3-Data
@@ -348,8 +360,8 @@ vlan 330
 | Ethernet94 |   | trunk phone | - | 310 | - | - |
 | Ethernet95 |   | trunk phone | - | 310 | - | - |
 | Ethernet96 |   | trunk phone | - | 310 | - | - |
-| Ethernet97/1 | LEAF3A_Ethernet97/3 | *trunk | *310,320,330 | *- | *- | 971 |
-| Ethernet97/2 | LEAF3B_Ethernet97/3 | *trunk | *310,320,330 | *- | *- | 971 |
+| Ethernet97/1 | LEAF3A_Ethernet97/3 | *trunk | *10,310,320,330 | *- | *- | 971 |
+| Ethernet97/2 | LEAF3B_Ethernet97/3 | *trunk | *10,310,320,330 | *- | *- | 971 |
 
 *Inherited from Port-Channel Interface
 
@@ -2296,7 +2308,7 @@ interface Ethernet97/2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel971 | IDF3_AGG_Po973 | switched | trunk | 310,320,330 | - | - | - | - | - | - |
+| Port-Channel971 | IDF3_AGG_Po973 | switched | trunk | 10,310,320,330 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -2306,7 +2318,7 @@ interface Port-Channel971
    description IDF3_AGG_Po973
    no shutdown
    switchport
-   switchport trunk allowed vlan 310,320,330
+   switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
 ```
 
@@ -2352,12 +2364,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 172.100.100.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 10.0.0.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+ip route 0.0.0.0/0 10.0.0.1
 ```
 
 # Multicast

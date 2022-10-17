@@ -17,22 +17,30 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| DC1_FABRIC | leaf | LEAF1A | 172.100.100.103/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF1B | 172.100.100.104/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF2A | 172.100.100.105/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF3A | 172.100.100.106/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF3B | 172.100.100.107/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF3C | 172.100.100.108/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF3D | 172.100.100.109/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | leaf | LEAF3E | 172.100.100.110/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | l3spine | SPINE1 | 172.100.100.101/24 | cEOS-LAB | Provisioned |
-| DC1_FABRIC | l3spine | SPINE2 | 172.100.100.102/24 | cEOS-LAB | Provisioned |
+| DC1_FABRIC | leaf | LEAF1A | 172.100.100.103/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF1B | 172.100.100.104/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF2A | 172.100.100.105/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF3A | 172.100.100.106/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF3B | 172.100.100.107/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF3C | 172.100.100.108/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF3D | 172.100.100.109/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | leaf | LEAF3E | 172.100.100.110/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | l3spine | SPINE1 | 172.100.100.101/24 | cEOSLab | Provisioned |
+| DC1_FABRIC | l3spine | SPINE2 | 172.100.100.102/24 | cEOSLab | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
 ## Fabric Switches with inband Management IP
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
+| DC1_FABRIC | leaf | LEAF1A | 10.0.0.6/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF1B | 10.0.0.7/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF2A | 10.0.0.8/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3A | 10.0.0.9/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3B | 10.0.0.10/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3C | 10.0.0.11/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3D | 10.0.0.12/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3E | 10.0.0.13/24 | Vlan10 |
 
 # Fabric Topology
 

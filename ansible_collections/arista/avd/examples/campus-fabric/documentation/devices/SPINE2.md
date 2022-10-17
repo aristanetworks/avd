@@ -256,6 +256,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 10 | L2LEAF_INBAND_MGMT | - |
 | 110 | IDF1-Data | - |
 | 120 | IDF1-Voice | - |
 | 130 | IDF1-Guest | - |
@@ -271,6 +272,9 @@ vlan internal order ascending range 1006 1199
 ## VLANs Device Configuration
 
 ```eos
+!
+vlan 10
+   name L2LEAF_INBAND_MGMT
 !
 vlan 110
    name IDF1-Data
@@ -318,10 +322,10 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | LEAF1B_Ethernet51 | *trunk | *110,120,130 | *- | *- | 1 |
-| Ethernet49/1 | LEAF2A_Ethernet1/3 | *trunk | *210,220,230 | *- | *- | 491 |
-| Ethernet50/1 | LEAF3A_Ethernet97/2 | *trunk | *310,320,330 | *- | *- | 501 |
-| Ethernet51/1 | LEAF3B_Ethernet97/2 | *trunk | *310,320,330 | *- | *- | 501 |
+| Ethernet1 | LEAF1B_Ethernet51 | *trunk | *10,110,120,130 | *- | *- | 1 |
+| Ethernet49/1 | LEAF2A_Ethernet1/3 | *trunk | *10,210,220,230 | *- | *- | 491 |
+| Ethernet50/1 | LEAF3A_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
+| Ethernet51/1 | LEAF3B_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
 | Ethernet55/1 | MLAG_PEER_SPINE1_Ethernet55/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
 | Ethernet56/1 | MLAG_PEER_SPINE1_Ethernet56/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
 
@@ -370,9 +374,9 @@ interface Ethernet56/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | IDF1_Po51 | switched | trunk | 110,120,130 | - | - | - | - | 1 | - |
-| Port-Channel491 | LEAF2A_Po11 | switched | trunk | 210,220,230 | - | - | - | - | 491 | - |
-| Port-Channel501 | IDF3_AGG_Po971 | switched | trunk | 310,320,330 | - | - | - | - | 501 | - |
+| Port-Channel1 | IDF1_Po51 | switched | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
+| Port-Channel491 | LEAF2A_Po11 | switched | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
+| Port-Channel501 | IDF3_AGG_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
 | Port-Channel551 | MLAG_PEER_SPINE1_Po551 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -383,7 +387,7 @@ interface Port-Channel1
    description IDF1_Po51
    no shutdown
    switchport
-   switchport trunk allowed vlan 110,120,130
+   switchport trunk allowed vlan 10,110,120,130
    switchport mode trunk
    mlag 1
 !
@@ -391,7 +395,7 @@ interface Port-Channel491
    description LEAF2A_Po11
    no shutdown
    switchport
-   switchport trunk allowed vlan 210,220,230
+   switchport trunk allowed vlan 10,210,220,230
    switchport mode trunk
    mlag 491
 !
@@ -399,7 +403,7 @@ interface Port-Channel501
    description IDF3_AGG_Po971
    no shutdown
    switchport
-   switchport trunk allowed vlan 310,320,330
+   switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
    mlag 501
 !
@@ -445,6 +449,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan10 | L2LEAF_INBAND_MGMT | default | 1500 | False |
 | Vlan110 | IDF1-Data | default | - | False |
 | Vlan120 | IDF1-Voice | default | - | False |
 | Vlan130 | IDF1-Guest | default | - | False |
@@ -461,6 +466,7 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan10 |  default  |  10.0.0.3/24  |  -  |  10.0.0.1  |  -  |  -  |  -  |
 | Vlan110 |  default  |  10.1.10.3/23  |  -  |  10.1.10.1  |  -  |  -  |  -  |
 | Vlan120 |  default  |  10.1.20.3/23  |  -  |  10.1.20.1  |  -  |  -  |  -  |
 | Vlan130 |  default  |  10.1.30.3/23  |  -  |  10.1.30.1  |  -  |  -  |  -  |
@@ -476,6 +482,14 @@ interface Loopback0
 ### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan10
+   description L2LEAF_INBAND_MGMT
+   no shutdown
+   mtu 1500
+   ip address 10.0.0.3/24
+   ip attached-host route export 19
+   ip virtual-router address 10.0.0.1
 !
 interface Vlan110
    description IDF1-Data
