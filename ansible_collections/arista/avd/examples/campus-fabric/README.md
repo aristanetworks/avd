@@ -154,15 +154,15 @@ Details on this feature can be found [here](https://avd.sh/en/stable/roles/eos_d
 
 In Campus Networks it is uncommon to have a dedicated out-of-band management network in each IDF. You can easily disable configuring Management0 interface and vrf MGMT, by adding these variables to the DC1_LEAFS.yml group_vars.
 
-???+ note
-
-    If you switch to using in-band management only, update other variables that reference vrf MGMT to use the vrf default.
-
 ``` yaml
 mgmt_gateway: null
 mgmt_interface: null
 mgmt_interface_vrf: default
 ```
+
+???+ note
+
+    If you switch to using in-band management only, update other variables that reference vrf MGMT to use the vrf default.
 
 ## Build Fabric Topology
 
