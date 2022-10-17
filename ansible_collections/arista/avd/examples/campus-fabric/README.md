@@ -126,6 +126,44 @@ examples/campus-fabric/inventory.yml
 --8<--
 ```
 
+## Management Network
+
+In this example, a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI Vlan10 (vrf: default) is configured. In-band management is easily configured with two variables under the leaf node in `DC1_FABRIC` yml.  It auto-generates an SVI and default route on each leaf node.  On the Spine nodes it will build a matching SVI for Vlan 10 and also creates a Virtual-IP for the subnet defined.
+
+``` yaml
+leaf:
+  defaults:
+    inband_management_subnet: 10.0.0.0/24
+    inband_management_vlan: 10
+```
+
+Details on this feature can be found [here](https://avd.sh/en/stable/roles/eos_designs/doc/fabric-topology-v4.0.html?h=inband#inband-management-vlan).
+
+| Node   | Management0     | Vlan10    |
+| ------ | --------------- | --------- |
+| SPINE1 | 172.100.100.101 | 10.0.0.2  |
+| SPINE2 | 172.100.100.102 | 10.0.0.3  |
+| LEAF1A | 172.100.100.103 | 10.0.0.6  |
+| LEAF1B | 172.100.100.104 | 10.0.0.7  |
+| LEAF2A | 172.100.100.105 | 10.0.0.8  |
+| LEAF3A | 172.100.100.106 | 10.0.0.9  |
+| LEAF3B | 172.100.100.107 | 10.0.0.10 |
+| LEAF3C | 172.100.100.108 | 10.0.0.11 |
+| LEAF3D | 172.100.100.109 | 10.0.0.12 |
+| LEAF3E | 172.100.100.110 | 10.0.0.13 |
+
+In Campus Networks it is uncommon to have a dedicated out-of-band management network in each IDF. You can easily disable configuring Management0 interface and vrf MGMT, by adding these variables to the DC1_LEAFS.yml group_vars.
+
+???+ note
+
+    If you switch to using in-band management only, update other variables that reference vrf MGMT to use the vrf default.
+
+``` yaml
+mgmt_gateway: null
+mgmt_interface: null
+mgmt_interface_vrf: default
+```
+
 ## Build Fabric Topology
 
 AVD Fabric Input Variables
