@@ -29,6 +29,9 @@ fabric_name: < Fabric_Name >
 underlay_routing_protocol: < isis-sr | isis-ldp | isis-sr-ldp | ospf-ldp | default -> isis-sr >
 overlay_routing_protocol: < ibgp | default -> ibgp >
 
+# Fabric EVPN encapsulation, should be set to mpls for evpn-mpls scenario
+fabric_evpn_encapsulation: < vxlan | mpls | default -> vxlan >
+
 # Underlay ISIS parameters
 isis_default_is_type: < level-1 | level-2 | level-1-2 | default -> level-1-2 >
 isis_default_circuit_type: < level-1 | level-2 | level-1-2 | default -> level-1-2 >
