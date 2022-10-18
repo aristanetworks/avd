@@ -12,6 +12,13 @@ router_bgp:
 {%     include 'overlay/ibgp/address-family-evpn.j2' %}
 
 {% endif %}
+
+{% if switch.overlay.dpath %}
+  bgp:
+    bestpath:
+      d_path: true
+{% endif %}
+
 {% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
 {%     include 'overlay/ibgp/address-family-rtc.j2' %}
 

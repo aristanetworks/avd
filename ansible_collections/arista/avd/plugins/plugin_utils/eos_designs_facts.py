@@ -1048,6 +1048,11 @@ class EosDesignsFacts(AvdFacts):
                     "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
                     "structured_config": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
                 },
+                # "ipvpn_gateway_overlay_peers": {
+                #     "name": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_overlay_peers.name", default="MPLS-VPN-GATEWAY-OVERLAY-PEERS"),
+                #     "password": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_overlay_peers.password"),
+                #     "structured_config": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_overlay_peers.structured_config"),
+                # },
             }
         return None
 
@@ -1682,7 +1687,11 @@ class EosDesignsFacts(AvdFacts):
         # Set overlay.ler to enable MPLS edge PE features
         ler = (
             self.underlay["mpls"]
-            and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
+            and (
+                self.mpls_overlay_role in ["client", "server"]
+                or self.evpn_role in ["client", "server"]
+                or get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False)
+            )
             and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
         )
         # Set overlay.vtep to enable VXLAN edge PE features
@@ -1703,9 +1712,34 @@ class EosDesignsFacts(AvdFacts):
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
         evpn_vxlan = evpn and self.evpn_encapsulation == "vxlan"
         evpn_mpls = evpn and self.evpn_encapsulation == "mpls"
+        # Set ipvpn_gateway to trigger ipvpn interworking configuration.
+        ipvpn_gateway = evpn and get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False)
         # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
-        vpn_ipv4 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families
-        vpn_ipv6 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families
+        vpn_ipv4 = self.bgp and (
+            (self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families)
+            or ("vpn-ipv4" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and ipvpn_gateway)
+        )
+        vpn_ipv6 = self.bgp and (
+            (self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families)
+            or ("vpn-ipv6" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and ipvpn_gateway)
+        )
+        # Set dpath and domain IDs based on ipvpn_gateway parameters
+        dpath = ipvpn_gateway and get(self._switch_data_combined, "ipvpn_gateway.enable_d_path", default=True)
+        if dpath:
+            evpn_domain_id = get(self._switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="65000:1")
+            ipvpn_domain_id = get(self._switch_data_combined, "ipvpn_gateway.ipvpn_domain_id", default="65000:2")
+        else:
+            evpn_domain_id = None
+            ipvpn_domain_id = None
+        # Set miscellaneous ipvpn_gateway parameters
+        if ipvpn_gateway:
+            ipvpn_gateway_max_routes = get(self._switch_data_combined, "ipvpn_gateway.maximum_routes", default=0)
+            ipvpn_gateway_local_as = get(self._switch_data_combined, "ipvpn_gateway.local_as", default=None)
+            ipvpn_gateway_remote_peers = get(self._switch_data_combined, "ipvpn_gateway.remote_peers", default=[])
+        else:
+            ipvpn_gateway_max_routes = None
+            ipvpn_gateway_local_as = None
+            ipvpn_gateway_remote_peers = None
         return {
             "peering_address": peering_address,
             "ler": ler,
@@ -1715,4 +1749,11 @@ class EosDesignsFacts(AvdFacts):
             "evpn_mpls": evpn_mpls,
             "vpn_ipv4": vpn_ipv4,
             "vpn_ipv6": vpn_ipv6,
+            "ipvpn_gateway": ipvpn_gateway,
+            "dpath": dpath,
+            "evpn_domain_id": evpn_domain_id,
+            "ipvpn_domain_id": ipvpn_domain_id,
+            "ipvpn_gateway_max_routes": ipvpn_gateway_max_routes,
+            "ipvpn_gateway_local_as": ipvpn_gateway_local_as,
+            "ipvpn_gateway_remote_peers": ipvpn_gateway_remote_peers,
         }

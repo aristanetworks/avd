@@ -11,4 +11,7 @@
       {{ overlay_data.rr_peers_peer_group.name }}:
         activate: true
 {%     endif %}
+{%     if switch.overlay.dpath %}
+    domain_identifier: "{{ switch.overlay.ipvpn_domain_id }}"
+{%     endif %}
 {% endif %}

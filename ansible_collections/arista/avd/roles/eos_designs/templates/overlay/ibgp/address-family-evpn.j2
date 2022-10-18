@@ -32,3 +32,6 @@
     route:
       import_match_failure_action: discard
 {% endif %}
+{% if switch.overlay.dpath %}
+    domain_identifier: "{{ switch.overlay.evpn_domain_id }}"
+{% endif %}
