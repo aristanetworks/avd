@@ -966,6 +966,81 @@ keys:
         - link
         - node
     type: dict
+  node_type_keys:
+    convert_types:
+    - dict
+    items:
+      keys:
+        connected_endpoints:
+          type: bool
+        default_evpn_role:
+          type: str
+        default_underlay_routing_protocol:
+          type: str
+        interface_descriptions:
+          keys:
+            connected_endpoints_ethernet_interfaces:
+              type: str
+            connected_endpoints_port_channel_interfaces:
+              type: str
+            overlay_loopback_interface:
+              type: str
+            underlay_ethernet_interfaces:
+              type: str
+            underlay_ethernet_mlag_interfaces:
+              type: str
+            underlay_port_channel_interfaces:
+              type: str
+            underlay_port_channel_mlag_interfaces:
+              type: str
+            vtep_loopback_interface:
+              type: str
+          type: dict
+        ip_addressing:
+          keys:
+            mlag_ip_primary:
+              type: str
+            mlag_ip_secondary:
+              type: str
+            mlag_l3_ip_primary:
+              type: str
+            mlag_l3_ip_secondary:
+              type: str
+            p2p_uplinks_ip:
+              type: str
+            p2p_uplinks_peer_ip:
+              type: str
+            router_id:
+              type: str
+            vtep_ip:
+              type: str
+            vtep_ip_mlag:
+              type: str
+          type: dict
+        key:
+          type: str
+        mlag_support:
+          type: bool
+        mpls_lsr:
+          type: bool
+        network_services:
+          keys:
+            l2:
+              type: bool
+            l3:
+              type: bool
+          type: dict
+        type:
+          type: str
+        underlay_router:
+          type: bool
+        uplink_type:
+          type: str
+        vtep:
+          type: bool
+      type: dict
+    primary_key: key
+    type: list
   only_local_vlan_trunk_groups:
     default: false
     description: 'A vlan can have many trunk_groups assigned. To avoid unneeded configuration

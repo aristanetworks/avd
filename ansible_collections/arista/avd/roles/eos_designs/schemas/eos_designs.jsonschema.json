@@ -358,6 +358,153 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "node_type_keys": {
+      "items": {
+        "properties": {
+          "connected_endpoints": {
+            "type": "boolean",
+            "title": "Connected Endpoints"
+          },
+          "default_evpn_role": {
+            "type": "string",
+            "title": "Default Evpn Role"
+          },
+          "default_underlay_routing_protocol": {
+            "type": "string",
+            "title": "Default Underlay Routing Protocol"
+          },
+          "interface_descriptions": {
+            "properties": {
+              "connected_endpoints_ethernet_interfaces": {
+                "type": "string",
+                "title": "Connected Endpoints Ethernet Interfaces"
+              },
+              "connected_endpoints_port_channel_interfaces": {
+                "type": "string",
+                "title": "Connected Endpoints Port Channel Interfaces"
+              },
+              "overlay_loopback_interface": {
+                "type": "string",
+                "title": "Overlay Loopback Interface"
+              },
+              "underlay_ethernet_interfaces": {
+                "type": "string",
+                "title": "Underlay Ethernet Interfaces"
+              },
+              "underlay_ethernet_mlag_interfaces": {
+                "type": "string",
+                "title": "Underlay Ethernet Mlag Interfaces"
+              },
+              "underlay_port_channel_interfaces": {
+                "type": "string",
+                "title": "Underlay Port Channel Interfaces"
+              },
+              "underlay_port_channel_mlag_interfaces": {
+                "type": "string",
+                "title": "Underlay Port Channel Mlag Interfaces"
+              },
+              "vtep_loopback_interface": {
+                "type": "string",
+                "title": "Vtep Loopback Interface"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Interface Descriptions"
+          },
+          "ip_addressing": {
+            "properties": {
+              "mlag_ip_primary": {
+                "type": "string",
+                "title": "Mlag Ip Primary"
+              },
+              "mlag_ip_secondary": {
+                "type": "string",
+                "title": "Mlag Ip Secondary"
+              },
+              "mlag_l3_ip_primary": {
+                "type": "string",
+                "title": "Mlag L3 Ip Primary"
+              },
+              "mlag_l3_ip_secondary": {
+                "type": "string",
+                "title": "Mlag L3 Ip Secondary"
+              },
+              "p2p_uplinks_ip": {
+                "type": "string",
+                "title": "P2P Uplinks Ip"
+              },
+              "p2p_uplinks_peer_ip": {
+                "type": "string",
+                "title": "P2P Uplinks Peer Ip"
+              },
+              "router_id": {
+                "type": "string",
+                "title": "Router Id"
+              },
+              "vtep_ip": {
+                "type": "string",
+                "title": "Vtep Ip"
+              },
+              "vtep_ip_mlag": {
+                "type": "string",
+                "title": "Vtep Ip Mlag"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Ip Addressing"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "mlag_support": {
+            "type": "boolean",
+            "title": "Mlag Support"
+          },
+          "mpls_lsr": {
+            "type": "boolean",
+            "title": "Mpls Lsr"
+          },
+          "network_services": {
+            "properties": {
+              "l2": {
+                "type": "boolean",
+                "title": "L2"
+              },
+              "l3": {
+                "type": "boolean",
+                "title": "L3"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "Network Services"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "underlay_router": {
+            "type": "boolean",
+            "title": "Underlay Router"
+          },
+          "uplink_type": {
+            "type": "string",
+            "title": "Uplink Type"
+          },
+          "vtep": {
+            "type": "boolean",
+            "title": "Vtep"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "type": "array",
+      "title": "Node Type Keys"
+    },
     "only_local_vlan_trunk_groups": {
       "default": false,
       "description": "A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf\nswitches when a new trunk group is added, this feature will only configure the vlan trunk groups\nmatched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\"\n",
