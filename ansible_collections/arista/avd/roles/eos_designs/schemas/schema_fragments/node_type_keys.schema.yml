@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  node_type_keys:
+    type: list
+    convert_types:
+    - dict
+    primary_key: key
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+        type:
+          type: str
+        connected_endpoints:
+          type: bool
+        default_evpn_role:
+          type: str
+        default_underlay_routing_protocol:
+          type: str
+        mlag_support:
+          type: bool
+        network_services:
+          type: dict
+          keys:
+            l2:
+              type: bool
+            l3:
+              type: bool
+        underlay_router:
+          type: bool
+        uplink_type:
+          type: str
+        vtep:
+          type: bool
+        mpls_lsr:
+          type: bool
+        ip_addressing:
+          type: dict
+          keys:
+            router_id:
+              type: str
+            mlag_ip_primary:
+              type: str
+            mlag_ip_secondary:
+              type: str
+            mlag_l3_ip_primary:
+              type: str
+            mlag_l3_ip_secondary:
+              type: str
+            p2p_uplinks_ip:
+              type: str
+            p2p_uplinks_peer_ip:
+              type: str
+            vtep_ip_mlag:
+              type: str
+            vtep_ip:
+              type: str
+        interface_descriptions:
+          type: dict
+          keys:
+            underlay_ethernet_interfaces:
+              type: str
+            underlay_port_channel_interfaces:
+              type: str
+            underlay_ethernet_mlag_interfaces:
+              type: str
+            underlay_port_channel_mlag_interfaces:
+              type: str
+            connected_endpoints_ethernet_interfaces:
+              type: str
+            connected_endpoints_port_channel_interfaces:
+              type: str
+            overlay_loopback_interface:
+              type: str
+            vtep_loopback_interface:
+              type: str    
