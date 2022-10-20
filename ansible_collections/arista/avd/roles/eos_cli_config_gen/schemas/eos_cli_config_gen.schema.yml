@@ -1878,6 +1878,17 @@ keys:
         max: 86400
         convert_types:
         - str
+  management_cvx:
+    type: dict
+    display_name: Management CVX
+    keys:
+      shutdown:
+        type: bool
+      server_hosts:
+        type: list
+        items:
+          type: str
+          description: IP or hostname
   management_defaults:
     type: dict
     keys:
