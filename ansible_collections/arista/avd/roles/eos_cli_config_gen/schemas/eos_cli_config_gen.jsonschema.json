@@ -2437,6 +2437,7 @@
           "title": "Source Interface Name"
         },
         "vrfs": {
+          "title": "VRFs",
           "type": "array",
           "items": {
             "type": "object",
@@ -2487,8 +2488,7 @@
               "name"
             ],
             "additionalProperties": false
-          },
-          "title": "Vrfs"
+          }
         },
         "policy": {
           "type": "object",
