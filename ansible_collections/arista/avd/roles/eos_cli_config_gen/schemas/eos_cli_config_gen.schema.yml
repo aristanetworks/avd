@@ -649,7 +649,8 @@ keys:
           '
       cvconfig:
         type: bool
-        description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
+        description: 'Subscribe to dynamic device configuration from CloudVision
+          (TerminAttr default is false).
 
           '
       cvcompression:
