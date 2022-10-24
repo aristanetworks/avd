@@ -735,12 +735,12 @@
         },
         "cvconfig": {
           "type": "boolean",
-          "description": "Subscribe to dynamic device configuration from CloudVision\n(TerminAttr default is false).\n",
+          "description": "Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).\n",
           "title": "Cvconfig"
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0. There is no need to change the compression scheme.\n",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n",
           "title": "Cvcompression"
         },
         "ingestauth_key": {
