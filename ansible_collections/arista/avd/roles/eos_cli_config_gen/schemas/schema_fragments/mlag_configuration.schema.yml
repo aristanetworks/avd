@@ -38,12 +38,14 @@ keys:
         - str
       dual_primary_recovery_delay_mlag:
         type: int
+        description: Delay in seconds
         min: 0
         max: 86400
         convert_types:
         - str
       dual_primary_recovery_delay_non_mlag:
         type: int
+        description: Delay in seconds
         min: 0
         max: 86400
         convert_types:

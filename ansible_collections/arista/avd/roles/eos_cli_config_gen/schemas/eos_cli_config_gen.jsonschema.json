@@ -2795,12 +2795,14 @@
         },
         "dual_primary_recovery_delay_mlag": {
           "type": "integer",
+          "description": "Delay in seconds",
           "minimum": 0,
           "maximum": 86400,
           "title": "Dual Primary Recovery Delay Mlag"
         },
         "dual_primary_recovery_delay_non_mlag": {
           "type": "integer",
+          "description": "Delay in seconds",
           "minimum": 0,
           "maximum": 86400,
           "title": "Dual Primary Recovery Delay Non Mlag"
