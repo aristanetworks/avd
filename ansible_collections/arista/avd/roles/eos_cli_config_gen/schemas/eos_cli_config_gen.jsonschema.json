@@ -2750,6 +2750,7 @@
     },
     "mlag_configuration": {
       "type": "object",
+      "title": "Multi-Chassis Link Aggregation (MLAG) Configuration",
       "properties": {
         "domain_id": {
           "type": "string",
@@ -2757,6 +2758,7 @@
         },
         "heartbeat_interval": {
           "type": "integer",
+          "description": "Heartbeat interval in milliseconds",
           "title": "Heartbeat Interval"
         },
         "local_interface": {
@@ -2765,6 +2767,7 @@
         },
         "peer_address": {
           "type": "string",
+          "description": "IPv4 Address",
           "title": "Peer Address"
         },
         "peer_address_heartbeat": {
@@ -2772,6 +2775,7 @@
           "properties": {
             "peer_ip": {
               "type": "string",
+              "description": "IPv4 Address",
               "title": "Peer Ip"
             },
             "vrf": {
@@ -2784,18 +2788,21 @@
         },
         "dual_primary_detection_delay": {
           "type": "integer",
+          "description": "Delay in seconds",
+          "minimum": 0,
+          "maximum": 86400,
           "title": "Dual Primary Detection Delay"
         },
         "dual_primary_recovery_delay_mlag": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 1000,
+          "maximum": 86400,
           "title": "Dual Primary Recovery Delay Mlag"
         },
         "dual_primary_recovery_delay_non_mlag": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 1000,
+          "maximum": 86400,
           "title": "Dual Primary Recovery Delay Non Mlag"
         },
         "peer_link": {
@@ -2803,16 +2810,17 @@
           "type": "string"
         },
         "reload_delay_mlag": {
-          "type": "integer",
+          "type": "string",
+          "description": "Delay in seconds <0-86400> or infinity",
           "title": "Reload Delay Mlag"
         },
         "reload_delay_non_mlag": {
-          "type": "integer",
+          "type": "string",
+          "description": "Delay in seconds <0-86400> or infinity",
           "title": "Reload Delay Non Mlag"
         }
       },
-      "additionalProperties": false,
-      "title": "Mlag Configuration"
+      "additionalProperties": false
     },
     "monitor_connectivity": {
       "type": "object",
