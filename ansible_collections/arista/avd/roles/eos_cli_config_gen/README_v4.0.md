@@ -2017,6 +2017,8 @@ daemon_terminattr:
   # ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343")
   # This flag is enabled by default and does not have to be added to the daemon configuration
   sflowaddr: < IPV4_address:port >
+  # Subscribe to dynamic device configuration from CloudVision (default false)
+  cvconfig: < true | false >
 ```
 
 You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance. Streaming to multiple clusters both on-prem and cloud service is supported.

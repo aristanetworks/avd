@@ -439,6 +439,7 @@ daemon_terminattr:
   ipfixaddr: <str>
   sflow: <bool>
   sflowaddr: <str>
+  cvconfig: <bool>
   cvcompression: <str>
   ingestauth_key: <str>
   ingestgrpcurl:

@@ -647,6 +647,11 @@ keys:
           (TerminAttr default "127.0.0.1:6343").
 
           '
+      cvconfig:
+        type: bool
+        description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
+
+          '
       cvcompression:
         type: str
         description: 'The default compression scheme when streaming to CloudVision
