@@ -488,6 +488,58 @@
         "description": "Template relative path below playbook directory"
       }
     },
+    "cvx": {
+      "type": "object",
+      "title": "CVX",
+      "description": "CVX server features are not supported on physical switches. See `management_cvx` for client configurations.",
+      "properties": {
+        "shutdown": {
+          "type": "boolean",
+          "title": "Shutdown"
+        },
+        "services": {
+          "type": "object",
+          "properties": {
+            "mcs": {
+              "type": "object",
+              "title": "MCS",
+              "properties": {
+                "redis": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string",
+                      "description": "Hashed password using the password_type",
+                      "title": "Password"
+                    },
+                    "password_type": {
+                      "type": "string",
+                      "enum": [
+                        "0",
+                        "7",
+                        "8a"
+                      ],
+                      "default": "7",
+                      "title": "Password Type"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Redis"
+                },
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "title": "Services"
+        }
+      },
+      "additionalProperties": false
+    },
     "daemon_terminattr": {
       "type": "object",
       "title": "Daemon TerminAttr",
