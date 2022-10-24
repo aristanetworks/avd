@@ -345,6 +345,37 @@ custom_templates:
   - <str>
 ```
 
+## CVX
+
+### Description
+
+CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>cvx</samp>](## "cvx") | Dictionary |  |  |  | CVX |
+| [<samp>&nbsp;&nbsp;shutdown</samp>](## "cvx.shutdown") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;services</samp>](## "cvx.services") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mcs</samp>](## "cvx.services.mcs") | Dictionary |  |  |  | MCS |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redis</samp>](## "cvx.services.mcs.redis") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "cvx.services.mcs.redis.password") | String |  |  |  | Hashed password using the password_type |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "cvx.services.mcs.redis.password_type") | String |  | 7 | Valid Values:<br>- 0<br>- 7<br>- 8a |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.mcs.shutdown") | Boolean |  |  |  |  |
+
+### YAML
+
+```yaml
+cvx:
+  shutdown: <bool>
+  services:
+    mcs:
+      redis:
+        password: <str>
+        password_type: <str>
+      shutdown: <bool>
+```
+
 ## Daemon TerminAttr
 
 ### Description
@@ -1509,6 +1540,26 @@ management_console:
   idle_timeout: <int>
 ```
 
+## Management CVX
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>management_cvx</samp>](## "management_cvx") | Dictionary |  |  |  | Management CVX |
+| [<samp>&nbsp;&nbsp;shutdown</samp>](## "management_cvx.shutdown") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;server_hosts</samp>](## "management_cvx.server_hosts") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "management_cvx.server_hosts.[].&lt;str&gt;") | String |  |  |  | IP or hostname |
+
+### YAML
+
+```yaml
+management_cvx:
+  shutdown: <bool>
+  server_hosts:
+    - <str>
+```
+
 ## Management Defaults
 
 ### Variables
@@ -2125,6 +2176,114 @@ router_igmp:
   ssm_aware: <bool>
 ```
 
+## Router ISIS
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>router_isis</samp>](## "router_isis") | Dictionary |  |  |  | Router ISIS |
+| [<samp>&nbsp;&nbsp;instance</samp>](## "router_isis.instance") | String |  |  |  | ISIS Instance Name |
+| [<samp>&nbsp;&nbsp;net</samp>](## "router_isis.net") | String |  |  |  | CLNS Address like "49.0001.0001.0000.0001.00" |
+| [<samp>&nbsp;&nbsp;router_id</samp>](## "router_isis.router_id") | String |  |  |  | Router ID<br>IPv4 Address |
+| [<samp>&nbsp;&nbsp;is_type</samp>](## "router_isis.is_type") | String |  |  | Valid Values:<br>- level-1<br>- level-1-2<br>- level-2 | IS Type |
+| [<samp>&nbsp;&nbsp;log_adjacency_changes</samp>](## "router_isis.log_adjacency_changes") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;mpls_ldp_sync_default</samp>](## "router_isis.mpls_ldp_sync_default") | Boolean |  |  |  | MPLS LDP Sync Default |
+| [<samp>&nbsp;&nbsp;timers</samp>](## "router_isis.timers") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_convergence</samp>](## "router_isis.timers.local_convergence") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected_prefixes</samp>](## "router_isis.timers.local_convergence.protected_prefixes") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_isis.timers.local_convergence.delay") | Integer |  | 10000 |  | Delay in milliseconds. |
+| [<samp>&nbsp;&nbsp;advertise</samp>](## "router_isis.advertise") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_only</samp>](## "router_isis.advertise.passive_only") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;address_family</samp>](## "router_isis.address_family") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_isis.address_family.[].&lt;str&gt;") | String |  |  | Valid Values:<br>- ipv4<br>- ipv6<br>- ipv4 unicast<br>- ipv6 unicast | Address Family |
+| [<samp>&nbsp;&nbsp;isis_af_defaults</samp>](## "router_isis.isis_af_defaults") | List, items: String |  |  |  | ISIS AF Defaults |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_isis.isis_af_defaults.[].&lt;str&gt;") | String |  |  |  | EOS CLI rendered under the address families<br>Example "maximum-paths 64"<br> |
+| [<samp>&nbsp;&nbsp;redistribute_routes</samp>](## "router_isis.redistribute_routes") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- source_protocol</samp>](## "router_isis.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- bgp<br>- connected<br>- isis<br>- ospf<br>- ospfv3<br>- static |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_isis.redistribute_routes.[].route_map") | String |  |  |  | Route-map name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_isis.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_isis.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- external<br>- internal<br>- nssa-external | OSPF Route Type<br>ospf_route_type is required with source_protocols 'ospf' and 'ospfv3' |
+| [<samp>&nbsp;&nbsp;address_family_ipv4</samp>](## "router_isis.address_family_ipv4") | Dictionary |  |  |  | Address Family IPv4 |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_isis.address_family_ipv4.maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fast_reroute_ti_lfa</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa") | Dictionary |  |  |  | Fast Reroute TI LFA |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode") | String |  |  | Valid Values:<br>- link-protection<br>- node-protection |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- level-1<br>- level-2 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg") | Dictionary |  |  |  | SRLG<br>Shared Risk Link Group |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strict</samp>](## "router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_source_labeled_unicast</samp>](## "router_isis.address_family_ipv4.tunnel_source_labeled_unicast") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enabled") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf") | String |  |  |  | RCF<br>Route Control Function |
+| [<samp>&nbsp;&nbsp;address_family_ipv6</samp>](## "router_isis.address_family_ipv6") | Dictionary |  |  |  | Address Family IPv6 |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_isis.address_family_ipv6.maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fast_reroute_ti_lfa</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa") | Dictionary |  |  |  | Fast Reroute TI LFA |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode") | String |  |  | Valid Values:<br>- link-protection<br>- node-protection |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- level-1<br>- level-2 | Optional, default is to protect all levels |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg") | Dictionary |  |  |  | SRLG<br>Shared Risk Link Group |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strict</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;segment_routing_mpls</samp>](## "router_isis.segment_routing_mpls") | Dictionary |  |  |  | Segment Routing MPLS |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.segment_routing_mpls.enabled") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_isis.segment_routing_mpls.router_id") | String |  |  |  | Router ID |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_isis.segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].index") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;no_passive_interfaces</samp>](## "router_isis.no_passive_interfaces") | List |  |  |  | Unused key - to be removed from eos_designs. |
+
+### YAML
+
+```yaml
+router_isis:
+  instance: <str>
+  net: <str>
+  router_id: <str>
+  is_type: <str>
+  log_adjacency_changes: <bool>
+  mpls_ldp_sync_default: <bool>
+  timers:
+    local_convergence:
+      protected_prefixes: <bool>
+      delay: <int>
+  advertise:
+    passive_only: <bool>
+  address_family:
+    - <str>
+  isis_af_defaults:
+    - <str>
+  redistribute_routes:
+    - source_protocol: <str>
+      route_map: <str>
+      include_leaked: <bool>
+      ospf_route_type: <str>
+  address_family_ipv4:
+    maximum_paths: <int>
+    fast_reroute_ti_lfa:
+      mode: <str>
+      level: <str>
+      srlg:
+        enable: <bool>
+        strict: <bool>
+    tunnel_source_labeled_unicast:
+      enabled: <bool>
+      rcf: <str>
+  address_family_ipv6:
+    maximum_paths: <int>
+    fast_reroute_ti_lfa:
+      mode: <str>
+      level: <str>
+      srlg:
+        enable: <bool>
+        strict: <bool>
+  segment_routing_mpls:
+    enabled: <bool>
+    router_id: <str>
+    prefix_segments:
+      - prefix: <str>
+        index: <int>
+  no_passive_interfaces:
+```
+
 ## Router L2 VPN
 
 ### Variables
@@ -2197,6 +2356,22 @@ router_pim_sparse_mode:
           - address: <str>
             groups:
               - <str>
+```
+
+## Service Routing Configuration BGP
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>service_routing_configuration_bgp</samp>](## "service_routing_configuration_bgp") | Dictionary |  |  |  | Service Routing Configuration BGP |
+| [<samp>&nbsp;&nbsp;no_equals_default</samp>](## "service_routing_configuration_bgp.no_equals_default") | Boolean |  |  |  |  |
+
+### YAML
+
+```yaml
+service_routing_configuration_bgp:
+  no_equals_default: <bool>
 ```
 
 ## Service Routing Protocols Model
