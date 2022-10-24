@@ -4,12 +4,8 @@ mgmt_gateway: 1.1.1.1
 l2leaf:
   defaults:
   nodes:
-    mgmt_interface_platform:
-      platform: 7500R2
-      mgmt_ip: 1.1.1.2
-      id: 105
     mgmt_interface_platform_7050X2:
       platform: 7050X2
       mgmt_ip: 1.1.1.3
-      id: 100
+      id: 106
 
