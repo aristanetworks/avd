@@ -740,7 +740,7 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0. There is no need to change the compression scheme.\n",
           "title": "Cvcompression"
         },
         "ingestauth_key": {
