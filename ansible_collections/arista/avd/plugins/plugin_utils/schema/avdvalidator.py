@@ -64,7 +64,6 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
     - Validate "required" under child keys
     - Expand "dynamic_valid_values" under child keys (don't perform validation)
     """
-    print(f"KEYS I AM CALLED for {instance}")
     if not validator.is_type(instance, "object"):
         return
 
@@ -112,7 +111,6 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
             childschema.setdefault("valid_values", []).extend(get_all(instance, childschema["dynamic_valid_values"]))
 
         # Perform regular validation of the child schema.
-        print(f"DESCENDING FOR {instance[key]}")
         yield from validator.descend(
             instance[key],
             childschema,
