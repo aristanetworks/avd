@@ -3708,7 +3708,7 @@
                   "type": "string",
                   "enum": [
                     "link-protection",
-                    "node_protection"
+                    "node-protection"
                   ],
                   "title": "Mode"
                 },
@@ -3718,7 +3718,6 @@
                     "level-1",
                     "level-2"
                   ],
-                  "description": "Optional, default is to protect all levels",
                   "title": "Level"
                 },
                 "srlg": {
@@ -3777,7 +3776,7 @@
                   "type": "string",
                   "enum": [
                     "link-protection",
-                    "node_protection"
+                    "node-protection"
                   ],
                   "title": "Mode"
                 },
@@ -3787,6 +3786,7 @@
                     "level-1",
                     "level-2"
                   ],
+                  "description": "Optional, default is to protect all levels",
                   "title": "Level"
                 },
                 "srlg": {

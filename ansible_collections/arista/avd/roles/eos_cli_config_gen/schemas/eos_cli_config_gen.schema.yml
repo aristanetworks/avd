@@ -2824,13 +2824,12 @@ keys:
                 type: str
                 valid_values:
                 - link-protection
-                - node_protection
+                - node-protection
               level:
                 type: str
                 valid_values:
                 - level-1
                 - level-2
-                description: Optional, default is to protect all levels
               srlg:
                 type: dict
                 display_name: SRLG
@@ -2867,12 +2866,13 @@ keys:
                 type: str
                 valid_values:
                 - link-protection
-                - node_protection
+                - node-protection
               level:
                 type: str
                 valid_values:
                 - level-1
                 - level-2
+                description: Optional, default is to protect all levels
               srlg:
                 type: dict
                 display_name: SRLG

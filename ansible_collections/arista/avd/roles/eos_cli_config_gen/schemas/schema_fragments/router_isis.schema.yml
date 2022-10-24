@@ -112,7 +112,7 @@ keys:
                 type: str
                 valid_values:
                   - "link-protection"
-                  - "node_protection"
+                  - "node-protection"
               level:
                 type: str
                 valid_values:
@@ -154,7 +154,7 @@ keys:
                 type: str
                 valid_values:
                   - "link-protection"
-                  - "node_protection"
+                  - "node-protection"
               level:
                 type: str
                 valid_values:
