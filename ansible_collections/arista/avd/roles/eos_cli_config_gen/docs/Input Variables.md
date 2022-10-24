@@ -345,6 +345,37 @@ custom_templates:
   - <str>
 ```
 
+## CVX
+
+### Description
+
+CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>cvx</samp>](## "cvx") | Dictionary |  |  |  | CVX |
+| [<samp>&nbsp;&nbsp;shutdown</samp>](## "cvx.shutdown") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;services</samp>](## "cvx.services") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mcs</samp>](## "cvx.services.mcs") | Dictionary |  |  |  | MCS |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redis</samp>](## "cvx.services.mcs.redis") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "cvx.services.mcs.redis.password") | String |  |  |  | Hashed password using the password_type |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "cvx.services.mcs.redis.password_type") | String |  | 7 | Valid Values:<br>- 0<br>- 7<br>- 8a |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.mcs.shutdown") | Boolean |  |  |  |  |
+
+### YAML
+
+```yaml
+cvx:
+  shutdown: <bool>
+  services:
+    mcs:
+      redis:
+        password: <str>
+        password_type: <str>
+      shutdown: <bool>
+```
+
 ## Daemon TerminAttr
 
 ### Description
