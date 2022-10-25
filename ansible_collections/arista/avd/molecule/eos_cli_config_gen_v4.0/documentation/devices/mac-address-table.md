@@ -100,6 +100,7 @@ mac address-table notification host-flap detection moves 2
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

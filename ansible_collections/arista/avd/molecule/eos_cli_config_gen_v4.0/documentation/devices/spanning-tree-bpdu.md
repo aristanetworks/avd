@@ -96,6 +96,7 @@ no spanning-tree edge-port bpdufilter default
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

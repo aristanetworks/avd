@@ -127,6 +127,7 @@ logging vrf mgt source-interface Management0
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

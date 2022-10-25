@@ -1044,6 +1044,7 @@ ip routing vrf Tenant_B_WAN_Zone
 ip routing vrf Tenant_C_OP_Zone
 ip routing vrf Tenant_C_WAN_Zone
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

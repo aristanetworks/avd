@@ -84,6 +84,7 @@ service routing configuration bgp no-equals-default
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

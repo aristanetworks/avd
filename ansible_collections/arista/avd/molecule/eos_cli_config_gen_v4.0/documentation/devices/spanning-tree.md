@@ -125,6 +125,7 @@ spanning-tree mst configuration
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

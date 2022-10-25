@@ -80,6 +80,7 @@ vlan internal order ascending range 10 40
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

@@ -90,6 +90,7 @@ boot secret 5 a153de6290ff1409257a
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

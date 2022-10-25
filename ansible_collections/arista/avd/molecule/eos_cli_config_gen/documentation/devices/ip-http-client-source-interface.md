@@ -96,6 +96,7 @@ ip http client local-interface Ethernet10
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

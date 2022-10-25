@@ -101,6 +101,7 @@ spanning-tree vlan-id 100-500 priority 16384
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

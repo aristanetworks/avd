@@ -405,6 +405,7 @@ ip routing
 ip routing vrf Common_VRF
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

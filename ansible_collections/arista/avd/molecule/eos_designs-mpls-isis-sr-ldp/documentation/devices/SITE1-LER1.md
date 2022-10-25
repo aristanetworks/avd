@@ -487,6 +487,7 @@ ip routing
 no ip routing vrf MGMT
 ip routing vrf TENANT_B_INTRA
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary

@@ -273,6 +273,7 @@ ip virtual-router mac-address 00:1c:73:00:00:9a
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
