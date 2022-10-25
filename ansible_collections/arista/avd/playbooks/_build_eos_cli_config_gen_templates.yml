@@ -1,0 +1,9 @@
+---
+- name: Create eos_cli_config_gen templates
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create concatenated cli and documentation templates from fragments
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+        tasks_from: build-templates

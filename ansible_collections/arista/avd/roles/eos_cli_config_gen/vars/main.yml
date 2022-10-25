@@ -18,3 +18,558 @@ role_schema_json_schema_path: "{{ role_schema_dir }}/{{ role_schema_json_schema_
 # Documentation folder
 role_documentation_dir_name: "docs"
 role_documentation_dir: "{{ role_path }}/{{ role_documentation_dir_name }}"
+
+
+# Templates folder
+role_templates_dir_name: "templates"
+role_templates_dir: "{{ role_path }}/{{ role_templates_dir_name }}"
+
+# EOS CLI Fragements
+eos_cli_fragments:
+# Device Configuration
+  - "eos/rancid-content-type.j2"
+# System Boot Configuration
+  - "eos/boot.j2"
+# terminal settings
+  - "eos/terminal-settings.j2"
+# cli prompt
+  - "eos/prompt.j2"
+# aliases
+  - "eos/aliases.j2"
+# hardware counters
+  - "eos/hardware-counters.j2"
+# service routing configuration
+  - "eos/service-routing-configuration-bgp.j2"
+# daemon TerminAttr
+  - "eos/daemon-terminattr.j2"
+# daemons
+  - "eos/daemons.j2"
+# DHCP relay
+  - "eos/dhcp-relay.j2"
+# ip dhcp relay
+  - "eos/ip-dhcp-relay.j2"
+# switchport default
+  - "eos/switchport-default.j2"
+# internal vlan allocation policy
+  - "eos/vlan-internal-order.j2"
+# ip igmp snooping
+  - "eos/ip-igmp-snooping.j2"
+# event monitor
+  - "eos/event-monitor.j2"
+# load-interval
+  - "eos/load-interval.j2"
+# interface defaults
+  - "eos/interface-defaults.j2"
+# interface profiles
+  - "eos/interface-profiles.j2"
+# transceiver qsfp default mode
+  - "eos/transceiver-qsfp-default-mode.j2"
+# errdisable
+  - "eos/errdisable.j2"
+# service routing protocols model
+  - "eos/service-routing-protocols-model.j2"
+# queue monitor length
+  - "eos/queue-monitor-length.j2"
+# lldp
+  - "eos/lldp.j2"
+# lacp
+  - "eos/lacp.j2"
+# logging
+  - "eos/logging.j2"
+# mcs client
+  - "eos/mcs-client.j2"
+# match-list
+  - "eos/match-lists.j2"
+# as-paths
+  - "eos/as-path.j2"
+# macsec
+  - "eos/mac-security.j2"
+# hostname
+  - "eos/hostname.j2"
+# domain lookup
+  - "eos/domain-lookup.j2"
+# name servers
+  - "eos/name-servers.j2"
+# dns domain
+  - "eos/dns-domain.j2"
+# domain-list
+  - "eos/domain-list.j2"
+# Object Tracking
+  - "eos/object-tracking.j2"
+# ntp
+  - "eos/ntp.j2"
+# ptp
+  - "eos/ptp.j2"
+# radius servers
+  - "eos/radius-servers.j2"
+# router l2-vpn#}
+  - "eos/router-l2-vpn.j2"
+# sflow
+  - "eos/sflow.j2"
+# redundancy
+  - "eos/redundancy.j2"
+# qos-profiles
+  - "eos/qos-profiles.j2"
+# snmp settings
+  - "eos/snmp-settings.j2"
+# hardware configuration
+  - "eos/hardware.j2"
+# spanning-tree
+  - "eos/spanning-tree.j2"
+# platform
+  - "eos/platform.j2"
+# unsupported transceiver
+  - "eos/unsupported-transceiver.j2"
+# tacacs servers
+  - "eos/tacacs-servers.j2"
+# aaa
+  - "eos/aaa.j2"
+# enable password
+  - "eos/enable-password.j2"
+# aaa root
+  - "eos/aaa-root.j2"
+# users
+  - "eos/local-users.j2"
+# roles
+  - "eos/roles.j2"
+# Tap Aggregation
+  - "eos/tap-aggregation.j2"
+# clock
+  - "eos/clock.j2"
+# VLANs
+  - "eos/vlans.j2"
+# VRF Instances
+  - "eos/vrf-instances.j2"
+# Link Tracking
+  - "eos/link-tracking-groups.j2"
+# CVX
+  - "eos/cvx.j2"
+# Port-Channel Interfaces
+  - "eos/port-channel-interfaces.j2"
+# Ethernet Interfaces
+  - "eos/ethernet-interfaces.j2"
+# Loopback Interfaces
+  - "eos/loopback-interfaces.j2"
+# Management Interfaces
+  - "eos/management-interfaces.j2"
+# VLAN Interfaces
+  - "eos/vlan-interfaces.j2"
+# VxLAN interface
+  - "eos/vxlan-interface.j2"
+# Hardware TCAM Profiles
+  - "eos/tcam-profile.j2"
+# Connectivity monitor configuration
+  - "eos/monitor-connectivity.j2"
+# MAC address-table aging
+  - "eos/mac-address-table-aging-time.j2"
+# Router virtual mac address
+  - "eos/virtual-router-mac-address.j2"
+# Router virtual source nat
+  - "eos/virtual-source-nat.j2"
+# event handler
+  - "eos/event-handler.j2"
+# BGP Groups configuration
+  - "eos/bgp-groups.j2"
+# Interface Groups configuration
+  - "eos/interface-groups.j2"
+# IPv6 Extended Access-lists
+  - "eos/ipv6-access-lists.j2"
+# IPv6 Standard Access-lists
+  - "eos/ipv6-standard-access-lists.j2"
+# Extended Access-lists
+  - "eos/access-lists.j2"
+# Extended Access-lists, improved data model
+  - "eos/ip-access-lists.j2"
+# Standard Access-lists
+  - "eos/standard-access-lists.j2"
+# MAC Access-lists
+  - "eos/mac-access-lists.j2"
+# IP Routing
+  - "eos/ip-routing.j2"
+# IPv6 Routing
+  - "eos/ipv6-routing.j2"
+# Monitor Sessions
+  - "eos/monitor-sessions.j2"
+# qos
+  - "eos/qos.j2"
+# Community-lists
+  - "eos/community-lists.j2"
+# Community-lists, improved data model
+  - "eos/ip-community-lists.j2"
+# IP Extended Community Lists
+  - "eos/ip-extended-community-lists.j2"
+# IP Extended Community Lists Regexp
+  - "eos/ip-extended-community-lists-regexp.j2"
+# Dynmaic Prefix-lists
+  - "eos/dynamic-prefix-lists.j2"
+# Prefix-lists
+  - "eos/prefix-lists.j2"
+# IPv6 Prefix-lists
+  - "eos/ipv6-prefix-lists.j2"
+# System Control-Plane#}
+  - "eos/system-control-plane.j2"
+# mac address-table notification
+  - "eos/mac-address-table-notification.j2"
+# maintenance
+  - "eos/maintenance.j2"
+# mlag configuration
+  - "eos/mlag-configuration.j2"
+# Static Route
+  - "eos/static-routes.j2"
+# IPv6 Static Route
+  - "eos/ipv6-static-routes.j2"
+# QOS class-map
+  - "eos/class-maps-qos.j2"
+# PBR policy-map
+  - "eos/policy-maps-pbr.j2"
+# QOS policy-map
+  - "eos/policy-maps-qos.j2"
+# ARP
+  - "eos/arp.j2"
+# route-maps
+  - "eos/route-maps.j2"
+# router bfd
+  - "eos/router-bfd.j2"
+# peer-filters
+  - "eos/peer-filters.j2"
+# router bgp configuration
+  - "eos/router-bgp.j2"
+# router igmp configuration
+  - "eos/router-igmp.j2"
+# router multicast configuration
+  - "eos/router-multicast.j2"
+# router general configuration
+  - "eos/router-general.j2"
+# router traffic-engineering configuration
+  - "eos/router-traffic-engineering.j2"
+# router ospf configuration
+  - "eos/router-ospf.j2"
+# router pim sparse mode configuration
+  - "eos/router-pim-sparse-mode.j2"
+# router isis configuration
+  - "eos/router-isis.j2"
+# MPLS
+  - "eos/mpls.j2"
+# Patch Panel
+  - "eos/patch-panel.j2"
+# queue monitor streaming
+  - "eos/queue-monitor-streaming.j2"
+# ip tacacs+ source interfaces
+  - "eos/ip-tacacs-source-interfaces.j2"
+# ip radius source interfaces
+  - "eos/ip-radius-source-interfaces.j2"
+# vmtracer sessions
+  - "eos/vmtracer-sessions.j2"
+# traffic policies
+  - "eos/traffic-policies.j2"
+# banner
+  - "eos/banners.j2"
+# ip http client source interfaces
+  - "eos/ip-http-client-source-interfaces.j2"
+# ip ssh client source interfaces
+  - "eos/ip-ssh-client-source-interfaces.j2"
+# management api http
+  - "eos/management-api-http.j2"
+# management console
+  - "eos/management-console.j2"
+# management cvx
+  - "eos/management-cvx.j2"
+# management defaults
+  - "eos/management-defaults.j2"
+# management api gnmi
+  - "eos/management-api-gnmi.j2"
+# management api models
+  - "eos/management-api-models.j2"
+# management security
+  - "eos/management-security.j2"
+# 802.1x Global
+  - "eos/dot1x.j2"
+# management ssh
+  - "eos/management-ssh.j2"
+# management tech-support
+  - "eos/management-tech-support.j2"
+# EOS CLI
+  - "eos/eos-cli.j2"
+# custom templates
+  - "eos/custom-templates.j2"
+# end
+  - "eos/end.j2"
+
+eos_documentation_sections:
+  # Management
+  - heading: "Management"
+    documentation_fragments:
+    # Management Interface
+      - "documentation/management-interfaces.j2"
+    # DNS Domain
+      - "documentation/dns-domain.j2"
+    # Domain-list
+      - "documentation/domain-list.j2"
+    # Name Servers
+      - "documentation/name-servers.j2"
+    # Domain Lookup
+      - "documentation/domain-lookup.j2"
+    # Clock
+      - "documentation/clock.j2"
+    # NTP
+      - "documentation/ntp.j2"
+    # PTP
+      - "documentation/ptp.j2"
+    # System Control-Plane#}
+      - "documentation/system-control-plane.j2"
+    # Management SSH
+      - "documentation/management-ssh.j2"
+    # Management Tech-Support
+      - "documentation/management-tech-support.j2"
+    # IP SSH Client Source Interfaces
+      - "documentation/ip-ssh-client-source-interfaces.j2"
+    # Management API GNMI
+      - "documentation/management-api-gnmi.j2"
+    # Management CVX
+      - "documentation/management-cvx.j2"
+    # Management Console
+      - "documentation/management-console.j2"
+    # Management API HTTP
+      - "documentation/management-api-http.j2"
+    # Management API Models
+      - "documentation/management-api-models.j2"
+    # IP HTTP Client Source Interfaces
+      - "documentation/ip-http-client-source-interfaces.j2"
+    # CVX
+      - "documentation/cvx.j2"
+
+  # Authentication
+  - heading: "Authentication"
+    documentation_fragments:
+    # Local Users
+      - "documentation/local-users.j2"
+    # Roles
+      - "documentation/roles.j2"
+    # Enable Password
+      - "documentation/enable-password.j2"
+    # Management defaults
+      - "documentation/management-defaults.j2"
+    # TACACS Servers
+      - "documentation/tacacs-servers.j2"
+    # IP TACACS Source Interfaces
+      - "documentation/ip-tacacs-source-interfaces.j2"
+    # RADIUS Servers
+      - "documentation/radius-servers.j2"
+    # IP RADIUS Source Interfaces
+      - "documentation/ip-radius-source-interfaces.j2"
+    # AAA Server Groups
+      - "documentation/aaa-server-groups.j2"
+    # AAA Authentication
+      - "documentation/aaa-authentication.j2"
+    # AAA Authorization
+      - "documentation/aaa-authorization.j2"
+    # AAA Accounting
+      - "documentation/aaa-accounting.j2"
+    # Management Security
+      - "documentation/management-security.j2"
+    # Prompt
+      - "documentation/prompt.j2"
+    # Aliases
+      - "documentation/aliases.j2"
+    # DHCP Relay
+      - "documentation/dhcp-relay.j2"
+    # System Boot Configuration
+      - "documentation/boot.j2"
+
+  # Monitoring
+  - heading: "Monitoring"
+    documentation_fragments:
+    # TerminAttr Daemon
+      - "documentation/daemon-terminattr.j2"
+    # Custom Daemons
+      - "documentation/daemons.j2"
+    # Logging
+      - "documentation/logging.j2"
+    # Mcs client
+      - "documentation/mcs-client.j2"
+    # SNMP
+      - "documentation/snmp-settings.j2"
+    # Monitor Sessions
+      - "documentation/monitor-sessions.j2"
+    # Tap Aggregation
+      - "documentation/tap-aggregation.j2"
+    # SFlow
+      - "documentation/sflow.j2"
+    # Hardware Counters
+      - "documentation/hardware-counters.j2"
+    # VM Tracer Sessions
+      - "documentation/vmtracer-sessions.j2"
+    # Event Handler
+      - "documentation/event-handler.j2"
+    # Object Tracking
+      - "documentation/object-tracking.j2"
+    # Monitor Connectivity
+      - "documentation/monitor-connectivity.j2"
+    # Hardware TCAM Profile
+      - "documentation/tcam-profile.j2"
+    # Link Tracking Groups
+      - "documentation/link-tracking-groups.j2"
+    # MLAG
+      - "documentation/mlag-configuration.j2"
+    # LLDP
+      - "documentation/lldp.j2"
+    # LACP
+      - "documentation/lacp-configuration.j2"
+    # Spanning Tree
+      - "documentation/spanning-tree.j2"
+    # Internal VLAN Allocation Policy
+      - "documentation/vlan-internal-order.j2"
+    # VLANs
+      - "documentation/vlans.j2"
+    # Mac address-table ##}
+      - "documentation/mac-address-table.j2"
+
+  # Interfaces
+  - heading: "Interfaces"
+    documentation_fragments:
+    # Switchport Default
+      - "documentation/switchport-default.j2"
+    # Interface Defaults
+      - "documentation/interface-defaults.j2"
+    # Interface Profiles
+      - "documentation/interface-profiles.j2"
+    # Ethernet Interfaces
+      - "documentation/ethernet-interfaces.j2"
+    # Port-Channel Interfaces
+      - "documentation/port-channel-interfaces.j2"
+    # Loopback Interfaces
+      - "documentation/loopback-interfaces.j2"
+    # VLAN Interfaces
+      - "documentation/vlan-interfaces.j2"
+    # VXLAN Interface
+      - "documentation/vxlan-interface.j2"
+
+  # Routing
+  - heading: Routing
+    documentation_fragments:
+    # Service Routing Configuration
+      - "documentation/service-routing-configuration-bgp.j2"
+    # Service Routing Protocols Model
+      - "documentation/service-routing-protocols-model.j2"
+    # Virtual Router MAC Address
+      - "documentation/virtual-router-mac-address.j2"
+    # IP Routing
+      - "documentation/ip-routing.j2"
+    # IPv6 Routing
+      - "documentation/ipv6-routing.j2"
+    # Static Routes
+      - "documentation/static-routes.j2"
+    # IPv6 Static Routes
+      - "documentation/ipv6-static-routes.j2"
+    # ARP
+      - "documentation/arp.j2"
+    # Router General
+      - "documentation/router-general.j2"
+    # Router Traffic Engineering
+      - "documentation/router-traffic-engineering.j2"
+    # Router OSPF
+      - "documentation/router-ospf.j2"
+    # Router ISIS
+      - "documentation/router-isis.j2"
+    # Router BGP
+      - "documentation/router-bgp.j2"
+    # PBR Policy Maps ##}
+      - "documentation/policy-maps-pbr.j2"
+    # BFD
+      - "documentation/bfd.j2"
+    # MPLS
+      - "documentation/mpls.j2"
+    # Patch Panel
+      - "documentation/patch-panel.j2"
+
+  # Multicast
+  - heading: Multicast
+    documentation_fragments:
+    # IP IGMP Snooping
+      - "documentation/ip-igmp-snooping.j2"
+    # Router Multicast
+      - "documentation/router-multicast.j2"
+    # Router PIM Sparse Mode
+      - "documentation/pim-sparse-mode.j2"
+    # Router IGMP
+      - "documentation/router-igmp.j2"
+
+  # Filters
+  - heading: Filters
+    documentation_fragments:
+    # Community-lists
+      - "documentation/community-lists.j2"
+    # Community-lists, improved data model
+      - "documentation/ip-community-lists.j2"
+    # Peer Filters
+      - "documentation/peer-filters.j2"
+    # Dynamic Prefix-lists
+      - "documentation/dynamic-prefix-lists.j2"
+    # Prefix-lists
+      - "documentation/prefix-lists.j2"
+    # IPv6 Prefix-lists
+      - "documentation/ipv6-prefix-lists.j2"
+    # Route-maps
+      - "documentation/route-maps.j2"
+    # IP Extended Community Lists
+      - "documentation/ip-extended-community-lists.j2"
+    # IP Extended Community Lists Regexp
+      - "documentation/ip-extended-community-lists-regexp.j2"
+    # Match-Lists
+      - "documentation/match-lists.j2"
+    # as-paths
+      - "documentation/as-path.j2"
+    # dot1x
+      - "documentation/dot1x.j2"
+
+  # ACL
+  - heading: ACL
+    documentation_fragments:
+    # Standard Access-lists
+      - "documentation/standard-access-lists.j2"
+    # Extended Access-lists
+      - "documentation/access-lists.j2"
+    # Extended Access-lists, improved data model
+      - "documentation/ip-access-lists.j2"
+    # IPv6 Standard Access-lists
+      - "documentation/ipv6-standard-access-lists.j2"
+    # IPv6 Extended Access-lists
+      - "documentation/ipv6-access-lists.j2"
+    # MAC Access-lists
+      - "documentation/mac-access-lists.j2"
+    # VRF Instances
+      - "documentation/vrf-instances.j2"
+    # Virtual Source NAT
+      - "documentation/virtual-source-nat.j2"
+    # Platform
+      - "documentation/platform.j2"
+    # Router L2 VPN
+      - "documentation/router-l2-vpn.j2"
+    # IP DHCP Relay
+      - "documentation/ip-dhcp-relay.j2"
+    # Errdisable
+      - "documentation/errdisable.j2"
+    # MACsec
+      - "documentation/mac-security.j2"
+    # Traffic Policies
+      - "documentation/traffic-policies.j2"
+
+  # Quality Of Service
+  - heading: Quality Of Service
+    documentation_fragments:
+    # QOS
+      - "documentation/qos.j2"
+    # QOS Class Maps
+      - "documentation/class-maps-qos.j2"
+    # QOS Policy Maps
+      - "documentation/policy-maps-qos.j2"
+    # QOS Profiles
+      - "documentation/qos-profiles.j2"
+    # QOS Interfaces
+      - "documentation/qos-interfaces.j2"
+    # Maintenance Mode
+      - "documentation/maintenance-mode.j2"
+    # EOS CLI
+      - "documentation/eos-cli.j2"
+    # Custom Templates
+      - "documentation/custom-templates.j2"

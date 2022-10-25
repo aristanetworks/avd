@@ -1,0 +1,17 @@
+---
+
+- name: concatenate eos_cli template fragements
+  tags: [eos_cli_config_gen, cli_template]
+  run_once: true
+  ansible.builtin.template:
+    src: templates/build-eos-cli-template.j2
+    dest: "{{ role_templates_dir }}/eos-intended-config.j2"
+    mode: 0664
+
+- name: concatenate eos_documentation template fragements
+  tags: [eos_cli_config_gen, documentation_template]
+  run_once: true
+  ansible.builtin.template:
+    src: templates/build-eos-device-documentation-template.j2
+    dest: "{{ role_templates_dir }}/eos-device-documentation.j2"
+    mode: 0664

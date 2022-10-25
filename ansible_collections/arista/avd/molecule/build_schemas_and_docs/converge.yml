@@ -3,3 +3,5 @@
   import_playbook: arista.avd._build_schemas
 - name: Run arista.avd._build_documentation playbook
   import_playbook: arista.avd._build_documentation
+- name: Run arista.avd._build_eos_cli_config_gen_templates playbook
+  import_playbook: arista.avd._build_eos_cli_config_gen_templates

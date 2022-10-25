@@ -1,0 +1,3 @@
+{% for eos_cli_fragment in eos_cli_fragments %}
+{{ lookup('ansible.builtin.file', eos_cli_fragment) }}
+{% endfor %}
