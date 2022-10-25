@@ -1297,17 +1297,123 @@ service unsupported-transceiver {{ service_unsupported_transceiver.license_name 
 tacacs-server policy unknown-mandatory-attribute ignore
 {%     endif %}
 {% endif %}
-{# aaa server groups #}
-{% include 'eos/aaa-server-groups.j2' %}
+{# eos - AAA Group Servers#}
+{% if aaa_server_groups is arista.avd.defined %}
+{%     for aaa_server_group in aaa_server_groups %}
+{%         if aaa_server_group.type is arista.avd.defined and aaa_server_group.name is arista.avd.defined %}
+!
+aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
+{%             if aaa_server_group.servers is arista.avd.defined %}
+{%                 for server in aaa_server_group.servers %}
+{%                     if server.server is arista.avd.defined %}
+{%                         set server_cli = "server " ~ server.server %}
+{%                         if server.vrf is arista.avd.defined %}
+{%                             set server_cli = server_cli ~ " vrf " ~ server.vrf %}
+{%                         endif %}
+   {{ server_cli }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{# aaa delimiter #}
 {% if aaa_authentication is arista.avd.defined or aaa_authorization is arista.avd.defined or aaa_accounting is arista.avd.defined %}
 !
 {% endif %}
-{# aaa authentication #}
-{% include 'eos/aaa-authentication.j2' %}
-{# aaa authorization #}
-{% include 'eos/aaa-authorization.j2' %}
-{# aaa accounting #}
-{% include 'eos/aaa-accounting.j2' %}
+{# eos - aaa authentication #}
+{% if aaa_authentication is arista.avd.defined %}
+{%     if aaa_authentication.login.default is arista.avd.defined %}
+aaa authentication login default {{ aaa_authentication.login.default }}
+{%     endif %}
+{%     if aaa_authentication.login.console is arista.avd.defined %}
+aaa authentication login console {{ aaa_authentication.login.console }}
+{%     endif %}
+{%     if aaa_authentication.enable.default is arista.avd.defined %}
+aaa authentication enable default {{ aaa_authentication.enable.default }}
+{%     endif %}
+{%     if aaa_authentication.dot1x.default is arista.avd.defined %}
+aaa authentication dot1x default {{ aaa_authentication.dot1x.default }}
+{%     endif %}
+{%     if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}
+aaa authentication policy on-failure log
+{%     endif %}
+{%     if aaa_authentication.policies.on_success_log is arista.avd.defined(true) %}
+aaa authentication policy on-success log
+{%     endif %}
+{%     if aaa_authentication.policies.local.allow_nopassword is arista.avd.defined(true) %}
+aaa authentication policy local allow-nopassword-remote-login
+{%     endif %}
+{%     if aaa_authentication.policies.lockout.failure is arista.avd.defined and aaa_authentication.policies.lockout.duration is arista.avd.defined %}
+{%         set lockout_cli = "aaa authentication policy lockout failure " ~ aaa_authentication.policies.lockout.failure %}
+{%         if aaa_authentication.policies.lockout.window is arista.avd.defined %}
+{%             set lockout_cli = lockout_cli ~ " window " ~ aaa_authentication.policies.lockout.window %}
+{%         endif %}
+{%         set lockout_cli = lockout_cli ~ " duration " ~ aaa_authentication.policies.lockout.duration %}
+{{ lockout_cli }}
+{%     endif %}
+{% endif %}
+{# eos - aaa authorization #}
+{% if aaa_authorization is arista.avd.defined %}
+{%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
+aaa authorization serial-console
+{%     endif %}
+{%     if aaa_authorization.exec.default is arista.avd.defined %}
+aaa authorization exec default {{ aaa_authorization.exec.default }}
+{%     endif %}
+{%     if aaa_authorization.config_commands is arista.avd.defined(false) %}
+no aaa authorization config-commands
+{%     endif %}
+{%     if aaa_authorization.commands.all_default is arista.avd.defined %}
+aaa authorization commands all default {{ aaa_authorization.commands.all_default }}
+{%     endif %}
+{%     for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%         if command_level.level is arista.avd.defined and command_level.default is arista.avd.defined %}
+{%             set commands_privilege_cli = "aaa authorization commands " ~ command_level.level ~ " default " ~ command_level.default %}
+{{ commands_privilege_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{# eos - aaa accounting #}
+{% if aaa_accounting is arista.avd.defined %}
+{%     if aaa_accounting.exec.console.type is arista.avd.defined and aaa_accounting.exec.console.group is arista.avd.defined %}
+aaa accounting exec console {{ aaa_accounting.exec.console.type }} group {{ aaa_accounting.exec.console.group }}
+{%     endif %}
+{%     if aaa_accounting.commands.console is arista.avd.defined %}
+{%         for command_default in aaa_accounting.commands.console %}
+{%             if command_default.commands is arista.avd.defined and command_default.type is arista.avd.defined %}
+{%                 set aaa_accounting_commands_commands_console_cli = "aaa accounting commands " ~ command_default.commands ~ " console " ~ command_default.type %}
+{%                 if command_default.group is arista.avd.defined %}
+{%                     set aaa_accounting_commands_commands_console_cli = aaa_accounting_commands_commands_console_cli ~ " group " ~ command_default.group %}
+{%                 endif %}
+{%                 if command_default.logging is arista.avd.defined(true) %}
+{%                     set aaa_accounting_commands_commands_console_cli = aaa_accounting_commands_commands_console_cli ~ " logging" %}
+{%                 endif %}
+{%             endif %}
+{{ aaa_accounting_commands_commands_console_cli }}
+{%         endfor %}
+{%     endif %}
+{%     if aaa_accounting.exec.default.type is arista.avd.defined and aaa_accounting.exec.default.group is arista.avd.defined %}
+aaa accounting exec default {{ aaa_accounting.exec.default.type }} group {{ aaa_accounting.exec.default.group }}
+{%     endif %}
+{%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined %}
+aaa accounting system default {{ aaa_accounting.system.default.type }} group {{ aaa_accounting.system.default.group }}
+{%     endif %}
+{%     if aaa_accounting.commands.default is arista.avd.defined %}
+{%         for command_default in aaa_accounting.commands.default %}
+{%             if command_default.commands is arista.avd.defined and command_default.type is arista.avd.defined %}
+{%                 set aaa_accounting_commands_commands_default_cli = "aaa accounting commands " ~ command_default.commands ~ " default " ~ command_default.type %}
+{%                 if command_default.group is arista.avd.defined %}
+{%                     set aaa_accounting_commands_commands_default_cli = aaa_accounting_commands_commands_default_cli ~ " group " ~ command_default.group %}
+{%                 endif %}
+{%                 if command_default.logging is arista.avd.defined(true) %}
+{%                     set aaa_accounting_commands_commands_default_cli = aaa_accounting_commands_commands_default_cli ~ " logging" %}
+{%                 endif %}
+{%             endif %}
+{{ aaa_accounting_commands_commands_default_cli }}
+{%         endfor %}
+{%     endif %}
+{% endif %}
 {# eos - Enable password #}
 {% if enable_password is arista.avd.defined %}
 {%     if enable_password.key is arista.avd.defined %}

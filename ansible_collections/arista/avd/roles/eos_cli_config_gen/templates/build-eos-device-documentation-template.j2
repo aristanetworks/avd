@@ -1,8 +1,4 @@
-# {{ inventory_hostname }}
-# Table of Contents
-
-<!-- toc -->
-<!-- toc -->
+{{ lookup('ansible.builtin.file', 'documentation/01_documentation_heading.j2') }}
 {% for eos_documentation_section in eos_documentation_sections %}
 # {{ eos_documentation_section.heading }}
 {%     for documentation_fragment in eos_documentation_section.documentation_fragments %}

@@ -122,8 +122,16 @@ eos_cli_fragments:
   - "eos/unsupported-transceiver.j2"
 # tacacs servers
   - "eos/tacacs-servers.j2"
+# aaa server groups #
+  - "eos/aaa-server-groups.j2"
 # aaa
-  - "eos/aaa.j2"
+  - "eos/aaa-delimiter.j2"
+# aaa authentication #}
+  - "eos/aaa-authentication.j2"
+# aaa authorization
+  - "eos/aaa-authorization.j2"
+# aaa accounting
+  - "eos/aaa-accounting.j2"
 # enable password
   - "eos/enable-password.j2"
 # aaa root
