@@ -12,7 +12,7 @@
 - name: Validate power supplies status
   assert:
     that:
-      - powerSupply.value.state == 'ok'
+      - "powerSupply.value.state in {{ accepted_pwr_supply_states }}"
     fail_msg: "Power supply state is {{ powerSupply.value.state | replace('\"','') }}"
     quiet: true
   loop: "{{ system_environment_power.stdout_lines.0.powerSupplies | dict2items }}"
@@ -33,7 +33,7 @@
 - name: Validate fan status (power supplies)
   assert:
     that:
-      - powerSupplySlot.status == 'ok'
+      - "powerSupplySlot.status in {{ accepted_fan_states }}"
     fail_msg: "Power supply fan status is {{ powerSupplySlot.status | replace('\"','') }}"
     quiet: true
   loop: "{{ system_environment_cooling.stdout_lines.0.powerSupplySlots }}"
@@ -47,7 +47,7 @@
 - name: Validate fan status (fan tray)
   assert:
     that:
-      - fanTraySlot.status == 'ok'
+      - "fanTraySlot.status in {{ accepted_fan_states }}"
     fail_msg: "Fan status is {{ fanTraySlot.status | replace('\"','') }}"
     quiet: true
   loop: "{{ system_environment_cooling.stdout_lines.0.fanTraySlots }}"

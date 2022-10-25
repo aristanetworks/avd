@@ -84,6 +84,13 @@ fabric_name: "all"
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
+# Allow different states for power supplies
+accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok', 'Not Inserted']) }}"
+
+# Allow different states for fans
+accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok', 'Not Inserted']) }}"
+
+
 # Generate CSV results file
 validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
 
