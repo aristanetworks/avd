@@ -182,7 +182,7 @@ To apply AVD input variables to the nodes in the fabric, we make use of Ansible 
 The tabs below show the Ansible **group_vars** used in this example.
 
 === "DC1"
-At the top level (DC1), the following variables are defined in the **group_vars/DC1.yml** file. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
+    At the top level (DC1), the following variables are defined in the **group_vars/DC1.yml** file. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
 
     You can create a sha512_password by creating a username and password on a switch and copy/paste it within double quotes here.
 
@@ -193,9 +193,9 @@ At the top level (DC1), the following variables are defined in the **group_vars/
     ```
 
 === "DC1_FABRIC"
-At the Fabric level (DC1_FABRIC), the following variables are defined in the **group_vars/DC1_FABRIC.yml** file. The fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include: spanning-tree mode and priority, along with an MLAG IP pool. Typically, an IDF has a unique set of VLANs. You may use the `filter.tags` variable to constrain which VLANs are built on an IDF node.
+    At the Fabric level (DC1_FABRIC), the following variables are defined in the **group_vars/DC1_FABRIC.yml** file. The fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include: spanning-tree mode and priority, along with an MLAG IP pool. Typically, an IDF has a unique set of VLANs. You may use the `filter.tags` variable to constrain which VLANs are built on an IDF node.
 
-Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
+    Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
 
     The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2A has a unique variable `uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]` defined. This means that LEAF2A is connected to SPINE1's Ethernet49/1 and SPINE2's Ethernet49/1, respectively.
 
@@ -233,7 +233,7 @@ Variables applied under the node key type (spine/leaf) defaults section are inhe
     ```
 
 === "DC1_NETWORK_PORTS"
-Our fabric would not be complete without connecting some devices to it. Therefore, we define port profiles and network port ranges in the  **group_vars/DC1_NETWORKS_PORTS.yml** file. A single port_profile may be used across several switches and port ranges. In our example, we create a port profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The `network_ports` data model is where we define which switches and ports to apply the port profile. This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. You can view more details of the `range_expand` filter [here](https://avd.sh/en/stable/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
+    Our fabric would not be complete without connecting some devices to it. Therefore, we define port profiles and network port ranges in the  **group_vars/DC1_NETWORKS_PORTS.yml** file. A single port_profile may be used across several switches and port ranges. In our example, we create a port profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The `network_ports` data model is where we define which switches and ports to apply the port profile. This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. You can view more details of the `range_expand` filter [here](https://avd.sh/en/stable/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
 
     ``` yaml
     --8<--
