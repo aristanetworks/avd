@@ -79,7 +79,7 @@ Basic connectivity between the Ansible controller host and the switches must be 
 
 ???+ info
 
-    When using vEOS/cEOS virtual switches, `Management0` is used. When using actual hardware switches, `Management1` is used. The included basic switch configurations may need to be adjusted for your environment.
+    The management interfaces used by cEOS and vEOS, are `Management0` and `Management1` respectively. When using actual hardware switches, `Management1` is used. The included basic switch configurations may need to be adjusted for your environment.
 
 Below is the basic configuration file for SPINE1:
 
