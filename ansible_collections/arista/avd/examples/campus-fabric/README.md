@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This example describes and includes all the AVD files used to build an Campus Fabric by building upon the previous [L2LS Fabric](../../examples/campus-fabric/README.md) example. The spine nodes provide L3 routing of SVIs and the L2 leaf nodes support 802.1x Network Access Control (NAC) with port ranges.
+This example describes and includes all the AVD files used to build a Campus Fabric by building upon the previous [L2LS Fabric](../../examples/campus-fabric/README.md) example. The spine nodes provide L3 routing of SVIs, and the L2 leaf nodes support 802.1x Network Access Control (NAC) with port ranges.
 
 ## Installation & Requirements
 
@@ -55,7 +55,7 @@ ansible-avd-examples/     (directory where playbook was run)
 
 ### Physical Campus Fabric Topology
 
-In a Campus network it is common to refer to the location of the switches as **MDF** (Main Distribution Frame) and **IDFs** (Independent Distribution Frame). Throughtout this example we refer to the spine nodes as the MDF and the leaf nodes as the IDFs. This example shows various switch types and common ways of cabling the IDF to the MDF.
+In a Campus network, it is common to refer to the location of the switches as **MDF** (Main Distribution Frame) and **IDFs** (Independent Distribution Frame). Throughout this example, we refer to the spine nodes as the MDF and the leaf nodes as the IDFs. This example shows various switch types and common ways of cabling the IDF to the MDF.
 
 - MDF
   - 2 Spine nodes
@@ -118,7 +118,7 @@ The below inventory file represents two Spines and four Leafs. The nodes are def
 
 The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution (e.g., ping SPINE1).
 
-Alternatively, if DNS is not available, define the variable ansible_host to be an IP address for each device.
+Alternatively, if DNS is unavailable, define the variable ansible_host as an IP address for each device.
 
 ``` yaml
 --8<--
@@ -128,7 +128,7 @@ examples/campus-fabric/inventory.yml
 
 ## Management Network
 
-In this example, a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI Vlan10 (vrf: default) is configured. In-band management is easily configured with two variables under the leaf node in `DC1_FABRIC` yml.  It auto-generates an SVI and default route on each leaf node.  On the Spine nodes it will build a matching SVI for Vlan 10 and also creates a Virtual-IP for the subnet defined.
+This example configures a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI Vlan10 (vrf: default). In-band management is easily configured with two variables under the leaf node in `DC1_FABRIC.yml`. First, it auto-generates an SVI and default route on each leaf node. Then, on the Spine nodes, it will build a matching SVI for Vlan 10 and create a Virtual-IP for the defined subnet.
 
 ``` yaml
 leaf:
@@ -152,7 +152,7 @@ Details on this feature can be found [here](https://avd.sh/en/stable/roles/eos_d
 | LEAF3D | 172.100.100.109 | 10.0.0.12 |
 | LEAF3E | 172.100.100.110 | 10.0.0.13 |
 
-In Campus Networks it is uncommon to have a dedicated out-of-band management network in each IDF. You can easily disable configuring Management0 interface and vrf MGMT, by adding these variables to the DC1_LEAFS.yml group_vars.
+In Campus Networks, it is uncommon to have a dedicated out-of-band management network in each IDF. Therefore, you can easily disable configuring the Management0 interface and the management VRF by adding these variables to the `DC1_LEAFS.yml` group_vars.
 
 ``` yaml
 mgmt_gateway: null
@@ -182,7 +182,7 @@ To apply AVD input variables to the nodes in the fabric, we make use of Ansible 
 The tabs below show the Ansible **group_vars** used in this example.
 
 === "DC1"
-    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
+At the top level (DC1), the following variables are defined in the **group_vars/DC1.yml** file. These Ansible variables apply to all nodes in the fabric and is a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
 
     You can create a sha512_password by creating a username and password on a switch and copy/paste it within double quotes here.
 
@@ -193,9 +193,9 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_FABRIC"
-    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. The fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include: spanning-tree mode and priority along with an mlag IP pool. Typically, and IDF has a unique set of VLANs. You may use the `filter.tags` variable to constrain which vlans are built on an IDF node.
+At the Fabric level (DC1_FABRIC), the following variables are defined in the **group_vars/DC1_FABRIC.yml** file. The fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include: spanning-tree mode and priority, along with an MLAG IP pool. Typically, an IDF has a unique set of VLANs. You may use the `filter.tags` variable to constrain which VLANs are built on an IDF node.
 
-    Variables applied under the node key type (spine/leaf) defaults section are inherited to nodes under each type. These variables may be overwritten under the node itself.
+Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
 
     The spine interface used by a particular leaf is defined from the leaf's perspective with a variable called `uplink_switch_interfaces`. For example, LEAF2A has a unique variable `uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]` defined. This means that LEAF2A is connected to SPINE1's Ethernet49/1 and SPINE2's Ethernet49/1, respectively.
 
@@ -206,7 +206,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_SPINES"
-    In an L2LS design, there are two types of spine nodes: `spine` and `l3spine`. In AVD. the node type defines the functionality and the EOS CLI configuration to be generated. For an L2LS design, we will use node type: spine. Later, we will add routing to the Spines by changing the node type to l3spine.
+    In an L2LS design, there are two types of spine nodes: `spine` and `l3spine`. In AVD, the node type defines the functionality and the EOS CLI configuration to be generated. For an L2LS design, we will use node type: spine. Later, we will add routing to the Spines by changing the node type to l3spine.
 
     ``` yaml
     --8<--
@@ -224,7 +224,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs and SVIs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs. These variables are applied to spine and leaf nodes since they are a part of this group.
+    You add VLANs and SVIs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml** file. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific Leaf Pairs. These variables are applied to spine and leaf nodes since they are a part of this group.
 
     ``` yaml
     --8<--
@@ -233,7 +233,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_PORTS"
-    Our fabric would not be complete without connecting some devices to it. We define port profiles and network port ranges in **group_vars/DC1_NETWORKS_PORTS.yml**. A single port_profile may be used across a number of switches and port ranges. In our example we create a port_profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The network_ports data model is where we define which switches and ports to apply the port profile. This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. Details of the range_expand filter can be viewed [here](https://avd.sh/en/stable/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
+Our fabric would not be complete without connecting some devices to it. Therefore, we define port profiles and network port ranges in the  **group_vars/DC1_NETWORKS_PORTS.yml** file. A single port_profile may be used across several switches and port ranges. In our example, we create a port profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The `network_ports` data model is where we define which switches and ports to apply the port profile. This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. You can view more details of the `range_expand` filter [here](https://avd.sh/en/stable/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
 
     ``` yaml
     --8<--
@@ -243,7 +243,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
 ## Network Services
 
-The Network Services data model is stored in the **DC1_NETWORK_SERVICES** group_var tab above. Each IDF will have 3 unique VLANs to support Data, Voice and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
+The Network Services data model is stored in the **DC1_NETWORK_SERVICES** group_var tab above. Each IDF will have three unique VLANs to support Data, Voice, and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
 
 ### VLAN/IP Subnet Assignment
 
@@ -255,17 +255,17 @@ The Network Services data model is stored in the **DC1_NETWORK_SERVICES** group_
 
 ## Port Profiles and Network Ports
 
-AVD provides a way to standardize and reuse port profiles through a compact data model that can be utilized across the network. The Network Ports data model is stored in the **DC1_NETWORK_PORTS** group_vars tab above. Each port is configured to support NAC and dynamically assigns the proper vlan based on 802.1x authentication. Multiple device types (IP Phone, Workstations, Printers, Access Points, etc...) can share the same port configuration below.
+AVD provides a way to standardize and reuse port profiles through a compact data model you can utilize across the network. The Network Ports data model is stored in the **DC1_NETWORK_PORTS** group_vars tab above. Each port is configured to support NAC and dynamically assigns the proper VLAN based on 802.1x authentication. Multiple device types (IP Phones, Workstations, Printers, Access Points, etc.) can share the same port configuration below.
 
 ![Figure: 3](images/dot1x_ports.svg)
 
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in port_profiles, while network_ports defines which switches and port ranges to be applied. The network_ports data model allows the use of regex to match switches and an expand_range filter to cover a range of ports. For details, see documentation for [port_profiles](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [network_ports](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see documentation for [`port_profiles`](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [`network_ports`](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
 
 ## Deploy Fabric
 
 ## The Playbooks
 
-Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
+Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configurations. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: `eos_designs` and `eos_cli_config_gen`, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
 
 === "build.yml"
 
@@ -285,7 +285,7 @@ Now that we have defined all of our Ansible variables (AVD inputs), it is time t
 
 ### Playbook Run
 
-To build the configurations files, run the playbook called `build.yml`.
+To build the configuration files, run the playbook called `build.yml`.
 
 ``` bash
 ### Build configurations
@@ -294,7 +294,7 @@ ansible-playbook build.yml
 
 After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
 
-To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables were defined in DC1_FABRIC.yml.
+To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. We defined the authentication variables in the `DC1_FABRIC.yml` file in this example.
 
 ``` bash
 ### Build configurations & Push Configs to switches
