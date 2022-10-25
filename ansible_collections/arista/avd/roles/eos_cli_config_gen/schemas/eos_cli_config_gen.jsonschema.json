@@ -2445,10 +2445,7 @@
           }
         },
         "required": [
-          "name",
-          "description",
-          "ip_address",
-          "gateway"
+          "name"
         ],
         "additionalProperties": false
       },
