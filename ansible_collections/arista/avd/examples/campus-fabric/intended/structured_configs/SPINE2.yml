@@ -26,10 +26,6 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-  arista:
-    privilege: 15
-    role: network-admin
-    no_password: true
 vrfs:
   MGMT:
     ip_routing: false
@@ -290,7 +286,7 @@ mlag_configuration:
 loopback_interfaces:
   Loopback0:
     shutdown: false
-    ip_address: 1.1.1.2/32
+    ip_address: 172.16.1.2/32
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

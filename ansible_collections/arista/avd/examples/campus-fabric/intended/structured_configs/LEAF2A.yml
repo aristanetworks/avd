@@ -27,10 +27,6 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-  arista:
-    privilege: 15
-    role: network-admin
-    no_password: true
 vrfs:
   MGMT:
     ip_routing: false
@@ -75,8 +71,9 @@ ethernet_interfaces:
       id: 11
       mode: active
   Ethernet3/1:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -108,8 +105,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/2:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -141,8 +139,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/3:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -174,8 +173,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/4:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -207,8 +207,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/5:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -240,8 +241,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/6:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -273,8 +275,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/7:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -306,8 +309,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/8:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -339,8 +343,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/9:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -372,8 +377,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/10:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -405,8 +411,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/11:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -438,8 +445,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/12:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -471,8 +479,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/13:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -504,8 +513,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/14:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -537,8 +547,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/15:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -570,8 +581,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/16:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -603,8 +615,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/17:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -636,8 +649,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/18:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -669,8 +683,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/19:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -702,8 +717,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/20:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -735,8 +751,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/21:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -768,8 +785,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/22:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -801,8 +819,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/23:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -834,8 +853,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/24:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -867,8 +887,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/25:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -900,8 +921,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/26:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -933,8 +955,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/27:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -966,8 +989,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/28:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -999,8 +1023,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/29:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1032,8 +1057,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/30:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1065,8 +1091,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/31:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1098,8 +1125,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/32:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1131,8 +1159,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/33:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1164,8 +1193,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/34:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1197,8 +1227,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/35:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1230,8 +1261,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/36:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1263,8 +1295,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/37:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1296,8 +1329,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/38:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1329,8 +1363,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/39:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1362,8 +1397,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/40:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1395,8 +1431,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/41:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1428,8 +1465,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/42:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1461,8 +1499,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/43:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1494,8 +1533,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/44:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1527,8 +1567,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/45:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1560,8 +1601,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/46:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1593,8 +1635,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/47:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1626,8 +1669,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet3/48:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1659,8 +1703,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/1:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1692,8 +1737,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/2:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1725,8 +1771,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/3:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1758,8 +1805,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/4:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1791,8 +1839,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/5:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1824,8 +1873,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/6:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1857,8 +1907,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/7:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1890,8 +1941,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/8:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1923,8 +1975,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/9:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1956,8 +2009,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/10:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -1989,8 +2043,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/11:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2022,8 +2077,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/12:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2055,8 +2111,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/13:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2088,8 +2145,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/14:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2121,8 +2179,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/15:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2154,8 +2213,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/16:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2187,8 +2247,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/17:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2220,8 +2281,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/18:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2253,8 +2315,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/19:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2286,8 +2349,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/20:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2319,8 +2383,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/21:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2352,8 +2417,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/22:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2385,8 +2451,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/23:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2418,8 +2485,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/24:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2451,8 +2519,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/25:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2484,8 +2553,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/26:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2517,8 +2587,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/27:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2550,8 +2621,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/28:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2583,8 +2655,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/29:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2616,8 +2689,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/30:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2649,8 +2723,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/31:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2682,8 +2757,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/32:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2715,8 +2791,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/33:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2748,8 +2825,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/34:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2781,8 +2859,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/35:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2814,8 +2893,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/36:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2847,8 +2927,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/37:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2880,8 +2961,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/38:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2913,8 +2995,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/39:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2946,8 +3029,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/40:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -2979,8 +3063,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/41:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3012,8 +3097,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/42:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3045,8 +3131,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/43:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3078,8 +3165,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/44:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3111,8 +3199,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/45:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3144,8 +3233,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/46:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3177,8 +3267,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/47:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3210,8 +3301,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet4/48:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3243,8 +3335,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/1:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3276,8 +3369,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/2:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3309,8 +3403,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/3:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3342,8 +3437,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/4:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3375,8 +3471,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/5:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3408,8 +3505,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/6:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3441,8 +3539,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/7:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3474,8 +3573,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/8:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3507,8 +3607,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/9:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3540,8 +3641,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/10:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3573,8 +3675,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/11:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3606,8 +3709,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/12:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3639,8 +3743,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/13:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3672,8 +3777,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/14:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3705,8 +3811,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/15:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3738,8 +3845,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/16:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3771,8 +3879,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/17:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3804,8 +3913,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/18:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3837,8 +3947,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/19:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3870,8 +3981,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/20:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3903,8 +4015,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/21:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3936,8 +4049,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/22:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -3969,8 +4083,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/23:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4002,8 +4117,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/24:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4035,8 +4151,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/25:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4068,8 +4185,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/26:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4101,8 +4219,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/27:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4134,8 +4253,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/28:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4167,8 +4287,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/29:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4200,8 +4321,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/30:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4233,8 +4355,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/31:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4266,8 +4389,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/32:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4299,8 +4423,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/33:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4332,8 +4457,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/34:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4365,8 +4491,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/35:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4398,8 +4525,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/36:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4431,8 +4559,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/37:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4464,8 +4593,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/38:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4497,8 +4627,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/39:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4530,8 +4661,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/40:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4563,8 +4695,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/41:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4596,8 +4729,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/42:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4629,8 +4763,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/43:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4662,8 +4797,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/44:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4695,8 +4831,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/45:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4728,8 +4865,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/46:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4761,8 +4899,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/47:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4794,8 +4933,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet5/48:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4827,8 +4967,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/1:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4860,8 +5001,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/2:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4893,8 +5035,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/3:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4926,8 +5069,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/4:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4959,8 +5103,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/5:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -4992,8 +5137,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/6:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5025,8 +5171,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/7:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5058,8 +5205,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/8:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5091,8 +5239,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/9:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5124,8 +5273,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/10:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5157,8 +5307,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/11:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5190,8 +5341,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/12:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5223,8 +5375,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/13:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5256,8 +5409,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/14:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5289,8 +5443,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/15:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5322,8 +5477,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/16:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5355,8 +5511,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/17:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5388,8 +5545,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/18:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5421,8 +5579,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/19:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5454,8 +5613,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/20:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5487,8 +5647,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/21:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5520,8 +5681,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/22:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5553,8 +5715,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/23:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5586,8 +5749,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/24:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5619,8 +5783,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/25:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5652,8 +5817,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/26:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5685,8 +5851,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/27:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5718,8 +5885,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/28:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5751,8 +5919,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/29:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5784,8 +5953,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/30:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5817,8 +5987,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/31:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5850,8 +6021,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/32:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5883,8 +6055,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/33:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5916,8 +6089,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/34:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5949,8 +6123,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/35:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -5982,8 +6157,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/36:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6015,8 +6191,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/37:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6048,8 +6225,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/38:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6081,8 +6259,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/39:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6114,8 +6293,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/40:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6147,8 +6327,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/41:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6180,8 +6361,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/42:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6213,8 +6395,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/43:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6246,8 +6429,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/44:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6279,8 +6463,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/45:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6312,8 +6497,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/46:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6345,8 +6531,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/47:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6378,8 +6565,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet6/48:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6411,8 +6599,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/1:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6444,8 +6633,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/2:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6477,8 +6667,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/3:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6510,8 +6701,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/4:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6543,8 +6735,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/5:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6576,8 +6769,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/6:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6609,8 +6803,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/7:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6642,8 +6837,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/8:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6675,8 +6871,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/9:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6708,8 +6905,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/10:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6741,8 +6939,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/11:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6774,8 +6973,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/12:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6807,8 +7007,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/13:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6840,8 +7041,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/14:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6873,8 +7075,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/15:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6906,8 +7109,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/16:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6939,8 +7143,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/17:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -6972,8 +7177,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/18:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7005,8 +7211,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/19:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7038,8 +7245,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/20:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7071,8 +7279,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/21:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7104,8 +7313,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/22:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7137,8 +7347,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/23:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7170,8 +7381,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/24:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7203,8 +7415,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/25:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7236,8 +7449,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/26:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7269,8 +7483,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/27:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7302,8 +7517,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/28:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7335,8 +7551,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/29:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7368,8 +7585,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/30:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7401,8 +7619,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/31:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7434,8 +7653,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/32:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7467,8 +7687,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/33:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7500,8 +7721,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/34:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7533,8 +7755,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/35:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7566,8 +7789,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/36:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7599,8 +7823,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/37:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7632,8 +7857,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/38:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7665,8 +7891,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/39:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7698,8 +7925,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/40:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7731,8 +7959,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/41:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7764,8 +7993,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/42:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7797,8 +8027,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/43:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7830,8 +8061,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/44:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7863,8 +8095,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/45:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7896,8 +8129,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/46:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7929,8 +8163,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/47:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
@@ -7962,8 +8197,9 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 220
   Ethernet7/48:
+    peer: IDF2 Standard Port
     peer_type: network_port
-    description: ''
+    description: IDF2 Standard Port
     type: switched
     shutdown: false
     mode: trunk phone
