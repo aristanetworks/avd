@@ -3,7 +3,7 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.100.100.1
 - destination_address_prefix: 0.0.0.0/0
-  gateway: 10.0.0.1
+  gateway: 10.10.10.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -43,8 +43,8 @@ management_interfaces:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
     mtu: 1500
-    ip_address: 10.0.0.9/24
-    gateway: 10.0.0.1
+    ip_address: 10.10.10.9/24
+    gateway: 10.10.10.1
     type: inband
 management_api_http:
   enable_vrfs:
