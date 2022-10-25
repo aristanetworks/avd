@@ -57,6 +57,18 @@ ethernet_interfaces:
     channel_group:
       id: 101
       mode: active
+  Ethernet5:
+    peer: 'N: blah'
+    peer_type: network_port
+    description: 'N: blah'
+    type: switched
+    shutdown: false
+  Ethernet6:
+    peer: 'N: blah'
+    peer_type: network_port
+    description: 'N: blah'
+    type: switched
+    shutdown: false
   Ethernet1:
     peer: PCs
     peer_type: network_port
