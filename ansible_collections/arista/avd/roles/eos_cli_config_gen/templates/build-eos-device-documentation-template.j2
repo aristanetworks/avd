@@ -8,5 +8,7 @@
 {%     for documentation_fragment in eos_documentation_section.documentation_fragments %}
 {{ lookup('ansible.builtin.file', documentation_fragment) }}
 {%     endfor %}
+{%     if not loop.last %}
 
+{%     endif %}
 {% endfor %}
