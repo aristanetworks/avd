@@ -34,9 +34,9 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
-| Management42 | - | oob | default | -  | - |
-| Vlan123 | inband_management | inband | default | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
+| Management42 | - | oob | default | - | - |
+| Vlan123 | inband_management | inband | default | - | - |
 
 ### Management Interfaces Device Configuration
 

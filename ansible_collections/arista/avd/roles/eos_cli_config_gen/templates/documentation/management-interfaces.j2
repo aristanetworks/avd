@@ -13,7 +13,8 @@
 {%         set description = management_interface.description | arista.avd.default('-') %}
 {%         set ip = management_interface.ip_address | arista.avd.default('-') %}
 {%         set ip_gateway = management_interface.gateway | arista.avd.default('-') %}
-| {{ management_interface.name }} | {{ description }} | {{ management_interface.type | arista.avd.default('oob') }} | {{ vrf }} | {{ ip }} | {{ ip_gateway }} |
+{%         set int_type = management_interface.type | arista.avd.default('oob') %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ip }} | {{ ip_gateway }} |
 {%     endfor %}
 
 #### IPv6
@@ -25,7 +26,8 @@
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
 {%         set ipv6 = management_interface.ipv6_address | arista.avd.default('-') %}
 {%         set ipv6_gateway = management_interface.ipv6_gateway | arista.avd.default('-') %}
-| {{ management_interface.name }} | {{ description }} | {{ management_interface.type | arista.avd.default('oob') }} | {{ vrf }} | {{ ipv6 }}  | {{ ipv6_gateway }} |
+{%         set int_type = management_interface.type | arista.avd.default('oob') %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} |
 {%     endfor %}
 
 ### Management Interfaces Device Configuration
