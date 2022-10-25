@@ -8,7 +8,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
 - [MLAG](#mlag)
@@ -34,6 +33,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [Router OSPF](#router-ospf)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
@@ -142,30 +142,12 @@ management api http-commands
 | User | Privilege | Role |
 | ---- | --------- | ---- |
 | admin | 15 | network-admin |
-| arista | 15 | network-admin |
 
 ### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-username arista privilege 15 role network-admin nopassword
-```
-
-## AAA Authentication
-
-### AAA Authentication Summary
-
-| Type | Sub-type | User Stores |
-| ---- | -------- | ---------- |
-
-Policy local allow-nopassword-remote-login has been enabled.
-
-### AAA Authentication Device Configuration
-
-```eos
-aaa authentication policy local allow-nopassword-remote-login
-!
 ```
 
 ## AAA Authorization
@@ -331,6 +313,12 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet52/1 | P2P_LINK_TO_WAN_Ethernet1/1 | routed | - | 10.0.0.3/31 | default | 1500 | False | - | - |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -354,6 +342,15 @@ interface Ethernet51/1
    description LEAF3B_Ethernet97/1
    no shutdown
    channel-group 501 mode active
+!
+interface Ethernet52/1
+   description P2P_LINK_TO_WAN_Ethernet1/1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.0.0.3/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
 !
 interface Ethernet55/1
    description MLAG_PEER_SPINE2_Ethernet55/1
@@ -425,7 +422,7 @@ interface Port-Channel551
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | - | default | 1.1.1.1/32 |
+| Loopback0 | - | default | 172.16.1.1/32 |
 
 #### IPv6
 
@@ -440,7 +437,8 @@ interface Port-Channel551
 !
 interface Loopback0
    no shutdown
-   ip address 1.1.1.1/32
+   ip address 172.16.1.1/32
+   ip ospf area 0.0.0.0
 ```
 
 ## VLAN Interfaces
@@ -466,7 +464,7 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan10 |  default  |  10.0.0.2/24  |  -  |  10.0.0.1  |  -  |  -  |  -  |
+| Vlan10 |  default  |  10.10.10.2/24  |  -  |  10.10.10.1  |  -  |  -  |  -  |
 | Vlan110 |  default  |  10.1.10.2/23  |  -  |  10.1.10.1  |  -  |  -  |  -  |
 | Vlan120 |  default  |  10.1.20.2/23  |  -  |  10.1.20.1  |  -  |  -  |  -  |
 | Vlan130 |  default  |  10.1.30.2/23  |  -  |  10.1.30.1  |  -  |  -  |  -  |
@@ -487,9 +485,9 @@ interface Vlan10
    description L2LEAF_INBAND_MGMT
    no shutdown
    mtu 1500
-   ip address 10.0.0.2/24
+   ip address 10.10.10.2/24
    ip attached-host route export 19
-   ip virtual-router address 10.0.0.1
+   ip virtual-router address 10.10.10.1
 !
 interface Vlan110
    description IDF1-Data
@@ -550,6 +548,8 @@ interface Vlan4093
    no shutdown
    mtu 1500
    ip address 10.1.1.0/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
 !
 interface Vlan4094
    description MLAG_PEER
@@ -620,6 +620,41 @@ no ip routing vrf MGMT
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+```
+
+## Router OSPF
+
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 100 | 172.16.1.1 | enabled | Vlan4093 <br> Ethernet52/1 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+
+### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 100 | connected | - |
+
+### OSPF Interfaces
+
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+| Ethernet52/1 | 0.0.0.0 | - | True |
+| Vlan4093 | 0.0.0.0 | - | True |
+| Loopback0 | 0.0.0.0 | - | - |
+
+### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 100
+   router-id 172.16.1.1
+   passive-interface default
+   no passive-interface Vlan4093
+   no passive-interface Ethernet52/1
+   max-lsa 12000
+   redistribute connected
 ```
 
 # Multicast

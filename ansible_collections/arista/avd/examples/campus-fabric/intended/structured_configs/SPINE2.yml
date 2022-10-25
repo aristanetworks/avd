@@ -88,6 +88,8 @@ vlan_interfaces:
     shutdown: false
     ip_address: 10.1.1.1/31
     mtu: 1500
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
@@ -276,6 +278,17 @@ ethernet_interfaces:
     channel_group:
       id: 501
       mode: active
+  Ethernet52/1:
+    peer: WAN
+    peer_interface: Ethernet1/1
+    peer_type: other
+    description: P2P_LINK_TO_WAN_Ethernet1/1
+    type: routed
+    shutdown: false
+    mtu: 1500
+    ip_address: 10.0.0.5/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094
@@ -287,6 +300,18 @@ loopback_interfaces:
   Loopback0:
     shutdown: false
     ip_address: 172.16.1.2/32
+    ospf_area: 0.0.0.0
+router_ospf:
+  process_ids:
+    100:
+      passive_interface_default: true
+      router_id: 172.16.1.2
+      no_passive_interfaces:
+      - Vlan4093
+      - Ethernet52/1
+      max_lsa: 12000
+      redistribute:
+        connected: {}
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

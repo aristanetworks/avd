@@ -8,7 +8,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
 - [MLAG](#mlag)
@@ -54,7 +53,7 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.107/24 | 172.100.100.1 |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.0.0.10/24 | 10.0.0.1 |
+| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.10.10.10/24 | 10.10.10.1 |
 
 #### IPv6
 
@@ -77,7 +76,7 @@ interface Vlan10
    description L2LEAF_INBAND_MGMT
    no shutdown
    mtu 1500
-   ip address 10.0.0.10/24
+   ip address 10.10.10.10/24
 ```
 
 ## Name Servers
@@ -150,30 +149,12 @@ management api http-commands
 | User | Privilege | Role |
 | ---- | --------- | ---- |
 | admin | 15 | network-admin |
-| arista | 15 | network-admin |
 
 ### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-username arista privilege 15 role network-admin nopassword
-```
-
-## AAA Authentication
-
-### AAA Authentication Summary
-
-| Type | Sub-type | User Stores |
-| ---- | -------- | ---------- |
-
-Policy local allow-nopassword-remote-login has been enabled.
-
-### AAA Authentication Device Configuration
-
-```eos
-aaa authentication policy local allow-nopassword-remote-login
-!
 ```
 
 ## AAA Authorization
@@ -301,102 +282,102 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |   | trunk phone | - | 310 | - | - |
-| Ethernet2 |   | trunk phone | - | 310 | - | - |
-| Ethernet3 |   | trunk phone | - | 310 | - | - |
-| Ethernet4 |   | trunk phone | - | 310 | - | - |
-| Ethernet5 |   | trunk phone | - | 310 | - | - |
-| Ethernet6 |   | trunk phone | - | 310 | - | - |
-| Ethernet7 |   | trunk phone | - | 310 | - | - |
-| Ethernet8 |   | trunk phone | - | 310 | - | - |
-| Ethernet9 |   | trunk phone | - | 310 | - | - |
-| Ethernet10 |   | trunk phone | - | 310 | - | - |
-| Ethernet11 |   | trunk phone | - | 310 | - | - |
-| Ethernet12 |   | trunk phone | - | 310 | - | - |
-| Ethernet13 |   | trunk phone | - | 310 | - | - |
-| Ethernet14 |   | trunk phone | - | 310 | - | - |
-| Ethernet15 |   | trunk phone | - | 310 | - | - |
-| Ethernet16 |   | trunk phone | - | 310 | - | - |
-| Ethernet17 |   | trunk phone | - | 310 | - | - |
-| Ethernet18 |   | trunk phone | - | 310 | - | - |
-| Ethernet19 |   | trunk phone | - | 310 | - | - |
-| Ethernet20 |   | trunk phone | - | 310 | - | - |
-| Ethernet21 |   | trunk phone | - | 310 | - | - |
-| Ethernet22 |   | trunk phone | - | 310 | - | - |
-| Ethernet23 |   | trunk phone | - | 310 | - | - |
-| Ethernet24 |   | trunk phone | - | 310 | - | - |
-| Ethernet25 |   | trunk phone | - | 310 | - | - |
-| Ethernet26 |   | trunk phone | - | 310 | - | - |
-| Ethernet27 |   | trunk phone | - | 310 | - | - |
-| Ethernet28 |   | trunk phone | - | 310 | - | - |
-| Ethernet29 |   | trunk phone | - | 310 | - | - |
-| Ethernet30 |   | trunk phone | - | 310 | - | - |
-| Ethernet31 |   | trunk phone | - | 310 | - | - |
-| Ethernet32 |   | trunk phone | - | 310 | - | - |
-| Ethernet33 |   | trunk phone | - | 310 | - | - |
-| Ethernet34 |   | trunk phone | - | 310 | - | - |
-| Ethernet35 |   | trunk phone | - | 310 | - | - |
-| Ethernet36 |   | trunk phone | - | 310 | - | - |
-| Ethernet37 |   | trunk phone | - | 310 | - | - |
-| Ethernet38 |   | trunk phone | - | 310 | - | - |
-| Ethernet39 |   | trunk phone | - | 310 | - | - |
-| Ethernet40 |   | trunk phone | - | 310 | - | - |
-| Ethernet41 |   | trunk phone | - | 310 | - | - |
-| Ethernet42 |   | trunk phone | - | 310 | - | - |
-| Ethernet43 |   | trunk phone | - | 310 | - | - |
-| Ethernet44 |   | trunk phone | - | 310 | - | - |
-| Ethernet45 |   | trunk phone | - | 310 | - | - |
-| Ethernet46 |   | trunk phone | - | 310 | - | - |
-| Ethernet47 |   | trunk phone | - | 310 | - | - |
-| Ethernet48 |   | trunk phone | - | 310 | - | - |
-| Ethernet49 |   | trunk phone | - | 310 | - | - |
-| Ethernet50 |   | trunk phone | - | 310 | - | - |
-| Ethernet51 |   | trunk phone | - | 310 | - | - |
-| Ethernet52 |   | trunk phone | - | 310 | - | - |
-| Ethernet53 |   | trunk phone | - | 310 | - | - |
-| Ethernet54 |   | trunk phone | - | 310 | - | - |
-| Ethernet55 |   | trunk phone | - | 310 | - | - |
-| Ethernet56 |   | trunk phone | - | 310 | - | - |
-| Ethernet57 |   | trunk phone | - | 310 | - | - |
-| Ethernet58 |   | trunk phone | - | 310 | - | - |
-| Ethernet59 |   | trunk phone | - | 310 | - | - |
-| Ethernet60 |   | trunk phone | - | 310 | - | - |
-| Ethernet61 |   | trunk phone | - | 310 | - | - |
-| Ethernet62 |   | trunk phone | - | 310 | - | - |
-| Ethernet63 |   | trunk phone | - | 310 | - | - |
-| Ethernet64 |   | trunk phone | - | 310 | - | - |
-| Ethernet65 |   | trunk phone | - | 310 | - | - |
-| Ethernet66 |   | trunk phone | - | 310 | - | - |
-| Ethernet67 |   | trunk phone | - | 310 | - | - |
-| Ethernet68 |   | trunk phone | - | 310 | - | - |
-| Ethernet69 |   | trunk phone | - | 310 | - | - |
-| Ethernet70 |   | trunk phone | - | 310 | - | - |
-| Ethernet71 |   | trunk phone | - | 310 | - | - |
-| Ethernet72 |   | trunk phone | - | 310 | - | - |
-| Ethernet73 |   | trunk phone | - | 310 | - | - |
-| Ethernet74 |   | trunk phone | - | 310 | - | - |
-| Ethernet75 |   | trunk phone | - | 310 | - | - |
-| Ethernet76 |   | trunk phone | - | 310 | - | - |
-| Ethernet77 |   | trunk phone | - | 310 | - | - |
-| Ethernet78 |   | trunk phone | - | 310 | - | - |
-| Ethernet79 |   | trunk phone | - | 310 | - | - |
-| Ethernet80 |   | trunk phone | - | 310 | - | - |
-| Ethernet81 |   | trunk phone | - | 310 | - | - |
-| Ethernet82 |   | trunk phone | - | 310 | - | - |
-| Ethernet83 |   | trunk phone | - | 310 | - | - |
-| Ethernet84 |   | trunk phone | - | 310 | - | - |
-| Ethernet85 |   | trunk phone | - | 310 | - | - |
-| Ethernet86 |   | trunk phone | - | 310 | - | - |
-| Ethernet87 |   | trunk phone | - | 310 | - | - |
-| Ethernet88 |   | trunk phone | - | 310 | - | - |
-| Ethernet89 |   | trunk phone | - | 310 | - | - |
-| Ethernet90 |   | trunk phone | - | 310 | - | - |
-| Ethernet91 |   | trunk phone | - | 310 | - | - |
-| Ethernet92 |   | trunk phone | - | 310 | - | - |
-| Ethernet93 |   | trunk phone | - | 310 | - | - |
-| Ethernet94 |   | trunk phone | - | 310 | - | - |
-| Ethernet95 |   | trunk phone | - | 310 | - | - |
-| Ethernet96 |   | trunk phone | - | 310 | - | - |
+| Ethernet1 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet2 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet3 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet4 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet5 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet6 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet7 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet8 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet9 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet10 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet11 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet12 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet13 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet14 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet15 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet16 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet17 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet18 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet19 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet20 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet21 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet22 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet23 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet24 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet25 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet26 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet27 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet28 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet29 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet30 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet31 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet32 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet33 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet34 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet35 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet36 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet37 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet38 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet39 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet40 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet41 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet42 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet43 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet44 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet45 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet46 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet47 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet48 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet49 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet50 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet51 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet52 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet53 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet54 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet55 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet56 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet57 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet58 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet59 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet60 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet61 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet62 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet63 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet64 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet65 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet66 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet67 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet68 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet69 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet70 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet71 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet72 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet73 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet74 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet75 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet76 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet77 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet78 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet79 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet80 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet81 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet82 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet83 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet84 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet85 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet86 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet87 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet88 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet89 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet90 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet91 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet92 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet93 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet94 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet95 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet96 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
 | Ethernet97/1 | SPINE1_Ethernet51/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
 | Ethernet97/2 | SPINE2_Ethernet51/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
 | Ethernet97/3 | LEAF3C_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 973 |
@@ -412,7 +393,7 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -432,7 +413,7 @@ interface Ethernet1
    spanning-tree bpduguard enable
 !
 interface Ethernet2
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -452,7 +433,7 @@ interface Ethernet2
    spanning-tree bpduguard enable
 !
 interface Ethernet3
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -472,7 +453,7 @@ interface Ethernet3
    spanning-tree bpduguard enable
 !
 interface Ethernet4
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -492,7 +473,7 @@ interface Ethernet4
    spanning-tree bpduguard enable
 !
 interface Ethernet5
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -512,7 +493,7 @@ interface Ethernet5
    spanning-tree bpduguard enable
 !
 interface Ethernet6
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -532,7 +513,7 @@ interface Ethernet6
    spanning-tree bpduguard enable
 !
 interface Ethernet7
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -552,7 +533,7 @@ interface Ethernet7
    spanning-tree bpduguard enable
 !
 interface Ethernet8
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -572,7 +553,7 @@ interface Ethernet8
    spanning-tree bpduguard enable
 !
 interface Ethernet9
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -592,7 +573,7 @@ interface Ethernet9
    spanning-tree bpduguard enable
 !
 interface Ethernet10
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -612,7 +593,7 @@ interface Ethernet10
    spanning-tree bpduguard enable
 !
 interface Ethernet11
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -632,7 +613,7 @@ interface Ethernet11
    spanning-tree bpduguard enable
 !
 interface Ethernet12
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -652,7 +633,7 @@ interface Ethernet12
    spanning-tree bpduguard enable
 !
 interface Ethernet13
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -672,7 +653,7 @@ interface Ethernet13
    spanning-tree bpduguard enable
 !
 interface Ethernet14
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -692,7 +673,7 @@ interface Ethernet14
    spanning-tree bpduguard enable
 !
 interface Ethernet15
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -712,7 +693,7 @@ interface Ethernet15
    spanning-tree bpduguard enable
 !
 interface Ethernet16
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -732,7 +713,7 @@ interface Ethernet16
    spanning-tree bpduguard enable
 !
 interface Ethernet17
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -752,7 +733,7 @@ interface Ethernet17
    spanning-tree bpduguard enable
 !
 interface Ethernet18
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -772,7 +753,7 @@ interface Ethernet18
    spanning-tree bpduguard enable
 !
 interface Ethernet19
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -792,7 +773,7 @@ interface Ethernet19
    spanning-tree bpduguard enable
 !
 interface Ethernet20
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -812,7 +793,7 @@ interface Ethernet20
    spanning-tree bpduguard enable
 !
 interface Ethernet21
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -832,7 +813,7 @@ interface Ethernet21
    spanning-tree bpduguard enable
 !
 interface Ethernet22
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -852,7 +833,7 @@ interface Ethernet22
    spanning-tree bpduguard enable
 !
 interface Ethernet23
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -872,7 +853,7 @@ interface Ethernet23
    spanning-tree bpduguard enable
 !
 interface Ethernet24
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -892,7 +873,7 @@ interface Ethernet24
    spanning-tree bpduguard enable
 !
 interface Ethernet25
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -912,7 +893,7 @@ interface Ethernet25
    spanning-tree bpduguard enable
 !
 interface Ethernet26
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -932,7 +913,7 @@ interface Ethernet26
    spanning-tree bpduguard enable
 !
 interface Ethernet27
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -952,7 +933,7 @@ interface Ethernet27
    spanning-tree bpduguard enable
 !
 interface Ethernet28
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -972,7 +953,7 @@ interface Ethernet28
    spanning-tree bpduguard enable
 !
 interface Ethernet29
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -992,7 +973,7 @@ interface Ethernet29
    spanning-tree bpduguard enable
 !
 interface Ethernet30
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1012,7 +993,7 @@ interface Ethernet30
    spanning-tree bpduguard enable
 !
 interface Ethernet31
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1032,7 +1013,7 @@ interface Ethernet31
    spanning-tree bpduguard enable
 !
 interface Ethernet32
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1052,7 +1033,7 @@ interface Ethernet32
    spanning-tree bpduguard enable
 !
 interface Ethernet33
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1072,7 +1053,7 @@ interface Ethernet33
    spanning-tree bpduguard enable
 !
 interface Ethernet34
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1092,7 +1073,7 @@ interface Ethernet34
    spanning-tree bpduguard enable
 !
 interface Ethernet35
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1112,7 +1093,7 @@ interface Ethernet35
    spanning-tree bpduguard enable
 !
 interface Ethernet36
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1132,7 +1113,7 @@ interface Ethernet36
    spanning-tree bpduguard enable
 !
 interface Ethernet37
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1152,7 +1133,7 @@ interface Ethernet37
    spanning-tree bpduguard enable
 !
 interface Ethernet38
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1172,7 +1153,7 @@ interface Ethernet38
    spanning-tree bpduguard enable
 !
 interface Ethernet39
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1192,7 +1173,7 @@ interface Ethernet39
    spanning-tree bpduguard enable
 !
 interface Ethernet40
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1212,7 +1193,7 @@ interface Ethernet40
    spanning-tree bpduguard enable
 !
 interface Ethernet41
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1232,7 +1213,7 @@ interface Ethernet41
    spanning-tree bpduguard enable
 !
 interface Ethernet42
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1252,7 +1233,7 @@ interface Ethernet42
    spanning-tree bpduguard enable
 !
 interface Ethernet43
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1272,7 +1253,7 @@ interface Ethernet43
    spanning-tree bpduguard enable
 !
 interface Ethernet44
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1292,7 +1273,7 @@ interface Ethernet44
    spanning-tree bpduguard enable
 !
 interface Ethernet45
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1312,7 +1293,7 @@ interface Ethernet45
    spanning-tree bpduguard enable
 !
 interface Ethernet46
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1332,7 +1313,7 @@ interface Ethernet46
    spanning-tree bpduguard enable
 !
 interface Ethernet47
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1352,7 +1333,7 @@ interface Ethernet47
    spanning-tree bpduguard enable
 !
 interface Ethernet48
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1372,7 +1353,7 @@ interface Ethernet48
    spanning-tree bpduguard enable
 !
 interface Ethernet49
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1392,7 +1373,7 @@ interface Ethernet49
    spanning-tree bpduguard enable
 !
 interface Ethernet50
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1412,7 +1393,7 @@ interface Ethernet50
    spanning-tree bpduguard enable
 !
 interface Ethernet51
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1432,7 +1413,7 @@ interface Ethernet51
    spanning-tree bpduguard enable
 !
 interface Ethernet52
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1452,7 +1433,7 @@ interface Ethernet52
    spanning-tree bpduguard enable
 !
 interface Ethernet53
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1472,7 +1453,7 @@ interface Ethernet53
    spanning-tree bpduguard enable
 !
 interface Ethernet54
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1492,7 +1473,7 @@ interface Ethernet54
    spanning-tree bpduguard enable
 !
 interface Ethernet55
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1512,7 +1493,7 @@ interface Ethernet55
    spanning-tree bpduguard enable
 !
 interface Ethernet56
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1532,7 +1513,7 @@ interface Ethernet56
    spanning-tree bpduguard enable
 !
 interface Ethernet57
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1552,7 +1533,7 @@ interface Ethernet57
    spanning-tree bpduguard enable
 !
 interface Ethernet58
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1572,7 +1553,7 @@ interface Ethernet58
    spanning-tree bpduguard enable
 !
 interface Ethernet59
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1592,7 +1573,7 @@ interface Ethernet59
    spanning-tree bpduguard enable
 !
 interface Ethernet60
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1612,7 +1593,7 @@ interface Ethernet60
    spanning-tree bpduguard enable
 !
 interface Ethernet61
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1632,7 +1613,7 @@ interface Ethernet61
    spanning-tree bpduguard enable
 !
 interface Ethernet62
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1652,7 +1633,7 @@ interface Ethernet62
    spanning-tree bpduguard enable
 !
 interface Ethernet63
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1672,7 +1653,7 @@ interface Ethernet63
    spanning-tree bpduguard enable
 !
 interface Ethernet64
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1692,7 +1673,7 @@ interface Ethernet64
    spanning-tree bpduguard enable
 !
 interface Ethernet65
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1712,7 +1693,7 @@ interface Ethernet65
    spanning-tree bpduguard enable
 !
 interface Ethernet66
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1732,7 +1713,7 @@ interface Ethernet66
    spanning-tree bpduguard enable
 !
 interface Ethernet67
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1752,7 +1733,7 @@ interface Ethernet67
    spanning-tree bpduguard enable
 !
 interface Ethernet68
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1772,7 +1753,7 @@ interface Ethernet68
    spanning-tree bpduguard enable
 !
 interface Ethernet69
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1792,7 +1773,7 @@ interface Ethernet69
    spanning-tree bpduguard enable
 !
 interface Ethernet70
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1812,7 +1793,7 @@ interface Ethernet70
    spanning-tree bpduguard enable
 !
 interface Ethernet71
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1832,7 +1813,7 @@ interface Ethernet71
    spanning-tree bpduguard enable
 !
 interface Ethernet72
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1852,7 +1833,7 @@ interface Ethernet72
    spanning-tree bpduguard enable
 !
 interface Ethernet73
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1872,7 +1853,7 @@ interface Ethernet73
    spanning-tree bpduguard enable
 !
 interface Ethernet74
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1892,7 +1873,7 @@ interface Ethernet74
    spanning-tree bpduguard enable
 !
 interface Ethernet75
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1912,7 +1893,7 @@ interface Ethernet75
    spanning-tree bpduguard enable
 !
 interface Ethernet76
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1932,7 +1913,7 @@ interface Ethernet76
    spanning-tree bpduguard enable
 !
 interface Ethernet77
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1952,7 +1933,7 @@ interface Ethernet77
    spanning-tree bpduguard enable
 !
 interface Ethernet78
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1972,7 +1953,7 @@ interface Ethernet78
    spanning-tree bpduguard enable
 !
 interface Ethernet79
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -1992,7 +1973,7 @@ interface Ethernet79
    spanning-tree bpduguard enable
 !
 interface Ethernet80
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2012,7 +1993,7 @@ interface Ethernet80
    spanning-tree bpduguard enable
 !
 interface Ethernet81
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2032,7 +2013,7 @@ interface Ethernet81
    spanning-tree bpduguard enable
 !
 interface Ethernet82
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2052,7 +2033,7 @@ interface Ethernet82
    spanning-tree bpduguard enable
 !
 interface Ethernet83
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2072,7 +2053,7 @@ interface Ethernet83
    spanning-tree bpduguard enable
 !
 interface Ethernet84
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2092,7 +2073,7 @@ interface Ethernet84
    spanning-tree bpduguard enable
 !
 interface Ethernet85
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2112,7 +2093,7 @@ interface Ethernet85
    spanning-tree bpduguard enable
 !
 interface Ethernet86
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2132,7 +2113,7 @@ interface Ethernet86
    spanning-tree bpduguard enable
 !
 interface Ethernet87
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2152,7 +2133,7 @@ interface Ethernet87
    spanning-tree bpduguard enable
 !
 interface Ethernet88
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2172,7 +2153,7 @@ interface Ethernet88
    spanning-tree bpduguard enable
 !
 interface Ethernet89
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2192,7 +2173,7 @@ interface Ethernet89
    spanning-tree bpduguard enable
 !
 interface Ethernet90
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2212,7 +2193,7 @@ interface Ethernet90
    spanning-tree bpduguard enable
 !
 interface Ethernet91
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2232,7 +2213,7 @@ interface Ethernet91
    spanning-tree bpduguard enable
 !
 interface Ethernet92
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2252,7 +2233,7 @@ interface Ethernet92
    spanning-tree bpduguard enable
 !
 interface Ethernet93
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2272,7 +2253,7 @@ interface Ethernet93
    spanning-tree bpduguard enable
 !
 interface Ethernet94
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2292,7 +2273,7 @@ interface Ethernet94
    spanning-tree bpduguard enable
 !
 interface Ethernet95
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2312,7 +2293,7 @@ interface Ethernet95
    spanning-tree bpduguard enable
 !
 interface Ethernet96
-   description
+   description IDF3 Standard Port
    no shutdown
    switchport trunk native vlan 310
    switchport phone vlan 320
@@ -2494,14 +2475,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 172.100.100.1 | - | 1 | - | - | - |
-| default | 0.0.0.0/0 | 10.0.0.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.100.100.1
-ip route 0.0.0.0/0 10.0.0.1
+ip route 0.0.0.0/0 10.10.10.1
 ```
 
 # Multicast

@@ -33,14 +33,14 @@
 ## Fabric Switches with inband Management IP
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
-| DC1_FABRIC | leaf | LEAF1A | 10.0.0.6/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF1B | 10.0.0.7/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF2A | 10.0.0.8/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF3A | 10.0.0.9/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF3B | 10.0.0.10/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF3C | 10.0.0.11/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF3D | 10.0.0.12/24 | Vlan10 |
-| DC1_FABRIC | leaf | LEAF3E | 10.0.0.13/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF1A | 10.10.10.6/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF1B | 10.10.10.7/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF2A | 10.10.10.8/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3A | 10.10.10.9/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3B | 10.10.10.10/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3C | 10.10.10.11/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3D | 10.10.10.12/24 | Vlan10 |
+| DC1_FABRIC | leaf | LEAF3E | 10.10.10.13/24 | Vlan10 |
 
 # Fabric Topology
 
@@ -83,14 +83,14 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 1.1.1.0/24 | 256 | 2 | 0.79 % |
+| 172.16.1.0/24 | 256 | 2 | 0.79 % |
 
 ## Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| DC1_FABRIC | SPINE1 | 1.1.1.1/32 |
-| DC1_FABRIC | SPINE2 | 1.1.1.2/32 |
+| DC1_FABRIC | SPINE1 | 172.16.1.1/32 |
+| DC1_FABRIC | SPINE2 | 172.16.1.2/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

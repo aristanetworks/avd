@@ -8,7 +8,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
 - [MLAG](#mlag)
@@ -54,7 +53,7 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.104/24 | 172.100.100.1 |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.0.0.7/24 | 10.0.0.1 |
+| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.10.10.7/24 | 10.10.10.1 |
 
 #### IPv6
 
@@ -77,7 +76,7 @@ interface Vlan10
    description L2LEAF_INBAND_MGMT
    no shutdown
    mtu 1500
-   ip address 10.0.0.7/24
+   ip address 10.10.10.7/24
 ```
 
 ## Name Servers
@@ -150,30 +149,12 @@ management api http-commands
 | User | Privilege | Role |
 | ---- | --------- | ---- |
 | admin | 15 | network-admin |
-| arista | 15 | network-admin |
 
 ### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-username arista privilege 15 role network-admin nopassword
-```
-
-## AAA Authentication
-
-### AAA Authentication Summary
-
-| Type | Sub-type | User Stores |
-| ---- | -------- | ---------- |
-
-Policy local allow-nopassword-remote-login has been enabled.
-
-### AAA Authentication Device Configuration
-
-```eos
-aaa authentication policy local allow-nopassword-remote-login
-!
 ```
 
 ## AAA Authorization
@@ -301,54 +282,54 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |   | trunk phone | - | 110 | - | - |
-| Ethernet2 |   | trunk phone | - | 110 | - | - |
-| Ethernet3 |   | trunk phone | - | 110 | - | - |
-| Ethernet4 |   | trunk phone | - | 110 | - | - |
-| Ethernet5 |   | trunk phone | - | 110 | - | - |
-| Ethernet6 |   | trunk phone | - | 110 | - | - |
-| Ethernet7 |   | trunk phone | - | 110 | - | - |
-| Ethernet8 |   | trunk phone | - | 110 | - | - |
-| Ethernet9 |   | trunk phone | - | 110 | - | - |
-| Ethernet10 |   | trunk phone | - | 110 | - | - |
-| Ethernet11 |   | trunk phone | - | 110 | - | - |
-| Ethernet12 |   | trunk phone | - | 110 | - | - |
-| Ethernet13 |   | trunk phone | - | 110 | - | - |
-| Ethernet14 |   | trunk phone | - | 110 | - | - |
-| Ethernet15 |   | trunk phone | - | 110 | - | - |
-| Ethernet16 |   | trunk phone | - | 110 | - | - |
-| Ethernet17 |   | trunk phone | - | 110 | - | - |
-| Ethernet18 |   | trunk phone | - | 110 | - | - |
-| Ethernet19 |   | trunk phone | - | 110 | - | - |
-| Ethernet20 |   | trunk phone | - | 110 | - | - |
-| Ethernet21 |   | trunk phone | - | 110 | - | - |
-| Ethernet22 |   | trunk phone | - | 110 | - | - |
-| Ethernet23 |   | trunk phone | - | 110 | - | - |
-| Ethernet24 |   | trunk phone | - | 110 | - | - |
-| Ethernet25 |   | trunk phone | - | 110 | - | - |
-| Ethernet26 |   | trunk phone | - | 110 | - | - |
-| Ethernet27 |   | trunk phone | - | 110 | - | - |
-| Ethernet28 |   | trunk phone | - | 110 | - | - |
-| Ethernet29 |   | trunk phone | - | 110 | - | - |
-| Ethernet30 |   | trunk phone | - | 110 | - | - |
-| Ethernet31 |   | trunk phone | - | 110 | - | - |
-| Ethernet32 |   | trunk phone | - | 110 | - | - |
-| Ethernet33 |   | trunk phone | - | 110 | - | - |
-| Ethernet34 |   | trunk phone | - | 110 | - | - |
-| Ethernet35 |   | trunk phone | - | 110 | - | - |
-| Ethernet36 |   | trunk phone | - | 110 | - | - |
-| Ethernet37 |   | trunk phone | - | 110 | - | - |
-| Ethernet38 |   | trunk phone | - | 110 | - | - |
-| Ethernet39 |   | trunk phone | - | 110 | - | - |
-| Ethernet40 |   | trunk phone | - | 110 | - | - |
-| Ethernet41 |   | trunk phone | - | 110 | - | - |
-| Ethernet42 |   | trunk phone | - | 110 | - | - |
-| Ethernet43 |   | trunk phone | - | 110 | - | - |
-| Ethernet44 |   | trunk phone | - | 110 | - | - |
-| Ethernet45 |   | trunk phone | - | 110 | - | - |
-| Ethernet46 |   | trunk phone | - | 110 | - | - |
-| Ethernet47 |   | trunk phone | - | 110 | - | - |
-| Ethernet48 |   | trunk phone | - | 110 | - | - |
+| Ethernet1 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet2 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet3 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet4 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet5 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet6 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet7 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet8 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet9 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet10 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet11 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet12 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet13 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet14 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet15 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet16 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet17 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet18 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet19 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet20 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet21 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet22 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet23 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet24 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet25 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet26 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet27 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet28 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet29 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet30 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet31 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet32 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet33 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet34 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet35 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet36 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet37 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet38 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet39 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet40 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet41 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet42 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet43 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet44 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet45 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet46 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet47 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet48 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet51 | SPINE2_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
 | Ethernet53 | MLAG_PEER_LEAF1A_Ethernet53 | *trunk | *2-4094 | *- | *['MLAG'] | 53 |
 | Ethernet54 | MLAG_PEER_LEAF1A_Ethernet54 | *trunk | *2-4094 | *- | *['MLAG'] | 53 |
@@ -360,7 +341,7 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -380,7 +361,7 @@ interface Ethernet1
    spanning-tree bpduguard enable
 !
 interface Ethernet2
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -400,7 +381,7 @@ interface Ethernet2
    spanning-tree bpduguard enable
 !
 interface Ethernet3
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -420,7 +401,7 @@ interface Ethernet3
    spanning-tree bpduguard enable
 !
 interface Ethernet4
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -440,7 +421,7 @@ interface Ethernet4
    spanning-tree bpduguard enable
 !
 interface Ethernet5
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -460,7 +441,7 @@ interface Ethernet5
    spanning-tree bpduguard enable
 !
 interface Ethernet6
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -480,7 +461,7 @@ interface Ethernet6
    spanning-tree bpduguard enable
 !
 interface Ethernet7
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -500,7 +481,7 @@ interface Ethernet7
    spanning-tree bpduguard enable
 !
 interface Ethernet8
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -520,7 +501,7 @@ interface Ethernet8
    spanning-tree bpduguard enable
 !
 interface Ethernet9
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -540,7 +521,7 @@ interface Ethernet9
    spanning-tree bpduguard enable
 !
 interface Ethernet10
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -560,7 +541,7 @@ interface Ethernet10
    spanning-tree bpduguard enable
 !
 interface Ethernet11
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -580,7 +561,7 @@ interface Ethernet11
    spanning-tree bpduguard enable
 !
 interface Ethernet12
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -600,7 +581,7 @@ interface Ethernet12
    spanning-tree bpduguard enable
 !
 interface Ethernet13
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -620,7 +601,7 @@ interface Ethernet13
    spanning-tree bpduguard enable
 !
 interface Ethernet14
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -640,7 +621,7 @@ interface Ethernet14
    spanning-tree bpduguard enable
 !
 interface Ethernet15
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -660,7 +641,7 @@ interface Ethernet15
    spanning-tree bpduguard enable
 !
 interface Ethernet16
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -680,7 +661,7 @@ interface Ethernet16
    spanning-tree bpduguard enable
 !
 interface Ethernet17
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -700,7 +681,7 @@ interface Ethernet17
    spanning-tree bpduguard enable
 !
 interface Ethernet18
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -720,7 +701,7 @@ interface Ethernet18
    spanning-tree bpduguard enable
 !
 interface Ethernet19
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -740,7 +721,7 @@ interface Ethernet19
    spanning-tree bpduguard enable
 !
 interface Ethernet20
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -760,7 +741,7 @@ interface Ethernet20
    spanning-tree bpduguard enable
 !
 interface Ethernet21
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -780,7 +761,7 @@ interface Ethernet21
    spanning-tree bpduguard enable
 !
 interface Ethernet22
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -800,7 +781,7 @@ interface Ethernet22
    spanning-tree bpduguard enable
 !
 interface Ethernet23
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -820,7 +801,7 @@ interface Ethernet23
    spanning-tree bpduguard enable
 !
 interface Ethernet24
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -840,7 +821,7 @@ interface Ethernet24
    spanning-tree bpduguard enable
 !
 interface Ethernet25
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -860,7 +841,7 @@ interface Ethernet25
    spanning-tree bpduguard enable
 !
 interface Ethernet26
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -880,7 +861,7 @@ interface Ethernet26
    spanning-tree bpduguard enable
 !
 interface Ethernet27
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -900,7 +881,7 @@ interface Ethernet27
    spanning-tree bpduguard enable
 !
 interface Ethernet28
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -920,7 +901,7 @@ interface Ethernet28
    spanning-tree bpduguard enable
 !
 interface Ethernet29
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -940,7 +921,7 @@ interface Ethernet29
    spanning-tree bpduguard enable
 !
 interface Ethernet30
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -960,7 +941,7 @@ interface Ethernet30
    spanning-tree bpduguard enable
 !
 interface Ethernet31
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -980,7 +961,7 @@ interface Ethernet31
    spanning-tree bpduguard enable
 !
 interface Ethernet32
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1000,7 +981,7 @@ interface Ethernet32
    spanning-tree bpduguard enable
 !
 interface Ethernet33
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1020,7 +1001,7 @@ interface Ethernet33
    spanning-tree bpduguard enable
 !
 interface Ethernet34
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1040,7 +1021,7 @@ interface Ethernet34
    spanning-tree bpduguard enable
 !
 interface Ethernet35
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1060,7 +1041,7 @@ interface Ethernet35
    spanning-tree bpduguard enable
 !
 interface Ethernet36
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1080,7 +1061,7 @@ interface Ethernet36
    spanning-tree bpduguard enable
 !
 interface Ethernet37
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1100,7 +1081,7 @@ interface Ethernet37
    spanning-tree bpduguard enable
 !
 interface Ethernet38
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1120,7 +1101,7 @@ interface Ethernet38
    spanning-tree bpduguard enable
 !
 interface Ethernet39
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1140,7 +1121,7 @@ interface Ethernet39
    spanning-tree bpduguard enable
 !
 interface Ethernet40
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1160,7 +1141,7 @@ interface Ethernet40
    spanning-tree bpduguard enable
 !
 interface Ethernet41
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1180,7 +1161,7 @@ interface Ethernet41
    spanning-tree bpduguard enable
 !
 interface Ethernet42
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1200,7 +1181,7 @@ interface Ethernet42
    spanning-tree bpduguard enable
 !
 interface Ethernet43
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1220,7 +1201,7 @@ interface Ethernet43
    spanning-tree bpduguard enable
 !
 interface Ethernet44
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1240,7 +1221,7 @@ interface Ethernet44
    spanning-tree bpduguard enable
 !
 interface Ethernet45
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1260,7 +1241,7 @@ interface Ethernet45
    spanning-tree bpduguard enable
 !
 interface Ethernet46
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1280,7 +1261,7 @@ interface Ethernet46
    spanning-tree bpduguard enable
 !
 interface Ethernet47
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1300,7 +1281,7 @@ interface Ethernet47
    spanning-tree bpduguard enable
 !
 interface Ethernet48
-   description
+   description IDF1 Standard Port
    no shutdown
    switchport trunk native vlan 110
    switchport phone vlan 120
@@ -1435,14 +1416,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 172.100.100.1 | - | 1 | - | - | - |
-| default | 0.0.0.0/0 | 10.0.0.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.100.100.1
-ip route 0.0.0.0/0 10.0.0.1
+ip route 0.0.0.0/0 10.10.10.1
 ```
 
 # Multicast

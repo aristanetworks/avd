@@ -23,13 +23,13 @@ ansible_httpapi_use_ssl: true
 # Do not try to validate certs
 ansible_httpapi_validate_certs: false
 
-# Spine Switches (L2 Only)
+# Spine Switches
 l3spine:
   defaults:
     platform: cEOSLab
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
-    loopback_ipv4_pool: 1.1.1.0/24
+    loopback_ipv4_pool: 172.16.1.0/24
     mlag_peer_ipv4_pool: 192.168.0.0/24
     mlag_peer_l3_ipv4_pool: 10.1.1.0/24
     virtual_router_mac_address: 00:1c:73:00:dc:01
@@ -129,3 +129,18 @@ leaf:
 
 #### Override for vEOS/cEOS Lab Caveats ####
 p2p_uplinks_mtu: 1500
+
+# Underlay Routing Protocol
+underlay_routing_protocol: OSPF
+
+#### WAN/Core Edge Links ####
+core_interfaces:
+  p2p_links:
+    - ip: [ 10.0.0.3/31, 10.0.0.2/31 ]
+      nodes: [ SPINE1, WAN ]
+      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+      include_in_underlay_protocol: true
+    - ip: [ 10.0.0.5/31, 10.0.0.4/31 ]
+      nodes: [ SPINE2, WAN ]
+      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+      include_in_underlay_protocol: true

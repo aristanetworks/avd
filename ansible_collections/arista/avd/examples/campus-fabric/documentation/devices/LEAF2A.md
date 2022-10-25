@@ -8,7 +8,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
 - [Spanning Tree](#spanning-tree)
@@ -50,7 +49,7 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.105/24 | 172.100.100.1 |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.0.0.8/24 | 10.0.0.1 |
+| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.10.10.8/24 | 10.10.10.1 |
 
 #### IPv6
 
@@ -73,7 +72,7 @@ interface Vlan10
    description L2LEAF_INBAND_MGMT
    no shutdown
    mtu 1500
-   ip address 10.0.0.8/24
+   ip address 10.10.10.8/24
 ```
 
 ## Name Servers
@@ -146,30 +145,12 @@ management api http-commands
 | User | Privilege | Role |
 | ---- | --------- | ---- |
 | admin | 15 | network-admin |
-| arista | 15 | network-admin |
 
 ### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-username arista privilege 15 role network-admin nopassword
-```
-
-## AAA Authentication
-
-### AAA Authentication Summary
-
-| Type | Sub-type | User Stores |
-| ---- | -------- | ---------- |
-
-Policy local allow-nopassword-remote-login has been enabled.
-
-### AAA Authentication Device Configuration
-
-```eos
-aaa authentication policy local allow-nopassword-remote-login
-!
 ```
 
 ## AAA Authorization
@@ -266,246 +247,246 @@ vlan 230
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1/1 | SPINE1_Ethernet49/1 | *trunk | *10,210,220,230 | *- | *- | 11 |
 | Ethernet1/3 | SPINE2_Ethernet49/1 | *trunk | *10,210,220,230 | *- | *- | 11 |
-| Ethernet3/1 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/2 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/3 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/4 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/5 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/6 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/7 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/8 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/9 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/10 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/11 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/12 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/13 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/14 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/15 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/16 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/17 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/18 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/19 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/20 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/21 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/22 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/23 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/24 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/25 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/26 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/27 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/28 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/29 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/30 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/31 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/32 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/33 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/34 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/35 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/36 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/37 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/38 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/39 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/40 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/41 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/42 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/43 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/44 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/45 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/46 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/47 |   | trunk phone | - | 210 | - | - |
-| Ethernet3/48 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/1 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/2 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/3 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/4 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/5 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/6 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/7 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/8 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/9 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/10 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/11 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/12 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/13 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/14 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/15 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/16 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/17 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/18 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/19 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/20 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/21 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/22 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/23 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/24 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/25 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/26 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/27 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/28 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/29 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/30 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/31 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/32 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/33 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/34 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/35 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/36 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/37 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/38 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/39 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/40 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/41 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/42 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/43 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/44 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/45 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/46 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/47 |   | trunk phone | - | 210 | - | - |
-| Ethernet4/48 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/1 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/2 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/3 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/4 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/5 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/6 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/7 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/8 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/9 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/10 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/11 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/12 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/13 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/14 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/15 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/16 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/17 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/18 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/19 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/20 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/21 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/22 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/23 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/24 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/25 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/26 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/27 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/28 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/29 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/30 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/31 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/32 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/33 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/34 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/35 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/36 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/37 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/38 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/39 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/40 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/41 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/42 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/43 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/44 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/45 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/46 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/47 |   | trunk phone | - | 210 | - | - |
-| Ethernet5/48 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/1 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/2 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/3 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/4 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/5 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/6 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/7 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/8 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/9 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/10 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/11 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/12 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/13 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/14 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/15 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/16 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/17 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/18 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/19 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/20 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/21 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/22 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/23 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/24 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/25 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/26 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/27 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/28 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/29 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/30 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/31 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/32 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/33 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/34 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/35 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/36 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/37 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/38 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/39 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/40 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/41 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/42 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/43 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/44 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/45 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/46 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/47 |   | trunk phone | - | 210 | - | - |
-| Ethernet6/48 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/1 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/2 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/3 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/4 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/5 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/6 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/7 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/8 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/9 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/10 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/11 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/12 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/13 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/14 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/15 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/16 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/17 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/18 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/19 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/20 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/21 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/22 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/23 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/24 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/25 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/26 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/27 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/28 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/29 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/30 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/31 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/32 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/33 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/34 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/35 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/36 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/37 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/38 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/39 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/40 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/41 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/42 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/43 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/44 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/45 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/46 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/47 |   | trunk phone | - | 210 | - | - |
-| Ethernet7/48 |   | trunk phone | - | 210 | - | - |
+| Ethernet3/1 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/2 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/3 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/4 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/5 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/6 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/7 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/8 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/9 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/10 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/11 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/12 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/13 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/14 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/15 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/16 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/17 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/18 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/19 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/20 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/21 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/22 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/23 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/24 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/25 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/26 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/27 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/28 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/29 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/30 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/31 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/32 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/33 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/34 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/35 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/36 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/37 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/38 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/39 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/40 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/41 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/42 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/43 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/44 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/45 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/46 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/47 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet3/48 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/1 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/2 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/3 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/4 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/5 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/6 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/7 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/8 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/9 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/10 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/11 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/12 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/13 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/14 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/15 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/16 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/17 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/18 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/19 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/20 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/21 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/22 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/23 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/24 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/25 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/26 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/27 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/28 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/29 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/30 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/31 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/32 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/33 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/34 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/35 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/36 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/37 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/38 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/39 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/40 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/41 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/42 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/43 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/44 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/45 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/46 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/47 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet4/48 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/1 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/2 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/3 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/4 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/5 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/6 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/7 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/8 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/9 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/10 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/11 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/12 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/13 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/14 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/15 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/16 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/17 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/18 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/19 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/20 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/21 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/22 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/23 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/24 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/25 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/26 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/27 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/28 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/29 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/30 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/31 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/32 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/33 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/34 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/35 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/36 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/37 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/38 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/39 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/40 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/41 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/42 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/43 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/44 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/45 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/46 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/47 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet5/48 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/1 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/2 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/3 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/4 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/5 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/6 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/7 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/8 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/9 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/10 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/11 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/12 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/13 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/14 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/15 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/16 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/17 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/18 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/19 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/20 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/21 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/22 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/23 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/24 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/25 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/26 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/27 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/28 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/29 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/30 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/31 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/32 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/33 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/34 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/35 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/36 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/37 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/38 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/39 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/40 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/41 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/42 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/43 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/44 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/45 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/46 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/47 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet6/48 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/1 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/2 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/3 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/4 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/5 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/6 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/7 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/8 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/9 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/10 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/11 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/12 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/13 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/14 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/15 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/16 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/17 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/18 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/19 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/20 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/21 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/22 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/23 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/24 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/25 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/26 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/27 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/28 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/29 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/30 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/31 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/32 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/33 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/34 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/35 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/36 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/37 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/38 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/39 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/40 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/41 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/42 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/43 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/44 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/45 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/46 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/47 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
+| Ethernet7/48 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -524,7 +505,7 @@ interface Ethernet1/3
    channel-group 11 mode active
 !
 interface Ethernet3/1
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -544,7 +525,7 @@ interface Ethernet3/1
    spanning-tree bpduguard enable
 !
 interface Ethernet3/2
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -564,7 +545,7 @@ interface Ethernet3/2
    spanning-tree bpduguard enable
 !
 interface Ethernet3/3
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -584,7 +565,7 @@ interface Ethernet3/3
    spanning-tree bpduguard enable
 !
 interface Ethernet3/4
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -604,7 +585,7 @@ interface Ethernet3/4
    spanning-tree bpduguard enable
 !
 interface Ethernet3/5
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -624,7 +605,7 @@ interface Ethernet3/5
    spanning-tree bpduguard enable
 !
 interface Ethernet3/6
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -644,7 +625,7 @@ interface Ethernet3/6
    spanning-tree bpduguard enable
 !
 interface Ethernet3/7
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -664,7 +645,7 @@ interface Ethernet3/7
    spanning-tree bpduguard enable
 !
 interface Ethernet3/8
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -684,7 +665,7 @@ interface Ethernet3/8
    spanning-tree bpduguard enable
 !
 interface Ethernet3/9
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -704,7 +685,7 @@ interface Ethernet3/9
    spanning-tree bpduguard enable
 !
 interface Ethernet3/10
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -724,7 +705,7 @@ interface Ethernet3/10
    spanning-tree bpduguard enable
 !
 interface Ethernet3/11
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -744,7 +725,7 @@ interface Ethernet3/11
    spanning-tree bpduguard enable
 !
 interface Ethernet3/12
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -764,7 +745,7 @@ interface Ethernet3/12
    spanning-tree bpduguard enable
 !
 interface Ethernet3/13
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -784,7 +765,7 @@ interface Ethernet3/13
    spanning-tree bpduguard enable
 !
 interface Ethernet3/14
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -804,7 +785,7 @@ interface Ethernet3/14
    spanning-tree bpduguard enable
 !
 interface Ethernet3/15
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -824,7 +805,7 @@ interface Ethernet3/15
    spanning-tree bpduguard enable
 !
 interface Ethernet3/16
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -844,7 +825,7 @@ interface Ethernet3/16
    spanning-tree bpduguard enable
 !
 interface Ethernet3/17
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -864,7 +845,7 @@ interface Ethernet3/17
    spanning-tree bpduguard enable
 !
 interface Ethernet3/18
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -884,7 +865,7 @@ interface Ethernet3/18
    spanning-tree bpduguard enable
 !
 interface Ethernet3/19
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -904,7 +885,7 @@ interface Ethernet3/19
    spanning-tree bpduguard enable
 !
 interface Ethernet3/20
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -924,7 +905,7 @@ interface Ethernet3/20
    spanning-tree bpduguard enable
 !
 interface Ethernet3/21
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -944,7 +925,7 @@ interface Ethernet3/21
    spanning-tree bpduguard enable
 !
 interface Ethernet3/22
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -964,7 +945,7 @@ interface Ethernet3/22
    spanning-tree bpduguard enable
 !
 interface Ethernet3/23
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -984,7 +965,7 @@ interface Ethernet3/23
    spanning-tree bpduguard enable
 !
 interface Ethernet3/24
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1004,7 +985,7 @@ interface Ethernet3/24
    spanning-tree bpduguard enable
 !
 interface Ethernet3/25
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1024,7 +1005,7 @@ interface Ethernet3/25
    spanning-tree bpduguard enable
 !
 interface Ethernet3/26
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1044,7 +1025,7 @@ interface Ethernet3/26
    spanning-tree bpduguard enable
 !
 interface Ethernet3/27
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1064,7 +1045,7 @@ interface Ethernet3/27
    spanning-tree bpduguard enable
 !
 interface Ethernet3/28
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1084,7 +1065,7 @@ interface Ethernet3/28
    spanning-tree bpduguard enable
 !
 interface Ethernet3/29
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1104,7 +1085,7 @@ interface Ethernet3/29
    spanning-tree bpduguard enable
 !
 interface Ethernet3/30
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1124,7 +1105,7 @@ interface Ethernet3/30
    spanning-tree bpduguard enable
 !
 interface Ethernet3/31
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1144,7 +1125,7 @@ interface Ethernet3/31
    spanning-tree bpduguard enable
 !
 interface Ethernet3/32
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1164,7 +1145,7 @@ interface Ethernet3/32
    spanning-tree bpduguard enable
 !
 interface Ethernet3/33
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1184,7 +1165,7 @@ interface Ethernet3/33
    spanning-tree bpduguard enable
 !
 interface Ethernet3/34
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1204,7 +1185,7 @@ interface Ethernet3/34
    spanning-tree bpduguard enable
 !
 interface Ethernet3/35
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1224,7 +1205,7 @@ interface Ethernet3/35
    spanning-tree bpduguard enable
 !
 interface Ethernet3/36
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1244,7 +1225,7 @@ interface Ethernet3/36
    spanning-tree bpduguard enable
 !
 interface Ethernet3/37
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1264,7 +1245,7 @@ interface Ethernet3/37
    spanning-tree bpduguard enable
 !
 interface Ethernet3/38
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1284,7 +1265,7 @@ interface Ethernet3/38
    spanning-tree bpduguard enable
 !
 interface Ethernet3/39
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1304,7 +1285,7 @@ interface Ethernet3/39
    spanning-tree bpduguard enable
 !
 interface Ethernet3/40
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1324,7 +1305,7 @@ interface Ethernet3/40
    spanning-tree bpduguard enable
 !
 interface Ethernet3/41
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1344,7 +1325,7 @@ interface Ethernet3/41
    spanning-tree bpduguard enable
 !
 interface Ethernet3/42
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1364,7 +1345,7 @@ interface Ethernet3/42
    spanning-tree bpduguard enable
 !
 interface Ethernet3/43
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1384,7 +1365,7 @@ interface Ethernet3/43
    spanning-tree bpduguard enable
 !
 interface Ethernet3/44
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1404,7 +1385,7 @@ interface Ethernet3/44
    spanning-tree bpduguard enable
 !
 interface Ethernet3/45
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1424,7 +1405,7 @@ interface Ethernet3/45
    spanning-tree bpduguard enable
 !
 interface Ethernet3/46
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1444,7 +1425,7 @@ interface Ethernet3/46
    spanning-tree bpduguard enable
 !
 interface Ethernet3/47
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1464,7 +1445,7 @@ interface Ethernet3/47
    spanning-tree bpduguard enable
 !
 interface Ethernet3/48
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1484,7 +1465,7 @@ interface Ethernet3/48
    spanning-tree bpduguard enable
 !
 interface Ethernet4/1
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1504,7 +1485,7 @@ interface Ethernet4/1
    spanning-tree bpduguard enable
 !
 interface Ethernet4/2
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1524,7 +1505,7 @@ interface Ethernet4/2
    spanning-tree bpduguard enable
 !
 interface Ethernet4/3
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1544,7 +1525,7 @@ interface Ethernet4/3
    spanning-tree bpduguard enable
 !
 interface Ethernet4/4
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1564,7 +1545,7 @@ interface Ethernet4/4
    spanning-tree bpduguard enable
 !
 interface Ethernet4/5
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1584,7 +1565,7 @@ interface Ethernet4/5
    spanning-tree bpduguard enable
 !
 interface Ethernet4/6
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1604,7 +1585,7 @@ interface Ethernet4/6
    spanning-tree bpduguard enable
 !
 interface Ethernet4/7
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1624,7 +1605,7 @@ interface Ethernet4/7
    spanning-tree bpduguard enable
 !
 interface Ethernet4/8
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1644,7 +1625,7 @@ interface Ethernet4/8
    spanning-tree bpduguard enable
 !
 interface Ethernet4/9
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1664,7 +1645,7 @@ interface Ethernet4/9
    spanning-tree bpduguard enable
 !
 interface Ethernet4/10
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1684,7 +1665,7 @@ interface Ethernet4/10
    spanning-tree bpduguard enable
 !
 interface Ethernet4/11
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1704,7 +1685,7 @@ interface Ethernet4/11
    spanning-tree bpduguard enable
 !
 interface Ethernet4/12
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1724,7 +1705,7 @@ interface Ethernet4/12
    spanning-tree bpduguard enable
 !
 interface Ethernet4/13
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1744,7 +1725,7 @@ interface Ethernet4/13
    spanning-tree bpduguard enable
 !
 interface Ethernet4/14
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1764,7 +1745,7 @@ interface Ethernet4/14
    spanning-tree bpduguard enable
 !
 interface Ethernet4/15
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1784,7 +1765,7 @@ interface Ethernet4/15
    spanning-tree bpduguard enable
 !
 interface Ethernet4/16
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1804,7 +1785,7 @@ interface Ethernet4/16
    spanning-tree bpduguard enable
 !
 interface Ethernet4/17
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1824,7 +1805,7 @@ interface Ethernet4/17
    spanning-tree bpduguard enable
 !
 interface Ethernet4/18
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1844,7 +1825,7 @@ interface Ethernet4/18
    spanning-tree bpduguard enable
 !
 interface Ethernet4/19
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1864,7 +1845,7 @@ interface Ethernet4/19
    spanning-tree bpduguard enable
 !
 interface Ethernet4/20
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1884,7 +1865,7 @@ interface Ethernet4/20
    spanning-tree bpduguard enable
 !
 interface Ethernet4/21
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1904,7 +1885,7 @@ interface Ethernet4/21
    spanning-tree bpduguard enable
 !
 interface Ethernet4/22
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1924,7 +1905,7 @@ interface Ethernet4/22
    spanning-tree bpduguard enable
 !
 interface Ethernet4/23
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1944,7 +1925,7 @@ interface Ethernet4/23
    spanning-tree bpduguard enable
 !
 interface Ethernet4/24
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1964,7 +1945,7 @@ interface Ethernet4/24
    spanning-tree bpduguard enable
 !
 interface Ethernet4/25
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -1984,7 +1965,7 @@ interface Ethernet4/25
    spanning-tree bpduguard enable
 !
 interface Ethernet4/26
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2004,7 +1985,7 @@ interface Ethernet4/26
    spanning-tree bpduguard enable
 !
 interface Ethernet4/27
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2024,7 +2005,7 @@ interface Ethernet4/27
    spanning-tree bpduguard enable
 !
 interface Ethernet4/28
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2044,7 +2025,7 @@ interface Ethernet4/28
    spanning-tree bpduguard enable
 !
 interface Ethernet4/29
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2064,7 +2045,7 @@ interface Ethernet4/29
    spanning-tree bpduguard enable
 !
 interface Ethernet4/30
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2084,7 +2065,7 @@ interface Ethernet4/30
    spanning-tree bpduguard enable
 !
 interface Ethernet4/31
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2104,7 +2085,7 @@ interface Ethernet4/31
    spanning-tree bpduguard enable
 !
 interface Ethernet4/32
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2124,7 +2105,7 @@ interface Ethernet4/32
    spanning-tree bpduguard enable
 !
 interface Ethernet4/33
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2144,7 +2125,7 @@ interface Ethernet4/33
    spanning-tree bpduguard enable
 !
 interface Ethernet4/34
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2164,7 +2145,7 @@ interface Ethernet4/34
    spanning-tree bpduguard enable
 !
 interface Ethernet4/35
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2184,7 +2165,7 @@ interface Ethernet4/35
    spanning-tree bpduguard enable
 !
 interface Ethernet4/36
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2204,7 +2185,7 @@ interface Ethernet4/36
    spanning-tree bpduguard enable
 !
 interface Ethernet4/37
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2224,7 +2205,7 @@ interface Ethernet4/37
    spanning-tree bpduguard enable
 !
 interface Ethernet4/38
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2244,7 +2225,7 @@ interface Ethernet4/38
    spanning-tree bpduguard enable
 !
 interface Ethernet4/39
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2264,7 +2245,7 @@ interface Ethernet4/39
    spanning-tree bpduguard enable
 !
 interface Ethernet4/40
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2284,7 +2265,7 @@ interface Ethernet4/40
    spanning-tree bpduguard enable
 !
 interface Ethernet4/41
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2304,7 +2285,7 @@ interface Ethernet4/41
    spanning-tree bpduguard enable
 !
 interface Ethernet4/42
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2324,7 +2305,7 @@ interface Ethernet4/42
    spanning-tree bpduguard enable
 !
 interface Ethernet4/43
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2344,7 +2325,7 @@ interface Ethernet4/43
    spanning-tree bpduguard enable
 !
 interface Ethernet4/44
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2364,7 +2345,7 @@ interface Ethernet4/44
    spanning-tree bpduguard enable
 !
 interface Ethernet4/45
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2384,7 +2365,7 @@ interface Ethernet4/45
    spanning-tree bpduguard enable
 !
 interface Ethernet4/46
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2404,7 +2385,7 @@ interface Ethernet4/46
    spanning-tree bpduguard enable
 !
 interface Ethernet4/47
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2424,7 +2405,7 @@ interface Ethernet4/47
    spanning-tree bpduguard enable
 !
 interface Ethernet4/48
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2444,7 +2425,7 @@ interface Ethernet4/48
    spanning-tree bpduguard enable
 !
 interface Ethernet5/1
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2464,7 +2445,7 @@ interface Ethernet5/1
    spanning-tree bpduguard enable
 !
 interface Ethernet5/2
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2484,7 +2465,7 @@ interface Ethernet5/2
    spanning-tree bpduguard enable
 !
 interface Ethernet5/3
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2504,7 +2485,7 @@ interface Ethernet5/3
    spanning-tree bpduguard enable
 !
 interface Ethernet5/4
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2524,7 +2505,7 @@ interface Ethernet5/4
    spanning-tree bpduguard enable
 !
 interface Ethernet5/5
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2544,7 +2525,7 @@ interface Ethernet5/5
    spanning-tree bpduguard enable
 !
 interface Ethernet5/6
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2564,7 +2545,7 @@ interface Ethernet5/6
    spanning-tree bpduguard enable
 !
 interface Ethernet5/7
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2584,7 +2565,7 @@ interface Ethernet5/7
    spanning-tree bpduguard enable
 !
 interface Ethernet5/8
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2604,7 +2585,7 @@ interface Ethernet5/8
    spanning-tree bpduguard enable
 !
 interface Ethernet5/9
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2624,7 +2605,7 @@ interface Ethernet5/9
    spanning-tree bpduguard enable
 !
 interface Ethernet5/10
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2644,7 +2625,7 @@ interface Ethernet5/10
    spanning-tree bpduguard enable
 !
 interface Ethernet5/11
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2664,7 +2645,7 @@ interface Ethernet5/11
    spanning-tree bpduguard enable
 !
 interface Ethernet5/12
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2684,7 +2665,7 @@ interface Ethernet5/12
    spanning-tree bpduguard enable
 !
 interface Ethernet5/13
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2704,7 +2685,7 @@ interface Ethernet5/13
    spanning-tree bpduguard enable
 !
 interface Ethernet5/14
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2724,7 +2705,7 @@ interface Ethernet5/14
    spanning-tree bpduguard enable
 !
 interface Ethernet5/15
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2744,7 +2725,7 @@ interface Ethernet5/15
    spanning-tree bpduguard enable
 !
 interface Ethernet5/16
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2764,7 +2745,7 @@ interface Ethernet5/16
    spanning-tree bpduguard enable
 !
 interface Ethernet5/17
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2784,7 +2765,7 @@ interface Ethernet5/17
    spanning-tree bpduguard enable
 !
 interface Ethernet5/18
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2804,7 +2785,7 @@ interface Ethernet5/18
    spanning-tree bpduguard enable
 !
 interface Ethernet5/19
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2824,7 +2805,7 @@ interface Ethernet5/19
    spanning-tree bpduguard enable
 !
 interface Ethernet5/20
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2844,7 +2825,7 @@ interface Ethernet5/20
    spanning-tree bpduguard enable
 !
 interface Ethernet5/21
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2864,7 +2845,7 @@ interface Ethernet5/21
    spanning-tree bpduguard enable
 !
 interface Ethernet5/22
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2884,7 +2865,7 @@ interface Ethernet5/22
    spanning-tree bpduguard enable
 !
 interface Ethernet5/23
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2904,7 +2885,7 @@ interface Ethernet5/23
    spanning-tree bpduguard enable
 !
 interface Ethernet5/24
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2924,7 +2905,7 @@ interface Ethernet5/24
    spanning-tree bpduguard enable
 !
 interface Ethernet5/25
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2944,7 +2925,7 @@ interface Ethernet5/25
    spanning-tree bpduguard enable
 !
 interface Ethernet5/26
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2964,7 +2945,7 @@ interface Ethernet5/26
    spanning-tree bpduguard enable
 !
 interface Ethernet5/27
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -2984,7 +2965,7 @@ interface Ethernet5/27
    spanning-tree bpduguard enable
 !
 interface Ethernet5/28
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3004,7 +2985,7 @@ interface Ethernet5/28
    spanning-tree bpduguard enable
 !
 interface Ethernet5/29
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3024,7 +3005,7 @@ interface Ethernet5/29
    spanning-tree bpduguard enable
 !
 interface Ethernet5/30
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3044,7 +3025,7 @@ interface Ethernet5/30
    spanning-tree bpduguard enable
 !
 interface Ethernet5/31
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3064,7 +3045,7 @@ interface Ethernet5/31
    spanning-tree bpduguard enable
 !
 interface Ethernet5/32
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3084,7 +3065,7 @@ interface Ethernet5/32
    spanning-tree bpduguard enable
 !
 interface Ethernet5/33
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3104,7 +3085,7 @@ interface Ethernet5/33
    spanning-tree bpduguard enable
 !
 interface Ethernet5/34
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3124,7 +3105,7 @@ interface Ethernet5/34
    spanning-tree bpduguard enable
 !
 interface Ethernet5/35
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3144,7 +3125,7 @@ interface Ethernet5/35
    spanning-tree bpduguard enable
 !
 interface Ethernet5/36
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3164,7 +3145,7 @@ interface Ethernet5/36
    spanning-tree bpduguard enable
 !
 interface Ethernet5/37
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3184,7 +3165,7 @@ interface Ethernet5/37
    spanning-tree bpduguard enable
 !
 interface Ethernet5/38
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3204,7 +3185,7 @@ interface Ethernet5/38
    spanning-tree bpduguard enable
 !
 interface Ethernet5/39
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3224,7 +3205,7 @@ interface Ethernet5/39
    spanning-tree bpduguard enable
 !
 interface Ethernet5/40
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3244,7 +3225,7 @@ interface Ethernet5/40
    spanning-tree bpduguard enable
 !
 interface Ethernet5/41
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3264,7 +3245,7 @@ interface Ethernet5/41
    spanning-tree bpduguard enable
 !
 interface Ethernet5/42
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3284,7 +3265,7 @@ interface Ethernet5/42
    spanning-tree bpduguard enable
 !
 interface Ethernet5/43
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3304,7 +3285,7 @@ interface Ethernet5/43
    spanning-tree bpduguard enable
 !
 interface Ethernet5/44
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3324,7 +3305,7 @@ interface Ethernet5/44
    spanning-tree bpduguard enable
 !
 interface Ethernet5/45
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3344,7 +3325,7 @@ interface Ethernet5/45
    spanning-tree bpduguard enable
 !
 interface Ethernet5/46
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3364,7 +3345,7 @@ interface Ethernet5/46
    spanning-tree bpduguard enable
 !
 interface Ethernet5/47
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3384,7 +3365,7 @@ interface Ethernet5/47
    spanning-tree bpduguard enable
 !
 interface Ethernet5/48
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3404,7 +3385,7 @@ interface Ethernet5/48
    spanning-tree bpduguard enable
 !
 interface Ethernet6/1
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3424,7 +3405,7 @@ interface Ethernet6/1
    spanning-tree bpduguard enable
 !
 interface Ethernet6/2
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3444,7 +3425,7 @@ interface Ethernet6/2
    spanning-tree bpduguard enable
 !
 interface Ethernet6/3
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3464,7 +3445,7 @@ interface Ethernet6/3
    spanning-tree bpduguard enable
 !
 interface Ethernet6/4
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3484,7 +3465,7 @@ interface Ethernet6/4
    spanning-tree bpduguard enable
 !
 interface Ethernet6/5
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3504,7 +3485,7 @@ interface Ethernet6/5
    spanning-tree bpduguard enable
 !
 interface Ethernet6/6
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3524,7 +3505,7 @@ interface Ethernet6/6
    spanning-tree bpduguard enable
 !
 interface Ethernet6/7
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3544,7 +3525,7 @@ interface Ethernet6/7
    spanning-tree bpduguard enable
 !
 interface Ethernet6/8
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3564,7 +3545,7 @@ interface Ethernet6/8
    spanning-tree bpduguard enable
 !
 interface Ethernet6/9
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3584,7 +3565,7 @@ interface Ethernet6/9
    spanning-tree bpduguard enable
 !
 interface Ethernet6/10
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3604,7 +3585,7 @@ interface Ethernet6/10
    spanning-tree bpduguard enable
 !
 interface Ethernet6/11
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3624,7 +3605,7 @@ interface Ethernet6/11
    spanning-tree bpduguard enable
 !
 interface Ethernet6/12
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3644,7 +3625,7 @@ interface Ethernet6/12
    spanning-tree bpduguard enable
 !
 interface Ethernet6/13
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3664,7 +3645,7 @@ interface Ethernet6/13
    spanning-tree bpduguard enable
 !
 interface Ethernet6/14
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3684,7 +3665,7 @@ interface Ethernet6/14
    spanning-tree bpduguard enable
 !
 interface Ethernet6/15
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3704,7 +3685,7 @@ interface Ethernet6/15
    spanning-tree bpduguard enable
 !
 interface Ethernet6/16
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3724,7 +3705,7 @@ interface Ethernet6/16
    spanning-tree bpduguard enable
 !
 interface Ethernet6/17
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3744,7 +3725,7 @@ interface Ethernet6/17
    spanning-tree bpduguard enable
 !
 interface Ethernet6/18
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3764,7 +3745,7 @@ interface Ethernet6/18
    spanning-tree bpduguard enable
 !
 interface Ethernet6/19
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3784,7 +3765,7 @@ interface Ethernet6/19
    spanning-tree bpduguard enable
 !
 interface Ethernet6/20
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3804,7 +3785,7 @@ interface Ethernet6/20
    spanning-tree bpduguard enable
 !
 interface Ethernet6/21
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3824,7 +3805,7 @@ interface Ethernet6/21
    spanning-tree bpduguard enable
 !
 interface Ethernet6/22
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3844,7 +3825,7 @@ interface Ethernet6/22
    spanning-tree bpduguard enable
 !
 interface Ethernet6/23
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3864,7 +3845,7 @@ interface Ethernet6/23
    spanning-tree bpduguard enable
 !
 interface Ethernet6/24
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3884,7 +3865,7 @@ interface Ethernet6/24
    spanning-tree bpduguard enable
 !
 interface Ethernet6/25
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3904,7 +3885,7 @@ interface Ethernet6/25
    spanning-tree bpduguard enable
 !
 interface Ethernet6/26
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3924,7 +3905,7 @@ interface Ethernet6/26
    spanning-tree bpduguard enable
 !
 interface Ethernet6/27
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3944,7 +3925,7 @@ interface Ethernet6/27
    spanning-tree bpduguard enable
 !
 interface Ethernet6/28
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3964,7 +3945,7 @@ interface Ethernet6/28
    spanning-tree bpduguard enable
 !
 interface Ethernet6/29
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -3984,7 +3965,7 @@ interface Ethernet6/29
    spanning-tree bpduguard enable
 !
 interface Ethernet6/30
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4004,7 +3985,7 @@ interface Ethernet6/30
    spanning-tree bpduguard enable
 !
 interface Ethernet6/31
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4024,7 +4005,7 @@ interface Ethernet6/31
    spanning-tree bpduguard enable
 !
 interface Ethernet6/32
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4044,7 +4025,7 @@ interface Ethernet6/32
    spanning-tree bpduguard enable
 !
 interface Ethernet6/33
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4064,7 +4045,7 @@ interface Ethernet6/33
    spanning-tree bpduguard enable
 !
 interface Ethernet6/34
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4084,7 +4065,7 @@ interface Ethernet6/34
    spanning-tree bpduguard enable
 !
 interface Ethernet6/35
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4104,7 +4085,7 @@ interface Ethernet6/35
    spanning-tree bpduguard enable
 !
 interface Ethernet6/36
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4124,7 +4105,7 @@ interface Ethernet6/36
    spanning-tree bpduguard enable
 !
 interface Ethernet6/37
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4144,7 +4125,7 @@ interface Ethernet6/37
    spanning-tree bpduguard enable
 !
 interface Ethernet6/38
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4164,7 +4145,7 @@ interface Ethernet6/38
    spanning-tree bpduguard enable
 !
 interface Ethernet6/39
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4184,7 +4165,7 @@ interface Ethernet6/39
    spanning-tree bpduguard enable
 !
 interface Ethernet6/40
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4204,7 +4185,7 @@ interface Ethernet6/40
    spanning-tree bpduguard enable
 !
 interface Ethernet6/41
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4224,7 +4205,7 @@ interface Ethernet6/41
    spanning-tree bpduguard enable
 !
 interface Ethernet6/42
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4244,7 +4225,7 @@ interface Ethernet6/42
    spanning-tree bpduguard enable
 !
 interface Ethernet6/43
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4264,7 +4245,7 @@ interface Ethernet6/43
    spanning-tree bpduguard enable
 !
 interface Ethernet6/44
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4284,7 +4265,7 @@ interface Ethernet6/44
    spanning-tree bpduguard enable
 !
 interface Ethernet6/45
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4304,7 +4285,7 @@ interface Ethernet6/45
    spanning-tree bpduguard enable
 !
 interface Ethernet6/46
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4324,7 +4305,7 @@ interface Ethernet6/46
    spanning-tree bpduguard enable
 !
 interface Ethernet6/47
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4344,7 +4325,7 @@ interface Ethernet6/47
    spanning-tree bpduguard enable
 !
 interface Ethernet6/48
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4364,7 +4345,7 @@ interface Ethernet6/48
    spanning-tree bpduguard enable
 !
 interface Ethernet7/1
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4384,7 +4365,7 @@ interface Ethernet7/1
    spanning-tree bpduguard enable
 !
 interface Ethernet7/2
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4404,7 +4385,7 @@ interface Ethernet7/2
    spanning-tree bpduguard enable
 !
 interface Ethernet7/3
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4424,7 +4405,7 @@ interface Ethernet7/3
    spanning-tree bpduguard enable
 !
 interface Ethernet7/4
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4444,7 +4425,7 @@ interface Ethernet7/4
    spanning-tree bpduguard enable
 !
 interface Ethernet7/5
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4464,7 +4445,7 @@ interface Ethernet7/5
    spanning-tree bpduguard enable
 !
 interface Ethernet7/6
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4484,7 +4465,7 @@ interface Ethernet7/6
    spanning-tree bpduguard enable
 !
 interface Ethernet7/7
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4504,7 +4485,7 @@ interface Ethernet7/7
    spanning-tree bpduguard enable
 !
 interface Ethernet7/8
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4524,7 +4505,7 @@ interface Ethernet7/8
    spanning-tree bpduguard enable
 !
 interface Ethernet7/9
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4544,7 +4525,7 @@ interface Ethernet7/9
    spanning-tree bpduguard enable
 !
 interface Ethernet7/10
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4564,7 +4545,7 @@ interface Ethernet7/10
    spanning-tree bpduguard enable
 !
 interface Ethernet7/11
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4584,7 +4565,7 @@ interface Ethernet7/11
    spanning-tree bpduguard enable
 !
 interface Ethernet7/12
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4604,7 +4585,7 @@ interface Ethernet7/12
    spanning-tree bpduguard enable
 !
 interface Ethernet7/13
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4624,7 +4605,7 @@ interface Ethernet7/13
    spanning-tree bpduguard enable
 !
 interface Ethernet7/14
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4644,7 +4625,7 @@ interface Ethernet7/14
    spanning-tree bpduguard enable
 !
 interface Ethernet7/15
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4664,7 +4645,7 @@ interface Ethernet7/15
    spanning-tree bpduguard enable
 !
 interface Ethernet7/16
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4684,7 +4665,7 @@ interface Ethernet7/16
    spanning-tree bpduguard enable
 !
 interface Ethernet7/17
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4704,7 +4685,7 @@ interface Ethernet7/17
    spanning-tree bpduguard enable
 !
 interface Ethernet7/18
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4724,7 +4705,7 @@ interface Ethernet7/18
    spanning-tree bpduguard enable
 !
 interface Ethernet7/19
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4744,7 +4725,7 @@ interface Ethernet7/19
    spanning-tree bpduguard enable
 !
 interface Ethernet7/20
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4764,7 +4745,7 @@ interface Ethernet7/20
    spanning-tree bpduguard enable
 !
 interface Ethernet7/21
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4784,7 +4765,7 @@ interface Ethernet7/21
    spanning-tree bpduguard enable
 !
 interface Ethernet7/22
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4804,7 +4785,7 @@ interface Ethernet7/22
    spanning-tree bpduguard enable
 !
 interface Ethernet7/23
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4824,7 +4805,7 @@ interface Ethernet7/23
    spanning-tree bpduguard enable
 !
 interface Ethernet7/24
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4844,7 +4825,7 @@ interface Ethernet7/24
    spanning-tree bpduguard enable
 !
 interface Ethernet7/25
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4864,7 +4845,7 @@ interface Ethernet7/25
    spanning-tree bpduguard enable
 !
 interface Ethernet7/26
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4884,7 +4865,7 @@ interface Ethernet7/26
    spanning-tree bpduguard enable
 !
 interface Ethernet7/27
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4904,7 +4885,7 @@ interface Ethernet7/27
    spanning-tree bpduguard enable
 !
 interface Ethernet7/28
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4924,7 +4905,7 @@ interface Ethernet7/28
    spanning-tree bpduguard enable
 !
 interface Ethernet7/29
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4944,7 +4925,7 @@ interface Ethernet7/29
    spanning-tree bpduguard enable
 !
 interface Ethernet7/30
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4964,7 +4945,7 @@ interface Ethernet7/30
    spanning-tree bpduguard enable
 !
 interface Ethernet7/31
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -4984,7 +4965,7 @@ interface Ethernet7/31
    spanning-tree bpduguard enable
 !
 interface Ethernet7/32
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5004,7 +4985,7 @@ interface Ethernet7/32
    spanning-tree bpduguard enable
 !
 interface Ethernet7/33
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5024,7 +5005,7 @@ interface Ethernet7/33
    spanning-tree bpduguard enable
 !
 interface Ethernet7/34
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5044,7 +5025,7 @@ interface Ethernet7/34
    spanning-tree bpduguard enable
 !
 interface Ethernet7/35
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5064,7 +5045,7 @@ interface Ethernet7/35
    spanning-tree bpduguard enable
 !
 interface Ethernet7/36
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5084,7 +5065,7 @@ interface Ethernet7/36
    spanning-tree bpduguard enable
 !
 interface Ethernet7/37
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5104,7 +5085,7 @@ interface Ethernet7/37
    spanning-tree bpduguard enable
 !
 interface Ethernet7/38
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5124,7 +5105,7 @@ interface Ethernet7/38
    spanning-tree bpduguard enable
 !
 interface Ethernet7/39
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5144,7 +5125,7 @@ interface Ethernet7/39
    spanning-tree bpduguard enable
 !
 interface Ethernet7/40
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5164,7 +5145,7 @@ interface Ethernet7/40
    spanning-tree bpduguard enable
 !
 interface Ethernet7/41
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5184,7 +5165,7 @@ interface Ethernet7/41
    spanning-tree bpduguard enable
 !
 interface Ethernet7/42
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5204,7 +5185,7 @@ interface Ethernet7/42
    spanning-tree bpduguard enable
 !
 interface Ethernet7/43
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5224,7 +5205,7 @@ interface Ethernet7/43
    spanning-tree bpduguard enable
 !
 interface Ethernet7/44
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5244,7 +5225,7 @@ interface Ethernet7/44
    spanning-tree bpduguard enable
 !
 interface Ethernet7/45
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5264,7 +5245,7 @@ interface Ethernet7/45
    spanning-tree bpduguard enable
 !
 interface Ethernet7/46
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5284,7 +5265,7 @@ interface Ethernet7/46
    spanning-tree bpduguard enable
 !
 interface Ethernet7/47
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5304,7 +5285,7 @@ interface Ethernet7/47
    spanning-tree bpduguard enable
 !
 interface Ethernet7/48
-   description
+   description IDF2 Standard Port
    no shutdown
    switchport trunk native vlan 210
    switchport phone vlan 220
@@ -5388,14 +5369,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 172.100.100.1 | - | 1 | - | - | - |
-| default | 0.0.0.0/0 | 10.0.0.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.100.100.1
-ip route 0.0.0.0/0 10.0.0.1
+ip route 0.0.0.0/0 10.10.10.1
 ```
 
 # Multicast
