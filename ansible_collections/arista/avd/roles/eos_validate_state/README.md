@@ -105,6 +105,8 @@ The variable `fabric_name` is used to select the inventory group covering all de
 
 The default accepted manufacturers are "Arastra, Inc." and "Arista Networks." If `validation_role.xcvr_own_manufacturers` is set, it takes precedence and overrides the defined default variables.
 
+By default, all fans and power supplies are expected to be in the `ok` state. However chassis switches may intentionally be missing some fans or power supplies as they are not fully populated. In this case, `validation_role.fan_states` and `validation_role.pwr_supply_states` can be updated to include the `notInserted` state, as per the example below to avoid failures on missing fans/power supplies.
+
 Two user-defined variables control the generation of CSV and MD reports. These are `validation_role.validation_report_csv` and `validation_role.validation_report_md` respectively.
 
 The variable validation_role.only_failed_tests is used to limit the number of tests shown in the reports. When set, all reports will only show failed tests.
