@@ -41,6 +41,13 @@ network_ports:
     profile: pc
     description: PCs
 
+  # Test for issue #2223 regarding colon in description
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet5-6
+    description: "N: blah"
+
 # Only creating network services required to test the filter "only_vlans_in_use" combined with network ports
 tenants:
   TEST:

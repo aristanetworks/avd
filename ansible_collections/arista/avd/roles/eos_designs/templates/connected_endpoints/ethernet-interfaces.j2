@@ -32,7 +32,7 @@ ethernet_interfaces:
 {%                 set channel_group_id = (adapter_settings.port_channel.channel_id | arista.avd.default(adapter_settings.switch_ports[0] | regex_findall("\d") | join)) %}
 {%                 set peer_interface = endpoint_ports[loop.index0] | arista.avd.default %}
   {{ adapter_settings.switch_ports[loop.index0] }}:
-    peer: {{ peer }}
+    peer: "{{ peer }}"
     peer_interface: {{ peer_interface }}
     peer_type: {{ peer_type }}
     description: "{% include switch.interface_descriptions.connected_endpoints_ethernet_interfaces %}"
