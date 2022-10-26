@@ -114,7 +114,7 @@ This naming convention makes it possible to extend anything quickly and can be c
 
 ### inventory.yml
 
-The below inventory file represents two Spines and four Leafs. The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively. We apply group variables (group_vars) to these groups to define their functionality and configurations.
+The below inventory file represents two spines and ten leafs. The nodes are defined under the groups DC1_SPINES and DC1_LEAFS, respectively. We apply group variables (group_vars) to these groups to define their functionality and configurations.
 
 The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution (e.g., ping SPINE1).
 
@@ -128,7 +128,7 @@ examples/campus-fabric/inventory.yml
 
 ## Management Network
 
-This example configures a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI Vlan10 (vrf: default). In-band management is easily configured with two variables under the leaf node in `DC1_FABRIC.yml`. First, it auto-generates an SVI and default route on each leaf node. Then, on the Spine nodes, it will build a matching SVI for Vlan 10 and create a Virtual-IP for the defined subnet.
+This example configures a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI Vlan10 (vrf: default). In-band management is easily configured with two variables under the leaf defaults key in `DC1_FABRIC.yml`. First, it auto-generates an SVI and default route on each leaf node. Then, on the Spine nodes, it will build a matching SVI for Vlan 10 and create a Virtual-IP (10.10.10.1) for the defined subnet.
 
 ``` yaml
 leaf:
@@ -261,9 +261,30 @@ AVD provides a way to standardize and reuse port profiles through a compact data
 
 The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see documentation for [`port_profiles`](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [`network_ports`](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
 
+## WAN/Core Edge
+
+Lastly, we need to provide a way for traffic to exit the Campus Fabric via the WAN/Core Edge.  This is easily accomplished using `underlay_routing_protocol` and `core_interfaces` to create point-to-point IP links to the WAN/Core and enable a routing protocol such as OSPF.  This simple data model below is located at the bottom of the **group_vars/DC1_FABRIC.yml** file.
+
+``` yaml
+# Underlay Routing Protocol
+underlay_routing_protocol: OSPF
+
+#### WAN/Core Edge Links ####
+core_interfaces:
+  p2p_links:
+    - ip: [ 10.0.0.3/31, 10.0.0.2/31 ]
+      nodes: [ SPINE1, WAN ]
+      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+      include_in_underlay_protocol: true
+    - ip: [ 10.0.0.5/31, 10.0.0.4/31 ]
+      nodes: [ SPINE2, WAN ]
+      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+      include_in_underlay_protocol: true
+```
+
 ## Deploy Fabric
 
-## The Playbooks
+### The Playbooks
 
 Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configurations. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: `eos_designs` and `eos_cli_config_gen`, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
 
