@@ -22,7 +22,7 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -72,7 +72,7 @@ jobs:
     container: avdteam/base:3.8-v2.0
     if: needs.file-changes.outputs.requirements == 'true'
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: 'Send Webhook to docker hub'
         env:
           AUTH_TOKEN: ${{secrets.AVD_BUILDER_TOKEN}}
