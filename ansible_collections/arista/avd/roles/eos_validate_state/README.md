@@ -85,10 +85,10 @@ fabric_name: "all"
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
 # Allow different states for power supplies
-accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok', 'Not Inserted']) }}"
+accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok']) }}"
 
 # Allow different states for fans
-accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok', 'Not Inserted']) }}"
+accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
 
 
 # Generate CSV results file
@@ -176,6 +176,12 @@ validation_role:
   xcvr_own_manufacturers:
     - Manufacturer 1
     - Manufacturer 2
+  pwr_supply_states:
+    - ok
+    - notInserted
+  fan_states:
+    - ok
+    - notInserted
 ```
 
 ### inventory/intended/structured_configs/switch1.yml
