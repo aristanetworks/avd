@@ -3396,6 +3396,9 @@
                   "title": "Low"
                 }
               },
+              "required": [
+                "high"
+              ],
               "additionalProperties": false,
               "title": "Thresholds"
             }
