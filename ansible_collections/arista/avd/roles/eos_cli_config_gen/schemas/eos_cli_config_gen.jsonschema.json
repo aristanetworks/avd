@@ -4445,10 +4445,12 @@
               "properties": {
                 "ipv4": {
                   "type": "integer",
+                  "description": "Segment size",
                   "title": "Ipv4"
                 },
                 "ipv6": {
                   "type": "integer",
+                  "description": "Segment size",
                   "title": "Ipv6"
                 }
               },
