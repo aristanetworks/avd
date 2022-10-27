@@ -5,7 +5,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, get
 
 
 class AvdStructuredConfig(AvdFacts):
@@ -45,6 +45,13 @@ class AvdStructuredConfig(AvdFacts):
         hostname variable set based on switch.hostname fact
         """
         return get(self._hostvars, "switch.hostname", required=True)
+
+    @cached_property
+    def _system_mac_address(self):
+        """
+        system_mac_address variable set based on switch.system_mac_address fact
+        """
+        return get(self._hostvars, "switch.system_mac_address")
 
     @cached_property
     def router_bgp(self):
@@ -320,8 +327,21 @@ class AvdStructuredConfig(AvdFacts):
             return None
 
         snmp_server = {}
-        if (compute_local_engineid := snmp_settings.get("compute_local_engineid")) is True:
+
+        local_engine_id = None
+
+        # In the case where both default_engineid_from_system_mac and compute_local_engineid are set
+        # `default_engineid_from_system_mac` takes precedence
+        if (snmp_settings.get("default_engineid_from_system_mac")) is True:
+            if self._system_mac_address is None:
+                raise AristaAvdError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
+            # the default engine id on switches is derived as per the following formula
+            local_engine_id = f"f5717f{str(self._system_mac_address).replace(':', '').lower()}00"
+
+        if local_engine_id is None and (snmp_settings.get("compute_local_engineid")) is True:
             local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
+
+        if local_engine_id is not None:
             snmp_server["engine_ids"] = {"local": local_engine_id}
 
         if (contact := snmp_settings.get("contact")) is not None:
@@ -347,14 +367,14 @@ class AvdStructuredConfig(AvdFacts):
                 user_dict = {"name": get(user, "name"), "group": get(user, "group"), "version": version}
                 compute_v3_user_localized_key = snmp_settings.get("compute_v3_user_localized_key")
                 if version == "v3":
-                    if compute_local_engineid is True and compute_v3_user_localized_key is True:
+                    if local_engine_id is not None and compute_v3_user_localized_key is True:
                         user_dict["localized"] = local_engine_id
 
                     auth = user.get("auth")
                     auth_passphrase = user.get("auth_passphrase")
                     if auth is not None and auth_passphrase is not None:
                         user_dict["auth"] = auth
-                        if compute_local_engineid is True and compute_v3_user_localized_key is True:
+                        if local_engine_id is not None and compute_v3_user_localized_key is True:
                             hash_filter = {"passphrase": auth_passphrase, "auth": auth, "engine_id": local_engine_id}
                             user_dict["auth_passphrase"] = hash_passphrase(hash_filter)
                         else:
@@ -364,7 +384,7 @@ class AvdStructuredConfig(AvdFacts):
                         priv_passphrase = user.get("priv_passphrase")
                         if priv is not None and priv_passphrase is not None:
                             user_dict["priv"] = priv
-                            if compute_local_engineid is True and compute_v3_user_localized_key is True:
+                            if local_engine_id is not None and compute_v3_user_localized_key is True:
                                 hash_filter.update({"passphrase": priv_passphrase, "priv": priv})
                                 user_dict["priv_passphrase"] = hash_passphrase(hash_filter)
                             else:

@@ -364,6 +364,10 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "mgmt_ip")
 
     @cached_property
+    def system_mac_address(self):
+        return get(self._switch_data_combined, "system_mac_address")
+
+    @cached_property
     def platform(self):
         return get(self._switch_data_combined, "platform")
 

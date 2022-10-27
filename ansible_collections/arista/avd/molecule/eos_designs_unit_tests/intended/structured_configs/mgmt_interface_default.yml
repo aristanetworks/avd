@@ -26,32 +26,8 @@ name_server:
   - 192.168.200.5
   - 8.8.8.8
 snmp_server:
-  engine_ids:
-    local: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_default
-  users:
-  - name: usertest-auth-priv
-    group: usergroup
-    version: v3
-    localized: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
-    auth: sha
-    auth_passphrase: 06049cbfe1b2b278cb54c146a92ccc16d7baad8e
-    priv: aes192
-    priv_passphrase: f58469295ec858e90f9ae24e847a66cf904c84ac1577e4d8
-  - name: usertest-auth-no-priv
-    group: usergroup
-    version: v3
-    localized: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
-    auth: sha512
-    auth_passphrase: 73018cb477dc10e09c853263883c7fe5c91d9e9b9b3f2a45b699b50d0a213b53d2842e927d85a4f427135cd03ac2c16a663640d191f10e9410e42308a88b816e
-  - name: usertest-no-auth-no-priv
-    group: usergroup
-    version: v3
-    localized: 9bcf6c0f329158bf35cac04fdb34f9d238e56497
-  - name: usertest-v2c
-    group: usergroup
-    version: v2c
 local_users:
   admin:
     disabled: true

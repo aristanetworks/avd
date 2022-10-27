@@ -160,6 +160,13 @@ defaults <- node_group <- node_group.node <- node
 
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
+
+      # The following variable SHOULD be set to the MAC address
+      # available in show version
+      # NOTE: the mac_address variable used in dhcp_provisioner role is
+      # different from this variable
+      # Expected format: xx:xx:xx:xx:xx:xx
+      system_mac_address: < str >
 ```
 
 ## Node Variables details
