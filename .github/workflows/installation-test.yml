@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     container: avdteam/base:3.8-v2.0
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: Execute one-liner installation
         run: |
           cd /tmp/
