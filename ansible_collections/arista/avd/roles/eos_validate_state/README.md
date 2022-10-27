@@ -84,6 +84,13 @@ fabric_name: "all"
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
+# Allow different states for power supplies
+accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok']) }}"
+
+# Allow different states for fans
+accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
+
+
 # Generate CSV results file
 validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
 
@@ -97,6 +104,8 @@ only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(fa
 The variable `fabric_name` is used to select the inventory group covering all devices in the report. This variable is also required for the role `eos_designs`, but the user can set a name if this role is not used. The default value is `all` pointing to the built-in inventory group `all`. Therefore all devices in the inventory will be selected for the report.
 
 The default accepted manufacturers are "Arastra, Inc." and "Arista Networks." If `validation_role.xcvr_own_manufacturers` is set, it takes precedence and overrides the defined default variables.
+
+By default, all fans and power supplies are expected to be in the `ok` state. However chassis switches may intentionally be missing some fans or power supplies as they are not fully populated. In this case, `validation_role.fan_states` and `validation_role.pwr_supply_states` can be updated to include the `notInserted` state, as per the example below to avoid failures on missing fans/power supplies.
 
 Two user-defined variables control the generation of CSV and MD reports. These are `validation_role.validation_report_csv` and `validation_role.validation_report_md` respectively.
 
@@ -169,6 +178,12 @@ validation_role:
   xcvr_own_manufacturers:
     - Manufacturer 1
     - Manufacturer 2
+  pwr_supply_states:
+    - ok
+    - notInserted
+  fan_states:
+    - ok
+    - notInserted
 ```
 
 ### inventory/intended/structured_configs/switch1.yml
