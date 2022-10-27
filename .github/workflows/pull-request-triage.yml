@@ -17,7 +17,6 @@ jobs:
     # https://github.com/actions/labeler
     runs-on: ubuntu-latest
     steps:
-      # V3 is not used as we hit following issue: https://github.com/actions/labeler/issues/107
       - uses: actions/labeler@v4
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
@@ -28,7 +27,7 @@ jobs:
     # https://github.com/marketplace/actions/auto-author-assign
     runs-on: ubuntu-latest
     steps:
-      - uses: toshimaru/auto-author-assign@v1.2.0
+      - uses: toshimaru/auto-author-assign@v1.6.1
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
