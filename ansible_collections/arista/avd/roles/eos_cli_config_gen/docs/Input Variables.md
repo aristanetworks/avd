@@ -424,6 +424,7 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
 | [<samp>&nbsp;&nbsp;ipfixaddr</samp>](## "daemon_terminattr.ipfixaddr") | String |  |  |  | ECO IPFIX Collector address to listen on to receive IPFIX packets (TerminAttr default "127.0.0.1:4739").<br> |
 | [<samp>&nbsp;&nbsp;sflow</samp>](## "daemon_terminattr.sflow") | Boolean |  |  |  | Enable sFlow provider (TerminAttr default is true).<br> |
 | [<samp>&nbsp;&nbsp;sflowaddr</samp>](## "daemon_terminattr.sflowaddr") | String |  |  |  | ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default "127.0.0.1:6343").<br> |
+| [<samp>&nbsp;&nbsp;cvconfig</samp>](## "daemon_terminattr.cvconfig") | Boolean |  |  |  | Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).<br> |
 | [<samp>&nbsp;&nbsp;cvcompression</samp>](## "daemon_terminattr.cvcompression") | String |  |  |  | The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.<br>There is no need to change the compression scheme.<br> |
 | [<samp>&nbsp;&nbsp;ingestauth_key</samp>](## "daemon_terminattr.ingestauth_key") | String |  |  |  | Deprecated key. Use `cvauth` instead.<br> |
 | [<samp>&nbsp;&nbsp;ingestgrpcurl</samp>](## "daemon_terminattr.ingestgrpcurl") | Dictionary |  |  |  | Deprecated key. Use `cvaddrs` instead.<br> |
@@ -470,6 +471,7 @@ daemon_terminattr:
   ipfixaddr: <str>
   sflow: <bool>
   sflowaddr: <str>
+  cvconfig: <bool>
   cvcompression: <str>
   ingestauth_key: <str>
   ingestgrpcurl:
