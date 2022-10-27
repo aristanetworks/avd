@@ -304,7 +304,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "BGP"
   test_description: "ip bgp peer state established (ipv4)"
-  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+  test: "bgp_neighbor: {{ result.bgp_neighbor.ip_address }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
@@ -325,7 +325,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "BGP"
   test_description: "bgp evpn peer state established (evpn)"
-  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+  test: "bgp_neighbor: {{ result.bgp_neighbor.ip_address }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
