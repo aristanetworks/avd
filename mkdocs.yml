@@ -10,7 +10,7 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 
 # Configuration
 use_directory_urls: false
-edit_uri: ""
+edit_uri: edit/devel/ansible_collections/arista/avd/
 theme:
   name: material
   # custom_dir: ansible_collections/arista/avd/docs/_overrides
@@ -25,6 +25,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
     logo: fontawesome/solid/book
+    edit: fontawesome/solid/file-pen
   favicon: docs/_media/favicon.ico
   font:
     code: Fira Mono
