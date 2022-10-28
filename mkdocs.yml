@@ -47,8 +47,8 @@ extra:
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/aristanetworks/ansible-avd
-    # - icon: fontawesome/brands/twitter
-    #   link: https://twitter.com/AristaNetworks
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/AristaNetworks
     - icon: fontawesome/solid/globe
       link: https://www.arista.com
 
@@ -64,11 +64,11 @@ plugins:
       lang: en
   - git-revision-date-localized:
       type: date
-  # Deactivated due to https://github.com/tikitu/jsmin/issues/33
-  # Issue in progress: https://github.com/byrnereese/mkdocs-minify-plugin/issues/15
-  # - minify:
-  #     minify_html: true
-  #     minify_js: true
+  - exclude:
+      glob:
+        - examples/*/documentation/*
+        - molecule/*
+        - tests/*
 
 markdown_extensions:
   - admonition
