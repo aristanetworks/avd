@@ -254,27 +254,6 @@
                             "default": false,
                             "description": "Allow keys in the dictionary which are not defined in the schema."
                         },
-                        "validate_password": {
-                            "type": "object",
-                            "description": "structure to validate a password in a dict",
-                            "required": ["password_field", "password_type"],
-                            "properties": {
-                                "password_field": {
-                                    "type": "string",
-                                    "description": "The field in the dict that holds the password"
-                                },
-                                "password_type": {
-                                    "type": "string",
-                                    "description": "The type of the password, currently only 'bgp' is supported",
-                                    "enum": ["bgp"]
-                                },
-                                "password_key_field": {
-                                    "type": "string",
-                                    "description": "The field in the dict to use as key for the password"
-                                }
-                            },
-                            "additionalProperties": true
-                        },
                         "display_name": { "$ref": "#/$def/display_name" },
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },

@@ -6,7 +6,6 @@ import copy
 import json
 import os
 
-from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_check_password
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 try:
@@ -156,43 +155,6 @@ def _valid_values_validator(validator, valid_values, instance, schema: dict):
         yield jsonschema.ValidationError(f"'{instance}' is not one of {valid_values}")
 
 
-def _password_validator(validator, validate_password: dict, instance: str, schema: dict):
-    """
-    This function validates if password is a valid password for the given password_type
-
-    The assumption is that the schema validates that the password_type is a valid one so no
-    check is run on this method
-    """
-    if not validator.is_type(instance, "dict"):
-        return
-
-    # Don't run validator if $ref is part of the schema.
-    # Instead $ref validator will pop $ref and run all validators.
-    if "$ref" in schema:
-        return
-
-    password = instance[validate_password["password_field"]]
-    if not validator.is_type(password, "str"):
-        return
-
-    password_type = validate_password["password_type"]
-    if password_type == "bgp":
-        if "password_key_field" not in validate_password.keys():
-            yield jsonschema.ValidationError("BGP password validation requires a password_key_field")
-        elif validate_password["password_key_field"] not in instance.keys():
-            yield jsonschema.ValidationError(f"password_key_field {validate_password['password_key_field']} not in instance")
-        else:
-            password_key = instance[validate_password["password_key_field"]]
-            if not isinstance(password_key, str):
-                yield jsonschema.ValidationError("BGP password validation requires a password_key")
-            else:
-                b_key = bytes(f"{password_key}_passwd", encoding="utf-8")
-                b_password = bytes(password, encoding="utf-8")
-
-                if not cbc_check_password(b_key, b_password):
-                    yield jsonschema.ValidationError(f"BGP password {password} is not valid for password_key {password_key}")
-
-
 """
 AvdSchemaValidator is used to validate AVD Data.
 It uses a combination of our own validators and builtin jsonschema validators
@@ -219,7 +181,6 @@ else:
             "primary_key": _primary_key_validator,
             "keys": _keys_validator,
             "dynamic_keys": _dynamic_keys_validator,
-            "validate_password": _password_validator,
         },
         type_checker=jsonschema.TypeChecker(
             {
@@ -237,8 +198,7 @@ else:
                 "bool": jsonschema._types.is_bool,
                 "list": jsonschema._types.is_array,
                 "int": jsonschema._types.is_integer,
-                "password": jsonschema._types.is_string,
             }
-        ),
-        # version="0.2",
+        )
+        # version="0.1",
     )

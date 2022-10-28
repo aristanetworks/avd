@@ -199,7 +199,7 @@ An example usage for `arista.avd.encrypt` filter for BGP it ot use it in conjunc
 bgp_peer_groups:
   ipv4_underlay_peers:
       name: IPv4-UNDERLAY-PEERS
-          password: "{{ bgp_vault_password | bgp_encrypt(passwd_type="bgp", key="IPv4-UNDERLAY-PEERS")
+          password: "{{ bgp_vault_password | bgp_encrypt(passwd_type="bgp", key="IPv4-UNDERLAY-PEERS") }}"
 ```
 
 ## Plugin Tests
@@ -332,29 +332,6 @@ Jinja template with the `selectattr` and `arista.avd.contains` test:
 switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
-```
-
-### valid_password test
-
-The `arista.avd.valid_password` test will test if an encrypted is valid.
-It takes as input a `type`, the `value` to test and a `key`
-If the password is not valid, an Exception is raised.
-
-Supported types:
-
-- bgp
-
-#### BGP password
-
-BGP password provided is validated against the Neighbor IP or Peer Group Name against which it is applied.
-It allows to detect early in the configuration generation step if there will be an issue when applying the configuration on the device.
-
-To use this test:
-
-```jinja
-{% if bgp_password is arista.avd.valid_password(passwd_type="bgp", key="My-Awesome-Peer-Group-Name %}
-  neighbor My-Awesome-Peer-Group-Name password bgp_password
-{% endif %}
 ```
 
 ## Modules
