@@ -73,11 +73,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-<<<<<<< HEAD
 | Management1 | oob_management | oob | MGMT | - | - |
-=======
-| Management1 | oob_management | oob | MGMT | -  | - |
->>>>>>> bcaec98f (Test: fix further molecule scenarios password)
 
 ### Management Interfaces Device Configuration
 
@@ -956,20 +952,12 @@ router bgp 65106
    neighbor MLAG_PEER remote-as 65106
    neighbor MLAG_PEER next-hop-self
    neighbor MLAG_PEER description DC1-LEAF3B
-<<<<<<< HEAD
-   neighbor MLAG_PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
-=======
    neighbor MLAG_PEER password 7 arwUnrq9ydqIhjfTwRhAlg==
->>>>>>> bcaec98f (Test: fix further molecule scenarios password)
    neighbor MLAG_PEER send-community
    neighbor MLAG_PEER maximum-routes 12000
    neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY_PEERS peer group
-<<<<<<< HEAD
-   neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
-=======
    neighbor UNDERLAY_PEERS password 7 af6F4WLl4wUrWRZcwbEwkQ==
->>>>>>> bcaec98f (Test: fix further molecule scenarios password)
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001
