@@ -527,7 +527,8 @@ router_ospf:
       no_passive_interfaces:
       - Vlan150
       max_lsa: 15000
-      redistribute: {}
+      redistribute:
+        bgp: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP

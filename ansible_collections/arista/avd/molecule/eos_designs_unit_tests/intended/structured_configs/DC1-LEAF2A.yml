@@ -1036,7 +1036,8 @@ router_ospf:
       no_passive_interfaces:
       - Ethernet22
       - Ethernet23
-      redistribute: {}
+      redistribute:
+        bgp: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP

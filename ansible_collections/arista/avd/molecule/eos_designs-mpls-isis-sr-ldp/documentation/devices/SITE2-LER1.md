@@ -527,6 +527,7 @@ ip route vrf TENANT_B_INTRA 123.0.10.0/24 Ethernet6.10 123.1.1.3 name TENANT_B_S
 
 | Process ID | Source Protocol | Route Map |
 | ---------- | --------------- | --------- |
+| 99 | bgp | - |
 
 ### OSPF Interfaces
 
@@ -543,6 +544,7 @@ router ospf 99 vrf TENANT_B_WAN
    passive-interface default
    no passive-interface Ethernet6.100
    max-lsa 10000
+   redistribute bgp
 ```
 
 ## Router ISIS

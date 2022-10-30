@@ -488,4 +488,5 @@ router_ospf:
       no_passive_interfaces:
       - Ethernet6.100
       max_lsa: 10000
-      redistribute: {}
+      redistribute:
+        bgp: {}

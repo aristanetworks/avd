@@ -531,6 +531,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Source Protocol | Route Map |
 | ---------- | --------------- | --------- |
+| 19 | bgp | - |
 
 ### OSPF Interfaces
 
@@ -547,6 +548,7 @@ router ospf 19 vrf TENANT_B_INTRA
    passive-interface default
    no passive-interface Ethernet6.10
    max-lsa 10000
+   redistribute bgp
 ```
 
 ## Router ISIS
