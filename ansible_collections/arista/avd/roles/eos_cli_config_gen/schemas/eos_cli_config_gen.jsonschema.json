@@ -178,6 +178,7 @@
       "additionalProperties": false
     },
     "aaa_server_groups": {
+      "title": "AAA Server Groups",
       "type": "array",
       "items": {
         "type": "object",
@@ -202,10 +203,12 @@
               "properties": {
                 "server": {
                   "type": "string",
+                  "description": "Hostname or IP address",
                   "title": "Server"
                 },
                 "vrf": {
                   "type": "string",
+                  "description": "VRF Name",
                   "title": "Vrf"
                 }
               },
@@ -215,8 +218,7 @@
           }
         },
         "additionalProperties": false
-      },
-      "title": "Aaa Server Groups"
+      }
     },
     "access_lists": {
       "type": "array",

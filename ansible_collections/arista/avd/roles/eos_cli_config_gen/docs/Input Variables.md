@@ -97,18 +97,18 @@ aaa_root:
     sha512_password: <str>
 ```
 
-## Aaa Server Groups
+## AAA Server Groups
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>aaa_server_groups</samp>](## "aaa_server_groups") | List, items: Dictionary |  |  |  |  |
+| [<samp>aaa_server_groups</samp>](## "aaa_server_groups") | List, items: Dictionary |  |  |  | AAA Server Groups |
 | [<samp>&nbsp;&nbsp;- name</samp>](## "aaa_server_groups.[].name") | String |  |  |  | Server Group Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_server_groups.[].type") | String |  |  | Valid Values:<br>- tacacs+<br>- radius<br>- ldap |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "aaa_server_groups.[].servers") | List, items: Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- server</samp>](## "aaa_server_groups.[].servers.[].server") | String |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_server_groups.[].servers.[].vrf") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- server</samp>](## "aaa_server_groups.[].servers.[].server") | String |  |  |  | Hostname or IP address |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_server_groups.[].servers.[].vrf") | String |  |  |  | VRF Name |
 
 ### YAML
 

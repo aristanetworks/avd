@@ -4,6 +4,7 @@
 type: dict
 keys:
   aaa_server_groups:
+    display_name: AAA Server Groups
     type: list
     items:
       type: dict
@@ -21,5 +22,7 @@ keys:
             keys:
               server:
                 type: str
+                description: Hostname or IP address
               vrf:
                 type: str
+                description: VRF Name
