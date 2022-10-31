@@ -245,6 +245,15 @@ keys:
             type: list
             items:
               type: str
+              valid_values:
+              - acl
+              - arp-inspection
+              - dot1x
+              - link-change
+              - tapagg
+              - xcvr-misconfigured
+              - xcvr-overheat
+              - xcvr-power-unsupported
       recovery:
         type: dict
         keys:
@@ -252,10 +261,32 @@ keys:
             type: list
             items:
               type: str
+              valid_values:
+              - arp-inspection
+              - bpduguard
+              - dot1x
+              - hitless-reload-down
+              - lacp-rate-limit
+              - link-flap
+              - no-internal-vlan
+              - portchannelguard
+              - portsec
+              - speed-misconfigured
+              - tap-port-init
+              - tapagg
+              - uplink-failure-detection
+              - xcvr-misconfigured
+              - xcvr-overheat
+              - xcvr-power-unsupported
+              - xcvr-unsupported
           interval:
             type: int
+            convert_types:
+            - str
             display_name: Interval in seconds
             default: 300
+            min: 30
+            max: 86400
   event_handlers:
     type: list
     primary_key: name

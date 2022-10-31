@@ -289,7 +289,17 @@
             "causes": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "acl",
+                  "arp-inspection",
+                  "dot1x",
+                  "link-change",
+                  "tapagg",
+                  "xcvr-misconfigured",
+                  "xcvr-overheat",
+                  "xcvr-power-unsupported"
+                ]
               },
               "title": "Causes"
             }
@@ -303,14 +313,35 @@
             "causes": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "arp-inspection",
+                  "bpduguard",
+                  "dot1x",
+                  "hitless-reload-down",
+                  "lacp-rate-limit",
+                  "link-flap",
+                  "no-internal-vlan",
+                  "portchannelguard",
+                  "portsec",
+                  "speed-misconfigured",
+                  "tap-port-init",
+                  "tapagg",
+                  "uplink-failure-detection",
+                  "xcvr-misconfigured",
+                  "xcvr-overheat",
+                  "xcvr-power-unsupported",
+                  "xcvr-unsupported"
+                ]
               },
               "title": "Causes"
             },
             "interval": {
               "type": "integer",
               "title": "Interval in seconds",
-              "default": 300
+              "default": 300,
+              "minimum": 30,
+              "maximum": 86400
             }
           },
           "additionalProperties": false,
