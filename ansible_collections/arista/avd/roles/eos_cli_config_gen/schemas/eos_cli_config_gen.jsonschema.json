@@ -4204,16 +4204,19 @@
       "properties": {
         "process_ids": {
           "type": "array",
+          "title": "Process IDs",
           "items": {
             "type": "object",
             "properties": {
               "id": {
                 "type": "integer",
-                "title": "Process ID"
+                "title": "ID",
+                "description": "OSPF Process ID"
               },
               "vrf": {
                 "type": "string",
-                "title": "VRF Name for Process ID"
+                "title": "VRF",
+                "description": "VRF Name for OSPF Process"
               },
               "passive_interface_default": {
                 "type": "boolean",
@@ -4221,7 +4224,8 @@
               },
               "router_id": {
                 "type": "string",
-                "title": "IPv4 Address"
+                "title": "Router ID",
+                "description": "IPv4 Address"
               },
               "distance": {
                 "type": "object",
@@ -4259,7 +4263,7 @@
                   "properties": {
                     "ipv4_prefix": {
                       "type": "string",
-                      "title": "IPv4 Subnet/Netmask"
+                      "title": "IPv4 Prefix"
                     },
                     "area": {
                       "type": "string",
@@ -4272,11 +4276,11 @@
               },
               "bfd_enable": {
                 "type": "boolean",
-                "title": "Bfd Enable"
+                "title": "BFD Enable"
               },
               "bfd_adjacency_state_any": {
                 "type": "boolean",
-                "title": "Bfd Adjacency State Any"
+                "title": "BFD Adjacency State Any"
               },
               "no_passive_interfaces": {
                 "type": "array",
@@ -4298,7 +4302,7 @@
               },
               "max_lsa": {
                 "type": "integer",
-                "title": "Max Lsa"
+                "title": "Max LSA"
               },
               "timers": {
                 "type": "object",
@@ -4308,13 +4312,14 @@
                     "properties": {
                       "rx_min_interval": {
                         "type": "integer",
+                        "title": "RX Min Interval",
                         "description": "Min interval in msecs between accepting the same LSA",
                         "minimum": 0,
-                        "maximum": 600000,
-                        "title": "Rx Min Interval"
+                        "maximum": 600000
                       },
                       "tx_delay": {
                         "type": "object",
+                        "title": "TX Delay",
                         "properties": {
                           "initial": {
                             "type": "integer",
@@ -4338,8 +4343,7 @@
                             "title": "Max"
                           }
                         },
-                        "additionalProperties": false,
-                        "title": "Tx Delay"
+                        "additionalProperties": false
                       }
                     },
                     "additionalProperties": false,
@@ -4347,6 +4351,7 @@
                   },
                   "spf_delay": {
                     "type": "object",
+                    "title": "SPF Delay",
                     "properties": {
                       "initial": {
                         "type": "integer",
@@ -4370,8 +4375,7 @@
                         "title": "Max"
                       }
                     },
-                    "additionalProperties": false,
-                    "title": "Spf Delay"
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false,
@@ -4395,7 +4399,8 @@
                   "properties": {
                     "prefix": {
                       "type": "string",
-                      "title": "Summary Prefix Address"
+                      "description": "Summary Prefix Address",
+                      "title": "Prefix"
                     },
                     "tag": {
                       "type": "integer",
@@ -4441,14 +4446,14 @@
                   },
                   "bgp": {
                     "type": "object",
+                    "title": "BGP",
                     "properties": {
                       "route_map": {
                         "type": "string",
                         "title": "Route Map Name"
                       }
                     },
-                    "additionalProperties": false,
-                    "title": "Bgp"
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false,
@@ -4466,7 +4471,7 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "title": "Id"
+                      "title": "ID"
                     },
                     "filter": {
                       "type": "object",
@@ -4503,14 +4508,14 @@
                     },
                     "nssa_only": {
                       "type": "boolean",
-                      "title": "Nssa Only"
+                      "title": "NSSA Only"
                     },
                     "default_information_originate": {
                       "type": "object",
                       "properties": {
                         "metric": {
                           "type": "integer",
-                          "description": "Value of the route metric",
+                          "description": "Metric for default route",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Metric"
@@ -4521,7 +4526,7 @@
                             1,
                             2
                           ],
-                          "description": "OSPF metric type",
+                          "description": "OSPF metric type for default route",
                           "title": "Metric Type"
                         }
                       },
@@ -4541,7 +4546,6 @@
               },
               "max_metric": {
                 "type": "object",
-                "description": "Not expected to produce config. Just here to test proper variable checks.",
                 "properties": {
                   "router_lsa": {
                     "type": "object",
@@ -4565,11 +4569,12 @@
                       },
                       "on_startup": {
                         "type": "string",
-                        "description": "wait-for-bgp or Integer 5-86400\nExample: \"wait-for-bgp\" Or \"222\"\n",
+                        "description": "\"wait-for-bgp\" or Integer 5-86400\nExample: \"wait-for-bgp\" Or \"222\"\n",
                         "title": "On Startup"
                       },
                       "summary_lsa": {
                         "type": "object",
+                        "title": "Summary LSA",
                         "properties": {
                           "override_metric": {
                             "type": "integer",
@@ -4578,8 +4583,7 @@
                             "title": "Override Metric"
                           }
                         },
-                        "additionalProperties": false,
-                        "title": "Summary Lsa"
+                        "additionalProperties": false
                       }
                     },
                     "additionalProperties": false,
@@ -4595,8 +4599,7 @@
               }
             },
             "additionalProperties": false
-          },
-          "title": "Process Ids"
+          }
         }
       },
       "additionalProperties": false
