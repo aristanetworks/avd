@@ -2942,13 +2942,13 @@ keys:
       keys:
         host:
           type: str
-          display_name: Host IP Address Or Name
+          description: Host IP address or name
         vrf:
           type: str
-          display_name: VRF Name
+          display_name: VRF
         key:
           type: str
-          display_name: Encrypted Key
+          description: Encrypted key
   redundancy:
     type: dict
     keys:
