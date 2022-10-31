@@ -1,6 +1,6 @@
 ### Logging ###
 logging:
-  console: error
+  console: errors
   buffered:
     size: 1000000
     level: warnings

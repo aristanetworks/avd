@@ -411,8 +411,8 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ipv6_enable: true
     mtu: 1500
+    ipv6_enable: true
   Vlan4094:
     description: MLAG_PEER
     shutdown: false

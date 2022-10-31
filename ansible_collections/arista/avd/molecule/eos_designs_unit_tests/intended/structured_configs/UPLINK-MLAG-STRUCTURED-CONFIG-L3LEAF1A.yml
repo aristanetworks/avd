@@ -97,8 +97,8 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 10.255.251.0/31
     mtu: 9000
+    ip_address: 10.255.251.0/31
     struct_cfg:
       pim:
         ipv4:
@@ -111,9 +111,9 @@ vlan_interfaces:
     shutdown: false
     ip_address: 10.255.252.0/31
     no_autostate: true
-    mtu: 9000
     struct_cfg:
       description: mlag_peer_vlan_structured_config_override
+    mtu: 9000
 port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Po3

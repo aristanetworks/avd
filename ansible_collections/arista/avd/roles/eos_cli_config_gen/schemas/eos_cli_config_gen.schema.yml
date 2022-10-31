@@ -1,6 +1,292 @@
 type: dict
 allow_other_keys: true
 keys:
+  aaa_accounting:
+    display_name: AAA Accounting
+    type: dict
+    keys:
+      exec:
+        type: dict
+        keys:
+          console:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - none
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - none
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
+      system:
+        type: dict
+        keys:
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - none
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
+      commands:
+        type: dict
+        keys:
+          console:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Privelege level 'all' or 0-15
+                type:
+                  type: str
+                  valid_values:
+                  - none
+                  - start-stop
+                  - stop-only
+                group:
+                  description: Group Name
+                  type: str
+                logging:
+                  type: bool
+          default:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Privelege level 'all' or 0-15
+                type:
+                  type: str
+                  valid_values:
+                  - none
+                  - start-stop
+                  - stop-only
+                group:
+                  description: Group Name
+                  type: str
+                logging:
+                  type: bool
+          commands_default:
+            type: list
+            description: Deprecated and removed key from AVD 2.x
+  aaa_authentication:
+    type: dict
+    display_name: AAA Authentication
+    keys:
+      login:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: 'Login authentication method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group radius group MYGROUP local"
+
+              '
+          console:
+            type: str
+            description: 'Console authentication method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group radius group MYGROUP local"
+
+              '
+      enable:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: 'Enable authentication method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group radius group MYGROUP local"
+
+              '
+      dot1x:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: '802.1x authentication method(s) as a string.
+
+              Examples:
+
+              - "group radius"
+
+              - "group MYGROUP group radius"
+
+              '
+      policies:
+        type: dict
+        keys:
+          on_failure_log:
+            type: bool
+          on_success_log:
+            type: bool
+          local:
+            type: dict
+            keys:
+              allow_nopassword:
+                type: bool
+          lockout:
+            type: dict
+            keys:
+              failure:
+                type: int
+                min: 1
+                max: 255
+                convert_types:
+                - str
+              duration:
+                type: int
+                min: 1
+                max: 4294967295
+                convert_types:
+                - str
+              window:
+                type: int
+                min: 1
+                max: 4294967295
+                convert_types:
+                - str
+  aaa_authorization:
+    type: dict
+    display_name: AAA Authorization
+    keys:
+      exec:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: 'Exec authorization method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group radius group MYGROUP local"
+
+              '
+      config_commands:
+        type: bool
+      serial_console:
+        type: bool
+      commands:
+        type: dict
+        keys:
+          all_default:
+            type: str
+            description: 'Command authorization method(s) as a string.
+
+              Examples:
+
+              - "group tacacs+ local"
+
+              - "group MYGROUP none"
+
+              - "group tacacs+ group MYGROUP local
+
+              '
+          privilege:
+            type: list
+            items:
+              type: dict
+              keys:
+                level:
+                  type: str
+                  description: Privilege level(s) 0-15
+                  convert_types:
+                  - int
+                default:
+                  type: str
+                  description: 'Command authorization method(s) as a string.
+
+                    Examples:
+
+                    - "group tacacs+ local"
+
+                    - "group MYGROUP none"
+
+                    - "group tacacs+ group MYGROUP local"'
+  aaa_root:
+    type: dict
+    display_name: AAA Root
+    keys:
+      secret:
+        type: dict
+        keys:
+          sha512_password:
+            type: str
+  aaa_server_groups:
+    display_name: AAA Server Groups
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          description: Group name
+          type: str
+        type:
+          type: str
+          valid_values:
+          - tacacs+
+          - radius
+          - ldap
+        servers:
+          type: list
+          items:
+            type: dict
+            keys:
+              server:
+                type: str
+                description: Hostname or IP address
+              vrf:
+                type: str
+                description: VRF name
   access_lists:
     type: list
     primary_key: name
@@ -55,6 +341,18 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  arp:
+    display_name: ARP
+    type: dict
+    keys:
+      aging:
+        type: dict
+        keys:
+          timeout_default:
+            description: Timeout in seconds
+            type: int
+            min: 60
+            max: 65535
   as_path:
     type: dict
     keys:
@@ -92,6 +390,15 @@ keys:
                     - igp
                     - incomplete
                     default: any
+  banners:
+    type: dict
+    keys:
+      login:
+        type: str
+        description: Multiline string ending with EOF on the last line
+      motd:
+        type: str
+        description: Multiline string ending with EOF on the last line
   bgp_groups:
     type: list
     primary_key: name
@@ -116,6 +423,25 @@ keys:
           items:
             type: str
             display_name: Profile Name
+  boot:
+    display_name: System Boot Settings
+    description: 'Set the Aboot password
+
+      '
+    type: dict
+    keys:
+      secret:
+        type: dict
+        keys:
+          hash_algorithm:
+            type: str
+            valid_values:
+            - md5
+            - sha512
+            default: sha512
+          key:
+            display_name: Hashed Password
+            type: str
   class_maps:
     type: dict
     display_name: QOS Class-maps
@@ -170,6 +496,11 @@ keys:
                 access_group:
                   type: str
                   display_name: IPv6 Access-List Name
+  clock:
+    type: dict
+    keys:
+      timezone:
+        type: str
   community_lists:
     type: list
     primary_key: name
@@ -208,6 +539,316 @@ keys:
           description: 'Action as string
 
             Example: "permit GSHUT 65123:123"'
+  custom_templates:
+    type: list
+    display_name: Extensibility with Custom Templates
+    description: "- Custom templates can be added below the playbook directory.\n-
+      If a location above the directory is desired, a symbolic link can be used.\n-
+      Example under the `playbooks` directory create symbolic link with the following
+      command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n
+      \ ```\n\n- The output will be rendered at the end of the configuration.\n- The
+      order of custom templates in the list can be important if they overlap.\n- It
+      is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd
+      `custom_templates` to group/host variables:\n"
+    items:
+      type: str
+      description: Template relative path below playbook directory
+  cvx:
+    type: dict
+    display_name: CVX
+    description: CVX server features are not supported on physical switches. See `management_cvx`
+      for client configurations.
+    keys:
+      shutdown:
+        type: bool
+      services:
+        type: dict
+        keys:
+          mcs:
+            type: dict
+            display_name: MCS
+            keys:
+              redis:
+                type: dict
+                keys:
+                  password:
+                    type: str
+                    description: Hashed password using the password_type
+                  password_type:
+                    type: str
+                    convert_types:
+                    - int
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
+                    default: '7'
+              shutdown:
+                type: bool
+  daemon_terminattr:
+    type: dict
+    display_name: Daemon TerminAttr
+    description: "You can either provide a list of IPs/FQDNs to target on-premise
+      Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming
+      to multiple clusters both on-prem and cloud service is supported.\n> Note For
+      TerminAttr version recommendation and EOS compatibility matrix, please refer
+      to the latest TerminAttr Release Notes\n  which always contain the latest recommended
+      versions and minimum required versions per EOS release.\n"
+    keys:
+      cvaddrs:
+        type: list
+        description: 'Streaming address(es) for CloudVision single cluster
+
+          - TCP 9910 is used for CV on-prem
+
+          - TCP 443 is used for CV as a Service
+
+          '
+        items:
+          type: str
+          description: Server address in the format `<ip/fqdn>:<port>`
+      clusters:
+        type: list
+        description: 'Multiple CloudVision clusters
+
+          '
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              display_name: Cluster Name
+            cvaddrs:
+              type: list
+              description: 'Streaming address(es) for CloudVision cluster
+
+                - TCP 9910 is used for CV on-prem
+
+                - TCP 443 is used for CV as a Service
+
+                '
+              items:
+                type: str
+                description: Server address in the format `<ip/fqdn>:<port>`
+            cvauth:
+              type: dict
+              description: 'Authentication scheme used to connect to CloudVision
+
+                '
+              keys:
+                method:
+                  type: str
+                  valid_values:
+                  - token
+                  - token-secure
+                  - key
+                key:
+                  type: str
+                token_file:
+                  type: str
+                  description: 'Token file path
+
+                    e.g. "/tmp/token"
+
+                    '
+            cvobscurekeyfile:
+              type: bool
+              display_name: Obscure Key File
+              description: 'Encrypt the private key used for authentication to CloudVision
+
+                '
+            cvproxy:
+              type: str
+              display_name: Proxy URL
+              description: 'Proxy server through which CloudVision is reachable. Useful
+                when the CloudVision server is hosted in the cloud.
+
+                The expected form is http://[user:password@]ip:port, e.g.: ''http://arista:arista@10.83.12.78:3128''.
+                Available as of TerminAttr v1.13.0
+
+                '
+            cvsourceip:
+              type: str
+              display_name: Source IP Address
+              description: 'Set source IP address in case of in-band managament
+
+                '
+            cvvrf:
+              type: str
+              display_name: VRF
+              description: 'The VRF to use to connect to CloudVision
+
+                '
+      cvauth:
+        type: dict
+        description: 'Authentication scheme used to connect to CloudVision
+
+          '
+        keys:
+          method:
+            type: str
+            valid_values:
+            - token
+            - token-secure
+            - key
+          key:
+            type: str
+          token_file:
+            type: str
+            description: 'Token file path
+
+              e.g. "/tmp/token"
+
+              '
+      cvobscurekeyfile:
+        type: bool
+        display_name: Obscure Key File
+        description: 'Encrypt the private key used for authentication to CloudVision
+
+          '
+      cvproxy:
+        type: str
+        display_name: Proxy URL
+        description: 'Proxy server through which CloudVision is reachable. Useful
+          when the CloudVision server is hosted in the cloud.
+
+          The expected form is http://[user:password@]ip:port, e.g.: ''http://arista:arista@10.83.12.78:3128''.
+          Available as of TerminAttr v1.13.0
+
+          '
+      cvsourceip:
+        type: str
+        display_name: Source IP Address
+        description: 'Set source IP address in case of in-band managament
+
+          '
+      cvvrf:
+        type: str
+        display_name: VRF
+        description: 'The VRF to use to connect to CloudVision
+
+          '
+      cvgnmi:
+        type: bool
+        description: 'Stream states from EOS GNMI servers (Openconfig) to CloudVision.
+          Available as of TerminAttr v1.13.1
+
+          '
+      disable_aaa:
+        type: bool
+        description: 'Disable AAA authorization and accounting.
+
+          When setting this flag, all commands pushed from CloudVision are applied
+          directly to the CLI without authorization
+
+          '
+      grpcaddr:
+        type: str
+        description: 'Set the gRPC server address, the default is 127.0.0.1:6042
+
+          e.g. "MGMT/0.0.0.0:6042"
+
+          '
+      grpcreadonly:
+        type: bool
+        description: 'gNMI read-only mode - Disable gnmi.Set()
+
+          '
+      ingestexclude:
+        type: str
+        description: 'Exclude paths from Sysdb on the ingest side.
+
+          e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+          '
+      smashexcludes:
+        type: str
+        description: 'Exclude paths from the shared memory table.
+
+          e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+
+          '
+      taillogs:
+        type: str
+        description: 'Enable log file collection; /var/log/messages is streamed by
+          default if no path is set.
+
+          e.g. "/var/log/messages"
+
+          '
+      ecodhcpaddr:
+        type: str
+        description: 'ECO DHCP Collector address or ECO DHCP Fingerprint listening
+          address in standalone mode (default "127.0.0.1:67")
+
+          '
+      ipfix:
+        type: bool
+        description: 'Enable IPFIX provider (TerminAttr default is true).
+
+          This flag is enabled by default and does not have to be added to the daemon
+          configuration.
+
+          '
+      ipfixaddr:
+        type: str
+        description: 'ECO IPFIX Collector address to listen on to receive IPFIX packets
+          (TerminAttr default "127.0.0.1:4739").
+
+          '
+      sflow:
+        type: bool
+        description: 'Enable sFlow provider (TerminAttr default is true).
+
+          '
+      sflowaddr:
+        type: str
+        description: 'ECO sFlow Collector address to listen on to receive sFlow packets
+          (TerminAttr default "127.0.0.1:6343").
+
+          '
+      cvconfig:
+        type: bool
+        description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr
+          default is false).
+
+          '
+      cvcompression:
+        type: str
+        description: 'The default compression scheme when streaming to CloudVision
+          is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
+
+          There is no need to change the compression scheme.
+
+          '
+      ingestauth_key:
+        type: str
+        description: 'Deprecated key. Use `cvauth` instead.
+
+          '
+      ingestgrpcurl:
+        type: dict
+        description: 'Deprecated key. Use `cvaddrs` instead.
+
+          '
+        keys:
+          ips:
+            type: list
+            items:
+              type: str
+          port:
+            type: int
+            convert_types:
+            - str
+      ingestvrf:
+        description: 'Deprecated key. Use `cvvrf` instead.
+
+          '
+        type: str
   daemons:
     type: list
     primary_key: name
@@ -230,6 +871,74 @@ keys:
         enabled:
           type: bool
           default: true
+  dhcp_relay:
+    type: dict
+    display_name: DHCP Relay
+    keys:
+      servers:
+        type: list
+        items:
+          type: str
+          display_name: Server IP or Hostname
+      tunnel_requests_disabled:
+        type: bool
+  dns_domain:
+    type: str
+    display_name: DNS Domain
+    description: Domain Name
+  domain_list:
+    type: list
+    description: Search list of DNS domains
+    items:
+      type: str
+      description: Domain name
+  dot1x:
+    type: dict
+    display_name: Global 802.1x Authentication
+    keys:
+      system_auth_control:
+        type: bool
+      protocol_lldp_bypass:
+        type: bool
+        display_name: Protocol LLDP Bypass
+      dynamic_authorization:
+        type: bool
+  dynamic_prefix_lists:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Dynamic prefix-list name
+        match_map:
+          type: str
+          description: Route-map name
+        prefix_list:
+          type: dict
+          keys:
+            ipv4:
+              type: str
+              display_name: IPv4
+              description: Prefix-list name
+            ipv6:
+              type: str
+              display_name: IPv6
+              description: Prefix-list name
+  enable_password:
+    type: dict
+    keys:
+      hash_algorithm:
+        type: str
+        valid_values:
+        - md5
+        - sha512
+      key:
+        type: str
+        description: 'Must be the hash of the password using the specified algorithm.
+
+          By default EOS salts the password, so the simplest is to generate the hash
+          on an EOS device.'
   eos_cli:
     type: str
     display_name: EOS CLI
@@ -336,9 +1045,78 @@ keys:
           type: bool
           default: false
           description: Set the action to be non-blocking.
+  event_monitor:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+  generate_default_config:
+    type: bool
+    default: true
+    description: 'The `generate_default_config` knob allows to omit default EOS configuration.
+
+      This can be useful when leveraging `eos_cli_config_gen` to generate configlets
+      with CloudVision.
+
+
+      The following commands will be omitted when `generate_default_config` is set
+      to `false`:
+
+
+      - RANCID Content Type
+
+      - Hostname
+
+      - Default configuration for `aaa`
+
+      - Default configuration for `enable password`
+
+      - Transceiver qsfp default mode
+
+      - End of configuration delimiter'
   generate_device_documentation:
     type: bool
     default: true
+  hardware:
+    type: dict
+    keys:
+      access_list:
+        type: dict
+        keys:
+          mechanism:
+            type: str
+            valid_values:
+            - algomatch
+            - none
+            - tcam
+      speed_groups:
+        type: list
+        primary_key: speed_group
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            speed_group:
+              type: int
+              convert_types:
+              - str
+              required: true
+            serdes:
+              type: str
+              description: Serdes speed like "10g" or "25g"
+  interface_defaults:
+    type: dict
+    keys:
+      ethernet:
+        type: dict
+        keys:
+          shutdown:
+            type: bool
+      mtu:
+        type: int
+        convert_types:
+        - str
   interface_groups:
     type: list
     display_name: Maintenance Interface Groups
@@ -387,6 +1165,182 @@ keys:
             description: 'EOS CLI interface command
 
               Example: "switchport mode access"'
+  ip_access_lists:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: IP Extended Access-Lists (improved model)
+    description: 'AVD currently supports 2 different data models for extended ACLs:
+
+
+      - The legacy `access_lists` data model, for compatibility with existing deployments
+
+      - The improved `ip_access_lists` data model, for access to more EOS features
+
+
+      Both data models can coexists without conflicts, as different keys are used:
+      `access_lists` vs `ip_access_lists`.
+
+      Access list names must be unique.
+
+
+      The improved data model has a more sophisticated design documented below:
+
+      '
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: Access-list Name
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          display_name: ACL Entries
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+                description: 'ACL entry sequence number.
+
+                  '
+              remark:
+                type: str
+                description: 'Comment up to 100 characters.
+
+                  If remark is defined, other keys in acl entry will be ignored.
+
+                  '
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+                description: 'ACL action.
+
+                  Required for standard entry.
+
+                  '
+              protocol:
+                type: str
+                description: 'ip, tcp, udp, icmp or other protocol name or number.
+
+                  Required for standard entry.
+
+                  '
+              source:
+                type: str
+                description: 'any, A.B.C.D/E or A.B.C.D.
+
+                  A.B.C.D without a mask means host.
+
+                  Required for standard entry.
+
+                  '
+              source_ports_match:
+                type: str
+                valid_values:
+                - eq
+                - gt
+                - lt
+                - neq
+                - range
+                default: eq
+              source_ports:
+                type: list
+                items:
+                  type: str
+                  convert_types:
+                  - int
+                  description: TCP/UDP source port name or number.
+              destination:
+                type: str
+                description: 'any, A.B.C.D/E or A.B.C.D.
+
+                  A.B.C.D without a mask means host.
+
+                  Required for standard entry.
+
+                  '
+              destination_ports_match:
+                type: str
+                valid_values:
+                - eq
+                - gt
+                - lt
+                - neq
+                - range
+                default: eq
+              destination_ports:
+                type: list
+                items:
+                  type: str
+                  convert_types:
+                  - int
+                  description: TCP/UDP destination port name or number.
+              tcp_flags:
+                type: list
+                items:
+                  type: str
+                  display_name: TCP Flag Name
+              fragments:
+                type: bool
+                description: Match non-head fragment packets.
+              log:
+                type: bool
+                description: Log matches against this rule.
+              ttl:
+                type: int
+                display_name: TTL value
+                convert_types:
+                - str
+                min: 0
+                max: 254
+              ttl_match:
+                type: str
+                valid_values:
+                - eq
+                - gt
+                - lt
+                - neq
+                default: eq
+              icmp_type:
+                type: str
+                convert_types:
+                - int
+                description: Message type name/number for ICMP packets.
+              icmp_code:
+                type: str
+                convert_types:
+                - int
+                description: Message code for ICMP packets.
+              nexthop_group:
+                type: str
+                description: nexthop-group name.
+              tracked:
+                type: bool
+                description: Match packets in existing ICMP/UDP/TCP connections.
+              dscp:
+                type: str
+                convert_types:
+                - int
+                description: DSCP value or name.
+              vlan_number:
+                type: int
+                convert_types:
+                - str
+              vlan_inner:
+                type: bool
+                default: false
+              vlan_mask:
+                type: str
+                description: 0x000-0xFFF VLAN mask.
   ip_community_lists:
     type: list
     secondary_key: entries
@@ -431,6 +1385,13 @@ keys:
                 type: str
                 display_name: Regular Expression
                 description: If defined, a regex community-list will be configured
+  ip_dhcp_relay:
+    type: dict
+    display_name: IP DHCP Relay
+    keys:
+      information_option:
+        type: bool
+        description: Insert Option-82 information
   ip_domain_lookup:
     type: dict
     display_name: Domain Lookup
@@ -514,6 +1475,21 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_http_client_source_interfaces:
+    type: list
+    display_name: IP HTTP Client Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          display_name: Interface Name
+          type: str
+        vrf:
+          display_name: VRF
+          type: str
+  ip_icmp_redirect:
+    type: bool
+    display_name: IP ICMP Redirect
   ip_igmp_snooping:
     type: dict
     display_name: IP IGMP Snooping
@@ -635,6 +1611,53 @@ keys:
               type: bool
               description: Global proxy settings should be enabled before enabling
                 per-vlan
+  ip_radius_source_interfaces:
+    type: list
+    display_name: IP RADIUS Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          display_name: Interface Name
+        vrf:
+          type: str
+          display_name: VRF Name
+  ip_routing:
+    type: bool
+    display_name: IP Routing
+  ip_routing_ipv6_interfaces:
+    type: bool
+    display_name: IP Routing IPv6 Interfaces
+  ip_ssh_client_source_interfaces:
+    type: list
+    display_name: IP SSH Client Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          display_name: Interface Name
+          type: str
+        vrf:
+          display_name: VRF
+          type: str
+          default: default
+  ip_tacacs_source_interfaces:
+    type: list
+    display_name: IP Tacacs Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Interface name
+        vrf:
+          type: str
+          display_name: VRF
+  ip_virtual_router_mac_address:
+    display_name: IP Virtual Router MAC Address
+    type: str
+    description: MAC address (hh:hh:hh:hh:hh:hh)
   ipv6_access_lists:
     type: list
     primary_key: name
@@ -671,6 +1694,26 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  ipv6_hardware:
+    display_name: IPv6 Hardware
+    type: dict
+    keys:
+      fib:
+        type: dict
+        keys:
+          optimize:
+            type: dict
+            keys:
+              prefixes:
+                type: dict
+                keys:
+                  profile:
+                    type: str
+                    description: Pre-defined profile 'internet' or user-defined profile
+                      name
+  ipv6_icmp_redirect:
+    type: bool
+    display_name: IPv6 ICMP Redirect
   ipv6_prefix_lists:
     type: list
     primary_key: name
@@ -741,6 +1784,126 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ipv6 any any"'
+  ipv6_static_routes:
+    type: list
+    display_name: IPv6 Static Routes
+    items:
+      type: dict
+      keys:
+        vrf:
+          type: str
+          display_name: VRF
+        destination_address_prefix:
+          type: str
+          description: IPv6 Network/Mask
+        interface:
+          type: str
+        gateway:
+          type: str
+          display_name: IPv6 Address
+        distance:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 255
+        tag:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        name:
+          type: str
+          display_name: Description
+        metric:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+  lacp:
+    type: dict
+    display_name: LACP
+    description: Set Link Aggregation Control Protocol (LACP) parameters.
+    keys:
+      port_id:
+        type: dict
+        description: LACP port-ID range configuration.
+        keys:
+          range:
+            type: dict
+            keys:
+              begin:
+                type: int
+                description: Minimum LACP port-ID range.
+              end:
+                type: int
+                description: Maximum LACP port-ID range.
+      rate_limit:
+        type: dict
+        description: Set LACPDU rate limit options.
+        keys:
+          default:
+            type: bool
+            description: Enable LACPDU rate limiting by default on all ports.
+      system_priority:
+        type: int
+        description: Set local system LACP priority.
+        min: 0
+        max: 65535
+  lldp:
+    type: dict
+    display_name: LLDP
+    keys:
+      timer:
+        type: int
+      timer_reinitialization:
+        type: str
+      holdtime:
+        type: int
+      management_address:
+        type: str
+      vrf:
+        type: str
+        display_name: VRF
+      receive_packet_tagged_drop:
+        type: str
+      tlvs:
+        type: list
+        display_name: TLVs
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              valid_values:
+              - link-aggregation
+              - management-address
+              - max-frame-size
+              - med
+              - port-description
+              - port-vlan
+              - power-via-mdi
+              - system-capabilities
+              - system-description
+              - system-name
+              - vlan-name
+            transmit:
+              type: bool
+      run:
+        type: bool
+  load_interval:
+    type: dict
+    keys:
+      default:
+        type: int
+        description: Default load interval in seconds
+        convert_types:
+        - str
   local_users:
     type: list
     primary_key: name
@@ -785,6 +1948,213 @@ keys:
         ssh_key:
           display_name: SSH Key
           type: str
+  logging:
+    type: dict
+    keys:
+      console:
+        type: str
+        valid_values:
+        - debugging
+        - informational
+        - notifications
+        - warnings
+        - errors
+        - critical
+        - alerts
+        - emergencies
+        - disabled
+        description: 'Console logging severity level
+
+          '
+      monitor:
+        type: str
+        valid_values:
+        - debugging
+        - informational
+        - notifications
+        - warnings
+        - errors
+        - critical
+        - alerts
+        - emergencies
+        - disabled
+        description: 'Monitor logging severity level
+
+          '
+      buffered:
+        type: dict
+        keys:
+          size:
+            type: int
+            convert_types:
+            - str
+            min: 10
+            max: 2147483647
+          level:
+            type: str
+            valid_values:
+            - debugging
+            - informational
+            - notifications
+            - warnings
+            - errors
+            - critical
+            - alerts
+            - emergencies
+            - disabled
+            description: 'Buffer logging severity level
+
+              '
+      trap:
+        type: str
+        valid_values:
+        - debugging
+        - informational
+        - notifications
+        - warnings
+        - errors
+        - critical
+        - alerts
+        - emergencies
+        - disabled
+        description: 'Trap logging severity level
+
+          '
+      synchronous:
+        type: dict
+        keys:
+          level:
+            type: str
+            valid_values:
+            - debugging
+            - informational
+            - notifications
+            - warnings
+            - errors
+            - critical
+            - alerts
+            - emergencies
+            - disabled
+            description: 'Synchronous logging severity level
+
+              '
+            default: critical
+      format:
+        type: dict
+        keys:
+          timestamp:
+            type: str
+            valid_values:
+            - high-resolution
+            - traditional
+            - traditional timezone
+            - traditional year
+            - traditional timezone year
+            - traditional year timezone
+            description: Timestamp format
+          hostname:
+            type: str
+            valid_values:
+            - fqdn
+            - ipv4
+            description: Hostname format
+          sequence_numbers:
+            type: bool
+            description: 'Add sequence numbers to log messages
+
+              '
+      facility:
+        type: str
+        valid_values:
+        - auth
+        - cron
+        - daemon
+        - kern
+        - local0
+        - local1
+        - local2
+        - local3
+        - local4
+        - local5
+        - local6
+        - local7
+        - lpr
+        - mail
+        - news
+        - sys9
+        - sys10
+        - sys11
+        - sys12
+        - sys13
+        - sys14
+        - syslog
+        - user
+        - uucp
+      source_interface:
+        type: str
+        description: Source Interface Name
+      vrfs:
+        display_name: VRFs
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: VRF name
+            source_interface:
+              type: str
+              description: Source interface name
+            hosts:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    required: true
+                    description: Syslog server name
+                  protocol:
+                    type: str
+                    valid_values:
+                    - tcp
+                    - udp
+                    default: udp
+                  ports:
+                    type: list
+                    items:
+                      type: int
+                      convert_types:
+                      - str
+      policy:
+        type: dict
+        keys:
+          match:
+            type: dict
+            keys:
+              match_lists:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: Match list
+                    action:
+                      type: str
+                      valid_values:
+                      - discard
   mac_access_lists:
     type: list
     primary_key: name
@@ -1052,6 +2422,61 @@ keys:
           private_key:
             type: str
             description: Name of private key; certificate must also be specified
+  management_api_models:
+    display_name: Management API Models
+    type: dict
+    keys:
+      providers:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              valid_values:
+              - sysdb
+              - smash
+            paths:
+              type: list
+              items:
+                type: dict
+                keys:
+                  path:
+                    type: str
+                  disabled:
+                    type: bool
+                    default: false
+  management_console:
+    type: dict
+    keys:
+      idle_timeout:
+        type: int
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+  management_cvx:
+    type: dict
+    display_name: Management CVX
+    keys:
+      shutdown:
+        type: bool
+      server_hosts:
+        type: list
+        items:
+          type: str
+          description: IP or hostname
+  management_defaults:
+    type: dict
+    keys:
+      secret:
+        type: dict
+        keys:
+          hash:
+            type: str
+            valid_values:
+            - md5
+            - sha512
   management_interfaces:
     type: list
     primary_key: name
@@ -1066,7 +2491,6 @@ keys:
           display_name: Management Interface Name
         description:
           type: str
-          required: true
         shutdown:
           type: bool
         mtu:
@@ -1076,7 +2500,6 @@ keys:
           display_name: VRF Name
         ip_address:
           type: str
-          required: true
           display_name: IPv4_address/Mask
         ipv6_enable:
           type: bool
@@ -1092,11 +2515,57 @@ keys:
           description: For documentation purposes only
         gateway:
           type: str
-          required: true
           description: IPv4 address of default gateway in management VRF
         ipv6_gateway:
           type: str
           description: IPv6 address of default gateway in management VRF
+  management_security:
+    type: dict
+    keys:
+      entropy_source:
+        type: str
+      password:
+        type: dict
+        keys:
+          minimum_length:
+            type: int
+            min: 1
+            max: 32
+            convert_types:
+            - str
+          encryption_key_common:
+            type: bool
+          encryption_reversible:
+            type: str
+      ssl_profiles:
+        type: list
+        display_name: SSL Profiles
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            tls_versions:
+              type: str
+              display_name: TLS Versions
+              description: 'List of allowed TLS versions as string
+
+                '
+            cipher_list:
+              type: str
+              description: 'cipher_list syntax follows the openssl cipher strings
+                format.
+
+                Colon (:) separated list of allowed ciphers as a string
+
+                '
+            certificate:
+              type: dict
+              keys:
+                file:
+                  type: str
+                key:
+                  type: str
   management_ssh:
     type: dict
     display_name: Management SSH
@@ -1226,6 +2695,289 @@ keys:
                     type: str
                     required: true
                     display_name: Regular Expression
+  mcs_client:
+    type: dict
+    display_name: MCS Client
+    keys:
+      shutdown:
+        type: bool
+      cvx_secondary:
+        type: dict
+        display_name: CVX Secondary
+        keys:
+          name:
+            type: str
+          shutdown:
+            type: bool
+          server_hosts:
+            type: list
+            items:
+              type: str
+              description: IP or hostname
+  mlag_configuration:
+    type: dict
+    display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
+    keys:
+      domain_id:
+        type: str
+        display_name: Domain ID
+      heartbeat_interval:
+        type: int
+        description: Heartbeat interval in milliseconds
+        convert_types:
+        - str
+      local_interface:
+        display_name: Local Interface Name
+        type: str
+      peer_address:
+        type: str
+        description: IPv4 Address
+      peer_address_heartbeat:
+        type: dict
+        keys:
+          peer_ip:
+            type: str
+            description: IPv4 Address
+          vrf:
+            display_name: VRF Name
+            type: str
+      dual_primary_detection_delay:
+        type: int
+        description: Delay in seconds
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+      dual_primary_recovery_delay_mlag:
+        type: int
+        display_name: Dual Primary Recovery Delay MLAG
+        description: Delay in seconds
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+      dual_primary_recovery_delay_non_mlag:
+        type: int
+        display_name: Dual Primary Recovery Delay Non MLAG
+        description: Delay in seconds
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+      peer_link:
+        description: Port-Channel interface name
+        type: str
+      reload_delay_mlag:
+        type: str
+        display_name: Reload Delay MLAG
+        description: Delay in seconds <0-86400> or 'infinity'
+        convert_types:
+        - int
+      reload_delay_non_mlag:
+        type: str
+        display_name: Reload Delay Non MLAG
+        description: Delay in seconds <0-86400> or 'infinity'
+        convert_types:
+        - int
+  monitor_connectivity:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      interval:
+        type: int
+        convert_types:
+        - str
+      interface_sets:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            interfaces:
+              type: str
+              description: 'Interface range(s) should be of same type, Ethernet, Loopback,
+                Management etc.
+
+                Multiple interface ranges can be specified separated by ","
+
+                '
+      local_interfaces:
+        type: str
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              display_name: Host Name
+              type: str
+            description:
+              type: str
+            ip:
+              type: str
+            local_interfaces:
+              type: str
+            url:
+              type: str
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              display_name: VRF Name
+              type: str
+            description:
+              type: str
+            interface_sets:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  interfaces:
+                    type: str
+            local_interfaces:
+              type: str
+            hosts:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    display_name: Host name
+                    type: str
+                  description:
+                    type: str
+                  ip:
+                    type: str
+                  local_interfaces:
+                    type: str
+                  url:
+                    type: str
+  monitor_sessions:
+    type: list
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Session Name
+        sources:
+          type: list
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Interface name, range or comma separated list
+              direction:
+                type: str
+                valid_values:
+                - rx
+                - tx
+                - both
+              access_group:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values:
+                    - ip
+                    - ipv6
+                    - mac
+                  name:
+                    description: ACL Name
+                    type: str
+                  priority:
+                    type: int
+                    convert_types:
+                    - str
+        destinations:
+          type: list
+          items:
+            type: str
+            description: '''cpu'' or interface name, range or comma separated list'
+        encapsulation_gre_metadata_tx:
+          type: bool
+          display_name: Encapsulation GRE metadata TX
+        header_remove_size:
+          type: int
+          description: Number of bytes to remove from header
+          convert_types:
+          - str
+        access_group:
+          type: dict
+          keys:
+            type:
+              type: str
+              valid_values:
+              - ip
+              - ipv6
+              - mac
+            name:
+              display_name: ACL Name
+              type: str
+        rate_limit_per_ingress_chip:
+          type: str
+          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+            \ \"100 kbps\"\n  \"10 mbps\"\n"
+        rate_limit_per_egress_chip:
+          type: str
+          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+            \ \"100 kbps\"\n  \"10 mbps\"\n"
+        sample:
+          type: int
+          convert_types:
+          - str
+        truncate:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            size:
+              type: int
+              description: Size in bytes
+              convert_types:
+              - str
+  mpls:
+    type: dict
+    display_name: MPLS
+    keys:
+      ip:
+        type: bool
+      ldp:
+        type: dict
+        keys:
+          interface_disabled_default:
+            type: bool
+          router_id:
+            type: str
+            display_name: Router ID
+          shutdown:
+            type: bool
+          transport_address_interface:
+            display_name: Interface Name
+            type: str
+  name_server:
+    type: dict
+    keys:
+      source:
+        type: dict
+        keys:
+          vrf:
+            display_name: VRF Name
+            type: str
+      nodes:
+        type: list
+        items:
+          type: str
   peer_filters:
     type: list
     primary_key: name
@@ -1259,6 +3011,152 @@ keys:
                 description: 'Match as string
 
                   Example: "as-range 1-100 result accept"'
+  platform:
+    type: dict
+    keys:
+      trident:
+        type: dict
+        keys:
+          forwarding_table_partition:
+            type: str
+            convert_types:
+            - int
+      sand:
+        type: dict
+        description: Most of the platform sand options are hardware dependant and
+          optional
+        keys:
+          qos_maps:
+            type: list
+            display_name: QOS Maps
+            items:
+              type: dict
+              keys:
+                traffic_class:
+                  type: int
+                  min: 0
+                  max: 7
+                  convert_types:
+                  - str
+                to_network_qos:
+                  type: int
+                  display_name: To Network QOS
+                  min: 0
+                  max: 63
+                  convert_types:
+                  - str
+          lag:
+            type: dict
+            display_name: LAG
+            keys:
+              hardware_only:
+                type: bool
+              mode:
+                type: str
+          forwarding_mode:
+            type: str
+          multicast_replication:
+            type: dict
+            keys:
+              default:
+                type: str
+                valid_values:
+                - ingress
+                - egress
+  policy_maps:
+    type: dict
+    display_name: Policy-Maps
+    keys:
+      pbr:
+        type: list
+        display_name: PBR Policy-Maps
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Class Name
+                  index:
+                    type: int
+                    convert_types:
+                    - str
+                  drop:
+                    description: '''drop'' and ''set'' are mutually exclusive'
+                    display_name: Drop
+                    type: bool
+                  set:
+                    description: '''drop'' and ''set'' are mutually exclusive'
+                    display_name: Set Nexthop
+                    type: dict
+                    keys:
+                      nexthop:
+                        type: dict
+                        keys:
+                          ip_address:
+                            type: str
+                            description: IPv4 or IPv6 Address
+                          recursive:
+                            type: bool
+      qos:
+        type: list
+        display_name: QOS Policy-Maps
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Class Name
+                  set:
+                    type: dict
+                    keys:
+                      cos:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: COS
+                      dscp:
+                        type: str
+                        convert_types:
+                        - int
+                        display_name: DSCP
+                      traffic_class:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: Traffic-class
+                      drop_precedence:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: Drop-precedence
   prefix_lists:
     type: list
     primary_key: name
@@ -1292,6 +3190,313 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  prompt:
+    type: str
+  qos:
+    type: dict
+    display_name: QOS
+    keys:
+      map:
+        type: dict
+        keys:
+          cos:
+            type: list
+            display_name: COS
+            items:
+              type: str
+              description: 'Example: "0 1 to traffic-class 1"
+
+                '
+          dscp:
+            type: list
+            display_name: DSCP
+            items:
+              type: str
+              description: 'Example: "8 9 10 to traffic-class 1"
+
+                '
+          traffic_class:
+            type: list
+            items:
+              type: str
+              description: 'Example: "1 to dscp 32"
+
+                '
+      rewrite_dscp:
+        display_name: Rewrite DSCP
+        type: bool
+  qos_profiles:
+    type: list
+    display_name: QOS Profiles
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Profile-Name
+        trust:
+          type: str
+          valid_values:
+          - cos
+          - dscp
+          - disabled
+        cos:
+          type: int
+          convert_types:
+          - str
+          display_name: COS
+        dscp:
+          type: int
+          convert_types:
+          - str
+          display_name: DSCP
+        shape:
+          type: dict
+          keys:
+            rate:
+              type: str
+              description: 'Supported options are platform dependent
+
+                Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                '
+        service_policy:
+          type: dict
+          keys:
+            type:
+              type: dict
+              keys:
+                qos_input:
+                  type: str
+                  description: Policy-map name
+        tx_queues:
+          type: list
+          display_name: TX Queues
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                display_name: ID
+                convert_types:
+                - str
+                required: true
+                description: TX-Queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                - str
+              priority:
+                type: str
+                valid_values:
+                - priority strict
+                - no priority
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: 'Supported options are platform dependent
+
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                      '
+        uc_tx_queues:
+          type: list
+          display_name: UC TX Queues
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                display_name: ID
+                convert_types:
+                - str
+                required: true
+                description: UC TX queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                - str
+              priority:
+                type: str
+                valid_values:
+                - priority strict
+                - no priority
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: 'Supported options are platform dependent
+
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                      '
+        mc_tx_queues:
+          type: list
+          display_name: MC TX Queues
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                display_name: ID
+                convert_types:
+                - str
+                required: true
+                description: MC TX queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                - str
+              priority:
+                type: str
+                valid_values:
+                - priority strict
+                - no priority
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: 'Supported options are platform dependent
+
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"'
+  queue_monitor_length:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        description: '"enabled: true" will be required in AVD4.0.
+
+          In AVD3.x default is true as long as queue_monitor_length is defined and
+          not None
+
+          '
+      log:
+        type: int
+        convert_types:
+        - str
+        description: Logging interval in seconds
+      notifying:
+        type: bool
+        description: should only be used for platforms supporting the "queue-monitor
+          length notifying" CLI
+      cpu:
+        type: dict
+        display_name: CPU
+        keys:
+          thresholds:
+            type: dict
+            keys:
+              high:
+                type: int
+                required: true
+                convert_types:
+                - str
+              low:
+                type: int
+                convert_types:
+                - str
+  queue_monitor_streaming:
+    type: dict
+    keys:
+      enable:
+        type: bool
+      ip_access_group:
+        type: str
+        display_name: IP Access Group
+        description: Name of IP ACL
+      ipv6_access_group:
+        type: str
+        display_name: IPv6 Access Group
+        description: Name of IPv6 ACL
+      max_connections:
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 100
+      vrf:
+        type: str
+        display_name: VRF
+  radius_servers:
+    type: list
+    items:
+      type: dict
+      keys:
+        host:
+          type: str
+          description: Host IP address or name
+        vrf:
+          type: str
+          display_name: VRF
+        key:
+          type: str
+          description: Encrypted key
+  redundancy:
+    type: dict
+    keys:
+      protocol:
+        type: str
+        display_name: Redundancy Protocol
+  roles:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Role name
+        sequence_numbers:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+                description: Sequence number
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+              mode:
+                type: str
+                description: '"config", "config-all", "exec" or mode key as string
+
+                  '
+              command:
+                type: str
+                description: Command as string
   route_maps:
     type: list
     primary_key: name
@@ -1359,6 +3564,71 @@ keys:
                     type: int
                     convert_types:
                     - str
+  router_bfd:
+    type: dict
+    display_name: Router BFD
+    keys:
+      interval:
+        type: int
+        description: Rate in milliseconds
+      min_rx:
+        type: int
+        display_name: Min RX
+        description: Rate in milliseconds
+      multiplier:
+        type: int
+        min: 3
+        max: 50
+      multihop:
+        type: dict
+        keys:
+          interval:
+            type: int
+            description: Rate in milliseconds
+          min_rx:
+            type: int
+            display_name: Min RX
+            description: Rate in milliseconds
+          multiplier:
+            type: int
+            min: 3
+            max: 50
+      sbfd:
+        type: dict
+        display_name: SBFD
+        keys:
+          local_interface:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Interface Name
+              protocols:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                    display_name: IPv4
+                  ipv6:
+                    type: bool
+                    display_name: IPv6
+          initiator_interval:
+            type: int
+            description: Rate in milliseconds
+          initiator_multiplier:
+            type: int
+            min: 3
+            max: 50
+          reflector:
+            type: dict
+            keys:
+              min_rx:
+                type: int
+                display_name: Min RX
+                description: Rate in milliseconds
+              local_discriminator:
+                type: str
+                description: IPv4 address or 32 bit integer
   router_general:
     type: dict
     display_name: Router General configuration
@@ -1415,6 +3685,688 @@ keys:
     keys:
       ssm_aware:
         type: bool
+  router_isis:
+    type: dict
+    display_name: Router ISIS
+    keys:
+      instance:
+        type: str
+        description: ISIS Instance Name
+      net:
+        type: str
+        description: CLNS Address like "49.0001.0001.0000.0001.00"
+      router_id:
+        type: str
+        display_name: Router ID
+        description: IPv4 Address
+      is_type:
+        type: str
+        display_name: IS Type
+        valid_values:
+        - level-1
+        - level-1-2
+        - level-2
+      log_adjacency_changes:
+        type: bool
+      mpls_ldp_sync_default:
+        type: bool
+        display_name: MPLS LDP Sync Default
+      timers:
+        type: dict
+        keys:
+          local_convergence:
+            type: dict
+            keys:
+              protected_prefixes:
+                type: bool
+              delay:
+                type: int
+                convert_types:
+                - str
+                default: 10000
+                description: Delay in milliseconds.
+      advertise:
+        type: dict
+        keys:
+          passive_only:
+            type: bool
+      address_family:
+        type: list
+        items:
+          type: str
+          valid_values:
+          - ipv4
+          - ipv6
+          - ipv4 unicast
+          - ipv6 unicast
+          description: Address Family
+      isis_af_defaults:
+        type: list
+        display_name: ISIS AF Defaults
+        items:
+          type: str
+          description: 'EOS CLI rendered under the address families
+
+            Example "maximum-paths 64"
+
+            '
+      redistribute_routes:
+        type: list
+        items:
+          type: dict
+          keys:
+            source_protocol:
+              type: str
+              required: true
+              valid_values:
+              - bgp
+              - connected
+              - isis
+              - ospf
+              - ospfv3
+              - static
+            route_map:
+              type: str
+              description: Route-map name
+            include_leaked:
+              type: bool
+            ospf_route_type:
+              type: str
+              display_name: OSPF Route Type
+              valid_values:
+              - external
+              - internal
+              - nssa-external
+              description: ospf_route_type is required with source_protocols 'ospf'
+                and 'ospfv3'
+      address_family_ipv4:
+        type: dict
+        display_name: Address Family IPv4
+        keys:
+          maximum_paths:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 128
+          fast_reroute_ti_lfa:
+            type: dict
+            display_name: Fast Reroute TI LFA
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - link-protection
+                - node-protection
+              level:
+                type: str
+                valid_values:
+                - level-1
+                - level-2
+              srlg:
+                type: dict
+                display_name: SRLG
+                description: Shared Risk Link Group
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+          tunnel_source_labeled_unicast:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              rcf:
+                type: str
+                display_name: RCF
+                description: Route Control Function
+      address_family_ipv6:
+        type: dict
+        display_name: Address Family IPv6
+        keys:
+          maximum_paths:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 128
+          fast_reroute_ti_lfa:
+            type: dict
+            display_name: Fast Reroute TI LFA
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - link-protection
+                - node-protection
+              level:
+                type: str
+                valid_values:
+                - level-1
+                - level-2
+                description: Optional, default is to protect all levels
+              srlg:
+                type: dict
+                display_name: SRLG
+                description: Shared Risk Link Group
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+      segment_routing_mpls:
+        type: dict
+        display_name: Segment Routing MPLS
+        keys:
+          enabled:
+            type: bool
+          router_id:
+            type: str
+            display_name: Router ID
+          prefix_segments:
+            type: list
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                index:
+                  type: int
+                  convert_types:
+                  - str
+      no_passive_interfaces:
+        type: list
+        description: Unused key - to be removed from eos_designs.
+  router_l2_vpn:
+    type: dict
+    display_name: Router L2 VPN
+    keys:
+      nd_rs_flooding_disabled:
+        type: bool
+        display_name: ND RS Flooding Disabled
+      virtual_router_nd_ra_flooding_disabled:
+        type: bool
+        display_name: Virtual Router ND RA Flooding Disabled
+      arp_selective_install:
+        type: bool
+        display_name: ARP Selective Install
+      arp_proxy:
+        type: dict
+        display_name: ARP Proxy
+        keys:
+          prefix_list:
+            type: str
+            description: Prefix-list Name
+  router_multicast:
+    type: dict
+    keys:
+      ipv4:
+        type: dict
+        display_name: IPv4
+        keys:
+          counters:
+            type: dict
+            keys:
+              rate_period_decay:
+                description: Rate in seconds
+                type: int
+                min: 0
+                max: 600
+                convert_types:
+                - str
+          routing:
+            type: bool
+          multipath:
+            type: str
+            valid_values:
+            - none
+            - deterministic
+            - deterministic color
+            - deterministic router-id
+          software_forwarding:
+            type: str
+            valid_values:
+            - kernel
+            - sfe
+          rpf:
+            type: dict
+            keys:
+              routes:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    source_prefix:
+                      description: Source address A.B.C.D or Source prefix A.B.C.D/E
+                      type: str
+                      required: true
+                    destinations:
+                      type: list
+                      required: true
+                      items:
+                        type: dict
+                        keys:
+                          nexthop:
+                            description: Next-hop IP address or interface name
+                            type: str
+                            required: true
+                          distance:
+                            description: Administrative distance for this route
+                            type: int
+                            min: 1
+                            max: 255
+                            convert_types:
+                            - str
+      vrfs:
+        type: list
+        display_name: VRFs
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            ipv4:
+              type: dict
+              display_name: IPv4
+              keys:
+                routing:
+                  type: bool
+  router_ospf:
+    type: dict
+    display_name: Router OSPF Configuration
+    keys:
+      process_ids:
+        type: list
+        display_name: Process IDs
+        primary_key: id
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+              display_name: ID
+              description: OSPF Process ID
+            vrf:
+              type: str
+              display_name: VRF
+              description: VRF Name for OSPF Process
+            passive_interface_default:
+              type: bool
+            router_id:
+              type: str
+              display_name: Router ID
+              description: IPv4 Address
+            distance:
+              type: dict
+              keys:
+                external:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 255
+                inter_area:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 255
+                intra_area:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 255
+            log_adjacency_changes_detail:
+              type: bool
+            network_prefixes:
+              type: list
+              primary_key: ipv4_prefix
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  ipv4_prefix:
+                    type: str
+                    display_name: IPv4 Prefix
+                  area:
+                    type: str
+            bfd_enable:
+              type: bool
+              display_name: BFD Enable
+            bfd_adjacency_state_any:
+              type: bool
+              display_name: BFD Adjacency State Any
+            no_passive_interfaces:
+              type: list
+              items:
+                type: str
+                display_name: Interface Name
+            distribute_list_in:
+              type: dict
+              keys:
+                route_map:
+                  type: str
+            max_lsa:
+              type: int
+              display_name: Max LSA
+              convert_types:
+              - str
+            timers:
+              type: dict
+              keys:
+                lsa:
+                  type: dict
+                  keys:
+                    rx_min_interval:
+                      type: int
+                      display_name: RX Min Interval
+                      convert_types:
+                      - str
+                      description: Min interval in msecs between accepting the same
+                        LSA
+                      min: 0
+                      max: 600000
+                    tx_delay:
+                      type: dict
+                      display_name: TX Delay
+                      keys:
+                        initial:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Delay to generate first occurrence of LSA in
+                            msecs
+                          min: 0
+                          max: 600000
+                        min:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Min delay between originating the same LSA
+                            in msecs
+                          min: 1
+                          max: 600000
+                        max:
+                          type: int
+                          convert_types:
+                          - str
+                          description: 1-600000 Maximum delay between originating
+                            the same LSA in msec
+                          min: 1
+                          max: 600000
+                spf_delay:
+                  type: dict
+                  display_name: SPF Delay
+                  keys:
+                    initial:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Initial SPF schedule delay in msecs
+                      min: 0
+                      max: 600000
+                    min:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Min Hold time between two SPFs in msecs
+                      min: 0
+                      max: 65535000
+                    max:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Max wait time between two SPFs in msecs
+                      min: 0
+                      max: 65535000
+            default_information_originate:
+              type: dict
+              keys:
+                always:
+                  type: bool
+            summary_addresses:
+              type: list
+              primary_key: prefix
+              items:
+                type: dict
+                keys:
+                  prefix:
+                    type: str
+                    description: Summary Prefix Address
+                  tag:
+                    type: int
+                  attribute_map:
+                    type: str
+                  not_advertise:
+                    type: bool
+            redistribute:
+              type: dict
+              keys:
+                static:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      display_name: Route Map Name
+                connected:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      display_name: Route Map Name
+                bgp:
+                  type: dict
+                  display_name: BGP
+                  keys:
+                    route_map:
+                      type: str
+                      display_name: Route Map Name
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              description: Bandwidth in mbps
+            areas:
+              type: list
+              primary_key: id
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                    display_name: ID
+                  filter:
+                    type: dict
+                    keys:
+                      networks:
+                        type: list
+                        items:
+                          type: str
+                          display_name: IPv4 Prefix
+                      prefix_list:
+                        type: str
+                        display_name: Prefix-List Name
+                  type:
+                    type: str
+                    valid_values:
+                    - normal
+                    - stub
+                    - nssa
+                    default: normal
+                  no_summary:
+                    type: bool
+                  nssa_only:
+                    type: bool
+                    display_name: NSSA Only
+                  default_information_originate:
+                    type: dict
+                    keys:
+                      metric:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Metric for default route
+                        min: 1
+                        max: 65535
+                      metric_type:
+                        type: int
+                        convert_types:
+                        - str
+                        valid_values:
+                        - 1
+                        - 2
+                        description: OSPF metric type for default route
+            maximum_paths:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 32
+            max_metric:
+              type: dict
+              keys:
+                router_lsa:
+                  type: dict
+                  keys:
+                    external_lsa:
+                      type: dict
+                      keys:
+                        override_metric:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 16777215
+                    include_stub:
+                      type: bool
+                    on_startup:
+                      type: str
+                      convert_types:
+                      - int
+                      description: '"wait-for-bgp" or Integer 5-86400
+
+                        Example: "wait-for-bgp" Or "222"
+
+                        '
+                    summary_lsa:
+                      type: dict
+                      display_name: Summary LSA
+                      keys:
+                        override_metric:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 16777215
+            mpls_ldp_sync_default:
+              type: bool
+  router_pim_sparse_mode:
+    type: dict
+    display_name: Routing PIM Sparse Mode
+    keys:
+      ipv4:
+        type: dict
+        display_name: IPv4
+        keys:
+          ssm_range:
+            type: str
+            description: IPv4 Prefix associated with SSM
+          rp_addresses:
+            type: list
+            display_name: RP Addresses
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  display_name: RP Address
+                groups:
+                  type: list
+                  convert_types:
+                  - dict
+                  items:
+                    type: str
+          anycast_rps:
+            type: list
+            display_name: Anycast RPs
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  display_name: Anycast RP Address
+                other_anycast_rp_addresses:
+                  type: list
+                  display_name: Other Anycast RP Addresses
+                  primary_key: address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        required: true
+                        display_name: Other Anycast RP Address
+                      register_count:
+                        type: int
+                        convert_types:
+                        - str
+      vrfs:
+        type: list
+        display_name: VRFs
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: VRF Name
+            ipv4:
+              type: dict
+              keys:
+                rp_addresses:
+                  type: list
+                  display_name: RP Addresses
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        display_name: RP Address
+                      groups:
+                        type: list
+                        items:
+                          type: str
+  service_routing_configuration_bgp:
+    type: dict
+    display_name: Service Routing Configuration BGP
+    keys:
+      no_equals_default:
+        type: bool
+  service_routing_protocols_model:
+    type: str
+    valid_values:
+    - multi-agent
+    - ribd
   sflow:
     type: dict
     display_name: Sflow
@@ -1504,6 +4456,123 @@ keys:
                 enabled:
                   type: bool
                   default: true
+  spanning_tree:
+    type: dict
+    keys:
+      root_super:
+        type: bool
+      edge_port:
+        type: dict
+        keys:
+          bpdufilter_default:
+            type: bool
+          bpduguard_default:
+            type: bool
+      mode:
+        type: str
+        valid_values:
+        - mstp
+        - rstp
+        - rapid-pvst
+        - none
+      bpduguard_rate_limit:
+        type: dict
+        keys:
+          default:
+            type: bool
+          count:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of BPDUs per timer interval
+      rstp_priority:
+        type: int
+        convert_types:
+        - str
+      mst:
+        type: dict
+        keys:
+          pvst_border:
+            type: bool
+          configuration:
+            type: dict
+            keys:
+              name:
+                type: str
+              revision:
+                type: int
+                convert_types:
+                - str
+                description: 0-65535
+              instances:
+                type: list
+                primary_key: id
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    id:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: Instance ID
+                    vlans:
+                      type: str
+                      convert_types:
+                      - int
+                      description: '"< vlan_id >, < vlan_id >-< vlan_id >"
+
+                        Example: 15,16,17,18
+
+                        '
+      mst_instances:
+        type: list
+        primary_key: id
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: str
+              convert_types:
+              - int
+              display_name: Instance ID
+            priority:
+              type: int
+              convert_types:
+              - str
+      no_spanning_tree_vlan:
+        type: str
+        convert_types:
+        - int
+        description: '"< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 105,202,505-506
+
+          '
+      rapid_pvst_instances:
+        type: list
+        primary_key: id
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: str
+              convert_types:
+              - int
+              description: '"< vlan_id >, < vlan_id >-< vlan_id >"
+
+                Example: 105,202,505-506
+
+                '
+            priority:
+              type: int
+              convert_types:
+              - str
   standard_access_lists:
     type: list
     primary_key: name
@@ -1540,6 +4609,223 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  static_routes:
+    type: list
+    display_name: Static Routes
+    items:
+      type: dict
+      keys:
+        vrf:
+          type: str
+          display_name: VRF Name
+          description: If vrf_name = default the route will be placed in the GRT
+        destination_address_prefix:
+          type: str
+          display_name: IPv4_network/Mask
+        interface:
+          type: str
+        gateway:
+          type: str
+          display_name: IPv4 Address
+        distance:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 255
+        tag:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        name:
+          type: str
+          display_name: Description
+        metric:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+  switchport_default:
+    type: dict
+    keys:
+      mode:
+        type: str
+        valid_values:
+        - routed
+        - access
+      phone:
+        type: dict
+        keys:
+          cos:
+            type: int
+            display_name: COS
+            convert_types:
+            - str
+            min: 0
+            max: 7
+          trunk:
+            type: str
+            valid_values:
+            - tagged
+            - untagged
+          vlan:
+            type: int
+            display_name: VLAN ID
+            convert_types:
+            - str
+            min: 1
+            max: 4094
+  system:
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        keys:
+          tcp_mss:
+            type: dict
+            keys:
+              ipv4:
+                type: int
+                description: Segment size
+              ipv6:
+                type: int
+                description: Segment size
+          ipv4_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
+          ipv6_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
+  tacacs_servers:
+    type: dict
+    keys:
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              description: Host IP address or name
+            vrf:
+              type: str
+              display_name: VRF
+            key:
+              type: str
+              description: Encrypted key
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
+            single_connection:
+              type: bool
+            timeout:
+              type: int
+              convert_types:
+              - str
+      policy_unknown_mandatory_attribute_ignore:
+        type: bool
+  tap_aggregation:
+    type: dict
+    keys:
+      mode:
+        type: dict
+        keys:
+          exclusive:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              profile:
+                description: Profile Name
+                type: str
+              no_errdisable:
+                type: list
+                items:
+                  type: str
+                  description: Interface name e.g Ethernet1, Port-Channel1
+      encapsulation_dot1br_strip:
+        display_name: Encapsulation dot1br Strip
+        type: bool
+      encapsulation_vn_tag_strip:
+        display_name: Encapsulation VN Tag Strip
+        type: bool
+      protocol_lldp_trap:
+        display_name: Protocol LLDP Trap
+        type: bool
+      truncation_size:
+        type: int
+        description: 'Allowed truncation_size values vary depending on the platform
+
+          '
+      mac:
+        display_name: MAC
+        type: dict
+        keys:
+          timestamp:
+            type: dict
+            description: 'mac.timestamp.replace_source_mac and mac.timestamp.header.format
+              are mutually exclsuive. If both are defined, replace_source_mac takes
+              precedence
+
+              '
+            keys:
+              replace_source_mac:
+                display_name: Replace Source MAC
+                type: bool
+              header:
+                type: dict
+                keys:
+                  format:
+                    type: str
+                    valid_values:
+                    - 48-bit
+                    - 64-bit
+                  eth_type:
+                    display_name: EtherType
+                    type: int
+                    convert_types:
+                    - str
+          fcs_append:
+            display_name: FCS Append
+            type: bool
+            description: 'mac.fcs_append and mac.fcs_error are mutually exclusive.
+              If both are defined, mac.fcs_append takes precedence
+
+              '
+          fcs_error:
+            display_name: FCS Error
+            type: str
+            valid_values:
+            - correct
+            - discard
+            - pass-through
   tcam_profile:
     type: dict
     display_name: Hardware TCAM Profiles
@@ -1569,6 +4855,268 @@ keys:
                 is often a good idea to import the config from a file.
 
                 Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+  terminal:
+    type: dict
+    display_name: Terminal Settings
+    keys:
+      length:
+        type: int
+        min: 1
+        max: 32767
+      width:
+        type: int
+        min: 1
+        max: 32767
+  trackers:
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Name of tracker object
+          required: true
+        interface:
+          type: str
+          description: Name of tracked interface
+          required: true
+        tracked_property:
+          type: str
+          default: line-protocol
+          description: Property to track
+  traffic_policies:
+    type: dict
+    keys:
+      options:
+        type: dict
+        keys:
+          counter_per_interface:
+            type: bool
+      field_sets:
+        type: dict
+        keys:
+          ipv4:
+            type: list
+            display_name: IPv4
+            secondary_key: prefixes
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 Prefix Field Set Name
+                prefixes:
+                  type: list
+                  items:
+                    type: str
+                    display_name: IPv4 Prefix
+          ipv6:
+            type: list
+            display_name: IPv6
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 Prefix Field Set Name
+                prefixes:
+                  type: list
+                  items:
+                    type: str
+                    display_name: IPv6 Prefix
+          ports:
+            type: list
+            primary_key: name
+            secondary_key: port_range
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: L4 Port Field Set Name
+                port_range:
+                  type: str
+                  description: 'Example: ''10,20,80,440-450'''
+      policies:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Traffic Policy Name
+            matches:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Traffic Policy Item
+                  type:
+                    type: str
+                    valid_values:
+                    - ipv4
+                    - ipv6
+                  source:
+                    type: dict
+                    keys:
+                      prefixes:
+                        type: list
+                        items:
+                          type: str
+                          description: IP address or prefix
+                      prefix_lists:
+                        type: list
+                        description: Field-set prefix lists
+                        items:
+                          type: str
+                  destination:
+                    type: dict
+                    keys:
+                      prefixes:
+                        type: list
+                        items:
+                          type: str
+                          description: IP address or prefix
+                      prefix_lists:
+                        type: list
+                        description: Field-set prefix lists
+                        items:
+                          type: str
+                  ttl:
+                    type: str
+                    display_name: TTL
+                    description: TTL range
+                  fragment:
+                    type: dict
+                    description: 'The ''fragment'' command is not supported when ''source
+                      port''
+
+                      or ''destination port'' command is configured
+
+                      '
+                    keys:
+                      offset:
+                        type: str
+                        description: Fragment offset range
+                  protocols:
+                    type: list
+                    primary_key: protocol
+                    convert_types:
+                    - dict
+                    items:
+                      type: dict
+                      keys:
+                        protocol:
+                          type: str
+                        src_port:
+                          type: str
+                          description: Port range
+                        dst_port:
+                          type: str
+                          description: Port range
+                        src_field:
+                          type: str
+                          description: L4 port range field set
+                        dst_field:
+                          type: str
+                          description: L4 port range field set
+                        flags:
+                          type: list
+                          items:
+                            type: str
+                            valid_values:
+                            - established
+                            - initial
+                        icmp_type:
+                          type: list
+                          items:
+                            type: str
+                          display_name: ICMP Type
+                  actions:
+                    type: dict
+                    keys:
+                      dscp:
+                        type: int
+                        convert_types:
+                        - str
+                        display_name: DSCP
+                      traffic_class:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Traffic class ID
+                      count:
+                        type: str
+                        description: Counter name
+                      drop:
+                        type: bool
+                      log:
+                        type: bool
+                        description: Only supported when action is set to drop
+            default_actions:
+              type: dict
+              keys:
+                ipv4:
+                  type: dict
+                  display_name: IPv4
+                  keys:
+                    dscp:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: DSCP
+                    traffic_class:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Traffic class ID
+                    count:
+                      type: str
+                      description: Counter name
+                    drop:
+                      type: bool
+                    log:
+                      type: bool
+                      description: Only supported when action is set to drop
+                ipv6:
+                  type: dict
+                  display_name: IPv6
+                  keys:
+                    dscp:
+                      type: int
+                      convert_types:
+                      - str
+                      display_name: DSCP
+                    traffic_class:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Traffic class ID
+                    count:
+                      type: str
+                      description: Counter name
+                    drop:
+                      type: bool
+                    log:
+                      type: bool
+                      description: Only supported when action is set to drop
   virtual_source_nat_vrfs:
     type: list
     primary_key: name
@@ -1614,6 +5162,49 @@ keys:
             display_name: Vlan ID
             convert_types:
             - str
+  vlans:
+    type: list
+    display_name: VLANs
+    primary_key: id
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        id:
+          type: int
+          convert_types:
+          - str
+          display_name: VLAN ID
+        name:
+          type: str
+          display_name: VLAN Name
+        state:
+          type: str
+          valid_values:
+          - active
+          - suspend
+        trunk_groups:
+          type: list
+          items:
+            type: str
+            display_name: Trunk Group Name
+        private_vlan:
+          type: dict
+          keys:
+            type:
+              type: str
+              valid_values:
+              - community
+              - isolated
+            primary_vlan:
+              type: int
+              convert_types:
+              - str
+              display_name: Primary VLAN ID
+        tenant:
+          type: str
+          description: Key only used for documentation or validation purposes
   vmtracer_sessions:
     type: list
     primary_key: name

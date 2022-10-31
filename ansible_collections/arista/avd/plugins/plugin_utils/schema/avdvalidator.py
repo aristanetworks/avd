@@ -46,7 +46,7 @@ def _primary_key_validator(validator, primary_key: str, instance: list, schema: 
     if "$ref" in schema:
         return
 
-    if not all(element.get(primary_key) for element in instance):
+    if not all(element.get(primary_key) is not None for element in instance):
         yield jsonschema.ValidationError(f"Primary key '{primary_key}' is not set on all items as required.")
 
     if len(set(element.get(primary_key) for element in instance)) < len(instance):

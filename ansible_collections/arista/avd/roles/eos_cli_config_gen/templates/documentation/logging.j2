@@ -46,7 +46,7 @@
 {%         if logging.source_interface is arista.avd.defined %}
 | - | {{ logging.source_interface }} |
 {%         endif %}
-{%         for vrf in logging.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in logging.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.source_interface is arista.avd.defined %}
 | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%             endif %}
@@ -54,9 +54,9 @@
 
 | VRF | Hosts | Ports | Protocol |
 | --- | ----- | ----- | -------- |
-{%         for vrf in logging.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in logging.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.hosts is arista.avd.defined %}
-{%                 for host in vrf.hosts | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                 for host in vrf.hosts | arista.avd.natural_sort('name') %}
 | {{ vrf.name }} | {{ host.name }} | {{ host.ports | arista.avd.default(['Default']) | join(', ') }} | {{ host.protocol | arista.avd.default('UDP') | upper }} |
 {%                 endfor %}
 {%             endif %}

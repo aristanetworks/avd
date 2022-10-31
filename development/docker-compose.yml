@@ -4,6 +4,7 @@ services:
     image: avdteam/base:3.8-v2.0
     container_name: ansible_avd
     environment:
+      - AVD_UID=${AVD_UID}
       - AVD_GIT_USER=${GIT_USER}
       - AVD_GIT_EMAIL=${GIT_EMAIL}
     volumes:

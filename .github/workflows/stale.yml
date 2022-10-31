@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Issue stale management
-    - uses: actions/stale@v4
+    - uses: actions/stale@v6
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 90
@@ -21,7 +21,7 @@ jobs:
         exempt-pr-labels: 'state: accepted, state: in-progress'
 
     #   # PR Stale Management
-    # - uses: actions/stale@v4
+    # - uses: actions/stale@v6
     #   with:
     #     repo-token: ${{ secrets.GITHUB_TOKEN }}
     #     days-before-stale: 30

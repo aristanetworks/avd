@@ -58,8 +58,8 @@ vlan_interfaces:
     ip_address_virtual_secondaries: {{ svi.ip_address_virtual_secondaries }}
 {%             endif %}
 {# Virtual Secondary IPv6 address #}
-{%             if svi.ipv6_address_virtual_secondaries is arista.avd.defined %}
-    ipv6_address_virtual_secondaries: {{ svi.ipv6_address_virtual_secondaries }}
+{%             if svi.ipv6_address_virtuals is arista.avd.defined %}
+    ipv6_address_virtuals: {{ svi.ipv6_address_virtuals }}
 {%             endif %}
 {# MTU definition #}
 {%             if svi.mtu is arista.avd.defined %}

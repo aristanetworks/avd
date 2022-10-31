@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_l2_vpn:
+    type: dict
+    display_name: Router L2 VPN
+    keys:
+      nd_rs_flooding_disabled:
+        type: bool
+        display_name: ND RS Flooding Disabled
+      virtual_router_nd_ra_flooding_disabled:
+        type: bool
+        display_name: Virtual Router ND RA Flooding Disabled
+      arp_selective_install:
+        type: bool
+        display_name: ARP Selective Install
+      arp_proxy:
+        type: dict
+        display_name: ARP Proxy
+        keys:
+          prefix_list:
+            type: str
+            description: Prefix-list Name

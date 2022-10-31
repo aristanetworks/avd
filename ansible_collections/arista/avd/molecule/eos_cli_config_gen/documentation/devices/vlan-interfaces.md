@@ -36,7 +36,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -137,7 +137,7 @@ interface Management1
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:17::15/64 | - | - | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
@@ -192,7 +192,7 @@ interface Vlan25
    no shutdown
    ipv6 address 1b11:3a00:22b0:16::16/64
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
-   ipv6 virtual-router address 1b11:3a00:22b0:17::15/64
+   ipv6 virtual-router address 1b11:3a00:22b0:16::14
 !
 interface Vlan41
    description SVI Description
@@ -229,6 +229,8 @@ interface Vlan81
    vrf Tenant_C
    ipv6 enable
    ipv6 address virtual fc00:10:10:81::1/64
+   ipv6 address virtual fc00:10:11:81::1/64
+   ipv6 address virtual fc00:10:12:81::1/64
    ip address virtual 10.10.81.1/24
 !
 interface Vlan83

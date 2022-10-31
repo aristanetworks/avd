@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  policy_maps:
+    type: dict
+    display_name: Policy-Maps
+    keys:
+      pbr:
+        type: list
+        display_name: PBR Policy-Maps
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Class Name
+                  index:
+                    type: int
+                    convert_types:
+                      - str
+                  drop:
+                    description: "'drop' and 'set' are mutually exclusive"
+                    display_name: Drop
+                    type: bool
+                  set:
+                    description: "'drop' and 'set' are mutually exclusive"
+                    display_name: Set Nexthop
+                    type: dict
+                    keys:
+                      nexthop:
+                        type: dict
+                        keys:
+                          ip_address:
+                            type: str
+                            description: IPv4 or IPv6 Address
+                          recursive:
+                            type: bool
+      qos:
+        type: list
+        display_name: QOS Policy-Maps
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              display_name: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    display_name: Class Name
+                  set:
+                    type: dict
+                    keys:
+                      cos:
+                        type: int
+                        convert_types:
+                          - str
+                        display_name: COS
+                      dscp:
+                        type: str
+                        convert_types:
+                          - int
+                        display_name: DSCP
+                      traffic_class:
+                        type: int
+                        convert_types:
+                          - str
+                        display_name: Traffic-class
+                      drop_precedence:
+                        type: int
+                        convert_types:
+                          - str
+                        display_name: Drop-precedence

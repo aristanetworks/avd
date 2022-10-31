@@ -4,7 +4,7 @@
 !
 daemon TerminAttr
 {%     set cvp_config.cli = "exec /usr/bin/TerminAttr" %}
-{%     for cluster in daemon_terminattr.clusters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for cluster in daemon_terminattr.clusters | arista.avd.natural_sort('name') %}
 {%         set cvp_config.cli = cvp_config.cli ~  " -cvopt " ~ cluster.name ~ ".addr=" ~ cluster.cvaddrs | join(',') %}
 {%         if cluster.cvauth.method is arista.avd.defined('key') %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=key," ~ cluster.cvauth.key | arista.avd.default('') %}
@@ -89,6 +89,9 @@ daemon TerminAttr
 {%     endif %}
 {%     if daemon_terminattr.sflowaddr is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflowaddr=" ~ daemon_terminattr.sflowaddr %}
+{%     endif %}
+{%     if daemon_terminattr.cvconfig is arista.avd.defined(true) %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cvconfig" %}
 {%     endif %}
    {{ cvp_config.cli }}
    no shutdown

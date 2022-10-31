@@ -1378,8 +1378,20 @@ vlan_interfaces:
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    # The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
+    # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
     ipv6_address_virtual: < IPv6_address/Mask >
+    # The new "ipv6_address_virtuals" key support multiple virtual ip addresses.
+    ipv6_address_virtuals:
+      - < IPv6_address/Mask >
+      - < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
+    # The below "ipv6_virtual_router_address" key will be deprecated in AVD v4.0 - These should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
+    ipv6_virtual_router_address: < IPv6_address >
+    # New improved "VARPv6" data model to support multiple VARPv6 addresses.
+    ipv6_virtual_router_addresses:
+      - < IPv6_address >
+      - < IPv6_address >
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
     ipv6_nd_prefixes:
@@ -1423,12 +1435,6 @@ vlan_interfaces:
         dr_priority: < 0-429467295 >
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
-    # The below "ipv6_virtual_router_address" key will be deprecated in AVD v4.0 - These should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
-    ipv6_virtual_router_address: < IPv6_address >
-    # New improved "VARPv6" data model to support multiple VARPv6 addresses.
-    ipv6_virtual_router_addresses:
-      - < IPv6_address/Mask | IPv6_address >
-      - < IPv6_address/Mask | IPv6_address >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
@@ -2187,6 +2193,8 @@ daemon_terminattr:
   # ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343")
   # This flag is enabled by default and does not have to be added to the daemon configuration
   sflowaddr: < IPV4_address:port >
+  # Subscribe to dynamic device configuration from CloudVision (default false)
+  cvconfig: < true | false >
 ```
 
 You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance. Streaming to multiple clusters both on-prem and cloud service is supported.

@@ -1,6 +1,5 @@
 import ipaddress
 import re
-from collections import ChainMap
 from functools import cached_property
 from hashlib import sha256
 
@@ -12,6 +11,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, default, get, get_item
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
 
 class EosDesignsFacts(AvdFacts):
@@ -43,6 +43,10 @@ class EosDesignsFacts(AvdFacts):
         """
         return get(self._switch_data_combined, "foo", required=True)
     '''
+
+    def __init__(self, hostvars, templar):
+        super().__init__(hostvars, templar)
+        self.avd_ip_addressing = load_ip_addressing(self._hostvars, self._templar)
 
     @cached_property
     def type(self):
@@ -930,18 +934,10 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def router_id(self):
         """
-        Run template lookup to render ipv4 address for router_id
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for router_id using dynamically loaded python module.
         """
         if self.underlay_router is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["loopback_ipv4_pool"] = self.loopback_ipv4_pool
-            template_vars["loopback_ipv4_offset"] = self.loopback_ipv4_offset
-            template_path = get(self.ip_addressing, "router_id", required=True)
-            return self.template_var(template_path, template_vars)
+            return self.avd_ip_addressing.router_id()
         return None
 
     @cached_property
@@ -1182,18 +1178,10 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def ipv6_router_id(self):
         """
-        Run template lookup to render ipv6 address for router_id
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv6 address for router_id using dynamically loaded python module.
         """
         if self.underlay_ipv6 is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["loopback_ipv6_pool"] = self.loopback_ipv6_pool
-            template_vars["loopback_ipv6_offset"] = self.loopback_ipv6_offset
-            template_path = get(self.ip_addressing, "ipv6_router_id", required=True)
-            return self.template_var(template_path, template_vars)
+            return self.avd_ip_addressing.ipv6_router_id()
         return None
 
     @cached_property
@@ -1379,8 +1367,6 @@ class EosDesignsFacts(AvdFacts):
             uplink_switch_interfaces = default(self.uplink_switch_interfaces, [])
             fabric_name = get(self._hostvars, "fabric_name", required=True)
             inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
@@ -1419,11 +1405,8 @@ class EosDesignsFacts(AvdFacts):
                 if get(self._hostvars, "underlay_rfc5549") is True:
                     uplink["ipv6_enable"] = True
                 else:
-                    template_vars["uplink_switch_index"] = uplink_index
-                    template_path = get(self.ip_addressing, "p2p_uplinks_ip", required=True)
-                    uplink["ip_address"] = self.template_var(template_path, template_vars)
-                    template_path = get(self.ip_addressing, "p2p_uplinks_peer_ip", required=True)
-                    uplink["peer_ip_address"] = self.template_var(template_path, template_vars)
+                    uplink["ip_address"] = self.avd_ip_addressing.p2p_uplinks_ip(uplink_index)
+                    uplink["peer_ip_address"] = self.avd_ip_addressing.p2p_uplinks_peer_ip(uplink_index)
 
                 if self.link_tracking_groups is not None:
                     uplink["link_tracking_groups"] = []
@@ -1558,54 +1541,27 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def vtep_ip(self):
         """
-        Run template lookup to render ipv4 address for vtep_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for vtep_ip using dynamically loaded python module.
         """
         if self.vtep is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["switch_vtep_loopback_ipv4_pool"] = self.vtep_loopback_ipv4_pool
-            template_vars["loopback_ipv4_offset"] = self.loopback_ipv4_offset
-
             if self.mlag is True:
-                if self.mlag_role == "primary":
-                    template_vars["mlag_primary_id"] = self.id
-                    template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                elif self.mlag_role == "secondary":
-                    template_vars["mlag_secondary_id"] = self.id
-                    template_vars["mlag_primary_id"] = self._mlag_peer_id
+                return self.avd_ip_addressing.vtep_ip_mlag()
 
-                template_path = get(self.ip_addressing, "vtep_ip_mlag", required=True)
-                return self.template_var(template_path, template_vars)
             else:
-                template_path = get(self.ip_addressing, "vtep_ip", required=True)
-                return self.template_var(template_path, template_vars)
+                return self.avd_ip_addressing.vtep_ip()
 
         return None
 
     @cached_property
     def mlag_ip(self):
         """
-        Run template lookup to render ipv4 address for mlag_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for mlag_ip using dynamically loaded python module.
         """
         if self.mlag is True:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["switch_data"] = {"combined": {"mlag_peer_ipv4_pool": self.mlag_peer_ipv4_pool}}
             if self.mlag_role == "primary":
-                template_vars["mlag_primary_id"] = self.id
-                template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_ip_primary", required=True)
+                return self.avd_ip_addressing.mlag_ip_primary()
             elif self.mlag_role == "secondary":
-                template_vars["mlag_secondary_id"] = self.id
-                template_vars["mlag_primary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_ip_secondary", required=True)
-            return self.template_var(template_path, template_vars)
+                return self.avd_ip_addressing.mlag_ip_secondary()
         return None
 
     @cached_property
@@ -1623,25 +1579,13 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mlag_l3_ip(self):
         """
-        Run template lookup to render ipv4 address for mlag_l3_ip
-
-        Since some templates might contain certain legacy variables (switch_*),
-        those are mapped from the switch.* model
+        Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
         """
         if self.mlag_l3 is True and self.mlag_peer_l3_vlan is not None:
-            template_vars = ChainMap({}, self._hostvars)
-            template_vars["switch_id"] = self.id
-            template_vars["switch_data"] = {"combined": {"mlag_peer_l3_ipv4_pool": self.mlag_peer_l3_ipv4_pool}}
             if self.mlag_role == "primary":
-                template_vars["mlag_primary_id"] = self.id
-                template_vars["mlag_secondary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_l3_ip_primary", required=True)
+                return self.avd_ip_addressing.mlag_l3_ip_primary()
             elif self.mlag_role == "secondary":
-                template_vars["mlag_secondary_id"] = self.id
-                template_vars["mlag_primary_id"] = self._mlag_peer_id
-                template_path = get(self.ip_addressing, "mlag_l3_ip_secondary", required=True)
-
-            return self.template_var(template_path, template_vars)
+                return self.avd_ip_addressing.mlag_l3_ip_secondary()
         return None
 
     @cached_property

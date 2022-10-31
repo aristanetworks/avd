@@ -360,7 +360,7 @@ struct_cfg:
         destinations:
           192.168.200.10: null
           10.0.200.90: null
-        source_interface: Management1
+        source_interface: '{{ switch.mgmt_interface }}'
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -528,8 +528,7 @@ router_ospf:
       - Vlan150
       max_lsa: 15000
       redistribute:
-        bgp:
-          enabled: true
+        bgp: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP

@@ -315,25 +315,25 @@ class AvdToDocumentationSchemaConverter:
 
     def restrictions(self, schema: dict):
         restrictions = []
-        if schema.get("min"):
+        if schema.get("min") is not None:
             restrictions.append(f"Min: {schema['min']}")
-        if schema.get("max"):
+        if schema.get("max") is not None:
             restrictions.append(f"Max: {schema['max']}")
-        if schema.get("min_length"):
+        if schema.get("min_length") is not None:
             restrictions.append(f"Min Length: {schema['min_length']}")
-        if schema.get("max_length"):
+        if schema.get("max_length") is not None:
             restrictions.append(f"Max Length: {schema['max_length']}")
-        if schema.get("format"):
+        if schema.get("format") is not None:
             restrictions.append(f"Format: {schema['format']}")
-        if schema.get("dynamic_valid_values"):
+        if schema.get("dynamic_valid_values") is not None:
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"
             schema["valid_values"].append(valid_value)
-        if schema.get("valid_values"):
+        if schema.get("valid_values") is not None:
             restrictions.append("Valid Values:")
             for valid_value in schema["valid_values"]:
                 restrictions.append(f"- {valid_value}")
-        if schema.get("pattern"):
+        if schema.get("pattern") is not None:
             restrictions.append(f"Pattern: {schema['pattern']}")
 
         if restrictions:
