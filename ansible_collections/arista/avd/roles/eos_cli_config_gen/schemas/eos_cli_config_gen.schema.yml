@@ -3096,6 +3096,39 @@ keys:
                   Example: "permit 10.255.0.0/27 eq 32"'
   prompt:
     type: str
+  qos:
+    type: dict
+    display_name: QOS
+    keys:
+      map:
+        type: dict
+        keys:
+          cos:
+            type: list
+            display_name: COS
+            items:
+              type: str
+              description: 'Example: "0 1 to traffic-class 1"
+
+                '
+          dscp:
+            type: list
+            display_name: DSCP
+            items:
+              type: str
+              description: 'Example: "8 9 10 to traffic-class 1"
+
+                '
+          traffic_class:
+            type: list
+            items:
+              type: str
+              description: 'Example: "1 to dscp 32"
+
+                '
+      rewrite_dscp:
+        display_name: Rewrite DSCP
+        type: bool
   qos_profiles:
     type: list
     display_name: QOS Profiles

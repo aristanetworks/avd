@@ -4100,6 +4100,48 @@
       "type": "string",
       "title": "Prompt"
     },
+    "qos": {
+      "type": "object",
+      "title": "QOS",
+      "properties": {
+        "map": {
+          "type": "object",
+          "properties": {
+            "cos": {
+              "type": "array",
+              "title": "COS",
+              "items": {
+                "type": "string",
+                "description": "Example: \"0 1 to traffic-class 1\"\n"
+              }
+            },
+            "dscp": {
+              "type": "array",
+              "title": "DSCP",
+              "items": {
+                "type": "string",
+                "description": "Example: \"8 9 10 to traffic-class 1\"\n"
+              }
+            },
+            "traffic_class": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Example: \"1 to dscp 32\"\n"
+              },
+              "title": "Traffic Class"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Map"
+        },
+        "rewrite_dscp": {
+          "title": "Rewrite DSCP",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
     "qos_profiles": {
       "type": "array",
       "title": "QOS Profiles",
