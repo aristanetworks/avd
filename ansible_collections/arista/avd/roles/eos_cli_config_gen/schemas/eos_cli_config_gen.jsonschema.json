@@ -4523,7 +4523,8 @@
                 "no_errdisable": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Interface name e.g Ethernet1, Port-Channel1"
                   },
                   "title": "No Errdisable"
                 }

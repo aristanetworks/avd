@@ -3394,6 +3394,7 @@ keys:
                 type: list
                 items:
                   type: str
+                  description: Interface name e.g Ethernet1, Port-Channel1
       encapsulation_dot1br_strip:
         display_name: Encapsulation dot1br Strip
         type: bool
