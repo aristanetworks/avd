@@ -184,8 +184,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "title": "Server Group Name",
-            "type": "string"
+            "description": "Group name",
+            "type": "string",
+            "title": "Name"
           },
           "type": {
             "type": "string",
@@ -208,7 +209,7 @@
                 },
                 "vrf": {
                   "type": "string",
-                  "description": "VRF Name",
+                  "description": "VRF name",
                   "title": "Vrf"
                 }
               },

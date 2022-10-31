@@ -174,7 +174,7 @@ keys:
       type: dict
       keys:
         name:
-          display_name: Server Group Name
+          description: Group name
           type: str
         type:
           type: str
@@ -192,7 +192,7 @@ keys:
                 description: Hostname or IP address
               vrf:
                 type: str
-                description: VRF Name
+                description: VRF name
   access_lists:
     type: list
     primary_key: name
