@@ -1308,8 +1308,8 @@ ip_ssh_client_source_interfaces:
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>ip_tacacs_source_interfaces</samp>](## "ip_tacacs_source_interfaces") | List, items: Dictionary |  |  |  | IP Tacacs Source Interfaces |
-| [<samp>&nbsp;&nbsp;- name</samp>](## "ip_tacacs_source_interfaces.[].name") | String |  |  |  | Interface Name |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_tacacs_source_interfaces.[].vrf") | String |  |  |  | VRF Name |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "ip_tacacs_source_interfaces.[].name") | String |  |  |  | Interface name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_tacacs_source_interfaces.[].vrf") | String |  |  |  | VRF |
 
 ### YAML
 

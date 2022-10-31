@@ -1944,11 +1944,12 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Interface Name"
+            "description": "Interface name",
+            "title": "Name"
           },
           "vrf": {
             "type": "string",
-            "title": "VRF Name"
+            "title": "VRF"
           }
         },
         "additionalProperties": false
