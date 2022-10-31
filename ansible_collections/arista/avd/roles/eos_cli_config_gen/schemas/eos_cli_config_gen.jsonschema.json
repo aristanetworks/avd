@@ -3827,13 +3827,13 @@
       "properties": {
         "interval": {
           "type": "integer",
-          "description": "Rate In milliseconds",
+          "description": "Rate in milliseconds",
           "title": "Interval"
         },
         "min_rx": {
           "type": "integer",
           "title": "Min RX",
-          "description": "Rate In milliseconds"
+          "description": "Rate in milliseconds"
         },
         "multiplier": {
           "type": "integer",
@@ -3846,13 +3846,13 @@
           "properties": {
             "interval": {
               "type": "integer",
-              "description": "Rate In milliseconds",
+              "description": "Rate in milliseconds",
               "title": "Interval"
             },
             "min_rx": {
               "type": "integer",
               "title": "Min RX",
-              "description": "Rate In milliseconds"
+              "description": "Rate in milliseconds"
             },
             "multiplier": {
               "type": "integer",
@@ -3897,7 +3897,7 @@
             },
             "initiator_interval": {
               "type": "integer",
-              "description": "Rate In milliseconds",
+              "description": "Rate in milliseconds",
               "title": "Initiator Interval"
             },
             "initiator_multiplier": {
@@ -3912,7 +3912,7 @@
                 "min_rx": {
                   "type": "integer",
                   "title": "Min RX",
-                  "description": "Rate In milliseconds"
+                  "description": "Rate in milliseconds"
                 },
                 "local_discriminator": {
                   "type": "string",

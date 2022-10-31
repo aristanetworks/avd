@@ -2920,11 +2920,11 @@ keys:
     keys:
       interval:
         type: int
-        description: Rate In milliseconds
+        description: Rate in milliseconds
       min_rx:
         type: int
         display_name: Min RX
-        description: Rate In milliseconds
+        description: Rate in milliseconds
       multiplier:
         type: int
         min: 3
@@ -2934,11 +2934,11 @@ keys:
         keys:
           interval:
             type: int
-            description: Rate In milliseconds
+            description: Rate in milliseconds
           min_rx:
             type: int
             display_name: Min RX
-            description: Rate In milliseconds
+            description: Rate in milliseconds
           multiplier:
             type: int
             min: 3
@@ -2964,7 +2964,7 @@ keys:
                     display_name: IPv6
           initiator_interval:
             type: int
-            description: Rate In milliseconds
+            description: Rate in milliseconds
           initiator_multiplier:
             type: int
             min: 3
@@ -2975,7 +2975,7 @@ keys:
               min_rx:
                 type: int
                 display_name: Min RX
-                description: Rate In milliseconds
+                description: Rate in milliseconds
               local_discriminator:
                 type: str
                 description: IPv4_address in u32 format
