@@ -3827,15 +3827,18 @@
       "properties": {
         "interval": {
           "type": "integer",
-          "title": "Rate In Milliseconds"
+          "description": "Rate In milliseconds",
+          "title": "Interval"
         },
         "min_rx": {
           "type": "integer",
-          "title": "Rate In Milliseconds"
+          "title": "Min RX",
+          "description": "Rate In milliseconds"
         },
         "multiplier": {
           "type": "integer",
-          "description": "3-50",
+          "minimum": 3,
+          "maximum": 50,
           "title": "Multiplier"
         },
         "multihop": {
@@ -3843,15 +3846,18 @@
           "properties": {
             "interval": {
               "type": "integer",
-              "title": "Rate In Milliseconds"
+              "description": "Rate In milliseconds",
+              "title": "Interval"
             },
             "min_rx": {
               "type": "integer",
-              "title": "Rate In Milliseconds"
+              "title": "Min RX",
+              "description": "Rate In milliseconds"
             },
             "multiplier": {
               "type": "integer",
-              "description": "3-50",
+              "minimum": 3,
+              "maximum": 50,
               "title": "Multiplier"
             }
           },
@@ -3860,24 +3866,26 @@
         },
         "sbfd": {
           "type": "object",
+          "title": "SBFD",
           "properties": {
             "local_interface": {
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string",
-                  "title": "Interface Name"
+                  "description": "Interface Name",
+                  "title": "Name"
                 },
                 "protocols": {
                   "type": "object",
                   "properties": {
                     "ipv4": {
                       "type": "boolean",
-                      "title": "Ipv4"
+                      "title": "IPv4"
                     },
                     "ipv6": {
                       "type": "boolean",
-                      "title": "Ipv6"
+                      "title": "IPv6"
                     }
                   },
                   "additionalProperties": false,
@@ -3889,11 +3897,13 @@
             },
             "initiator_interval": {
               "type": "integer",
-              "title": "Rate In Milliseconds"
+              "description": "Rate In milliseconds",
+              "title": "Initiator Interval"
             },
             "initiator_multiplier": {
               "type": "integer",
-              "description": "3-50",
+              "minimum": 3,
+              "maximum": 50,
               "title": "Initiator Multiplier"
             },
             "reflector": {
@@ -3901,7 +3911,8 @@
               "properties": {
                 "min_rx": {
                   "type": "integer",
-                  "title": "Rate In Milliseconds"
+                  "title": "Min RX",
+                  "description": "Rate In milliseconds"
                 },
                 "local_discriminator": {
                   "type": "string",
@@ -3913,8 +3924,7 @@
               "title": "Reflector"
             }
           },
-          "additionalProperties": false,
-          "title": "Sbfd"
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
