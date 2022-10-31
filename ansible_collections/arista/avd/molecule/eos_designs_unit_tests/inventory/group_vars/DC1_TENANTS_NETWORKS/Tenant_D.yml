@@ -33,6 +33,12 @@ Tenant_D:
           tags: ['v6opzone']
           enabled: True
           profile: GENERIC_DUAL_STACK
+          ip_virtual_router_addresses: [ "11.4.12.1" ]
+          ipv6_virtual_router_addresses: [ "2001:db9:412::1" ]
+          nodes:
+            DC1-LEAF2A:
+              ip_address: 11.4.12.2/24
+              ipv6_address: 2001:db9:412::2/64
       static_routes:
         - destination_address_prefix: 0.0.0.0/0
           gateway: "10.3.11.4"
@@ -58,7 +64,6 @@ Tenant_D:
           name: Tenant_D_v6_WAN_Zone_1
           tags: ['v6wan']
           enabled: True
-          ipv6_address: 2001:db8:350::1/64
           ipv6_address_virtual: 2001:db8:355::1/64
         451:
           name: Tenant_D_v6_WAN_Zone_2

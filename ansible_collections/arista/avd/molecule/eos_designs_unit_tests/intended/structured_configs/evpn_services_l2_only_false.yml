@@ -290,18 +290,6 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
-- destination_address_prefix: 10.2.32.0/24
-  vrf: Tenant_A_APP_Zone
-  name: VARP
-  interface: Vlan132
-- destination_address_prefix: 10.3.32.0/24
-  vrf: Tenant_A_APP_Zone
-  name: VARP
-  interface: Vlan132
-- destination_address_prefix: 10.3.11.0/24
-  vrf: Tenant_D_OP_Zone
-  name: VARP
-  interface: Vlan411
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -529,10 +517,6 @@ vlan_interfaces:
     description: Tenant_A_APP_Zone_3
     shutdown: false
     vrf: Tenant_A_APP_Zone
-    ip_virtual_router_addresses:
-    - 10.1.32.254
-    - 10.2.32.254/24
-    - 10.3.32.254/24
   Vlan140:
     tenant: Tenant_A
     tags:
@@ -693,10 +677,6 @@ vlan_interfaces:
     description: Tenant_D_v6_OP_Zone_2
     shutdown: false
     vrf: Tenant_D_OP_Zone
-    ip_virtual_router_addresses:
-    - 10.3.11.1/24
-    ipv6_virtual_router_addresses:
-    - 2001:db8:311::1
   Vlan412:
     tenant: Tenant_D
     tags:
