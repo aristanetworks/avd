@@ -3364,6 +3364,53 @@
       },
       "title": "Prefix Lists"
     },
+    "queue_monitor_length": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "\"enabled: true\" will be required in AVD4.0.\nIn AVD3.x default is true as long as queue_monitor_length is defined and not None\n",
+          "title": "Enabled"
+        },
+        "log": {
+          "type": "integer",
+          "description": "Logging interval in seconds",
+          "title": "Log"
+        },
+        "notifying": {
+          "type": "boolean",
+          "description": "should only be used for platforms supporting the \"queue-monitor length notifying\" CLI",
+          "title": "Notifying"
+        },
+        "cpu": {
+          "type": "object",
+          "title": "CPU",
+          "properties": {
+            "thresholds": {
+              "type": "object",
+              "properties": {
+                "high": {
+                  "type": "integer",
+                  "title": "High"
+                },
+                "low": {
+                  "type": "integer",
+                  "title": "Low"
+                }
+              },
+              "required": [
+                "high"
+              ],
+              "additionalProperties": false,
+              "title": "Thresholds"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "title": "Queue Monitor Length"
+    },
     "redundancy": {
       "type": "object",
       "properties": {
