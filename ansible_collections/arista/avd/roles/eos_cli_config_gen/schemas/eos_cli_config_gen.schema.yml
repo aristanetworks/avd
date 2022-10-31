@@ -2935,6 +2935,20 @@ keys:
       vrf:
         type: str
         display_name: VRF
+  radius_servers:
+    type: list
+    items:
+      type: dict
+      keys:
+        host:
+          type: str
+          description: Host IP address or name
+        vrf:
+          type: str
+          display_name: VRF
+        key:
+          type: str
+          description: Encrypted key
   redundancy:
     type: dict
     keys:
