@@ -1,6 +1,100 @@
 type: dict
 allow_other_keys: true
 keys:
+  aaa_accounting:
+    display_name: AAA Accounting
+    type: dict
+    keys:
+      exec:
+        type: dict
+        keys:
+          console:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - none
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - none
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
+      system:
+        type: dict
+        keys:
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - none
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
+      commands:
+        type: dict
+        keys:
+          console:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Privelege level 'all' or 0-15
+                type:
+                  type: str
+                  valid_values:
+                  - none
+                  - start-stop
+                  - stop-only
+                group:
+                  description: Group Name
+                  type: str
+                logging:
+                  type: bool
+          default:
+            type: list
+            items:
+              type: dict
+              keys:
+                commands:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Privelege level 'all' or 0-15
+                type:
+                  type: str
+                  valid_values:
+                  - none
+                  - start-stop
+                  - stop-only
+                group:
+                  description: Group Name
+                  type: str
+                logging:
+                  type: bool
+          commands_default:
+            type: list
+            description: Deprecated and removed key from AVD 2.x
   aaa_authentication:
     type: dict
     display_name: AAA Authentication

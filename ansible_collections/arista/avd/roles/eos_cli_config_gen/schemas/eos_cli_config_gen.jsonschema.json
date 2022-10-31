@@ -1,6 +1,168 @@
 {
   "type": "object",
   "properties": {
+    "aaa_accounting": {
+      "title": "AAA Accounting",
+      "type": "object",
+      "properties": {
+        "exec": {
+          "type": "object",
+          "properties": {
+            "console": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "start-stop",
+                    "stop-only"
+                  ],
+                  "title": "Type"
+                },
+                "group": {
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Console"
+            },
+            "default": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "start-stop",
+                    "stop-only"
+                  ],
+                  "title": "Type"
+                },
+                "group": {
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Exec"
+        },
+        "system": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "start-stop",
+                    "stop-only"
+                  ],
+                  "title": "Type"
+                },
+                "group": {
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "System"
+        },
+        "commands": {
+          "type": "object",
+          "properties": {
+            "console": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "commands": {
+                    "type": "string",
+                    "description": "Privelege level 'all' or 0-15",
+                    "title": "Commands"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "start-stop",
+                      "stop-only"
+                    ],
+                    "title": "Type"
+                  },
+                  "group": {
+                    "description": "Group Name",
+                    "type": "string",
+                    "title": "Group"
+                  },
+                  "logging": {
+                    "type": "boolean",
+                    "title": "Logging"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Console"
+            },
+            "default": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "commands": {
+                    "type": "string",
+                    "description": "Privelege level 'all' or 0-15",
+                    "title": "Commands"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "start-stop",
+                      "stop-only"
+                    ],
+                    "title": "Type"
+                  },
+                  "group": {
+                    "description": "Group Name",
+                    "type": "string",
+                    "title": "Group"
+                  },
+                  "logging": {
+                    "type": "boolean",
+                    "title": "Logging"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Default"
+            },
+            "commands_default": {
+              "type": "array",
+              "description": "Deprecated and removed key from AVD 2.x",
+              "title": "Commands Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Commands"
+        }
+      },
+      "additionalProperties": false
+    },
     "aaa_authentication": {
       "type": "object",
       "title": "AAA Authentication",
