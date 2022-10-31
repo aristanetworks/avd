@@ -78,6 +78,7 @@ keys:
               type: list
               items:
                 type: str
+                display_name: Interface Name
             distribute_list_in:
               type: dict
               keys:
@@ -217,7 +218,7 @@ keys:
                         type: list
                         items:
                           type: str
-                          display_name: IPv4 Subnet/Netmask
+                          display_name: IPv4 Prefix
                       prefix_list:
                         type: str
                         display_name: Prefix-List Name

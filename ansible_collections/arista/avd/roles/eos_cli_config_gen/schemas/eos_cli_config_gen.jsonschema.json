@@ -4285,7 +4285,8 @@
               "no_passive_interfaces": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "Interface Name"
                 },
                 "title": "No Passive Interfaces"
               },
@@ -4480,7 +4481,7 @@
                           "type": "array",
                           "items": {
                             "type": "string",
-                            "title": "IPv4 Subnet/Netmask"
+                            "title": "IPv4 Prefix"
                           },
                           "title": "Networks"
                         },
