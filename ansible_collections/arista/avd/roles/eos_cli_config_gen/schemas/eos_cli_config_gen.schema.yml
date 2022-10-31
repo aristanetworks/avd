@@ -2781,6 +2781,8 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  prompt:
+    type: str
   queue_monitor_length:
     type: dict
     keys:

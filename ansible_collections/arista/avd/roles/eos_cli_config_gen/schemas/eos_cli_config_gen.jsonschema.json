@@ -3642,6 +3642,10 @@
       },
       "title": "Prefix Lists"
     },
+    "prompt": {
+      "type": "string",
+      "title": "Prompt"
+    },
     "queue_monitor_length": {
       "type": "object",
       "properties": {
