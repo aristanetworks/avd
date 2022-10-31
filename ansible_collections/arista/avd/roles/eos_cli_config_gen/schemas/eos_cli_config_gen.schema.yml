@@ -3388,7 +3388,7 @@ keys:
               enabled:
                 type: bool
               profile:
-                display_name: Profile Name
+                description: Profile Name
                 type: str
               no_errdisable:
                 type: list
@@ -3440,8 +3440,8 @@ keys:
           fcs_append:
             display_name: FCS Append
             type: bool
-            description: 'mac_fcs_append and mac_fcs_error are mutually exclusive.
-              If both are defined, mac_fcs_append takes precedence
+            description: 'mac.fcs_append and mac.fcs_error are mutually exclusive.
+              If both are defined, mac.fcs_append takes precedence
 
               '
           fcs_error:

@@ -4517,8 +4517,9 @@
                   "title": "Enabled"
                 },
                 "profile": {
-                  "title": "Profile Name",
-                  "type": "string"
+                  "description": "Profile Name",
+                  "type": "string",
+                  "title": "Profile"
                 },
                 "no_errdisable": {
                   "type": "array",
@@ -4591,7 +4592,7 @@
             "fcs_append": {
               "title": "FCS Append",
               "type": "boolean",
-              "description": "mac_fcs_append and mac_fcs_error are mutually exclusive. If both are defined, mac_fcs_append takes precedence\n"
+              "description": "mac.fcs_append and mac.fcs_error are mutually exclusive. If both are defined, mac.fcs_append takes precedence\n"
             },
             "fcs_error": {
               "title": "FCS Error",
