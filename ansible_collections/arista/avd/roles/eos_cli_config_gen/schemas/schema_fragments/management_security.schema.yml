@@ -34,6 +34,7 @@ keys:
               display_name: TLS Versions
               description: |
                 List of allowed TLS versions as string
+                Example: "1.1 1.2"
             cipher_list:
               type: str
               description: |
