@@ -5857,6 +5857,348 @@
       },
       "title": "Trackers"
     },
+    "traffic_policies": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "object",
+          "properties": {
+            "counter_per_interface": {
+              "type": "boolean",
+              "title": "Counter Per Interface"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Options"
+        },
+        "field_sets": {
+          "type": "object",
+          "properties": {
+            "ipv4": {
+              "type": "array",
+              "title": "IPv4",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 Prefix Field Set Name",
+                    "title": "Name"
+                  },
+                  "prefixes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "IPv4 Prefix"
+                    },
+                    "title": "Prefixes"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "ipv6": {
+              "type": "array",
+              "title": "IPv6",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv6 Prefix Field Set Name",
+                    "title": "Name"
+                  },
+                  "prefixes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "title": "IPv6 Prefix"
+                    },
+                    "title": "Prefixes"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "ports": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "L4 Port Field Set Name",
+                    "title": "Name"
+                  },
+                  "port_range": {
+                    "type": "string",
+                    "description": "Example: '10,20,80,440-450'",
+                    "title": "Port Range"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Ports"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Field Sets"
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Traffic Policy Name",
+                "title": "Name"
+              },
+              "matches": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Traffic Policy Item",
+                      "title": "Name"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "ipv4",
+                        "ipv6"
+                      ],
+                      "title": "Type"
+                    },
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "prefixes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "description": "IP address or prefix"
+                          },
+                          "title": "Prefixes"
+                        },
+                        "prefix_lists": {
+                          "type": "array",
+                          "description": "Field-set prefix lists",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Prefix Lists"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Source"
+                    },
+                    "destination": {
+                      "type": "object",
+                      "properties": {
+                        "prefixes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "description": "IP address or prefix"
+                          },
+                          "title": "Prefixes"
+                        },
+                        "prefix_lists": {
+                          "type": "array",
+                          "description": "Field-set prefix lists",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Prefix Lists"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Destination"
+                    },
+                    "ttl": {
+                      "type": "string",
+                      "title": "TTL",
+                      "description": "TTL range"
+                    },
+                    "fragment": {
+                      "type": "object",
+                      "description": "The 'fragment' command is not supported when 'source port'\nor 'destination port' command is configured\n",
+                      "properties": {
+                        "offset": {
+                          "type": "string",
+                          "description": "Fragment offset range",
+                          "title": "Offset"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Fragment"
+                    },
+                    "protocols": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "protocol": {
+                            "type": "string",
+                            "title": "Protocol"
+                          },
+                          "src_port": {
+                            "type": "string",
+                            "description": "Port range",
+                            "title": "Src Port"
+                          },
+                          "dst_port": {
+                            "type": "string",
+                            "description": "Port range",
+                            "title": "Dst Port"
+                          },
+                          "src_field": {
+                            "type": "string",
+                            "description": "L4 port range field set",
+                            "title": "Src Field"
+                          },
+                          "dst_field": {
+                            "type": "string",
+                            "description": "L4 port range field set",
+                            "title": "Dst Field"
+                          },
+                          "flags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "established",
+                                "initial"
+                              ]
+                            },
+                            "title": "Flags"
+                          },
+                          "icmp_type": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "ICMP Type"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "title": "Protocols"
+                    },
+                    "actions": {
+                      "type": "object",
+                      "properties": {
+                        "dscp": {
+                          "type": "integer",
+                          "title": "DSCP"
+                        },
+                        "traffic_class": {
+                          "type": "integer",
+                          "description": "Traffic class ID",
+                          "title": "Traffic Class"
+                        },
+                        "count": {
+                          "type": "string",
+                          "description": "Counter name",
+                          "title": "Count"
+                        },
+                        "drop": {
+                          "type": "boolean",
+                          "title": "Drop"
+                        },
+                        "log": {
+                          "type": "boolean",
+                          "description": "Only supported when action is set to drop",
+                          "title": "Log"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Actions"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Matches"
+              },
+              "default_actions": {
+                "type": "object",
+                "properties": {
+                  "ipv4": {
+                    "type": "object",
+                    "title": "IPv4",
+                    "properties": {
+                      "dscp": {
+                        "type": "integer",
+                        "title": "DSCP"
+                      },
+                      "traffic_class": {
+                        "type": "integer",
+                        "description": "Traffic class ID",
+                        "title": "Traffic Class"
+                      },
+                      "count": {
+                        "type": "string",
+                        "description": "Counter name",
+                        "title": "Count"
+                      },
+                      "drop": {
+                        "type": "boolean",
+                        "title": "Drop"
+                      },
+                      "log": {
+                        "type": "boolean",
+                        "description": "Only supported when action is set to drop",
+                        "title": "Log"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "ipv6": {
+                    "type": "object",
+                    "title": "IPv6",
+                    "properties": {
+                      "dscp": {
+                        "type": "integer",
+                        "title": "DSCP"
+                      },
+                      "traffic_class": {
+                        "type": "integer",
+                        "description": "Traffic class ID",
+                        "title": "Traffic Class"
+                      },
+                      "count": {
+                        "type": "string",
+                        "description": "Counter name",
+                        "title": "Count"
+                      },
+                      "drop": {
+                        "type": "boolean",
+                        "title": "Drop"
+                      },
+                      "log": {
+                        "type": "boolean",
+                        "description": "Only supported when action is set to drop",
+                        "title": "Log"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Default Actions"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Policies"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Traffic Policies"
+    },
     "virtual_source_nat_vrfs": {
       "type": "array",
       "title": "Virtual Source NAT",
