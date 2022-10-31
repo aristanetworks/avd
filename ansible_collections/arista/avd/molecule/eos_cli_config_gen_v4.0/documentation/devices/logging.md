@@ -55,7 +55,7 @@ interface Management1
 
 | Type | Level |
 | -----| ----- |
-| Console | error |
+| Console | errors |
 | Buffer | warnings |
 | Trap | disabled |
 | Synchronous | critical |
@@ -80,7 +80,7 @@ interface Management1
 !
 logging buffered 1000000 warnings
 no logging trap
-logging console error
+logging console errors
 logging synchronous level critical
 logging host 20.20.20.7
 logging host 50.50.50.7 100 200 protocol tcp
