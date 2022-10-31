@@ -1936,6 +1936,25 @@
         "additionalProperties": false
       }
     },
+    "ip_tacacs_source_interfaces": {
+      "type": "array",
+      "title": "IP Tacacs Source Interfaces",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Interface name",
+            "title": "Name"
+          },
+          "vrf": {
+            "type": "string",
+            "title": "VRF"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "ip_virtual_router_mac_address": {
       "title": "IP Virtual Router MAC Address",
       "type": "string",

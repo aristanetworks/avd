@@ -1590,6 +1590,18 @@ keys:
           display_name: VRF
           type: str
           default: default
+  ip_tacacs_source_interfaces:
+    type: list
+    display_name: IP Tacacs Source Interfaces
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Interface name
+        vrf:
+          type: str
+          display_name: VRF
   ip_virtual_router_mac_address:
     display_name: IP Virtual Router MAC Address
     type: str
