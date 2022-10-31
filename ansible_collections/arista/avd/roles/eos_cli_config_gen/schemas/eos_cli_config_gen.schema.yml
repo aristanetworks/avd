@@ -2914,6 +2914,71 @@ keys:
                     type: int
                     convert_types:
                     - str
+  router_bfd:
+    type: dict
+    display_name: Router BFD
+    keys:
+      interval:
+        type: int
+        description: Rate in milliseconds
+      min_rx:
+        type: int
+        display_name: Min RX
+        description: Rate in milliseconds
+      multiplier:
+        type: int
+        min: 3
+        max: 50
+      multihop:
+        type: dict
+        keys:
+          interval:
+            type: int
+            description: Rate in milliseconds
+          min_rx:
+            type: int
+            display_name: Min RX
+            description: Rate in milliseconds
+          multiplier:
+            type: int
+            min: 3
+            max: 50
+      sbfd:
+        type: dict
+        display_name: SBFD
+        keys:
+          local_interface:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Interface Name
+              protocols:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                    display_name: IPv4
+                  ipv6:
+                    type: bool
+                    display_name: IPv6
+          initiator_interval:
+            type: int
+            description: Rate in milliseconds
+          initiator_multiplier:
+            type: int
+            min: 3
+            max: 50
+          reflector:
+            type: dict
+            keys:
+              min_rx:
+                type: int
+                display_name: Min RX
+                description: Rate in milliseconds
+              local_discriminator:
+                type: str
+                description: IPv4 address or 32 bit integer
   router_general:
     type: dict
     display_name: Router General configuration

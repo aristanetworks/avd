@@ -3821,6 +3821,114 @@
       },
       "title": "Route Maps"
     },
+    "router_bfd": {
+      "type": "object",
+      "title": "Router BFD",
+      "properties": {
+        "interval": {
+          "type": "integer",
+          "description": "Rate in milliseconds",
+          "title": "Interval"
+        },
+        "min_rx": {
+          "type": "integer",
+          "title": "Min RX",
+          "description": "Rate in milliseconds"
+        },
+        "multiplier": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 50,
+          "title": "Multiplier"
+        },
+        "multihop": {
+          "type": "object",
+          "properties": {
+            "interval": {
+              "type": "integer",
+              "description": "Rate in milliseconds",
+              "title": "Interval"
+            },
+            "min_rx": {
+              "type": "integer",
+              "title": "Min RX",
+              "description": "Rate in milliseconds"
+            },
+            "multiplier": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 50,
+              "title": "Multiplier"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Multihop"
+        },
+        "sbfd": {
+          "type": "object",
+          "title": "SBFD",
+          "properties": {
+            "local_interface": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Interface Name",
+                  "title": "Name"
+                },
+                "protocols": {
+                  "type": "object",
+                  "properties": {
+                    "ipv4": {
+                      "type": "boolean",
+                      "title": "IPv4"
+                    },
+                    "ipv6": {
+                      "type": "boolean",
+                      "title": "IPv6"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Protocols"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Local Interface"
+            },
+            "initiator_interval": {
+              "type": "integer",
+              "description": "Rate in milliseconds",
+              "title": "Initiator Interval"
+            },
+            "initiator_multiplier": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 50,
+              "title": "Initiator Multiplier"
+            },
+            "reflector": {
+              "type": "object",
+              "properties": {
+                "min_rx": {
+                  "type": "integer",
+                  "title": "Min RX",
+                  "description": "Rate in milliseconds"
+                },
+                "local_discriminator": {
+                  "type": "string",
+                  "description": "IPv4 address or 32 bit integer",
+                  "title": "Local Discriminator"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Reflector"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "router_general": {
       "type": "object",
       "title": "Router General configuration",
