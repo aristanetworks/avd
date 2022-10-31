@@ -4072,6 +4072,132 @@
       },
       "additionalProperties": false
     },
+    "router_multicast": {
+      "type": "object",
+      "properties": {
+        "ipv4": {
+          "type": "object",
+          "title": "IPv4",
+          "properties": {
+            "counters": {
+              "type": "object",
+              "properties": {
+                "rate_period_decay": {
+                  "description": "Rate in seconds",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 600,
+                  "title": "Rate Period Decay"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Counters"
+            },
+            "routing": {
+              "type": "boolean",
+              "title": "Routing"
+            },
+            "multipath": {
+              "type": "string",
+              "enum": [
+                "none",
+                "deterministic",
+                "deterministic color",
+                "deterministic router-id"
+              ],
+              "title": "Multipath"
+            },
+            "software_forwarding": {
+              "type": "string",
+              "enum": [
+                "kernel",
+                "sfe"
+              ],
+              "title": "Software Forwarding"
+            },
+            "rpf": {
+              "type": "object",
+              "properties": {
+                "routes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_prefix": {
+                        "description": "Source address A.B.C.D or Source prefix A.B.C.D/E",
+                        "type": "string",
+                        "title": "Source Prefix"
+                      },
+                      "destinations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "nexthop": {
+                              "description": "Next-hop IP address or interface name",
+                              "type": "string",
+                              "title": "Nexthop"
+                            },
+                            "distance": {
+                              "description": "Administrative distance for this route",
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 255,
+                              "title": "Distance"
+                            }
+                          },
+                          "required": [
+                            "nexthop"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "title": "Destinations"
+                      }
+                    },
+                    "required": [
+                      "source_prefix",
+                      "destinations"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "title": "Routes"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Rpf"
+            }
+          },
+          "additionalProperties": false
+        },
+        "vrfs": {
+          "type": "array",
+          "title": "VRFs",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "ipv4": {
+                "type": "object",
+                "title": "IPv4",
+                "properties": {
+                  "routing": {
+                    "type": "boolean",
+                    "title": "Routing"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false,
+      "title": "Router Multicast"
+    },
     "router_pim_sparse_mode": {
       "type": "object",
       "title": "Routing PIM Sparse Mode",

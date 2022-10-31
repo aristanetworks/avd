@@ -3069,6 +3069,80 @@ keys:
           prefix_list:
             type: str
             description: Prefix-list Name
+  router_multicast:
+    type: dict
+    keys:
+      ipv4:
+        type: dict
+        display_name: IPv4
+        keys:
+          counters:
+            type: dict
+            keys:
+              rate_period_decay:
+                description: Rate in seconds
+                type: int
+                min: 0
+                max: 600
+                convert_types:
+                - str
+          routing:
+            type: bool
+          multipath:
+            type: str
+            valid_values:
+            - none
+            - deterministic
+            - deterministic color
+            - deterministic router-id
+          software_forwarding:
+            type: str
+            valid_values:
+            - kernel
+            - sfe
+          rpf:
+            type: dict
+            keys:
+              routes:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    source_prefix:
+                      description: Source address A.B.C.D or Source prefix A.B.C.D/E
+                      type: str
+                      required: true
+                    destinations:
+                      type: list
+                      required: true
+                      items:
+                        type: dict
+                        keys:
+                          nexthop:
+                            description: Next-hop IP address or interface name
+                            type: str
+                            required: true
+                          distance:
+                            description: Administrative distance for this route
+                            type: int
+                            min: 1
+                            max: 255
+                            convert_types:
+                            - str
+      vrfs:
+        type: list
+        display_name: VRFs
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            ipv4:
+              type: dict
+              display_name: IPv4
+              keys:
+                routing:
+                  type: bool
   router_pim_sparse_mode:
     type: dict
     display_name: Routing PIM Sparse Mode
