@@ -9221,16 +9221,16 @@
       "title": "Sflow"
     },
     "snmp_server": {
-      "title": "SNMP Server",
       "type": "object",
+      "title": "SNMP Server",
       "properties": {
         "engine_ids": {
-          "title": "Engine IDs",
           "type": "object",
+          "title": "Engine IDs",
           "properties": {
             "local": {
               "type": "string",
-              "description": "Engine id in hexadecimal\n",
+              "description": "Engine ID in hexadecimal\n",
               "title": "Local"
             },
             "remotes": {
@@ -9239,9 +9239,9 @@
                 "type": "object",
                 "properties": {
                   "id": {
-                    "title": "ID",
                     "type": "string",
-                    "description": "Engine ID In Hexadecimal\n"
+                    "title": "ID",
+                    "description": "Remote Engine ID In Hexadecimal\n"
                   },
                   "address": {
                     "type": "string",
@@ -9249,8 +9249,8 @@
                     "title": "Address"
                   },
                   "udp_port": {
-                    "title": "UDP Port",
-                    "type": "integer"
+                    "type": "integer",
+                    "title": "UDP Port"
                   }
                 },
                 "additionalProperties": false
@@ -9262,7 +9262,8 @@
         },
         "contact": {
           "type": "string",
-          "title": "Contact Name"
+          "description": "Contact Name",
+          "title": "Contact"
         },
         "location": {
           "type": "string",
@@ -9275,7 +9276,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Community Name"
+                "description": "Community Name",
+                "title": "Name"
               },
               "access": {
                 "type": "string",
@@ -9286,30 +9288,30 @@
                 "title": "Access"
               },
               "access_list_ipv4": {
-                "title": "Access List IPv4",
                 "type": "object",
+                "title": "Access List IPv4",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "ACL IPv4 Name"
+                    "title": "Name"
                   }
                 },
                 "additionalProperties": false
               },
               "access_list_ipv6": {
-                "title": "Access List IPv6",
                 "type": "object",
+                "title": "Access List IPv6",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "ACL IPv6 Name"
+                    "title": "Name"
                   }
                 },
                 "additionalProperties": false
               },
               "view": {
                 "type": "string",
-                "title": "View Name"
+                "title": "View"
               }
             },
             "additionalProperties": false,
@@ -9320,18 +9322,19 @@
           "title": "Communities"
         },
         "ipv4_acls": {
-          "title": "IPv4 ACLs",
           "type": "array",
+          "title": "IPv4 ACLs",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "title": "IPv4 Access List"
+                "description": "IPv4 Access List Name",
+                "title": "Name"
               },
               "vrf": {
-                "title": "VRF",
-                "type": "string"
+                "type": "string",
+                "title": "VRF"
               }
             },
             "additionalProperties": false
@@ -9345,7 +9348,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "IPv4 Access List"
+                "description": "IPv6 Access List Name",
+                "title": "Name"
               },
               "vrf": {
                 "title": "VRF",
@@ -9362,11 +9366,12 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Interface Name"
+                "description": "Interface Name",
+                "title": "Name"
               },
               "vrf": {
-                "title": "VRF",
-                "type": "string"
+                "type": "string",
+                "title": "VRF"
               }
             },
             "required": [
@@ -9383,11 +9388,12 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "View Name"
+                "description": "SNMP View Name",
+                "title": "Name"
               },
               "MIB_family_name": {
-                "title": "MIB Family Name",
-                "type": "string"
+                "type": "string",
+                "title": "MIB Family Name"
               },
               "included": {
                 "type": "boolean",
@@ -9405,7 +9411,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Group name"
+                "description": "Group name",
+                "title": "Name"
               },
               "version": {
                 "type": "string",
@@ -9427,15 +9434,18 @@
               },
               "read": {
                 "type": "string",
-                "title": "Read View"
+                "description": "Read View",
+                "title": "Read"
               },
               "write": {
                 "type": "string",
-                "title": "Write View"
+                "description": "Write View",
+                "title": "Write"
               },
               "notify": {
                 "type": "string",
-                "title": "Notify View"
+                "description": "Notify View",
+                "title": "Notify"
               }
             },
             "additionalProperties": false
@@ -9449,11 +9459,13 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Username"
+                "description": "Username",
+                "title": "Name"
               },
               "group": {
                 "type": "string",
-                "title": "Group Name"
+                "description": "Group Name",
+                "title": "Group"
               },
               "remote_address": {
                 "type": "string",
@@ -9476,7 +9488,7 @@
               },
               "localized": {
                 "type": "string",
-                "description": "Engine ID in hexadecimal\n",
+                "description": "Engine ID in hexadecimal for localizing auth and/or priv\n",
                 "title": "Localized"
               },
               "auth": {
@@ -9515,7 +9527,7 @@
               },
               "vrf": {
                 "type": "string",
-                "title": "VRF Name"
+                "title": "VRF"
               },
               "version": {
                 "type": "string",
@@ -9528,7 +9540,8 @@
               },
               "community": {
                 "type": "string",
-                "title": "Community Name"
+                "description": "Community Name",
+                "title": "Community"
               },
               "users": {
                 "type": "array",
@@ -9570,13 +9583,12 @@
             "snmp_traps": {
               "title": "SNMP Traps",
               "type": "array",
-              "description": "Enable or disable specific snmp-traps and their sub_traps\n",
               "items": {
                 "type": "object",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "snmp_trap_type | snmp_trap_type snmp_sub_trap_type\n",
+                    "description": "Enable or disable specific snmp-traps and their sub_traps.\nExamples:\n- \"bgp\"\n- \"bgp established\"\n",
                     "title": "Name"
                   },
                   "enabled": {
@@ -9600,7 +9612,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VRF Name"
+                "description": "VRF Name",
+                "title": "Name"
               },
               "enable": {
                 "type": "boolean",

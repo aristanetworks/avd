@@ -6209,18 +6209,18 @@ keys:
                   type: bool
                   default: true
   snmp_server:
-    display_name: SNMP Server
     type: dict
+    display_name: SNMP Server
     keys:
       engine_ids:
-        display_name: Engine IDs
         type: dict
+        display_name: Engine IDs
         keys:
           local:
             type: str
             convert_types:
             - int
-            description: 'Engine id in hexadecimal
+            description: 'Engine ID in hexadecimal
 
               '
           remotes:
@@ -6229,11 +6229,11 @@ keys:
               type: dict
               keys:
                 id:
-                  display_name: ID
                   type: str
+                  display_name: ID
                   convert_types:
                   - int
-                  description: 'Engine ID In Hexadecimal
+                  description: 'Remote Engine ID In Hexadecimal
 
                     '
                 address:
@@ -6242,13 +6242,13 @@ keys:
 
                     '
                 udp_port:
-                  display_name: UDP Port
                   type: int
+                  display_name: UDP Port
                   convert_types:
                   - str
       contact:
         type: str
-        display_name: Contact Name
+        description: Contact Name
       location:
         type: str
       communities:
@@ -6261,41 +6261,38 @@ keys:
           keys:
             name:
               type: str
-              display_name: Community Name
+              description: Community Name
             access:
               type: str
               valid_values:
               - ro
               - rw
             access_list_ipv4:
+              type: dict
               display_name: Access List IPv4
-              type: dict
               keys:
                 name:
                   type: str
-                  display_name: ACL IPv4 Name
             access_list_ipv6:
-              display_name: Access List IPv6
               type: dict
+              display_name: Access List IPv6
               keys:
                 name:
                   type: str
-                  display_name: ACL IPv6 Name
             view:
               type: str
-              display_name: View Name
       ipv4_acls:
-        display_name: IPv4 ACLs
         type: list
+        display_name: IPv4 ACLs
         items:
           type: dict
           keys:
             name:
               type: str
-              display_name: IPv4 Access List
+              description: IPv4 Access List Name
             vrf:
-              display_name: VRF
               type: str
+              display_name: VRF
       ipv6_acls:
         display_name: IPv6 ACLs
         type: list
@@ -6304,7 +6301,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: IPv4 Access List
+              description: IPv6 Access List Name
             vrf:
               display_name: VRF
               type: str
@@ -6319,10 +6316,10 @@ keys:
             name:
               type: str
               required: true
-              display_name: Interface Name
+              description: Interface Name
             vrf:
-              display_name: VRF
               type: str
+              display_name: VRF
       views:
         type: list
         items:
@@ -6330,10 +6327,10 @@ keys:
           keys:
             name:
               type: str
-              display_name: View Name
+              description: SNMP View Name
             MIB_family_name:
-              display_name: MIB Family Name
               type: str
+              display_name: MIB Family Name
             included:
               type: bool
       groups:
@@ -6343,7 +6340,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Group name
+              description: Group name
             version:
               type: str
               valid_values:
@@ -6358,13 +6355,13 @@ keys:
               - priv
             read:
               type: str
-              display_name: Read View
+              description: Read View
             write:
               type: str
-              display_name: Write View
+              description: Write View
             notify:
               type: str
-              display_name: Notify View
+              description: Notify View
       users:
         type: list
         items:
@@ -6372,10 +6369,10 @@ keys:
           keys:
             name:
               type: str
-              display_name: Username
+              description: Username
             group:
               type: str
-              display_name: Group Name
+              description: Group Name
             remote_address:
               type: str
               description: 'Hostname or ip of remote engine. The remote_address and
@@ -6400,7 +6397,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Engine ID in hexadecimal
+              description: 'Engine ID in hexadecimal for localizing auth and/or priv
 
                 '
             auth:
@@ -6434,7 +6431,7 @@ keys:
               type: str
             vrf:
               type: str
-              display_name: VRF Name
+              display_name: VRF
             version:
               type: str
               convert_types:
@@ -6445,7 +6442,7 @@ keys:
               - '3'
             community:
               type: str
-              display_name: Community Name
+              description: Community Name
             users:
               type: list
               items:
@@ -6471,15 +6468,18 @@ keys:
           snmp_traps:
             display_name: SNMP Traps
             type: list
-            description: 'Enable or disable specific snmp-traps and their sub_traps
-
-              '
             items:
               type: dict
               keys:
                 name:
                   type: str
-                  description: 'snmp_trap_type | snmp_trap_type snmp_sub_trap_type
+                  description: 'Enable or disable specific snmp-traps and their sub_traps.
+
+                    Examples:
+
+                    - "bgp"
+
+                    - "bgp established"
 
                     '
                 enabled:
@@ -6493,7 +6493,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: VRF Name
+              description: VRF Name
             enable:
               type: bool
   spanning_tree:
