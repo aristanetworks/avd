@@ -4102,28 +4102,32 @@
     },
     "qos": {
       "type": "object",
+      "title": "QOS",
       "properties": {
         "map": {
           "type": "object",
           "properties": {
             "cos": {
               "type": "array",
+              "title": "COS",
               "items": {
-                "type": "string"
-              },
-              "title": "Cos"
+                "type": "string",
+                "description": "Example: \"0 1 to traffic-class 1\"\n"
+              }
             },
             "dscp": {
               "type": "array",
+              "title": "DSCP",
               "items": {
-                "type": "string"
-              },
-              "title": "Dscp"
+                "type": "string",
+                "description": "Example: \"8 9 10 to traffic-class 1\"\n"
+              }
             },
             "traffic_class": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "description": "Example: \"1 to dscp 32\"\n"
               },
               "title": "Traffic Class"
             }
@@ -4132,12 +4136,11 @@
           "title": "Map"
         },
         "rewrite_dscp": {
-          "type": "boolean",
-          "title": "Rewrite Dscp"
+          "title": "Rewrite DSCP",
+          "type": "boolean"
         }
       },
-      "additionalProperties": false,
-      "title": "Qos"
+      "additionalProperties": false
     },
     "qos_profiles": {
       "type": "array",
