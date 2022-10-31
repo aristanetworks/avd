@@ -6234,6 +6234,59 @@
       "additionalProperties": false,
       "title": "System"
     },
+    "tacacs_servers": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Host IP address or name",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "key": {
+                "type": "string",
+                "description": "Encrypted key",
+                "title": "Key"
+              },
+              "key_type": {
+                "type": "string",
+                "enum": [
+                  "0",
+                  "7",
+                  "8a"
+                ],
+                "default": "7",
+                "title": "Key Type"
+              },
+              "single_connection": {
+                "type": "boolean",
+                "title": "Single Connection"
+              },
+              "timeout": {
+                "type": "integer",
+                "title": "Timeout"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Hosts"
+        },
+        "policy_unknown_mandatory_attribute_ignore": {
+          "type": "boolean",
+          "title": "Policy Unknown Mandatory Attribute Ignore"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Tacacs Servers"
+    },
     "tap_aggregation": {
       "type": "object",
       "properties": {
