@@ -2754,7 +2754,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "title": "Domain Id"
+          "title": "Domain ID"
         },
         "heartbeat_interval": {
           "type": "integer",
@@ -2762,7 +2762,7 @@
           "title": "Heartbeat Interval"
         },
         "local_interface": {
-          "title": "Interface Name",
+          "title": "Local Interface Name",
           "type": "string"
         },
         "peer_address": {
@@ -2795,31 +2795,32 @@
         },
         "dual_primary_recovery_delay_mlag": {
           "type": "integer",
+          "title": "Dual Primary Recovery Delay MLAG",
           "description": "Delay in seconds",
           "minimum": 0,
-          "maximum": 86400,
-          "title": "Dual Primary Recovery Delay Mlag"
+          "maximum": 86400
         },
         "dual_primary_recovery_delay_non_mlag": {
           "type": "integer",
+          "title": "Dual Primary Recovery Delay Non MLAG",
           "description": "Delay in seconds",
           "minimum": 0,
-          "maximum": 86400,
-          "title": "Dual Primary Recovery Delay Non Mlag"
+          "maximum": 86400
         },
         "peer_link": {
-          "title": "Port-Channel ID",
-          "type": "string"
+          "description": "Port-Channel interface name",
+          "type": "string",
+          "title": "Peer Link"
         },
         "reload_delay_mlag": {
           "type": "string",
-          "description": "Delay in seconds <0-86400> or infinity",
-          "title": "Reload Delay Mlag"
+          "title": "Reload Delay MLAG",
+          "description": "Delay in seconds <0-86400> or 'infinity'"
         },
         "reload_delay_non_mlag": {
           "type": "string",
-          "description": "Delay in seconds <0-86400> or infinity",
-          "title": "Reload Delay Non Mlag"
+          "title": "Reload Delay Non MLAG",
+          "description": "Delay in seconds <0-86400> or 'infinity'"
         }
       },
       "additionalProperties": false
