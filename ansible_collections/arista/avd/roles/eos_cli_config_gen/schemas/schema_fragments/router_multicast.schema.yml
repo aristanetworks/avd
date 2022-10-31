@@ -8,6 +8,7 @@ keys:
     keys:
       ipv4:
         type: dict
+        display_name: IPv4
         keys:
           counters:
             type: dict
@@ -36,16 +37,19 @@ keys:
                   type: dict
                   keys:
                     source_prefix:
-                      description: Source prefix A.B.C.D or Source address with prefix A.B.C.D/E
+                      description: Source address A.B.C.D or Source prefix A.B.C.D/E
                       type: str
+                      required: true
                     destinations:
                       type: list
+                      required: true
                       items:
                         type: dict
                         keys:
                           nexthop:
-                            description: Nenxthop ip address or Interface name
+                            description: Next-hop IP address or interface name
                             type: str
+                            required: true
                           distance:
                             description: Administrative distance for this route
                             type: int
@@ -55,6 +59,7 @@ keys:
                             - str
       vrfs:
         type: list
+        display_name: VRFs
         items:
           type: dict
           keys:
@@ -62,6 +67,7 @@ keys:
               type: str
             ipv4:
               type: dict
+              display_name: IPv4
               keys:
                 routing:
                   type: bool

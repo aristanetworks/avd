@@ -3890,6 +3890,7 @@
       "properties": {
         "ipv4": {
           "type": "object",
+          "title": "IPv4",
           "properties": {
             "counters": {
               "type": "object",
@@ -3936,7 +3937,7 @@
                     "type": "object",
                     "properties": {
                       "source_prefix": {
-                        "description": "Source prefix A.B.C.D or Source address with prefix A.B.C.D/E",
+                        "description": "Source address A.B.C.D or Source prefix A.B.C.D/E",
                         "type": "string",
                         "title": "Source Prefix"
                       },
@@ -3946,7 +3947,7 @@
                           "type": "object",
                           "properties": {
                             "nexthop": {
-                              "description": "Nenxthop ip address or Interface name",
+                              "description": "Next-hop IP address or interface name",
                               "type": "string",
                               "title": "Nexthop"
                             },
@@ -3958,11 +3959,18 @@
                               "title": "Distance"
                             }
                           },
+                          "required": [
+                            "nexthop"
+                          ],
                           "additionalProperties": false
                         },
                         "title": "Destinations"
                       }
                     },
+                    "required": [
+                      "source_prefix",
+                      "destinations"
+                    ],
                     "additionalProperties": false
                   },
                   "title": "Routes"
@@ -3972,11 +3980,11 @@
               "title": "Rpf"
             }
           },
-          "additionalProperties": false,
-          "title": "Ipv4"
+          "additionalProperties": false
         },
         "vrfs": {
           "type": "array",
+          "title": "VRFs",
           "items": {
             "type": "object",
             "properties": {
@@ -3986,19 +3994,18 @@
               },
               "ipv4": {
                 "type": "object",
+                "title": "IPv4",
                 "properties": {
                   "routing": {
                     "type": "boolean",
                     "title": "Routing"
                   }
                 },
-                "additionalProperties": false,
-                "title": "Ipv4"
+                "additionalProperties": false
               }
             },
             "additionalProperties": false
-          },
-          "title": "Vrfs"
+          }
         }
       },
       "additionalProperties": false,
