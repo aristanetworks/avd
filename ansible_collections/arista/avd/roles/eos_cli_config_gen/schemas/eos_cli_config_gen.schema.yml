@@ -2955,6 +2955,37 @@ keys:
       protocol:
         type: str
         display_name: Redundancy Protocol
+  roles:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Role name
+        sequence_numbers:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+                description: Sequence number
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+              mode:
+                type: str
+                description: '"config", "config-all", "exec" or mode key as string
+
+                  '
+              command:
+                type: str
+                description: Command as string
   route_maps:
     type: list
     primary_key: name
