@@ -1410,6 +1410,7 @@ keys:
           default: default
   ip_virtual_router_mac_address:
     type: str
+    display_name: IP Virtual Router MAC Address
   ipv6_access_lists:
     type: list
     primary_key: name

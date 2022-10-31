@@ -1151,13 +1151,13 @@ ip_ssh_client_source_interfaces:
     vrf: <str>
 ```
 
-## Ip Virtual Router Mac Address
+## IP Virtual Router MAC Address
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>ip_virtual_router_mac_address</samp>](## "ip_virtual_router_mac_address") | String |  |  |  |  |
+| [<samp>ip_virtual_router_mac_address</samp>](## "ip_virtual_router_mac_address") | String |  |  |  | IP Virtual Router MAC Address |
 
 ### YAML
 
