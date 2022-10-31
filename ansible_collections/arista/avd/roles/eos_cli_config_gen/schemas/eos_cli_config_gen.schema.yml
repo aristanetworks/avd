@@ -3515,6 +3515,81 @@ keys:
                   type: str
                 vrf:
                   type: str
+  tap_aggregation:
+    type: dict
+    keys:
+      mode:
+        type: dict
+        keys:
+          exclusive:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              profile:
+                description: Profile Name
+                type: str
+              no_errdisable:
+                type: list
+                items:
+                  type: str
+                  description: Interface name e.g Ethernet1, Port-Channel1
+      encapsulation_dot1br_strip:
+        display_name: Encapsulation dot1br Strip
+        type: bool
+      encapsulation_vn_tag_strip:
+        display_name: Encapsulation VN Tag Strip
+        type: bool
+      protocol_lldp_trap:
+        display_name: Protocol LLDP Trap
+        type: bool
+      truncation_size:
+        type: int
+        description: 'Allowed truncation_size values vary depending on the platform
+
+          '
+      mac:
+        display_name: MAC
+        type: dict
+        keys:
+          timestamp:
+            type: dict
+            description: 'mac.timestamp.replace_source_mac and mac.timestamp.header.format
+              are mutually exclsuive. If both are defined, replace_source_mac takes
+              precedence
+
+              '
+            keys:
+              replace_source_mac:
+                display_name: Replace Source MAC
+                type: bool
+              header:
+                type: dict
+                keys:
+                  format:
+                    type: str
+                    valid_values:
+                    - 48-bit
+                    - 64-bit
+                  eth_type:
+                    display_name: EtherType
+                    type: int
+                    convert_types:
+                    - str
+          fcs_append:
+            display_name: FCS Append
+            type: bool
+            description: 'mac.fcs_append and mac.fcs_error are mutually exclusive.
+              If both are defined, mac.fcs_append takes precedence
+
+              '
+          fcs_error:
+            display_name: FCS Error
+            type: str
+            valid_values:
+            - correct
+            - discard
+            - pass-through
   tcam_profile:
     type: dict
     display_name: Hardware TCAM Profiles

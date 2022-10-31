@@ -4690,6 +4690,113 @@
       "additionalProperties": false,
       "title": "System"
     },
+    "tap_aggregation": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "object",
+          "properties": {
+            "exclusive": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "profile": {
+                  "description": "Profile Name",
+                  "type": "string",
+                  "title": "Profile"
+                },
+                "no_errdisable": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Interface name e.g Ethernet1, Port-Channel1"
+                  },
+                  "title": "No Errdisable"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Exclusive"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Mode"
+        },
+        "encapsulation_dot1br_strip": {
+          "title": "Encapsulation dot1br Strip",
+          "type": "boolean"
+        },
+        "encapsulation_vn_tag_strip": {
+          "title": "Encapsulation VN Tag Strip",
+          "type": "boolean"
+        },
+        "protocol_lldp_trap": {
+          "title": "Protocol LLDP Trap",
+          "type": "boolean"
+        },
+        "truncation_size": {
+          "type": "integer",
+          "description": "Allowed truncation_size values vary depending on the platform\n",
+          "title": "Truncation Size"
+        },
+        "mac": {
+          "title": "MAC",
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "object",
+              "description": "mac.timestamp.replace_source_mac and mac.timestamp.header.format are mutually exclsuive. If both are defined, replace_source_mac takes precedence\n",
+              "properties": {
+                "replace_source_mac": {
+                  "title": "Replace Source MAC",
+                  "type": "boolean"
+                },
+                "header": {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "48-bit",
+                        "64-bit"
+                      ],
+                      "title": "Format"
+                    },
+                    "eth_type": {
+                      "title": "EtherType",
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Header"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Timestamp"
+            },
+            "fcs_append": {
+              "title": "FCS Append",
+              "type": "boolean",
+              "description": "mac.fcs_append and mac.fcs_error are mutually exclusive. If both are defined, mac.fcs_append takes precedence\n"
+            },
+            "fcs_error": {
+              "title": "FCS Error",
+              "type": "string",
+              "enum": [
+                "correct",
+                "discard",
+                "pass-through"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "title": "Tap Aggregation"
+    },
     "tcam_profile": {
       "type": "object",
       "title": "Hardware TCAM Profiles",
