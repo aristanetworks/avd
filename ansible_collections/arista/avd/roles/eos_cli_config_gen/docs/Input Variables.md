@@ -3385,9 +3385,9 @@ system:
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>tacacs_servers</samp>](## "tacacs_servers") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;hosts</samp>](## "tacacs_servers.hosts") | List, items: Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- host</samp>](## "tacacs_servers.hosts.[].host") | String |  |  |  | Host IP Address Or Name |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "tacacs_servers.hosts.[].vrf") | String |  |  |  | VRF Name |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "tacacs_servers.hosts.[].key") | String |  |  |  | Encrypted Key |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- host</samp>](## "tacacs_servers.hosts.[].host") | String |  |  |  | Host IP address or name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "tacacs_servers.hosts.[].vrf") | String |  |  |  | VRF |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "tacacs_servers.hosts.[].key") | String |  |  |  | Encrypted key |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "tacacs_servers.hosts.[].key_type") | String |  | 7 | Valid Values:<br>- 0<br>- 7<br>- 8a |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_connection</samp>](## "tacacs_servers.hosts.[].single_connection") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "tacacs_servers.hosts.[].timeout") | Integer |  |  |  |  |

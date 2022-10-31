@@ -6244,15 +6244,17 @@
             "properties": {
               "host": {
                 "type": "string",
-                "title": "Host IP Address Or Name"
+                "description": "Host IP address or name",
+                "title": "Host"
               },
               "vrf": {
                 "type": "string",
-                "title": "VRF Name"
+                "title": "VRF"
               },
               "key": {
                 "type": "string",
-                "title": "Encrypted Key"
+                "description": "Encrypted key",
+                "title": "Key"
               },
               "key_type": {
                 "type": "string",
