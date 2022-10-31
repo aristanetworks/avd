@@ -1,4 +1,605 @@
 allow_other_keys: true
+dynamic_keys:
+  node_type_keys.key:
+    display_name: Node Type Structure
+    documentation_options:
+      filename: fabric_topology
+    keys:
+      defaults:
+        keys:
+          bgp_as:
+            convert_types:
+            - int
+            description: Required with eBGP
+            display_name: BGP AS Number
+            type: str
+          bgp_defaults:
+            description: List of EOS commands to apply to BGP daemon
+            display_name: BGP Defaults
+            items:
+              display_name: EOS Command
+              type: str
+            type: list
+          evpn_gateway:
+            description: 'Node is acting as EVPN Multi-Domain Gateway
+
+              New BGP peer-group is generated between EVPN GWs in different domains
+              or between GWs and Route Servers. Name can be changed under "bgp_peer_groups.evpn_overlay_core"
+              variable
+
+              L3 rechability for different EVPN GWs must be already in place, it is
+              recommended to use DCI & L3 Edge if Route Servers and GWs are not defined
+              under the same Ansible inventory.
+
+              '
+            display_name: EVPN Gateway
+            keys:
+              evpn_l2:
+                description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP)
+                  and 3 (IMET)
+                display_name: EVPN L2
+                keys:
+                  enabled:
+                    default: false
+                    type: bool
+                type: dict
+              evpn_l3:
+                description: Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX)
+                display_name: EVPN L3
+                keys:
+                  enabled:
+                    default: false
+                    type: bool
+                  inter_domain:
+                    default: true
+                    type: bool
+                type: dict
+              remote_peers:
+                description: 'Define remote peers of the EVPN VXLAN Gateway.
+
+                  If the hostname can be found in the inventory, ip_address and BGP
+                  ASN will be automatically populated. Manual override takes precedence.
+
+                  If the peer''s hostname can not be found in the inventory, ip_address
+                  and bgp_as must be defined.
+
+                  '
+                items:
+                  keys:
+                    bgp_as:
+                      convert_types:
+                      - int
+                      description: BGP ASN of remote Route Server
+                      display_name: BGP AS Number
+                      type: str
+                    hostname:
+                      description: Hostname of remote EVPN GW server
+                      type: str
+                    ip_address:
+                      description: Peering IP of remote Route Server
+                      display_name: IP Address
+                      format: ipv4
+                      type: str
+                  type: dict
+                type: list
+            type: dict
+          evpn_role:
+            description: Acting role in EVPN control plane. Default is set in node_type
+              definition from node_type_keys.
+            display_name: EVPN Role
+            type: str
+            valid_values:
+            - client
+            - server
+            - none
+          evpn_route_servers:
+            description: List of nodes acting as EVPN Route-Servers / Route-Reflectors
+            display_name: EVPN Route Servers
+            items:
+              display_name: EVPN Route Server
+              type: str
+            type: list
+          evpn_services_l2_only:
+            default: false
+            description: 'Possibility to prevent configuration of Tenant VRFs and
+              SVIs
+
+              Override node definition "network_services_l3" from node_type_keys
+
+              This allows support for centralized routing.
+
+              '
+            display_name: EVPN Services Layer2 only
+            type: bool
+          filter:
+            description: 'Filter L3 and L2 network services based on tenant and tags
+              (and operation filter)
+
+              If filter is not defined it will default to all
+
+              '
+            display_name: Network Services Filters
+            keys:
+              always_include_vrfs_in_tenants:
+                description: 'List of tenants where VRFs will be configured even if
+                  VLANs are not included in tags
+
+                  Useful for L3 "border" leaf.
+
+                  '
+                display_name: Always Include VRFs in Tenants
+                items:
+                  display_name: Tenant
+                  type: str
+                type: list
+              tags:
+                default:
+                - all
+                items:
+                  display_name: Tag
+                  type: str
+                type: list
+              tenants:
+                default:
+                - all
+                items:
+                  display_name: Tenant
+                  type: str
+                type: list
+            type: dict
+          id:
+            convert_types:
+            - str
+            description: Unique identifier used for IP addressing and other algorithms
+            display_name: Node ID
+            type: int
+          igmp_snooping_enabled:
+            default: true
+            description: Activate or deactivate IGMP snooping on device level
+            display_name: IGMP Snooping Enabled
+            type: bool
+          inband_management_subnet:
+            description: 'Optional IP subnet assigned to Inband Management SVI on
+              l2leafs in default VRF.
+
+              Parent l3leafs will have SVI with "ip virtual-router" and host-route
+              injection based on ARP. This allows all l3leafs to reuse the same subnet
+
+              SVI IP address will be assigned as follows:
+
+              virtual-router: <subnet> + 1
+
+              l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+
+              l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+
+              l2leafs       : <subnet> + 3 + <l2leaf id>
+
+              GW on l2leafs : <subnet> + 1
+
+              Assign range larger than total l2leafs + 5
+
+              '
+            format: ipv4_cidr
+            type: str
+          inband_management_vlan:
+            convert_types:
+            - str
+            default: 4092
+            description: VLAN number assigned to Inband Management SVI on l2leafs
+              in default VRF
+            display_name: Inband Management VLAN
+            type: int
+          is_type:
+            default: level-2
+            display_name: IS Type
+            type: str
+            valid_values:
+            - level-1-2
+            - level-1
+            - level-2
+          isis_maximum_paths:
+            convert_types:
+            - str
+            description: Number of path to configure in ECMP for ISIS
+            display_name: ISIS Maximum Paths
+            type: int
+          isis_system_id_prefix:
+            description: (4.4 hexadecimal)
+            display_name: ISIS System ID prefix
+            pattern: '[0-9a-f]{4}\.[0-9a-f]{4}'
+            type: str
+          lacp_port_id_range:
+            description: 'This will generate the "lacp port-id range", "begin" and
+              "end" values based on node "id" and the number of nodes in the "node_group".
+
+              Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+
+              '
+            display_name: LACP Port ID Range
+            keys:
+              enabled:
+                default: false
+                type: bool
+              offset:
+                convert_types:
+                - str
+                default: 0
+                description: 'Offset is used to avoid overlapping port-id ranges of
+                  different switches
+
+                  Useful when a "connected-endpoint" is connected to switches in different
+                  "node_groups".
+
+                  '
+                type: int
+              size:
+                convert_types:
+                - str
+                default: 128
+                description: Recommended size > = number of ports in the switch.
+                type: int
+            type: dict
+          link_tracking:
+            description: 'This configures the Link Tracking Group on a switch as well
+              as adds the p2p-uplinks of the switch as the upstream interfaces.
+
+              Useful in EVPN multhoming designs.
+
+              '
+            keys:
+              enabled:
+                default: false
+                type: bool
+              groups:
+                default:
+                - name: LT_GROUP1
+                description: 'By default a single group named "LT_GROUP1" is defined
+                  with default values.
+
+                  Any groups defined under "groups" will replace the default.
+
+                  '
+                display_name: Link Tracking Groups
+                items:
+                  keys:
+                    links_minimum:
+                      convert_types:
+                      - str
+                      max: 100000
+                      min: 1
+                      type: int
+                    name:
+                      display_name: Tracking Group Name
+                      type: str
+                    recovery_delay:
+                      convert_types:
+                      - str
+                      description: default -> platform_settings_mlag_reload_delay
+                        -> 300
+                      max: 3600
+                      min: 0
+                      type: int
+                  type: dict
+                type: list
+            type: dict
+          loopback_ipv4_offset:
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset all assigned loopback IP addresses.
+
+              Required when the < loopback_ipv4_pool > is same for 2 different node_types
+              (like spine and l3leaf) to avoid over-lapping IPs.
+
+              For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset:
+              < total # spine switches > or vice versa.
+
+              '
+            display_name: Loopback IPv4 Offset
+            type: int
+          loopback_ipv4_pool:
+            description: IPv4 subnet for Loopback0 allocation
+            display_name: Loopback0 IPv4 Pool
+            format: ipv4_cidr
+            type: str
+          loopback_ipv6_offset:
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset all assigned loopback IPv6 addresses.
+
+              Required when the < loopback_ipv6_pool > is same for 2 different node_types
+              (like spine and l3leaf) to avoid overlapping IPs.
+
+              For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset:
+              < total # spine switches > or vice versa.
+
+              '
+            display_name: Loopback IPv6 Offset
+            type: int
+          loopback_ipv6_pool:
+            description: IPv6 subnet for Loopback0 allocation
+            display_name: Loopback0 IPv6 Pool
+            format: ipv6_cidr
+            type: str
+          max_parallel_uplinks:
+            convert_types:
+            - str
+            description: Number of parallel links towards uplink switches
+            type: int
+          max_uplink_switches:
+            convert_types:
+            - str
+            description: 'Maximum number of uplink switches.
+
+              Changing this value may change IP Addressing on uplinks.
+
+              Can be used to reserve IP space for future expansions.
+
+              '
+            type: int
+          mgmt_interface:
+            description: 'Management Interface Name
+
+              Default -> platform_management_interface -> mgmt_interface -> "Management1"
+
+              '
+            display_name: Mgmt Interface
+            type: str
+          mgmt_ip:
+            description: Management Interface IP Address
+            display_name: Mgmt Interface IP
+            format: cidr
+            type: str
+          mlag:
+            default: true
+            description: Enable / Disable auto MLAG, when two nodes are defined in
+              node group.
+            display_name: Enable MLAG
+            documentation_options:
+              table: mlag
+            type: bool
+          mlag_dual_primary_detection:
+            default: false
+            description: Enable / Disable MLAG dual primary detection
+            display_name: MLAG Dual Primary Detection
+            documentation_options:
+              table: mlag
+            type: bool
+          mlag_interfaces:
+            description: Required when MLAG leafs are present in the topology
+            display_name: MLAG interfaces
+            documentation_options:
+              table: mlag
+            items:
+              pattern: Ethernet[\d/]+
+              type: str
+            type: list
+          mlag_interfaces_speed:
+            description: < interface_speed | forced interface_speed | auto interface_speed
+              >
+            display_name: MLAG interfaces speed
+            documentation_options:
+              table: mlag
+            type: str
+          mlag_peer_ipv4_pool:
+            description: 'IP address pool used for MLAG Peer Link (control link).
+              IP is derived from the node id.
+
+              Required when MLAG leafs present in topology.
+
+              '
+            display_name: MLAG Peer IPv4 Pool
+            documentation_options:
+              table: mlag
+            format: ipv4_cidr
+            type: str
+          mlag_peer_l3_ipv4_pool:
+            description: 'IP address pool used for MLAG underlay L3 peering. IP is
+              derived from the node id.
+
+              Required when MLAG leafs present in topology and they are using a separate
+              L3 peering VLAN.
+
+              '
+            display_name: MLAG L3 Peering IPv4 Pool
+            documentation_options:
+              table: mlag
+            format: ipv4_cidr
+            type: str
+          mlag_peer_l3_vlan:
+            convert_types:
+            - str
+            default: 4093
+            description: 'Underlay L3 peering SVI interface id
+
+              If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will
+              be used for L3 peering
+
+              '
+            display_name: MLAG L3 Peering VLAN
+            documentation_options:
+              table: mlag
+            max: 4094
+            min: 0
+            type: int
+          mlag_peer_link_allowed_vlans:
+            default: 2-4094
+            display_name: MLAG Peer-link Allowed VLAN range
+            documentation_options:
+              table: mlag
+            type: str
+          mlag_peer_vlan:
+            convert_types:
+            - str
+            default: 4094
+            description: MLAG Peer Link (control link) SVI interface id
+            display_name: MLAG Peer VLAN
+            documentation_options:
+              table: mlag
+            max: 4094
+            min: 1
+            type: int
+          mlag_port_channel_id:
+            convert_types:
+            - str
+            description: If not set, the mlag port-channel id is generated based on
+              the digits of the first interface present in 'mlag_interfaces'. Valid
+              port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999
+              > for EOS >= 4.25.0F.
+            display_name: MLAG Port-Channel ID
+            documentation_options:
+              table: mlag
+            type: int
+          node_sid_base:
+            convert_types:
+            - str
+            default: 0
+            description: Node-SID base for isis-sr underlay variants. Combined with
+              node id to generate ISIS-SR node-SID.
+            display_name: Node-SID Base
+            type: int
+          platform:
+            description: Arista platform family
+            display_name: Hardware Platform
+            type: str
+          rack:
+            description: Rack that the switch is located in (only used in snmp_settings
+              location)
+            type: str
+          raw_eos_cli:
+            description: EOS CLI rendered directly on the root level of the final
+              EOS configuration
+            display_name: Raw EOS CLI
+            type: str
+          short_esi:
+            description: 'short_esi only valid for l2leaf devices using port-channel
+              uplink
+
+              Setting short_esi to "auto" generates the short_esi automatically using
+              a hash of configuration elements.
+
+              < 0000:0000:0000 | auto >
+
+              '
+            display_name: Short ESI
+            type: str
+          spanning_tree_mode:
+            type: str
+            valid_values:
+            - mstp
+            - rstp
+            - rapid-pvst
+            - none
+          spanning_tree_priority:
+            convert_types:
+            - str
+            default: 32768
+            type: int
+          spanning_tree_root_super:
+            default: false
+            type: bool
+          structured_config:
+            description: Custom structured config for eos_cli_config_gen
+            type: dict
+          uplink_interface_speed:
+            description: 'Point-to-Point interface speed - will apply to uplinks on
+              both ends
+
+              < interface_speed | forced interface_speed | auto interface_speed >
+
+              '
+            type: str
+          uplink_interfaces:
+            description: Local uplink interfaces
+            items:
+              pattern: Ethernet[\d/]+
+              type: str
+            type: list
+          uplink_ipv4_pool:
+            description: IPv4 subnet to use to connect to uplink switches
+            display_name: Uplink IPv4 Pool
+            format: ipv4_cidr
+            type: str
+          uplink_macsec:
+            description: Enable MacSec on all uplinks
+            display_name: Uplink MacSec
+            keys:
+              profile:
+                display_name: MacSec profile name
+                type: str
+            type: dict
+          uplink_ptp:
+            description: Enable PTP on all infrastructure links
+            display_name: Uplink PTP
+            keys:
+              enable:
+                default: false
+                type: bool
+            type: dict
+          uplink_switch_interfaces:
+            description: Interfaces located on uplink switches
+            items:
+              pattern: Ethernet[\d/]+
+              type: str
+            type: list
+          uplink_switches:
+            items:
+              description: Hostname of uplink switch
+              type: str
+            type: list
+          virtual_router_mac_address:
+            description: Virtual router mac address for anycast gateway
+            display_name: Virtual Router MAC Address
+            format: mac
+            type: str
+          vtep_loopback:
+            description: Set VXLAN source interface.
+            display_name: VTEP Loopback Interface Name
+            pattern: Loopback[\d/]+
+            type: str
+          vtep_loopback_ipv4_pool:
+            description: IPv4 subnet for VTEP-Loopback allocation
+            display_name: VTEP Loopback IPv4 Pool
+            format: ipv4_cidr
+            type: str
+        type: dict
+      node_groups:
+        convert_types:
+        - dict
+        items:
+          $ref: '#/dynamic_keys/node_type_keys.key/keys/defaults'
+          keys:
+            group:
+              description: The Node Group Name is used for MLAG domain
+              display_name: Node Group Name
+              required: true
+              type: str
+            nodes:
+              $ref: '#/dynamic_keys/node_type_keys.key/keys/nodes'
+          type: dict
+        primary_key: group
+        type: list
+      nodes:
+        convert_types:
+        - dict
+        items:
+          $ref: '#/dynamic_keys/node_type_keys.key/keys/defaults'
+          keys:
+            mac_address:
+              description: '`mac_address` can only be set under the node and is used
+                by the `arista.avd.dhcp_provisioner` role'
+              type: str
+            name:
+              description: The Node Name is used as "hostname"
+              display_name: Node Name
+              required: true
+              type: str
+          type: dict
+        primary_key: name
+        type: list
+    type: dict
 keys:
   bfd_multihop:
     display_name: BFD Multihop tuning
@@ -276,6 +877,12 @@ keys:
     description: Enable vlan aware bundles for EVPN MAC-VRF
     display_name: EVPN VLAN-Aware Bundles
     type: bool
+  fabric_name:
+    description: Fabric Name, required to match Ansible Group name covering all devices
+      in the Fabric
+    display_name: Fabric Name
+    required: true
+    type: str
   inband_management_subnet:
     description: 'Optional IP subnet assigned to Inband Management SVI on l2leafs
       in default VRF.
@@ -443,6 +1050,15 @@ keys:
     description: QOS Profile assigned on all infrastructure links
     display_name: P2P Uplinks QoS Profile
     type: str
+  pod_name:
+    description: 'POD Name, only used in Fabric Documentation | Optional, fallback
+      to dc_name and then to fabric_name.
+
+      Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+
+      '
+    display_name: POD Name
+    type: str
   shutdown_interfaces_towards_undeployed_peers:
     default: false
     description: '- It is possible to provision configurations for a complete topology
@@ -517,6 +1133,11 @@ keys:
             type: str
         type: dict
     type: dict
+  type:
+    display_name: Device Type
+    dynamic_valid_values: node_type_keys.type
+    required: true
+    type: str
   underlay_filter_peer_as:
     default: '0000:0000:'
     description: 'Configure route-map on eBGP sessions towards underlay peers, where
