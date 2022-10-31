@@ -1911,7 +1911,8 @@
         "properties": {
           "vrf": {
             "type": "string",
-            "title": "VRF Name"
+            "title": "VRF Name",
+            "description": "if vrf_name = default the route will be placed in the GRT"
           },
           "destination_address_prefix": {
             "type": "string",
