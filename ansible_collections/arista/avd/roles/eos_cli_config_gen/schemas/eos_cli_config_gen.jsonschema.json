@@ -5714,12 +5714,14 @@
           "properties": {
             "ipv4": {
               "type": "array",
+              "title": "IPv4",
               "items": {
                 "type": "object",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Ipv4 Prefix Field Set Name"
+                    "description": "IPv4 Prefix Field Set Name",
+                    "title": "Name"
                   },
                   "prefixes": {
                     "type": "array",
@@ -5731,17 +5733,18 @@
                   }
                 },
                 "additionalProperties": false
-              },
-              "title": "Ipv4"
+              }
             },
             "ipv6": {
               "type": "array",
+              "title": "IPv6",
               "items": {
                 "type": "object",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Ipv6 Prefix Field Set Name"
+                    "description": "IPv6 Prefix Field Set Name",
+                    "title": "Name"
                   },
                   "prefixes": {
                     "type": "array",
@@ -5753,8 +5756,7 @@
                   }
                 },
                 "additionalProperties": false
-              },
-              "title": "Ipv6"
+              }
             },
             "ports": {
               "type": "array",
@@ -5763,12 +5765,13 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "L4 Port Field Set Name"
+                    "description": "L4 Port Field Set Name",
+                    "title": "Name"
                   },
                   "port_range": {
                     "type": "string",
-                    "title": "Vlan Range",
-                    "description": "Example: \"10,20,80,440-450\"\n"
+                    "description": "Example: '10,20,80,440-450'",
+                    "title": "Port Range"
                   }
                 },
                 "additionalProperties": false
@@ -5786,7 +5789,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Traffic Policy Name"
+                "description": "Traffic Policy Name",
+                "title": "Name"
               },
               "matches": {
                 "type": "array",
@@ -5795,11 +5799,16 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "title": "Traffic Policy Item"
+                      "description": "Traffic Policy Item",
+                      "title": "Name"
                     },
                     "type": {
                       "type": "string",
-                      "title": "Ipv4/Ipv6"
+                      "enum": [
+                        "ipv4",
+                        "ipv6"
+                      ],
+                      "title": "Type"
                     },
                     "source": {
                       "type": "object",
@@ -5807,15 +5816,16 @@
                         "prefixes": {
                           "type": "array",
                           "items": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "IP address or prefix"
                           },
                           "title": "Prefixes"
                         },
                         "prefix_lists": {
                           "type": "array",
+                          "description": "Field-set prefix lists",
                           "items": {
-                            "type": "string",
-                            "title": "Field Set List"
+                            "type": "string"
                           },
                           "title": "Prefix Lists"
                         }
@@ -5829,15 +5839,16 @@
                         "prefixes": {
                           "type": "array",
                           "items": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "IP address or prefix"
                           },
                           "title": "Prefixes"
                         },
                         "prefix_lists": {
                           "type": "array",
+                          "description": "Field-set prefix lists",
                           "items": {
-                            "type": "string",
-                            "title": "Field Set List"
+                            "type": "string"
                           },
                           "title": "Prefix Lists"
                         }
@@ -5847,7 +5858,8 @@
                     },
                     "ttl": {
                       "type": "string",
-                      "title": "TTL Range"
+                      "title": "TTL",
+                      "description": "TTL range"
                     },
                     "fragment": {
                       "type": "object",
@@ -5855,7 +5867,8 @@
                       "properties": {
                         "offset": {
                           "type": "string",
-                          "title": "Fragment Offset Range"
+                          "description": "Fragment offset range",
+                          "title": "Offset"
                         }
                       },
                       "additionalProperties": false,
@@ -5906,7 +5919,7 @@
                             "items": {
                               "type": "string"
                             },
-                            "title": "ICMP Message Type"
+                            "title": "ICMP Type"
                           }
                         },
                         "additionalProperties": false
@@ -5918,24 +5931,24 @@
                       "properties": {
                         "dscp": {
                           "type": "integer",
-                          "title": "DSCP Code Value"
+                          "title": "DSCP"
                         },
                         "traffic_class": {
                           "type": "integer",
-                          "title": "Traffic Class ID"
+                          "description": "Traffic class ID",
+                          "title": "Traffic Class"
                         },
                         "count": {
                           "type": "string",
-                          "title": "Counter Name"
+                          "description": "Counter name",
+                          "title": "Count"
                         },
                         "drop": {
                           "type": "boolean",
-                          "default": false,
                           "title": "Drop"
                         },
                         "log": {
                           "type": "boolean",
-                          "default": false,
                           "description": "Only supported when action is set to drop",
                           "title": "Log"
                         }
@@ -5953,63 +5966,63 @@
                 "properties": {
                   "ipv4": {
                     "type": "object",
+                    "title": "IPv4",
                     "properties": {
                       "dscp": {
                         "type": "integer",
-                        "title": "DSCP Code Value"
+                        "title": "DSCP"
                       },
                       "traffic_class": {
                         "type": "integer",
-                        "title": "Traffic Class ID"
+                        "description": "Traffic class ID",
+                        "title": "Traffic Class"
                       },
                       "count": {
                         "type": "string",
-                        "title": "Counter Name"
+                        "description": "Counter name",
+                        "title": "Count"
                       },
                       "drop": {
                         "type": "boolean",
-                        "default": false,
                         "title": "Drop"
                       },
                       "log": {
                         "type": "boolean",
-                        "default": false,
                         "description": "Only supported when action is set to drop",
                         "title": "Log"
                       }
                     },
-                    "additionalProperties": false,
-                    "title": "Ipv4"
+                    "additionalProperties": false
                   },
                   "ipv6": {
                     "type": "object",
+                    "title": "IPv6",
                     "properties": {
                       "dscp": {
                         "type": "integer",
-                        "title": "DSCP Code Value"
+                        "title": "DSCP"
                       },
                       "traffic_class": {
                         "type": "integer",
-                        "title": "Traffic Class ID"
+                        "description": "Traffic class ID",
+                        "title": "Traffic Class"
                       },
                       "count": {
                         "type": "string",
-                        "title": "Counter Name"
+                        "description": "Counter name",
+                        "title": "Count"
                       },
                       "drop": {
                         "type": "boolean",
-                        "default": false,
                         "title": "Drop"
                       },
                       "log": {
                         "type": "boolean",
-                        "default": false,
                         "description": "Only supported when action is set to drop",
                         "title": "Log"
                       }
                     },
-                    "additionalProperties": false,
-                    "title": "Ipv6"
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false,

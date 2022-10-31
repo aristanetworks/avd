@@ -16,6 +16,7 @@ keys:
         keys:
           ipv4:
             type: list
+            display_name: IPv4
             secondary_key: prefixes
             primary_key: name
             convert_types:
@@ -25,7 +26,7 @@ keys:
               keys:
                 name:
                   type: str
-                  display_name: Ipv4 Prefix Field Set Name
+                  description: IPv4 Prefix Field Set Name
                 prefixes:
                   type: list
                   items:
@@ -33,6 +34,7 @@ keys:
                     display_name: IPv4 Prefix
           ipv6:
             type: list
+            display_name: IPv6
             primary_key: name
             convert_types:
               - dict
@@ -41,7 +43,7 @@ keys:
               keys:
                 name:
                   type: str
-                  display_name: Ipv6 Prefix Field Set Name
+                  description: IPv6 Prefix Field Set Name
                 prefixes:
                   type: list
                   items:
@@ -58,12 +60,10 @@ keys:
               keys:
                 name:
                   type: str
-                  display_name: L4 Port Field Set Name
+                  description: L4 Port Field Set Name
                 port_range:
                   type: str
-                  display_name: Vlan Range
-                  description: |
-                    Example: "10,20,80,440-450"
+                  description: "Example: '10,20,80,440-450'"
       policies:
         type: list
         primary_key: name
@@ -74,7 +74,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Traffic Policy Name
+              description: Traffic Policy Name
             matches:
               type: list
               primary_key: name
@@ -85,10 +85,12 @@ keys:
                 keys:
                   name:
                     type: str
-                    display_name: Traffic Policy Item
+                    description: Traffic Policy Item
                   type:
                     type: str
-                    display_name: Ipv4/Ipv6
+                    valid_values:
+                      - ipv4
+                      - ipv6
                   source:
                     type: dict
                     keys:
@@ -96,11 +98,12 @@ keys:
                         type: list
                         items:
                           type: str
+                          description: IP address or prefix
                       prefix_lists:
                         type: list
+                        description: Field-set prefix lists
                         items:
                           type: str
-                          display_name: Field Set List
                   destination:
                     type: dict
                     keys:
@@ -108,14 +111,16 @@ keys:
                         type: list
                         items:
                           type: str
+                          description: IP address or prefix
                       prefix_lists:
                         type: list
+                        description: Field-set prefix lists
                         items:
                           type: str
-                          display_name: Field Set List
                   ttl:
                     type: str
-                    display_name: TTL Range
+                    display_name: TTL
+                    description: TTL range
                   fragment:
                     type: dict
                     description: |
@@ -124,7 +129,7 @@ keys:
                     keys:
                       offset:
                         type: str
-                        display_name: Fragment Offset Range
+                        description: Fragment offset range
                   protocols:
                     type: list
                     primary_key: protocol
@@ -156,7 +161,7 @@ keys:
                           type: list
                           items:
                             type: str
-                          display_name: ICMP Message Type
+                          display_name: ICMP Type
                   actions:
                     type: dict
                     keys:
@@ -164,68 +169,64 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        display_name: DSCP Code Value
+                        display_name: DSCP
                       traffic_class:
                         type: int
                         convert_types:
                           - str
-                        display_name: Traffic Class ID
+                        description: Traffic class ID
                       count:
                         type: str
-                        display_name: Counter Name
+                        description: Counter name
                       drop:
                         type: bool
-                        default: false
                       log:
                         type: bool
-                        default: false
                         description: Only supported when action is set to drop
             default_actions:
               type: dict
               keys:
                 ipv4:
                   type: dict
+                  display_name: IPv4
                   keys:
                     dscp:
                       type: int
                       convert_types:
                         - str
-                      display_name: DSCP Code Value
+                      display_name: DSCP
                     traffic_class:
                       type: int
                       convert_types:
                         - str
-                      display_name: Traffic Class ID
+                      description: Traffic class ID
                     count:
                       type: str
-                      display_name: Counter Name
+                      description: Counter name
                     drop:
                       type: bool
-                      default: false
                     log:
                       type: bool
-                      default: false
                       description: Only supported when action is set to drop
                 ipv6:
                   type: dict
+                  display_name: IPv6
                   keys:
                     dscp:
                       type: int
                       convert_types:
                         - str
-                      display_name: DSCP Code Value
+                      display_name: DSCP
                     traffic_class:
                       type: int
                       convert_types:
                         - str
-                      display_name: Traffic Class ID
+                      description: Traffic class ID
                     count:
                       type: str
-                      display_name: Counter Name
+                      description: Counter name
                     drop:
                       type: bool
-                      default: false
                     log:
                       type: bool
-                      default: false
                       description: Only supported when action is set to drop
