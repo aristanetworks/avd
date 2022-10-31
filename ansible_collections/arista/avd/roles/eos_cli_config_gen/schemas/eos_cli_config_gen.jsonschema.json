@@ -4243,6 +4243,413 @@
       "additionalProperties": false,
       "title": "Router Multicast"
     },
+    "router_ospf": {
+      "type": "object",
+      "title": "Router OSPF Configuration",
+      "properties": {
+        "process_ids": {
+          "type": "array",
+          "title": "Process IDs",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "title": "ID",
+                "description": "OSPF Process ID"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF",
+                "description": "VRF Name for OSPF Process"
+              },
+              "passive_interface_default": {
+                "type": "boolean",
+                "title": "Passive Interface Default"
+              },
+              "router_id": {
+                "type": "string",
+                "title": "Router ID",
+                "description": "IPv4 Address"
+              },
+              "distance": {
+                "type": "object",
+                "properties": {
+                  "external": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 255,
+                    "title": "External"
+                  },
+                  "inter_area": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 255,
+                    "title": "Inter Area"
+                  },
+                  "intra_area": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 255,
+                    "title": "Intra Area"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Distance"
+              },
+              "log_adjacency_changes_detail": {
+                "type": "boolean",
+                "title": "Log Adjacency Changes Detail"
+              },
+              "network_prefixes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ipv4_prefix": {
+                      "type": "string",
+                      "title": "IPv4 Prefix"
+                    },
+                    "area": {
+                      "type": "string",
+                      "title": "Area"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Network Prefixes"
+              },
+              "bfd_enable": {
+                "type": "boolean",
+                "title": "BFD Enable"
+              },
+              "bfd_adjacency_state_any": {
+                "type": "boolean",
+                "title": "BFD Adjacency State Any"
+              },
+              "no_passive_interfaces": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Interface Name"
+                },
+                "title": "No Passive Interfaces"
+              },
+              "distribute_list_in": {
+                "type": "object",
+                "properties": {
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Distribute List In"
+              },
+              "max_lsa": {
+                "type": "integer",
+                "title": "Max LSA"
+              },
+              "timers": {
+                "type": "object",
+                "properties": {
+                  "lsa": {
+                    "type": "object",
+                    "properties": {
+                      "rx_min_interval": {
+                        "type": "integer",
+                        "title": "RX Min Interval",
+                        "description": "Min interval in msecs between accepting the same LSA",
+                        "minimum": 0,
+                        "maximum": 600000
+                      },
+                      "tx_delay": {
+                        "type": "object",
+                        "title": "TX Delay",
+                        "properties": {
+                          "initial": {
+                            "type": "integer",
+                            "description": "Delay to generate first occurrence of LSA in msecs",
+                            "minimum": 0,
+                            "maximum": 600000,
+                            "title": "Initial"
+                          },
+                          "min": {
+                            "type": "integer",
+                            "description": "Min delay between originating the same LSA in msecs",
+                            "minimum": 1,
+                            "maximum": 600000,
+                            "title": "Min"
+                          },
+                          "max": {
+                            "type": "integer",
+                            "description": "1-600000 Maximum delay between originating the same LSA in msec",
+                            "minimum": 1,
+                            "maximum": 600000,
+                            "title": "Max"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Lsa"
+                  },
+                  "spf_delay": {
+                    "type": "object",
+                    "title": "SPF Delay",
+                    "properties": {
+                      "initial": {
+                        "type": "integer",
+                        "description": "Initial SPF schedule delay in msecs",
+                        "minimum": 0,
+                        "maximum": 600000,
+                        "title": "Initial"
+                      },
+                      "min": {
+                        "type": "integer",
+                        "description": "Min Hold time between two SPFs in msecs",
+                        "minimum": 0,
+                        "maximum": 65535000,
+                        "title": "Min"
+                      },
+                      "max": {
+                        "type": "integer",
+                        "description": "Max wait time between two SPFs in msecs",
+                        "minimum": 0,
+                        "maximum": 65535000,
+                        "title": "Max"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Timers"
+              },
+              "default_information_originate": {
+                "type": "object",
+                "properties": {
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Default Information Originate"
+              },
+              "summary_addresses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "description": "Summary Prefix Address",
+                      "title": "Prefix"
+                    },
+                    "tag": {
+                      "type": "integer",
+                      "title": "Tag"
+                    },
+                    "attribute_map": {
+                      "type": "string",
+                      "title": "Attribute Map"
+                    },
+                    "not_advertise": {
+                      "type": "boolean",
+                      "title": "Not Advertise"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Summary Addresses"
+              },
+              "redistribute": {
+                "type": "object",
+                "properties": {
+                  "static": {
+                    "type": "object",
+                    "properties": {
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map Name"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Static"
+                  },
+                  "connected": {
+                    "type": "object",
+                    "properties": {
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map Name"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Connected"
+                  },
+                  "bgp": {
+                    "type": "object",
+                    "title": "BGP",
+                    "properties": {
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map Name"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Redistribute"
+              },
+              "auto_cost_reference_bandwidth": {
+                "type": "integer",
+                "description": "Bandwidth in mbps",
+                "title": "Auto Cost Reference Bandwidth"
+              },
+              "areas": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "ID"
+                    },
+                    "filter": {
+                      "type": "object",
+                      "properties": {
+                        "networks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "title": "IPv4 Prefix"
+                          },
+                          "title": "Networks"
+                        },
+                        "prefix_list": {
+                          "type": "string",
+                          "title": "Prefix-List Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Filter"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "normal",
+                        "stub",
+                        "nssa"
+                      ],
+                      "default": "normal",
+                      "title": "Type"
+                    },
+                    "no_summary": {
+                      "type": "boolean",
+                      "title": "No Summary"
+                    },
+                    "nssa_only": {
+                      "type": "boolean",
+                      "title": "NSSA Only"
+                    },
+                    "default_information_originate": {
+                      "type": "object",
+                      "properties": {
+                        "metric": {
+                          "type": "integer",
+                          "description": "Metric for default route",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Metric"
+                        },
+                        "metric_type": {
+                          "type": "integer",
+                          "enum": [
+                            1,
+                            2
+                          ],
+                          "description": "OSPF metric type for default route",
+                          "title": "Metric Type"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Default Information Originate"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Areas"
+              },
+              "maximum_paths": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 32,
+                "title": "Maximum Paths"
+              },
+              "max_metric": {
+                "type": "object",
+                "properties": {
+                  "router_lsa": {
+                    "type": "object",
+                    "properties": {
+                      "external_lsa": {
+                        "type": "object",
+                        "properties": {
+                          "override_metric": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 16777215,
+                            "title": "Override Metric"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "title": "External Lsa"
+                      },
+                      "include_stub": {
+                        "type": "boolean",
+                        "title": "Include Stub"
+                      },
+                      "on_startup": {
+                        "type": "string",
+                        "description": "\"wait-for-bgp\" or Integer 5-86400\nExample: \"wait-for-bgp\" Or \"222\"\n",
+                        "title": "On Startup"
+                      },
+                      "summary_lsa": {
+                        "type": "object",
+                        "title": "Summary LSA",
+                        "properties": {
+                          "override_metric": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 16777215,
+                            "title": "Override Metric"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Router Lsa"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Max Metric"
+              },
+              "mpls_ldp_sync_default": {
+                "type": "boolean",
+                "title": "Mpls Ldp Sync Default"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "router_pim_sparse_mode": {
       "type": "object",
       "title": "Routing PIM Sparse Mode",

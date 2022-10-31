@@ -555,8 +555,7 @@ router_ospf:
       - Vlan150
       max_lsa: 15000
       redistribute:
-        bgp:
-          enabled: true
+        bgp: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP
