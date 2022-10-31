@@ -3816,7 +3816,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Profile-Name"
+            "description": "Profile-Name",
+            "title": "Name"
           },
           "trust": {
             "type": "string",
@@ -3829,11 +3830,11 @@
           },
           "cos": {
             "type": "integer",
-            "title": "COS-Value"
+            "title": "COS"
           },
           "dscp": {
             "type": "integer",
-            "title": "DSCP-Value"
+            "title": "DSCP"
           },
           "shape": {
             "type": "object",
@@ -3855,7 +3856,8 @@
                 "properties": {
                   "qos_input": {
                     "type": "string",
-                    "title": "Policy_map Name"
+                    "description": "Policy-map name",
+                    "title": "Qos Input"
                   }
                 },
                 "additionalProperties": false,
@@ -3867,12 +3869,14 @@
           },
           "tx_queues": {
             "type": "array",
+            "title": "TX Queues",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "integer",
-                  "title": "Tx-Queue ID"
+                  "title": "ID",
+                  "description": "TX-Queue ID"
                 },
                 "bandwidth_percent": {
                   "type": "integer",
@@ -3907,17 +3911,18 @@
                 "id"
               ],
               "additionalProperties": false
-            },
-            "title": "Tx Queues"
+            }
           },
           "uc_tx_queues": {
             "type": "array",
+            "title": "UC TX Queues",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "integer",
-                  "title": "UC-Tx-Queue ID"
+                  "title": "ID",
+                  "description": "UC TX queue ID"
                 },
                 "bandwidth_percent": {
                   "type": "integer",
@@ -3952,17 +3957,18 @@
                 "id"
               ],
               "additionalProperties": false
-            },
-            "title": "Uc Tx Queues"
+            }
           },
           "mc_tx_queues": {
             "type": "array",
+            "title": "MC TX Queues",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "integer",
-                  "title": "MC-Tx-Queue ID"
+                  "title": "ID",
+                  "description": "MC TX queue ID"
                 },
                 "bandwidth_percent": {
                   "type": "integer",
@@ -3997,8 +4003,7 @@
                 "id"
               ],
               "additionalProperties": false
-            },
-            "title": "Mc Tx Queues"
+            }
           }
         },
         "required": [
