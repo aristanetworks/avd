@@ -1409,8 +1409,9 @@ keys:
           type: str
           default: default
   ip_virtual_router_mac_address:
-    type: str
     display_name: IP Virtual Router MAC Address
+    type: str
+    description: MAC address (hh:hh:hh:hh:hh:hh)
   ipv6_access_lists:
     type: list
     primary_key: name

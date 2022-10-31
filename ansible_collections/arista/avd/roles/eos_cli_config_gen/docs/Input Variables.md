@@ -1153,6 +1153,9 @@ ip_ssh_client_source_interfaces:
 
 ## IP Virtual Router MAC Address
 
+### Description
+
+MAC address (hh:hh:hh:hh:hh:hh)
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |

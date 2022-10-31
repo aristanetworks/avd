@@ -1628,8 +1628,9 @@
       }
     },
     "ip_virtual_router_mac_address": {
+      "title": "IP Virtual Router MAC Address",
       "type": "string",
-      "title": "IP Virtual Router MAC Address"
+      "description": "MAC address (hh:hh:hh:hh:hh:hh)"
     },
     "ipv6_access_lists": {
       "type": "array",
