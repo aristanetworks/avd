@@ -1013,6 +1013,51 @@
       "default": true,
       "title": "Generate Device Documentation"
     },
+    "hardware": {
+      "type": "object",
+      "properties": {
+        "access_list": {
+          "type": "object",
+          "properties": {
+            "mechanism": {
+              "type": "string",
+              "enum": [
+                "algomatch",
+                "none",
+                "tcam"
+              ],
+              "title": "Mechanism"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Access List"
+        },
+        "speed_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "speed_group": {
+                "type": "integer",
+                "title": "Speed Group"
+              },
+              "serdes": {
+                "type": "string",
+                "description": "Serdes speed like \"10g\" or \"25g\"",
+                "title": "Serdes"
+              }
+            },
+            "required": [
+              "speed_group"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Speed Groups"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Hardware"
+    },
     "interface_defaults": {
       "type": "object",
       "properties": {
