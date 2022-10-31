@@ -167,6 +167,32 @@ keys:
         keys:
           sha512_password:
             type: str
+  aaa_server_groups:
+    display_name: AAA Server Groups
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          description: Group name
+          type: str
+        type:
+          type: str
+          valid_values:
+          - tacacs+
+          - radius
+          - ldap
+        servers:
+          type: list
+          items:
+            type: dict
+            keys:
+              server:
+                type: str
+                description: Hostname or IP address
+              vrf:
+                type: str
+                description: VRF name
   access_lists:
     type: list
     primary_key: name

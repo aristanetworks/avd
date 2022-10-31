@@ -177,6 +177,50 @@
       },
       "additionalProperties": false
     },
+    "aaa_server_groups": {
+      "title": "AAA Server Groups",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Group name",
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "tacacs+",
+              "radius",
+              "ldap"
+            ],
+            "title": "Type"
+          },
+          "servers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "server": {
+                  "type": "string",
+                  "description": "Hostname or IP address",
+                  "title": "Server"
+                },
+                "vrf": {
+                  "type": "string",
+                  "description": "VRF name",
+                  "title": "Vrf"
+                }
+              },
+              "additionalProperties": false
+            },
+            "title": "Servers"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "access_lists": {
       "type": "array",
       "title": "IP Extended Access-Lists (legacy model)",
