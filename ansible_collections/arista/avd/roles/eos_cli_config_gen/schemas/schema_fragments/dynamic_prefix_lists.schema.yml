@@ -10,16 +10,18 @@ keys:
       keys:
         name:
           type: str
-          display_name: Dynamic Prefix List Name
+          description: Dynamic prefix-list name
         match_map:
           type: str
-          display_name: Route Map
+          description: Route-map name
         prefix_list:
           type: dict
           keys:
             ipv4:
               type: str
-              display_name: IPv4 Prefix List
+              display_name: IPv4
+              description: Prefix-list name
             ipv6:
               type: str
-              display_name: IPv6 Prefix List
+              display_name: IPv6
+              description: Prefix-list name

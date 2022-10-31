@@ -862,22 +862,26 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Dynamic Prefix List Name"
+            "description": "Dynamic prefix-list name",
+            "title": "Name"
           },
           "match_map": {
             "type": "string",
-            "title": "Route Map"
+            "description": "Route-map name",
+            "title": "Match Map"
           },
           "prefix_list": {
             "type": "object",
             "properties": {
               "ipv4": {
                 "type": "string",
-                "title": "IPv4 Prefix List"
+                "title": "IPv4",
+                "description": "Prefix-list name"
               },
               "ipv6": {
                 "type": "string",
-                "title": "IPv6 Prefix List"
+                "title": "IPv6",
+                "description": "Prefix-list name"
               }
             },
             "additionalProperties": false,

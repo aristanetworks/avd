@@ -584,11 +584,11 @@ dot1x:
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>dynamic_prefix_lists</samp>](## "dynamic_prefix_lists") | List, items: Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;- name</samp>](## "dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic Prefix List Name |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match_map</samp>](## "dynamic_prefix_lists.[].match_map") | String |  |  |  | Route Map |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic prefix-list name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match_map</samp>](## "dynamic_prefix_lists.[].match_map") | String |  |  |  | Route-map name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "dynamic_prefix_lists.[].prefix_list") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "dynamic_prefix_lists.[].prefix_list.ipv4") | String |  |  |  | IPv4 Prefix List |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "dynamic_prefix_lists.[].prefix_list.ipv6") | String |  |  |  | IPv6 Prefix List |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "dynamic_prefix_lists.[].prefix_list.ipv4") | String |  |  |  | IPv4<br>Prefix-list name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "dynamic_prefix_lists.[].prefix_list.ipv6") | String |  |  |  | IPv6<br>Prefix-list name |
 
 ### YAML
 
