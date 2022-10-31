@@ -876,6 +876,43 @@
       },
       "additionalProperties": false
     },
+    "dynamic_prefix_lists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Dynamic prefix-list name",
+            "title": "Name"
+          },
+          "match_map": {
+            "type": "string",
+            "description": "Route-map name",
+            "title": "Match Map"
+          },
+          "prefix_list": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "string",
+                "title": "IPv4",
+                "description": "Prefix-list name"
+              },
+              "ipv6": {
+                "type": "string",
+                "title": "IPv6",
+                "description": "Prefix-list name"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Prefix List"
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Dynamic Prefix Lists"
+    },
     "enable_password": {
       "type": "object",
       "properties": {
