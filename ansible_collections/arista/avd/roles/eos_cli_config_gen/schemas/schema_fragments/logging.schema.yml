@@ -50,11 +50,11 @@ keys:
           timestamp:
             type: str
             valid_values: ["high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"]
-            display_name: Timestamp format
+            description: Timestamp format
           hostname:
             type: str
             valid_values: ["fqdn", "ipv4"]
-            display_name: Hostname format
+            description: Hostname format
           sequence_numbers:
             type: bool
             description: |
@@ -66,7 +66,7 @@ keys:
                        "sys13", "sys14", "syslog", "user", "uucp"]
       source_interface:
         type: str
-        display_name: Source Interface Name
+        description: Source Interface Name
       vrfs:
         display_name: VRFs
         type: list
@@ -79,10 +79,10 @@ keys:
             name:
               type: str
               required: true
-              display_name: VRF Name
+              description: VRF name
             source_interface:
               type: str
-              display_name: Source Interface Name
+              description: Source interface name
             hosts:
               type: list
               primary_key: name
@@ -94,7 +94,7 @@ keys:
                   name:
                     type: str
                     required: true
-                    display_name: Syslog Server Name
+                    description: Syslog server name
                   protocol:
                     type: str
                     valid_values: ["tcp", "udp"]
@@ -122,7 +122,7 @@ keys:
                     name:
                       type: str
                       required: true
-                      display_name: Match list
+                      description: Match list
                     action:
                       type: str
                       valid_values: ["discard"]

@@ -2383,7 +2383,8 @@
                 "traditional timezone year",
                 "traditional year timezone"
               ],
-              "title": "Timestamp format"
+              "description": "Timestamp format",
+              "title": "Timestamp"
             },
             "hostname": {
               "type": "string",
@@ -2391,7 +2392,8 @@
                 "fqdn",
                 "ipv4"
               ],
-              "title": "Hostname format"
+              "description": "Hostname format",
+              "title": "Hostname"
             },
             "sequence_numbers": {
               "type": "boolean",
@@ -2434,7 +2436,8 @@
         },
         "source_interface": {
           "type": "string",
-          "title": "Source Interface Name"
+          "description": "Source Interface Name",
+          "title": "Source Interface"
         },
         "vrfs": {
           "title": "VRFs",
@@ -2444,11 +2447,13 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VRF Name"
+                "description": "VRF name",
+                "title": "Name"
               },
               "source_interface": {
                 "type": "string",
-                "title": "Source Interface Name"
+                "description": "Source interface name",
+                "title": "Source Interface"
               },
               "hosts": {
                 "type": "array",
@@ -2457,7 +2462,8 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "title": "Syslog Server Name"
+                      "description": "Syslog server name",
+                      "title": "Name"
                     },
                     "protocol": {
                       "type": "string",
@@ -2503,7 +2509,8 @@
                     "properties": {
                       "name": {
                         "type": "string",
-                        "title": "Match list"
+                        "description": "Match list",
+                        "title": "Name"
                       },
                       "action": {
                         "type": "string",
