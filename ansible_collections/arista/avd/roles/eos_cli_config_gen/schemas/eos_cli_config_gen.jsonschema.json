@@ -2776,6 +2776,83 @@
       },
       "additionalProperties": false
     },
+    "mlag_configuration": {
+      "type": "object",
+      "title": "Multi-Chassis Link Aggregation (MLAG) Configuration",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "title": "Domain ID"
+        },
+        "heartbeat_interval": {
+          "type": "integer",
+          "description": "Heartbeat interval in milliseconds",
+          "title": "Heartbeat Interval"
+        },
+        "local_interface": {
+          "title": "Local Interface Name",
+          "type": "string"
+        },
+        "peer_address": {
+          "type": "string",
+          "description": "IPv4 Address",
+          "title": "Peer Address"
+        },
+        "peer_address_heartbeat": {
+          "type": "object",
+          "properties": {
+            "peer_ip": {
+              "type": "string",
+              "description": "IPv4 Address",
+              "title": "Peer Ip"
+            },
+            "vrf": {
+              "title": "VRF Name",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Peer Address Heartbeat"
+        },
+        "dual_primary_detection_delay": {
+          "type": "integer",
+          "description": "Delay in seconds",
+          "minimum": 0,
+          "maximum": 86400,
+          "title": "Dual Primary Detection Delay"
+        },
+        "dual_primary_recovery_delay_mlag": {
+          "type": "integer",
+          "title": "Dual Primary Recovery Delay MLAG",
+          "description": "Delay in seconds",
+          "minimum": 0,
+          "maximum": 86400
+        },
+        "dual_primary_recovery_delay_non_mlag": {
+          "type": "integer",
+          "title": "Dual Primary Recovery Delay Non MLAG",
+          "description": "Delay in seconds",
+          "minimum": 0,
+          "maximum": 86400
+        },
+        "peer_link": {
+          "description": "Port-Channel interface name",
+          "type": "string",
+          "title": "Peer Link"
+        },
+        "reload_delay_mlag": {
+          "type": "string",
+          "title": "Reload Delay MLAG",
+          "description": "Delay in seconds <0-86400> or 'infinity'"
+        },
+        "reload_delay_non_mlag": {
+          "type": "string",
+          "title": "Reload Delay Non MLAG",
+          "description": "Delay in seconds <0-86400> or 'infinity'"
+        }
+      },
+      "additionalProperties": false
+    },
     "monitor_connectivity": {
       "type": "object",
       "properties": {
