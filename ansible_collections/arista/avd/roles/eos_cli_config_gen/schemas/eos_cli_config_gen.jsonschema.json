@@ -3808,6 +3808,210 @@
       "type": "string",
       "title": "Prompt"
     },
+    "qos_profiles": {
+      "type": "array",
+      "title": "QOS Profiles",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Profile-Name",
+            "title": "Name"
+          },
+          "trust": {
+            "type": "string",
+            "enum": [
+              "cos",
+              "dscp",
+              "disabled"
+            ],
+            "title": "Trust"
+          },
+          "cos": {
+            "type": "integer",
+            "title": "COS"
+          },
+          "dscp": {
+            "type": "integer",
+            "title": "DSCP"
+          },
+          "shape": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "string",
+                "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
+                "title": "Rate"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Shape"
+          },
+          "service_policy": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "object",
+                "properties": {
+                  "qos_input": {
+                    "type": "string",
+                    "description": "Policy-map name",
+                    "title": "Qos Input"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Type"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Service Policy"
+          },
+          "tx_queues": {
+            "type": "array",
+            "title": "TX Queues",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "ID",
+                  "description": "TX-Queue ID"
+                },
+                "bandwidth_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Percent"
+                },
+                "bandwidth_guaranteed_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Guaranteed Percent"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "priority strict",
+                    "no priority"
+                  ],
+                  "title": "Priority"
+                },
+                "shape": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "type": "string",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
+                      "title": "Rate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Shape"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "uc_tx_queues": {
+            "type": "array",
+            "title": "UC TX Queues",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "ID",
+                  "description": "UC TX queue ID"
+                },
+                "bandwidth_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Percent"
+                },
+                "bandwidth_guaranteed_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Guaranteed Percent"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "priority strict",
+                    "no priority"
+                  ],
+                  "title": "Priority"
+                },
+                "shape": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "type": "string",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
+                      "title": "Rate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Shape"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "mc_tx_queues": {
+            "type": "array",
+            "title": "MC TX Queues",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "ID",
+                  "description": "MC TX queue ID"
+                },
+                "bandwidth_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Percent"
+                },
+                "bandwidth_guaranteed_percent": {
+                  "type": "integer",
+                  "title": "Bandwidth Guaranteed Percent"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": [
+                    "priority strict",
+                    "no priority"
+                  ],
+                  "title": "Priority"
+                },
+                "shape": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "type": "string",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"",
+                      "title": "Rate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Shape"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
     "queue_monitor_length": {
       "type": "object",
       "properties": {
