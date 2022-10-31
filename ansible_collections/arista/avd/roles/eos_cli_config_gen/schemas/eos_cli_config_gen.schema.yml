@@ -1772,6 +1772,7 @@ keys:
           max: 4294967295
   ipv6_unicast_routing:
     type: bool
+    display_name: IPv6 Unicast Routing
   lacp:
     type: dict
     display_name: LACP

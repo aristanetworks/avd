@@ -2179,7 +2179,7 @@
     },
     "ipv6_unicast_routing": {
       "type": "boolean",
-      "title": "Ipv6 Unicast Routing"
+      "title": "IPv6 Unicast Routing"
     },
     "lacp": {
       "type": "object",
