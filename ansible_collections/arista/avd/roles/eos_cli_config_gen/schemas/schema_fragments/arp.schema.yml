@@ -4,10 +4,14 @@
 type: dict
 keys:
   arp:
+    display_name: ARP
     type: dict
     keys:
       aging:
         type: dict
         keys:
           timeout_default:
+            description: Timeout in seconds
             type: int
+            min: 60
+            max: 65535

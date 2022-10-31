@@ -224,13 +224,17 @@
       }
     },
     "arp": {
+      "title": "ARP",
       "type": "object",
       "properties": {
         "aging": {
           "type": "object",
           "properties": {
             "timeout_default": {
+              "description": "Timeout in seconds",
               "type": "integer",
+              "minimum": 60,
+              "maximum": 65535,
               "title": "Timeout Default"
             }
           },
@@ -238,8 +242,7 @@
           "title": "Aging"
         }
       },
-      "additionalProperties": false,
-      "title": "Arp"
+      "additionalProperties": false
     },
     "as_path": {
       "type": "object",
