@@ -5,6 +5,7 @@ type: dict
 keys:
   lldp:
     type: dict
+    display_name: LLDP
     keys:
       timer:
         type: int
@@ -16,10 +17,12 @@ keys:
         type: str
       vrf:
         type: str
+        display_name: VRF
       receive_packet_tagged_drop:
         type: str
       tlvs:
         type: list
+        display_name: TLVs
         primary_key: name
         convert_types:
         - dict
@@ -28,6 +31,18 @@ keys:
           keys:
             name:
               type: str
+              valid_values:
+              - "link-aggregation"
+              - "management-address"
+              - "max-frame-size"
+              - "med"
+              - "port-description"
+              - "port-vlan"
+              - "power-via-mdi"
+              - "system-capabilities"
+              - "system-description"
+              - "system-name"
+              - "vlan-name"
             transmit:
               type: bool
       run:

@@ -2232,6 +2232,7 @@
     },
     "lldp": {
       "type": "object",
+      "title": "LLDP",
       "properties": {
         "timer": {
           "type": "integer",
@@ -2251,7 +2252,7 @@
         },
         "vrf": {
           "type": "string",
-          "title": "Vrf"
+          "title": "VRF"
         },
         "receive_packet_tagged_drop": {
           "type": "string",
@@ -2259,11 +2260,25 @@
         },
         "tlvs": {
           "type": "array",
+          "title": "TLVs",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
+                "enum": [
+                  "link-aggregation",
+                  "management-address",
+                  "max-frame-size",
+                  "med",
+                  "port-description",
+                  "port-vlan",
+                  "power-via-mdi",
+                  "system-capabilities",
+                  "system-description",
+                  "system-name",
+                  "vlan-name"
+                ],
                 "title": "Name"
               },
               "transmit": {
@@ -2272,16 +2287,14 @@
               }
             },
             "additionalProperties": false
-          },
-          "title": "Tlvs"
+          }
         },
         "run": {
           "type": "boolean",
           "title": "Run"
         }
       },
-      "additionalProperties": false,
-      "title": "Lldp"
+      "additionalProperties": false
     },
     "load_interval": {
       "type": "object",
