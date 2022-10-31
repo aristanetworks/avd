@@ -194,6 +194,23 @@
       "type": "array",
       "title": "Default Node Types"
     },
+    "design": {
+      "title": "AVD Design",
+      "properties": {
+        "type": {
+          "default": "l3ls-evpn",
+          "description": "By setting the `design.type` to `mpls`,\nthe default node-types and templates described in these documents will be used.\n",
+          "type": "string",
+          "enum": [
+            "l3ls-evpn",
+            "mpls"
+          ],
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "enable_trunk_groups": {
       "default": false,
       "description": "Warning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature\n",
