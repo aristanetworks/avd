@@ -3916,7 +3916,7 @@
                 },
                 "local_discriminator": {
                   "type": "string",
-                  "description": "IPv4_address in u32 format",
+                  "description": "IPv4 address or 32 bit integer",
                   "title": "Local Discriminator"
                 }
               },

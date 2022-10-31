@@ -2978,7 +2978,7 @@ keys:
                 description: Rate in milliseconds
               local_discriminator:
                 type: str
-                description: IPv4_address in u32 format
+                description: IPv4 address or 32 bit integer
   router_general:
     type: dict
     display_name: Router General configuration
