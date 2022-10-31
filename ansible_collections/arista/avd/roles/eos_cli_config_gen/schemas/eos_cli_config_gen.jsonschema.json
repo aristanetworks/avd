@@ -223,6 +223,27 @@
         "additionalProperties": false
       }
     },
+    "arp": {
+      "title": "ARP",
+      "type": "object",
+      "properties": {
+        "aging": {
+          "type": "object",
+          "properties": {
+            "timeout_default": {
+              "description": "Timeout in seconds",
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 65535,
+              "title": "Timeout Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Aging"
+        }
+      },
+      "additionalProperties": false
+    },
     "as_path": {
       "type": "object",
       "properties": {
@@ -732,6 +753,11 @@
           "type": "string",
           "description": "ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default \"127.0.0.1:6343\").\n",
           "title": "Sflowaddr"
+        },
+        "cvconfig": {
+          "type": "boolean",
+          "description": "Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).\n",
+          "title": "Cvconfig"
         },
         "cvcompression": {
           "type": "string",
@@ -2445,10 +2471,7 @@
           }
         },
         "required": [
-          "name",
-          "description",
-          "ip_address",
-          "gateway"
+          "name"
         ],
         "additionalProperties": false
       },
@@ -3361,6 +3384,53 @@
         "additionalProperties": false
       },
       "title": "Prefix Lists"
+    },
+    "queue_monitor_length": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "\"enabled: true\" will be required in AVD4.0.\nIn AVD3.x default is true as long as queue_monitor_length is defined and not None\n",
+          "title": "Enabled"
+        },
+        "log": {
+          "type": "integer",
+          "description": "Logging interval in seconds",
+          "title": "Log"
+        },
+        "notifying": {
+          "type": "boolean",
+          "description": "should only be used for platforms supporting the \"queue-monitor length notifying\" CLI",
+          "title": "Notifying"
+        },
+        "cpu": {
+          "type": "object",
+          "title": "CPU",
+          "properties": {
+            "thresholds": {
+              "type": "object",
+              "properties": {
+                "high": {
+                  "type": "integer",
+                  "title": "High"
+                },
+                "low": {
+                  "type": "integer",
+                  "title": "Low"
+                }
+              },
+              "required": [
+                "high"
+              ],
+              "additionalProperties": false,
+              "title": "Thresholds"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "title": "Queue Monitor Length"
     },
     "redundancy": {
       "type": "object",
@@ -4434,6 +4504,73 @@
       "additionalProperties": false,
       "title": "Switchport Default"
     },
+    "system": {
+      "type": "object",
+      "properties": {
+        "control_plane": {
+          "type": "object",
+          "properties": {
+            "tcp_mss": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "integer",
+                  "description": "Segment size",
+                  "title": "Ipv4"
+                },
+                "ipv6": {
+                  "type": "integer",
+                  "description": "Segment size",
+                  "title": "Ipv6"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Tcp Mss"
+            },
+            "ipv4_access_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "acl_name": {
+                    "type": "string",
+                    "title": "Acl Name"
+                  },
+                  "vrf": {
+                    "type": "string",
+                    "title": "Vrf"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Ipv4 Access Groups"
+            },
+            "ipv6_access_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "acl_name": {
+                    "type": "string",
+                    "title": "Acl Name"
+                  },
+                  "vrf": {
+                    "type": "string",
+                    "title": "Vrf"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Ipv6 Access Groups"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Control Plane"
+        }
+      },
+      "additionalProperties": false,
+      "title": "System"
+    },
     "tcam_profile": {
       "type": "object",
       "title": "Hardware TCAM Profiles",
@@ -4465,6 +4602,25 @@
             "additionalProperties": false
           },
           "title": "Profiles"
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminal": {
+      "type": "object",
+      "title": "Terminal Settings",
+      "properties": {
+        "length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32767,
+          "title": "Length"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32767,
+          "title": "Width"
         }
       },
       "additionalProperties": false

@@ -17,8 +17,7 @@ jobs:
     # https://github.com/actions/labeler
     runs-on: ubuntu-latest
     steps:
-      # V3 is not used as we hit following issue: https://github.com/actions/labeler/issues/107
-      - uses: actions/labeler@v2
+      - uses: actions/labeler@v4
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: '.github/labeler.yml'
@@ -28,7 +27,7 @@ jobs:
     # https://github.com/marketplace/actions/auto-author-assign
     runs-on: ubuntu-latest
     steps:
-      - uses: toshimaru/auto-author-assign@v1.2.0
+      - uses: toshimaru/auto-author-assign@v1.6.1
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -40,7 +39,7 @@ jobs:
     steps:
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases
-      - uses: amannn/action-semantic-pull-request@v3.4.1
+      - uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

@@ -63,8 +63,8 @@ node_type_keys:
     interface_descriptions:
       underlay_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces >
       underlay_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces >
-      underlay_ethernet_mlag_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces >
-      underlay_port_channel_mlag_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces >
+      mlag_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces >
+      mlag_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces >
       connected_endpoints_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces >
       connected_endpoints_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces >
       overlay_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface >

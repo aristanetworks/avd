@@ -10,7 +10,11 @@
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
-| {{ management_interface.name }} | {{ management_interface.description }} | {{ management_interface.type | arista.avd.default('oob') }} | {{ vrf }} | {{ management_interface.ip_address }} | {{ management_interface.gateway }} |
+{%         set description = management_interface.description | arista.avd.default('-') %}
+{%         set ip = management_interface.ip_address | arista.avd.default('-') %}
+{%         set ip_gateway = management_interface.gateway | arista.avd.default('-') %}
+{%         set int_type = management_interface.type | arista.avd.default('oob') %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ip }} | {{ ip_gateway }} |
 {%     endfor %}
 
 #### IPv6
@@ -18,10 +22,12 @@
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
+{%         set description = management_interface.description | arista.avd.default('-') %}
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
 {%         set ipv6 = management_interface.ipv6_address | arista.avd.default('-') %}
 {%         set ipv6_gateway = management_interface.ipv6_gateway | arista.avd.default('-') %}
-| {{ management_interface.name }} | {{ management_interface.description }} | {{ management_interface.type | arista.avd.default('oob') }} | {{ vrf }} | {{ ipv6 }}  | {{ ipv6_gateway }} |
+{%         set int_type = management_interface.type | arista.avd.default('oob') %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} |
 {%     endfor %}
 
 ### Management Interfaces Device Configuration

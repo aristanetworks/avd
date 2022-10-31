@@ -221,6 +221,18 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  arp:
+    display_name: ARP
+    type: dict
+    keys:
+      aging:
+        type: dict
+        keys:
+          timeout_default:
+            description: Timeout in seconds
+            type: int
+            min: 60
+            max: 65535
   as_path:
     type: dict
     keys:
@@ -677,6 +689,12 @@ keys:
         type: str
         description: 'ECO sFlow Collector address to listen on to receive sFlow packets
           (TerminAttr default "127.0.0.1:6343").
+
+          '
+      cvconfig:
+        type: bool
+        description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr
+          default is false).
 
           '
       cvcompression:
@@ -1946,7 +1964,6 @@ keys:
           display_name: Management Interface Name
         description:
           type: str
-          required: true
         shutdown:
           type: bool
         mtu:
@@ -1956,7 +1973,6 @@ keys:
           display_name: VRF Name
         ip_address:
           type: str
-          required: true
           display_name: IPv4_address/Mask
         ipv6_enable:
           type: bool
@@ -1972,7 +1988,6 @@ keys:
           description: For documentation purposes only
         gateway:
           type: str
-          required: true
           description: IPv4 address of default gateway in management VRF
         ipv6_gateway:
           type: str
@@ -2583,6 +2598,42 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  queue_monitor_length:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        description: '"enabled: true" will be required in AVD4.0.
+
+          In AVD3.x default is true as long as queue_monitor_length is defined and
+          not None
+
+          '
+      log:
+        type: int
+        convert_types:
+        - str
+        description: Logging interval in seconds
+      notifying:
+        type: bool
+        description: should only be used for platforms supporting the "queue-monitor
+          length notifying" CLI
+      cpu:
+        type: dict
+        display_name: CPU
+        keys:
+          thresholds:
+            type: dict
+            keys:
+              high:
+                type: int
+                required: true
+                convert_types:
+                - str
+              low:
+                type: int
+                convert_types:
+                - str
   redundancy:
     type: dict
     keys:
@@ -3334,6 +3385,45 @@ keys:
             - str
             min: 1
             max: 4094
+  system:
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        keys:
+          tcp_mss:
+            type: dict
+            keys:
+              ipv4:
+                type: int
+                description: Segment size
+              ipv6:
+                type: int
+                description: Segment size
+          ipv4_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
+          ipv6_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
   tcam_profile:
     type: dict
     display_name: Hardware TCAM Profiles
@@ -3363,6 +3453,18 @@ keys:
                 is often a good idea to import the config from a file.
 
                 Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+  terminal:
+    type: dict
+    display_name: Terminal Settings
+    keys:
+      length:
+        type: int
+        min: 1
+        max: 32767
+      width:
+        type: int
+        min: 1
+        max: 32767
   trackers:
     type: list
     primary_key: name

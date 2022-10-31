@@ -170,6 +170,10 @@ keys:
         type: str
         description: |
           ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default "127.0.0.1:6343").
+      cvconfig:
+        type: bool
+        description: |
+          Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
       cvcompression:
         type: str
         description: |
