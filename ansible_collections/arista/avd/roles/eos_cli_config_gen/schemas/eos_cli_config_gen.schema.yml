@@ -1800,6 +1800,50 @@ keys:
         description: Set local system LACP priority.
         min: 0
         max: 65535
+  lldp:
+    type: dict
+    display_name: LLDP
+    keys:
+      timer:
+        type: int
+      timer_reinitialization:
+        type: str
+      holdtime:
+        type: int
+      management_address:
+        type: str
+      vrf:
+        type: str
+        display_name: VRF
+      receive_packet_tagged_drop:
+        type: str
+      tlvs:
+        type: list
+        display_name: TLVs
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              valid_values:
+              - link-aggregation
+              - management-address
+              - max-frame-size
+              - med
+              - port-description
+              - port-vlan
+              - power-via-mdi
+              - system-capabilities
+              - system-description
+              - system-name
+              - vlan-name
+            transmit:
+              type: bool
+      run:
+        type: bool
   load_interval:
     type: dict
     keys:

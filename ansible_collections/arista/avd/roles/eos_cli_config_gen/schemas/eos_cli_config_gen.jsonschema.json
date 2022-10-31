@@ -2230,6 +2230,72 @@
       },
       "additionalProperties": false
     },
+    "lldp": {
+      "type": "object",
+      "title": "LLDP",
+      "properties": {
+        "timer": {
+          "type": "integer",
+          "title": "Timer"
+        },
+        "timer_reinitialization": {
+          "type": "string",
+          "title": "Timer Reinitialization"
+        },
+        "holdtime": {
+          "type": "integer",
+          "title": "Holdtime"
+        },
+        "management_address": {
+          "type": "string",
+          "title": "Management Address"
+        },
+        "vrf": {
+          "type": "string",
+          "title": "VRF"
+        },
+        "receive_packet_tagged_drop": {
+          "type": "string",
+          "title": "Receive Packet Tagged Drop"
+        },
+        "tlvs": {
+          "type": "array",
+          "title": "TLVs",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "link-aggregation",
+                  "management-address",
+                  "max-frame-size",
+                  "med",
+                  "port-description",
+                  "port-vlan",
+                  "power-via-mdi",
+                  "system-capabilities",
+                  "system-description",
+                  "system-name",
+                  "vlan-name"
+                ],
+                "title": "Name"
+              },
+              "transmit": {
+                "type": "boolean",
+                "title": "Transmit"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "run": {
+          "type": "boolean",
+          "title": "Run"
+        }
+      },
+      "additionalProperties": false
+    },
     "load_interval": {
       "type": "object",
       "properties": {
