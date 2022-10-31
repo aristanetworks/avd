@@ -67,7 +67,6 @@ plugins:
       type: date
   - exclude:
       glob:
-        - examples/*/documentation/*
         - molecule/*
         - tests/*
 
