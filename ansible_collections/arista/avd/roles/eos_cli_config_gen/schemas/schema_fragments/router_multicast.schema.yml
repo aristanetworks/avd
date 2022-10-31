@@ -13,6 +13,7 @@ keys:
             type: dict
             keys:
               rate_period_decay:
+                description: Rate in seconds
                 type: int
                 min: 0
                 max: 600
@@ -35,6 +36,7 @@ keys:
                   type: dict
                   keys:
                     source_prefix:
+                      description: Source prefix A.B.C.D or Source address with prefix A.B.C.D/E
                       type: str
                     destinations:
                       type: list
@@ -42,8 +44,10 @@ keys:
                         type: dict
                         keys:
                           nexthop:
+                            description: Nenxthop ip address or Interface name
                             type: str
                           distance:
+                            description: Administrative distance for this route
                             type: int
                             min: 1
                             max: 255

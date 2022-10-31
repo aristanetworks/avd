@@ -3895,6 +3895,7 @@
               "type": "object",
               "properties": {
                 "rate_period_decay": {
+                  "description": "Rate in seconds",
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 600,
@@ -3935,6 +3936,7 @@
                     "type": "object",
                     "properties": {
                       "source_prefix": {
+                        "description": "Source prefix A.B.C.D or Source address with prefix A.B.C.D/E",
                         "type": "string",
                         "title": "Source Prefix"
                       },
@@ -3944,10 +3946,12 @@
                           "type": "object",
                           "properties": {
                             "nexthop": {
+                              "description": "Nenxthop ip address or Interface name",
                               "type": "string",
                               "title": "Nexthop"
                             },
                             "distance": {
+                              "description": "Administrative distance for this route",
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 255,
