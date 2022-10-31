@@ -431,7 +431,7 @@
     },
     "aliases": {
       "type": "string",
-      "description": "Multiline string with one or more multiple alias commands.\nExample:\n```\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
+      "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
       "title": "Aliases"
     },
     "arp": {

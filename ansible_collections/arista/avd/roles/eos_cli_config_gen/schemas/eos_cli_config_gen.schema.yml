@@ -343,7 +343,7 @@ keys:
                   Example: "deny ip any any"'
   aliases:
     type: str
-    description: "Multiline string with one or more multiple alias commands.\nExample:\n```\naliases:
+    description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
       brief\n```"
   arp:
