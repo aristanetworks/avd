@@ -96,10 +96,12 @@ class TestConvertDicts:
         assert resp == list_of_dict
 
     def test_convert_dicts_with_list_of_dict_secondary_key(self):
+        # We convert a list-of-dict input if primary_key is found in element and secondary_key is set
         resp = convert_dicts(list_of_dict, secondary_key="id")
         assert resp == [{"name": "type", "id": "permit"}, {"name": "extcommunities", "id": "65000:65000"}]
 
     def test_convert_dicts_with_list_of_dict_primary_key_and_secondary_key(self):
+        # We convert a list-of-dict input if primary_key is found in element and secondary_key is set
         resp = convert_dicts(list_of_dict, "test", "id")
         assert resp == [{"test": "type", "id": "permit"}, {"test": "extcommunities", "id": "65000:65000"}]
 
