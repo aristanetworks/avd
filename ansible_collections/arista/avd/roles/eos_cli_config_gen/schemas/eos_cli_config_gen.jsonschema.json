@@ -3541,10 +3541,17 @@
                 "properties": {
                   "command": {
                     "type": "string",
+                    "description": "Command to exclude from tech-support",
                     "title": "Command"
                   },
                   "type": {
                     "type": "string",
+                    "enum": [
+                      "text",
+                      "json"
+                    ],
+                    "default": "text",
+                    "description": "The supported values for type are platform dependent.",
                     "title": "Type"
                   }
                 },
@@ -3559,6 +3566,7 @@
                 "properties": {
                   "command": {
                     "type": "string",
+                    "description": "Command to include in tech-support",
                     "title": "Command"
                   }
                 },

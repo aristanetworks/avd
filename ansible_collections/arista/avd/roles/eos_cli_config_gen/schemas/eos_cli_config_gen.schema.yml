@@ -2620,8 +2620,14 @@ keys:
               keys:
                 command:
                   type: str
+                  description: Command to exclude from tech-support
                 type:
                   type: str
+                  valid_values:
+                  - text
+                  - json
+                  default: text
+                  description: The supported values for type are platform dependent.
           include_commands:
             type: list
             items:
@@ -2629,6 +2635,7 @@ keys:
               keys:
                 command:
                   type: str
+                  description: Command to include in tech-support
   match_list_input:
     type: dict
     display_name: Match Lists
