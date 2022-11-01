@@ -2253,6 +2253,10 @@
         "additionalProperties": false
       }
     },
+    "ipv6_unicast_routing": {
+      "type": "boolean",
+      "title": "IPv6 Unicast Routing"
+    },
     "lacp": {
       "type": "object",
       "title": "LACP",

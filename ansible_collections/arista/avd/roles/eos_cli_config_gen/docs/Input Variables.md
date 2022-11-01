@@ -1525,6 +1525,20 @@ ipv6_static_routes:
     metric: <int>
 ```
 
+## IPv6 Unicast Routing
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ipv6_unicast_routing</samp>](## "ipv6_unicast_routing") | Boolean |  |  |  | IPv6 Unicast Routing |
+
+### YAML
+
+```yaml
+ipv6_unicast_routing: <bool>
+```
+
 ## LACP
 
 ### Description
