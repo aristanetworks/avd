@@ -2834,7 +2834,8 @@
       "properties": {
         "aging_time": {
           "type": "integer",
-          "title": "Aging Time In Seconds"
+          "description": "Aging time in seconds",
+          "title": "Aging Time"
         },
         "notification_host_flap": {
           "type": "object",
