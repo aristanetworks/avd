@@ -6259,25 +6259,25 @@
       "properties": {
         "router_id": {
           "type": "object",
+          "title": "Router ID",
           "properties": {
             "ipv4": {
               "type": "string",
-              "title": "Ipv4"
+              "title": "IPv4"
             },
             "ipv6": {
               "type": "string",
-              "title": "Ipv6"
+              "title": "IPv6"
             }
           },
-          "additionalProperties": false,
-          "title": "Router Id"
+          "additionalProperties": false
         },
         "segment_routing": {
           "type": "object",
           "properties": {
             "colored_tunnel_rib": {
               "type": "boolean",
-              "title": "Colored Tunnel Rib"
+              "title": "Colored Tunnel RIB"
             },
             "policy_endpoints": {
               "type": "array",
@@ -6286,6 +6286,7 @@
                 "properties": {
                   "address": {
                     "type": "string",
+                    "description": "IPv4 or IPv6 address",
                     "title": "Address"
                   },
                   "colors": {
@@ -6311,7 +6312,8 @@
                         },
                         "sbfd_remote_discriminator": {
                           "type": "string",
-                          "title": "Sbfd Remote Discriminator"
+                          "title": "SBFD Remote Discriminator",
+                          "description": "IPv4 address or 32 bit integer"
                         },
                         "path_group": {
                           "type": "array",
@@ -6324,6 +6326,12 @@
                               },
                               "explicit_null": {
                                 "type": "string",
+                                "enum": [
+                                  "ipv4",
+                                  "ipv6",
+                                  "ipv4 ipv6",
+                                  "none"
+                                ],
                                 "title": "Explicit Null"
                               },
                               "segment_list": {
@@ -6333,6 +6341,7 @@
                                   "properties": {
                                     "label_stack": {
                                       "type": "string",
+                                      "description": "Label Stack as string.\nExample: \"100 2000 30\"\n",
                                       "title": "Label Stack"
                                     },
                                     "weight": {

@@ -8,16 +8,20 @@ keys:
     keys:
       router_id:
         type: dict
+        display_name: Router ID
         keys:
           ipv4:
             type: str
+            display_name: IPv4
           ipv6:
             type: str
+            display_name: IPv6
       segment_routing:
         type: dict
         keys:
           colored_tunnel_rib:
             type: bool
+            display_name: Colored Tunnel RIB
           policy_endpoints:
             type: list
             items:
@@ -25,6 +29,7 @@ keys:
               keys:
                 address:
                   type: str
+                  description: IPv4 or IPv6 address
                 colors:
                   type: list
                   primary_key: value
@@ -35,14 +40,20 @@ keys:
                     keys:
                       value:
                         type: int
+                        convert_types:
+                        - "str"
                       binding_sid:
                         type: int
+                        convert_types:
+                        - "str"
                       description:
                         type: str
                       name:
                         type: str
                       sbfd_remote_discriminator:
                         type: str
+                        display_name: SBFD Remote Discriminator
+                        description: IPv4 address or 32 bit integer
                         convert_types:
                         - int
                       path_group:
@@ -52,8 +63,15 @@ keys:
                           keys:
                             preference:
                               type: int
+                              convert_types:
+                              - "str"
                             explicit_null:
                               type: str
+                              valid_values:
+                              - "ipv4"
+                              - "ipv6"
+                              - "ipv4 ipv6"
+                              - "none"
                             segment_list:
                               type: list
                               items:
@@ -61,7 +79,16 @@ keys:
                                 keys:
                                   label_stack:
                                     type: str
+                                    convert_types:
+                                    - "int"
+                                    description: |
+                                      Label Stack as string.
+                                      Example: "100 2000 30"
                                   weight:
                                     type: int
+                                    convert_types:
+                                    - "str"
                                   index:
                                     type: int
+                                    convert_types:
+                                    - "str"
