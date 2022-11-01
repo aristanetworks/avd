@@ -238,7 +238,6 @@ mac_address_table:
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
         # Any SVI setting, defined under svis[svi] can also be defined under the svis[svi].nodes[node]
-        # The node specific setting will over-write the svi settings on that given switch/node
         svis:
 
           # SVI interface id and VLAN id. | Required

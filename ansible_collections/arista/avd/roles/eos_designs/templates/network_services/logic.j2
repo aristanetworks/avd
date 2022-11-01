@@ -85,7 +85,7 @@
 {%                                 set tmp_svi = tmp_svi | ansible.builtin.combine(svi, recursive=true, list_merge='replace') %}
 {%                                 set tmp_svi_node_cfg = tmp_svi_node_cfg | ansible.builtin.combine(tmp_node_cfg, recursive=true, list_merge='replace') %}
 {%                                 do tmp_svi_node_cfg.pop("name", none) %}
-{%                                 do tmp_svi.update(tmp_svi_node_cfg) %}
+{%                                 set tmp_svi = tmp_svi | ansible.builtin.combine(tmp_svi_node_cfg, recursive=true, list_merge='replace') %}
 {%                                 if tmp_svi.ip_address_virtual is arista.avd.defined and tmp_svi.ip_address is arista.avd.defined and tmp_svi.ip_virtual_router_addresses is arista.avd.defined %}
 {%                                     do tmp_svi.update({"ip_address_virtual": none, "ip_address_virtual_secondaries": none}) %}
 {%                                 elif tmp_svi.ip_virtual_router_addresses is arista.avd.defined and tmp_svi.ip_address is not arista.avd.defined %}
