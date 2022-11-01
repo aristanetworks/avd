@@ -3881,3 +3881,27 @@ vmtracer_sessions:
     autovlan_disable: <bool>
     source_interface: <str>
 ```
+
+## VRFs
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | VRFs |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "vrfs.[].name") | String |  |  |  | VRF Name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  | IP Routing |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  | IPv6 Routing |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vrfs.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes |
+
+### YAML
+
+```yaml
+vrfs:
+  - name: <str>
+    description: <str>
+    ip_routing: <bool>
+    ipv6_routing: <bool>
+    tenant: <str>
+```

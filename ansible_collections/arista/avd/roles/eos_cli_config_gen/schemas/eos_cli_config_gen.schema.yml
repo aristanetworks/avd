@@ -5238,3 +5238,26 @@ keys:
           type: bool
         source_interface:
           type: str
+  vrfs:
+    type: list
+    display_name: VRFs
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: VRF Name
+        description:
+          type: str
+        ip_routing:
+          type: bool
+          display_name: IP Routing
+        ipv6_routing:
+          type: bool
+          display_name: IPv6 Routing
+        tenant:
+          type: str
+          description: Key only used for documentation or validation purposes
