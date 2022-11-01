@@ -459,7 +459,7 @@ class AvdStructuredConfig(AvdFacts):
         mgmt_gateway and mgmt_interface_vrf variable
         """
         mgmt_interface = get(self._hostvars, "switch.mgmt_interface")
-        if mgmt_interface is not None and self._mgmt_ip is not None and self._mgmt_interface_vrf is not None and self._mgmt_gateway is not None:
+        if mgmt_interface is not None and self._mgmt_ip is not None and self._mgmt_interface_vrf is not None:
             return {
                 mgmt_interface: {
                     "description": "oob_management",
