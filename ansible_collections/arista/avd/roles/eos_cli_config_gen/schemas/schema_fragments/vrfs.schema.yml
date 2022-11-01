@@ -5,7 +5,7 @@ type: dict
 keys:
   vrfs:
     type: list
-    display_name: VRF Instances
+    display_name: VRFs
     primary_key: name
     convert_types:
       - dict
@@ -14,7 +14,7 @@ keys:
       keys:
         name:
           type: str
-          display_name: VRF Name
+          description: VRF Name
         description:
           type: str
         ip_routing:

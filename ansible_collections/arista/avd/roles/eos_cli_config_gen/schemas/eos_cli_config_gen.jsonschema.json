@@ -7162,13 +7162,14 @@
     },
     "vrfs": {
       "type": "array",
-      "title": "VRF Instances",
+      "title": "VRFs",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "VRF Name"
+            "description": "VRF Name",
+            "title": "Name"
           },
           "description": {
             "type": "string",

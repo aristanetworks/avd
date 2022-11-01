@@ -3868,13 +3868,13 @@ vmtracer_sessions:
     source_interface: <str>
 ```
 
-## VRF Instances
+## VRFs
 
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | VRF Instances |
+| [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | VRFs |
 | [<samp>&nbsp;&nbsp;- name</samp>](## "vrfs.[].name") | String |  |  |  | VRF Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  | IP Routing |
