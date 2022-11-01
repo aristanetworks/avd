@@ -7745,7 +7745,8 @@
               "properties": {
                 "source_interface": {
                   "type": "string",
-                  "title": "Source Interface Name"
+                  "description": "Source Interface Name",
+                  "title": "Source Interface"
                 },
                 "mlag_source_interface": {
                   "title": "MLAG Source Interface",
@@ -7758,7 +7759,7 @@
                 "virtual_router_encapsulation_mac_address": {
                   "title": "Virtual Router Encapsulation MAC Address",
                   "type": "string",
-                  "description": "mlag-system-id or ethernet_address (H.H.H)\n"
+                  "description": "\"mlag-system-id\" or ethernet_address (H.H.H)\n"
                 },
                 "bfd_vtep_evpn": {
                   "title": "BFD VTEP EVPN",
@@ -7769,7 +7770,7 @@
                       "title": "Interval"
                     },
                     "min_rx": {
-                      "title": "MIN RX",
+                      "title": "Min RX",
                       "type": "integer"
                     },
                     "multiplier": {
@@ -7788,11 +7789,11 @@
                 "qos": {
                   "title": "QOS",
                   "type": "object",
+                  "description": "For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in \"DSCP Trust\" mode.\n!!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.\n",
                   "properties": {
                     "dscp_propagation_encapsulation": {
                       "title": "DSCP Propagation Encapsulation",
-                      "type": "boolean",
-                      "description": "For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in \"DSCP Trust\" mode.\n!!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.\n"
+                      "type": "boolean"
                     },
                     "map_dscp_to_traffic_class_decapsulation": {
                       "title": "Map DSCP To Traffic Class Decapsulation",
@@ -7809,7 +7810,8 @@
                     "properties": {
                       "id": {
                         "type": "integer",
-                        "title": "VLAN ID"
+                        "title": "ID",
+                        "description": "VLAN ID"
                       },
                       "vni": {
                         "title": "VNI",
@@ -7817,13 +7819,15 @@
                       },
                       "multicast_group": {
                         "type": "string",
-                        "title": "IP Multicast Group Address"
+                        "description": "IP Multicast Group Address",
+                        "title": "Multicast Group"
                       },
                       "flood_vteps": {
                         "title": "Flood VTEPs",
                         "type": "array",
                         "items": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Remote VTEP IP Address"
                         }
                       }
                     },
@@ -7841,7 +7845,8 @@
                     "properties": {
                       "name": {
                         "type": "string",
-                        "title": "VRF Name"
+                        "description": "VRF Name",
+                        "title": "Name"
                       },
                       "vni": {
                         "title": "VNI",
@@ -7849,7 +7854,8 @@
                       },
                       "multicast_group": {
                         "type": "string",
-                        "title": "IP Multicast Group Address"
+                        "description": "IP Multicast Group Address",
+                        "title": "Multicast Group"
                       }
                     },
                     "required": [
@@ -7862,7 +7868,8 @@
                   "title": "Flood VTEPs",
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Remote VTEP IP Address"
                   }
                 },
                 "flood_vtep_learned_data_plane": {
@@ -7874,8 +7881,8 @@
             },
             "eos_cli": {
               "type": "string",
-              "title": "Multiline EOS CLI",
-              "description": "EOS CLI rendered directly on the Vxlan interface in the final EOS configuration."
+              "title": "EOS CLI",
+              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration."
             }
           },
           "additionalProperties": false,
