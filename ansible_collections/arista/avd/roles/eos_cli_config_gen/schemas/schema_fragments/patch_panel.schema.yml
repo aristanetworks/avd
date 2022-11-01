@@ -16,6 +16,7 @@ keys:
           keys:
             name:
               type: str
+              required: true
             enabled:
               type: bool
             connectors:
@@ -23,14 +24,30 @@ keys:
               primary_key: id
               convert_types:
               - dict
+              min_length: 2
+              max_length: 2
+              description: Must have exactly two connectors to a patch of which at least one must be of type "interface"
               items:
                 type: dict
                 keys:
                   id:
-                    type: int
+                    type: str
                     convert_types:
-                    - str
+                    - int
+                    required: true
                   type:
                     type: str
+                    valid_values:
+                    - interface
+                    - pseudowire
+                    required: true
                   endpoint:
                     type: str
+                    description: |
+                      String with relevant endpoint depending on type.
+                      Examples:
+                      - "Ethernet1"
+                      - "Ethernet1 dot1q vlan 123"
+                      - "bgp vpws TENANT_A pseudowire VPWS_PW_1"
+                      - "ldp LDP_PW_1"
+                    required: true

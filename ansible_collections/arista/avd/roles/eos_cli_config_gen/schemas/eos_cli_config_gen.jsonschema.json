@@ -4100,27 +4100,43 @@
               },
               "connectors": {
                 "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "description": "Must have exactly two connectors to a patch of which at least one must be of type \"interface\"",
                 "items": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "integer",
+                      "type": "string",
                       "title": "Id"
                     },
                     "type": {
                       "type": "string",
+                      "enum": [
+                        "interface",
+                        "pseudowire"
+                      ],
                       "title": "Type"
                     },
                     "endpoint": {
                       "type": "string",
+                      "description": "String with relevant endpoint depending on type.\nExamples:\n- \"Ethernet1\"\n- \"Ethernet1 dot1q vlan 123\"\n- \"bgp vpws TENANT_A pseudowire VPWS_PW_1\"\n- \"ldp LDP_PW_1\"\n",
                       "title": "Endpoint"
                     }
                   },
+                  "required": [
+                    "id",
+                    "type",
+                    "endpoint"
+                  ],
                   "additionalProperties": false
                 },
                 "title": "Connectors"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false
           },
           "title": "Patches"
