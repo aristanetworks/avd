@@ -18,7 +18,6 @@ keys:
           display_name: Vmtracer Session Name
         url:
           type: str
-          display_name: URL
         username:
           type: str
         password:

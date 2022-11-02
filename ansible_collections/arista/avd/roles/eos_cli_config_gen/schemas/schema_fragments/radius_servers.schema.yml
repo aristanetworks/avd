@@ -13,7 +13,6 @@ keys:
           description: Host IP address or name
         vrf:
           type: str
-          display_name: VRF
         key:
           type: str
           description: Encrypted key

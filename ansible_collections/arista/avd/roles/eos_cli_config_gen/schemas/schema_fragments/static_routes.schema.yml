@@ -5,7 +5,6 @@ type: dict
 keys:
   static_routes:
     type: list
-    display_name: Static Routes
     items:
       type: dict
       keys:

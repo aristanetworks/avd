@@ -5,7 +5,6 @@ type: dict
 keys:
   vlans:
     type: list
-    display_name: VLANs
     primary_key: id
     convert_types:
       - dict

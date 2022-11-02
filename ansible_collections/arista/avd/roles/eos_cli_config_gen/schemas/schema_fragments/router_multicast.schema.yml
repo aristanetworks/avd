@@ -8,7 +8,6 @@ keys:
     keys:
       ipv4:
         type: dict
-        display_name: IPv4
         keys:
           counters:
             type: dict
@@ -59,7 +58,6 @@ keys:
                             - str
       vrfs:
         type: list
-        display_name: VRFs
         items:
           type: dict
           keys:
@@ -67,7 +65,6 @@ keys:
               type: str
             ipv4:
               type: dict
-              display_name: IPv4
               keys:
                 routing:
                   type: bool

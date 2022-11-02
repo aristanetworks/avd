@@ -37,5 +37,4 @@ keys:
           description: |
             If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         ssh_key:
-          display_name: SSH Key
           type: str

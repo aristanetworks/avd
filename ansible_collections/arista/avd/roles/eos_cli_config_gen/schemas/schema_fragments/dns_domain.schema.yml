@@ -5,5 +5,4 @@ type: dict
 keys:
   dns_domain:
     type: str
-    display_name: DNS Domain
     description: Domain Name

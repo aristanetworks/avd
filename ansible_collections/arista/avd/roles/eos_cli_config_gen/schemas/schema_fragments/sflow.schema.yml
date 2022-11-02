@@ -6,7 +6,6 @@ allow_other_keys: true
 keys:
   sflow:
     type: dict
-    display_name: Sflow
     keys:
       sample:
         type: int
@@ -24,7 +23,6 @@ keys:
           keys:
             name:
               type: str
-              display_name: VRF
             destinations:
               type: list
               primary_key: destination
@@ -43,7 +41,6 @@ keys:
                     - str
             source_interface:
               type: str
-              display_name: Source Interface
       destinations:
         type: list
         primary_key: destination
@@ -62,7 +59,6 @@ keys:
               - str
       source_interface:
         type: str
-        display_name: Source Interface
       interface:
         type: dict
         keys:

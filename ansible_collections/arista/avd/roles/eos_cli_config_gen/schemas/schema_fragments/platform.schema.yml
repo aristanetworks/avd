@@ -19,7 +19,6 @@ keys:
         keys:
           qos_maps:
             type: list
-            display_name: QOS Maps
             items:
               type: dict
               keys:
@@ -31,14 +30,12 @@ keys:
                     - "str"
                 to_network_qos:
                   type: int
-                  display_name: To Network QOS
                   min: 0
                   max: 63
                   convert_types:
                     - "str"
           lag:
             type: dict
-            display_name: LAG
             keys:
               hardware_only:
                 type: bool

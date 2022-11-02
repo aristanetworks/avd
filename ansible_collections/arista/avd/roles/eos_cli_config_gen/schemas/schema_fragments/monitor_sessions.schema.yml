@@ -45,7 +45,6 @@ keys:
             description: "'cpu' or interface name, range or comma separated list"
         encapsulation_gre_metadata_tx:
           type: bool
-          display_name: Encapsulation GRE metadata TX
         header_remove_size:
           type: int
           description: Number of bytes to remove from header

@@ -14,7 +14,6 @@ keys:
         keys:
           cos:
             type: int
-            display_name: COS
             convert_types:
               - str
             min: 0

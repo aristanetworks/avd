@@ -38,7 +38,6 @@ keys:
                 keys:
                   source_vrf:
                     type: str
-                    display_name: Source-VRF
                   subscribe_policy:
                     type: str
                     display_name: Route-Map Policy

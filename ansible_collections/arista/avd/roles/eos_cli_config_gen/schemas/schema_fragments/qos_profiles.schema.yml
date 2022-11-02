@@ -5,7 +5,6 @@ type: dict
 keys:
   qos_profiles:
     type: list
-    display_name: QOS Profiles
     primary_key: name
     convert_types:
       - dict
@@ -23,12 +22,10 @@ keys:
           type: int
           convert_types:
             - str
-          display_name: COS
         dscp:
           type: int
           convert_types:
             - str
-          display_name: DSCP
         shape:
           type: dict
           keys:
@@ -48,7 +45,6 @@ keys:
                   description: Policy-map name
         tx_queues:
           type: list
-          display_name: TX Queues
           primary_key: id
           convert_types:
             - dict
@@ -57,7 +53,6 @@ keys:
             keys:
               id:
                 type: int
-                display_name: ID
                 convert_types:
                   - str
                 required: true
@@ -83,7 +78,6 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
         uc_tx_queues:
           type: list
-          display_name: UC TX Queues
           primary_key: id
           convert_types:
             - dict
@@ -92,7 +86,6 @@ keys:
             keys:
               id:
                 type: int
-                display_name: ID
                 convert_types:
                   - str
                 required: true
@@ -118,7 +111,6 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
         mc_tx_queues:
           type: list
-          display_name: MC TX Queues
           primary_key: id
           convert_types:
             - dict
@@ -127,7 +119,6 @@ keys:
             keys:
               id:
                 type: int
-                display_name: ID
                 convert_types:
                   - str
                 required: true

@@ -5,4 +5,3 @@ type: dict
 keys:
   ip_icmp_redirect:
     type: bool
-    display_name: IP ICMP Redirect

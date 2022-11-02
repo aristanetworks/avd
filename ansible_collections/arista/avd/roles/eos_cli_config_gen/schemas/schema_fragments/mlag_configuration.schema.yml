@@ -9,7 +9,6 @@ keys:
     keys:
       domain_id:
         type: str
-        display_name: Domain ID
       heartbeat_interval:
         type: int
         description: Heartbeat interval in milliseconds
@@ -39,7 +38,6 @@ keys:
         - str
       dual_primary_recovery_delay_mlag:
         type: int
-        display_name: Dual Primary Recovery Delay MLAG
         description: Delay in seconds
         min: 0
         max: 86400
@@ -47,7 +45,6 @@ keys:
         - str
       dual_primary_recovery_delay_non_mlag:
         type: int
-        display_name: Dual Primary Recovery Delay Non MLAG
         description: Delay in seconds
         min: 0
         max: 86400
@@ -58,13 +55,11 @@ keys:
         type: str
       reload_delay_mlag:
         type: str
-        display_name: Reload Delay MLAG
         description: Delay in seconds <0-86400> or 'infinity'
         convert_types:
         - int
       reload_delay_non_mlag:
         type: str
-        display_name: Reload Delay Non MLAG
         description: Delay in seconds <0-86400> or 'infinity'
         convert_types:
         - int

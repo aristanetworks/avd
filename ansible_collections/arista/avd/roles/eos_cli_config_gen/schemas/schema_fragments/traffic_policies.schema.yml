@@ -16,7 +16,6 @@ keys:
         keys:
           ipv4:
             type: list
-            display_name: IPv4
             secondary_key: prefixes
             primary_key: name
             convert_types:
@@ -34,7 +33,6 @@ keys:
                     display_name: IPv4 Prefix
           ipv6:
             type: list
-            display_name: IPv6
             primary_key: name
             convert_types:
               - dict
@@ -119,7 +117,6 @@ keys:
                           type: str
                   ttl:
                     type: str
-                    display_name: TTL
                     description: TTL range
                   fragment:
                     type: dict
@@ -161,7 +158,6 @@ keys:
                           type: list
                           items:
                             type: str
-                          display_name: ICMP Type
                   actions:
                     type: dict
                     keys:
@@ -169,7 +165,6 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        display_name: DSCP
                       traffic_class:
                         type: int
                         convert_types:
@@ -188,13 +183,11 @@ keys:
               keys:
                 ipv4:
                   type: dict
-                  display_name: IPv4
                   keys:
                     dscp:
                       type: int
                       convert_types:
                         - str
-                      display_name: DSCP
                     traffic_class:
                       type: int
                       convert_types:
@@ -210,13 +203,11 @@ keys:
                       description: Only supported when action is set to drop
                 ipv6:
                   type: dict
-                  display_name: IPv6
                   keys:
                     dscp:
                       type: int
                       convert_types:
                         - str
-                      display_name: DSCP
                     traffic_class:
                       type: int
                       convert_types:

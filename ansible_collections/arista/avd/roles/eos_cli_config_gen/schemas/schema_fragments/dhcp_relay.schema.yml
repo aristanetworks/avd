@@ -5,7 +5,6 @@ type: dict
 keys:
   dhcp_relay:
     type: dict
-    display_name: DHCP Relay
     keys:
       servers:
         type: list

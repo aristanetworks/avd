@@ -6,7 +6,6 @@ allow_other_keys: true
 keys:
   management_ssh:
     type: dict
-    display_name: Management SSH
     keys:
       access_groups:
         type: list

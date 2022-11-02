@@ -22,4 +22,3 @@ keys:
                 Source Interface
             vrf:
               type: str
-              display_name: VRF

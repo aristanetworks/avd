@@ -5,7 +5,6 @@ type: dict
 keys:
   ip_igmp_snooping:
     type: dict
-    display_name: IP IGMP Snooping
     keys:
       globally_enabled:
         type: bool

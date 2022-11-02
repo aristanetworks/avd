@@ -5,7 +5,6 @@ type: dict
 keys:
   cvx:
     type: dict
-    display_name: CVX
     description: "CVX server features are not supported on physical switches. See `management_cvx` for client configurations."
     keys:
       shutdown:
@@ -15,7 +14,6 @@ keys:
         keys:
           mcs:
             type: dict
-            display_name: MCS
             keys:
               redis:
                 type: dict

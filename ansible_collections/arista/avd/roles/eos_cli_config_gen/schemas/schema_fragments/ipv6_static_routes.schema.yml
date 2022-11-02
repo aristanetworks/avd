@@ -5,13 +5,11 @@ type: dict
 keys:
   ipv6_static_routes:
     type: list
-    display_name: IPv6 Static Routes
     items:
       type: dict
       keys:
         vrf:
           type: str
-          display_name: VRF
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask

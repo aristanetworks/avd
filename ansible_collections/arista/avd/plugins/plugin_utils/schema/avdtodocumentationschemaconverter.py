@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.utils import key_to_display_name
 
 __metaclass__ = type
 
@@ -98,11 +99,11 @@ class AvdToDocumentationSchemaConverter:
             # Single key table
             main_key = list(schema["keys"].keys())[0]
             main_key_schema = schema["keys"][main_key]
-            built_table["display_name"] = main_key_schema.get("display_name", main_key.replace("_", " ").title())
+            built_table["display_name"] = main_key_schema.get("display_name", key_to_display_name(main_key))
             built_table["description"] = main_key_schema.get("description")
         else:
             # Combined table
-            built_table["display_name"] = table.replace("_", " ").title()
+            built_table["display_name"] = key_to_display_name(table)
 
         schema_keys = self._get_keys(schema)
 

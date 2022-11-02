@@ -23,7 +23,6 @@ keys:
             type: str
       ssl_profiles:
         type: list
-        display_name: SSL Profiles
         items:
           type: dict
           keys:
@@ -31,7 +30,6 @@ keys:
               type: str
             tls_versions:
               type: str
-              display_name: TLS Versions
               description: |
                 List of allowed TLS versions as string
             cipher_list:

@@ -36,7 +36,6 @@ keys:
                       - str
                   drop:
                     description: "'drop' and 'set' are mutually exclusive"
-                    display_name: Drop
                     type: bool
                   set:
                     description: "'drop' and 'set' are mutually exclusive"
@@ -81,19 +80,15 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        display_name: COS
                       dscp:
                         type: str
                         convert_types:
                           - int
-                        display_name: DSCP
                       traffic_class:
                         type: int
                         convert_types:
                           - str
-                        display_name: Traffic-class
                       drop_precedence:
                         type: int
                         convert_types:
                           - str
-                        display_name: Drop-precedence
