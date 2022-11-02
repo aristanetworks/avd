@@ -6259,7 +6259,6 @@
       "properties": {
         "router_id": {
           "type": "object",
-          "title": "Router ID",
           "properties": {
             "ipv4": {
               "type": "string",
@@ -6270,14 +6269,15 @@
               "title": "IPv6"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Router ID"
         },
         "segment_routing": {
           "type": "object",
           "properties": {
             "colored_tunnel_rib": {
               "type": "boolean",
-              "title": "Colored Tunnel RIB"
+              "title": "Colored Tunnel Rib"
             },
             "policy_endpoints": {
               "type": "array",
@@ -6312,8 +6312,8 @@
                         },
                         "sbfd_remote_discriminator": {
                           "type": "string",
-                          "title": "SBFD Remote Discriminator",
-                          "description": "IPv4 address or 32 bit integer"
+                          "description": "IPv4 address or 32 bit integer",
+                          "title": "SBFD Remote Discriminator"
                         },
                         "path_group": {
                           "type": "array",

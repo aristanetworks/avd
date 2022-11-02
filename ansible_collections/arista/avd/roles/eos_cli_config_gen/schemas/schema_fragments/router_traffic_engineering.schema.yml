@@ -8,20 +8,16 @@ keys:
     keys:
       router_id:
         type: dict
-        display_name: Router ID
         keys:
           ipv4:
             type: str
-            display_name: IPv4
           ipv6:
             type: str
-            display_name: IPv6
       segment_routing:
         type: dict
         keys:
           colored_tunnel_rib:
             type: bool
-            display_name: Colored Tunnel RIB
           policy_endpoints:
             type: list
             items:
@@ -52,7 +48,6 @@ keys:
                         type: str
                       sbfd_remote_discriminator:
                         type: str
-                        display_name: SBFD Remote Discriminator
                         description: IPv4 address or 32 bit integer
                         convert_types:
                         - int
