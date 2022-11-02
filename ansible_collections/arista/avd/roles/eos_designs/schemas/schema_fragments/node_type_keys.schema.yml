@@ -77,4 +77,4 @@ keys:
             overlay_loopback_interface:
               type: str
             vtep_loopback_interface:
-              type: str    
+              type: str
