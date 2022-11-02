@@ -15,7 +15,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Interface-Group name
+          description: Interface-Group name
         interfaces:
           type: list
           items:

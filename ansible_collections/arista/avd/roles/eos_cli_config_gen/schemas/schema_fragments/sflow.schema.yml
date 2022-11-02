@@ -6,7 +6,6 @@ allow_other_keys: true
 keys:
   sflow:
     type: dict
-    display_name: Sflow
     keys:
       sample:
         type: int
@@ -24,7 +23,6 @@ keys:
           keys:
             name:
               type: str
-              display_name: VRF
             destinations:
               type: list
               primary_key: destination
@@ -35,15 +33,14 @@ keys:
                 keys:
                   destination:
                     type: str
-                    display_name: Sflow Destination IP
+                    description: Sflow Destination IP
                   port:
                     type: int
-                    display_name: Port Number
+                    description: Port Number
                     convert_types:
                     - str
             source_interface:
               type: str
-              display_name: Source Interface
       destinations:
         type: list
         primary_key: destination
@@ -54,15 +51,14 @@ keys:
           keys:
             destination:
               type: str
-              display_name: Sflow Destination IP
+              description: Sflow Destination IP
             port:
               type: int
-              display_name: Port Number
+              description: Port Number
               convert_types:
               - str
       source_interface:
         type: str
-        display_name: Source Interface
       interface:
         type: dict
         keys:

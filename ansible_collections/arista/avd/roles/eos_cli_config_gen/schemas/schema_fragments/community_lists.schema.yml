@@ -25,7 +25,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Community-list Name
+          description: Community-list Name
         action:
           type: str
           required: true

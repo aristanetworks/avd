@@ -5,7 +5,6 @@ type: dict
 keys:
   daemon_terminattr:
     type: dict
-    display_name: Daemon TerminAttr
     description: |
       You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
       Streaming to multiple clusters both on-prem and cloud service is supported.
@@ -34,7 +33,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Cluster Name
+              description: Cluster Name
             cvaddrs:
               type: list
               description: |
@@ -61,23 +60,19 @@ keys:
                     e.g. "/tmp/token"
             cvobscurekeyfile:
               type: bool
-              display_name: Obscure Key File
               description: |
                 Encrypt the private key used for authentication to CloudVision
             cvproxy:
               type: str
-              display_name: Proxy URL
               description: |
                 Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
                 The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0
             cvsourceip:
               type: str
-              display_name: Source IP Address
               description: |
                 Set source IP address in case of in-band managament
             cvvrf:
               type: str
-              display_name: VRF
               description: |
                 The VRF to use to connect to CloudVision
       cvauth:
@@ -97,23 +92,19 @@ keys:
               e.g. "/tmp/token"
       cvobscurekeyfile:
         type: bool
-        display_name: Obscure Key File
         description: |
           Encrypt the private key used for authentication to CloudVision
       cvproxy:
         type: str
-        display_name: Proxy URL
         description: |
           Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
           The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0
       cvsourceip:
         type: str
-        display_name: Source IP Address
         description: |
           Set source IP address in case of in-band managament
       cvvrf:
         type: str
-        display_name: VRF
         description: |
           The VRF to use to connect to CloudVision
       cvgnmi:

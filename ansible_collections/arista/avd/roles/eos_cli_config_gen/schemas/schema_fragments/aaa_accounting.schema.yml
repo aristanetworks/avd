@@ -4,7 +4,6 @@
 type: dict
 keys:
   aaa_accounting:
-    display_name: AAA Accounting
     type: dict
     keys:
       exec:

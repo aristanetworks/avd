@@ -5,18 +5,15 @@ type: dict
 keys:
   router_pim_sparse_mode:
     type: dict
-    display_name: Routing PIM Sparse Mode
     keys:
       ipv4:
         type: dict
-        display_name: IPv4
         keys:
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM
           rp_addresses:
             type: list
-            display_name: RP Addresses
             primary_key: address
             convert_types:
             - dict
@@ -26,7 +23,7 @@ keys:
                 address:
                   type: str
                   required: true
-                  display_name: RP Address
+                  description: RP Address
                 groups:
                   type: list
                   convert_types:
@@ -35,7 +32,6 @@ keys:
                     type: str
           anycast_rps:
             type: list
-            display_name: Anycast RPs
             primary_key: address
             convert_types:
             - dict
@@ -45,10 +41,9 @@ keys:
                 address:
                   type: str
                   required: true
-                  display_name: Anycast RP Address
+                  description: Anycast RP Address
                 other_anycast_rp_addresses:
                   type: list
-                  display_name: Other Anycast RP Addresses
                   primary_key: address
                   convert_types:
                   - dict
@@ -58,32 +53,30 @@ keys:
                       address:
                         type: str
                         required: true
-                        display_name: Other Anycast RP Address
+                        description: Other Anycast RP Address
                       register_count:
                         type: int
                         convert_types:
                         - str
       vrfs:
         type: list
-        display_name: VRFs
         items:
           type: dict
           keys:
             name:
               type: str
-              display_name: VRF Name
+              description: VRF Name
             ipv4:
               type: dict
               keys:
                 rp_addresses:
                   type: list
-                  display_name: RP Addresses
                   items:
                     type: dict
                     keys:
                       address:
                         type: str
-                        display_name: RP Address
+                        description: RP Address
                       groups:
                         type: list
                         items:

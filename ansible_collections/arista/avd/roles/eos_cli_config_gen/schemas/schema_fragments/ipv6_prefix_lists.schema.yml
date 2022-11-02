@@ -9,14 +9,13 @@ keys:
     primary_key: name
     convert_types:
       - dict
-    display_name: IPv6 Prefix Lists
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Prefix-list Name
+          description: Prefix-list Name
         sequence_numbers:
           type: list
           required: true
@@ -29,7 +28,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                   - str
               action:

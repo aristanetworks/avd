@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
 
 __metaclass__ = type
 
@@ -30,11 +31,10 @@ class AvdToDocumentationSchemaConverter:
           table:
             - variable: "foo"
               type: "List, Items: Dictionary"
-              description: "Display name of foo - main key will not append description here"
             - variable: "  - bar"
               type: "String"
               required: "Yes, Unique"
-              description: "Display name of foo.bar<br>Description of foo.bar"
+              description: "Description of foo.bar"
           yaml:
             - 'foo:'
             - '  - bar: "<str>"'
@@ -98,11 +98,11 @@ class AvdToDocumentationSchemaConverter:
             # Single key table
             main_key = list(schema["keys"].keys())[0]
             main_key_schema = schema["keys"][main_key]
-            built_table["display_name"] = main_key_schema.get("display_name", main_key.replace("_", " ").title())
+            built_table["display_name"] = main_key_schema.get("display_name", key_to_display_name(main_key))
             built_table["description"] = main_key_schema.get("description")
         else:
             # Combined table
-            built_table["display_name"] = table.replace("_", " ").title()
+            built_table["display_name"] = key_to_display_name(table)
 
         schema_keys = self._get_keys(schema)
 
@@ -342,8 +342,6 @@ class AvdToDocumentationSchemaConverter:
 
     def description(self, schema: dict, indentation: str, table: str):
         descriptions = []
-        if schema.get("display_name"):
-            descriptions.append(schema["display_name"])
         if schema.get("description"):
             # Only append schema description field to the description if this is a combined table or if it is not the first row
             # For the first row in a single-key table / DEFAULT_TABLE we will print the description as the table description.

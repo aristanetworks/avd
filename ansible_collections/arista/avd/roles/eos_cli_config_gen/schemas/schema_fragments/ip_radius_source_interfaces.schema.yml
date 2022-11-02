@@ -5,13 +5,12 @@ type: dict
 keys:
   ip_radius_source_interfaces:
     type: list
-    display_name: IP RADIUS Source Interfaces
     items:
       type: dict
       keys:
         name:
           type: str
-          display_name: Interface Name
+          description: Interface Name
         vrf:
           type: str
-          display_name: VRF Name
+          description: VRF Name

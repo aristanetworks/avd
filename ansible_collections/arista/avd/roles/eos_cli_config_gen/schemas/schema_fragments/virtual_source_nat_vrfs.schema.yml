@@ -8,13 +8,12 @@ keys:
     primary_key: name
     convert_types:
       - dict
-    display_name: Virtual Source NAT
     items:
       type: dict
       keys:
         name:
           type: str
-          display_name: VRF Name
+          description: VRF Name
         ip_address:
           type: str
-          display_name: IPv4 Address
+          description: IPv4 Address

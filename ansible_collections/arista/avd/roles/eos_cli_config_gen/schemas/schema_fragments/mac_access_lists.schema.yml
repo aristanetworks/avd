@@ -14,7 +14,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: MAC Access-list Name
+          description: MAC Access-list Name
         counters_per_entry:
           type: bool
         entries:

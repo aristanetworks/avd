@@ -2,7 +2,6 @@ type: dict
 allow_other_keys: true
 keys:
   aaa_accounting:
-    display_name: AAA Accounting
     type: dict
     keys:
       exec:
@@ -97,7 +96,6 @@ keys:
             description: Deprecated and removed key from AVD 2.x
   aaa_authentication:
     type: dict
-    display_name: AAA Authentication
     keys:
       login:
         type: dict
@@ -193,7 +191,6 @@ keys:
                 - str
   aaa_authorization:
     type: dict
-    display_name: AAA Authorization
     keys:
       exec:
         type: dict
@@ -254,7 +251,6 @@ keys:
                     - "group tacacs+ group MYGROUP local"'
   aaa_root:
     type: dict
-    display_name: AAA Root
     keys:
       secret:
         type: dict
@@ -262,7 +258,6 @@ keys:
           sha512_password:
             type: str
   aaa_server_groups:
-    display_name: AAA Server Groups
     type: list
     items:
       type: dict
@@ -317,7 +312,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Access-list Name
+          description: Access-list Name
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -332,7 +327,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               action:
@@ -347,7 +342,6 @@ keys:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
       brief\n```"
   arp:
-    display_name: ARP
     type: dict
     keys:
       aging:
@@ -373,7 +367,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Access List Name
+              description: Access List Name
             entries:
               type: list
               items:
@@ -386,7 +380,7 @@ keys:
                     - deny
                   match:
                     type: str
-                    display_name: Regex To Match
+                    description: Regex To Match
                   origin:
                     type: str
                     valid_values:
@@ -415,10 +409,9 @@ keys:
         name:
           type: str
           required: true
-          display_name: Group Name
+          description: Group Name
         vrf:
           type: str
-          display_name: VRF
         neighbors:
           type: list
           items:
@@ -427,7 +420,7 @@ keys:
           type: list
           items:
             type: str
-            display_name: Profile Name
+            description: Profile Name
   boot:
     display_name: System Boot Settings
     description: 'Set the Aboot password
@@ -445,7 +438,7 @@ keys:
             - sha512
             default: sha512
           key:
-            display_name: Hashed Password
+            description: Hashed Password
             type: str
   class_maps:
     type: dict
@@ -461,13 +454,13 @@ keys:
           keys:
             name:
               type: str
-              display_name: Class-Map Name
+              description: Class-Map Name
             ip:
               type: dict
               keys:
                 access_group:
                   type: str
-                  display_name: Standard Access-List Name
+                  description: Standard Access-List Name
       qos:
         type: list
         primary_key: name
@@ -478,7 +471,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Class-Map Name
+              description: Class-Map Name
             vlan:
               type: int
               convert_types:
@@ -494,13 +487,13 @@ keys:
               keys:
                 access_group:
                   type: str
-                  display_name: IPv4 Access-List Name
+                  description: IPv4 Access-List Name
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
-                  display_name: IPv6 Access-List Name
+                  description: IPv6 Access-List Name
   clock:
     type: dict
     keys:
@@ -537,7 +530,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Community-list Name
+          description: Community-list Name
         action:
           type: str
           required: true
@@ -560,7 +553,6 @@ keys:
       description: Template relative path below playbook directory
   cvx:
     type: dict
-    display_name: CVX
     description: CVX server features are not supported on physical switches. See `management_cvx`
       for client configurations.
     keys:
@@ -571,7 +563,6 @@ keys:
         keys:
           mcs:
             type: dict
-            display_name: MCS
             keys:
               redis:
                 type: dict
@@ -592,7 +583,6 @@ keys:
                 type: bool
   daemon_terminattr:
     type: dict
-    display_name: Daemon TerminAttr
     description: "You can either provide a list of IPs/FQDNs to target on-premise
       Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming
       to multiple clusters both on-prem and cloud service is supported.\n> Note For
@@ -626,7 +616,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Cluster Name
+              description: Cluster Name
             cvaddrs:
               type: list
               description: 'Streaming address(es) for CloudVision cluster
@@ -662,13 +652,11 @@ keys:
                     '
             cvobscurekeyfile:
               type: bool
-              display_name: Obscure Key File
               description: 'Encrypt the private key used for authentication to CloudVision
 
                 '
             cvproxy:
               type: str
-              display_name: Proxy URL
               description: 'Proxy server through which CloudVision is reachable. Useful
                 when the CloudVision server is hosted in the cloud.
 
@@ -678,13 +666,11 @@ keys:
                 '
             cvsourceip:
               type: str
-              display_name: Source IP Address
               description: 'Set source IP address in case of in-band managament
 
                 '
             cvvrf:
               type: str
-              display_name: VRF
               description: 'The VRF to use to connect to CloudVision
 
                 '
@@ -711,13 +697,11 @@ keys:
               '
       cvobscurekeyfile:
         type: bool
-        display_name: Obscure Key File
         description: 'Encrypt the private key used for authentication to CloudVision
 
           '
       cvproxy:
         type: str
-        display_name: Proxy URL
         description: 'Proxy server through which CloudVision is reachable. Useful
           when the CloudVision server is hosted in the cloud.
 
@@ -727,13 +711,11 @@ keys:
           '
       cvsourceip:
         type: str
-        display_name: Source IP Address
         description: 'Set source IP address in case of in-band managament
 
           '
       cvvrf:
         type: str
-        display_name: VRF
         description: 'The VRF to use to connect to CloudVision
 
           '
@@ -866,7 +848,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Daemon Name
+          description: Daemon Name
         exec:
           type: str
           required: true
@@ -878,18 +860,16 @@ keys:
           default: true
   dhcp_relay:
     type: dict
-    display_name: DHCP Relay
     keys:
       servers:
         type: list
         items:
           type: str
-          display_name: Server IP or Hostname
+          description: Server IP or Hostname
       tunnel_requests_disabled:
         type: bool
   dns_domain:
     type: str
-    display_name: DNS Domain
     description: Domain Name
   domain_list:
     type: list
@@ -905,7 +885,6 @@ keys:
         type: bool
       protocol_lldp_bypass:
         type: bool
-        display_name: Protocol LLDP Bypass
       dynamic_authorization:
         type: bool
   dynamic_prefix_lists:
@@ -924,11 +903,9 @@ keys:
           keys:
             ipv4:
               type: str
-              display_name: IPv4
               description: Prefix-list name
             ipv6:
               type: str
-              display_name: IPv6
               description: Prefix-list name
   enable_password:
     type: dict
@@ -946,7 +923,6 @@ keys:
           on an EOS device.'
   eos_cli:
     type: str
-    display_name: EOS CLI
     description: Multiline string with EOS CLI rendered directly on the root level
       of the final EOS configuration
   errdisable:
@@ -997,7 +973,7 @@ keys:
             type: int
             convert_types:
             - str
-            display_name: Interval in seconds
+            description: Interval in seconds
             default: 300
             min: 30
             max: 86400
@@ -1006,19 +982,14 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Event Handlers
     items:
       type: dict
       keys:
         name:
           type: str
-          display_name: Event Handler Name
+          description: Event Handler Name
         action_type:
           type: str
-          display_name: Action Type
-          description: 'Type of action
-
-            '
           valid_values:
           - bash
           - increment
@@ -1134,7 +1105,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Interface-Group name
+          description: Interface-Group name
         interfaces:
           type: list
           items:
@@ -1161,7 +1132,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Interface-Profile Name
+          description: Interface-Profile Name
         commands:
           type: list
           required: true
@@ -1199,12 +1170,12 @@ keys:
         name:
           type: str
           required: true
-          display_name: Access-list Name
+          description: Access-list Name
         counters_per_entry:
           type: bool
         entries:
           type: list
-          display_name: ACL Entries
+          description: ACL Entries
           items:
             type: dict
             keys:
@@ -1293,7 +1264,7 @@ keys:
                 type: list
                 items:
                   type: str
-                  display_name: TCP Flag Name
+                  description: TCP Flag Name
               fragments:
                 type: bool
                 description: Match non-head fragment packets.
@@ -1302,7 +1273,7 @@ keys:
                 description: Log matches against this rule.
               ttl:
                 type: int
-                display_name: TTL value
+                description: TTL value
                 convert_types:
                 - str
                 min: 0
@@ -1368,7 +1339,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: IP Community-list Name
+          description: IP Community-list Name
         entries:
           type: list
           required: true
@@ -1388,18 +1359,17 @@ keys:
                 description: If defined, a standard community-list will be configured
               regexp:
                 type: str
-                display_name: Regular Expression
-                description: If defined, a regex community-list will be configured
+                description: 'Regular Expression
+
+                  If defined, a regex community-list will be configured'
   ip_dhcp_relay:
     type: dict
-    display_name: IP DHCP Relay
     keys:
       information_option:
         type: bool
         description: Insert Option-82 information
   ip_domain_lookup:
     type: dict
-    display_name: Domain Lookup
     keys:
       source_interfaces:
         type: list
@@ -1417,7 +1387,6 @@ keys:
                 '
             vrf:
               type: str
-              display_name: VRF
   ip_extcommunity_lists:
     type: list
     primary_key: name
@@ -1431,7 +1400,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Community-list Name
+          description: Community-list Name
         entries:
           type: list
           required: true
@@ -1463,7 +1432,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Community-list Name
+          description: Community-list Name
         entries:
           type: list
           required: true
@@ -1482,22 +1451,18 @@ keys:
                 description: Regular Expression
   ip_http_client_source_interfaces:
     type: list
-    display_name: IP HTTP Client Source Interfaces
     items:
       type: dict
       keys:
         name:
-          display_name: Interface Name
+          description: Interface Name
           type: str
         vrf:
-          display_name: VRF
           type: str
   ip_icmp_redirect:
     type: bool
-    display_name: IP ICMP Redirect
   ip_igmp_snooping:
     type: dict
-    display_name: IP IGMP Snooping
     keys:
       globally_enabled:
         type: bool
@@ -1523,7 +1488,7 @@ keys:
             type: bool
           address:
             type: str
-            display_name: IP Address
+            description: IP Address
           query_interval:
             type: int
             convert_types:
@@ -1567,7 +1532,7 @@ keys:
               convert_types:
               - str
               required: true
-              display_name: VLAN ID
+              description: VLAN ID
             enabled:
               type: bool
             querier:
@@ -1577,7 +1542,7 @@ keys:
                   type: bool
                 address:
                   type: str
-                  display_name: IP Address
+                  description: IP Address
                 query_interval:
                   type: int
                   convert_types:
@@ -1618,33 +1583,28 @@ keys:
                 per-vlan
   ip_radius_source_interfaces:
     type: list
-    display_name: IP RADIUS Source Interfaces
     items:
       type: dict
       keys:
         name:
           type: str
-          display_name: Interface Name
+          description: Interface Name
         vrf:
           type: str
-          display_name: VRF Name
+          description: VRF Name
   ip_routing:
     type: bool
-    display_name: IP Routing
   ip_routing_ipv6_interfaces:
     type: bool
-    display_name: IP Routing IPv6 Interfaces
   ip_ssh_client_source_interfaces:
     type: list
-    display_name: IP SSH Client Source Interfaces
     items:
       type: dict
       keys:
         name:
-          display_name: Interface Name
+          description: Interface Name
           type: str
         vrf:
-          display_name: VRF
           type: str
           default: default
   ip_tacacs_source_interfaces:
@@ -1660,7 +1620,6 @@ keys:
           type: str
           display_name: VRF
   ip_virtual_router_mac_address:
-    display_name: IP Virtual Router MAC Address
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)
   ipv6_access_lists:
@@ -1675,7 +1634,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: IPv6 Access-list Name
+          description: IPv6 Access-list Name
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -1690,7 +1649,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               action:
@@ -1700,7 +1659,6 @@ keys:
 
                   Example: "deny ipv6 any any"'
   ipv6_hardware:
-    display_name: IPv6 Hardware
     type: dict
     keys:
       fib:
@@ -1718,20 +1676,18 @@ keys:
                       name
   ipv6_icmp_redirect:
     type: bool
-    display_name: IPv6 ICMP Redirect
   ipv6_prefix_lists:
     type: list
     primary_key: name
     convert_types:
     - dict
-    display_name: IPv6 Prefix Lists
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Prefix-list Name
+          description: Prefix-list Name
         sequence_numbers:
           type: list
           required: true
@@ -1744,7 +1700,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               action:
@@ -1758,14 +1714,13 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: IPv6 Standard Access-Lists
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Access-list Name
+          description: Access-list Name
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -1780,7 +1735,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               action:
@@ -1791,13 +1746,11 @@ keys:
                   Example: "deny ipv6 any any"'
   ipv6_static_routes:
     type: list
-    display_name: IPv6 Static Routes
     items:
       type: dict
       keys:
         vrf:
           type: str
-          display_name: VRF
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask
@@ -1805,7 +1758,7 @@ keys:
           type: str
         gateway:
           type: str
-          display_name: IPv6 Address
+          description: IPv6 Address
         distance:
           type: int
           convert_types:
@@ -1820,7 +1773,7 @@ keys:
           max: 4294967295
         name:
           type: str
-          display_name: Description
+          description: Description
         metric:
           type: int
           convert_types:
@@ -1829,10 +1782,8 @@ keys:
           max: 4294967295
   ipv6_unicast_routing:
     type: bool
-    display_name: IPv6 Unicast Routing
   lacp:
     type: dict
-    display_name: LACP
     description: Set Link Aggregation Control Protocol (LACP) parameters.
     keys:
       port_id:
@@ -1862,7 +1813,6 @@ keys:
         max: 65535
   lldp:
     type: dict
-    display_name: LLDP
     keys:
       timer:
         type: int
@@ -1874,12 +1824,10 @@ keys:
         type: str
       vrf:
         type: str
-        display_name: VRF
       receive_packet_tagged_drop:
         type: str
       tlvs:
         type: list
-        display_name: TLVs
         primary_key: name
         convert_types:
         - dict
@@ -1921,7 +1869,7 @@ keys:
       type: dict
       keys:
         name:
-          display_name: Username
+          description: Username
           type: str
           required: true
         privilege:
@@ -1940,11 +1888,12 @@ keys:
 
             '
         sha512_password:
-          display_name: SHA512 Hash of Password
           type: str
-          description: 'Must be the hash of the password. By default EOS salts the
-            password with the username, so the simplest is to generate the hash on
-            an EOS device using the same username.
+          description: 'SHA512 Hash of Password
+
+            Must be the hash of the password. By default EOS salts the password with
+            the username, so the simplest is to generate the hash on an EOS device
+            using the same username.
 
             '
         no_password:
@@ -1954,7 +1903,6 @@ keys:
 
             '
         ssh_key:
-          display_name: SSH Key
           type: str
   logging:
     type: dict
@@ -2102,7 +2050,6 @@ keys:
         type: str
         description: Source Interface Name
       vrfs:
-        display_name: VRFs
         type: list
         primary_key: name
         convert_types:
@@ -2174,7 +2121,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: MAC Access-list Name
+          description: MAC Access-list Name
         counters_per_entry:
           type: bool
         entries:
@@ -2190,7 +2137,7 @@ keys:
                 type: str
   mac_security:
     type: dict
-    display_name: MACsec
+    display_name: MAC Security (MACsec)
     keys:
       license:
         type: dict
@@ -2216,7 +2163,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Profile-Name
+              description: Profile-Name
             cipher:
               type: str
               valid_values:
@@ -2312,7 +2259,6 @@ keys:
                     '
       bgp_profiles:
         type: list
-        display_name: BGP Profiles
         primary_key: name
         convert_types:
         - dict
@@ -2322,13 +2268,13 @@ keys:
             name:
               type: str
               required: true
-              display_name: BGP Profile Name
+              description: BGP Profile Name
             initiator:
               type: dict
               keys:
                 route_map_inout:
                   type: str
-                  display_name: Route Map
+                  description: Route Map
       unit_profiles:
         type: list
         primary_key: name
@@ -2340,7 +2286,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Unit Profile Name
+              description: Unit Profile Name
             on_boot:
               type: dict
               keys:
@@ -2364,7 +2310,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Unit Name
+              description: Unit Name
             quiesce:
               type: bool
             profile:
@@ -2378,7 +2324,6 @@ keys:
               keys:
                 bgp_groups:
                   type: list
-                  display_name: BGP Groups
                   items:
                     type: str
                     description: 'Name of BGP Group
@@ -2390,7 +2335,6 @@ keys:
                     type: str
                     description: Name of Interface Group
   management_api_http:
-    display_name: Management HTTP
     type: dict
     keys:
       enable_http:
@@ -2398,7 +2342,7 @@ keys:
       enable_https:
         type: bool
       https_ssl_profile:
-        display_name: SSL Profile Name
+        description: SSL Profile Name
         type: str
       default_services:
         type: bool
@@ -2412,14 +2356,14 @@ keys:
           type: dict
           keys:
             name:
-              display_name: VRF Name
+              description: VRF Name
               type: str
               required: true
             access_group:
-              display_name: Standard IPv4 ACL name
+              description: Standard IPv4 ACL name
               type: str
             ipv6_access_group:
-              display_name: Standard IPv6 ACL name
+              description: Standard IPv6 ACL name
               type: str
       protocol_https_certificate:
         type: dict
@@ -2431,7 +2375,6 @@ keys:
             type: str
             description: Name of private key; certificate must also be specified
   management_api_models:
-    display_name: Management API Models
     type: dict
     keys:
       providers:
@@ -2465,7 +2408,6 @@ keys:
         - str
   management_cvx:
     type: dict
-    display_name: Management CVX
     keys:
       shutdown:
         type: bool
@@ -2496,7 +2438,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Management Interface Name
+          description: Management Interface Name
         description:
           type: str
         shutdown:
@@ -2505,15 +2447,15 @@ keys:
           type: int
         vrf:
           type: str
-          display_name: VRF Name
+          description: VRF Name
         ip_address:
           type: str
-          display_name: IPv4_address/Mask
+          description: IPv4_address/Mask
         ipv6_enable:
           type: bool
         ipv6_address:
           type: str
-          display_name: IPv6_address/Mask
+          description: IPv6_address/Mask
         type:
           type: str
           valid_values:
@@ -2547,7 +2489,6 @@ keys:
             type: str
       ssl_profiles:
         type: list
-        display_name: SSL Profiles
         items:
           type: dict
           keys:
@@ -2555,7 +2496,6 @@ keys:
               type: str
             tls_versions:
               type: str
-              display_name: TLS Versions
               description: 'List of allowed TLS versions as string
 
                 '
@@ -2576,7 +2516,6 @@ keys:
                   type: str
   management_ssh:
     type: dict
-    display_name: Management SSH
     keys:
       access_groups:
         type: list
@@ -2585,10 +2524,10 @@ keys:
           keys:
             name:
               type: str
-              display_name: Standard ACL Name
+              description: Standard ACL Name
             vrf:
               type: str
-              display_name: VRF Name
+              description: VRF Name
       ipv6_access_groups:
         type: list
         items:
@@ -2596,10 +2535,10 @@ keys:
           keys:
             name:
               type: str
-              display_name: Standard ACL Name
+              description: Standard ACL Name
             vrf:
               type: str
-              display_name: VRF Name
+              description: VRF Name
       idle_timeout:
         type: int
         convert_types:
@@ -2661,7 +2600,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: VRF Name
+              description: VRF Name
             enable:
               description: Enable SSH in VRF
               type: bool
@@ -2683,7 +2622,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Match-list Name
+              description: Match-list Name
             sequence_numbers:
               type: list
               required: true
@@ -2696,22 +2635,20 @@ keys:
                   sequence:
                     type: int
                     required: true
-                    display_name: Sequence ID
+                    description: Sequence ID
                     convert_types:
                     - str
                   match_regex:
                     type: str
                     required: true
-                    display_name: Regular Expression
+                    description: Regular Expression
   mcs_client:
     type: dict
-    display_name: MCS Client
     keys:
       shutdown:
         type: bool
       cvx_secondary:
         type: dict
-        display_name: CVX Secondary
         keys:
           name:
             type: str
@@ -2728,14 +2665,13 @@ keys:
     keys:
       domain_id:
         type: str
-        display_name: Domain ID
       heartbeat_interval:
         type: int
         description: Heartbeat interval in milliseconds
         convert_types:
         - str
       local_interface:
-        display_name: Local Interface Name
+        description: Local Interface Name
         type: str
       peer_address:
         type: str
@@ -2747,7 +2683,7 @@ keys:
             type: str
             description: IPv4 Address
           vrf:
-            display_name: VRF Name
+            description: VRF Name
             type: str
       dual_primary_detection_delay:
         type: int
@@ -2758,7 +2694,6 @@ keys:
         - str
       dual_primary_recovery_delay_mlag:
         type: int
-        display_name: Dual Primary Recovery Delay MLAG
         description: Delay in seconds
         min: 0
         max: 86400
@@ -2766,7 +2701,6 @@ keys:
         - str
       dual_primary_recovery_delay_non_mlag:
         type: int
-        display_name: Dual Primary Recovery Delay Non MLAG
         description: Delay in seconds
         min: 0
         max: 86400
@@ -2777,13 +2711,11 @@ keys:
         type: str
       reload_delay_mlag:
         type: str
-        display_name: Reload Delay MLAG
         description: Delay in seconds <0-86400> or 'infinity'
         convert_types:
         - int
       reload_delay_non_mlag:
         type: str
-        display_name: Reload Delay Non MLAG
         description: Delay in seconds <0-86400> or 'infinity'
         convert_types:
         - int
@@ -2819,7 +2751,7 @@ keys:
           type: dict
           keys:
             name:
-              display_name: Host Name
+              description: Host Name
               type: str
             description:
               type: str
@@ -2835,7 +2767,7 @@ keys:
           type: dict
           keys:
             name:
-              display_name: VRF Name
+              description: VRF Name
               type: str
             description:
               type: str
@@ -2856,7 +2788,7 @@ keys:
                 type: dict
                 keys:
                   name:
-                    display_name: Host name
+                    description: Host name
                     type: str
                   description:
                     type: str
@@ -2914,7 +2846,6 @@ keys:
             description: '''cpu'' or interface name, range or comma separated list'
         encapsulation_gre_metadata_tx:
           type: bool
-          display_name: Encapsulation GRE metadata TX
         header_remove_size:
           type: int
           description: Number of bytes to remove from header
@@ -2930,7 +2861,7 @@ keys:
               - ipv6
               - mac
             name:
-              display_name: ACL Name
+              description: ACL Name
               type: str
         rate_limit_per_ingress_chip:
           type: str
@@ -2956,7 +2887,6 @@ keys:
               - str
   mpls:
     type: dict
-    display_name: MPLS
     keys:
       ip:
         type: bool
@@ -2967,11 +2897,10 @@ keys:
             type: bool
           router_id:
             type: str
-            display_name: Router ID
           shutdown:
             type: bool
           transport_address_interface:
-            display_name: Interface Name
+            description: Interface Name
             type: str
   name_server:
     type: dict
@@ -2980,7 +2909,7 @@ keys:
         type: dict
         keys:
           vrf:
-            display_name: VRF Name
+            description: VRF Name
             type: str
       nodes:
         type: list
@@ -2997,7 +2926,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Peer-filter Name
+          description: Peer-filter Name
         sequence_numbers:
           type: list
           required: true
@@ -3010,7 +2939,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               match:
@@ -3036,7 +2965,6 @@ keys:
         keys:
           qos_maps:
             type: list
-            display_name: QOS Maps
             items:
               type: dict
               keys:
@@ -3048,14 +2976,12 @@ keys:
                   - str
                 to_network_qos:
                   type: int
-                  display_name: To Network QOS
                   min: 0
                   max: 63
                   convert_types:
                   - str
           lag:
             type: dict
-            display_name: LAG
             keys:
               hardware_only:
                 type: bool
@@ -3073,11 +2999,10 @@ keys:
                 - egress
   policy_maps:
     type: dict
-    display_name: Policy-Maps
     keys:
       pbr:
         type: list
-        display_name: PBR Policy-Maps
+        description: PBR Policy-Maps
         primary_key: name
         convert_types:
         - dict
@@ -3086,7 +3011,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Policy-Map Name
+              description: Policy-Map Name
             classes:
               type: list
               primary_key: name
@@ -3097,18 +3022,20 @@ keys:
                 keys:
                   name:
                     type: str
-                    display_name: Class Name
+                    description: Class Name
                   index:
                     type: int
                     convert_types:
                     - str
                   drop:
                     description: '''drop'' and ''set'' are mutually exclusive'
-                    display_name: Drop
                     type: bool
                   set:
-                    description: '''drop'' and ''set'' are mutually exclusive'
-                    display_name: Set Nexthop
+                    description: 'Set Nexthop
+
+                      ''drop'' and ''set'' are mutually exclusive
+
+                      '
                     type: dict
                     keys:
                       nexthop:
@@ -3121,7 +3048,7 @@ keys:
                             type: bool
       qos:
         type: list
-        display_name: QOS Policy-Maps
+        description: QOS Policy-Maps
         primary_key: name
         convert_types:
         - dict
@@ -3130,7 +3057,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Policy-Map Name
+              description: Policy-Map Name
             classes:
               type: list
               primary_key: name
@@ -3141,7 +3068,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    display_name: Class Name
+                    description: Class Name
                   set:
                     type: dict
                     keys:
@@ -3149,22 +3076,18 @@ keys:
                         type: int
                         convert_types:
                         - str
-                        display_name: COS
                       dscp:
                         type: str
                         convert_types:
                         - int
-                        display_name: DSCP
                       traffic_class:
                         type: int
                         convert_types:
                         - str
-                        display_name: Traffic-class
                       drop_precedence:
                         type: int
                         convert_types:
                         - str
-                        display_name: Drop-precedence
   prefix_lists:
     type: list
     primary_key: name
@@ -3176,7 +3099,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Prefix-list Name
+          description: Prefix-list Name
         sequence_numbers:
           type: list
           required: true
@@ -3189,7 +3112,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               action:
@@ -3202,14 +3125,12 @@ keys:
     type: str
   qos:
     type: dict
-    display_name: QOS
     keys:
       map:
         type: dict
         keys:
           cos:
             type: list
-            display_name: COS
             items:
               type: str
               description: 'Example: "0 1 to traffic-class 1"
@@ -3217,7 +3138,6 @@ keys:
                 '
           dscp:
             type: list
-            display_name: DSCP
             items:
               type: str
               description: 'Example: "8 9 10 to traffic-class 1"
@@ -3231,11 +3151,9 @@ keys:
 
                 '
       rewrite_dscp:
-        display_name: Rewrite DSCP
         type: bool
   qos_profiles:
     type: list
-    display_name: QOS Profiles
     primary_key: name
     convert_types:
     - dict
@@ -3256,12 +3174,10 @@ keys:
           type: int
           convert_types:
           - str
-          display_name: COS
         dscp:
           type: int
           convert_types:
           - str
-          display_name: DSCP
         shape:
           type: dict
           keys:
@@ -3283,7 +3199,6 @@ keys:
                   description: Policy-map name
         tx_queues:
           type: list
-          display_name: TX Queues
           primary_key: id
           convert_types:
           - dict
@@ -3292,7 +3207,6 @@ keys:
             keys:
               id:
                 type: int
-                display_name: ID
                 convert_types:
                 - str
                 required: true
@@ -3322,7 +3236,6 @@ keys:
                       '
         uc_tx_queues:
           type: list
-          display_name: UC TX Queues
           primary_key: id
           convert_types:
           - dict
@@ -3331,7 +3244,6 @@ keys:
             keys:
               id:
                 type: int
-                display_name: ID
                 convert_types:
                 - str
                 required: true
@@ -3361,7 +3273,6 @@ keys:
                       '
         mc_tx_queues:
           type: list
-          display_name: MC TX Queues
           primary_key: id
           convert_types:
           - dict
@@ -3370,7 +3281,6 @@ keys:
             keys:
               id:
                 type: int
-                display_name: ID
                 convert_types:
                 - str
                 required: true
@@ -3418,7 +3328,6 @@ keys:
           length notifying" CLI
       cpu:
         type: dict
-        display_name: CPU
         keys:
           thresholds:
             type: dict
@@ -3439,11 +3348,9 @@ keys:
         type: bool
       ip_access_group:
         type: str
-        display_name: IP Access Group
         description: Name of IP ACL
       ipv6_access_group:
         type: str
-        display_name: IPv6 Access Group
         description: Name of IPv6 ACL
       max_connections:
         type: int
@@ -3453,7 +3360,6 @@ keys:
         max: 100
       vrf:
         type: str
-        display_name: VRF
   radius_servers:
     type: list
     items:
@@ -3464,7 +3370,6 @@ keys:
           description: Host IP address or name
         vrf:
           type: str
-          display_name: VRF
         key:
           type: str
           description: Encrypted key
@@ -3473,7 +3378,7 @@ keys:
     keys:
       protocol:
         type: str
-        display_name: Redundancy Protocol
+        description: Redundancy Protocol
   roles:
     type: list
     items:
@@ -3516,7 +3421,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Route-map Name
+          description: Route-map Name
         sequence_numbers:
           type: list
           required: true
@@ -3529,7 +3434,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               type:
@@ -3574,14 +3479,12 @@ keys:
                     - str
   router_bfd:
     type: dict
-    display_name: Router BFD
     keys:
       interval:
         type: int
         description: Rate in milliseconds
       min_rx:
         type: int
-        display_name: Min RX
         description: Rate in milliseconds
       multiplier:
         type: int
@@ -3595,7 +3498,6 @@ keys:
             description: Rate in milliseconds
           min_rx:
             type: int
-            display_name: Min RX
             description: Rate in milliseconds
           multiplier:
             type: int
@@ -3603,7 +3505,6 @@ keys:
             max: 50
       sbfd:
         type: dict
-        display_name: SBFD
         keys:
           local_interface:
             type: dict
@@ -3616,10 +3517,8 @@ keys:
                 keys:
                   ipv4:
                     type: bool
-                    display_name: IPv4
                   ipv6:
                     type: bool
-                    display_name: IPv6
           initiator_interval:
             type: int
             description: Rate in milliseconds
@@ -3632,7 +3531,6 @@ keys:
             keys:
               min_rx:
                 type: int
-                display_name: Min RX
                 description: Rate in milliseconds
               local_discriminator:
                 type: str
@@ -3646,10 +3544,10 @@ keys:
         keys:
           ipv4:
             type: str
-            display_name: IPv4 Address
+            description: IPv4 Address
           ipv6:
             type: str
-            display_name: IPv6 Address
+            description: IPv6 Address
       nexthop_fast_failover:
         type: bool
         default: false
@@ -3664,7 +3562,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Destination-VRF
+              description: Destination-VRF
             leak_routes:
               type: list
               items:
@@ -3672,10 +3570,9 @@ keys:
                 keys:
                   source_vrf:
                     type: str
-                    display_name: Source-VRF
                   subscribe_policy:
                     type: str
-                    display_name: Route-Map Policy
+                    description: Route-Map Policy
             routes:
               type: dict
               keys:
@@ -3686,7 +3583,7 @@ keys:
                     keys:
                       name:
                         type: str
-                        display_name: Dynamic Prefix List Name
+                        description: Dynamic Prefix List Name
   router_igmp:
     type: dict
     display_name: Router IGMP Configuration
@@ -3695,7 +3592,6 @@ keys:
         type: bool
   router_isis:
     type: dict
-    display_name: Router ISIS
     keys:
       instance:
         type: str
@@ -3705,11 +3601,9 @@ keys:
         description: CLNS Address like "49.0001.0001.0000.0001.00"
       router_id:
         type: str
-        display_name: Router ID
         description: IPv4 Address
       is_type:
         type: str
-        display_name: IS Type
         valid_values:
         - level-1
         - level-1-2
@@ -3718,7 +3612,6 @@ keys:
         type: bool
       mpls_ldp_sync_default:
         type: bool
-        display_name: MPLS LDP Sync Default
       timers:
         type: dict
         keys:
@@ -3750,7 +3643,6 @@ keys:
           description: Address Family
       isis_af_defaults:
         type: list
-        display_name: ISIS AF Defaults
         items:
           type: str
           description: 'EOS CLI rendered under the address families
@@ -3780,7 +3672,6 @@ keys:
               type: bool
             ospf_route_type:
               type: str
-              display_name: OSPF Route Type
               valid_values:
               - external
               - internal
@@ -3789,7 +3680,6 @@ keys:
                 and 'ospfv3'
       address_family_ipv4:
         type: dict
-        display_name: Address Family IPv4
         keys:
           maximum_paths:
             type: int
@@ -3799,7 +3689,6 @@ keys:
             max: 128
           fast_reroute_ti_lfa:
             type: dict
-            display_name: Fast Reroute TI LFA
             keys:
               mode:
                 type: str
@@ -3813,7 +3702,6 @@ keys:
                 - level-2
               srlg:
                 type: dict
-                display_name: SRLG
                 description: Shared Risk Link Group
                 keys:
                   enable:
@@ -3827,11 +3715,9 @@ keys:
                 type: bool
               rcf:
                 type: str
-                display_name: RCF
                 description: Route Control Function
       address_family_ipv6:
         type: dict
-        display_name: Address Family IPv6
         keys:
           maximum_paths:
             type: int
@@ -3841,7 +3727,6 @@ keys:
             max: 128
           fast_reroute_ti_lfa:
             type: dict
-            display_name: Fast Reroute TI LFA
             keys:
               mode:
                 type: str
@@ -3856,7 +3741,6 @@ keys:
                 description: Optional, default is to protect all levels
               srlg:
                 type: dict
-                display_name: SRLG
                 description: Shared Risk Link Group
                 keys:
                   enable:
@@ -3865,13 +3749,11 @@ keys:
                     type: bool
       segment_routing_mpls:
         type: dict
-        display_name: Segment Routing MPLS
         keys:
           enabled:
             type: bool
           router_id:
             type: str
-            display_name: Router ID
           prefix_segments:
             type: list
             convert_types:
@@ -3890,20 +3772,15 @@ keys:
         description: Unused key - to be removed from eos_designs.
   router_l2_vpn:
     type: dict
-    display_name: Router L2 VPN
     keys:
       nd_rs_flooding_disabled:
         type: bool
-        display_name: ND RS Flooding Disabled
       virtual_router_nd_ra_flooding_disabled:
         type: bool
-        display_name: Virtual Router ND RA Flooding Disabled
       arp_selective_install:
         type: bool
-        display_name: ARP Selective Install
       arp_proxy:
         type: dict
-        display_name: ARP Proxy
         keys:
           prefix_list:
             type: str
@@ -3913,7 +3790,6 @@ keys:
     keys:
       ipv4:
         type: dict
-        display_name: IPv4
         keys:
           counters:
             type: dict
@@ -3970,7 +3846,6 @@ keys:
                             - str
       vrfs:
         type: list
-        display_name: VRFs
         items:
           type: dict
           keys:
@@ -3978,7 +3853,6 @@ keys:
               type: str
             ipv4:
               type: dict
-              display_name: IPv4
               keys:
                 routing:
                   type: bool
@@ -3988,7 +3862,6 @@ keys:
     keys:
       process_ids:
         type: list
-        display_name: Process IDs
         primary_key: id
         convert_types:
         - dict
@@ -3999,17 +3872,14 @@ keys:
               type: int
               convert_types:
               - str
-              display_name: ID
               description: OSPF Process ID
             vrf:
               type: str
-              display_name: VRF
               description: VRF Name for OSPF Process
             passive_interface_default:
               type: bool
             router_id:
               type: str
-              display_name: Router ID
               description: IPv4 Address
             distance:
               type: dict
@@ -4044,20 +3914,17 @@ keys:
                 keys:
                   ipv4_prefix:
                     type: str
-                    display_name: IPv4 Prefix
                   area:
                     type: str
             bfd_enable:
               type: bool
-              display_name: BFD Enable
             bfd_adjacency_state_any:
               type: bool
-              display_name: BFD Adjacency State Any
             no_passive_interfaces:
               type: list
               items:
                 type: str
-                display_name: Interface Name
+                description: Interface Name
             distribute_list_in:
               type: dict
               keys:
@@ -4065,7 +3932,6 @@ keys:
                   type: str
             max_lsa:
               type: int
-              display_name: Max LSA
               convert_types:
               - str
             timers:
@@ -4076,7 +3942,6 @@ keys:
                   keys:
                     rx_min_interval:
                       type: int
-                      display_name: RX Min Interval
                       convert_types:
                       - str
                       description: Min interval in msecs between accepting the same
@@ -4085,7 +3950,6 @@ keys:
                       max: 600000
                     tx_delay:
                       type: dict
-                      display_name: TX Delay
                       keys:
                         initial:
                           type: int
@@ -4113,7 +3977,6 @@ keys:
                           max: 600000
                 spf_delay:
                   type: dict
-                  display_name: SPF Delay
                   keys:
                     initial:
                       type: int
@@ -4164,20 +4027,19 @@ keys:
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
                 connected:
                   type: dict
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
                 bgp:
                   type: dict
-                  display_name: BGP
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
             auto_cost_reference_bandwidth:
               type: int
               convert_types:
@@ -4193,7 +4055,6 @@ keys:
                 keys:
                   id:
                     type: str
-                    display_name: ID
                   filter:
                     type: dict
                     keys:
@@ -4201,10 +4062,10 @@ keys:
                         type: list
                         items:
                           type: str
-                          display_name: IPv4 Prefix
+                          description: IPv4 Prefix
                       prefix_list:
                         type: str
-                        display_name: Prefix-List Name
+                        description: Prefix-List Name
                   type:
                     type: str
                     valid_values:
@@ -4216,7 +4077,6 @@ keys:
                     type: bool
                   nssa_only:
                     type: bool
-                    display_name: NSSA Only
                   default_information_originate:
                     type: dict
                     keys:
@@ -4269,7 +4129,6 @@ keys:
                         '
                     summary_lsa:
                       type: dict
-                      display_name: Summary LSA
                       keys:
                         override_metric:
                           type: int
@@ -4281,18 +4140,15 @@ keys:
               type: bool
   router_pim_sparse_mode:
     type: dict
-    display_name: Routing PIM Sparse Mode
     keys:
       ipv4:
         type: dict
-        display_name: IPv4
         keys:
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM
           rp_addresses:
             type: list
-            display_name: RP Addresses
             primary_key: address
             convert_types:
             - dict
@@ -4302,7 +4158,7 @@ keys:
                 address:
                   type: str
                   required: true
-                  display_name: RP Address
+                  description: RP Address
                 groups:
                   type: list
                   convert_types:
@@ -4311,7 +4167,6 @@ keys:
                     type: str
           anycast_rps:
             type: list
-            display_name: Anycast RPs
             primary_key: address
             convert_types:
             - dict
@@ -4321,10 +4176,9 @@ keys:
                 address:
                   type: str
                   required: true
-                  display_name: Anycast RP Address
+                  description: Anycast RP Address
                 other_anycast_rp_addresses:
                   type: list
-                  display_name: Other Anycast RP Addresses
                   primary_key: address
                   convert_types:
                   - dict
@@ -4334,39 +4188,36 @@ keys:
                       address:
                         type: str
                         required: true
-                        display_name: Other Anycast RP Address
+                        description: Other Anycast RP Address
                       register_count:
                         type: int
                         convert_types:
                         - str
       vrfs:
         type: list
-        display_name: VRFs
         items:
           type: dict
           keys:
             name:
               type: str
-              display_name: VRF Name
+              description: VRF Name
             ipv4:
               type: dict
               keys:
                 rp_addresses:
                   type: list
-                  display_name: RP Addresses
                   items:
                     type: dict
                     keys:
                       address:
                         type: str
-                        display_name: RP Address
+                        description: RP Address
                       groups:
                         type: list
                         items:
                           type: str
   service_routing_configuration_bgp:
     type: dict
-    display_name: Service Routing Configuration BGP
     keys:
       no_equals_default:
         type: bool
@@ -4377,7 +4228,6 @@ keys:
     - ribd
   sflow:
     type: dict
-    display_name: Sflow
     keys:
       sample:
         type: int
@@ -4395,7 +4245,6 @@ keys:
           keys:
             name:
               type: str
-              display_name: VRF
             destinations:
               type: list
               primary_key: destination
@@ -4406,15 +4255,14 @@ keys:
                 keys:
                   destination:
                     type: str
-                    display_name: Sflow Destination IP
+                    description: Sflow Destination IP
                   port:
                     type: int
-                    display_name: Port Number
+                    description: Port Number
                     convert_types:
                     - str
             source_interface:
               type: str
-              display_name: Source Interface
       destinations:
         type: list
         primary_key: destination
@@ -4425,15 +4273,14 @@ keys:
           keys:
             destination:
               type: str
-              display_name: Sflow Destination IP
+              description: Sflow Destination IP
             port:
               type: int
-              display_name: Port Number
+              description: Port Number
               convert_types:
               - str
       source_interface:
         type: str
-        display_name: Source Interface
       interface:
         type: dict
         keys:
@@ -4524,7 +4371,7 @@ keys:
                       type: int
                       convert_types:
                       - str
-                      display_name: Instance ID
+                      description: Instance ID
                     vlans:
                       type: str
                       convert_types:
@@ -4546,7 +4393,7 @@ keys:
               type: str
               convert_types:
               - int
-              display_name: Instance ID
+              description: Instance ID
             priority:
               type: int
               convert_types:
@@ -4586,14 +4433,13 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Standard Access-Lists
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Access-list Name
+          description: Access-list Name
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4608,7 +4454,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                 - str
               action:
@@ -4619,22 +4465,20 @@ keys:
                   Example: "deny ip any any"'
   static_routes:
     type: list
-    display_name: Static Routes
     items:
       type: dict
       keys:
         vrf:
           type: str
-          display_name: VRF Name
-          description: If vrf_name = default the route will be placed in the GRT
+          description: VRF Name
         destination_address_prefix:
           type: str
-          display_name: IPv4_network/Mask
+          description: IPv4_network/Mask
         interface:
           type: str
         gateway:
           type: str
-          display_name: IPv4 Address
+          description: IPv4 Address
         distance:
           type: int
           convert_types:
@@ -4649,7 +4493,7 @@ keys:
           max: 4294967295
         name:
           type: str
-          display_name: Description
+          description: Description
         metric:
           type: int
           convert_types:
@@ -4669,7 +4513,6 @@ keys:
         keys:
           cos:
             type: int
-            display_name: COS
             convert_types:
             - str
             min: 0
@@ -4681,7 +4524,7 @@ keys:
             - untagged
           vlan:
             type: int
-            display_name: VLAN ID
+            description: VLAN ID
             convert_types:
             - str
             min: 1
@@ -4738,7 +4581,6 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
-              display_name: VRF
             key:
               type: str
               description: Encrypted key
@@ -4779,13 +4621,10 @@ keys:
                   type: str
                   description: Interface name e.g Ethernet1, Port-Channel1
       encapsulation_dot1br_strip:
-        display_name: Encapsulation dot1br Strip
         type: bool
       encapsulation_vn_tag_strip:
-        display_name: Encapsulation VN Tag Strip
         type: bool
       protocol_lldp_trap:
-        display_name: Protocol LLDP Trap
         type: bool
       truncation_size:
         type: int
@@ -4793,7 +4632,6 @@ keys:
 
           '
       mac:
-        display_name: MAC
         type: dict
         keys:
           timestamp:
@@ -4805,7 +4643,6 @@ keys:
               '
             keys:
               replace_source_mac:
-                display_name: Replace Source MAC
                 type: bool
               header:
                 type: dict
@@ -4816,19 +4653,17 @@ keys:
                     - 48-bit
                     - 64-bit
                   eth_type:
-                    display_name: EtherType
+                    description: EtherType
                     type: int
                     convert_types:
                     - str
           fcs_append:
-            display_name: FCS Append
             type: bool
             description: 'mac.fcs_append and mac.fcs_error are mutually exclusive.
               If both are defined, mac.fcs_append takes precedence
 
               '
           fcs_error:
-            display_name: FCS Error
             type: str
             valid_values:
             - correct
@@ -4855,7 +4690,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Tcam-Profile Name
+              description: Tcam-Profile Name
             config:
               type: str
               required: true
@@ -4906,7 +4741,6 @@ keys:
         keys:
           ipv4:
             type: list
-            display_name: IPv4
             secondary_key: prefixes
             primary_key: name
             convert_types:
@@ -4921,10 +4755,9 @@ keys:
                   type: list
                   items:
                     type: str
-                    display_name: IPv4 Prefix
+                    description: IPv4 Prefix
           ipv6:
             type: list
-            display_name: IPv6
             primary_key: name
             convert_types:
             - dict
@@ -4938,7 +4771,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    display_name: IPv6 Prefix
+                    description: IPv6 Prefix
           ports:
             type: list
             primary_key: name
@@ -5009,7 +4842,6 @@ keys:
                           type: str
                   ttl:
                     type: str
-                    display_name: TTL
                     description: TTL range
                   fragment:
                     type: dict
@@ -5056,7 +4888,6 @@ keys:
                           type: list
                           items:
                             type: str
-                          display_name: ICMP Type
                   actions:
                     type: dict
                     keys:
@@ -5064,7 +4895,6 @@ keys:
                         type: int
                         convert_types:
                         - str
-                        display_name: DSCP
                       traffic_class:
                         type: int
                         convert_types:
@@ -5083,13 +4913,11 @@ keys:
               keys:
                 ipv4:
                   type: dict
-                  display_name: IPv4
                   keys:
                     dscp:
                       type: int
                       convert_types:
                       - str
-                      display_name: DSCP
                     traffic_class:
                       type: int
                       convert_types:
@@ -5105,13 +4933,11 @@ keys:
                       description: Only supported when action is set to drop
                 ipv6:
                   type: dict
-                  display_name: IPv6
                   keys:
                     dscp:
                       type: int
                       convert_types:
                       - str
-                      display_name: DSCP
                     traffic_class:
                       type: int
                       convert_types:
@@ -5130,19 +4956,17 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Virtual Source NAT
     items:
       type: dict
       keys:
         name:
           type: str
-          display_name: VRF Name
+          description: VRF Name
         ip_address:
           type: str
-          display_name: IPv4 Address
+          description: IPv4 Address
   vlan_internal_order:
     type: dict
-    display_name: Internal VLAN Order
     keys:
       allocation:
         type: str
@@ -5159,7 +4983,7 @@ keys:
             min: 1
             max: 4094
             required: true
-            display_name: Vlan ID
+            description: Vlan ID
             convert_types:
             - str
           ending:
@@ -5167,12 +4991,11 @@ keys:
             min: 1
             max: 4094
             required: true
-            display_name: Vlan ID
+            description: Vlan ID
             convert_types:
             - str
   vlans:
     type: list
-    display_name: VLANs
     primary_key: id
     convert_types:
     - dict
@@ -5183,10 +5006,10 @@ keys:
           type: int
           convert_types:
           - str
-          display_name: VLAN ID
+          description: VLAN ID
         name:
           type: str
-          display_name: VLAN Name
+          description: VLAN Name
         state:
           type: str
           valid_values:
@@ -5196,7 +5019,7 @@ keys:
           type: list
           items:
             type: str
-            display_name: Trunk Group Name
+            description: Trunk Group Name
         private_vlan:
           type: dict
           keys:
@@ -5209,7 +5032,7 @@ keys:
               type: int
               convert_types:
               - str
-              display_name: Primary VLAN ID
+              description: Primary VLAN ID
         tenant:
           type: str
           description: Key only used for documentation or validation purposes
@@ -5218,17 +5041,15 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: VM Tracer Sessions
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Vmtracer Session Name
+          description: Vmtracer Session Name
         url:
           type: str
-          display_name: URL
         username:
           type: str
         password:
@@ -5240,7 +5061,6 @@ keys:
           type: str
   vrfs:
     type: list
-    display_name: VRFs
     primary_key: name
     convert_types:
     - dict
@@ -5254,10 +5074,8 @@ keys:
           type: str
         ip_routing:
           type: bool
-          display_name: IP Routing
         ipv6_routing:
           type: bool
-          display_name: IPv6 Routing
         tenant:
           type: str
           description: Key only used for documentation or validation purposes

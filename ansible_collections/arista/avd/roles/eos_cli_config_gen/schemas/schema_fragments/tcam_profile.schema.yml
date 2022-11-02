@@ -23,7 +23,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Tcam-Profile Name
+              description: Tcam-Profile Name
             config:
               type: str
               required: true

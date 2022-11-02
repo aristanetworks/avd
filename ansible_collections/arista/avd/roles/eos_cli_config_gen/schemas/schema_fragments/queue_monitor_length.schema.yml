@@ -21,7 +21,6 @@ keys:
         description: should only be used for platforms supporting the "queue-monitor length notifying" CLI
       cpu:
         type: dict
-        display_name: CPU
         keys:
           thresholds:
             type: dict

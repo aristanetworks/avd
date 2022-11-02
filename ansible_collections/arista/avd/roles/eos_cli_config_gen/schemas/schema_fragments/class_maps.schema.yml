@@ -17,13 +17,13 @@ keys:
           keys:
             name:
               type: str
-              display_name: Class-Map Name
+              description: Class-Map Name
             ip:
               type: dict
               keys:
                 access_group:
                   type: str
-                  display_name: Standard Access-List Name
+                  description: Standard Access-List Name
       qos:
         type: list
         primary_key: name
@@ -34,7 +34,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Class-Map Name
+              description: Class-Map Name
             vlan:
               type: int
               convert_types:
@@ -50,10 +50,10 @@ keys:
               keys:
                 access_group:
                   type: str
-                  display_name: IPv4 Access-List Name
+                  description: IPv4 Access-List Name
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
-                  display_name: IPv6 Access-List Name
+                  description: IPv6 Access-List Name

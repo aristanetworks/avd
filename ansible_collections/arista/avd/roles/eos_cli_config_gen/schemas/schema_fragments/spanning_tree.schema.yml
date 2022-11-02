@@ -59,7 +59,7 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      display_name: Instance ID
+                      description: Instance ID
                     vlans:
                       type: str
                       convert_types:
@@ -79,7 +79,7 @@ keys:
               type: str
               convert_types:
                 - int
-              display_name: Instance ID
+              description: Instance ID
             priority:
               type: int
               convert_types:

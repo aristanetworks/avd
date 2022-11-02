@@ -2,6 +2,7 @@ import json
 import os
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:
@@ -77,7 +78,7 @@ class AvdToJsonSchemaConverter:
 
             # Add an auto-generated title in case one is not set
             if "title" not in output["properties"][key]:
-                output["properties"][key]["title"] = str(key).replace("_", " ").title()
+                output["properties"][key]["title"] = key_to_display_name(str(key))
 
             if keys[key].get("required") is True:
                 required.append(key)

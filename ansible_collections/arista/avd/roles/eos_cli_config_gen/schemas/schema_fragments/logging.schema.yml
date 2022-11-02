@@ -68,7 +68,6 @@ keys:
         type: str
         description: Source Interface Name
       vrfs:
-        display_name: VRFs
         type: list
         primary_key: name
         convert_types:

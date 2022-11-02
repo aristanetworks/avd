@@ -5,13 +5,11 @@ type: dict
 keys:
   mcs_client:
     type: dict
-    display_name: MCS Client
     keys:
       shutdown:
         type: bool
       cvx_secondary:
         type: dict
-        display_name: CVX Secondary
         keys:
           name:
             type: str

@@ -17,5 +17,5 @@ keys:
             valid_values: ["md5", "sha512"]
             default: "sha512"
           key:
-            display_name: Hashed Password
+            description: Hashed Password
             type: str

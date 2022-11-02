@@ -19,9 +19,7 @@ keys:
           keys:
             ipv4:
               type: str
-              display_name: IPv4
               description: Prefix-list name
             ipv6:
               type: str
-              display_name: IPv6
               description: Prefix-list name

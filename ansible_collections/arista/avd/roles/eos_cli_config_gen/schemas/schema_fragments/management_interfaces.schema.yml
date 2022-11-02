@@ -14,7 +14,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Management Interface Name
+          description: Management Interface Name
         description:
           type: str
         shutdown:
@@ -23,15 +23,15 @@ keys:
           type: int
         vrf:
           type: str
-          display_name: VRF Name
+          description: VRF Name
         ip_address:
           type: str
-          display_name: IPv4_address/Mask
+          description: IPv4_address/Mask
         ipv6_enable:
           type: bool
         ipv6_address:
           type: str
-          display_name: IPv6_address/Mask
+          description: IPv6_address/Mask
         type:
           type: str
           valid_values: ["oob", "inband"]

@@ -14,7 +14,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Peer-filter Name
+          description: Peer-filter Name
         sequence_numbers:
           type: list
           required: true
@@ -27,7 +27,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                   - str
               match:

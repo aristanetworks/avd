@@ -5,14 +5,12 @@ type: dict
 keys:
   router_bfd:
     type: dict
-    display_name: Router BFD
     keys:
       interval:
         type: int
         description: Rate in milliseconds
       min_rx:
         type: int
-        display_name: Min RX
         description: Rate in milliseconds
       multiplier:
         type: int
@@ -26,7 +24,6 @@ keys:
             description: Rate in milliseconds
           min_rx:
             type: int
-            display_name: Min RX
             description: Rate in milliseconds
           multiplier:
             type: int
@@ -34,7 +31,6 @@ keys:
             max: 50
       sbfd:
         type: dict
-        display_name: SBFD
         keys:
           local_interface:
             type: dict
@@ -47,10 +43,8 @@ keys:
                 keys:
                   ipv4:
                     type: bool
-                    display_name: IPv4
                   ipv6:
                     type: bool
-                    display_name: IPv6
           initiator_interval:
             type: int
             description: Rate in milliseconds
@@ -63,7 +57,6 @@ keys:
             keys:
               min_rx:
                 type: int
-                display_name: Min RX
                 description: Rate in milliseconds
               local_discriminator:
                 type: str

@@ -5,13 +5,11 @@ type: dict
 keys:
   ipv6_static_routes:
     type: list
-    display_name: IPv6 Static Routes
     items:
       type: dict
       keys:
         vrf:
           type: str
-          display_name: VRF
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask
@@ -19,7 +17,7 @@ keys:
           type: str
         gateway:
           type: str
-          display_name: IPv6 Address
+          description: IPv6 Address
         distance:
           type: int
           convert_types:
@@ -34,7 +32,7 @@ keys:
           max: 4294967295
         name:
           type: str
-          display_name: Description
+          description: Description
         metric:
           type: int
           convert_types:

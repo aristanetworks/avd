@@ -14,10 +14,9 @@ keys:
         name:
           type: str
           required: true
-          display_name: Group Name
+          description: Group Name
         vrf:
           type: str
-          display_name: VRF
         neighbors:
           type: list
           items:
@@ -26,4 +25,4 @@ keys:
           type: list
           items:
             type: str
-            display_name: Profile Name
+            description: Profile Name

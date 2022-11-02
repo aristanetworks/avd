@@ -5,7 +5,6 @@ type: dict
 keys:
   ip_domain_lookup:
     type: dict
-    display_name: Domain Lookup
     keys:
       source_interfaces:
         type: list
@@ -22,4 +21,3 @@ keys:
                 Source Interface
             vrf:
               type: str
-              display_name: VRF

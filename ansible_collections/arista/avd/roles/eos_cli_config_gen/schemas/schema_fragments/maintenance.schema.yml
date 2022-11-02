@@ -57,7 +57,6 @@ keys:
                     Max delay in seconds
       bgp_profiles:
         type: list
-        display_name: BGP Profiles
         primary_key: name
         convert_types:
         - dict
@@ -67,13 +66,13 @@ keys:
             name:
               type: str
               required: true
-              display_name: BGP Profile Name
+              description: BGP Profile Name
             initiator:
               type: dict
               keys:
                 route_map_inout:
                   type: str
-                  display_name: Route Map
+                  description: Route Map
       unit_profiles:
         type: list
         primary_key: name
@@ -85,7 +84,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Unit Profile Name
+              description: Unit Profile Name
             on_boot:
               type: dict
               keys:
@@ -108,7 +107,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Unit Name
+              description: Unit Name
             quiesce:
               type: bool
             profile:
@@ -121,7 +120,6 @@ keys:
               keys:
                 bgp_groups:
                   type: list
-                  display_name: BGP Groups
                   items:
                     type: str
                     description: |

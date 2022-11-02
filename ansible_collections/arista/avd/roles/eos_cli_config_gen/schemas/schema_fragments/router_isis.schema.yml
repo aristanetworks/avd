@@ -5,7 +5,6 @@ type: dict
 keys:
   router_isis:
     type: dict
-    display_name: Router ISIS
     keys:
       instance:
         type: str
@@ -15,11 +14,9 @@ keys:
         description: CLNS Address like "49.0001.0001.0000.0001.00"
       router_id:
         type: str
-        display_name: Router ID
         description: IPv4 Address
       is_type:
         type: str
-        display_name: IS Type
         valid_values:
           - "level-1"
           - "level-1-2"
@@ -28,7 +25,6 @@ keys:
         type: bool
       mpls_ldp_sync_default:
         type: bool
-        display_name: MPLS LDP Sync Default
       timers:
         type: dict
         keys:
@@ -60,7 +56,6 @@ keys:
           description: Address Family
       isis_af_defaults:
         type: list
-        display_name: ISIS AF Defaults
         items:
           type: str
           description: |
@@ -88,7 +83,6 @@ keys:
               type: bool
             ospf_route_type:
               type: str
-              display_name: OSPF Route Type
               valid_values:
                 - "external"
                 - "internal"
@@ -96,7 +90,6 @@ keys:
               description: ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
       address_family_ipv4:
         type: dict
-        display_name: Address Family IPv4
         keys:
           maximum_paths:
             type: int
@@ -106,7 +99,6 @@ keys:
             max: 128
           fast_reroute_ti_lfa:
             type: dict
-            display_name: Fast Reroute TI LFA
             keys:
               mode:
                 type: str
@@ -120,7 +112,6 @@ keys:
                   - "level-2"
               srlg:
                 type: dict
-                display_name: SRLG
                 description: Shared Risk Link Group
                 keys:
                   enable:
@@ -134,11 +125,9 @@ keys:
                 type: bool
               rcf:
                 type: str
-                display_name: RCF
                 description: Route Control Function
       address_family_ipv6:
         type: dict
-        display_name: Address Family IPv6
         keys:
           maximum_paths:
             type: int
@@ -148,7 +137,6 @@ keys:
             max: 128
           fast_reroute_ti_lfa:
             type: dict
-            display_name: Fast Reroute TI LFA
             keys:
               mode:
                 type: str
@@ -163,7 +151,6 @@ keys:
                 description: Optional, default is to protect all levels
               srlg:
                 type: dict
-                display_name: SRLG
                 description: Shared Risk Link Group
                 keys:
                   enable:
@@ -172,13 +159,11 @@ keys:
                     type: bool
       segment_routing_mpls:
         type: dict
-        display_name: Segment Routing MPLS
         keys:
           enabled:
             type: bool
           router_id:
             type: str
-            display_name: Router ID
           prefix_segments:
             type: list
             convert_types:

@@ -9,7 +9,6 @@ keys:
     keys:
       process_ids:
         type: list
-        display_name: Process IDs
         primary_key: id
         convert_types:
           - dict
@@ -20,17 +19,14 @@ keys:
               type: int
               convert_types:
                 - str
-              display_name: ID
               description: OSPF Process ID
             vrf:
               type: str
-              display_name: VRF
               description: VRF Name for OSPF Process
             passive_interface_default:
               type: bool
             router_id:
               type: str
-              display_name: Router ID
               description: IPv4 Address
             distance:
               type: dict
@@ -65,20 +61,17 @@ keys:
                 keys:
                   ipv4_prefix:
                     type: str
-                    display_name: IPv4 Prefix
                   area:
                     type: str
             bfd_enable:
               type: bool
-              display_name: BFD Enable
             bfd_adjacency_state_any:
               type: bool
-              display_name: BFD Adjacency State Any
             no_passive_interfaces:
               type: list
               items:
                 type: str
-                display_name: Interface Name
+                description: Interface Name
             distribute_list_in:
               type: dict
               keys:
@@ -86,7 +79,6 @@ keys:
                   type: str
             max_lsa:
               type: int
-              display_name: Max LSA
               convert_types:
                 - str
             timers:
@@ -97,7 +89,6 @@ keys:
                   keys:
                     rx_min_interval:
                       type: int
-                      display_name: RX Min Interval
                       convert_types:
                         - str
                       description: Min interval in msecs between accepting the same LSA
@@ -105,7 +96,6 @@ keys:
                       max: 600000
                     tx_delay:
                       type: dict
-                      display_name: TX Delay
                       keys:
                         initial:
                           type: int
@@ -130,7 +120,6 @@ keys:
                           max: 600000
                 spf_delay:
                   type: dict
-                  display_name: SPF Delay
                   keys:
                     initial:
                       type: int
@@ -181,20 +170,19 @@ keys:
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
                 connected:
                   type: dict
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
                 bgp:
                   type: dict
-                  display_name: BGP
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
             auto_cost_reference_bandwidth:
               type: int
               convert_types:
@@ -210,7 +198,6 @@ keys:
                 keys:
                   id:
                     type: str
-                    display_name: ID
                   filter:
                     type: dict
                     keys:
@@ -218,10 +205,10 @@ keys:
                         type: list
                         items:
                           type: str
-                          display_name: IPv4 Prefix
+                          description: IPv4 Prefix
                       prefix_list:
                         type: str
-                        display_name: Prefix-List Name
+                        description: Prefix-List Name
                   type:
                     type: str
                     valid_values: ["normal", "stub", "nssa"]
@@ -230,7 +217,6 @@ keys:
                     type: bool
                   nssa_only:
                     type: bool
-                    display_name: NSSA Only
                   default_information_originate:
                     type: dict
                     keys:
@@ -279,7 +265,6 @@ keys:
                         Example: "wait-for-bgp" Or "222"
                     summary_lsa:
                       type: dict
-                      display_name: Summary LSA
                       keys:
                         override_metric:
                           type: int

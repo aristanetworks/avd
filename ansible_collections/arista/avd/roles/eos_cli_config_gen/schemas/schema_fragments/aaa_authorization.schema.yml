@@ -5,7 +5,6 @@ type: dict
 keys:
   aaa_authorization:
     type: dict
-    display_name: AAA Authorization
     keys:
       exec:
         type: dict

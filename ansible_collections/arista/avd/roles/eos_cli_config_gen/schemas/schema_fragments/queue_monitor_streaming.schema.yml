@@ -10,11 +10,9 @@ keys:
         type: bool
       ip_access_group:
         type: str
-        display_name: IP Access Group
         description: Name of IP ACL
       ipv6_access_group:
         type: str
-        display_name: IPv6 Access Group
         description: Name of IPv6 ACL
       max_connections:
         type: int
@@ -24,4 +22,3 @@ keys:
         max: 100
       vrf:
         type: str
-        display_name: VRF
