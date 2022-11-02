@@ -4108,7 +4108,7 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "title": "Id"
+                      "title": "ID"
                     },
                     "type": {
                       "type": "string",
