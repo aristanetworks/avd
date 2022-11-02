@@ -26,8 +26,10 @@ class EosDesignsFacts(AvdFacts):
         "switch.foo" fact set based on "bar" data model
         """
         return get(self._hostvars, "bar.foo", default="zoo")
+
     -----------------------------------------------------------------------------------------------------
     Example function to set a fact based on a required key under ex "l3leaf.node_groups.<>.nodes.<>.<key>
+
     Notice the variable _switch_data_combined starts with _ meaning it is an internal variable which will
     not be returned as part of the facts. We can load such variables with commonly used data, leveraged
     by multiple facts functions.
@@ -36,6 +38,7 @@ class EosDesignsFacts(AvdFacts):
     def foo(self):
         """
         "switch.foo" fact set based on "<node_type_key>.*" data model
+
         Example l3leaf.defaults.foo -> switch.foo
         """
         return get(self._switch_data_combined, "foo", required=True)
@@ -256,11 +259,13 @@ class EosDesignsFacts(AvdFacts):
     def _switch_data(self):
         """
         internal _switch_data containing inherited vars from fabric_topology data model
+
         Vars are inherited like:
         <node_type_key>.defaults ->
             <node_type_key>.node_groups.[<node_group>] ->
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
+
         Returns
         -------
         dict
@@ -726,6 +731,7 @@ class EosDesignsFacts(AvdFacts):
         """
         Return list of vlans after filtering network services.
         The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use
+
         Ex. [1, 2, 3 ,4 ,201, 3021]
         """
         if self._any_network_services:
@@ -812,6 +818,7 @@ class EosDesignsFacts(AvdFacts):
     def vlans(self):
         """
         Return the compressed list of vlans to be defined on this switch
+
         Ex. "1-100, 201-202"
         """
         return list_compress(self._vlans)
@@ -965,6 +972,7 @@ class EosDesignsFacts(AvdFacts):
     def bgp_peer_groups(self):
         """
         Get bgp_peer_groups configurations or fallback to defaults
+
         Supporting legacy uppercase keys as well.
         """
         if self.underlay_router is True:
@@ -1046,7 +1054,9 @@ class EosDesignsFacts(AvdFacts):
     def bgp_as(self):
         """
         Get global bgp_as or fabric_topology bgp_as.
+
         At least one of global bgp_as or fabric_topology bgp_as must be defined.
+
         AS ranges in fabric_topology bgp_as will be expanded to a list and:
          - For standalone or A/A MH devices, the node id will be used to index into the list to find the ASN.
          - For MLAG devices, the node id of the first node in the node group will be used to index into the ASN list.
@@ -1337,6 +1347,7 @@ class EosDesignsFacts(AvdFacts):
     def uplinks(self):
         """
         List of uplinks with all parameters
+
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
@@ -1605,6 +1616,9 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def bgp(self):
+        """
+        Boolean telling if BGP Routing should be configured.
+        """
         return (
             self.underlay_router
             and self.uplink_type == "p2p"
@@ -1619,6 +1633,9 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def underlay(self):
+        """
+        Returns a dictionary of underlay parameters to configure on the node.
+        """
         bgp = self.bgp and self.underlay_routing_protocol == "ebgp" and self.underlay_router and self.uplink_type == "p2p"
         mpls = (
             self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"]
@@ -1644,23 +1661,20 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def overlay(self):
         """
-        Set overlay.peering_address
+        Returns a dictionary of overlay parameters to configure on the node.
         """
+        # Set overlay.peering_address to use
         if self.overlay_routing_protocol_address_family == "ipv6":
             peering_address = self.ipv6_router_id
         else:
             peering_address = self.router_id
-        """
-        Set overlay.ler
-        """
+        # Set overlay.ler to enable MPLS edge PE features
         ler = (
             self.underlay["mpls"]
             and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
             and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
         )
-        """
-        Set overlay.vtep based on criteria
-        """
+        # Set overlay.vtep to enable VXLAN edge PE features
         vtep = (
             self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
             and (self.network_services_l2 or self.network_services_l3)
@@ -1668,17 +1682,17 @@ class EosDesignsFacts(AvdFacts):
             and self.uplink_type == "p2p"
             and self.vtep
         )
-        """
-        Set overlay.evpn based on criteria
-        """
+        # Set overlay.evpn to enable EVPN on the node
         evpn = (
             self.bgp
             and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
             and self.overlay_routing_protocol in ["ebgp", "ibgp"]
             and "evpn" in self.overlay_address_families
         )
+        # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
         evpn_vxlan = evpn and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "vxlan"
         evpn_mpls = evpn and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "mpls"
+        # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
         vpn_ipv4 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families
         vpn_ipv6 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families
         return {
