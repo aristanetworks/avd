@@ -78,8 +78,7 @@ vlan_interfaces:
   - name: Vlan90
     description: SVI Description
     ip_address: 10.10.83.1/24
-    ip_attached_host_route_export:
-      test: 10
+    ip_attached_host_route_export: {}
 
 # MCAST Configuration
 
@@ -217,5 +216,4 @@ vlan_interfaces:
     description: PVLAN Primary with vlan mapping
     shutdown: false
     vrf: Tenant_A
-    ip address: 10.0.101.1/24
     pvlan_mapping: 111-112
