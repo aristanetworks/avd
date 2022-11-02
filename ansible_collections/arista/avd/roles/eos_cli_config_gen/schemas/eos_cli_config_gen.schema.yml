@@ -8038,7 +8038,11 @@ keys:
           display_name: IP Attached Host Route Export
           keys:
             distance:
-              type: str
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 255
         bfd:
           type: dict
           display_name: BFD

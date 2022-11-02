@@ -11916,7 +11916,9 @@
             "title": "IP Attached Host Route Export",
             "properties": {
               "distance": {
-                "type": "string",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
                 "title": "Distance"
               }
             },
