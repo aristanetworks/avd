@@ -21,7 +21,8 @@
                                 "type": "string",
                                 "enum": [
                                     "bool",
-                                    "str"
+                                    "str",
+                                    "float"
                                 ]
                             }
                         },
@@ -111,7 +112,8 @@
                                 "type": "string",
                                 "enum": [
                                     "bool",
-                                    "int"
+                                    "int",
+                                    "float"
                                 ]
                             }
                         },
