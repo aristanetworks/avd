@@ -850,18 +850,17 @@ keys:
     type: bool
   evpn_multicast:
     default: false
-    description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"\
-      \ must also be configured under the Network Services (tenants).\nRequires \"\
-      underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor\
-      \ MLAG devices Route Distinguisher must be unique since this feature will create\
-      \ multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3,\
-      \ 7300X3, 720XP and 722XP\n  The Following default platform setting will be\
-      \ configured: \"platform trident forwarding-table partition flexible exact-match\
-      \ 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be\
-      \ restarted when this configuration is applied.\n  You can tune the settings\
-      \ by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\
-      \n  Please contact an Arista representative for help with determining the appropriate\
-      \ values for your environment.\n"
+    description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
+      must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
+      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
+      Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning
+      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The
+      Following default platform setting will be configured: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All
+      forwarding agents will be restarted when this configuration is applied.\n  You
+      can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      \ Please contact an Arista representative for help with determining the appropriate
+      values for your environment.\n"
     display_name: Enable Fabric to support EVPN Multicast
     type: bool
   evpn_overlay_bgp_rtc:
@@ -1117,8 +1116,8 @@ keys:
   overlay_routing_protocol:
     case_sensitive: false
     default: ebgp
-    description: "- The following overlay routing protocols are supported:\n  - EBGP\
-      \ (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n"
+    description: "- The following overlay routing protocols are supported:\n  - EBGP
+      (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n"
     type: str
     valid_values:
     - ebgp
@@ -1313,10 +1312,10 @@ keys:
   underlay_routing_protocol:
     case_sensitive: false
     default: ebgp
-    description: "- The following underlay routing protocols are supported:\n  - EBGP\
-      \ (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n\
-      \  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all\
-      \ devices in the fabric.\n\n*Only supported with core_interfaces data model.\n"
+    description: "- The following underlay routing protocols are supported:\n  - EBGP
+      (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
+      \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
+      devices in the fabric.\n\n*Only supported with core_interfaces data model.\n"
     type: str
     valid_values:
     - ebgp

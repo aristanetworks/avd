@@ -43,7 +43,7 @@
       "default": false,
       "description": "BGP Mesh PES",
       "type": "boolean",
-      "title": "Bgp Mesh Pes"
+      "title": "BGP Mesh Pes"
     },
     "bgp_peer_groups": {
       "description": "Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.\nNote that the name of the peer groups use '-' instead of '_' in EOS configuration.\n",
@@ -399,7 +399,7 @@
               },
               "underlay_ethernet_mlag_interfaces": {
                 "type": "string",
-                "title": "Underlay Ethernet Mlag Interfaces"
+                "title": "Underlay Ethernet MLAG Interfaces"
               },
               "underlay_port_channel_interfaces": {
                 "type": "string",
@@ -407,7 +407,7 @@
               },
               "underlay_port_channel_mlag_interfaces": {
                 "type": "string",
-                "title": "Underlay Port Channel Mlag Interfaces"
+                "title": "Underlay Port Channel MLAG Interfaces"
               },
               "vtep_loopback_interface": {
                 "type": "string",
@@ -422,44 +422,44 @@
             "properties": {
               "mlag_ip_primary": {
                 "type": "string",
-                "title": "Mlag Ip Primary"
+                "title": "MLAG IP Primary"
               },
               "mlag_ip_secondary": {
                 "type": "string",
-                "title": "Mlag Ip Secondary"
+                "title": "MLAG IP Secondary"
               },
               "mlag_l3_ip_primary": {
                 "type": "string",
-                "title": "Mlag L3 Ip Primary"
+                "title": "MLAG L3 IP Primary"
               },
               "mlag_l3_ip_secondary": {
                 "type": "string",
-                "title": "Mlag L3 Ip Secondary"
+                "title": "MLAG L3 IP Secondary"
               },
               "p2p_uplinks_ip": {
                 "type": "string",
-                "title": "P2P Uplinks Ip"
+                "title": "P2P Uplinks IP"
               },
               "p2p_uplinks_peer_ip": {
                 "type": "string",
-                "title": "P2P Uplinks Peer Ip"
+                "title": "P2P Uplinks Peer IP"
               },
               "router_id": {
                 "type": "string",
-                "title": "Router Id"
+                "title": "Router ID"
               },
               "vtep_ip": {
                 "type": "string",
-                "title": "Vtep Ip"
+                "title": "Vtep IP"
               },
               "vtep_ip_mlag": {
                 "type": "string",
-                "title": "Vtep Ip Mlag"
+                "title": "Vtep IP MLAG"
               }
             },
             "additionalProperties": false,
             "type": "object",
-            "title": "Ip Addressing"
+            "title": "IP Addressing"
           },
           "key": {
             "type": "string",
@@ -467,11 +467,11 @@
           },
           "mlag_support": {
             "type": "boolean",
-            "title": "Mlag Support"
+            "title": "MLAG Support"
           },
           "mpls_lsr": {
             "type": "boolean",
-            "title": "Mpls Lsr"
+            "title": "MPLS Lsr"
           },
           "network_services": {
             "properties": {
@@ -506,7 +506,10 @@
           }
         },
         "additionalProperties": false,
-        "type": "object"
+        "type": "object",
+        "required": [
+          "key"
+        ]
       },
       "type": "array",
       "title": "Node Type Keys"
