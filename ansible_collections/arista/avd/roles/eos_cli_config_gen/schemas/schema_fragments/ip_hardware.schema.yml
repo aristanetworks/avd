@@ -4,11 +4,9 @@
 type: dict
 keys:
   ip_hardware:
-    display_name: IP Hardware
     type: dict
     keys:
       fib:
-        display_name: FIB
         type: dict
         keys:
           optimize:

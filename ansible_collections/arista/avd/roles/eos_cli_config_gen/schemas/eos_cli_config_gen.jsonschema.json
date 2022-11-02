@@ -1817,11 +1817,9 @@
       }
     },
     "ip_hardware": {
-      "title": "IP Hardware",
       "type": "object",
       "properties": {
         "fib": {
-          "title": "FIB",
           "type": "object",
           "properties": {
             "optimize": {
@@ -1847,10 +1845,12 @@
               "title": "Optimize"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Fib"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "IP Hardware"
     },
     "ip_http_client_source_interfaces": {
       "type": "array",
