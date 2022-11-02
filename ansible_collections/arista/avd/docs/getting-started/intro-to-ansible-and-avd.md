@@ -702,7 +702,7 @@ Below are a number of links to additional documentation about Ansible AVD and An
 
 - [Role documentation for eos_design](../../roles/eos_designs)
 - [Role documentation for eos_cli_config_gen](../../roles/eos_cli_config_gen)
-- [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/2.3/tower.html)
+- [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/latest/reference_appendices/tower.html)
 - [Role documentation for eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
 
 ## Next steps
