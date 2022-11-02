@@ -370,8 +370,8 @@ This source of truth means you have a complete overview of your entire designed 
 
 Below you will find two examples of documentation automatically created by Ansible AVD:
 
-- [5 stage CLOS fabric across two Data Centers](../../molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
-- [A single leaf inside the fabric above](../../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
+- [Documentation for L3LS fabric](../../examples/single-dc-l3ls/documentation/fabric/FABRIC-documentation.md)
+- [A single leaf inside the fabric above](../../examples/single-dc-l3ls/documentation/devices/dc1-leaf1a.md)
 
 ## How do I use AVD?
 
@@ -702,7 +702,7 @@ Below are a number of links to additional documentation about Ansible AVD and An
 
 - [Role documentation for eos_design](../../roles/eos_designs)
 - [Role documentation for eos_cli_config_gen](../../roles/eos_cli_config_gen)
-- [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/2.3/tower.html)
+- [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/latest/reference_appendices/tower.html)
 - [Role documentation for eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
 
 ## Next steps
