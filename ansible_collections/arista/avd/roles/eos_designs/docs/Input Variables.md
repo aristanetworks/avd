@@ -72,6 +72,23 @@ Maximum Paths for BGP multi-path
 bgp_maximum_paths: <int>
 ```
 
+## Bgp Mesh Pes
+
+### Description
+
+BGP Mesh PES
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  |  |
+
+### YAML
+
+```yaml
+bgp_mesh_pes: <bool>
+```
+
 ## BGP peer group names and encrypted password
 
 ### Description
