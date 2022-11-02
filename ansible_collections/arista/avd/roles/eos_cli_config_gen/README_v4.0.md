@@ -2453,10 +2453,10 @@ qos_profiles:
     cos: < cos-value >
     dscp: < dscp-value >
     tx_queues:
-      id: < tx-queue-id >
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
-      id: < tx-queue-id >
+      - id: < tx-queue-id >
         bandwidth_percent: < value >
         priority: < string >
 ```
@@ -3334,7 +3334,7 @@ traffic_policies:
             - protocol: vrrp
             # The 'protocol neighbors' subcommand is not supported when any
             # other match subcommands are configured
-            neighbors:
+            - protocol: neighbors
           actions:
             dscp: < dscp code value >
             traffic_class: < traffic class id >

@@ -44,9 +44,10 @@ router_ospf:
       redistribute:
 {%                 if vrf.ospf.redistribute_bgp.enabled | arista.avd.default(true) %}
         bgp:
-          enabled: true
 {%                     if vrf.ospf.redistribute_bgp.route_map is arista.avd.defined %}
           route_map: {{ vrf.ospf.redistribute_bgp.route_map }}
+{%                     else %}
+          {}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}

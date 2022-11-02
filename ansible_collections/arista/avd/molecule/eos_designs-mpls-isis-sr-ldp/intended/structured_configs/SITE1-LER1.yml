@@ -467,5 +467,4 @@ router_ospf:
       - Ethernet6.10
       max_lsa: 10000
       redistribute:
-        bgp:
-          enabled: true
+        bgp: {}

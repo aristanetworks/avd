@@ -7,7 +7,7 @@
 | --- | --------------- |
 | default | {{ ipv6_unicast_routing | arista.avd.default(false) }} |
 {% set ipv6_configured_in_vrf = false %}
-{% for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for vrf in vrfs | arista.avd.natural_sort('name') %}
 {%     if vrf.ipv6_routing is arista.avd.defined(true) %}
 {%         set ipv6_configured_in_vrf = true %}
 | {{ vrf.name }} | true |
