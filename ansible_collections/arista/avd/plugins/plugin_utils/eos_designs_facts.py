@@ -1501,6 +1501,7 @@ class EosDesignsFacts(AvdFacts):
     def uplink_peers(self):
         """
         List of all uplink peers
+
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
         fabric_name = get(self._hostvars, "fabric_name", required=True)
