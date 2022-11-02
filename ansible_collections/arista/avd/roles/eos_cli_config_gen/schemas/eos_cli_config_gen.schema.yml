@@ -540,14 +540,14 @@ keys:
   custom_templates:
     type: list
     display_name: Extensibility with Custom Templates
-    description: "- Custom templates can be added below the playbook directory.\n\
-      - If a location above the directory is desired, a symbolic link can be used.\n\
-      - Example under the `playbooks` directory create symbolic link with the following\
-      \ command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n\
-      \  ```\n\n- The output will be rendered at the end of the configuration.\n-\
-      \ The order of custom templates in the list can be important if they overlap.\n\
-      - It is recommenended to use a `!` delimiter at the top of each custom template.\n\
-      \nAdd `custom_templates` to group/host variables:\n"
+    description: "- Custom templates can be added below the playbook directory.\n-
+      If a location above the directory is desired, a symbolic link can be used.\n-
+      Example under the `playbooks` directory create symbolic link with the following
+      command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n
+      \ ```\n\n- The output will be rendered at the end of the configuration.\n- The
+      order of custom templates in the list can be important if they overlap.\n- It
+      is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd
+      `custom_templates` to group/host variables:\n"
     items:
       type: str
       description: Template relative path below playbook directory
@@ -588,22 +588,12 @@ keys:
                 type: bool
   daemon_terminattr:
     type: dict
-<<<<<<< HEAD
     description: "You can either provide a list of IPs/FQDNs to target on-premise
       Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming
       to multiple clusters both on-prem and cloud service is supported.\n> Note For
       TerminAttr version recommendation and EOS compatibility matrix, please refer
       to the latest TerminAttr Release Notes\n  which always contain the latest recommended
       versions and minimum required versions per EOS release.\n"
-=======
-    display_name: Daemon TerminAttr
-    description: "You can either provide a list of IPs/FQDNs to target on-premise\
-      \ Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\n\
-      Streaming to multiple clusters both on-prem and cloud service is supported.\n\
-      > Note For TerminAttr version recommendation and EOS compatibility matrix, please\
-      \ refer to the latest TerminAttr Release Notes\n  which always contain the latest\
-      \ recommended versions and minimum required versions per EOS release.\n"
->>>>>>> 89a1fd8df (Feat(eos_designs): Add schema for eos_designs_fabric_variables_mpls_beta.md)
     keys:
       cvaddrs:
         type: list
@@ -2367,15 +2357,15 @@ keys:
     convert_types:
     - dict
     display_name: IP Community Lists
-    description: "AVD supports 2 different data models for community lists:\n\n- The\
-      \ legacy `community_lists` data model that can be used for compatibility with\
-      \ the existing deployments.\n- The improved `ip_community_lists` data model.\n\
-      \nBoth data models can coexist without conflicts, as different keys are used:\
-      \ `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\
-      \nThe improved data model has a better design documented below:\n\ncommunities\
-      \ and regexp MUST not be configured together in the same entry\npossible community\
-      \ strings are (case insensitive):\n - GSHUT\n - internet\n - local-as\n - no-advertise\n\
-      \ - no-export\n - <1-4294967040>\n - aa:nn\n"
+    description: "AVD supports 2 different data models for community lists:\n\n- The
+      legacy `community_lists` data model that can be used for compatibility with
+      the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth
+      data models can coexist without conflicts, as different keys are used: `community_lists`
+      vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved
+      data model has a better design documented below:\n\ncommunities and regexp MUST
+      not be configured together in the same entry\npossible community strings are
+      (case insensitive):\n - GSHUT\n - internet\n - local-as\n - no-advertise\n -
+      no-export\n - <1-4294967040>\n - aa:nn\n"
     items:
       type: dict
       keys:
@@ -4193,12 +4183,12 @@ keys:
               type: str
         rate_limit_per_ingress_chip:
           type: str
-          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\
-            \n  \"100 kbps\"\n  \"10 mbps\"\n"
+          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+            \ \"100 kbps\"\n  \"10 mbps\"\n"
         rate_limit_per_egress_chip:
           type: str
-          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\
-            \n  \"100 kbps\"\n  \"10 mbps\"\n"
+          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+            \ \"100 kbps\"\n  \"10 mbps\"\n"
         sample:
           type: int
           convert_types:
