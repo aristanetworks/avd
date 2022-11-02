@@ -15,7 +15,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Access-list Name
+          description: Access-list Name
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -30,7 +30,7 @@ keys:
               sequence:
                 type: int
                 required: true
-                display_name: Sequence ID
+                description: Sequence ID
                 convert_types:
                   - str
               action:

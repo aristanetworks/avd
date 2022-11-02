@@ -5,11 +5,10 @@ type: dict
 keys:
   policy_maps:
     type: dict
-    display_name: Policy-Maps
     keys:
       pbr:
         type: list
-        display_name: PBR Policy-Maps
+        description: PBR Policy-Maps
         primary_key: name
         convert_types:
           - dict
@@ -18,7 +17,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Policy-Map Name
+              description: Policy-Map Name
             classes:
               type: list
               primary_key: name
@@ -29,7 +28,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    display_name: Class Name
+                    description: Class Name
                   index:
                     type: int
                     convert_types:
@@ -38,8 +37,9 @@ keys:
                     description: "'drop' and 'set' are mutually exclusive"
                     type: bool
                   set:
-                    description: "'drop' and 'set' are mutually exclusive"
-                    display_name: Set Nexthop
+                    description: |
+                      Set Nexthop
+                      'drop' and 'set' are mutually exclusive
                     type: dict
                     keys:
                       nexthop:
@@ -52,7 +52,7 @@ keys:
                             type: bool
       qos:
         type: list
-        display_name: QOS Policy-Maps
+        description: QOS Policy-Maps
         primary_key: name
         convert_types:
           - dict
@@ -61,7 +61,7 @@ keys:
           keys:
             name:
               type: str
-              display_name: Policy-Map Name
+              description: Policy-Map Name
             classes:
               type: list
               primary_key: name
@@ -72,7 +72,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    display_name: Class Name
+                    description: Class Name
                   set:
                     type: dict
                     keys:

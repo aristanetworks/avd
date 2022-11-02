@@ -71,7 +71,7 @@ keys:
               type: list
               items:
                 type: str
-                display_name: Interface Name
+                description: Interface Name
             distribute_list_in:
               type: dict
               keys:
@@ -170,19 +170,19 @@ keys:
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
                 connected:
                   type: dict
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
                 bgp:
                   type: dict
                   keys:
                     route_map:
                       type: str
-                      display_name: Route Map Name
+                      description: Route Map Name
             auto_cost_reference_bandwidth:
               type: int
               convert_types:
@@ -205,10 +205,10 @@ keys:
                         type: list
                         items:
                           type: str
-                          display_name: IPv4 Prefix
+                          description: IPv4 Prefix
                       prefix_list:
                         type: str
-                        display_name: Prefix-List Name
+                        description: Prefix-List Name
                   type:
                     type: str
                     valid_values: ["normal", "stub", "nssa"]

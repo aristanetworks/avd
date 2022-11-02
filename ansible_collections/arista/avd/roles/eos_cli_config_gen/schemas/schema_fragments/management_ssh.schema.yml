@@ -14,10 +14,10 @@ keys:
           keys:
             name:
               type: str
-              display_name: Standard ACL Name
+              description: Standard ACL Name
             vrf:
               type: str
-              display_name: VRF Name
+              description: VRF Name
       ipv6_access_groups:
         type: list
         items:
@@ -25,10 +25,10 @@ keys:
           keys:
             name:
               type: str
-              display_name: Standard ACL Name
+              description: Standard ACL Name
             vrf:
               type: str
-              display_name: VRF Name
+              description: VRF Name
       idle_timeout:
         type: int
         convert_types:
@@ -90,7 +90,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: VRF Name
+              description: VRF Name
             enable:
               description: Enable SSH in VRF
               type: bool

@@ -4,7 +4,6 @@
 type: dict
 keys:
   management_api_http:
-    display_name: Management HTTP
     type: dict
     keys:
       enable_http:
@@ -12,7 +11,7 @@ keys:
       enable_https:
         type: bool
       https_ssl_profile:
-        display_name: SSL Profile Name
+        description: SSL Profile Name
         type: str
       default_services:
         type: bool
@@ -26,14 +25,14 @@ keys:
           type: dict
           keys:
             name:
-              display_name: VRF Name
+              description: VRF Name
               type: str
               required: true
             access_group:
-              display_name: Standard IPv4 ACL name
+              description: Standard IPv4 ACL name
               type: str
             ipv6_access_group:
-              display_name: Standard IPv6 ACL name
+              description: Standard IPv6 ACL name
               type: str
       protocol_https_certificate:
         type: dict

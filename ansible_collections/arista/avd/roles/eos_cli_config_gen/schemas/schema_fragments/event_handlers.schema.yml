@@ -8,18 +8,14 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Event Handlers
     items:
       type: dict
       keys:
         name:
           type: str
-          display_name: Event Handler Name
+          description: Event Handler Name
         action_type:
           type: str
-          display_name: Action Type
-          description: |
-            Type of action
           valid_values: ["bash", "increment", "log"]
         action:
           type: str

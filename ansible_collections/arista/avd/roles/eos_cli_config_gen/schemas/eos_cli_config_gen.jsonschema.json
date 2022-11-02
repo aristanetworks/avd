@@ -392,7 +392,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Access-list Name"
+            "description": "Access-list Name",
+            "title": "Name"
           },
           "counters_per_entry": {
             "type": "boolean",
@@ -405,7 +406,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "action": {
                   "type": "string",
@@ -473,7 +475,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Access List Name"
+                "description": "Access List Name",
+                "title": "Name"
               },
               "entries": {
                 "type": "array",
@@ -490,7 +493,8 @@
                     },
                     "match": {
                       "type": "string",
-                      "title": "Regex To Match"
+                      "description": "Regex To Match",
+                      "title": "Match"
                     },
                     "origin": {
                       "type": "string",
@@ -541,7 +545,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Group Name"
+            "description": "Group Name",
+            "title": "Name"
           },
           "vrf": {
             "type": "string",
@@ -558,7 +563,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "title": "Profile Name"
+              "description": "Profile Name"
             },
             "title": "BGP Maintenance Profiles"
           }
@@ -588,8 +593,9 @@
               "title": "Hash Algorithm"
             },
             "key": {
-              "title": "Hashed Password",
-              "type": "string"
+              "description": "Hashed Password",
+              "type": "string",
+              "title": "Key"
             }
           },
           "additionalProperties": false,
@@ -609,14 +615,16 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Class-Map Name"
+                "description": "Class-Map Name",
+                "title": "Name"
               },
               "ip": {
                 "type": "object",
                 "properties": {
                   "access_group": {
                     "type": "string",
-                    "title": "Standard Access-List Name"
+                    "description": "Standard Access-List Name",
+                    "title": "Access Group"
                   }
                 },
                 "additionalProperties": false,
@@ -634,7 +642,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Class-Map Name"
+                "description": "Class-Map Name",
+                "title": "Name"
               },
               "vlan": {
                 "type": "integer",
@@ -651,7 +660,8 @@
                 "properties": {
                   "access_group": {
                     "type": "string",
-                    "title": "IPv4 Access-List Name"
+                    "description": "IPv4 Access-List Name",
+                    "title": "Access Group"
                   }
                 },
                 "additionalProperties": false,
@@ -662,7 +672,8 @@
                 "properties": {
                   "access_group": {
                     "type": "string",
-                    "title": "IPv6 Access-List Name"
+                    "description": "IPv6 Access-List Name",
+                    "title": "Access Group"
                   }
                 },
                 "additionalProperties": false,
@@ -696,7 +707,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Community-list Name"
+            "description": "Community-list Name",
+            "title": "Name"
           },
           "action": {
             "type": "string",
@@ -774,7 +786,6 @@
     },
     "daemon_terminattr": {
       "type": "object",
-      "title": "Daemon TerminAttr",
       "description": "You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming to multiple clusters both on-prem and cloud service is supported.\n> Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes\n  which always contain the latest recommended versions and minimum required versions per EOS release.\n",
       "properties": {
         "cvaddrs": {
@@ -794,7 +805,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Cluster Name"
+                "description": "Cluster Name",
+                "title": "Name"
               },
               "cvaddrs": {
                 "type": "array",
@@ -833,23 +845,23 @@
               },
               "cvobscurekeyfile": {
                 "type": "boolean",
-                "title": "Obscure Key File",
-                "description": "Encrypt the private key used for authentication to CloudVision\n"
+                "description": "Encrypt the private key used for authentication to CloudVision\n",
+                "title": "Cvobscurekeyfile"
               },
               "cvproxy": {
                 "type": "string",
-                "title": "Proxy URL",
-                "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n"
+                "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n",
+                "title": "Cvproxy"
               },
               "cvsourceip": {
                 "type": "string",
-                "title": "Source IP Address",
-                "description": "Set source IP address in case of in-band managament\n"
+                "description": "Set source IP address in case of in-band managament\n",
+                "title": "Cvsourceip"
               },
               "cvvrf": {
                 "type": "string",
-                "title": "VRF",
-                "description": "The VRF to use to connect to CloudVision\n"
+                "description": "The VRF to use to connect to CloudVision\n",
+                "title": "Cvvrf"
               }
             },
             "required": [
@@ -887,23 +899,23 @@
         },
         "cvobscurekeyfile": {
           "type": "boolean",
-          "title": "Obscure Key File",
-          "description": "Encrypt the private key used for authentication to CloudVision\n"
+          "description": "Encrypt the private key used for authentication to CloudVision\n",
+          "title": "Cvobscurekeyfile"
         },
         "cvproxy": {
           "type": "string",
-          "title": "Proxy URL",
-          "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n"
+          "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n",
+          "title": "Cvproxy"
         },
         "cvsourceip": {
           "type": "string",
-          "title": "Source IP Address",
-          "description": "Set source IP address in case of in-band managament\n"
+          "description": "Set source IP address in case of in-band managament\n",
+          "title": "Cvsourceip"
         },
         "cvvrf": {
           "type": "string",
-          "title": "VRF",
-          "description": "The VRF to use to connect to CloudVision\n"
+          "description": "The VRF to use to connect to CloudVision\n",
+          "title": "Cvvrf"
         },
         "cvgnmi": {
           "type": "boolean",
@@ -1005,7 +1017,8 @@
           "title": "Ingestvrf"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Daemon TerminAttr"
     },
     "daemons": {
       "type": "array",
@@ -1015,7 +1028,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Daemon Name"
+            "description": "Daemon Name",
+            "title": "Name"
           },
           "exec": {
             "type": "string",
@@ -1042,7 +1056,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "title": "Server IP or Hostname"
+            "description": "Server IP or Hostname"
           },
           "title": "Servers"
         },
@@ -1207,10 +1221,11 @@
             },
             "interval": {
               "type": "integer",
-              "title": "Interval in seconds",
+              "description": "Interval in seconds",
               "default": 300,
               "minimum": 30,
-              "maximum": 86400
+              "maximum": 86400,
+              "title": "Interval"
             }
           },
           "additionalProperties": false,
@@ -1222,23 +1237,22 @@
     },
     "event_handlers": {
       "type": "array",
-      "title": "Event Handlers",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "Event Handler Name"
+            "description": "Event Handler Name",
+            "title": "Name"
           },
           "action_type": {
             "type": "string",
-            "title": "Action Type",
-            "description": "Type of action\n",
             "enum": [
               "bash",
               "increment",
               "log"
-            ]
+            ],
+            "title": "Action Type"
           },
           "action": {
             "type": "string",
@@ -1271,7 +1285,8 @@
           }
         },
         "additionalProperties": false
-      }
+      },
+      "title": "Event Handlers"
     },
     "event_monitor": {
       "type": "object",
@@ -1370,7 +1385,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Interface-Group name"
+            "description": "Interface-Group name",
+            "title": "Name"
           },
           "interfaces": {
             "type": "array",
@@ -1410,7 +1426,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Interface-Profile Name"
+            "description": "Interface-Profile Name",
+            "title": "Name"
           },
           "commands": {
             "type": "array",
@@ -1438,7 +1455,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Access-list Name"
+            "description": "Access-list Name",
+            "title": "Name"
           },
           "counters_per_entry": {
             "type": "boolean",
@@ -1446,7 +1464,7 @@
           },
           "entries": {
             "type": "array",
-            "title": "ACL Entries",
+            "description": "ACL Entries",
             "items": {
               "type": "object",
               "properties": {
@@ -1528,7 +1546,7 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "title": "TCP Flag Name"
+                    "description": "TCP Flag Name"
                   },
                   "title": "TCP Flags"
                 },
@@ -1544,9 +1562,10 @@
                 },
                 "ttl": {
                   "type": "integer",
-                  "title": "TTL value",
+                  "description": "TTL value",
                   "minimum": 0,
-                  "maximum": 254
+                  "maximum": 254,
+                  "title": "TTL"
                 },
                 "ttl_match": {
                   "type": "string",
@@ -1600,7 +1619,8 @@
                 }
               },
               "additionalProperties": false
-            }
+            },
+            "title": "Entries"
           }
         },
         "required": [
@@ -1618,7 +1638,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "IP Community-list Name"
+            "description": "IP Community-list Name",
+            "title": "Name"
           },
           "entries": {
             "type": "array",
@@ -1643,8 +1664,8 @@
                 },
                 "regexp": {
                   "type": "string",
-                  "title": "Regular Expression",
-                  "description": "If defined, a regex community-list will be configured"
+                  "description": "Regular Expression\nIf defined, a regex community-list will be configured",
+                  "title": "RegExp"
                 }
               },
               "required": [
@@ -1676,7 +1697,6 @@
     },
     "ip_domain_lookup": {
       "type": "object",
-      "title": "Domain Lookup",
       "properties": {
         "source_interfaces": {
           "type": "array",
@@ -1701,7 +1721,8 @@
           "title": "Source Interfaces"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "IP Domain Lookup"
     },
     "ip_extcommunity_lists": {
       "type": "array",
@@ -1711,7 +1732,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Community-list Name"
+            "description": "Community-list Name",
+            "title": "Name"
           },
           "entries": {
             "type": "array",
@@ -1756,7 +1778,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Community-list Name"
+            "description": "Community-list Name",
+            "title": "Name"
           },
           "entries": {
             "type": "array",
@@ -1799,8 +1822,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "title": "Interface Name",
-            "type": "string"
+            "description": "Interface Name",
+            "type": "string",
+            "title": "Name"
           },
           "vrf": {
             "type": "string",
@@ -1848,7 +1872,8 @@
             },
             "address": {
               "type": "string",
-              "title": "IP Address"
+              "description": "IP Address",
+              "title": "Address"
             },
             "query_interval": {
               "type": "integer",
@@ -1893,7 +1918,8 @@
             "properties": {
               "id": {
                 "type": "integer",
-                "title": "VLAN ID"
+                "description": "VLAN ID",
+                "title": "ID"
               },
               "enabled": {
                 "type": "boolean",
@@ -1908,7 +1934,8 @@
                   },
                   "address": {
                     "type": "string",
-                    "title": "IP Address"
+                    "description": "IP Address",
+                    "title": "Address"
                   },
                   "query_interval": {
                     "type": "integer",
@@ -1974,11 +2001,13 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Interface Name"
+            "description": "Interface Name",
+            "title": "Name"
           },
           "vrf": {
             "type": "string",
-            "title": "VRF Name"
+            "description": "VRF Name",
+            "title": "VRF"
           }
         },
         "additionalProperties": false
@@ -1999,8 +2028,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "title": "Interface Name",
-            "type": "string"
+            "description": "Interface Name",
+            "type": "string",
+            "title": "Name"
           },
           "vrf": {
             "type": "string",
@@ -2044,7 +2074,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "IPv6 Access-list Name"
+            "description": "IPv6 Access-list Name",
+            "title": "Name"
           },
           "counters_per_entry": {
             "type": "boolean",
@@ -2057,7 +2088,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "action": {
                   "type": "string",
@@ -2125,7 +2157,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Prefix-list Name"
+            "description": "Prefix-list Name",
+            "title": "Name"
           },
           "sequence_numbers": {
             "type": "array",
@@ -2134,7 +2167,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "action": {
                   "type": "string",
@@ -2161,13 +2195,13 @@
     },
     "ipv6_standard_access_lists": {
       "type": "array",
-      "title": "IPv6 Standard Access-Lists",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "Access-list Name"
+            "description": "Access-list Name",
+            "title": "Name"
           },
           "counters_per_entry": {
             "type": "boolean",
@@ -2180,7 +2214,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "action": {
                   "type": "string",
@@ -2202,7 +2237,8 @@
           "sequence_numbers"
         ],
         "additionalProperties": false
-      }
+      },
+      "title": "IPv6 Standard Access Lists"
     },
     "ipv6_static_routes": {
       "type": "array",
@@ -2224,7 +2260,8 @@
           },
           "gateway": {
             "type": "string",
-            "title": "IPv6 Address"
+            "description": "IPv6 Address",
+            "title": "Gateway"
           },
           "distance": {
             "type": "integer",
@@ -2240,7 +2277,8 @@
           },
           "name": {
             "type": "string",
-            "title": "Description"
+            "description": "Description",
+            "title": "Name"
           },
           "metric": {
             "type": "integer",
@@ -2394,8 +2432,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "title": "Username",
-            "type": "string"
+            "description": "Username",
+            "type": "string",
+            "title": "Name"
           },
           "privilege": {
             "type": "integer",
@@ -2410,9 +2449,9 @@
             "title": "Role"
           },
           "sha512_password": {
-            "title": "SHA512 Hash of Password",
             "type": "string",
-            "description": "Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.\n"
+            "description": "SHA512 Hash of Password\nMust be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.\n",
+            "title": "SHA512 Password"
           },
           "no_password": {
             "type": "boolean",
@@ -2711,7 +2750,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "MAC Access-list Name"
+            "description": "MAC Access-list Name",
+            "title": "Name"
           },
           "counters_per_entry": {
             "type": "boolean",
@@ -2745,7 +2785,7 @@
     },
     "mac_security": {
       "type": "object",
-      "title": "MACsec",
+      "title": "MAC Security (MACsec)",
       "properties": {
         "license": {
           "type": "object",
@@ -2777,7 +2817,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Profile-Name"
+                "description": "Profile-Name",
+                "title": "Name"
               },
               "cipher": {
                 "type": "string",
@@ -2923,14 +2964,16 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "BGP Profile Name"
+                "description": "BGP Profile Name",
+                "title": "Name"
               },
               "initiator": {
                 "type": "object",
                 "properties": {
                   "route_map_inout": {
                     "type": "string",
-                    "title": "Route Map"
+                    "description": "Route Map",
+                    "title": "Route Map Inout"
                   }
                 },
                 "additionalProperties": false,
@@ -2951,7 +2994,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Unit Profile Name"
+                "description": "Unit Profile Name",
+                "title": "Name"
               },
               "on_boot": {
                 "type": "object",
@@ -2982,7 +3026,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Unit Name"
+                "description": "Unit Name",
+                "title": "Name"
               },
               "quiesce": {
                 "type": "boolean",
@@ -3029,7 +3074,6 @@
       "additionalProperties": false
     },
     "management_api_http": {
-      "title": "Management HTTP",
       "type": "object",
       "properties": {
         "enable_http": {
@@ -3041,8 +3085,9 @@
           "title": "Enable Https"
         },
         "https_ssl_profile": {
-          "title": "SSL Profile Name",
-          "type": "string"
+          "description": "SSL Profile Name",
+          "type": "string",
+          "title": "Https SSL Profile"
         },
         "default_services": {
           "type": "boolean",
@@ -3055,16 +3100,19 @@
             "type": "object",
             "properties": {
               "name": {
-                "title": "VRF Name",
-                "type": "string"
+                "description": "VRF Name",
+                "type": "string",
+                "title": "Name"
               },
               "access_group": {
-                "title": "Standard IPv4 ACL name",
-                "type": "string"
+                "description": "Standard IPv4 ACL name",
+                "type": "string",
+                "title": "Access Group"
               },
               "ipv6_access_group": {
-                "title": "Standard IPv6 ACL name",
-                "type": "string"
+                "description": "Standard IPv6 ACL name",
+                "type": "string",
+                "title": "IPv6 Access Group"
               }
             },
             "required": [
@@ -3092,7 +3140,8 @@
           "title": "Protocol Https Certificate"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Management API HTTP"
     },
     "management_api_models": {
       "type": "object",
@@ -3199,7 +3248,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Management Interface Name"
+            "description": "Management Interface Name",
+            "title": "Name"
           },
           "description": {
             "type": "string",
@@ -3215,11 +3265,13 @@
           },
           "vrf": {
             "type": "string",
-            "title": "VRF Name"
+            "description": "VRF Name",
+            "title": "VRF"
           },
           "ip_address": {
             "type": "string",
-            "title": "IPv4_address/Mask"
+            "description": "IPv4_address/Mask",
+            "title": "IP Address"
           },
           "ipv6_enable": {
             "type": "boolean",
@@ -3227,7 +3279,8 @@
           },
           "ipv6_address": {
             "type": "string",
-            "title": "IPv6_address/Mask"
+            "description": "IPv6_address/Mask",
+            "title": "IPv6 Address"
           },
           "type": {
             "type": "string",
@@ -3338,11 +3391,13 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Standard ACL Name"
+                "description": "Standard ACL Name",
+                "title": "Name"
               },
               "vrf": {
                 "type": "string",
-                "title": "VRF Name"
+                "description": "VRF Name",
+                "title": "VRF"
               }
             },
             "additionalProperties": false
@@ -3356,11 +3411,13 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Standard ACL Name"
+                "description": "Standard ACL Name",
+                "title": "Name"
               },
               "vrf": {
                 "type": "string",
-                "title": "VRF Name"
+                "description": "VRF Name",
+                "title": "VRF"
               }
             },
             "additionalProperties": false
@@ -3446,7 +3503,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VRF Name"
+                "description": "VRF Name",
+                "title": "Name"
               },
               "enable": {
                 "description": "Enable SSH in VRF",
@@ -3481,7 +3539,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Match-list Name"
+                "description": "Match-list Name",
+                "title": "Name"
               },
               "sequence_numbers": {
                 "type": "array",
@@ -3490,11 +3549,13 @@
                   "properties": {
                     "sequence": {
                       "type": "integer",
-                      "title": "Sequence ID"
+                      "description": "Sequence ID",
+                      "title": "Sequence"
                     },
                     "match_regex": {
                       "type": "string",
-                      "title": "Regular Expression"
+                      "description": "Regular Expression",
+                      "title": "Match Regex"
                     }
                   },
                   "required": [
@@ -3565,8 +3626,9 @@
           "title": "Heartbeat Interval"
         },
         "local_interface": {
-          "title": "Local Interface Name",
-          "type": "string"
+          "description": "Local Interface Name",
+          "type": "string",
+          "title": "Local Interface"
         },
         "peer_address": {
           "type": "string",
@@ -3582,8 +3644,9 @@
               "title": "Peer IP"
             },
             "vrf": {
-              "title": "VRF Name",
-              "type": "string"
+              "description": "VRF Name",
+              "type": "string",
+              "title": "VRF"
             }
           },
           "additionalProperties": false,
@@ -3668,8 +3731,9 @@
             "type": "object",
             "properties": {
               "name": {
-                "title": "Host Name",
-                "type": "string"
+                "description": "Host Name",
+                "type": "string",
+                "title": "Name"
               },
               "description": {
                 "type": "string",
@@ -3698,8 +3762,9 @@
             "type": "object",
             "properties": {
               "name": {
-                "title": "VRF Name",
-                "type": "string"
+                "description": "VRF Name",
+                "type": "string",
+                "title": "Name"
               },
               "description": {
                 "type": "string",
@@ -3733,8 +3798,9 @@
                   "type": "object",
                   "properties": {
                     "name": {
-                      "title": "Host name",
-                      "type": "string"
+                      "description": "Host name",
+                      "type": "string",
+                      "title": "Name"
                     },
                     "description": {
                       "type": "string",
@@ -3855,8 +3921,9 @@
                 "title": "Type"
               },
               "name": {
-                "title": "ACL Name",
-                "type": "string"
+                "description": "ACL Name",
+                "type": "string",
+                "title": "Name"
               }
             },
             "additionalProperties": false,
@@ -3923,8 +3990,9 @@
               "title": "Shutdown"
             },
             "transport_address_interface": {
-              "title": "Interface Name",
-              "type": "string"
+              "description": "Interface Name",
+              "type": "string",
+              "title": "Transport Address Interface"
             }
           },
           "additionalProperties": false,
@@ -3941,8 +4009,9 @@
           "type": "object",
           "properties": {
             "vrf": {
-              "title": "VRF Name",
-              "type": "string"
+              "description": "VRF Name",
+              "type": "string",
+              "title": "VRF"
             }
           },
           "additionalProperties": false,
@@ -3966,7 +4035,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Peer-filter Name"
+            "description": "Peer-filter Name",
+            "title": "Name"
           },
           "sequence_numbers": {
             "type": "array",
@@ -3975,7 +4045,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "match": {
                   "type": "string",
@@ -4084,17 +4155,17 @@
     },
     "policy_maps": {
       "type": "object",
-      "title": "Policy-Maps",
       "properties": {
         "pbr": {
           "type": "array",
-          "title": "PBR Policy-Maps",
+          "description": "PBR Policy-Maps",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Policy-Map Name"
+                "description": "Policy-Map Name",
+                "title": "Name"
               },
               "classes": {
                 "type": "array",
@@ -4103,7 +4174,8 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "title": "Class Name"
+                      "description": "Class Name",
+                      "title": "Name"
                     },
                     "index": {
                       "type": "integer",
@@ -4115,8 +4187,7 @@
                       "title": "Drop"
                     },
                     "set": {
-                      "description": "'drop' and 'set' are mutually exclusive",
-                      "title": "Set Nexthop",
+                      "description": "Set Nexthop\n'drop' and 'set' are mutually exclusive\n",
                       "type": "object",
                       "properties": {
                         "nexthop": {
@@ -4136,7 +4207,8 @@
                           "title": "Nexthop"
                         }
                       },
-                      "additionalProperties": false
+                      "additionalProperties": false,
+                      "title": "Set"
                     }
                   },
                   "additionalProperties": false
@@ -4145,17 +4217,19 @@
               }
             },
             "additionalProperties": false
-          }
+          },
+          "title": "PBR"
         },
         "qos": {
           "type": "array",
-          "title": "QOS Policy-Maps",
+          "description": "QOS Policy-Maps",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Policy-Map Name"
+                "description": "Policy-Map Name",
+                "title": "Name"
               },
               "classes": {
                 "type": "array",
@@ -4164,7 +4238,8 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "title": "Class Name"
+                      "description": "Class Name",
+                      "title": "Name"
                     },
                     "set": {
                       "type": "object",
@@ -4196,10 +4271,12 @@
               }
             },
             "additionalProperties": false
-          }
+          },
+          "title": "QOS"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Policy Maps"
     },
     "prefix_lists": {
       "type": "array",
@@ -4208,7 +4285,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Prefix-list Name"
+            "description": "Prefix-list Name",
+            "title": "Name"
           },
           "sequence_numbers": {
             "type": "array",
@@ -4217,7 +4295,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "action": {
                   "type": "string",
@@ -4599,7 +4678,8 @@
       "properties": {
         "protocol": {
           "type": "string",
-          "title": "Redundancy Protocol"
+          "description": "Redundancy Protocol",
+          "title": "Protocol"
         }
       },
       "additionalProperties": false,
@@ -4660,7 +4740,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Route-map Name"
+            "description": "Route-map Name",
+            "title": "Name"
           },
           "sequence_numbers": {
             "type": "array",
@@ -4669,7 +4750,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "type": {
                   "type": "string",
@@ -4856,11 +4938,13 @@
           "properties": {
             "ipv4": {
               "type": "string",
-              "title": "IPv4 Address"
+              "description": "IPv4 Address",
+              "title": "IPv4"
             },
             "ipv6": {
               "type": "string",
-              "title": "IPv6 Address"
+              "description": "IPv6 Address",
+              "title": "IPv6"
             }
           },
           "additionalProperties": false,
@@ -4878,7 +4962,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Destination-VRF"
+                "description": "Destination-VRF",
+                "title": "Name"
               },
               "leak_routes": {
                 "type": "array",
@@ -4891,7 +4976,8 @@
                     },
                     "subscribe_policy": {
                       "type": "string",
-                      "title": "Route-Map Policy"
+                      "description": "Route-Map Policy",
+                      "title": "Subscribe Policy"
                     }
                   },
                   "additionalProperties": false
@@ -4908,7 +4994,8 @@
                       "properties": {
                         "name": {
                           "type": "string",
-                          "title": "Dynamic Prefix List Name"
+                          "description": "Dynamic Prefix List Name",
+                          "title": "Name"
                         }
                       },
                       "additionalProperties": false
@@ -5484,7 +5571,7 @@
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "title": "Interface Name"
+                  "description": "Interface Name"
                 },
                 "title": "No Passive Interfaces"
               },
@@ -5626,7 +5713,8 @@
                     "properties": {
                       "route_map": {
                         "type": "string",
-                        "title": "Route Map Name"
+                        "description": "Route Map Name",
+                        "title": "Route Map"
                       }
                     },
                     "additionalProperties": false,
@@ -5637,7 +5725,8 @@
                     "properties": {
                       "route_map": {
                         "type": "string",
-                        "title": "Route Map Name"
+                        "description": "Route Map Name",
+                        "title": "Route Map"
                       }
                     },
                     "additionalProperties": false,
@@ -5648,7 +5737,8 @@
                     "properties": {
                       "route_map": {
                         "type": "string",
-                        "title": "Route Map Name"
+                        "description": "Route Map Name",
+                        "title": "Route Map"
                       }
                     },
                     "additionalProperties": false,
@@ -5679,13 +5769,14 @@
                           "type": "array",
                           "items": {
                             "type": "string",
-                            "title": "IPv4 Prefix"
+                            "description": "IPv4 Prefix"
                           },
                           "title": "Networks"
                         },
                         "prefix_list": {
                           "type": "string",
-                          "title": "Prefix-List Name"
+                          "description": "Prefix-List Name",
+                          "title": "Prefix List"
                         }
                       },
                       "additionalProperties": false,
@@ -5822,7 +5913,8 @@
                 "properties": {
                   "address": {
                     "type": "string",
-                    "title": "RP Address"
+                    "description": "RP Address",
+                    "title": "Address"
                   },
                   "groups": {
                     "type": "array",
@@ -5846,7 +5938,8 @@
                 "properties": {
                   "address": {
                     "type": "string",
-                    "title": "Anycast RP Address"
+                    "description": "Anycast RP Address",
+                    "title": "Address"
                   },
                   "other_anycast_rp_addresses": {
                     "type": "array",
@@ -5855,7 +5948,8 @@
                       "properties": {
                         "address": {
                           "type": "string",
-                          "title": "Other Anycast RP Address"
+                          "description": "Other Anycast RP Address",
+                          "title": "Address"
                         },
                         "register_count": {
                           "type": "integer",
@@ -5888,7 +5982,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VRF Name"
+                "description": "VRF Name",
+                "title": "Name"
               },
               "ipv4": {
                 "type": "object",
@@ -5900,7 +5995,8 @@
                       "properties": {
                         "address": {
                           "type": "string",
-                          "title": "RP Address"
+                          "description": "RP Address",
+                          "title": "Address"
                         },
                         "groups": {
                           "type": "array",
@@ -5973,11 +6069,13 @@
                   "properties": {
                     "destination": {
                       "type": "string",
-                      "title": "Sflow Destination IP"
+                      "description": "Sflow Destination IP",
+                      "title": "Destination"
                     },
                     "port": {
                       "type": "integer",
-                      "title": "Port Number"
+                      "description": "Port Number",
+                      "title": "Port"
                     }
                   },
                   "additionalProperties": false
@@ -6000,11 +6098,13 @@
             "properties": {
               "destination": {
                 "type": "string",
-                "title": "Sflow Destination IP"
+                "description": "Sflow Destination IP",
+                "title": "Destination"
               },
               "port": {
                 "type": "integer",
-                "title": "Port Number"
+                "description": "Port Number",
+                "title": "Port"
               }
             },
             "additionalProperties": false
@@ -6153,7 +6253,8 @@
                     "properties": {
                       "id": {
                         "type": "integer",
-                        "title": "Instance ID"
+                        "description": "Instance ID",
+                        "title": "ID"
                       },
                       "vlans": {
                         "type": "string",
@@ -6180,7 +6281,8 @@
             "properties": {
               "id": {
                 "type": "string",
-                "title": "Instance ID"
+                "description": "Instance ID",
+                "title": "ID"
               },
               "priority": {
                 "type": "integer",
@@ -6226,7 +6328,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Access-list Name"
+            "description": "Access-list Name",
+            "title": "Name"
           },
           "counters_per_entry": {
             "type": "boolean",
@@ -6239,7 +6342,8 @@
               "properties": {
                 "sequence": {
                   "type": "integer",
-                  "title": "Sequence ID"
+                  "description": "Sequence ID",
+                  "title": "Sequence"
                 },
                 "action": {
                   "type": "string",
@@ -6271,12 +6375,13 @@
         "properties": {
           "vrf": {
             "type": "string",
-            "title": "VRF Name",
-            "description": "If vrf_name = default the route will be placed in the GRT"
+            "description": "VRF Name",
+            "title": "VRF"
           },
           "destination_address_prefix": {
             "type": "string",
-            "title": "IPv4_network/Mask"
+            "description": "IPv4_network/Mask",
+            "title": "Destination Address Prefix"
           },
           "interface": {
             "type": "string",
@@ -6284,7 +6389,8 @@
           },
           "gateway": {
             "type": "string",
-            "title": "IPv4 Address"
+            "description": "IPv4 Address",
+            "title": "Gateway"
           },
           "distance": {
             "type": "integer",
@@ -6300,7 +6406,8 @@
           },
           "name": {
             "type": "string",
-            "title": "Description"
+            "description": "Description",
+            "title": "Name"
           },
           "metric": {
             "type": "integer",
@@ -6343,9 +6450,10 @@
             },
             "vlan": {
               "type": "integer",
-              "title": "VLAN ID",
+              "description": "VLAN ID",
               "minimum": 1,
-              "maximum": 4094
+              "maximum": 4094,
+              "title": "VLAN"
             }
           },
           "additionalProperties": false,
@@ -6549,8 +6657,9 @@
                       "title": "Format"
                     },
                     "eth_type": {
-                      "title": "EtherType",
-                      "type": "integer"
+                      "description": "EtherType",
+                      "type": "integer",
+                      "title": "Eth Type"
                     }
                   },
                   "additionalProperties": false,
@@ -6598,7 +6707,8 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Tcam-Profile Name"
+                "description": "Tcam-Profile Name",
+                "title": "Name"
               },
               "config": {
                 "type": "string",
@@ -6697,7 +6807,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "title": "IPv4 Prefix"
+                      "description": "IPv4 Prefix"
                     },
                     "title": "Prefixes"
                   }
@@ -6720,7 +6830,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "title": "IPv6 Prefix"
+                      "description": "IPv6 Prefix"
                     },
                     "title": "Prefixes"
                   }
@@ -7010,21 +7120,23 @@
     },
     "virtual_source_nat_vrfs": {
       "type": "array",
-      "title": "Virtual Source NAT",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "VRF Name"
+            "description": "VRF Name",
+            "title": "Name"
           },
           "ip_address": {
             "type": "string",
-            "title": "IPv4 Address"
+            "description": "IPv4 Address",
+            "title": "IP Address"
           }
         },
         "additionalProperties": false
-      }
+      },
+      "title": "Virtual Source Nat VRFs"
     },
     "vlan_interfaces": {
       "type": "array",
@@ -7725,7 +7837,6 @@
     },
     "vlan_internal_order": {
       "type": "object",
-      "title": "Internal VLAN Order",
       "properties": {
         "allocation": {
           "type": "string",
@@ -7742,13 +7853,15 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 4094,
-              "title": "Vlan ID"
+              "description": "Vlan ID",
+              "title": "Beginning"
             },
             "ending": {
               "type": "integer",
               "minimum": 1,
               "maximum": 4094,
-              "title": "Vlan ID"
+              "description": "Vlan ID",
+              "title": "Ending"
             }
           },
           "required": [
@@ -7763,7 +7876,8 @@
         "allocation",
         "range"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "VLAN Internal Order"
     },
     "vlans": {
       "type": "array",
@@ -7772,11 +7886,13 @@
         "properties": {
           "id": {
             "type": "integer",
-            "title": "VLAN ID"
+            "description": "VLAN ID",
+            "title": "ID"
           },
           "name": {
             "type": "string",
-            "title": "VLAN Name"
+            "description": "VLAN Name",
+            "title": "Name"
           },
           "state": {
             "type": "string",
@@ -7790,7 +7906,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "title": "Trunk Group Name"
+              "description": "Trunk Group Name"
             },
             "title": "Trunk Groups"
           },
@@ -7807,7 +7923,8 @@
               },
               "primary_vlan": {
                 "type": "integer",
-                "title": "Primary VLAN ID"
+                "description": "Primary VLAN ID",
+                "title": "Primary VLAN"
               }
             },
             "additionalProperties": false,
@@ -7825,13 +7942,13 @@
     },
     "vmtracer_sessions": {
       "type": "array",
-      "title": "VM Tracer Sessions",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "Vmtracer Session Name"
+            "description": "Vmtracer Session Name",
+            "title": "Name"
           },
           "url": {
             "type": "string",
@@ -7859,7 +7976,8 @@
           "name"
         ],
         "additionalProperties": false
-      }
+      },
+      "title": "VMTracer Sessions"
     },
     "vrfs": {
       "type": "array",

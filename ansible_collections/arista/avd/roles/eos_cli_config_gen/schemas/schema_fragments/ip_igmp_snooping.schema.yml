@@ -30,7 +30,7 @@ keys:
             type: bool
           address:
             type: str
-            display_name: IP Address
+            description: IP Address
           query_interval:
             type: int
             convert_types:
@@ -74,7 +74,7 @@ keys:
               convert_types:
               - str
               required: true
-              display_name: VLAN ID
+              description: VLAN ID
             enabled:
               type: bool
             querier:
@@ -84,7 +84,7 @@ keys:
                   type: bool
                 address:
                   type: str
-                  display_name: IP Address
+                  description: IP Address
                 query_interval:
                   type: int
                   convert_types:

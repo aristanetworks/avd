@@ -16,7 +16,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Community-list Name
+          description: Community-list Name
         entries:
           type: list
           required: true

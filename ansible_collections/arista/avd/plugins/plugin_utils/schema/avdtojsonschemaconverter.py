@@ -2,7 +2,7 @@ import json
 import os
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.utils import key_to_display_name
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:

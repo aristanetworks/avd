@@ -32,7 +32,7 @@ keys:
           type: dict
           keys:
             name:
-              display_name: Host Name
+              description: Host Name
               type: str
             description:
               type: str
@@ -48,7 +48,7 @@ keys:
           type: dict
           keys:
             name:
-              display_name: VRF Name
+              description: VRF Name
               type: str
             description:
               type: str
@@ -69,7 +69,7 @@ keys:
                 type: dict
                 keys:
                   name:
-                    display_name: Host name
+                    description: Host name
                     type: str
                   description:
                     type: str

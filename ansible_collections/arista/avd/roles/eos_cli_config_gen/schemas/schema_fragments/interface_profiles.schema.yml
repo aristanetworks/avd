@@ -14,7 +14,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Interface-Profile Name
+          description: Interface-Profile Name
         commands:
           type: list
           required: true

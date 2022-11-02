@@ -10,16 +10,15 @@ keys:
       keys:
         vrf:
           type: str
-          display_name: VRF Name
-          description: If vrf_name = default the route will be placed in the GRT
+          description: VRF Name
         destination_address_prefix:
           type: str
-          display_name: IPv4_network/Mask
+          description: IPv4_network/Mask
         interface:
           type: str
         gateway:
           type: str
-          display_name: IPv4 Address
+          description: IPv4 Address
         distance:
           type: int
           convert_types:
@@ -34,7 +33,7 @@ keys:
           max: 4294967295
         name:
           type: str
-          display_name: Description
+          description: Description
         metric:
           type: int
           convert_types:

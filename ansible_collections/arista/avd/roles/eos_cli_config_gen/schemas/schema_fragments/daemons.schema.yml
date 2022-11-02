@@ -15,7 +15,7 @@ keys:
         name:
           type: str
           required: true
-          display_name: Daemon Name
+          description: Daemon Name
         exec:
           type: str
           required: true

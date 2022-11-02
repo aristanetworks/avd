@@ -49,7 +49,7 @@ keys:
                     type: str
                     valid_values: ["48-bit", "64-bit"]
                   eth_type:
-                    display_name: EtherType
+                    description: EtherType
                     type: int
                     convert_types:
                     - str

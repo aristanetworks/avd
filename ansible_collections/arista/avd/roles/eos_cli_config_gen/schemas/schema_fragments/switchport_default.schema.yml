@@ -23,7 +23,7 @@ keys:
             valid_values: ["tagged", "untagged"]
           vlan:
             type: int
-            display_name: VLAN ID
+            description: VLAN ID
             convert_types:
               - str
             min: 1

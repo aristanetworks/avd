@@ -18,5 +18,5 @@ keys:
           shutdown:
             type: bool
           transport_address_interface:
-            display_name: Interface Name
+            description: Interface Name
             type: str

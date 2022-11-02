@@ -25,12 +25,12 @@ keys:
         name:
           type: str
           required: true
-          display_name: Access-list Name
+          description: Access-list Name
         counters_per_entry:
           type: bool
         entries:
           type: list
-          display_name: ACL Entries
+          description: ACL Entries
           items:
             type: dict
             keys:
@@ -94,7 +94,7 @@ keys:
                 type: list
                 items:
                   type: str
-                  display_name: TCP Flag Name
+                  description: TCP Flag Name
               fragments:
                 type: bool
                 description: Match non-head fragment packets.
@@ -103,7 +103,7 @@ keys:
                 description: Log matches against this rule.
               ttl:
                 type: int
-                display_name: TTL value
+                description: TTL value
                 convert_types:
                 - str
                 min: 0

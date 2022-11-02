@@ -33,10 +33,10 @@ keys:
                 keys:
                   destination:
                     type: str
-                    display_name: Sflow Destination IP
+                    description: Sflow Destination IP
                   port:
                     type: int
-                    display_name: Port Number
+                    description: Port Number
                     convert_types:
                     - str
             source_interface:
@@ -51,10 +51,10 @@ keys:
           keys:
             destination:
               type: str
-              display_name: Sflow Destination IP
+              description: Sflow Destination IP
             port:
               type: int
-              display_name: Port Number
+              description: Port Number
               convert_types:
               - str
       source_interface:

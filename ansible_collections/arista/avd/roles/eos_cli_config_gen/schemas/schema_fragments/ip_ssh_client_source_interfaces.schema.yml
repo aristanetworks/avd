@@ -9,7 +9,7 @@ keys:
       type: dict
       keys:
         name:
-          display_name: Interface Name
+          description: Interface Name
           type: str
         vrf:
           type: str

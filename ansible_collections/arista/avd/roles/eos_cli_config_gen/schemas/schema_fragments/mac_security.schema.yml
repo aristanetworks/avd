@@ -5,7 +5,7 @@ type: dict
 keys:
   mac_security:
     type: dict
-    display_name: MACsec
+    display_name: MAC Security (MACsec)
     keys:
       license:
         type: dict
@@ -31,7 +31,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Profile-Name
+              description: Profile-Name
             cipher:
               type: str
               valid_values:

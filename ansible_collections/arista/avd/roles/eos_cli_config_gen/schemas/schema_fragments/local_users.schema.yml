@@ -12,7 +12,7 @@ keys:
       type: dict
       keys:
         name:
-          display_name: Username
+          description: Username
           type: str
           required: true
         privilege:
@@ -28,9 +28,9 @@ keys:
           description: |
             EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"
         sha512_password:
-          display_name: SHA512 Hash of Password
           type: str
           description: |
+            SHA512 Hash of Password
             Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
         no_password:
           type: bool

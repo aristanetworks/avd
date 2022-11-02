@@ -30,7 +30,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    display_name: IPv4 Prefix
+                    description: IPv4 Prefix
           ipv6:
             type: list
             primary_key: name
@@ -46,7 +46,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    display_name: IPv6 Prefix
+                    description: IPv6 Prefix
           ports:
             type: list
             primary_key: name

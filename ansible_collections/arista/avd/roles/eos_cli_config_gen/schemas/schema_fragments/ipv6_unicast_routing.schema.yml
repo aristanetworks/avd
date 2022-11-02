@@ -5,4 +5,3 @@ type: dict
 keys:
   ipv6_unicast_routing:
     type: bool
-    display_name: IPv6 Unicast Routing

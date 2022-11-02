@@ -8,4 +8,4 @@ keys:
     keys:
       protocol:
         type: str
-        display_name: Redundancy Protocol
+        description: Redundancy Protocol

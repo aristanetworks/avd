@@ -18,7 +18,7 @@ keys:
             name:
               type: str
               required: true
-              display_name: Match-list Name
+              description: Match-list Name
             sequence_numbers:
               type: list
               required: true
@@ -31,10 +31,10 @@ keys:
                   sequence:
                     type: int
                     required: true
-                    display_name: Sequence ID
+                    description: Sequence ID
                     convert_types:
                       - str
                   match_regex:
                     type: str
                     required: true
-                    display_name: Regular Expression
+                    description: Regular Expression

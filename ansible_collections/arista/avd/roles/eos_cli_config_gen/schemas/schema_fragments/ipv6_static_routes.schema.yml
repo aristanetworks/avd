@@ -17,7 +17,7 @@ keys:
           type: str
         gateway:
           type: str
-          display_name: IPv6 Address
+          description: IPv6 Address
         distance:
           type: int
           convert_types:
@@ -32,7 +32,7 @@ keys:
           max: 4294967295
         name:
           type: str
-          display_name: Description
+          description: Description
         metric:
           type: int
           convert_types:

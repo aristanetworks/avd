@@ -15,7 +15,7 @@ keys:
         convert_types:
         - str
       local_interface:
-        display_name: Local Interface Name
+        description: Local Interface Name
         type: str
       peer_address:
         type: str
@@ -27,7 +27,7 @@ keys:
             type: str
             description: IPv4 Address
           vrf:
-            display_name: VRF Name
+            description: VRF Name
             type: str
       dual_primary_detection_delay:
         type: int
