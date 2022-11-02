@@ -1633,6 +1633,13 @@ class EosDesignsFacts(AvdFacts):
         )
 
     @cached_property
+    def evpn_encapsulation(self):
+        """
+        Toggle to set EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation.
+        """
+        return get(self._hostvars, "fabric_evpn_encapsulation", default=get(self._node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
+
+    @cached_property
     def underlay(self):
         """
         Returns a dictionary of underlay parameters to configure on the node.
@@ -1691,8 +1698,8 @@ class EosDesignsFacts(AvdFacts):
             and "evpn" in self.overlay_address_families
         )
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
-        evpn_vxlan = evpn and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "vxlan"
-        evpn_mpls = evpn and get(self._hostvars, "fabric_evpn_encapsulation", default="vxlan") == "mpls"
+        evpn_vxlan = evpn and self.evpn_encapsulation == "vxlan"
+        evpn_mpls = evpn and self.evpn_encapsulation == "mpls"
         # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
         vpn_ipv4 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families
         vpn_ipv6 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families
