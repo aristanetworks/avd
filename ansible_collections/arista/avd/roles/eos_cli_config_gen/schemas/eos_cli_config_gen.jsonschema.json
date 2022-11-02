@@ -6413,6 +6413,10 @@
           "type": "boolean",
           "title": "Dangerous"
         },
+        "polling_interval": {
+          "type": "integer",
+          "title": "Polling Interval"
+        },
         "vrfs": {
           "type": "array",
           "items": {
@@ -6429,7 +6433,7 @@
                   "properties": {
                     "destination": {
                       "type": "string",
-                      "description": "Sflow Destination IP",
+                      "description": "Sflow Destination IP Address",
                       "title": "Destination"
                     },
                     "port": {
@@ -6445,8 +6449,14 @@
                 },
                 "title": "Destinations"
               },
+              "source": {
+                "type": "string",
+                "description": "Source IP Address",
+                "title": "Source"
+              },
               "source_interface": {
                 "type": "string",
+                "description": "Source Interface",
                 "title": "Source Interface"
               }
             },
@@ -6464,7 +6474,7 @@
             "properties": {
               "destination": {
                 "type": "string",
-                "description": "Sflow Destination IP",
+                "description": "Sflow Destination IP Address",
                 "title": "Destination"
               },
               "port": {
@@ -6480,9 +6490,38 @@
           },
           "title": "Destinations"
         },
+        "source": {
+          "type": "string",
+          "description": "Source IP Address",
+          "title": "Source"
+        },
         "source_interface": {
           "type": "string",
+          "description": "Source Interface",
           "title": "Source Interface"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Extension Name",
+                "title": "Name"
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "Enable or Disable Extension",
+                "title": "Enabled"
+              }
+            },
+            "required": [
+              "enabled"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Extensions"
         },
         "interface": {
           "type": "object",

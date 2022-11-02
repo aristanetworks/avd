@@ -2325,12 +2325,15 @@ trackers:
 sflow:
   sample: < sample_rate >
   dangerous: < true | false >
+  polling_interval: < polling_interval_seconds >
   vrfs:
     <vrf_name_1>:
       destinations:
         < sflow_destination_ip_1>:
         < sflow_destination_ip_2>:
           port: < port_number >
+      # source and source_interface are mutually exclusive. If both are defined, source_interface takes precedence
+      source: < source_ip_address >
       source_interface: < source_interface >
     <vrf_name_2>:
       destinations:
@@ -2340,7 +2343,12 @@ sflow:
     < sflow_destination_ip_1 >:
       port: < port_number >
     < sflow_destination_ip_2 >:
+  # source and source_interface are mutually exclusive. If both are defined, source_interface takes precedence
+  source: < source_ip_address >
   source_interface: < source_interface >
+  extensions:
+    - name: <bgp | router | switch | tunnel >
+      enabled: < true | false >
   interface:
     disable:
       default: < true | false >
