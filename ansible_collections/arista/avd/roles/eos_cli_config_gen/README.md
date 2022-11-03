@@ -368,6 +368,9 @@ local_users:
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     ssh_key: "< ssh_key_string >"
+    # If "disabled" is true, the user will be removed and all other settings are ignored.
+    # Useful for removing the default "admin" user.
+    disabled: < true | false >
   < user_2 >:
     privilege: < 1-15 >
     role: < role >

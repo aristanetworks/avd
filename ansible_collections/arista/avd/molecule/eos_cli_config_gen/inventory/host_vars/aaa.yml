@@ -117,6 +117,13 @@ aaa_root:
 ### Local Users ###
 local_users:
   admin:
+    # Test disabling the default admin user. Will ignore the other settings.
+    disabled: true
+    privilege: 15
+    role: network-admin
+    no_password: true
+  aadmin:
+    disabled: false
     privilege: 15
     role: network-admin
     no_password: true

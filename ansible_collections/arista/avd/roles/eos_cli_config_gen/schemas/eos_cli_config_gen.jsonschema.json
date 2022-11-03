@@ -2461,6 +2461,11 @@
           "ssh_key": {
             "type": "string",
             "title": "SSH Key"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "If true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.",
+            "title": "Disabled"
           }
         },
         "required": [

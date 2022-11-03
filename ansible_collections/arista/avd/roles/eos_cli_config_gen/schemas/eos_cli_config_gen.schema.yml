@@ -1904,6 +1904,12 @@ keys:
             '
         ssh_key:
           type: str
+        disabled:
+          type: bool
+          description: 'If true, the user will be removed and all other settings are
+            ignored.
+
+            Useful for removing the default "admin" user.'
   logging:
     type: dict
     keys:

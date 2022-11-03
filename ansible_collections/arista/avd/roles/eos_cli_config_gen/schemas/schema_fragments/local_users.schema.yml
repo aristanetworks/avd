@@ -38,3 +38,8 @@ keys:
             If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         ssh_key:
           type: str
+        disabled:
+          type: bool
+          description: |
+            If true, the user will be removed and all other settings are ignored.
+            Useful for removing the default "admin" user.

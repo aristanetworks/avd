@@ -422,6 +422,10 @@ class AvdStructuredConfig(AvdFacts):
         local_users_dict = {}
         for local_user in natural_sort(local_users, "name"):
             name = local_user.get("name")
+            if local_user.get("disabled") is True:
+                local_users_dict[name] = {"disabled": True}
+                continue
+
             local_users_dict[name] = {"privilege": get(local_user, "privilege")}
             if (role := local_user.get("role")) is not None:
                 local_users_dict[name]["role"] = role

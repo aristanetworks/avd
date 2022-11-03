@@ -3,6 +3,10 @@
 !
 {%     for local_user in local_users | arista.avd.natural_sort('name') %}
 {%         set local_user_cli = "username " ~ local_user.name %}
+{%         if local_user.disabled is arista.avd.defined(true) %}
+no {{ local_user_cli }}
+{%             continue %}
+{%         endif %}
 {%         if local_user.privilege is arista.avd.defined %}
 {%             set local_user_cli = local_user_cli ~ " privilege " ~ local_user.privilege %}
 {%         endif %}
