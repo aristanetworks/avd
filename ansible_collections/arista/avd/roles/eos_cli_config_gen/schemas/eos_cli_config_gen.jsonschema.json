@@ -2437,9 +2437,9 @@
             "title": "Name"
           },
           "disabled": {
-            "description": "If the EOS user is removed in the configuration",
-            "type": "bool",
-            "title": "Present"
+            "type": "boolean",
+            "description": "If true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.\n",
+            "title": "Disabled"
           },
           "privilege": {
             "type": "integer",

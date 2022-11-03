@@ -1874,8 +1874,12 @@ keys:
           required: true
         disabled:
           type: bool
-          description: |
-            If the EOS user is removed in the configuration
+          description: 'If true, the user will be removed and all other settings are
+            ignored.
+
+            Useful for removing the default "admin" user.
+
+            '
         privilege:
           type: int
           convert_types:
