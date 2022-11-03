@@ -2828,6 +2828,48 @@
       },
       "title": "MAC Access Lists"
     },
+    "mac_address_table": {
+      "type": "object",
+      "properties": {
+        "aging_time": {
+          "type": "integer",
+          "description": "Aging time in seconds",
+          "title": "Aging Time"
+        },
+        "notification_host_flap": {
+          "type": "object",
+          "properties": {
+            "logging": {
+              "type": "boolean",
+              "title": "Logging"
+            },
+            "detection": {
+              "type": "object",
+              "properties": {
+                "window": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 300,
+                  "title": "Window"
+                },
+                "moves": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 10,
+                  "title": "Moves"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Detection"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Notification Host Flap"
+        }
+      },
+      "additionalProperties": false,
+      "title": "MAC Address Table"
+    },
     "mac_security": {
       "type": "object",
       "title": "MAC Security (MACsec)",

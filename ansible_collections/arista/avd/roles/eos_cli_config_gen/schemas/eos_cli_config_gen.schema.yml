@@ -2156,6 +2156,34 @@ keys:
                 - str
               action:
                 type: str
+  mac_address_table:
+    type: dict
+    keys:
+      aging_time:
+        type: int
+        description: Aging time in seconds
+        convert_types:
+        - str
+      notification_host_flap:
+        type: dict
+        keys:
+          logging:
+            type: bool
+          detection:
+            type: dict
+            keys:
+              window:
+                type: int
+                min: 2
+                max: 300
+                convert_types:
+                - str
+              moves:
+                type: int
+                min: 2
+                max: 10
+                convert_types:
+                - str
   mac_security:
     type: dict
     display_name: MAC Security (MACsec)
