@@ -4484,10 +4484,10 @@ keys:
                     - str
             source:
               type: str
-              description: '"Source IP Address
+              description: 'Source IP Address.
 
-                source and source_interface are mutually exclusive. If both are defined,
-                source_interface takes precedence"
+                "source" and "source_interface" are mutually exclusive. If both are
+                defined, "source_interface" takes precedence.
 
                 '
             source_interface:
@@ -4511,10 +4511,10 @@ keys:
               - str
       source:
         type: str
-        description: '"Source IP Address
+        description: 'Source IP Address.
 
-          source and source_interface are mutually exclusive. If both are defined,
-          source_interface takes precedence"
+          "source" and "source_interface" are mutually exclusive. If both are defined,
+          "source_interface" takes precedence.
 
           '
       source_interface:

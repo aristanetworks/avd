@@ -6451,7 +6451,7 @@
               },
               "source": {
                 "type": "string",
-                "description": "\"Source IP Address\nsource and source_interface are mutually exclusive. If both are defined, source_interface takes precedence\"\n",
+                "description": "Source IP Address.\n\"source\" and \"source_interface\" are mutually exclusive. If both are defined, \"source_interface\" takes precedence.\n",
                 "title": "Source"
               },
               "source_interface": {
@@ -6492,7 +6492,7 @@
         },
         "source": {
           "type": "string",
-          "description": "\"Source IP Address\nsource and source_interface are mutually exclusive. If both are defined, source_interface takes precedence\"\n",
+          "description": "Source IP Address.\n\"source\" and \"source_interface\" are mutually exclusive. If both are defined, \"source_interface\" takes precedence.\n",
           "title": "Source"
         },
         "source_interface": {
