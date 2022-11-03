@@ -6363,7 +6363,10 @@
                           "title": "Path Group"
                         }
                       },
-                      "additionalProperties": false
+                      "additionalProperties": false,
+                      "required": [
+                        "value"
+                      ]
                     },
                     "title": "Colors"
                   }
