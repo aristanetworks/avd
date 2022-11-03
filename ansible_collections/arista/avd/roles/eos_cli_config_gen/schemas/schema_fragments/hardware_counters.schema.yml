@@ -18,7 +18,6 @@ keys:
             name:
               type: str
               required: true
-              display_name: Name of feature
             direction:
               type: str
               required: true
