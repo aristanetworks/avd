@@ -24,4 +24,5 @@ ntp:
     - id: 2
       hash_algorithm: "sha1"
       key: "15060E1F10"
+      key_type: 8a
   trusted_keys: "1-2"

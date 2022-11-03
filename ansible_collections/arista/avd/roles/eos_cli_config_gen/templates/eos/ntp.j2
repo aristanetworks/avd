@@ -5,7 +5,7 @@
 {%         if authentication_key.id is arista.avd.defined and
               authentication_key.key is arista.avd.defined and
               authentication_key.hash_algorithm is arista.avd.defined %}
-ntp authentication-key {{ authentication_key.id }} {{ authentication_key.hash_algorithm }} {{ authentication_key.key }}
+ntp authentication-key {{ authentication_key.id }} {{ authentication_key.hash_algorithm }} {{ authentication_key.key_type | arista.avd.default("7") }} {{ authentication_key.key }}
 {%         endif %}
 {%     endfor %}
 {%     if ntp.trusted_keys is arista.avd.defined %}
