@@ -1758,7 +1758,7 @@ mac_access_lists:
         action: <str>
 ```
 
-## MAC Address-table
+## MAC Address Table
 
 ### Variables
 

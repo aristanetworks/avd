@@ -2830,7 +2830,6 @@
     },
     "mac_address_table": {
       "type": "object",
-      "title": "MAC Address-table",
       "properties": {
         "aging_time": {
           "type": "integer",
@@ -2868,7 +2867,8 @@
           "title": "Notification Host Flap"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Mac Address Table"
     },
     "mac_security": {
       "type": "object",
