@@ -318,7 +318,7 @@ mac_address_table:
             # note, also requires an IPv6 address to be configured on the SVI where it is applied.
             # Optional
             # When ipv6_address_virtual and ipv6_virtual_router_addresses are defined in an SVI the node that was defined with the ipv6_address
-            # will be configured with ipv6_virtual_router_addresses. For iv6p_virtual_router_addresses to be configured, ipv6_address must be defined
+            # will be configured with ipv6_virtual_router_addresses. For ipv6_virtual_router_addresses to be configured, ipv6_address must be defined
             ipv6_virtual_router_addresses:
               - < IPv6_address >
 
