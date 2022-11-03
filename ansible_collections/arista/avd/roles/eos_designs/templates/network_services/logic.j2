@@ -91,8 +91,8 @@
 {%                                 elif tmp_svi.ip_virtual_router_addresses is arista.avd.defined and tmp_svi.ip_address is not arista.avd.defined %}
 {%                                     do tmp_svi.update({"ip_virtual_router_addresses": none}) %}
 {%                                 endif %}
-{%                                 if tmp_svi.ipv6_address_virtual is arista.avd.defined and tmp_svi.ipv6_address is arista.avd.defined and tmp_svi.ipv6_virtual_router_addresses is arista.avd.defined %}
-{%                                     do tmp_svi.update({"ipv6_address_virtual": none, "ip_address_virtual_secondaries": none}) %}
+{%                                 if (tmp_svi.ipv6_address_virtual is arista.avd.defined or tmp_svi.ipv6_address_virtuals is arista.avd.defined) and tmp_svi.ipv6_address is arista.avd.defined and tmp_svi.ipv6_virtual_router_addresses is arista.avd.defined %}
+{%                                     do tmp_svi.update({"ipv6_address_virtual": none, "ipv6_address_virtuals": none}) %}
 {%                                 elif tmp_svi.ipv6_virtual_router_addresses is arista.avd.defined and tmp_svi.ipv6_address is not arista.avd.defined %}
 {%                                     do tmp_svi.update({"ipv6_virtual_router_addresses": none}) %}
 {%                                 endif %}
