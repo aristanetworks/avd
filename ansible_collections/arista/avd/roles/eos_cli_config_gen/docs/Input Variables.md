@@ -900,6 +900,26 @@ hardware:
       serdes: <str>
 ```
 
+## Hardware Counters
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "hardware_counters.features.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "hardware_counters.features.[].direction") | String | Required |  | Valid Values:<br>- in<br>- out |  |
+
+### YAML
+
+```yaml
+hardware_counters:
+  features:
+    - name: <str>
+      direction: <str>
+```
+
 ## Interface Defaults
 
 ### Variables
