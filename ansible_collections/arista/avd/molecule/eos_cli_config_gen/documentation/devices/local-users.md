@@ -51,9 +51,9 @@ interface Management1
 
 ### Local Users Summary
 
-| User | Privilege | Role | Present |
+| User | Privilege | Role | Disabled |
 | ---- | --------- | ---- | -------- |
-| admin | - | - | False |
+| admin | - | - | True |
 
 ### Local Users Device Configuration
 

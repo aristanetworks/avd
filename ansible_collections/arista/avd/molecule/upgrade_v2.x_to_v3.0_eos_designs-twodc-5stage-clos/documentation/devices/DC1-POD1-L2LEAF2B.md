@@ -108,9 +108,9 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role | Present |
+| User | Privilege | Role | Disabled |
 | ---- | --------- | ---- | -------- |
-| admin | 15 | network-admin | True |
+| admin | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 

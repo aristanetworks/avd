@@ -57,11 +57,11 @@ interface Management1
 
 ### Local Users Summary
 
-| User | Privilege | Role | Present |
+| User | Privilege | Role | Disabled |
 | ---- | --------- | ---- | -------- |
-| admin | 15 | network-admin | True |
-| ansible | 15 | network-admin | True |
-| cvpadmin | 15 | network-admin | True |
+| admin | 15 | network-admin | False |
+| ansible | 15 | network-admin | False |
+| cvpadmin | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 

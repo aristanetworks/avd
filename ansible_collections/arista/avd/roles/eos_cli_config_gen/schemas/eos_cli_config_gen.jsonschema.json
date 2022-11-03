@@ -2436,8 +2436,8 @@
             "type": "string",
             "title": "Name"
           },
-          "present": {
-            "description": "If the EOS user is present in the configuration",
+          "disabled": {
+            "description": "If the EOS user is removed in the configuration",
             "type": "bool",
             "title": "Present"
           },

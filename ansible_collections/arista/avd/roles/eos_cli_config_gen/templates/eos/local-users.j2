@@ -2,7 +2,7 @@
 {% if local_users is arista.avd.defined %}
 !
 {%     for local_user in local_users | arista.avd.natural_sort('name') %}
-{%         if local_user.present is arista.avd.defined(false) %}
+{%         if local_user.disabled is arista.avd.defined(true) %}
 no username {{ local_user.name }}
 {%         else %}
 {%             set local_user_cli = "username " ~ local_user.name %}
