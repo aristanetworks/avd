@@ -15,6 +15,10 @@ keys:
           description: Username
           type: str
           required: true
+        present:
+          type: bool
+          description: |
+            If the EOS user is present in the configuration
         privilege:
           type: int
           convert_types:

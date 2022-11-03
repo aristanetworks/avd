@@ -2436,6 +2436,11 @@
             "type": "string",
             "title": "Name"
           },
+          "present": {
+            "description": "If the EOS user is present in the configuration",
+            "type": "bool",
+            "title": "Present"
+          },
           "privilege": {
             "type": "integer",
             "minimum": 1,
