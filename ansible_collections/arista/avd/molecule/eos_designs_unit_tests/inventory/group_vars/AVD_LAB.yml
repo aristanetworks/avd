@@ -3,6 +3,8 @@
 # local users
 local_users:
   admin:
+    # Test disabling admin user. Other keys will be ignored.
+    disabled: true
     privilege: 15
     role: network-admin
     no_password: true
