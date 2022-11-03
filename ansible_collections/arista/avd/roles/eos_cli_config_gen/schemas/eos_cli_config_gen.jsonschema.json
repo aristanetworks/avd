@@ -2868,7 +2868,7 @@
         }
       },
       "additionalProperties": false,
-      "title": "Mac Address Table"
+      "title": "MAC Address Table"
     },
     "mac_security": {
       "type": "object",
