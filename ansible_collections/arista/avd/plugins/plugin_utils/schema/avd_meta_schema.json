@@ -263,6 +263,48 @@
                     "additionalProperties": false
                 },
                 {
+                    "required": [ "type", "password_type", "password_key_field" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "password"
+                            ]
+                        },
+                        "convert_types": {
+                            "type": "array",
+                            "description": "List of types to auto-convert from.\nFor 'password' auto-conversion is supported from 'int'",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "int"
+                                ]
+                            }
+                        },
+                        "max_length": {
+                            "type": "number"
+                        },
+                        "min_length": {
+                            "type": "number"
+                        },
+                        "password_type": {
+                            "type": "string",
+                            "description": "The type of the password, currently only 'bgp' is supported",
+                            "enum": ["bgp"]
+                        },
+                        "password_key_field": {
+                            "type": "string",
+                            "description": "The field in the dict to use as key for the password.\nIt will only worked with keys in the same dictionary."
+                        },
+                        "display_name": { "$ref": "#/$def/display_name" },
+                        "description": { "$ref": "#/$def/description" },
+                        "required": { "$ref": "#/$def/required" },
+                        "$ref": { "$ref": "#/$def/$ref" },
+                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                    },
+                    "additionalProperties": false
+                },
+                {
                     "required": [ "$ref" ],
                     "properties": {
                         "$ref": { "$ref": "#/$def/$ref" }

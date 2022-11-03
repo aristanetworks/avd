@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import os
+from contextlib import nullcontext as does_not_raise
 
 import pytest
 import yaml
@@ -237,3 +238,49 @@ class TestAvdSchema:
         with pytest.raises(AvdValidationError):
             avdschema = AvdSchema()
             avdschema.subschema([], INVALID_SCHEMA)
+
+
+PASSWORD_VALIDATOR_SCHEMA_MISSING_PASSWORD_KEY_FIELD = {
+    "type": "dict",
+    "keys": {
+        "password": {"type": "password", "password_type": "bgp", "description": "Password"},
+    },
+    "description": "Missing required password_key_field in password",
+}
+PASSWORD_VALIDATOR_SCHEMA_MISSING_PASSWORD_TYPE = {
+    "type": "dict",
+    "keys": {"password": {"type": "password", "password_key_field": "neighbor", "description": "Password"}, "neighbor": {"type": "str"}},
+    "description": "Missing required password_type in password",
+}
+PASSWORD_VALIDATOR_SCHEMA_WRONG_PASSWORD_TYPE = {
+    "type": "dict",
+    "keys": {
+        "password": {"type": "password", "password_type": "toto", "password_key_field": "neighbor", "description": "Password"},
+        "neighbor": {"type": "str"},
+    },
+    "description": "Wrong password_type in password",
+}
+PASSWORD_VALIDATOR_SCHEMA_VALID = {
+    "type": "dict",
+    "keys": {
+        "password": {"type": "password", "password_type": "bgp", "password_key_field": "neighbor", "description": "Password"},
+        "neighbor": {"type": "str"},
+    },
+    "description": "Valid password field",
+}
+
+PASSWORD_VALIDATOR_PARAMS = [
+    pytest.param(PASSWORD_VALIDATOR_SCHEMA_MISSING_PASSWORD_KEY_FIELD, pytest.raises(AvdValidationError), id="missing_password_field"),
+    pytest.param(PASSWORD_VALIDATOR_SCHEMA_MISSING_PASSWORD_TYPE, pytest.raises(AvdValidationError), id="missing_password_type"),
+    pytest.param(PASSWORD_VALIDATOR_SCHEMA_WRONG_PASSWORD_TYPE, pytest.raises(AvdValidationError), id="wrong_password_type"),
+    pytest.param(PASSWORD_VALIDATOR_SCHEMA_VALID, does_not_raise(), id="valid_schema"),
+]
+
+
+@pytest.mark.parametrize("schema, expected_raise", PASSWORD_VALIDATOR_PARAMS)
+def test_password_schema(avdschema_factory, schema, expected_raise):
+    """
+    Tests to verify that only acceptable password schema are accepted
+    """
+    with expected_raise:
+        avdschema_factory(schema)
