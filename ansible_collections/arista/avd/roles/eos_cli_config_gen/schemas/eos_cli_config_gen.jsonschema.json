@@ -631,7 +631,10 @@
                 "title": "IP"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "PBR"
         },
@@ -680,7 +683,10 @@
                 "title": "IPv6"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "QOS"
         }
@@ -1284,7 +1290,10 @@
             "title": "Asynchronous"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
       },
       "title": "Event Handlers"
     },
@@ -2402,7 +2411,10 @@
                 "title": "Transmit"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "TLVs"
         },
@@ -2848,7 +2860,10 @@
                       "title": "Fallback"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "id"
+                  ]
                 },
                 "title": "Connection Keys"
               },
@@ -4328,12 +4343,18 @@
                       "title": "Set"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Classes"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "PBR"
         },
@@ -4382,12 +4403,18 @@
                       "title": "Set"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Classes"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "QOS"
         }
@@ -5672,7 +5699,10 @@
                       "title": "Area"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "ipv4_prefix"
+                  ]
                 },
                 "title": "Network Prefixes"
               },
@@ -5818,7 +5848,10 @@
                       "title": "Not Advertise"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "prefix"
+                  ]
                 },
                 "title": "Summary Addresses"
               },
@@ -5941,7 +5974,10 @@
                       "title": "Default Information Originate"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "id"
+                  ]
                 },
                 "title": "Areas"
               },
@@ -6005,7 +6041,10 @@
                 "title": "MPLS LDP Sync Default"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "Process IDs"
         }
@@ -6195,7 +6234,10 @@
                       "title": "Port"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "destination"
+                  ]
                 },
                 "title": "Destinations"
               },
@@ -6204,7 +6246,10 @@
                 "title": "Source Interface"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         },
@@ -6224,7 +6269,10 @@
                 "title": "Port"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "destination"
+            ]
           },
           "title": "Destinations"
         },
@@ -6280,7 +6328,10 @@
                     "title": "Enabled"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Modules"
             }
@@ -6379,7 +6430,10 @@
                         "title": "VLANs"
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "required": [
+                      "id"
+                    ]
                   },
                   "title": "Instances"
                 }
@@ -6406,7 +6460,10 @@
                 "title": "Priority"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "Mst Instances"
         },
@@ -6430,7 +6487,10 @@
                 "title": "Priority"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "Rapid Pvst Instances"
         }
@@ -6617,7 +6677,10 @@
                     "title": "VRF"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "acl_name"
+                ]
               },
               "title": "IPv4 Access Groups"
             },
@@ -6635,7 +6698,10 @@
                     "title": "VRF"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "acl_name"
+                ]
               },
               "title": "IPv6 Access Groups"
             }
@@ -6929,7 +6995,10 @@
                     "title": "Prefixes"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "IPv4"
             },
@@ -6952,7 +7021,10 @@
                     "title": "Prefixes"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "IPv6"
             },
@@ -6972,7 +7044,10 @@
                     "title": "Port Range"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Ports"
             }
@@ -7120,7 +7195,10 @@
                             "title": "ICMP Type"
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "required": [
+                          "protocol"
+                        ]
                       },
                       "title": "Protocols"
                     },
@@ -7155,7 +7233,10 @@
                       "title": "Actions"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Matches"
               },
@@ -7227,7 +7308,10 @@
                 "title": "Default Actions"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "Policies"
         }
@@ -7251,7 +7335,10 @@
             "title": "IP Address"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
       },
       "title": "Virtual Source Nat VRFs"
     },
@@ -7356,7 +7443,10 @@
             "title": "Tenant"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ]
       },
       "title": "VLANs"
     },
@@ -7427,7 +7517,10 @@
             "title": "Tenant"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
       },
       "title": "VRFs"
     }

@@ -304,10 +304,10 @@ class AvdToDocumentationSchemaConverter:
 
     def required(self, schema: dict, var_name: str, parent_schema: dict):
         output = None
-        if schema.get("required"):
+        if parent_schema and parent_schema.get("primary_key") == var_name:
+            output = "Required, Unique"
+        elif schema.get("required"):
             output = "Required"
-            if parent_schema and parent_schema.get("primary_key") == var_name:
-                output = "Required, Unique"
         return output
 
     def default(self, schema: dict):
