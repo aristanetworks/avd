@@ -137,10 +137,13 @@ class AvdToJsonSchemaConverter:
         return {"default": default}
 
     def convert_items(self, items: dict, parent_schema: dict) -> dict:
-        output = {"items": {}}
-        output["items"] = self.convert_schema(items)
-        if (primary_key := parent_schema.get("primary_key")) and output["items"]["type"] == "dict":
-            output["items"]["keys"][primary_key]["required"] = True
+        output = {
+            "items": self.convert_schema(items),
+        }
+        if (primary_key := parent_schema.get("primary_key")) and items.get("type") == "dict":
+            output["items"].setdefault("required", [])
+            if primary_key not in output["items"]["required"]:
+                output["items"]["required"].append(primary_key)
         return output
 
     def convert_display_name(self, display_name: str, parent_schema: dict) -> dict:

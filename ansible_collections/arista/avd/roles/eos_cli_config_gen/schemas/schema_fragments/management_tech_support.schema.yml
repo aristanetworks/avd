@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_tech_support:
+    type: dict
+    keys:
+      policy_show_tech_support:
+        type: dict
+        keys:
+          exclude_commands:
+            type: list
+            items:
+              type: dict
+              keys:
+                command:
+                  type: str
+                  description: Command to exclude from tech-support
+                type:
+                  type: str
+                  valid_values:
+                  - text
+                  - json
+                  default: text
+                  description: The supported values for type are platform dependent.
+          include_commands:
+            type: list
+            items:
+              type: dict
+              keys:
+                command:
+                  type: str
+                  description: Command to include in tech-support

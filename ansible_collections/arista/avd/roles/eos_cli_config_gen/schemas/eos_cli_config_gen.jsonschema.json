@@ -631,7 +631,10 @@
                 "title": "IP"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "PBR"
         },
@@ -680,7 +683,10 @@
                 "title": "IPv6"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "QOS"
         }
@@ -1284,7 +1290,10 @@
             "title": "Asynchronous"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
       },
       "title": "Event Handlers"
     },
@@ -1354,6 +1363,39 @@
       },
       "additionalProperties": false,
       "title": "Hardware"
+    },
+    "hardware_counters": {
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out"
+                ],
+                "title": "Direction"
+              }
+            },
+            "required": [
+              "name",
+              "direction"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Features"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Hardware Counters"
     },
     "interface_defaults": {
       "type": "object",
@@ -2438,7 +2480,10 @@
                 "title": "Transmit"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "TLVs"
         },
@@ -2819,6 +2864,48 @@
       },
       "title": "MAC Access Lists"
     },
+    "mac_address_table": {
+      "type": "object",
+      "properties": {
+        "aging_time": {
+          "type": "integer",
+          "description": "Aging time in seconds",
+          "title": "Aging Time"
+        },
+        "notification_host_flap": {
+          "type": "object",
+          "properties": {
+            "logging": {
+              "type": "boolean",
+              "title": "Logging"
+            },
+            "detection": {
+              "type": "object",
+              "properties": {
+                "window": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 300,
+                  "title": "Window"
+                },
+                "moves": {
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 10,
+                  "title": "Moves"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Detection"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Notification Host Flap"
+        }
+      },
+      "additionalProperties": false,
+      "title": "MAC Address Table"
+    },
     "mac_security": {
       "type": "object",
       "title": "MAC Security (MACsec)",
@@ -2884,7 +2971,10 @@
                       "title": "Fallback"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "id"
+                  ]
                 },
                 "title": "Connection Keys"
               },
@@ -3564,6 +3654,60 @@
       "additionalProperties": false,
       "title": "Management SSH"
     },
+    "management_tech_support": {
+      "type": "object",
+      "properties": {
+        "policy_show_tech_support": {
+          "type": "object",
+          "properties": {
+            "exclude_commands": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "description": "Command to exclude from tech-support",
+                    "title": "Command"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "json"
+                    ],
+                    "default": "text",
+                    "description": "The supported values for type are platform dependent.",
+                    "title": "Type"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Exclude Commands"
+            },
+            "include_commands": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "description": "Command to include in tech-support",
+                    "title": "Command"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Include Commands"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Policy Show Tech Support"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management Tech Support"
+    },
     "match_list_input": {
       "type": "object",
       "title": "Match Lists",
@@ -4064,6 +4208,69 @@
       "additionalProperties": false,
       "title": "Name Server"
     },
+    "patch_panel": {
+      "type": "object",
+      "properties": {
+        "patches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "connectors": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "description": "Must have exactly two connectors to a patch of which at least one must be of type \"interface\"",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "ID"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "interface",
+                        "pseudowire"
+                      ],
+                      "title": "Type"
+                    },
+                    "endpoint": {
+                      "type": "string",
+                      "description": "String with relevant endpoint depending on type.\nExamples:\n- \"Ethernet1\"\n- \"Ethernet1 dot1q vlan 123\"\n- \"bgp vpws TENANT_A pseudowire VPWS_PW_1\"\n- \"ldp LDP_PW_1\"\n",
+                      "title": "Endpoint"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "type",
+                    "endpoint"
+                  ],
+                  "additionalProperties": false
+                },
+                "title": "Connectors"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Patches"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Patch Panel"
+    },
     "peer_filters": {
       "type": "array",
       "items": {
@@ -4247,12 +4454,18 @@
                       "title": "Set"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Classes"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "PBR"
         },
@@ -4301,12 +4514,18 @@
                       "title": "Set"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Classes"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "QOS"
         }
@@ -5591,7 +5810,10 @@
                       "title": "Area"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "ipv4_prefix"
+                  ]
                 },
                 "title": "Network Prefixes"
               },
@@ -5737,7 +5959,10 @@
                       "title": "Not Advertise"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "prefix"
+                  ]
                 },
                 "title": "Summary Addresses"
               },
@@ -5860,7 +6085,10 @@
                       "title": "Default Information Originate"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "id"
+                  ]
                 },
                 "title": "Areas"
               },
@@ -5924,7 +6152,10 @@
                 "title": "MPLS LDP Sync Default"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "Process IDs"
         }
@@ -6059,6 +6290,135 @@
       "additionalProperties": false,
       "title": "Router PIM Sparse Mode"
     },
+    "router_traffic_engineering": {
+      "type": "object",
+      "properties": {
+        "router_id": {
+          "type": "object",
+          "properties": {
+            "ipv4": {
+              "type": "string",
+              "title": "IPv4"
+            },
+            "ipv6": {
+              "type": "string",
+              "title": "IPv6"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Router ID"
+        },
+        "segment_routing": {
+          "type": "object",
+          "properties": {
+            "colored_tunnel_rib": {
+              "type": "boolean",
+              "title": "Colored Tunnel Rib"
+            },
+            "policy_endpoints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "description": "IPv4 or IPv6 address",
+                    "title": "Address"
+                  },
+                  "colors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "integer",
+                          "title": "Value"
+                        },
+                        "binding_sid": {
+                          "type": "integer",
+                          "title": "Binding Sid"
+                        },
+                        "description": {
+                          "type": "string",
+                          "title": "Description"
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "sbfd_remote_discriminator": {
+                          "type": "string",
+                          "description": "IPv4 address or 32 bit integer",
+                          "title": "SBFD Remote Discriminator"
+                        },
+                        "path_group": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "preference": {
+                                "type": "integer",
+                                "title": "Preference"
+                              },
+                              "explicit_null": {
+                                "type": "string",
+                                "enum": [
+                                  "ipv4",
+                                  "ipv6",
+                                  "ipv4 ipv6",
+                                  "none"
+                                ],
+                                "title": "Explicit Null"
+                              },
+                              "segment_list": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "label_stack": {
+                                      "type": "string",
+                                      "description": "Label Stack as string.\nExample: \"100 2000 30\"\n",
+                                      "title": "Label Stack"
+                                    },
+                                    "weight": {
+                                      "type": "integer",
+                                      "title": "Weight"
+                                    },
+                                    "index": {
+                                      "type": "integer",
+                                      "title": "Index"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "title": "Segment List"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "title": "Path Group"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "value"
+                      ]
+                    },
+                    "title": "Colors"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Policy Endpoints"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Segment Routing"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Router Traffic Engineering"
+    },
     "service_routing_configuration_bgp": {
       "type": "object",
       "properties": {
@@ -6114,7 +6474,10 @@
                       "title": "Port"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "destination"
+                  ]
                 },
                 "title": "Destinations"
               },
@@ -6123,7 +6486,10 @@
                 "title": "Source Interface"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         },
@@ -6143,7 +6509,10 @@
                 "title": "Port"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "destination"
+            ]
           },
           "title": "Destinations"
         },
@@ -6199,7 +6568,10 @@
                     "title": "Enabled"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Modules"
             }
@@ -6298,7 +6670,10 @@
                         "title": "VLANs"
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "required": [
+                      "id"
+                    ]
                   },
                   "title": "Instances"
                 }
@@ -6325,7 +6700,10 @@
                 "title": "Priority"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "Mst Instances"
         },
@@ -6349,7 +6727,10 @@
                 "title": "Priority"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "Rapid Pvst Instances"
         }
@@ -6536,7 +6917,10 @@
                     "title": "VRF"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "acl_name"
+                ]
               },
               "title": "IPv4 Access Groups"
             },
@@ -6554,7 +6938,10 @@
                     "title": "VRF"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "acl_name"
+                ]
               },
               "title": "IPv6 Access Groups"
             }
@@ -6848,7 +7235,10 @@
                     "title": "Prefixes"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "IPv4"
             },
@@ -6871,7 +7261,10 @@
                     "title": "Prefixes"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "IPv6"
             },
@@ -6891,7 +7284,10 @@
                     "title": "Port Range"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Ports"
             }
@@ -7039,7 +7435,10 @@
                             "title": "ICMP Type"
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "required": [
+                          "protocol"
+                        ]
                       },
                       "title": "Protocols"
                     },
@@ -7074,7 +7473,10 @@
                       "title": "Actions"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Matches"
               },
@@ -7146,7 +7548,10 @@
                 "title": "Default Actions"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "Policies"
         }
@@ -7170,7 +7575,10 @@
             "title": "IP Address"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
       },
       "title": "Virtual Source Nat VRFs"
     },
@@ -7275,7 +7683,10 @@
             "title": "Tenant"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ]
       },
       "title": "VLANs"
     },
@@ -7346,9 +7757,175 @@
             "title": "Tenant"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
       },
       "title": "VRFs"
+    },
+    "vxlan_interface": {
+      "type": "object",
+      "properties": {
+        "Vxlan1": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "vxlan": {
+              "type": "object",
+              "properties": {
+                "source_interface": {
+                  "type": "string",
+                  "description": "Source Interface Name",
+                  "title": "Source Interface"
+                },
+                "mlag_source_interface": {
+                  "type": "string",
+                  "title": "MLAG Source Interface"
+                },
+                "udp_port": {
+                  "type": "integer",
+                  "title": "UDP Port"
+                },
+                "virtual_router_encapsulation_mac_address": {
+                  "type": "string",
+                  "description": "\"mlag-system-id\" or ethernet_address (H.H.H)\n",
+                  "title": "Virtual Router Encapsulation MAC Address"
+                },
+                "bfd_vtep_evpn": {
+                  "type": "object",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    },
+                    "prefix_list": {
+                      "type": "string",
+                      "title": "Prefix List"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "BFD Vtep Evpn"
+                },
+                "qos": {
+                  "type": "object",
+                  "description": "For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in \"DSCP Trust\" mode.\n!!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.\n",
+                  "properties": {
+                    "dscp_propagation_encapsulation": {
+                      "type": "boolean",
+                      "title": "DSCP Propagation Encapsulation"
+                    },
+                    "map_dscp_to_traffic_class_decapsulation": {
+                      "type": "boolean",
+                      "title": "Map DSCP To Traffic Class Decapsulation"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "QOS"
+                },
+                "vlans": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "VLAN ID",
+                        "title": "ID"
+                      },
+                      "vni": {
+                        "type": "integer",
+                        "title": "Vni"
+                      },
+                      "multicast_group": {
+                        "type": "string",
+                        "description": "IP Multicast Group Address",
+                        "title": "Multicast Group"
+                      },
+                      "flood_vteps": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Remote VTEP IP Address"
+                        },
+                        "title": "Flood Vteps"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "title": "VLANs"
+                },
+                "vrfs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "VRF Name",
+                        "title": "Name"
+                      },
+                      "vni": {
+                        "type": "integer",
+                        "title": "Vni"
+                      },
+                      "multicast_group": {
+                        "type": "string",
+                        "description": "IP Multicast Group Address",
+                        "title": "Multicast Group"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "title": "VRFs"
+                },
+                "flood_vteps": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Remote VTEP IP Address"
+                  },
+                  "title": "Flood Vteps"
+                },
+                "flood_vtep_learned_data_plane": {
+                  "type": "boolean",
+                  "title": "Flood Vtep Learned Data Plane"
+                }
+              },
+              "additionalProperties": false,
+              "title": "VxLAN"
+            },
+            "eos_cli": {
+              "type": "string",
+              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.",
+              "title": "EOS CLI"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Vxlan1"
+        }
+      },
+      "additionalProperties": false,
+      "title": "VxLAN Interface"
     }
   },
   "additionalProperties": true

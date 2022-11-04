@@ -10,7 +10,7 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 
 # Configuration
 use_directory_urls: false
-edit_uri: ""
+edit_uri: edit/devel/ansible_collections/arista/avd/
 theme:
   name: material
   # custom_dir: ansible_collections/arista/avd/docs/_overrides
@@ -25,6 +25,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
     logo: fontawesome/solid/book
+    edit: fontawesome/solid/file-pen
   favicon: docs/_media/favicon.ico
   font:
     code: Fira Mono
@@ -47,8 +48,8 @@ extra:
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/aristanetworks/ansible-avd
-    # - icon: fontawesome/brands/twitter
-    #   link: https://twitter.com/AristaNetworks
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/AristaNetworks
     - icon: fontawesome/solid/globe
       link: https://www.arista.com
 
@@ -64,11 +65,10 @@ plugins:
       lang: en
   - git-revision-date-localized:
       type: date
-  # Deactivated due to https://github.com/tikitu/jsmin/issues/33
-  # Issue in progress: https://github.com/byrnereese/mkdocs-minify-plugin/issues/15
-  # - minify:
-  #     minify_html: true
-  #     minify_js: true
+  - exclude:
+      glob:
+        - molecule/*
+        - tests/*
 
 markdown_extensions:
   - admonition
@@ -117,6 +117,7 @@ nav:
       - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
       - Example for Single DC L3LS: examples/single-dc-l3ls/README.md
       - Example for L2LS Fabric: examples/l2ls-fabric/README.md
+      - Example for Campus Fabric: examples/campus-fabric/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
       - Requirements: docs/installation/requirements.md

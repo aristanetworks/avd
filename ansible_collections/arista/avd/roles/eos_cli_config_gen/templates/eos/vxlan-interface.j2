@@ -18,7 +18,7 @@ interface Vxlan1
 {%     if vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane is arista.avd.defined(true) %}
    vxlan flood vtep learned data-plane
 {%     endif %}
-{%     for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.natural_sort('id') %}
 {%         if vlan.vni is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} vni {{ vlan.vni }}
 {%         endif %}
@@ -26,7 +26,7 @@ interface Vxlan1
    vxlan vlan {{ vlan.id }} flood vtep {{ vlan.flood_vteps | join(' ') }}
 {%         endif %}
 {%     endfor %}
-{%     for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort('name') %}
 {%         if vrf.vni is arista.avd.defined %}
    vxlan vrf {{ vrf.name }} vni {{ vrf.vni }}
 {%         endif %}
@@ -57,10 +57,10 @@ interface Vxlan1
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(false) %}
    no vxlan qos map dscp to traffic-class decapsulation
 {%     endif %}
-{%     for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') if vlan.multicast_group is arista.avd.defined %}
+{%     for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.natural_sort('id') if vlan.multicast_group is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} multicast group {{ vlan.multicast_group }}
 {%     endfor %}
-{%     for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') if vrf.multicast_group is arista.avd.defined %}
+{%     for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort('name') if vrf.multicast_group is arista.avd.defined %}
    vxlan vrf {{ vrf.name }} multicast group {{ vrf.multicast_group }}
 {%     endfor %}
 {%     if  vxlan_interface.Vxlan1.eos_cli is arista.avd.defined %}

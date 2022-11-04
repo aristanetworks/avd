@@ -52,7 +52,7 @@
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
-{%         for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.natural_sort('id') %}
 {%             set vlan_vni = vlan.vni | arista.avd.default('-') %}
 {%             set multicast_group = vlan.multicast_group | arista.avd.default('-') %}
 {%             if vlan.flood_vteps is arista.avd.defined %}
@@ -69,7 +69,7 @@
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
-{%         for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort('name') %}
 {%             set vrf_vni = vrf.vni | arista.avd.default('-') %}
 {%             set multicast_group = vrf.multicast_group | arista.avd.default('-') %}
 | {{ vrf.name }} | {{ vrf_vni }} | {{ multicast_group }} |
