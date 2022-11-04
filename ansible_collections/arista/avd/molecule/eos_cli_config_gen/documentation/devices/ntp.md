@@ -74,7 +74,7 @@ interface Management1
 
 #### NTP Authentication Keys
 
-| ID | Algoritm |
+| ID | Algorithm |
 | -- | -------- |
 | 1 | md5 |
 | 2 | sha1 |
@@ -84,7 +84,7 @@ interface Management1
 ```eos
 !
 ntp authentication-key 1 md5 7 044F0E151B
-ntp authentication-key 2 sha1 8a 15060E1F10
+ntp authentication-key 2 sha1 8a $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
 ntp trusted-key 1-2
 ntp authenticate
 ntp local-interface lo1

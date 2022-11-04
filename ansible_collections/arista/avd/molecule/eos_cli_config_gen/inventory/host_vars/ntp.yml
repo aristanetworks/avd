@@ -23,6 +23,6 @@ ntp:
       key: "044F0E151B"
     - id: 2
       hash_algorithm: "sha1"
-      key: "15060E1F10"
+      key: "$BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo"
       key_type: 8a
   trusted_keys: "1-2"
