@@ -91,6 +91,8 @@ interface Management1
 
 #### IP Sparse Mode Information
 
+BFD enabled: False
+
 ##### IP Rendezvous Information
 
 | Rendezvous Point Address | Group Address |
@@ -104,6 +106,8 @@ interface Management1
 | 10.38.1.161 | 10.50.64.16 | 15 |
 
 ##### IP Sparse Mode VRFs
+
+BFD enabled: False
 
 | VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------ | ------------- |

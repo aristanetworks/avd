@@ -6168,6 +6168,11 @@
         "ipv4": {
           "type": "object",
           "properties": {
+            "bfd": {
+              "type": "boolean",
+              "description": "Enable/Disable BFD",
+              "title": "BFD"
+            },
             "ssm_range": {
               "type": "string",
               "description": "IPv4 Prefix associated with SSM",
@@ -6255,6 +6260,11 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
+                  "bfd": {
+                    "type": "boolean",
+                    "description": "Enable/Disable BFD",
+                    "title": "BFD"
+                  },
                   "rp_addresses": {
                     "type": "array",
                     "items": {

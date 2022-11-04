@@ -4,6 +4,9 @@
 router pim sparse-mode
 {%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
    ipv4
+{%         if router_pim_sparse_mode.ipv4.bfd is arista.avd.defined(true) %}
+      bfd
+{%         endif %}
 {%         for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
 {%             if rp_address.groups is arista.avd.defined %}
 {%                 for group in rp_address.groups | arista.avd.natural_sort %}
@@ -31,6 +34,9 @@ router pim sparse-mode
    vrf {{ vrf.name }}
 {%         if vrf.ipv4 is arista.avd.defined %}
       ipv4
+{%             if vrf.ipv4.bfd is arista.avd.defined(true) %}
+         bfd
+{%             endif %}
 {%             for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
 {%                 if rp_address.groups is arista.avd.defined %}
 {%                     for group in rp_address.groups | arista.avd.natural_sort %}

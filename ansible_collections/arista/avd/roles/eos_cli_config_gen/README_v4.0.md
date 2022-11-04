@@ -1922,6 +1922,7 @@ router_multicast:
 ```yaml
 router_pim_sparse_mode:
   ipv4:
+    bfd: < true | false >
     ssm_range: < range >
     rp_addresses:
       - address: < rp_address_1 >
@@ -1937,6 +1938,7 @@ router_pim_sparse_mode:
   vrfs:
     - name: < vrf_name >
       ipv4:
+        bfd: < true | false >
         rp_addresses:
           - address: < rp_address_1 >
             groups:
