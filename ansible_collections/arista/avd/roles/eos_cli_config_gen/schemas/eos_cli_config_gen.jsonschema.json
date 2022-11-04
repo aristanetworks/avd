@@ -5356,15 +5356,14 @@
     },
     "router_bgp": {
       "type": "object",
-      "title": "Router BGP Configuration",
       "properties": {
         "as": {
           "type": "string",
-          "title": "BGP AS"
+          "title": "As"
         },
         "router_id": {
           "type": "string",
-          "title": "IPv4 Address"
+          "title": "Router ID"
         },
         "distance": {
           "type": "object",
@@ -5427,13 +5426,12 @@
         },
         "bgp_cluster_id": {
           "type": "string",
-          "title": "IPv4 Address"
+          "title": "BGP Cluster ID"
         },
         "bgp_defaults": {
           "type": "array",
           "items": {
-            "type": "string",
-            "title": "BGP Command As String"
+            "type": "string"
           },
           "title": "BGP Defaults"
         },
@@ -5463,7 +5461,7 @@
             "properties": {
               "prefix": {
                 "type": "string",
-                "description": "\"A.B.C.D/E\" | \"A:B:C:D:E:F:G:H/I\"\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Prefix"
               },
               "peer_id_include_router_id": {
@@ -5473,12 +5471,12 @@
               },
               "peer_group": {
                 "type": "string",
-                "title": "Name Of Peer-Group"
+                "title": "Peer Group"
               },
               "peer_filter": {
                 "type": "string",
-                "title": "Name Of Peer-Filter",
-                "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n"
+                "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n",
+                "title": "Peer Filter"
               },
               "remote_as": {
                 "type": "string",
@@ -5497,24 +5495,24 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Peer-Group Name"
+                "title": "Name"
               },
               "type": {
                 "type": "string",
-                "description": "[ \"ipv4\", \"evpn\" ]\nExample- \"vpn-ipv4, vpn-ipv6\"\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Type"
               },
               "remote_as": {
                 "type": "string",
-                "title": "BGP AS"
+                "title": "Remote As"
               },
               "local_as": {
                 "type": "integer",
-                "title": "BGP AS"
+                "title": "Local As"
               },
               "description": {
                 "type": "string",
-                "title": "Description As String"
+                "title": "Description"
               },
               "shutdown": {
                 "type": "boolean",
@@ -5565,7 +5563,7 @@
               },
               "update_source": {
                 "type": "string",
-                "title": "Interface"
+                "title": "Update Source"
               },
               "route_reflector_client": {
                 "type": "boolean",
@@ -5585,7 +5583,7 @@
               },
               "password": {
                 "type": "string",
-                "title": "Encrypted Password"
+                "title": "Password"
               },
               "default_originate": {
                 "type": "object",
@@ -5600,7 +5598,7 @@
                   },
                   "route_map": {
                     "type": "string",
-                    "title": "Route-Map Name"
+                    "title": "Route Map"
                   }
                 },
                 "additionalProperties": false,
@@ -5608,7 +5606,7 @@
               },
               "send_community": {
                 "type": "string",
-                "description": "[ \"standard\", \"extended\", \"large\", \"all\" ]\nExample: \"standard large\"\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Send Community"
               },
               "maximum_routes": {
@@ -5617,7 +5615,7 @@
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "[\"<integer>\", \"<0-100> percent\"]\nExample: 40 percent\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5633,7 +5631,7 @@
                   },
                   "default": {
                     "type": "string",
-                    "description": "nn.nn(K|M|G)  Link speed in bits/second",
+                    "description": "nn.nn(K|M|G) Link speed in bits/second",
                     "title": "Default"
                   }
                 },
@@ -5659,7 +5657,7 @@
               },
               "weight": {
                 "type": "integer",
-                "title": "Weight Value"
+                "title": "Weight"
               },
               "timers": {
                 "type": "string",
@@ -5713,7 +5711,10 @@
                 "title": "Set IPv4 Next Hop"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "Peer Groups"
         },
@@ -5724,23 +5725,23 @@
             "properties": {
               "ip_address": {
                 "type": "string",
-                "title": "IPv4 Address"
+                "title": "IP Address"
               },
               "peer_group": {
                 "type": "string",
-                "title": "Peer-Group Name"
+                "title": "Peer Group"
               },
               "remote_as": {
                 "type": "string",
-                "title": "BGP AS"
+                "title": "Remote As"
               },
               "local_as": {
                 "type": "integer",
-                "title": "BGP AS"
+                "title": "Local As"
               },
               "description": {
                 "type": "string",
-                "title": "Description As String"
+                "title": "Description"
               },
               "shutdown": {
                 "type": "boolean",
@@ -5748,7 +5749,7 @@
               },
               "update_source": {
                 "type": "string",
-                "title": "Interface"
+                "title": "Update Source"
               },
               "bfd": {
                 "type": "boolean",
@@ -5756,7 +5757,7 @@
               },
               "weight": {
                 "type": "integer",
-                "title": "Weight Value"
+                "title": "Weight"
               },
               "timers": {
                 "type": "string",
@@ -5786,7 +5787,7 @@
                   },
                   "route_map": {
                     "type": "string",
-                    "title": "Route-Map Name"
+                    "title": "Route Map"
                   }
                 },
                 "additionalProperties": false,
@@ -5794,7 +5795,7 @@
               },
               "send_community": {
                 "type": "string",
-                "description": "[ \"standard\", \"extended\", \"large\", \"all\" ]\nExample: \"standard large\"\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Send Community"
               },
               "maximum_routes": {
@@ -5803,7 +5804,7 @@
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "[\"<integer>\", \"<0-100> percent\"]\nExample: 40 percent\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5901,7 +5902,10 @@
                 "title": "Remove Private As Ingress"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "ip_address"
+            ]
           },
           "title": "Neighbors"
         },
@@ -5912,26 +5916,29 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "Interface"
+                "title": "Name"
               },
               "remote_as": {
                 "type": "string",
-                "title": "BGP AS"
+                "title": "Remote As"
               },
               "peer_group": {
                 "type": "string",
-                "title": "Peer Group Name"
+                "title": "Peer Group"
               },
               "description": {
                 "type": "string",
-                "title": "Description As String"
+                "title": "Description"
               },
               "peer_filter": {
                 "type": "string",
                 "title": "Peer Filter"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "Neighbor Interfaces"
         },
@@ -5959,14 +5966,17 @@
               },
               "attribute_map": {
                 "type": "string",
-                "title": "Route Map Name"
+                "title": "Attribute Map"
               },
               "match_map": {
                 "type": "string",
-                "title": "Route Map Name"
+                "title": "Match Map"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "prefix"
+            ]
           },
           "title": "Aggregate Addresses"
         },
@@ -5981,10 +5991,13 @@
               },
               "route_map": {
                 "type": "string",
-                "title": "Route Map Name"
+                "title": "Route Map"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "source_protocol"
+            ]
           },
           "title": "Redistribute Routes"
         },
@@ -5995,7 +6008,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VLAN Aware Bundle Name"
+                "title": "Name"
               },
               "tenant": {
                 "type": "string",
@@ -6003,11 +6016,11 @@
               },
               "description": {
                 "type": "string",
-                "title": "Description As String"
+                "title": "Description"
               },
               "rd": {
                 "type": "string",
-                "title": "Route Distinguisher"
+                "title": "Rd"
               },
               "rd_evpn_domain": {
                 "type": "object",
@@ -6022,7 +6035,7 @@
                   },
                   "rd": {
                     "type": "string",
-                    "title": "Route Distinguisher"
+                    "title": "Rd"
                   }
                 },
                 "additionalProperties": false,
@@ -6034,24 +6047,21 @@
                   "both": {
                     "type": "array",
                     "items": {
-                      "type": "string",
-                      "title": "Route Target"
+                      "type": "string"
                     },
                     "title": "Both"
                   },
                   "import": {
                     "type": "array",
                     "items": {
-                      "type": "string",
-                      "title": "Route Target"
+                      "type": "string"
                     },
                     "title": "Import"
                   },
                   "export": {
                     "type": "array",
                     "items": {
-                      "type": "string",
-                      "title": "Route Target"
+                      "type": "string"
                     },
                     "title": "Export"
                   },
@@ -6135,8 +6145,7 @@
               "no_redistribute_routes": {
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "title": "Host-Route"
+                  "type": "string"
                 },
                 "title": "No Redistribute Routes"
               },
@@ -6145,7 +6154,10 @@
                 "title": "VLAN"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "VLAN Aware Bundles"
         },
@@ -6156,7 +6168,7 @@
             "properties": {
               "id": {
                 "type": "integer",
-                "title": "VLAN ID"
+                "title": "ID"
               },
               "tenant": {
                 "type": "string",
@@ -6165,7 +6177,7 @@
               },
               "rd": {
                 "type": "string",
-                "title": "Route Distinguisher"
+                "title": "Rd"
               },
               "rd_evpn_domain": {
                 "type": "object",
@@ -6180,7 +6192,7 @@
                   },
                   "rd": {
                     "type": "string",
-                    "title": "Route Distinguisher"
+                    "title": "Rd"
                   }
                 },
                 "additionalProperties": false,
@@ -6212,24 +6224,21 @@
                   "both": {
                     "type": "array",
                     "items": {
-                      "type": "string",
-                      "title": "Route Target"
+                      "type": "string"
                     },
                     "title": "Both"
                   },
                   "import": {
                     "type": "array",
                     "items": {
-                      "type": "string",
-                      "title": "Route Target"
+                      "type": "string"
                     },
                     "title": "Import"
                   },
                   "export": {
                     "type": "array",
                     "items": {
-                      "type": "string",
-                      "title": "Route Target"
+                      "type": "string"
                     },
                     "title": "Export"
                   },
@@ -6313,13 +6322,15 @@
               "no_redistribute_routes": {
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "title": "Host-Route"
+                  "type": "string"
                 },
                 "title": "No Redistribute Routes"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
           },
           "title": "VLANs"
         },
@@ -6330,18 +6341,18 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VPWS Instance Name"
+                "title": "Name"
               },
               "rd": {
                 "type": "string",
-                "title": "Route Distinguisher"
+                "title": "Rd"
               },
               "route_targets": {
                 "type": "object",
                 "properties": {
                   "import_export": {
                     "type": "string",
-                    "title": "Route Target"
+                    "title": "Import Export"
                   }
                 },
                 "additionalProperties": false,
@@ -6368,7 +6379,7 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "title": "Pseudowire Name"
+                      "title": "Name"
                     },
                     "id_local": {
                       "type": "integer",
@@ -6381,12 +6392,18 @@
                       "title": "ID Remote"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Pseudowires"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "Vpws"
         },
@@ -6410,7 +6427,7 @@
                 },
                 "next_hop_self_source_interface": {
                   "type": "string",
-                  "title": "Source Interface"
+                  "title": "Next Hop Self Source Interface"
                 },
                 "next_hop_self_received_evpn_routes": {
                   "type": "object",
@@ -6438,7 +6455,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6459,7 +6476,10 @@
                     "title": "Domain Remote"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             },
@@ -6515,7 +6535,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6537,7 +6557,10 @@
                     "title": "Default Route Target"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             }
@@ -6555,14 +6578,17 @@
                 "properties": {
                   "prefix": {
                     "type": "string",
-                    "title": "Prefix IPV4"
+                    "title": "Prefix"
                   },
                   "route_map": {
                     "type": "string",
-                    "title": "Route-Map Name"
+                    "title": "Route Map"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "prefix"
+                ]
               },
               "title": "Networks"
             },
@@ -6573,7 +6599,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6598,7 +6624,7 @@
                       },
                       "route_map": {
                         "type": "string",
-                        "title": "Route-Map Name"
+                        "title": "Route Map"
                       }
                     },
                     "additionalProperties": false,
@@ -6626,7 +6652,10 @@
                     "title": "Prefix List Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             },
@@ -6637,7 +6666,7 @@
                 "properties": {
                   "ip_address": {
                     "type": "string",
-                    "title": "Neighbor IP Address"
+                    "title": "IP Address"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6672,14 +6701,17 @@
                       },
                       "route_map": {
                         "type": "string",
-                        "title": "Route-Map Name"
+                        "title": "Route Map"
                       }
                     },
                     "additionalProperties": false,
                     "title": "Default Originate"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "ip_address"
+                ]
               },
               "title": "Neighbors"
             }
@@ -6697,7 +6729,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6714,7 +6746,10 @@
                     "title": "Route Map Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             },
@@ -6725,7 +6760,7 @@
                 "properties": {
                   "ip_address": {
                     "type": "string",
-                    "title": "Neighbor IP Address"
+                    "title": "IP Address"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6742,7 +6777,10 @@
                     "title": "Route Map Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "ip_address"
+                ]
               },
               "title": "Neighbors"
             },
@@ -6757,10 +6795,13 @@
                   },
                   "route_map": {
                     "type": "string",
-                    "title": "Route Map Name"
+                    "title": "Route Map"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "source_protocol"
+                ]
               },
               "title": "Redistribute Routes"
             }
@@ -6778,14 +6819,17 @@
                 "properties": {
                   "prefix": {
                     "type": "string",
-                    "title": "Prefix IPV4"
+                    "title": "Prefix"
                   },
                   "route_map": {
                     "type": "string",
-                    "title": "Route-Map Name"
+                    "title": "Route Map"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "prefix"
+                ]
               },
               "title": "Networks"
             },
@@ -6796,7 +6840,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6823,7 +6867,10 @@
                     "title": "Prefix List Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             },
@@ -6834,7 +6881,7 @@
                 "properties": {
                   "ip_address": {
                     "type": "string",
-                    "title": "Neighbor IP Address"
+                    "title": "IP Address"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6861,7 +6908,10 @@
                     "title": "Prefix List Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "ip_address"
+                ]
               },
               "title": "Neighbors"
             },
@@ -6876,10 +6926,13 @@
                   },
                   "route_map": {
                     "type": "string",
-                    "title": "Route Map Name"
+                    "title": "Route Map"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "source_protocol"
+                ]
               },
               "title": "Redistribute Routes"
             }
@@ -6901,7 +6954,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6918,7 +6971,10 @@
                     "title": "Route Map Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             },
@@ -6941,7 +6997,7 @@
                 "properties": {
                   "ip_address": {
                     "type": "string",
-                    "title": "Neighbor IP Address"
+                    "title": "IP Address"
                   },
                   "activate": {
                     "type": "boolean",
@@ -6958,7 +7014,10 @@
                     "title": "Route Map Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "ip_address"
+                ]
               },
               "title": "Neighbors"
             },
@@ -6967,7 +7026,7 @@
               "properties": {
                 "source_interface": {
                   "type": "string",
-                  "title": "Interface"
+                  "title": "Source Interface"
                 }
               },
               "additionalProperties": false,
@@ -6991,7 +7050,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "title": "Peer-Group Name"
+                    "title": "Name"
                   },
                   "activate": {
                     "type": "boolean",
@@ -7008,7 +7067,10 @@
                     "title": "Route Map Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
               },
               "title": "Peer Groups"
             },
@@ -7031,7 +7093,7 @@
                 "properties": {
                   "ip_address": {
                     "type": "string",
-                    "title": "Neighbor IP Address"
+                    "title": "IP Address"
                   },
                   "activate": {
                     "type": "boolean",
@@ -7048,7 +7110,10 @@
                     "title": "Route Map Out"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "required": [
+                  "ip_address"
+                ]
               },
               "title": "Neighbors"
             },
@@ -7057,7 +7122,7 @@
               "properties": {
                 "source_interface": {
                   "type": "string",
-                  "title": "Interface"
+                  "title": "Source Interface"
                 }
               },
               "additionalProperties": false,
@@ -7074,11 +7139,11 @@
             "properties": {
               "name": {
                 "type": "string",
-                "title": "VRF Name"
+                "title": "Name"
               },
               "rd": {
                 "type": "string",
-                "title": "Route Distinguisher"
+                "title": "Rd"
               },
               "evpn_multicast": {
                 "type": "boolean",
@@ -7099,13 +7164,15 @@
                         "route_targets": {
                           "type": "array",
                           "items": {
-                            "type": "string",
-                            "title": "Route Target"
+                            "type": "string"
                           },
                           "title": "Route Targets"
                         }
                       },
-                      "additionalProperties": false
+                      "additionalProperties": false,
+                      "required": [
+                        "address_family"
+                      ]
                     },
                     "title": "Import"
                   },
@@ -7121,13 +7188,15 @@
                         "route_targets": {
                           "type": "array",
                           "items": {
-                            "type": "string",
-                            "title": "Route Target"
+                            "type": "string"
                           },
                           "title": "Route Targets"
                         }
                       },
-                      "additionalProperties": false
+                      "additionalProperties": false,
+                      "required": [
+                        "address_family"
+                      ]
                     },
                     "title": "Export"
                   }
@@ -7137,7 +7206,7 @@
               },
               "router_id": {
                 "type": "string",
-                "title": "IPv4 Address"
+                "title": "Router ID"
               },
               "timers": {
                 "type": "string",
@@ -7151,14 +7220,17 @@
                   "properties": {
                     "prefix": {
                       "type": "string",
-                      "title": "Prefix IPV4"
+                      "title": "Prefix"
                     },
                     "route_map": {
                       "type": "string",
-                      "title": "Route-Map Name"
+                      "title": "Route Map"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "prefix"
+                  ]
                 },
                 "title": "Networks"
               },
@@ -7170,7 +7242,7 @@
                   "properties": {
                     "prefix": {
                       "type": "string",
-                      "description": "\"A.B.C.D/E\" | \"A:B:C:D:E:F:G:H/I\"\n",
+                      "description": "Key only used for documentation or validation purposes",
                       "title": "Prefix"
                     },
                     "peer_id_include_router_id": {
@@ -7180,12 +7252,12 @@
                     },
                     "peer_group": {
                       "type": "string",
-                      "title": "Name Of Peer-Group"
+                      "title": "Peer Group"
                     },
                     "peer_filter": {
                       "type": "string",
-                      "title": "Name Of Peer-Filter",
-                      "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n"
+                      "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n",
+                      "title": "Peer Filter"
                     },
                     "remote_as": {
                       "type": "string",
@@ -7208,10 +7280,13 @@
                     },
                     "route_map": {
                       "type": "string",
-                      "title": "Route Map Name"
+                      "title": "Route Map"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "source_protocol"
+                  ]
                 },
                 "title": "Redistribute Routes"
               },
@@ -7239,14 +7314,17 @@
                     },
                     "attribute_map": {
                       "type": "string",
-                      "title": "Route Map Name"
+                      "title": "Attribute Map"
                     },
                     "match_map": {
                       "type": "string",
-                      "title": "Route Map Name"
+                      "title": "Match Map"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "prefix"
+                  ]
                 },
                 "title": "Aggregate Addresses"
               },
@@ -7257,15 +7335,15 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "title": "Interface"
+                      "title": "Name"
                     },
                     "remote_as": {
                       "type": "string",
-                      "title": "BGP AS"
+                      "title": "Remote As"
                     },
                     "peer_group": {
                       "type": "string",
-                      "title": "Peer Group Name"
+                      "title": "Peer Group"
                     },
                     "peer_filter": {
                       "type": "string",
@@ -7273,10 +7351,13 @@
                     },
                     "description": {
                       "type": "string",
-                      "title": "Description As String"
+                      "title": "Description"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Neighbor Interfaces"
               },
@@ -7335,7 +7416,7 @@
                         "properties": {
                           "ip_address": {
                             "type": "string",
-                            "title": "Neighbor IP Address"
+                            "title": "IP Address"
                           },
                           "activate": {
                             "type": "boolean",
@@ -7352,7 +7433,10 @@
                             "title": "Route Map Out"
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "required": [
+                          "ip_address"
+                        ]
                       },
                       "title": "Neighbors"
                     },
@@ -7363,7 +7447,7 @@
                         "properties": {
                           "name": {
                             "type": "string",
-                            "title": "Peer-Group Name"
+                            "title": "Name"
                           },
                           "activate": {
                             "type": "boolean",
@@ -7381,7 +7465,10 @@
                             "title": "Next Hop"
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "required": [
+                          "name"
+                        ]
                       },
                       "title": "Peer Groups"
                     },
@@ -7392,19 +7479,25 @@
                         "properties": {
                           "prefix": {
                             "type": "string",
-                            "title": "Prefix IPV4"
+                            "title": "Prefix"
                           },
                           "route_map": {
                             "type": "string",
-                            "title": "Route-Map Name"
+                            "title": "Route Map"
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "required": [
+                          "prefix"
+                        ]
                       },
                       "title": "Networks"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "address_family"
+                  ]
                 },
                 "title": "Address Families"
               },
@@ -7420,27 +7513,27 @@
                   "properties": {
                     "ip_address": {
                       "type": "string",
-                      "title": "IPv4 Address"
+                      "title": "IP Address"
                     },
                     "peer_group": {
                       "type": "string",
-                      "title": "Peer-Group Name"
+                      "title": "Peer Group"
                     },
                     "remote_as": {
                       "type": "string",
-                      "title": "BGP AS"
+                      "title": "Remote As"
                     },
                     "password": {
                       "type": "string",
-                      "title": "Encrypted Password"
+                      "title": "Password"
                     },
                     "local_as": {
                       "type": "integer",
-                      "title": "BGP AS"
+                      "title": "Local As"
                     },
                     "description": {
                       "type": "string",
-                      "title": "Description As String"
+                      "title": "Description"
                     },
                     "shutdown": {
                       "type": "boolean",
@@ -7448,7 +7541,7 @@
                     },
                     "update_source": {
                       "type": "string",
-                      "title": "Interface"
+                      "title": "Update Source"
                     },
                     "bfd": {
                       "type": "boolean",
@@ -7456,11 +7549,11 @@
                     },
                     "weight": {
                       "type": "integer",
-                      "title": "Weight Value"
+                      "title": "Weight"
                     },
                     "timers": {
                       "type": "string",
-                      "description": "keepalive hold timer values",
+                      "description": "Keepalive hold timer values",
                       "title": "Timers"
                     },
                     "route_map_in": {
@@ -7486,7 +7579,7 @@
                         },
                         "route_map": {
                           "type": "string",
-                          "title": "Route-Map Name"
+                          "title": "Route Map"
                         }
                       },
                       "additionalProperties": false,
@@ -7494,7 +7587,7 @@
                     },
                     "send_community": {
                       "type": "string",
-                      "description": "[ \"standard\", \"extended\", \"large\", \"all\" ]\nExample: \"standard large\"\n",
+                      "description": "Key only used for documentation or validation purposes",
                       "title": "Send Community"
                     },
                     "maximum_routes": {
@@ -7503,7 +7596,7 @@
                     },
                     "maximum_routes_warning_limit": {
                       "type": "string",
-                      "description": "[\"<integer>\", \"<0-100> percent\"]\nExample: 40 percent\n",
+                      "description": "Key only used for documentation or validation purposes",
                       "title": "Maximum Routes Warning Limit"
                     },
                     "maximum_routes_warning_only": {
@@ -7519,7 +7612,8 @@
                         },
                         "times": {
                           "type": "integer",
-                          "description": "1-10",
+                          "minimum": 1,
+                          "maximum": 10,
                           "title": "Times"
                         }
                       },
@@ -7652,22 +7746,32 @@
                             "title": "Activate"
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "required": [
+                          "address_family"
+                        ]
                       },
                       "title": "Address Families"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "ip_address"
+                  ]
                 },
                 "title": "Neighbors"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Router BGP"
     },
     "router_general": {
       "type": "object",
