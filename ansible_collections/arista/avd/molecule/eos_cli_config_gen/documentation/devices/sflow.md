@@ -53,11 +53,15 @@ interface Management1
 
 ### SFlow Summary
 
-| VRF | SFlow Source Interface | SFlow Destination | Port |
-| --- | ---------------------- | ----------------- | ---- |
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
 | AAA | - | 10.6.75.62 | 123 |
 | AAA | - | 10.6.75.63 | 333 |
 | AAA | Ethernet2 | - | - |
+| BBB | - | 10.6.75.62 | 6343 |
+| BBB | 1.1.1.1 | - | - |
+| CCC | - | 10.6.75.62 | 6343 |
+| CCC | Management1 | - | - |
 | MGMT | - | 10.6.75.59 | 6343 |
 | MGMT | - | 10.6.75.62 | 123 |
 | MGMT | - | 10.6.75.63 | 333 |
@@ -67,6 +71,8 @@ interface Management1
 | default | Management0 | - | - |
 
 sFlow Sample Rate: 1000
+
+sFlow Polling Interval: 10
 
 sFlow is enabled.
 
@@ -84,14 +90,28 @@ sFlow hardware accelerated Sample Rate: 1024
 | Linecard2 | True |
 | Linecard3 | False |
 
+### SFlow Extensions
+
+| Extension | Enabled |
+| --------- | ------- |
+| bgp | True |
+| router | True |
+| switch | False |
+| tunnel | False |
+
 ### SFlow Device Configuration
 
 ```eos
 !
 sflow sample dangerous 1000
+sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333
 sflow vrf AAA source-interface Ethernet2
+sflow vrf BBB destination 10.6.75.62
+sflow vrf BBB source 1.1.1.1
+sflow vrf CCC destination 10.6.75.62
+sflow vrf CCC source-interface Management1
 sflow vrf MGMT destination 10.6.75.59
 sflow vrf MGMT destination 10.6.75.62 123
 sflow vrf MGMT destination 10.6.75.63 333
@@ -99,8 +119,12 @@ sflow vrf MGMT source-interface Ethernet3
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
-sflow run
+sflow extension bgp
+sflow extension router
+no sflow extension switch
+no sflow extension tunnel
 sflow interface disable default
+sflow run
 sflow hardware acceleration
 sflow hardware acceleration sample 1024
 sflow hardware acceleration module Linecard1

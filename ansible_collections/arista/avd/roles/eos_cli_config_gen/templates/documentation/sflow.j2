@@ -5,8 +5,8 @@
 ### SFlow Summary
 {%     if ((sflow.vrfs is arista.avd.defined) or (sflow.destinations is arista.avd.defined) or (sflow.source_interface is arista.avd.defined)) %}
 
-| VRF | SFlow Source Interface | SFlow Destination | Port |
-| --- | ---------------------- | ----------------- | ---- |
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
 {%         if sflow.vrfs is arista.avd.defined %}
 {%             for vrf in sflow.vrfs | arista.avd.natural_sort('name') %}
 {%                 if vrf.destinations is arista.avd.defined %}
@@ -17,6 +17,8 @@
 {%                 endif %}
 {%                 if vrf.source_interface is arista.avd.defined %}
 | {{ vrf.name }} | {{ vrf.source_interface }} | - | - |
+{%                 elif vrf.source is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.source }} | - | - |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -28,11 +30,17 @@
 {%         endif %}
 {%         if sflow.source_interface is arista.avd.defined %}
 | default | {{ sflow.source_interface }} | - | - |
+{%         elif sflow.source is arista.avd.defined %}
+| default | {{ sflow.source }} | - | - |
 {%         endif %}
 {%     endif %}
 {%     if sflow.sample is arista.avd.defined %}
 
 sFlow Sample Rate: {{ sflow.sample }}
+{%     endif %}
+{%     if sflow.polling_interval is arista.avd.defined %}
+
+sFlow Polling Interval: {{ sflow.polling_interval }}
 {%     endif %}
 {%     if sflow.run is defined and sflow.run == true %}
 
@@ -63,6 +71,16 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 {%             if module.name is arista.avd.defined %}
 | {{ module.name }} | {{ module.enabled | arista.avd.default(true) }} |
 {%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if sflow.extensions is arista.avd.defined %}
+
+### SFlow Extensions
+
+| Extension | Enabled |
+| --------- | ------- |
+{%         for extension in sflow.extensions | arista.avd.natural_sort('name') if extension.name is arista.avd.defined and extension.enabled is arista.avd.defined %}
+| {{ extension.name }} | {{ extension.enabled }} |
 {%         endfor %}
 {%     endif %}
 

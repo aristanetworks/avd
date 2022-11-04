@@ -13,6 +13,11 @@ keys:
         - str
       dangerous:
         type: bool
+      polling_interval:
+        type: int
+        convert_types:
+        - str
+        description: Polling interval in seconds
       vrfs:
         type: list
         primary_key: name
@@ -33,14 +38,20 @@ keys:
                 keys:
                   destination:
                     type: str
-                    description: Sflow Destination IP
+                    description: Sflow Destination IP Address
                   port:
                     type: int
                     description: Port Number
                     convert_types:
                     - str
+            source:
+              type: str
+              description: |
+                Source IP Address.
+                "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
             source_interface:
               type: str
+              description: Source Interface
       destinations:
         type: list
         primary_key: destination
@@ -51,14 +62,33 @@ keys:
           keys:
             destination:
               type: str
-              description: Sflow Destination IP
+              description: Sflow Destination IP Address
             port:
               type: int
               description: Port Number
               convert_types:
               - str
+      source:
+        type: str
+        description: |
+          Source IP Address.
+          "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
       source_interface:
         type: str
+        description: Source Interface
+      extensions:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Extension Name
+            enabled:
+              type: bool
+              description: Enable or Disable Extension
+              required: true
       interface:
         type: dict
         keys:

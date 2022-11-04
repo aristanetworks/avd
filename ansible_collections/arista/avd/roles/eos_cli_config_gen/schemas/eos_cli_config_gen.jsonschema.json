@@ -6449,6 +6449,11 @@
           "type": "boolean",
           "title": "Dangerous"
         },
+        "polling_interval": {
+          "type": "integer",
+          "description": "Polling interval in seconds",
+          "title": "Polling Interval"
+        },
         "vrfs": {
           "type": "array",
           "items": {
@@ -6465,7 +6470,7 @@
                   "properties": {
                     "destination": {
                       "type": "string",
-                      "description": "Sflow Destination IP",
+                      "description": "Sflow Destination IP Address",
                       "title": "Destination"
                     },
                     "port": {
@@ -6481,8 +6486,14 @@
                 },
                 "title": "Destinations"
               },
+              "source": {
+                "type": "string",
+                "description": "Source IP Address.\n\"source\" and \"source_interface\" are mutually exclusive. If both are defined, \"source_interface\" takes precedence.\n",
+                "title": "Source"
+              },
               "source_interface": {
                 "type": "string",
+                "description": "Source Interface",
                 "title": "Source Interface"
               }
             },
@@ -6500,7 +6511,7 @@
             "properties": {
               "destination": {
                 "type": "string",
-                "description": "Sflow Destination IP",
+                "description": "Sflow Destination IP Address",
                 "title": "Destination"
               },
               "port": {
@@ -6516,9 +6527,39 @@
           },
           "title": "Destinations"
         },
+        "source": {
+          "type": "string",
+          "description": "Source IP Address.\n\"source\" and \"source_interface\" are mutually exclusive. If both are defined, \"source_interface\" takes precedence.\n",
+          "title": "Source"
+        },
         "source_interface": {
           "type": "string",
+          "description": "Source Interface",
           "title": "Source Interface"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Extension Name",
+                "title": "Name"
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "Enable or Disable Extension",
+                "title": "Enabled"
+              }
+            },
+            "required": [
+              "enabled",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Extensions"
         },
         "interface": {
           "type": "object",
