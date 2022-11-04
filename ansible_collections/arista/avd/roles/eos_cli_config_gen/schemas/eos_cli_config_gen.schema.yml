@@ -5299,7 +5299,6 @@ keys:
           type: str
           description: Key only used for documentation or validation purposes
   vxlan_interface:
-    display_name: VxLAN Interface
     type: dict
     keys:
       Vxlan1:
@@ -5308,28 +5307,23 @@ keys:
           description:
             type: str
           vxlan:
-            display_name: VxLAN
             type: dict
             keys:
               source_interface:
                 type: str
                 description: Source Interface Name
               mlag_source_interface:
-                display_name: MLAG Source Interface
                 type: str
               udp_port:
-                display_name: UDP Port
                 type: int
                 convert_types:
                 - str
               virtual_router_encapsulation_mac_address:
-                display_name: Virtual Router Encapsulation MAC Address
                 type: str
                 description: '"mlag-system-id" or ethernet_address (H.H.H)
 
                   '
               bfd_vtep_evpn:
-                display_name: BFD VTEP EVPN
                 type: dict
                 keys:
                   interval:
@@ -5337,7 +5331,6 @@ keys:
                     convert_types:
                     - str
                   min_rx:
-                    display_name: Min RX
                     type: int
                     convert_types:
                     - str
@@ -5350,7 +5343,6 @@ keys:
                   prefix_list:
                     type: str
               qos:
-                display_name: QOS
                 type: dict
                 description: 'For the Traffic Class to be derived based on the outer
                   DSCP field of the incoming VxLan packet, the core ports must be
@@ -5362,13 +5354,10 @@ keys:
                   '
                 keys:
                   dscp_propagation_encapsulation:
-                    display_name: DSCP Propagation Encapsulation
                     type: bool
                   map_dscp_to_traffic_class_decapsulation:
-                    display_name: Map DSCP To Traffic Class Decapsulation
                     type: bool
               vlans:
-                display_name: VLANs
                 type: list
                 primary_key: id
                 convert_types:
@@ -5381,10 +5370,8 @@ keys:
                       convert_types:
                       - str
                       required: true
-                      display_name: ID
                       description: VLAN ID
                     vni:
-                      display_name: VNI
                       type: int
                       convert_types:
                       - str
@@ -5392,13 +5379,11 @@ keys:
                       type: str
                       description: IP Multicast Group Address
                     flood_vteps:
-                      display_name: Flood VTEPs
                       type: list
                       items:
                         type: str
                         description: Remote VTEP IP Address
               vrfs:
-                display_name: VRFs
                 type: list
                 primary_key: name
                 convert_types:
@@ -5411,7 +5396,6 @@ keys:
                       required: true
                       description: VRF Name
                     vni:
-                      display_name: VNI
                       type: int
                       convert_types:
                       - str
@@ -5419,16 +5403,13 @@ keys:
                       type: str
                       description: IP Multicast Group Address
               flood_vteps:
-                display_name: Flood VTEPs
                 type: list
                 items:
                   type: str
                   description: Remote VTEP IP Address
               flood_vtep_learned_data_plane:
-                display_name: Flood VTEP Learned Data Plane
                 type: bool
           eos_cli:
             type: str
-            display_name: EOS CLI
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.

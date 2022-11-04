@@ -7729,7 +7729,6 @@
       "title": "VRFs"
     },
     "vxlan_interface": {
-      "title": "VxLAN Interface",
       "type": "object",
       "properties": {
         "Vxlan1": {
@@ -7740,7 +7739,6 @@
               "title": "Description"
             },
             "vxlan": {
-              "title": "VxLAN",
               "type": "object",
               "properties": {
                 "source_interface": {
@@ -7749,20 +7747,19 @@
                   "title": "Source Interface"
                 },
                 "mlag_source_interface": {
-                  "title": "MLAG Source Interface",
-                  "type": "string"
+                  "type": "string",
+                  "title": "MLAG Source Interface"
                 },
                 "udp_port": {
-                  "title": "UDP Port",
-                  "type": "integer"
+                  "type": "integer",
+                  "title": "UDP Port"
                 },
                 "virtual_router_encapsulation_mac_address": {
-                  "title": "Virtual Router Encapsulation MAC Address",
                   "type": "string",
-                  "description": "\"mlag-system-id\" or ethernet_address (H.H.H)\n"
+                  "description": "\"mlag-system-id\" or ethernet_address (H.H.H)\n",
+                  "title": "Virtual Router Encapsulation MAC Address"
                 },
                 "bfd_vtep_evpn": {
-                  "title": "BFD VTEP EVPN",
                   "type": "object",
                   "properties": {
                     "interval": {
@@ -7770,8 +7767,8 @@
                       "title": "Interval"
                     },
                     "min_rx": {
-                      "title": "Min RX",
-                      "type": "integer"
+                      "type": "integer",
+                      "title": "Min RX"
                     },
                     "multiplier": {
                       "type": "integer",
@@ -7784,38 +7781,38 @@
                       "title": "Prefix List"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "title": "BFD Vtep Evpn"
                 },
                 "qos": {
-                  "title": "QOS",
                   "type": "object",
                   "description": "For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in \"DSCP Trust\" mode.\n!!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.\n",
                   "properties": {
                     "dscp_propagation_encapsulation": {
-                      "title": "DSCP Propagation Encapsulation",
-                      "type": "boolean"
+                      "type": "boolean",
+                      "title": "DSCP Propagation Encapsulation"
                     },
                     "map_dscp_to_traffic_class_decapsulation": {
-                      "title": "Map DSCP To Traffic Class Decapsulation",
-                      "type": "boolean"
+                      "type": "boolean",
+                      "title": "Map DSCP To Traffic Class Decapsulation"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "title": "QOS"
                 },
                 "vlans": {
-                  "title": "VLANs",
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
                       "id": {
                         "type": "integer",
-                        "title": "ID",
-                        "description": "VLAN ID"
+                        "description": "VLAN ID",
+                        "title": "ID"
                       },
                       "vni": {
-                        "title": "VNI",
-                        "type": "integer"
+                        "type": "integer",
+                        "title": "Vni"
                       },
                       "multicast_group": {
                         "type": "string",
@@ -7823,22 +7820,22 @@
                         "title": "Multicast Group"
                       },
                       "flood_vteps": {
-                        "title": "Flood VTEPs",
                         "type": "array",
                         "items": {
                           "type": "string",
                           "description": "Remote VTEP IP Address"
-                        }
+                        },
+                        "title": "Flood Vteps"
                       }
                     },
                     "required": [
                       "id"
                     ],
                     "additionalProperties": false
-                  }
+                  },
+                  "title": "VLANs"
                 },
                 "vrfs": {
-                  "title": "VRFs",
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -7849,8 +7846,8 @@
                         "title": "Name"
                       },
                       "vni": {
-                        "title": "VNI",
-                        "type": "integer"
+                        "type": "integer",
+                        "title": "Vni"
                       },
                       "multicast_group": {
                         "type": "string",
@@ -7862,34 +7859,37 @@
                       "name"
                     ],
                     "additionalProperties": false
-                  }
+                  },
+                  "title": "VRFs"
                 },
                 "flood_vteps": {
-                  "title": "Flood VTEPs",
                   "type": "array",
                   "items": {
                     "type": "string",
                     "description": "Remote VTEP IP Address"
-                  }
+                  },
+                  "title": "Flood Vteps"
                 },
                 "flood_vtep_learned_data_plane": {
-                  "title": "Flood VTEP Learned Data Plane",
-                  "type": "boolean"
+                  "type": "boolean",
+                  "title": "Flood Vtep Learned Data Plane"
                 }
               },
-              "additionalProperties": false
+              "additionalProperties": false,
+              "title": "VxLAN"
             },
             "eos_cli": {
               "type": "string",
-              "title": "EOS CLI",
-              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration."
+              "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.",
+              "title": "EOS CLI"
             }
           },
           "additionalProperties": false,
           "title": "Vxlan1"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "VxLAN Interface"
     }
   },
   "additionalProperties": true
