@@ -379,6 +379,7 @@ vlan_interfaces:
     description: static_routes_410
     shutdown: false
     vrf: svi_profile_tests_vrf
+    ip_address: 11.4.10.1/24
     ip_virtual_router_addresses:
     - 10.4.10.1/24
   Vlan411:
@@ -386,6 +387,7 @@ vlan_interfaces:
     description: static_routes_411
     shutdown: false
     vrf: svi_profile_tests_vrf
+    ip_address: 11.4.11.1/24
     ip_virtual_router_addresses:
     - 10.4.11.1/24
   Vlan412:
@@ -393,6 +395,7 @@ vlan_interfaces:
     description: static_routes_412
     shutdown: false
     vrf: svi_profile_tests_vrf
+    ip_address: 11.4.12.1/24
     ip_virtual_router_addresses:
     - 10.4.12.1/24
   Vlan510:

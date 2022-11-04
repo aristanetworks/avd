@@ -27,6 +27,20 @@ svi_profiles:
       - ip_helper: 1.1.1.1
         source_interface: lo100
         source_vrf: TEST
+    nodes:
+      - name: DC1-LEAF1A
+        # Should take config from svis[svi].nodes[node]
+        ip_address_virtual_secondaries:
+          - 10.2.21.1/24
+        # Over-writes the ip_helpers defined on svi settings profile
+        ip_helpers:
+          - ip_helper: 1.1.1.1
+            source_interface: lo101
+            source_vrf: TEST
+      - name: DC1-LEAF2A
+        # Should over-write the config from svi settings
+        ip_address_virtual_secondaries:
+          - 10.2.21.1/24
   - profile: WITH_DHCP
     enabled: true
     ip_helpers:
@@ -86,6 +100,17 @@ tenants:
             ip_address_virtual_secondaries:
               - 10.2.20.1/24
               - 10.2.21.1/24
+            nodes:
+              - name: DC1-LEAF1A
+                ip_address_virtual_secondaries:
+                  - 10.2.20.1/24
+              - name: DC1-LEAF2A
+                # Test the node priority on ip_helpers
+                # Merges the config from nodes
+                ip_helpers:
+                  - ip_helper: 2.2.2.2
+                    source_interface: lo102
+                    source_vrf: TEST
           - id: 121
             name: Tenant_A_WEBZone_2
             tags: ['web']
@@ -110,6 +135,11 @@ tenants:
             nodes:
               - name: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
+              - name: evpn_services_l2_only_false
+                ip_address: 10.1.32.2/24
+                ip_virtual_router_addresses:
+                  # OverWrites the svi.ip_virtual_router_addresses
+                  - 10.2.32.254/24
             ip_virtual_router_addresses:
               - 10.1.32.254
               - 10.2.32.254/24
