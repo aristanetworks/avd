@@ -6517,7 +6517,8 @@
               }
             },
             "required": [
-              "enabled"
+              "enabled",
+              "name"
             ],
             "additionalProperties": false
           },
