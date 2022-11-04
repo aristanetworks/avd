@@ -3000,7 +3000,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Loopback Interface"
+            "title": "Name"
           },
           "description": {
             "type": "string",
@@ -3017,13 +3017,12 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "IPv4 Address"
+            "title": "IP Address"
           },
           "ip_address_secondaries": {
             "type": "array",
             "items": {
-              "type": "string",
-              "title": "IPv4 Address"
+              "type": "string"
             },
             "title": "IP Address Secondaries"
           },
@@ -3046,6 +3045,10 @@
           "mpls": {
             "type": "object",
             "properties": {
+              "ip": {
+                "type": "boolean",
+                "title": "IP"
+              },
               "ldp": {
                 "type": "object",
                 "properties": {
@@ -3063,11 +3066,11 @@
           },
           "eos_cli": {
             "type": "string",
-            "title": "Multiline eos cli"
+            "title": "EOS CLI"
           },
           "isis_enable": {
             "type": "string",
-            "title": "ISIS Instance"
+            "title": "ISIS Enable"
           },
           "isis_passive": {
             "type": "boolean",
