@@ -6415,6 +6415,7 @@
         },
         "polling_interval": {
           "type": "integer",
+          "description": "Polling interval in seconds",
           "title": "Polling Interval"
         },
         "vrfs": {

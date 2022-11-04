@@ -3439,7 +3439,7 @@ service_routing_protocols_model: <str>
 | [<samp>sflow</samp>](## "sflow") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow.sample") | Integer |  |  |  |  |
 | [<samp>&nbsp;&nbsp;dangerous</samp>](## "sflow.dangerous") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;polling_interval</samp>](## "sflow.polling_interval") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;polling_interval</samp>](## "sflow.polling_interval") | Integer |  |  |  | Polling interval in seconds |
 | [<samp>&nbsp;&nbsp;vrfs</samp>](## "sflow.vrfs") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "sflow.vrfs.[].name") | String | Required, Unique |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "sflow.vrfs.[].destinations") | List, items: Dictionary |  |  |  |  |

@@ -15,6 +15,9 @@ keys:
         type: bool
       polling_interval:
         type: int
+        convert_types:
+        - str
+        description: Polling interval in seconds
       vrfs:
         type: list
         primary_key: name
