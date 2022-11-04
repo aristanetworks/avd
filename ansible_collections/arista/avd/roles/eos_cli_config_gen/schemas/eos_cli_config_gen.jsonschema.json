@@ -2437,17 +2437,21 @@
           },
           "links_minimum": {
             "type": "integer",
+            "minimum": 1,
+            "maximum": 100000,
             "title": "Links Minimum"
           },
           "recovery_delay": {
             "type": "integer",
+            "minimum": 0,
+            "maximum": 3600,
             "title": "Recovery Delay"
           }
         },
-        "additionalProperties": false,
         "required": [
           "name"
-        ]
+        ],
+        "additionalProperties": false
       },
       "title": "Link Tracking Groups"
     },
