@@ -1470,6 +1470,23 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_hardware:
+    type: dict
+    keys:
+      fib:
+        type: dict
+        keys:
+          optimize:
+            type: dict
+            keys:
+              prefixes:
+                type: dict
+                keys:
+                  profile:
+                    type: str
+                    valid_values:
+                    - internet
+                    - urpf-internet
   ip_http_client_source_interfaces:
     type: list
     items:
