@@ -20,6 +20,8 @@
     - "{{ eos_validate_state_dir }}"
   delegate_to: localhost
   run_once: true
+  tags:
+    - always
 
 - name: Include device intended structure configuration variables
   include_vars: "{{ filename }}"
