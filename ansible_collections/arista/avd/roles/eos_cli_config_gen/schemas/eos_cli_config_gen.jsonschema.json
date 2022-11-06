@@ -3504,7 +3504,7 @@
               },
               "tls_versions": {
                 "type": "string",
-                "description": "List of allowed TLS versions as string\n",
+                "description": "List of allowed TLS versions as string\nExamples:\n  - \"1.0\"\n  - \"1.0 1.1\"\n",
                 "title": "TLS Versions"
               },
               "cipher_list": {

@@ -32,6 +32,11 @@ keys:
               type: str
               description: |
                 List of allowed TLS versions as string
+                Examples:
+                  - "1.0"
+                  - "1.0 1.1"
+              convert_types:
+              - float
             cipher_list:
               type: str
               description: |

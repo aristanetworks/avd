@@ -197,6 +197,10 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
     return instance
 
 
+def _is_float(validator, instance):
+    return isinstance(instance, float)
+
+
 """
 AvdDataConverter is used to convert AVD Data Types based on schema options.
 We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
@@ -224,6 +228,7 @@ else:
                 "bool": jsonschema._types.is_bool,
                 "list": jsonschema._types.is_array,
                 "int": jsonschema._types.is_integer,
+                "float": _is_float,
             }
         ),
     )

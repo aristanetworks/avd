@@ -14,3 +14,7 @@ management_security:
       certificate:
         file: eAPI.crt
         key: eAPI.key
+    - name: tls-single-version-profile-as-string
+      tls_versions: "1.1"
+    - name: tls-single-version-profile-as-float
+      tls_versions: 1.0
