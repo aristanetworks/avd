@@ -91,7 +91,7 @@ interface Management1
 
 #### IP Sparse Mode Information
 
-BFD enabled: False
+BFD enabled: True
 
 ##### IP Rendezvous Information
 
@@ -107,7 +107,10 @@ BFD enabled: False
 
 ##### IP Sparse Mode VRFs
 
-BFD enabled: False
+| VRF Name | BFD Enabled | 
+| -------- | ----------- | 
+| MCAST_VRF1 | True |
+| MCAST_VRF2_ALL_GROUPS | False |
 
 | VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------ | ------------- |

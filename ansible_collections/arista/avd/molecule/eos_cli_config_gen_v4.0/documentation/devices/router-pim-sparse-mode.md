@@ -107,7 +107,10 @@ BFD enabled: False
 
 ##### IP Sparse Mode VRFs
 
-BFD enabled: False
+| VRF Name | BFD Enabled | 
+| -------- | ----------- | 
+| MCAST_VRF1 | False |
+| MCAST_VRF2_ALL_GROUPS | False |
 
 | VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------ | ------------- |

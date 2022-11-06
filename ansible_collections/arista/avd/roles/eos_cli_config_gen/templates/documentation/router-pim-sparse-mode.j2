@@ -5,9 +5,9 @@
 
 #### IP Sparse Mode Information
 {%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
-{%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
-BFD enabled: {{ router_pim_sparse_mode.bfd | arista.avd.default(false) }}
+BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
+{%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
 ##### IP Rendezvous Information
 
@@ -36,7 +36,11 @@ BFD enabled: {{ router_pim_sparse_mode.bfd | arista.avd.default(false) }}
 
 ##### IP Sparse Mode VRFs
 
-BFD enabled: {{ router_pim_sparse_mode.bfd | arista.avd.default(false) }}
+| VRF Name | BFD Enabled | 
+| -------- | ----------- | 
+{%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+| {{ vrf.name }} | {{ vrf.ipv4.bfd | arista.avd.default(false) }} |
+{%         endfor %}
 
 | VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------ | ------------- |
