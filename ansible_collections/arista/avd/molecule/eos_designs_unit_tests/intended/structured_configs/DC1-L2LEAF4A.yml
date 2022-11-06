@@ -35,9 +35,7 @@ spanning_tree:
       priority: 16384
 local_users:
   admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
+    disabled: true
   cvpadmin:
     privilege: 15
     role: network-admin
