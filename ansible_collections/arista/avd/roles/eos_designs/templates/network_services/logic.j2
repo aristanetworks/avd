@@ -39,22 +39,24 @@
 {%                         if svi.id | int in whitelist.vlans %}
 {%                             if "all" in match_tags or svi.tags | arista.avd.default(['all']) is arista.avd.contains(match_tags) %}
 {%                                 set tmp_svi = {} %}
-{%                                 set tmp_svi_struct_cfg = svi.nodes | arista.avd.default({}) |
-                                                                        arista.avd.convert_dicts('name') |
-                                                                        selectattr('name', 'arista.avd.defined', inventory_hostname) |
-                                                                        map(attribute='structured_config') |
-                                                                        first %}
+{%                                 set tmp_svi_node_cfg = {} %}
+{%                                 set tmp_node_cfg = (svi.nodes | arista.avd.default({}) |
+                                                                   arista.avd.convert_dicts('name') |
+                                                                   selectattr('name', 'arista.avd.defined', inventory_hostname)
+                                                       )[0] | arista.avd.default({}) %}
+{%                                 set tmp_svi_struct_cfg = tmp_node_cfg.pop('structured_config', none) %}
 {%                                 set bgp_svi_struct_cfg = svi.bgp.structured_config | arista.avd.default %}
 {%                                 if svi.profile is arista.avd.defined %}
 {%                                     set svi_profile = svi_profiles | arista.avd.default({}) |
                                                                         arista.avd.convert_dicts('profile') |
                                                                         selectattr('profile', 'arista.avd.defined', svi.profile) |
                                                                         first %}
-{%                                     if tmp_svi_struct_cfg is not arista.avd.defined and svi_profile.nodes is arista.avd.defined %}
-{%                                         set tmp_svi_struct_cfg = svi_profile.nodes | arista.avd.convert_dicts('name') |
-                                                                                        selectattr('name', 'arista.avd.defined', inventory_hostname) |
-                                                                                        map(attribute='structured_config') |
-                                                                                        first %}
+{%                                     set tmp_node_profile_cfg = (svi_profile.nodes | arista.avd.default({}) |
+                                                                                       arista.avd.convert_dicts('name') |
+                                                                                       selectattr('name', 'arista.avd.defined', inventory_hostname)
+                                                                   )[0] | arista.avd.default({}) %}
+{%                                     if tmp_svi_struct_cfg is not arista.avd.defined %}
+{%                                         set tmp_svi_struct_cfg = tmp_node_profile_cfg.pop('structured_config', none) %}
 {%                                     endif %}
 {%                                     if bgp_svi_struct_cfg is not arista.avd.defined and svi_profile.bgp.structured_config is arista.avd.defined %}
 {%                                         set bgp_svi_struct_cfg = svi_profile.bgp.structured_config %}
@@ -64,20 +66,36 @@
                                                                                    arista.avd.convert_dicts('profile') |
                                                                                    selectattr('profile', 'arista.avd.defined', svi_profile.parent_profile) |
                                                                                    first %}
-{%                                         if tmp_svi_struct_cfg is not arista.avd.defined and svi_parent_profile.nodes is arista.avd.defined %}
-{%                                             set tmp_svi_struct_cfg = svi_parent_profile.nodes | arista.avd.convert_dicts('name') |
-                                                                                                   selectattr('name', 'arista.avd.defined', inventory_hostname) |
-                                                                                                   map(attribute='structured_config') |
-                                                                                                   first %}
+{%                                         set tmp_node_parent_profile_cfg = (svi_parent_profile.nodes | arista.avd.default({}) |
+                                                                                                         arista.avd.convert_dicts('name') |
+                                                                                                         selectattr('name', 'arista.avd.defined', inventory_hostname)
+                                                                              )[0] | arista.avd.default({}) %}
+{%                                         if tmp_svi_struct_cfg is not arista.avd.defined %}
+{%                                             set tmp_svi_struct_cfg = tmp_node_parent_profile_cfg.pop('structured_config', none) %}
 {%                                         endif %}
 {%                                         if bgp_svi_struct_cfg is not arista.avd.defined and svi_parent_profile.bgp.structured_config is arista.avd.defined %}
 {%                                             set bgp_svi_struct_cfg = svi_parent_profile.bgp.structured_config %}
 {%                                         endif %}
 {%                                         set tmp_svi = svi_parent_profile %}
+{%                                         set tmp_svi_node_cfg = tmp_node_parent_profile_cfg %}
 {%                                     endif %}
 {%                                     set tmp_svi = tmp_svi | ansible.builtin.combine(svi_profile, recursive=true, list_merge='replace') %}
+{%                                     set tmp_svi_node_cfg = tmp_svi_node_cfg | ansible.builtin.combine(tmp_node_profile_cfg, recursive=true, list_merge='replace') %}
 {%                                 endif %}
 {%                                 set tmp_svi = tmp_svi | ansible.builtin.combine(svi, recursive=true, list_merge='replace') %}
+{%                                 set tmp_svi_node_cfg = tmp_svi_node_cfg | ansible.builtin.combine(tmp_node_cfg, recursive=true, list_merge='replace') %}
+{%                                 do tmp_svi_node_cfg.pop("name", none) %}
+{%                                 set tmp_svi = tmp_svi | ansible.builtin.combine(tmp_svi_node_cfg, recursive=true, list_merge='replace') %}
+{%                                 if tmp_svi.ip_address_virtual is arista.avd.defined and tmp_svi.ip_address is arista.avd.defined and tmp_svi.ip_virtual_router_addresses is arista.avd.defined %}
+{%                                     do tmp_svi.update({"ip_address_virtual": none, "ip_address_virtual_secondaries": none}) %}
+{%                                 elif tmp_svi.ip_virtual_router_addresses is arista.avd.defined and tmp_svi.ip_address is not arista.avd.defined %}
+{%                                     do tmp_svi.update({"ip_virtual_router_addresses": none}) %}
+{%                                 endif %}
+{%                                 if (tmp_svi.ipv6_address_virtual is arista.avd.defined or tmp_svi.ipv6_address_virtuals is arista.avd.defined) and tmp_svi.ipv6_address is arista.avd.defined and tmp_svi.ipv6_virtual_router_addresses is arista.avd.defined %}
+{%                                     do tmp_svi.update({"ipv6_address_virtual": none, "ipv6_address_virtuals": none}) %}
+{%                                 elif tmp_svi.ipv6_virtual_router_addresses is arista.avd.defined and tmp_svi.ipv6_address is not arista.avd.defined %}
+{%                                     do tmp_svi.update({"ipv6_virtual_router_addresses": none}) %}
+{%                                 endif %}
 {#                                 Structured config should not be merged recursively, but will be taken directly from the most specific level #}
 
 {%                                 do tmp_svi.update({"structured_config": tmp_svi_struct_cfg | arista.avd.default(

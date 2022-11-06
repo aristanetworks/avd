@@ -315,6 +315,11 @@ tenants:
             enabled: true
             ip_virtual_router_addresses: [10.4.10.1/24]
             profile: static_routes_child_profile_1
+            nodes:
+              SVI_PROFILE_NODE_1:
+                ip_address: 11.4.10.1/24
+              SVI_PROFILE_NODE_2:
+                ip_address: 11.4.10.2/24
 
           # ip_virtual_router_addresses set on child_profile and parent_profile
           # expected result: child_profile.ip_virtual_router_addresses should win
@@ -322,6 +327,11 @@ tenants:
             name: static_routes_411
             enabled: true
             profile: static_routes_child_profile_2
+            nodes:
+              SVI_PROFILE_NODE_1:
+                ip_address: 11.4.11.1/24
+              SVI_PROFILE_NODE_2:
+                ip_address: 11.4.11.2/24
 
           # ip_virtual_router_addresses set on child_profile and parent_profile
           # expected result: parent_profile.ip_virtual_router_addresses should win
@@ -329,6 +339,11 @@ tenants:
             name: static_routes_412
             enabled: true
             profile: static_routes_child_profile_3
+            nodes:
+              SVI_PROFILE_NODE_1:
+                ip_address: 11.4.12.1/24
+              SVI_PROFILE_NODE_2:
+                ip_address: 11.4.12.2/24
 
 
 #### ---- Test inheritance of svi ospf.enabled ----- ###

@@ -1081,6 +1081,27 @@ keys:
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"
+  hardware_counters:
+    type: dict
+    keys:
+      features:
+        type: list
+        primary_key: name
+        secondary_key: direction
+        convert_types:
+        - list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            direction:
+              type: str
+              required: true
+              valid_values:
+              - in
+              - out
   interface_defaults:
     type: dict
     keys:
@@ -1449,6 +1470,23 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression
+  ip_hardware:
+    type: dict
+    keys:
+      fib:
+        type: dict
+        keys:
+          optimize:
+            type: dict
+            keys:
+              prefixes:
+                type: dict
+                keys:
+                  profile:
+                    type: str
+                    valid_values:
+                    - internet
+                    - urpf-internet
   ip_http_client_source_interfaces:
     type: list
     items:
@@ -1811,6 +1849,25 @@ keys:
         description: Set local system LACP priority.
         min: 0
         max: 65535
+  link_tracking_groups:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+        links_minimum:
+          type: int
+          min: 1
+          max: 100000
+        recovery_delay:
+          type: int
+          min: 0
+          max: 3600
   lldp:
     type: dict
     keys:
@@ -2143,6 +2200,34 @@ keys:
                 - str
               action:
                 type: str
+  mac_address_table:
+    type: dict
+    keys:
+      aging_time:
+        type: int
+        description: Aging time in seconds
+        convert_types:
+        - str
+      notification_host_flap:
+        type: dict
+        keys:
+          logging:
+            type: bool
+          detection:
+            type: dict
+            keys:
+              window:
+                type: int
+                min: 2
+                max: 300
+                convert_types:
+                - str
+              moves:
+                type: int
+                min: 2
+                max: 10
+                convert_types:
+                - str
   mac_security:
     type: dict
     display_name: MAC Security (MACsec)
@@ -2504,9 +2589,10 @@ keys:
               type: str
             tls_versions:
               type: str
-              description: 'List of allowed TLS versions as string
-
-                '
+              description: "List of allowed TLS versions as string\nExamples:\n  -
+                \"1.0\"\n  - \"1.0 1.1\"\n"
+              convert_types:
+              - float
             cipher_list:
               type: str
               description: 'cipher_list syntax follows the openssl cipher strings
@@ -2952,6 +3038,61 @@ keys:
         type: list
         items:
           type: str
+  patch_panel:
+    type: dict
+    keys:
+      patches:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            enabled:
+              type: bool
+            connectors:
+              type: list
+              primary_key: id
+              convert_types:
+              - dict
+              min_length: 2
+              max_length: 2
+              description: Must have exactly two connectors to a patch of which at
+                least one must be of type "interface"
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                    convert_types:
+                    - int
+                    required: true
+                  type:
+                    type: str
+                    valid_values:
+                    - interface
+                    - pseudowire
+                    required: true
+                  endpoint:
+                    type: str
+                    description: 'String with relevant endpoint depending on type.
+
+                      Examples:
+
+                      - "Ethernet1"
+
+                      - "Ethernet1 dot1q vlan 123"
+
+                      - "bgp vpws TENANT_A pseudowire VPWS_PW_1"
+
+                      - "ldp LDP_PW_1"
+
+                      '
+                    required: true
   peer_filters:
     type: list
     primary_key: name
@@ -4253,6 +4394,92 @@ keys:
                         type: list
                         items:
                           type: str
+  router_traffic_engineering:
+    type: dict
+    keys:
+      router_id:
+        type: dict
+        keys:
+          ipv4:
+            type: str
+          ipv6:
+            type: str
+      segment_routing:
+        type: dict
+        keys:
+          colored_tunnel_rib:
+            type: bool
+          policy_endpoints:
+            type: list
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: IPv4 or IPv6 address
+                colors:
+                  type: list
+                  primary_key: value
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      value:
+                        type: int
+                        convert_types:
+                        - str
+                      binding_sid:
+                        type: int
+                        convert_types:
+                        - str
+                      description:
+                        type: str
+                      name:
+                        type: str
+                      sbfd_remote_discriminator:
+                        type: str
+                        description: IPv4 address or 32 bit integer
+                        convert_types:
+                        - int
+                      path_group:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            preference:
+                              type: int
+                              convert_types:
+                              - str
+                            explicit_null:
+                              type: str
+                              valid_values:
+                              - ipv4
+                              - ipv6
+                              - ipv4 ipv6
+                              - none
+                            segment_list:
+                              type: list
+                              items:
+                                type: dict
+                                keys:
+                                  label_stack:
+                                    type: str
+                                    convert_types:
+                                    - int
+                                    description: 'Label Stack as string.
+
+                                      Example: "100 2000 30"
+
+                                      '
+                                  weight:
+                                    type: int
+                                    convert_types:
+                                    - str
+                                  index:
+                                    type: int
+                                    convert_types:
+                                    - str
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -4272,6 +4499,11 @@ keys:
         - str
       dangerous:
         type: bool
+      polling_interval:
+        type: int
+        convert_types:
+        - str
+        description: Polling interval in seconds
       vrfs:
         type: list
         primary_key: name
@@ -4292,14 +4524,23 @@ keys:
                 keys:
                   destination:
                     type: str
-                    description: Sflow Destination IP
+                    description: Sflow Destination IP Address
                   port:
                     type: int
                     description: Port Number
                     convert_types:
                     - str
+            source:
+              type: str
+              description: 'Source IP Address.
+
+                "source" and "source_interface" are mutually exclusive. If both are
+                defined, "source_interface" takes precedence.
+
+                '
             source_interface:
               type: str
+              description: Source Interface
       destinations:
         type: list
         primary_key: destination
@@ -4310,14 +4551,36 @@ keys:
           keys:
             destination:
               type: str
-              description: Sflow Destination IP
+              description: Sflow Destination IP Address
             port:
               type: int
               description: Port Number
               convert_types:
               - str
+      source:
+        type: str
+        description: 'Source IP Address.
+
+          "source" and "source_interface" are mutually exclusive. If both are defined,
+          "source_interface" takes precedence.
+
+          '
       source_interface:
         type: str
+        description: Source Interface
+      extensions:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Extension Name
+            enabled:
+              type: bool
+              description: Enable or Disable Extension
+              required: true
       interface:
         type: dict
         keys:
@@ -5116,3 +5379,118 @@ keys:
         tenant:
           type: str
           description: Key only used for documentation or validation purposes
+  vxlan_interface:
+    type: dict
+    keys:
+      Vxlan1:
+        type: dict
+        keys:
+          description:
+            type: str
+          vxlan:
+            type: dict
+            keys:
+              source_interface:
+                type: str
+                description: Source Interface Name
+              mlag_source_interface:
+                type: str
+              udp_port:
+                type: int
+                convert_types:
+                - str
+              virtual_router_encapsulation_mac_address:
+                type: str
+                description: '"mlag-system-id" or ethernet_address (H.H.H)
+
+                  '
+              bfd_vtep_evpn:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                  min_rx:
+                    type: int
+                    convert_types:
+                    - str
+                  multiplier:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 3
+                    max: 50
+                  prefix_list:
+                    type: str
+              qos:
+                type: dict
+                description: 'For the Traffic Class to be derived based on the outer
+                  DSCP field of the incoming VxLan packet, the core ports must be
+                  in "DSCP Trust" mode.
+
+                  !!!Warning, only few hardware types with software version >= 4.26.0
+                  support the below knobs to configure Vxlan DSCP mapping.
+
+                  '
+                keys:
+                  dscp_propagation_encapsulation:
+                    type: bool
+                  map_dscp_to_traffic_class_decapsulation:
+                    type: bool
+              vlans:
+                type: list
+                primary_key: id
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    id:
+                      type: int
+                      convert_types:
+                      - str
+                      required: true
+                      description: VLAN ID
+                    vni:
+                      type: int
+                      convert_types:
+                      - str
+                    multicast_group:
+                      type: str
+                      description: IP Multicast Group Address
+                    flood_vteps:
+                      type: list
+                      items:
+                        type: str
+                        description: Remote VTEP IP Address
+              vrfs:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: VRF Name
+                    vni:
+                      type: int
+                      convert_types:
+                      - str
+                    multicast_group:
+                      type: str
+                      description: IP Multicast Group Address
+              flood_vteps:
+                type: list
+                items:
+                  type: str
+                  description: Remote VTEP IP Address
+              flood_vtep_learned_data_plane:
+                type: bool
+          eos_cli:
+            type: str
+            description: Multiline String with EOS CLI rendered directly on the Vxlan
+              interface in the final EOS configuration.

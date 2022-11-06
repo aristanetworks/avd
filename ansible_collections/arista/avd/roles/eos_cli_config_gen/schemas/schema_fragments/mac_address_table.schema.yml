@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mac_address_table:
+    type: dict
+    keys:
+      aging_time:
+        type: int
+        description: Aging time in seconds
+        convert_types:
+        - str
+      notification_host_flap:
+        type: dict
+        keys:
+          logging:
+            type: bool
+          detection:
+            type: dict
+            keys:
+              window:
+                type: int
+                min: 2
+                max: 300
+                convert_types:
+                - str
+              moves:
+                type: int
+                min: 2
+                max: 10
+                convert_types:
+                - str

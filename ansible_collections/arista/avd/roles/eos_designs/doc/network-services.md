@@ -237,6 +237,7 @@ mac_address_table:
 
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
+        # Any SVI setting, defined under svis[svi] can also be defined under the svis[svi].nodes[node]
         svis:
 
           # SVI interface id and VLAN id. | Required
@@ -308,12 +309,16 @@ mac_address_table:
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
+            # When ip_address_virtual and ip_virtual_router_addresses are defined in an SVI the node that was defined with the ip_address
+            # will be configured with ip_virtual_router_addresses. For ip_virtual_router_addresses to be configured, ip_address must be defined
             ip_virtual_router_addresses:
               - < IPv4_address/Mask | IPv4_address >
 
             # ipv6 virtual-router address
             # note, also requires an IPv6 address to be configured on the SVI where it is applied.
             # Optional
+            # When ipv6_address_virtual and ipv6_virtual_router_addresses are defined in an SVI the node that was defined with the ipv6_address
+            # will be configured with ipv6_virtual_router_addresses. For ipv6_virtual_router_addresses to be configured, ipv6_address must be defined
             ipv6_virtual_router_addresses:
               - < IPv6_address >
 
