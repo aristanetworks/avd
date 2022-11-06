@@ -107,8 +107,8 @@ BFD enabled: True
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | 
-| -------- | ----------- | 
+| VRF Name | BFD Enabled |
+| -------- | ----------- |
 | MCAST_VRF1 | True |
 | MCAST_VRF2_ALL_GROUPS | False |
 

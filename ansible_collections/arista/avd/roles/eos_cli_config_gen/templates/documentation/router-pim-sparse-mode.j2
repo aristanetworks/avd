@@ -36,8 +36,8 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | 
-| -------- | ----------- | 
+| VRF Name | BFD Enabled |
+| -------- | ----------- |
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 | {{ vrf.name }} | {{ vrf.ipv4.bfd | arista.avd.default(false) }} |
 {%         endfor %}
