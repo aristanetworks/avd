@@ -39,8 +39,8 @@
       bfd: true
 {%     if overlay_data.rr_peers_peer_group.password is arista.avd.defined %}
       password: "{{ overlay_data.rr_peers_peer_group.password }}"
+{%     endif %}
       send_community: all
       maximum_routes: 0
-{%     endif %}
       struct_cfg: {{ overlay_data.rr_peers_peer_group.structured_config | arista.avd.default }}
 {% endif %}
