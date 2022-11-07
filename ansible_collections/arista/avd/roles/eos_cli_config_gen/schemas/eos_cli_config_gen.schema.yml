@@ -7713,8 +7713,14 @@ keys:
                 description: IPv6 address/mask
               valid_lifetime:
                 type: str
+                description: in seconds <0-4294967295> or infinite
+                convert_types:
+                - int
               preferred_lifetime:
                 type: str
+                description: in seconds <0-4294967295> or infinite
+                convert_types:
+                - int
               no_autoconfig_flag:
                 type: bool
         access_group_in:
