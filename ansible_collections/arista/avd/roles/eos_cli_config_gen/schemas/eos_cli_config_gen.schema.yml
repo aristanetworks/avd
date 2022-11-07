@@ -6210,11 +6210,9 @@ keys:
                   default: true
   snmp_server:
     type: dict
-    display_name: SNMP Server
     keys:
       engine_ids:
         type: dict
-        display_name: Engine IDs
         keys:
           local:
             type: str
@@ -6230,7 +6228,6 @@ keys:
               keys:
                 id:
                   type: str
-                  display_name: ID
                   convert_types:
                   - int
                   description: 'Remote Engine ID In Hexadecimal
@@ -6243,7 +6240,6 @@ keys:
                     '
                 udp_port:
                   type: int
-                  display_name: UDP Port
                   convert_types:
                   - str
       contact:
@@ -6269,13 +6265,11 @@ keys:
               - rw
             access_list_ipv4:
               type: dict
-              display_name: Access List IPv4
               keys:
                 name:
                   type: str
             access_list_ipv6:
               type: dict
-              display_name: Access List IPv6
               keys:
                 name:
                   type: str
@@ -6283,7 +6277,6 @@ keys:
               type: str
       ipv4_acls:
         type: list
-        display_name: IPv4 ACLs
         items:
           type: dict
           keys:
@@ -6292,9 +6285,7 @@ keys:
               description: IPv4 Access List Name
             vrf:
               type: str
-              display_name: VRF
       ipv6_acls:
-        display_name: IPv6 ACLs
         type: list
         items:
           type: dict
@@ -6303,7 +6294,6 @@ keys:
               type: str
               description: IPv6 Access List Name
             vrf:
-              display_name: VRF
               type: str
       local_interfaces:
         type: list
@@ -6319,7 +6309,6 @@ keys:
               description: Interface Name
             vrf:
               type: str
-              display_name: VRF
       views:
         type: list
         items:
@@ -6330,7 +6319,6 @@ keys:
               description: SNMP View Name
             MIB_family_name:
               type: str
-              display_name: MIB Family Name
             included:
               type: bool
       groups:
@@ -6380,7 +6368,6 @@ keys:
 
                 '
             udp_port:
-              display_name: UDP Port
               type: int
               convert_types:
               - str
@@ -6431,7 +6418,6 @@ keys:
               type: str
             vrf:
               type: str
-              display_name: VRF
             version:
               type: str
               convert_types:
@@ -6466,7 +6452,6 @@ keys:
 
               '
           snmp_traps:
-            display_name: SNMP Traps
             type: list
             items:
               type: dict
@@ -6486,7 +6471,6 @@ keys:
                   type: bool
                   default: true
       vrfs:
-        display_name: VRFs
         type: list
         items:
           type: dict

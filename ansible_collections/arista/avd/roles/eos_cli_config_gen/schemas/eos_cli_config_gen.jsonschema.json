@@ -9222,11 +9222,9 @@
     },
     "snmp_server": {
       "type": "object",
-      "title": "SNMP Server",
       "properties": {
         "engine_ids": {
           "type": "object",
-          "title": "Engine IDs",
           "properties": {
             "local": {
               "type": "string",
@@ -9240,8 +9238,8 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "title": "ID",
-                    "description": "Remote Engine ID In Hexadecimal\n"
+                    "description": "Remote Engine ID In Hexadecimal\n",
+                    "title": "ID"
                   },
                   "address": {
                     "type": "string",
@@ -9258,7 +9256,8 @@
               "title": "Remotes"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Engine IDs"
         },
         "contact": {
           "type": "string",
@@ -9289,25 +9288,25 @@
               },
               "access_list_ipv4": {
                 "type": "object",
-                "title": "Access List IPv4",
                 "properties": {
                   "name": {
                     "type": "string",
                     "title": "Name"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "Access List IPv4"
               },
               "access_list_ipv6": {
                 "type": "object",
-                "title": "Access List IPv6",
                 "properties": {
                   "name": {
                     "type": "string",
                     "title": "Name"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "Access List IPv6"
               },
               "view": {
                 "type": "string",
@@ -9323,7 +9322,6 @@
         },
         "ipv4_acls": {
           "type": "array",
-          "title": "IPv4 ACLs",
           "items": {
             "type": "object",
             "properties": {
@@ -9338,10 +9336,10 @@
               }
             },
             "additionalProperties": false
-          }
+          },
+          "title": "IPv4 Acls"
         },
         "ipv6_acls": {
-          "title": "IPv6 ACLs",
           "type": "array",
           "items": {
             "type": "object",
@@ -9352,12 +9350,13 @@
                 "title": "Name"
               },
               "vrf": {
-                "title": "VRF",
-                "type": "string"
+                "type": "string",
+                "title": "VRF"
               }
             },
             "additionalProperties": false
-          }
+          },
+          "title": "IPv6 Acls"
         },
         "local_interfaces": {
           "type": "array",
@@ -9473,9 +9472,9 @@
                 "title": "Remote Address"
               },
               "udp_port": {
-                "title": "UDP Port",
                 "type": "integer",
-                "description": "udp_port will not be used if no remote_address is configured.\n"
+                "description": "udp_port will not be used if no remote_address is configured.\n",
+                "title": "UDP Port"
               },
               "version": {
                 "type": "string",
@@ -9581,7 +9580,6 @@
               "title": "Enable"
             },
             "snmp_traps": {
-              "title": "SNMP Traps",
               "type": "array",
               "items": {
                 "type": "object",
@@ -9598,14 +9596,14 @@
                   }
                 },
                 "additionalProperties": false
-              }
+              },
+              "title": "Snmp Traps"
             }
           },
           "additionalProperties": false,
           "title": "Traps"
         },
         "vrfs": {
-          "title": "VRFs",
           "type": "array",
           "items": {
             "type": "object",
@@ -9621,10 +9619,12 @@
               }
             },
             "additionalProperties": false
-          }
+          },
+          "title": "VRFs"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "title": "Snmp Server"
     },
     "spanning_tree": {
       "type": "object",
