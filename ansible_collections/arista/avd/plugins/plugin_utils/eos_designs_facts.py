@@ -1644,21 +1644,12 @@ class EosDesignsFacts(AvdFacts):
         """
         Returns a dictionary of underlay parameters to configure on the node.
         """
-        if self.uplink_type != "p2p":
+        if self.uplink_type != "p2p" or not self.underlay_router:
             return {"bgp": False, "mpls": False, "ospf": False, "isis": False}
-        bgp = self.bgp and self.underlay_routing_protocol == "ebgp" and self.underlay_router
-        mpls = self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"] and self.underlay_router and self.mpls_lsr
-        ospf = self.underlay_routing_protocol in ["ospf", "ospf-ldp"] and self.underlay_router
-        isis = (
-            self.underlay_routing_protocol
-            in [
-                "isis",
-                "isis-sr",
-                "isis-ldp",
-                "isis-sr-ldp",
-            ]
-            and self.underlay_router
-        )
+        bgp = self.bgp and self.underlay_routing_protocol == "ebgp"
+        mpls = self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"] and self.mpls_lsr
+        ospf = self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
+        isis = self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
 
         return {"bgp": bgp, "mpls": mpls, "ospf": ospf, "isis": isis}
 
