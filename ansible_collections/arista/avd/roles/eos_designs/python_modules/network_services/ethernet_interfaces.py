@@ -4,6 +4,7 @@ import re
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
@@ -36,17 +37,32 @@ class EthernetInterfacesMixin(UtilsMixin):
                     # The l3_interfaces has already been filtered in _filtered_tenants
                     # to only contain entries with our hostname
                     for l3_interface in vrf["l3_interfaces"]:
+                        nodes_length = len(l3_interface["nodes"])
+                        if (
+                            len(l3_interface["interfaces"]) != nodes_length
+                            or len(l3_interface["ip_addresses"]) != nodes_length
+                            or ("descriptions" in l3_interface and "description" not in l3_interface and len(l3_interface["descriptions"]) != nodes_length)
+                        ):
+                            raise AristaAvdError(
+                                "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for l3_interfaces for"
+                                f" {vrf['name']} in {tenant['name']}"
+                            )
+
                         for node_index, node_name in enumerate(l3_interface["nodes"]):
                             if node_name != self._hostname:
                                 continue
 
                             interface_name = str(l3_interface["interfaces"][node_index])
+                            interface_description = l3_interface.get("description")
+                            # if 'description' is set, it is preferred
+                            if (interface_descriptions := l3_interface.get("descriptions")) is not None and interface_description is None:
+                                interface_description = interface_descriptions[node_index]
                             interface = {
                                 "peer_type": "l3_interface",
                                 "ip_address": l3_interface["ip_addresses"][node_index],
                                 "mtu": l3_interface.get("mtu"),
                                 "shutdown": not l3_interface.get("enabled", True),
-                                "description": l3_interface.get("description"),
+                                "description": interface_description,
                                 "eos_cli": l3_interface.get("raw_eos_cli"),
                                 "struct_cfg": l3_interface.get("structured_config"),
                             }

@@ -442,6 +442,22 @@ ethernet_interfaces:
     description: test
     type: routed
     vrf: Tenant_L3_VRF_Zone
+  Ethernet10:
+    peer_type: l3_interface
+    ip_address: 10.10.30.10/24
+    mtu: 9000
+    shutdown: false
+    description: test-DC1-BL1A
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
+  Ethernet11:
+    peer_type: l3_interface
+    ip_address: 10.10.30.10/24
+    mtu: 9000
+    shutdown: false
+    description: Single description preferred over descriptions
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
   Ethernet4000:
     description: My test
     ip_address: 10.3.2.1/21
