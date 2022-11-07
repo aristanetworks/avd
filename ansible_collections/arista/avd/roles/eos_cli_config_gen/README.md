@@ -1396,9 +1396,9 @@ tunnel_interfaces:
   ipv6_access_group_in: <str>
   ipv6_access_group_out: <str>
   tcp_mss_ceiling:
-	ipv4: <int>
-	ipv6: <int>
-	direction: <str>
+ ipv4: <int>
+ ipv6: <int>
+ direction: <str>
   source_interface: <str>
   destination: <str>
   path_mtu_discovery: <bool>
