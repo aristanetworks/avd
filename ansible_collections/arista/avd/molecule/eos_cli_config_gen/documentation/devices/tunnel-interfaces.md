@@ -66,10 +66,11 @@ interface Management1
 ### Tunnel Interfaces Summary
 
 | Interface | Description | VRF | MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| --------- | ----------- | --- | --- | -------- |
 | Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False |
 | Tunnel2 | test ipv6 only | default | - | True |
 | Tunnel3 | test dual stack | default | 1500 | - |
+| Tunnel4 | test no tcp_mss | default | 1500 | - |
 
 #### IPv4
 
@@ -77,6 +78,7 @@ interface Management1
 | --------- | --- | ---------- | ------- | ----------------- | ---------------- | ------------| -------------- | ------ | ------- |
 | Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | Ethernnet42 | 6.6.6.6 | True | test-in | test-out |
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | Ethernnet42 | 1.1.1.1 | - | - | - |
+| Tunnel4 | default | 64.64.64.64/24 | - | - | Ethernnet42 | 1.1.1.1 | - | - | - |
 
 #### IPv6
 
@@ -84,6 +86,7 @@ interface Management1
 | --------- | --- | ------------ | ------- | ----------------- | ---------------- | ------------| -------------- | ----------- | ------------ |
 | Tunnel2 | default | cafe::1/64 | 666 | egress | Ethernnet42 | dead:beef::1 | False | test-in | test-out |
 | Tunnel3 | default | beef::64/64 | 666 | - | Ethernnet42 | 1.1.1.1 | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | Ethernnet42 | 1.1.1.1 | - | - | - |
 
 ### Tunnel Interfaces Device Configuration
 
@@ -124,6 +127,15 @@ interface Tunnel3
    ipv6 enable
    ipv6 address beef::64/64
    tcp mss ceiling ipv4 666 ipv6 666
+   tunnel source interface Ethernnet42
+   tunnel destination 1.1.1.1
+!
+interface Tunnel4
+   description test no tcp_mss
+   mtu 1500
+   ip address 64.64.64.64/24
+   ipv6 enable
+   ipv6 address beef::64/64
    tunnel source interface Ethernnet42
    tunnel destination 1.1.1.1
 ```

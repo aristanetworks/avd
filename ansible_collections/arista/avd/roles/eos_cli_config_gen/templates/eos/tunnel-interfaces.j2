@@ -13,7 +13,7 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.mtu is arista.avd.defined %}
    mtu {{ tunnel_interface.mtu }}
 {%     endif %}
-{%     if tunnel_interface.vrf is arista.avd.defined and tunnel_interface.vrf is ne 'default' %}
+{%     if tunnel_interface.vrf is arista.avd.defined and tunnel_interface.vrf != 'default' %}
    vrf {{ tunnel_interface.vrf }}
 {%     endif %}
 {%     if tunnel_interface.ip_address is arista.avd.defined %}

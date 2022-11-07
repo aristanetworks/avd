@@ -21,6 +21,8 @@ keys:
           type: bool
         mtu:
           type: int
+          convert_types:
+            - str
         vrf:
           type: str
           description: VRF Name
@@ -50,9 +52,13 @@ keys:
             ipv4:
               type: int
               description: Segment Size for IPv4
+              convert_types:
+                - str
             ipv6:
               type: int
               description: Segment Size for IPv6
+              convert_types:
+                - str
             direction:
               type: str
               valid_values: ["ingress", "egress"]

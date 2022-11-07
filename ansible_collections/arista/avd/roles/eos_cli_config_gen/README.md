@@ -1379,6 +1379,32 @@ port_channel_interfaces:
         key: "< encrypted_password >"
 ```
 
+#### Tunnel Interfaces
+
+```yaml
+tunnel_interfaces:
+- name: <str>
+  description: <str>
+  shutdown: <bool>
+  mtu: <int>
+  vrf: <str>
+  ip_address: <str>
+  ipv6_enable: <bool>
+  ipv6_address: <str>
+  access_group_in: <str>
+  access_group_out: <str>
+  ipv6_access_group_in: <str>
+  ipv6_access_group_out: <str>
+  tcp_mss_ceiling:
+	ipv4: <int>
+	ipv6: <int>
+	direction: <str>
+  source_interface: <str>
+  destination: <str>
+  path_mtu_discovery: <bool>
+  eos_cli: <str>
+```
+
 #### VLAN Interfaces
 
 ```yaml

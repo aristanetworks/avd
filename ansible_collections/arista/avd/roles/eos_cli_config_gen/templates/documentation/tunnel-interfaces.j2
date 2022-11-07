@@ -1,20 +1,16 @@
-{% if tunnel_interfaces is defined and tunnel_interfaces is not none %}
+{% if tunnel_interfaces is defined %}
 
 ## Tunnel Interfaces
 
 ### Tunnel Interfaces Summary
 
 | Interface | Description | VRF | MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| --------- | ----------- | --- | --- | -------- |
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = tunnel_interface.description | arista.avd.default('-') %}
 {%         set vrf = tunnel_interface.vrf | arista.avd.default('default') %}
 {%         set mtu = tunnel_interface.mtu | arista.avd.default('-') %}
-{%         if tunnel_interface.shutdown is arista.avd.defined %}
-{%             set shutdown = tunnel_interface.shutdown %}
-{%         else %}
-{%             set shutdown = '-' %}
-{%         endif %}
+{%         set shutdown = tunnel_interface.shutdown | arista.avd.default('-') %}
 | {{ tunnel_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
 
@@ -33,13 +29,8 @@
 {%         for tunnel_interface in tunnel_interfaces_ipv4 | arista.avd.natural_sort('name') %}
 {%             set row_vrf = tunnel_interface.vrf | arista.avd.default('default') %}
 {%             set row_ip_addr = tunnel_interface.ip_address | arista.avd.default("-") %}
-{%             if tunnel_interface.tcp_mss_ceiling is arista.avd.defined %}
-{%                 set row_tcp_mss = tunnel_interface.tcp_mss_ceiling.ipv4 | arista.avd.default("-") %}
-{%                 set row_tcp_mss_direction = tunnel_interface.tcp_mss_ceiling.direction | arista.avd.default("-") %}
-{%             else %}
-{%                 set row_tcp_mss = "-" %}
-{%                 set row_tcp_mss_direction = "-" %}
-{%             endif %}
+{%             set row_tcp_mss = tunnel_interface.tcp_mss_ceiling.ipv4 | arista.avd.default("-") %}
+{%             set row_tcp_mss_direction = tunnel_interface.tcp_mss_ceiling.direction | arista.avd.default("-") %}
 {%             set row_source_interface = tunnel_interface.source_interface | arista.avd.default("-") %}
 {%             set row_destination = tunnel_interface.destination | arista.avd.default("-") %}
 {%             set row_pmtu = tunnel_interface.path_mtu_discovery | arista.avd.default("-") %}
