@@ -2,6 +2,7 @@
 
 router_pim_sparse_mode:
   ipv4:
+    bfd: true
     rp_addresses:
       10.238.1.161:
         groups:
@@ -20,6 +21,7 @@ router_pim_sparse_mode:
   vrfs:
     - name: MCAST_VRF1
       ipv4:
+        bfd: true
         rp_addresses:
           - address: 10.238.2.161
             groups:

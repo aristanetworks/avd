@@ -9,6 +9,9 @@ keys:
       ipv4:
         type: dict
         keys:
+          bfd:
+            type: bool
+            description: Enable/Disable BFD
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM
@@ -69,6 +72,9 @@ keys:
             ipv4:
               type: dict
               keys:
+                bfd:
+                  type: bool
+                  description: Enable/Disable BFD
                 rp_addresses:
                   type: list
                   items:
