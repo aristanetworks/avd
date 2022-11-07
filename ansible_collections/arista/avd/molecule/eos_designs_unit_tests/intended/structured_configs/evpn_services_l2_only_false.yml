@@ -322,9 +322,7 @@ snmp_server:
   location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_false
 local_users:
   admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
+    disabled: true
   cvpadmin:
     privilege: 15
     role: network-admin

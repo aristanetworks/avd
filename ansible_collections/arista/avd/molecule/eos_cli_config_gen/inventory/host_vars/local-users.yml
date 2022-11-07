@@ -1,0 +1,4 @@
+### Local Users ###
+local_users:
+  admin:
+    disabled: true

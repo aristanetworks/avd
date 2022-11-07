@@ -54,9 +54,7 @@ snmp_server:
     version: v2c
 local_users:
   admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
+    disabled: true
   cvpadmin:
     privilege: 15
     role: network-admin

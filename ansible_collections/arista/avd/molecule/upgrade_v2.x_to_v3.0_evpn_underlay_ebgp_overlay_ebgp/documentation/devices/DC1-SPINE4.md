@@ -139,10 +139,10 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| admin | 15 | network-admin |
-| cvpadmin | 15 | network-admin |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
+| cvpadmin | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 

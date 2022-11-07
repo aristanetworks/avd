@@ -362,9 +362,7 @@ spanning_tree:
   no_spanning_tree_vlan: 4090,4092
 local_users:
   admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
+    disabled: true
   cvpadmin:
     privilege: 15
     role: network-admin
