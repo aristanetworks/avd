@@ -43,6 +43,7 @@
       - [Route Maps](#route-maps)
       - [Match Lists](#match-lists)
       - [AS Path](#as-path)
+    - [Flow Tracking](#flow-tracking)
     - [Generate Device Documentation](#generate-device-documentation)
     - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
@@ -751,6 +752,30 @@ as_path:
           origin: < "any" | "egp" | "igp" | "incomplete" | default -> "any" >
 ```
 
+### Flow Tracking
+
+```yaml
+flow_trackings:
+  - type: <str>
+    sample: <int>
+    trackers:
+      - name: <str>
+        record_export:
+          inactive_timeout: <int>
+          interval: <int>
+          mpls: <bool>
+        exporters:
+          - name: <str>
+            collector:
+              ip_address: <str>
+              port: <int>
+            format:
+              ipfix_version: <int>
+            local_interface: <str>
+            template_interval: <int>
+    shutdown: <bool>
+```
+
 ### Generate Device Documentation
 
 ```yaml
@@ -850,6 +875,7 @@ ethernet_interfaces:
     # The parent interface should be defined as routed.
     type: < routed | switched | l3dot1q | l2dot1q >
     vrf: < vrf_name >
+    flow_tracker_sampled: < flow_tracker_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
       fire_code: < true | false >
@@ -1002,6 +1028,7 @@ ethernet_interfaces:
       - < trunk_group_name_2 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    flow_tracker_sampled: < flow_tracker_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
       fire_code: < true | false >
@@ -1196,6 +1223,7 @@ port_channel_interfaces:
       vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    flow_tracker_sampled: < flow_tracker_name >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:

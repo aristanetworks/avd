@@ -1,0 +1,58 @@
+---
+### Flow Tracking
+
+flow_trackings:
+  - type: sampled
+    sample: 666
+    trackers:
+      - name: T1
+        record_export:
+          inactive_timeout: 666
+          interval: 666
+          mpls: true
+        # no exporter
+      - name: T2
+        record_export:
+          # Should not be rendered
+          mpls: false
+        # one exporter
+        exporters:
+          - name: T2-E1
+            collector:
+              ip_address: 42.42.42.42
+              # no port
+      - name: T3
+        # two exporters
+        exporters:
+          - name: T3-E1
+            collector:
+              # only port - should not be rendered
+              port: 666
+          - name: T3-E2
+            collector:
+              ip_address: 10.10.10.10
+              port: 777
+          - name: T3-E3
+            collector:
+              ip_address: 20.20.20.20
+              port: 888
+            format:
+              ipfix_version: 10
+            local_interface: Management1
+            template_interval: 4242
+          - name: T3-E4
+            collector:
+              ip_address: 30.30.30.30
+    shutdown: false
+
+ethernet_interfaces:
+  Ethernet40:
+    flow_tracker_sampled: T2
+  Ethernet41:
+    flow_tracker_sampled: T3
+  Ethernet42:
+    flow_tracker_sampled: T3
+
+port_channel_interfaces:
+  Port-Channel42:
+    flow_tracker_sampled: T3
