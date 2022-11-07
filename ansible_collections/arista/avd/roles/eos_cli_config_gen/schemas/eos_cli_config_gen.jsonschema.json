@@ -11291,7 +11291,6 @@
     },
     "vlan_interfaces": {
       "type": "array",
-      "title": "VLAN Interfaces",
       "items": {
         "type": "object",
         "properties": {
@@ -11322,7 +11321,7 @@
           },
           "arp_gratuitous_accept": {
             "type": "boolean",
-            "title": "ARP Gratuitous Acccept"
+            "title": "ARP Gratuitous Accept"
           },
           "arp_monitor_mac_address": {
             "type": "boolean",
@@ -11338,37 +11337,37 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "IP Address",
-            "description": "IPv4 address/mask"
+            "description": "IPv4 address/mask",
+            "title": "IP Address"
           },
           "ip_address_secondaries": {
             "type": "array",
-            "title": "IP Address Secondaries",
             "items": {
               "type": "string",
               "description": "IPv4 address/mask"
-            }
+            },
+            "title": "IP Address Secondaries"
           },
           "ip_virtual_router_addresses": {
             "type": "array",
-            "title": "IP Virtual Router Addresses",
             "items": {
               "type": "string",
               "description": "IPv4 address or IPv4 address/mask"
-            }
+            },
+            "title": "IP Virtual Router Addresses"
           },
           "ip_address_virtual": {
             "type": "string",
-            "title": "IP Address Virtual",
-            "description": "IPv4 address/mask"
+            "description": "IPv4 address/mask",
+            "title": "IP Address Virtual"
           },
           "ip_address_virtual_secondaries": {
             "type": "array",
-            "title": "IP Address Virtual Secondaries",
             "items": {
               "type": "string",
               "description": "IPv4 address/mask"
-            }
+            },
+            "title": "IP Address Virtual Secondaries"
           },
           "ip_igmp": {
             "type": "boolean",
@@ -11376,15 +11375,14 @@
           },
           "ip_helpers": {
             "type": "array",
-            "title": "IP Helpers",
             "description": "List of DHCP Servers",
             "items": {
               "type": "object",
               "properties": {
                 "ip_helper": {
                   "type": "string",
-                  "title": "IP Helper",
-                  "description": "IP address or hostname of DHCP server"
+                  "description": "IP address or hostname of DHCP server",
+                  "title": "IP Helper"
                 },
                 "source_interface": {
                   "type": "string",
@@ -11393,15 +11391,16 @@
                 },
                 "vrf": {
                   "type": "string",
-                  "title": "VRF",
-                  "description": "VRF where DHCP server can be reached"
+                  "description": "VRF where DHCP server can be reached",
+                  "title": "VRF"
                 }
               },
               "additionalProperties": false,
               "required": [
                 "ip_helper"
               ]
-            }
+            },
+            "title": "IP Helpers"
           },
           "ipv6_enable": {
             "type": "boolean",
@@ -11409,41 +11408,41 @@
           },
           "ipv6_address": {
             "type": "string",
-            "title": "IPv6 Address",
-            "description": "IPv6 address/mask"
+            "description": "IPv6 address/mask",
+            "title": "IPv6 Address"
           },
           "ipv6_address_virtual": {
             "type": "string",
-            "title": "IPv6 Address Virtual",
-            "description": "IPv6 address/mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n"
+            "description": "IPv6 address/mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "title": "IPv6 Address Virtual"
           },
           "ipv6_address_virtuals": {
             "type": "array",
-            "title": "IPv6 Address Virtuals",
             "description": "The new \"ipv6_address_virtuals\" key support multiple virtual ipv6 addresses.",
             "items": {
               "type": "string",
               "description": "IPv6 address/mask"
-            }
+            },
+            "title": "IPv6 Address Virtuals"
           },
           "ipv6_address_link_local": {
             "type": "string",
-            "title": "IPv6 Address Link Local",
-            "description": "IPv6 address/mask"
+            "description": "IPv6 address/mask",
+            "title": "IPv6 Address Link Local"
           },
           "ipv6_virtual_router_address": {
             "type": "string",
-            "title": "IPv6 Virtual Router Address",
-            "description": "\"ipv6_virtual_router_address\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n"
+            "description": "\"ipv6_virtual_router_address\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n",
+            "title": "IPv6 Virtual Router Address"
           },
           "ipv6_virtual_router_addresses": {
             "type": "array",
-            "title": "IPv6 Virtual Router Addresses",
             "description": "New improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
             "items": {
               "type": "string",
               "description": "IPv6 address or IPv6 address/mask"
-            }
+            },
+            "title": "IPv6 Virtual Router Addresses"
           },
           "ipv6_nd_ra_disabled": {
             "type": "boolean",
@@ -11455,14 +11454,13 @@
           },
           "ipv6_nd_prefixes": {
             "type": "array",
-            "title": "IPv6 ND Prefixes",
             "items": {
               "type": "object",
               "properties": {
                 "ipv6_prefix": {
                   "type": "string",
-                  "title": "IPv6 Prefix",
-                  "description": "IPv6 address/mask"
+                  "description": "IPv6 address/mask",
+                  "title": "IPv6 Prefix"
                 },
                 "valid_lifetime": {
                   "type": "string",
@@ -11481,7 +11479,8 @@
               "required": [
                 "ipv6_prefix"
               ]
-            }
+            },
+            "title": "IPv6 ND Prefixes"
           },
           "access_group_in": {
             "type": "string",
@@ -11495,13 +11494,13 @@
           },
           "ipv6_access_group_in": {
             "type": "string",
-            "title": "IPv6 Access Group In",
-            "description": "IPv6 access-list name"
+            "description": "IPv6 access-list name",
+            "title": "IPv6 Access Group In"
           },
           "ipv6_access_group_out": {
             "type": "string",
-            "title": "IPv6 Access Group Out",
-            "description": "IPv6 access-list name"
+            "description": "IPv6 access-list name",
+            "title": "IPv6 Access Group Out"
           },
           "multicast": {
             "type": "object",
@@ -11626,21 +11625,20 @@
           },
           "ospf_authentication": {
             "type": "string",
-            "title": "OSPF Authentication",
             "enum": [
               "none",
               "simple",
               "message-digest"
-            ]
+            ],
+            "title": "OSPF Authentication"
           },
           "ospf_authentication_key": {
             "type": "string",
-            "title": "OSPF Authentication Key",
-            "description": "Key used for simple authentication"
+            "description": "Key used for simple authentication",
+            "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
             "type": "array",
-            "title": "OSPF Message Digest Keys",
             "description": "Keys used for message-digest authentication",
             "items": {
               "type": "object",
@@ -11670,15 +11668,14 @@
               "required": [
                 "id"
               ]
-            }
+            },
+            "title": "OSPF Message Digest Keys"
           },
           "pim": {
             "type": "object",
-            "title": "PIM",
             "properties": {
               "ipv4": {
                 "type": "object",
-                "title": "IPv4",
                 "properties": {
                   "dr_priority": {
                     "type": "integer",
@@ -11693,15 +11690,17 @@
                     "title": "Local Interface"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "IPv4"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "PIM"
           },
           "isis_enable": {
             "type": "string",
-            "title": "ISIS Enable",
-            "description": "ISIS Instance Name"
+            "description": "ISIS Instance Name",
+            "title": "ISIS Enable"
           },
           "isis_passive": {
             "type": "boolean",
@@ -11725,15 +11724,14 @@
           },
           "vrrp_ids": {
             "type": "array",
-            "title": "VRRP IDs",
             "description": "New improved \"vrrp\" data model to support multiple VRRP IDs",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "integer",
-                  "title": "ID",
-                  "description": "VRID"
+                  "description": "VRID",
+                  "title": "ID"
                 },
                 "priority_level": {
                   "type": "integer",
@@ -11832,7 +11830,6 @@
                 },
                 "ipv4": {
                   "type": "object",
-                  "title": "IPv4",
                   "properties": {
                     "address": {
                       "type": "string",
@@ -11851,11 +11848,11 @@
                   "required": [
                     "address"
                   ],
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "title": "IPv4"
                 },
                 "ipv6": {
                   "type": "object",
-                  "title": "IPv6",
                   "properties": {
                     "address": {
                       "type": "string",
@@ -11866,18 +11863,19 @@
                   "required": [
                     "address"
                   ],
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "title": "IPv6"
                 }
               },
               "additionalProperties": false,
               "required": [
                 "id"
               ]
-            }
+            },
+            "title": "VRRP IDs"
           },
           "vrrp": {
             "type": "object",
-            "title": "VRRP",
             "description": "\"vrrp\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n",
             "properties": {
               "virtual_router": {
@@ -11900,20 +11898,20 @@
               },
               "ipv4": {
                 "type": "string",
-                "title": "IPv4",
-                "description": "Virtual IPv4 Address"
+                "description": "Virtual IPv4 Address",
+                "title": "IPv4"
               },
               "ipv6": {
                 "type": "string",
-                "title": "IPv6",
-                "description": "Virtual IPv6 Address"
+                "description": "Virtual IPv6 Address",
+                "title": "IPv6"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "VRRP"
           },
           "ip_attached_host_route_export": {
             "type": "object",
-            "title": "IP Attached Host Route Export",
             "properties": {
               "distance": {
                 "type": "integer",
@@ -11922,11 +11920,11 @@
                 "title": "Distance"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "IP Attached Host Route Export"
           },
           "bfd": {
             "type": "object",
-            "title": "BFD",
             "properties": {
               "echo": {
                 "type": "boolean",
@@ -11939,8 +11937,8 @@
               },
               "min_rx": {
                 "type": "integer",
-                "title": "Min RX",
-                "description": "Minimum RX hold time in milliseconds"
+                "description": "Minimum RX hold time in milliseconds",
+                "title": "Min RX"
               },
               "multiplier": {
                 "type": "integer",
@@ -11949,14 +11947,14 @@
                 "title": "Multiplier"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "BFD"
           },
           "service_policy": {
             "type": "object",
             "properties": {
               "pbr": {
                 "type": "object",
-                "title": "PBR",
                 "properties": {
                   "input": {
                     "type": "string",
@@ -11964,7 +11962,8 @@
                     "title": "Input"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "PBR"
               }
             },
             "additionalProperties": false,
@@ -11972,8 +11971,8 @@
           },
           "pvlan_mapping": {
             "type": "string",
-            "title": "PVLAN Mapping",
-            "description": "List of VLANs as string"
+            "description": "List of VLANs as string",
+            "title": "PVLAN Mapping"
           },
           "eos_cli": {
             "type": "string",
@@ -12005,7 +12004,8 @@
           "name"
         ],
         "additionalProperties": false
-      }
+      },
+      "title": "VLAN Interfaces"
     },
     "vlan_internal_order": {
       "type": "object",
