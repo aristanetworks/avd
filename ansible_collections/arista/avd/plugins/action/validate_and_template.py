@@ -2,6 +2,9 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import cProfile
+import pstats
+
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
@@ -11,7 +14,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, template
 
-VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug"]
+VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug", "quiet"]
 VALID_VALIDATION_MODES = ["disabled", "error", "warning", "info", "debug"]
 
 
@@ -22,6 +25,11 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
+
+        cprofile_file = self._task.args.get("cprofile_file")
+        if cprofile_file:
+            profiler = cProfile.Profile()
+            profiler.enable()
 
         # Validate Arguments
         if self._task.args and "schema" in self._task.args and "template" in self._task.args:
@@ -67,6 +75,8 @@ class ActionModule(ActionBase):
         except Exception as e:
             raise AnsibleActionFail("Invalid Schema supplied to the 'arista.avd.validate_and_template' plugin") from e
 
+        self.display = Display()
+
         result_messages = []
 
         # Perform data conversions
@@ -84,7 +94,13 @@ class ActionModule(ActionBase):
 
         # Template to file
         # Update result from Ansible "copy" operation (setting 'changed' flag accordingly)
-        result.update(self.template(task_vars))
+        if not result.get("failed"):
+            result.update(self.template(task_vars))
+
+        if cprofile_file:
+            profiler.disable()
+            stats = pstats.Stats(profiler).sort_stats("cumtime")
+            stats.dump_stats(cprofile_file)
 
         return result
 
@@ -95,12 +111,9 @@ class ActionModule(ActionBase):
         The data conversion is done in-place (updating the original "data" dict).
         """
 
-        # avd_schema.convert returns a generator, which we need to run over to perform the actual conversions.
-        # The returned values are a list of conversion errors
-        exceptions = list(self.avd_schema.convert(self.data))
+        # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
+        exceptions = self.avd_schema.convert(self.data)
         conversion_counter = self.handle_exceptions(exceptions, self.conversion_mode)
-        # This is not yet effective, since the converter does not yield on succesful conversion.
-        # TODO: Get converter to return the data that was converted, so the user can see what needs to be updated.
         if conversion_counter:
             result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
         return
@@ -110,9 +123,8 @@ class ActionModule(ActionBase):
         Validate data according to the schema
         """
 
-        # avd_schema.validate returns a generator, which we need to run over to perform the actual validations.
-        # The returned values are a list of validation errors
-        exceptions = list(self.avd_schema.validate(self.data))
+        # avd_schema.validate returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
+        exceptions = self.avd_schema.validate(self.data)
         validation_counter = self.handle_exceptions(exceptions, self.validation_mode)
         if validation_counter:
             result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")
@@ -120,19 +132,25 @@ class ActionModule(ActionBase):
         return True
 
     def handle_exceptions(self, exceptions, mode):
-        arista_avd_errors = [exception for exception in exceptions if isinstance(exception, AristaAvdError)]
-        for exception in arista_avd_errors:
-            message = str.encode(f"[{self.hostname}]: {exception}", "UTF-8")
+        counter = 0
+        for exception in exceptions:
+            if not isinstance(exception, AristaAvdError):
+                continue
+
+            counter += 1
+            if mode == "quiet":
+                continue
+            message = f"[{self.hostname}]: {exception}"
             if mode == "error":
-                Display().error(message, False)
-            elif mode == "message":
-                Display().display(message, False)
+                self.display.error(message, False)
+            elif mode == "info":
+                self.display.display(message)
             elif mode == "debug":
-                Display(verbosity=1).debug(message, False)
+                self.display.v(message)
             else:
                 # mode == "warning"
-                Display().warning(message, False)
-        return len(arista_avd_errors)
+                self.display.warning(message, False)
+        return counter
 
     def template(self, task_vars):
         searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
