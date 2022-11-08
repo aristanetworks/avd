@@ -193,7 +193,7 @@ BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Gr
 
 To use these filters:
 
-```
+```jinja
 {{ <var_with_clear_text_password> | bgp_encrypt(passwd_type=<type>, key=<encryption_key>) }}
 {{ <var_with_encrypted_password> | bgp_decrypt(passwd_type=<type>, key=<encryption_key>) }}
 ```
