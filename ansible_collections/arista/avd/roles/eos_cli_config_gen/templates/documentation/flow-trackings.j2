@@ -2,14 +2,14 @@
 {% if flow_trackings is arista.avd.defined %}
 
 ## Flow Tracking
-
 {%     for flow_tracking in flow_trackings %}
 {%         if flow_tracking.type == "sampled" %}
+
 ### Flow Tracking Sampled
 
 Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
-
 {%             if flow_tracking.trackers is arista.avd.defined %}
+
 #### Trackers Summary
 
 | Tracker Name | Record Export Inactive Timeout | Record Export Interval | MPLS | Number of Exporters | Applied On |
@@ -21,12 +21,12 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
 {%                     set applied_on = [] %}
 {%                     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') %}
-{%                         if ethernet_interface.flow_tracker_sampled is arista.avd.defined and ethernet_interface.flow_tracker_sampled == tracker.name %}
+{%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined and ethernet_interface.flow_tracker.sampled == tracker.name %}
 {%                             do applied_on.append(ethernet_interface.name) %}
 {%                         endif %}
 {%                     endfor %}
 {%                     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') %}
-{%                         if port_channel_interface.flow_tracker_sampled is arista.avd.defined and port_channel_interface.flow_tracker_sampled == tracker.name %}
+{%                         if port_channel_interface.flow_tracker.sampled is arista.avd.defined and port_channel_interface.flow_tracker.sampled == tracker.name %}
 {%                             do applied_on.append(port_channel_interface.name) %}
 {%                         endif %}
 {%                     endfor %}

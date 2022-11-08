@@ -47,12 +47,16 @@ flow_trackings:
 
 ethernet_interfaces:
   Ethernet40:
-    flow_tracker_sampled: T2
+    flow_tracker:
+      sampled: T2
   Ethernet41:
-    flow_tracker_sampled: T3
+    flow_tracker:
+      sampled: T3
   Ethernet42:
-    flow_tracker_sampled: T3
+    flow_tracker:
+      sampled: T3
 
 port_channel_interfaces:
   Port-Channel42:
-    flow_tracker_sampled: T3
+    flow_tracker:
+      sampled: T3

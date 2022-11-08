@@ -875,7 +875,8 @@ ethernet_interfaces:
     # The parent interface should be defined as routed.
     type: < routed | switched | l3dot1q | l2dot1q >
     vrf: < vrf_name >
-    flow_tracker_sampled: < flow_tracker_name >
+    flow_tracker:
+        sampled: < flow_tracker_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
       fire_code: < true | false >
@@ -1028,7 +1029,8 @@ ethernet_interfaces:
       - < trunk_group_name_2 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
-    flow_tracker_sampled: < flow_tracker_name >
+    flow_tracker:
+        sampled: < flow_tracker_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
       fire_code: < true | false >
@@ -1223,7 +1225,8 @@ port_channel_interfaces:
       vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
-    flow_tracker_sampled: < flow_tracker_name >
+    flow_tracker:
+        sampled: < flow_tracker_name >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:

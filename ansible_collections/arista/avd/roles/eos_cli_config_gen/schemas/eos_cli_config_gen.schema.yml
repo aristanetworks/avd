@@ -1044,8 +1044,6 @@ keys:
         trackers:
           type: list
           primary_key: name
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -1071,8 +1069,6 @@ keys:
               exporters:
                 type: list
                 primary_key: name
-                convert_types:
-                - dict
                 items:
                   type: dict
                   keys:
