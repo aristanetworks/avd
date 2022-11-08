@@ -150,7 +150,7 @@ router_bgp:
         - '12:12'
       redistribute_routes:
       - learned
-      vlan: 130
+      vlan: '130'
     Tenant_A_DB_Zone:
       rd: 192.168.255.10:13
       route_targets:
@@ -183,7 +183,7 @@ router_bgp:
         - 10160:10160
       redistribute_routes:
       - learned
-      vlan: 160
+      vlan: '160'
     Tenant_A_NFS:
       tenant: Tenant_A
       rd: 192.168.255.10:10161
@@ -606,16 +606,16 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_APP_Zone_1
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan131:
     tenant: Tenant_A
     tags:
     - app
     description: Tenant_A_APP_Zone_2
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan140:
     tenant: Tenant_A
     tags:
@@ -623,24 +623,24 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_DB_BZone_1
     shutdown: false
-    vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.40.1/24
+    vrf: Tenant_A_DB_Zone
   Vlan141:
     tenant: Tenant_A
     tags:
     - db
     description: Tenant_A_DB_Zone_2
     shutdown: false
-    vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.41.1/24
+    vrf: Tenant_A_DB_Zone
   Vlan110:
     tenant: Tenant_A
     tags:
     - opzone
     description: SVI 110 CUSTOM DESCRIPTION
     shutdown: false
-    vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
+    vrf: Tenant_A_OP_Zone
     ip_helpers:
       1.2.3.4: {}
   Vlan111:
@@ -649,8 +649,8 @@ vlan_interfaces:
     - opzone
     description: SVI 111 CUSTOM DESCRIPTION
     shutdown: false
-    vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
+    vrf: Tenant_A_OP_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -662,8 +662,8 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_WEB_Zone_1
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -674,17 +674,17 @@ vlan_interfaces:
     - web
     description: Tenant_A_WEBZone_2
     shutdown: true
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+    ip_address_virtual: 10.1.10.254/24
+    vrf: Tenant_A_WEB_Zone
   Vlan122:
     tenant: Tenant_A
     tags:
     - web
     description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.22.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1: {}
   Vlan123:
@@ -693,8 +693,8 @@ vlan_interfaces:
     - web
     description: Tenant_a_WEB_DHCP_source_int_no_vrf
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.23.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -704,8 +704,8 @@ vlan_interfaces:
     - web
     description: Tenant_a_WEB_DHCP_vrf_no_source_int
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.24.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
         vrf: TEST
@@ -715,38 +715,38 @@ vlan_interfaces:
     - opzone
     description: Tenant_B_OP_Zone_1
     shutdown: false
-    vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.10.1/24
+    vrf: Tenant_B_OP_Zone
   Vlan211:
     tenant: Tenant_B
     tags:
     - opzone
     description: Tenant_B_OP_Zone_2
     shutdown: false
-    vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.11.1/24
+    vrf: Tenant_B_OP_Zone
   Vlan310:
     tenant: Tenant_C
     tags:
     - opzone
     description: Tenant_C_OP_Zone_1
     shutdown: false
-    vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.10.1/24
+    vrf: Tenant_C_OP_Zone
   Vlan311:
     tenant: Tenant_C
     tags:
     - opzone
     description: Tenant_C_OP_Zone_2
     shutdown: false
-    vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
+    vrf: Tenant_C_OP_Zone
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
     vxlan:
-      source_interface: Loopback10
       udp_port: 4789
+      source_interface: Loopback10
       vlans:
         130:
           vni: 10130

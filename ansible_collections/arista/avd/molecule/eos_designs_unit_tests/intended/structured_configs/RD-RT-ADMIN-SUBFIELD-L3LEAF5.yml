@@ -133,22 +133,22 @@ vlan_interfaces:
     - test_l3
     description: VLAN_1
     shutdown: false
-    vrf: TEST1
     ip_address_virtual: 10.0.1.1/24
+    vrf: TEST1
   Vlan2:
     tenant: Tenant_A
     tags:
     - test_l3
     description: VLAN_2
     shutdown: false
-    vrf: TEST1
     ip_address_virtual: 10.0.2.1/24
+    vrf: TEST1
 vxlan_interface:
   Vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF5_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         1:
           vni: 10001

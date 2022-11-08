@@ -341,28 +341,28 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_APP_Zone_1
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan131:
     tenant: Tenant_A
     tags:
     - app
     description: Tenant_A_APP_Zone_2
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan132:
     tenant: Tenant_A
     tags:
     - erp2
     description: Tenant_A_APP_Zone_3
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address: 10.1.32.1/24
     ip_virtual_router_addresses:
     - 10.1.32.254
     - 10.2.32.254/24
     - 10.3.32.254/24
+    vrf: Tenant_A_APP_Zone
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -370,11 +370,11 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_WEB_Zone_1
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
     ip_address_virtual_secondaries:
     - 10.2.20.1/24
     - 10.2.21.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -385,42 +385,42 @@ vlan_interfaces:
     - web
     description: Tenant_A_WEBZone_2
     shutdown: true
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+    ip_address_virtual: 10.1.10.254/24
+    vrf: Tenant_A_WEB_Zone
   Vlan450:
     tenant: Tenant_D
     tags:
     - v6wan
     description: Tenant_D_v6_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_D_WAN_Zone
     ipv6_address_virtual: 2001:db8:355::1/64
+    vrf: Tenant_D_WAN_Zone
   Vlan451:
     tenant: Tenant_D
     tags:
     - v6wan
     description: Tenant_D_v6_WAN_Zone_2
     shutdown: false
-    vrf: Tenant_D_WAN_Zone
-    ipv6_address_virtual: 2001:db8:451::1/64
     mtu: 1560
+    ipv6_address_virtual: 2001:db8:451::1/64
+    vrf: Tenant_D_WAN_Zone
   Vlan452:
     tenant: Tenant_D
     tags:
     - v6wan
     description: Tenant_D_v6_WAN_Zone_3
     shutdown: false
-    vrf: Tenant_D_WAN_Zone
+    mtu: 1560
     ip_address_virtual: 10.4.12.254/24
     ipv6_address_virtual: 2001:db8:412::1/64
-    mtu: 1560
+    vrf: Tenant_D_WAN_Zone
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         130:
           vni: 10130

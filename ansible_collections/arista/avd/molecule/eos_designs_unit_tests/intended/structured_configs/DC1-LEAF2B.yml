@@ -238,7 +238,7 @@ router_bgp:
         - 100000:20160
       redistribute_routes:
       - learned
-      vlan: 160
+      vlan: '160'
     Tenant_A_NFS:
       tenant: Tenant_A
       rd: 65001:20161
@@ -285,8 +285,8 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - destination_address_prefix: 0.0.0.0/0
-  vrf: Tenant_D_OP_Zone
   gateway: 10.3.11.4
+  vrf: Tenant_D_OP_Zone
 - destination_address_prefix: 10.3.11.0/24
   vrf: Tenant_D_OP_Zone
   name: VARP
@@ -536,11 +536,11 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.31.254.79/31
   Ethernet24:
-    type: routed
     peer_type: l3_interface
-    vrf: Tenant_OSPF
     ip_address: 10.0.0.5/30
     shutdown: false
+    type: routed
+    vrf: Tenant_OSPF
     ospf_area: 0
     ospf_network_point_to_point: true
   Ethernet20:
@@ -791,16 +791,16 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_APP_Zone_1
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan131:
     tenant: Tenant_A
     tags:
     - app
     description: Tenant_A_APP_Zone_2
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan140:
     tenant: Tenant_A
     tags:
@@ -808,32 +808,32 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_DB_BZone_1
     shutdown: false
-    vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.40.1/24
+    vrf: Tenant_A_DB_Zone
   Vlan141:
     tenant: Tenant_A
     tags:
     - db
     description: Tenant_A_DB_Zone_2
     shutdown: false
-    vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.41.1/24
+    vrf: Tenant_A_DB_Zone
   Vlan110:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_1
     shutdown: false
-    vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
+    vrf: Tenant_A_OP_Zone
   Vlan111:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_2
     shutdown: false
-    vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
+    vrf: Tenant_A_OP_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -844,8 +844,8 @@ vlan_interfaces:
     - opzone
     description: Tenant_A_OP_Zone_3
     shutdown: false
-    vrf: Tenant_A_OP_Zone
     mtu: 1560
+    vrf: Tenant_A_OP_Zone
     ip_helpers:
       2.2.2.2:
         source_interface: lo101
@@ -857,11 +857,11 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_WEB_Zone_1
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
     ip_address_virtual_secondaries:
     - 10.2.20.1/24
     - 10.2.21.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -872,90 +872,90 @@ vlan_interfaces:
     - web
     description: Tenant_A_WEBZone_2
     shutdown: true
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+    ip_address_virtual: 10.1.10.254/24
+    vrf: Tenant_A_WEB_Zone
   Vlan210:
     tenant: Tenant_B
     tags:
     - opzone
     description: Tenant_B_OP_Zone_1
     shutdown: false
-    vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.10.1/24
+    vrf: Tenant_B_OP_Zone
   Vlan211:
     tenant: Tenant_B
     tags:
     - opzone
     description: Tenant_B_OP_Zone_2
     shutdown: false
-    vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.11.1/24
+    vrf: Tenant_B_OP_Zone
   Vlan310:
     tenant: Tenant_C
     tags:
     - opzone
     description: Tenant_C_OP_Zone_1
     shutdown: false
-    vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.10.1/24
+    vrf: Tenant_C_OP_Zone
   Vlan311:
     tenant: Tenant_C
     tags:
     - opzone
     description: Tenant_C_OP_Zone_2
     shutdown: false
-    vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
+    vrf: Tenant_C_OP_Zone
   Vlan410:
     tenant: Tenant_D
     tags:
     - v6opzone
     description: Tenant_D_v6_OP_Zone_1
     shutdown: false
-    vrf: Tenant_D_OP_Zone
     ip_address_virtual: 10.3.10.1/24
     ipv6_address_virtual: 2001:db8:310::1/64
     ipv6_address_virtuals:
     - 2001:db8:311::1/64
     - 2001:db8:312::1/64
+    vrf: Tenant_D_OP_Zone
   Vlan411:
     tenant: Tenant_D
     tags:
     - v6opzone
     description: Tenant_D_v6_OP_Zone_2
     shutdown: false
-    vrf: Tenant_D_OP_Zone
     ip_address: 10.3.11.3/24
     ipv6_address: 2001:db8:311::3/64
     ip_virtual_router_addresses:
     - 10.3.11.1/24
     ipv6_virtual_router_addresses:
     - 2001:db8:311::1
+    vrf: Tenant_D_OP_Zone
   Vlan412:
     tenant: Tenant_D
     tags:
     - v6opzone
     description: Tenant_D_v6_OP_Zone_1
     shutdown: false
-    vrf: Tenant_D_OP_Zone
+    mtu: 1560
     ip_address_virtual: 10.4.12.254/24
     ipv6_address_virtual: 2001:db8:412::1/64
-    mtu: 1560
+    vrf: Tenant_D_OP_Zone
   Vlan413:
     tenant: Tenant_D
     tags:
     - v6opzone
     description: Tenant_D_v6_OP_Zone_3
     shutdown: false
-    vrf: Tenant_D_OP_Zone
     ip_address: 101.4.13.2/24
     ipv6_address: 2002:db9:413::2/64
+    mtu: 1560
     ip_virtual_router_addresses:
     - 101.4.13.1
     ipv6_virtual_router_addresses:
     - 2002:db9:413::1
-    mtu: 1560
+    vrf: Tenant_D_OP_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo101
@@ -966,32 +966,32 @@ vlan_interfaces:
     - v6wan
     description: Tenant_D_v6_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_D_WAN_Zone
     ipv6_address_virtual: 2001:db8:355::1/64
+    vrf: Tenant_D_WAN_Zone
   Vlan451:
     tenant: Tenant_D
     tags:
     - v6wan
     description: Tenant_D_v6_WAN_Zone_2
     shutdown: false
-    vrf: Tenant_D_WAN_Zone
-    ipv6_address_virtual: 2001:db8:451::1/64
     mtu: 1560
+    ipv6_address_virtual: 2001:db8:451::1/64
+    vrf: Tenant_D_WAN_Zone
   Vlan452:
     tenant: Tenant_D
     tags:
     - v6wan
     description: Tenant_D_v6_WAN_Zone_3
     shutdown: false
-    vrf: Tenant_D_WAN_Zone
+    mtu: 1560
     ip_address_virtual: 10.4.12.254/24
     ipv6_address_virtual: 2001:db8:412::1/64
-    mtu: 1560
+    vrf: Tenant_D_WAN_Zone
 ipv6_static_routes:
 - destination_address_prefix: ::/0
-  vrf: Tenant_D_OP_Zone
   gateway: 2001:db8:311::4
   name: IPv6-test-2
+  vrf: Tenant_D_OP_Zone
 router_ospf:
   process_ids:
     30:
@@ -1006,8 +1006,8 @@ vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         130:
           vni: 10130

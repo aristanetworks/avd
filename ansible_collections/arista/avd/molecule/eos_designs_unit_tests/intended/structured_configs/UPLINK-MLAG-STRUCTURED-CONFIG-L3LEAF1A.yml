@@ -250,6 +250,6 @@ vxlan_interface:
   Vxlan1:
     description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789

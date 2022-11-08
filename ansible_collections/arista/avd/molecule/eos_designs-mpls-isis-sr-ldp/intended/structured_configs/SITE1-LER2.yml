@@ -73,13 +73,13 @@ router_bgp:
           - '65000:20'
           vpn-ipv6:
           - '65000:20'
+      redistribute_routes:
+      - connected
       neighbors:
         192.168.48.1:
           description: TENANT_B_CPE_SITE3
           password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
           remote_as: '65201'
-      redistribute_routes:
-      - connected
       address_families:
         ipv4:
           neighbors:
@@ -281,17 +281,13 @@ ethernet_interfaces:
       id: 8
       mode: active
   Ethernet5.100:
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 100
     peer_type: l3_interface
-    vrf: TENANT_B_WAN
     ip_address: 192.168.48.0/31
     shutdown: false
     description: TENANT_B_SITE_3
-  Ethernet5:
-    type: routed
-    peer_type: l3_interface
-    shutdown: false
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    vrf: TENANT_B_WAN
   Ethernet3:
     shutdown: false
     channel_group:
@@ -302,6 +298,10 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
+  Ethernet5:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
 port_channel_interfaces:
   Port-Channel8:
     description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel

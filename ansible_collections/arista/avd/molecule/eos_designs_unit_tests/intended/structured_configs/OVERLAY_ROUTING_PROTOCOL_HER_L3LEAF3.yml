@@ -93,8 +93,8 @@ vxlan_interface:
   Vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       flood_vteps:
       - 192.168.253.1
       - 192.168.253.2
@@ -107,5 +107,3 @@ vxlan_interface:
           vni: 12900
         2903:
           vni: 12903
-      vrfs:
-        TEST: {}
