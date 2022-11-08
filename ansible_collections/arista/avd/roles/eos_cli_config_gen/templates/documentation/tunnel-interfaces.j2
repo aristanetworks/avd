@@ -1,4 +1,4 @@
-{% if tunnel_interfaces is defined %}
+{% if tunnel_interfaces is arista.avd.defined %}
 
 ## Tunnel Interfaces
 
@@ -13,7 +13,6 @@
 {%         set shutdown = tunnel_interface.shutdown | arista.avd.default('-') %}
 | {{ tunnel_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
-
 {# IPv4 #}
 {%     set tunnel_interfaces_ipv4 = [] %}
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.default([]) %}
@@ -22,6 +21,7 @@
 {%         endif %}
 {%     endfor %}
 {%     if tunnel_interfaces_ipv4 | length > 0 %}
+
 #### IPv4
 
 | Interface | VRF | IP Address | TCP MSS | TCP MSS Direction | Source Interface | Destination | PMTU-Discovery | ACL In | ACL Out |
