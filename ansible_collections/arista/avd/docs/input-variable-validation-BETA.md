@@ -60,21 +60,21 @@ Type conversion is turned on by default but can be disabled or adjusted with the
 
 ## Validation Options
 
-By default `arista.avd.validate` plugin runs type conversion first and then performs validation of the converted data, reporting
-validation issues as warnings - not blocking the playbook. This behavior can be adjusted by setting the variables described
-below.
+Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
+performs validation of the converted data.
 
-The validation task can be skipped entirely by adding `--skip-tags validate` to the `ansible-playbook` command-line.
+By default the data conversions are logged with `-v` and data validation issues will trigger warnings - not blocking further processing.
+This behavior can be adjusted by setting the variables described below.
 
 ```yaml
 # Conversion Mode for arista.avd.validate | Optional
 # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
-# "disabled" means that conversion will not run.
-# "warning" will produce warning messages.
-# "info" will produce regular log messages.
-# "debug" will produce hidden debug messages viewable with -v.
-# The converted data is set as facts which can be seen with -v, but is more readable with -vvv
-avd_validate_conversion_mode: < "disabled" | "warning" | "info" | "debug" | default -> "debug" >
+# conversion_mode:disabled means that conversion will not run.
+# conversion_mode:warning will produce warning messages.
+# conversion_mode:info will produce regular log messages.
+# conversion_mode:debug will produce hidden messages viewable with -v.
+# conversion_mode:quiet will not produce any messages
+avd_validate_conversion_mode: < "disabled" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
 
 # Validation Mode for arista.avd.validate | Optional
 # During validation, messages will generated with information about the host(s) and key(s) which failed validation.

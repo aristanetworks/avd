@@ -625,7 +625,7 @@ The module arguments are:
   # Pass this value as skip_lines to add_md_toc | Optional, default: 0
   md_toc_skip_lines: <int>
 
-  # Run data conversion in either "warning", "info", "debug" or "disabled" mode | Optional, default: "debug"
+  # Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode | Optional, default: "debug"
   # Conversion will perform type conversion of input variables as defined in the schema.
   # Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
   # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
@@ -633,6 +633,7 @@ The module arguments are:
   # conversion_mode:warning will produce warning messages.
   # conversion_mode:info will produce regular log messages.
   # conversion_mode:debug will produce hidden messages viewable with -v.
+  # conversion_mode:quiet will not produce any messages
   conversion_mode: <str>
 
   # Run validation in either "error", "warning", "info", "debug" or "disabled" mode | Optional, default: "warning"
