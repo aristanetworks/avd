@@ -14,6 +14,8 @@ mgmt_gateway: 192.168.200.5
 
 underlay_routing_protocol: isis-sr-ldp
 
+fabric_evpn_encapsulation: mpls
+
 # Core ISIS parameters
 isis_ti_lfa:
   enabled: true
@@ -99,6 +101,8 @@ pe:
       nodes:
         SITE1-LER1:
           id: 5
+          mpls_overlay_role: none
+          evpn_role: client
           overlay_address_families: [ evpn ]
           mgmt_ip: 192.168.200.105/24
         SITE1-LER2:
@@ -114,6 +118,7 @@ pe:
           mgmt_ip: 192.168.200.107/24
     SITE3-LER1-TEST:
       mpls_overlay_role: none
+      evpn_role: none
       filter:
         tenants: [ all ]
         tags: [ all ]

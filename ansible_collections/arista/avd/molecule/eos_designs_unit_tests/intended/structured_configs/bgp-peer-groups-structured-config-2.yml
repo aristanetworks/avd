@@ -32,11 +32,24 @@ router_bgp:
       struct_cfg:
         description: Description for mpls_overlay_peers via structured_config
       description: Description for mpls_overlay_peers via structured_config
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      remote_as: '65001'
+      bfd: true
+      send_community: all
+      maximum_routes: 0
+      route_reflector_client: true
+      struct_cfg:
+        description: Description for evpn_overlay_peers via structured_config
+      description: Description for evpn_overlay_peers via structured_config
     RR-OVERLAY-PEERS:
       type: mpls
       update_source: Loopback0
       remote_as: '65001'
       bfd: true
+      send_community: all
+      maximum_routes: 0
       struct_cfg:
         description: Description for rr_overlay_peers via structured_config
       description: Description for rr_overlay_peers via structured_config
@@ -48,6 +61,8 @@ router_bgp:
         activate: true
       MPLS-OVERLAY-PEERS:
         activate: false
+      EVPN-OVERLAY-PEERS:
+        activate: false
       RR-OVERLAY-PEERS:
         activate: false
   neighbors:
@@ -55,20 +70,24 @@ router_bgp:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: bgp-peer-groups-structured-config-1
     192.168.255.111:
-      peer_group: MPLS-OVERLAY-PEERS
+      peer_group: EVPN-OVERLAY-PEERS
       description: bgp-peer-groups-structured-config-1
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
   bgp_cluster_id: 192.168.255.112
   address_family_evpn:
-    neighbor_default:
-      encapsulation: mpls
     peer_groups:
-      MPLS-OVERLAY-PEERS:
+      EVPN-OVERLAY-PEERS:
         activate: true
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
+      RR-OVERLAY-PEERS:
+        activate: true
+  address_family_vpn_ipv4:
+    peer_groups:
+      MPLS-OVERLAY-PEERS:
+        activate: true
       RR-OVERLAY-PEERS:
         activate: true
 static_routes:

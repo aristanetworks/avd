@@ -38,6 +38,7 @@ default_node_type_keys:
       mpls_lsr: true
       connected_endpoints: true
       default_mpls_overlay_role: client
+      default_evpn_role: client
       network_services:
         l1: true
         l2: true
@@ -46,13 +47,16 @@ default_node_type_keys:
       default_overlay_routing_protocol: ibgp
       default_underlay_routing_protocol: isis-sr
       default_overlay_address_families: [ vpn-ipv4 ]
+      default_evpn_encapsulation: mpls
     rr:
       type: rr
       mpls_lsr: true
       default_mpls_overlay_role: server
+      default_evpn_role: server
       default_overlay_routing_protocol: ibgp
       default_underlay_routing_protocol: isis-sr
       default_overlay_address_families: [ vpn-ipv4 ]
+      default_evpn_encapsulation: mpls
 
   "l2ls":
     l3spine:

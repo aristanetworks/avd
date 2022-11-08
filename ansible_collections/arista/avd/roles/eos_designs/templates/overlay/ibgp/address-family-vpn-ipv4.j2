@@ -1,11 +1,11 @@
-{% if switch.mpls_overlay_role in ["server", "client"] %}
+{% if switch.overlay.vpn_ipv4 %}
   address_family_vpn_ipv4:
-{%     if switch.mpls_overlay_role == "client" %}
+{%     if switch.overlay.ler %}
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
 {%     endif %}
     peer_groups:
-      {{ overlay_data.overlay_peer_group.name }}:
+      {{ overlay_data.mpls_overlay_peer_group.name }}:
         activate: true
 {%     if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
       {{ overlay_data.rr_peers_peer_group.name }}:

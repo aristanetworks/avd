@@ -9,7 +9,7 @@
 {# Found a matching server. Gathering information for this server #}
 {%             set server = namespace() %}
 {%             set server.bgp_as = peer_facts.switch.bgp_as %}
-{%             set server.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
+{%             set server.ip_address = peer_facts.switch.overlay.peering_address %}
 {%             do overlay_data.evpn_route_servers.update({ route_server: server }) %}
 {%         endif %}
 {%     endif %}

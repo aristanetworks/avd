@@ -228,14 +228,6 @@ class EosDesignsFacts(AvdFacts):
         return get(self._node_type_key_data, "vtep", default=False)
 
     @cached_property
-    def mpls_ler(self):
-        """
-        switch.mpls_ler set based on
-        node_type_keys.<node_type_key>.mpls_ler
-        """
-        return get(self._node_type_key_data, "mpls_ler", default=False)
-
-    @cached_property
     def ip_addressing(self):
         """
         switch.ip_addressing.* set based on
@@ -1112,7 +1104,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def mpls_route_reflectors(self):
         if self.underlay_router is True:
-            if self.mpls_overlay_role in ["client", "server"]:
+            if self.mpls_overlay_role in ["client", "server"] or (self.evpn_role in ["client", "server"] and self.overlay["evpn_mpls"]):
                 return get(self._switch_data_combined, "mpls_route_reflectors")
         return None
 
@@ -1624,7 +1616,87 @@ class EosDesignsFacts(AvdFacts):
         return overlay_routing_protocol_address_family
 
     @cached_property
-    def overlay_routing_protocol_peering_address(self):
+    def bgp(self):
+        """
+        Boolean telling if BGP Routing should be configured.
+        """
+        return (
+            self.underlay_router
+            and self.uplink_type == "p2p"
+            and (
+                self.underlay_routing_protocol == "ebgp"
+                or (
+                    self.overlay_routing_protocol in ["ebgp", "ibgp"]
+                    and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
+                )
+            )
+        )
+
+    @cached_property
+    def evpn_encapsulation(self):
+        """
+        Toggle to set EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation.
+        """
+        return get(self._hostvars, "fabric_evpn_encapsulation", default=get(self._node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
+
+    @cached_property
+    def underlay(self):
+        """
+        Returns a dictionary of underlay parameters to configure on the node.
+        """
+        if self.uplink_type != "p2p" or not self.underlay_router:
+            return {"bgp": False, "mpls": False, "ospf": False, "isis": False}
+        bgp = self.bgp and self.underlay_routing_protocol == "ebgp"
+        mpls = self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"] and self.mpls_lsr
+        ospf = self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
+        isis = self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
+
+        return {"bgp": bgp, "mpls": mpls, "ospf": ospf, "isis": isis}
+
+    @cached_property
+    def overlay(self):
+        """
+        Returns a dictionary of overlay parameters to configure on the node.
+        """
+        # Set overlay.peering_address to use
         if self.overlay_routing_protocol_address_family == "ipv6":
-            return self.ipv6_router_id
-        return self.router_id
+            peering_address = self.ipv6_router_id
+        else:
+            peering_address = self.router_id
+        # Set overlay.ler to enable MPLS edge PE features
+        ler = (
+            self.underlay["mpls"]
+            and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
+            and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
+        )
+        # Set overlay.vtep to enable VXLAN edge PE features
+        vtep = (
+            self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
+            and (self.network_services_l2 or self.network_services_l3)
+            and self.underlay_router
+            and self.uplink_type == "p2p"
+            and self.vtep
+        )
+        # Set overlay.evpn to enable EVPN on the node
+        evpn = (
+            self.bgp
+            and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
+            and self.overlay_routing_protocol in ["ebgp", "ibgp"]
+            and "evpn" in self.overlay_address_families
+        )
+        # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
+        evpn_vxlan = evpn and self.evpn_encapsulation == "vxlan"
+        evpn_mpls = evpn and self.evpn_encapsulation == "mpls"
+        # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
+        vpn_ipv4 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families
+        vpn_ipv6 = self.bgp and self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families
+        return {
+            "peering_address": peering_address,
+            "ler": ler,
+            "vtep": vtep,
+            "evpn": evpn,
+            "evpn_vxlan": evpn_vxlan,
+            "evpn_mpls": evpn_mpls,
+            "vpn_ipv4": vpn_ipv4,
+            "vpn_ipv6": vpn_ipv6,
+        }
