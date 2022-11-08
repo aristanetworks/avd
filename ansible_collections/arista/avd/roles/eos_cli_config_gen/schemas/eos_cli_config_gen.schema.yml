@@ -7603,8 +7603,13 @@ keys:
           type: str
         arp_aging_timeout:
           type: int
+          description: in seconds
+          min: 1
+          max: 65535
         arp_cache_dynamic_capacity:
           type: int
+          min: 0
+          max: 4294967295
         arp_gratuitous_accept:
           type: bool
         arp_monitor_mac_address:
