@@ -18,6 +18,9 @@ def bgp_encrypt(password, key=None, usebase64=True) -> str:
     if not key:
         raise AristaAvdMissingVariableError("Key is required for BGP encryption")
 
+    if not password:
+        raise AristaAvdMissingVariableError("Password is required for BGP encryption")
+
     data = bytes(password, encoding="UTF-8")
     key = bytes(f"{key}_passwd", encoding="UTF-8")
 
@@ -34,6 +37,9 @@ def bgp_decrypt(password, key=None, usebase64=True) -> str:
     """
     if not key:
         raise AristaAvdMissingVariableError("Key is required for BGP decryption")
+
+    if not password:
+        raise AristaAvdMissingVariableError("Password is required for BGP decryption")
 
     data = bytes(password, encoding="UTF-8")
     key = bytes(f"{key}_passwd", encoding="UTF-8")
