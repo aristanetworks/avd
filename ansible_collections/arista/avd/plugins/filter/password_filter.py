@@ -18,8 +18,8 @@ def bgp_encrypt(password, key=None, usebase64=True) -> str:
     if not key:
         raise AristaAvdMissingVariableError("Key is required for BGP encryption")
 
-    data = bytes(password, encoding="utf-8")
-    key = bytes(f"{key}_passwd", encoding="utf-8")
+    data = bytes(password, encoding="UTF-8")
+    key = bytes(f"{key}_passwd", encoding="UTF-8")
 
     return cbc_encrypt(key, data, usebase64).decode()
 
@@ -35,8 +35,8 @@ def bgp_decrypt(password, key=None, usebase64=True) -> str:
     if not key:
         raise AristaAvdMissingVariableError("Key is required for BGP decryption")
 
-    data = bytes(password, encoding="utf-8")
-    key = bytes(f"{key}_passwd", encoding="utf-8")
+    data = bytes(password, encoding="UTF-8")
+    key = bytes(f"{key}_passwd", encoding="UTF-8")
 
     try:
         return cbc_decrypt(key, data, usebase64).decode()
