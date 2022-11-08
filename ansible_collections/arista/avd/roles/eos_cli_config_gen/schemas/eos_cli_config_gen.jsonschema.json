@@ -1389,7 +1389,6 @@
                         "properties": {
                           "ipfix_version": {
                             "type": "integer",
-                            "default": 10,
                             "title": "Ipfix Version"
                           }
                         },

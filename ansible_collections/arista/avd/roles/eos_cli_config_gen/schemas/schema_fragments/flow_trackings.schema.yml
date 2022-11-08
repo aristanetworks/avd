@@ -67,7 +67,6 @@ keys:
                       keys:
                         ipfix_version:
                           type: int
-                          default: 10
                           convert_types:
                             - str
                     local_interface:

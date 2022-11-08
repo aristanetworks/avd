@@ -708,6 +708,7 @@ as_path:
 
 ```yaml
 flow_trackings:
+  # Only 'sampled' is supported for type
   - type: <str>
     sample: <int>
     trackers:

@@ -21,12 +21,12 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
 {%                     set applied_on = [] %}
 {%                     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') %}
-{%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined and ethernet_interface.flow_tracker.sampled == tracker.name %}
+{%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
 {%                             do applied_on.append(ethernet_interface.name) %}
 {%                         endif %}
 {%                     endfor %}
 {%                     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') %}
-{%                         if port_channel_interface.flow_tracker.sampled is arista.avd.defined and port_channel_interface.flow_tracker.sampled == tracker.name %}
+{%                         if port_channel_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
 {%                             do applied_on.append(port_channel_interface.name) %}
 {%                         endif %}
 {%                     endfor %}
@@ -40,7 +40,7 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%                 for tracker in flow_tracking.trackers | arista.avd.natural_sort('name') %}
 {%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
 {%                         set ip = exporter.ip_address | arista.avd.default("-") %}
-{%                         set port = exporter.port | arista.avd.default("-")  %}
+{%                         set port = exporter.port | arista.avd.default("-") %}
 {%                         set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ ip }} | {{ port }} | {{ local_interface }} |
 {%                     endfor %}
