@@ -5661,7 +5661,7 @@
               },
               "timers": {
                 "type": "string",
-                "description": "keepalive hold timer values",
+                "description": "Keep alive hold timer values",
                 "title": "Timers"
               },
               "rib_in_pre_policy_retain": {
@@ -5761,7 +5761,7 @@
               },
               "timers": {
                 "type": "string",
-                "description": "keepalive hold timer values",
+                "description": "Keep alive hold timer values",
                 "title": "Timers"
               },
               "route_map_in": {
@@ -5820,7 +5820,8 @@
                   },
                   "times": {
                     "type": "integer",
-                    "description": "1-10",
+                    "minimum": 1,
+                    "maximum": 10,
                     "title": "Times"
                   }
                 },
@@ -6200,7 +6201,7 @@
               },
               "eos_cli": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes\n",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "EOS CLI"
               },
               "struct_cfg": {
@@ -7553,7 +7554,7 @@
                     },
                     "timers": {
                       "type": "string",
-                      "description": "Keepalive hold timer values",
+                      "description": "Keep alive hold timer values",
                       "title": "Timers"
                     },
                     "route_map_in": {

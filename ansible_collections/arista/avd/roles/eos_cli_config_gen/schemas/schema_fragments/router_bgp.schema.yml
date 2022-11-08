@@ -202,7 +202,7 @@ keys:
                 - str
             timers:
               type: str
-              description: keepalive hold timer values
+              description: Keep alive hold timer values
             rib_in_pre_policy_retain:
               type: dict
               keys:
@@ -261,7 +261,7 @@ keys:
                 - str
             timers:
               type: str
-              description: keepalive hold timer values
+              description: Keep alive hold timer values
             route_map_in:
               type: str
               description: Inbound Route-Map
@@ -300,7 +300,8 @@ keys:
                   type: int
                   convert_types:
                     - str
-                  description: 1-10
+                  min: 1
+                  max: 10
             ebgp_multihop:
               type: int
               convert_types:
@@ -501,8 +502,7 @@ keys:
                   type: str
             eos_cli:
               type: str
-              description: |
-                Key only used for documentation or validation purposes
+              description: Key only used for documentation or validation purposes
             struct_cfg:
               type: dict
               description: Key only used for documentation or validation purposes
@@ -1276,7 +1276,7 @@ keys:
                       - str
                   timers:
                     type: str
-                    description: Keepalive hold timer values
+                    description: Keep alive hold timer values
                   route_map_in:
                     type: str
                     description: Inbound Route-Map
