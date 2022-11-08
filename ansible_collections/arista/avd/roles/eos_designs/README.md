@@ -20,11 +20,8 @@ The **eos_designs** role:
 
 Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role.
 
-<!-- ![Figure 1: Ansible Role eos_designs](../../media/role_eos_designs.gif) -->
-
-<div style="text-align:center">
-  <img src="../../media/role_eos_designs.gif" />
-</div>
+![EOS Designs Overview](../../docs/_media/eos_designs_dark.svg#only-dark)
+![EOS Designs Overview](../../docs/_media/eos_designs_light.svg#only-light)
 
 **Inputs:**
 
