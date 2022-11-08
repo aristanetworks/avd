@@ -1585,7 +1585,8 @@
           "interface_maintenance_profiles": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "Name of Interface Maintenance Profile"
             },
             "title": "Interface Maintenance Profiles"
           }
@@ -3004,7 +3005,6 @@
           },
           "description": {
             "type": "string",
-            "description": "description",
             "title": "Description"
           },
           "shutdown": {

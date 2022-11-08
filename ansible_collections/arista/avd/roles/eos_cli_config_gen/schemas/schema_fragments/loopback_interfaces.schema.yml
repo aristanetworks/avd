@@ -16,7 +16,6 @@ keys:
           required: true
         description:
           type: str
-          description: description
         shutdown:
           type: bool
         vrf:
@@ -62,5 +61,9 @@ keys:
           keys:
             ipv4_index:
               type: int
+              convert_types:
+              - str
             ipv6_index:
               type: int
+              convert_types:
+              - str

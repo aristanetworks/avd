@@ -1230,6 +1230,7 @@ keys:
           type: list
           items:
             type: str
+            description: Name of Interface Maintenance Profile
   interface_profiles:
     type: list
     primary_key: name
@@ -2276,7 +2277,6 @@ keys:
           required: true
         description:
           type: str
-          description: description
         shutdown:
           type: bool
         vrf:
@@ -2322,8 +2322,12 @@ keys:
           keys:
             ipv4_index:
               type: int
+              convert_types:
+              - str
             ipv6_index:
               type: int
+              convert_types:
+              - str
   mac_access_lists:
     type: list
     primary_key: name
