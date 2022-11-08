@@ -48,6 +48,8 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65001'
       bfd: true
+      send_community: all
+      maximum_routes: 0
       struct_cfg:
         description: Description for rr_overlay_peers via structured_config
       description: Description for rr_overlay_peers via structured_config
