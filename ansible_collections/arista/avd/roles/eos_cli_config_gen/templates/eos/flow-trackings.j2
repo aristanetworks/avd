@@ -1,4 +1,4 @@
-{% for flow_tracking in flow_trackings %}
+{% for flow_tracking in flow_trackings | arista.avd.default([]) %}
 !
 flow tracking {{ flow_tracking.type }}
 {%     if flow_tracking.sample is arista.avd.defined %}
