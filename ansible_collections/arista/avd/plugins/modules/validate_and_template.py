@@ -61,7 +61,7 @@ options:
       - conversion_mode:warning will produce warning messages.
       - conversion_mode:info will produce regular log messages.
       - conversion_mode:debug will produce hidden messages viewable with -v.
-      - convertion_mode:quiet will not produce any messages.
+      - conversion_mode:quiet will not produce any messages.
     required: false
     default: "debug"
     type: str
