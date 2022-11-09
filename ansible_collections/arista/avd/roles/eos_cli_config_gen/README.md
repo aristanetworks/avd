@@ -709,24 +709,25 @@ as_path:
 ```yaml
 flow_trackings:
   # Only 'sampled' is supported for type
-  - type: <str>
-    sample: <int>
+  - type: < "sampled" >
+    sample: < integer >
     trackers:
-      - name: <str>
+      - name: < tracker_name >
         record_export:
-          inactive_timeout: <int>
-          interval: <int>
-          mpls: <bool>
+          inactive_timeout: < integer >
+          interval: < integer >
+          mpls: < true | false >
         exporters:
-          - name: <str>
+          - name: < exporter_name >
             collector:
-              ip_address: <str>
-              port: <int>
+              ip_address: < collector_ip >
+              port: < collector_port >
             format:
-              ipfix_version: <int>
-            local_interface: <str>
-            template_interval: <int>
-    shutdown: <bool>
+              # Note that platforms only support 10 today
+              ipfix_version: < ipfix_version as integer >
+            local_interface: < local_interface_name >
+            template_interval: < integer >
+    shutdown: < true | false >
 ```
 
 ### Generate Device Documentation
