@@ -132,10 +132,14 @@ router_bgp:
           evpn:
           - '14:14'
           - 65000:456
+          vpn-ipv4:
+          - 65000:123
         export:
           evpn:
           - '14:14'
           - 65000:789
+          vpn-ipv4:
+          - 65000:123
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:

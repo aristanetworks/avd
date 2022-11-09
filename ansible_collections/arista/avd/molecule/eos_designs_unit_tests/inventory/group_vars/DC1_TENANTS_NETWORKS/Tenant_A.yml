@@ -186,11 +186,11 @@ Tenant_A:
         - type: import
           address_family: vpn-ipv4
           route_target: '65000:123'
-          nodes: [ DC1-BL1A, DC1-BL1B ]
+          nodes: [ DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B ]
         - type: export
           address_family: vpn-ipv4
           route_target: '65000:123'
-          nodes: [ DC1-BL1A, DC1-BL1B ]
+          nodes: [ DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B ]
         - type: import
           address_family: evpn
           route_target: '65000:456'
