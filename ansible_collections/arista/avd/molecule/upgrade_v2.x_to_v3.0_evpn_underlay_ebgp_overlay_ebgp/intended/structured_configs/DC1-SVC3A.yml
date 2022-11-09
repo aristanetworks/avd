@@ -779,7 +779,7 @@ port_channel_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     mlag: 14
@@ -802,7 +802,7 @@ port_channel_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     mlag: 15
@@ -825,7 +825,7 @@ port_channel_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     mlag: 17
@@ -851,7 +851,7 @@ port_channel_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     mlag: 18
@@ -877,7 +877,7 @@ port_channel_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     mlag: 19
@@ -999,7 +999,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
   Ethernet12:
@@ -1024,7 +1024,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
   Ethernet13:
@@ -1050,7 +1050,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
   Ethernet14:
@@ -1076,7 +1076,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     channel_group:
@@ -1104,7 +1104,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     channel_group:
@@ -1133,7 +1133,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
   Ethernet17:
@@ -1158,7 +1158,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     channel_group:
@@ -1188,7 +1188,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     channel_group:
@@ -1218,7 +1218,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
     channel_group:

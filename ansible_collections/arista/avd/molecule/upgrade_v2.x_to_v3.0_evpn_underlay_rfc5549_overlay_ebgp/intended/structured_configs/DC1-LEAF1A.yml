@@ -261,7 +261,7 @@ ethernet_interfaces:
       multicast:
         level: 1
         unit: percent
-      unknown-unicast:
+      unknown_unicast:
         level: 2
         unit: percent
 loopback_interfaces:
