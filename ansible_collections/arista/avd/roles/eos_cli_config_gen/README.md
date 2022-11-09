@@ -1383,26 +1383,28 @@ port_channel_interfaces:
 
 ```yaml
 tunnel_interfaces:
-- name: <str>
-  description: <str>
-  shutdown: <bool>
-  mtu: <int>
-  vrf: <str>
-  ip_address: <str>
-  ipv6_enable: <bool>
-  ipv6_address: <str>
-  access_group_in: <str>
-  access_group_out: <str>
-  ipv6_access_group_in: <str>
-  ipv6_access_group_out: <str>
+- name: < interface_name >
+  description: < description >
+  shutdown: < true | false >
+  mtu: < integer >
+  vrf: < vrf_name >
+  ip_address: < ip_address >
+  ipv6_enable: < true | false >
+  ipv6_address: < ipv6_address >
+  access_group_in: < access_list_name >
+  access_group_out: < access_list_name >
+  ipv6_access_group_in: < access_list_name >
+  ipv6_access_group_out: < access_list_name >
   tcp_mss_ceiling:
- ipv4: <int>
- ipv6: <int>
- direction: <str>
-  source_interface: <str>
-  destination: <str>
-  path_mtu_discovery: <bool>
-  eos_cli: <str>
+     ipv4: < integer >
+     ipv6: < integer >
+     direction: < ingress | egress >
+  source_interface: < tunnel_source_interface_name >
+  destination: < tunnel_destination >
+  path_mtu_discovery: < true | false >
+  # EOS CLI rendered directly on the Tunnel interface in the final EOS configuration
+  eos_cli: |
+    < multiline eos cli >
 ```
 
 #### VLAN Interfaces

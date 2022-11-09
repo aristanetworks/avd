@@ -60,7 +60,6 @@
       - [Interface Profiles](#interface-profiles)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
-      - [Tunnel Interfaces](#tunnel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
       - [VxLAN Interface](#vxlan-interface)
     - [Internal VLAN Order](#internal-vlan-order)
@@ -1330,32 +1329,6 @@ port_channel_interfaces:
       - id: < id >
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
-```
-
-#### Tunnel Interfaces
-
-```yaml
-tunnel_interfaces:
-- name: <str>
-  description: <str>
-  shutdown: <bool>
-  mtu: <int>
-  vrf: <str>
-  ip_address: <str>
-  ipv6_enable: <bool>
-  ipv6_address: <str>
-  access_group_in: <str>
-  access_group_out: <str>
-  ipv6_access_group_in: <str>
-  ipv6_access_group_out: <str>
-  tcp_mss_ceiling:
- ipv4: <int>
- ipv6: <int>
- direction: <str>
-  source_interface: <str>
-  destination: <str>
-  path_mtu_discovery: <bool>
-  eos_cli: <str>
 ```
 
 #### VLAN Interfaces
