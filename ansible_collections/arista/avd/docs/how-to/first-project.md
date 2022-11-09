@@ -7,7 +7,6 @@ This page explains how to build your first Ansible project leveraging ansible-av
 ![Example Playbook eAPI Deployment](../../docs/_media/avd_workflow_eapi_dark.svg#only-dark)
 ![Example Playbook eAPI Deployment](../../docs/_media/avd_workflow_eapi_light.svg#only-light)
 
-
 You can organize your working directory in many different ways, but a structure we find helpful is something like this:
 
 - A folder for all your inventories with one sub-folder per inventory. An inventory folder containing all your variables for a given environment like `host_vars`, `group_vars`, `inventory.yml`.

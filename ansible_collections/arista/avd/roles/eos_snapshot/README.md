@@ -12,7 +12,6 @@ Figure 1 below visualizes the role's inputs, outputs, and tasks.
 ![Figure 1: Ansible Role eos_snapshot](../../docs/_media/eos_snapshot_dark.svg#only-dark)
 ![Figure 1: Ansible Role eos_snapshot](../../docs/_media/eos_snapshot_light.svg#only-light)
 
-
 **Inputs:**
 
 Ansible inventory to connect to EOS devices. The default variables can be changed to select a report format and include others commands.

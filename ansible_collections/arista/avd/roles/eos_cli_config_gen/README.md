@@ -17,7 +17,6 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 ![Figure 1: Ansible Role eos_cli_config_gen](../../docs/_media/eos_cli_config_gen_dark.svg#only-dark)
 ![Figure 1: Ansible Role eos_cli_config_gen](../../docs/_media/eos_cli_config_gen_light.svg#only-light)
 
-
 **Inputs:**
 
 - Structured EOS configuration file in yaml format.
