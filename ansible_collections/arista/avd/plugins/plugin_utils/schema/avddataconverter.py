@@ -179,7 +179,7 @@ class AvdDataConverter:
 
                 elif convert_type == "str" and schema_type == "list":
                     try:
-                        data[index] = value.split(",")
+                        data[index] = list(map(str.strip, value.split(",")))
                     except Exception:
                         # Ignore errors
                         # TODO: Log message
