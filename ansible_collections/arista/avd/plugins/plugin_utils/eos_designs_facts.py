@@ -1056,11 +1056,6 @@ class EosDesignsFacts(AvdFacts):
                     "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
                     "structured_config": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
                 },
-                # "ipvpn_gateway_overlay_peers": {
-                #     "name": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_overlay_peers.name", default="MPLS-VPN-GATEWAY-OVERLAY-PEERS"),
-                #     "password": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_overlay_peers.password"),
-                #     "structured_config": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_overlay_peers.structured_config"),
-                # },
             }
         return None
 
