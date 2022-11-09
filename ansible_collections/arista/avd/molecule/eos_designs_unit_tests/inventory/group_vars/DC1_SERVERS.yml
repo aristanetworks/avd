@@ -35,7 +35,7 @@ port_profiles:
       multicast:
         level: 1
         unit: percent
-      'unknown-unicast':
+      unknown_unicast:
         level: 2
         unit: percent
 
@@ -56,7 +56,7 @@ port_profiles:
       multicast:
         level: 1
         unit: percent
-      'unknown-unicast':
+      unknown_unicast:
         level: 2
         unit: percent
     port_channel:
@@ -80,7 +80,7 @@ port_profiles:
       multicast:
         level: 1
         unit: percent
-      'unknown-unicast':
+      unknown_unicast:
         level: 2
         unit: percent
     port_channel:
@@ -213,7 +213,7 @@ servers:
           multicast:
             level: 1
             unit: percent
-          'unknown-unicast':
+          unknown_unicast:
             level: 2
             unit: percent
 
@@ -239,7 +239,7 @@ servers:
           multicast:
             level: 1
             unit: percent
-          'unknown-unicast':
+          unknown_unicast:
             level: 2
             unit: percent
 
@@ -272,7 +272,7 @@ servers:
           multicast:
             level: 1
             unit: percent
-          'unknown-unicast':
+          unknown_unicast:
             level: 2
             unit: percent
         port_channel:
@@ -301,7 +301,7 @@ servers:
           multicast:
             level: 1
             unit: percent
-          'unknown-unicast':
+          unknown_unicast:
             level: 2
             unit: percent
         port_channel: null   #Setting to null, to override port-channel inherited from profile
@@ -327,7 +327,7 @@ servers:
           multicast:
             level: 1
             unit: percent
-          'unknown-unicast':
+          unknown_unicast:
             level: 2
             unit: percent
         port_channel:
