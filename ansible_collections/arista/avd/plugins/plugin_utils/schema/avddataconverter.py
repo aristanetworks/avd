@@ -16,6 +16,11 @@ SCHEMA_TO_PY_TYPE_MAP = {
     "dict": dict,
     "list": list,
 }
+SIMPLE_CONVERTERS = {
+    "str": str,
+    "int": int,
+    "bool": bool,
+}
 
 
 class AvdDataConverter:
@@ -133,21 +138,15 @@ class AvdDataConverter:
         """
         schema_type = schema.get("type")
 
-        simple_converters = {
-            "str": str,
-            "int": int,
-            "bool": bool,
-        }
-
         # For simple conversions, skip conversion if the value is of the correct type
-        if schema_type in simple_converters and isinstance(data, SCHEMA_TO_PY_TYPE_MAP.get(schema_type)):
+        if schema_type in SIMPLE_CONVERTERS and isinstance(data, SCHEMA_TO_PY_TYPE_MAP.get(schema_type)):
             return data
 
         for convert_type in convert_types:
             if isinstance(data, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)):
-                if schema_type in simple_converters:
+                if schema_type in SIMPLE_CONVERTERS:
                     try:
-                        return simple_converters[schema_type](data)
+                        return SIMPLE_CONVERTERS[schema_type](data)
                     except Exception:
                         # Ignore errors and return original
                         return data
