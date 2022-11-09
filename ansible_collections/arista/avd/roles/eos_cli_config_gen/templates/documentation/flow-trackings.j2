@@ -35,14 +35,14 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 
 #### Exporters Summary
 
-| Tracker Name | Exporter Name | Collector IP | Collector Port | Local Interface |
-| ------------ | ------------- | -------------| -------------- | --------------- |
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | --------------- |
 {%                 for tracker in flow_tracking.trackers | arista.avd.natural_sort('name') %}
 {%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                         set ip = exporter.ip_address | arista.avd.default("-") %}
+{%                         set host = exporter.host | arista.avd.default("-") %}
 {%                         set port = exporter.port | arista.avd.default("-") %}
 {%                         set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
-| {{ tracker.name }} | {{ exporter.name }} | {{ ip }} | {{ port }} | {{ local_interface }} |
+| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
 {%                     endfor %}
 {%                 endfor %}
 {%             endif %}

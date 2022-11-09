@@ -61,14 +61,14 @@ Sample: 666
 
 | Tracker Name | Record Export Inactive Timeout | Record Export Interval | MPLS | Number of Exporters | Applied On |
 | ------------ | ------------------------------ | ---------------------- | ---- | ------------------- | ---------- |
-| T1 | 666 | 666 | True | 0 |  |
+| T1 | 3666 | 5666 | True | 0 |  |
 | T2 | - | - | False | 1 | Ethernet40 |
 | T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel42 |
 
 #### Exporters Summary
 
-| Tracker Name | Exporter Name | Collector IP | Collector Port | Local Interface |
-| ------------ | ------------- | -------------| -------------- | --------------- |
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | --------------- |
 | T2 | T2-E1 | - | - | No local interface |
 | T3 | T3-E1 | - | - | No local interface |
 | T3 | T3-E2 | - | - | No local interface |
@@ -82,8 +82,8 @@ Sample: 666
 flow tracking sampled
    sample 666
    tracker T1
-      record export on inactive timeout 666
-      record export on interval 666
+      record export on inactive timeout 3666
+      record export on interval 5666
       record export mpls
    tracker T2
       exporter T2-E1
@@ -93,12 +93,12 @@ flow tracking sampled
       exporter T3-E2
          collector 10.10.10.10 port 777
       exporter T3-E3
-         collector 20.20.20.20 port 888
+         collector this.is.my.awesome.collector.dns.name port 888
          format ipfix version 10
          local interface Management1
-         template interval 4242
+         template interval 424242
       exporter T3-E4
-         collector 30.30.30.30
+         collector dead:beef::cafe
    no shutdown
 ```
 

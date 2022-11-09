@@ -18,8 +18,8 @@ flow tracking {{ flow_tracking.type }}
 {%         if tracker.exporters is arista.avd.defined %}
 {%             for exporter in tracker.exporters %}
       exporter {{ exporter.name }}
-{%                 if exporter.collector.ip_address is arista.avd.defined %}
-{%                     set collector_cli = 'collector ' ~ exporter.collector.ip_address %}
+{%                 if exporter.collector.host is arista.avd.defined %}
+{%                     set collector_cli = 'collector ' ~ exporter.collector.host %}
 {%                     if exporter.collector.port is arista.avd.defined %}
 {%                         set collector_cli = collector_cli ~ ' port ' ~ exporter.collector.port %}
 {%                     endif %}

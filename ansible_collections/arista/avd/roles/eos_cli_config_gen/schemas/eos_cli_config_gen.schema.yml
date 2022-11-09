@@ -1041,6 +1041,8 @@ keys:
           type: int
           convert_types:
           - str
+          min: 1
+          max: 4294967295
         trackers:
           type: list
           primary_key: name
@@ -1057,11 +1059,15 @@ keys:
                     type: int
                     convert_types:
                     - str
+                    min: 3000
+                    max: 900000
                     description: Flow record inactive export timeout in milliseconds
                   interval:
                     type: int
                     convert_types:
                     - str
+                    min: 1000
+                    max: 36000000
                     description: Flow record export interval in milliseconds
                   mpls:
                     type: bool
@@ -1078,12 +1084,15 @@ keys:
                     collector:
                       type: dict
                       keys:
-                        ip_address:
+                        host:
                           type: str
-                          description: Collector IP Address
+                          description: Collector IPv4 address or IPv6 address or fully
+                            qualified domain name
                         port:
                           type: int
                           description: Collector Port Number
+                          min: 1
+                          max: 65535
                           convert_types:
                           - str
                     format:
@@ -1098,9 +1107,11 @@ keys:
                       description: Local Source Interface
                     template_interval:
                       type: int
-                      description: Template interval in milliseconds
                       convert_types:
                       - str
+                      min: 5000
+                      max: 3600000
+                      description: Template interval in milliseconds
         shutdown:
           type: bool
           default: false

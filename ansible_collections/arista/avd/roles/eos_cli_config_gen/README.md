@@ -710,23 +710,23 @@ as_path:
 flow_trackings:
   # Only 'sampled' is supported for type
   - type: < "sampled" >
-    sample: < integer >
+    sample: < 1-4294967295 >
     trackers:
       - name: < tracker_name >
         record_export:
-          inactive_timeout: < integer >
-          interval: < integer >
+          inactive_timeout: < 3000-900000 >
+          interval: < 1000-36000000 >
           mpls: < true | false >
         exporters:
           - name: < exporter_name >
             collector:
-              ip_address: < collector_ip >
-              port: < collector_port >
+              host: < collector_ip_or_hostname >
+              port: < 1-65535 >
             format:
               # Note that platforms only support 10 today
               ipfix_version: < ipfix_version as integer >
             local_interface: < local_interface_name >
-            template_interval: < integer >
+        template_interval: < 5000-3600000 >
     shutdown: < true | false >
 ```
 

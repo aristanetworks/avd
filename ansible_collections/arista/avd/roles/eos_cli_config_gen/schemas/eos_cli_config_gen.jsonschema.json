@@ -1323,6 +1323,8 @@
           },
           "sample": {
             "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
             "title": "Sample"
           },
           "trackers": {
@@ -1340,11 +1342,15 @@
                   "properties": {
                     "inactive_timeout": {
                       "type": "integer",
+                      "minimum": 3000,
+                      "maximum": 900000,
                       "description": "Flow record inactive export timeout in milliseconds",
                       "title": "Inactive Timeout"
                     },
                     "interval": {
                       "type": "integer",
+                      "minimum": 1000,
+                      "maximum": 36000000,
                       "description": "Flow record export interval in milliseconds",
                       "title": "Interval"
                     },
@@ -1370,14 +1376,16 @@
                       "collector": {
                         "type": "object",
                         "properties": {
-                          "ip_address": {
+                          "host": {
                             "type": "string",
-                            "description": "Collector IP Address",
-                            "title": "IP Address"
+                            "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                            "title": "Host"
                           },
                           "port": {
                             "type": "integer",
                             "description": "Collector Port Number",
+                            "minimum": 1,
+                            "maximum": 65535,
                             "title": "Port"
                           }
                         },
@@ -1402,6 +1410,8 @@
                       },
                       "template_interval": {
                         "type": "integer",
+                        "minimum": 5000,
+                        "maximum": 3600000,
                         "description": "Template interval in milliseconds",
                         "title": "Template Interval"
                       }
