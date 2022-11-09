@@ -10743,6 +10743,8 @@
           },
           "mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "title": "MTU"
           },
           "vrf": {
@@ -10790,11 +10792,15 @@
               "ipv4": {
                 "type": "integer",
                 "description": "Segment Size for IPv4",
+                "minimum": 64,
+                "maximum": 65495,
                 "title": "IPv4"
               },
               "ipv6": {
                 "type": "integer",
                 "description": "Segment Size for IPv6",
+                "minimum": 64,
+                "maximum": 65475,
                 "title": "IPv6"
               },
               "direction": {
