@@ -741,6 +741,8 @@ keys:
   custom_structured_configuration_prefix:
     convert_types:
     - str
+    default:
+    - custom_structured_configuration_
     description: 'Custom EOS Structured Configuration keys can be set on any group
       or host_var level using the name
 
@@ -752,7 +754,9 @@ keys:
       By default Lists are replaced and Dictionaries are updated. The combine is done
       recursively, so it is possible to update a sub-key of a variable set by
 
-      `eos_designs` role already.'
+      `eos_designs` role already.
+
+      '
     type: list
   default_igmp_snooping_enabled:
     default: true
