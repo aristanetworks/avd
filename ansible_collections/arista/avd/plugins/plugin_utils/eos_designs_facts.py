@@ -27,8 +27,10 @@ class EosDesignsFacts(AvdFacts):
         "switch.foo" fact set based on "bar" data model
         """
         return get(self._hostvars, "bar.foo", default="zoo")
+
     -----------------------------------------------------------------------------------------------------
     Example function to set a fact based on a required key under ex "l3leaf.node_groups.<>.nodes.<>.<key>
+
     Notice the variable _switch_data_combined starts with _ meaning it is an internal variable which will
     not be returned as part of the facts. We can load such variables with commonly used data, leveraged
     by multiple facts functions.
@@ -37,6 +39,7 @@ class EosDesignsFacts(AvdFacts):
     def foo(self):
         """
         "switch.foo" fact set based on "<node_type_key>.*" data model
+
         Example l3leaf.defaults.foo -> switch.foo
         """
         return get(self._switch_data_combined, "foo", required=True)
@@ -277,11 +280,13 @@ class EosDesignsFacts(AvdFacts):
     def _switch_data(self):
         """
         internal _switch_data containing inherited vars from fabric_topology data model
+
         Vars are inherited like:
         <node_type_key>.defaults ->
             <node_type_key>.node_groups.[<node_group>] ->
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
+
         Returns
         -------
         dict
@@ -747,6 +752,7 @@ class EosDesignsFacts(AvdFacts):
         """
         Return list of vlans after filtering network services.
         The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use
+
         Ex. [1, 2, 3 ,4 ,201, 3021]
         """
         if self._any_network_services:
@@ -833,6 +839,7 @@ class EosDesignsFacts(AvdFacts):
     def vlans(self):
         """
         Return the compressed list of vlans to be defined on this switch
+
         Ex. "1-100, 201-202"
         """
         return list_compress(self._vlans)
@@ -986,6 +993,7 @@ class EosDesignsFacts(AvdFacts):
     def bgp_peer_groups(self):
         """
         Get bgp_peer_groups configurations or fallback to defaults
+
         Supporting legacy uppercase keys as well.
         """
         if self.underlay_router is True:
@@ -1072,7 +1080,9 @@ class EosDesignsFacts(AvdFacts):
     def bgp_as(self):
         """
         Get global bgp_as or fabric_topology bgp_as.
+
         At least one of global bgp_as or fabric_topology bgp_as must be defined.
+
         AS ranges in fabric_topology bgp_as will be expanded to a list and:
          - For standalone or A/A MH devices, the node id will be used to index into the list to find the ASN.
          - For MLAG devices, the node id of the first node in the node group will be used to index into the ASN list.
@@ -1363,6 +1373,7 @@ class EosDesignsFacts(AvdFacts):
     def uplinks(self):
         """
         List of uplinks with all parameters
+
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
@@ -1516,6 +1527,7 @@ class EosDesignsFacts(AvdFacts):
     def uplink_peers(self):
         """
         List of all uplink peers
+
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
         fabric_name = get(self._hostvars, "fabric_name", required=True)
