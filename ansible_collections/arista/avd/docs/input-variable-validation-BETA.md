@@ -69,11 +69,11 @@ This behavior can be adjusted by setting the variables described below.
 ```yaml
 # Conversion Mode for arista.avd.validate | Optional
 # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
-# conversion_mode:disabled means that conversion will not run.
-# conversion_mode:warning will produce warning messages.
-# conversion_mode:info will produce regular log messages.
-# conversion_mode:debug will produce hidden messages viewable with -v.
-# conversion_mode:quiet will not produce any messages
+# "disabled" means that conversion will not run.
+# "warning" will produce warning messages.
+# "info" will produce regular log messages.
+# "debug" will produce hidden messages viewable with -v.
+# "quiet" will not produce any messages
 avd_validate_conversion_mode: < "disabled" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
 
 # Validation Mode for arista.avd.validate | Optional
