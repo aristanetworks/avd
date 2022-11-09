@@ -181,12 +181,12 @@ By default Lists are replaced and Dictionaries are updated. The combine is done 
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>custom_structured_configuration_prefix</samp>](## "custom_structured_configuration_prefix") | Integer |  |  |  |  |
+| [<samp>custom_structured_configuration_prefix</samp>](## "custom_structured_configuration_prefix") | List |  |  |  |  |
 
 ### YAML
 
 ```yaml
-custom_structured_configuration_prefix: <int>
+custom_structured_configuration_prefix:
 ```
 
 ## Default IGMP Snooping enabled
