@@ -5659,6 +5659,126 @@
                 "type": "string",
                 "description": "VRF name",
                 "title": "Name"
+              },
+              "originator_id_local_interface": {
+                "type": "string",
+                "description": "Interface to use for originator ID",
+                "title": "Originator ID Local Interface"
+              },
+              "rejected_limit": {
+                "type": "integer",
+                "description": "Maximum number of rejected SA messages allowed in cache",
+                "minimum": 0,
+                "maximum": 40000,
+                "title": "Rejected Limit"
+              },
+              "forward_register_packets": {
+                "type": "boolean",
+                "title": "Forward Register Packets"
+              },
+              "connection_retry_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "Connection Retry Interval"
+              },
+              "peers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ipv4_address": {
+                      "type": "string",
+                      "description": "Peer IP Address",
+                      "title": "IPv4 Address"
+                    },
+                    "default_peer_prefix_list": {
+                      "type": "string",
+                      "description": "Prefix list to filter source of SA messages",
+                      "title": "Default Peer Prefix List"
+                    },
+                    "local_interface": {
+                      "type": "string",
+                      "title": "Local Interface"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "Description"
+                    },
+                    "disabled": {
+                      "type": "boolean",
+                      "description": "Disable the MSDP peer",
+                      "title": "Disabled"
+                    },
+                    "sa_limit": {
+                      "type": "integer",
+                      "description": "Maximum number of SA messages allowed in cache",
+                      "minimum": 0,
+                      "maximum": 40000,
+                      "title": "Sa Limit"
+                    },
+                    "mesh_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Mesh group name",
+                            "title": "Name"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "title": "Mesh Groups"
+                    },
+                    "keepalive": {
+                      "type": "object",
+                      "properties": {
+                        "keepalive_timer": {
+                          "type": "integer",
+                          "title": "Keepalive Timer"
+                        },
+                        "hold_timer": {
+                          "type": "integer",
+                          "description": "Must be greater than keepalive timer",
+                          "title": "Hold Timer"
+                        }
+                      },
+                      "required": [
+                        "keepalive_timer",
+                        "hold_timer"
+                      ],
+                      "additionalProperties": false,
+                      "title": "Keepalive"
+                    },
+                    "sa_filter": {
+                      "type": "object",
+                      "properties": {
+                        "in_list": {
+                          "type": "string",
+                          "description": "ACL to filter inbound SA messages",
+                          "title": "In List"
+                        },
+                        "out_list": {
+                          "type": "string",
+                          "description": "ACL to filter outbound SA messages",
+                          "title": "Out List"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Sa Filter"
+                    }
+                  },
+                  "required": [
+                    "ipv4_address"
+                  ],
+                  "additionalProperties": false
+                },
+                "title": "Peers"
               }
             },
             "required": [
