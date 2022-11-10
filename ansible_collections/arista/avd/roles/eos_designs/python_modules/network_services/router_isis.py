@@ -18,13 +18,13 @@ class RouterIsisMixin(UtilsMixin):
 
         Used for non-EVPN where underlay_routing_protocol is ISIS,
         static routes in VRF "default" should be redistributed into ISIS
+        unless specifically disabled under the vrf.
         """
 
         if (
             self._network_services_l3
-            and self._vrf_default_ipv4_static_routes
+            and self._vrf_default_ipv4_static_routes[1]
             and self._underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]
-            and not (self._overlay_vtep and self._overlay_evpn)
         ):
             return {"redistribute_routes": [{"source_protocol": "static"}]}
 

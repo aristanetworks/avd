@@ -178,11 +178,22 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return subnets
 
     @cached_property
-    def _vrf_default_ipv4_static_routes(self) -> list[str]:
+    def _vrf_default_ipv4_static_routes(self) -> tuple(list[str], bool, bool):
         """
-        Return list of ipv4 static routes in VRF "default"
+        Return tuple with:
+        [0]: list of ipv4 static routes in VRF "default"
+        [1]: boolean whether to redistribute static into the underlay protocol
+        [2]: boolean whether to redistribute static into overlay protocol for vrf default
+
+        For underlay, the boolean is set in the special cases where static routes should be redistributed
+        into the underlay, like when not running EVPN or not being a VTEP.
+
+        For overlay, the boolean is set if there are any static routes and this is an EVPN VTEP
+
+        The both booleans will respect "redistribute_static" under the VRF definition (default=True)
         """
         vrf_default_ipv4_static_routes = set()
+        vrf_default_redistribute_static = True
         for tenant in self._filtered_tenants:
             if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
                 continue
@@ -193,7 +204,18 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             for static_route in static_routes:
                 vrf_default_ipv4_static_routes.add(static_route["destination_address_prefix"])
 
-        return list(vrf_default_ipv4_static_routes)
+            vrf_default_redistribute_static = vrf_default.get("redistribute_static", vrf_default_redistribute_static)
+
+        if self._overlay_evpn and self._overlay_vtep:
+            # This is an EVPN VTEP
+            redistribute_in_underlay = False
+            redistribute_in_overlay = vrf_default_redistribute_static and vrf_default_ipv4_static_routes
+        else:
+            # This is a not an EVPN VTEP
+            redistribute_in_underlay = vrf_default_redistribute_static and vrf_default_ipv4_static_routes
+            redistribute_in_overlay = False
+
+        return (list(vrf_default_ipv4_static_routes), redistribute_in_underlay, redistribute_in_overlay)
 
     @cached_property
     def _evpn_short_esi_prefix(self) -> str:
@@ -202,6 +224,10 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _underlay_routing_protocol(self) -> str | None:
         return get(self._hostvars, "switch.underlay_routing_protocol")
+
+    @cached_property
+    def _underlay_bgp(self) -> bool:
+        return get(self._hostvars, "switch.underlay.bgp") is True
 
     @cached_property
     def _overlay_routing_protocol(self) -> str | None:

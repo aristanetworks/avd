@@ -87,7 +87,7 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_peer_groups[peer_group_name] = peer_group
 
         # router bgp default vrf configuration for evpn
-        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes) and self._overlay_vtep and self._overlay_evpn:
+        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes[0]) and self._overlay_vtep and self._overlay_evpn:
             peer_group_name = self._peer_group_ipv4_underlay_peers_name
             bgp_peer_groups[peer_group_name] = {
                 "type": "ipv4",
@@ -133,6 +133,7 @@ class RouterBgpMixin(UtilsMixin):
                     route_targets.setdefault(rt["type"], {}).setdefault(rt["address_family"], []).append(rt["route_target"])
 
                 if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
+                    # Special handling of vrf default.
                     route_targets["export"].setdefault("evpn", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
                     bgp_vrf = {
                         "rd": f"{self._overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
@@ -387,20 +388,19 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return structured config for router_bgp.redistribute_routes
 
-        - Add redistribute static to default if there are network services in vrf default
+        Add redistribute static to default if either "redistribute_in_overlay" is set or
+        "redistribute_in_underlay" and underlay protocol is BGP.
         """
+        redistribute_in_underlay, redistribute_in_overlay = self._vrf_default_ipv4_static_routes[1:3]
+        if redistribute_in_overlay or (redistribute_in_underlay and self._underlay_bgp):
+            return {"static": {}}
 
-        if not self._vrf_default_ipv4_static_routes:
-            return None
-
-        return {"static": {}}
+        return None
 
     @cached_property
     def _router_bgp_vpws(self) -> list[dict] | None:
         """
-        Return structured config for router_bgp.redistribute_routes
-
-        - Add redistribute static to default if there are network services in vrf default
+        Return structured config for router_bgp.vpws
         """
 
         if not (self._network_services_l1 and self._overlay_ler and self._overlay_evpn_mpls):
@@ -426,7 +426,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     # Endpoints can only have two entries with index 0 and 1.
                     # So the remote must be the other index.
-                    remote_index = int(not (local_index))
+                    remote_endpoint = endpoints[int(not (local_index))]
 
                     if subifs:
                         for subif in subifs:
@@ -434,8 +434,8 @@ class RouterBgpMixin(UtilsMixin):
                             pseudowires.append(
                                 {
                                     "name": f"{point_to_point_service['name']}_{subif_number}",
-                                    "id_local": int(endpoints[local_index]["id"]) + subif_number,
-                                    "id_remote": int(endpoints[remote_index]["id"]) + subif_number,
+                                    "id_local": int(endpoint["id"]) + subif_number,
+                                    "id_remote": int(remote_endpoint["id"]) + subif_number,
                                 }
                             )
 
@@ -443,8 +443,8 @@ class RouterBgpMixin(UtilsMixin):
                         pseudowires.append(
                             {
                                 "name": f"{point_to_point_service['name']}",
-                                "id_local": int(endpoints[local_index]["id"]),
-                                "id_remote": int(endpoints[remote_index]["id"]),
+                                "id_local": int(endpoint["id"]),
+                                "id_remote": int(remote_endpoint["id"]),
                             }
                         )
 
