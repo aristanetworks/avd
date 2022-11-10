@@ -165,10 +165,10 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| BLUE-C1 | 1.0.1.1:101 | static |
-| RED-C1 | 1.0.1.1:102 | - |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| BLUE-C1 | 1.0.1.1:101 | static | - |
+| RED-C1 | 1.0.1.1:102 | - | - |
 
 ### Router BGP Device Configuration
 

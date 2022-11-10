@@ -177,11 +177,12 @@ interface Management1
 
 ### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
-| TENANT_A_PROJECT03 | 192.168.255.3:13 | - |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | True |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | - |
+| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: Disabled: True, Transit: True |
+| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: Disabled: False, Transit: False |
 
 ### Router BGP Device Configuration
 
@@ -304,6 +305,13 @@ router bgp 65101
             transit
       route-target import evpn 13:13
       route-target export evpn 13:13
+      router-id 192.168.255.3
+   !
+   vrf TENANT_A_PROJECT04
+      rd 192.168.255.3:14
+      evpn multicast
+      route-target import evpn 14:14
+      route-target export evpn 14:14
       router-id 192.168.255.3
 ```
 
