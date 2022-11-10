@@ -15,7 +15,8 @@
 
 Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_validate_state](media/role-eos_validate_state.gif)
+![Figure 1: Ansible Role eos_validate_state](../../docs/_media/eos_validate_state_dark.svg#only-dark)
+![Figure 1: Ansible Role eos_validate_state](../../docs/_media/eos_validate_state_light.svg#only-light)
 
 **Inputs:**
 

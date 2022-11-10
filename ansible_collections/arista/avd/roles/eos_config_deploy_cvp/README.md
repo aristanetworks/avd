@@ -23,7 +23,8 @@ ansible-galaxy collection install arista.cvp
 
 Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_config_deploy_eapi](./media/role_eos_config_deploy_cvp.gif)
+![Figure 1: Ansible Role eos_config_deploy_eapi](../../docs/_media/eos_config_deploy_cvp_dark.svg#only-dark)
+![Figure 1: Ansible Role eos_config_deploy_eapi](../../docs/_media/eos_config_deploy_cvp_light.svg#only-light)
 
 1. Read inventory file
    1. Build containers topology
