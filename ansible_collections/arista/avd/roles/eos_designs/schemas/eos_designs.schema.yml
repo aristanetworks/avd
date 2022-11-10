@@ -690,6 +690,28 @@ keys:
 
       '
     type: list
+  cvp_ingestauth_key:
+    description: CloudVision Ingest Authentication key is required for on-prem CVP
+    type: str
+  cvp_instance_ip:
+    type: str
+  cvp_instance_ips:
+    description: 'You can either provide a list of IPs to target on-premise CloudVision
+      cluster or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.
+
+      '
+    items:
+      type: str
+    type: list
+  cvp_token_file:
+    default: /tmp/cv-onboarding-token
+    description: cvp_token_file is path to token file on switch
+    type: str
   default_igmp_snooping_enabled:
     default: true
     description: 'Disable IGMP snooping at fabric level.
@@ -750,6 +772,50 @@ keys:
       '
     display_name: Enable Trunk Group support across eos_designs
     type: bool
+  event_handlers:
+    convert_types:
+    - dict
+    description: 'Gives ability to monitor and react to Syslog messages provides a
+      powerful and flexible tool that can be used to apply self-healing actions,
+
+      customize the system behavior, and implement workarounds to problems discovered
+      in the field.
+
+      '
+    items:
+      keys:
+        action:
+          description: Command to run when handler is triggered
+          type: str
+        action_type:
+          type: str
+          valid_values:
+          - bash
+          - increment
+        asynchronous:
+          default: false
+          description: Set the action to be non-blocking.
+          type: bool
+        delay:
+          convert_types:
+          - str
+          description: Event-handler delay in seconds
+          type: int
+        name:
+          required: true
+          type: str
+        regex:
+          description: Regular expression to use for searching log messages. Required
+            for on-logging trigger
+          type: str
+        trigger:
+          description: Configure event trigger condition.
+          type: str
+          valid_values:
+          - on-logging
+      type: dict
+    primary_key: name
+    type: list
   evpn_ebgp_gateway_multihop:
     convert_types:
     - str
@@ -918,6 +984,68 @@ keys:
         - link
         - node
     type: dict
+  local_users:
+    convert_types:
+    - dict
+    items:
+      keys:
+        name:
+          required: true
+          type: str
+        no_password:
+          description: If set a password will not be configured for this user. "sha512_password"
+            MUST not be defined for this user.
+          type: bool
+        privilege:
+          convert_types:
+          - str
+          description: Initial privilege level with local EXEC authorization.
+          max: 15
+          min: 1
+          type: int
+        role:
+          description: EOS RBAC Role to be assigned to the user such as "network-admin"
+            or "network-operator"
+          type: str
+        sha512_password:
+          description: Must be the hash of the password. By default EOS salts the
+            password with the username, so the simplest is to generate the hash on
+            an EOS device using the same username.
+          type: str
+        ssh_key:
+          type: str
+      type: dict
+    primary_key: name
+    type: list
+  management_eapi:
+    description: Default is https management eAPI enabled
+    keys:
+      default_services:
+        type: bool
+      enable_http:
+        default: false
+        type: bool
+      enable_https:
+        default: true
+        type: bool
+    type: dict
+  mgmt_destination_networks:
+    description: OOB mgmt interface destination networks - override default route
+    items:
+      type: str
+    type: list
+  mgmt_gateway:
+    description: Management interface configuration
+    type: str
+  mgmt_interface:
+    default: Management1
+    type: str
+  mgmt_interface_vrf:
+    default: MGMT
+    type: str
+  mgmt_vrf_routing:
+    default: false
+    type: bool
   name_server:
     keys:
       nodes:
@@ -1144,6 +1272,33 @@ keys:
       role interface tests. Again, this is only an issue if `eos_config_deploy_cvp`
       is used and the devices are not present in the network.'
     type: bool
+  snmp_settings:
+    description: Set SNMP settings
+    keys:
+      contact:
+        type: str
+      location:
+        default: false
+        description: 'Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }}
+          {{ switch_rack }} {{ inventory_hostname }}'
+        type: bool
+    type: dict
+  terminattr_disable_aaa:
+    default: false
+    type: bool
+  terminattr_ingestexclude:
+    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+    type: str
+  terminattr_ingestgrpcurl_port:
+    convert_types:
+    - str
+    default: 9910
+    type: int
+  terminattr_smashexcludes:
+    default: ale,flexCounter,hardware,kni,pulse,strata
+    type: str
+  timezone:
+    type: str
   trunk_groups:
     keys:
       mlag:

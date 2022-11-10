@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  snmp_settings:
+    type: dict
+    description: Set SNMP settings
+    keys:
+      contact:
+        type: str
+      location:
+        type: bool
+        default: False
+        description: |
+          Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}
