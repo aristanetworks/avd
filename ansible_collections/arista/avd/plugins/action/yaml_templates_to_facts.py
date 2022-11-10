@@ -70,10 +70,12 @@ class ActionModule(ActionBase):
         for var in task_vars:
             if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
                 continue
-            try:
-                task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
-            except Exception as e:
-                raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+            if self._templar.is_template(task_vars[var]):
+                # Var contains a jinja template.
+                try:
+                    task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
+                except Exception as e:
+                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
         # Create a new Ansible "templar" instance to be passed along to our simplified "templater"
         searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
@@ -172,8 +174,8 @@ class ActionModule(ActionBase):
             if debug:
                 debug_item = {"action": "template_output", "timestamps": {"templating": datetime.now()}}
 
-            templar.available_variables = template_vars
-            output = templar.template(output)
+            with self._templar.set_temporary_context(available_variables=template_vars):
+                output = self._templar.template(output, fail_on_undefined=False)
 
             if debug:
                 debug_item["timestamps"]["done"] = datetime.now()

@@ -137,9 +137,6 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
     111:
       tenant: Tenant_A
       rd: 172.16.120.3:50111
@@ -156,9 +153,6 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
     112:
       tenant: Tenant_A
       rd: 172.16.120.3:20112
@@ -175,9 +169,6 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
     2500:
       tenant: Tenant_A
       rd: 172.16.120.3:2500
@@ -202,9 +193,6 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -376,8 +364,6 @@ vlan_interfaces:
     - opzone
     description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
     shutdown: false
-    struct_cfg:
-      description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
     ip_address_virtual: 10.1.10.1/24
     vrf: Common_VRF
   Vlan111:
@@ -438,9 +424,6 @@ vlan_interfaces:
     shutdown: false
     ip_address_virtual: 10.101.100.1/24
     vrf: vrf_with_loopbacks_from_pod_pools
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP

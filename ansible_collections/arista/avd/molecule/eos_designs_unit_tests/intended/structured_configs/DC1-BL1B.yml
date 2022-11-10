@@ -351,14 +351,6 @@ management_api_http:
     MGMT: {}
   enable_https: true
   default_services: false
-struct_cfg:
-  sflow:
-    vrfs:
-      OOB:
-        destinations:
-          192.168.200.10: null
-          10.0.200.90: null
-        source_interface: '{{ switch.mgmt_interface }}'
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1

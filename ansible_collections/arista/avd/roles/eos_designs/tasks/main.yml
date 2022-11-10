@@ -36,6 +36,7 @@
   arista.avd.eos_designs_facts:
     avd_switch_facts: true
     #cprofile_file: "eos_designs_facts.prof"
+    template_output: true
   check_mode: false
   run_once: true
 

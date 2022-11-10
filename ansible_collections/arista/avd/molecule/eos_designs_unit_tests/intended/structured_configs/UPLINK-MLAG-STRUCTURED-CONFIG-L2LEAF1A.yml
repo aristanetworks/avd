@@ -52,13 +52,6 @@ port_channel_interfaces:
     mode: trunk
     trunk_groups:
     - MLAG
-    struct_cfg:
-      storm_control:
-        broadcast:
-          level: 25
-        unknown_unicast:
-          level: 25
-      native_vlan_tag: true
     storm_control:
       broadcast:
         level: 25
@@ -72,13 +65,6 @@ port_channel_interfaces:
     vlans: none
     mode: trunk
     mlag: 1
-    struct_cfg:
-      storm_control:
-        broadcast:
-          level: 25
-        unknown_unicast:
-          level: 25
-      native_vlan_tag: true
     storm_control:
       broadcast:
         level: 25

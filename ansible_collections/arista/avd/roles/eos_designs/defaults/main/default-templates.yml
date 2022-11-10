@@ -26,10 +26,10 @@ default_templates:
       # Inband Management feature
       - template: "inband_management/main.j2"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
@@ -62,10 +62,10 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
         python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
@@ -101,10 +101,10 @@ default_templates:
       # Inband Management feature
       - template: "inband_management/main.j2"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
