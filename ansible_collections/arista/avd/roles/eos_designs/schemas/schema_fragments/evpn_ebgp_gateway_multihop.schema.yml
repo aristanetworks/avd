@@ -4,7 +4,6 @@
 type: dict
 keys:
   evpn_ebgp_gateway_multihop:
-    display_name: EVPN Gateway EBGP Multihop
     description: |
       Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
       Adapt the value for your specific topology.

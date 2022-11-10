@@ -111,7 +111,7 @@
       mlag_port_channel_id: <int>
 ```
 
-## Node Type Structure
+## <Node Type Keys.Key>
 
 ### Variables
 

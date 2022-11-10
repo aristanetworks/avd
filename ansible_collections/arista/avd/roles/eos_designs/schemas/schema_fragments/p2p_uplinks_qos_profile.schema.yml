@@ -4,6 +4,5 @@
 type: dict
 keys:
   p2p_uplinks_qos_profile:
-    display_name: P2P Uplinks QoS Profile
     description: QOS Profile assigned on all infrastructure links
     type: str

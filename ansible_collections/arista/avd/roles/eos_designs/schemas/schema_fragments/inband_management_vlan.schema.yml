@@ -7,7 +7,6 @@ keys:
     type: int
     convert_types:
       - str
-    display_name: Inband Management VLAN
     description: |
       VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
     default: 4092

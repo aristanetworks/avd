@@ -4,7 +4,6 @@
 type: dict
 keys:
   bgp_maximum_paths:
-    display_name: BGP Maximum Paths
     description: Maximum Paths for BGP multi-path
     type: int
     convert_types:

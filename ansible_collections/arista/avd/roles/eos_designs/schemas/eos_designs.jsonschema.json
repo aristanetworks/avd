@@ -1,7 +1,6 @@
 {
   "properties": {
     "bfd_multihop": {
-      "title": "BFD Multihop tuning",
       "properties": {
         "interval": {
           "default": 300,
@@ -20,24 +19,25 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "BFD Multihop"
     },
     "bgp_as": {
       "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == IBGP",
-      "title": "BGP AS",
-      "type": "string"
+      "type": "string",
+      "title": "BGP As"
     },
     "bgp_ecmp": {
       "default": 4,
       "description": "Maximum ECMP for BGP multi-path",
-      "title": "BGP ECMP",
-      "type": "integer"
+      "type": "integer",
+      "title": "BGP Ecmp"
     },
     "bgp_maximum_paths": {
       "default": 4,
       "description": "Maximum Paths for BGP multi-path",
-      "title": "BGP Maximum Paths",
-      "type": "integer"
+      "type": "integer",
+      "title": "BGP Maximum Paths"
     },
     "bgp_mesh_pes": {
       "default": false,
@@ -47,7 +47,6 @@
     },
     "bgp_peer_groups": {
       "description": "Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.\nNote that the name of the peer groups use '-' instead of '_' in EOS configuration.\n",
-      "title": "BGP peer group names and encrypted password",
       "properties": {
         "EVPN_OVERLAY_PEERS": {
           "properties": {
@@ -57,8 +56,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -73,8 +72,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -89,8 +88,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -105,8 +104,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -121,8 +120,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -137,8 +136,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -153,8 +152,8 @@
               "title": "Name"
             },
             "password": {
-              "title": "Encrypted Password",
-              "type": "string"
+              "type": "string",
+              "title": "Password"
             }
           },
           "additionalProperties": false,
@@ -163,7 +162,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "BGP Peer Groups"
     },
     "custom_structured_configuration_list_merge": {
       "default": "replace",
@@ -190,8 +190,8 @@
     "default_igmp_snooping_enabled": {
       "default": true,
       "description": "Disable IGMP snooping at fabric level.\nIf set, it overrides per vlan settings\n",
-      "title": "Default IGMP Snooping enabled",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Default IGMP Snooping Enabled"
     },
     "default_node_types": {
       "description": "Uses hostname matches against a regular expression to determine the node type.",
@@ -223,7 +223,6 @@
       "title": "Default Node Types"
     },
     "design": {
-      "title": "AVD Design",
       "properties": {
         "type": {
           "default": "l3ls-evpn",
@@ -237,7 +236,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "Design"
     },
     "enable_trunk_groups": {
       "default": false,
@@ -248,17 +248,16 @@
     "evpn_ebgp_gateway_multihop": {
       "default": 15,
       "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
-      "title": "EVPN Gateway EBGP Multihop",
-      "type": "integer"
+      "type": "integer",
+      "title": "Evpn Ebgp Gateway Multihop"
     },
     "evpn_ebgp_multihop": {
       "default": 3,
       "description": "Default of 3, the recommended value for a 3 stage spine and leaf topology.\nSet to a higher value to allow for very large and complex topologies.\n",
-      "title": "EVPN EBGP Multihop",
-      "type": "integer"
+      "type": "integer",
+      "title": "Evpn Ebgp Multihop"
     },
     "evpn_hostflap_detection": {
-      "title": "EVPN Host Flapping Settings",
       "properties": {
         "enabled": {
           "default": true,
@@ -285,83 +284,83 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "Evpn Hostflap Detection"
     },
     "evpn_import_pruning": {
       "default": false,
       "description": "Enable VPN import pruning (Min. EOS 4.24.2F)\nThe Route Target extended communities carried by incoming VPN paths will\nbe examined. If none of those Route Targets have been configured for import,\nthe path will be immediately discarded\n",
-      "title": "EVPN Import Pruning",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Evpn Import Pruning"
     },
     "evpn_multicast": {
       "default": false,
       "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
-      "title": "Enable Fabric to support EVPN Multicast",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Evpn Multicast"
     },
     "evpn_overlay_bgp_rtc": {
       "default": false,
       "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)\nRequires use eBGP as overlay protocol.\n",
-      "title": "EVPN Overlay BGP RTC",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Evpn Overlay BGP Rtc"
     },
     "evpn_prevent_readvertise_to_server": {
       "default": false,
       "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
-      "title": "EVPN Prevent Readvertise to Server",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Evpn Prevent Readvertise To Server"
     },
     "evpn_short_esi_prefix": {
       "default": "0000:0000:",
       "description": "Configure prefix for \"short_esi\" values",
-      "title": "EVPN Short ESI Prefix",
-      "type": "string"
+      "type": "string",
+      "title": "Evpn Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
       "default": false,
       "description": "Enable vlan aware bundles for EVPN MAC-VRF",
-      "title": "EVPN VLAN-Aware Bundles",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Evpn VLAN Aware Bundles"
     },
     "fabric_name": {
       "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric",
-      "title": "Fabric Name",
-      "type": "string"
+      "type": "string",
+      "title": "Fabric Name"
     },
     "inband_management_subnet": {
       "description": "Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.\nParent l3leafs will have SVI with \"ip virtual-router\" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet\nSVI IP address will be assigned as follows:\nvirtual-router: <subnet> + 1\nl3leaf A      : <subnet> + 2 (same IP on all l3leaf A)\nl3leaf B      : <subnet> + 3 (same IP on all l3leaf B)\nl2leafs       : <subnet> + 3 + <l2leaf id>\nGW on l2leafs : <subnet> + 1\nAssign range larger than total l2leafs + 5",
-      "title": "IPv4 Network/Mask assigned to Inband Management",
-      "type": "string"
+      "type": "string",
+      "title": "Inband Management Subnet"
     },
     "inband_management_vlan": {
       "default": 4092,
       "description": "VLAN number assigned to Inband Management SVI on l2leafs in default VRF.\n",
-      "title": "Inband Management VLAN",
-      "type": "integer"
+      "type": "integer",
+      "title": "Inband Management VLAN"
     },
     "isis_advertise_passive_only": {
       "default": false,
-      "title": "ISIS Advertise Passive Only",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "ISIS Advertise Passive Only"
     },
     "isis_area_id": {
       "default": "49.0001",
       "description": "Required when \"underlay_routing_protocol\" == ISIS variants",
-      "title": "Underlay ISIS Area",
-      "type": "string"
+      "type": "string",
+      "title": "ISIS Area ID"
     },
     "isis_default_is_type": {
       "default": "level-2",
-      "title": "ISIS Default IS Type",
       "type": "string",
       "enum": [
         "level-1-2",
         "level-1",
         "level-2"
-      ]
+      ],
+      "title": "ISIS Default IS Type"
     },
     "isis_ti_lfa": {
-      "title": "ISIS TI-LFA",
       "properties": {
         "enabled": {
           "default": false,
@@ -384,7 +383,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "ISIS TI LFA"
     },
     "name_server": {
       "properties": {
@@ -398,8 +398,8 @@
         "source": {
           "properties": {
             "vrf": {
-              "title": "VRF Name",
-              "type": "string"
+              "type": "string",
+              "title": "VRF"
             }
           },
           "additionalProperties": false,
@@ -572,24 +572,24 @@
     "only_local_vlan_trunk_groups": {
       "default": false,
       "description": "A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf\nswitches when a new trunk group is added, this feature will only configure the vlan trunk groups\nmatched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\"\n",
-      "title": "Only Configure VLAN Trunk Groups used by local endpoints",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Only Local VLAN Trunk Groups"
     },
     "overlay_her_flood_list_per_vni": {
       "default": false,
       "description": "When using Head-End Replication, configure flood-lists per VNI. | Optional\nBy default HER will be configured with a common flood-list containing all VTEPs. This behavior can be changed\nto per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`. This will make `eos_designs` consider\nconfigured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.\n",
-      "title": "Overlay Her Flood List Per VNI",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Overlay Her Flood List Per Vni"
     },
     "overlay_her_flood_list_scope": {
       "default": "fabric",
       "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added\nto the flood-lists. This can be changed to all VTEPs in the DC (part of the inventory group referenced\nby \"dc_name\")\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
-      "title": "Overlay HER Flood List Scope",
       "type": "string",
       "enum": [
         "fabric",
         "dc"
-      ]
+      ],
+      "title": "Overlay Her Flood List Scope"
     },
     "overlay_loopback_description": {
       "description": "Customizable overlay loopback description",
@@ -599,8 +599,8 @@
     "overlay_mlag_rfc5549": {
       "default": false,
       "description": "IPv6 Unnumbered for MLAG iBGP connections.\nRequires \"underlay_rfc5549: true\"\n",
-      "title": "Enable RFC 5549(iBGP)",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Overlay MLAG Rfc5549"
     },
     "overlay_routing_protocol": {
       "default": "ebgp",
@@ -625,18 +625,18 @@
     },
     "p2p_uplinks_mtu": {
       "default": 9000,
-      "title": "Point to Point Links MTU",
-      "type": "integer"
+      "type": "integer",
+      "title": "P2P Uplinks MTU"
     },
     "p2p_uplinks_qos_profile": {
       "description": "QOS Profile assigned on all infrastructure links",
-      "title": "P2P Uplinks QoS Profile",
-      "type": "string"
+      "type": "string",
+      "title": "P2P Uplinks QOS Profile"
     },
     "pod_name": {
       "description": "POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines, Leafs within a POD (One l3ls topology)\n",
-      "title": "POD Name",
-      "type": "string"
+      "type": "string",
+      "title": "Pod Name"
     },
     "shutdown_interfaces_towards_undeployed_peers": {
       "default": false,
@@ -645,71 +645,71 @@
       "title": "Shutdown Interfaces Towards Undeployed Peers"
     },
     "trunk_groups": {
-      "title": "Trunk Group Names",
       "properties": {
         "mlag": {
           "description": "\"mlag\" is the Trunk Group used for MLAG VLAN (Typically VLAN 4094)\n",
-          "title": "MLAG",
           "properties": {
             "name": {
               "default": "MLAG",
-              "title": "Trunk Group Name",
-              "type": "string"
+              "type": "string",
+              "title": "Name"
             }
           },
           "additionalProperties": false,
-          "type": "object"
+          "type": "object",
+          "title": "MLAG"
         },
         "mlag_l3": {
           "description": "\"mlag_l3\" is the Trunk Group used for MLAG L3 peering VLAN (Typically VLAN 4093)\n\"mlag_l3\" is also the Trunk Group used for VRF L3 peering VLANs\n",
-          "title": "MLAG L3",
           "properties": {
             "name": {
               "default": "LEAF_PEER_L3",
-              "title": "Trunk Group Name",
-              "type": "string"
+              "type": "string",
+              "title": "Name"
             }
           },
           "additionalProperties": false,
-          "type": "object"
+          "type": "object",
+          "title": "MLAG L3"
         },
         "uplink": {
           "description": "\"uplink\" is the Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set\n",
-          "title": "UPLINK",
           "properties": {
             "name": {
               "default": "UPLINK",
-              "title": "Trunk Group Name",
-              "type": "string"
+              "type": "string",
+              "title": "Name"
             }
           },
           "additionalProperties": false,
-          "type": "object"
+          "type": "object",
+          "title": "Uplink"
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "Trunk Groups"
     },
     "type": {
-      "title": "Device Type",
-      "type": "string"
+      "type": "string",
+      "title": "Type"
     },
     "underlay_filter_peer_as": {
       "default": "0000:0000:",
       "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
-      "title": "Underlay Filter Peer AS",
-      "type": "string"
+      "type": "string",
+      "title": "Underlay Filter Peer As"
     },
     "underlay_ipv6": {
       "default": false,
       "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the \"Fabric Topology\"\n",
-      "title": "Enable IPv6 Address Family on underlay",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Underlay IPv6"
     },
     "underlay_isis_instance_name": {
       "default": "EVPN_UNDERLAY",
-      "title": "Underlay ISIS Instance Name",
-      "type": "string"
+      "type": "string",
+      "title": "Underlay ISIS Instance Name"
     },
     "underlay_multicast": {
       "default": false,
@@ -719,30 +719,30 @@
     },
     "underlay_ospf_area": {
       "default": "0.0.0.0",
-      "title": "Underlay OSPF Area",
       "format": "ipv4",
-      "type": "string"
+      "type": "string",
+      "title": "Underlay OSPF Area"
     },
     "underlay_ospf_bfd_enable": {
       "default": false,
-      "title": "Enable Underlay OSPF BFD",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Underlay OSPF BFD Enable"
     },
     "underlay_ospf_max_lsa": {
       "default": 12000,
-      "title": "Underlay OSPF Max LSA",
-      "type": "integer"
+      "type": "integer",
+      "title": "Underlay OSPF Max LSA"
     },
     "underlay_ospf_process_id": {
       "default": 100,
-      "title": "Underlay OSPF Process ID",
-      "type": "integer"
+      "type": "integer",
+      "title": "Underlay OSPF Process ID"
     },
     "underlay_rfc5549": {
       "default": false,
       "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered\nRequires \"underlay_routing_protocol: ebgp\"\n",
-      "title": "Enable RFC5549 in Underlay",
-      "type": "boolean"
+      "type": "boolean",
+      "title": "Underlay Rfc5549"
     },
     "underlay_routing_protocol": {
       "default": "ebgp",
@@ -762,7 +762,6 @@
     },
     "uplink_ptp": {
       "description": "Enable PTP on all infrastructure links",
-      "title": "Uplink PTP",
       "properties": {
         "enable": {
           "default": false,
@@ -771,12 +770,13 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "title": "Uplink Ptp"
     },
     "vtep_vvtep_ip": {
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1\nThis is only needed for centralized routing designs\n",
-      "title": "Virtual VTEP IP",
-      "type": "string"
+      "type": "string",
+      "title": "Vtep Vvtep IP"
     }
   },
   "required": [
