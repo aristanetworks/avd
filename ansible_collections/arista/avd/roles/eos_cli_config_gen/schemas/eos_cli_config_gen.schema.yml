@@ -4039,12 +4039,16 @@ keys:
                         convert_types:
                         - str
                         required: true
+                        min: 1
+                        max: 65535
                       hold_timer:
                         type: int
                         convert_types:
                         - str
                         required: true
                         description: Must be greater than keepalive timer
+                        min: 1
+                        max: 65535
                   sa_filter:
                     type: dict
                     keys:

@@ -3167,8 +3167,8 @@ router_l2_vpn:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mesh_groups</samp>](## "router_msdp.vrfs.[].peers.[].mesh_groups") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_msdp.vrfs.[].peers.[].mesh_groups.[].name") | String | Required, Unique |  |  | Mesh group name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keepalive</samp>](## "router_msdp.vrfs.[].peers.[].keepalive") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keepalive_timer</samp>](## "router_msdp.vrfs.[].peers.[].keepalive.keepalive_timer") | Integer | Required |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hold_timer</samp>](## "router_msdp.vrfs.[].peers.[].keepalive.hold_timer") | Integer | Required |  |  | Must be greater than keepalive timer |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keepalive_timer</samp>](## "router_msdp.vrfs.[].peers.[].keepalive.keepalive_timer") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hold_timer</samp>](## "router_msdp.vrfs.[].peers.[].keepalive.hold_timer") | Integer | Required |  | Min: 1<br>Max: 65535 | Must be greater than keepalive timer |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sa_filter</samp>](## "router_msdp.vrfs.[].peers.[].sa_filter") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in_list</samp>](## "router_msdp.vrfs.[].peers.[].sa_filter.in_list") | String |  |  |  | ACL to filter inbound SA messages |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out_list</samp>](## "router_msdp.vrfs.[].peers.[].sa_filter.out_list") | String |  |  |  | ACL to filter outbound SA messages |

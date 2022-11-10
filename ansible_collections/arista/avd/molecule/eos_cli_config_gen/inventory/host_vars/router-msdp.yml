@@ -28,9 +28,6 @@ router_msdp:
       peers:
         - ipv4_address: 2.3.4.5
           default_peer_prefix_list: PLIST2
-          mesh_groups:
-            - name: MG3
-            - name: MG4
           local_interface: Loopback13
           keepalive:
             keepalive_timer: 5

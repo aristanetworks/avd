@@ -14,6 +14,9 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Router MSDP](#router-msdp)
+  - [Router MSDP Peers](#router-msdp-peers)
+  - [Router MSDP Device Configuration](#router-msdp-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
 # Management
@@ -87,5 +90,48 @@ interface Management1
 # Filters
 
 # ACL
+
+# Router MSDP
+
+## Router MSDP Peers
+
+| Peer Address | VRF | Mesh Groups | Local Interface | Description |
+| ------------ | --- | ----------- | --------------- | ----------- |
+| 1.2.3.4 | default | MG1, MG2 | Loopback11 | Some kind of MSDP Peer |
+| 2.3.4.5 | RED | - | Loopback13 | Some other kind of MSDP Peer |
+
+## Router MSDP Device Configuration
+
+```eos
+!
+router msdp
+   originator-id local-interface Loopback10
+   rejected-limit 123
+   forward register-packets
+   connection retry interval 5
+   peer 1.2.3.4
+      default-peer prefix-list PLIST1
+      mesh-group MG1
+      mesh-group MG2
+      local-interface Loopback11
+      keepalive 10 30
+      sa-filter in list ACL1
+      sa-filter out list ACL1
+      description Some kind of MSDP Peer
+      disabled
+      sa-limit 1000
+   vrf RED
+      originator-id local-interface Loopback12
+      rejected-limit 10
+      connection retry interval 10
+      peer 2.3.4.5
+         default-peer prefix-list PLIST2
+         local-interface Loopback13
+         keepalive 5 15
+         sa-filter in list ACL3
+         sa-filter out list ACL3
+         description Some other kind of MSDP Peer
+         sa-limit 100
+```
 
 # Quality Of Service

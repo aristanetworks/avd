@@ -1,0 +1,36 @@
+{% if router_msdp is arista.avd.defined %}
+
+# Router MSDP
+{%     set msdp_peers = namespace(configured=false) %}
+{%     for vrf in router_msdp.vrfs | arista.avd.default([]) %}
+{%         for peer in vrf.peers | arista.avd.default([]) %}
+{%             set msdp_peers.configured = true %}
+{%             break %}
+{%         endfor %}
+{%     endfor %}
+{%     if msdp_peers.configured %}
+
+## Router MSDP Peers
+
+| Peer Address | VRF | Mesh Groups | Local Interface | Description |
+| ------------ | --- | ----------- | --------------- | ----------- |
+{%         for vrf in router_msdp.vrfs | arista.avd.default([]) %}
+{%             for peer in vrf.peers | arista.avd.default([]) %}
+{%                 if peer.mesh_groups | arista.avd.default([]) | length > 0 %}
+{%                     set row_mesh_groups = [] %}
+{%                     for mesh_group in peer.mesh_groups %}
+{%                         do row_mesh_groups.append(mesh_group.name) %}
+{%                     endfor %}
+{%                     set row_mesh_groups = row_mesh_groups | join(", ") %}
+{%                 endif %}
+| {{ peer.ipv4_address }} | {{ vrf.name }} | {{ row_mesh_groups | arista.avd.default("-") }} | {{ peer.local_interface | arista.avd.default("-") }} | {{ peer.description | arista.avd.default("-") }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+## Router MSDP Device Configuration
+
+```eos
+{%     include 'eos/router-msdp.j2' %}
+```
+{% endif %}

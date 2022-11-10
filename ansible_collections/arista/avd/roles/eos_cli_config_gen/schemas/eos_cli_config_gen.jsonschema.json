@@ -5740,11 +5740,15 @@
                       "properties": {
                         "keepalive_timer": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
                           "title": "Keepalive Timer"
                         },
                         "hold_timer": {
                           "type": "integer",
                           "description": "Must be greater than keepalive timer",
+                          "minimum": 1,
+                          "maximum": 65535,
                           "title": "Hold Timer"
                         }
                       },
