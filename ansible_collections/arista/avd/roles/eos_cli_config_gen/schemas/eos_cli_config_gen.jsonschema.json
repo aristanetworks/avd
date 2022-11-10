@@ -1243,13 +1243,12 @@
     },
     "ethernet_interfaces": {
       "type": "array",
-      "title": "Routed Ethernet Interfaces",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "title": "Ethernet Interface"
+            "title": "Name"
           },
           "peer": {
             "type": "string",
@@ -1277,27 +1276,27 @@
             "title": "Speed"
           },
           "mtu": {
-            "title": "MTU",
-            "type": "integer"
+            "type": "integer",
+            "title": "MTU"
           },
           "l2_mtu": {
-            "title": "L2 MTU",
             "type": "integer",
-            "description": "l2-mtu - if defined this profile should only be used for platforms supporting the \"l2 mtu\" CLI\n"
+            "description": "l2-mtu - if defined this profile should only be used for platforms supporting the \"l2 mtu\" CLI\n",
+            "title": "L2 MTU"
           },
           "vlans": {
-            "title": "VLANs",
             "type": "string",
-            "description": "< list of vlans as string\n"
+            "description": "< list of vlans as string\n",
+            "title": "VLANs"
           },
           "native_vlan": {
-            "title": "Native VLAN",
-            "type": "integer"
+            "type": "integer",
+            "title": "Native VLAN"
           },
           "native_vlan_tag": {
-            "title": "Native VLAN Tag",
             "type": "boolean",
-            "default": false
+            "default": false,
+            "title": "Native VLAN Tag"
           },
           "mode": {
             "type": "string",
@@ -1321,25 +1320,25 @@
                 "title": "Trunk"
               },
               "vlan": {
-                "title": "VLAN",
                 "type": "integer",
                 "minimum": 1,
-                "maximum": 4094
+                "maximum": 4094,
+                "title": "VLAN"
               }
             },
             "additionalProperties": false,
             "title": "Phone"
           },
           "l2_protocol": {
-            "title": "L2 Protocol",
             "type": "object",
             "properties": {
               "encapsulation_dot1q_vlan": {
-                "title": "Encapsulation dot1q VLAN",
-                "type": "integer"
+                "type": "integer",
+                "title": "Encapsulation Dot1Q VLAN"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "L2 Protocol"
           },
           "trunk_groups": {
             "type": "array",
@@ -1409,8 +1408,8 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "title": "Group Name",
-                  "type": "string"
+                  "type": "string",
+                  "title": "Name"
                 },
                 "direction": {
                   "type": "string",
@@ -1426,7 +1425,6 @@
             "title": "Link Tracking Groups"
           },
           "evpn_ethernet_segment": {
-            "title": "EVPN Ethernet Segment",
             "type": "object",
             "properties": {
               "identifier": {
@@ -1482,7 +1480,6 @@
                 "title": "Designated Forwarder Election"
               },
               "mpls": {
-                "title": "MPLS",
                 "type": "object",
                 "properties": {
                   "shared_index": {
@@ -1496,7 +1493,8 @@
                     "title": "Tunnel Flood Filter Time"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "MPLS"
               },
               "route_target": {
                 "type": "string",
@@ -1504,15 +1502,15 @@
                 "title": "Route Target"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "Evpn Ethernet Segment"
           },
           "encapsulation_dot1q_vlan": {
-            "title": "Encapsulation dot1q VLAN",
             "type": "integer",
-            "description": "vlan tag to configure on sub-interface\n"
+            "description": "vlan tag to configure on sub-interface\n",
+            "title": "Encapsulation Dot1Q VLAN"
           },
           "encapsulation_vlan": {
-            "title": "Encapsulation VLAN",
             "type": "object",
             "properties": {
               "client": {
@@ -1522,28 +1520,31 @@
                     "type": "object",
                     "properties": {
                       "vlan": {
-                        "title": "Client VLAN ID",
-                        "type": "integer"
+                        "type": "integer",
+                        "title": "VLAN"
                       },
                       "outer": {
                         "title": "Client Outer VLAN ID",
                         "type": "integer"
                       },
                       "inner": {
-                        "title": "Client Inner VLAN ID",
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Client Inner VLAN ID",
+                        "title": "Inner"
                       }
                     },
                     "additionalProperties": false,
                     "title": "Dot1Q"
                   },
                   "outer": {
-                    "title": "Client Outer VLAN ID",
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Client Outer VLAN ID",
+                    "title": "Outer"
                   },
                   "inner": {
-                    "title": "Client Inner VLAN ID",
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Client Inner VLAN ID",
+                    "title": "Inner"
                   },
                   "unmatched": {
                     "type": "boolean",
@@ -1561,28 +1562,33 @@
                     "type": "object",
                     "properties": {
                       "vlan": {
-                        "title": "Network VLAN ID",
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Network VLAN ID",
+                        "title": "VLAN"
                       },
                       "outer": {
-                        "title": "Network Outer VLAN ID",
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Network Outer VLAN ID",
+                        "title": "Outer"
                       },
                       "inner": {
-                        "title": "Network Inner VLAN ID",
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Network Inner VLAN ID",
+                        "title": "Inner"
                       }
                     },
                     "additionalProperties": false,
                     "title": "Dot1Q"
                   },
                   "outer": {
-                    "title": "Network Outer VLAN ID",
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Network Outer VLAN ID",
+                    "title": "Outer"
                   },
                   "inner": {
-                    "title": "Network Inner VLAN ID",
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Network Inner VLAN ID",
+                    "title": "Inner"
                   },
                   "client": {
                     "type": "boolean",
@@ -1593,88 +1599,88 @@
                 "title": "Network"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "Encapsulation VLAN"
           },
           "vlan_id": {
-            "title": "VLAN ID",
             "type": "integer",
             "minimum": 1,
-            "maximum": 4094
+            "maximum": 4094,
+            "title": "VLAN ID"
           },
           "ip_address": {
-            "title": "IP Address",
-            "type": "string"
+            "type": "string",
+            "title": "IP Address"
           },
           "ip_address_secondaries": {
-            "title": "IP Address Secondaries",
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "title": "IP Address Secondaries"
           },
           "ip_helpers": {
-            "title": "IP Helpers",
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
                 "ip_helper": {
-                  "title": "IP Helper",
-                  "type": "string"
+                  "type": "string",
+                  "title": "IP Helper"
                 },
                 "source_interface": {
                   "type": "string",
-                  "title": "Source Interface Name"
+                  "title": "Source Interface"
                 },
                 "vrf": {
-                  "title": "VRF Name",
-                  "type": "string"
+                  "type": "string",
+                  "title": "VRF"
                 }
               },
               "required": [
                 "ip_helper"
               ],
               "additionalProperties": false
-            }
+            },
+            "title": "IP Helpers"
           },
           "ipv6_enable": {
-            "title": "IPv6 Enable",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "IPv6 Enable"
           },
           "ipv6_address": {
-            "title": "IPv6 Address",
-            "type": "string"
+            "type": "string",
+            "title": "IPv6 Address"
           },
           "ipv6_address_link_local": {
-            "title": "IPv6 Address Link Local",
-            "type": "string"
+            "type": "string",
+            "title": "IPv6 Address Link Local"
           },
           "ipv6_nd_ra_disabled": {
             "title": "IPv6 ND RA Disabled",
             "type": "boolean"
           },
           "ipv6_nd_managed_config_flag": {
-            "title": "IPv6 ND Managed Config Flag",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "IPv6 ND Managed Config Flag"
           },
           "ipv6_nd_prefixes": {
-            "title": "IPv6 ND Prefixes",
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
                 "ipv6_prefix": {
-                  "title": "IPv6 Prefix",
-                  "type": "string"
+                  "type": "string",
+                  "title": "IPv6 Prefix"
                 },
                 "valid_lifetime": {
                   "type": "string",
-                  "description": "< infinite or lifetime in seconds >\n",
+                  "description": "Infinite or lifetime in seconds\n",
                   "title": "Valid Lifetime"
                 },
                 "preferred_lifetime": {
                   "type": "string",
-                  "description": "< infinite or lifetime in seconds >\n",
+                  "description": "Infinite or lifetime in seconds\n",
                   "title": "Preferred Lifetime"
                 },
                 "no_autoconfig_flag": {
@@ -1686,38 +1692,38 @@
                 "ipv6_prefix"
               ],
               "additionalProperties": false
-            }
+            },
+            "title": "IPv6 ND Prefixes"
           },
           "access_group_in": {
-            "title": "Access Group IN",
-            "type": "string"
+            "type": "string",
+            "title": "Access Group In"
           },
           "access_group_out": {
-            "title": "Access Group OUT",
-            "type": "string"
+            "type": "string",
+            "title": "Access Group Out"
           },
           "ipv6_access_group_in": {
-            "title": "IPv6 Access Group IN",
-            "type": "string"
+            "type": "string",
+            "title": "IPv6 Access Group In"
           },
           "ipv6_access_group_out": {
-            "title": "IPV6 Access Group OUT",
-            "type": "string"
+            "type": "string",
+            "title": "IPv6 Access Group Out"
           },
           "mac_access_group_in": {
-            "title": "MAC Access Group IN",
-            "type": "string"
+            "type": "string",
+            "title": "MAC Access Group In"
           },
           "mac_access_group_out": {
-            "title": "MAC Access Group OUT",
-            "type": "string"
+            "type": "string",
+            "title": "MAC Access Group Out"
           },
           "multicast": {
             "type": "object",
             "description": "boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both\n",
             "properties": {
               "ipv4": {
-                "title": "IPv4",
                 "type": "object",
                 "properties": {
                   "boundaries": {
@@ -1743,10 +1749,10 @@
                     "title": "Static"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "IPv4"
               },
               "ipv6": {
-                "title": "IPv6",
                 "type": "object",
                 "properties": {
                   "boundaries": {
@@ -1768,39 +1774,39 @@
                     "title": "Static"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "IPv6"
               }
             },
             "additionalProperties": false,
             "title": "Multicast"
           },
           "ospf_network_point_to_point": {
-            "title": "OSPF Network Point To Point",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "OSPF Network Point To Point"
           },
           "ospf_area": {
-            "title": "OSPF Area",
-            "type": "string"
+            "type": "string",
+            "title": "OSPF Area"
           },
           "ospf_cost": {
-            "title": "OSPF Cost",
-            "type": "integer"
+            "type": "integer",
+            "title": "OSPF Cost"
           },
           "ospf_authentication": {
-            "title": "OSPF Authentication",
             "type": "string",
             "enum": [
               "none",
               "simple",
               "message-digest"
-            ]
+            ],
+            "title": "OSPF Authentication"
           },
           "ospf_authentication_key": {
-            "title": "OSPF Authentication Key",
-            "type": "string"
+            "type": "string",
+            "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
-            "title": "OSPF Message Digest Keys",
             "type": "array",
             "items": {
               "type": "object",
@@ -1829,34 +1835,34 @@
                 "id"
               ],
               "additionalProperties": false
-            }
+            },
+            "title": "OSPF Message Digest Keys"
           },
           "pim": {
-            "title": "PIM",
             "type": "object",
             "properties": {
               "ipv4": {
-                "title": "IPv4",
                 "type": "object",
                 "properties": {
                   "dr_priority": {
-                    "title": "DR Priority",
                     "type": "integer",
                     "minimum": 0,
-                    "maximum": 429467295
+                    "maximum": 429467295,
+                    "title": "DR Priority"
                   },
                   "sparse_mode": {
                     "type": "boolean",
                     "title": "Sparse Mode"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "IPv4"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "PIM"
           },
           "mac_security": {
-            "title": "MAC Security",
             "type": "object",
             "properties": {
               "profile": {
@@ -1864,14 +1870,15 @@
                 "title": "Profile"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "MAC Security"
           },
           "channel_group": {
             "type": "object",
             "properties": {
               "id": {
-                "title": "Port-Channel ID",
-                "type": "integer"
+                "type": "integer",
+                "title": "ID"
               },
               "mode": {
                 "type": "string",
@@ -1887,49 +1894,48 @@
             "title": "Channel Group"
           },
           "isis_enable": {
-            "title": "ISIS Enable",
-            "type": "string"
+            "type": "string",
+            "title": "ISIS Enable"
           },
           "isis_passive": {
-            "title": "ISIS Passive",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "ISIS Passive"
           },
           "isis_metric": {
-            "title": "ISIS Metric",
-            "type": "integer"
+            "type": "integer",
+            "title": "ISIS Metric"
           },
           "isis_network_point_to_point": {
-            "title": "ISIS Network Point To Point",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "ISIS Network Point To Point"
           },
           "isis_circuit_type": {
-            "title": "ISIS Circuit Type",
             "type": "string",
             "enum": [
               "level-1-2",
               "level-1",
               "level-2"
-            ]
+            ],
+            "title": "ISIS Circuit Type"
           },
           "isis_hello_padding": {
-            "title": "ISIS Hello Padding",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "ISIS Hello Padding"
           },
           "isis_authentication_mode": {
-            "title": "ISIS Authentication Mode",
             "type": "string",
             "enum": [
               "text",
               "md5"
-            ]
+            ],
+            "title": "ISIS Authentication Mode"
           },
           "isis_authentication_key": {
-            "title": "ISIS Authentication Key",
             "type": "string",
-            "description": "type-7 encrypted password\n"
+            "description": "Type-7 encrypted password\n",
+            "title": "ISIS Authentication Key"
           },
           "ptp": {
-            "title": "PTP",
             "type": "object",
             "properties": {
               "enable": {
@@ -1983,9 +1989,9 @@
                 "title": "Role"
               },
               "vlan": {
-                "title": "VLAN",
                 "type": "string",
-                "description": "< all | list of vlans as string >\n"
+                "description": "all or list of vlans as string\n",
+                "title": "VLAN"
               },
               "transport": {
                 "type": "string",
@@ -1997,11 +2003,12 @@
                 "title": "Transport"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "Ptp"
           },
           "profile": {
-            "title": "Interface Profile",
-            "type": "string"
+            "type": "string",
+            "title": "Profile"
           },
           "storm_control": {
             "type": "object",
@@ -2101,7 +2108,6 @@
             "title": "Logging"
           },
           "lldp": {
-            "title": "LLDP",
             "type": "object",
             "properties": {
               "transmit": {
@@ -2113,23 +2119,23 @@
                 "title": "Receive"
               },
               "ztp_vlan": {
-                "title": "ZTP VLAN",
-                "type": "integer"
+                "type": "integer",
+                "title": "Ztp VLAN"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "LLDP"
           },
           "trunk_private_vlan_secondary": {
-            "title": "Trunk Private VLAN Secondary",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "Trunk Private VLAN Secondary"
           },
           "pvlan_mapping": {
-            "title": "PVLAN Mapping",
             "type": "integer",
-            "description": "List of vlans as string\n"
+            "description": "List of vlans as string\n",
+            "title": "PVLAN Mapping"
           },
           "vlan_translations": {
-            "title": "VLAN Translations",
             "type": "array",
             "items": {
               "type": "object",
@@ -2140,8 +2146,8 @@
                   "title": "From"
                 },
                 "to": {
-                  "title": "To",
-                  "type": "integer"
+                  "type": "integer",
+                  "title": "To"
                 },
                 "direction": {
                   "type": "string",
@@ -2155,7 +2161,8 @@
                 }
               },
               "additionalProperties": false
-            }
+            },
+            "title": "VLAN Translations"
           },
           "dot1x": {
             "type": "object",
@@ -2178,7 +2185,6 @@
                 "title": "Reauthentication"
               },
               "pae": {
-                "title": "PAE",
                 "type": "object",
                 "properties": {
                   "mode": {
@@ -2189,7 +2195,8 @@
                     "title": "Mode"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "Pae"
               },
               "authentication_failure": {
                 "type": "object",
@@ -2203,10 +2210,10 @@
                     "title": "Action"
                   },
                   "allow_vlan": {
-                    "title": "Allow VLAN",
                     "type": "integer",
                     "minimum": 1,
-                    "maximum": 4094
+                    "maximum": 4094,
+                    "title": "Allow VLAN"
                   }
                 },
                 "additionalProperties": false,
@@ -2228,7 +2235,6 @@
                     "title": "Multi Host Authenticated"
                   },
                   "mac_based_authentication": {
-                    "title": "MAC Based Authentication",
                     "type": "object",
                     "properties": {
                       "enabled": {
@@ -2244,7 +2250,8 @@
                         "title": "Host Mode Common"
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "title": "MAC Based Authentication"
                   },
                   "timeout": {
                     "type": "object",
@@ -2290,7 +2297,6 @@
                 "title": "Host Mode"
               },
               "mac_based_authentication": {
-                "title": "MAC Based Authentication",
                 "type": "object",
                 "properties": {
                   "enabled": {
@@ -2306,7 +2312,8 @@
                     "title": "Host Mode Common"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "MAC Based Authentication"
               },
               "timeout": {
                 "type": "object",
@@ -2328,8 +2335,8 @@
                     "title": "Reauth Timeout Ignore"
                   },
                   "tx_period": {
-                    "title": "Transmit Period",
-                    "type": "integer"
+                    "type": "integer",
+                    "title": "TX Period"
                   }
                 },
                 "additionalProperties": false,
@@ -2352,7 +2359,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "< \"< rate > kbps\" | \"1-100 percent\" | \"< rate > pps\" , supported options are platform dependent >\n",
+                "description": "rate in kbps or 1-100 percent or rate in pps, supported options are platform dependent\n",
                 "title": "Rate"
               }
             },
@@ -2360,7 +2367,6 @@
             "title": "Shape"
           },
           "qos": {
-            "title": "QOS",
             "type": "object",
             "properties": {
               "trust": {
@@ -2373,15 +2379,16 @@
                 "title": "Trust"
               },
               "dscp": {
-                "title": "DSCP",
-                "type": "integer"
+                "type": "integer",
+                "title": "DSCP"
               },
               "cos": {
-                "title": "COS",
-                "type": "integer"
+                "type": "integer",
+                "title": "COS"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "QOS"
           },
           "spanning_tree_bpdufilter": {
             "type": "string",
@@ -2409,8 +2416,8 @@
             "title": "Spanning Tree Portfast"
           },
           "vmtracer": {
-            "title": "VM Tracer",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "VMTracer"
           },
           "priority_flow_control": {
             "type": "object",
@@ -2444,7 +2451,6 @@
             "title": "Priority Flow Control"
           },
           "bfd": {
-            "title": "BFD",
             "type": "object",
             "properties": {
               "echo": {
@@ -2457,9 +2463,9 @@
                 "title": "Interval"
               },
               "min_rx": {
-                "title": "Min RX",
                 "type": "integer",
-                "description": "Rate in milliseconds\n"
+                "description": "Rate in milliseconds\n",
+                "title": "Min RX"
               },
               "multiplier": {
                 "type": "integer",
@@ -2468,36 +2474,35 @@
                 "title": "Multiplier"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "BFD"
           },
           "service_policy": {
             "type": "object",
             "properties": {
               "pbr": {
-                "title": "PBR",
                 "type": "object",
                 "properties": {
                   "input": {
                     "type": "string",
-                    "title": "Policy Map Name"
+                    "title": "Input"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "PBR"
               }
             },
             "additionalProperties": false,
             "title": "Service Policy"
           },
           "mpls": {
-            "title": "MPLS",
             "type": "object",
             "properties": {
               "ip": {
-                "title": "IP",
-                "type": "boolean"
+                "type": "boolean",
+                "title": "IP"
               },
               "ldp": {
-                "title": "LDP",
                 "type": "object",
                 "properties": {
                   "interface": {
@@ -2509,13 +2514,14 @@
                     "type": "boolean"
                   }
                 },
-                "additionalProperties": false
+                "additionalProperties": false,
+                "title": "LDP"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "MPLS"
           },
           "lacp_timer": {
-            "title": "LACP Timer",
             "type": "object",
             "properties": {
               "mode": {
@@ -2533,13 +2539,14 @@
                 "title": "Multiplier"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "title": "Lacp Timer"
           },
           "lacp_port_priority": {
-            "title": "LACP Port Priority",
             "type": "integer",
             "minimum": 0,
-            "maximum": 65535
+            "maximum": 65535,
+            "title": "Lacp Port Priority"
           },
           "transceiver": {
             "type": "object",
@@ -2548,8 +2555,9 @@
                 "type": "object",
                 "properties": {
                   "override": {
-                    "title": "Transceiver Type",
-                    "type": "string"
+                    "type": "string",
+                    "description": "Transceiver Type",
+                    "title": "Override"
                   }
                 },
                 "additionalProperties": false,
@@ -2560,20 +2568,20 @@
             "title": "Transceiver"
           },
           "ip_proxy_arp": {
-            "title": "IP Proxy ARP",
-            "type": "boolean"
+            "type": "boolean",
+            "title": "IP Proxy ARP"
           },
           "traffic_policy": {
             "type": "object",
             "properties": {
               "input": {
                 "type": "string",
-                "description": "ingress traffic policy\n",
+                "description": "Ingress traffic policy\n",
                 "title": "Input"
               },
               "output": {
                 "type": "string",
-                "description": "egress traffic policy\n",
+                "description": "Egress traffic policy\n",
                 "title": "Output"
               }
             },
@@ -2581,16 +2589,17 @@
             "title": "Traffic Policy"
           },
           "eos_cli": {
-            "title": "EOS CLI",
             "type": "string",
-            "description": "< multiline eos cli >"
+            "description": "Multiline eos cli",
+            "title": "EOS CLI"
           }
         },
         "required": [
           "name"
         ],
         "additionalProperties": false
-      }
+      },
+      "title": "Ethernet Interfaces"
     },
     "event_handlers": {
       "type": "array",

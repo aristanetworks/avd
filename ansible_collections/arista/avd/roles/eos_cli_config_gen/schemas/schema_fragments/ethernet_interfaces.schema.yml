@@ -8,14 +8,12 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    display_name: Routed Ethernet Interfaces
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-          display_name: Ethernet Interface
         peer:
           type: str
         peer_interface:
@@ -31,31 +29,26 @@ keys:
           description: |
             < interface_speed | forced interface_speed | auto interface_speed >
         mtu:
-          display_name: MTU
           type: int
           convert_types:
           - str
         l2_mtu:
-          display_name: L2 MTU
           type: int
           convert_types:
           - str
           description: |
             l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI
         vlans:
-          display_name: VLANs
           type: str
           convert_types:
           - int
           description: |
             < list of vlans as string
         native_vlan:
-          display_name: Native VLAN
           type: int
           convert_types:
           - str
         native_vlan_tag:
-          display_name: Native VLAN Tag
           type: bool
           default: false
         mode:
@@ -68,18 +61,15 @@ keys:
               type: str
               valid_values: ["tagged", "untagged"]
             vlan:
-              display_name: VLAN
               type: int
               min: 1
               max: 4094
               convert_types:
               - str
         l2_protocol:
-          display_name: L2 Protocol
           type: dict
           keys:
             encapsulation_dot1q_vlan:
-              display_name: Encapsulation dot1q VLAN
               type: int
               convert_types:
               - str
@@ -120,13 +110,11 @@ keys:
             type: dict
             keys:
               name:
-                display_name: Group Name
                 type: str
               direction:
                 type: str
                 valid_values: ["upstream", "downstream"]
         evpn_ethernet_segment:
-          display_name: EVPN Ethernet Segment
           type: dict
           keys:
             identifier:
@@ -162,7 +150,6 @@ keys:
                 candidate_reachability_required:
                   type: bool
             mpls:
-              display_name: MPLS
               type: dict
               keys:
                 shared_index:
@@ -180,14 +167,12 @@ keys:
               description: |
                 EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
         encapsulation_dot1q_vlan:
-          display_name: Encapsulation dot1q VLAN
           type: int
           convert_types:
           - str
           description: |
             vlan tag to configure on sub-interface
         encapsulation_vlan:
-          display_name: Encapsulation VLAN
           type: dict
           keys:
             client:
@@ -197,7 +182,6 @@ keys:
                   type: dict
                   keys:
                     vlan:
-                      display_name: Client VLAN ID
                       type: int
                       convert_types:
                       - str
@@ -207,20 +191,20 @@ keys:
                       convert_types:
                       - str
                     inner:
-                      display_name: Client Inner VLAN ID
                       type: int
                       convert_types:
                       - str
+                      description: Client Inner VLAN ID
                 outer:
-                  display_name: Client Outer VLAN ID
                   type: int
                   convert_types:
                   - str
+                  description: Client Outer VLAN ID
                 inner:
-                  display_name: Client Inner VLAN ID
                   type: int
                   convert_types:
                   - str
+                  description: Client Inner VLAN ID
                 unmatched:
                   type: bool
             network:
@@ -232,49 +216,45 @@ keys:
                   type: dict
                   keys:
                     vlan:
-                      display_name: Network VLAN ID
                       type: int
                       convert_types:
                       - str
+                      description: Network VLAN ID
                     outer:
-                      display_name: Network Outer VLAN ID
                       type: int
                       convert_types:
                       - str
+                      description: Network Outer VLAN ID
                     inner:
-                      display_name: Network Inner VLAN ID
                       type: int
                       convert_types:
                       - str
+                      description: Network Inner VLAN ID
                 outer:
-                  display_name: Network Outer VLAN ID
                   type: int
                   convert_types:
                   - str
+                  description: Network Outer VLAN ID
                 inner:
-                  display_name: Network Inner VLAN ID
                   type: int
                   convert_types:
                   - str
+                  description: Network Inner VLAN ID
                 client:
                   type: bool
         vlan_id:
-          display_name: VLAN ID
           type: int
           min: 1
           max: 4094
           convert_types:
           - str
         ip_address:
-          display_name: IP Address
           type: str
         ip_address_secondaries:
-          display_name: IP Address Secondaries
           type: list
           items:
             type: str
         ip_helpers:
-          display_name: IP Helpers
           type: list
           primary_key: ip_helper
           convert_types:
@@ -283,32 +263,24 @@ keys:
             type: dict
             keys:
               ip_helper:
-                display_name: IP Helper
                 type: str
                 required: true
               source_interface:
                 type: str
-                display_name: Source Interface Name
               vrf:
-                display_name: VRF Name
                 type: str
         ipv6_enable:
-          display_name: IPv6 Enable
           type: bool
         ipv6_address:
-          display_name: IPv6 Address
           type: str
         ipv6_address_link_local:
-          display_name: IPv6 Address Link Local
           type: str
         ipv6_nd_ra_disabled:
           display_name: IPv6 ND RA Disabled
           type: bool
         ipv6_nd_managed_config_flag:
-          display_name: IPv6 ND Managed Config Flag
           type: bool
         ipv6_nd_prefixes:
-          display_name: IPv6 ND Prefixes
           type: list
           primary_key: ipv6_prefix
           convert_types:
@@ -317,7 +289,6 @@ keys:
             type: dict
             keys:
               ipv6_prefix:
-                display_name: IPv6 Prefix
                 type: str
                 required: true
               valid_lifetime:
@@ -325,32 +296,26 @@ keys:
                 convert_types:
                 - int
                 description: |
-                  < infinite or lifetime in seconds >
+                  Infinite or lifetime in seconds
               preferred_lifetime:
                 type: str
                 convert_types:
                 - int
                 description: |
-                  < infinite or lifetime in seconds >
+                  Infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
         access_group_in:
-          display_name: Access Group IN
           type: str
         access_group_out:
-          display_name: Access Group OUT
           type: str
         ipv6_access_group_in:
-          display_name: IPv6 Access Group IN
           type: str
         ipv6_access_group_out:
-          display_name: IPV6 Access Group OUT
           type: str
         mac_access_group_in:
-          display_name: MAC Access Group IN
           type: str
         mac_access_group_out:
-          display_name: MAC Access Group OUT
           type: str
         multicast:
           type: dict
@@ -358,7 +323,6 @@ keys:
             boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
           keys:
             ipv4:
-              display_name: IPv4
               type: dict
               keys:
                 boundaries:
@@ -373,7 +337,6 @@ keys:
                 static:
                   type: bool
             ipv6:
-              display_name: IPv6
               type: dict
               keys:
                 boundaries:
@@ -386,27 +349,21 @@ keys:
                 static:
                   type: bool
         ospf_network_point_to_point:
-          display_name: OSPF Network Point To Point
           type: bool
         ospf_area:
-          display_name: OSPF Area
           type: str
           convert_types:
           - int
         ospf_cost:
-          display_name: OSPF Cost
           type: int
           convert_types:
           - str
         ospf_authentication:
-          display_name: OSPF Authentication
           type: str
           valid_values: ["none", "simple", "message-digest"]
         ospf_authentication_key:
-          display_name: OSPF Authentication Key
           type: str
         ospf_message_digest_keys:
-          display_name: OSPF Message Digest Keys
           type: list
           primary_key: id
           convert_types:
@@ -426,15 +383,12 @@ keys:
               key:
                 type: str
         pim:
-          display_name: PIM
           type: dict
           keys:
             ipv4:
-              display_name: IPv4
               type: dict
               keys:
                 dr_priority:
-                  display_name: DR Priority
                   type: int
                   convert_types:
                   - str
@@ -443,7 +397,6 @@ keys:
                 sparse_mode:
                   type: bool
         mac_security:
-          display_name: MAC Security
           type: dict
           keys:
             profile:
@@ -452,7 +405,6 @@ keys:
           type: dict
           keys:
             id:
-              display_name: Port-Channel ID
               type: int
               convert_types:
               - str
@@ -460,37 +412,28 @@ keys:
               type: str
               valid_values: ["on", "active", "passive"]
         isis_enable:
-          display_name: ISIS Enable
           type: str
         isis_passive:
-          display_name: ISIS Passive
           type: bool
         isis_metric:
-          display_name: ISIS Metric
           type: int
           convert_types:
           - str
         isis_network_point_to_point:
-          display_name: ISIS Network Point To Point
           type: bool
         isis_circuit_type:
-          display_name: ISIS Circuit Type
           type: str
           valid_values: ["level-1-2", "level-1", "level-2"]
         isis_hello_padding:
-          display_name: ISIS Hello Padding
           type: bool
         isis_authentication_mode:
-          display_name: ISIS Authentication Mode
           type: str
           valid_values: ["text", "md5"]
         isis_authentication_key:
-          display_name: ISIS Authentication Key
           type: str
           description: |
-            type-7 encrypted password
+            Type-7 encrypted password
         ptp:
-          display_name: PTP
           type: dict
           keys:
             enable:
@@ -524,17 +467,15 @@ keys:
               type: str
               valid_values: ["master", "dynamic"]
             vlan:
-              display_name: VLAN
               type: str
               convert_types:
               - int
               description: |
-                < all | list of vlans as string >
+                all or list of vlans as string
             transport:
               type: str
               valid_values: ["ipv4", "ipv6", "layer2"]
         profile:
-          display_name: Interface Profile
           type: str
         storm_control:
           type: dict
@@ -602,7 +543,6 @@ keys:
                 congestion_drops:
                   type: bool
         lldp:
-          display_name: LLDP
           type: dict
           keys:
             transmit:
@@ -610,22 +550,18 @@ keys:
             receive:
               type: bool
             ztp_vlan:
-              display_name: ZTP VLAN
               type: int
               convert_types:
               - str
         trunk_private_vlan_secondary:
-          display_name: Trunk Private VLAN Secondary
           type: bool
         pvlan_mapping:
-          display_name: PVLAN Mapping
           type: int
           convert_types:
           - str
           description: |
             List of vlans as string
         vlan_translations:
-          display_name: VLAN Translations
           type: list
           items:
             type: dict
@@ -635,7 +571,6 @@ keys:
                 description: |
                   List of vlans as string (only one vlan if direction is "both")
               to:
-                display_name: To
                 type: int
                 convert_types:
                 - str
@@ -654,7 +589,6 @@ keys:
             reauthentication:
               type: bool
             pae:
-              display_name: PAE
               type: dict
               keys:
                 mode:
@@ -667,7 +601,6 @@ keys:
                   type: str
                   valid_values: ["allow", "drop"]
                 allow_vlan:
-                  display_name: Allow VLAN
                   type: int
                   min: 1
                   max: 4094
@@ -682,7 +615,6 @@ keys:
                 multi_host_authenticated:
                   type: bool
                 mac_based_authentication:
-                  display_name: MAC Based Authentication
                   type: dict
                   keys:
                     enabled:
@@ -724,7 +656,6 @@ keys:
                   convert_types:
                   - str
             mac_based_authentication:
-              display_name: MAC Based Authentication
               type: dict
               keys:
                 enabled:
@@ -749,7 +680,6 @@ keys:
                 reauth_timeout_ignore:
                   type: bool
                 tx_period:
-                  display_name: Transmit Period
                   type: int
                   convert_types:
                   - str
@@ -765,21 +695,18 @@ keys:
             rate:
               type: str
               description: |
-                < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+                rate in kbps or 1-100 percent or rate in pps, supported options are platform dependent
         qos:
-          display_name: QOS
           type: dict
           keys:
             trust:
               type: str
               valid_values: ["dscp", "cos", "disabled"]
             dscp:
-              display_name: DSCP
               type: int
               convert_types:
               - str
             cos:
-              display_name: COS
               type: int
               convert_types:
               - str
@@ -798,7 +725,6 @@ keys:
           type: str
           valid_values: ["edge", "network"]
         vmtracer:
-          display_name: VM Tracer
           type: bool
         priority_flow_control:
           type: dict
@@ -819,7 +745,6 @@ keys:
                   no_drop:
                     type: bool
         bfd:
-          display_name: BFD
           type: dict
           keys:
             echo:
@@ -831,7 +756,6 @@ keys:
               description: |
                 Interval in milliseconds
             min_rx:
-              display_name: Min RX
               type: int
               convert_types:
               - str
@@ -847,21 +771,16 @@ keys:
           type: dict
           keys:
             pbr:
-              display_name: PBR
               type: dict
               keys:
                 input:
                   type: str
-                  display_name: Policy Map Name
         mpls:
-          display_name: MPLS
           type: dict
           keys:
             ip:
-              display_name: IP
               type: bool
             ldp:
-              display_name: LDP
               type: dict
               keys:
                 interface:
@@ -870,7 +789,6 @@ keys:
                   display_name: IGP Sync
                   type: bool
         lacp_timer:
-          display_name: LACP Timer
           type: dict
           keys:
             mode:
@@ -883,7 +801,6 @@ keys:
               convert_types:
               - str
         lacp_port_priority:
-          display_name: LACP Port Priority
           type: int
           min: 0
           max: 65535
@@ -896,10 +813,9 @@ keys:
               type: dict
               keys:
                 override:
-                  display_name: Transceiver Type
                   type: str
+                  description: Transceiver Type
         ip_proxy_arp:
-          display_name: IP Proxy ARP
           type: bool
         traffic_policy:
           type: dict
@@ -907,13 +823,12 @@ keys:
             input:
               type: str
               description: |
-                ingress traffic policy
+                Ingress traffic policy
             output:
               type: str
               description: |
-                egress traffic policy
+                Egress traffic policy
         eos_cli:
-          display_name: EOS CLI
           type: str
           description: |
-            < multiline eos cli >
+            Multiline eos cli
