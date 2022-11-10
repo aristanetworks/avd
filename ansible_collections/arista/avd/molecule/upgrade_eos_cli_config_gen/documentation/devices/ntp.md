@@ -70,7 +70,7 @@ interface Management1
 
 #### NTP Authentication Keys
 
-| ID | Algoritm |
+| ID | Algorithm |
 | -- | -------- |
 
 ### NTP Device Configuration

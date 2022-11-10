@@ -74,7 +74,7 @@ interface Management1
 
 #### NTP Authentication Keys
 
-| ID | Algoritm |
+| ID | Algorithm |
 | -- | -------- |
 | 1 | md5 |
 | 2 | sha1 |

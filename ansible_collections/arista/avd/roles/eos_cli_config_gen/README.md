@@ -1995,7 +1995,8 @@ ntp:
   authentication_keys:
     - id: < key_identifier | 1-65534 >
       hash_algorithm: < md5 | sha1 >
-      key: "< type7_obfuscated_key >"
+      key: "< obfuscated_key >"
+      key_type: < 0 | 7 | 8a >
   trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 
