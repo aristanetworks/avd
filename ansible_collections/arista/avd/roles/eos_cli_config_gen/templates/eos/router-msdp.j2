@@ -10,7 +10,7 @@ router msdp
 {%             if vrf.rejected_limit is arista.avd.defined %}
    rejected-limit {{ vrf.rejected_limit }}
 {%             endif %}
-{%             if vrf.forward_register_packets %}
+{%             if vrf.forward_register_packets is arista.avd.defined(true) %}
    forward register-packets
 {%             endif %}
 {%             if vrf.connection_retry_interval is arista.avd.defined %}
@@ -42,7 +42,7 @@ router msdp
 {%                     if peer.description is arista.avd.defined %}
       description {{ peer.description }}
 {%                     endif %}
-{%                     if peer.disabled %}
+{%                     if peer.disabled is arista.avd.defined(true) %}
       disabled
 {%                     endif %}
 {%                     if peer.sa_limit is arista.avd.defined %}
@@ -58,7 +58,7 @@ router msdp
 {%             if vrf.rejected_limit is arista.avd.defined %}
       rejected-limit {{ vrf.rejected_limit }}
 {%             endif %}
-{%             if vrf.forward_register_packets %}
+{%             if vrf.forward_register_packets is arista.avd.defined(true) %}
       forward register-packets
 {%             endif %}
 {%             if vrf.connection_retry_interval is arista.avd.defined %}
@@ -90,7 +90,7 @@ router msdp
 {%                     if peer.description is arista.avd.defined %}
          description {{ peer.description }}
 {%                     endif %}
-{%                     if peer.disabled %}
+{%                     if peer.disabled is arista.avd.defined(true) %}
          disabled
 {%                     endif %}
 {%                     if peer.sa_limit is arista.avd.defined %}
