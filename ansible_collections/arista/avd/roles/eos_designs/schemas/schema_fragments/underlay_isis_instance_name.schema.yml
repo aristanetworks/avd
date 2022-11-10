@@ -4,7 +4,6 @@
 type: dict
 keys:
   underlay_isis_instance_name:
-    display_name: Underlay ISIS Instance Name
     type: str
     default: "EVPN_UNDERLAY"
   # TODO

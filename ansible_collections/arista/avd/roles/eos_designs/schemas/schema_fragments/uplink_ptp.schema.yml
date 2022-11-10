@@ -4,7 +4,6 @@
 type: dict
 keys:
   uplink_ptp:
-    display_name: Uplink PTP
     description: Enable PTP on all infrastructure links
     type: dict
     keys:

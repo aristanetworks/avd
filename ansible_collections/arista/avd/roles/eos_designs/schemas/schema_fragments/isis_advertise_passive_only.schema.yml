@@ -4,6 +4,5 @@
 type: dict
 keys:
   isis_advertise_passive_only:
-    display_name: ISIS Advertise Passive Only
     type: bool
     default: false

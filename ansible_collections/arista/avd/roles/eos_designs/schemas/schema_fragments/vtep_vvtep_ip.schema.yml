@@ -4,7 +4,6 @@
 type: dict
 keys:
   vtep_vvtep_ip:
-    display_name: Virtual VTEP IP
     description: |
       IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1
       This is only needed for centralized routing designs

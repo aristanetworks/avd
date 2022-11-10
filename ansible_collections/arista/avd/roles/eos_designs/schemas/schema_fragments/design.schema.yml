@@ -5,7 +5,6 @@ type: dict
 keys:
   design:
     type: dict
-    display_name: AVD Design
     keys:
       type:
         type: str
@@ -13,6 +12,6 @@ keys:
           By setting the `design.type` to `mpls`,
           the default node-types and templates described in these documents will be used.
         valid_values:
-          - "l3ls-evpn"
-          - "mpls"
+          - l3ls-evpn
+          - mpls
         default: "l3ls-evpn"

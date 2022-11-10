@@ -5,7 +5,6 @@ type: dict
 keys:
   only_local_vlan_trunk_groups:
     type: bool
-    display_name: Only Configure VLAN Trunk Groups used by local endpoints
     description: |
       A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf
       switches when a new trunk group is added, this feature will only configure the vlan trunk groups

@@ -4,7 +4,6 @@
 type: dict
 keys:
   isis_area_id:
-    display_name: Underlay ISIS Area
     description: Required when "underlay_routing_protocol" == ISIS variants
     type: str
     default: "49.0001"

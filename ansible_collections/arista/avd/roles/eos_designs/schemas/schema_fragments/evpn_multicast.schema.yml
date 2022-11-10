@@ -5,7 +5,6 @@ type: dict
 keys:
   evpn_multicast:
     type: bool
-    display_name: Enable Fabric to support EVPN Multicast
     description: |
       General Configuration required for EVPN Multicast. "evpn_l2_multicast" must also be configured under the Network Services (tenants).
       Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).

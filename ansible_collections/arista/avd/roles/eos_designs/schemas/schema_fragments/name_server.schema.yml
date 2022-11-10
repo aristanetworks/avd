@@ -10,7 +10,6 @@ keys:
         type: dict
         keys:
           vrf:
-            display_name: VRF Name
             type: str
       nodes:
         type: list

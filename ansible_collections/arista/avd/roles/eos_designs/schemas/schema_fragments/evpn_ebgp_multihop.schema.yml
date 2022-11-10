@@ -4,7 +4,6 @@
 type: dict
 keys:
   evpn_ebgp_multihop:
-    display_name: EVPN EBGP Multihop
     description: |
       Default of 3, the recommended value for a 3 stage spine and leaf topology.
       Set to a higher value to allow for very large and complex topologies.

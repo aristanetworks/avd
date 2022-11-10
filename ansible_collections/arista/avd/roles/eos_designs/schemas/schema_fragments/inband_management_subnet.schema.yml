@@ -5,7 +5,6 @@ type: dict
 keys:
   inband_management_subnet:
     type: str
-    display_name: IPv4 Network/Mask assigned to Inband Management
     description: |
       Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
       Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet

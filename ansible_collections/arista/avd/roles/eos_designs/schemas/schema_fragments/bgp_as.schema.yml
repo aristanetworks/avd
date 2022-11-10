@@ -4,7 +4,6 @@
 type: dict
 keys:
   bgp_as:
-    display_name: BGP AS
     description: AS number to use to configure overlay when "overlay_routing_protocol" == IBGP
     type: str
     convert_types:
