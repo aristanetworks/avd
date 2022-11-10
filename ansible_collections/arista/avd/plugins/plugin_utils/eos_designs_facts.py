@@ -53,14 +53,12 @@ class EosDesignsFacts(AvdFacts):
         """
         switch.type fact set based on type variable
         """
-        node_type = get(self._hostvars, "type", required=False)
-
-        if node_type:
+        if (node_type := get(self._hostvars, "type")) is not None:
             return node_type
         elif self._default_node_type:
             return self._default_node_type
 
-        raise AristaAvdMissingVariableError("type")
+        raise AristaAvdMissingVariableError(f"'type' for host {self.hostname}")
 
     @cached_property
     def hostname(self):
