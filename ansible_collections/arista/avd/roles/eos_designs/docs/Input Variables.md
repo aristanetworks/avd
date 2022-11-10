@@ -190,6 +190,76 @@ By default Lists are replaced and Dictionaries are updated. The combine is done 
 custom_structured_configuration_prefix:
 ```
 
+## CVP Ingestauth Key
+
+### Description
+
+CloudVision Ingest Authentication key is required for on-prem CVP
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+cvp_ingestauth_key: <str>
+```
+
+## CVP Instance IP
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>cvp_instance_ip</samp>](## "cvp_instance_ip") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+cvp_instance_ip: <str>
+```
+
+## CVP Instance Ips
+
+### Description
+
+You can either provide a list of IPs to target on-premise CloudVision cluster or
+use DNS name for your CloudVision as a Service instance. If you have both on-prem and
+CVaaS defined, only on-prem is going to be configured.
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvp_instance_ips.[].&lt;str&gt;") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+cvp_instance_ips:
+  - <str>
+```
+
+## CVP Token File
+
+### Description
+
+cvp_token_file is path to token file on switch
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>cvp_token_file</samp>](## "cvp_token_file") | String |  | /tmp/cv-onboarding-token |  |  |
+
+### YAML
+
+```yaml
+cvp_token_file: <str>
+```
+
 ## Default IGMP Snooping Enabled
 
 ### Description
@@ -267,6 +337,39 @@ See "Details on enable_trunk_groups" below before enabling this feature
 
 ```yaml
 enable_trunk_groups: <bool>
+```
+
+## Event Handlers
+
+### Description
+
+Gives ability to monitor and react to Syslog messages provides a powerful and flexible tool that can be used to apply self-healing actions,
+customize the system behavior, and implement workarounds to problems discovered in the field.
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to run when handler is triggered |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | False |  | Set the action to be non-blocking. |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- on-logging | Configure event trigger condition. |
+
+### YAML
+
+```yaml
+event_handlers:
+  - action: <str>
+    action_type: <str>
+    asynchronous: <bool>
+    delay: <int>
+    name: <str>
+    regex: <str>
+    trigger: <str>
 ```
 
 ## Evpn Ebgp Gateway Multihop
@@ -571,6 +674,133 @@ isis_ti_lfa:
   enabled: <bool>
   local_convergence_delay: <int>
   protection: <str>
+```
+
+## Local Users
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>local_users</samp>](## "local_users") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- name</samp>](## "local_users.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean |  |  |  | If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user. |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "local_users.[].privilege") | Integer |  |  | Min: 1<br>Max: 15 | Initial privilege level with local EXEC authorization. |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator" |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "local_users.[].sha512_password") | String |  |  |  | Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username. |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "local_users.[].ssh_key") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+local_users:
+  - name: <str>
+    no_password: <bool>
+    privilege: <int>
+    role: <str>
+    sha512_password: <str>
+    ssh_key: <str>
+```
+
+## Management Eapi
+
+### Description
+
+Default is https management eAPI enabled
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  | False |  |  |
+| [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | True |  |  |
+
+### YAML
+
+```yaml
+management_eapi:
+  default_services: <bool>
+  enable_http: <bool>
+  enable_https: <bool>
+```
+
+## Mgmt Destination Networks
+
+### Description
+
+OOB mgmt interface destination networks - override default route
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+mgmt_destination_networks:
+  - <str>
+```
+
+## Mgmt Gateway
+
+### Description
+
+Management interface configuration
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mgmt_gateway</samp>](## "mgmt_gateway") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+mgmt_gateway: <str>
+```
+
+## Mgmt Interface
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mgmt_interface</samp>](## "mgmt_interface") | String |  | Management1 |  |  |
+
+### YAML
+
+```yaml
+mgmt_interface: <str>
+```
+
+## Mgmt Interface VRF
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mgmt_interface_vrf</samp>](## "mgmt_interface_vrf") | String |  | MGMT |  |  |
+
+### YAML
+
+```yaml
+mgmt_interface_vrf: <str>
+```
+
+## Mgmt VRF Routing
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>mgmt_vrf_routing</samp>](## "mgmt_vrf_routing") | Boolean |  | False |  |  |
+
+### YAML
+
+```yaml
+mgmt_vrf_routing: <bool>
 ```
 
 ## Name Server
@@ -907,6 +1137,97 @@ is_deployed: < true | false | default -> true >
 
 ```yaml
 shutdown_interfaces_towards_undeployed_peers: <bool>
+```
+
+## Snmp Settings
+
+### Description
+
+Set SNMP settings
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | False |  | Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }} |
+
+### YAML
+
+```yaml
+snmp_settings:
+  contact: <str>
+  location: <bool>
+```
+
+## TerminAttr Disable AAA
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") | Boolean |  | False |  |  |
+
+### YAML
+
+```yaml
+terminattr_disable_aaa: <bool>
+```
+
+## TerminAttr Ingestexclude
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") | String |  | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent |  |  |
+
+### YAML
+
+```yaml
+terminattr_ingestexclude: <str>
+```
+
+## TerminAttr Ingestgrpcurl Port
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") | Integer |  | 9910 |  |  |
+
+### YAML
+
+```yaml
+terminattr_ingestgrpcurl_port: <int>
+```
+
+## TerminAttr Smashexcludes
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") | String |  | ale,flexCounter,hardware,kni,pulse,strata |  |  |
+
+### YAML
+
+```yaml
+terminattr_smashexcludes: <str>
+```
+
+## Timezone
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>timezone</samp>](## "timezone") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+timezone: <str>
 ```
 
 ## Trunk Groups
