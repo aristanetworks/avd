@@ -181,6 +181,7 @@ interface Management1
 | --- | ------------------- | ------------ |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
+| TENANT_A_PROJECT03 | 192.168.255.3:13 | - |
 
 ### Router BGP Device Configuration
 
@@ -294,6 +295,16 @@ router bgp 65101
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+   !
+   vrf TENANT_A_PROJECT03
+      rd 192.168.255.3:13
+      evpn multicast
+         address-family ipv4
+            disabled
+            transit
+      route-target import evpn 13:13
+      route-target export evpn 13:13
+      router-id 192.168.255.3
 ```
 
 # Multicast
