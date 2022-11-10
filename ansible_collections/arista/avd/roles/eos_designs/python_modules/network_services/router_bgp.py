@@ -87,7 +87,7 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_peer_groups[peer_group_name] = peer_group
 
         # router bgp default vrf configuration for evpn
-        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes[0]) and self._overlay_vtep and self._overlay_evpn:
+        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self._overlay_vtep and self._overlay_evpn:
             peer_group_name = self._peer_group_ipv4_underlay_peers_name
             bgp_peer_groups[peer_group_name] = {
                 "type": "ipv4",
@@ -391,8 +391,9 @@ class RouterBgpMixin(UtilsMixin):
         Add redistribute static to default if either "redistribute_in_overlay" is set or
         "redistribute_in_underlay" and underlay protocol is BGP.
         """
-        redistribute_in_underlay, redistribute_in_overlay = self._vrf_default_ipv4_static_routes[1:3]
-        if redistribute_in_overlay or (redistribute_in_underlay and self._underlay_bgp):
+        if self._vrf_default_ipv4_static_routes["redistribute_in_overlay"] or (
+            self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self._underlay_bgp
+        ):
             return {"static": {}}
 
         return None
@@ -426,7 +427,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     # Endpoints can only have two entries with index 0 and 1.
                     # So the remote must be the other index.
-                    remote_endpoint = endpoints[int(not (local_index))]
+                    remote_endpoint = endpoints[(local_index + 1) % 2]
 
                     if subifs:
                         for subif in subifs:

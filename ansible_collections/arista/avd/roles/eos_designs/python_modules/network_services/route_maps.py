@@ -69,7 +69,7 @@ class RouteMapsMixin(UtilsMixin):
             return None
 
         subnets = self._vrf_default_ipv4_subnets
-        static_routes = self._vrf_default_ipv4_static_routes[0]
+        static_routes = self._vrf_default_ipv4_static_routes["static_routes"]
         if not subnets and not static_routes:
             return None
 
