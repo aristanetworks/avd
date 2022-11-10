@@ -36,7 +36,8 @@ node_type_keys:
       p2p_uplinks_peer_ip: 'custom_templates/ip_addressing/p2p-uplinks-peer-ip.j2'
       vtep_ip_mlag: 'custom_templates/ip_addressing/vtep-ip-mlag.j2'
       vtep_ip: 'custom_templates/ip_addressing/vtep-ip.j2'
-
+      mlag_ibgp_peering_ip_primary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-primary.j2'
+      mlag_ibgp_peering_ip_secondary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-secondary.j2'
     interface_descriptions:
       # Override interface description templates with our custom templates
       underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'

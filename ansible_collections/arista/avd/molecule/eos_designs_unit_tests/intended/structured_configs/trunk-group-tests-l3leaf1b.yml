@@ -53,11 +53,11 @@ router_bgp:
         export:
           evpn:
           - 100:100
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.247.0:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
     TG_200:
       router_id: 192.168.250.10
       rd: 192.168.250.10:200
@@ -68,11 +68,11 @@ router_bgp:
         export:
           evpn:
           - 200:200
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.247.0:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
     TG_300:
       router_id: 192.168.250.10
       rd: 192.168.250.10:300
@@ -83,11 +83,11 @@ router_bgp:
         export:
           evpn:
           - 300:300
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.247.0:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
   vlans:
     100:
       tenant: TRUNK_GROUP_TESTS
@@ -307,16 +307,16 @@ vlan_interfaces:
     - TRUNK_GROUP_TESTS_L2LEAF1
     description: svi100_with_trunk_groups
     shutdown: false
-    vrf: TG_100
     ip_address_virtual: 10.1.0.1/24
+    vrf: TG_100
   Vlan3099:
     tenant: TRUNK_GROUP_TESTS
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf TG_100'
     vrf: TG_100
-    ip_address: 10.255.247.1/31
     mtu: 9000
+    ip_address: 10.255.247.1/31
   Vlan200:
     tenant: TRUNK_GROUP_TESTS
     tags:
@@ -324,16 +324,16 @@ vlan_interfaces:
     - TRUNK_GROUP_TESTS_L2LEAF1
     description: svi200_with_trunk_groups
     shutdown: false
-    vrf: TG_200
     ip_address_virtual: 10.2.0.1/24
+    vrf: TG_200
   Vlan3199:
     tenant: TRUNK_GROUP_TESTS
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
     vrf: TG_200
-    ip_address: 10.255.247.1/31
     mtu: 9000
+    ip_address: 10.255.247.1/31
   Vlan300:
     tenant: TRUNK_GROUP_TESTS
     tags:
@@ -341,16 +341,16 @@ vlan_interfaces:
     - TRUNK_GROUP_TESTS_L2LEAF1
     description: svi300_with_trunk_groups
     shutdown: false
-    vrf: TG_300
     ip_address_virtual: 10.3.0.1/24
+    vrf: TG_300
   Vlan301:
     tenant: TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
     description: svi301_with_trunk_groups_only_l3leaf
     shutdown: false
-    vrf: TG_300
     ip_address_virtual: 10.3.1.1/24
+    vrf: TG_300
   Vlan398:
     tenant: TRUNK_GROUP_TESTS
     tags:
@@ -358,16 +358,16 @@ vlan_interfaces:
     - TRUNK_GROUP_TESTS_L2LEAF1
     description: svi398_without_trunk_groups
     shutdown: false
-    vrf: TG_300
     ip_address_virtual: 10.3.1.1/24
+    vrf: TG_300
   Vlan3299:
     tenant: TRUNK_GROUP_TESTS
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf TG_300'
     vrf: TG_300
-    ip_address: 10.255.247.1/31
     mtu: 9000
+    ip_address: 10.255.247.1/31
 port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_trunk-group-tests-l3leaf1a_Po3
@@ -517,9 +517,9 @@ vxlan_interface:
   Vxlan1:
     description: trunk-group-tests-l3leaf1b_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
       vlans:
         100:
           vni: 10100

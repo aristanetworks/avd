@@ -376,26 +376,24 @@ vlan_interfaces:
     - opzone
     description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
     shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.10.1/24
     struct_cfg:
       description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
+    ip_address_virtual: 10.1.10.1/24
+    vrf: Common_VRF
   Vlan111:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_2
     shutdown: true
-    vrf: Common_VRF
     ip_address_virtual: 10.1.11.1/24
+    vrf: Common_VRF
   Vlan112:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_3
     shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.12.1/24
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -403,14 +401,16 @@ vlan_interfaces:
       EOF
 
       '
+    ip_address_virtual: 10.1.12.1/24
+    vrf: Common_VRF
   Vlan113:
     tenant: Tenant_A
     tags:
     - opzone
     description: SVI_with_no_vxlan
     shutdown: false
-    vrf: Common_VRF
     ip_address_virtual: 10.10.13.1/24
+    vrf: Common_VRF
   Vlan1102:
     tenant: Tenant_A
     tags:
@@ -418,8 +418,8 @@ vlan_interfaces:
     - web
     description: test_svi
     shutdown: false
-    vrf: vrf_with_loopbacks_dc1_pod1_only
     ip_address_virtual: 10.102.100.1/24
+    vrf: vrf_with_loopbacks_dc1_pod1_only
   Vlan1100:
     tenant: Tenant_A
     tags:
@@ -427,8 +427,8 @@ vlan_interfaces:
     - web
     description: test_svi
     shutdown: false
-    vrf: vrf_with_loopbacks_from_overlapping_pool
     ip_address_virtual: 10.100.100.1/24
+    vrf: vrf_with_loopbacks_from_overlapping_pool
   Vlan1101:
     tenant: Tenant_A
     tags:
@@ -436,8 +436,8 @@ vlan_interfaces:
     - web
     description: test_svi
     shutdown: false
-    vrf: vrf_with_loopbacks_from_pod_pools
     ip_address_virtual: 10.101.100.1/24
+    vrf: vrf_with_loopbacks_from_pod_pools
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
@@ -445,8 +445,8 @@ vxlan_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         110:
           vni: 10110

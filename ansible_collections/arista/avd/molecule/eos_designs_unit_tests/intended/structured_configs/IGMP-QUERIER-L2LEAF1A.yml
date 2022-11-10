@@ -96,4 +96,3 @@ vlans:
     name: VLAN_123
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: {}

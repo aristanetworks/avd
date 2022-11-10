@@ -74,14 +74,14 @@ router_bgp:
           - '65000:20'
           vpn-ipv6:
           - '65000:20'
+      redistribute_routes:
+      - connected
+      - ospf
       neighbors:
         192.168.48.3:
           description: TENANT_B_CPE_SITE5
           password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
           remote_as: '65202'
-      redistribute_routes:
-      - connected
-      - ospf
       address_families:
         ipv4:
           neighbors:
@@ -146,10 +146,10 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - destination_address_prefix: 123.0.10.0/24
-  vrf: TENANT_B_INTRA
   gateway: 123.1.1.3
   name: TENANT_B_SITE_5_SUBNET
   interface: Ethernet6.10
+  vrf: TENANT_B_INTRA
 service_routing_protocols_model: multi-agent
 ip_routing: true
 ipv6_unicast_routing: true
@@ -274,38 +274,38 @@ ethernet_interfaces:
     vlans: 10
     spanning_tree_portfast: edge
   Ethernet6.10:
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 10
     peer_type: l3_interface
-    vrf: TENANT_B_WAN
     ip_address: 192.168.48.2/31
     shutdown: false
     description: TENANT_B_SITE_5
-  Ethernet6.100:
     type: l3dot1q
-    encapsulation_dot1q_vlan: 100
-    peer_type: l3_interface
+    encapsulation_dot1q_vlan: 10
     vrf: TENANT_B_WAN
+  Ethernet6.100:
+    peer_type: l3_interface
     ip_address: 192.168.48.4/31
     shutdown: false
     description: TENANT_B_SITE_3_OSPF
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    vrf: TENANT_B_WAN
     ospf_area: 0
     ospf_network_point_to_point: true
     ospf_cost: 10
   Ethernet6:
-    type: routed
     peer_type: l3_interface
-    vrf: TENANT_B_WAN
     ip_address: 123.10.10.2/31
     shutdown: false
     description: TENANT_B_SITE_5_WAN_TEST
+    type: routed
+    vrf: TENANT_B_WAN
   Ethernet7:
     type: routed
+    peer_type: l3_interface
+    shutdown: false
     lldp:
       transmit: false
       receive: false
-    peer_type: l3_interface
-    shutdown: false
   Ethernet4:
     shutdown: false
     channel_group:

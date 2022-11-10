@@ -190,5 +190,5 @@ vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback0
       udp_port: 4789
+      source_interface: Loopback0

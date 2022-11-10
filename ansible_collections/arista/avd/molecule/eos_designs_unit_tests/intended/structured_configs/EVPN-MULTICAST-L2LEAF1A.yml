@@ -50,7 +50,7 @@ port_channel_interfaces:
     description: EVPN_MULTICAST_L3LEAF1_Po6
     type: switched
     shutdown: false
-    vlans: 1-9,110-111,210-211,256-257,310-311,4096
+    vlans: 1-9,110-111,210-211,256-257,310-311,4092
     mode: trunk
 vlans:
   310:
@@ -77,9 +77,9 @@ vlans:
   257:
     tenant: Tenant_A
     name: MULTICAST_ENABLED_257
-  4096:
+  4092:
     tenant: Tenant_A
-    name: MULTICAST_ENABLED_4096
+    name: MULTICAST_ENABLED_4092
   5:
     tenant: Tenant_B
     name: MULTICAST_DISABLED_5
@@ -109,4 +109,3 @@ vlans:
     name: MULTICAST_ENABLED_8
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: {}

@@ -55,8 +55,12 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merg
     for nxt in nxt_list:
         if isinstance(nxt, list):
             for nxt_item in nxt:
+                if not destructive_merge:
+                    nxt_item = copy.deepcopy(nxt_item)
                 merger.merge(base, nxt_item)
         else:
+            if not destructive_merge:
+                nxt = copy.deepcopy(nxt)
             merger.merge(base, nxt)
 
     return base
