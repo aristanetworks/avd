@@ -42,7 +42,7 @@ provisioner:
       host_vars: 'inventory/host_vars/'
   ansible_args:
     - --skip-tags=documentation
-    - --tags=build, validate
+    - --tags=build,validate
 verifier:
   name: ansible
   env:
