@@ -5647,6 +5647,31 @@
       "additionalProperties": false,
       "title": "Router L2 VPN"
     },
+    "router_msdp": {
+      "type": "object",
+      "properties": {
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Router Msdp"
+    },
     "router_multicast": {
       "type": "object",
       "properties": {

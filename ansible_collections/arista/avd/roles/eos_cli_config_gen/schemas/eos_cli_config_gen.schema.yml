@@ -3963,6 +3963,18 @@ keys:
           prefix_list:
             type: str
             description: Prefix-list Name
+  router_msdp:
+    type: dict
+    keys:
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: VRF name
   router_multicast:
     type: dict
     keys:
