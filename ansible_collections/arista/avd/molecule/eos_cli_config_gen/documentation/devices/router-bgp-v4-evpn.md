@@ -211,10 +211,10 @@ interface Management1
 
 ### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | - |
 
 ### Router BGP Device Configuration
 

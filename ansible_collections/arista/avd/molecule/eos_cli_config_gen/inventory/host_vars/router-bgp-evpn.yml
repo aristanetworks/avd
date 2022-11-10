@@ -205,3 +205,18 @@ router_bgp:
         export:
           evpn:
             - "13:13"
+    TENANT_A_PROJECT04:
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:14"
+      evpn_multicast: true
+      evpn_multicast_address_family:
+        ipv4:
+          disabled: false
+          transit: false
+      route_targets:
+        import:
+          evpn:
+            - "14:14"
+        export:
+          evpn:
+            - "14:14"
