@@ -179,10 +179,10 @@ interface Management1
 
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
 | --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | True |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | Configured |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | - |
-| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: Disabled: True, Transit: True |
-| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: Disabled: False, Transit: False |
+| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | Configured, Disabled: True, Transit: True |
+| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | Configured, Disabled: False, Transit: False |
 
 ### Router BGP Device Configuration
 
