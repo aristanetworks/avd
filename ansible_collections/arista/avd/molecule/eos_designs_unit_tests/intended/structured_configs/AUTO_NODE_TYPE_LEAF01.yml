@@ -1,0 +1,136 @@
+router_bgp:
+  as: '65101'
+  router_id: 192.168.255.3
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    172.31.255.0:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65100'
+      description: AUTO_NODE_TYPE_SPINE01_Ethernet1
+    172.31.255.2:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65100'
+      description: AUTO_NODE_TYPE_SPINE02_Ethernet1
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: AUTO_NODE_TYPE_SPINE01
+      remote_as: '65100'
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: AUTO_NODE_TYPE_SPINE02
+      remote_as: '65100'
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.203.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.203.12/24
+    gateway: 192.168.203.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: AUTO_NODE_TYPE_SPINE01
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet1
+    mtu: 9000
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.1/31
+  Ethernet2:
+    peer: AUTO_NODE_TYPE_SPINE02
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet1
+    mtu: 9000
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.3/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.3/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vxlan_interface:
+  Vxlan1:
+    description: AUTO_NODE_TYPE_LEAF01_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
