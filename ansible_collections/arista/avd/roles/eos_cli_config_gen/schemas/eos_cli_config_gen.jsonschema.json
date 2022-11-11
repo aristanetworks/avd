@@ -1243,6 +1243,7 @@
     },
     "ethernet_interfaces": {
       "type": "array",
+      "description": "Routed interfaces",
       "items": {
         "type": "object",
         "properties": {
@@ -1272,7 +1273,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "< interface_speed | forced interface_speed | auto interface_speed >\n",
+            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
             "title": "Speed"
           },
           "mtu": {
@@ -1281,12 +1282,12 @@
           },
           "l2_mtu": {
             "type": "integer",
-            "description": "l2-mtu - if defined this profile should only be used for platforms supporting the \"l2 mtu\" CLI\n",
+            "description": "If l2_mtu defined this profile should only be used for platforms supporting the \"l2 mtu\" CLI",
             "title": "L2 MTU"
           },
           "vlans": {
             "type": "string",
-            "description": "< list of vlans as string\n",
+            "description": "List of vlans as string",
             "title": "VLANs"
           },
           "native_vlan": {
@@ -1334,6 +1335,7 @@
             "properties": {
               "encapsulation_dot1q_vlan": {
                 "type": "integer",
+                "description": "Vlan tag to configure on sub-interface",
                 "title": "Encapsulation Dot1Q VLAN"
               }
             },
@@ -1355,12 +1357,13 @@
               "l3dot1q",
               "l2dot1q"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.",
             "title": "Type"
           },
           "snmp_trap_link_change": {
-            "title": "SNMP Trap Link Change",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "SNMP trap link change",
+            "title": "Snmp Trap Link Change"
           },
           "flowcontrol": {
             "type": "object",
@@ -1379,8 +1382,21 @@
             "title": "Flowcontrol"
           },
           "vrf": {
-            "title": "VRF Name",
-            "type": "string"
+            "type": "string",
+            "description": "VRF name",
+            "title": "VRF"
+          },
+          "flow_tracker": {
+            "type": "object",
+            "properties": {
+              "sampled": {
+                "type": "string",
+                "description": "Flow tracker name",
+                "title": "Sampled"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Flow Tracker"
           },
           "error_correction_encoding": {
             "type": "object",
@@ -1409,6 +1425,7 @@
               "properties": {
                 "name": {
                   "type": "string",
+                  "description": "Group name",
                   "title": "Name"
                 },
                 "direction": {
@@ -1429,7 +1446,7 @@
             "properties": {
               "identifier": {
                 "type": "string",
-                "description": "EVPN Ethernet Segment Identifier (Type 1 format)\n",
+                "description": "EVPN Ethernet Segment Identifier (Type 1 format)",
                 "title": "Identifier"
               },
               "redundancy": {
@@ -1455,7 +1472,7 @@
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 65535,
-                    "description": "Preference_value and dont_preempt are set for preference algorithm and are optional\n",
+                    "description": "Preference_value and dont_preempt are set for preference algorithm and are optional",
                     "title": "Preference Value"
                   },
                   "dont_preempt": {
@@ -1498,7 +1515,7 @@
               },
               "route_target": {
                 "type": "string",
-                "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx\n",
+                "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx",
                 "title": "Route Target"
               }
             },
@@ -1507,7 +1524,7 @@
           },
           "encapsulation_dot1q_vlan": {
             "type": "integer",
-            "description": "vlan tag to configure on sub-interface\n",
+            "description": "VLAN tag to configure on sub-interface",
             "title": "Encapsulation Dot1Q VLAN"
           },
           "encapsulation_vlan": {
@@ -1521,11 +1538,13 @@
                     "properties": {
                       "vlan": {
                         "type": "integer",
+                        "description": "Client VLAN ID",
                         "title": "VLAN"
                       },
                       "outer": {
-                        "title": "Client Outer VLAN ID",
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Client Outer VLAN ID",
+                        "title": "Outer"
                       },
                       "inner": {
                         "type": "integer",
@@ -1556,7 +1575,7 @@
               },
               "network": {
                 "type": "object",
-                "description": "Network encapsulation is all optional, and skipped if using client unmatched.\n",
+                "description": "Network encapsulation is all optional, and skipped if using client unmatched.",
                 "properties": {
                   "dot1q": {
                     "type": "object",
@@ -1610,6 +1629,7 @@
           },
           "ip_address": {
             "type": "string",
+            "description": "IPv4_address or Mask",
             "title": "IP Address"
           },
           "ip_address_secondaries": {
@@ -1630,10 +1650,12 @@
                 },
                 "source_interface": {
                   "type": "string",
+                  "description": "Source interface name",
                   "title": "Source Interface"
                 },
                 "vrf": {
                   "type": "string",
+                  "description": "VRF name",
                   "title": "VRF"
                 }
               },
@@ -1654,11 +1676,13 @@
           },
           "ipv6_address_link_local": {
             "type": "string",
+            "description": "Link local IPv6 address or mask",
             "title": "IPv6 Address Link Local"
           },
           "ipv6_nd_ra_disabled": {
-            "title": "IPv6 ND RA Disabled",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "IPv6 ND RA disabled",
+            "title": "IPv6 ND RA Disabled"
           },
           "ipv6_nd_managed_config_flag": {
             "type": "boolean",
@@ -1675,12 +1699,12 @@
                 },
                 "valid_lifetime": {
                   "type": "string",
-                  "description": "Infinite or lifetime in seconds\n",
+                  "description": "Infinite or lifetime in seconds",
                   "title": "Valid Lifetime"
                 },
                 "preferred_lifetime": {
                   "type": "string",
-                  "description": "Infinite or lifetime in seconds\n",
+                  "description": "Infinite or lifetime in seconds",
                   "title": "Preferred Lifetime"
                 },
                 "no_autoconfig_flag": {
@@ -1697,31 +1721,37 @@
           },
           "access_group_in": {
             "type": "string",
+            "description": "Access list name",
             "title": "Access Group In"
           },
           "access_group_out": {
             "type": "string",
+            "description": "Access list name",
             "title": "Access Group Out"
           },
           "ipv6_access_group_in": {
             "type": "string",
+            "description": "IPv6 access list name",
             "title": "IPv6 Access Group In"
           },
           "ipv6_access_group_out": {
             "type": "string",
+            "description": "IPv6 access list name",
             "title": "IPv6 Access Group Out"
           },
           "mac_access_group_in": {
             "type": "string",
+            "description": "MAC access list name",
             "title": "MAC Access Group In"
           },
           "mac_access_group_out": {
             "type": "string",
+            "description": "MAC access list name",
             "title": "MAC Access Group Out"
           },
           "multicast": {
             "type": "object",
-            "description": "boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both\n",
+            "description": "Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both",
             "properties": {
               "ipv4": {
                 "type": "object",
@@ -1733,6 +1763,7 @@
                       "properties": {
                         "boundary": {
                           "type": "string",
+                          "description": "ACL name or multicast IP subnet",
                           "title": "Boundary"
                         },
                         "out": {
@@ -1762,6 +1793,7 @@
                       "properties": {
                         "boundary": {
                           "type": "string",
+                          "description": "ACL name or multicast IP subnet",
                           "title": "Boundary"
                         }
                       },
@@ -1804,6 +1836,7 @@
           },
           "ospf_authentication_key": {
             "type": "string",
+            "description": "Encrypted password",
             "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
@@ -1812,15 +1845,15 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "title": "ID",
-                  "type": "integer"
+                  "type": "integer",
+                  "title": "ID"
                 },
                 "hash_algorithm": {
                   "type": "string",
                   "enum": [
                     "md5",
                     "sha1",
-                    "sha 256",
+                    "sha256",
                     "sha384",
                     "sha512"
                   ],
@@ -1828,6 +1861,7 @@
                 },
                 "key": {
                   "type": "string",
+                  "description": "Encrypted password",
                   "title": "Key"
                 }
               },
@@ -1895,6 +1929,7 @@
           },
           "isis_enable": {
             "type": "string",
+            "description": "ISIS instance",
             "title": "ISIS Enable"
           },
           "isis_passive": {
@@ -1932,7 +1967,7 @@
           },
           "isis_authentication_key": {
             "type": "string",
-            "description": "Type-7 encrypted password\n",
+            "description": "Type-7 encrypted password",
             "title": "ISIS Authentication Key"
           },
           "ptp": {
@@ -1990,7 +2025,7 @@
               },
               "vlan": {
                 "type": "string",
-                "description": "all or list of vlans as string\n",
+                "description": "VLAN can be 'all' or list of vlans as string",
                 "title": "VLAN"
               },
               "transport": {
@@ -2018,12 +2053,17 @@
                 "properties": {
                   "level": {
                     "type": "integer",
-                    "description": "Configure maximum storm-control level\n",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
-                    "description": "Percent* | pps (optional and is hardware dependant - default is percent)\n",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -2035,12 +2075,17 @@
                 "properties": {
                   "level": {
                     "type": "integer",
-                    "description": "Configure maximum storm-control level\n",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
-                    "description": "Percent* | pps (optional and is hardware dependant - default is percent)\n",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -2052,12 +2097,17 @@
                 "properties": {
                   "level": {
                     "type": "integer",
-                    "description": "Configure maximum storm-control level\n",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
-                    "description": "Percent* | pps (optional and is hardware dependant - default is percent)\n",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -2069,12 +2119,17 @@
                 "properties": {
                   "level": {
                     "type": "integer",
-                    "description": "Configure maximum storm-control level\n",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
-                    "description": "Percent* | pps (optional and is hardware dependant - default is percent)\n",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -2120,6 +2175,7 @@
               },
               "ztp_vlan": {
                 "type": "integer",
+                "description": "ZTP vlan number",
                 "title": "Ztp VLAN"
               }
             },
@@ -2132,7 +2188,7 @@
           },
           "pvlan_mapping": {
             "type": "integer",
-            "description": "List of vlans as string\n",
+            "description": "List of vlans as string",
             "title": "PVLAN Mapping"
           },
           "vlan_translations": {
@@ -2142,11 +2198,12 @@
               "properties": {
                 "from": {
                   "type": "string",
-                  "description": "List of vlans as string (only one vlan if direction is \"both\")\n",
+                  "description": "List of vlans as string (only one vlan if direction is \"both\")",
                   "title": "From"
                 },
                 "to": {
                   "type": "integer",
+                  "description": "VLAN id",
                   "title": "To"
                 },
                 "direction": {
@@ -2233,64 +2290,6 @@
                   "multi_host_authenticated": {
                     "type": "boolean",
                     "title": "Multi Host Authenticated"
-                  },
-                  "mac_based_authentication": {
-                    "type": "object",
-                    "properties": {
-                      "enabled": {
-                        "type": "boolean",
-                        "title": "Enabled"
-                      },
-                      "always": {
-                        "type": "boolean",
-                        "title": "Always"
-                      },
-                      "host_mode_common": {
-                        "type": "boolean",
-                        "title": "Host Mode Common"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "title": "MAC Based Authentication"
-                  },
-                  "timeout": {
-                    "type": "object",
-                    "properties": {
-                      "idle_host": {
-                        "type": "integer",
-                        "minimum": 10,
-                        "maximum": 65535,
-                        "title": "Idle Host"
-                      },
-                      "quiet_period": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 65535,
-                        "title": "Quiet Period"
-                      },
-                      "reauth_period": {
-                        "type": "string",
-                        "title": "Reauth Period"
-                      },
-                      "reauth_timeout_ignore": {
-                        "type": "boolean",
-                        "title": "Reauth Timeout Ignore"
-                      },
-                      "tx_period": {
-                        "title": "Transmit Period",
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 65535
-                      }
-                    },
-                    "additionalProperties": false,
-                    "title": "Timeout"
-                  },
-                  "reauthorization_request_limit": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 10,
-                    "title": "Reauthorization Request Limit"
                   }
                 },
                 "additionalProperties": false,
@@ -2328,6 +2327,7 @@
                   },
                   "reauth_period": {
                     "type": "string",
+                    "description": "Value can be 60-4294967295 or 'server'",
                     "title": "Reauth Period"
                   },
                   "reauth_timeout_ignore": {
@@ -2344,6 +2344,8 @@
               },
               "reauthorization_request_limit": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
                 "title": "Reauthorization Request Limit"
               }
             },
@@ -2352,6 +2354,7 @@
           },
           "service_profile": {
             "type": "string",
+            "description": "QOS profile",
             "title": "Service Profile"
           },
           "shape": {
@@ -2359,7 +2362,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "rate in kbps or 1-100 percent or rate in pps, supported options are platform dependent\n",
+                "description": "Rate in kbps or pps or 1-100 percent or rate in pps, supported options are platform dependent",
                 "title": "Rate"
               }
             },
@@ -2380,10 +2383,12 @@
               },
               "dscp": {
                 "type": "integer",
+                "description": "DSCP value",
                 "title": "DSCP"
               },
               "cos": {
                 "type": "integer",
+                "description": "COS value",
                 "title": "COS"
               }
             },
@@ -2459,12 +2464,12 @@
               },
               "interval": {
                 "type": "integer",
-                "description": "Interval in milliseconds\n",
+                "description": "Interval in milliseconds",
                 "title": "Interval"
               },
               "min_rx": {
                 "type": "integer",
-                "description": "Rate in milliseconds\n",
+                "description": "Rate in milliseconds",
                 "title": "Min RX"
               },
               "multiplier": {
@@ -2485,6 +2490,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
+                    "description": "Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -2510,8 +2516,8 @@
                     "title": "Interface"
                   },
                   "igp_sync": {
-                    "title": "IGP Sync",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "title": "Igp Sync"
                   }
                 },
                 "additionalProperties": false,
@@ -2576,12 +2582,12 @@
             "properties": {
               "input": {
                 "type": "string",
-                "description": "Ingress traffic policy\n",
+                "description": "Ingress traffic policy",
                 "title": "Input"
               },
               "output": {
                 "type": "string",
-                "description": "Egress traffic policy\n",
+                "description": "Egress traffic policy",
                 "title": "Output"
               }
             },
@@ -2590,8 +2596,12 @@
           },
           "eos_cli": {
             "type": "string",
-            "description": "Multiline eos cli",
+            "description": "Multiline eos cli. EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
             "title": "EOS CLI"
+          },
+          "struct_cfg": {
+            "type": "object",
+            "title": "Struct Cfg"
           }
         },
         "required": [

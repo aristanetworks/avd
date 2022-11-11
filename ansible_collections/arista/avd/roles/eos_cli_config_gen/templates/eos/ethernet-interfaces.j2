@@ -549,12 +549,12 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
 {%         endif %}
-{%         if ethernet_interface.spanning_tree_bpduguard is arista.avd.defined(true) or ethernet_interface.spanning_tree_bpduguard is arista.avd.defined("enabled") %}
+{%         if ethernet_interface.spanning_tree_bpduguard is arista.avd.defined and ethernet_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%         elif ethernet_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
    spanning-tree bpduguard disable
 {%         endif %}
-{%         if ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined(true) or ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+{%         if ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined and ethernet_interface.spanning_tree_bpdufilter in [True, "True", "enabled"] %}
    spanning-tree bpdufilter enable
 {%         elif ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable

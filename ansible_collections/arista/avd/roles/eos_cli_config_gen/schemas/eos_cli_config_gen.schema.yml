@@ -982,6 +982,7 @@ keys:
     primary_key: name
     convert_types:
     - dict
+    description: Routed interfaces
     items:
       type: dict
       keys:
@@ -1000,10 +1001,8 @@ keys:
           type: bool
         speed:
           type: str
-          description: '< interface_speed | forced interface_speed | auto interface_speed
-            >
-
-            '
+          description: Speed can be interface_speed or forced interface_speed or auto
+            interface_speed
         mtu:
           type: int
           convert_types:
@@ -1012,17 +1011,13 @@ keys:
           type: int
           convert_types:
           - str
-          description: 'l2-mtu - if defined this profile should only be used for platforms
+          description: If l2_mtu defined this profile should only be used for platforms
             supporting the "l2 mtu" CLI
-
-            '
         vlans:
           type: str
           convert_types:
           - int
-          description: '< list of vlans as string
-
-            '
+          description: List of vlans as string
         native_vlan:
           type: int
           convert_types:
@@ -1058,6 +1053,7 @@ keys:
               type: int
               convert_types:
               - str
+              description: Vlan tag to configure on sub-interface
         trunk_groups:
           type: list
           items:
@@ -1069,13 +1065,11 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+          description: l3dot1q and l2dot1q are used for sub-interfaces. The parent
             interface should be defined as routed.
-
-            '
         snmp_trap_link_change:
-          display_name: SNMP Trap Link Change
           type: bool
+          description: SNMP trap link change
         flowcontrol:
           type: dict
           keys:
@@ -1086,8 +1080,14 @@ keys:
               - send
               - 'on'
         vrf:
-          display_name: VRF Name
           type: str
+          description: VRF name
+        flow_tracker:
+          type: dict
+          keys:
+            sampled:
+              type: str
+              description: Flow tracker name
         error_correction_encoding:
           type: dict
           keys:
@@ -1105,6 +1105,7 @@ keys:
             keys:
               name:
                 type: str
+                description: Group name
               direction:
                 type: str
                 valid_values:
@@ -1115,9 +1116,7 @@ keys:
           keys:
             identifier:
               type: str
-              description: 'EVPN Ethernet Segment Identifier (Type 1 format)
-
-                '
+              description: EVPN Ethernet Segment Identifier (Type 1 format)
             redundancy:
               type: str
               valid_values:
@@ -1135,10 +1134,8 @@ keys:
                   type: int
                   min: 0
                   max: 65535
-                  description: 'Preference_value and dont_preempt are set for preference
+                  description: Preference_value and dont_preempt are set for preference
                     algorithm and are optional
-
-                    '
                 dont_preempt:
                   type: bool
                   default: false
@@ -1167,16 +1164,12 @@ keys:
                   - str
             route_target:
               type: str
-              description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
-
-                '
+              description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
         encapsulation_dot1q_vlan:
           type: int
           convert_types:
           - str
-          description: 'vlan tag to configure on sub-interface
-
-            '
+          description: VLAN tag to configure on sub-interface
         encapsulation_vlan:
           type: dict
           keys:
@@ -1190,11 +1183,12 @@ keys:
                       type: int
                       convert_types:
                       - str
+                      description: Client VLAN ID
                     outer:
-                      display_name: Client Outer VLAN ID
                       type: int
                       convert_types:
                       - str
+                      description: Client Outer VLAN ID
                     inner:
                       type: int
                       convert_types:
@@ -1214,10 +1208,8 @@ keys:
                   type: bool
             network:
               type: dict
-              description: 'Network encapsulation is all optional, and skipped if
-                using client unmatched.
-
-                '
+              description: Network encapsulation is all optional, and skipped if using
+                client unmatched.
               keys:
                 dot1q:
                   type: dict
@@ -1257,6 +1249,7 @@ keys:
           - str
         ip_address:
           type: str
+          description: IPv4_address or Mask
         ip_address_secondaries:
           type: list
           items:
@@ -1274,17 +1267,20 @@ keys:
                 required: true
               source_interface:
                 type: str
+                description: Source interface name
               vrf:
                 type: str
+                description: VRF name
         ipv6_enable:
           type: bool
         ipv6_address:
           type: str
         ipv6_address_link_local:
           type: str
+          description: Link local IPv6 address or mask
         ipv6_nd_ra_disabled:
-          display_name: IPv6 ND RA Disabled
           type: bool
+          description: IPv6 ND RA disabled
         ipv6_nd_managed_config_flag:
           type: bool
         ipv6_nd_prefixes:
@@ -1302,36 +1298,36 @@ keys:
                 type: str
                 convert_types:
                 - int
-                description: 'Infinite or lifetime in seconds
-
-                  '
+                description: Infinite or lifetime in seconds
               preferred_lifetime:
                 type: str
                 convert_types:
                 - int
-                description: 'Infinite or lifetime in seconds
-
-                  '
+                description: Infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
         access_group_in:
           type: str
+          description: Access list name
         access_group_out:
           type: str
+          description: Access list name
         ipv6_access_group_in:
           type: str
+          description: IPv6 access list name
         ipv6_access_group_out:
           type: str
+          description: IPv6 access list name
         mac_access_group_in:
           type: str
+          description: MAC access list name
         mac_access_group_out:
           type: str
+          description: MAC access list name
         multicast:
           type: dict
-          description: 'boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix
+          description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix
             but not combination of both
-
-            '
           keys:
             ipv4:
               type: dict
@@ -1343,6 +1339,7 @@ keys:
                     keys:
                       boundary:
                         type: str
+                        description: ACL name or multicast IP subnet
                       out:
                         type: bool
                 static:
@@ -1357,6 +1354,7 @@ keys:
                     keys:
                       boundary:
                         type: str
+                        description: ACL name or multicast IP subnet
                 static:
                   type: bool
         ospf_network_point_to_point:
@@ -1377,6 +1375,7 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
+          description: Encrypted password
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -1386,7 +1385,6 @@ keys:
             type: dict
             keys:
               id:
-                display_name: ID
                 type: int
                 convert_types:
                 - str
@@ -1396,11 +1394,12 @@ keys:
                 valid_values:
                 - md5
                 - sha1
-                - sha 256
+                - sha256
                 - sha384
                 - sha512
               key:
                 type: str
+                description: Encrypted password
         pim:
           type: dict
           keys:
@@ -1435,6 +1434,7 @@ keys:
               - passive
         isis_enable:
           type: str
+          description: ISIS instance
         isis_passive:
           type: bool
         isis_metric:
@@ -1458,9 +1458,7 @@ keys:
           - md5
         isis_authentication_key:
           type: str
-          description: 'Type-7 encrypted password
-
-            '
+          description: Type-7 encrypted password
         ptp:
           type: dict
           keys:
@@ -1502,9 +1500,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'all or list of vlans as string
-
-                '
+              description: VLAN can be 'all' or list of vlans as string
             transport:
               type: str
               valid_values:
@@ -1523,15 +1519,14 @@ keys:
                   type: int
                   convert_types:
                   - str
-                  description: 'Configure maximum storm-control level
-
-                    '
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
-                  description: 'Percent* | pps (optional and is hardware dependant
-                    - default is percent)
-
-                    '
+                  default: percent
+                  valid_values:
+                  - percent
+                  - pps
+                  description: Optional field and is hardware dependant
             broadcast:
               type: dict
               keys:
@@ -1539,15 +1534,14 @@ keys:
                   type: int
                   convert_types:
                   - str
-                  description: 'Configure maximum storm-control level
-
-                    '
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
-                  description: 'Percent* | pps (optional and is hardware dependant
-                    - default is percent)
-
-                    '
+                  default: percent
+                  valid_values:
+                  - percent
+                  - pps
+                  description: Optional field and is hardware dependant
             multicast:
               type: dict
               keys:
@@ -1555,15 +1549,14 @@ keys:
                   type: int
                   convert_types:
                   - str
-                  description: 'Configure maximum storm-control level
-
-                    '
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
-                  description: 'Percent* | pps (optional and is hardware dependant
-                    - default is percent)
-
-                    '
+                  default: percent
+                  valid_values:
+                  - percent
+                  - pps
+                  description: Optional field and is hardware dependant
             unknown_unicast:
               type: dict
               keys:
@@ -1571,15 +1564,14 @@ keys:
                   type: int
                   convert_types:
                   - str
-                  description: 'Configure maximum storm-control level
-
-                    '
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
-                  description: 'Percent* | pps (optional and is hardware dependant
-                    - default is percent)
-
-                    '
+                  default: percent
+                  valid_values:
+                  - percent
+                  - pps
+                  description: Optional field and is hardware dependant
         logging:
           type: dict
           keys:
@@ -1601,15 +1593,14 @@ keys:
               type: int
               convert_types:
               - str
+              description: ZTP vlan number
         trunk_private_vlan_secondary:
           type: bool
         pvlan_mapping:
           type: int
           convert_types:
           - str
-          description: 'List of vlans as string
-
-            '
+          description: List of vlans as string
         vlan_translations:
           type: list
           items:
@@ -1617,14 +1608,13 @@ keys:
             keys:
               from:
                 type: str
-                description: 'List of vlans as string (only one vlan if direction
-                  is "both")
-
-                  '
+                description: List of vlans as string (only one vlan if direction is
+                  "both")
               to:
                 type: int
                 convert_types:
                 - str
+                description: VLAN id
               direction:
                 type: str
                 valid_values:
@@ -1676,47 +1666,6 @@ keys:
                   - single-host
                 multi_host_authenticated:
                   type: bool
-                mac_based_authentication:
-                  type: dict
-                  keys:
-                    enabled:
-                      type: bool
-                    always:
-                      type: bool
-                    host_mode_common:
-                      type: bool
-                timeout:
-                  type: dict
-                  keys:
-                    idle_host:
-                      type: int
-                      min: 10
-                      max: 65535
-                      convert_types:
-                      - str
-                    quiet_period:
-                      type: int
-                      min: 1
-                      max: 65535
-                      convert_types:
-                      - str
-                    reauth_period:
-                      type: str
-                    reauth_timeout_ignore:
-                      type: bool
-                    tx_period:
-                      display_name: Transmit Period
-                      type: int
-                      min: 1
-                      max: 65535
-                      convert_types:
-                      - str
-                reauthorization_request_limit:
-                  type: int
-                  min: 1
-                  max: 10
-                  convert_types:
-                  - str
             mac_based_authentication:
               type: dict
               keys:
@@ -1739,6 +1688,9 @@ keys:
                   - str
                 reauth_period:
                   type: str
+                  convert_types:
+                  - int
+                  description: Value can be 60-4294967295 or 'server'
                 reauth_timeout_ignore:
                   type: bool
                 tx_period:
@@ -1747,19 +1699,20 @@ keys:
                   - str
             reauthorization_request_limit:
               type: int
+              min: 1
+              max: 10
               convert_types:
               - str
         service_profile:
           type: str
+          description: QOS profile
         shape:
           type: dict
           keys:
             rate:
               type: str
-              description: 'rate in kbps or 1-100 percent or rate in pps, supported
+              description: Rate in kbps or pps or 1-100 percent or rate in pps, supported
                 options are platform dependent
-
-                '
         qos:
           type: dict
           keys:
@@ -1773,10 +1726,12 @@ keys:
               type: int
               convert_types:
               - str
+              description: DSCP value
             cos:
               type: int
               convert_types:
               - str
+              description: COS value
         spanning_tree_bpdufilter:
           type: str
           convert_types:
@@ -1825,16 +1780,12 @@ keys:
               type: int
               convert_types:
               - str
-              description: 'Interval in milliseconds
-
-                '
+              description: Interval in milliseconds
             min_rx:
               type: int
               convert_types:
               - str
-              description: 'Rate in milliseconds
-
-                '
+              description: Rate in milliseconds
             multiplier:
               type: int
               min: 3
@@ -1849,6 +1800,7 @@ keys:
               keys:
                 input:
                   type: str
+                  description: Policy-map name
         mpls:
           type: dict
           keys:
@@ -1860,7 +1812,6 @@ keys:
                 interface:
                   type: bool
                 igp_sync:
-                  display_name: IGP Sync
                   type: bool
         lacp_timer:
           type: dict
@@ -1898,17 +1849,16 @@ keys:
           keys:
             input:
               type: str
-              description: 'Ingress traffic policy
-
-                '
+              description: Ingress traffic policy
             output:
               type: str
-              description: 'Egress traffic policy
-
-                '
+              description: Egress traffic policy
         eos_cli:
           type: str
-          description: Multiline eos cli
+          description: Multiline eos cli. EOS CLI rendered directly on the ethernet
+            interface in the final EOS configuration
+        struct_cfg:
+          type: dict
   event_handlers:
     type: list
     primary_key: name
