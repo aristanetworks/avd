@@ -3767,6 +3767,11 @@
             "type": "string",
             "description": "IPv6 address of default gateway in management VRF",
             "title": "IPv6 Gateway"
+          },
+          "mac_address": {
+            "type": "string",
+            "description": "MAC_address",
+            "title": "MAC Address"
           }
         },
         "required": [
