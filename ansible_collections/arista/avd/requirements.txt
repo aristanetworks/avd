@@ -8,3 +8,4 @@ requests>=2.25.1
 PyYAML>=5.4.1
 md-toc>=7.1.0
 deepmerge>=1.0.1
+graphviz
