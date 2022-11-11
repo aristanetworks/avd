@@ -1327,6 +1327,65 @@ keys:
   p2p_uplinks_qos_profile:
     description: QOS Profile assigned on all infrastructure links
     type: str
+  platform_settings:
+    items:
+      keys:
+        feature_support:
+          keys:
+            interface_storm_control:
+              default: true
+              type: bool
+            queue_monitor_length_notify:
+              default: true
+              type: bool
+          type: dict
+        lag_hardware_only:
+          type: bool
+        management_interface:
+          default: Management1
+          type: str
+        platforms:
+          items:
+            type: str
+          type: list
+        raw_eos_cli:
+          description: EOS CLI rendered directly on the root level of the final EOS
+            configuration
+          type: str
+        reload_delay:
+          keys:
+            mlag:
+              type: int
+            non_mlag:
+              type: int
+          type: dict
+        tcam_profile:
+          type: str
+        trident_forwarding_table_partition:
+          type: str
+      type: dict
+    type: list
+  platform_speed_groups:
+    description: Set Hardware Speed Groups per Platform
+    items:
+      keys:
+        platform:
+          type: str
+        speeds:
+          items:
+            keys:
+              speed:
+                type: str
+              speed_groups:
+                items:
+                  convert_types:
+                  - str
+                  type: int
+                type: list
+            type: dict
+          type: list
+      type: dict
+    type: list
   pod_name:
     description: 'POD Name, only used in Fabric Documentation | Optional, fallback
       to dc_name and then to fabric_name.
@@ -1335,6 +1394,15 @@ keys:
 
       '
     type: str
+  redundancy:
+    description: Redundancy for chassis platforms with dual supervisors | Optional
+    keys:
+      protocol:
+        type: str
+        valid_values:
+        - sso
+        - rpr
+    type: dict
   shutdown_interfaces_towards_undeployed_peers:
     default: false
     description: '- It is possible to provision configurations for a complete topology
