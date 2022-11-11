@@ -1157,6 +1157,73 @@ QOS Profile assigned on all infrastructure links
 p2p_uplinks_qos_profile: <str>
 ```
 
+## Platform Settings
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | True |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | True |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lag_hardware_only</samp>](## "platform_settings.[].lag_hardware_only") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | Management1 |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "platform_settings.[].platforms.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;reload_delay</samp>](## "platform_settings.[].reload_delay") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "platform_settings.[].reload_delay.mlag") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;non_mlag</samp>](## "platform_settings.[].reload_delay.non_mlag") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcam_profile</samp>](## "platform_settings.[].tcam_profile") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+platform_settings:
+  - feature_support:
+      interface_storm_control: <bool>
+      queue_monitor_length_notify: <bool>
+    lag_hardware_only: <bool>
+    management_interface: <str>
+    platforms:
+      - <str>
+    raw_eos_cli: <str>
+    reload_delay:
+      mlag: <int>
+      non_mlag: <int>
+    tcam_profile: <str>
+    trident_forwarding_table_partition: <str>
+```
+
+## Platform Speed Groups
+
+### Description
+
+Set Hardware Speed Groups per Platform
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>platform_speed_groups</samp>](## "platform_speed_groups") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;- platform</samp>](## "platform_speed_groups.[].platform") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speeds</samp>](## "platform_speed_groups.[].speeds") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- speed</samp>](## "platform_speed_groups.[].speeds.[].speed") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed_groups</samp>](## "platform_speed_groups.[].speeds.[].speed_groups") | List, items: Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;int&gt;</samp>](## "platform_speed_groups.[].speeds.[].speed_groups.[].&lt;int&gt;") | Integer |  |  |  |  |
+
+### YAML
+
+```yaml
+platform_speed_groups:
+  - platform: <str>
+    speeds:
+      - speed: <str>
+        speed_groups:
+          - <int>
+```
+
 ## Pod Name
 
 ### Description
@@ -1174,6 +1241,25 @@ Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ```yaml
 pod_name: <str>
+```
+
+## Redundancy
+
+### Description
+
+Redundancy for chassis platforms with dual supervisors | Optional
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- sso<br>- rpr |  |
+
+### YAML
+
+```yaml
+redundancy:
+  protocol: <str>
 ```
 
 ## Shutdown Interfaces Towards Undeployed Peers
