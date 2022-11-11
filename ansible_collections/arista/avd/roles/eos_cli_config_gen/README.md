@@ -3274,7 +3274,6 @@ router_bgp:
       # evpn_multicast_address_family requires evpn_multicast: true to be set
       evpn_multicast_address_family:
         ipv4:
-          disabled: < true | false >
           transit: < true | false >
       route_targets:
         import:

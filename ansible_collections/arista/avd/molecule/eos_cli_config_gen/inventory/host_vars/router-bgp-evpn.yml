@@ -196,7 +196,6 @@ router_bgp:
       evpn_multicast: true
       evpn_multicast_address_family:
         ipv4:
-          disabled: true
           transit: true
       route_targets:
         import:
@@ -211,7 +210,6 @@ router_bgp:
       evpn_multicast: true
       evpn_multicast_address_family:
         ipv4:
-          disabled: false
           transit: false
       route_targets:
         import:
