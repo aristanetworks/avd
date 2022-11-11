@@ -3807,10 +3807,12 @@ keys:
     keys:
       as:
         type: str
+        description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
         convert_types:
         - int
       router_id:
         type: str
+        description: in IP address format A.B.C.D
       distance:
         type: dict
         keys:
@@ -3856,6 +3858,7 @@ keys:
             type: bool
       bgp_cluster_id:
         type: str
+        description: IP Address A.B.C.D
       bgp_defaults:
         type: list
         items:
@@ -3879,24 +3882,27 @@ keys:
           keys:
             prefix:
               type: str
-              description: Key only used for documentation or validation purposes
+              description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
             peer_id_include_router_id:
               type: bool
               description: Include router ID as part of peer filter
             peer_group:
               type: str
+              description: Peer group name
             peer_filter:
               type: str
-              description: 'peer_filter or remote_as is required but mutually exclusive.
+              description: 'Peer-filter name
 
-                If both are defined, peer_filter takes precedence
+                note: `peer_filter` or `remote_as` is required but mutually exclusive.
+
+                If both are defined, `peer_filter` takes precedence
 
                 '
             remote_as:
               type: str
               convert_types:
               - int
-              description: Remote ASN in plain or dot notation
+              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
       peer_groups:
         type: list
         primary_key: name
@@ -3907,17 +3913,20 @@ keys:
           keys:
             name:
               type: str
+              description: Peer-group name
             type:
               type: str
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
+              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
               - int
             local_as:
-              type: int
+              type: str
+              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
-              - str
+              - int
             description:
               type: str
             shutdown:
@@ -3941,16 +3950,29 @@ keys:
                   type: bool
             peer_filter:
               type: str
+              description: 'Peer-filter name
+
+                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated
+                in AVD v4.0
+
+                These should not be mixed with the new `listen_ranges` key above to
+                avoid conflicts.
+
+                '
             next_hop_unchanged:
               type: bool
             update_source:
               type: str
+              description: IP address or interface name
             route_reflector_client:
               type: bool
             bfd:
               type: bool
             ebgp_multihop:
               type: int
+              min: 1
+              max: 255
+              description: Time-to-live in range of hops
               convert_types:
               - str
             next_hop_self:
@@ -3966,18 +3988,28 @@ keys:
                   type: bool
                 route_map:
                   type: str
+                  description: Route-map name
             send_community:
               type: str
-              description: Key only used for documentation or validation purposes
+              description: '''all'' or a combination of ''standard'', ''extended'',
+                ''large'' and ''link-bandwidth (w/options)'''
             maximum_routes:
               type: int
+              description: Maximum number of routes (0 means unlimited)
+              min: 0
+              max: 4294967294
               convert_types:
               - str
             maximum_routes_warning_limit:
               type: str
+              description: 'Maximum number of routes after which a warning is issued
+                (0 means never warn)
+
+                Percentage of maximum number of routes at which to warn (1-100)
+
+                '
               convert_types:
               - int
-              description: Key only used for documentation or validation purposes
             maximum_routes_warning_only:
               type: bool
             link_bandwidth:
@@ -3987,7 +4019,7 @@ keys:
                   type: bool
                 default:
                   type: str
-                  description: nn.nn(K|M|G) Link speed in bits/second
+                  description: nn.nn(K|M|G) link speed in bits/second
             allowas_in:
               type: dict
               keys:
@@ -3995,17 +4027,21 @@ keys:
                   type: bool
                 times:
                   type: int
+                  description: Number of local ASNs allowed in a BGP update
                   convert_types:
                   - str
                   min: 1
                   max: 10
             weight:
               type: int
+              min: 0
+              max: 65535
               convert_types:
               - str
             timers:
               type: str
-              description: Keep alive hold timer values
+              description: Time between BGP keepalive messages in seconds "<0-3600>
+                <0-3600>"
             rib_in_pre_policy_retain:
               type: dict
               keys:
@@ -4015,21 +4051,21 @@ keys:
                   type: bool
             route_map_in:
               type: str
-              description: Inbound Route-Map
+              description: Inbound route-map name
             route_map_out:
               type: str
-              description: Outbound Route-Map
+              description: Outbound route-map name
             bgp_listen_range_prefix:
               type: str
-              description: IP Prefix Range
-            struct_cfg:
-              type: dict
-              description: Key only used for documentation or validation purposes
-              keys:
-                description:
-                  type: str
-            set_ipv4_next_hop:
-              type: str
+              description: 'IP prefix range
+
+                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated
+                in AVD v4.0
+
+                These should not be mixed with the new `listen_ranges` key above to
+                avoid conflicts.
+
+                '
       neighbors:
         type: list
         primary_key: ip_address
@@ -4044,12 +4080,14 @@ keys:
               type: str
             remote_as:
               type: str
+              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
               - int
             local_as:
-              type: int
+              type: str
+              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
-              - str
+              - int
             description:
               type: str
             shutdown:
@@ -4060,17 +4098,20 @@ keys:
               type: bool
             weight:
               type: int
+              min: 0
+              max: 65535
               convert_types:
               - str
             timers:
               type: str
-              description: Keep alive hold timer values
+              description: Time between BGP keepalive messages in seconds "<0-3600>
+                <0-3600>"
             route_map_in:
               type: str
-              description: Inbound Route-Map
+              description: Inbound route-map name
             route_map_out:
               type: str
-              description: Outbound Route-Map
+              description: Outbound route-map name
             default_originate:
               type: dict
               keys:
@@ -4082,16 +4123,25 @@ keys:
                   type: str
             send_community:
               type: str
-              description: Key only used for documentation or validation purposes
+              description: '''all'' or a combination of ''standard'', ''extended'',
+                ''large'' and ''link-bandwidth (w/options)'''
             maximum_routes:
               type: int
+              description: Maximum number of routes (0 means unlimited)
+              min: 0
+              max: 4294967294
               convert_types:
               - str
             maximum_routes_warning_limit:
               type: str
+              description: 'Maximum number of routes after which a warning is issued
+                (0 means never warn)
+
+                Percentage of maximum number of routes at which to warn (1-100)
+
+                '
               convert_types:
               - int
-              description: Key only used for documentation or validation purposes
             maximum_routes_warning_only:
               type: bool
             allowas_in:
@@ -4107,6 +4157,9 @@ keys:
                   max: 10
             ebgp_multihop:
               type: int
+              min: 1
+              max: 255
+              description: Time-to-live in range of hops
               convert_types:
               - str
             next_hop_self:
@@ -4118,7 +4171,7 @@ keys:
                   type: bool
                 default:
                   type: str
-                  description: Link speed in bits/second
+                  description: nn.nn(K|M|G) link speed in bits/second
             rib_in_pre_policy_retain:
               type: dict
               keys:
@@ -4153,16 +4206,19 @@ keys:
           keys:
             name:
               type: str
+              description: Interface name
             remote_as:
               type: str
               convert_types:
               - int
             peer_group:
               type: str
+              default: Peer-group name
             description:
               type: str
             peer_filter:
               type: str
+              description: Peer-filter name
       aggregate_addresses:
         type: list
         primary_key: prefix
@@ -4173,7 +4229,7 @@ keys:
           keys:
             prefix:
               type: str
-              description: Aggregate Address/Mask
+              description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
             advertise_only:
               type: bool
             as_set:
@@ -4182,8 +4238,10 @@ keys:
               type: bool
             attribute_map:
               type: str
+              description: Route-map name
             match_map:
               type: str
+              description: Route-map name
       redistribute_routes:
         type: list
         primary_key: source_protocol
@@ -4207,11 +4265,15 @@ keys:
           keys:
             name:
               type: str
+              description: VLAN aware bundle name
             tenant:
               type: str
+              description: Key only used for documentation or validation purposes
             description:
               type: str
+              description: Key only used for documentation or validation purposes
             rd:
+              description: Route distinguisher
               type: str
             rd_evpn_domain:
               type: dict
@@ -4280,6 +4342,7 @@ keys:
                 type: str
             no_redistribute_routes:
               type: list
+              description: host-route
               items:
                 type: str
             vlan:
@@ -4302,6 +4365,7 @@ keys:
               type: str
               description: Key only used for documentation or validation purposes
             rd:
+              description: Route distinguisher
               type: str
             rd_evpn_domain:
               type: dict
@@ -4316,14 +4380,6 @@ keys:
             eos_cli:
               type: str
               description: Key only used for documentation or validation purposes
-            struct_cfg:
-              type: dict
-              description: Key only used for documentation or validation purposes
-              keys:
-                redistribute_routes:
-                  type: list
-                  items:
-                    type: str
             route_targets:
               type: dict
               keys:
@@ -4381,6 +4437,7 @@ keys:
                 type: str
             no_redistribute_routes:
               type: list
+              description: host-route
               items:
                 type: str
       vpws:
@@ -4393,7 +4450,9 @@ keys:
           keys:
             name:
               type: str
+              description: vpws instance name
             rd:
+              description: Route distinguisher
               type: str
             route_targets:
               type: dict
@@ -4420,6 +4479,7 @@ keys:
                 keys:
                   name:
                     type: str
+                    description: pseudowire name
                   id_local:
                     type: int
                     convert_types:
@@ -4446,6 +4506,7 @@ keys:
                 - vxlan
                 - mpls
               next_hop_self_source_interface:
+                description: Source interface name
                 type: str
               next_hop_self_received_evpn_routes:
                 type: dict
@@ -4464,14 +4525,15 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
                 domain_remote:
                   type: bool
           evpn_hostflap_detection:
@@ -4481,28 +4543,33 @@ keys:
                 type: bool
               window:
                 type: int
+                description: Time (in seconds) to detect a MAC duplication issue
+                min: 0
+                max: 4294967295
                 convert_types:
                 - str
-                description: Time in seconds
               threshold:
                 type: int
+                min: 0
+                max: 4294967295
                 convert_types:
                 - str
                 description: Minimum number of MAC moves that indicate a MAC Duplication
                   issue
               expiry_timeout:
                 type: int
+                min: 0
+                max: 4294967295
                 convert_types:
                 - str
-                description: Timeout in seconds
+                description: Time (in seconds) to purge a MAC duplication issue
           route:
             type: dict
             keys:
               import_match_failure_action:
                 type: str
-                description: 'Example: "discard"
-
-                  '
+                valid_values:
+                - discard
       address_family_rtc:
         type: dict
         keys:
@@ -4516,6 +4583,7 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 default_route_target:
@@ -4537,8 +4605,10 @@ keys:
               type: dict
               keys:
                 prefix:
+                  description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   type: str
                 route_map:
+                  description: Route-map name
                   type: str
           peer_groups:
             type: list
@@ -4550,20 +4620,22 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
                 default_originate:
                   type: dict
                   keys:
                     always:
                       type: bool
                     route_map:
+                      description: Route-map name
                       type: str
                 next_hop:
                   type: dict
@@ -4572,10 +4644,10 @@ keys:
                       type: bool
                 prefix_list_in:
                   type: str
-                  description: Prefix List Name
+                  description: Inbound prefix-list name
                 prefix_list_out:
                   type: str
-                  description: Prefix List Name
+                  description: Outbound prefix-list name
           neighbors:
             type: list
             primary_key: ip_address
@@ -4590,16 +4662,16 @@ keys:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
                 prefix_list_in:
                   type: str
-                  description: Prefix List Name
+                  description: Inbound prefix-list name
                 prefix_list_out:
                   type: str
-                  description: Prefix List Name
+                  description: Prefix-list name
                 default_originate:
                   type: dict
                   keys:
@@ -4620,14 +4692,15 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
           neighbors:
             type: list
             primary_key: ip_address
@@ -4642,10 +4715,10 @@ keys:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -4670,8 +4743,10 @@ keys:
               type: dict
               keys:
                 prefix:
+                  description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   type: str
                 route_map:
+                  description: Route-map name
                   type: str
           peer_groups:
             type: list
@@ -4683,20 +4758,21 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
                 prefix_list_in:
                   type: str
-                  description: Prefix List Name
+                  description: Inbound prefix-list name
                 prefix_list_out:
                   type: str
-                  description: Prefix List Name
+                  description: Outbound prefix-list name
           neighbors:
             type: list
             primary_key: ip_address
@@ -4711,16 +4787,16 @@ keys:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
                 prefix_list_in:
                   type: str
-                  description: Prefix List Name
+                  description: Inbound prefix-list name
                 prefix_list_out:
                   type: str
-                  description: Prefix List Name
+                  description: Outbound prefix-list name
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -4750,22 +4826,22 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
           route:
             type: dict
             keys:
               import_match_failure_action:
                 type: str
-                description: 'Example: "discard"
-
-                  '
+                valid_values:
+                - discard
           neighbors:
             type: list
             primary_key: ip_address
@@ -4780,10 +4856,10 @@ keys:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -4806,22 +4882,22 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Peer-group name
                 activate:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
           route:
             type: dict
             keys:
               import_match_failure_action:
                 type: str
-                description: 'Example: "discard"
-
-                  '
+                valid_values:
+                - discard
           neighbors:
             type: list
             primary_key: ip_address
@@ -4836,10 +4912,10 @@ keys:
                   type: bool
                 route_map_in:
                   type: str
-                  description: Route-Map Name
+                  description: Inbound route-map name
                 route_map_out:
                   type: str
-                  description: Route-Map Name
+                  description: Outbound route-map name
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -4855,8 +4931,10 @@ keys:
           keys:
             name:
               type: str
+              description: VRF name
             rd:
               type: str
+              description: Route distinguisher
             evpn_multicast:
               type: bool
             route_targets:
@@ -4893,10 +4971,12 @@ keys:
                         items:
                           type: str
             router_id:
+              description: in IP address format A.B.C.D
               type: str
             timers:
               type: str
-              description: Keep alive hold timer values
+              description: Time between BGP keepalive messages in seconds "<0-3600>
+                <0-3600>"
             networks:
               type: list
               primary_key: prefix
@@ -4907,6 +4987,7 @@ keys:
                 keys:
                   prefix:
                     type: str
+                    description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   route_map:
                     type: str
             listen_ranges:
@@ -4920,15 +5001,18 @@ keys:
                 keys:
                   prefix:
                     type: str
-                    description: Key only used for documentation or validation purposes
+                    description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   peer_id_include_router_id:
                     type: bool
                     description: Include router ID as part of peer filter
                   peer_group:
                     type: str
+                    description: Peer-group name
                   peer_filter:
                     type: str
-                    description: 'peer_filter or remote_as is required but mutually
+                    description: 'Peer-filter name
+
+                      note: `peer_filter`` or `remote_as` is required but mutually
                       exclusive.
 
                       If both are defined, peer_filter takes precedence
@@ -4936,9 +5020,206 @@ keys:
                       '
                   remote_as:
                     type: str
+                    description: BGP AS <1-4294967295> or AS number in asdot notation
+                      <1-65535>.<0-65535>
                     convert_types:
                     - int
-                    description: Remote ASN in plain or dot notation
+            neighbors:
+              type: list
+              primary_key: ip_address
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                  peer_group:
+                    type: str
+                    description: Peer-group name
+                  remote_as:
+                    type: str
+                    description: BGP AS <1-4294967295> or AS number in asdot notation
+                      <1-65535>.<0-65535>
+                    convert_types:
+                    - int
+                  password:
+                    type: str
+                  remove_private_as:
+                    type: dict
+                    description: Remove private AS numbers in outbound AS path
+                    keys:
+                      enabled:
+                        type: bool
+                      all:
+                        type: bool
+                      replace_as:
+                        type: bool
+                      ingress:
+                        type: bool
+                  remove_private_as_ingress:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      replace_as:
+                        type: bool
+                  weight:
+                    type: int
+                    min: 0
+                    max: 65535
+                    convert_types:
+                    - str
+                  local_as:
+                    type: str
+                    description: BGP AS <1-4294967295> or AS number in asdot notation
+                      <1-65535>.<0-65535>
+                    convert_types:
+                    - int
+                  description:
+                    type: str
+                  ebgp_multihop:
+                    type: int
+                    min: 1
+                    max: 255
+                    description: Time-to-live in range of hops
+                  next_hop_self:
+                    type: bool
+                  shutdown:
+                    type: bool
+                  bfd:
+                    type: bool
+                  timers:
+                    type: str
+                    description: Time between BGP keepalive messages in seconds "<0-3600>
+                      <0-3600>"
+                  rib_in_pre_policy_retain:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      all:
+                        type: bool
+                  send_community:
+                    type: str
+                    description: '''all'' or a combination of ''standard'', ''extended'',
+                      ''large'' and ''link-bandwidth (w/options)'''
+                    valid_values:
+                    - all
+                    - extended
+                    - large
+                    - link-bandwidth
+                    - standard
+                  maximum_routes:
+                    type: int
+                    convert_types:
+                    - str
+                  maximum_routes_warning_limit:
+                    type: str
+                    convert_types:
+                    - int
+                    description: 'Maximum number of routes after which a warning is
+                      issued (0 means never warn)
+
+                      Percentage of maximum number of routes at which to warn (1-100)
+
+                      '
+                  maximum_routes_warning_only:
+                    type: bool
+                  allowas_in:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      times:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 10
+                  default_originate:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      always:
+                        type: bool
+                      route_map:
+                        type: str
+                  update_source:
+                    type: str
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name
+                  address_families:
+                    type: list
+                    description: Key only used for documentation or validation purposes
+                    primary_key: address_family
+                    convert_types:
+                    - dict
+                    items:
+                      type: dict
+                      keys:
+                        address_family:
+                          type: str
+                        bgp:
+                          type: dict
+                          keys:
+                            missing_policy:
+                              type: dict
+                              keys:
+                                direction_in_action:
+                                  type: str
+                                  valid_values:
+                                  - deny
+                                  - deny-in-out
+                                  - permit
+                                direction_out_action:
+                                  type: str
+                                  valid_values:
+                                  - deny
+                                  - deny-in-out
+                                  - permit
+                            additional_paths:
+                              type: list
+                              items:
+                                type: str
+                        activate:
+                          type: bool
+            neighbor_interfaces:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Interface name
+                  remote_as:
+                    type: str
+                    description: BGP AS <1-4294967295> or AS number in asdot notation
+                      <1-65535>.<0-65535>
+                    convert_types:
+                    - int
+                  peer_group:
+                    type: str
+                    description: Peer-group name
+                  peer_filter:
+                    type: str
+                    description: Peer-filter name
+                  description:
+                    type: str
             redistribute_routes:
               type: list
               primary_key: source_protocol
@@ -4962,7 +5243,7 @@ keys:
                 keys:
                   prefix:
                     type: str
-                    description: Aggregate Address/Mask
+                    description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   advertise_only:
                     type: bool
                   as_set:
@@ -4972,26 +5253,6 @@ keys:
                   attribute_map:
                     type: str
                   match_map:
-                    type: str
-            neighbor_interfaces:
-              type: list
-              primary_key: name
-              convert_types:
-              - dict
-              items:
-                type: dict
-                keys:
-                  name:
-                    type: str
-                  remote_as:
-                    type: str
-                    convert_types:
-                    - int
-                  peer_group:
-                    type: str
-                  peer_filter:
-                    type: str
-                  description:
                     type: str
             address_families:
               type: list
@@ -5039,10 +5300,10 @@ keys:
                           type: bool
                         route_map_in:
                           type: str
-                          description: Route-Map Name
+                          description: Inbound route-map name
                         route_map_out:
                           type: str
-                          description: Route-Map Name
+                          description: Outbound route-map name
                   peer_groups:
                     type: list
                     primary_key: name
@@ -5053,6 +5314,7 @@ keys:
                       keys:
                         name:
                           type: str
+                          description: Peer-group name
                         activate:
                           type: bool
                         next_hop:
@@ -5070,164 +5332,13 @@ keys:
                       keys:
                         prefix:
                           type: str
+                          description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                         route_map:
                           type: str
             eos_cli:
               type: str
-              description: 'Multiline EOS CLI rendered directly on the Router BGP,
+              description: Multiline EOS CLI rendered directly on the Router BGP,
                 VRF definition in the final EOS configuration
-
-                '
-            neighbors:
-              type: list
-              primary_key: ip_address
-              convert_types:
-              - dict
-              items:
-                type: dict
-                keys:
-                  ip_address:
-                    type: str
-                  peer_group:
-                    type: str
-                  remote_as:
-                    type: str
-                    convert_types:
-                    - int
-                  password:
-                    type: str
-                  local_as:
-                    type: int
-                    convert_types:
-                    - str
-                  description:
-                    type: str
-                  shutdown:
-                    type: bool
-                  update_source:
-                    type: str
-                  bfd:
-                    type: bool
-                  weight:
-                    type: int
-                    convert_types:
-                    - str
-                  timers:
-                    type: str
-                    description: Keep alive hold timer values
-                  route_map_in:
-                    type: str
-                    description: Inbound Route-Map
-                  route_map_out:
-                    type: str
-                    description: Outbound Route-Map
-                  default_originate:
-                    type: dict
-                    keys:
-                      enabled:
-                        type: bool
-                      always:
-                        type: bool
-                      route_map:
-                        type: str
-                  send_community:
-                    type: str
-                    description: Key only used for documentation or validation purposes
-                  maximum_routes:
-                    type: int
-                    convert_types:
-                    - str
-                  maximum_routes_warning_limit:
-                    type: str
-                    convert_types:
-                    - int
-                    description: Key only used for documentation or validation purposes
-                  maximum_routes_warning_only:
-                    type: bool
-                  allowas_in:
-                    type: dict
-                    keys:
-                      enabled:
-                        type: bool
-                      times:
-                        type: int
-                        convert_types:
-                        - str
-                        min: 1
-                        max: 10
-                  ebgp_multihop:
-                    type: int
-                    convert_types:
-                    - str
-                  next_hop_self:
-                    type: bool
-                  prefix_list_in:
-                    type: str
-                    description: Prefix List Name
-                  prefix_list_out:
-                    type: str
-                    description: Prefix List Name
-                  rib_in_pre_policy_retain:
-                    type: dict
-                    keys:
-                      enabled:
-                        type: bool
-                      all:
-                        type: bool
-                  remove_private_as:
-                    type: dict
-                    description: Remove private AS numbers in outbound AS path
-                    keys:
-                      enabled:
-                        type: bool
-                      all:
-                        type: bool
-                      replace_as:
-                        type: bool
-                      ingress:
-                        type: bool
-                  remove_private_as_ingress:
-                    type: dict
-                    keys:
-                      enabled:
-                        type: bool
-                      replace_as:
-                        type: bool
-                  address_families:
-                    type: list
-                    description: Key only used for documentation or validation purposes
-                    primary_key: address_family
-                    convert_types:
-                    - dict
-                    items:
-                      type: dict
-                      keys:
-                        address_family:
-                          type: str
-                        bgp:
-                          type: dict
-                          keys:
-                            missing_policy:
-                              type: dict
-                              keys:
-                                direction_in_action:
-                                  type: str
-                                  valid_values:
-                                  - deny
-                                  - deny-in-out
-                                  - permit
-                                direction_out_action:
-                                  type: str
-                                  valid_values:
-                                  - deny
-                                  - deny-in-out
-                                  - permit
-                            additional_paths:
-                              type: list
-                              items:
-                                type: str
-                        activate:
-                          type: bool
   router_general:
     type: dict
     display_name: Router General configuration

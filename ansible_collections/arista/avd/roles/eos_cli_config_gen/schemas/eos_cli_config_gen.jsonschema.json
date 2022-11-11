@@ -5359,10 +5359,12 @@
       "properties": {
         "as": {
           "type": "string",
+          "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
           "title": "As"
         },
         "router_id": {
           "type": "string",
+          "description": "in IP address format A.B.C.D",
           "title": "Router ID"
         },
         "distance": {
@@ -5426,6 +5428,7 @@
         },
         "bgp_cluster_id": {
           "type": "string",
+          "description": "IP Address A.B.C.D",
           "title": "BGP Cluster ID"
         },
         "bgp_defaults": {
@@ -5461,7 +5464,7 @@
             "properties": {
               "prefix": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes",
+                "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
                 "title": "Prefix"
               },
               "peer_id_include_router_id": {
@@ -5471,16 +5474,17 @@
               },
               "peer_group": {
                 "type": "string",
+                "description": "Peer group name",
                 "title": "Peer Group"
               },
               "peer_filter": {
                 "type": "string",
-                "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n",
+                "description": "Peer-filter name\nnote: `peer_filter` or `remote_as` is required but mutually exclusive.\nIf both are defined, `peer_filter` takes precedence\n",
                 "title": "Peer Filter"
               },
               "remote_as": {
                 "type": "string",
-                "description": "Remote ASN in plain or dot notation",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Remote As"
               }
             },
@@ -5495,6 +5499,7 @@
             "properties": {
               "name": {
                 "type": "string",
+                "description": "Peer-group name",
                 "title": "Name"
               },
               "type": {
@@ -5504,10 +5509,12 @@
               },
               "remote_as": {
                 "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Remote As"
               },
               "local_as": {
-                "type": "integer",
+                "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Local As"
               },
               "description": {
@@ -5555,6 +5562,7 @@
               },
               "peer_filter": {
                 "type": "string",
+                "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
                 "title": "Peer Filter"
               },
               "next_hop_unchanged": {
@@ -5563,6 +5571,7 @@
               },
               "update_source": {
                 "type": "string",
+                "description": "IP address or interface name",
                 "title": "Update Source"
               },
               "route_reflector_client": {
@@ -5575,6 +5584,9 @@
               },
               "ebgp_multihop": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "description": "Time-to-live in range of hops",
                 "title": "Ebgp Multihop"
               },
               "next_hop_self": {
@@ -5598,6 +5610,7 @@
                   },
                   "route_map": {
                     "type": "string",
+                    "description": "Route-map name",
                     "title": "Route Map"
                   }
                 },
@@ -5606,16 +5619,19 @@
               },
               "send_community": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes",
+                "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
                 "title": "Send Community"
               },
               "maximum_routes": {
                 "type": "integer",
+                "description": "Maximum number of routes (0 means unlimited)",
+                "minimum": 0,
+                "maximum": 4294967294,
                 "title": "Maximum Routes"
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes",
+                "description": "Maximum number of routes after which a warning is issued (0 means never warn)\nPercentage of maximum number of routes at which to warn (1-100)\n",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5631,7 +5647,7 @@
                   },
                   "default": {
                     "type": "string",
-                    "description": "nn.nn(K|M|G) Link speed in bits/second",
+                    "description": "nn.nn(K|M|G) link speed in bits/second",
                     "title": "Default"
                   }
                 },
@@ -5647,6 +5663,7 @@
                   },
                   "times": {
                     "type": "integer",
+                    "description": "Number of local ASNs allowed in a BGP update",
                     "minimum": 1,
                     "maximum": 10,
                     "title": "Times"
@@ -5657,11 +5674,13 @@
               },
               "weight": {
                 "type": "integer",
+                "minimum": 0,
+                "maximum": 65535,
                 "title": "Weight"
               },
               "timers": {
                 "type": "string",
-                "description": "Keep alive hold timer values",
+                "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
                 "title": "Timers"
               },
               "rib_in_pre_policy_retain": {
@@ -5681,34 +5700,18 @@
               },
               "route_map_in": {
                 "type": "string",
-                "description": "Inbound Route-Map",
+                "description": "Inbound route-map name",
                 "title": "Route Map In"
               },
               "route_map_out": {
                 "type": "string",
-                "description": "Outbound Route-Map",
+                "description": "Outbound route-map name",
                 "title": "Route Map Out"
               },
               "bgp_listen_range_prefix": {
                 "type": "string",
-                "description": "IP Prefix Range",
+                "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
                 "title": "BGP Listen Range Prefix"
-              },
-              "struct_cfg": {
-                "type": "object",
-                "description": "Key only used for documentation or validation purposes",
-                "properties": {
-                  "description": {
-                    "type": "string",
-                    "title": "Description"
-                  }
-                },
-                "additionalProperties": false,
-                "title": "Struct Cfg"
-              },
-              "set_ipv4_next_hop": {
-                "type": "string",
-                "title": "Set IPv4 Next Hop"
               }
             },
             "additionalProperties": false,
@@ -5733,10 +5736,12 @@
               },
               "remote_as": {
                 "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Remote As"
               },
               "local_as": {
-                "type": "integer",
+                "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Local As"
               },
               "description": {
@@ -5757,21 +5762,23 @@
               },
               "weight": {
                 "type": "integer",
+                "minimum": 0,
+                "maximum": 65535,
                 "title": "Weight"
               },
               "timers": {
                 "type": "string",
-                "description": "Keep alive hold timer values",
+                "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
                 "title": "Timers"
               },
               "route_map_in": {
                 "type": "string",
-                "description": "Inbound Route-Map",
+                "description": "Inbound route-map name",
                 "title": "Route Map In"
               },
               "route_map_out": {
                 "type": "string",
-                "description": "Outbound Route-Map",
+                "description": "Outbound route-map name",
                 "title": "Route Map Out"
               },
               "default_originate": {
@@ -5795,16 +5802,19 @@
               },
               "send_community": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes",
+                "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
                 "title": "Send Community"
               },
               "maximum_routes": {
                 "type": "integer",
+                "description": "Maximum number of routes (0 means unlimited)",
+                "minimum": 0,
+                "maximum": 4294967294,
                 "title": "Maximum Routes"
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes",
+                "description": "Maximum number of routes after which a warning is issued (0 means never warn)\nPercentage of maximum number of routes at which to warn (1-100)\n",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5830,6 +5840,9 @@
               },
               "ebgp_multihop": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "description": "Time-to-live in range of hops",
                 "title": "Ebgp Multihop"
               },
               "next_hop_self": {
@@ -5845,7 +5858,7 @@
                   },
                   "default": {
                     "type": "string",
-                    "description": "Link speed in bits/second",
+                    "description": "nn.nn(K|M|G) link speed in bits/second",
                     "title": "Default"
                   }
                 },
@@ -5917,6 +5930,7 @@
             "properties": {
               "name": {
                 "type": "string",
+                "description": "Interface name",
                 "title": "Name"
               },
               "remote_as": {
@@ -5925,6 +5939,7 @@
               },
               "peer_group": {
                 "type": "string",
+                "default": "Peer-group name",
                 "title": "Peer Group"
               },
               "description": {
@@ -5933,6 +5948,7 @@
               },
               "peer_filter": {
                 "type": "string",
+                "description": "Peer-filter name",
                 "title": "Peer Filter"
               }
             },
@@ -5950,7 +5966,7 @@
             "properties": {
               "prefix": {
                 "type": "string",
-                "description": "Aggregate Address/Mask",
+                "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
                 "title": "Prefix"
               },
               "advertise_only": {
@@ -5967,10 +5983,12 @@
               },
               "attribute_map": {
                 "type": "string",
+                "description": "Route-map name",
                 "title": "Attribute Map"
               },
               "match_map": {
                 "type": "string",
+                "description": "Route-map name",
                 "title": "Match Map"
               }
             },
@@ -6009,17 +6027,21 @@
             "properties": {
               "name": {
                 "type": "string",
+                "description": "VLAN aware bundle name",
                 "title": "Name"
               },
               "tenant": {
                 "type": "string",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Tenant"
               },
               "description": {
                 "type": "string",
+                "description": "Key only used for documentation or validation purposes",
                 "title": "Description"
               },
               "rd": {
+                "description": "Route distinguisher",
                 "type": "string",
                 "title": "Rd"
               },
@@ -6145,6 +6167,7 @@
               },
               "no_redistribute_routes": {
                 "type": "array",
+                "description": "host-route",
                 "items": {
                   "type": "string"
                 },
@@ -6177,6 +6200,7 @@
                 "title": "Tenant"
               },
               "rd": {
+                "description": "Route distinguisher",
                 "type": "string",
                 "title": "Rd"
               },
@@ -6203,21 +6227,6 @@
                 "type": "string",
                 "description": "Key only used for documentation or validation purposes",
                 "title": "EOS CLI"
-              },
-              "struct_cfg": {
-                "type": "object",
-                "description": "Key only used for documentation or validation purposes",
-                "properties": {
-                  "redistribute_routes": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "title": "Redistribute Routes"
-                  }
-                },
-                "additionalProperties": false,
-                "title": "Struct Cfg"
               },
               "route_targets": {
                 "type": "object",
@@ -6322,6 +6331,7 @@
               },
               "no_redistribute_routes": {
                 "type": "array",
+                "description": "host-route",
                 "items": {
                   "type": "string"
                 },
@@ -6342,9 +6352,11 @@
             "properties": {
               "name": {
                 "type": "string",
+                "description": "vpws instance name",
                 "title": "Name"
               },
               "rd": {
+                "description": "Route distinguisher",
                 "type": "string",
                 "title": "Rd"
               },
@@ -6380,6 +6392,7 @@
                   "properties": {
                     "name": {
                       "type": "string",
+                      "description": "pseudowire name",
                       "title": "Name"
                     },
                     "id_local": {
@@ -6427,6 +6440,7 @@
                   "title": "Encapsulation"
                 },
                 "next_hop_self_source_interface": {
+                  "description": "Source interface name",
                   "type": "string",
                   "title": "Next Hop Self Source Interface"
                 },
@@ -6456,6 +6470,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -6464,12 +6479,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   },
                   "domain_remote": {
@@ -6493,17 +6508,23 @@
                 },
                 "window": {
                   "type": "integer",
-                  "description": "Time in seconds",
+                  "description": "Time (in seconds) to detect a MAC duplication issue",
+                  "minimum": 0,
+                  "maximum": 4294967295,
                   "title": "Window"
                 },
                 "threshold": {
                   "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295,
                   "description": "Minimum number of MAC moves that indicate a MAC Duplication issue",
                   "title": "Threshold"
                 },
                 "expiry_timeout": {
                   "type": "integer",
-                  "description": "Timeout in seconds",
+                  "minimum": 0,
+                  "maximum": 4294967295,
+                  "description": "Time (in seconds) to purge a MAC duplication issue",
                   "title": "Expiry Timeout"
                 }
               },
@@ -6515,7 +6536,9 @@
               "properties": {
                 "import_match_failure_action": {
                   "type": "string",
-                  "description": "Example: \"discard\"\n",
+                  "enum": [
+                    "discard"
+                  ],
                   "title": "Import Match Failure Action"
                 }
               },
@@ -6536,6 +6559,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -6578,10 +6602,12 @@
                 "type": "object",
                 "properties": {
                   "prefix": {
+                    "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
                     "type": "string",
                     "title": "Prefix"
                   },
                   "route_map": {
+                    "description": "Route-map name",
                     "type": "string",
                     "title": "Route Map"
                   }
@@ -6600,6 +6626,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -6608,12 +6635,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   },
                   "default_originate": {
@@ -6624,6 +6651,7 @@
                         "title": "Always"
                       },
                       "route_map": {
+                        "description": "Route-map name",
                         "type": "string",
                         "title": "Route Map"
                       }
@@ -6644,12 +6672,12 @@
                   },
                   "prefix_list_in": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Inbound prefix-list name",
                     "title": "Prefix List In"
                   },
                   "prefix_list_out": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Outbound prefix-list name",
                     "title": "Prefix List Out"
                   }
                 },
@@ -6675,22 +6703,22 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   },
                   "prefix_list_in": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Inbound prefix-list name",
                     "title": "Prefix List In"
                   },
                   "prefix_list_out": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Prefix-list name",
                     "title": "Prefix List Out"
                   },
                   "default_originate": {
@@ -6730,6 +6758,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -6738,12 +6767,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   }
                 },
@@ -6769,12 +6798,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   }
                 },
@@ -6819,10 +6848,12 @@
                 "type": "object",
                 "properties": {
                   "prefix": {
+                    "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
                     "type": "string",
                     "title": "Prefix"
                   },
                   "route_map": {
+                    "description": "Route-map name",
                     "type": "string",
                     "title": "Route Map"
                   }
@@ -6841,6 +6872,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -6849,22 +6881,22 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   },
                   "prefix_list_in": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Inbound prefix-list name",
                     "title": "Prefix List In"
                   },
                   "prefix_list_out": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Outbound prefix-list name",
                     "title": "Prefix List Out"
                   }
                 },
@@ -6890,22 +6922,22 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   },
                   "prefix_list_in": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Inbound prefix-list name",
                     "title": "Prefix List In"
                   },
                   "prefix_list_out": {
                     "type": "string",
-                    "description": "Prefix List Name",
+                    "description": "Outbound prefix-list name",
                     "title": "Prefix List Out"
                   }
                 },
@@ -6955,6 +6987,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -6963,12 +6996,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   }
                 },
@@ -6984,7 +7017,9 @@
               "properties": {
                 "import_match_failure_action": {
                   "type": "string",
-                  "description": "Example: \"discard\"\n",
+                  "enum": [
+                    "discard"
+                  ],
                   "title": "Import Match Failure Action"
                 }
               },
@@ -7006,12 +7041,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   }
                 },
@@ -7051,6 +7086,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "Peer-group name",
                     "title": "Name"
                   },
                   "activate": {
@@ -7059,12 +7095,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   }
                 },
@@ -7080,7 +7116,9 @@
               "properties": {
                 "import_match_failure_action": {
                   "type": "string",
-                  "description": "Example: \"discard\"\n",
+                  "enum": [
+                    "discard"
+                  ],
                   "title": "Import Match Failure Action"
                 }
               },
@@ -7102,12 +7140,12 @@
                   },
                   "route_map_in": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Inbound route-map name",
                     "title": "Route Map In"
                   },
                   "route_map_out": {
                     "type": "string",
-                    "description": "Route-Map Name",
+                    "description": "Outbound route-map name",
                     "title": "Route Map Out"
                   }
                 },
@@ -7140,10 +7178,12 @@
             "properties": {
               "name": {
                 "type": "string",
+                "description": "VRF name",
                 "title": "Name"
               },
               "rd": {
                 "type": "string",
+                "description": "Route distinguisher",
                 "title": "Rd"
               },
               "evpn_multicast": {
@@ -7206,12 +7246,13 @@
                 "title": "Route Targets"
               },
               "router_id": {
+                "description": "in IP address format A.B.C.D",
                 "type": "string",
                 "title": "Router ID"
               },
               "timers": {
                 "type": "string",
-                "description": "Keep alive hold timer values",
+                "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
                 "title": "Timers"
               },
               "networks": {
@@ -7221,6 +7262,7 @@
                   "properties": {
                     "prefix": {
                       "type": "string",
+                      "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
                       "title": "Prefix"
                     },
                     "route_map": {
@@ -7243,7 +7285,7 @@
                   "properties": {
                     "prefix": {
                       "type": "string",
-                      "description": "Key only used for documentation or validation purposes",
+                      "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
                       "title": "Prefix"
                     },
                     "peer_id_include_router_id": {
@@ -7253,259 +7295,23 @@
                     },
                     "peer_group": {
                       "type": "string",
+                      "description": "Peer-group name",
                       "title": "Peer Group"
                     },
                     "peer_filter": {
                       "type": "string",
-                      "description": "peer_filter or remote_as is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n",
+                      "description": "Peer-filter name\nnote: `peer_filter`` or `remote_as` is required but mutually exclusive.\nIf both are defined, peer_filter takes precedence\n",
                       "title": "Peer Filter"
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "Remote ASN in plain or dot notation",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                       "title": "Remote As"
                     }
                   },
                   "additionalProperties": false
                 },
                 "title": "Listen Ranges"
-              },
-              "redistribute_routes": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "source_protocol": {
-                      "type": "string",
-                      "title": "Source Protocol"
-                    },
-                    "route_map": {
-                      "type": "string",
-                      "title": "Route Map"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "source_protocol"
-                  ]
-                },
-                "title": "Redistribute Routes"
-              },
-              "aggregate_addresses": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "prefix": {
-                      "type": "string",
-                      "description": "Aggregate Address/Mask",
-                      "title": "Prefix"
-                    },
-                    "advertise_only": {
-                      "type": "boolean",
-                      "title": "Advertise Only"
-                    },
-                    "as_set": {
-                      "type": "boolean",
-                      "title": "As Set"
-                    },
-                    "summary_only": {
-                      "type": "boolean",
-                      "title": "Summary Only"
-                    },
-                    "attribute_map": {
-                      "type": "string",
-                      "title": "Attribute Map"
-                    },
-                    "match_map": {
-                      "type": "string",
-                      "title": "Match Map"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "prefix"
-                  ]
-                },
-                "title": "Aggregate Addresses"
-              },
-              "neighbor_interfaces": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "title": "Name"
-                    },
-                    "remote_as": {
-                      "type": "string",
-                      "title": "Remote As"
-                    },
-                    "peer_group": {
-                      "type": "string",
-                      "title": "Peer Group"
-                    },
-                    "peer_filter": {
-                      "type": "string",
-                      "title": "Peer Filter"
-                    },
-                    "description": {
-                      "type": "string",
-                      "title": "Description"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "name"
-                  ]
-                },
-                "title": "Neighbor Interfaces"
-              },
-              "address_families": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "address_family": {
-                      "type": "string",
-                      "title": "Address Family"
-                    },
-                    "bgp": {
-                      "type": "object",
-                      "properties": {
-                        "missing_policy": {
-                          "type": "object",
-                          "properties": {
-                            "direction_in_action": {
-                              "type": "string",
-                              "enum": [
-                                "deny",
-                                "deny-in-out",
-                                "permit"
-                              ],
-                              "title": "Direction In Action"
-                            },
-                            "direction_out_action": {
-                              "type": "string",
-                              "enum": [
-                                "deny",
-                                "deny-in-out",
-                                "permit"
-                              ],
-                              "title": "Direction Out Action"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "title": "Missing Policy"
-                        },
-                        "additional_paths": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "title": "Additional Paths"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "title": "BGP"
-                    },
-                    "neighbors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "ip_address": {
-                            "type": "string",
-                            "title": "IP Address"
-                          },
-                          "activate": {
-                            "type": "boolean",
-                            "title": "Activate"
-                          },
-                          "route_map_in": {
-                            "type": "string",
-                            "description": "Route-Map Name",
-                            "title": "Route Map In"
-                          },
-                          "route_map_out": {
-                            "type": "string",
-                            "description": "Route-Map Name",
-                            "title": "Route Map Out"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "required": [
-                          "ip_address"
-                        ]
-                      },
-                      "title": "Neighbors"
-                    },
-                    "peer_groups": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "title": "Name"
-                          },
-                          "activate": {
-                            "type": "boolean",
-                            "title": "Activate"
-                          },
-                          "next_hop": {
-                            "type": "object",
-                            "properties": {
-                              "address_family_ipv6_originate": {
-                                "type": "boolean",
-                                "title": "Address Family IPv6 Originate"
-                              }
-                            },
-                            "additionalProperties": false,
-                            "title": "Next Hop"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "required": [
-                          "name"
-                        ]
-                      },
-                      "title": "Peer Groups"
-                    },
-                    "networks": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "prefix": {
-                            "type": "string",
-                            "title": "Prefix"
-                          },
-                          "route_map": {
-                            "type": "string",
-                            "title": "Route Map"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "required": [
-                          "prefix"
-                        ]
-                      },
-                      "title": "Networks"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "address_family"
-                  ]
-                },
-                "title": "Address Families"
-              },
-              "eos_cli": {
-                "type": "string",
-                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration\n",
-                "title": "EOS CLI"
               },
               "neighbors": {
                 "type": "array",
@@ -7518,141 +7324,17 @@
                     },
                     "peer_group": {
                       "type": "string",
+                      "description": "Peer-group name",
                       "title": "Peer Group"
                     },
                     "remote_as": {
                       "type": "string",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                       "title": "Remote As"
                     },
                     "password": {
                       "type": "string",
                       "title": "Password"
-                    },
-                    "local_as": {
-                      "type": "integer",
-                      "title": "Local As"
-                    },
-                    "description": {
-                      "type": "string",
-                      "title": "Description"
-                    },
-                    "shutdown": {
-                      "type": "boolean",
-                      "title": "Shutdown"
-                    },
-                    "update_source": {
-                      "type": "string",
-                      "title": "Update Source"
-                    },
-                    "bfd": {
-                      "type": "boolean",
-                      "title": "BFD"
-                    },
-                    "weight": {
-                      "type": "integer",
-                      "title": "Weight"
-                    },
-                    "timers": {
-                      "type": "string",
-                      "description": "Keep alive hold timer values",
-                      "title": "Timers"
-                    },
-                    "route_map_in": {
-                      "type": "string",
-                      "description": "Inbound Route-Map",
-                      "title": "Route Map In"
-                    },
-                    "route_map_out": {
-                      "type": "string",
-                      "description": "Outbound Route-Map",
-                      "title": "Route Map Out"
-                    },
-                    "default_originate": {
-                      "type": "object",
-                      "properties": {
-                        "enabled": {
-                          "type": "boolean",
-                          "title": "Enabled"
-                        },
-                        "always": {
-                          "type": "boolean",
-                          "title": "Always"
-                        },
-                        "route_map": {
-                          "type": "string",
-                          "title": "Route Map"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "title": "Default Originate"
-                    },
-                    "send_community": {
-                      "type": "string",
-                      "description": "Key only used for documentation or validation purposes",
-                      "title": "Send Community"
-                    },
-                    "maximum_routes": {
-                      "type": "integer",
-                      "title": "Maximum Routes"
-                    },
-                    "maximum_routes_warning_limit": {
-                      "type": "string",
-                      "description": "Key only used for documentation or validation purposes",
-                      "title": "Maximum Routes Warning Limit"
-                    },
-                    "maximum_routes_warning_only": {
-                      "type": "boolean",
-                      "title": "Maximum Routes Warning Only"
-                    },
-                    "allowas_in": {
-                      "type": "object",
-                      "properties": {
-                        "enabled": {
-                          "type": "boolean",
-                          "title": "Enabled"
-                        },
-                        "times": {
-                          "type": "integer",
-                          "minimum": 1,
-                          "maximum": 10,
-                          "title": "Times"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "title": "Allowas In"
-                    },
-                    "ebgp_multihop": {
-                      "type": "integer",
-                      "title": "Ebgp Multihop"
-                    },
-                    "next_hop_self": {
-                      "type": "boolean",
-                      "title": "Next Hop Self"
-                    },
-                    "prefix_list_in": {
-                      "type": "string",
-                      "description": "Prefix List Name",
-                      "title": "Prefix List In"
-                    },
-                    "prefix_list_out": {
-                      "type": "string",
-                      "description": "Prefix List Name",
-                      "title": "Prefix List Out"
-                    },
-                    "rib_in_pre_policy_retain": {
-                      "type": "object",
-                      "properties": {
-                        "enabled": {
-                          "type": "boolean",
-                          "title": "Enabled"
-                        },
-                        "all": {
-                          "type": "boolean",
-                          "title": "All"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "title": "Rib In Pre Policy Retain"
                     },
                     "remove_private_as": {
                       "type": "object",
@@ -7692,6 +7374,145 @@
                       },
                       "additionalProperties": false,
                       "title": "Remove Private As Ingress"
+                    },
+                    "weight": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 65535,
+                      "title": "Weight"
+                    },
+                    "local_as": {
+                      "type": "string",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "title": "Local As"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "Description"
+                    },
+                    "ebgp_multihop": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "description": "Time-to-live in range of hops",
+                      "title": "Ebgp Multihop"
+                    },
+                    "next_hop_self": {
+                      "type": "boolean",
+                      "title": "Next Hop Self"
+                    },
+                    "shutdown": {
+                      "type": "boolean",
+                      "title": "Shutdown"
+                    },
+                    "bfd": {
+                      "type": "boolean",
+                      "title": "BFD"
+                    },
+                    "timers": {
+                      "type": "string",
+                      "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
+                      "title": "Timers"
+                    },
+                    "rib_in_pre_policy_retain": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "all": {
+                          "type": "boolean",
+                          "title": "All"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Rib In Pre Policy Retain"
+                    },
+                    "send_community": {
+                      "type": "string",
+                      "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
+                      "enum": [
+                        "all",
+                        "extended",
+                        "large",
+                        "link-bandwidth",
+                        "standard"
+                      ],
+                      "title": "Send Community"
+                    },
+                    "maximum_routes": {
+                      "type": "integer",
+                      "title": "Maximum Routes"
+                    },
+                    "maximum_routes_warning_limit": {
+                      "type": "string",
+                      "description": "Maximum number of routes after which a warning is issued (0 means never warn)\nPercentage of maximum number of routes at which to warn (1-100)\n",
+                      "title": "Maximum Routes Warning Limit"
+                    },
+                    "maximum_routes_warning_only": {
+                      "type": "boolean",
+                      "title": "Maximum Routes Warning Only"
+                    },
+                    "allowas_in": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "times": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 10,
+                          "title": "Times"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Allowas In"
+                    },
+                    "default_originate": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "always": {
+                          "type": "boolean",
+                          "title": "Always"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Default Originate"
+                    },
+                    "update_source": {
+                      "type": "string",
+                      "title": "Update Source"
+                    },
+                    "route_map_in": {
+                      "type": "string",
+                      "description": "Inbound route-map name",
+                      "title": "Route Map In"
+                    },
+                    "route_map_out": {
+                      "type": "string",
+                      "description": "Outbound route-map name",
+                      "title": "Route Map Out"
+                    },
+                    "prefix_list_in": {
+                      "type": "string",
+                      "description": "Inbound prefix-list name",
+                      "title": "Prefix List In"
+                    },
+                    "prefix_list_out": {
+                      "type": "string",
+                      "description": "Outbound prefix-list name",
+                      "title": "Prefix List Out"
                     },
                     "address_families": {
                       "type": "array",
@@ -7761,6 +7582,249 @@
                   ]
                 },
                 "title": "Neighbors"
+              },
+              "neighbor_interfaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name",
+                      "title": "Name"
+                    },
+                    "remote_as": {
+                      "type": "string",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "title": "Remote As"
+                    },
+                    "peer_group": {
+                      "type": "string",
+                      "description": "Peer-group name",
+                      "title": "Peer Group"
+                    },
+                    "peer_filter": {
+                      "type": "string",
+                      "description": "Peer-filter name",
+                      "title": "Peer Filter"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "Description"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Neighbor Interfaces"
+              },
+              "redistribute_routes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source_protocol": {
+                      "type": "string",
+                      "title": "Source Protocol"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "title": "Route Map"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "source_protocol"
+                  ]
+                },
+                "title": "Redistribute Routes"
+              },
+              "aggregate_addresses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                      "title": "Prefix"
+                    },
+                    "advertise_only": {
+                      "type": "boolean",
+                      "title": "Advertise Only"
+                    },
+                    "as_set": {
+                      "type": "boolean",
+                      "title": "As Set"
+                    },
+                    "summary_only": {
+                      "type": "boolean",
+                      "title": "Summary Only"
+                    },
+                    "attribute_map": {
+                      "type": "string",
+                      "title": "Attribute Map"
+                    },
+                    "match_map": {
+                      "type": "string",
+                      "title": "Match Map"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "prefix"
+                  ]
+                },
+                "title": "Aggregate Addresses"
+              },
+              "address_families": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address_family": {
+                      "type": "string",
+                      "title": "Address Family"
+                    },
+                    "bgp": {
+                      "type": "object",
+                      "properties": {
+                        "missing_policy": {
+                          "type": "object",
+                          "properties": {
+                            "direction_in_action": {
+                              "type": "string",
+                              "enum": [
+                                "deny",
+                                "deny-in-out",
+                                "permit"
+                              ],
+                              "title": "Direction In Action"
+                            },
+                            "direction_out_action": {
+                              "type": "string",
+                              "enum": [
+                                "deny",
+                                "deny-in-out",
+                                "permit"
+                              ],
+                              "title": "Direction Out Action"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "title": "Missing Policy"
+                        },
+                        "additional_paths": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Additional Paths"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "BGP"
+                    },
+                    "neighbors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ip_address": {
+                            "type": "string",
+                            "title": "IP Address"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "route_map_in": {
+                            "type": "string",
+                            "description": "Inbound route-map name",
+                            "title": "Route Map In"
+                          },
+                          "route_map_out": {
+                            "type": "string",
+                            "description": "Outbound route-map name",
+                            "title": "Route Map Out"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "required": [
+                          "ip_address"
+                        ]
+                      },
+                      "title": "Neighbors"
+                    },
+                    "peer_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Peer-group name",
+                            "title": "Name"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "next_hop": {
+                            "type": "object",
+                            "properties": {
+                              "address_family_ipv6_originate": {
+                                "type": "boolean",
+                                "title": "Address Family IPv6 Originate"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "title": "Next Hop"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Peer Groups"
+                    },
+                    "networks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "prefix": {
+                            "type": "string",
+                            "description": "IPv4 prefix \"A.B.C.D/E\" or IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                            "title": "Prefix"
+                          },
+                          "route_map": {
+                            "type": "string",
+                            "title": "Route Map"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "required": [
+                          "prefix"
+                        ]
+                      },
+                      "title": "Networks"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "address_family"
+                  ]
+                },
+                "title": "Address Families"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
