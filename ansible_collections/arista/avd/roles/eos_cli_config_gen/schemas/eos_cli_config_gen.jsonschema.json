@@ -4494,12 +4494,6 @@
       "additionalProperties": false,
       "title": "Name Server"
     },
-<<<<<<< HEAD
-    "patch_panel": {
-      "type": "object",
-      "properties": {
-        "patches": {
-=======
     "ntp": {
       "type": "object",
       "properties": {
@@ -4507,19 +4501,145 @@
           "type": "object",
           "properties": {
             "name": {
-              "title": "Source Interface",
-              "type": "string"
+              "type": "string",
+              "description": "Source interface",
+              "title": "Name"
             },
             "vrf": {
               "type": "string",
-              "title": "VRF Name"
+              "description": "VRF name",
+              "title": "VRF"
             }
           },
           "additionalProperties": false,
           "title": "Local Interface"
         },
         "servers": {
->>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IP or hostname ex-2.2.2.55, ie.pool.ntp.org",
+                "title": "Name"
+              },
+              "burst": {
+                "type": "boolean",
+                "title": "Burst"
+              },
+              "iburst": {
+                "type": "boolean",
+                "title": "Iburst"
+              },
+              "key": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "Key"
+              },
+              "local_interface": {
+                "type": "string",
+                "description": "Source interface",
+                "title": "Local Interface"
+              },
+              "maxpoll": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 17,
+                "description": "Value of maxpoll betweeen 3 - 17 (Logarithmic)",
+                "title": "Maxpoll"
+              },
+              "minpoll": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 17,
+                "description": "Value of minpoll betweeen 3 - 17 (Logarithmic)",
+                "title": "Minpoll"
+              },
+              "preferred": {
+                "type": "boolean",
+                "title": "Preferred"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4,
+                "title": "Version"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Servers"
+        },
+        "authenticate": {
+          "type": "boolean",
+          "title": "Authenticate"
+        },
+        "authenticate_servers_only": {
+          "type": "boolean",
+          "title": "Authenticate Servers Only"
+        },
+        "authentication_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65534,
+                "description": "Key identifier",
+                "title": "ID"
+              },
+              "hash_algorithm": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha1"
+                ],
+                "title": "Hash Algorithm"
+              },
+              "key": {
+                "type": "string",
+                "description": "Obfuscated key",
+                "title": "Key"
+              },
+              "key_type": {
+                "type": "string",
+                "enum": [
+                  "0",
+                  "7",
+                  "8a"
+                ],
+                "title": "Key Type"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ]
+          },
+          "title": "Authentication Keys"
+        },
+        "trusted_keys": {
+          "type": "string",
+          "description": "List of trusted-keys as string ex. 10-12,15",
+          "title": "Trusted Keys"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Ntp"
+    },
+    "patch_panel": {
+      "type": "object",
+      "properties": {
+        "patches": {
           "type": "array",
           "items": {
             "type": "object",
@@ -4528,7 +4648,6 @@
                 "type": "string",
                 "title": "Name"
               },
-<<<<<<< HEAD
               "enabled": {
                 "type": "boolean",
                 "title": "Enabled"
@@ -4579,98 +4698,6 @@
       },
       "additionalProperties": false,
       "title": "Patch Panel"
-=======
-              "burst": {
-                "type": "boolean",
-                "title": "Burst"
-              },
-              "iburst": {
-                "type": "boolean",
-                "title": "Iburst"
-              },
-              "key": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 65535,
-                "title": "Key"
-              },
-              "local_interface": {
-                "type": "string",
-                "title": "Local Interface"
-              },
-              "maxpoll": {
-                "type": "integer",
-                "minimum": 3,
-                "maximum": 17,
-                "title": "Maxpoll"
-              },
-              "minpoll": {
-                "type": "integer",
-                "minimum": 3,
-                "maximum": 17,
-                "title": "Minpoll"
-              },
-              "preferred": {
-                "type": "boolean",
-                "title": "Preferred"
-              },
-              "version": {
-                "type": "integer",
-                "title": "Version"
-              },
-              "vrf": {
-                "type": "string",
-                "title": "VRF Name"
-              }
-            },
-            "additionalProperties": false
-          },
-          "title": "Servers"
-        },
-        "authenticate": {
-          "type": "boolean",
-          "title": "Authenticate"
-        },
-        "authenticate_servers_only": {
-          "type": "boolean",
-          "title": "Authenticate Servers Only"
-        },
-        "authentication_keys": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "title": "Key Identifier",
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 65534
-              },
-              "hash_algorithm": {
-                "type": "string",
-                "enum": [
-                  "md5",
-                  "sha1"
-                ],
-                "title": "Hash Algorithm"
-              },
-              "key": {
-                "type": "string",
-                "title": "Key"
-              }
-            },
-            "additionalProperties": false
-          },
-          "title": "Authentication Keys"
-        },
-        "trusted_keys": {
-          "type": "string",
-          "title": "Trusted Keys"
-        }
-      },
-      "additionalProperties": false,
-      "title": "Ntp"
->>>>>>> 354fbf33 (Feat(eos_cli_config_gen): Add schema for ntp)
     },
     "peer_filters": {
       "type": "array",
