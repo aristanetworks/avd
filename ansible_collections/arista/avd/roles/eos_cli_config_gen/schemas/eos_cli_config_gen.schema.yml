@@ -5104,12 +5104,6 @@ keys:
                     type: str
                     description: '''all'' or a combination of ''standard'', ''extended'',
                       ''large'' and ''link-bandwidth (w/options)'''
-                    valid_values:
-                    - all
-                    - extended
-                    - large
-                    - link-bandwidth
-                    - standard
                   maximum_routes:
                     type: int
                     convert_types:

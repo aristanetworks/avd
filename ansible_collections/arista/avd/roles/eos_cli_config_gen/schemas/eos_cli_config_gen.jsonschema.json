@@ -7432,13 +7432,6 @@
                     "send_community": {
                       "type": "string",
                       "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
-                      "enum": [
-                        "all",
-                        "extended",
-                        "large",
-                        "link-bandwidth",
-                        "standard"
-                      ],
                       "title": "Send Community"
                     },
                     "maximum_routes": {
