@@ -2,20 +2,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import cProfile
-import pstats
+from cProfile import Profile
+from pstats import Stats
 
 from ansible.errors import AnsibleActionFail
-from ansible.plugins.action import ActionBase
-from ansible.utils.display import Display
+from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, template
-
-VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug", "quiet"]
-VALID_VALIDATION_MODES = ["disabled", "error", "warning", "info", "debug"]
 
 
 class ActionModule(ActionBase):
@@ -28,7 +23,7 @@ class ActionModule(ActionBase):
 
         cprofile_file = self._task.args.get("cprofile_file")
         if cprofile_file:
-            profiler = cProfile.Profile()
+            profiler = Profile()
             profiler.enable()
 
         # Validate Arguments
@@ -45,17 +40,8 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The arguments 'template', 'dest' and 'schema' must be set")
 
-        self.conversion_mode = self._task.args.get("conversion_mode", "debug")
-        if not isinstance(self.conversion_mode, str):
-            raise AnsibleActionFail("The argument 'conversion_mode' must be a string")
-        if self.conversion_mode not in VALID_CONVERSION_MODES:
-            raise AnsibleActionFail(f"Invalid value '{self.conversion_mode}' for the argument 'conversion_mode'. Must be one of {VALID_CONVERSION_MODES}")
-
-        self.validation_mode = self._task.args.get("validation_mode", "warning")
-        if not isinstance(self.validation_mode, str):
-            raise AnsibleActionFail("The argument 'validation_mode' must be a string")
-        if self.validation_mode not in VALID_VALIDATION_MODES:
-            raise AnsibleActionFail(f"Invalid value '{self.validation_mode}' for the argument 'validation_mode'. Must be one of {VALID_VALIDATION_MODES}")
+        conversion_mode = self._task.args.get("conversion_mode")
+        validation_mode = self._task.args.get("validation_mode")
 
         self.add_md_toc = self._task.args.get("add_md_toc", False)
         if not isinstance(self.add_md_toc, bool):
@@ -66,28 +52,20 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail("The argument 'md_toc_skip_lines' must be an integer")
 
         # Build data from hostvars and role default vars
-        self.hostname = task_vars["inventory_hostname"]
+        hostname = task_vars["inventory_hostname"]
         self.data = self._templar.template(self._task._role.get_default_vars())
-        self.data.update(task_vars["hostvars"].get(self.hostname))
+        self.data.update(task_vars["hostvars"].get(hostname))
 
-        try:
-            self.avd_schema = AvdSchema(schema)
-        except Exception as e:
-            raise AnsibleActionFail("Invalid Schema supplied to the 'arista.avd.validate_and_template' plugin") from e
-
-        self.display = Display()
+        # Load schema tools
+        avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
 
         result_messages = []
 
         # Perform data conversions
-        if self.conversion_mode != "disabled":
-            self.convert_data(result_messages)
+        result_messages.extend(avdschematools.convert_data(self.data))
 
         # Perform validation
-        if self.validation_mode != "disabled":
-            valid = self.validate_data(result_messages)
-            if not valid and self.validation_mode == "error":
-                result["failed"] = True
+        result_messages.extend(avdschematools.validate_data(self.data))
 
         if result_messages:
             result["msg"] = " ".join(result_messages)
@@ -99,58 +77,10 @@ class ActionModule(ActionBase):
 
         if cprofile_file:
             profiler.disable()
-            stats = pstats.Stats(profiler).sort_stats("cumtime")
+            stats = Stats(profiler).sort_stats("cumtime")
             stats.dump_stats(cprofile_file)
 
         return result
-
-    def convert_data(self, result_messages):
-        """
-        Convert data according to the schema (convert_types)
-
-        The data conversion is done in-place (updating the original "data" dict).
-        """
-
-        # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
-        exceptions = self.avd_schema.convert(self.data)
-        conversion_counter = self.handle_exceptions(exceptions, self.conversion_mode)
-        if conversion_counter:
-            result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
-        return
-
-    def validate_data(self, result_messages):
-        """
-        Validate data according to the schema
-        """
-
-        # avd_schema.validate returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
-        exceptions = self.avd_schema.validate(self.data)
-        validation_counter = self.handle_exceptions(exceptions, self.validation_mode)
-        if validation_counter:
-            result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")
-            return False
-        return True
-
-    def handle_exceptions(self, exceptions, mode):
-        counter = 0
-        for exception in exceptions:
-            if not isinstance(exception, AristaAvdError):
-                continue
-
-            counter += 1
-            if mode == "quiet":
-                continue
-            message = f"[{self.hostname}]: {exception}"
-            if mode == "error":
-                self.display.error(message, False)
-            elif mode == "info":
-                self.display.display(message)
-            elif mode == "debug":
-                self.display.v(message)
-            else:
-                # mode == "warning"
-                self.display.warning(message, False)
-        return counter
 
     def template(self, task_vars):
         searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
