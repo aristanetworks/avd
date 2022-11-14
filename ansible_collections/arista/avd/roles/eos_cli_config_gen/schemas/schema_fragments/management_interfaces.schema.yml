@@ -45,4 +45,4 @@ keys:
           description: IPv6 address of default gateway in management VRF
         mac_address:
           type: str
-          description: MAC_address
+          description: MAC address
