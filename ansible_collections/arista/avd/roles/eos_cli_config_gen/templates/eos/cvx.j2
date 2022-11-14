@@ -7,6 +7,9 @@ cvx
 {%     elif cvx.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
+{%     for peer_hosts in cvx.peer_hosts | arista.avd.natural_sort %}
+   peer host {{ peer_hosts }}
+{%     endfor %}
 {%     if cvx.services is arista.avd.defined %}
 {%         if cvx.services.mcs is arista.avd.defined %}
    service mcs

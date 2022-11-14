@@ -746,6 +746,14 @@
           "type": "boolean",
           "title": "Shutdown"
         },
+        "peer_hosts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "IP address or hostname"
+          },
+          "title": "Peer Hosts"
+        },
         "services": {
           "type": "object",
           "properties": {

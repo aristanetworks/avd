@@ -483,6 +483,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>cvx</samp>](## "cvx") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;shutdown</samp>](## "cvx.shutdown") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;peer_hosts</samp>](## "cvx.peer_hosts") | List, items: String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvx.peer_hosts.[].&lt;str&gt;") | String |  |  |  | IP address or hostname |
 | [<samp>&nbsp;&nbsp;services</samp>](## "cvx.services") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mcs</samp>](## "cvx.services.mcs") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redis</samp>](## "cvx.services.mcs.redis") | Dictionary |  |  |  |  |
@@ -495,6 +497,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
 ```yaml
 cvx:
   shutdown: <bool>
+  peer_hosts:
+    - <str>
   services:
     mcs:
       redis:

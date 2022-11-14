@@ -63,6 +63,8 @@ CVX is enabled
 !
 cvx
    no shutdown
+   peer host 1.1.1.1
+   peer host 2.2.2.2
    service mcs
       redis password 7 070E334ddD1D18
       no shutdown
