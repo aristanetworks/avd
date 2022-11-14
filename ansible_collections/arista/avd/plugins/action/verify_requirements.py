@@ -1,182 +1,240 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
 import importlib.metadata
+import json
 import os
-import re
 import sys
+from subprocess import PIPE, Popen
 
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.module_utils.compat.importlib import import_module
-from ansible.plugins.action import ActionBase
-from ansible.utils.display import Display
+from ansible.plugins.action import ActionBase, display
+from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 
-HAS_PIP = True
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+
+HAS_PACKAGING = True
 try:
-    from pip._vendor.packaging.specifiers import SpecifierSet
+    from packaging.requirements import InvalidRequirement, Requirement
+    from packaging.specifiers import SpecifierSet
 except ImportError:
-    HAS_PIP = False
+    HAS_PACKAGING = False
 
 # Python >= 3.8
 MIN_PYTHON_SUPPORTED_VERSION = (3, 8)
-# Ansible >=2.11.3
-# TODO check if we can use meta/runtimes.yml
-ANSIBLE_SPECIFIERS = ">=2.11.3,<2.13.0"
-
-python_version_info = dict(
-    major=sys.version_info[0],
-    minor=sys.version_info[1],
-    micro=sys.version_info[2],
-    releaselevel=sys.version_info[3],
-    serial=sys.version_info[4],
-)
 
 
-class ActionModule(ActionBase):
-    def _validate_python_version(self, result):
-        """
-        TODO - avoid hardcoding this
-        """
-        if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
-            running_version = ".".join(str(v) for v in sys.version_info[:3])
-            min_version = ".".join(str(v) for v in MIN_PYTHON_SUPPORTED_VERSION)
-            Display().error(
-                f"Python Version running {running_version} - Minimum Version required is {min_version}",
-                False,
-            )
-            result["failed"] = True
-        result["python_version_info"] = python_version_info
-        result["python_path"] = sys.path
+def _validate_python_version(result) -> bool:
+    """
+    TODO - avoid hardcoding the min supported version
 
-    def _validate_python_dependencies(self, dependencies, result):
-        """
-        Validate python lib versions
-        """
-        dependencies_dict = {
-            "not_found": {},
-            "valid": {},
-            "mismatched": {},
-            "parsing_failed": [],
-        }
+    return False if the python version is not valid
+    """
+    result["python_version_info"] = {
+        "major": sys.version_info.major,
+        "minor": sys.version_info.minor,
+        "micro": sys.version_info.micro,
+        "releaselevel": sys.version_info.releaselevel,
+        "serial": sys.version_info.serial,
+    }
+    result["python_path"] = sys.path
 
-        # Can match this format
-        # requests [security] >=2.8.1, == 2.8.* ; python_version < "2.7"
-        req_re = re.compile(r"(^[a-zA-Z][a-zA-Z0-9_-]+) ?((?:\[[a-zA-Z0-9]+\])?) ?((?:(?:==|[!><~]=?) ?(?:[0-9.*]+),? ?)*)(?: ?; ?(.*))?$")
+    if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
+        running_version = ".".join(str(v) for v in sys.version_info[:3])
+        min_version = ".".join(str(v) for v in MIN_PYTHON_SUPPORTED_VERSION)
+        display.error(f"Python Version running {running_version} - Minimum Version required is {min_version}", False)
+        return False
 
-        for dep in dependencies:
-            match = req_re.match(dep)
-            if not match:
-                dependencies_dict["parsing_failed"].append(dep)
-                continue
-            pkg, label, specifiers_str, extra = match.groups()
-            specifiers_set = SpecifierSet(specifiers_str)
+    return True
 
-            try:
-                installed_version = importlib.metadata.version(pkg)
-                Display().vvvv(f"Found {pkg} {installed_version} installed!", False)
-            except importlib.metadata.PackageNotFoundError:
-                dependencies_dict["not_found"][pkg] = {
-                    "installed": None,
-                    "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
-                }
-                result["failed"] = True
-                continue
 
-            if specifiers_set.contains(installed_version):
-                dependencies_dict["valid"][pkg] = {
-                    "installed": installed_version,
-                    "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
-                }
+def _validate_python_dependencies(dependencies, result) -> bool:
+    """
+    Validate python lib versions
+
+    return False if any python dependency is not valid
+    """
+    valid = True
+
+    dependencies_dict = {
+        "not_found": {},
+        "valid": {},
+        "mismatched": {},
+        "parsing_failed": [],
+    }
+
+    # Remove the comments
+    dependencies = [dep for dep in dependencies if dep[0] != "#"]
+    for dep in dependencies:
+        try:
+            req = Requirement(dep)
+        except InvalidRequirement as exc:
+            raise AristaAvdError(f"Wrong format for dependency {dep}") from exc
+
+        try:
+            installed_version = importlib.metadata.version(req.name)
+            display.vvvv(f"Found {req.name} {installed_version} installed!", "Verify Requirements")
+        except importlib.metadata.PackageNotFoundError:
+            dependencies_dict["not_found"][req.name] = {
+                "installed": None,
+                "desired": str(req.specifier) if len(req.specifier) > 0 else None,
+            }
+            display.error(f"{req.name} required but not found - required version is {str(req.specifier)}", False)
+            valid = False
+            continue
+
+        if req.specifier.contains(installed_version):
+            dependencies_dict["valid"][req.name] = {
+                "installed": installed_version,
+                "desired": str(req.specifier) if len(req.specifier) > 0 else None,
+            }
+        else:
+            display.error(f"{req.name} version running {installed_version} - required version is {str(req.specifier)}", False)
+            dependencies_dict["mismatched"][req.name] = {
+                "installed": installed_version,
+                "desired": str(req.specifier) if len(req.specifier) > 0 else None,
+            }
+            valid = False
+
+    result["python_dependencies"] = dependencies_dict
+    return valid
+
+
+def _validate_ansible_version(collection_name, running_version, result) -> bool:
+    """
+    Validate ansible version
+    """
+    collection_meta = _get_collection_metadata(collection_name)
+    specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
+    if len(specifiers_set) > 0:
+        result["requires_ansible"] = str(specifiers_set)
+    if not specifiers_set.contains(running_version):
+        ActionModule.display.error(
+            f"Ansible Version running {running_version} - Requirement is {str(specifiers_set)}",
+            False,
+        )
+        return True
+
+    result["ansible_version"] = running_version
+    return False
+
+
+def _validate_ansible_collections(running_collection_name, result) -> bool:
+    """
+    Verify the version of the collections for ansible collections requirements
+    """
+    failed = False
+
+    collection = import_module(f"ansible_collections.{running_collection_name}")
+    collection_path = os.path.dirname(collection.__file__)
+    collections_file = os.path.join(collection_path, "collections.yml")
+    with open(collections_file, "rb") as fd:
+        metadata = yaml.safe_load(fd)
+    if "collections" not in metadata:
+        # no requirements
+        return
+
+    dependencies_dict = {
+        "not_found": {},
+        "valid": {},
+        "mismatched": {},
+        "parsing_failed": [],
+    }
+
+    for collection_dict in metadata["collections"]:
+        if "name" not in collection_dict:
+            # This should not happen
+            continue
+
+        collection_name = collection_dict["name"]
+        # Check if there is a version requirement
+        specifiers_set = SpecifierSet(collection_dict.get("version", ""))
+
+        try:
+            collection_path = _get_collection_path(collection_name)
+        except ModuleNotFoundError:
+            dependencies_dict["not_found"][collection_name] = {
+                "installed": None,
+                "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
+            }
+            if specifiers_set:
+                ActionModule.display.error(f"{collection_name} required but not found - required version is {str(specifiers_set)}", False)
             else:
-                dependencies_dict["mismatched"][pkg] = {
-                    "installed": installed_version,
-                    "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
-                }
-                result["failed"] = True
+                ActionModule.display.error(f"{collection_name} required but not found", False)
+            failed = True
+            continue
 
-        result["dependencies"] = dependencies_dict
+        installed_version = _get_collection_version(collection_path)
 
-    def _validate_ansible_version(self, running_version, result):
-        """
-        Validate ansible version
+        if specifiers_set.contains(installed_version):
+            dependencies_dict["valid"][collection_name] = {
+                "installed": installed_version,
+                "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
+            }
+        else:
+            ActionModule.display.error(f"{collection_name} version running {installed_version} - required version is {str(specifiers_set)}", False)
+            dependencies_dict["mismatched"][collection_name] = {
+                "installed": installed_version,
+                "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
+            }
+            failed = True
 
-        TODO - avoid hardcoding this
-        """
-        specifiers_set = SpecifierSet(ANSIBLE_SPECIFIERS)
-        if not specifiers_set.contains(running_version):
-            Display().error(
-                f"Ansible Version running {running_version} - Requirement is {ANSIBLE_SPECIFIERS}",
-                False,
-            )
-            result["failed"] = True
+    result["collection_dependencies"] = dependencies_dict
+    return failed
 
-        result["ansible_version"] = running_version
 
-    def _validate_ansible_collections(self, result):
-        """ """
-        # TODO
-        pass
+def _get_collection_path(collection_name) -> str:
+    """
+    TODO
+    """
+    collection = import_module(f"ansible_collections.{collection_name}")
+    return os.path.dirname(collection.__file__)
 
-    def __maybe_get_git_commit(self, collection_path):
-        def is_sha1(maybe_sha1):
-            try:
-                assert len(maybe_sha1) == 40
-                int(maybe_sha1, 16)
-                return True
-            except Exception:
-                return False
 
-        maybe_git_root = os.path.dirname(os.path.dirname(os.path.dirname(collection_path)))
-        maybe_git_dir = os.path.join(maybe_git_root, ".git")
-        if os.path.exists(maybe_git_dir):
-            # it is a git repo
-            with open(os.path.join(maybe_git_dir, "HEAD"), "r") as fd:
-                data = fd.read().strip()
-            if is_sha1(data):
-                return data[:9]
-
-            # HEAD is probably a ref
-            head = yaml.safe_load(data)
-            ref = head["ref"]
-            with open(os.path.join(maybe_git_dir, ref), "r") as fd:
-                data = fd.read().strip()
-            if is_sha1(data):
-                return data[:9]
-
-            # TODO - we failed parsing
-
-        return None
-
-    def _get_running_collection_version(self, running_collection_name, result):
-        """
-        TODO
-        """
-        collection = import_module(f"ansible_collections.{running_collection_name}")
-        collection_path = os.path.dirname(collection.__file__)
+def _get_collection_version(self, collection_path) -> str:
+    """
+    TODO
+    """
+    # Trying to find the version based on either galaxy.yml or MANIFEST.json
+    try:
         galaxy_file = os.path.join(collection_path, "galaxy.yml")
         with open(galaxy_file, "rb") as fd:
             metadata = yaml.safe_load(fd)
+    except FileNotFoundError:
+        manifest_file = os.path.join(collection_path, "MANIFEST.json")
+        with open(manifest_file, "rb") as fd:
+            metadata = json.load(fd)["collection_info"]
 
-        version = metadata["version"]
+    ActionModule.display.vvv(str(metadata))
 
-        # Try to detect a git tag
-        # if it was cloned from git the git root will be two levels above
-        git_commit = self.__maybe_get_git_commit(collection_path)
-        # Not in theory `BLAH` should be the number of commits between version and the
-        # commit id but it is hard to compute without git API and the goal is to
-        # not add any additional dependencies
-        # TODO - decide if we want to keep this
-        if git_commit:
-            version = f"v{version}-BLAH-d{git_commit}"
+    return metadata["version"]
 
-        result["collection"] = {
-            "name": running_collection_name,
-            "path": os.path.dirname(os.path.dirname(collection_path)),
-            "version": version,
-        }
 
+def _get_running_collection_version(running_collection_name, result) -> None:
+    collection_path = _get_collection_path(running_collection_name)
+    version = _get_collection_version(collection_path)
+
+    # Try to detect a git tag
+    # Using subprocess for now
+    with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE) as process:
+        output, err = process.communicate()
+        if err:
+            ActionModule.display.vvv("Not a git repository")
+        else:
+            ActionModule.display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
+            version = output.decode("UTF-8").strip()
+
+    result["collection"] = {
+        "name": running_collection_name,
+        "path": os.path.dirname(os.path.dirname(collection_path)),
+        "version": version,
+    }
+
+
+class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
@@ -184,24 +242,33 @@ class ActionModule(ActionBase):
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
-        if not HAS_PIP:
-            raise AnsibleActionFail("pip is required to run this plugin")
+        if not HAS_PACKAGING:
+            raise AnsibleActionFail("packaging is required to run this plugin")
 
         if not (self._task.args and "dependencies" in self._task.args):
             raise AnsibleActionFail("The argument 'dependencies' must be set")
 
-        dependencies = self._task.args.get("dependencies")
+        py_dependencies = self._task.args.get("dependencies")
 
-        if not isinstance(dependencies, list):
+        if not isinstance(py_dependencies, list):
             raise AnsibleActionFail("The argument 'dependencies' is not a list")
 
         running_ansible_version = task_vars["ansible_version"]["string"]
         running_collection_name = task_vars["ansible_collection_name"]
-        self._get_running_collection_version(running_collection_name, result)
 
-        self._validate_python_version(result)
-        self._validate_python_dependencies(dependencies, result)
-        self._validate_ansible_version(running_ansible_version, result)
-        self._validate_ansible_collections(result)
+        result["failed"] = False
+        result["ansible"] = {}
+        result["python"] = {}
+
+        _get_running_collection_version(running_collection_name, result["ansible"])
+
+        if _validate_python_version(result["python"]) is False:
+            result["failed"] = True
+        if _validate_python_dependencies(py_dependencies, result["python"]) is False:
+            result["failed"] = True
+        if _validate_ansible_version(running_collection_name, running_ansible_version, result["ansible"]) is True:
+            result["failed"] = True
+        if _validate_ansible_collections(running_collection_name, result["ansible"]) is True:
+            result["failed"] = True
 
         return result

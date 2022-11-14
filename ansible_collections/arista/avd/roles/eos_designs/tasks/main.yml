@@ -22,7 +22,8 @@
 
 - name: "Print requirements"
   tags: [debug, avd_req, never]
-  debug: msg="{{ requirements }}"
+  ansible.builtin.debug:
+    msg: "{{ requirements }}"
   run_once: true
 
 - name: Create required output directories if not present
