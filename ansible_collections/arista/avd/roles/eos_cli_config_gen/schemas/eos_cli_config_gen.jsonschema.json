@@ -3770,7 +3770,7 @@
           },
           "mac_address": {
             "type": "string",
-            "description": "MAC_address",
+            "description": "MAC address",
             "title": "MAC Address"
           }
         },
