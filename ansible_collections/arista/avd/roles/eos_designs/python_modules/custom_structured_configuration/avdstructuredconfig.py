@@ -40,7 +40,7 @@ class AvdStructuredConfig(
             return None
 
         struct_cfgs = {key: dict_of_dicts[key].pop("struct_cfg") for key in natural_sort(dict_of_dicts) if "struct_cfg" in dict_of_dicts[key]}
-        if struct_cfgs is None:
+        if not struct_cfgs:
             return None
 
         return {varname: struct_cfgs}
