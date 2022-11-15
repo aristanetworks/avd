@@ -25,7 +25,8 @@ default_templates:
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Inband Management feature
-      - template: "inband_management/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.inband_management"
+        python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
         python_class_name: "AvdStructuredConfig"
@@ -102,7 +103,8 @@ default_templates:
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Inband Management feature
-      - template: "inband_management/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.inband_management"
+        python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
         python_class_name: "AvdStructuredConfig"
