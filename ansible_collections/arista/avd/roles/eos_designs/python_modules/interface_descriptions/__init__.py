@@ -1,4 +1,24 @@
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import load_python_class
+
 from .avdinterfacedescriptions import AvdInterfaceDescriptions
-from .load_interface_descriptions import load_interfacedescriptions
 
 __all__ = ["AvdInterfaceDescriptions", "load_interfacedescriptions"]
+
+DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_MODULE = "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
+DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME = "AvdInterfaceDescriptions"
+
+
+def load_interfacedescriptions(hostvars, templar) -> AvdInterfaceDescriptions:
+    """
+    Load the python_module defined in `templates.interface_descriptions.python_module`
+    Return the class defined by `templates.interface_descriptions.python_class_name`
+    """
+    cls = load_python_class(
+        hostvars,
+        "switch.interface_descriptions",
+        DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_MODULE,
+        DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME,
+        AvdInterfaceDescriptions,
+    )
+
+    return cls(hostvars=hostvars, templar=templar)

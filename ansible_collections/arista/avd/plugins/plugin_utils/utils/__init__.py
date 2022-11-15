@@ -13,6 +13,7 @@ __all__ = [
     "get",
     "get_all",
     "get_item",
+    "load_python_class",
     "template",
     "template_var",
     "unique",

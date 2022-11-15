@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import cProfile
-import importlib
 import pstats
 from collections import ChainMap
 from datetime import datetime
@@ -133,28 +132,18 @@ class ActionModule(ActionBase):
                     template_result_data = strip_null_from_data(template_result_data)
 
             elif "python_module" in template_item:
-                module_path = template_item.get("python_module")
-                class_name = template_item.get("python_class_name", DEFAULT_PYTHON_CLASS_NAME)
+                cls = load_python_class(template_item, "", "", DEFAULT_PYTHON_CLASS_NAME, AvdFacts)
 
-                try:
-                    cls = getattr(importlib.import_module(module_path), class_name)
-                except ImportError as imp_exc:
-                    raise AnsibleActionFail(imp_exc) from imp_exc
-
-                if issubclass(cls, AvdFacts):
-                    cls_instance = cls(hostvars=template_vars, templar=templar)
-                    if debug:
-                        debug_item["timestamps"]["render_python_class"] = datetime.now()
-                    if getattr(cls_instance, "render"):
-                        try:
-                            template_result_data = cls_instance.render()
-                        except Exception as error:
-                            raise AnsibleActionFail(error) from error
-                    else:
-                        raise AristaAvdError(f"{cls_instance} has no attribute render")
+                cls_instance = cls(hostvars=template_vars, templar=templar)
+                if debug:
+                    debug_item["timestamps"]["render_python_class"] = datetime.now()
+                if getattr(cls_instance, "render"):
+                    try:
+                        template_result_data = cls_instance.render()
+                    except Exception as error:
+                        raise AnsibleActionFail(error) from error
                 else:
-                    raise AnsibleActionFail(f"{cls} is not an instance of AvdFacts class")
-
+                    raise AristaAvdError(f"{cls_instance} has no attribute render")
             else:
                 raise AnsibleActionFail("Invalid template data")
 
