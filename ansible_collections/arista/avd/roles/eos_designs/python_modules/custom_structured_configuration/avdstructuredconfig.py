@@ -39,7 +39,11 @@ class AvdStructuredConfig(
         if not dict_of_dicts:
             return None
 
-        return {varname: {key: dict_of_dicts[key].pop("struct_cfg") for key in natural_sort(dict_of_dicts) if "struct_cfg" in dict_of_dicts[key]}}
+        struct_cfgs = {key: dict_of_dicts[key].pop("struct_cfg") for key in natural_sort(dict_of_dicts) if "struct_cfg" in dict_of_dicts[key]}
+        if struct_cfgs is None:
+            return None
+
+        return {varname: struct_cfgs}
 
     def _struct_cfg(self) -> dict | None:
         return self._hostvars.pop("struct_cfg", None)
@@ -111,8 +115,5 @@ class AvdStructuredConfig(
         ]
         struct_cfgs = [struct_cfg for struct_cfg in struct_cfgs if struct_cfg is not None]
         struct_cfgs.extend(self._custom_structured_configurations())
-
-        if not struct_cfgs:
-            return []
 
         return struct_cfgs
