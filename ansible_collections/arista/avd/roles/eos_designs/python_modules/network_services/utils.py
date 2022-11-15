@@ -7,7 +7,8 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError, default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils_filtered_tenants import UtilsFilteredTenantsMixin
+
+from .utils_filtered_tenants import UtilsFilteredTenantsMixin
 
 
 class UtilsMixin(UtilsFilteredTenantsMixin):
