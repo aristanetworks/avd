@@ -98,6 +98,7 @@ interface Management1
 | Peer Address | VRF | Mesh Groups | Local Interface | Description |
 | ------------ | --- | ----------- | --------------- | ----------- |
 | 1.2.3.4 | default | MG1, MG2 | Loopback11 | Some kind of MSDP Peer |
+| 4.3.2.1 | default | - | Loopback21 | - |
 | 2.3.4.5 | RED | - | Loopback13 | Some other kind of MSDP Peer |
 
 ## Router MSDP Device Configuration
@@ -105,10 +106,13 @@ interface Management1
 ```eos
 !
 router msdp
+   group-limit 100 source 10.0.1.0/24
+   group-limit 123 source 10.0.123.0/24
    originator-id local-interface Loopback10
    rejected-limit 123
    forward register-packets
    connection retry interval 5
+   !
    peer 1.2.3.4
       default-peer prefix-list PLIST1
       mesh-group MG1
@@ -120,10 +124,16 @@ router msdp
       description Some kind of MSDP Peer
       disabled
       sa-limit 1000
+   !
+   peer 4.3.2.1
+      local-interface Loopback21
+   !
    vrf RED
+      group-limit 22 source 10.0.22.0/24
       originator-id local-interface Loopback12
       rejected-limit 10
       connection retry interval 10
+      !
       peer 2.3.4.5
          default-peer prefix-list PLIST2
          local-interface Loopback13
