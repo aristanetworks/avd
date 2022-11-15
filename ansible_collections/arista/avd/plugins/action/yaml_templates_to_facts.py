@@ -132,7 +132,9 @@ class ActionModule(ActionBase):
                     template_result_data = strip_null_from_data(template_result_data)
 
             elif "python_module" in template_item:
-                cls = load_python_class(template_item, "", "", DEFAULT_PYTHON_CLASS_NAME, AvdFacts)
+                module_path = template_item.get("python_module")
+                class_name = template_item.get("python_class_name", DEFAULT_PYTHON_CLASS_NAME)
+                cls = load_python_class(module_path, class_name, AvdFacts)
 
                 cls_instance = cls(hostvars=template_vars, templar=templar)
                 if debug:
