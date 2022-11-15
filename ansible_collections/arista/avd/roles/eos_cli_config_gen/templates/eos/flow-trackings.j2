@@ -6,11 +6,11 @@ flow tracking {{ flow_tracking.type }}
 {%     endif %}
 {%     for tracker in flow_tracking.trackers %}
    tracker {{ tracker.name }}
-{%         if tracker.record_export.inactive_timeout is arista.avd.defined %}
-      record export on inactive timeout {{ tracker.record_export.inactive_timeout }}
+{%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
+      record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
 {%         endif %}
-{%         if tracker.record_export.interval is arista.avd.defined %}
-      record export on interval {{ tracker.record_export.interval }}
+{%         if tracker.record_export.on_interval is arista.avd.defined %}
+      record export on interval {{ tracker.record_export.on_interval }}
 {%         endif %}
 {%         if tracker.record_export.mpls is arista.avd.defined(true) %}
       record export mpls

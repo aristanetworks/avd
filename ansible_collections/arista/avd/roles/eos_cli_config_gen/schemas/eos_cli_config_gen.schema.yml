@@ -1055,14 +1055,14 @@ keys:
               record_export:
                 type: dict
                 keys:
-                  inactive_timeout:
+                  on_inactive_timeout:
                     type: int
                     convert_types:
                     - str
                     min: 3000
                     max: 900000
                     description: Flow record inactive export timeout in milliseconds
-                  interval:
+                  on_interval:
                     type: int
                     convert_types:
                     - str

@@ -714,8 +714,8 @@ flow_trackings:
     trackers:
       - name: < tracker_name >
         record_export:
-          inactive_timeout: < 3000-900000 >
-          interval: < 1000-36000000 >
+          on_inactive_timeout: < 3000-900000 >
+          on_interval: < 1000-36000000 >
           mpls: < true | false >
         exporters:
           - name: < exporter_name >

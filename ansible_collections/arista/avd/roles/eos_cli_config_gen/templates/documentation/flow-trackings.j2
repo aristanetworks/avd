@@ -12,11 +12,11 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 
 #### Trackers Summary
 
-| Tracker Name | Record Export Inactive Timeout | Record Export Interval | MPLS | Number of Exporters | Applied On |
-| ------------ | ------------------------------ | ---------------------- | ---- | ------------------- | ---------- |
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- |
 {%                 for tracker in flow_tracking.trackers | arista.avd.natural_sort('name') %}
-{%                     set inactive_timeout = tracker.record_export.inactive_timeout | arista.avd.default("-") %}
-{%                     set interval = tracker.record_export.interval | arista.avd.default("-") %}
+{%                     set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
+{%                     set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
 {%                     set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
 {%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
 {%                     set applied_on = [] %}
@@ -30,7 +30,7 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%                             do applied_on.append(port_channel_interface.name) %}
 {%                         endif %}
 {%                     endfor %}
-| {{ tracker.name }} | {{ inactive_timeout }} | {{ interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
 {%                 endfor %}
 
 #### Exporters Summary

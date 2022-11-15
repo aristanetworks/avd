@@ -1340,19 +1340,19 @@
                 "record_export": {
                   "type": "object",
                   "properties": {
-                    "inactive_timeout": {
+                    "on_inactive_timeout": {
                       "type": "integer",
                       "minimum": 3000,
                       "maximum": 900000,
                       "description": "Flow record inactive export timeout in milliseconds",
-                      "title": "Inactive Timeout"
+                      "title": "On Inactive Timeout"
                     },
-                    "interval": {
+                    "on_interval": {
                       "type": "integer",
                       "minimum": 1000,
                       "maximum": 36000000,
                       "description": "Flow record export interval in milliseconds",
-                      "title": "Interval"
+                      "title": "On Interval"
                     },
                     "mpls": {
                       "type": "boolean",
