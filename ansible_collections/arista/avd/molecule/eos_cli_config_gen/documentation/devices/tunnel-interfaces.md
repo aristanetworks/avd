@@ -65,28 +65,28 @@ interface Management1
 
 ### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | MTU | Shutdown |
-| --------- | ----------- | --- | --- | -------- |
-| Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False |
-| Tunnel2 | test ipv6 only | default | - | True |
-| Tunnel3 | test dual stack | default | 1500 | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - |
+| Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
+| --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
+| Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False | Ethernnet42 | 6.6.6.6 | True |
+| Tunnel2 | test ipv6 only | default | - | True | Ethernnet42 | dead:beef::1 | False |
+| Tunnel3 | test dual stack | default | 1500 | - | Ethernnet42 | 1.1.1.1 | - |
+| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernnet42 | 1.1.1.1 | - |
 
 #### IPv4
 
-| Interface | VRF | IP Address | TCP MSS | TCP MSS Direction | Source Interface | Destination | PMTU-Discovery | ACL In | ACL Out |
-| --------- | --- | ---------- | ------- | ----------------- | ---------------- | ------------| -------------- | ------ | ------- |
-| Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | Ethernnet42 | 6.6.6.6 | True | test-in | test-out |
-| Tunnel3 | default | 64.64.64.64/24 | 666 | - | Ethernnet42 | 1.1.1.1 | - | - | - |
-| Tunnel4 | default | 64.64.64.64/24 | - | - | Ethernnet42 | 1.1.1.1 | - | - | - |
+| Interface | VRF | IP Address | TCP MSS | TCP MSS Direction | ACL In | ACL Out |
+| --------- | --- | ---------- | ------- | ----------------- | ------ | ------- |
+| Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | test-in | test-out |
+| Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
+| Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
 
 #### IPv6
 
-| Interface | VRF | IPv6 Address | TCP MSS | TCP MSS Direction | Source Interface | Destination | PMTU-Discovery | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ------- | ----------------- | ---------------- | ------------| -------------- | ----------- | ------------ |
-| Tunnel2 | default | cafe::1/64 | 666 | egress | Ethernnet42 | dead:beef::1 | False | test-in | test-out |
-| Tunnel3 | default | beef::64/64 | 666 | - | Ethernnet42 | 1.1.1.1 | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | Ethernnet42 | 1.1.1.1 | - | - | - |
+| Interface | VRF | IPv6 Address | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ------- | ----------------- | ----------- | ------------ |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - |
 
 ### Tunnel Interfaces Device Configuration
 
