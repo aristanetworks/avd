@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
 
 __metaclass__ = type

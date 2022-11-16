@@ -1,7 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 try:
     import jsonschema
 except ImportError as imp_exc:
@@ -26,6 +22,10 @@ class AristaAvdError(Exception):
                     continue
                 path += "." + elem
         return path
+
+
+class AristaAvdMissingVariableError(AristaAvdError):
+    pass
 
 
 class AvdSchemaError(AristaAvdError):
