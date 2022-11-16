@@ -165,13 +165,6 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n
   \ description Loopback created from raw_eos_cli under VRF Common_VRF\n"
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65120
-      IPv4-UNDERLAY-PEERS:
-        remote_as: 65120
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD2-SPINE1

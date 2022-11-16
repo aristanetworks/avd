@@ -332,13 +332,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65001
-      UNDERLAY_PEERS:
-        remote_as: 65001
 vlans:
   4093:
     tenant: system

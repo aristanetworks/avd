@@ -180,8 +180,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-struct_cfg:
-  tags: no-monitor
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1

@@ -294,48 +294,36 @@ vlan_interfaces:
     tenant: svi_profile_tests
     description: set from structured_config on svi.nodes[inventory_hostname].structured_config
     shutdown: false
-    struct_cfg:
-      description: set from structured_config on svi.nodes[inventory_hostname].structured_config
     ip_address_virtual: 10.1.10.1/24
     vrf: svi_profile_tests_vrf
   Vlan111:
     tenant: svi_profile_tests
     description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
     shutdown: false
-    struct_cfg:
-      description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
     ip_address_virtual: 10.1.11.1/24
     vrf: svi_profile_tests_vrf
   Vlan112:
     tenant: svi_profile_tests
     description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
     shutdown: false
-    struct_cfg:
-      description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
     ip_address_virtual: 10.1.12.1/24
     vrf: svi_profile_tests_vrf
   Vlan113:
     tenant: svi_profile_tests
     description: set from svi.structured_config
     shutdown: false
-    struct_cfg:
-      description: set from svi.structured_config
     ip_address_virtual: 10.1.13.1/24
     vrf: svi_profile_tests_vrf
   Vlan114:
     tenant: svi_profile_tests
     description: set from structured_config on svi_profile.structured_config
     shutdown: false
-    struct_cfg:
-      description: set from structured_config on svi_profile.structured_config
     ip_address_virtual: 10.1.14.1/24
     vrf: svi_profile_tests_vrf
   Vlan115:
     tenant: svi_profile_tests
     description: set from structured_config on svi_parent_profile.structured_config
     shutdown: false
-    struct_cfg:
-      description: set from structured_config on svi_parent_profile.structured_config
     ip_address_virtual: 10.1.15.1/24
     vrf: svi_profile_tests_vrf
   Vlan210:
