@@ -12,11 +12,11 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [Router MSDP](#router-msdp)
   - [Router MSDP Peers](#router-msdp-peers)
   - [Router MSDP Device Configuration](#router-msdp-device-configuration)
+- [Filters](#filters)
+- [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
 # Management
@@ -87,10 +87,6 @@ interface Management1
 
 # Multicast
 
-# Filters
-
-# ACL
-
 # Router MSDP
 
 ## Router MSDP Peers
@@ -143,5 +139,9 @@ router msdp
          description Some other kind of MSDP Peer
          sa-limit 100
 ```
+
+# Filters
+
+# ACL
 
 # Quality Of Service

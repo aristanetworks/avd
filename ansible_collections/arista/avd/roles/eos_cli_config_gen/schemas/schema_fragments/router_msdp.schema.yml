@@ -26,9 +26,14 @@ keys:
         max: 65535
       group_limits:
         type: list
+        primary_key: source_prefix
         items:
           type: dict
           keys:
+            source_prefix:
+              type: str
+              description: Source address prefix
+              required: true
             limit:
               type: int
               convert_types:
@@ -36,10 +41,6 @@ keys:
               description: Limit for SAs matching the source address prefix
               min: 0
               max: 40000
-              required: true
-            source_prefix:
-              type: str
-              description: Source address prefix
               required: true
       peers:
         type: list
@@ -135,9 +136,14 @@ keys:
               max: 65535
             group_limits:
               type: list
+              primary_key: source_prefix
               items:
                 type: dict
                 keys:
+                  source_prefix:
+                    type: str
+                    description: Source address prefix
+                    required: true
                   limit:
                     type: int
                     convert_types:
@@ -145,10 +151,6 @@ keys:
                     description: Limit for SAs matching the source address prefix
                     min: 0
                     max: 40000
-                    required: true
-                  source_prefix:
-                    type: str
-                    description: Source address prefix
                     required: true
             peers:
               type: list

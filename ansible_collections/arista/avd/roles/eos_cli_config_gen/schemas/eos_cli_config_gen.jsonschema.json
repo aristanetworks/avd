@@ -5677,22 +5677,22 @@
           "items": {
             "type": "object",
             "properties": {
+              "source_prefix": {
+                "type": "string",
+                "description": "Source address prefix",
+                "title": "Source Prefix"
+              },
               "limit": {
                 "type": "integer",
                 "description": "Limit for SAs matching the source address prefix",
                 "minimum": 0,
                 "maximum": 40000,
                 "title": "Limit"
-              },
-              "source_prefix": {
-                "type": "string",
-                "description": "Source address prefix",
-                "title": "Source Prefix"
               }
             },
             "required": [
-              "limit",
-              "source_prefix"
+              "source_prefix",
+              "limit"
             ],
             "additionalProperties": false
           },
@@ -5837,22 +5837,22 @@
                 "items": {
                   "type": "object",
                   "properties": {
+                    "source_prefix": {
+                      "type": "string",
+                      "description": "Source address prefix",
+                      "title": "Source Prefix"
+                    },
                     "limit": {
                       "type": "integer",
                       "description": "Limit for SAs matching the source address prefix",
                       "minimum": 0,
                       "maximum": 40000,
                       "title": "Limit"
-                    },
-                    "source_prefix": {
-                      "type": "string",
-                      "description": "Source address prefix",
-                      "title": "Source Prefix"
                     }
                   },
                   "required": [
-                    "limit",
-                    "source_prefix"
+                    "source_prefix",
+                    "limit"
                   ],
                   "additionalProperties": false
                 },

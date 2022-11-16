@@ -3156,8 +3156,8 @@ router_l2_vpn:
 | [<samp>&nbsp;&nbsp;forward_register_packets</samp>](## "router_msdp.forward_register_packets") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;connection_retry_interval</samp>](## "router_msdp.connection_retry_interval") | Integer |  |  | Min: 1<br>Max: 65535 |  |
 | [<samp>&nbsp;&nbsp;group_limits</samp>](## "router_msdp.group_limits") | List, items: Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- limit</samp>](## "router_msdp.group_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 40000 | Limit for SAs matching the source address prefix |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_prefix</samp>](## "router_msdp.group_limits.[].source_prefix") | String | Required |  |  | Source address prefix |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- source_prefix</samp>](## "router_msdp.group_limits.[].source_prefix") | String | Required, Unique |  |  | Source address prefix |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_msdp.group_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 40000 | Limit for SAs matching the source address prefix |
 | [<samp>&nbsp;&nbsp;peers</samp>](## "router_msdp.peers") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_address</samp>](## "router_msdp.peers.[].ipv4_address") | String | Required, Unique |  |  | Peer IP Address |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_peer_prefix_list</samp>](## "router_msdp.peers.[].default_peer_prefix_list") | String |  |  |  | Prefix list to filter source of SA messages |
@@ -3180,8 +3180,8 @@ router_l2_vpn:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_register_packets</samp>](## "router_msdp.vrfs.[].forward_register_packets") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_retry_interval</samp>](## "router_msdp.vrfs.[].connection_retry_interval") | Integer |  |  | Min: 1<br>Max: 65535 |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_limits</samp>](## "router_msdp.vrfs.[].group_limits") | List, items: Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- limit</samp>](## "router_msdp.vrfs.[].group_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 40000 | Limit for SAs matching the source address prefix |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_prefix</samp>](## "router_msdp.vrfs.[].group_limits.[].source_prefix") | String | Required |  |  | Source address prefix |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- source_prefix</samp>](## "router_msdp.vrfs.[].group_limits.[].source_prefix") | String | Required, Unique |  |  | Source address prefix |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_msdp.vrfs.[].group_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 40000 | Limit for SAs matching the source address prefix |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peers</samp>](## "router_msdp.vrfs.[].peers") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_address</samp>](## "router_msdp.vrfs.[].peers.[].ipv4_address") | String | Required, Unique |  |  | Peer IP Address |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_peer_prefix_list</samp>](## "router_msdp.vrfs.[].peers.[].default_peer_prefix_list") | String |  |  |  | Prefix list to filter source of SA messages |
@@ -3207,8 +3207,8 @@ router_msdp:
   forward_register_packets: <bool>
   connection_retry_interval: <int>
   group_limits:
-    - limit: <int>
-      source_prefix: <str>
+    - source_prefix: <str>
+      limit: <int>
   peers:
     - ipv4_address: <str>
       default_peer_prefix_list: <str>
@@ -3231,8 +3231,8 @@ router_msdp:
       forward_register_packets: <bool>
       connection_retry_interval: <int>
       group_limits:
-        - limit: <int>
-          source_prefix: <str>
+        - source_prefix: <str>
+          limit: <int>
       peers:
         - ipv4_address: <str>
           default_peer_prefix_list: <str>
