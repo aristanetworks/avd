@@ -984,6 +984,101 @@ keys:
         - link
         - node
     type: dict
+  l3_edge:
+    keys:
+      p2p_links:
+        convert_types:
+        - dict
+        description: any setting supported under p2p_links can be set and inherited
+          from profile
+        items:
+          keys:
+            as:
+              description: AS Numbers for BGP, required with bgp peering
+              items:
+                type: str
+              type: list
+            bfd:
+              default: false
+              description: Enable BFD (only considered for BGP)
+              type: bool
+            id:
+              description: Unique id per subnet_summary. Used to calculate ip addresses
+                | Required with ip_pool
+              type: int
+            include_in_underlay_protocol:
+              default: false
+              description: Add this interface to underlay routing protocol
+              type: bool
+            interfaces:
+              description: Interfaces where this link should be configured | Required
+              items:
+                type: str
+              type: list
+            ip:
+              description: Specific IP addresses used on this P2P link | Optional
+                (Requires ip_pool or subnet or ip)
+              items:
+                type: str
+              type: list
+            ip_pool:
+              description: IP Pool defined under p2p_links_ip_pools. A /31 will be
+                taken from the pool per P2P link | Optional (Requires ip_pool or subnet
+                or ip)
+              type: str
+            macsec_profile:
+              description: MAC Security Profile
+              type: str
+            mtu:
+              description: MTU for this P2P link
+              type: int
+            nodes:
+              description: Nodes where this link should be configured | Required
+              items:
+                type: str
+              type: list
+            profile:
+              description: Profile defined under p2p_profiles
+              type: str
+            ptp_enable:
+              default: false
+              description: Enable PTP
+              type: bool
+            qos_profile:
+              description: QOS Service Profile
+              type: str
+            speed:
+              description: Speed | Optional
+              type: str
+              valid_values:
+              - speed
+              - auto speed
+              - forced speed
+            subnet:
+              description: Subnet used on this P2P link | Optional (Requires ip_pool
+                or subnet or ip)
+              type: str
+          type: dict
+        primary_key: id
+        required: true
+        type: list
+      p2p_links_ip_pools:
+        items:
+          keys:
+            ipv4_pool:
+              type: str
+            name:
+              type: str
+          type: dict
+        type: list
+      p2p_links_profiles:
+        items:
+          keys:
+            name:
+              type: str
+          type: dict
+        type: list
+    type: dict
   local_users:
     convert_types:
     - dict

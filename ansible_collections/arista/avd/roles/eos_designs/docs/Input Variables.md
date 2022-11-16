@@ -676,6 +676,70 @@ isis_ti_lfa:
   protection: <str>
 ```
 
+## L3 Edge
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>l3_edge</samp>](## "l3_edge") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;p2p_links</samp>](## "l3_edge.p2p_links") | List, items: Dictionary | Required |  |  | any setting supported under p2p_links can be set and inherited from profile |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- as</samp>](## "l3_edge.p2p_links.[].as") | List, items: String |  |  |  | AS Numbers for BGP, required with bgp peering |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].as.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.p2p_links.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP) |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links.[].id") | Integer | Required, Unique |  |  | Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links.[].include_in_underlay_protocol") | Boolean |  | False |  | Add this interface to underlay routing protocol |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured | Required |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip) |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ip.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links.[].ip_pool") | String |  |  |  | IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip) |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links.[].macsec_profile") | String |  |  |  | MAC Security Profile |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "l3_edge.p2p_links.[].mtu") | Integer |  |  |  | MTU for this P2P link |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "l3_edge.p2p_links.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured | Required |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].nodes.[].&lt;str&gt;") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].profile") | String |  |  |  | Profile defined under p2p_profiles |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp_enable</samp>](## "l3_edge.p2p_links.[].ptp_enable") | Boolean |  | False |  | Enable PTP |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links.[].qos_profile") | String |  |  |  | QOS Service Profile |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  | Valid Values:<br>- speed<br>- auto speed<br>- forced speed | Speed | Optional |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links.[].subnet") | String |  |  |  | Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip) |
+| [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "l3_edge.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_edge.p2p_links_ip_pools.[].name") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+l3_edge:
+  p2p_links:
+    - as:
+        - <str>
+      bfd: <bool>
+      id: <int>
+      include_in_underlay_protocol: <bool>
+      interfaces:
+        - <str>
+      ip:
+        - <str>
+      ip_pool: <str>
+      macsec_profile: <str>
+      mtu: <int>
+      nodes:
+        - <str>
+      profile: <str>
+      ptp_enable: <bool>
+      qos_profile: <str>
+      speed: <str>
+      subnet: <str>
+  p2p_links_ip_pools:
+    - ipv4_pool: <str>
+      name: <str>
+  p2p_links_profiles:
+    - name: <str>
+```
+
 ## Local Users
 
 ### Variables

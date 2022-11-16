@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  l3_edge:
+    type: dict
+    keys:
+      p2p_links_ip_pools:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            ipv4_pool:
+              type: str
+      p2p_links_profiles:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+      p2p_links:
+        type: list
+        primary_key: id
+        convert_types:
+        - dict
+        required: true
+        description: any setting supported under p2p_links can be set and inherited from profile
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              description: Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
+            speed:
+              type: str
+              valid_values:
+              - speed
+              - auto speed
+              - forced speed
+              description: Speed | Optional
+            ip_pool:
+              type: str
+              description: IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
+            subnet:
+              type: str
+              description: Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+            ip:
+              type: list
+              description: Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+              items:
+                type: str
+            nodes:
+              type: list
+              description: Nodes where this link should be configured | Required
+              items:
+                type: str
+            interfaces:
+              type: list
+              description: Interfaces where this link should be configured | Required
+              items:
+                type: str
+            as:
+              type: list
+              description: AS Numbers for BGP, required with bgp peering
+              items:
+                type: str
+            include_in_underlay_protocol:
+              type: bool
+              default: false
+              description: Add this interface to underlay routing protocol
+            mtu:
+              type: int
+              description: MTU for this P2P link
+            bfd:
+              type: bool
+              default: false
+              description: Enable BFD (only considered for BGP)
+            ptp_enable:
+              type: bool
+              default: false
+              description: Enable PTP
+            qos_profile:
+              type: str
+              description: QOS Service Profile
+            macsec_profile:
+              type: str
+              description: MAC Security Profile
+            profile:
+              type: str
+              description: Profile defined under p2p_profiles
