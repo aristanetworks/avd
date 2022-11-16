@@ -6,16 +6,16 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS = ["custom_structured_configuration_prefix", "custom_structured_configuration_list_merge"]
 
-class AvdStructuredConfig(
-    AvdFacts,
-):
+
+class AvdStructuredConfig(AvdFacts):
     """
-    The AvdStructuredConfig Class is imported used "yaml_templates_to_facts" to render parts of the structured config.
+    The AvdStructuredConfig Class is imported by "yaml_templates_to_facts" to render parts of the structured config.
 
     "yaml_templates_to_facts" imports, instantiates and run the .render() method on the class.
 
-    The Class uses AvdFacts, as the base class, to get the render, keys and other attributes.
+    The Class uses AvdFacts, as the base class, to inherit _hostvars other attributes.
     """
 
     @cached_property
@@ -33,7 +33,7 @@ class AvdStructuredConfig(
     def _router_bgp(self) -> dict | None:
         return get(self._hostvars, "router_bgp")
 
-    def _extract_struct_cfg_from_dict_of_dicts(self, data: dict, varname: str) -> dict:
+    def _extract_struct_cfg_from_dict_of_dicts(self, data: dict, varname: str) -> dict | None:
         # TODO: Handle AVD4.0 data models. For now this is only handling dicts
         dict_of_dicts = get(data, varname)
         if not dict_of_dicts:
@@ -85,13 +85,15 @@ class AvdStructuredConfig(
         return {"router_bgp": struct_cfgs}
 
     def _custom_structured_configurations(self) -> list[dict]:
-        EXEMPT_KEYS = ["custom_structured_configuration_prefix", "custom_structured_configuration_list_merge"]
-
         if not self._custom_structured_configuration_prefix:
             return []
 
         return [
-            {str(key)[len(prefix) :]: self._hostvars[key] for key in self._hostvars if str(key).startswith(prefix) and key not in EXEMPT_KEYS}
+            {
+                str(key)[len(prefix) :]: self._hostvars[key]
+                for key in self._hostvars
+                if str(key).startswith(prefix) and key not in CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS
+            }
             for prefix in self._custom_structured_configuration_prefix
         ]
 
