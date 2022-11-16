@@ -6,7 +6,7 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.password_filter import FilterModule, bgp_decrypt, bgp_encrypt, decrypt, encrypt
+from ansible_collections.arista.avd.plugins.filter.password import FilterModule, bgp_decrypt, bgp_encrypt, decrypt, encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
 
 ##########
@@ -122,7 +122,7 @@ def test_decrypt(password, passwd_type, key, expected_raise):
         decrypt(password, passwd_type=passwd_type, key=key)
 
 
-def test_password_filter_module():
+def test_password_module():
     """
     Assert:
       * encrypt
