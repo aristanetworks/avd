@@ -464,6 +464,157 @@
       "type": "object",
       "title": "ISIS TI LFA"
     },
+    "l3_edge": {
+      "properties": {
+        "p2p_links": {
+          "description": "any setting supported under p2p_links can be set and inherited from profile",
+          "items": {
+            "properties": {
+              "as": {
+                "description": "AS Numbers for BGP, required with bgp peering",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "As"
+              },
+              "bfd": {
+                "default": false,
+                "description": "Enable BFD (only considered for BGP)",
+                "type": "boolean",
+                "title": "BFD"
+              },
+              "id": {
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool",
+                "type": "integer",
+                "title": "ID"
+              },
+              "include_in_underlay_protocol": {
+                "default": false,
+                "description": "Add this interface to underlay routing protocol",
+                "type": "boolean",
+                "title": "Include In Underlay Protocol"
+              },
+              "interfaces": {
+                "description": "Interfaces where this link should be configured | Required",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Interfaces"
+              },
+              "ip": {
+                "description": "Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "IP"
+              },
+              "ip_pool": {
+                "description": "IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)",
+                "type": "string",
+                "title": "IP Pool"
+              },
+              "macsec_profile": {
+                "description": "MAC Security Profile",
+                "type": "string",
+                "title": "Macsec Profile"
+              },
+              "mtu": {
+                "description": "MTU for this P2P link",
+                "type": "integer",
+                "title": "MTU"
+              },
+              "nodes": {
+                "description": "Nodes where this link should be configured | Required",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Nodes"
+              },
+              "profile": {
+                "description": "Profile defined under p2p_profiles",
+                "type": "string",
+                "title": "Profile"
+              },
+              "ptp_enable": {
+                "default": false,
+                "description": "Enable PTP",
+                "type": "boolean",
+                "title": "Ptp Enable"
+              },
+              "qos_profile": {
+                "description": "QOS Service Profile",
+                "type": "string",
+                "title": "QOS Profile"
+              },
+              "speed": {
+                "description": "Speed | Optional",
+                "type": "string",
+                "enum": [
+                  "speed",
+                  "auto speed",
+                  "forced speed"
+                ],
+                "title": "Speed"
+              },
+              "subnet": {
+                "description": "Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)",
+                "type": "string",
+                "title": "Subnet"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "id"
+            ]
+          },
+          "type": "array",
+          "title": "P2P Links"
+        },
+        "p2p_links_ip_pools": {
+          "items": {
+            "properties": {
+              "ipv4_pool": {
+                "type": "string",
+                "title": "IPv4 Pool"
+              },
+              "name": {
+                "type": "string",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "P2P Links IP Pools"
+        },
+        "p2p_links_profiles": {
+          "items": {
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "P2P Links Profiles"
+        }
+      },
+      "required": [
+        "p2p_links"
+      ],
+      "additionalProperties": false,
+      "type": "object",
+      "title": "L3 Edge"
+    },
     "local_users": {
       "items": {
         "properties": {
