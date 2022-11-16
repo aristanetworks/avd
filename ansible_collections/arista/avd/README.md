@@ -43,7 +43,8 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 - [**arista.avd.eos_snapshot**](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
 - [**arista.avd.dhcp_provisioner**](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and CloudVision registration.
 
-![Arista AVD Overview](media/example-playbook-deploy-cvp.gif)
+![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
+![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
 
 ## Custom Plugins & Modules
 
@@ -84,7 +85,8 @@ duplicate_dict_key=error
 
 **Example playbook to deploy an Arista Validated Design via CloudVision:**
 
-![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-deploy-cvp.gif)
+![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
+![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
 
 ```yaml
 # Play to build EOS configuration from EOS_DESIGNS
@@ -135,7 +137,8 @@ Running this playbook requires the following:
 
 **Example playbook to deploy an Arista Validated Design via EOS eAPI:**
 
-![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-deploy-eapi.gif)
+![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
+![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
 
 ```yaml
 # Play to build EOS configuration from EOS_DESIGNS + Deploy using eAPI

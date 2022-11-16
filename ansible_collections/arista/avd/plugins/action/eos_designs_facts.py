@@ -28,6 +28,7 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         set_avd_switch_facts = self._task.args.get("avd_switch_facts", False)
+        self.template_output = self._task.args.get("template_output", False)
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -138,9 +139,16 @@ class ActionModule(ActionBase):
                 switch : < switch.* facts >
         """
         rendered_facts = {}
-        try:
-            for host in avd_switch_facts_instances:
+        for host in avd_switch_facts_instances:
+            try:
                 rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
-        except AristaAvdMissingVariableError as e:
-            raise AnsibleActionFail(f"{e} is required but was not found for host '{host}'") from e
+            except AristaAvdMissingVariableError as e:
+                raise AnsibleActionFail(f"{e} is required but was not found for host '{host}'") from e
+
+            # If the argument 'template_output' is set, run the output data through jinja2 rendering.
+            # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.
+            if self.template_output:
+                with self._templar.set_temporary_context(available_variables=avd_switch_facts_instances[host]["switch"]._hostvars):
+                    rendered_facts[host]["switch"] = self._templar.template(rendered_facts[host]["switch"], fail_on_undefined=False)
+
         return rendered_facts

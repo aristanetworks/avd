@@ -11,15 +11,11 @@ router_bgp:
       description: Description for mlag_ipv4_underlay_peer via structured_config
       maximum_routes: 12000
       send_community: all
-      struct_cfg:
-        description: Description for mlag_ipv4_underlay_peer via structured_config
       route_map_in: RM-MLAG-PEER-IN
     IPv4-UNDERLAY-PEERS:
       type: ipv4
       maximum_routes: 12000
       send_community: all
-      struct_cfg:
-        description: Description for ipv4_underlay_peers via structured_config
       description: Description for ipv4_underlay_peers via structured_config
     MPLS-OVERLAY-PEERS:
       type: mpls
@@ -28,8 +24,6 @@ router_bgp:
       bfd: true
       send_community: all
       maximum_routes: 0
-      struct_cfg:
-        description: Description for mpls_overlay_peers via structured_config
       description: Description for mpls_overlay_peers via structured_config
     EVPN-OVERLAY-PEERS:
       type: evpn
@@ -38,8 +32,6 @@ router_bgp:
       bfd: true
       send_community: all
       maximum_routes: 0
-      struct_cfg:
-        description: Description for evpn_overlay_peers via structured_config
       description: Description for evpn_overlay_peers via structured_config
   address_family_ipv4:
     peer_groups:
@@ -192,6 +184,6 @@ vxlan_interface:
   Vxlan1:
     description: bgp-peer-groups-structured-config-1_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789

@@ -265,7 +265,7 @@ svi_profiles:
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
-              - name: < l3_leaf_inventory_hostname_1 >
+              - node: < l3_leaf_inventory_hostname_1 >
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
 
@@ -278,7 +278,7 @@ svi_profiles:
                 # Overrides the setting on SVI level.
                 structured_config: < dictionary >
 
-              - name: < l3_leaf_inventory_hostname_2 >
+              - node: < l3_leaf_inventory_hostname_2 >
                 ip_address: < IPv4_address/Mask >
 
             # Defined interface MTU

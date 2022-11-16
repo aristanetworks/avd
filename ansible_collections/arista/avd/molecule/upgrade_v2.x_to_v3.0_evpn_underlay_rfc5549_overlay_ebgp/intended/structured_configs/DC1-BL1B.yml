@@ -85,6 +85,9 @@ router_bgp:
         export:
           evpn:
           - '14:14'
+      redistribute_routes:
+      - connected
+      - static
       neighbors:
         123.1.1.10:
           remote_as: 1234
@@ -100,13 +103,10 @@ router_bgp:
           route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::a:
           remote_as: 12345
-          send_community: None
+          send_community: null
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
-      redistribute_routes:
-      - connected
-      - static
       address_families:
         ipv4:
           neighbors:
@@ -150,7 +150,7 @@ router_bgp:
         - '14:14'
       redistribute_routes:
       - learned
-      vlan: 150
+      vlan: '150'
     Tenant_B_WAN_Zone:
       rd: 192.168.255.11:21
       route_targets:
@@ -158,7 +158,7 @@ router_bgp:
         - '21:21'
       redistribute_routes:
       - learned
-      vlan: 250
+      vlan: '250'
     Tenant_C_WAN_Zone:
       rd: 192.168.255.11:31
       route_targets:
@@ -166,14 +166,14 @@ router_bgp:
         - '31:31'
       redistribute_routes:
       - learned
-      vlan: 350
+      vlan: '350'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - destination_address_prefix: 10.3.4.0/24
-  vrf: Tenant_A_WAN_Zone
   gateway: 1.2.3.4
+  vrf: Tenant_A_WAN_Zone
 service_routing_protocols_model: multi-agent
 ip_routing: true
 ipv6_unicast_routing: true
@@ -243,13 +243,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65001
-      UNDERLAY_PEERS:
-        remote_as: 65001
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -356,30 +349,30 @@ vlan_interfaces:
     - wan
     description: Tenant_A_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    vrf: Tenant_A_WAN_Zone
   Vlan250:
     tenant: Tenant_B
     tags:
     - wan
     description: Tenant_B_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
+    vrf: Tenant_B_WAN_Zone
   Vlan350:
     tenant: Tenant_C
     tags:
     - wan
     description: Tenant_C_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+    vrf: Tenant_C_WAN_Zone
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         150:
           vni: 10150

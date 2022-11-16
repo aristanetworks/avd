@@ -173,8 +173,8 @@ vxlan_interface:
   Vxlan1:
     description: DC2-POD1-LEAF2A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
 vlans:
   4092:
     tenant: system

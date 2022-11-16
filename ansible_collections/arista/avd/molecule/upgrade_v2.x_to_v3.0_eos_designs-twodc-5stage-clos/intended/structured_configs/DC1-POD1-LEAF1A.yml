@@ -115,13 +115,6 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65110
-      IPv4-UNDERLAY-PEERS:
-        remote_as: 65110
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-SPINE1
@@ -250,8 +243,8 @@ vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
 vlans:
   4085:
     tenant: system

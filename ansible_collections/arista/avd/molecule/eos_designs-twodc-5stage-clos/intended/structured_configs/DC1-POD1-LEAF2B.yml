@@ -175,9 +175,6 @@ router_bgp:
     110:
       tenant: Tenant_A
       rd: 172.16.110.5:99110
-      rd_evpn_domain:
-        domain: remote
-        rd: 172.16.110.5:99110
       route_targets:
         both:
         - 99110:99110
@@ -194,15 +191,12 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:99110
     111:
       tenant: Tenant_A
       rd: 172.16.110.5:50111
-      rd_evpn_domain:
-        domain: remote
-        rd: 172.16.110.5:50111
       route_targets:
         both:
         - 50111:50111
@@ -219,15 +213,12 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:50111
     112:
       tenant: Tenant_A
       rd: 172.16.110.5:20112
-      rd_evpn_domain:
-        domain: remote
-        rd: 172.16.110.5:20112
       route_targets:
         both:
         - 20112:20112
@@ -244,15 +235,12 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:20112
     2500:
       tenant: Tenant_A
       rd: 172.16.110.5:2500
-      rd_evpn_domain:
-        domain: remote
-        rd: 172.16.110.5:2500
       route_targets:
         both:
         - 2500:2500
@@ -261,12 +249,12 @@ router_bgp:
           route_target: 2500:2500
       redistribute_routes:
       - learned
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:2500
     2600:
       tenant: Tenant_A
       rd: 172.16.110.5:32600
-      rd_evpn_domain:
-        domain: remote
-        rd: 172.16.110.5:32600
       route_targets:
         both:
         - 32600:32600
@@ -283,9 +271,9 @@ router_bgp:
         EOF
 
         '
-      struct_cfg:
-        redistribute_routes:
-        - router-mac system
+      rd_evpn_domain:
+        domain: remote
+        rd: 172.16.110.5:32600
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -392,26 +380,22 @@ vlan_interfaces:
     - opzone
     description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
     shutdown: false
-    vrf: Common_VRF
     ip_address_virtual: 10.1.10.1/24
-    struct_cfg:
-      description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
+    vrf: Common_VRF
   Vlan111:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_2
     shutdown: true
-    vrf: Common_VRF
     ip_address_virtual: 10.1.11.1/24
+    vrf: Common_VRF
   Vlan112:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_3
     shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.12.1/24
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -419,14 +403,16 @@ vlan_interfaces:
       EOF
 
       '
+    ip_address_virtual: 10.1.12.1/24
+    vrf: Common_VRF
   Vlan113:
     tenant: Tenant_A
     tags:
     - opzone
     description: SVI_with_no_vxlan
     shutdown: false
-    vrf: Common_VRF
     ip_address_virtual: 10.10.13.1/24
+    vrf: Common_VRF
   Vlan1102:
     tenant: Tenant_A
     tags:
@@ -434,8 +420,8 @@ vlan_interfaces:
     - web
     description: test_svi
     shutdown: false
-    vrf: vrf_with_loopbacks_dc1_pod1_only
     ip_address_virtual: 10.102.100.1/24
+    vrf: vrf_with_loopbacks_dc1_pod1_only
   Vlan1100:
     tenant: Tenant_A
     tags:
@@ -443,8 +429,8 @@ vlan_interfaces:
     - web
     description: test_svi
     shutdown: false
-    vrf: vrf_with_loopbacks_from_overlapping_pool
     ip_address_virtual: 10.100.100.1/24
+    vrf: vrf_with_loopbacks_from_overlapping_pool
   Vlan1101:
     tenant: Tenant_A
     tags:
@@ -452,8 +438,8 @@ vlan_interfaces:
     - web
     description: test_svi
     shutdown: false
-    vrf: vrf_with_loopbacks_from_pod_pools
     ip_address_virtual: 10.101.100.1/24
+    vrf: vrf_with_loopbacks_from_pod_pools
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
@@ -498,8 +484,6 @@ port_channel_interfaces:
     vlans: 110
     mlag: 17
     service_profile: foo
-    struct_cfg:
-      description: Set using structured_config on server adapter port-channel
   Port-Channel18:
     description: server-1_PortChannel
     type: switched
@@ -670,8 +654,6 @@ ethernet_interfaces:
       EOF
 
       '
-    struct_cfg:
-      description: Set using structured_config on server adapter
   Ethernet18:
     peer: server-1
     peer_interface: Eth6
@@ -804,16 +786,13 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2B_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
       vlans:
         110:
           vni: 10110

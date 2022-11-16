@@ -90,11 +90,11 @@ router_bgp:
         export:
           evpn:
           - '14:14'
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.251.11:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:21
@@ -105,11 +105,11 @@ router_bgp:
         export:
           evpn:
           - '21:21'
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.251.11:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:31
@@ -120,11 +120,11 @@ router_bgp:
         export:
           evpn:
           - '31:31'
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.251.11:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.10:14
@@ -133,7 +133,7 @@ router_bgp:
         - '14:14'
       redistribute_routes:
       - learned
-      vlan: 150
+      vlan: '150'
     Tenant_B_WAN_Zone:
       rd: 192.168.255.10:21
       route_targets:
@@ -141,7 +141,7 @@ router_bgp:
         - '21:21'
       redistribute_routes:
       - learned
-      vlan: 250
+      vlan: '250'
     Tenant_C_WAN_Zone:
       rd: 192.168.255.10:31
       route_targets:
@@ -149,7 +149,7 @@ router_bgp:
         - '31:31'
       redistribute_routes:
       - learned
-      vlan: 350
+      vlan: '350'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -269,48 +269,48 @@ vlan_interfaces:
     - wan
     description: Tenant_A_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    vrf: Tenant_A_WAN_Zone
   Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
     vrf: Tenant_A_WAN_Zone
-    ip_address: 10.255.251.10/31
     mtu: 1500
+    ip_address: 10.255.251.10/31
   Vlan250:
     tenant: Tenant_B
     tags:
     - wan
     description: Tenant_B_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
+    vrf: Tenant_B_WAN_Zone
   Vlan3020:
     tenant: Tenant_B
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
     vrf: Tenant_B_WAN_Zone
-    ip_address: 10.255.251.10/31
     mtu: 1500
+    ip_address: 10.255.251.10/31
   Vlan350:
     tenant: Tenant_C
     tags:
     - wan
     description: Tenant_C_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+    vrf: Tenant_C_WAN_Zone
   Vlan3030:
     tenant: Tenant_C
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
     vrf: Tenant_C_WAN_Zone
-    ip_address: 10.255.251.10/31
     mtu: 1500
+    ip_address: 10.255.251.10/31
 port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-BL1B_Po5
@@ -427,9 +427,9 @@ vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
       vlans:
         150:
           vni: 10150

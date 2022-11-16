@@ -140,13 +140,6 @@ management_api_http:
 eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65210
-      IPv4-UNDERLAY-PEERS:
-        remote_as: 65210
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-POD1-SPINE1
@@ -253,8 +246,8 @@ vxlan_interface:
   Vxlan1:
     description: DC2-POD1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vrfs:
         Common_VRF:
           vni: 1025

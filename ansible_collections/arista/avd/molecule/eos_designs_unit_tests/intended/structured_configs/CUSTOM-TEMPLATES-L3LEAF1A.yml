@@ -50,6 +50,31 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+  vrfs:
+    TEST_VRF:
+      router_id: 192.168.255.21
+      rd: 192.168.255.21:1
+      route_targets:
+        import:
+          evpn:
+          - '1:1'
+        export:
+          evpn:
+          - '1:1'
+      redistribute_routes:
+      - connected
+      neighbors:
+        10.255.240.11:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+  vlans:
+    110:
+      tenant: CUSTOM_TEMPLATES_TENANT
+      rd: 192.168.255.21:11110
+      route_targets:
+        both:
+        - 11110:11110
+      redistribute_routes:
+      - learned
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -64,6 +89,9 @@ vlan_internal_order:
 vrfs:
   MGMT:
     ip_routing: false
+  TEST_VRF:
+    tenant: CUSTOM_TEMPLATES_TENANT
+    ip_routing: true
 management_interfaces:
   Management1:
     description: oob_management
@@ -89,6 +117,14 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  110:
+    tenant: CUSTOM_TEMPLATES_TENANT
+    name: Tenant_A_OP_Zone_1
+  3000:
+    tenant: CUSTOM_TEMPLATES_TENANT
+    name: MLAG_iBGP_TEST_VRF
+    trunk_groups:
+    - LEAF_PEER_L3
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -101,6 +137,22 @@ vlan_interfaces:
     ip_address: 10.255.252.10/31
     no_autostate: true
     mtu: 9000
+  Vlan110:
+    tenant: CUSTOM_TEMPLATES_TENANT
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_1
+    shutdown: false
+    ip_address_virtual: 10.1.10.1/24
+    vrf: TEST_VRF
+  Vlan3000:
+    tenant: CUSTOM_TEMPLATES_TENANT
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf TEST_VRF'
+    vrf: TEST_VRF
+    mtu: 9000
+    ip_address: 10.255.240.10/31
 port_channel_interfaces:
   Port-Channel3:
     description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1B_Po3
@@ -190,6 +242,12 @@ vxlan_interface:
   Vxlan1:
     description: CUSTOM-TEMPLATES-L3LEAF1A_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
+      vlans:
+        110:
+          vni: 11110
+      vrfs:
+        TEST_VRF:
+          vni: 1

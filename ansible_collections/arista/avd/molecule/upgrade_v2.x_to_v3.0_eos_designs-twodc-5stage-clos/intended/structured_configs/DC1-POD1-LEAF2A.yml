@@ -181,13 +181,6 @@ management_api_http:
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65110
-      IPv4-UNDERLAY-PEERS:
-        remote_as: 65110
 vlans:
   4093:
     tenant: system
@@ -235,24 +228,22 @@ vlan_interfaces:
     - opzone
     description: Tenant_A_OP_Zone_1
     shutdown: false
-    vrf: Common_VRF
     ip_address_virtual: 10.1.10.1/24
+    vrf: Common_VRF
   Vlan111:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_2
     shutdown: true
-    vrf: Common_VRF
     ip_address_virtual: 10.1.11.1/24
+    vrf: Common_VRF
   Vlan112:
     tenant: Tenant_A
     tags:
     - opzone
     description: Tenant_A_OP_Zone_3
     shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.12.1/24
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -260,6 +251,8 @@ vlan_interfaces:
       EOF
 
       '
+    ip_address_virtual: 10.1.12.1/24
+    vrf: Common_VRF
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
@@ -573,9 +566,9 @@ vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2A_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
       vlans:
         110:
           vni: 10110

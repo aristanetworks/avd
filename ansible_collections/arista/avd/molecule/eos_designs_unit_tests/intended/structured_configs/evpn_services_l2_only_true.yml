@@ -84,7 +84,7 @@ router_bgp:
         - 20160:20160
       redistribute_routes:
       - learned
-      vlan: 160
+      vlan: '160'
     Tenant_A_NFS:
       tenant: Tenant_A
       rd: 192.168.255.109:20161
@@ -118,7 +118,7 @@ router_bgp:
         - '21:21'
       redistribute_routes:
       - learned
-      vlan: 250
+      vlan: '250'
     Tenant_C_OP_Zone:
       rd: 192.168.255.109:30
       route_targets:
@@ -134,7 +134,7 @@ router_bgp:
         - '31:31'
       redistribute_routes:
       - learned
-      vlan: 350
+      vlan: '350'
     Tenant_D_OP_Zone:
       rd: 192.168.255.109:40
       route_targets:
@@ -320,8 +320,8 @@ vxlan_interface:
   Vxlan1:
     description: evpn_services_l2_only_true_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         130:
           vni: 10130

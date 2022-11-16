@@ -85,10 +85,10 @@ tenants:
     l2vlans:
       # Expected results:
       # - vlan 256 not configured with multicast
-      # - vlan 257 and 4096 configured with multicast:
+      # - vlan 257 and 4092 configured with multicast:
       #   - Querier address configured with loopback address
       #   - vxlan vlan 257 multicast group 232.0.1.0
-      #   - vxlan vlan 4096 multicast group 232.0.15.255 (tests maximum value within subnet allocated in underlay_l2_multicast_group_ipv4_pool)
+      #   - vxlan vlan 4092 multicast group 232.0.15.251 (tests near maximum value within subnet allocated in underlay_l2_multicast_group_ipv4_pool)
       #   - redistribute igmp on BGP vlan-aware bundle and vlan based
       256:
         name: "MULTICAST_DISABLED_256"
@@ -98,8 +98,8 @@ tenants:
       257:
         name: "MULTICAST_ENABLED_257"
         tags: ['test_l2']
-      4096:
-        name: "MULTICAST_ENABLED_4096"
+      4092:
+        name: "MULTICAST_ENABLED_4092"
         tags: ['test_l2']
 
 # Test when tenant level evpn_l2_multicast.enabled: false and svi level enabled

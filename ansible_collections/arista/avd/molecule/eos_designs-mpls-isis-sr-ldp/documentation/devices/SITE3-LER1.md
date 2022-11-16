@@ -24,9 +24,6 @@
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
-- [Patch Panel](#patch-panel)
-  - [Patch Panel Summary](#patch-panel-summary)
-  - [Patch Panel Configuration](#patch-panel-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
@@ -326,20 +323,6 @@ mpls ldp
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
 | Loopback0 | - | True | - |
-
-# Patch Panel
-
-## Patch Panel Summary
-
-| Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
-| ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
-
-## Patch Panel Configuration
-
-```eos
-!
-patch panel
-```
 
 # Multicast
 

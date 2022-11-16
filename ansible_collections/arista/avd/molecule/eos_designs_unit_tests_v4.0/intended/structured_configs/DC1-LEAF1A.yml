@@ -116,14 +116,6 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
-- destination_address_prefix: 10.2.32.0/24
-  vrf: Tenant_A_APP_Zone
-  name: VARP
-  interface: Vlan132
-- destination_address_prefix: 10.3.32.0/24
-  vrf: Tenant_A_APP_Zone
-  name: VARP
-  interface: Vlan132
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -323,16 +315,16 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_APP_Zone_1
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan131:
     tenant: Tenant_A
     tags:
     - app
     description: Tenant_A_APP_Zone_2
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan132:
     tenant: Tenant_A
     tags:
@@ -340,11 +332,6 @@ vlan_interfaces:
     description: Tenant_A_APP_Zone_3
     shutdown: false
     vrf: Tenant_A_APP_Zone
-    ip_address: 10.1.32.1/24
-    ip_virtual_router_addresses:
-    - 10.1.32.254
-    - 10.2.32.254/24
-    - 10.3.32.254/24
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -352,13 +339,14 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_WEB_Zone_1
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
     ip_address_virtual_secondaries:
     - 10.2.20.1/24
+    - 10.2.21.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
-        source_interface: lo101
+        source_interface: lo100
         vrf: TEST
   Vlan121:
     tenant: Tenant_A
@@ -366,15 +354,15 @@ vlan_interfaces:
     - web
     description: Tenant_A_WEBZone_2
     shutdown: true
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+    ip_address_virtual: 10.1.10.254/24
+    vrf: Tenant_A_WEB_Zone
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         130:
           vni: 10130

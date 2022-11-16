@@ -53,7 +53,12 @@ class EosDesignsFacts(AvdFacts):
         """
         switch.type fact set based on type variable
         """
-        return get(self._hostvars, "type", required=True)
+        if (node_type := get(self._hostvars, "type")) is not None:
+            return node_type
+        elif self._default_node_type:
+            return self._default_node_type
+
+        raise AristaAvdMissingVariableError(f"'type' for host {self.hostname}")
 
     @cached_property
     def hostname(self):
@@ -125,6 +130,21 @@ class EosDesignsFacts(AvdFacts):
                     return default_interface
 
         return {}
+
+    @cached_property
+    def _default_node_type(self):
+        """
+        switch._default_node_type set based on hostname, returning
+        first node type matching a regex in default_node_types
+        """
+        default_node_types = get(self._hostvars, "default_node_types", default=[])
+
+        for default_node_type in default_node_types:
+            for hostname_regex in default_node_type["match_hostnames"]:
+                if re.search(f"^{hostname_regex}$", self.hostname):
+                    return default_node_type["node_type"]
+
+        return None
 
     @cached_property
     def default_underlay_routing_protocol(self):

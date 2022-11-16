@@ -84,10 +84,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.0/31
-    struct_cfg:
-      pim:
-        ipv4:
-          sparse_mode: true
     pim:
       ipv4:
         sparse_mode: true
@@ -100,10 +96,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.2/31
-    struct_cfg:
-      pim:
-        ipv4:
-          sparse_mode: true
     pim:
       ipv4:
         sparse_mode: true

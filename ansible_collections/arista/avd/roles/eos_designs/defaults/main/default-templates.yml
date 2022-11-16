@@ -18,22 +18,21 @@ default_templates:
       - template: "core_interfaces/main.j2"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
-      # Tenants feature
-      - template: "network_services/main.j2"
+      # Network Services feature
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
+        python_class_name: "AvdStructuredConfig"
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Inband Management feature
       - template: "inband_management/main.j2"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
-      mlag_ibgp_peering_ip_primary: "ip_addressing/mlag-ibgp-peering-ip-primary.j2"
-      mlag_ibgp_peering_ip_secondary: "ip_addressing/mlag-ibgp-peering-ip-secondary.j2"
     interface_descriptions:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
       python_class_name: "AvdInterfaceDescriptions"
@@ -59,13 +58,14 @@ default_templates:
       - template: "connected_endpoints/main.j2"
       # Overlay feature
       - template: "overlay/main.j2"
-      # Tenants feature
-      - template: "network_services/main.j2"
+      # Network Services feature
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
+        python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
@@ -93,17 +93,18 @@ default_templates:
       - template: "core_interfaces/main.j2"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
-      # Tenants feature
-      - template: "network_services/main.j2"
+      # Network Services feature
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
+        python_class_name: "AvdStructuredConfig"
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Inband Management feature
       - template: "inband_management/main.j2"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"

@@ -4,6 +4,20 @@
 
 fabric_name: DC1_FABRIC
 
+# This lab also used to test default_node_types
+default_node_types:
+  - match_hostnames:
+      - DC1-SPINE\d+
+    node_type: spine
+  - match_hostnames:
+      - DC1-LEAF\d+[AB]*
+      - DC1-SVC\d+[AB]*
+      - DC1-BL\d+[AB]*
+    node_type: l3leaf
+  - match_hostnames:
+      - DC1-L2LEAF\d+[AB]*
+    node_type: l2leaf
+
 # OSPF Parameters when underlay_routing_protocol=OSPF
 underlay_routing_protocol: OSPF
 underlay_ospf_process_id: 101

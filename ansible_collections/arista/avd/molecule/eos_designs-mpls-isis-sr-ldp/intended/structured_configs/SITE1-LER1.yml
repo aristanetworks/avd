@@ -249,13 +249,13 @@ ethernet_interfaces:
       id: 8
       mode: active
   Ethernet6.10:
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 10
     peer_type: l3_interface
-    vrf: TENANT_B_INTRA
     ip_address: 123.1.1.0/31
     shutdown: false
     description: TENANT_B_SITE_3_INTRA_L3VPN
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 10
+    vrf: TENANT_B_INTRA
     ospf_area: 0
     ospf_network_point_to_point: true
     ospf_cost: 10
@@ -263,6 +263,9 @@ ethernet_interfaces:
     type: routed
     peer_type: l3_interface
     shutdown: false
+    lldp:
+      transmit: false
+      receive: false
   Ethernet3:
     shutdown: false
     channel_group:
