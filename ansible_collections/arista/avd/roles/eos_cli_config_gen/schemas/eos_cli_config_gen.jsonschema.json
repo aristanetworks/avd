@@ -5433,6 +5433,7 @@
         },
         "bgp_defaults": {
           "type": "array",
+          "description": "BGP command as string",
           "items": {
             "type": "string"
           },
@@ -5458,7 +5459,7 @@
         },
         "listen_ranges": {
           "type": "array",
-          "description": "New improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
+          "description": "Improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
           "items": {
             "type": "object",
             "properties": {
@@ -7506,67 +7507,6 @@
                       "type": "string",
                       "description": "Outbound prefix-list name",
                       "title": "Prefix List Out"
-                    },
-                    "address_families": {
-                      "type": "array",
-                      "description": "Key only used for documentation or validation purposes",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "address_family": {
-                            "type": "string",
-                            "title": "Address Family"
-                          },
-                          "bgp": {
-                            "type": "object",
-                            "properties": {
-                              "missing_policy": {
-                                "type": "object",
-                                "properties": {
-                                  "direction_in_action": {
-                                    "type": "string",
-                                    "enum": [
-                                      "deny",
-                                      "deny-in-out",
-                                      "permit"
-                                    ],
-                                    "title": "Direction In Action"
-                                  },
-                                  "direction_out_action": {
-                                    "type": "string",
-                                    "enum": [
-                                      "deny",
-                                      "deny-in-out",
-                                      "permit"
-                                    ],
-                                    "title": "Direction Out Action"
-                                  }
-                                },
-                                "additionalProperties": false,
-                                "title": "Missing Policy"
-                              },
-                              "additional_paths": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                },
-                                "title": "Additional Paths"
-                              }
-                            },
-                            "additionalProperties": false,
-                            "title": "BGP"
-                          },
-                          "activate": {
-                            "type": "boolean",
-                            "title": "Activate"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "required": [
-                          "address_family"
-                        ]
-                      },
-                      "title": "Address Families"
                     }
                   },
                   "additionalProperties": false,

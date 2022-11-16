@@ -141,9 +141,6 @@ router_bgp:
         1.1.1.1:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
           description: test_description
-          address_families:
-            ipv4:
-              activate: true
           route_map_out: RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
         BEBA::C0CA:C07A:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP

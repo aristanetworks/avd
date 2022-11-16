@@ -62,6 +62,7 @@ keys:
         description: IP Address A.B.C.D
       bgp_defaults:
         type: list
+        description: BGP command as string
         items:
           type: str
       bgp:
@@ -75,7 +76,7 @@ keys:
       listen_ranges:
         type: list
         description: |
-          New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+          Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
         items:
           type: dict
           keys:
@@ -1314,41 +1315,6 @@ keys:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name
-                  address_families:
-                    type: list
-                    description: Key only used for documentation or validation purposes
-                    primary_key: address_family
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        address_family:
-                          type: str
-                        bgp:
-                          type: dict
-                          keys:
-                            missing_policy:
-                              type: dict
-                              keys:
-                                direction_in_action:
-                                  type: str
-                                  valid_values:
-                                    - "deny"
-                                    - "deny-in-out"
-                                    - "permit"
-                                direction_out_action:
-                                  type: str
-                                  valid_values:
-                                    - "deny"
-                                    - "deny-in-out"
-                                    - "permit"
-                            additional_paths:
-                              type: list
-                              items:
-                                type: str
-                        activate:
-                          type: bool
             neighbor_interfaces:
               type: list
               primary_key: name

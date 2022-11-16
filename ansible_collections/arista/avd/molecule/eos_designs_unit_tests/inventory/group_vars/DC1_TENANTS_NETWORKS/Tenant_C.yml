@@ -69,9 +69,6 @@ Tenant_C:
           description: test_description
           nodes: [ DC1-BL2B ]
           set_ipv4_next_hop: 1.1.1.1
-          address_families:
-            ipv4:
-              activate: true
         BEBA::C0CA:C07A:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
           nodes: [ DC1-BL2B ]
