@@ -10,7 +10,8 @@ from ansible_collections.arista.avd.plugins.filter.list_compress import list_com
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError, default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
 

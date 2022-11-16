@@ -15,9 +15,10 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"

@@ -3,7 +3,8 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, get
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class AvdIpAddressing(AvdFacts):
