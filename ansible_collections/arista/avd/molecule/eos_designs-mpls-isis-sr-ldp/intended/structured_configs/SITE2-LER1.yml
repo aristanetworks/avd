@@ -238,8 +238,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1000
+
+      '
     ip_address: 100.64.48.15/31
-    speed: forced 40gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 60
@@ -253,16 +255,17 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1000
-
-      '
+    speed: forced 40gfull
   Ethernet11:
-    type: routed
+    peer: SITE2-LSR2
+    peer_interface: Port-Channel12
+    peer_type: p
     description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
     shutdown: false
     channel_group:
       id: 11
       mode: active
+    speed: forced 40gfull
   Ethernet8:
     peer: CPE_TENANT_A_SITE2
     peer_interface: eth0
@@ -325,8 +328,10 @@ port_channel_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1600
+
+      '
     ip_address: 100.64.48.17/31
-    speed: forced 40gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 60
@@ -335,9 +340,6 @@ port_channel_interfaces:
     isis_circuit_type: level-2
     isis_authentication_mode: md5
     isis_authentication_key: asdadjiwtelogkkdng
-    eos_cli: 'link-debounce time 1600
-
-      '
     mpls:
       ip: true
       ldp:

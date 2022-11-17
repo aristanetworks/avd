@@ -223,8 +223,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9214
+    eos_cli: 'link-debounce time 1000
+
+      '
     ip_address: 100.64.48.2/31
-    speed: forced 100gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 50
@@ -238,9 +240,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1000
-
-      '
+    speed: forced 100gfull
   Ethernet2:
     peer: SITE1-LER1
     peer_interface: Ethernet2
@@ -249,8 +249,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1500
+
+      '
     ip_address: 100.64.48.5/31
-    speed: forced 10000full
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 500
@@ -264,9 +266,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1500
-
-      '
+    speed: forced 10000full
   Ethernet8:
     peer: CPE_TENANT_A_SITE1
     peer_interface: Ethernet2
