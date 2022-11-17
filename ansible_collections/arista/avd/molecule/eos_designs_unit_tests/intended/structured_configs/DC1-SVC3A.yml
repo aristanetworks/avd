@@ -763,8 +763,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mlag: 7
   Port-Channel10:
     description: server03_ESI_PortChanne1
@@ -967,8 +967,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-L2LEAF2A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -977,8 +977,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-L2LEAF2B_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -988,9 +988,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet7/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.97/31
   Ethernet50/1:
     peer: DC1-SPINE2
@@ -998,9 +998,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/7/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.99/31
   Ethernet51/1:
     peer: DC1-SPINE3
@@ -1008,9 +1008,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/7/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.101/31
   Ethernet52/1:
     peer: DC1-SPINE4
@@ -1018,9 +1018,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet7/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.103/31
   Ethernet10:
     peer: server03_ESI

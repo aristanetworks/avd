@@ -11,7 +11,8 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.mlag"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
-      - template: "underlay/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay"
+        python_class_name: "AvdStructuredConfig"
       # Overlay feature
       - template: "overlay/main.j2"
       # Core Interfaces Feature
@@ -51,7 +52,8 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
-      - template: "underlay/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay"
+        python_class_name: "AvdStructuredConfig"
       # Core Interfaces Feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
         python_class_name: "AvdStructuredConfig"
@@ -91,7 +93,8 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.mlag"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
-      - template: "underlay/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay"
+        python_class_name: "AvdStructuredConfig"
       # Core Interfaces Feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
         python_class_name: "AvdStructuredConfig"

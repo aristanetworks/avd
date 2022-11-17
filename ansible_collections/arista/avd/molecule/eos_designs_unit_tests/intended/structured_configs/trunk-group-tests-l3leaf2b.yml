@@ -169,9 +169,9 @@ port_channel_interfaces:
     description: TRUNK-GROUP-TESTS-L2LEAF4_Po1
     type: switched
     shutdown: false
+    mode: trunk
     trunk_groups:
     - trunk-group-tests-l2leaf4
-    mode: trunk
     mlag: 1
 ethernet_interfaces:
   Ethernet3:
@@ -199,8 +199,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: TRUNK-GROUP-TESTS-L2LEAF4_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active

@@ -119,7 +119,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         elements = [peer, adapter_port_channel_description]
         return "_".join([str(element) for element in elements if element is not None])
 
-    def overlay_loopback_interface(self, overlay_loopback_description) -> str:
+    def overlay_loopback_interface(self, overlay_loopback_description: str = None) -> str:
         if template_path := get(self._hostvars, "switch.interface_descriptions.overlay_loopback_interface"):
             return self._template(template_path, overlay_loopback_description=overlay_loopback_description)
 

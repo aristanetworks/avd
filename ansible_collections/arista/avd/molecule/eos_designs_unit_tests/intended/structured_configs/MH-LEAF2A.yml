@@ -161,20 +161,20 @@ ethernet_interfaces:
     peer_interface: Ethernet21
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet21
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
-    ip_address: 10.10.101.5/31
     link_tracking_groups:
     - name: Eth-conn-to-router
       direction: upstream
+    ip_address: 10.10.101.5/31
   Ethernet2:
     peer: MH-L2LEAF1A
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: MH-L2LEAF1A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 2
       mode: active
@@ -195,8 +195,8 @@ port_channel_interfaces:
     description: MH-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 310
     mode: trunk
+    vlans: '310'
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

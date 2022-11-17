@@ -80,18 +80,18 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.20/31
   Ethernet2:
     peer: CUSTOM-TEMPLATES-L3LEAF1B
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.22/31
 loopback_interfaces:
   Loopback0:
