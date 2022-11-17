@@ -137,7 +137,7 @@ class ActionModule(ActionBase):
                 try:
                     cls = load_python_class(module_path, class_name, AvdFacts)
                 except AristaAvdMissingVariableError as exc:
-                    raise AristaAvdError(f"Missing module_path or class_name in {template_item}") from exc
+                    raise AnsibleActionFail(f"Missing module_path or class_name in {template_item}") from exc
 
                 cls_instance = cls(hostvars=template_vars, templar=templar)
 
@@ -145,7 +145,7 @@ class ActionModule(ActionBase):
                     debug_item["timestamps"]["render_python_class"] = datetime.now()
 
                 if not (getattr(cls_instance, "render")):
-                    raise AristaAvdError(f"{cls_instance} has no attribute render")
+                    raise AnsibleActionFail(f"{cls_instance} has no attribute render")
 
                 try:
                     template_result_data = cls_instance.render()
