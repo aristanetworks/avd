@@ -1,10 +1,9 @@
 import importlib
-from typing import Optional
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 
 
-def load_python_class(module_path: str, class_name: str, parent_class: Optional[type] = None) -> type:
+def load_python_class(module_path: str, class_name: str, parent_class: type | None = None) -> type:
     """
     Load Python Class via importlib
 
@@ -25,13 +24,17 @@ def load_python_class(module_path: str, class_name: str, parent_class: Optional[
 
     Raises
     ------
-    AristaAvdError
+    AristaAvdMissingVariableError
         If module_path or class_name are not present
+
+    AristaAvdError
         If importlib fails to load the Class
         If the loaded Class is not inheriting from the optional parent_class
     """
-    if not module_path or not class_name:
-        raise AristaAvdError("Cannot load a class from a module if class_name or module_path are not given")
+    if not module_path:
+        raise AristaAvdMissingVariableError("Cannot load a python class without the module_path set.")
+    if not class_name:
+        raise AristaAvdMissingVariableError("Cannot load a python class without the class_name set.")
 
     try:
         cls = getattr(importlib.import_module(module_path), class_name)

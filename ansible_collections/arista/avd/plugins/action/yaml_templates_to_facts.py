@@ -14,7 +14,7 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, load_python_class
@@ -134,18 +134,23 @@ class ActionModule(ActionBase):
             elif "python_module" in template_item:
                 module_path = template_item.get("python_module")
                 class_name = template_item.get("python_class_name", DEFAULT_PYTHON_CLASS_NAME)
-                cls = load_python_class(module_path, class_name, AvdFacts)
+                try:
+                    cls = load_python_class(module_path, class_name, AvdFacts)
+                except AristaAvdMissingVariableError as exc:
+                    raise AristaAvdError(f"Missing module_path or class_name in {template_item}") from exc
 
                 cls_instance = cls(hostvars=template_vars, templar=templar)
+
                 if debug:
                     debug_item["timestamps"]["render_python_class"] = datetime.now()
-                if getattr(cls_instance, "render"):
-                    try:
-                        template_result_data = cls_instance.render()
-                    except Exception as error:
-                        raise AnsibleActionFail(error) from error
-                else:
+
+                if not (getattr(cls_instance, "render")):
                     raise AristaAvdError(f"{cls_instance} has no attribute render")
+
+                try:
+                    template_result_data = cls_instance.render()
+                except Exception as error:
+                    raise AnsibleActionFail(error) from error
             else:
                 raise AnsibleActionFail("Invalid template data")
 
