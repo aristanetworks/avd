@@ -14,13 +14,18 @@ keys:
             type: str
         trident_forwarding_table_partition:
           type: str
+          description: Only applied when evpn_multicast is true
         reload_delay:
           type: dict
           keys:
             mlag:
               type: int
+              convert_types:
+              - str
             non_mlag:
               type: int
+              convert_types:
+              - str
         tcam_profile:
           type: str
         lag_hardware_only:

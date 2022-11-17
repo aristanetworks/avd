@@ -1016,6 +1016,7 @@
             "title": "TCAM Profile"
           },
           "trident_forwarding_table_partition": {
+            "description": "Only applied when evpn_multicast is true",
             "type": "string",
             "title": "Trident Forwarding Table Partition"
           }

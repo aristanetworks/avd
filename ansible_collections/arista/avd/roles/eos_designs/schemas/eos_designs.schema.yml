@@ -1355,13 +1355,18 @@ keys:
         reload_delay:
           keys:
             mlag:
+              convert_types:
+              - str
               type: int
             non_mlag:
+              convert_types:
+              - str
               type: int
           type: dict
         tcam_profile:
           type: str
         trident_forwarding_table_partition:
+          description: Only applied when evpn_multicast is true
           type: str
       type: dict
     type: list
