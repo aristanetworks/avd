@@ -989,7 +989,7 @@ keys:
       p2p_links:
         convert_types:
         - dict
-        description: any setting supported under p2p_links can be set and inherited
+        description: Any setting supported under p2p_links can be set and inherited
           from profile
         items:
           keys:

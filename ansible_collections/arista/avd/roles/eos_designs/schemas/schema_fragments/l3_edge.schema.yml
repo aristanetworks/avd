@@ -28,7 +28,7 @@ keys:
         convert_types:
         - dict
         required: true
-        description: any setting supported under p2p_links can be set and inherited from profile
+        description: Any setting supported under p2p_links can be set and inherited from profile
         items:
           type: dict
           keys:

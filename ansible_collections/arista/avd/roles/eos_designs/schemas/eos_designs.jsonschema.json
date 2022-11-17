@@ -467,7 +467,7 @@
     "l3_edge": {
       "properties": {
         "p2p_links": {
-          "description": "any setting supported under p2p_links can be set and inherited from profile",
+          "description": "Any setting supported under p2p_links can be set and inherited from profile",
           "items": {
             "properties": {
               "as": {
