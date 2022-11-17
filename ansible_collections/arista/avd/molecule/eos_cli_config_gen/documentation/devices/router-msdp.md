@@ -12,9 +12,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
-- [Router MSDP](#router-msdp)
-  - [Router MSDP Peers](#router-msdp-peers)
-  - [Router MSDP Device Configuration](#router-msdp-device-configuration)
+  - [Router MSDP](#router-msdp)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -87,9 +85,9 @@ interface Management1
 
 # Multicast
 
-# Router MSDP
+## Router MSDP
 
-## Router MSDP Peers
+### Router MSDP Peers
 
 | Peer Address | VRF | Mesh Groups | Local Interface | Description |
 | ------------ | --- | ----------- | --------------- | ----------- |
@@ -97,7 +95,7 @@ interface Management1
 | 4.3.2.1 | default | - | Loopback21 | - |
 | 2.3.4.5 | RED | - | Loopback13 | Some other kind of MSDP Peer |
 
-## Router MSDP Device Configuration
+### Router MSDP Device Configuration
 
 ```eos
 !
