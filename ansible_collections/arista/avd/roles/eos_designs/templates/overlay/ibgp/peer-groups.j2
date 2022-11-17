@@ -4,15 +4,15 @@
       type: mpls
       update_source: Loopback0
       remote_as: "{{ switch.bgp_as }}"
-{%     if switch.overlay.ipvpn_gateway_local_as is arista.avd.defined %}
-      local_as: "{{ switch.overlay.ipvpn_gateway_local_as }}"
+{%     if switch.ipvpn_gateway.local_as is arista.avd.defined %}
+      local_as: "{{ switch.ipvpn_gateway.local_as }}"
 {%     endif %}
       bfd: true
 {%     if overlay_data.mpls_overlay_peer_group.password is arista.avd.defined %}
       password: "{{ overlay_data.mpls_overlay_peer_group.password }}"
 {%     endif %}
       send_community: all
-      maximum_routes: {{ switch.overlay.ipvpn_gateway_max_routes | arista.avd.default(0) }}
+      maximum_routes: {{ switch.ipvpn_gateway.max_routes | arista.avd.default(0) }}
 {%     if switch.mpls_overlay_role == "server" or (switch.evpn_role == "server" and switch.overlay.evpn_mpls) %}
       route_reflector_client: true
 {%     endif %}

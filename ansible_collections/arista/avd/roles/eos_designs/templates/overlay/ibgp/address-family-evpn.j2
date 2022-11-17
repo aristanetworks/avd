@@ -33,5 +33,5 @@
       import_match_failure_action: discard
 {% endif %}
 {% if switch.overlay.dpath %}
-    domain_identifier: "{{ switch.overlay.evpn_domain_id }}"
+    domain_identifier: "{{ switch.ipvpn_gateway.evpn_domain_id }}"
 {% endif %}

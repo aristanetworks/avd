@@ -12,6 +12,6 @@
         activate: true
 {%     endif %}
 {%     if switch.overlay.dpath %}
-    domain_identifier: "{{ switch.overlay.ipvpn_domain_id }}"
+    domain_identifier: "{{ switch.ipvpn_gateway.ipvpn_domain_id }}"
 {%     endif %}
 {% endif %}

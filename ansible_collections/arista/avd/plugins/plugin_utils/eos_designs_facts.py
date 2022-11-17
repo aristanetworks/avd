@@ -1722,6 +1722,7 @@ class EosDesignsFacts(AvdFacts):
         # Set ipvpn_gateway to trigger ipvpn interworking configuration.
         ipvpn_gateway = evpn and get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False)
         # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
+        # TODO - separate _overlay_<flag> methods for vpn_ipv4/6 logic
         vpn_ipv4 = self.bgp and (
             (self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families)
             or ("vpn-ipv4" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and ipvpn_gateway)
@@ -1730,23 +1731,8 @@ class EosDesignsFacts(AvdFacts):
             (self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families)
             or ("vpn-ipv6" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and ipvpn_gateway)
         )
-        # Set dpath and domain IDs based on ipvpn_gateway parameters
+        # Set dpath based on ipvpn_gateway parameters
         dpath = ipvpn_gateway and get(self._switch_data_combined, "ipvpn_gateway.enable_d_path", default=True)
-        if dpath:
-            evpn_domain_id = get(self._switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="65000:1")
-            ipvpn_domain_id = get(self._switch_data_combined, "ipvpn_gateway.ipvpn_domain_id", default="65000:2")
-        else:
-            evpn_domain_id = None
-            ipvpn_domain_id = None
-        # Set miscellaneous ipvpn_gateway parameters
-        if ipvpn_gateway:
-            ipvpn_gateway_max_routes = get(self._switch_data_combined, "ipvpn_gateway.maximum_routes", default=0)
-            ipvpn_gateway_local_as = get(self._switch_data_combined, "ipvpn_gateway.local_as", default=None)
-            ipvpn_gateway_remote_peers = get(self._switch_data_combined, "ipvpn_gateway.remote_peers", default=[])
-        else:
-            ipvpn_gateway_max_routes = None
-            ipvpn_gateway_local_as = None
-            ipvpn_gateway_remote_peers = None
         return {
             "peering_address": peering_address,
             "ler": ler,
@@ -1758,9 +1744,26 @@ class EosDesignsFacts(AvdFacts):
             "vpn_ipv6": vpn_ipv6,
             "ipvpn_gateway": ipvpn_gateway,
             "dpath": dpath,
-            "evpn_domain_id": evpn_domain_id,
-            "ipvpn_domain_id": ipvpn_domain_id,
-            "ipvpn_gateway_max_routes": ipvpn_gateway_max_routes,
-            "ipvpn_gateway_local_as": ipvpn_gateway_local_as,
-            "ipvpn_gateway_remote_peers": ipvpn_gateway_remote_peers,
+        }
+
+    @cached_property
+    def ipvpn_gateway(self):
+        """
+        Returns a dictionary of ipvpn interworking gateway parameters to configure on the node.
+        """
+        if get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False):
+            return {
+                "evpn_domain_id": get(self._switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="0:1"),
+                "ipvpn_domain_id": get(self._switch_data_combined, "ipvpn_gateway.ipvpn_domain_id", default="0:2"),
+                "max_routes": get(self._switch_data_combined, "ipvpn_gateway.maximum_routes", default=0),
+                "local_as": get(self._switch_data_combined, "ipvpn_gateway.local_as", default=None),
+                "remote_peers": get(self._switch_data_combined, "ipvpn_gateway.remote_peers", default=[]),
+            }
+
+        return {
+            "evpn_domain_id": None,
+            "ipvpn_domain_id": None,
+            "max_routes": None,
+            "local_as": None,
+            "remote_peers": None,
         }
