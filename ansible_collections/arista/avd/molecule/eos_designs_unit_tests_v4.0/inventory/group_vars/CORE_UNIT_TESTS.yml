@@ -135,6 +135,8 @@ core_interfaces:
       port_channel:
         mode: active
         nodes_child_interfaces:
-          core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
-          core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
+          - node: core-1-isis-sr-ldp
+            interfaces: [ Ethernet12, Ethernet13 ]
+          - node: core-2-ospf-ldp
+            interfaces: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
