@@ -36,9 +36,10 @@ keys:
                   - str
       contact:
         type: str
-        description: Contact Name
+        description: SNMP Contact
       location:
         type: str
+        description: SNMP Location
       communities:
         type: list
         primary_key: name
