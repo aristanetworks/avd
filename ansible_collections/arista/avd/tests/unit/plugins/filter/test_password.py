@@ -12,7 +12,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdE
 ##########
 # BGP
 ##########
-# NOTE: for now not testing anything with use_base64 for BGP False as this should not bew widely used
 
 INPUT_DICT_ENCRYPT_EXPECTED = [
     ("42.42.42.42", "arista", "3QGcqpU2YTwKh2jVQ4Vj/A=="),

@@ -17,7 +17,7 @@ def test_cbc_encrypt(key, expected):
     Valid cases for both neighbor IP and peer group name
     """
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
-    assert cbc_encrypt(augmented_key, b"arista", True) == expected
+    assert cbc_encrypt(augmented_key, b"arista") == expected
 
 
 @pytest.mark.parametrize("key, password", VALID_PASSWORD_KEY_PAIRS)
@@ -26,7 +26,7 @@ def test_cbc_decrypt(key, password):
     Valid cases for both neighbor IP and peer group name
     """
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
-    assert cbc_decrypt(augmented_key, password, True) == b"arista"
+    assert cbc_decrypt(augmented_key, password) == b"arista"
 
 
 @pytest.mark.parametrize("key, password", VALID_PASSWORD_KEY_PAIRS)
@@ -35,7 +35,7 @@ def test_cbc_check_password_success(key, password):
     Valid cases for both neighbor IP and peer group name
     """
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
-    assert cbc_check_password(augmented_key, password, True) is True
+    assert cbc_check_password(augmented_key, password) is True
 
 
 @pytest.mark.parametrize("key, password", INVALID_PASSWORD_KEY_PAIRS)
@@ -44,4 +44,4 @@ def test_cbc_check_password_invalid_values(key, password):
     Invalid cases for both neighbor IP and peer group name
     """
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
-    assert cbc_check_password(augmented_key, password, True) is False
+    assert cbc_check_password(augmented_key, password) is False
