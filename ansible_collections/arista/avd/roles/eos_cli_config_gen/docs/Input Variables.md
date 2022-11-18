@@ -4453,15 +4453,15 @@ sflow:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "snmp_server.engine_ids.remotes.[].id") | String |  |  |  | Remote Engine ID In Hexadecimal<br> |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "snmp_server.engine_ids.remotes.[].address") | String |  |  |  | Hostname or IP Of Remote Engine<br> |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.engine_ids.remotes.[].udp_port") | Integer |  |  |  |  |
-| [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_server.contact") | String |  |  |  | Contact Name |
-| [<samp>&nbsp;&nbsp;location</samp>](## "snmp_server.location") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_server.contact") | String |  |  |  | SNMP Contact |
+| [<samp>&nbsp;&nbsp;location</samp>](## "snmp_server.location") | String |  |  |  | SNMP Location |
 | [<samp>&nbsp;&nbsp;communities</samp>](## "snmp_server.communities") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "snmp_server.communities.[].name") | String | Required, Unique |  |  | Community Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access</samp>](## "snmp_server.communities.[].access") | String |  |  | Valid Values:<br>- ro<br>- rw |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "snmp_server.communities.[].access_list_ipv4") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.communities.[].access_list_ipv4.name") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.communities.[].access_list_ipv4.name") | String |  |  |  | IPv4 Access List Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv6</samp>](## "snmp_server.communities.[].access_list_ipv6") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.communities.[].access_list_ipv6.name") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.communities.[].access_list_ipv6.name") | String |  |  |  | IPv6 Access List Name |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view</samp>](## "snmp_server.communities.[].view") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_server.ipv4_acls") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "snmp_server.ipv4_acls.[].name") | String |  |  |  | IPv4 Access List Name |

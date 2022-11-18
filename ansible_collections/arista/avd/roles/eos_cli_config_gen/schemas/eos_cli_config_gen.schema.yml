@@ -6244,9 +6244,10 @@ keys:
                   - str
       contact:
         type: str
-        description: Contact Name
+        description: SNMP Contact
       location:
         type: str
+        description: SNMP Location
       communities:
         type: list
         primary_key: name
@@ -6268,11 +6269,13 @@ keys:
               keys:
                 name:
                   type: str
+                  description: IPv4 Access List Name
             access_list_ipv6:
               type: dict
               keys:
                 name:
                   type: str
+                  description: IPv6 Access List Name
             view:
               type: str
       ipv4_acls:

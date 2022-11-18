@@ -9261,11 +9261,12 @@
         },
         "contact": {
           "type": "string",
-          "description": "Contact Name",
+          "description": "SNMP Contact",
           "title": "Contact"
         },
         "location": {
           "type": "string",
+          "description": "SNMP Location",
           "title": "Location"
         },
         "communities": {
@@ -9291,6 +9292,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "IPv4 Access List Name",
                     "title": "Name"
                   }
                 },
@@ -9302,6 +9304,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
+                    "description": "IPv6 Access List Name",
                     "title": "Name"
                   }
                 },
