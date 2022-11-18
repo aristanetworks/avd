@@ -5,6 +5,7 @@ from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
 
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError, default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
@@ -202,15 +203,18 @@ class UtilsMixin:
             "peer_bgp_as": str(bgp_as[peer_index]),
         }
 
-        if member_interfaces := get(p2p_link, f"port_channel..nodes_child_interfaces..{self._hostname}", separator=".."):
+        node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
+        # Convert to new data models
+        node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
+        if member_interfaces := get_item(node_child_interfaces, "node", self._hostname, default={}).get("interfaces"):
             # Port-channel
-            peer_member_interfaces = get(
-                p2p_link,
-                f"port_channel..nodes_child_interfaces..{peer}",
-                separator="..",
-                org_key=f"core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.{peer}",
+            peer_member_interfaces = get_item(
+                node_child_interfaces,
+                "node",
+                peer,
                 required=True,
-            )
+                var_name=f"{peer} under core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces",
+            )["interfaces"]
             id = int("".join(re.findall(r"\d", member_interfaces[0])))
             peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
             data.update(
