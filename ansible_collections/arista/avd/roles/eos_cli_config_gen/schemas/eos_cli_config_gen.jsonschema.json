@@ -11442,7 +11442,7 @@
           },
           "ipv6_virtual_router_addresses": {
             "type": "array",
-            "description": "New improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
+            "description": "Improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
             "items": {
               "type": "string",
               "description": "IPv6 address or IPv6 address/mask"
@@ -11521,6 +11521,7 @@
                 "properties": {
                   "boundaries": {
                     "type": "array",
+                    "description": "Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -11574,6 +11575,7 @@
                 "properties": {
                   "boundaries": {
                     "type": "array",
+                    "description": "Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -11690,6 +11692,8 @@
                 "properties": {
                   "dr_priority": {
                     "type": "integer",
+                    "minimum": 0,
+                    "maximum": 429467295,
                     "title": "DR Priority"
                   },
                   "sparse_mode": {
@@ -11735,7 +11739,7 @@
           },
           "vrrp_ids": {
             "type": "array",
-            "description": "New improved \"vrrp\" data model to support multiple VRRP IDs",
+            "description": "Improved \"vrrp\" data model to support multiple VRRP IDs",
             "items": {
               "type": "object",
               "properties": {
@@ -12008,11 +12012,6 @@
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
             "title": "Type"
-          },
-          "struct_cfg": {
-            "type": "object",
-            "description": "Internal key from arista.eos_designs.",
-            "title": "Struct Cfg"
           }
         },
         "required": [

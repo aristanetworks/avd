@@ -7700,8 +7700,7 @@ keys:
             '
         ipv6_virtual_router_addresses:
           type: list
-          description: New improved "VARPv6" data model to support multiple VARPv6
-            addresses.
+          description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
           items:
             type: str
             description: IPv6 address or IPv6 address/mask
@@ -7754,6 +7753,8 @@ keys:
               keys:
                 boundaries:
                   type: list
+                  description: Boundaries can be either 1 ACL or a list of multicast
+                    IP address_range(s)/prefix but not combination of both
                   primary_key: boundary
                   items:
                     type: dict
@@ -7783,6 +7784,8 @@ keys:
               keys:
                 boundaries:
                   type: list
+                  description: Boundaries can be either 1 ACL or a list of multicast
+                    IP address_range(s)/prefix but not combination of both
                   primary_key: boundary
                   items:
                     type: dict
@@ -7858,6 +7861,8 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  min: 0
+                  max: 429467295
                 sparse_mode:
                   type: bool
                 local_interface:
@@ -7881,7 +7886,7 @@ keys:
           type: bool
         vrrp_ids:
           type: list
-          description: New improved "vrrp" data model to support multiple VRRP IDs
+          description: Improved "vrrp" data model to support multiple VRRP IDs
           primary_key: id
           items:
             type: dict
@@ -8059,9 +8064,6 @@ keys:
         type:
           type: str
           description: Key only used for documentation or validation purposes
-        struct_cfg:
-          type: dict
-          description: Internal key from arista.eos_designs.
   vlan_internal_order:
     type: dict
     keys:
