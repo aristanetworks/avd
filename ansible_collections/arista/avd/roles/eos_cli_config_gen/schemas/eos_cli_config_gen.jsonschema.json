@@ -9238,12 +9238,12 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "description": "Remote Engine ID In Hexadecimal\n",
+                    "description": "Remote engine ID in hexadecimal\n",
                     "title": "ID"
                   },
                   "address": {
                     "type": "string",
-                    "description": "Hostname or IP Of Remote Engine\n",
+                    "description": "Hostname or IP of remote engine\n",
                     "title": "Address"
                   },
                   "udp_port": {
@@ -9261,12 +9261,12 @@
         },
         "contact": {
           "type": "string",
-          "description": "SNMP Contact",
+          "description": "SNMP contact",
           "title": "Contact"
         },
         "location": {
           "type": "string",
-          "description": "SNMP Location",
+          "description": "SNMP location",
           "title": "Location"
         },
         "communities": {
@@ -9276,7 +9276,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Community Name",
+                "description": "Community name",
                 "title": "Name"
               },
               "access": {
@@ -9292,7 +9292,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "IPv4 Access List Name",
+                    "description": "IPv4 access list name",
                     "title": "Name"
                   }
                 },
@@ -9304,7 +9304,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "IPv6 Access List Name",
+                    "description": "IPv6 access list name",
                     "title": "Name"
                   }
                 },
@@ -9330,7 +9330,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IPv4 Access List Name",
+                "description": "IPv4 access list name",
                 "title": "Name"
               },
               "vrf": {
@@ -9349,7 +9349,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IPv6 Access List Name",
+                "description": "IPv6 access list name",
                 "title": "Name"
               },
               "vrf": {
@@ -9368,7 +9368,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Interface Name",
+                "description": "Interface name",
                 "title": "Name"
               },
               "vrf": {
@@ -9390,7 +9390,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "SNMP View Name",
+                "description": "SNMP view name",
                 "title": "Name"
               },
               "MIB_family_name": {
@@ -9436,17 +9436,17 @@
               },
               "read": {
                 "type": "string",
-                "description": "Read View",
+                "description": "Read view",
                 "title": "Read"
               },
               "write": {
                 "type": "string",
-                "description": "Write View",
+                "description": "Write view",
                 "title": "Write"
               },
               "notify": {
                 "type": "string",
-                "description": "Notify View",
+                "description": "Notify view",
                 "title": "Notify"
               }
             },
@@ -9466,17 +9466,17 @@
               },
               "group": {
                 "type": "string",
-                "description": "Group Name",
+                "description": "Group name",
                 "title": "Group"
               },
               "remote_address": {
                 "type": "string",
-                "description": "Hostname or ip of remote engine. The remote_address and udp_port are used for remote users.\n",
+                "description": "Hostname or ip of remote engine\nThe remote_address and udp_port are used for remote users\n",
                 "title": "Remote Address"
               },
               "udp_port": {
                 "type": "integer",
-                "description": "udp_port will not be used if no remote_address is configured.\n",
+                "description": "udp_port will not be used if no remote_address is configured\n",
                 "title": "UDP Port"
               },
               "version": {
@@ -9495,22 +9495,22 @@
               },
               "auth": {
                 "type": "string",
-                "description": "Hash Algorithm\n",
+                "description": "Hash algorithm\n",
                 "title": "Auth"
               },
               "auth_passphrase": {
                 "type": "string",
-                "description": "hashed_auth_passphrase if localized is used else cleartext auth_passphrase.\n",
+                "description": "Hashed authentication passphrase if localized is used else cleartext authentication passphrase\n",
                 "title": "Auth Passphrase"
               },
               "priv": {
                 "type": "string",
-                "description": "Encryption Algorithm\n",
+                "description": "Encryption algorithm\n",
                 "title": "Priv"
               },
               "priv_passphrase": {
                 "type": "string",
-                "description": "hashed_priv_passphrase if localized is used else cleartext priv_passphrase.\n",
+                "description": "Hashed privacy passphrase if localized is used else cleartext privacy passphrase\n",
                 "title": "Priv Passphrase"
               }
             },
@@ -9542,7 +9542,7 @@
               },
               "community": {
                 "type": "string",
-                "description": "Community Name",
+                "description": "Community name",
                 "title": "Community"
               },
               "users": {
@@ -9589,7 +9589,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "Enable or disable specific snmp-traps and their sub_traps.\nExamples:\n- \"bgp\"\n- \"bgp established\"\n",
+                    "description": "Enable or disable specific snmp-traps and their sub_traps\nExamples:\n- \"bgp\"\n- \"bgp established\"\n",
                     "title": "Name"
                   },
                   "enabled": {
@@ -9613,7 +9613,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "VRF Name",
+                "description": "VRF name",
                 "title": "Name"
               },
               "enable": {
