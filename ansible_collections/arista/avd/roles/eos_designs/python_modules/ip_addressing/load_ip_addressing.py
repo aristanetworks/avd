@@ -1,7 +1,4 @@
-import importlib
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
 
 from .avdipaddressing import AvdIpAddressing
 
@@ -24,12 +21,11 @@ def load_ip_addressing(hostvars, templar) -> AvdIpAddressing:
         "switch.ip_addressing.python_class_name",
         default=DEFAULT_AVD_IP_ADDRESSING_PYTHON_CLASS_NAME,
     )
-    try:
-        cls = getattr(importlib.import_module(module_path), class_name)
-    except ImportError as imp_exc:
-        raise AristaAvdError(imp_exc) from imp_exc
 
-    if not issubclass(cls, AvdIpAddressing):
-        raise AristaAvdError(f"{cls} is not a subclass of AvdIpAddressing class")
+    cls = load_python_class(
+        module_path,
+        class_name,
+        AvdIpAddressing,
+    )
 
     return cls(hostvars=hostvars, templar=templar)

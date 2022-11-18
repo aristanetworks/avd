@@ -1,7 +1,4 @@
-import importlib
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
 
 from .avdinterfacedescriptions import AvdInterfaceDescriptions
 
@@ -24,13 +21,11 @@ def load_interfacedescriptions(hostvars, templar) -> AvdInterfaceDescriptions:
         "switch.interface_descriptions.python_class_name",
         default=DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME,
     )
-    try:
-        cls = getattr(importlib.import_module(module_path), class_name)
-    except ImportError as imp_exc:
-        raise AristaAvdError(imp_exc) from imp_exc
 
-    # if not isinstance(cls, AvdInterfaceDescriptions):
-    if not issubclass(cls, AvdInterfaceDescriptions):
-        raise AristaAvdError(f"{cls} is not a subclass of AvdInterfaceDescriptions class")
+    cls = load_python_class(
+        module_path,
+        class_name,
+        AvdInterfaceDescriptions,
+    )
 
     return cls(hostvars=hostvars, templar=templar)
