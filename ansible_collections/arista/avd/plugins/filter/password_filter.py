@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdE
 ##############
 # BGP
 ##############
-def bgp_encrypt(password, key=None, usebase64=True) -> str:
+def bgp_encrypt(password, key=None) -> str:
     """
     Encrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
@@ -24,10 +24,10 @@ def bgp_encrypt(password, key=None, usebase64=True) -> str:
     data = bytes(password, encoding="UTF-8")
     key = bytes(f"{key}_passwd", encoding="UTF-8")
 
-    return cbc_encrypt(key, data, usebase64).decode()
+    return cbc_encrypt(key, data).decode()
 
 
-def bgp_decrypt(password, key=None, usebase64=True) -> str:
+def bgp_decrypt(password, key=None) -> str:
     """
     Decrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
@@ -45,7 +45,7 @@ def bgp_decrypt(password, key=None, usebase64=True) -> str:
     key = bytes(f"{key}_passwd", encoding="UTF-8")
 
     try:
-        return cbc_decrypt(key, data, usebase64).decode()
+        return cbc_decrypt(key, data).decode()
     except Exception as exc:
         raise AristaAvdError from exc
 

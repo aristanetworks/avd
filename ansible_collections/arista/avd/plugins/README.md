@@ -179,17 +179,6 @@ To use this filter:
 #### Password filters
 
 The `arista.avd.encrypt` and `arista.avd.decrypt` filters are used to encrypt or decrypt supported passwords.
-It takes as input a `type`
-
-Both take as parameter a value and key
-
-Supported types:
-
-- bgp
-
-##### BGP passwords
-
-BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name as is expected in EOS.
 
 To use these filters:
 
@@ -197,6 +186,14 @@ To use these filters:
 {{ <var_with_clear_text_password> | bgp_encrypt(passwd_type=<type>, key=<encryption_key>) }}
 {{ <var_with_encrypted_password> | bgp_decrypt(passwd_type=<type>, key=<encryption_key>) }}
 ```
+
+Supported types:
+
+- bgp
+
+##### BGP passwords
+
+BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
 
 An example usage for `arista.avd.encrypt` filter for BGP it ot use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 

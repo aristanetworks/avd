@@ -174,7 +174,7 @@ def hashkey(pw) -> bytes:
     return bytes(result)
 
 
-def cbc_encrypt(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
+def cbc_encrypt(key: bytes, data: bytes) -> bytes:
     """
     Encrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
     """
@@ -187,20 +187,16 @@ def cbc_encrypt(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
     result = encryptor.update(ciphertext)
     encryptor.finalize()
 
-    if usebase64:
-        return base64.b64encode(result)
-    else:
-        return result
+    return base64.b64encode(result)
 
 
-def cbc_decrypt(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
+def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     """
     Decrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
     raises TODO
     """
-    if usebase64:
-        data = base64.b64decode(data)
+    data = base64.b64decode(data)
     hashed_key = hashkey(key)
 
     cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())
@@ -216,13 +212,13 @@ def cbc_decrypt(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
     return result[4:password_len]
 
 
-def cbc_check_password(key: bytes, data: bytes, usebase64: bool = True) -> bytes:
+def cbc_check_password(key: bytes, data: bytes) -> bool:
     """
     This function is used to verify if an encrypted password is decryptable.
     It does not return the password but only raise an error if the passowrd cannot be decrypted
     """
     try:
-        cbc_decrypt(key, data, usebase64)
+        cbc_decrypt(key, data)
         return True
     except Exception:
         return False

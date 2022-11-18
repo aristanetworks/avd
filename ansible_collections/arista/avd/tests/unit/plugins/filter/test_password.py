@@ -2,12 +2,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from contextlib import nullcontext as does_not_raise
+
 import pytest
 
 from ansible_collections.arista.avd.plugins.filter.password_filter import FilterModule, bgp_decrypt, bgp_encrypt, decrypt, encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
-
-from ..conftest import does_not_raise
 
 ##########
 # BGP
