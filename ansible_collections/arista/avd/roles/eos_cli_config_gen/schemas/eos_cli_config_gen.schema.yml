@@ -2274,6 +2274,7 @@ keys:
       keys:
         name:
           type: str
+          description: Loopback Interface name like "Loopback0"
           required: true
         description:
           type: str
@@ -2281,20 +2282,26 @@ keys:
           type: bool
         vrf:
           type: str
+          description: VRF name
         ip_address:
           type: str
+          description: IPv4_address/Mask
         ip_address_secondaries:
           type: list
           items:
             type: str
+            description: IPv4_address/Mask
         ipv6_enable:
           type: bool
         ipv6_address:
           type: str
+          description: IPv6_address/Mask
         ip_proxy_arp:
           type: bool
         ospf_area:
           type: str
+          convert_types:
+          - int
         mpls:
           type: dict
           keys:
@@ -2307,8 +2314,11 @@ keys:
                   type: bool
         eos_cli:
           type: str
+          description: EOS CLI rendered directly on the loopback interface in the
+            final EOS configuration
         isis_enable:
           type: str
+          description: ISIS Instance Name
         isis_passive:
           type: bool
         isis_metric:

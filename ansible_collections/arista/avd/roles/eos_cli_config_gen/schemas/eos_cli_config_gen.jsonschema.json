@@ -3001,6 +3001,7 @@
         "properties": {
           "name": {
             "type": "string",
+            "description": "Loopback Interface name like \"Loopback0\"",
             "title": "Name"
           },
           "description": {
@@ -3013,16 +3014,19 @@
           },
           "vrf": {
             "type": "string",
+            "description": "VRF name",
             "title": "VRF"
           },
           "ip_address": {
             "type": "string",
+            "description": "IPv4_address/Mask",
             "title": "IP Address"
           },
           "ip_address_secondaries": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "description": "IPv4_address/Mask"
             },
             "title": "IP Address Secondaries"
           },
@@ -3032,6 +3036,7 @@
           },
           "ipv6_address": {
             "type": "string",
+            "description": "IPv6_address/Mask",
             "title": "IPv6 Address"
           },
           "ip_proxy_arp": {
@@ -3066,10 +3071,12 @@
           },
           "eos_cli": {
             "type": "string",
+            "description": "EOS CLI rendered directly on the loopback interface in the final EOS configuration",
             "title": "EOS CLI"
           },
           "isis_enable": {
             "type": "string",
+            "description": "ISIS Instance Name",
             "title": "ISIS Enable"
           },
           "isis_passive": {
