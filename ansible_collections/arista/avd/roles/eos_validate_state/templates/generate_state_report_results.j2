@@ -121,12 +121,12 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-{%             if not result.ethernet_interface.value.shutdown %}
+{%             if not result.ethernet_interface.shutdown %}
   test_description: "Ethernet Interface & Line Protocol == \"up\""
 {%             else %}
   test_description: "Ethernet Interface & Line Protocol == \"adminDown\""
 {%             endif %}
-  test: "{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description | arista.avd.default('') }}"
+  test: "{{ result.ethernet_interface.name }} - {{ result.ethernet_interface.description | arista.avd.default('') }}"
 {%             if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%             else %}
@@ -144,12 +144,12 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-{%             if not result.port_channel_interface.value.shutdown %}
+{%             if not result.port_channel_interface.shutdown %}
   test_description: "Port-Channel Interface & Line Protocol == \"up\""
 {%             else %}
   test_description: "Port-Channel Interface & Line Protocol == \"adminDown\""
 {%             endif %}
-  test: "{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description | arista.avd.default('') }}"
+  test: "{{ result.port_channel_interface.name }} - {{ result.port_channel_interface.description | arista.avd.default('') }}"
 {%             if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%             else %}
@@ -167,12 +167,12 @@ eos_validate_state_report:
 - id: {{ test_id.value }}
   device: "{{ node }}"
   test_category: "Interface State"
-{%             if not result.vlan_interface.value.shutdown %}
+{%             if not result.vlan_interface.shutdown %}
   test_description: "Vlan Interface & Line Protocol == \"up\""
 {%             else %}
   test_description: "Vlan Interface & Line Protocol == \"adminDown\""
 {%             endif %}
-  test: "{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description | arista.avd.default('') }}"
+  test: "{{ result.vlan_interface.name }} - {{ result.vlan_interface.description | arista.avd.default('') }}"
 {%             if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%             else %}
@@ -208,7 +208,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "Interface State"
   test_description: "Loopback Interface Status & Line Protocol == \"up\""
-  test: "{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description | arista.avd.default('') }}"
+  test: "{{ result.loopback_interface.name }} - {{ result.loopback_interface.description | arista.avd.default('') }}"
 {%             if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%             else %}
@@ -228,7 +228,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "LLDP Topology"
   test_description: "LLDP topology - validate peer and interface"
-  test: "local: {{ result.ethernet_interface.key }} - remote: {{ copy_hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer }}_{{ copy_hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer_interface }}"
+  test: "local: {{ result.ethernet_interface.name }} - remote: {{ result.ethernet_interface.peer }}_{{ result.ethernet_interface.peer_interface }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
@@ -266,7 +266,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "IP Reachability"
   test_description: "ip reachability test p2p links"
-  test: "Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} - Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }}"
+  test: "Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.name }} - Destination: {{ result.ip_reachability_test.ethernet_interface.peer }}_{{ result.ip_reachability_test.ethernet_interface.peer_interface }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
@@ -304,7 +304,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "BGP"
   test_description: "ip bgp peer state established (ipv4)"
-  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+  test: "bgp_neighbor: {{ result.bgp_neighbor.ip_address }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
@@ -325,7 +325,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "BGP"
   test_description: "bgp evpn peer state established (evpn)"
-  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+  test: "bgp_neighbor: {{ result.bgp_neighbor.ip_address }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
@@ -405,7 +405,7 @@ eos_validate_state_report:
   device: "{{ node }}"
   test_category: "Loopback0 Reachability"
   test_description: "Loopback0 Reachability"
-  test: "Source: {{ node }} - {{ copy_hostvars[node].loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
+  test: "Source: {{ node }} - {{ (copy_hostvars[node].loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0'))[0].ip_address | ansible.utils.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
 {%                 if result.failed is arista.avd.defined(false) %}
   result: "PASS"
 {%                 else %}
