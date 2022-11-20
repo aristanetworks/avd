@@ -180,12 +180,12 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
-{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("enabled") %}
+{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined and port_channel_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%     elif port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
    spanning-tree bpduguard disable
 {%     endif %}
-{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined and port_channel_interface.spanning_tree_bpdufilter in [True, "True", "enabled"] %}
    spanning-tree bpdufilter enable
 {%     elif port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable

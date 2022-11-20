@@ -14,10 +14,8 @@ keys:
         name:
           type: str
           required: true
-          display_name: Port Channel Interface
         description:
           type: str
-          display_name: Description
         logging:
           type: dict
           keys:
@@ -28,18 +26,32 @@ keys:
                   type: bool
         shutdown:
           type: bool
+        l2_mtu:
+          type: int
+          convert_types:
+          - str
         vlans:
           type: str
           convert_types:
           - int
         snmp_trap_link_change:
-          type: bool  
+          type: bool
         type:
           type: str
+          valid_values:
+          - routed
+          - switched
+          - l3dot1q
+          - l2dot1q
+          description: |
+            l3dot1q and l2dot1q are used for sub-interfaces. \
+            The parent interface should be defined as routed.
         encapsulation_dot1q_vlan:
           type: int
+          convert_types:
+          - str
         vrf:
-          type: str  
+          type: str
         encapsulation_vlan:
           type: dict
           keys:
@@ -52,15 +64,20 @@ keys:
                     vlan:
                       type: str
                       convert_types:
-                      - int 
+                      - int
                     outer:
                       type: int
+                      convert_types:
+                      - str
                     inner:
                       type: int
+                      convert_types:
+                      - str
                 unmatched:
                   type: bool
             network:
               type: dict
+              description: network encapsulation is all optional, and skipped if using client unmatched.
               keys:
                 dot1q:
                   type: dict
@@ -71,19 +88,36 @@ keys:
                       - int
                     outer:
                       type: int
+                      convert_types:
+                      - str
                     inner:
                       type: int
+                      convert_types:
+                      - str
                 client:
                   type: bool
         vlan_id:
           type: int
+          convert_types:
+          - str
+          min: 1
+          max: 4094
         mode:
           type: str
+          valid_values:
+          - access
+          - dot1q-tunnel
+          - trunk
+          - "trunk phone"
         native_vlan:
           type: int
-          display_name: Native VLAN Number
+          convert_types:
+          - str
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
         native_vlan_tag:
           type: bool
+          default: false
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
         link_tracking_groups:
           type: list
           items:
@@ -91,33 +125,56 @@ keys:
             keys:
               name:
                 type: str
-                display_name: Group Name
               direction:
                 type: str
+                valid_values:
+                - upstream
+                - downstream
         phone:
           type: dict
           keys:
             trunk:
               type: str
+              valid_values:
+              - tagged
+              - untagged
             vlan:
               type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
         l2_protocol:
           type: dict
           keys:
             encapsulation_dot1q_vlan:
               type: int
+              convert_types:
+              - str
         mtu:
           type: int
+          convert_types:
+          - str
+        peer:
+          type: str
+        peer_interface:
+          type: str
+        peer_type:
+          type: str
+        speed:
+          type: str
         mlag:
           type: int
-          display_name: MLAG id
+          convert_types:
+          - str
         trunk_groups:
           type: list
           items:
             type: str
-            display_name: Trunk Group
         lacp_fallback_timeout:
           type: int
+          convert_types:
+          - str
         lacp_fallback_mode:
           type: str
         qos:
@@ -125,10 +182,16 @@ keys:
           keys:
             trust:
               type: str
+              valid_values:
+              - dscp
+              - cos
+              - disabled
             dscp:
               type: str
             cos:
               type: int
+              convert_types:
+              - str
         bfd:
           type: dict
           keys:
@@ -136,10 +199,20 @@ keys:
               type: bool
             interval:
               type: int
+              description: Rate in milliseconds
+              convert_types:
+              - str
             min_rx:
               type: int
+              description: Rate in milliseconds
+              convert_types:
+              - str
             multiplier:
               type: int
+              convert_types:
+              - str
+              min: 3
+              max: 50
         service_policy:
           type: dict
           keys:
@@ -164,6 +237,8 @@ keys:
           type: bool
         pvlan_mapping:
           type: int
+          convert_types:
+          - str
         vlan_translations:
           type: list
           items:
@@ -173,13 +248,21 @@ keys:
                 type: str
               to:
                 type: int
+                convert_types:
+                - str
               direction:
                 type: str
+                valid_values:
+                - in
+                - out
+                - both
+                default: both
         shape:
           type: dict
           keys:
             rate:
               type: str
+              description: supported options are platform dependent
         storm_control:
           type: dict
           keys:
@@ -188,13 +271,17 @@ keys:
               keys:
                 level:
                   type: int
+                  convert_types:
+                  - str
                 unit:
-                  type: int
+                  type: str
             broadcast:
               type: dict
               keys:
                 level:
                   type: int
+                  convert_types:
+                  - str
                 unit:
                   type: str
             multicast:
@@ -202,6 +289,8 @@ keys:
               keys:
                 level:
                   type: int
+                  convert_types:
+                  - str
                 unit:
                   type: str
             unknown_unicast:
@@ -209,56 +298,85 @@ keys:
               keys:
                 level:
                   type: int
+                  convert_types:
+                  - str
                 unit:
                   type: str
         ip_proxy_arp:
           type: bool
         isis_enable:
           type: str
-          display_name: ISIS Instance
         isis_passive:
           type: bool
         isis_metric:
           type: int
+          convert_types:
+          - str
         isis_network_point_to_point:
           type: bool
         isis_circuit_type:
           type: str
+          valid_values:
+          - level-1-2
+          - level-1
+          - level-2
         isis_hello_padding:
           type: bool
         isis_authentication_mode:
           type: str
+          valid_values:
+          - text
+          - md5
         isis_authentication_key:
           type: str
+          description: type-7 encrypted password
         traffic_policy:
           type: dict
           keys:
             input:
               type: str
+              description: ingress traffic policy
             output:
-              type: str          
+              type: str
+              description: egress traffic policy
         eos_cli:
           type: str
-        mode:
-          type: str
+          description: EOS CLI rendered directly on the port-channel interface in the final EOS configuration
         evpn_ethernet_segment:
           type: dict
           keys:
             redundancy:
               type: str
+              valid_values:
+              - all-active
+              - single-active
             designated_forwarder_election:
               type: dict
               keys:
                 algorithm:
                   type: str
+                  valid_values:
+                  - modulus
+                  - preference
                 preference_value:
                   type: int
+                  description: preference_value and dont_preempt are set for preference algorithm and are optional
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 65535
                 dont_preempt:
                   type: bool
+                  description: preference_value and dont_preempt are set for preference algorithm and are optional
+                  default: false
                 hold_time:
                   type: int
+                  convert_types:
+                  - str
                 subsequent_hold_time:
                   type: int
+                  convert_types:
+                  - str
                 candidate_reachability_required:
                   type: bool
             mpls:
@@ -266,30 +384,49 @@ keys:
               keys:
                 shared_index:
                   type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 1024
                 tunnel_flood_filter_time:
                   type: int
+                  convert_types:
+                  - str
             route_target:
               type: str
+              description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
             identifier:
-              type: str        
+              type: str
         esi:
           type: str
+          description: EVPN Ethernet Segment Identifier (Type 1 format)
         rt:
           type: str
+          description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
         lacp_id:
           type: str
+          description: LACP ID with format xxxx.xxxx.xxxx
         spanning_tree_bpdufilter:
           type: str
           convert_types:
           - bool
+          valid_values: ["enabled", "disabled", "True", "False"]
         spanning_tree_bpduguard:
           type: str
           convert_types:
-          - bool          
+          - bool
+          valid_values: ["enabled", "disabled", "True", "False"]
         spanning_tree_guard:
           type: str
+          valid_values:
+          - loop
+          - root
+          - disabled
         spanning_tree_portfast:
           type: str
+          valid_values:
+          - edge
+          - network
         vmtracer:
           type: bool
         ptp:
@@ -302,31 +439,54 @@ keys:
               keys:
                 interval:
                   type: int
+                  convert_types:
+                  - str
                 timeout:
                   type: int
+                  convert_types:
+                  - str
             delay_req:
               type: int
+              convert_types:
+              - str
             delay_mechanism:
               type: str
+              valid_values:
+              - e2e
+              - p2p
             sync_message:
               type: dict
               keys:
                 interval:
                   type: int
+                  convert_types:
+                  - str
             role:
               type: str
+              valid_values:
+              - master
+              - dynamic
             vlan:
               type: int
+              convert_types:
+              - str
             transport:
               type: str
+              valid_values:
+              - ipv4
+              - ipv6
+              - layer2
         ip_address:
           type: str
+          description: IP_address/mask
         ipv6_enable:
           type: bool
         ipv6_address:
           type: str
+          description: IPv6_address/mask
         ipv6_address_link_local:
           type: str
+          description: link_local_IPv6_address/mask
         ipv6_nd_ra_disabled:
           type: bool
         ipv6_nd_managed_config_flag:
@@ -343,8 +503,10 @@ keys:
                 type: str
               valid_lifetime:
                 type: str
+                description: infinite or lifetime in seconds
               preferred_lifetime:
                 type: str
+                description: infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
         access_group_in:
@@ -368,19 +530,58 @@ keys:
                 sparse_mode:
                   type: bool
                 dr_priority:
-                  type: int  
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 429467295
         service_profile:
           type: str
+        struct_cfg:
+          type: dict
+          keys:
+            description:
+              type: str
+            native_vlan_tag:
+              type: bool
+            storm_control:
+              type: dict
+              keys:
+                broadcast:
+                  type: dict
+                  keys:
+                    level:
+                      type: int
+                      convert_types:
+                      - str
+                    unit:
+                      type: str
+                unknown_unicast:
+                  type: dict
+                  keys:
+                    level:
+                      type: int
+                      convert_types:
+                      - str
+                    unit:
+                      type: str
         ospf_network_point_to_point:
           type: bool
         ospf_area:
           type: str
         ospf_cost:
           type: int
+          convert_types:
+          - str
         ospf_authentication:
           type: str
+          valid_values:
+          - none
+          - simple
+          - message-digest
         ospf_authentication_key:
           type: str
+          description: encrypted_password
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -391,7 +592,20 @@ keys:
             keys:
               id:
                 type: int
+                convert_types:
+                - str
               hash_algorithm:
                 type: str
+                valid_values:
+                - md5
+                - sha1
+                - sha256
+                - sha384
+                - sha512
               key:
                 type: str
+        flow_tracker:
+          type: dict
+          keys:
+            sampled:
+              type: str
