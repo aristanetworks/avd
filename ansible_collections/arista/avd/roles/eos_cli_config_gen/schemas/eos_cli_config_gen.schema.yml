@@ -3601,6 +3601,7 @@ keys:
           - str
         vlans:
           type: str
+          description: list of vlans as string
           convert_types:
           - int
         snmp_trap_link_change:
@@ -3619,6 +3620,7 @@ keys:
             '
         encapsulation_dot1q_vlan:
           type: int
+          description: vlan tag to configure on sub-interface
           convert_types:
           - str
         vrf:
@@ -3634,14 +3636,17 @@ keys:
                   keys:
                     vlan:
                       type: str
+                      description: Client VLAN ID
                       convert_types:
                       - int
                     outer:
                       type: int
+                      description: Client Outer VLAN ID
                       convert_types:
                       - str
                     inner:
                       type: int
+                      description: Client Inner VLAN ID
                       convert_types:
                       - str
                 unmatched:
@@ -3656,14 +3661,17 @@ keys:
                   keys:
                     vlan:
                       type: str
+                      description: Network VLAN ID
                       convert_types:
                       - int
                     outer:
                       type: int
+                      description: Network Outer VLAN ID
                       convert_types:
                       - str
                     inner:
                       type: int
+                      description: Network Inner VLAN ID
                       convert_types:
                       - str
                 client:
@@ -3723,6 +3731,7 @@ keys:
           keys:
             encapsulation_dot1q_vlan:
               type: int
+              description: vlan number
               convert_types:
               - str
         mtu:
@@ -3747,10 +3756,17 @@ keys:
             type: str
         lacp_fallback_timeout:
           type: int
+          description: timeout in seconds
           convert_types:
           - str
+          default: 90
+          min: 0
+          max: 300
         lacp_fallback_mode:
           type: str
+          valid_values:
+          - individual
+          - static
         qos:
           type: dict
           keys:
@@ -3795,6 +3811,7 @@ keys:
               keys:
                 input:
                   type: str
+                  description: policy-map name
         mpls:
           type: dict
           keys:
@@ -3820,6 +3837,8 @@ keys:
             keys:
               from:
                 type: str
+                description: list of vlans as string (only one vlan if direction is
+                  "both")
               to:
                 type: int
                 convert_types:
@@ -3836,7 +3855,7 @@ keys:
           keys:
             rate:
               type: str
-              description: supported options are platform dependent
+              description: Supported options are platform dependent
         storm_control:
           type: dict
           keys:
@@ -3847,8 +3866,13 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
+                  valid_values:
+                  - percent
+                  - pps
+                  default: percent
             broadcast:
               type: dict
               keys:
@@ -3856,8 +3880,13 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
+                  valid_values:
+                  - percent
+                  - pps
+                  default: percent
             multicast:
               type: dict
               keys:
@@ -3865,8 +3894,13 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
+                  valid_values:
+                  - percent
+                  - pps
+                  default: percent
             unknown_unicast:
               type: dict
               keys:
@@ -3874,12 +3908,18 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  description: Configure maximum storm-control level
                 unit:
                   type: str
+                  valid_values:
+                  - percent
+                  - pps
+                  default: percent
         ip_proxy_arp:
           type: bool
         isis_enable:
           type: str
+          description: ISIS Instance
         isis_passive:
           type: bool
         isis_metric:
@@ -4189,6 +4229,7 @@ keys:
                 - sha512
               key:
                 type: str
+                description: encrypted_password
         flow_tracker:
           type: dict
           keys:

@@ -5066,6 +5066,7 @@
           },
           "vlans": {
             "type": "string",
+            "description": "list of vlans as string",
             "title": "VLANs"
           },
           "snmp_trap_link_change": {
@@ -5085,6 +5086,7 @@
           },
           "encapsulation_dot1q_vlan": {
             "type": "integer",
+            "description": "vlan tag to configure on sub-interface",
             "title": "Encapsulation Dot1Q VLAN"
           },
           "vrf": {
@@ -5102,14 +5104,17 @@
                     "properties": {
                       "vlan": {
                         "type": "string",
+                        "description": "Client VLAN ID",
                         "title": "VLAN"
                       },
                       "outer": {
                         "type": "integer",
+                        "description": "Client Outer VLAN ID",
                         "title": "Outer"
                       },
                       "inner": {
                         "type": "integer",
+                        "description": "Client Inner VLAN ID",
                         "title": "Inner"
                       }
                     },
@@ -5133,14 +5138,17 @@
                     "properties": {
                       "vlan": {
                         "type": "string",
+                        "description": "Network VLAN ID",
                         "title": "VLAN"
                       },
                       "outer": {
                         "type": "integer",
+                        "description": "Network Outer VLAN ID",
                         "title": "Outer"
                       },
                       "inner": {
                         "type": "integer",
+                        "description": "Network Inner VLAN ID",
                         "title": "Inner"
                       }
                     },
@@ -5234,6 +5242,7 @@
             "properties": {
               "encapsulation_dot1q_vlan": {
                 "type": "integer",
+                "description": "vlan number",
                 "title": "Encapsulation Dot1Q VLAN"
               }
             },
@@ -5273,10 +5282,18 @@
           },
           "lacp_fallback_timeout": {
             "type": "integer",
+            "description": "timeout in seconds",
+            "default": 90,
+            "minimum": 0,
+            "maximum": 300,
             "title": "Lacp Fallback Timeout"
           },
           "lacp_fallback_mode": {
             "type": "string",
+            "enum": [
+              "individual",
+              "static"
+            ],
             "title": "Lacp Fallback Mode"
           },
           "qos": {
@@ -5338,6 +5355,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
+                    "description": "policy-map name",
                     "title": "Input"
                   }
                 },
@@ -5389,6 +5407,7 @@
               "properties": {
                 "from": {
                   "type": "string",
+                  "description": "list of vlans as string (only one vlan if direction is \"both\")",
                   "title": "From"
                 },
                 "to": {
@@ -5415,7 +5434,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "supported options are platform dependent",
+                "description": "Supported options are platform dependent",
                 "title": "Rate"
               }
             },
@@ -5430,10 +5449,16 @@
                 "properties": {
                   "level": {
                     "type": "integer",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
                     "title": "Unit"
                   }
                 },
@@ -5445,10 +5470,16 @@
                 "properties": {
                   "level": {
                     "type": "integer",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
                     "title": "Unit"
                   }
                 },
@@ -5460,10 +5491,16 @@
                 "properties": {
                   "level": {
                     "type": "integer",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
                     "title": "Unit"
                   }
                 },
@@ -5475,10 +5512,16 @@
                 "properties": {
                   "level": {
                     "type": "integer",
+                    "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
                   "unit": {
                     "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
                     "title": "Unit"
                   }
                 },
@@ -5495,6 +5538,7 @@
           },
           "isis_enable": {
             "type": "string",
+            "description": "ISIS Instance",
             "title": "ISIS Enable"
           },
           "isis_passive": {
@@ -5974,6 +6018,7 @@
                 },
                 "key": {
                   "type": "string",
+                  "description": "encrypted_password",
                   "title": "Key"
                 }
               },
