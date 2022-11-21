@@ -3601,7 +3601,7 @@ keys:
           - str
         vlans:
           type: str
-          description: list of vlans as string
+          description: List of vlans as string
           convert_types:
           - int
         snmp_trap_link_change:
@@ -3620,7 +3620,7 @@ keys:
             '
         encapsulation_dot1q_vlan:
           type: int
-          description: vlan tag to configure on sub-interface
+          description: The vlan tag to configure on sub-interface
           convert_types:
           - str
         vrf:
@@ -3653,7 +3653,7 @@ keys:
                   type: bool
             network:
               type: dict
-              description: network encapsulation is all optional, and skipped if using
+              description: Network encapsulation is all optional, and skipped if using
                 client unmatched.
               keys:
                 dot1q:
@@ -3731,7 +3731,7 @@ keys:
           keys:
             encapsulation_dot1q_vlan:
               type: int
-              description: vlan number
+              description: The vlan number
               convert_types:
               - str
         mtu:
@@ -3756,7 +3756,7 @@ keys:
             type: str
         lacp_fallback_timeout:
           type: int
-          description: timeout in seconds
+          description: Timeout in seconds
           convert_types:
           - str
           default: 90
@@ -3811,7 +3811,7 @@ keys:
               keys:
                 input:
                   type: str
-                  description: policy-map name
+                  description: The policy-map name
         mpls:
           type: dict
           keys:
@@ -3828,6 +3828,7 @@ keys:
           type: bool
         pvlan_mapping:
           type: int
+          description: List of vlans as string
           convert_types:
           - str
         vlan_translations:
@@ -3837,7 +3838,7 @@ keys:
             keys:
               from:
                 type: str
-                description: list of vlans as string (only one vlan if direction is
+                description: List of vlans as string (only one vlan if direction is
                   "both")
               to:
                 type: int
@@ -3943,16 +3944,16 @@ keys:
           - md5
         isis_authentication_key:
           type: str
-          description: type-7 encrypted password
+          description: The type-7 encrypted password
         traffic_policy:
           type: dict
           keys:
             input:
               type: str
-              description: ingress traffic policy
+              description: Ingress traffic policy
             output:
               type: str
-              description: egress traffic policy
+              description: Egress traffic policy
         eos_cli:
           type: str
           description: EOS CLI rendered directly on the port-channel interface in
@@ -3975,7 +3976,7 @@ keys:
                   - preference
                 preference_value:
                   type: int
-                  description: preference_value and dont_preempt are set for preference
+                  description: The preference_value and dont_preempt are set for preference
                     algorithm and are optional
                   convert_types:
                   - str
@@ -3983,7 +3984,7 @@ keys:
                   max: 65535
                 dont_preempt:
                   type: bool
-                  description: preference_value and dont_preempt are set for preference
+                  description: The preference_value and dont_preempt are set for preference
                     algorithm and are optional
                   default: false
                 hold_time:
@@ -4128,24 +4129,30 @@ keys:
                 type: str
               valid_lifetime:
                 type: str
-                description: infinite or lifetime in seconds
+                description: The infinite or lifetime in seconds
               preferred_lifetime:
                 type: str
-                description: infinite or lifetime in seconds
+                description: The infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
         access_group_in:
           type: str
+          description: Access list name
         access_group_out:
           type: str
+          description: Access list name
         ipv6_access_group_in:
           type: str
+          description: IPv6 access list name
         ipv6_access_group_out:
           type: str
+          description: IPv6 access list name
         mac_access_group_in:
           type: str
+          description: MAC access list name
         mac_access_group_out:
           type: str
+          description: MAC access list name
         pim:
           type: dict
           keys:
@@ -4206,7 +4213,7 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: encrypted_password
+          description: The encrypted_password
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -4229,7 +4236,7 @@ keys:
                 - sha512
               key:
                 type: str
-                description: encrypted_password
+                description: The encrypted_password
         flow_tracker:
           type: dict
           keys:

@@ -5066,7 +5066,7 @@
           },
           "vlans": {
             "type": "string",
-            "description": "list of vlans as string",
+            "description": "List of vlans as string",
             "title": "VLANs"
           },
           "snmp_trap_link_change": {
@@ -5086,7 +5086,7 @@
           },
           "encapsulation_dot1q_vlan": {
             "type": "integer",
-            "description": "vlan tag to configure on sub-interface",
+            "description": "The vlan tag to configure on sub-interface",
             "title": "Encapsulation Dot1Q VLAN"
           },
           "vrf": {
@@ -5131,7 +5131,7 @@
               },
               "network": {
                 "type": "object",
-                "description": "network encapsulation is all optional, and skipped if using client unmatched.",
+                "description": "Network encapsulation is all optional, and skipped if using client unmatched.",
                 "properties": {
                   "dot1q": {
                     "type": "object",
@@ -5242,7 +5242,7 @@
             "properties": {
               "encapsulation_dot1q_vlan": {
                 "type": "integer",
-                "description": "vlan number",
+                "description": "The vlan number",
                 "title": "Encapsulation Dot1Q VLAN"
               }
             },
@@ -5282,7 +5282,7 @@
           },
           "lacp_fallback_timeout": {
             "type": "integer",
-            "description": "timeout in seconds",
+            "description": "Timeout in seconds",
             "default": 90,
             "minimum": 0,
             "maximum": 300,
@@ -5355,7 +5355,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "policy-map name",
+                    "description": "The policy-map name",
                     "title": "Input"
                   }
                 },
@@ -5398,6 +5398,7 @@
           },
           "pvlan_mapping": {
             "type": "integer",
+            "description": "List of vlans as string",
             "title": "PVLAN Mapping"
           },
           "vlan_translations": {
@@ -5407,7 +5408,7 @@
               "properties": {
                 "from": {
                   "type": "string",
-                  "description": "list of vlans as string (only one vlan if direction is \"both\")",
+                  "description": "List of vlans as string (only one vlan if direction is \"both\")",
                   "title": "From"
                 },
                 "to": {
@@ -5576,7 +5577,7 @@
           },
           "isis_authentication_key": {
             "type": "string",
-            "description": "type-7 encrypted password",
+            "description": "The type-7 encrypted password",
             "title": "ISIS Authentication Key"
           },
           "traffic_policy": {
@@ -5584,12 +5585,12 @@
             "properties": {
               "input": {
                 "type": "string",
-                "description": "ingress traffic policy",
+                "description": "Ingress traffic policy",
                 "title": "Input"
               },
               "output": {
                 "type": "string",
-                "description": "egress traffic policy",
+                "description": "Egress traffic policy",
                 "title": "Output"
               }
             },
@@ -5625,14 +5626,14 @@
                   },
                   "preference_value": {
                     "type": "integer",
-                    "description": "preference_value and dont_preempt are set for preference algorithm and are optional",
+                    "description": "The preference_value and dont_preempt are set for preference algorithm and are optional",
                     "minimum": 0,
                     "maximum": 65535,
                     "title": "Preference Value"
                   },
                   "dont_preempt": {
                     "type": "boolean",
-                    "description": "preference_value and dont_preempt are set for preference algorithm and are optional",
+                    "description": "The preference_value and dont_preempt are set for preference algorithm and are optional",
                     "default": false,
                     "title": "Dont Preempt"
                   },
@@ -5846,12 +5847,12 @@
                 },
                 "valid_lifetime": {
                   "type": "string",
-                  "description": "infinite or lifetime in seconds",
+                  "description": "The infinite or lifetime in seconds",
                   "title": "Valid Lifetime"
                 },
                 "preferred_lifetime": {
                   "type": "string",
-                  "description": "infinite or lifetime in seconds",
+                  "description": "The infinite or lifetime in seconds",
                   "title": "Preferred Lifetime"
                 },
                 "no_autoconfig_flag": {
@@ -5868,26 +5869,32 @@
           },
           "access_group_in": {
             "type": "string",
+            "description": "Access list name",
             "title": "Access Group In"
           },
           "access_group_out": {
             "type": "string",
+            "description": "Access list name",
             "title": "Access Group Out"
           },
           "ipv6_access_group_in": {
             "type": "string",
+            "description": "IPv6 access list name",
             "title": "IPv6 Access Group In"
           },
           "ipv6_access_group_out": {
             "type": "string",
+            "description": "IPv6 access list name",
             "title": "IPv6 Access Group Out"
           },
           "mac_access_group_in": {
             "type": "string",
+            "description": "MAC access list name",
             "title": "MAC Access Group In"
           },
           "mac_access_group_out": {
             "type": "string",
+            "description": "MAC access list name",
             "title": "MAC Access Group Out"
           },
           "pim": {
@@ -5993,7 +6000,7 @@
           },
           "ospf_authentication_key": {
             "type": "string",
-            "description": "encrypted_password",
+            "description": "The encrypted_password",
             "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
@@ -6018,7 +6025,7 @@
                 },
                 "key": {
                   "type": "string",
-                  "description": "encrypted_password",
+                  "description": "The encrypted_password",
                   "title": "Key"
                 }
               },
