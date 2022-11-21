@@ -194,8 +194,8 @@ keys:
             maximum_routes_warning_limit:
               type: str
               description: |
-                Maximum number of routes after which a warning is issued (0 means never warn)
-                Percentage of maximum number of routes at which to warn (1-100)
+                Maximum number of routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent")
               convert_types:
                 - int
             maximum_routes_warning_only:
@@ -228,7 +228,7 @@ keys:
                 - str
             timers:
               type: str
-              description: Time between BGP keepalive messages in seconds "<0-3600> <0-3600>"
+              description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
             rib_in_pre_policy_retain:
               type: dict
               keys:
@@ -276,6 +276,7 @@ keys:
               type: bool
             update_source:
               type: str
+              description: Source Interface
             bfd:
               type: bool
             weight:
@@ -286,7 +287,7 @@ keys:
                 - str
             timers:
               type: str
-              description: Time between BGP keepalive messages in seconds "<0-3600> <0-3600>"
+              description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
             route_map_in:
               type: str
               description: Inbound route-map name
@@ -315,8 +316,8 @@ keys:
             maximum_routes_warning_limit:
               type: str
               description: |
-                Maximum number of routes after which a warning is issued (0 means never warn)
-                Percentage of maximum number of routes at which to warn (1-100)
+                Maximum number of routes after which a warning is issued (0 means never warn) or
+                Percentage of maximum number of routes at which to warn ("<1-100> percent")
               convert_types:
                 - int
             maximum_routes_warning_only:
@@ -332,6 +333,7 @@ keys:
                     - str
                   min: 1
                   max: 10
+                  description: Number of local ASNs allowed in a BGP update
             ebgp_multihop:
               type: int
               min: 1
@@ -462,6 +464,7 @@ keys:
                     - "all"
                 rd:
                   type: str
+                  description: Route distinguisher
             route_targets:
               type: dict
               keys:
@@ -519,11 +522,11 @@ keys:
                 type: str
             no_redistribute_routes:
               type: list
-              description: host-route
               items:
                 type: str
             vlan:
               type: str
+              description: VLAN range as string. Example "100-200,300"
               convert_types:
                 - int
       vlans:
@@ -554,9 +557,10 @@ keys:
                     - "all"
                 rd:
                   type: str
+                  description: Route distinguisher
             eos_cli:
               type: str
-              description: Key only used for documentation or validation purposes
+              description: Multiline EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration
             route_targets:
               type: dict
               keys:
@@ -614,7 +618,6 @@ keys:
                 type: str
             no_redistribute_routes:
               type: list
-              description: host-route
               items:
                 type: str
       vpws:
@@ -627,7 +630,7 @@ keys:
           keys:
             name:
               type: str
-              description: vpws instance name
+              description: VPWS instance name
             rd:
               description: Route distinguisher
               type: str
@@ -636,12 +639,11 @@ keys:
               keys:
                 import_export:
                   type: str
+                  description: Route Target
             mpls_control_word:
               type: bool
-              default: false
             label_flow:
               type: bool
-              default: false
             mtu:
               type: int
               convert_types:
@@ -656,7 +658,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: pseudowire name
+                    description: Pseudowire name
                   id_local:
                     type: int
                     convert_types:
@@ -1151,7 +1153,7 @@ keys:
               type: str
             timers:
               type: str
-              description: Time between BGP keepalive messages in seconds "<0-3600> <0-3600>"
+              description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
             networks:
               type: list
               primary_key: prefix
@@ -1257,7 +1259,7 @@ keys:
                     type: bool
                   timers:
                     type: str
-                    description: Time between BGP keepalive messages in seconds "<0-3600> <0-3600>"
+                    description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
                   rib_in_pre_policy_retain:
                     type: dict
                     keys:
@@ -1277,8 +1279,8 @@ keys:
                     convert_types:
                       - int
                     description: |
-                      Maximum number of routes after which a warning is issued (0 means never warn)
-                      Percentage of maximum number of routes at which to warn (1-100)
+                      Maximum number of routes after which a warning is issued (0 means never warn) or
+                      Percentage of maximum number of routes at which to warn ("<1-100> percent")
                   maximum_routes_warning_only:
                     type: bool
                   allowas_in:
@@ -1292,6 +1294,7 @@ keys:
                           - str
                         min: 1
                         max: 10
+                        description: Number of local ASNs allowed in a BGP update
                   default_originate:
                     type: dict
                     keys:
