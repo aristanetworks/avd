@@ -14,9 +14,9 @@ Arista best practices are used, simplifying configuration of several global and 
     - SMPTE2059-2
     - AES67-R16-2016 (used by default if no profile is specified)
 
-        The profile will apply PTP parameters for the following interfaces:
-        - All routed interfaces
-        - Individual PTP-enabled interfaces for connected endpoints
+      The profile will apply PTP parameters for the following interfaces:
+      - All routed interfaces
+      - Individual PTP-enabled interfaces for connected endpoints
 
 - Defaults used when PTP is enabled:
   - All interfaces between leaf and spine switches participate in the Best Master Clock Algorithm (BMCA).
@@ -27,19 +27,25 @@ Arista best practices are used, simplifying configuration of several global and 
 ## Enabling PTP
 
 PTP must be specifically enabled:
+
 - on the fabric level, for example FABRIC.yml
+
   ```yml
   ptp:
     enabled: true
   ```
+
 - per node_group, for example for all spine nodes in SPINES.yml
+
   ```yml
   spine:
     defaults:
       ptp:
         enabled: true
   ```
+
 - per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
+
   ```yml
   nodes:
     leaf1:
@@ -76,30 +82,30 @@ Based on the PTP profile selection the following parameters are applied to all i
 
 `profile: aes67` is the *slow* PTP profile setting the following interface parameters:
 
- - ptp enable
- - ptp sync-message interval 0 (1 message every second)
- - ptp announce interval 2 (1 message every 4th second)
- - ptp transport ipv4
- - ptp announce timeout 3
- - ptp delay-req interval 0 (1 message every second)
+- ptp enable
+- ptp sync-message interval 0 (1 message every second)
+- ptp announce interval 2 (1 message every 4th second)
+- ptp transport ipv4
+- ptp announce timeout 3
+- ptp delay-req interval 0 (1 message every second)
 
 `profile: smpte2059-2` is the *fast* PTP profile setting the following interface parameters:
 
- - ptp enable
- - ptp sync-message interval -4 (16 messages every second)
- - ptp announce interval -2 (4 messages every second)
- - ptp transport ipv4
- - ptp announce timeout 3
- - ptp delay-req interval -4 (16 messages every second)
+- ptp enable
+- ptp sync-message interval -4 (16 messages every second)
+- ptp announce interval -2 (4 messages every second)
+- ptp transport ipv4
+- ptp announce timeout 3
+- ptp delay-req interval -4 (16 messages every second)
 
 `profile: aes67-r16-2016` is the ***default*** PTP profile, setting the following interface parameters:
 
- - ptp enable
- - ptp sync-message interval -3 (8 messages every second)
- - ptp announce interval 0 (1 message every second)
- - ptp transport ipv4
- - ptp announce timeout 3
- - ptp delay-req interval -3 (8 messages every second)
+- ptp enable
+- ptp sync-message interval -3 (8 messages every second)
+- ptp announce interval 0 (1 message every second)
+- ptp transport ipv4
+- ptp announce timeout 3
+- ptp delay-req interval -3 (8 messages every second)
 
 ## Group or device specific PTP settings
 
@@ -399,7 +405,7 @@ interface Ethernet11
 
 ## PTP Options ***not*** included
 
- - `ptp delay-mechanism` parameters are not included.
- - `vlan` settings are not included.
+- `ptp delay-mechanism` parameters are not included.
+- `vlan` settings are not included.
 
 However, these settings ***can*** be set using custom cli configuration if needed.
