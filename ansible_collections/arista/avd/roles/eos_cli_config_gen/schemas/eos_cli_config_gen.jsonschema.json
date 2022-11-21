@@ -7354,10 +7354,6 @@
                         "replace_as": {
                           "type": "boolean",
                           "title": "Replace As"
-                        },
-                        "ingress": {
-                          "type": "boolean",
-                          "title": "Ingress"
                         }
                       },
                       "additionalProperties": false,

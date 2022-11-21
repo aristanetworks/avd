@@ -1224,8 +1224,6 @@ keys:
                         type: bool
                       replace_as:
                         type: bool
-                      ingress:
-                        type: bool
                   remove_private_as_ingress:
                     type: dict
                     keys:
