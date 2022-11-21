@@ -13,7 +13,6 @@ Tenant_C:
       update_source: lo0
       bfd: false
       ebgp_multihop: 3
-      set_ipv4_next_hop: 1.1.1.1
       route_map_out: TEST_OUT
       route_map_in: TEST_IN
       local_as: 777
@@ -59,7 +58,6 @@ Tenant_C:
           update_source: lo0
           bfd: false
           ebgp_multihop: 3
-          set_ipv4_next_hop: 1.1.1.1
           route_map_out: TEST_OUT
           route_map_in: TEST_IN
           local_as: 777
@@ -69,9 +67,6 @@ Tenant_C:
           description: test_description
           nodes: [ DC1-BL2B ]
           set_ipv4_next_hop: 1.1.1.1
-          address_families:
-            ipv4:
-              activate: true
         BEBA::C0CA:C07A:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
           nodes: [ DC1-BL2B ]
