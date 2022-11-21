@@ -143,7 +143,6 @@ router_bgp:
           remove_private_as:
             enabled: true
             all: true
-            ingress: true
           ebgp_multihop: 3
           send_community: all
           maximum_routes: 0

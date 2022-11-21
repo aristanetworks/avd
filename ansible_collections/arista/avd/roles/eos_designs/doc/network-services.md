@@ -126,10 +126,6 @@ mac_address_table:
         update_source: < interface >
         bfd: < true | false >
         ebgp_multihop: < 1-255 >
-        # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
-        # Next hop takes precedence over route_map_out.
-        set_ipv4_next_hop: < IPv4_address >
-        set_ipv6_next_hop: < IPv6_address >
         route_map_out: < route-map name >
         route_map_in: < route-map name >
         local_as: < local BGP ASN >
@@ -507,10 +503,6 @@ mac_address_table:
             update_source: < interface >
             bfd: < true | false >
             ebgp_multihop: < 1-255 >
-            # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
-            # Next hop takes precedence over route_map_out.
-            set_ipv4_next_hop: < IPv4_address >
-            set_ipv6_next_hop: < IPv6_address >
             route_map_out: < route-map name >
             route_map_in: < route-map name >
             local_as: < local BGP ASN >
