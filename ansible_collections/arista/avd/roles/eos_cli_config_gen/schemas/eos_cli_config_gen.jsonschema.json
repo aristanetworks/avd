@@ -3151,6 +3151,10 @@
               "mka": {
                 "type": "object",
                 "properties": {
+                  "key_server_priority": {
+                    "type": "string",
+                    "title": "Key Server Priority"
+                  },
                   "session": {
                     "type": "object",
                     "properties": {
@@ -3172,6 +3176,35 @@
               "sci": {
                 "type": "boolean",
                 "title": "SCI"
+              },
+              "l2_protocols": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "lldp",
+                        "ethernet-flow-control"
+                      ],
+                      "title": "Name"
+                    },
+                    "mode": {
+                      "type": "string",
+                      "enum": [
+                        "encrypt",
+                        "bypass"
+                      ],
+                      "title": "Mode"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "L2 Protocols"
               }
             },
             "required": [

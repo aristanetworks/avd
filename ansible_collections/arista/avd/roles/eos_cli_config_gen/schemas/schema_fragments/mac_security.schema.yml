@@ -56,6 +56,8 @@ keys:
             mka:
               type: dict
               keys:
+                key_server_priority:
+                  type: str
                 session:
                   type: dict
                   keys:
@@ -68,3 +70,19 @@ keys:
                       description: Rekey period in seconds
             sci:
               type: bool
+            l2_protocols:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    valid_values:
+                      - lldp
+                      - ethernet-flow-control
+                  mode:
+                    type: str
+                    valid_values:
+                      - encrypt
+                      - bypass
