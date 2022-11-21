@@ -5364,7 +5364,7 @@
         },
         "router_id": {
           "type": "string",
-          "description": "in IP address format A.B.C.D",
+          "description": "In IP address format A.B.C.D",
           "title": "Router ID"
         },
         "distance": {
@@ -5632,7 +5632,7 @@
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "Maximum number of routes after which a warning is issued (0 means never warn)\nPercentage of maximum number of routes at which to warn (1-100)\n",
+                "description": "Maximum number of routes after which a warning is issued (0 means never warn) or\nPercentage of maximum number of routes at which to warn (\"<1-100> percent\")\n",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5681,7 +5681,7 @@
               },
               "timers": {
                 "type": "string",
-                "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
+                "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
                 "title": "Timers"
               },
               "rib_in_pre_policy_retain": {
@@ -5755,6 +5755,7 @@
               },
               "update_source": {
                 "type": "string",
+                "description": "Source Interface",
                 "title": "Update Source"
               },
               "bfd": {
@@ -5769,7 +5770,7 @@
               },
               "timers": {
                 "type": "string",
-                "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
+                "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
                 "title": "Timers"
               },
               "route_map_in": {
@@ -5815,7 +5816,7 @@
               },
               "maximum_routes_warning_limit": {
                 "type": "string",
-                "description": "Maximum number of routes after which a warning is issued (0 means never warn)\nPercentage of maximum number of routes at which to warn (1-100)\n",
+                "description": "Maximum number of routes after which a warning is issued (0 means never warn) or\nPercentage of maximum number of routes at which to warn (\"<1-100> percent\")\n",
                 "title": "Maximum Routes Warning Limit"
               },
               "maximum_routes_warning_only": {
@@ -5833,6 +5834,7 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 10,
+                    "description": "Number of local ASNs allowed in a BGP update",
                     "title": "Times"
                   }
                 },
@@ -6059,6 +6061,7 @@
                   },
                   "rd": {
                     "type": "string",
+                    "description": "Route distinguisher",
                     "title": "Rd"
                   }
                 },
@@ -6168,7 +6171,6 @@
               },
               "no_redistribute_routes": {
                 "type": "array",
-                "description": "host-route",
                 "items": {
                   "type": "string"
                 },
@@ -6176,6 +6178,7 @@
               },
               "vlan": {
                 "type": "string",
+                "description": "VLAN range as string. Example \"100-200,300\"",
                 "title": "VLAN"
               }
             },
@@ -6218,6 +6221,7 @@
                   },
                   "rd": {
                     "type": "string",
+                    "description": "Route distinguisher",
                     "title": "Rd"
                   }
                 },
@@ -6226,7 +6230,7 @@
               },
               "eos_cli": {
                 "type": "string",
-                "description": "Key only used for documentation or validation purposes",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration",
                 "title": "EOS CLI"
               },
               "route_targets": {
@@ -6332,7 +6336,6 @@
               },
               "no_redistribute_routes": {
                 "type": "array",
-                "description": "host-route",
                 "items": {
                   "type": "string"
                 },
@@ -6353,7 +6356,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "vpws instance name",
+                "description": "VPWS instance name",
                 "title": "Name"
               },
               "rd": {
@@ -6366,6 +6369,7 @@
                 "properties": {
                   "import_export": {
                     "type": "string",
+                    "description": "Route Target",
                     "title": "Import Export"
                   }
                 },
@@ -6374,12 +6378,10 @@
               },
               "mpls_control_word": {
                 "type": "boolean",
-                "default": false,
                 "title": "MPLS Control Word"
               },
               "label_flow": {
                 "type": "boolean",
-                "default": false,
                 "title": "Label Flow"
               },
               "mtu": {
@@ -6393,7 +6395,7 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "description": "pseudowire name",
+                      "description": "Pseudowire name",
                       "title": "Name"
                     },
                     "id_local": {
@@ -7253,7 +7255,7 @@
               },
               "timers": {
                 "type": "string",
-                "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
+                "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
                 "title": "Timers"
               },
               "networks": {
@@ -7280,7 +7282,7 @@
               },
               "listen_ranges": {
                 "type": "array",
-                "description": "New improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
+                "description": "Improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
                 "items": {
                   "type": "object",
                   "properties": {
@@ -7412,7 +7414,7 @@
                     },
                     "timers": {
                       "type": "string",
-                      "description": "Time between BGP keepalive messages in seconds \"<0-3600> <0-3600>\"",
+                      "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
                       "title": "Timers"
                     },
                     "rib_in_pre_policy_retain": {
@@ -7441,7 +7443,7 @@
                     },
                     "maximum_routes_warning_limit": {
                       "type": "string",
-                      "description": "Maximum number of routes after which a warning is issued (0 means never warn)\nPercentage of maximum number of routes at which to warn (1-100)\n",
+                      "description": "Maximum number of routes after which a warning is issued (0 means never warn) or\nPercentage of maximum number of routes at which to warn (\"<1-100> percent\")\n",
                       "title": "Maximum Routes Warning Limit"
                     },
                     "maximum_routes_warning_only": {
@@ -7459,6 +7461,7 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 10,
+                          "description": "Number of local ASNs allowed in a BGP update",
                           "title": "Times"
                         }
                       },

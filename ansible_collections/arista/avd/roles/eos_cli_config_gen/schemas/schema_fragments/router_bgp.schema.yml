@@ -13,7 +13,7 @@ keys:
           - int
       router_id:
         type: str
-        description: in IP address format A.B.C.D
+        description: In IP address format A.B.C.D
       distance:
         type: dict
         keys:
@@ -1170,7 +1170,7 @@ keys:
             listen_ranges:
               type: list
               description: |
-                New improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
+                Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
               items:
                 type: dict
                 keys:
