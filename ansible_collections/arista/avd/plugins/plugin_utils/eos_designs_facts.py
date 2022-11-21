@@ -439,7 +439,7 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def ptp(self):
-        '''
+        """
         Generates PTP config on node level as well as for interfaces, using various defaults.
         - The following are set in roles/eos_designs/defaults/main/default-node-type-keys.yml
             default_node_type_keys:
@@ -450,7 +450,7 @@ class EosDesignsFacts(AvdFacts):
                   default_ptp_priority1: 30
         PTP priority2 is set in the code below, calculated based on the node id:
             default_priority2 = self.id % 256
-        '''
+        """
         # Set defaults
         default_ptp_enabled = get(self._hostvars, "ptp.enabled")
         default_ptp_domain = get(self._hostvars, "ptp.domain", default=127)
@@ -472,9 +472,7 @@ class EosDesignsFacts(AvdFacts):
                 "auto_clock_identity": auto_clock_identity,
                 "clock_identity_prefix": clock_identity_prefix,
                 "clock_identity": get(self._switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
-                "source": {
-                    "ip": get(self._switch_data_combined, "ptp.source.ip")
-                },
+                "source": {"ip": get(self._switch_data_combined, "ptp.source.ip")},
                 "priority1": priority1,
                 "priority2": priority2,
                 "ttl": get(self._switch_data_combined, "ptp.ttl"),
@@ -1502,7 +1500,7 @@ class EosDesignsFacts(AvdFacts):
                 if self.uplink_bfd is True:
                     uplink["bfd"] = True
                 if self.uplink_ptp is not None:
-                    uplink['ptp'] = self.uplink_ptp
+                    uplink["ptp"] = self.uplink_ptp
                 elif self.ptp is not None:
                     if self.ptp["enabled"] is True:
                         uplink["ptp"] = True
