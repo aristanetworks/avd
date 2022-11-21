@@ -22,7 +22,7 @@
 {% endfor %}
 {% for ipvpn_gw_remote_peer in switch.ipvpn_gateway.remote_peers | arista.avd.natural_sort %}
     {{ ipvpn_gw_remote_peer.ip_address }}:
-      peer_group: {{ switch.bgp_peer_groups.mpls_overlay_peers.name }}
+      peer_group: {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}
       description: {{ ipvpn_gw_remote_peer.hostname }}
       remote_as: "{{ ipvpn_gw_remote_peer.bgp_as }}"
 {% endfor %}

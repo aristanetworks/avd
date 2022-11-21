@@ -1056,6 +1056,11 @@ class EosDesignsFacts(AvdFacts):
                     "password": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
                     "structured_config": get(self._hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
                 },
+                "ipvpn_gateway_peers": {
+                    "name": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_peers.name", default="IPVPN-GATEWAY-PEERS"),
+                    "password": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_peers.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.ipvpn_gateway_peers.structured_config"),
+                },
             }
         return None
 
@@ -1694,11 +1699,7 @@ class EosDesignsFacts(AvdFacts):
         # Set overlay.ler to enable MPLS edge PE features
         ler = (
             self.underlay["mpls"]
-            and (
-                self.mpls_overlay_role in ["client", "server"]
-                or self.evpn_role in ["client", "server"]
-                or get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False)
-            )
+            and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
             and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
         )
         # Set overlay.vtep to enable VXLAN edge PE features
