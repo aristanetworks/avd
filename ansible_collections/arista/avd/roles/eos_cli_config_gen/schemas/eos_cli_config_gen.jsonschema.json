@@ -3152,7 +3152,9 @@
                 "type": "object",
                 "properties": {
                   "key_server_priority": {
-                    "type": "string",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255,
                     "title": "Key Server Priority"
                   },
                   "session": {

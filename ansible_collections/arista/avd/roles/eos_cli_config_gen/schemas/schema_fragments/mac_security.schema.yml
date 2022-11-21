@@ -57,7 +57,11 @@ keys:
               type: dict
               keys:
                 key_server_priority:
-                  type: str
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 255
                 session:
                   type: dict
                   keys:
