@@ -416,6 +416,8 @@ keys:
           keys:
             test:
               type: int
+              convert_types:
+              - str
             distance:
               type: int
               convert_types:
