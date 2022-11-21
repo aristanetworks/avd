@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import importlib
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
