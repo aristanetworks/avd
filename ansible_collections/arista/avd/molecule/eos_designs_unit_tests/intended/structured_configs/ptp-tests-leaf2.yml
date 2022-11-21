@@ -103,7 +103,6 @@ ptp:
   auto_clock_identity: true
   clock_identity_prefix: '22:33:44'
   clock_identity: '22:33:44:01:00:02'
-  source: {}
   priority1: 1
   priority2: 2
   ttl: 16
@@ -118,7 +117,6 @@ ptp:
     threshold:
       offset_from_master: 1234
       mean_path_delay: 4567
-      drop: {}
     missing_message:
       intervals:
         announce: 10
@@ -138,7 +136,6 @@ ethernet_interfaces:
     description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet3
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -146,6 +143,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     type: routed
     shutdown: false
     ip_address: 10.254.2.5/31
@@ -156,7 +154,6 @@ ethernet_interfaces:
     description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet4
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -164,6 +161,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     type: routed
     shutdown: false
     ip_address: 10.254.2.7/31
@@ -178,7 +176,6 @@ ethernet_interfaces:
     vlans: 11
     spanning_tree_portfast: edge
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -186,6 +183,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
       role: master
 loopback_interfaces:
   Loopback0:

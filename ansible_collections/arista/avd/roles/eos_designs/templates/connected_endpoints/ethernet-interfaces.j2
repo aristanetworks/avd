@@ -142,25 +142,15 @@ ethernet_interfaces:
 {%                     if adapter_settings.ptp.enable is arista.avd.defined %}
       enable: {{ adapter_settings.ptp.enable }}
 {%                     endif %}
-{%                     if switch.ptp["interface_config"] is arista.avd.defined %}
-{%                         if adapter_settings.ptp is arista.avd.defined %}
-{%                             if adapter_settings.ptp.enable is arista.avd.defined(true) %}
-{%                                 set ptp_config = switch.ptp["interface_config"] | arista.avd.default(adapter_settings.ptp) %}
-{%                                 if adapter_settings.ptp.endpoint_role is not arista.avd.defined('bmca') %}
-{%                                     do ptp_config.update({"role": "master"}) %}
-{%                                 endif %}
-{%                                 if adapter_settings.ptp.profile is arista.avd.defined('aes67-r16-2016') %}
-{%                                     do ptp_config.update({"announce": {"interval": 0, "timeout": 3,},"delay_req": -3,"sync_message": {"interval": -3,},"transport": "ipv4",}) %}
-{%                                 endif %}
-{%                                 if adapter_settings.ptp.profile is arista.avd.defined('smpte2059-2') %}
-{%                                     do ptp_config.update({"announce": {"interval": -1, "timeout": 3,},"delay_req": -4,"sync_message": {"interval": -4,},"transport": "ipv4",}) %}
-{%                                 endif %}
-{%                                 if adapter_settings.ptp.profile is arista.avd.defined('aes67') %}
-{%                                     do ptp_config.update({"announce": {"interval": 2, "timeout": 3,},"delay_req": 0,"sync_message": {"interval": 0,},"transport": "ipv4",}) %}
-{%                                 endif %}
-    ptp: {{ ptp_config }}
-{%                             endif %}
+{%                     if adapter_settings.ptp.enable is arista.avd.defined(true) %}
+{%                         set ptp_profile = adapter_settings.ptp.profile | arista.avd.default(switch.ptp.profile) %}
+{%                         set ptp_config = (ptp_profiles | selectattr("profile", "arista.avd.defined", ptp_profile))[0] | arista.avd.default(adapter_settings.ptp) %}
+{%                         do ptp_config.update({"enable": true}) %}
+{%                         if adapter_settings.ptp.endpoint_role is not arista.avd.defined('bmca') %}
+{%                             do ptp_config.update({"role": "master"}) %}
 {%                         endif %}
+{%                         do ptp_config.pop("profile", none) %}
+    ptp: {{ ptp_config }}
 {%                     endif %}
 {%                 endif %}
 {%                 if adapter_settings.port_channel.lacp_fallback.mode is arista.avd.defined('static') %}

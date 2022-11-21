@@ -1,4 +1,0 @@
-{# PTP Configuration #}
-{% if switch.ptp.enabled is arista.avd.defined(true) %}
-ptp: {{ switch.ptp.device_config | to_json }}
-{% endif %}

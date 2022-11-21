@@ -63,7 +63,6 @@ ptp:
   auto_clock_identity: true
   clock_identity_prefix: 01:02:03
   clock_identity: 01:02:03:14:00:0a
-  source: {}
   priority1: 20
   priority2: 10
   ttl: 128
@@ -78,7 +77,6 @@ ptp:
     threshold:
       offset_from_master: 1234
       mean_path_delay: 4567
-      drop: {}
     missing_message:
       intervals:
         announce: 10
@@ -122,7 +120,6 @@ ethernet_interfaces:
     shutdown: false
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -130,3 +127,4 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true

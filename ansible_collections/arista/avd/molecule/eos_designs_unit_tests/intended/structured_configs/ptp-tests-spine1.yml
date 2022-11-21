@@ -87,21 +87,15 @@ ptp:
   auto_clock_identity: true
   clock_identity_prefix: 00:00:00
   clock_identity: 00:00:00:00:00:00
-  source: {}
   priority1: 20
   priority2: 1
   domain: 127
-  message_type:
-    general: {}
-    event: {}
   monitor:
     enabled: true
     threshold:
       offset_from_master: 250
       mean_path_delay: 1500
-      drop: {}
     missing_message:
-      intervals: {}
       sequence_ids:
         enabled: true
         announce: 3
@@ -116,7 +110,6 @@ ethernet_interfaces:
     description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet1
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -124,6 +117,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     type: routed
     shutdown: false
     ip_address: 10.254.2.0/31
@@ -134,7 +128,6 @@ ethernet_interfaces:
     description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet2
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -142,6 +135,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     type: routed
     shutdown: false
     ip_address: 10.254.2.2/31
@@ -152,7 +146,6 @@ ethernet_interfaces:
     description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet1
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -160,6 +153,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     type: routed
     shutdown: false
     ip_address: 10.254.2.4/31
@@ -170,7 +164,6 @@ ethernet_interfaces:
     description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet2
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -178,6 +171,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     type: routed
     shutdown: false
     ip_address: 10.254.2.6/31
@@ -190,7 +184,6 @@ ethernet_interfaces:
     shutdown: false
     mtu: 9000
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -198,6 +191,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

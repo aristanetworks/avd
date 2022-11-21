@@ -102,3 +102,32 @@ avd_structured_config_file_format: "yml"
 # Input Variable Validation
 avd_validate_conversion_mode: "debug"
 avd_validate_validation_mode: "warning"
+
+# PTP profiles
+ptp_profiles:
+  - profile: aes67-r16-2016
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: "ipv4"
+
+  - profile: smpte2059-2
+    announce:
+      interval: -1
+      timeout: 3
+    delay_req: -4
+    sync_message:
+      interval: -4
+    transport: "ipv4"
+
+  - profile: aes67
+    announce:
+      interval: 2
+      timeout: 3
+    delay_req: 0
+    sync_message:
+      interval: 0
+    transport: "ipv4"

@@ -15,8 +15,12 @@ ethernet_interfaces:
 {%         if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%         endif %}
-{%         if link.ptp is arista.avd.defined %}
-    ptp: {{ link.ptp }}
+{%         if link.ptp is arista.avd.defined(true) %}
+{%             set ptp_profile = switch.ptp.profile | arista.avd.default("unknown") %}
+{%             set ptp_config = (ptp_profiles | selectattr("profile", "arista.avd.defined", ptp_profile))[0] | arista.avd.default({"enable": true}) %}
+{%             do ptp_config.update({"enable": true}) %}
+{%             do ptp_config.pop("profile", none) %}
+    ptp: {{ ptp_config }}
 {%         endif %}
 {%         if link.mac_security is arista.avd.defined %}
     mac_security: {{ link.mac_security }}

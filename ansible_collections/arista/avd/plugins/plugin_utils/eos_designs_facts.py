@@ -12,6 +12,7 @@ from ansible_collections.arista.avd.plugins.filter.range_expand import range_exp
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
 
@@ -514,47 +515,7 @@ class EosDesignsFacts(AvdFacts):
             }
 
             ptp["profile"] = get(self._switch_data_combined, "ptp.profile", default_ptp_profile)
-            if ptp["profile"] == "aes67-r16-2016":
-                ptp["interface_config"] = {
-                    "enable": True,
-                    "announce": {
-                        "interval": 0,
-                        "timeout": 3,
-                    },
-                    "delay_req": -3,
-                    "sync_message": {
-                        "interval": -3,
-                    },
-                    "transport": "ipv4",
-                }
-
-            elif ptp["profile"] == "smpte2059-2":
-                ptp["interface_config"] = {
-                    "enable": True,
-                    "announce": {
-                        "interval": -1,
-                        "timeout": 3,
-                    },
-                    "delay_req": -4,
-                    "sync_message": {
-                        "interval": -4,
-                    },
-                    "transport": "ipv4",
-                }
-
-            elif ptp["profile"] == "aes67":
-                ptp["interface_config"] = {
-                    "enable": True,
-                    "announce": {
-                        "interval": 2,
-                        "timeout": 3,
-                    },
-                    "delay_req": 0,
-                    "sync_message": {
-                        "interval": 0,
-                    },
-                    "transport": "ipv4",
-                }
+            ptp = strip_null_from_data(ptp, (None, {}))
 
             return ptp
         return None
@@ -1544,7 +1505,7 @@ class EosDesignsFacts(AvdFacts):
                     uplink['ptp'] = self.uplink_ptp
                 elif self.ptp is not None:
                     if self.ptp["enabled"] is True:
-                        uplink['ptp'] = self.ptp["interface_config"]
+                        uplink["ptp"] = True
                 if self.uplink_macsec is not None:
                     uplink["mac_security"] = self.uplink_macsec
                 if self.underlay_multicast is True and uplink_switch_facts.underlay_multicast is True:
