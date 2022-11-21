@@ -15,7 +15,7 @@ ethernet_interfaces:
 {%         if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%         endif %}
-{%         if link.ptp is arista.avd.defined(true) %}
+{%         if link.ptp.enable is arista.avd.defined(true) %}
 {%             set ptp_profile = switch.ptp.profile | arista.avd.default("unknown") %}
 {%             set ptp_config = (ptp_profiles | selectattr("profile", "arista.avd.defined", ptp_profile))[0] | arista.avd.default({"enable": true}) %}
 {%             do ptp_config.update({"enable": true}) %}

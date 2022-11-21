@@ -1503,7 +1503,7 @@ class EosDesignsFacts(AvdFacts):
                     uplink["ptp"] = self.uplink_ptp
                 elif self.ptp is not None:
                     if self.ptp["enabled"] is True:
-                        uplink["ptp"] = True
+                        uplink["ptp"] = {"enable": True}
                 if self.uplink_macsec is not None:
                     uplink["mac_security"] = self.uplink_macsec
                 if self.underlay_multicast is True and uplink_switch_facts.underlay_multicast is True:
