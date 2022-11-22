@@ -29,7 +29,7 @@ tunnel_interfaces:
     tcp_mss_ceiling:
       ipv6: 666
       direction: egress
-    source_interface: Ethernnet42
+    source_interface: Ethernet42
     destination: dead:beef::1
     path_mtu_discovery: false
 
