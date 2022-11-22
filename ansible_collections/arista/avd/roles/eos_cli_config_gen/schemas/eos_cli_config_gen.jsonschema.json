@@ -3050,10 +3050,6 @@
           "mpls": {
             "type": "object",
             "properties": {
-              "ip": {
-                "type": "boolean",
-                "title": "IP"
-              },
               "ldp": {
                 "type": "object",
                 "properties": {
@@ -3068,11 +3064,6 @@
             },
             "additionalProperties": false,
             "title": "MPLS"
-          },
-          "eos_cli": {
-            "type": "string",
-            "description": "EOS CLI rendered directly on the loopback interface in the final EOS configuration",
-            "title": "EOS CLI"
           },
           "isis_enable": {
             "type": "string",
@@ -3105,6 +3096,11 @@
             },
             "additionalProperties": false,
             "title": "Node Segment"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the loopback interface in the final EOS configuration",
+            "title": "EOS CLI"
           }
         },
         "required": [

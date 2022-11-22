@@ -44,16 +44,11 @@ keys:
         mpls:
           type: dict
           keys:
-            ip:
-              type: bool
             ldp:
               type: dict
               keys:
                 interface:
                   type: bool
-        eos_cli:
-          type: str
-          description: EOS CLI rendered directly on the loopback interface in the final EOS configuration
         isis_enable:
           type: str
           description: ISIS Instance Name
@@ -76,3 +71,6 @@ keys:
               type: int
               convert_types:
               - str
+        eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the loopback interface in the final EOS configuration
