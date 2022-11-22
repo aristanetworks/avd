@@ -5655,6 +5655,53 @@
           "additionalProperties": false,
           "title": "Distance"
         },
+        "graceful_restart": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "restart_time": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Number of seconds",
+              "title": "Restart Time"
+            },
+            "stalepath_time": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Number of seconds",
+              "title": "Stalepath Time"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Graceful Restart"
+        },
+        "graceful_restart_helper": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "restart_time": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000000,
+              "description": "Number of seconds",
+              "title": "Restart Time"
+            },
+            "long_lived": {
+              "type": "boolean",
+              "title": "Long Lived"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Graceful Restart Helper"
+        },
         "maximum_paths": {
           "type": "object",
           "properties": {

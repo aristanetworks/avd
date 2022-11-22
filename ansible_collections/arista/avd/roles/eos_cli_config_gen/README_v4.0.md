@@ -2540,6 +2540,14 @@ router_bgp:
     external_routes: < 1-255 >
     internal_routes: < 1-255 >
     local_routes: < 1-255 >
+  graceful_restart:
+    enabled: < true | false >
+    restart_time: < 1-3600 >
+    stalepath_time: < 1-3600 >
+  graceful_restart_helper:
+    enabled: < true | false >
+    restart_time: < 1-100000000>
+    long_lived: < true | false >
   maximum_paths:
     paths: < 1-600 >
     ecmp: < 1-600 >

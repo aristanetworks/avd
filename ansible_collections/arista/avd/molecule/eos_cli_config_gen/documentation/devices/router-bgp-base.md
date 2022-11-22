@@ -94,8 +94,6 @@ interface Management1
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | bgp bestpath d-path |
 | update wait-for-convergence |
 | update wait-install |
@@ -158,12 +156,14 @@ interface Management1
 router bgp 65101
    router-id 192.168.255.3
    distance bgp 20 200 200
+   graceful-restart restart-time 555
+   graceful-restart stalepath-time 666
+   graceful-restart
+   graceful-restart-helper restart-time 555
    maximum-paths 32 ecmp 32
    update wait-for-convergence
    update wait-install
    no bgp default ipv4-unicast
-   graceful-restart restart-time 300
-   graceful-restart
    bgp bestpath d-path
    bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444

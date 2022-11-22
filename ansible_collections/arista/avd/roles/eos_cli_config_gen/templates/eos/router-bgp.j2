@@ -12,6 +12,34 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
    {{ distance_cli }}
 {%     endif %}
+{# the ordering of graceful-restart commands in the CLI is as follow
+   graceful-restart restart-time 300
+   graceful-restart stalepath-time 42
+   graceful-restart
+
+   but when disabling graceful-restart using no graceful-restart, stalepath-time stays
+   hence the convoluted Jinja template
+#}
+{%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) and router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
+{%     endif %}
+{%     if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
+{%     endif %}
+{%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+   graceful-restart
+{%     endif %}
+{%     if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}
+   no graceful-restart-helper
+{%     elif router_bgp.graceful_restart_helper.enabled is arista.avd.defined(true) %}
+{# graceful-restart-help long-lived and restart-time are mutually exclusive in CLI #}
+{# restart-time will win in this case #}
+{%         if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+   graceful-restart-helper restart-time {{ router_bgp.graceful_restart.restart_time }}
+{%         elif router_bgp.graceful_restart.long_lived is arista.avd.defined(true) %}
+   graceful-restart-helper long-lived
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.maximum_paths.paths is arista.avd.defined %}
 {%         set paths_cli = "maximum-paths " ~ router_bgp.maximum_paths.paths %}
 {%         if router_bgp.maximum_paths.ecmp is arista.avd.defined %}
