@@ -8,23 +8,46 @@ keys:
     keys:
       mode:
         type: str
+        description: Mode value
+        valid_values:
+        - boundary
+        - transparent
       forward_unicast:
         type: bool
       clock_identity:
         type: str
+        description: The clock-id in xx:xx:xx:xx:xx:xx format
       source:
         type: dict
         keys:
           ip:
+            description: Source IP
             type: str
       priority1:
         type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
       priority2:
         type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
       ttl:
         type: int
+        min: 1
+        max: 254
+        description: TTL value
+        convert_types:
+        - str
       domain:
         type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
       message_type:
         type: dict
         keys:
@@ -33,30 +56,57 @@ keys:
             keys:
               dscp:
                 type: int
+                convert_types:
+                - str
+                description: DSCP value
           event:
             type: dict
             keys:
               dscp:
                 type: int
+                description: DSCP value
+                convert_types:
+                - str
       monitor:
         type: dict
         keys:
           enabled:
             type: bool
+            default: true
           threshold:
             type: dict
             keys:
               offset_from_master:
                 type: int
+                min: 0
+                max: 1000000000
+                description: Offset value
+                convert_types:
+                - str
               mean_path_delay:
                 type: int
+                min: 0
+                max: 1000000000
+                description: Delay value
+                convert_types:
+                - str
               drop:
                 type: dict
                 keys:
                   offset_from_master:
                     type: int
+                    min: 0
+                    max: 1000000000
+                    description: Offset value
+                    convert_types:
+                    - str
                   mean_path_delay:
                     type: int
+                    min: 0
+                    max: 1000000000
+                    description: Delay value
+                    convert_types:
+                    - str
           missing_message:
             type: dict
             keys:
@@ -65,20 +115,49 @@ keys:
                 keys:
                   announce:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
                   follow_up:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
                   sync:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
               sequence_ids:
                 type: dict
                 keys:
                   enabled:
                     type: bool
+                    default: false
                   announce:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
                   delay_resp:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
                   follow_up:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
                   sync:
                     type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str

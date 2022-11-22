@@ -5067,6 +5067,11 @@
       "properties": {
         "mode": {
           "type": "string",
+          "description": "Mode value",
+          "enum": [
+            "boundary",
+            "transparent"
+          ],
           "title": "Mode"
         },
         "forward_unicast": {
@@ -5075,12 +5080,14 @@
         },
         "clock_identity": {
           "type": "string",
+          "description": "The clock-id in xx:xx:xx:xx:xx:xx format",
           "title": "Clock Identity"
         },
         "source": {
           "type": "object",
           "properties": {
             "ip": {
+              "description": "Source IP",
               "type": "string",
               "title": "IP"
             }
@@ -5090,18 +5097,27 @@
         },
         "priority1": {
           "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
           "title": "Priority1"
         },
         "priority2": {
           "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
           "title": "Priority2"
         },
         "ttl": {
           "type": "integer",
+          "minimum": 1,
+          "maximum": 254,
+          "description": "TTL value",
           "title": "TTL"
         },
         "domain": {
           "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
           "title": "Domain"
         },
         "message_type": {
@@ -5112,6 +5128,7 @@
               "properties": {
                 "dscp": {
                   "type": "integer",
+                  "description": "DSCP value",
                   "title": "DSCP"
                 }
               },
@@ -5123,6 +5140,7 @@
               "properties": {
                 "dscp": {
                   "type": "integer",
+                  "description": "DSCP value",
                   "title": "DSCP"
                 }
               },
@@ -5138,6 +5156,7 @@
           "properties": {
             "enabled": {
               "type": "boolean",
+              "default": true,
               "title": "Enabled"
             },
             "threshold": {
@@ -5145,10 +5164,16 @@
               "properties": {
                 "offset_from_master": {
                   "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000000,
+                  "description": "Offset value",
                   "title": "Offset From Master"
                 },
                 "mean_path_delay": {
                   "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000000,
+                  "description": "Delay value",
                   "title": "Mean Path Delay"
                 },
                 "drop": {
@@ -5156,10 +5181,16 @@
                   "properties": {
                     "offset_from_master": {
                       "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1000000000,
+                      "description": "Offset value",
                       "title": "Offset From Master"
                     },
                     "mean_path_delay": {
                       "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1000000000,
+                      "description": "Delay value",
                       "title": "Mean Path Delay"
                     }
                   },
@@ -5178,14 +5209,20 @@
                   "properties": {
                     "announce": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Announce"
                     },
                     "follow_up": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Follow Up"
                     },
                     "sync": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Sync"
                     }
                   },
@@ -5197,22 +5234,31 @@
                   "properties": {
                     "enabled": {
                       "type": "boolean",
+                      "default": false,
                       "title": "Enabled"
                     },
                     "announce": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Announce"
                     },
                     "delay_resp": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Delay Resp"
                     },
                     "follow_up": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Follow Up"
                     },
                     "sync": {
                       "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
                       "title": "Sync"
                     }
                   },
