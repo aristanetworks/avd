@@ -10723,6 +10723,127 @@
       "additionalProperties": false,
       "title": "Traffic Policies"
     },
+    "tunnel_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tunnel Interface Name",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
+          "mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF Name",
+            "title": "VRF"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4_address/Mask",
+            "title": "IP Address"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "title": "IPv6 Enable"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "description": "IPv6_address/Mask",
+            "title": "IPv6 Address"
+          },
+          "access_group_in": {
+            "description": "IPv4 ACL Name for ingress",
+            "type": "string",
+            "title": "Access Group In"
+          },
+          "access_group_out": {
+            "description": "IPv4 ACL Name for egress",
+            "type": "string",
+            "title": "Access Group Out"
+          },
+          "ipv6_access_group_in": {
+            "description": "IPv6 ACL Name for ingress",
+            "type": "string",
+            "title": "IPv6 Access Group In"
+          },
+          "ipv6_access_group_out": {
+            "description": "IPv6 ACL Name for egress",
+            "type": "string",
+            "title": "IPv6 Access Group Out"
+          },
+          "tcp_mss_ceiling": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "integer",
+                "description": "Segment Size for IPv4",
+                "minimum": 64,
+                "maximum": 65495,
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "integer",
+                "description": "Segment Size for IPv6",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv6"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "ingress",
+                  "egress"
+                ],
+                "description": "Optional direction ('ingress', 'egress')  for tcp mss ceiling\n",
+                "title": "Direction"
+              }
+            },
+            "additionalProperties": false,
+            "title": "TCP Mss Ceiling"
+          },
+          "source_interface": {
+            "type": "string",
+            "description": "Tunnel Source Interface Name",
+            "title": "Source Interface"
+          },
+          "destination": {
+            "type": "string",
+            "description": "IPv4 or IPv6 Address Tunnel Destination",
+            "title": "Destination"
+          },
+          "path_mtu_discovery": {
+            "type": "boolean",
+            "description": "Enable Path MTU Discovery On Tunnel",
+            "title": "Path MTU Discovery"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.",
+            "title": "EOS CLI"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Tunnel Interfaces"
+    },
     "virtual_source_nat_vrfs": {
       "type": "array",
       "items": {

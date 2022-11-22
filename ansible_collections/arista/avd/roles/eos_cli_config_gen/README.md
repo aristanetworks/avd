@@ -1379,6 +1379,34 @@ port_channel_interfaces:
         key: "< encrypted_password >"
 ```
 
+#### Tunnel Interfaces
+
+```yaml
+tunnel_interfaces:
+- name: < interface_name >
+  description: < description >
+  shutdown: < true | false >
+  mtu: < 68-65535 >
+  vrf: < vrf_name >
+  ip_address: < ip_address >
+  ipv6_enable: < true | false >
+  ipv6_address: < ipv6_address >
+  access_group_in: < access_list_name >
+  access_group_out: < access_list_name >
+  ipv6_access_group_in: < access_list_name >
+  ipv6_access_group_out: < access_list_name >
+  tcp_mss_ceiling:
+    ipv4: < 64-65495 >
+    ipv6: < 64-65475 >
+    direction: < ingress | egress >
+  source_interface: < tunnel_source_interface_name >
+  destination: < tunnel_destination >
+  path_mtu_discovery: < true | false >
+  # EOS CLI rendered directly on the Tunnel interface in the final EOS configuration
+  eos_cli: |
+    < multiline eos cli >
+```
+
 #### VLAN Interfaces
 
 ```yaml
