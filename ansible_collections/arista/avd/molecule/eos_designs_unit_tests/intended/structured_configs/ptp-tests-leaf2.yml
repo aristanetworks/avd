@@ -225,14 +225,14 @@ vlan_interfaces:
     tenant: PTP
     description: VLAN11
     shutdown: false
-    vrf: VRF1
     ip_address: 172.17.11.1/24
+    vrf: VRF1
 vxlan_interface:
   Vxlan1:
     description: ptp-tests-leaf2_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         11:
           vni: 10011
