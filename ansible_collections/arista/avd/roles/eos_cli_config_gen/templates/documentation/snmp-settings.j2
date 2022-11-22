@@ -60,7 +60,7 @@
 
 | Local Interface | VRF |
 | --------------- | --- |
-{%         for interface in snmp_server.local_interfaces | arista.avd.convert_dicts('name') %}
+{%         for interface in snmp_server.local_interfaces %}
 | {{ interface.name }} | {{ interface.vrf | arista.avd.default('default') }} |
 {%         endfor %}
 {%     endif %}
@@ -127,7 +127,7 @@
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-{%         for community in snmp_server.communities | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for community in snmp_server.communities | arista.avd.natural_sort('name') %}
 {%             set access = community.access | arista.avd.default("ro") %}
 {%             set access_list_ipv4 = community.access_list_ipv4.name | arista.avd.default("-") %}
 {%             set access_list_ipv6 = community.access_list_ipv6.name | arista.avd.default("-") %}

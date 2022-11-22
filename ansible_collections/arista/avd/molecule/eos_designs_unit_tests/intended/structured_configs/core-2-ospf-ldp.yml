@@ -27,7 +27,6 @@ loopback_interfaces:
     ipv6_address: 2000:1234:ffff:ffff::2/128
     ospf_area: 0.0.0.0
     mpls:
-      ip: true
       ldp:
         interface: true
 router_ospf:

@@ -2994,6 +2994,122 @@
       "additionalProperties": false,
       "title": "Logging"
     },
+    "loopback_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Loopback interface name e.g. \"Loopback0\"",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF name",
+            "title": "VRF"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4_address/Mask",
+            "title": "IP Address"
+          },
+          "ip_address_secondaries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask"
+            },
+            "title": "IP Address Secondaries"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "title": "IPv6 Enable"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "description": "IPv6_address/Mask",
+            "title": "IPv6 Address"
+          },
+          "ip_proxy_arp": {
+            "type": "boolean",
+            "title": "IP Proxy ARP"
+          },
+          "ospf_area": {
+            "type": "string",
+            "title": "OSPF Area"
+          },
+          "mpls": {
+            "type": "object",
+            "properties": {
+              "ldp": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "boolean",
+                    "title": "Interface"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "LDP"
+              }
+            },
+            "additionalProperties": false,
+            "title": "MPLS"
+          },
+          "isis_enable": {
+            "type": "string",
+            "description": "ISIS instance name",
+            "title": "ISIS Enable"
+          },
+          "isis_passive": {
+            "type": "boolean",
+            "title": "ISIS Passive"
+          },
+          "isis_metric": {
+            "type": "integer",
+            "title": "ISIS Metric"
+          },
+          "isis_network_point_to_point": {
+            "type": "boolean",
+            "title": "ISIS Network Point To Point"
+          },
+          "node_segment": {
+            "type": "object",
+            "properties": {
+              "ipv4_index": {
+                "type": "integer",
+                "title": "IPv4 Index"
+              },
+              "ipv6_index": {
+                "type": "integer",
+                "title": "IPv6 Index"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Node Segment"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the loopback interface in the final EOS configuration",
+            "title": "EOS CLI"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Loopback Interfaces"
+    },
     "mac_access_lists": {
       "type": "array",
       "items": {
@@ -9267,6 +9383,417 @@
       },
       "additionalProperties": false,
       "title": "Sflow"
+    },
+    "snmp_server": {
+      "type": "object",
+      "description": "SNMP settings",
+      "properties": {
+        "engine_ids": {
+          "type": "object",
+          "properties": {
+            "local": {
+              "type": "string",
+              "description": "Engine ID in hexadecimal\n",
+              "title": "Local"
+            },
+            "remotes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Remote engine ID in hexadecimal\n",
+                    "title": "ID"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Hostname or IP of remote engine\n",
+                    "title": "Address"
+                  },
+                  "udp_port": {
+                    "type": "integer",
+                    "title": "UDP Port"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Remotes"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Engine IDs"
+        },
+        "contact": {
+          "type": "string",
+          "description": "SNMP contact",
+          "title": "Contact"
+        },
+        "location": {
+          "type": "string",
+          "description": "SNMP location",
+          "title": "Location"
+        },
+        "communities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Community name",
+                "title": "Name"
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "ro",
+                  "rw"
+                ],
+                "title": "Access"
+              },
+              "access_list_ipv4": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 access list name",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Access List IPv4"
+              },
+              "access_list_ipv6": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv6 access list name",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Access List IPv6"
+              },
+              "view": {
+                "type": "string",
+                "title": "View"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Communities"
+        },
+        "ipv4_acls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IPv4 access list name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "IPv4 Acls"
+        },
+        "ipv6_acls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IPv6 access list name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "IPv6 Acls"
+        },
+        "local_interfaces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Interface name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Local Interfaces"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "SNMP view name",
+                "title": "Name"
+              },
+              "MIB_family_name": {
+                "type": "string",
+                "title": "MIB Family Name"
+              },
+              "included": {
+                "type": "boolean",
+                "title": "Included"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Views"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Group name",
+                "title": "Name"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "authentication": {
+                "type": "string",
+                "enum": [
+                  "auth",
+                  "noauth",
+                  "priv"
+                ],
+                "title": "Authentication"
+              },
+              "read": {
+                "type": "string",
+                "description": "Read view",
+                "title": "Read"
+              },
+              "write": {
+                "type": "string",
+                "description": "Write view",
+                "title": "Write"
+              },
+              "notify": {
+                "type": "string",
+                "description": "Notify view",
+                "title": "Notify"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Groups"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Username",
+                "title": "Name"
+              },
+              "group": {
+                "type": "string",
+                "description": "Group name",
+                "title": "Group"
+              },
+              "remote_address": {
+                "type": "string",
+                "description": "Hostname or ip of remote engine\nThe remote_address and udp_port are used for remote users\n",
+                "title": "Remote Address"
+              },
+              "udp_port": {
+                "type": "integer",
+                "description": "udp_port will not be used if no remote_address is configured\n",
+                "title": "UDP Port"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "localized": {
+                "type": "string",
+                "description": "Engine ID in hexadecimal for localizing auth and/or priv\n",
+                "title": "Localized"
+              },
+              "auth": {
+                "type": "string",
+                "description": "Hash algorithm\n",
+                "title": "Auth"
+              },
+              "auth_passphrase": {
+                "type": "string",
+                "description": "Hashed authentication passphrase if localized is used else cleartext authentication passphrase\n",
+                "title": "Auth Passphrase"
+              },
+              "priv": {
+                "type": "string",
+                "description": "Encryption algorithm\n",
+                "title": "Priv"
+              },
+              "priv_passphrase": {
+                "type": "string",
+                "description": "Hashed privacy passphrase if localized is used else cleartext privacy passphrase\n",
+                "title": "Priv Passphrase"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Users"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Host IP address or name",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "1",
+                  "2c",
+                  "3"
+                ],
+                "title": "Version"
+              },
+              "community": {
+                "type": "string",
+                "description": "Community name",
+                "title": "Community"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "title": "Username"
+                    },
+                    "authentication_level": {
+                      "type": "string",
+                      "enum": [
+                        "auth",
+                        "noauth",
+                        "priv"
+                      ],
+                      "title": "Authentication Level"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "title": "Users"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "Hosts"
+        },
+        "traps": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable or disable all snmp-traps\n",
+              "title": "Enable"
+            },
+            "snmp_traps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Enable or disable specific snmp-traps and their sub_traps\nExamples:\n- \"bgp\"\n- \"bgp established\"\n",
+                    "title": "Name"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Snmp Traps"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Traps"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              }
+            },
+            "additionalProperties": false
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Snmp Server"
     },
     "spanning_tree": {
       "type": "object",

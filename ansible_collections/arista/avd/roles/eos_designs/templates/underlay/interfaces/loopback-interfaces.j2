@@ -15,7 +15,6 @@ loopback_interfaces:
 {%     endif %}
 {%     if switch.mpls_lsr is arista.avd.defined(true) %}
     mpls:
-      ip: true
 {%         if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] %}
       ldp:
         interface: true
