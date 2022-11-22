@@ -1,4 +1,4 @@
-{% if vlan_interfaces is defined and vlan_interfaces is not none %}
+{% if vlan_interfaces is arista.avd.defined %}
 
 ## VLAN Interfaces
 
@@ -10,11 +10,7 @@
 {%         set description = vlan_interface.description | arista.avd.default('-') %}
 {%         set vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%         set mtu = vlan_interface.mtu | arista.avd.default('-') %}
-{%         if vlan_interface.shutdown is arista.avd.defined %}
-{%             set shutdown = vlan_interface.shutdown %}
-{%         else %}
-{%             set shutdown = '-' %}
-{%         endif %}
+{%         set shutdown = vlan_interface.shutdown | arista.avd.default('-') %}
 | {{ vlan_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
 {# PVLAN #}

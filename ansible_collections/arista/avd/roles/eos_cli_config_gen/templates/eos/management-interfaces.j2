@@ -13,7 +13,7 @@ interface {{ management_interface.name }}
 {%     if management_interface.mtu is arista.avd.defined %}
    mtu {{ management_interface.mtu }}
 {%     endif %}
-{%     if management_interface.vrf is arista.avd.defined and management_interface.vrf is ne 'default' %}
+{%     if management_interface.vrf is arista.avd.defined and management_interface.vrf != 'default' %}
    vrf {{ management_interface.vrf }}
 {%     endif %}
 {%     if management_interface.ip_address is arista.avd.defined %}
