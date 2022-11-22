@@ -177,7 +177,6 @@ loopback_interfaces:
     ip_address: 100.70.0.6/32
     ipv6_address: 2000:1234:ffff:ffff::6/128
     mpls:
-      ip: true
       ldp:
         interface: true
     isis_enable: CORE

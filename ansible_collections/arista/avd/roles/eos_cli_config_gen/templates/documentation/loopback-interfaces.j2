@@ -8,7 +8,7 @@
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
 {%         set vrf = loopback_interface.vrf | arista.avd.default('default') %}
 {%         if loopback_interface.ip_address is arista.avd.defined %}
 {%             set ip = loopback_interface.ip_address %}
