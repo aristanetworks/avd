@@ -26,7 +26,6 @@ loopback_interfaces:
     ip_address: 10.0.0.1/32
     ipv6_address: 2000:1234:ffff:ffff::1/128
     mpls:
-      ip: true
       ldp:
         interface: true
     isis_enable: CORE
