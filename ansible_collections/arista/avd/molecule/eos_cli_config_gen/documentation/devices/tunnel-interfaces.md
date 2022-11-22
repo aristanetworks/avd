@@ -101,7 +101,7 @@ interface Tunnel1
    ip access-group test-in in
    ip access-group test-out out
    tcp mss ceiling ipv4 666 ingress
-   tunnel source interface Ethernnet42
+   tunnel source interface Ethernet42
    tunnel destination 6.6.6.6
    tunnel path-mtu-discovery
    comment
@@ -117,7 +117,7 @@ interface Tunnel2
    ipv6 access-group test-in in
    ipv6 access-group test-out out
    tcp mss ceiling ipv6 666 egress
-   tunnel source interface Ethernnet42
+   tunnel source interface Ethernet42
    tunnel destination dead:beef::1
 !
 interface Tunnel3
@@ -127,7 +127,7 @@ interface Tunnel3
    ipv6 enable
    ipv6 address beef::64/64
    tcp mss ceiling ipv4 666 ipv6 666
-   tunnel source interface Ethernnet42
+   tunnel source interface Ethernet42
    tunnel destination 1.1.1.1
 !
 interface Tunnel4
@@ -136,7 +136,7 @@ interface Tunnel4
    ip address 64.64.64.64/24
    ipv6 enable
    ipv6 address beef::64/64
-   tunnel source interface Ethernnet42
+   tunnel source interface Ethernet42
    tunnel destination 1.1.1.1
 ```
 
