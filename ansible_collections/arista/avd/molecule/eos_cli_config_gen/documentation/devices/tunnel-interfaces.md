@@ -67,10 +67,10 @@ interface Management1
 
 | Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
 | --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
-| Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False | Ethernnet42 | 6.6.6.6 | True |
-| Tunnel2 | test ipv6 only | default | - | True | Ethernnet42 | dead:beef::1 | False |
-| Tunnel3 | test dual stack | default | 1500 | - | Ethernnet42 | 1.1.1.1 | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernnet42 | 1.1.1.1 | - |
+| Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False | Ethernet42 | 6.6.6.6 | True |
+| Tunnel2 | test ipv6 only | default | - | True | Ethernet42 | dead:beef::1 | False |
+| Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
+| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
 
 #### IPv4
 
