@@ -2582,7 +2582,7 @@ name_server:
     - <str>
 ```
 
-## Ntp
+## NTP
 
 ### Variables
 

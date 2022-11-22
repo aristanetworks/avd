@@ -4634,7 +4634,7 @@
         }
       },
       "additionalProperties": false,
-      "title": "Ntp"
+      "title": "NTP"
     },
     "patch_panel": {
       "type": "object",
