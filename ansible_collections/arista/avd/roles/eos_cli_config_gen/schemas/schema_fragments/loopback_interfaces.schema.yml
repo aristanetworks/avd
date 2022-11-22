@@ -13,7 +13,7 @@ keys:
       keys:
         name:
           type: str
-          description: Loopback Interface name like "Loopback0"
+          description: Loopback interface name e.g. "Loopback0"
           required: true
         description:
           type: str
@@ -51,7 +51,7 @@ keys:
                   type: bool
         isis_enable:
           type: str
-          description: ISIS Instance Name
+          description: ISIS instance name
         isis_passive:
           type: bool
         isis_metric:

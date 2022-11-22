@@ -3001,7 +3001,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Loopback Interface name like \"Loopback0\"",
+            "description": "Loopback interface name e.g. \"Loopback0\"",
             "title": "Name"
           },
           "description": {
@@ -3067,7 +3067,7 @@
           },
           "isis_enable": {
             "type": "string",
-            "description": "ISIS Instance Name",
+            "description": "ISIS instance name",
             "title": "ISIS Enable"
           },
           "isis_passive": {
