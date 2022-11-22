@@ -12,7 +12,7 @@ tunnel_interfaces:
     tcp_mss_ceiling:
       ipv4: 666
       direction: ingress
-    source_interface: Ethernnet42
+    source_interface: Ethernet42
     destination: 6.6.6.6
     path_mtu_discovery: true
     eos_cli: |
