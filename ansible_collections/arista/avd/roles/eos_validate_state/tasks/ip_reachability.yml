@@ -24,6 +24,7 @@
     - ip_reachability
 
 - name: Validate ip reachability (directly connected interfaces)
+  delegate_to: localhost
   assert:
     that:
       - ip_reachability_test.stdout[0] | regex_search('1 received')

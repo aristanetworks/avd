@@ -10,6 +10,7 @@
     - hardware
 
 - name: Validate power supplies status
+  delegate_to: localhost
   assert:
     that:
       - "powerSupply.value.state in {{ accepted_pwr_supply_states }}"
@@ -31,6 +32,7 @@
     - hardware
 
 - name: Validate fan status (power supplies)
+  delegate_to: localhost
   assert:
     that:
       - "powerSupplySlot.status in {{ accepted_fan_states }}"
@@ -45,6 +47,7 @@
     - hardware
 
 - name: Validate fan status (fan tray)
+  delegate_to: localhost
   assert:
     that:
       - "fanTraySlot.status in {{ accepted_fan_states }}"
@@ -67,6 +70,7 @@
     - hardware
 
 - name: Validate system temperature
+  delegate_to: localhost
   assert:
     that:
       - environment_temperature.stdout[0].systemStatus == 'temperatureOk'
@@ -85,6 +89,7 @@
     - hardware
 
 - name: Validate transceivers manufacturers
+  delegate_to: localhost
   assert:
     that:
       - "xcvrSlot.value.mfgName in {{ accepted_xcvr_manufacturers }}"

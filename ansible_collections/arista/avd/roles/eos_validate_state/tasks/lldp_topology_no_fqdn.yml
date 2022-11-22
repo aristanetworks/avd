@@ -11,6 +11,7 @@
     - lldp_topology
 
 - name: Validate lldp topology when there is no domain name
+  delegate_to: localhost
   assert:
     that:
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0] is defined
