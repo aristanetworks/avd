@@ -1520,7 +1520,7 @@
               }
             },
             "additionalProperties": false,
-            "title": "Evpn Ethernet Segment"
+            "title": "EVPN Ethernet Segment"
           },
           "encapsulation_dot1q_vlan": {
             "type": "integer",
@@ -2039,7 +2039,7 @@
               }
             },
             "additionalProperties": false,
-            "title": "Ptp"
+            "title": "PTP"
           },
           "profile": {
             "type": "string",
@@ -2176,7 +2176,7 @@
               "ztp_vlan": {
                 "type": "integer",
                 "description": "ZTP vlan number",
-                "title": "Ztp VLAN"
+                "title": "ZTP VLAN"
               }
             },
             "additionalProperties": false,
@@ -2253,7 +2253,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Pae"
+                "title": "PAE"
               },
               "authentication_failure": {
                 "type": "object",
@@ -2517,7 +2517,7 @@
                   },
                   "igp_sync": {
                     "type": "boolean",
-                    "title": "Igp Sync"
+                    "title": "IGP Sync"
                   }
                 },
                 "additionalProperties": false,
@@ -2546,13 +2546,13 @@
               }
             },
             "additionalProperties": false,
-            "title": "Lacp Timer"
+            "title": "LACP Timer"
           },
           "lacp_port_priority": {
             "type": "integer",
             "minimum": 0,
             "maximum": 65535,
-            "title": "Lacp Port Priority"
+            "title": "LACP Port Priority"
           },
           "transceiver": {
             "type": "object",
@@ -7954,7 +7954,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Rd Evpn Domain"
+                "title": "Rd EVPN Domain"
               },
               "route_targets": {
                 "type": "object",
@@ -8000,7 +8000,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Evpn Domains"
+                    "title": "Import EVPN Domains"
                   },
                   "export_evpn_domains": {
                     "type": "array",
@@ -8022,7 +8022,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Export Evpn Domains"
+                    "title": "Export EVPN Domains"
                   },
                   "import_export_evpn_domains": {
                     "type": "array",
@@ -8044,7 +8044,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Export Evpn Domains"
+                    "title": "Import Export EVPN Domains"
                   }
                 },
                 "additionalProperties": false,
@@ -8114,7 +8114,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Rd Evpn Domain"
+                "title": "Rd EVPN Domain"
               },
               "eos_cli": {
                 "type": "string",
@@ -8165,7 +8165,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Evpn Domains"
+                    "title": "Import EVPN Domains"
                   },
                   "export_evpn_domains": {
                     "type": "array",
@@ -8187,7 +8187,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Export Evpn Domains"
+                    "title": "Export EVPN Domains"
                   },
                   "import_export_evpn_domains": {
                     "type": "array",
@@ -8209,7 +8209,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Export Evpn Domains"
+                    "title": "Import Export EVPN Domains"
                   }
                 },
                 "additionalProperties": false,
@@ -8348,7 +8348,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "title": "Next Hop Self Received Evpn Routes"
+                  "title": "Next Hop Self Received EVPN Routes"
                 }
               },
               "additionalProperties": false,
@@ -8420,7 +8420,7 @@
                 }
               },
               "additionalProperties": false,
-              "title": "Evpn Hostflap Detection"
+              "title": "EVPN Hostflap Detection"
             },
             "route": {
               "type": "object",
@@ -8438,7 +8438,7 @@
             }
           },
           "additionalProperties": false,
-          "title": "Address Family Evpn"
+          "title": "Address Family EVPN"
         },
         "address_family_rtc": {
           "type": "object",
@@ -9079,7 +9079,7 @@
               },
               "evpn_multicast": {
                 "type": "boolean",
-                "title": "Evpn Multicast"
+                "title": "EVPN Multicast"
               },
               "evpn_multicast_address_family": {
                 "type": "object",
@@ -13624,7 +13624,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "title": "BFD Vtep Evpn"
+                  "title": "BFD Vtep EVPN"
                 },
                 "qos": {
                   "type": "object",
