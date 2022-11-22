@@ -18,7 +18,7 @@ mac_security:
           encrypted_key: 10195F4C5144405A
           fallback: true
       l2_protocols:
-        - name: lldp
+        lldp:
           mode: bypass
     A2:
       connection_keys:

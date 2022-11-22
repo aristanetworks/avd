@@ -3180,32 +3180,45 @@
                 "title": "SCI"
               },
               "l2_protocols": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "enum": [
-                        "lldp",
-                        "ethernet-flow-control"
-                      ],
-                      "title": "Name"
+                "type": "object",
+                "properties": {
+                  "ethernet-flow-control": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "encrypt",
+                          "bypass"
+                        ],
+                        "title": "Mode"
+                      }
                     },
-                    "mode": {
-                      "type": "string",
-                      "enum": [
-                        "encrypt",
-                        "bypass"
-                      ],
-                      "title": "Mode"
-                    }
+                    "required": [
+                      "mode"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Ethernet-Flow-Control"
                   },
-                  "additionalProperties": false,
-                  "required": [
-                    "name"
-                  ]
+                  "lldp": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "bypass"
+                        ],
+                        "title": "Mode"
+                      }
+                    },
+                    "required": [
+                      "mode"
+                    ],
+                    "additionalProperties": false,
+                    "title": "LLDP"
+                  }
                 },
+                "additionalProperties": false,
                 "title": "L2 Protocols"
               }
             },

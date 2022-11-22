@@ -1698,8 +1698,10 @@ mac_security:
           rekey_period: < 30-100000 in seconds >
       sci: < true | false >
       l2_protocols:
-        - name: < lldp | ethernet-flow-control >
+        ethernet-flow-control:
           mode: < encrypt | bypass >
+        lldp:
+          mode: < bypass >
 ```
 
 ### Maintenance Mode

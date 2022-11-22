@@ -205,6 +205,9 @@ Keys:
 
 L2 Protocols:
 
+|  L2 Protocol | Mode |
+| ------------ | ---- |
+| lldp | bypass |
 
 **Profile A2:**
 
@@ -220,9 +223,6 @@ Keys:
 | ------ | ---------------------- | -------- |
 | 1234b | 12485744465E5A53 | - |
 
-L2 Protocols:
-
-
 ## MACsec Device Configuration
 
 ```eos
@@ -237,6 +237,7 @@ mac security
       key 1234c 7 10195F4C5144405A fallback
       mka session rekey-period 30
       sci
+      l2-protocol lldp bypass
    profile A2
       key 1234b 7 12485744465E5A53
 ```

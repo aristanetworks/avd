@@ -32,11 +32,8 @@ mac security
 {%         if profile.sci is arista.avd.defined(true) %}
       sci
 {%         endif %}
-{%         for protocol in profile.l2_protocols | arista.avd.default([]) %}
-{%             if protocol.name is arista.avd.defined and
-                  protocol.mode is arista.avd.defined %}
-      l2-protocol {{ protocol.name }} {{ protocol.mode }}
-{%             endif %}
+{%         for l2_protocol in profile.l2_protocols | arista.avd.natural_sort %}
+      l2-protocol {{ l2_protocol }} {{ profile.l2_protocols[l2_protocol].mode }}
 {%         endfor %}
 {%     endfor %}
 {% endif %}

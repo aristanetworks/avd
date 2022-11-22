@@ -43,15 +43,14 @@ Keys:
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
+{%             if profile.l2_protocols | arista.avd.natural_sort | length > 0 %}
 
 L2 Protocols:
 
-{%             if profile.l2_protocols | arista.avd.default([]) | length > 0 %}
 |  L2 Protocol | Mode |
 | ------------ | ---- |
-{%                 for l2_protocol in profile.l2_protocols | arista.avd.natural_sort('name') %}
-{%                     set mode = l2_protocol.mode | arista.avd.default('-') %}
-| {{ l2_protocol.name }} | {{ mode }} |
+{%                 for l2_protocol in profile.l2_protocols | arista.avd.natural_sort %}
+| {{ l2_protocol }} | {{ profile.l2_protocols[l2_protocol].mode }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

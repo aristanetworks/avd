@@ -2389,21 +2389,27 @@ keys:
             sci:
               type: bool
             l2_protocols:
-              type: list
-              primary_key: name
-              items:
-                type: dict
-                keys:
-                  name:
-                    type: str
-                    valid_values:
-                    - lldp
-                    - ethernet-flow-control
-                  mode:
-                    type: str
-                    valid_values:
-                    - encrypt
-                    - bypass
+              type: dict
+              keys:
+                ethernet-flow-control:
+                  type: dict
+                  required: false
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                      - encrypt
+                      - bypass
+                lldp:
+                  type: dict
+                  required: false
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                      - bypass
   maintenance:
     type: dict
     display_name: Maintenance Mode

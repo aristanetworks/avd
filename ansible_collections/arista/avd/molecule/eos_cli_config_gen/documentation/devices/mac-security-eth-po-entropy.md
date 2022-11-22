@@ -223,9 +223,6 @@ Keys:
 | ------ | ---------------------- | -------- |
 | 1234b | 12485744465E5A53 | - |
 
-L2 Protocols:
-
-
 ## MACsec Device Configuration
 
 ```eos
