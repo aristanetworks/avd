@@ -2393,7 +2393,6 @@ keys:
               keys:
                 ethernet-flow-control:
                   type: dict
-                  required: false
                   keys:
                     mode:
                       type: str
@@ -2403,7 +2402,6 @@ keys:
                       - bypass
                 lldp:
                   type: dict
-                  required: false
                   keys:
                     mode:
                       type: str
