@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdE
 ##############
 # BGP
 ##############
-def bgp_encrypt(password, key=None) -> str:
+def bgp_encrypt(password, key) -> str:
     """
     Encrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
@@ -27,7 +27,7 @@ def bgp_encrypt(password, key=None) -> str:
     return cbc_encrypt(key, data).decode()
 
 
-def bgp_decrypt(password, key=None) -> str:
+def bgp_decrypt(password, key) -> str:
     """
     Decrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
