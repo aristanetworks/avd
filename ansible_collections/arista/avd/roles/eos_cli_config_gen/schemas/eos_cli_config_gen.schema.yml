@@ -6210,6 +6210,7 @@ keys:
                   default: true
   snmp_server:
     type: dict
+    description: SNMP settings
     keys:
       engine_ids:
         type: dict
@@ -6420,6 +6421,7 @@ keys:
           keys:
             host:
               type: str
+              description: Host IP address or name
             vrf:
               type: str
             version:
