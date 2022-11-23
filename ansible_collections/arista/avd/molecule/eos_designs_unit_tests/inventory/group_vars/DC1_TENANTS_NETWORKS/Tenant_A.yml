@@ -219,8 +219,9 @@ Tenant_A:
           nodes: [DC1-BL1A, DC1-BL1B]
           mtu: 9000
           enabled: True
-          description: "Single description preferred over descriptions"
-          descriptions: ["test-DC1-BL1A", "test-DC1-BL1B"]
+          description: "Single description"
+          descriptions: ["DC1-BL1A descriptions preferred over global description", "DC1-BL1B descriptions preferred over global description"]
+          # no description nor desciptions is tested in Tenant_OSPF below
     Tenant_OSPF:
       vrf_id: 30
       ospf:

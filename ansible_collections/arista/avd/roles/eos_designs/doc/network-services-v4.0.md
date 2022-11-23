@@ -324,7 +324,7 @@ svi_profiles:
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
-            # if description is set then descriptions is ignored for backward-compatibility
+            # `descriptions` has precedence over `description`
             descriptions: [ <description1>, <description2>, description3> ]
             enabled: < true | false >
             mtu: < mtu >

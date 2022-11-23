@@ -53,10 +53,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 continue
 
                             interface_name = str(l3_interface["interfaces"][node_index])
-                            interface_description = l3_interface.get("description")
-                            # if 'description' is set, it is preferred
-                            if (interface_descriptions := l3_interface.get("descriptions")) is not None and interface_description is None:
+                            # if 'descriptions' is set, it is preferred
+                            if (interface_descriptions := l3_interface.get("descriptions")) is not None:
                                 interface_description = interface_descriptions[node_index]
+                            else:
+                                interface_description = l3_interface.get("description")
                             interface = {
                                 "peer_type": "l3_interface",
                                 "ip_address": l3_interface["ip_addresses"][node_index],

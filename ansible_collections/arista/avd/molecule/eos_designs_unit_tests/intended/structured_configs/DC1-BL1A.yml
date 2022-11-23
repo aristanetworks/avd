@@ -455,7 +455,7 @@ ethernet_interfaces:
     ip_address: 10.10.30.10/24
     mtu: 9000
     shutdown: false
-    description: Single description preferred over descriptions
+    description: DC1-BL1A descriptions preferred over global description
     type: routed
     vrf: Tenant_L3_VRF_Zone
   Ethernet4000:
