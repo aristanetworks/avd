@@ -207,7 +207,7 @@ L2 Protocols:
 
 |  L2 Protocol | Mode |
 | ------------ | ---- |
-| lldp | bypass |
+| lldp | bypass unauthorized |
 
 **Profile A2:**
 
@@ -238,7 +238,7 @@ mac security
       mka session key-server priority 100
       mka session rekey-period 30
       sci
-      l2-protocol lldp bypass
+      l2-protocol lldp bypass unauthorized
    profile A2
       key 1234b 7 12485744465E5A53
 ```
