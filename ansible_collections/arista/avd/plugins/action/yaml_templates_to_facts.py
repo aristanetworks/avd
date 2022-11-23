@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import cProfile
-import importlib
 import pstats
 from collections import ChainMap
 from datetime import datetime
@@ -15,9 +14,10 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -134,26 +134,23 @@ class ActionModule(ActionBase):
             elif "python_module" in template_item:
                 module_path = template_item.get("python_module")
                 class_name = template_item.get("python_class_name", DEFAULT_PYTHON_CLASS_NAME)
+                try:
+                    cls = load_python_class(module_path, class_name, AvdFacts)
+                except AristaAvdMissingVariableError as exc:
+                    raise AnsibleActionFail(f"Missing module_path or class_name in {template_item}") from exc
+
+                cls_instance = cls(hostvars=template_vars, templar=templar)
+
+                if debug:
+                    debug_item["timestamps"]["render_python_class"] = datetime.now()
+
+                if not (getattr(cls_instance, "render")):
+                    raise AnsibleActionFail(f"{cls_instance} has no attribute render")
 
                 try:
-                    cls = getattr(importlib.import_module(module_path), class_name)
-                except ImportError as imp_exc:
-                    raise AnsibleActionFail(imp_exc) from imp_exc
-
-                if issubclass(cls, AvdFacts):
-                    cls_instance = cls(hostvars=template_vars, templar=templar)
-                    if debug:
-                        debug_item["timestamps"]["render_python_class"] = datetime.now()
-                    if getattr(cls_instance, "render"):
-                        try:
-                            template_result_data = cls_instance.render()
-                        except Exception as error:
-                            raise AnsibleActionFail(error) from error
-                    else:
-                        raise AristaAvdError(f"{cls_instance} has no attribute render")
-                else:
-                    raise AnsibleActionFail(f"{cls} is not an instance of AvdFacts class")
-
+                    template_result_data = cls_instance.render()
+                except Exception as error:
+                    raise AnsibleActionFail(error) from error
             else:
                 raise AnsibleActionFail("Invalid template data")
 

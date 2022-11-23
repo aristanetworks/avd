@@ -91,7 +91,7 @@ EXAMPLES = r"""
   yaml_templates_to_facts:
     root_key: structured_config
     templates:
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       - template: "mlag/main.j2"
       - template: "designs/underlay/main.j2"

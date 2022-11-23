@@ -287,6 +287,7 @@ interface Ethernet8
 interface Ethernet11
    description P2P_LINK_TO_SITE2-LSR2_Port-Channel12
    no shutdown
+   speed forced 40gfull
    channel-group 11 mode active
 ```
 

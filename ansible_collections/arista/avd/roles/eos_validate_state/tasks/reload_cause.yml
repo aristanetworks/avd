@@ -12,6 +12,7 @@
     - never
 
 - name: validate reload cause
+  delegate_to: localhost
   assert:
     that: reload_cause.stdout_lines[0][2] == 'Reload requested by the user.'
     fail_msg: "{{ reload_cause.stdout_lines[0][2] | replace('\"','') }}"

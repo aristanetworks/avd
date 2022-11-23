@@ -19,6 +19,7 @@
     - loopback0_reachability
 
 - name: Validate ip reachability between devices (loopback0 <-> loopback0)
+  delegate_to: localhost
   assert:
     that:
       - loopback0_reachability_test.stdout[0] | regex_search("1 received")
@@ -44,6 +45,7 @@
     - optional
 
 - name: Validate ip reachability from Inband Management to loopback0 in fabric
+  delegate_to: localhost
   assert:
     that:
       - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search('1 received')

@@ -4,7 +4,8 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
+
+from .utils import UtilsMixin
 
 
 class VlanInterfacesMixin(UtilsMixin):

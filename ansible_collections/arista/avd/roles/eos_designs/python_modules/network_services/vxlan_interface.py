@@ -6,7 +6,8 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
+
+from .utils import UtilsMixin
 
 
 class VxlanInterfaceMixin(UtilsMixin):

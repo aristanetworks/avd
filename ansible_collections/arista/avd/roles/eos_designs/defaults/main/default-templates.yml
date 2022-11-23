@@ -5,7 +5,7 @@ default_templates:
     structured_config:
       # Render Structured Configuration
       # Base features
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # MLAG feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.mlag"
@@ -15,7 +15,8 @@ default_templates:
       # Overlay feature
       - template: "overlay/main.j2"
       # Core Interfaces Feature
-      - template: "core_interfaces/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
+        python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Network Services feature
@@ -46,12 +47,13 @@ default_templates:
   mpls:
     structured_config:
       # Render Structured Configuration
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
       - template: "underlay/main.j2"
       # Core Interfaces Feature
-      - template: "core_interfaces/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
+        python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Connected Endpoints feature
@@ -82,7 +84,7 @@ default_templates:
     structured_config:
       # Render Structured Configuration
       # Base features
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # MLAG feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.mlag"
@@ -90,7 +92,8 @@ default_templates:
       # Underlay feature
       - template: "underlay/main.j2"
       # Core Interfaces Feature
-      - template: "core_interfaces/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
+        python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Network Services feature

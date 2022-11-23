@@ -10,6 +10,7 @@
     - bgp_check
 
 - name: Validate ArBGP is configured and operating
+  delegate_to: localhost
   assert:
     that:
       - ip_route_summary.stdout_lines[0][0] | regex_search('multi-agent')
@@ -34,6 +35,7 @@
     - bgp_check
 
 - name: Validate ip bgp neighbors peer state
+  delegate_to: localhost
   assert:
     that:
       - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState == 'Established'
@@ -50,6 +52,7 @@
     - bgp_check
 
 - name: Validate bgp evpn neighbors peer state
+  delegate_to: localhost
   assert:
     that:
       - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState == 'Established'

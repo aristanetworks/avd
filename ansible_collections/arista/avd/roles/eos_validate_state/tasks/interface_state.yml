@@ -11,6 +11,7 @@
     - interfaces_state
 
 - name: Validate Ethernet interfaces state
+  delegate_to: localhost
   assert:
     that:
       ( interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].interfaceStatus == 'up' and
@@ -34,6 +35,7 @@
     - interfaces_state
 
 - name: Validate Port-Channel interfaces state
+  delegate_to: localhost
   assert:
     that:
       ( interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].interfaceStatus == 'up' and
@@ -57,6 +59,7 @@
     - interfaces_state
 
 - name: Validate Vlan interfaces state
+  delegate_to: localhost
   assert:
     that:
       ( interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].interfaceStatus == 'up' and
@@ -80,6 +83,7 @@
     - interfaces_state
 
 - name: Validate Vxlan interfaces state
+  delegate_to: localhost
   assert:
     that:
       - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus == 'up'
@@ -94,6 +98,7 @@
     - interfaces_state
 
 - name: Validate Loopback interfaces state
+  delegate_to: localhost
   assert:
     that:
       - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.name].interfaceStatus == 'up'
