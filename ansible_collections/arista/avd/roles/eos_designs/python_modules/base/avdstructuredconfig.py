@@ -330,18 +330,21 @@ class AvdStructuredConfig(AvdFacts):
 
         local_engine_id = None
 
-        # In the case where both default_engineid_from_system_mac and compute_local_engineid are set
-        # `default_engineid_from_system_mac` takes precedence
-        if (snmp_settings.get("default_engineid_from_system_mac")) is True:
-            if self._system_mac_address is None:
-                raise AristaAvdError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
-            # the default engine id on switches is derived as per the following formula
-            local_engine_id = f"f5717f{str(self._system_mac_address).replace(':', '').lower()}00"
+        if snmp_settings.get("compute_local_engineid") is True:
+            compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
+            if compute_source == "hostname_and_ip":
+                local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
+            elif compute_source == "system_mac":
+                if self._system_mac_address is None:
+                    raise AristaAvdError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
+                # the default engine id on switches is derived as per the following formula
+                local_engine_id = f"f5717f{str(self._system_mac_address).replace(':', '').lower()}00"
+            else:
+                # Unknown mode
+                raise AristaAvdError(
+                    f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'"
+                )
 
-        if local_engine_id is None and (snmp_settings.get("compute_local_engineid")) is True:
-            local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
-
-        if local_engine_id is not None:
             snmp_server["engine_ids"] = {"local": local_engine_id}
 
         if (contact := snmp_settings.get("contact")) is not None:

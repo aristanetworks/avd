@@ -14,10 +14,8 @@ l2leaf:
 snmp_settings:
   contact: example@example.com
   location: true
-  default_engineid_from_system_mac: true
-  # compute_local_engineid won't be used as default_engineid_from_system_mac has
-  # precedence
   compute_local_engineid: true
+  compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
   users:
     - name: usertest-auth-priv

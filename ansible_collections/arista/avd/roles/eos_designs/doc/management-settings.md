@@ -75,17 +75,17 @@ name_servers:
 snmp_settings:
   contact: < contact_info >
   location: < boolean | default -> false > # Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}
-  # Generate a local engineId for SNMP by hashing via SHA1 the string
-  # generated via the concatenation of the hostname plus the management IP.
-  # {{ inventory_hostname }} + {{ switch.mgmt_ip }}
-  # This SHOULD NOT be used with `default_engineid_from_system_mac`
-  # `default_engineid_form_system_mac` will take precedence
+  # Generate a local engineId for SNMP using the compute_local_engineid_source method
   compute_local_engineid: < boolean | default -> false >
-  # Generate the switch default engine id for AVD usage
-  # To use this, system_mac_address MUST be set for the device
-  # The formula is f5717f + system_mac_address + 00
-  # This SHOULD NOT be used with compute_local_engineid
-  default_engineid_from_system_mac: < boolean | default -> false >
+  # `compute_local_engineid_source` supports:
+  # * 'hostname_and_ip': Generate a local engineId for SNMP by hashing via SHA1
+  #                      the string generated via the concatenation of the hostname plus the management IP.
+  #                      {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+  # * `system_mac`:  Generate the switch default engine id for AVD usage
+  #                  To use this, system_mac_address MUST be set for the device
+  #                  The formula is f5717f + system_mac_address + 00
+  # default is `hostname_and_ip`
+  compute_local_engineid_source: < hostname_and_ip | system_mac | default -> hostanme_and_ip >
   # Requires compute_local_engineid to be `true` if enabled, the SNMPv3
   # passphrases for auth and priv are transfromed using RFC 2574,
   # matching the value they would take in EOS cli the algorithm requires
