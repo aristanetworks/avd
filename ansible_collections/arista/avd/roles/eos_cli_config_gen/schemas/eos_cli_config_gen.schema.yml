@@ -3218,7 +3218,7 @@ keys:
           keys:
             name:
               type: str
-              description: IP or hostname ex-2.2.2.55, ie.pool.ntp.org
+              description: IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org
             burst:
               type: bool
             iburst:
@@ -3238,14 +3238,14 @@ keys:
               max: 17
               convert_types:
               - str
-              description: Value of maxpoll betweeen 3 - 17 (Logarithmic)
+              description: Value of maxpoll between 3 - 17 (Logarithmic)
             minpoll:
               type: int
               min: 3
               max: 17
               convert_types:
               - str
-              description: Value of minpoll betweeen 3 - 17 (Logarithmic)
+              description: Value of minpoll between 3 - 17 (Logarithmic)
             preferred:
               type: bool
             version:

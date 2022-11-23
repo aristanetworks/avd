@@ -4521,7 +4521,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IP or hostname ex-2.2.2.55, ie.pool.ntp.org",
+                "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org",
                 "title": "Name"
               },
               "burst": {
@@ -4547,14 +4547,14 @@
                 "type": "integer",
                 "minimum": 3,
                 "maximum": 17,
-                "description": "Value of maxpoll betweeen 3 - 17 (Logarithmic)",
+                "description": "Value of maxpoll between 3 - 17 (Logarithmic)",
                 "title": "Maxpoll"
               },
               "minpoll": {
                 "type": "integer",
                 "minimum": 3,
                 "maximum": 17,
-                "description": "Value of minpoll betweeen 3 - 17 (Logarithmic)",
+                "description": "Value of minpoll between 3 - 17 (Logarithmic)",
                 "title": "Minpoll"
               },
               "preferred": {
