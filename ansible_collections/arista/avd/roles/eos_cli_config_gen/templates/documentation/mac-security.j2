@@ -43,15 +43,18 @@ Keys:
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
-{%             if profile.l2_protocols | arista.avd.natural_sort | length > 0 %}
+{%             if profile.l2_protocols | arista.avd.default([]) | length > 0 %}
 
 L2 Protocols:
 
 |  L2 Protocol | Mode |
 | ------------ | ---- |
-{%                 for l2_protocol in profile.l2_protocols | arista.avd.natural_sort %}
-| {{ l2_protocol }} | {{ profile.l2_protocols[l2_protocol].mode }} |
-{%                 endfor %}
+{%                 if profile.l2_protocols.ethernet_flow_control is arista.avd.defined %}
+| ethernet-flow-control | {{ profile.l2_protocols.ethernet_flow_control.mode }} |
+{%                 endif %}
+{%                 if profile.l2_protocols.lldp is arista.avd.defined %}
+| lldp | {{ profile.l2_protocols.lldp..mode }} |
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

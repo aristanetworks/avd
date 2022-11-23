@@ -2463,7 +2463,7 @@ keys:
             l2_protocols:
               type: dict
               keys:
-                ethernet-flow-control:
+                ethernet_flow_control:
                   type: dict
                   keys:
                     mode:
@@ -2480,6 +2480,7 @@ keys:
                       required: true
                       valid_values:
                       - bypass
+                      - bypass unauthorized
   maintenance:
     type: dict
     display_name: Maintenance Mode

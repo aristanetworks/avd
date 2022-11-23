@@ -1726,10 +1726,10 @@ mac_security:
           rekey_period: < 30-100000 in seconds >
       sci: < true | false >
       l2_protocols:
-        ethernet-flow-control:
+        ethernet_flow_control:
           mode: < encrypt | bypass >
         lldp:
-          mode: < bypass >
+          mode: < bypass | bypass unauthorized >
 ```
 
 ### Maintenance Mode

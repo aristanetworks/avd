@@ -3298,7 +3298,7 @@
               "l2_protocols": {
                 "type": "object",
                 "properties": {
-                  "ethernet-flow-control": {
+                  "ethernet_flow_control": {
                     "type": "object",
                     "properties": {
                       "mode": {
@@ -3314,7 +3314,7 @@
                       "mode"
                     ],
                     "additionalProperties": false,
-                    "title": "Ethernet-Flow-Control"
+                    "title": "Ethernet Flow Control"
                   },
                   "lldp": {
                     "type": "object",
@@ -3322,7 +3322,8 @@
                       "mode": {
                         "type": "string",
                         "enum": [
-                          "bypass"
+                          "bypass",
+                          "bypass unauthorized"
                         ],
                         "title": "Mode"
                       }

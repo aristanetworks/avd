@@ -19,7 +19,7 @@ mac_security:
           fallback: true
       l2_protocols:
         lldp:
-          mode: bypass
+          mode: bypass unauthorized
     A2:
       connection_keys:
         1234b:
