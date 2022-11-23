@@ -1280,6 +1280,227 @@ keys:
       type: dict
     primary_key: key
     type: list
+  core_interfaces:
+    description: 'The `core_interfaces` data model can be used to configure L3 P2P
+      links anywhere in the fabric.
+
+      It can be between two switches that are already part of the fabric inventory,
+      or it can be towards another device,
+
+      where only one end of the link is on a switch in the fabric.
+
+      '
+    keys:
+      p2p_links:
+        items:
+          keys:
+            as:
+              description: AS Numbers for BGP or Required with bgp peering
+              items:
+                description: The values can be like ["node_a_as", "node_b_as"]
+                type: str
+              type: list
+            bfd:
+              default: false
+              description: Enable BFD (only considered for BGP).
+              type: bool
+            id:
+              convert_types:
+              - str
+              description: 'Unique id per subnet_summary. Used to calculate ip addresses
+                or Required with ip_pool.
+
+                ID starting from 1
+
+                '
+              type: int
+            include_in_underlay_protocol:
+              default: true
+              description: Add this interface to underlay routing protocol.
+              type: bool
+            interfaces:
+              description: Interfaces where this link should be configured and Required
+                unless using port-channels
+              items:
+                description: 'The value can be like < node_a_interface >, < node_b_interface
+                  >
+
+                  ex. - [ Ethernet2, Ethernet2 ]
+
+                  '
+                type: str
+              type: list
+            ip:
+              description: Specific IP addresses used on this P2P link
+              items:
+                description: Node IPv4 address/Mask
+                type: str
+              type: list
+            ip_pool:
+              description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
+                A /31 will be taken from the pool per P2P link
+              type: str
+            ipv6_enable:
+              default: false
+              description: Allows turning on ipv6 for the link or profile (also autodetected
+                based on underlay_rfc5549 and include_in_underlay_protocol)
+              type: bool
+            isis_authentication_key:
+              default: $1c$sTNAlR6rKSw=
+              description: IS-IS parameters
+              type: str
+            isis_authentication_mode:
+              default: md5
+              description: IS-IS parameters
+              type: str
+            isis_circuit_type:
+              default: level-2
+              description: IS-IS parameters
+              type: str
+            isis_hello_padding:
+              default: false
+              description: IS-IS parameters
+              type: bool
+            isis_metric:
+              convert_types:
+              - str
+              default: 60
+              description: IS-IS parameters
+              type: int
+            macsec_profile:
+              description: MAC security profile
+              type: str
+            mpls_ip:
+              description: MPLS parameters. Default value is true if switch.mpls_lsr
+                is true
+              type: bool
+            mpls_ldp:
+              description: MPLS parameters. Default value is true for ldp underlay
+                variants, otherwise false
+              type: bool
+            mtu:
+              convert_types:
+              - str
+              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+              type: int
+            nodes:
+              description: Nodes where this link should be configured
+              items:
+                description: 'The values can be < node_a >, < node_b >
+
+                  ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+
+                  '
+                type: str
+              required: true
+              type: list
+            port_channel:
+              description: Port-channel parameters
+              keys:
+                mode:
+                  default: active
+                  type: str
+                nodes_child_interfaces:
+                  convert_types:
+                  - dict
+                  items:
+                    keys:
+                      interfaces:
+                        description: List of node interfaces. Ex.- [ 'node1 interface1',
+                          'node1 interface2' ]
+                        items:
+                          type: str
+                        type: list
+                      node:
+                        required: true
+                        type: str
+                    type: dict
+                  primary_key: node
+                  secondary_key: interfaces
+                  type: list
+              type: dict
+            profile:
+              description: P2P profile name. Profile defined under p2p_profiles
+              type: str
+            ptp_enable:
+              default: false
+              description: Enable PTP
+              type: bool
+            qos_profile:
+              description: QOS service profile
+              type: str
+            raw_eos_cli:
+              description: EOS CLI rendered directly on the point-to-point interface
+                in the final EOS configuration.
+              type: str
+            speed:
+              description: The values can be speed or auto speed or forced speed
+              type: str
+            subnet:
+              description: IPv4 address/Mask. Subnet used on this P2P link or Optional
+              type: str
+          type: dict
+        type: list
+      p2p_links_ip_pools:
+        items:
+          keys:
+            ipv4_pool:
+              description: IPv4 address/Mask
+              type: str
+            name:
+              description: P2P pool name
+              type: str
+          type: dict
+        type: list
+      p2p_links_profiles:
+        items:
+          keys:
+            ip_pool:
+              description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
+                A /31 will be taken from the pool per P2P link
+              type: str
+            ipv6_enable:
+              default: false
+              description: Allows turning on ipv6 for the link or profile (also autodetected
+                based on underlay_rfc5549 and include_in_underlay_protocol)
+              type: bool
+            isis_authentication_key:
+              default: $1c$sTNAlR6rKSw=
+              description: IS-IS parameters
+              type: str
+            isis_authentication_mode:
+              default: md5
+              description: IS-IS parameters
+              type: str
+            isis_circuit_type:
+              default: level-2
+              description: IS-IS parameters
+              type: str
+            isis_hello_padding:
+              default: false
+              description: IS-IS parameters
+              type: bool
+            isis_metric:
+              convert_types:
+              - str
+              default: 60
+              description: IS-IS parameters
+              type: int
+            mtu:
+              convert_types:
+              - str
+              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+              type: int
+            name:
+              description: P2P profile name. Any variable supported under p2p_links
+                can be inherited from a profile.
+              type: str
+            speed:
+              description: The values can be speed or auto speed or forced speed
+              type: str
+          type: dict
+        type: list
+    type: dict
   custom_structured_configuration_list_merge:
     default: replace
     description: 'The List-merge strategy can be changed using `custom_structured_configuration_list_merge`
@@ -1610,6 +1831,17 @@ keys:
     default: '49.0001'
     description: Required when "underlay_routing_protocol" == ISIS variants
     type: str
+  isis_default_circuit_type:
+    default: level-2
+    description: 'Fabric vevel variables. These fabric level parameters can be used
+      with core_interfaces running ISIS,
+
+      and may be overridden on link profile or link level.'
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
   isis_default_is_type:
     default: level-2
     type: str
@@ -1617,6 +1849,15 @@ keys:
     - level-1-2
     - level-1
     - level-2
+  isis_default_metric:
+    convert_types:
+    - str
+    default: 50
+    description: 'Fabric level variables. These fabric level parameters can be used
+      with core_interfaces running ISIS,
+
+      and may be overridden on link profile or link level.'
+    type: int
   isis_ti_lfa:
     keys:
       enabled:

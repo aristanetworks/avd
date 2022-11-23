@@ -186,6 +186,296 @@
       "type": "array",
       "title": "Connected Endpoints Keys"
     },
+    "core_interfaces": {
+      "description": "The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.\nIt can be between two switches that are already part of the fabric inventory, or it can be towards another device,\nwhere only one end of the link is on a switch in the fabric.\n",
+      "properties": {
+        "p2p_links": {
+          "items": {
+            "properties": {
+              "as": {
+                "description": "AS Numbers for BGP or Required with bgp peering",
+                "items": {
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]",
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "As"
+              },
+              "bfd": {
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "type": "boolean",
+                "title": "BFD"
+              },
+              "id": {
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "type": "integer",
+                "title": "ID"
+              },
+              "include_in_underlay_protocol": {
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "type": "boolean",
+                "title": "Include In Underlay Protocol"
+              },
+              "interfaces": {
+                "description": "Interfaces where this link should be configured and Required unless using port-channels",
+                "items": {
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >\nex. - [ Ethernet2, Ethernet2 ]\n",
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Interfaces"
+              },
+              "ip": {
+                "description": "Specific IP addresses used on this P2P link",
+                "items": {
+                  "description": "Node IPv4 address/Mask",
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "IP"
+              },
+              "ip_pool": {
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "type": "string",
+                "title": "IP Pool"
+              },
+              "ipv6_enable": {
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol)",
+                "type": "boolean",
+                "title": "IPv6 Enable"
+              },
+              "isis_authentication_key": {
+                "default": "$1c$sTNAlR6rKSw=",
+                "description": "IS-IS parameters",
+                "type": "string",
+                "title": "ISIS Authentication Key"
+              },
+              "isis_authentication_mode": {
+                "default": "md5",
+                "description": "IS-IS parameters",
+                "type": "string",
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_circuit_type": {
+                "default": "level-2",
+                "description": "IS-IS parameters",
+                "type": "string",
+                "title": "ISIS Circuit Type"
+              },
+              "isis_hello_padding": {
+                "default": false,
+                "description": "IS-IS parameters",
+                "type": "boolean",
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "default": 60,
+                "description": "IS-IS parameters",
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "macsec_profile": {
+                "description": "MAC security profile",
+                "type": "string",
+                "title": "Macsec Profile"
+              },
+              "mpls_ip": {
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true",
+                "type": "boolean",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false",
+                "type": "boolean",
+                "title": "MPLS LDP"
+              },
+              "mtu": {
+                "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
+                "type": "integer",
+                "title": "MTU"
+              },
+              "nodes": {
+                "description": "Nodes where this link should be configured",
+                "items": {
+                  "description": "The values can be < node_a >, < node_b >\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]\n",
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Nodes"
+              },
+              "port_channel": {
+                "description": "Port-channel parameters",
+                "properties": {
+                  "mode": {
+                    "default": "active",
+                    "type": "string",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "items": {
+                      "properties": {
+                        "interfaces": {
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]",
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array",
+                          "title": "Interfaces"
+                        },
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "type": "object"
+                    },
+                    "type": "array",
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "type": "object",
+                "title": "Port Channel"
+              },
+              "profile": {
+                "description": "P2P profile name. Profile defined under p2p_profiles",
+                "type": "string",
+                "title": "Profile"
+              },
+              "ptp_enable": {
+                "default": false,
+                "description": "Enable PTP",
+                "type": "boolean",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "description": "QOS service profile",
+                "type": "string",
+                "title": "QOS Profile"
+              },
+              "raw_eos_cli": {
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "type": "string",
+                "title": "Raw EOS CLI"
+              },
+              "speed": {
+                "description": "The values can be speed or auto speed or forced speed",
+                "type": "string",
+                "title": "Speed"
+              },
+              "subnet": {
+                "description": "IPv4 address/Mask. Subnet used on this P2P link or Optional",
+                "type": "string",
+                "title": "Subnet"
+              }
+            },
+            "required": [
+              "nodes"
+            ],
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "P2P Links"
+        },
+        "p2p_links_ip_pools": {
+          "items": {
+            "properties": {
+              "ipv4_pool": {
+                "description": "IPv4 address/Mask",
+                "type": "string",
+                "title": "IPv4 Pool"
+              },
+              "name": {
+                "description": "P2P pool name",
+                "type": "string",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "P2P Links IP Pools"
+        },
+        "p2p_links_profiles": {
+          "items": {
+            "properties": {
+              "ip_pool": {
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "type": "string",
+                "title": "IP Pool"
+              },
+              "ipv6_enable": {
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol)",
+                "type": "boolean",
+                "title": "IPv6 Enable"
+              },
+              "isis_authentication_key": {
+                "default": "$1c$sTNAlR6rKSw=",
+                "description": "IS-IS parameters",
+                "type": "string",
+                "title": "ISIS Authentication Key"
+              },
+              "isis_authentication_mode": {
+                "default": "md5",
+                "description": "IS-IS parameters",
+                "type": "string",
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_circuit_type": {
+                "default": "level-2",
+                "description": "IS-IS parameters",
+                "type": "string",
+                "title": "ISIS Circuit Type"
+              },
+              "isis_hello_padding": {
+                "default": false,
+                "description": "IS-IS parameters",
+                "type": "boolean",
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "default": 60,
+                "description": "IS-IS parameters",
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "mtu": {
+                "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
+                "type": "integer",
+                "title": "MTU"
+              },
+              "name": {
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "type": "string",
+                "title": "Name"
+              },
+              "speed": {
+                "description": "The values can be speed or auto speed or forced speed",
+                "type": "string",
+                "title": "Speed"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "P2P Links Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "Core Interfaces"
+    },
     "custom_structured_configuration_list_merge": {
       "default": "replace",
       "description": "The List-merge strategy can be changed using `custom_structured_configuration_list_merge` variable using any value accepted by `list_merge` on the Ansible Combine filter.\n",
@@ -485,6 +775,17 @@
       "type": "string",
       "title": "ISIS Area ID"
     },
+    "isis_default_circuit_type": {
+      "default": "level-2",
+      "description": "Fabric vevel variables. These fabric level parameters can be used with core_interfaces running ISIS,\nand may be overridden on link profile or link level.",
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ],
+      "title": "ISIS Default Circuit Type"
+    },
     "isis_default_is_type": {
       "default": "level-2",
       "type": "string",
@@ -494,6 +795,12 @@
         "level-2"
       ],
       "title": "ISIS Default IS Type"
+    },
+    "isis_default_metric": {
+      "default": 50,
+      "description": "Fabric level variables. These fabric level parameters can be used with core_interfaces running ISIS,\nand may be overridden on link profile or link level.",
+      "type": "integer",
+      "title": "ISIS Default Metric"
     },
     "isis_ti_lfa": {
       "properties": {
