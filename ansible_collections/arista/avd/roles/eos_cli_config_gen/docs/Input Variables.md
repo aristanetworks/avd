@@ -1631,7 +1631,7 @@ ipv6_static_routes:
 ipv6_unicast_routing: <bool>
 ```
 
-## Lacp
+## LACP
 
 ### Description
 
