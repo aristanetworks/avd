@@ -53,7 +53,7 @@ L2 Protocols:
 | ethernet-flow-control | {{ profile.l2_protocols.ethernet_flow_control.mode }} |
 {%                 endif %}
 {%                 if profile.l2_protocols.lldp is arista.avd.defined %}
-| lldp | {{ profile.l2_protocols.lldp..mode }} |
+| lldp | {{ profile.l2_protocols.lldp.mode }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
