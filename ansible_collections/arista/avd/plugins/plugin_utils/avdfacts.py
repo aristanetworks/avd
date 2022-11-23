@@ -1,6 +1,7 @@
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath, get, template_var
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, get, template_var
 
 
 class AvdFacts:

@@ -5,8 +5,10 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError, default, get
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+
+from .utils import UtilsMixin
 
 
 class RouterBgpMixin(UtilsMixin):

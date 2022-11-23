@@ -3,7 +3,7 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
+from .utils import UtilsMixin
 
 
 class StaticRoutesMixin(UtilsMixin):

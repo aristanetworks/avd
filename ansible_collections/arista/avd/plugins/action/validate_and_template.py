@@ -7,7 +7,8 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, template
 
 VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug"]
