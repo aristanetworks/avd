@@ -1,5 +1,6 @@
 ---
 - name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  delegate_to: localhost
   tags: [always, avd_version]
   set_fact:
     avd_collection_version: version
@@ -60,6 +61,7 @@
     - hardware
 
 - name: Display device platform and release information
+  delegate_to: localhost
   debug:
     msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
   tags:

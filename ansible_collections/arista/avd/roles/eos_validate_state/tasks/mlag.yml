@@ -10,6 +10,7 @@
     - mlag
 
 - name: Validate mlag status
+  delegate_to: localhost
   assert:
     that:
       - mlag_state.stdout[0].state == 'active'
