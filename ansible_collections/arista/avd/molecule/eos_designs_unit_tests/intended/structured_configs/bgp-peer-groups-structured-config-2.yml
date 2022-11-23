@@ -25,15 +25,6 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       route_reflector_client: true
-      description: Description for mpls_overlay_peers via structured_config
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      remote_as: '65001'
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      route_reflector_client: true
       description: Description for evpn_overlay_peers via structured_config
     RR-OVERLAY-PEERS:
       type: mpls
