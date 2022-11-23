@@ -257,7 +257,7 @@ class UtilsMixin:
         index = p2p_link["nodes"].index(self._hostname)
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
-        ethernet_interface = {
+        interface_cfg = {
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],
@@ -269,14 +269,14 @@ class UtilsMixin:
             "eos_cli": p2p_link.get("raw_eos_cli"),
         }
         if (ip := get(p2p_link, "ip")) is not None:
-            ethernet_interface["ip_address"] = ip[index]
+            interface_cfg["ip_address"] = ip[index]
 
         if p2p_link.get("include_in_underlay_protocol", True) is True:
             if self._underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
-                ethernet_interface["ipv6_enable"] = True
+                interface_cfg["ipv6_enable"] = True
 
             if self._underlay_ospf:
-                ethernet_interface.update(
+                interface_cfg.update(
                     {
                         "ospf_network_point_to_point": True,
                         "ospf_area": self._underlay_ospf_area,
@@ -284,7 +284,7 @@ class UtilsMixin:
                 )
 
             if self._underlay_isis:
-                ethernet_interface.update(
+                interface_cfg.update(
                     {
                         "isis_enable": self._isis_instance_name,
                         "isis_metric": default(p2p_link.get("isis_metric"), self._isis_default_metric, 50),
@@ -297,19 +297,19 @@ class UtilsMixin:
                 )
 
         if p2p_link.get("macsec_profile"):
-            ethernet_interface["mac_security"] = {
+            interface_cfg["mac_security"] = {
                 "profile": p2p_link["macsec_profile"],
             }
 
         if p2p_link.get("ptp_enable") is True:
-            ethernet_interface["ptp"] = {
+            interface_cfg["ptp"] = {
                 "enable": True,
             }
 
         if self._mpls_lsr and p2p_link.get("mpls_ip", True) is True:
-            ethernet_interface["mpls"] = {"ip": True}
+            interface_cfg["mpls"] = {"ip": True}
             if p2p_link.get("include_in_underlay_protocol", True) is True and self._underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
-                ethernet_interface["mpls"].update(
+                interface_cfg["mpls"].update(
                     {
                         "ldp": {
                             "interface": True,
@@ -318,7 +318,7 @@ class UtilsMixin:
                     }
                 )
 
-        return ethernet_interface
+        return interface_cfg
 
     def _get_ethernet_cfg(self, p2p_link: dict) -> dict:
         """
