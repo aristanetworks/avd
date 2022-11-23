@@ -41,7 +41,7 @@
 {%     endif %}
       struct_cfg: {{ overlay_data.mpls_overlay_peer_group.structured_config | arista.avd.default }}
 {% endif %}
-{% if switch.bgp_peer_groups.ipvpn_gateway_peers is arista.avd.defined and switch.overlay.ipvpn_gateway %}
+{% if switch.overlay.ipvpn_gateway %}
     {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}:
       type: mpls
       update_source: Loopback0
@@ -53,6 +53,6 @@
       password: "{{ switch.bgp_peer_groups.ipvpn_gateway_peers.password }}"
 {%     endif %}
       send_community: all
-      maximum_routes: {{ switch.ipvpn_gateway.max_routes | arista.avd.default(0) }}
+      maximum_routes: {{ switch.ipvpn_gateway.max_routes }}
       struct_cfg: {{ switch.bgp_peer_groups.ipvpn_gateway_peers.structured_config | arista.avd.default }}
 {% endif %}

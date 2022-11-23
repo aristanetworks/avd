@@ -1752,7 +1752,7 @@ class EosDesignsFacts(AvdFacts):
         """
         Returns a dictionary of ipvpn interworking gateway parameters to configure on the node.
         """
-        if get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False):
+        if get(self.overlay, "ipvpn_gateway"):
             return {
                 "evpn_domain_id": get(self._switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="0:1"),
                 "ipvpn_domain_id": get(self._switch_data_combined, "ipvpn_gateway.ipvpn_domain_id", default="0:2"),
@@ -1761,10 +1761,4 @@ class EosDesignsFacts(AvdFacts):
                 "remote_peers": get(self._switch_data_combined, "ipvpn_gateway.remote_peers", default=[]),
             }
 
-        return {
-            "evpn_domain_id": None,
-            "ipvpn_domain_id": None,
-            "max_routes": None,
-            "local_as": None,
-            "remote_peers": None,
-        }
+        return None
