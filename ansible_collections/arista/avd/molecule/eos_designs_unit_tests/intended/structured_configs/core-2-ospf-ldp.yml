@@ -62,7 +62,6 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: unnumbered loopback0
-    speed: forced 1000full
     ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -71,6 +70,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    speed: forced 1000full
   Ethernet2:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet2
@@ -79,9 +79,8 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 1601
-    ip_address: 100.123.123.3/31
-    speed: 100full
     service_profile: test_qos_profile
+    ip_address: 100.123.123.3/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
     mpls:
@@ -89,6 +88,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    speed: 100full
   Ethernet3:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet3
@@ -98,7 +98,6 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: 100.64.48.5/31
-    speed: forced 1000full
     ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -107,6 +106,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    speed: forced 1000full
   Ethernet4:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet4
@@ -116,10 +116,10 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: 100.64.48.7/31
-    speed: forced 1000full
     ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
+    speed: forced 1000full
   Ethernet5:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet5
@@ -129,12 +129,12 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: 100.64.48.9/31
-    speed: forced 1000full
     ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
     mpls:
       ip: true
+    speed: forced 1000full
   Ethernet6:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet6
@@ -143,10 +143,9 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 1602
-    ip_address: unnumbered loopback0
-    speed: 100full
-    ipv6_enable: true
     service_profile: test_qos_profile
+    ip_address: unnumbered loopback0
+    ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
     mpls:
@@ -154,6 +153,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    speed: 100full
   Ethernet10:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet10
@@ -163,7 +163,6 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: 100.64.48.13/31
-    speed: forced 1000full
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
     mpls:
@@ -171,20 +170,27 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    speed: forced 1000full
   Ethernet12:
-    type: routed
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12
+    peer_type: core_router
     description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
     shutdown: false
     channel_group:
       id: 12
       mode: active
+    speed: forced 1000full
   Ethernet13:
-    type: routed
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12
+    peer_type: core_router
     description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
     shutdown: false
     channel_group:
       id: 12
       mode: active
+    speed: forced 1000full
 port_channel_interfaces:
   Port-Channel12:
     peer: core-1-isis-sr-ldp
@@ -195,7 +201,6 @@ port_channel_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: 100.64.48.17/31
-    speed: forced 1000full
     ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0

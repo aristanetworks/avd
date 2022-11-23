@@ -80,8 +80,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1000
+
+      '
     ip_address: 100.64.48.1/31
-    speed: forced 40gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 60
@@ -95,35 +97,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1000
-
-      '
-  Ethernet3:
-    peer: SITE2-LSR1
-    peer_interface: Ethernet3
-    peer_type: p
-    description: P2P_LINK_TO_SITE2-LSR1_Ethernet3
-    type: routed
-    shutdown: false
-    mtu: 9178
-    ip_address: 100.64.48.8/31
     speed: forced 40gfull
-    ipv6_enable: true
-    isis_enable: CORE
-    isis_metric: 60
-    isis_network_point_to_point: true
-    isis_hello_padding: false
-    isis_circuit_type: level-2
-    isis_authentication_mode: md5
-    isis_authentication_key: asdadjiwtelogkkdng
-    mpls:
-      ip: true
-      ldp:
-        interface: true
-        igp_sync: true
-    eos_cli: 'link-debounce time 1000
-
-      '
   Ethernet4:
     peer: SITE1-RR1
     peer_interface: Ethernet4
@@ -132,8 +106,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1000
+
+      '
     ip_address: 100.64.48.6/31
-    speed: forced 40gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 60
@@ -147,6 +123,30 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
+    speed: forced 40gfull
+  Ethernet3:
+    peer: SITE2-LSR1
+    peer_interface: Ethernet3
+    peer_type: p
+    description: P2P_LINK_TO_SITE2-LSR1_Ethernet3
+    type: routed
+    shutdown: false
+    mtu: 9178
     eos_cli: 'link-debounce time 1000
 
       '
+    ip_address: 100.64.48.8/31
+    ipv6_enable: true
+    isis_enable: CORE
+    isis_metric: 60
+    isis_network_point_to_point: true
+    isis_hello_padding: false
+    isis_circuit_type: level-2
+    isis_authentication_mode: md5
+    isis_authentication_key: asdadjiwtelogkkdng
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+    speed: forced 40gfull
