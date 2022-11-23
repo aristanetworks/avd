@@ -3626,6 +3626,11 @@
             "description": "IP or hostname"
           },
           "title": "Server Hosts"
+        },
+        "source_interface": {
+          "type": "string",
+          "description": "interface name",
+          "title": "Source Interface"
         }
       },
       "additionalProperties": false,
