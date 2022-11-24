@@ -205,8 +205,8 @@ Keys:
 
 L2 Protocols:
 
-|  L2 Protocol | Mode |
-| ------------ | ---- |
+| L2 Protocol | Mode |
+| ----------- | ---- |
 | lldp | bypass unauthorized |
 
 **Profile A2:**
