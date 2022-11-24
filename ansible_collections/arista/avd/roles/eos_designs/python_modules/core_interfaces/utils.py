@@ -6,8 +6,9 @@ from ipaddress import ip_network
 from itertools import islice
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdMissingVariableError, default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
