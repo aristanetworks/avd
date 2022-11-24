@@ -8,7 +8,7 @@ It is used in bgp_encrypt and bgp_decrypt filters as well as in bgp_valid_passwo
 
 import base64
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 try:
     from cryptography.hazmat.backends import default_backend

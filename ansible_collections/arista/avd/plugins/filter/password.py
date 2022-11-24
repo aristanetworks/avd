@@ -3,13 +3,13 @@ Encrypt / Decrypt filters
 """
 
 from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_decrypt, cbc_encrypt
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 
 
 ##############
 # BGP
 ##############
-def bgp_encrypt(password, key) -> str:
+def bgp_encrypt(password: str, key) -> str:
     """
     Encrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
@@ -21,13 +21,16 @@ def bgp_encrypt(password, key) -> str:
     if not password:
         raise AristaAvdMissingVariableError("Password is required for BGP encryption")
 
+    if not isinstance(password, str):
+        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
+
     data = bytes(password, encoding="UTF-8")
     key = bytes(f"{key}_passwd", encoding="UTF-8")
 
     return cbc_encrypt(key, data).decode()
 
 
-def bgp_decrypt(password, key) -> str:
+def bgp_decrypt(password: str, key) -> str:
     """
     Decrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
@@ -40,6 +43,9 @@ def bgp_decrypt(password, key) -> str:
 
     if not password:
         raise AristaAvdMissingVariableError("Password is required for BGP decryption")
+
+    if not isinstance(password, str):
+        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
 
     data = bytes(password, encoding="UTF-8")
     key = bytes(f"{key}_passwd", encoding="UTF-8")
@@ -66,7 +72,7 @@ def encrypt(value, passwd_type=None, key=None, **kwargs) -> str:
         encrypt_method = METHODS_DIR[passwd_type][0]
     except KeyError as exc:
         raise AristaAvdError("Type {passwd_type} is not supported for the encrypt filter") from exc
-    return encrypt_method(value, key=key, **kwargs)
+    return encrypt_method(str(value), key=key, **kwargs)
 
 
 def decrypt(value, passwd_type=None, key=None, **kwargs) -> str:
@@ -79,7 +85,7 @@ def decrypt(value, passwd_type=None, key=None, **kwargs) -> str:
         decrypt_method = METHODS_DIR[passwd_type][1]
     except KeyError as exc:
         raise AristaAvdError("Type {passwd_type} is not supported for the decrypt filter") from exc
-    return decrypt_method(value, key=key, **kwargs)
+    return decrypt_method(str(value), key=key, **kwargs)
 
 
 class FilterModule(object):

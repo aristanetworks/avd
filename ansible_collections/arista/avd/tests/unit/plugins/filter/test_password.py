@@ -7,7 +7,7 @@ from contextlib import nullcontext as does_not_raise
 import pytest
 
 from ansible_collections.arista.avd.plugins.filter.password import FilterModule, bgp_decrypt, bgp_encrypt, decrypt, encrypt
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 
 ##########
 # BGP
@@ -96,6 +96,7 @@ def test_molecule_bgp_encrypt(key, password, expected):
         pytest.param("dummy", None, "dummy", pytest.raises(AristaAvdMissingVariableError), id="Missing Type"),
         pytest.param("dummy", "ospf", "dummy", pytest.raises(AristaAvdError), id="Wrong Type"),
         pytest.param("arista", "bgp", "42.42.42.42", does_not_raise(), id="Implemented Type"),
+        pytest.param(42, "bgp", "42.42.42.42", does_not_raise(), id="Password in not a string"),
     ],
 )
 def test_encrypt(password, passwd_type, key, expected_raise):
