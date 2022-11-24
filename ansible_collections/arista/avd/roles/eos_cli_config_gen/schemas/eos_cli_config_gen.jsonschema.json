@@ -5286,7 +5286,7 @@
             "default": 90,
             "minimum": 0,
             "maximum": 300,
-            "title": "Lacp Fallback Timeout"
+            "title": "LACP Fallback Timeout"
           },
           "lacp_fallback_mode": {
             "type": "string",
@@ -5294,7 +5294,7 @@
               "individual",
               "static"
             ],
-            "title": "Lacp Fallback Mode"
+            "title": "LACP Fallback Mode"
           },
           "qos": {
             "type": "object",
@@ -5696,7 +5696,7 @@
           "lacp_id": {
             "type": "string",
             "description": "LACP ID with format xxxx.xxxx.xxxx",
-            "title": "Lacp ID"
+            "title": "LACP ID"
           },
           "spanning_tree_bpdufilter": {
             "type": "string",
