@@ -7711,6 +7711,26 @@
                 "type": "boolean",
                 "title": "Evpn Multicast"
               },
+              "evpn_multicast_address_family": {
+                "type": "object",
+                "description": "Enable per-AF EVPN multicast settings",
+                "properties": {
+                  "ipv4": {
+                    "type": "object",
+                    "properties": {
+                      "transit": {
+                        "type": "boolean",
+                        "description": "Enable EVPN multicast transit mode",
+                        "title": "Transit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "IPv4"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Evpn Multicast Address Family"
+              },
               "route_targets": {
                 "type": "object",
                 "properties": {

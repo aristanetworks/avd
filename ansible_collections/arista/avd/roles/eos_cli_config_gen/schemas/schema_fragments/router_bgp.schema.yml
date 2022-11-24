@@ -1115,6 +1115,16 @@ keys:
               description: Route distinguisher
             evpn_multicast:
               type: bool
+            evpn_multicast_address_family:
+              type: dict
+              description: Enable per-AF EVPN multicast settings
+              keys:
+                ipv4:
+                  type: dict
+                  keys:
+                    transit:
+                      type: bool
+                      description: Enable EVPN multicast transit mode
             route_targets:
               type: dict
               keys:

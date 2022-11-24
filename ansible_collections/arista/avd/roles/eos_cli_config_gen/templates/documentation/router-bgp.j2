@@ -663,7 +663,7 @@
 {%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
 {%             set redistribute = vrf.redistribute_routes | arista.avd.default([{'source_protocol':'-'}]) | map(attribute='source_protocol') %}
 {%             set multicast = vrf.evpn_multicast | arista.avd.default(false) %}
-{%             set multicast_transit = vrf.evpn_multicast_address_family.ipv4.transit | arista.avd.default(false)) %}
+{%             set multicast_transit = vrf.evpn_multicast_address_family.ipv4.transit | arista.avd.default(false) %}
 {%             set multicast_out = [] %}
 {%             do multicast_out.append("IPv4: " ~ multicast) %}
 {%             do multicast_out.append("Transit: " ~ multicast_transit) %}
