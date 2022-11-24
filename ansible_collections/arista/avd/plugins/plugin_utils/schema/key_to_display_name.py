@@ -42,6 +42,7 @@ WORDLIST = {
     "mpls": "MPLS",
     "mtu": "MTU",
     "nd": "ND",
+    "ntp": "NTP",
     "ospf": "OSPF",
     "pbr": "PBR",
     "pim": "PIM",
