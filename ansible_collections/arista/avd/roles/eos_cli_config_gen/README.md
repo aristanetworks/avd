@@ -1941,6 +1941,7 @@ management_cvx:
   server_hosts:
     - < IP | hostname >
     - < IP | hostname >
+  source_interface: < interface name >
 ```
 
 #### Management Defaults
