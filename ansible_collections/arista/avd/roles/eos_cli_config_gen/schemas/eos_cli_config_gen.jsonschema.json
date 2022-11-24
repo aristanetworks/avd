@@ -5266,7 +5266,7 @@
         }
       },
       "additionalProperties": false,
-      "title": "Ptp"
+      "title": "PTP"
     },
     "qos": {
       "type": "object",

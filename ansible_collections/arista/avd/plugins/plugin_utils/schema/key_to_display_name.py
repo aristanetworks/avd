@@ -47,6 +47,7 @@ WORDLIST = {
     "ospf": "OSPF",
     "pbr": "PBR",
     "pim": "PIM",
+    "ptp": "PTP",
     "pvlan": "PVLAN",
     "qos": "QOS",
     "ra": "RA",

@@ -2830,7 +2830,7 @@ prefix_lists:
 prompt: <str>
 ```
 
-## Ptp
+## PTP
 
 ### Variables
 
