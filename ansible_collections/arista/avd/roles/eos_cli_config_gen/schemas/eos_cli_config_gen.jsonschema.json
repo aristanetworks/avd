@@ -5067,7 +5067,6 @@
       "properties": {
         "mode": {
           "type": "string",
-          "description": "Mode value",
           "enum": [
             "boundary",
             "transparent"
@@ -5111,7 +5110,6 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 254,
-          "description": "TTL value",
           "title": "TTL"
         },
         "domain": {
@@ -5128,7 +5126,6 @@
               "properties": {
                 "dscp": {
                   "type": "integer",
-                  "description": "DSCP value",
                   "title": "DSCP"
                 }
               },
@@ -5140,7 +5137,6 @@
               "properties": {
                 "dscp": {
                   "type": "integer",
-                  "description": "DSCP value",
                   "title": "DSCP"
                 }
               },
@@ -5166,14 +5162,12 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 1000000000,
-                  "description": "Offset value",
                   "title": "Offset From Master"
                 },
                 "mean_path_delay": {
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 1000000000,
-                  "description": "Delay value",
                   "title": "Mean Path Delay"
                 },
                 "drop": {
@@ -5183,14 +5177,12 @@
                       "type": "integer",
                       "minimum": 0,
                       "maximum": 1000000000,
-                      "description": "Offset value",
                       "title": "Offset From Master"
                     },
                     "mean_path_delay": {
                       "type": "integer",
                       "minimum": 0,
                       "maximum": 1000000000,
-                      "description": "Delay value",
                       "title": "Mean Path Delay"
                     }
                   },
