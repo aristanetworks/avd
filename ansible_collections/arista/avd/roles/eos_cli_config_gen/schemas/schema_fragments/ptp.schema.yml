@@ -8,7 +8,6 @@ keys:
     keys:
       mode:
         type: str
-        description: Mode value
         valid_values:
         - boundary
         - transparent
@@ -39,7 +38,6 @@ keys:
         type: int
         min: 1
         max: 254
-        description: TTL value
         convert_types:
         - str
       domain:
@@ -58,13 +56,11 @@ keys:
                 type: int
                 convert_types:
                 - str
-                description: DSCP value
           event:
             type: dict
             keys:
               dscp:
                 type: int
-                description: DSCP value
                 convert_types:
                 - str
       monitor:
@@ -80,14 +76,12 @@ keys:
                 type: int
                 min: 0
                 max: 1000000000
-                description: Offset value
                 convert_types:
                 - str
               mean_path_delay:
                 type: int
                 min: 0
                 max: 1000000000
-                description: Delay value
                 convert_types:
                 - str
               drop:
@@ -97,14 +91,12 @@ keys:
                     type: int
                     min: 0
                     max: 1000000000
-                    description: Offset value
                     convert_types:
                     - str
                   mean_path_delay:
                     type: int
                     min: 0
                     max: 1000000000
-                    description: Delay value
                     convert_types:
                     - str
           missing_message:
