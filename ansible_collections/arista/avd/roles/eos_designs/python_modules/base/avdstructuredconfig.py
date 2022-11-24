@@ -5,7 +5,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
@@ -337,7 +337,7 @@ class AvdStructuredConfig(AvdFacts):
                 local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
             elif compute_source == "system_mac":
                 if self._system_mac_address is None:
-                    raise AristaAvdError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
+                    raise AristaAvdMissingVariableError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
                 # the default engine id on switches is derived as per the following formula
                 local_engine_id = f"f5717f{str(self._system_mac_address).replace(':', '').lower()}00"
             else:

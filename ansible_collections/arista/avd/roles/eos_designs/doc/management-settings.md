@@ -71,11 +71,11 @@ name_servers:
   - < IPv4_address_1 >
   - < IPv4_address_2 >
 
-# System setinngs | Optional
-# `system_mac_address` at this level has less precedence
-# than at the fabric-topology level
-# Expected format: "xx:xx:xx:xx:xx:xx"
-system_mac_address: < str >
+# System Mac Address | Optional
+# Set to the same MAC addres as available in "show version" on the device.
+# "system_mac_address" can also be set under "Fabric Topology".
+# If both are set, the setting under "Fabric Topology" takes precedence.
+system_mac_address: < "xx:xx:xx:xx:xx:xx" >
 
 # Set SNMP settings | Optional
 snmp_settings:

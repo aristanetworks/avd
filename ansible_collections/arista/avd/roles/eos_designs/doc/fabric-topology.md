@@ -161,14 +161,13 @@ defaults <- node_group <- node_group.node <- node
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
 
-      # The following variable SHOULD be set to the MAC address
-      # available in show version
-      # NOTE: the mac_address variable used in dhcp_provisioner role is
+      # System Mac Address | Optional
+      # Set to the same MAC addres as available in "show version" on the device.
+      # NOTE: the "mac_address" variable used in dhcp_provisioner role is
       # different from this variable
-      # This topology variable has precedence over system_mac_address defined at
-      # the host variable level
-      # Expected format: "txx:xx:xx:xx:xx:xx"
-      system_mac_address: < str | default -> hostvar system_mac_address -> None >
+      # "system_mac_address" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      system_mac_address: < "xx:xx:xx:xx:xx:xx" >
 ```
 
 ## Node Variables details
