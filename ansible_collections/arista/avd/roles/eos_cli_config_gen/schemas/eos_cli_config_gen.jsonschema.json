@@ -3629,7 +3629,7 @@
         },
         "source_interface": {
           "type": "string",
-          "description": "interface name",
+          "description": "Interface name",
           "title": "Source Interface"
         }
       },
