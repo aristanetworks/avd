@@ -5,7 +5,7 @@ from typing import Generator
 __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.errors import AristaAvdError, AvdConversion
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversion
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
