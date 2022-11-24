@@ -1721,9 +1721,15 @@ mac_security:
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
       mka:
+        key_server_priority: < 0 - 255 >
         session:
           rekey_period: < 30-100000 in seconds >
       sci: < true | false >
+      l2_protocols:
+        ethernet_flow_control:
+          mode: < encrypt | bypass >
+        lldp:
+          mode: < bypass | bypass unauthorized >
 ```
 
 ### Maintenance Mode

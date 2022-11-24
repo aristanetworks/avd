@@ -3267,6 +3267,12 @@
               "mka": {
                 "type": "object",
                 "properties": {
+                  "key_server_priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255,
+                    "title": "Key Server Priority"
+                  },
                   "session": {
                     "type": "object",
                     "properties": {
@@ -3288,6 +3294,49 @@
               "sci": {
                 "type": "boolean",
                 "title": "SCI"
+              },
+              "l2_protocols": {
+                "type": "object",
+                "properties": {
+                  "ethernet_flow_control": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "encrypt",
+                          "bypass"
+                        ],
+                        "title": "Mode"
+                      }
+                    },
+                    "required": [
+                      "mode"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Ethernet Flow Control"
+                  },
+                  "lldp": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "bypass",
+                          "bypass unauthorized"
+                        ],
+                        "title": "Mode"
+                      }
+                    },
+                    "required": [
+                      "mode"
+                    ],
+                    "additionalProperties": false,
+                    "title": "LLDP"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "L2 Protocols"
               }
             },
             "required": [
