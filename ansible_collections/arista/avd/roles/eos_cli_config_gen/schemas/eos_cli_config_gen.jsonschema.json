@@ -2560,7 +2560,7 @@
         }
       },
       "additionalProperties": false,
-      "title": "Lacp"
+      "title": "LACP"
     },
     "link_tracking_groups": {
       "type": "array",

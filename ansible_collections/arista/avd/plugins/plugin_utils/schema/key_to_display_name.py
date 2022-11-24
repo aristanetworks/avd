@@ -28,6 +28,7 @@ WORDLIST = {
     "ipv6": "IPv6",
     "is": "IS",
     "isis": "ISIS",
+    "lacp": "LACP",
     "lag": "LAG",
     "ldp": "LDP",
     "lfa": "LFA",
