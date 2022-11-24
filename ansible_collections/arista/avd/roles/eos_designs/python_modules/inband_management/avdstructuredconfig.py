@@ -53,16 +53,16 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def vlans(self) -> dict | None:
-        VLAN_CFG = {
+        vlan_cfg = {
             "tenant": "system",
             "name": "L2LEAF_INBAND_MGMT",
         }
 
         if self._inband_management_role == "child":
-            return {self._inband_management_vlan: VLAN_CFG}
+            return {self._inband_management_vlan: vlan_cfg}
 
         if self._inband_management_role == "parent":
-            return {vlan: VLAN_CFG for vlan in self._inband_management_data["vlans"]}
+            return {vlan: vlan_cfg for vlan in self._inband_management_data["vlans"]}
 
         return None
 
@@ -123,16 +123,16 @@ class AvdStructuredConfig(AvdFacts):
         if self._inband_management_role != "parent":
             return None
 
+        if not self._inband_management_data["subnets"]:
+            return None
+
         vlan_interfaces = {}
         for index, subnet in enumerate(self._inband_management_data["subnets"]):
             vlan = self._inband_management_data["vlans"][index]
             vlan_interface_name = f"Vlan{vlan}"
             vlan_interfaces[vlan_interface_name] = self._get_svi_cfg(subnet)
 
-        if vlan_interfaces:
-            return vlan_interfaces
-
-        return None
+        return vlan_interfaces
 
     def _get_svi_cfg(self, subnet) -> dict:
         subnet = ip_network(subnet, strict=False)
