@@ -220,7 +220,7 @@ Tenant_A:
           mtu: 9000
           enabled: True
           description: "Single description"
-          descriptions: ["DC1-BL1A descriptions preferred over global description", "DC1-BL1B descriptions preferred over global description"]
+          descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
           # no description nor desciptions is tested in Tenant_OSPF below
     Tenant_OSPF:
       vrf_id: 30
