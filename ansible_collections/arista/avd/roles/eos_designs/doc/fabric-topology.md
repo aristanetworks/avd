@@ -165,8 +165,10 @@ defaults <- node_group <- node_group.node <- node
       # available in show version
       # NOTE: the mac_address variable used in dhcp_provisioner role is
       # different from this variable
-      # Expected format: xx:xx:xx:xx:xx:xx
-      system_mac_address: < str >
+      # This topology variable has precedence over system_mac_address defined at
+      # the host variable level
+      # Expected format: "txx:xx:xx:xx:xx:xx"
+      system_mac_address: < str | default -> hostvar system_mac_address -> None >
 ```
 
 ## Node Variables details

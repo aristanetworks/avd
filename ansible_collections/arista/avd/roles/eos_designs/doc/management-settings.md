@@ -71,6 +71,12 @@ name_servers:
   - < IPv4_address_1 >
   - < IPv4_address_2 >
 
+# System setinngs | Optional
+# `system_mac_address` at this level has less precedence
+# than at the fabric-topology level
+# Expected format: "xx:xx:xx:xx:xx:xx"
+system_mac_address: < str >
+
 # Set SNMP settings | Optional
 snmp_settings:
   contact: < contact_info >
@@ -82,7 +88,7 @@ snmp_settings:
   #                      the string generated via the concatenation of the hostname plus the management IP.
   #                      {{ inventory_hostname }} + {{ switch.mgmt_ip }}
   # * `system_mac`:  Generate the switch default engine id for AVD usage
-  #                  To use this, system_mac_address MUST be set for the device
+  #                  To use this, `system_mac_address` MUST be set for the device
   #                  The formula is f5717f + system_mac_address + 00
   # default is `hostname_and_ip`
   compute_local_engineid_source: < hostname_and_ip | system_mac | default -> hostanme_and_ip >

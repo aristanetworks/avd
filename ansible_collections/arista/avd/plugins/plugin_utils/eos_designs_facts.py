@@ -364,10 +364,6 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "mgmt_ip")
 
     @cached_property
-    def system_mac_address(self):
-        return get(self._switch_data_combined, "system_mac_address")
-
-    @cached_property
     def platform(self):
         return get(self._switch_data_combined, "platform")
 
@@ -594,6 +590,15 @@ class EosDesignsFacts(AvdFacts):
         return default(
             get(self._switch_data_combined, "mgmt_interface"), self.platform_settings.get("management_interface"), get(self._hostvars, "mgmt_interface")
         )
+
+    @cached_property
+    def system_mac_address(self):
+        """
+        system_mac_address is inherited from
+        Host variable var system_mac_address ->
+          Fabric Topology data model system_mac_address
+        """
+        return default(get(self._switch_data_combined, "system_mac_address"), get(self._hostvars, "system_mac_address"))
 
     @cached_property
     def underlay_routing_protocol(self):

@@ -2,14 +2,17 @@
 # Minimum config to only test the specific feature.
 # This tests the SNMP engineID using system MAC
 # As well as the fact that default_engineid_from_system_mac has precedence over compute_local_engineid
+# Setting system_mac_address as a host variable
 
 type: l2leaf
 
 l2leaf:
   nodes:
-    SNMP_SYSTEM_MAC_ENGINEID:
+    SNMP_SYSTEM_MAC_ENGINEID_2:
       id: 42
-      system_mac_address: "42:42:42:42:42:42"
+      # no topology system_mac_address
+
+system_mac_address: "12:34:56:78:90:AB"
 
 snmp_settings:
   contact: example@example.com
