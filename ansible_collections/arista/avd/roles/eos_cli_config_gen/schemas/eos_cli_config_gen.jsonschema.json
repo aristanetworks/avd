@@ -11296,7 +11296,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "VLAN Interface name like \"Vlan123\"",
+            "description": "VLAN interface name like \"Vlan123\"",
             "title": "Name"
           },
           "description": {
@@ -11309,6 +11309,7 @@
           },
           "vrf": {
             "type": "string",
+            "description": "VRF name",
             "title": "VRF"
           },
           "arp_aging_timeout": {
@@ -11342,14 +11343,14 @@
           },
           "ip_address": {
             "type": "string",
-            "description": "IPv4 address/mask",
+            "description": "IPv4_address/Mask",
             "title": "IP Address"
           },
           "ip_address_secondaries": {
             "type": "array",
             "items": {
               "type": "string",
-              "description": "IPv4 address/mask"
+              "description": "IPv4_address/Mask"
             },
             "title": "IP Address Secondaries"
           },
@@ -11357,20 +11358,20 @@
             "type": "array",
             "items": {
               "type": "string",
-              "description": "IPv4 address or IPv4 address/mask"
+              "description": "IPv4 address or IPv4_address/Mask"
             },
             "title": "IP Virtual Router Addresses"
           },
           "ip_address_virtual": {
             "type": "string",
-            "description": "IPv4 address/mask",
+            "description": "IPv4_address/Mask",
             "title": "IP Address Virtual"
           },
           "ip_address_virtual_secondaries": {
             "type": "array",
             "items": {
               "type": "string",
-              "description": "IPv4 address/mask"
+              "description": "IPv4_address/Mask"
             },
             "title": "IP Address Virtual Secondaries"
           },
@@ -11380,7 +11381,7 @@
           },
           "ip_helpers": {
             "type": "array",
-            "description": "List of DHCP Servers",
+            "description": "List of DHCP servers",
             "items": {
               "type": "object",
               "properties": {
@@ -11413,12 +11414,12 @@
           },
           "ipv6_address": {
             "type": "string",
-            "description": "IPv6 address/mask",
+            "description": "IPv6_address/Mask",
             "title": "IPv6 Address"
           },
           "ipv6_address_virtual": {
             "type": "string",
-            "description": "IPv6 address/mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "description": "IPv6_address/Mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
             "title": "IPv6 Address Virtual"
           },
           "ipv6_address_virtuals": {
@@ -11426,13 +11427,13 @@
             "description": "The new \"ipv6_address_virtuals\" key support multiple virtual ipv6 addresses.",
             "items": {
               "type": "string",
-              "description": "IPv6 address/mask"
+              "description": "IPv6_address/Mask"
             },
             "title": "IPv6 Address Virtuals"
           },
           "ipv6_address_link_local": {
             "type": "string",
-            "description": "IPv6 address/mask",
+            "description": "IPv6_address/Mask",
             "title": "IPv6 Address Link Local"
           },
           "ipv6_virtual_router_address": {
@@ -11445,7 +11446,7 @@
             "description": "Improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
             "items": {
               "type": "string",
-              "description": "IPv6 address or IPv6 address/mask"
+              "description": "IPv6 address or IPv6_address/Mask"
             },
             "title": "IPv6 Virtual Router Addresses"
           },
@@ -11464,7 +11465,7 @@
               "properties": {
                 "ipv6_prefix": {
                   "type": "string",
-                  "description": "IPv6 address/mask",
+                  "description": "IPv6_address/Mask",
                   "title": "IPv6 Prefix"
                 },
                 "valid_lifetime": {
@@ -11714,7 +11715,7 @@
           },
           "isis_enable": {
             "type": "string",
-            "description": "ISIS Instance Name",
+            "description": "ISIS instance name",
             "title": "ISIS Enable"
           },
           "isis_passive": {
@@ -11900,7 +11901,7 @@
               },
               "priority": {
                 "type": "integer",
-                "description": "Instance Priority",
+                "description": "Instance priority",
                 "title": "Priority"
               },
               "advertisement_interval": {
@@ -11913,12 +11914,12 @@
               },
               "ipv4": {
                 "type": "string",
-                "description": "Virtual IPv4 Address",
+                "description": "Virtual IPv4 address",
                 "title": "IPv4"
               },
               "ipv6": {
                 "type": "string",
-                "description": "Virtual IPv6 Address",
+                "description": "Virtual IPv6 address",
                 "title": "IPv6"
               }
             },
@@ -11993,11 +11994,6 @@
             "description": "List of VLANs as string",
             "title": "PVLAN Mapping"
           },
-          "eos_cli": {
-            "type": "string",
-            "description": "Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration",
-            "title": "EOS CLI"
-          },
           "tenant": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -12012,6 +12008,11 @@
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
             "title": "Type"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration",
+            "title": "EOS CLI"
           }
         },
         "required": [

@@ -14,13 +14,14 @@ keys:
         name:
           type: str
           required: true
-          description: VLAN Interface name like "Vlan123"
+          description: VLAN interface name like "Vlan123"
         description:
           type: str
         shutdown:
           type: bool
         vrf:
           type: str
+          description: VRF name
         arp_aging_timeout:
           type: int
           convert_types:
@@ -44,30 +45,30 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4_address/Mask
         ip_address_secondaries:
           type: list
           items:
             type: str
-            description: IPv4 address/mask
+            description: IPv4_address/Mask
         ip_virtual_router_addresses:
           type: list
           items:
             type: str
-            description: IPv4 address or IPv4 address/mask
+            description: IPv4 address or IPv4_address/Mask
         ip_address_virtual:
           type: str
-          description: IPv4 address/mask
+          description: IPv4_address/Mask
         ip_address_virtual_secondaries:
           type: list
           items:
             type: str
-            description: IPv4 address/mask
+            description: IPv4_address/Mask
         ip_igmp:
           type: bool
         ip_helpers:
           type: list
-          description: List of DHCP Servers
+          description: List of DHCP servers
           convert_types:
           - dict
           primary_key: ip_helper
@@ -87,11 +88,11 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: IPv6 address/mask
+          description: IPv6_address/Mask
         ipv6_address_virtual:
           type: str
           description: |
-            IPv6 address/mask
+            IPv6_address/Mask
             "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
             If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
         ipv6_address_virtuals:
@@ -99,10 +100,10 @@ keys:
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
           items:
             type: str
-            description: IPv6 address/mask
+            description: IPv6_address/Mask
         ipv6_address_link_local:
           type: str
-          description: IPv6 address/mask
+          description: IPv6_address/Mask
         ipv6_virtual_router_address:
           type: str
           description: |
@@ -113,7 +114,7 @@ keys:
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
           items:
             type: str
-            description: IPv6 address or IPv6 address/mask
+            description: IPv6 address or IPv6_address/Mask
         ipv6_nd_ra_disabled:
           type: bool
         ipv6_nd_managed_config_flag:
@@ -128,7 +129,7 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                description: IPv6 address/mask
+                description: IPv6_address/Mask
               valid_lifetime:
                 type: str
                 description: In seconds <0-4294967295> or infinite
@@ -275,7 +276,7 @@ keys:
                   type: str
         isis_enable:
           type: str
-          description: ISIS Instance Name
+          description: ISIS instance name
         isis_passive:
           type: bool
         isis_metric:
@@ -396,7 +397,7 @@ keys:
               type: int
               convert_types:
               - str
-              description: Instance Priority
+              description: Instance priority
             advertisement_interval:
               type: int
               convert_types:
@@ -407,10 +408,10 @@ keys:
               - str
             ipv4:
               type: str
-              description: Virtual IPv4 Address
+              description: Virtual IPv4 address
             ipv6:
               type: str
-              description: Virtual IPv6 Address
+              description: Virtual IPv6 address
         ip_attached_host_route_export:
           type: dict
           keys:
@@ -457,9 +458,6 @@ keys:
         pvlan_mapping:
           type: str
           description: List of VLANs as string
-        eos_cli:
-          type: str
-          description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration
         tenant:
           type: str
           description: Key only used for documentation or validation purposes
@@ -469,3 +467,6 @@ keys:
         type:
           type: str
           description: Key only used for documentation or validation purposes
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration
