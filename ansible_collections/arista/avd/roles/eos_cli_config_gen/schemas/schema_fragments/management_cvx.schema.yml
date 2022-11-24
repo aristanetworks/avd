@@ -15,4 +15,4 @@ keys:
           description: IP or hostname
       source_interface:
         type: str
-        description: interface name
+        description: Interface name
