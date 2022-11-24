@@ -13,7 +13,7 @@ spanning_tree:
   mode: mstp
   mst_instances:
     '0':
-      priority: 32768
+      priority: '32768'
 local_users:
   admin:
     privilege: 15
@@ -79,16 +79,16 @@ port_channel_interfaces:
 vlans:
   11:
     tenant: TENANT1
-    name: VRF1_VLAN11
+    name: VRF10_VLAN11
   12:
     tenant: TENANT1
-    name: VRF1_VLAN12
+    name: VRF10_VLAN12
   21:
     tenant: TENANT1
-    name: VRF2_VLAN21
+    name: VRF11_VLAN21
   22:
     tenant: TENANT1
-    name: VRF2_VLAN22
+    name: VRF11_VLAN22
   3401:
     tenant: TENANT1
     name: L2_VLAN3401
