@@ -3721,7 +3721,6 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    default: false
                   announce:
                     type: int
                     min: 2

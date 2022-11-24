@@ -5234,7 +5234,6 @@
                   "properties": {
                     "enabled": {
                       "type": "boolean",
-                      "default": false,
                       "title": "Enabled"
                     },
                     "announce": {
