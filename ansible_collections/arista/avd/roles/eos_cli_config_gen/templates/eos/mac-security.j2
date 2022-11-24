@@ -24,7 +24,7 @@ mac security
 {%             endif %}
 {%         endfor %}
 {%         if profile.mka.key_server_priority is arista.avd.defined %}
-      mka session key-server priority {{ profile.mka.key_server_priority }}
+      mka key-server priority {{ profile.mka.key_server_priority }}
 {%         endif %}
 {%         if profile.mka.session.rekey_period is arista.avd.defined %}
       mka session rekey-period {{ profile.mka.session.rekey_period }}
