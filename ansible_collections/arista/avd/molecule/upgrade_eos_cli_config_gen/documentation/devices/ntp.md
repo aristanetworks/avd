@@ -72,11 +72,15 @@ interface Management1
 
 | ID | Algorithm |
 | -- | -------- |
+| 1 | md5 |
+| 2 | sha1 |
 
 ### NTP Device Configuration
 
 ```eos
 !
+ntp authentication-key 1 md5 044F0E151B
+ntp authentication-key 2 sha1 15060E1F10
 ntp trusted-key 1-2
 ntp authenticate
 ntp local-interface lo1
