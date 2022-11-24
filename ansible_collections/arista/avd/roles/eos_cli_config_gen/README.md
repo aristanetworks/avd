@@ -3271,6 +3271,10 @@ router_bgp:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
       evpn_multicast: < true | false >
+      # evpn_multicast_address_family requires evpn_multicast: true to be set
+      evpn_multicast_address_family:
+        ipv4:
+          transit: < true | false >
       route_targets:
         import:
           < address_family >:
