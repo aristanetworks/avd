@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ptp:
+    type: dict
+    keys:
+      mode:
+        type: str
+        valid_values:
+        - boundary
+        - transparent
+      forward_unicast:
+        type: bool
+      clock_identity:
+        type: str
+        description: The clock-id in xx:xx:xx:xx:xx:xx format
+      source:
+        type: dict
+        keys:
+          ip:
+            description: Source IP
+            type: str
+      priority1:
+        type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
+      priority2:
+        type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
+      ttl:
+        type: int
+        min: 1
+        max: 254
+        convert_types:
+        - str
+      domain:
+        type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
+      message_type:
+        type: dict
+        keys:
+          general:
+            type: dict
+            keys:
+              dscp:
+                type: int
+                convert_types:
+                - str
+          event:
+            type: dict
+            keys:
+              dscp:
+                type: int
+                convert_types:
+                - str
+      monitor:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+          threshold:
+            type: dict
+            keys:
+              offset_from_master:
+                type: int
+                min: 0
+                max: 1000000000
+                convert_types:
+                - str
+              mean_path_delay:
+                type: int
+                min: 0
+                max: 1000000000
+                convert_types:
+                - str
+              drop:
+                type: dict
+                keys:
+                  offset_from_master:
+                    type: int
+                    min: 0
+                    max: 1000000000
+                    convert_types:
+                    - str
+                  mean_path_delay:
+                    type: int
+                    min: 0
+                    max: 1000000000
+                    convert_types:
+                    - str
+          missing_message:
+            type: dict
+            keys:
+              intervals:
+                type: dict
+                keys:
+                  announce:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  follow_up:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  sync:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+              sequence_ids:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  announce:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  delay_resp:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  follow_up:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  sync:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
