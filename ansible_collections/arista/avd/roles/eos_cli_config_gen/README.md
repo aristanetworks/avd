@@ -2971,6 +2971,7 @@ router_bgp:
       remote_as: < bgp_as >
       local_as: < bgp_as >
       description: "< description as string >"
+      route_reflector_client: < true | false >
       ebgp_multihop: < integer >
       shutdown: < true | false >
       # Remove private AS numbers in outbound AS path
