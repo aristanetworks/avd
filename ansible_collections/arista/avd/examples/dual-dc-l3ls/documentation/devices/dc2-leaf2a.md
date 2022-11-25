@@ -266,6 +266,7 @@ vlan 4094
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet3 | routed | - | 10.255.255.73/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet3 | routed | - | 10.255.255.75/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_dc1-leaf2a_Ethernet6 | routed | - | 172.100.100.1/31 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -299,6 +300,13 @@ interface Ethernet5
    description dc2-leaf2-server1_PCI1
    no shutdown
    channel-group 5 mode active
+!
+interface Ethernet6
+   description P2P_LINK_TO_dc1-leaf2a_Ethernet6
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.100.100.1/31
 !
 interface Ethernet8
    description DC2-LEAF2C_Ethernet1
@@ -618,6 +626,17 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 ### Router BGP Peer Groups
 
+#### EVPN-OVERLAY-CORE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Source | Loopback0 |
+| BFD | True |
+| Ebgp multihop | 15 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
+
 #### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
@@ -651,11 +670,14 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
+| 10.255.0.5 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - |
+| 10.255.0.6 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - |
 | 10.255.128.1 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 10.255.128.2 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
 | 10.255.129.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 | 10.255.255.72 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 10.255.255.74 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
+| 172.100.100.0 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 10.255.129.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 | 10.255.129.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 
@@ -665,18 +687,27 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Peer Group | Activate |
 | ---------- | -------- |
+| EVPN-OVERLAY-CORE | True |
 | EVPN-OVERLAY-PEERS | True |
+
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 ### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 11 | 10.255.128.5:10011 | 10011:10011 | - | - | learned |
-| 12 | 10.255.128.5:10012 | 10012:10012 | - | - | learned |
-| 21 | 10.255.128.5:10021 | 10021:10021 | - | - | learned |
-| 22 | 10.255.128.5:10022 | 10022:10022 | - | - | learned |
-| 3401 | 10.255.128.5:13401 | 13401:13401 | - | - | learned |
-| 3402 | 10.255.128.5:13402 | 13402:13402 | - | - | learned |
+| 11 | 10.255.128.5:10011 | 10011:10011<br>remote 10011:10011 | - | - | learned |
+| 12 | 10.255.128.5:10012 | 10012:10012<br>remote 10012:10012 | - | - | learned |
+| 21 | 10.255.128.5:10021 | 10021:10021<br>remote 10021:10021 | - | - | learned |
+| 22 | 10.255.128.5:10022 | 10022:10022<br>remote 10022:10022 | - | - | learned |
+| 3401 | 10.255.128.5:13401 | 13401:13401<br>remote 13401:13401 | - | - | learned |
+| 3402 | 10.255.128.5:13402 | 13402:13402<br>remote 13402:13402 | - | - | learned |
 
 ### Router BGP VRFs
 
@@ -696,6 +727,12 @@ router bgp 65202
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-CORE peer group
+   neighbor EVPN-OVERLAY-CORE update-source Loopback0
+   neighbor EVPN-OVERLAY-CORE bfd
+   neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
+   neighbor EVPN-OVERLAY-CORE send-community
+   neighbor EVPN-OVERLAY-CORE maximum-routes 0
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -715,6 +752,12 @@ router bgp 65202
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor 10.255.0.5 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.0.5 remote-as 65102
+   neighbor 10.255.0.5 description dc1-leaf2a
+   neighbor 10.255.0.6 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.0.6 remote-as 65102
+   neighbor 10.255.0.6 description dc1-leaf2b
    neighbor 10.255.128.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.128.1 remote-as 65200
    neighbor 10.255.128.1 description dc2-spine1
@@ -729,42 +772,61 @@ router bgp 65202
    neighbor 10.255.255.74 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.74 remote-as 65200
    neighbor 10.255.255.74 description dc2-spine2_Ethernet3
+   neighbor 172.100.100.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.100.100.0 remote-as 65102
+   neighbor 172.100.100.0 description dc1-leaf2a
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 11
       rd 10.255.128.5:10011
+      rd evpn domain remote 10.255.128.5:10011
       route-target both 10011:10011
+      route-target import export evpn domain remote 10011:10011
       redistribute learned
    !
    vlan 12
       rd 10.255.128.5:10012
+      rd evpn domain remote 10.255.128.5:10012
       route-target both 10012:10012
+      route-target import export evpn domain remote 10012:10012
       redistribute learned
    !
    vlan 21
       rd 10.255.128.5:10021
+      rd evpn domain remote 10.255.128.5:10021
       route-target both 10021:10021
+      route-target import export evpn domain remote 10021:10021
       redistribute learned
    !
    vlan 22
       rd 10.255.128.5:10022
+      rd evpn domain remote 10.255.128.5:10022
       route-target both 10022:10022
+      route-target import export evpn domain remote 10022:10022
       redistribute learned
    !
    vlan 3401
       rd 10.255.128.5:13401
+      rd evpn domain remote 10.255.128.5:13401
       route-target both 13401:13401
+      route-target import export evpn domain remote 13401:13401
       redistribute learned
    !
    vlan 3402
       rd 10.255.128.5:13402
+      rd evpn domain remote 10.255.128.5:13402
       route-target both 13402:13402
+      route-target import export evpn domain remote 13402:13402
       redistribute learned
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-CORE activate
+      neighbor EVPN-OVERLAY-CORE domain remote
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate

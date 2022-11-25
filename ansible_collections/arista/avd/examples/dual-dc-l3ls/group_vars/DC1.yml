@@ -99,6 +99,13 @@ l3leaf:
 
     DC1_L3_LEAF2:
       bgp_as: 65102
+      evpn_gateway:
+        # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
+        evpn_l2:
+          enabled: true
+        evpn_l3:
+          enabled: true
+          inter_domain: true
       nodes:
         dc1-leaf2a:
           id: 3
@@ -106,13 +113,22 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet3
             - Ethernet3
+          evpn_gateway:
+            # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            remote_peers:
+              - hostname: dc2-leaf2a
+              - hostname: dc2-leaf2b
         dc1-leaf2b:
           id: 4
           mgmt_ip: 172.16.1.104/24
           uplink_switch_interfaces:
             - Ethernet4
             - Ethernet4
-
+          evpn_gateway:
+            # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+            remote_peers:
+              - hostname: dc2-leaf2a
+              - hostname: dc2-leaf2b
 # L2 Leaf switch group
 l2leaf:
   defaults:

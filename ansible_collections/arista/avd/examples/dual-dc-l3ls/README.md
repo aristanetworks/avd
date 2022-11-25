@@ -2,10 +2,10 @@
 
 ## Introduction
 
-This example is meant to be used as the logical evolution in AVD to new users. This document follows the single data center structure and asumes the reader was already able to successfully deploy the scenario described in the section [AVD example for a single data center using L3LS](../dual-dc-l3ls/README.md).
+This example is meant to be used as the logical evolution in AVD to new users. This document follows the single data center structure and asumes the reader was already been able to successfully deploy the scenario described in the section [AVD example for a single data center using L3LS](../dual-dc-l3ls/README.md).
 The main goal of this section is to provide a base scenario to enable the new users to grow in number of DCs (Data Center) and configure the interconnection between the different DCs that can be created.
 
-The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering a two DC, using the following:
+The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs, using the following:
 
 ### DC1
 - Two (virtual) spine switches.
@@ -17,7 +17,7 @@ The example includes and describes all the AVD files and their content used to b
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
 - Two (virtual) layer2-only switches often used for management connectivity to the servers.
 
-In order to follow the principle of network design using patterns, both DCs have the same layout to keep a repetitive and understandable architecture, but this is no hard requirement and one DC could use 2 spines while the other could be using 4 spines to comply with redundancy and BW requirements.
+In order to follow the principle of network design using patterns, both DCs have the same layout to keep a repetitive and understandable architecture, but this is no hard requirement and one DC could use 2 spines while the other could be using 4 spines to comply with redundancy and bandwidth requirements.
 
 
 Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the switches using eAPI.
@@ -88,12 +88,12 @@ The drawing below shows the physical topology used in this example. The interfac
 | dc1-leaf2c                                          | 172.16.1.152                |
 | dc2-spine1                                          | 172.16.1.21                 |
 | dc2-spine2                                          | 172.16.1.22                 |
-| dc2-leaf1a                                          | 172.16.1.201                |
-| dc2-leaf1b                                          | 172.16.1.202                |
-| dc2-leaf2a                                          | 172.16.1.203                |
-| dc2-leaf2b                                          | 172.16.1.204                |
-| dc2-leaf1c                                          | 172.16.1.251                |
-| dc2-leaf2c                                          | 172.16.1.252                |
+| dc2-leaf1a                                          | 172.16.1.111                |
+| dc2-leaf1b                                          | 172.16.1.112                |
+| dc2-leaf2a                                          | 172.16.1.113                |
+| dc2-leaf2b                                          | 172.16.1.114                |
+| dc2-leaf1c                                          | 172.16.1.161                |
+| dc2-leaf2c                                          | 172.16.1.162                |
 | **Point-to-point links between leaf and spine**     | **(Underlay)**              |
 | DC1                                                 | 10.255.255.0/26             |
 | DC2                                                 | 10.255.255.64/26            |

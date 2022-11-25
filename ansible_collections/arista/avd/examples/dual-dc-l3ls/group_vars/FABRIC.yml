@@ -49,3 +49,24 @@ bgp_peer_groups:
 # If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
+
+
+l3_edge:
+  p2p_links_ip_pools:
+    DCI_IP_pool: 172.100.100.0/24
+  p2p_links_profiles:
+    DCI_profile:
+      ip_pool: DCI_IP_pool
+      as: [65102,65202]
+      include_in_underlay_protocol: true
+  p2p_links:
+  - id: 1
+    nodes: [dc1-leaf2a,dc2-leaf2a]
+    interfaces: [Ethernet6,Ethernet6]
+    profile: DCI_profile
+  - id: 2
+    nodes: [dc1-leaf2b,dc2-leaf2b]
+    interfaces: [Ethernet6,Ethernet6]
+    profile: DCI_profile
+
+
