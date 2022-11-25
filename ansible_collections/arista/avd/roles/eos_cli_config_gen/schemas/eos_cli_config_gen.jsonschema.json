@@ -11997,6 +11997,9 @@
           },
           "tags": {
             "type": "array",
+            "items": {
+              "type": "string"
+            },
             "description": "Key only used for documentation or validation purposes",
             "title": "Tags"
           },
