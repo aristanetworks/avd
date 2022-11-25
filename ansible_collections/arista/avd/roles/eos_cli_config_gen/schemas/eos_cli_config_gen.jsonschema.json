@@ -11490,10 +11490,6 @@
             },
             "title": "IPv6 ND Prefixes"
           },
-          "ip_router_virtual_address": {
-            "type": "string",
-            "title": "IP Router Virtual Address"
-          },
           "access_group_in": {
             "type": "string",
             "description": "IPv4 access-list name",

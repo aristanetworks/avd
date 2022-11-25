@@ -142,8 +142,6 @@ keys:
                 - int
               no_autoconfig_flag:
                 type: bool
-        ip_router_virtual_address:
-          type: str
         access_group_in:
           type: str
           description: IPv4 access-list name
