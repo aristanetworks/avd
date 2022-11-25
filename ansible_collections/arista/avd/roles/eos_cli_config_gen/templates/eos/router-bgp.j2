@@ -34,9 +34,9 @@ router bgp {{ router_bgp.as }}
 {%     elif router_bgp.graceful_restart_helper.enabled is arista.avd.defined(true) %}
 {# graceful-restart-help long-lived and restart-time are mutually exclusive in CLI #}
 {# restart-time will win in this case #}
-{%         if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
-   graceful-restart-helper restart-time {{ router_bgp.graceful_restart.restart_time }}
-{%         elif router_bgp.graceful_restart.long_lived is arista.avd.defined(true) %}
+{%         if router_bgp.graceful_restart_helper.restart_time is arista.avd.defined %}
+   graceful-restart-helper restart-time {{ router_bgp.graceful_restart_helper.restart_time }}
+{%         elif router_bgp.graceful_restart_helper.long_lived is arista.avd.defined(true) %}
    graceful-restart-helper long-lived
 {%         endif %}
 {%     endif %}
