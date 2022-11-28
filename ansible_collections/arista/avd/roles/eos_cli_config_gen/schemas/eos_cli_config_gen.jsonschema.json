@@ -11644,7 +11644,7 @@
           },
           "ospf_authentication_key": {
             "type": "string",
-            "description": "Key used for simple authentication",
+            "description": "Encrypted password used for simple authentication",
             "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
@@ -11801,6 +11801,7 @@
                       "properties": {
                         "reload": {
                           "type": "integer",
+                          "description": "Delay after reload in seconds.",
                           "title": "Reload"
                         }
                       },
@@ -11925,10 +11926,6 @@
           "ip_attached_host_route_export": {
             "type": "object",
             "properties": {
-              "test": {
-                "type": "integer",
-                "title": "Test"
-              },
               "distance": {
                 "type": "integer",
                 "minimum": 1,

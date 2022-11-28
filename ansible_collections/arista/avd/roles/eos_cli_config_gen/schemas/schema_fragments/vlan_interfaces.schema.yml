@@ -231,7 +231,7 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Key used for simple authentication
+          description: Encrypted password used for simple authentication
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication
@@ -341,6 +341,7 @@ keys:
                     keys:
                       reload:
                         type: int
+                        description: Delay after reload in seconds.
                         convert_types:
                         - str
               tracked_object:
@@ -413,10 +414,6 @@ keys:
         ip_attached_host_route_export:
           type: dict
           keys:
-            test:
-              type: int
-              convert_types:
-              - str
             distance:
               type: int
               convert_types:
