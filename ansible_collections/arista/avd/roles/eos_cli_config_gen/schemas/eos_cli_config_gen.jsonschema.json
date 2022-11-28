@@ -5807,7 +5807,7 @@
               }
             },
             "additionalProperties": false,
-            "title": "Ptp"
+            "title": "PTP"
           },
           "ip_address": {
             "type": "string",
