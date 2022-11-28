@@ -2442,6 +2442,12 @@ keys:
             mka:
               type: dict
               keys:
+                key_server_priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 255
                 session:
                   type: dict
                   keys:
@@ -2454,6 +2460,27 @@ keys:
                       description: Rekey period in seconds
             sci:
               type: bool
+            l2_protocols:
+              type: dict
+              keys:
+                ethernet_flow_control:
+                  type: dict
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                      - encrypt
+                      - bypass
+                lldp:
+                  type: dict
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                      - bypass
+                      - bypass unauthorized
   maintenance:
     type: dict
     display_name: Maintenance Mode
@@ -2670,6 +2697,9 @@ keys:
         items:
           type: str
           description: IP or hostname
+      source_interface:
+        type: str
+        description: Interface name
   management_defaults:
     type: dict
     keys:
@@ -3558,6 +3588,155 @@ keys:
                   Example: "permit 10.255.0.0/27 eq 32"'
   prompt:
     type: str
+  ptp:
+    type: dict
+    keys:
+      mode:
+        type: str
+        valid_values:
+        - boundary
+        - transparent
+      forward_unicast:
+        type: bool
+      clock_identity:
+        type: str
+        description: The clock-id in xx:xx:xx:xx:xx:xx format
+      source:
+        type: dict
+        keys:
+          ip:
+            description: Source IP
+            type: str
+      priority1:
+        type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
+      priority2:
+        type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
+      ttl:
+        type: int
+        min: 1
+        max: 254
+        convert_types:
+        - str
+      domain:
+        type: int
+        min: 0
+        max: 255
+        convert_types:
+        - str
+      message_type:
+        type: dict
+        keys:
+          general:
+            type: dict
+            keys:
+              dscp:
+                type: int
+                convert_types:
+                - str
+          event:
+            type: dict
+            keys:
+              dscp:
+                type: int
+                convert_types:
+                - str
+      monitor:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+          threshold:
+            type: dict
+            keys:
+              offset_from_master:
+                type: int
+                min: 0
+                max: 1000000000
+                convert_types:
+                - str
+              mean_path_delay:
+                type: int
+                min: 0
+                max: 1000000000
+                convert_types:
+                - str
+              drop:
+                type: dict
+                keys:
+                  offset_from_master:
+                    type: int
+                    min: 0
+                    max: 1000000000
+                    convert_types:
+                    - str
+                  mean_path_delay:
+                    type: int
+                    min: 0
+                    max: 1000000000
+                    convert_types:
+                    - str
+          missing_message:
+            type: dict
+            keys:
+              intervals:
+                type: dict
+                keys:
+                  announce:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  follow_up:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  sync:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+              sequence_ids:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  announce:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  delay_resp:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  follow_up:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
+                  sync:
+                    type: int
+                    min: 2
+                    max: 255
+                    convert_types:
+                    - str
   qos:
     type: dict
     keys:
@@ -5111,6 +5290,16 @@ keys:
               description: Route distinguisher
             evpn_multicast:
               type: bool
+            evpn_multicast_address_family:
+              type: dict
+              description: Enable per-AF EVPN multicast settings
+              keys:
+                ipv4:
+                  type: dict
+                  keys:
+                    transit:
+                      type: bool
+                      description: Enable EVPN multicast transit mode
             route_targets:
               type: dict
               keys:

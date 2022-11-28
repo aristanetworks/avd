@@ -24,6 +24,7 @@
   template:
     src: avd_schema_documentation.j2
     dest: "{{ role_documentation_dir ~ '/' ~ documentation_file.filename ~ '.md'  }}"
+    mode: 0664
   loop: "{{ role_documentation_schema }}"
   loop_control:
     loop_var: documentation_file

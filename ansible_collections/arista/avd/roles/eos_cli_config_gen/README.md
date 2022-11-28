@@ -1721,9 +1721,15 @@ mac_security:
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
       mka:
+        key_server_priority: < 0 - 255 >
         session:
           rekey_period: < 30-100000 in seconds >
       sci: < true | false >
+      l2_protocols:
+        ethernet_flow_control:
+          mode: < encrypt | bypass >
+        lldp:
+          mode: < bypass | bypass unauthorized >
 ```
 
 ### Maintenance Mode
@@ -1941,6 +1947,7 @@ management_cvx:
   server_hosts:
     - < IP | hostname >
     - < IP | hostname >
+  source_interface: < interface name >
 ```
 
 #### Management Defaults
@@ -3264,6 +3271,10 @@ router_bgp:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
       evpn_multicast: < true | false >
+      # evpn_multicast_address_family requires evpn_multicast: true to be set
+      evpn_multicast_address_family:
+        ipv4:
+          transit: < true | false >
       route_targets:
         import:
           < address_family >:
