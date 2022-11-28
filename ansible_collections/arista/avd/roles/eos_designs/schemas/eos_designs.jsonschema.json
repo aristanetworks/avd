@@ -1133,6 +1133,24 @@
       "type": "array",
       "title": "Name Servers"
     },
+    "network_services_keys": {
+      "description": "Define network services keys, to define grouping of network services.\nThis provides the ability to define various keys of your choice to better organize/group your data.\nThis should be defined in top level group_var for the fabric.\n",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name"
+        ]
+      },
+      "type": "array",
+      "title": "Network Services Keys"
+    },
     "node_type_keys": {
       "items": {
         "properties": {
