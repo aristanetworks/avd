@@ -101,10 +101,10 @@ tenants:
               - 10.2.20.1/24
               - 10.2.21.1/24
             nodes:
-              - name: DC1-LEAF1A
+              - node: DC1-LEAF1A
                 ip_address_virtual_secondaries:
                   - 10.2.20.1/24
-              - name: DC1-LEAF2A
+              - node: DC1-LEAF2A
                 # Test the node priority on ip_helpers
                 # Merges the config from nodes
                 ip_helpers:
@@ -133,9 +133,9 @@ tenants:
             tags: ['erp2']
             enabled: True
             nodes:
-              - name: DC1-LEAF1A
+              - node: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
-              - name: evpn_services_l2_only_false
+              - node: evpn_services_l2_only_false
                 ip_address: 10.1.32.2/24
                 ip_virtual_router_addresses:
                   # OverWrites the svi.ip_virtual_router_addresses
