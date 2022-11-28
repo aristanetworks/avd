@@ -321,12 +321,16 @@
 {%                         if peer_group.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
 {%                             set inherited_vrf.rib_in_pre_policy_retain = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
+{%                         if peer_group.route_reflector_client is arista.avd.defined(true) %}
+{%                             set inherited_vrf.route_reflector_client = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf = namespace() %}
 {%                     set active_parameter_vrf.remote_as = neighbor.remote_as | arista.avd.default(inherited_vrf.remote_as, '-') %}
 {%                     set active_parameter_vrf.send_community = neighbor.send_community | arista.avd.default(inherited_vrf.send_community, '-') %}
 {%                     set active_parameter_vrf.bfd = neighbor.bfd | arista.avd.default(inherited_vrf.bfd, '-') %}
 {%                     set active_parameter_vrf.shutdown = neighbor.shutdown | arista.avd.default(inherited_vrf.shutdown, '-') %}
+{%                     set active_parameter_vrf.route_reflector_client = neighbor.route_reflector_client | arista.avd.default(inherited_vrf.route_reflector_client, '-') %}
 {%                     if neighbor.maximum_routes is arista.avd.defined %}
 {%                         if neighbor.maximum_routes == 0 %}
 {%                             set value = "0 (no limit)" %}
@@ -364,7 +368,7 @@
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} |
+| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
