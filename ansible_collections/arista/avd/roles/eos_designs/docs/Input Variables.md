@@ -1598,7 +1598,7 @@ underlay_rfc5549: <bool>
 underlay_routing_protocol: <str>
 ```
 
-## Uplink Ptp
+## Uplink PTP
 
 ### Description
 

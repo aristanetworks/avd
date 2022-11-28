@@ -543,7 +543,7 @@
                 "default": false,
                 "description": "Enable PTP",
                 "type": "boolean",
-                "title": "Ptp Enable"
+                "title": "PTP Enable"
               },
               "qos_profile": {
                 "description": "QOS Service Profile",
@@ -1259,7 +1259,7 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "title": "Uplink Ptp"
+      "title": "Uplink PTP"
     },
     "vtep_vvtep_ip": {
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1\nThis is only needed for centralized routing designs\n",
