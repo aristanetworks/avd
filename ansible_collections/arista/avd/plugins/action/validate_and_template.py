@@ -65,7 +65,11 @@ class ActionModule(ActionBase):
         result_messages.extend(avdschematools.convert_data(self.data))
 
         # Perform validation
-        result_messages.extend(avdschematools.validate_data(self.data))
+        validation_messages = avdschematools.validate_data(self.data)
+        if validation_messages:
+            result_messages.extend(validation_messages)
+            if validation_mode == "error":
+                result["failed"] = True
 
         if result_messages:
             result["msg"] = " ".join(result_messages)
