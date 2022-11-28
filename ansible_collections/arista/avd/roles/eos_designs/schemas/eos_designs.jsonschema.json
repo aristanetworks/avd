@@ -165,6 +165,27 @@
       "type": "object",
       "title": "BGP Peer Groups"
     },
+    "connected_endpoints_keys": {
+      "items": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key"
+        ]
+      },
+      "type": "array",
+      "title": "Connected Endpoints Keys"
+    },
     "custom_structured_configuration_list_merge": {
       "default": "replace",
       "description": "The List-merge strategy can be changed using `custom_structured_configuration_list_merge` variable using any value accepted by `list_merge` on the Ansible Combine filter.\n",
