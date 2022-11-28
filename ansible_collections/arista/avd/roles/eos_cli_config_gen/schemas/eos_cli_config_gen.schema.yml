@@ -982,19 +982,12 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    description: Routed interfaces
     items:
       type: dict
       keys:
         name:
           type: str
           required: true
-        peer:
-          type: str
-        peer_interface:
-          type: str
-        peer_type:
-          type: str
         description:
           type: str
         shutdown:
@@ -1011,20 +1004,29 @@ keys:
           type: int
           convert_types:
           - str
-          description: If l2_mtu defined this profile should only be used for platforms
-            supporting the "l2 mtu" CLI
+          description: '"l2_mtu" should only be defined for platforms supporting the
+            "l2 mtu" CLI
+
+            '
         vlans:
           type: str
           convert_types:
           - int
-          description: List of vlans as string
+          description: 'List of switchport vlans as string.
+
+            For a trunk port this would be a range like "1-200,300"
+
+            For an access port this would be a single vlan "123"
+
+            '
         native_vlan:
           type: int
           convert_types:
           - str
         native_vlan_tag:
           type: bool
-          default: false
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
+            takes precedence
         mode:
           type: str
           valid_values:
@@ -1069,16 +1071,15 @@ keys:
             interface should be defined as routed.
         snmp_trap_link_change:
           type: bool
-          description: SNMP trap link change
         flowcontrol:
           type: dict
           keys:
             received:
               type: str
               valid_values:
-              - received
-              - send
+              - desired
               - 'on'
+              - 'off'
         vrf:
           type: str
           description: VRF name
@@ -1100,6 +1101,7 @@ keys:
               type: bool
         link_tracking_groups:
           type: list
+          primary_key: name
           items:
             type: dict
             keys:
@@ -1134,11 +1136,12 @@ keys:
                   type: int
                   min: 0
                   max: 65535
-                  description: Preference_value and dont_preempt are set for preference
-                    algorithm and are optional
+                  convert_types:
+                  - str
+                  description: Preference_value is only used when "algorithm" is "preference"
                 dont_preempt:
                   type: bool
-                  default: false
+                  description: Dont_preempt is only used when "algorithm" is "preference"
                 hold_time:
                   type: int
                   convert_types:
@@ -1194,22 +1197,12 @@ keys:
                       convert_types:
                       - str
                       description: Client Inner VLAN ID
-                outer:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Client Outer VLAN ID
-                inner:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Client Inner VLAN ID
                 unmatched:
                   type: bool
             network:
               type: dict
-              description: Network encapsulation is all optional, and skipped if using
-                client unmatched.
+              description: Network encapsulations are all optional, and skipped if
+                using client unmatched.
               keys:
                 dot1q:
                   type: dict
@@ -1229,16 +1222,6 @@ keys:
                       convert_types:
                       - str
                       description: Network Inner VLAN ID
-                outer:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network Outer VLAN ID
-                inner:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network Inner VLAN ID
                 client:
                   type: bool
         vlan_id:
@@ -1249,7 +1232,7 @@ keys:
           - str
         ip_address:
           type: str
-          description: IPv4_address or Mask
+          description: IPv4 address/mask
         ip_address_secondaries:
           type: list
           items:
@@ -1277,10 +1260,9 @@ keys:
           type: str
         ipv6_address_link_local:
           type: str
-          description: Link local IPv6 address or mask
+          description: Link local IPv6 address/mask
         ipv6_nd_ra_disabled:
           type: bool
-          description: IPv6 ND RA disabled
         ipv6_nd_managed_config_flag:
           type: bool
         ipv6_nd_prefixes:
@@ -1509,6 +1491,7 @@ keys:
               - layer2
         profile:
           type: str
+          description: Interface profile
         storm_control:
           type: dict
           keys:
@@ -1597,9 +1580,9 @@ keys:
         trunk_private_vlan_secondary:
           type: bool
         pvlan_mapping:
-          type: int
+          type: str
           convert_types:
-          - str
+          - int
           description: List of vlans as string
         vlan_translations:
           type: list
@@ -1607,14 +1590,16 @@ keys:
             type: dict
             keys:
               from:
-                type: str
+                type: int
+                convert_types:
+                - str
                 description: List of vlans as string (only one vlan if direction is
                   "both")
               to:
                 type: int
                 convert_types:
                 - str
-                description: VLAN id
+                description: VLAN ID
               direction:
                 type: str
                 valid_values:
@@ -1680,10 +1665,14 @@ keys:
               keys:
                 idle_host:
                   type: int
+                  min: 10
+                  max: 65535
                   convert_types:
                   - str
                 quiet_period:
                   type: int
+                  min: 1
+                  max: 65535
                   convert_types:
                   - str
                 reauth_period:
@@ -1695,6 +1684,8 @@ keys:
                   type: bool
                 tx_period:
                   type: int
+                  min: 1
+                  max: 65535
                   convert_types:
                   - str
             reauthorization_request_limit:
@@ -1711,8 +1702,18 @@ keys:
           keys:
             rate:
               type: str
-              description: Rate in kbps or pps or 1-100 percent or rate in pps, supported
-                options are platform dependent
+              description: 'Rate in kbps, pps or percent. Supported options are platform
+                dependent.
+
+                Examples:
+
+                - "5000 kbps"
+
+                - "1000 pps"
+
+                - "20 percent"
+
+                '
         qos:
           type: dict
           keys:
@@ -1736,10 +1737,18 @@ keys:
           type: str
           convert_types:
           - bool
+          valid_values:
+          - enabled
+          - disabled
+          - 'true'
         spanning_tree_bpduguard:
           type: str
           convert_types:
           - bool
+          valid_values:
+          - enabled
+          - disabled
+          - 'true'
         spanning_tree_guard:
           type: str
           valid_values:
@@ -1760,6 +1769,7 @@ keys:
               type: bool
             priorities:
               type: list
+              primary_key: priority
               items:
                 type: dict
                 keys:
@@ -1855,10 +1865,17 @@ keys:
               description: Egress traffic policy
         eos_cli:
           type: str
-          description: Multiline eos cli. EOS CLI rendered directly on the ethernet
-            interface in the final EOS configuration
-        struct_cfg:
-          type: dict
+          description: Multiline EOS CLI rendered directly on the ethernet interface
+            in the final EOS configuration
+        peer:
+          type: str
+          description: Key only used for documentation or validation purposes
+        peer_interface:
+          type: str
+          description: Key only used for documentation or validation purposes
+        peer_type:
+          type: str
+          description: Key only used for documentation or validation purposes
   event_handlers:
     type: list
     primary_key: name

@@ -1243,25 +1243,12 @@
     },
     "ethernet_interfaces": {
       "type": "array",
-      "description": "Routed interfaces",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
             "title": "Name"
-          },
-          "peer": {
-            "type": "string",
-            "title": "Peer"
-          },
-          "peer_interface": {
-            "type": "string",
-            "title": "Peer Interface"
-          },
-          "peer_type": {
-            "type": "string",
-            "title": "Peer Type"
           },
           "description": {
             "type": "string",
@@ -1282,12 +1269,12 @@
           },
           "l2_mtu": {
             "type": "integer",
-            "description": "If l2_mtu defined this profile should only be used for platforms supporting the \"l2 mtu\" CLI",
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
           },
           "vlans": {
             "type": "string",
-            "description": "List of vlans as string",
+            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
             "title": "VLANs"
           },
           "native_vlan": {
@@ -1296,7 +1283,7 @@
           },
           "native_vlan_tag": {
             "type": "boolean",
-            "default": false,
+            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence",
             "title": "Native VLAN Tag"
           },
           "mode": {
@@ -1362,7 +1349,6 @@
           },
           "snmp_trap_link_change": {
             "type": "boolean",
-            "description": "SNMP trap link change",
             "title": "Snmp Trap Link Change"
           },
           "flowcontrol": {
@@ -1371,9 +1357,9 @@
               "received": {
                 "type": "string",
                 "enum": [
-                  "received",
-                  "send",
-                  "on"
+                  "desired",
+                  "on",
+                  "off"
                 ],
                 "title": "Received"
               }
@@ -1437,7 +1423,10 @@
                   "title": "Direction"
                 }
               },
-              "additionalProperties": false
+              "additionalProperties": false,
+              "required": [
+                "name"
+              ]
             },
             "title": "Link Tracking Groups"
           },
@@ -1472,12 +1461,12 @@
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 65535,
-                    "description": "Preference_value and dont_preempt are set for preference algorithm and are optional",
+                    "description": "Preference_value is only used when \"algorithm\" is \"preference\"",
                     "title": "Preference Value"
                   },
                   "dont_preempt": {
                     "type": "boolean",
-                    "default": false,
+                    "description": "Dont_preempt is only used when \"algorithm\" is \"preference\"",
                     "title": "Dont Preempt"
                   },
                   "hold_time": {
@@ -1555,16 +1544,6 @@
                     "additionalProperties": false,
                     "title": "Dot1Q"
                   },
-                  "outer": {
-                    "type": "integer",
-                    "description": "Client Outer VLAN ID",
-                    "title": "Outer"
-                  },
-                  "inner": {
-                    "type": "integer",
-                    "description": "Client Inner VLAN ID",
-                    "title": "Inner"
-                  },
                   "unmatched": {
                     "type": "boolean",
                     "title": "Unmatched"
@@ -1575,7 +1554,7 @@
               },
               "network": {
                 "type": "object",
-                "description": "Network encapsulation is all optional, and skipped if using client unmatched.",
+                "description": "Network encapsulations are all optional, and skipped if using client unmatched.",
                 "properties": {
                   "dot1q": {
                     "type": "object",
@@ -1599,16 +1578,6 @@
                     "additionalProperties": false,
                     "title": "Dot1Q"
                   },
-                  "outer": {
-                    "type": "integer",
-                    "description": "Network Outer VLAN ID",
-                    "title": "Outer"
-                  },
-                  "inner": {
-                    "type": "integer",
-                    "description": "Network Inner VLAN ID",
-                    "title": "Inner"
-                  },
                   "client": {
                     "type": "boolean",
                     "title": "Client"
@@ -1629,7 +1598,7 @@
           },
           "ip_address": {
             "type": "string",
-            "description": "IPv4_address or Mask",
+            "description": "IPv4 address/mask",
             "title": "IP Address"
           },
           "ip_address_secondaries": {
@@ -1676,12 +1645,11 @@
           },
           "ipv6_address_link_local": {
             "type": "string",
-            "description": "Link local IPv6 address or mask",
+            "description": "Link local IPv6 address/mask",
             "title": "IPv6 Address Link Local"
           },
           "ipv6_nd_ra_disabled": {
             "type": "boolean",
-            "description": "IPv6 ND RA disabled",
             "title": "IPv6 ND RA Disabled"
           },
           "ipv6_nd_managed_config_flag": {
@@ -2043,6 +2011,7 @@
           },
           "profile": {
             "type": "string",
+            "description": "Interface profile",
             "title": "Profile"
           },
           "storm_control": {
@@ -2187,7 +2156,7 @@
             "title": "Trunk Private VLAN Secondary"
           },
           "pvlan_mapping": {
-            "type": "integer",
+            "type": "string",
             "description": "List of vlans as string",
             "title": "PVLAN Mapping"
           },
@@ -2197,13 +2166,13 @@
               "type": "object",
               "properties": {
                 "from": {
-                  "type": "string",
+                  "type": "integer",
                   "description": "List of vlans as string (only one vlan if direction is \"both\")",
                   "title": "From"
                 },
                 "to": {
                   "type": "integer",
-                  "description": "VLAN id",
+                  "description": "VLAN ID",
                   "title": "To"
                 },
                 "direction": {
@@ -2319,10 +2288,14 @@
                 "properties": {
                   "idle_host": {
                     "type": "integer",
+                    "minimum": 10,
+                    "maximum": 65535,
                     "title": "Idle Host"
                   },
                   "quiet_period": {
                     "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
                     "title": "Quiet Period"
                   },
                   "reauth_period": {
@@ -2336,6 +2309,8 @@
                   },
                   "tx_period": {
                     "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
                     "title": "TX Period"
                   }
                 },
@@ -2362,7 +2337,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "Rate in kbps or pps or 1-100 percent or rate in pps, supported options are platform dependent",
+                "description": "Rate in kbps, pps or percent. Supported options are platform dependent.\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
                 "title": "Rate"
               }
             },
@@ -2397,10 +2372,20 @@
           },
           "spanning_tree_bpdufilter": {
             "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "true"
+            ],
             "title": "Spanning Tree Bpdufilter"
           },
           "spanning_tree_bpduguard": {
             "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "true"
+            ],
             "title": "Spanning Tree Bpduguard"
           },
           "spanning_tree_guard": {
@@ -2447,7 +2432,10 @@
                       "title": "No Drop"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": false,
+                  "required": [
+                    "priority"
+                  ]
                 },
                 "title": "Priorities"
               }
@@ -2596,12 +2584,23 @@
           },
           "eos_cli": {
             "type": "string",
-            "description": "Multiline eos cli. EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
+            "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
             "title": "EOS CLI"
           },
-          "struct_cfg": {
-            "type": "object",
-            "title": "Struct Cfg"
+          "peer": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer"
+          },
+          "peer_interface": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Interface"
+          },
+          "peer_type": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Type"
           }
         },
         "required": [
@@ -9099,7 +9098,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Evpn Multicast Address Family"
+                "title": "EVPN Multicast Address Family"
               },
               "route_targets": {
                 "type": "object",
