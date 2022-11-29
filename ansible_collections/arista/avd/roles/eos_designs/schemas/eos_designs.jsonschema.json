@@ -438,6 +438,42 @@
       "type": "integer",
       "title": "Inband Management VLAN"
     },
+    "internal_vlan_order": {
+      "description": "Internal vlan allocation order and range",
+      "properties": {
+        "allocation": {
+          "default": "ascending",
+          "type": "string",
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "title": "Allocation"
+        },
+        "range": {
+          "properties": {
+            "beginning": {
+              "default": 1006,
+              "description": "VLAN ID",
+              "type": "integer",
+              "title": "Beginning"
+            },
+            "ending": {
+              "default": 1199,
+              "description": "VLAN ID",
+              "type": "integer",
+              "title": "Ending"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "title": "Range"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "Internal VLAN Order"
+    },
     "isis_advertise_passive_only": {
       "default": false,
       "type": "boolean",
@@ -679,6 +715,19 @@
       "type": "array",
       "title": "Local Users"
     },
+    "mac_address_table": {
+      "description": "MAC address-table aging time\nUse to change the EOS default of 300.\n",
+      "properties": {
+        "aging_time": {
+          "description": "Time in seconds",
+          "type": "integer",
+          "title": "Aging Time"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "MAC Address Table"
+    },
     "management_eapi": {
       "description": "Default is https management eAPI enabled",
       "properties": {
@@ -728,6 +777,21 @@
       "default": false,
       "type": "boolean",
       "title": "Mgmt VRF Routing"
+    },
+    "mlag_ibgp_peering_vrfs": {
+      "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when mlag leafs in topology)\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1\nDepending on the values of vrf_id / vrf_id it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
+      "properties": {
+        "base_vlan": {
+          "default": 3000,
+          "maximum": 4000,
+          "minimum": 1,
+          "type": "integer",
+          "title": "Base VLAN"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "MLAG Ibgp Peering VRFs"
     },
     "name_server": {
       "properties": {
@@ -945,6 +1009,19 @@
       "type": "boolean",
       "title": "Overlay MLAG Rfc5549"
     },
+    "overlay_rd_type": {
+      "description": "Specify RD type\nRoute Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.\nBy configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.\n",
+      "properties": {
+        "admin_subfield": {
+          "description": "< \"vtep_loopback\" or \"bgp_as\" or < IPv4 Address > or <0-65535> or <0-4294967295>, default -> <overlay_loopback_ip> >",
+          "type": "string",
+          "title": "Admin Subfield"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "Overlay Rd Type"
+    },
     "overlay_routing_protocol": {
       "default": "ebgp",
       "description": "- The following overlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n",
@@ -965,6 +1042,19 @@
         "ipv6"
       ],
       "title": "Overlay Routing Protocol Address Family"
+    },
+    "overlay_rt_type": {
+      "description": "Specify RT type\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\n",
+      "properties": {
+        "admin_subfield": {
+          "description": "< \"bgp_as\" or <0-65535> or <0-4294967295>, default -> <mac_vrf_id> >",
+          "type": "string",
+          "title": "Admin Subfield"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "title": "Overlay Rt Type"
     },
     "p2p_uplinks_mtu": {
       "default": 9000,
@@ -1129,6 +1219,166 @@
       "type": "object",
       "title": "Snmp Settings"
     },
+    "svi_profiles": {
+      "description": "Optional profiles to apply on SVI interfaces\nEach profile can support all or some of the following keys according to your own needs.\nKeys are the same used under SVI.\nSvi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).\n",
+      "items": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "igmp_snooping_enabled": {
+            "default": true,
+            "type": "boolean",
+            "title": "IGMP Snooping Enabled"
+          },
+          "ip_address_virtual": {
+            "description": "IPv4_address/Mask",
+            "type": "string",
+            "title": "IP Address Virtual"
+          },
+          "ip_address_virtual_secondaries": {
+            "items": {
+              "description": "IPv4_address/Mask",
+              "type": "string"
+            },
+            "type": "array",
+            "title": "IP Address Virtual Secondaries"
+          },
+          "ip_helpers": {
+            "items": {
+              "properties": {
+                "ip_helper": {
+                  "description": "IPv4 DHCP server IP",
+                  "type": "string",
+                  "title": "IP Helper"
+                },
+                "source_interface": {
+                  "description": "Interface name",
+                  "type": "string",
+                  "title": "Source Interface"
+                },
+                "source_vrf": {
+                  "description": "VRF to originate DHCP relay packets to DHCP server",
+                  "type": "string",
+                  "title": "Source VRF"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "IP Helpers"
+          },
+          "ip_virtual_router_addresses": {
+            "items": {
+              "description": "IPv4_address/Mask or IPv4_address",
+              "type": "string"
+            },
+            "type": "array",
+            "title": "IP Virtual Router Addresses"
+          },
+          "mtu": {
+            "type": "integer",
+            "title": "MTU"
+          },
+          "name": {
+            "description": "VLAN name",
+            "type": "string",
+            "title": "Name"
+          },
+          "nodes": {
+            "items": {
+              "properties": {
+                "ip_address": {
+                  "type": "string",
+                  "title": "IP Address"
+                },
+                "ip_address_virtual_secondaries": {
+                  "description": "Should take config from svis[svi].nodes[node]",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "IP Address Virtual Secondaries"
+                },
+                "ip_helpers": {
+                  "items": {
+                    "properties": {
+                      "ip_helper": {
+                        "description": "IPv4 DHCP server IP",
+                        "type": "string",
+                        "title": "IP Helper"
+                      },
+                      "source_interface": {
+                        "description": "Interface name",
+                        "type": "string",
+                        "title": "Source Interface"
+                      },
+                      "source_vrf": {
+                        "description": "VRF to originate DHCP relay packets to DHCP server",
+                        "type": "string",
+                        "title": "Source VRF"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "IP Helpers"
+                },
+                "ip_virtual_router_addresses": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "IP Virtual Router Addresses"
+                },
+                "ipv6_address": {
+                  "type": "string",
+                  "title": "IPv6 Address"
+                },
+                "ipv6_virtual_router_addresses": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "IPv6 Virtual Router Addresses"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "name"
+              ]
+            },
+            "type": "array",
+            "title": "Nodes"
+          },
+          "parent_profile": {
+            "description": "SVI profile name",
+            "type": "string",
+            "title": "Parent Profile"
+          },
+          "profile": {
+            "description": "Profile name",
+            "type": "string",
+            "title": "Profile"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "profile"
+        ]
+      },
+      "type": "array",
+      "title": "Svi Profiles"
+    },
     "terminattr_disable_aaa": {
       "default": false,
       "type": "boolean",
@@ -1290,6 +1540,7 @@
   },
   "required": [
     "fabric_name",
+    "internal_vlan_order",
     "type"
   ],
   "additionalProperties": true,
