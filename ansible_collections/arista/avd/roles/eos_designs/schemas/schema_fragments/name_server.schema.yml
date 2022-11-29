@@ -5,6 +5,9 @@ type: dict
 keys:
   name_server:
     type: dict
+    description: |
+      Only name_server from eos_ci_config_gen.
+      The variables will make it to the intended config.
     keys:
       source:
         type: dict

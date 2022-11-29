@@ -4,7 +4,10 @@
 type: dict
 keys:
   p2p_uplinks_mtu:
+    description: Point to Point Links MTU
     type: int
     convert_types:
       - str
+    min: 0
+    max: 9216
     default: 9000

@@ -6,4 +6,4 @@ keys:
   bgp_mesh_pes:
     type: bool
     default: false
-    description: BGP Mesh PES
+    description: Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.

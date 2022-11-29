@@ -5,9 +5,20 @@ type: dict
 keys:
   l3_edge:
     type: dict
+    description: |
+      The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+      The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+      For BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+      Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
     keys:
       p2p_links_ip_pools:
         type: list
+        primary_key: name
+        secondary_key: ipv4_pool
+        convert_types:
+          - dict
         items:
           type: dict
           keys:
@@ -15,8 +26,12 @@ keys:
               type: str
             ipv4_pool:
               type: str
+              description: IPv4_address/Mask
       p2p_links_profiles:
         type: list
+        convert_types:
+          - dict
+        description: Any setting supported under p2p_links can be set and inherited from profile
         items:
           type: dict
           keys:
@@ -24,9 +39,6 @@ keys:
               type: str
       p2p_links:
         type: list
-        primary_key: id
-        convert_types:
-        - dict
         required: true
         description: Any setting supported under p2p_links can be set and inherited from profile
         items:
@@ -34,33 +46,33 @@ keys:
           keys:
             id:
               type: int
-              description: Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
+              convert_types:
+                - str
+              description: Unique id per subnet_summary (starting from 1). Used to calculate ip addresses, required with ip_pool
             speed:
               type: str
-              valid_values:
-              - speed
-              - auto speed
-              - forced speed
-              description: Speed | Optional
+              description: < speed | auto speed | forced speed >
             ip_pool:
               type: str
-              description: IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
+              description: IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link, Optional (Requires ip_pool or subnet or ip)
             subnet:
               type: str
-              description: Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+              description: Subnet used on this P2P link, Optional (Requires ip_pool or subnet or ip)
             ip:
               type: list
-              description: Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+              description: Specific IP addresses used on this P2P link, Optional (Requires ip_pool or subnet or ip)
               items:
                 type: str
             nodes:
               type: list
-              description: Nodes where this link should be configured | Required
+              required: true
+              description: Nodes where this link should be configured
               items:
                 type: str
             interfaces:
               type: list
-              description: Interfaces where this link should be configured | Required
+              required: true
+              description: Interfaces where this link should be configured
               items:
                 type: str
             as:
@@ -74,6 +86,8 @@ keys:
               description: Add this interface to underlay routing protocol
             mtu:
               type: int
+              convert_types:
+                - str
               description: MTU for this P2P link
             bfd:
               type: bool

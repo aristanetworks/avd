@@ -22,10 +22,12 @@ keys:
               type: int
               convert_types:
               - str
+              description: In seconds
             non_mlag:
               type: int
               convert_types:
               - str
+              description: In seconds
         tcam_profile:
           type: str
         lag_hardware_only:

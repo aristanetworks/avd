@@ -2533,7 +2533,8 @@ keys:
     type: int
   bgp_mesh_pes:
     default: false
-    description: BGP Mesh PES
+    description: Whether to configure an iBGP full mesh between PEs, either because
+      there is no RR used or other reasons.
     type: bool
   bgp_peer_groups:
     description: 'Leverage an Arista EOS switch to generate the encrypted password
@@ -2549,6 +2550,7 @@ keys:
             default: EVPN-OVERLAY-PEERS
             type: str
           password:
+            description: Encrypted Password
             type: str
         studios_options:
           exclude: true
@@ -2559,7 +2561,12 @@ keys:
             default: IPv4-UNDERLAY-PEERS
             type: str
           password:
+            description: Encrypted Password
             type: str
+          structured_config:
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+            type: dict
         studios_options:
           exclude: true
         type: dict
@@ -2569,6 +2576,7 @@ keys:
             default: MLAG-IPv4-UNDERLAY-PEER
             type: str
           password:
+            description: Encrypted Password
             type: str
         studios_options:
           exclude: true
@@ -2579,6 +2587,7 @@ keys:
             default: EVPN-OVERLAY-CORE
             type: str
           password:
+            description: Encrypted Password
             type: str
         type: dict
       evpn_overlay_peers:
@@ -2587,6 +2596,7 @@ keys:
             default: EVPN-OVERLAY-PEERS
             type: str
           password:
+            description: Encrypted Password
             type: str
         type: dict
       ipv4_underlay_peers:
@@ -2595,7 +2605,12 @@ keys:
             default: IPv4-UNDERLAY-PEERS
             type: str
           password:
+            description: Encrypted Password
             type: str
+          structured_config:
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+            type: dict
         type: dict
       mlag_ipv4_underlay_peer:
         keys:
@@ -2603,6 +2618,7 @@ keys:
             default: MLAG-IPv4-UNDERLAY-PEER
             type: str
           password:
+            description: Encrypted Password
             type: str
         type: dict
     type: dict
@@ -2941,8 +2957,10 @@ keys:
     type: dict
   enable_trunk_groups:
     default: false
-    description: 'Warning: Because of the nature of the EOS Trunk Group feature, enabling
-      this is "all or nothing".
+    description: 'Enable Trunk Group support across eos_designs
+
+      Warning: Because of the nature of the EOS Trunk Group feature, enabling this
+      is "all or nothing".
 
       *All* vlans and *all* trunks towards connected endpoints must be using trunk
       groups as well.
@@ -2953,7 +2971,6 @@ keys:
       See "Details on enable_trunk_groups" below before enabling this feature
 
       '
-    display_name: Enable Trunk Group support across eos_designs
     type: bool
   event_handlers:
     convert_types:
@@ -3214,10 +3231,27 @@ keys:
         - node
     type: dict
   l3_edge:
+    description: 'The `l3_edge` data model can be used to configure extra L3 P2P links
+      anywhere in the fabric. It can be between two switches that are already part
+      of the fabric inventory, or it can be towards another device, where only one
+      end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`,
+      `spine` or `super-spine`.
+
+
+      The data model supports using IP pools, Subnet per link or specifying the IP
+      addresses manually.
+
+      For BGP peerings the AS number must be specified. If the AS number is different
+      than the AS number configured for the node, the local-as will be replaced on
+      this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+
+      Make sure to configure the variables in a group_vars file covering all devices
+      mentioned in the data model.
+
+      '
     keys:
       p2p_links:
-        convert_types:
-        - dict
         description: Any setting supported under p2p_links can be set and inherited
           from profile
         items:
@@ -3232,39 +3266,45 @@ keys:
               description: Enable BFD (only considered for BGP)
               type: bool
             id:
-              description: Unique id per subnet_summary. Used to calculate ip addresses
-                | Required with ip_pool
+              convert_types:
+              - str
+              description: Unique id per subnet_summary (starting from 1). Used to
+                calculate ip addresses, required with ip_pool
               type: int
             include_in_underlay_protocol:
               default: false
               description: Add this interface to underlay routing protocol
               type: bool
             interfaces:
-              description: Interfaces where this link should be configured | Required
+              description: Interfaces where this link should be configured
               items:
                 type: str
+              required: true
               type: list
             ip:
-              description: Specific IP addresses used on this P2P link | Optional
-                (Requires ip_pool or subnet or ip)
+              description: Specific IP addresses used on this P2P link, Optional (Requires
+                ip_pool or subnet or ip)
               items:
                 type: str
               type: list
             ip_pool:
               description: IP Pool defined under p2p_links_ip_pools. A /31 will be
-                taken from the pool per P2P link | Optional (Requires ip_pool or subnet
+                taken from the pool per P2P link, Optional (Requires ip_pool or subnet
                 or ip)
               type: str
             macsec_profile:
               description: MAC Security Profile
               type: str
             mtu:
+              convert_types:
+              - str
               description: MTU for this P2P link
               type: int
             nodes:
-              description: Nodes where this link should be configured | Required
+              description: Nodes where this link should be configured
               items:
                 type: str
+              required: true
               type: list
             profile:
               description: Profile defined under p2p_profiles
@@ -3277,30 +3317,34 @@ keys:
               description: QOS Service Profile
               type: str
             speed:
-              description: Speed | Optional
+              description: < speed | auto speed | forced speed >
               type: str
-              valid_values:
-              - speed
-              - auto speed
-              - forced speed
             subnet:
-              description: Subnet used on this P2P link | Optional (Requires ip_pool
+              description: Subnet used on this P2P link, Optional (Requires ip_pool
                 or subnet or ip)
               type: str
           type: dict
-        primary_key: id
         required: true
         type: list
       p2p_links_ip_pools:
+        convert_types:
+        - dict
         items:
           keys:
             ipv4_pool:
+              description: IPv4_address/Mask
               type: str
             name:
               type: str
           type: dict
+        primary_key: name
+        secondary_key: ipv4_pool
         type: list
       p2p_links_profiles:
+        convert_types:
+        - dict
+        description: Any setting supported under p2p_links can be set and inherited
+          from profile
         items:
           keys:
             name:
@@ -3407,6 +3451,11 @@ keys:
         type: int
     type: dict
   name_server:
+    description: 'Only name_server from eos_ci_config_gen.
+
+      The variables will make it to the intended config.
+
+      '
     keys:
       nodes:
         items:
@@ -3444,74 +3493,143 @@ keys:
   node_type_keys:
     convert_types:
     - dict
+    description: 'Define Node Type Keys, to specify the properties of each node type
+      in the fabric
+
+      This allows for complete customization of the fabric layout.
+
+      This should be defined in top level group_var for the fabric.
+
+      '
     items:
       keys:
         connected_endpoints:
+          default: false
+          description: Are endpoints connected to this node type
           type: bool
         default_evpn_role:
+          default: none
+          description: Default evpn_role. Can be overridden in topology vars.
           type: str
+          valid_values:
+          - none
+          - client
+          - server
         default_underlay_routing_protocol:
+          default: ebgp
+          description: 'Set the default underlay routing_protocol.
+
+            Can be overridden by setting "underlay_routing_protocol" host/group_vars
+
+            '
           type: str
         interface_descriptions:
+          description: 'Override interface_descriptions templates
+
+            If description templates use Jinja2, they have to strip whitespaces using
+            {%- -%} on any code blocks
+
+            '
           keys:
             connected_endpoints_ethernet_interfaces:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces
               type: str
             connected_endpoints_port_channel_interfaces:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces
               type: str
             overlay_loopback_interface:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface
               type: str
             underlay_ethernet_interfaces:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces
               type: str
             underlay_ethernet_mlag_interfaces:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces
               type: str
             underlay_port_channel_interfaces:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces
               type: str
             underlay_port_channel_mlag_interfaces:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces
               type: str
             vtep_loopback_interface:
+              description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface
               type: str
           type: dict
         ip_addressing:
+          description: Override ip_addressing templates
           keys:
             mlag_ip_primary:
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary
               type: str
             mlag_ip_secondary:
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary
               type: str
             mlag_l3_ip_primary:
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary
               type: str
             mlag_l3_ip_secondary:
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary
               type: str
             p2p_uplinks_ip:
+              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip
               type: str
             p2p_uplinks_peer_ip:
+              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip
               type: str
             router_id:
+              description: Path to J2 template - default inherited from templates.ip_addressing.router_id
               type: str
             vtep_ip:
+              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip
               type: str
             vtep_ip_mlag:
+              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag
               type: str
           type: dict
         key:
           type: str
         mlag_support:
+          default: false
+          description: Can this node type support mlag
           type: bool
         mpls_lsr:
+          default: false
+          description: Is this switch an MPLS LSR
           type: bool
         network_services:
+          description: Will network services be deployed on this node type
           keys:
             l2:
+              default: false
+              description: Vlans
               type: bool
             l3:
+              default: false
+              description: 'VRFs, SVIs (if l2 is true)
+
+                Only supported with underlay_router
+
+                '
               type: bool
           type: dict
         type:
+          description: Type value matching this node_type_key
           type: str
         underlay_router:
+          default: true
+          description: Is this node type a L3 device
           type: bool
         uplink_type:
+          default: p2p
+          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
           type: str
+          valid_values:
+          - p2p
+          - port-channel
         vtep:
+          default: false
+          description: Is this switch an EVPN VTEP
           type: bool
       type: dict
     primary_key: key
@@ -3641,6 +3759,9 @@ keys:
     convert_types:
     - str
     default: 9000
+    description: Point to Point Links MTU
+    max: 9216
+    min: 0
     type: int
   p2p_uplinks_qos_profile:
     description: QOS Profile assigned on all infrastructure links
@@ -3675,10 +3796,12 @@ keys:
             mlag:
               convert_types:
               - str
+              description: In seconds
               type: int
             non_mlag:
               convert_types:
               - str
+              description: In seconds
               type: int
           type: dict
         tcam_profile:
@@ -3689,12 +3812,16 @@ keys:
       type: dict
     type: list
   platform_speed_groups:
+    convert_types:
+    - dict
     description: Set Hardware Speed Groups per Platform
     items:
       keys:
         platform:
           type: str
         speeds:
+          convert_types:
+          - dict
           items:
             keys:
               speed:
@@ -3706,8 +3833,12 @@ keys:
                   type: int
                 type: list
             type: dict
+          primary_key: speed
+          secondary_key: speed_groups
           type: list
       type: dict
+    primary_key: platform
+    secondary_key: speeds
     type: list
   pod_name:
     description: 'POD Name, only used in Fabric Documentation | Optional, fallback
@@ -3926,11 +4057,17 @@ keys:
         type: dict
     type: dict
   type:
+    description: 'The `type:` variable needs to be defined for each device in the
+      fabric.
+
+      This is leveraged to load the appropriate template to generate the configuration.
+
+      '
     dynamic_valid_values: node_type_keys.type
     required: true
     type: str
   underlay_filter_peer_as:
-    default: '0000:0000:'
+    default: false
     description: 'Configure route-map on eBGP sessions towards underlay peers, where
       prefixes with the peer''s ASN in the AS Path are filtered away.
 
@@ -3943,7 +4080,7 @@ keys:
       Note this key is ignored when EVPN is configured.
 
       '
-    type: str
+    type: bool
   underlay_ipv6:
     default: false
     description: 'This feature allows IPv6 underlay routing protocol with RFC5549
