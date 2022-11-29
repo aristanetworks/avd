@@ -556,9 +556,9 @@ keys:
             type: dict
             keys:
               from:
-                type: int
+                type: str
                 convert_types:
-                - str
+                - int
                 description: List of vlans as string (only one vlan if direction is "both")
               to:
                 type: int
@@ -682,12 +682,12 @@ keys:
           type: str
           convert_types:
           - bool
-          valid_values: ["enabled", "disabled", "true"]
+          valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_bpduguard:
           type: str
           convert_types:
           - bool
-          valid_values: ["enabled", "disabled", "true"]
+          valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_guard:
           type: str
           valid_values: ["loop", "root", "disabled"]

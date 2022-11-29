@@ -2166,7 +2166,7 @@
               "type": "object",
               "properties": {
                 "from": {
-                  "type": "integer",
+                  "type": "string",
                   "description": "List of vlans as string (only one vlan if direction is \"both\")",
                   "title": "From"
                 },
@@ -2375,7 +2375,10 @@
             "enum": [
               "enabled",
               "disabled",
-              "true"
+              "True",
+              "False",
+              "true",
+              "false"
             ],
             "title": "Spanning Tree Bpdufilter"
           },
@@ -2384,7 +2387,10 @@
             "enum": [
               "enabled",
               "disabled",
-              "true"
+              "True",
+              "False",
+              "true",
+              "false"
             ],
             "title": "Spanning Tree Bpduguard"
           },

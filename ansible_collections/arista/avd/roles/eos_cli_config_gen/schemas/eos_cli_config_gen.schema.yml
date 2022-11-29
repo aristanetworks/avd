@@ -1590,9 +1590,9 @@ keys:
             type: dict
             keys:
               from:
-                type: int
+                type: str
                 convert_types:
-                - str
+                - int
                 description: List of vlans as string (only one vlan if direction is
                   "both")
               to:
@@ -1740,7 +1740,10 @@ keys:
           valid_values:
           - enabled
           - disabled
+          - 'True'
+          - 'False'
           - 'true'
+          - 'false'
         spanning_tree_bpduguard:
           type: str
           convert_types:
@@ -1748,7 +1751,10 @@ keys:
           valid_values:
           - enabled
           - disabled
+          - 'True'
+          - 'False'
           - 'true'
+          - 'false'
         spanning_tree_guard:
           type: str
           valid_values:
