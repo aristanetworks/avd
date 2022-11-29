@@ -394,6 +394,13 @@ class RouterBgpMixin(UtilsMixin):
         if admin_subfield == "bgp_as":
             return self._bgp_as
 
+        try:
+            # Try to convert input var (str) to int
+            admin_subfield = int(admin_subfield)
+        except ValueError:
+            # Ignore if we could not convert
+            pass
+
         if isinstance(admin_subfield, int) and admin_subfield >= 0 and admin_subfield <= 4294967295:
             return str(admin_subfield)
 

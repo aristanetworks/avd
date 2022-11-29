@@ -1577,6 +1577,32 @@ keys:
 
       '
     type: int
+  internal_vlan_order:
+    description: Internal vlan allocation order and range
+    keys:
+      allocation:
+        default: ascending
+        type: str
+        valid_values:
+        - ascending
+        - descending
+      range:
+        keys:
+          beginning:
+            convert_types:
+            - str
+            default: 1006
+            description: VLAN ID
+            type: int
+          ending:
+            convert_types:
+            - str
+            default: 1199
+            description: VLAN ID
+            type: int
+        type: dict
+    required: true
+    type: dict
   isis_advertise_passive_only:
     default: false
     type: bool
@@ -1736,6 +1762,19 @@ keys:
       type: dict
     primary_key: name
     type: list
+  mac_address_table:
+    description: 'MAC address-table aging time
+
+      Use to change the EOS default of 300.
+
+      '
+    keys:
+      aging_time:
+        convert_types:
+        - str
+        description: Time in seconds
+        type: int
+    type: dict
   management_eapi:
     description: Default is https management eAPI enabled
     keys:
@@ -1765,6 +1804,29 @@ keys:
   mgmt_vrf_routing:
     default: false
     type: bool
+  mlag_ibgp_peering_vrfs:
+    description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
+      iBGP peering (required when mlag leafs in topology)
+
+      The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan
+      + (vrf_id or vrf_vni) - 1
+
+      Depending on the values of vrf_id / vrf_id it may be required to adjust the
+      base_vlan to avoid overlaps or invalid vlan ids.
+
+      The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all
+      iBGP peerings.
+
+      '
+    keys:
+      base_vlan:
+        convert_types:
+        - str
+        default: 3000
+        max: 4000
+        min: 1
+        type: int
+    type: dict
   name_server:
     keys:
       nodes:
@@ -1921,6 +1983,24 @@ keys:
 
       '
     type: bool
+  overlay_rd_type:
+    description: 'Specify RD type
+
+      Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni>
+      per default.
+
+      By configuring overlay_rd_type the Administrator subfield (first part of RD)
+      can be set to other values.
+
+      '
+    keys:
+      admin_subfield:
+        convert_types:
+        - int
+        description: < "vtep_loopback" or "bgp_as" or < IPv4 Address > or <0-65535>
+          or <0-4294967295>, default -> <overlay_loopback_ip> >
+        type: str
+    type: dict
   overlay_routing_protocol:
     case_sensitive: false
     default: ebgp
@@ -1943,6 +2023,23 @@ keys:
     valid_values:
     - ipv4
     - ipv6
+  overlay_rt_type:
+    description: 'Specify RT type
+
+      Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
+
+      By configuring overlay_rt_type the Administrator subfield (first part of RT)
+      can be set to other values.
+
+      '
+    keys:
+      admin_subfield:
+        convert_types:
+        - int
+        description: < "bgp_as" or <0-65535> or <0-4294967295>, default -> <mac_vrf_id>
+          >
+        type: str
+    type: dict
   p2p_uplinks_mtu:
     convert_types:
     - str
@@ -2075,6 +2172,111 @@ keys:
           {{ switch_rack }} {{ inventory_hostname }}'
         type: bool
     type: dict
+  svi_profiles:
+    convert_types:
+    - dict
+    description: 'Optional profiles to apply on SVI interfaces
+
+      Each profile can support all or some of the following keys according to your
+      own needs.
+
+      Keys are the same used under SVI.
+
+      Svi_profiles can refer to another svi_profiles to inherit settings in up to
+      two levels (svi->profile->parent_profile).
+
+      '
+    items:
+      keys:
+        enabled:
+          type: bool
+        igmp_snooping_enabled:
+          default: true
+          type: bool
+        ip_address_virtual:
+          description: IPv4_address/Mask
+          type: str
+        ip_address_virtual_secondaries:
+          items:
+            description: IPv4_address/Mask
+            type: str
+          type: list
+        ip_helpers:
+          items:
+            keys:
+              ip_helper:
+                description: IPv4 DHCP server IP
+                type: str
+              source_interface:
+                description: Interface name
+                type: str
+              source_vrf:
+                description: VRF to originate DHCP relay packets to DHCP server
+                type: str
+            type: dict
+          type: list
+        ip_virtual_router_addresses:
+          items:
+            description: IPv4_address/Mask or IPv4_address
+            type: str
+          type: list
+        mtu:
+          convert_types:
+          - str
+          type: int
+        name:
+          description: VLAN name
+          type: str
+        nodes:
+          convert_types:
+          - dict
+          items:
+            keys:
+              ip_address:
+                type: str
+              ip_address_virtual_secondaries:
+                description: Should take config from svis[svi].nodes[node]
+                items:
+                  type: str
+                type: list
+              ip_helpers:
+                items:
+                  keys:
+                    ip_helper:
+                      description: IPv4 DHCP server IP
+                      type: str
+                    source_interface:
+                      description: Interface name
+                      type: str
+                    source_vrf:
+                      description: VRF to originate DHCP relay packets to DHCP server
+                      type: str
+                  type: dict
+                type: list
+              ip_virtual_router_addresses:
+                items:
+                  type: str
+                type: list
+              ipv6_address:
+                type: str
+              ipv6_virtual_router_addresses:
+                items:
+                  type: str
+                type: list
+              name:
+                type: str
+            type: dict
+          primary_key: name
+          type: list
+        parent_profile:
+          description: SVI profile name
+          type: str
+        profile:
+          description: Profile name
+          type: str
+      type: dict
+    primary_key: profile
+    type: list
   terminattr_disable_aaa:
     default: false
     type: bool
