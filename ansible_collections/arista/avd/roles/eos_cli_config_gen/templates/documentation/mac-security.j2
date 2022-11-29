@@ -22,12 +22,13 @@ FIPS restrictions enabled.
 
 Settings:
 
-| Cipher | Rekey-Period | SCI |
-| ------ | ------------ | --- |
+| Cipher | Key-Server Priority | Rekey-Period | SCI |
+| ------ | ------------------- | ------------ | --- |
 {%             set cipher = profile.cipher | arista.avd.default('-') %}
+{%             set key_server_priority = profile.mka.key_server_priority | arista.avd.default('-') %}
 {%             set rekey_period = profile.mka.session.rekey_period | arista.avd.default('-') %}
 {%             set sci = profile.sci | arista.avd.default('-') %}
-| {{ cipher }} | {{ rekey_period }} | {{ sci }} |
+| {{ cipher }} | {{ key_server_priority }} | {{ rekey_period }} | {{ sci }} |
 
 Keys:
 
@@ -41,6 +42,19 @@ Keys:
 | {{ connection_key.id }} | {{ encrypted_key }} | {{ fallback }} |
 {%                     endif %}
 {%                 endfor %}
+{%             endif %}
+{%             if profile.l2_protocols | arista.avd.default([]) | length > 0 %}
+
+L2 Protocols:
+
+| L2 Protocol | Mode |
+| ----------- | ---- |
+{%                 if profile.l2_protocols.ethernet_flow_control is arista.avd.defined %}
+| ethernet-flow-control | {{ profile.l2_protocols.ethernet_flow_control.mode }} |
+{%                 endif %}
+{%                 if profile.l2_protocols.lldp is arista.avd.defined %}
+| lldp | {{ profile.l2_protocols.lldp.mode }} |
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

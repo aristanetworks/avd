@@ -7,6 +7,7 @@ mac_security:
     A1:
       sci: true
       mka:
+        key_server_priority: 100
         session:
           rekey_period: 30
       cipher: aes128-gcm
@@ -16,6 +17,9 @@ mac_security:
         1234c:
           encrypted_key: 10195F4C5144405A
           fallback: true
+      l2_protocols:
+        lldp:
+          mode: bypass unauthorized
     A2:
       connection_keys:
         1234b:

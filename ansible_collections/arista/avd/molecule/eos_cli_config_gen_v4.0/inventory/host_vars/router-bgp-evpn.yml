@@ -186,3 +186,35 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - source_protocol: connected
+    - name: TENANT_A_PROJECT03
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:13"
+      evpn_multicast: true
+      evpn_multicast_address_family:
+        ipv4:
+          transit: true
+      route_targets:
+        import:
+          - address_family: evpn
+            route_targets:
+              - "13:13"
+        export:
+          - address_family: evpn
+            route_targets:
+              - "13:13"
+    - name: TENANT_A_PROJECT04
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:14"
+      evpn_multicast: true
+      evpn_multicast_address_family:
+        ipv4:
+          transit: false
+      route_targets:
+        import:
+          - address_family: evpn
+            route_targets:
+              - "14:14"
+        export:
+          - address_family: evpn
+            route_targets:
+              - "14:14"

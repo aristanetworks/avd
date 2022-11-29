@@ -2560,7 +2560,7 @@
         }
       },
       "additionalProperties": false,
-      "title": "Lacp"
+      "title": "LACP"
     },
     "link_tracking_groups": {
       "type": "array",
@@ -3267,6 +3267,12 @@
               "mka": {
                 "type": "object",
                 "properties": {
+                  "key_server_priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255,
+                    "title": "Key Server Priority"
+                  },
                   "session": {
                     "type": "object",
                     "properties": {
@@ -3288,6 +3294,49 @@
               "sci": {
                 "type": "boolean",
                 "title": "SCI"
+              },
+              "l2_protocols": {
+                "type": "object",
+                "properties": {
+                  "ethernet_flow_control": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "encrypt",
+                          "bypass"
+                        ],
+                        "title": "Mode"
+                      }
+                    },
+                    "required": [
+                      "mode"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Ethernet Flow Control"
+                  },
+                  "lldp": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "bypass",
+                          "bypass unauthorized"
+                        ],
+                        "title": "Mode"
+                      }
+                    },
+                    "required": [
+                      "mode"
+                    ],
+                    "additionalProperties": false,
+                    "title": "LLDP"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "L2 Protocols"
               }
             },
             "required": [
@@ -3626,6 +3675,11 @@
             "description": "IP or hostname"
           },
           "title": "Server Hosts"
+        },
+        "source_interface": {
+          "type": "string",
+          "description": "Interface name",
+          "title": "Source Interface"
         }
       },
       "additionalProperties": false,
@@ -5007,6 +5061,212 @@
     "prompt": {
       "type": "string",
       "title": "Prompt"
+    },
+    "ptp": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "boundary",
+            "transparent"
+          ],
+          "title": "Mode"
+        },
+        "forward_unicast": {
+          "type": "boolean",
+          "title": "Forward Unicast"
+        },
+        "clock_identity": {
+          "type": "string",
+          "description": "The clock-id in xx:xx:xx:xx:xx:xx format",
+          "title": "Clock Identity"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "ip": {
+              "description": "Source IP",
+              "type": "string",
+              "title": "IP"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Source"
+        },
+        "priority1": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Priority1"
+        },
+        "priority2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Priority2"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 254,
+          "title": "TTL"
+        },
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Domain"
+        },
+        "message_type": {
+          "type": "object",
+          "properties": {
+            "general": {
+              "type": "object",
+              "properties": {
+                "dscp": {
+                  "type": "integer",
+                  "title": "DSCP"
+                }
+              },
+              "additionalProperties": false,
+              "title": "General"
+            },
+            "event": {
+              "type": "object",
+              "properties": {
+                "dscp": {
+                  "type": "integer",
+                  "title": "DSCP"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Event"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Message Type"
+        },
+        "monitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "title": "Enabled"
+            },
+            "threshold": {
+              "type": "object",
+              "properties": {
+                "offset_from_master": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000000,
+                  "title": "Offset From Master"
+                },
+                "mean_path_delay": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000000,
+                  "title": "Mean Path Delay"
+                },
+                "drop": {
+                  "type": "object",
+                  "properties": {
+                    "offset_from_master": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1000000000,
+                      "title": "Offset From Master"
+                    },
+                    "mean_path_delay": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1000000000,
+                      "title": "Mean Path Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Drop"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Threshold"
+            },
+            "missing_message": {
+              "type": "object",
+              "properties": {
+                "intervals": {
+                  "type": "object",
+                  "properties": {
+                    "announce": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Announce"
+                    },
+                    "follow_up": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Follow Up"
+                    },
+                    "sync": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Sync"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Intervals"
+                },
+                "sequence_ids": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "announce": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Announce"
+                    },
+                    "delay_resp": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Delay Resp"
+                    },
+                    "follow_up": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Follow Up"
+                    },
+                    "sync": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 255,
+                      "title": "Sync"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Sequence IDs"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Missing Message"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Monitor"
+        }
+      },
+      "additionalProperties": false,
+      "title": "PTP"
     },
     "qos": {
       "type": "object",
@@ -7450,6 +7710,26 @@
               "evpn_multicast": {
                 "type": "boolean",
                 "title": "Evpn Multicast"
+              },
+              "evpn_multicast_address_family": {
+                "type": "object",
+                "description": "Enable per-AF EVPN multicast settings",
+                "properties": {
+                  "ipv4": {
+                    "type": "object",
+                    "properties": {
+                      "transit": {
+                        "type": "boolean",
+                        "description": "Enable EVPN multicast transit mode",
+                        "title": "Transit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "IPv4"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Evpn Multicast Address Family"
               },
               "route_targets": {
                 "type": "object",
@@ -11008,6 +11288,735 @@
         ]
       },
       "title": "Virtual Source Nat VRFs"
+    },
+    "vlan_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "VLAN interface name like \"Vlan123\"",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF name",
+            "title": "VRF"
+          },
+          "arp_aging_timeout": {
+            "type": "integer",
+            "description": "In seconds",
+            "minimum": 1,
+            "maximum": 65535,
+            "title": "ARP Aging Timeout"
+          },
+          "arp_cache_dynamic_capacity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295,
+            "title": "ARP Cache Dynamic Capacity"
+          },
+          "arp_gratuitous_accept": {
+            "type": "boolean",
+            "title": "ARP Gratuitous Accept"
+          },
+          "arp_monitor_mac_address": {
+            "type": "boolean",
+            "title": "ARP Monitor MAC Address"
+          },
+          "ip_proxy_arp": {
+            "type": "boolean",
+            "title": "IP Proxy ARP"
+          },
+          "ip_directed_broadcast": {
+            "type": "boolean",
+            "title": "IP Directed Broadcast"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4_address/Mask",
+            "title": "IP Address"
+          },
+          "ip_address_secondaries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask"
+            },
+            "title": "IP Address Secondaries"
+          },
+          "ip_virtual_router_addresses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "IPv4 address or IPv4_address/Mask"
+            },
+            "title": "IP Virtual Router Addresses"
+          },
+          "ip_address_virtual": {
+            "type": "string",
+            "description": "IPv4_address/Mask",
+            "title": "IP Address Virtual"
+          },
+          "ip_address_virtual_secondaries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask"
+            },
+            "title": "IP Address Virtual Secondaries"
+          },
+          "ip_igmp": {
+            "type": "boolean",
+            "title": "IP IGMP"
+          },
+          "ip_helpers": {
+            "type": "array",
+            "description": "List of DHCP servers",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ip_helper": {
+                  "type": "string",
+                  "description": "IP address or hostname of DHCP server",
+                  "title": "IP Helper"
+                },
+                "source_interface": {
+                  "type": "string",
+                  "description": "Interface used as source for forwarded DHCP packets",
+                  "title": "Source Interface"
+                },
+                "vrf": {
+                  "type": "string",
+                  "description": "VRF where DHCP server can be reached",
+                  "title": "VRF"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "ip_helper"
+              ]
+            },
+            "title": "IP Helpers"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "title": "IPv6 Enable"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "description": "IPv6_address/Mask",
+            "title": "IPv6 Address"
+          },
+          "ipv6_address_virtual": {
+            "type": "string",
+            "description": "IPv6_address/Mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "title": "IPv6 Address Virtual"
+          },
+          "ipv6_address_virtuals": {
+            "type": "array",
+            "description": "The new \"ipv6_address_virtuals\" key support multiple virtual ipv6 addresses.",
+            "items": {
+              "type": "string",
+              "description": "IPv6_address/Mask"
+            },
+            "title": "IPv6 Address Virtuals"
+          },
+          "ipv6_address_link_local": {
+            "type": "string",
+            "description": "IPv6_address/Mask",
+            "title": "IPv6 Address Link Local"
+          },
+          "ipv6_virtual_router_address": {
+            "type": "string",
+            "description": "\"ipv6_virtual_router_address\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n",
+            "title": "IPv6 Virtual Router Address"
+          },
+          "ipv6_virtual_router_addresses": {
+            "type": "array",
+            "description": "Improved \"VARPv6\" data model to support multiple VARPv6 addresses.",
+            "items": {
+              "type": "string",
+              "description": "IPv6 address or IPv6_address/Mask"
+            },
+            "title": "IPv6 Virtual Router Addresses"
+          },
+          "ipv6_nd_ra_disabled": {
+            "type": "boolean",
+            "title": "IPv6 ND RA Disabled"
+          },
+          "ipv6_nd_managed_config_flag": {
+            "type": "boolean",
+            "title": "IPv6 ND Managed Config Flag"
+          },
+          "ipv6_nd_prefixes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ipv6_prefix": {
+                  "type": "string",
+                  "description": "IPv6_address/Mask",
+                  "title": "IPv6 Prefix"
+                },
+                "valid_lifetime": {
+                  "type": "string",
+                  "description": "In seconds <0-4294967295> or infinite",
+                  "title": "Valid Lifetime"
+                },
+                "preferred_lifetime": {
+                  "type": "string",
+                  "description": "In seconds <0-4294967295> or infinite",
+                  "title": "Preferred Lifetime"
+                },
+                "no_autoconfig_flag": {
+                  "type": "boolean",
+                  "title": "No Autoconfig Flag"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "ipv6_prefix"
+              ]
+            },
+            "title": "IPv6 ND Prefixes"
+          },
+          "access_group_in": {
+            "type": "string",
+            "description": "IPv4 access-list name",
+            "title": "Access Group In"
+          },
+          "access_group_out": {
+            "type": "string",
+            "description": "IPv4 access-list name",
+            "title": "Access Group Out"
+          },
+          "ipv6_access_group_in": {
+            "type": "string",
+            "description": "IPv6 access-list name",
+            "title": "IPv6 Access Group In"
+          },
+          "ipv6_access_group_out": {
+            "type": "string",
+            "description": "IPv6 access-list name",
+            "title": "IPv6 Access Group Out"
+          },
+          "multicast": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "object",
+                "properties": {
+                  "boundaries": {
+                    "type": "array",
+                    "description": "Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "boundary": {
+                          "type": "string",
+                          "description": "IPv4 access-list name or IPv4 multicast group prefix with mask",
+                          "title": "Boundary"
+                        },
+                        "out": {
+                          "type": "boolean",
+                          "title": "Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "boundary"
+                      ]
+                    },
+                    "title": "Boundaries"
+                  },
+                  "source_route_export": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "administrative_distance": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 255,
+                        "title": "Administrative Distance"
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Source Route Export"
+                  },
+                  "static": {
+                    "type": "boolean",
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "object",
+                "properties": {
+                  "boundaries": {
+                    "type": "array",
+                    "description": "Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "boundary": {
+                          "type": "string",
+                          "description": "IPv6 access-list name or IPv6 multicast group prefix with mask",
+                          "title": "Boundary"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "boundary"
+                      ]
+                    },
+                    "title": "Boundaries"
+                  },
+                  "source_route_export": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "administrative_distance": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 255,
+                        "title": "Administrative Distance"
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "additionalProperties": false,
+                    "title": "Source Route Export"
+                  },
+                  "static": {
+                    "type": "boolean",
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "IPv6"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Multicast"
+          },
+          "ospf_network_point_to_point": {
+            "type": "boolean",
+            "title": "OSPF Network Point To Point"
+          },
+          "ospf_area": {
+            "type": "string",
+            "title": "OSPF Area"
+          },
+          "ospf_cost": {
+            "type": "integer",
+            "title": "OSPF Cost"
+          },
+          "ospf_authentication": {
+            "type": "string",
+            "enum": [
+              "none",
+              "simple",
+              "message-digest"
+            ],
+            "title": "OSPF Authentication"
+          },
+          "ospf_authentication_key": {
+            "type": "string",
+            "description": "Encrypted password used for simple authentication",
+            "title": "OSPF Authentication Key"
+          },
+          "ospf_message_digest_keys": {
+            "type": "array",
+            "description": "Keys used for message-digest authentication",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "ID"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "md5",
+                    "sha1",
+                    "sha256",
+                    "sha384",
+                    "sha512"
+                  ],
+                  "title": "Hash Algorithm"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Encrypted password",
+                  "title": "Key"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id"
+              ]
+            },
+            "title": "OSPF Message Digest Keys"
+          },
+          "pim": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "object",
+                "properties": {
+                  "dr_priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 429467295,
+                    "title": "DR Priority"
+                  },
+                  "sparse_mode": {
+                    "type": "boolean",
+                    "title": "Sparse Mode"
+                  },
+                  "local_interface": {
+                    "type": "string",
+                    "title": "Local Interface"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "IPv4"
+              }
+            },
+            "additionalProperties": false,
+            "title": "PIM"
+          },
+          "isis_enable": {
+            "type": "string",
+            "description": "ISIS instance name",
+            "title": "ISIS Enable"
+          },
+          "isis_passive": {
+            "type": "boolean",
+            "title": "ISIS Passive"
+          },
+          "isis_metric": {
+            "type": "integer",
+            "title": "ISIS Metric"
+          },
+          "isis_network_point_to_point": {
+            "type": "boolean",
+            "title": "ISIS Network Point To Point"
+          },
+          "mtu": {
+            "type": "integer",
+            "title": "MTU"
+          },
+          "no_autostate": {
+            "type": "boolean",
+            "title": "No Autostate"
+          },
+          "vrrp_ids": {
+            "type": "array",
+            "description": "Improved \"vrrp\" data model to support multiple VRRP IDs",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "VRID",
+                  "title": "ID"
+                },
+                "priority_level": {
+                  "type": "integer",
+                  "description": "Instance priority",
+                  "title": "Priority Level"
+                },
+                "advertisement": {
+                  "type": "object",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "description": "Interval in seconds",
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Advertisement"
+                },
+                "preempt": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "integer",
+                          "description": "Minimum preempt delay in seconds",
+                          "title": "Minimum"
+                        },
+                        "reload": {
+                          "type": "integer",
+                          "description": "Reload preempt delay in seconds",
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Delay"
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ],
+                  "additionalProperties": false,
+                  "title": "Preempt"
+                },
+                "timers": {
+                  "type": "object",
+                  "properties": {
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "reload": {
+                          "type": "integer",
+                          "description": "Delay after reload in seconds.",
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Timers"
+                },
+                "tracked_object": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Tracked object name",
+                        "title": "Name"
+                      },
+                      "decrement": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "description": "Decrement VRRP priority by 1-254",
+                        "title": "Decrement"
+                      },
+                      "shutdown": {
+                        "type": "boolean",
+                        "title": "Shutdown"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Tracked Object"
+                },
+                "ipv4": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv4 address",
+                      "title": "Address"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "enum": [
+                        2,
+                        3
+                      ],
+                      "title": "Version"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv6 address",
+                      "title": "Address"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "title": "IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id"
+              ]
+            },
+            "title": "VRRP IDs"
+          },
+          "vrrp": {
+            "type": "object",
+            "description": "\"vrrp\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n",
+            "properties": {
+              "virtual_router": {
+                "type": "string",
+                "description": "Virtual Router ID",
+                "title": "Virtual Router"
+              },
+              "priority": {
+                "type": "integer",
+                "description": "Instance priority",
+                "title": "Priority"
+              },
+              "advertisement_interval": {
+                "type": "integer",
+                "title": "Advertisement Interval"
+              },
+              "preempt_delay_minimum": {
+                "type": "integer",
+                "title": "Preempt Delay Minimum"
+              },
+              "ipv4": {
+                "type": "string",
+                "description": "Virtual IPv4 address",
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "string",
+                "description": "Virtual IPv6 address",
+                "title": "IPv6"
+              }
+            },
+            "additionalProperties": false,
+            "title": "VRRP"
+          },
+          "ip_attached_host_route_export": {
+            "type": "object",
+            "properties": {
+              "distance": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255,
+                "title": "Distance"
+              }
+            },
+            "additionalProperties": false,
+            "title": "IP Attached Host Route Export"
+          },
+          "bfd": {
+            "type": "object",
+            "properties": {
+              "echo": {
+                "type": "boolean",
+                "title": "Echo"
+              },
+              "interval": {
+                "type": "integer",
+                "description": "Rate in milliseconds",
+                "title": "Interval"
+              },
+              "min_rx": {
+                "type": "integer",
+                "description": "Minimum RX hold time in milliseconds",
+                "title": "Min RX"
+              },
+              "multiplier": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 50,
+                "title": "Multiplier"
+              }
+            },
+            "additionalProperties": false,
+            "title": "BFD"
+          },
+          "service_policy": {
+            "type": "object",
+            "properties": {
+              "pbr": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Name of policy-map used for policy based routing",
+                    "title": "Input"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "PBR"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Service Policy"
+          },
+          "pvlan_mapping": {
+            "type": "string",
+            "description": "List of VLANs as string",
+            "title": "PVLAN Mapping"
+          },
+          "tenant": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Tenant"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Tags"
+          },
+          "type": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Type"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration",
+            "title": "EOS CLI"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "VLAN Interfaces"
     },
     "vlan_internal_order": {
       "type": "object",
