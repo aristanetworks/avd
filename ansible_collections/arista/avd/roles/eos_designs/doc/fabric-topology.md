@@ -452,7 +452,7 @@ default_interfaces:
 
   defaults:
     # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking | Optional.
-    # The BGP peer group used for this is "bgp_peer_groups.mpls_overlay_peers".
+    # The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
     # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
     ipvpn_gateway:
         enabled: < true | false | default -> False >

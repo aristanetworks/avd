@@ -5,14 +5,6 @@
       source_interface: Loopback0
 {%     endif %}
     peer_groups:
-{%     if overlay_data.mpls_overlay_peer_group is arista.avd.defined %}
-      {{ overlay_data.mpls_overlay_peer_group.name }}:
-        activate: true
-{%     endif %}
-{%     if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
-      {{ overlay_data.rr_peers_peer_group.name }}:
-        activate: true
-{%     endif %}
 {%     if switch.overlay.ipvpn_gateway %}
       {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}:
         activate: true

@@ -19,7 +19,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
-    IPVPN-GATEWAY-PEERS:
+    IPVPN-INTERWORKING-PEERS:
       type: mpls
       update_source: Loopback0
       local_as: '65001'
@@ -89,11 +89,11 @@ router_bgp:
       description: DC1-SPINE4
       remote_as: '65001'
     100.70.0.1:
-      peer_group: IPVPN-GATEWAY-PEERS
+      peer_group: IPVPN-INTERWORKING-PEERS
       description: rr1
       remote_as: '64512'
     100.70.0.2:
-      peer_group: IPVPN-GATEWAY-PEERS
+      peer_group: IPVPN-INTERWORKING-PEERS
       description: rr2
       remote_as: '64512'
   address_family_evpn:
@@ -113,14 +113,14 @@ router_bgp:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-      IPVPN-GATEWAY-PEERS:
+      IPVPN-INTERWORKING-PEERS:
         activate: true
     domain_identifier: '65000:4'
   address_family_vpn_ipv6:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-      IPVPN-GATEWAY-PEERS:
+      IPVPN-INTERWORKING-PEERS:
         activate: true
     domain_identifier: '65000:4'
   vrfs:
