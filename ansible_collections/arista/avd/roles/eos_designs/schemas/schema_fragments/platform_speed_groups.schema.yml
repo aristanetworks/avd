@@ -5,6 +5,10 @@ type: dict
 keys:
   platform_speed_groups:
     type: list
+    primary_key: platform
+    secondary_key: speeds
+    convert_types:
+      - dict
     description: Set Hardware Speed Groups per Platform
     items:
       type: dict
@@ -13,6 +17,10 @@ keys:
           type: str
         speeds:
           type: list
+          primary_key: speed
+          secondary_key: speed_groups
+          convert_types:
+            - dict
           items:
             type: dict
             keys:
@@ -23,4 +31,4 @@ keys:
                 items:
                   type: int
                   convert_types:
-                  - str
+                    - str

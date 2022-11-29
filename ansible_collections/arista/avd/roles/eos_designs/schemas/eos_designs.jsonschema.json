@@ -41,7 +41,7 @@
     },
     "bgp_mesh_pes": {
       "default": false,
-      "description": "BGP Mesh PES",
+      "description": "Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.",
       "type": "boolean",
       "title": "BGP Mesh Pes"
     },
@@ -56,6 +56,7 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
             }
@@ -72,8 +73,14 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
+            },
+            "structured_config": {
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "type": "object",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
@@ -88,6 +95,7 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
             }
@@ -104,6 +112,7 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
             }
@@ -120,6 +129,7 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
             }
@@ -136,8 +146,14 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
+            },
+            "structured_config": {
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "type": "object",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
@@ -152,6 +168,7 @@
               "title": "Name"
             },
             "password": {
+              "description": "Encrypted Password",
               "type": "string",
               "title": "Password"
             }
@@ -575,9 +592,9 @@
     },
     "enable_trunk_groups": {
       "default": false,
-      "description": "Warning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature\n",
-      "title": "Enable Trunk Group support across eos_designs",
-      "type": "boolean"
+      "description": "Enable Trunk Group support across eos_designs\nWarning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature\n",
+      "type": "boolean",
+      "title": "Enable Trunk Groups"
     },
     "event_handlers": {
       "description": "Gives ability to monitor and react to Syslog messages provides a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
@@ -829,6 +846,7 @@
       "title": "ISIS TI LFA"
     },
     "l3_edge": {
+      "description": "The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.\n\nThe data model supports using IP pools, Subnet per link or specifying the IP addresses manually.\nFor BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).\n\nMake sure to configure the variables in a group_vars file covering all devices mentioned in the data model.\n",
       "properties": {
         "p2p_links": {
           "description": "Any setting supported under p2p_links can be set and inherited from profile",
@@ -849,7 +867,7 @@
                 "title": "BFD"
               },
               "id": {
-                "description": "Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool",
+                "description": "Unique id per subnet_summary (starting from 1). Used to calculate ip addresses, required with ip_pool",
                 "type": "integer",
                 "title": "ID"
               },
@@ -860,7 +878,7 @@
                 "title": "Include In Underlay Protocol"
               },
               "interfaces": {
-                "description": "Interfaces where this link should be configured | Required",
+                "description": "Interfaces where this link should be configured",
                 "items": {
                   "type": "string"
                 },
@@ -868,7 +886,7 @@
                 "title": "Interfaces"
               },
               "ip": {
-                "description": "Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)",
+                "description": "Specific IP addresses used on this P2P link, Optional (Requires ip_pool or subnet or ip)",
                 "items": {
                   "type": "string"
                 },
@@ -876,7 +894,7 @@
                 "title": "IP"
               },
               "ip_pool": {
-                "description": "IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)",
+                "description": "IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link, Optional (Requires ip_pool or subnet or ip)",
                 "type": "string",
                 "title": "IP Pool"
               },
@@ -891,7 +909,7 @@
                 "title": "MTU"
               },
               "nodes": {
-                "description": "Nodes where this link should be configured | Required",
+                "description": "Nodes where this link should be configured",
                 "items": {
                   "type": "string"
                 },
@@ -915,26 +933,22 @@
                 "title": "QOS Profile"
               },
               "speed": {
-                "description": "Speed | Optional",
+                "description": "< speed | auto speed | forced speed >",
                 "type": "string",
-                "enum": [
-                  "speed",
-                  "auto speed",
-                  "forced speed"
-                ],
                 "title": "Speed"
               },
               "subnet": {
-                "description": "Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)",
+                "description": "Subnet used on this P2P link, Optional (Requires ip_pool or subnet or ip)",
                 "type": "string",
                 "title": "Subnet"
               }
             },
-            "additionalProperties": false,
-            "type": "object",
             "required": [
-              "id"
-            ]
+              "interfaces",
+              "nodes"
+            ],
+            "additionalProperties": false,
+            "type": "object"
           },
           "type": "array",
           "title": "P2P Links"
@@ -943,6 +957,7 @@
           "items": {
             "properties": {
               "ipv4_pool": {
+                "description": "IPv4_address/Mask",
                 "type": "string",
                 "title": "IPv4 Pool"
               },
@@ -952,12 +967,16 @@
               }
             },
             "additionalProperties": false,
-            "type": "object"
+            "type": "object",
+            "required": [
+              "name"
+            ]
           },
           "type": "array",
           "title": "P2P Links IP Pools"
         },
         "p2p_links_profiles": {
+          "description": "Any setting supported under p2p_links can be set and inherited from profile",
           "items": {
             "properties": {
               "name": {
@@ -1101,6 +1120,7 @@
       "title": "MLAG Ibgp Peering VRFs"
     },
     "name_server": {
+      "description": "Only name_server from eos_ci_config_gen.\nThe variables will make it to the intended config.\n",
       "properties": {
         "nodes": {
           "items": {
@@ -1152,51 +1172,72 @@
       "title": "Network Services Keys"
     },
     "node_type_keys": {
+      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
       "items": {
         "properties": {
           "connected_endpoints": {
+            "default": false,
+            "description": "Are endpoints connected to this node type",
             "type": "boolean",
             "title": "Connected Endpoints"
           },
           "default_evpn_role": {
+            "default": "none",
+            "description": "Default evpn_role. Can be overridden in topology vars.",
             "type": "string",
+            "enum": [
+              "none",
+              "client",
+              "server"
+            ],
             "title": "Default Evpn Role"
           },
           "default_underlay_routing_protocol": {
+            "default": "ebgp",
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars\n",
             "type": "string",
             "title": "Default Underlay Routing Protocol"
           },
           "interface_descriptions": {
+            "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks\n",
             "properties": {
               "connected_endpoints_ethernet_interfaces": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces",
                 "type": "string",
                 "title": "Connected Endpoints Ethernet Interfaces"
               },
               "connected_endpoints_port_channel_interfaces": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces",
                 "type": "string",
                 "title": "Connected Endpoints Port Channel Interfaces"
               },
               "overlay_loopback_interface": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface",
                 "type": "string",
                 "title": "Overlay Loopback Interface"
               },
               "underlay_ethernet_interfaces": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces",
                 "type": "string",
                 "title": "Underlay Ethernet Interfaces"
               },
               "underlay_ethernet_mlag_interfaces": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces",
                 "type": "string",
                 "title": "Underlay Ethernet MLAG Interfaces"
               },
               "underlay_port_channel_interfaces": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces",
                 "type": "string",
                 "title": "Underlay Port Channel Interfaces"
               },
               "underlay_port_channel_mlag_interfaces": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces",
                 "type": "string",
                 "title": "Underlay Port Channel MLAG Interfaces"
               },
               "vtep_loopback_interface": {
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface",
                 "type": "string",
                 "title": "Vtep Loopback Interface"
               }
@@ -1206,40 +1247,50 @@
             "title": "Interface Descriptions"
           },
           "ip_addressing": {
+            "description": "Override ip_addressing templates",
             "properties": {
               "mlag_ip_primary": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary",
                 "type": "string",
                 "title": "MLAG IP Primary"
               },
               "mlag_ip_secondary": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary",
                 "type": "string",
                 "title": "MLAG IP Secondary"
               },
               "mlag_l3_ip_primary": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary",
                 "type": "string",
                 "title": "MLAG L3 IP Primary"
               },
               "mlag_l3_ip_secondary": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary",
                 "type": "string",
                 "title": "MLAG L3 IP Secondary"
               },
               "p2p_uplinks_ip": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip",
                 "type": "string",
                 "title": "P2P Uplinks IP"
               },
               "p2p_uplinks_peer_ip": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip",
                 "type": "string",
                 "title": "P2P Uplinks Peer IP"
               },
               "router_id": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id",
                 "type": "string",
                 "title": "Router ID"
               },
               "vtep_ip": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip",
                 "type": "string",
                 "title": "Vtep IP"
               },
               "vtep_ip_mlag": {
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag",
                 "type": "string",
                 "title": "Vtep IP MLAG"
               }
@@ -1253,20 +1304,29 @@
             "title": "Key"
           },
           "mlag_support": {
+            "default": false,
+            "description": "Can this node type support mlag",
             "type": "boolean",
             "title": "MLAG Support"
           },
           "mpls_lsr": {
+            "default": false,
+            "description": "Is this switch an MPLS LSR",
             "type": "boolean",
             "title": "MPLS Lsr"
           },
           "network_services": {
+            "description": "Will network services be deployed on this node type",
             "properties": {
               "l2": {
+                "default": false,
+                "description": "Vlans",
                 "type": "boolean",
                 "title": "L2"
               },
               "l3": {
+                "default": false,
+                "description": "VRFs, SVIs (if l2 is true)\nOnly supported with underlay_router\n",
                 "type": "boolean",
                 "title": "L3"
               }
@@ -1276,18 +1336,29 @@
             "title": "Network Services"
           },
           "type": {
+            "description": "Type value matching this node_type_key",
             "type": "string",
             "title": "Type"
           },
           "underlay_router": {
+            "default": true,
+            "description": "Is this node type a L3 device",
             "type": "boolean",
             "title": "Underlay Router"
           },
           "uplink_type": {
+            "default": "p2p",
+            "description": "Uplinks must be p2p if \"vtep\" or \"underlay_router\" is true.",
             "type": "string",
+            "enum": [
+              "p2p",
+              "port-channel"
+            ],
             "title": "Uplink Type"
           },
           "vtep": {
+            "default": false,
+            "description": "Is this switch an EVPN VTEP",
             "type": "boolean",
             "title": "Vtep"
           }
@@ -1383,6 +1454,9 @@
     },
     "p2p_uplinks_mtu": {
       "default": 9000,
+      "description": "Point to Point Links MTU",
+      "maximum": 9216,
+      "minimum": 0,
       "type": "integer",
       "title": "P2P Uplinks MTU"
     },
@@ -1435,10 +1509,12 @@
           "reload_delay": {
             "properties": {
               "mlag": {
+                "description": "In seconds",
                 "type": "integer",
                 "title": "MLAG"
               },
               "non_mlag": {
+                "description": "In seconds",
                 "type": "integer",
                 "title": "Non MLAG"
               }
@@ -1487,14 +1563,20 @@
                 }
               },
               "additionalProperties": false,
-              "type": "object"
+              "type": "object",
+              "required": [
+                "speed"
+              ]
             },
             "type": "array",
             "title": "Speeds"
           }
         },
         "additionalProperties": false,
-        "type": "object"
+        "type": "object",
+        "required": [
+          "platform"
+        ]
       },
       "type": "array",
       "title": "Platform Speed Groups"
@@ -1775,13 +1857,14 @@
       "title": "Trunk Groups"
     },
     "type": {
+      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.\n",
       "type": "string",
       "title": "Type"
     },
     "underlay_filter_peer_as": {
-      "default": "0000:0000:",
+      "default": false,
       "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
-      "type": "string",
+      "type": "boolean",
       "title": "Underlay Filter Peer As"
     },
     "underlay_ipv6": {
