@@ -11,13 +11,13 @@ router_bgp:
       remote_as: '65103'
       next_hop_self: true
       description: DC1-SVC3A
-      password: vnEaG8gMeQf3d3cN6PktXQ==
+      password: 15AwQNBEJ1nyF/kBEtoAGw==
       maximum_routes: 12000
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
       remote_as: 65001

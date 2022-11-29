@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
