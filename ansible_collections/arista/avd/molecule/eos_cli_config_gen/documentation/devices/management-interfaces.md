@@ -45,8 +45,8 @@
 ```eos
 !
 interface Management0
-   ip address 10.0.0.0
    mac-address 00:1c:73:00:00:aa
+   ip address 10.0.0.0
 !
 interface Management1
    description oob_management

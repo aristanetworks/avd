@@ -13,6 +13,9 @@ interface {{ management_interface.name }}
 {%     if management_interface.mtu is arista.avd.defined %}
    mtu {{ management_interface.mtu }}
 {%     endif %}
+{%     if management_interface.mac_address is arista.avd.defined %}
+   mac-address {{ management_interface.mac_address }}
+{%     endif %}
 {%     if management_interface.vrf is arista.avd.defined and management_interface.vrf != 'default' %}
    vrf {{ management_interface.vrf }}
 {%     endif %}
@@ -24,8 +27,5 @@ interface {{ management_interface.name }}
 {%     endif %}
 {%     if management_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ management_interface.ipv6_address }}
-{%     endif %}
-{%     if management_interface.mac_address is arista.avd.defined %}
-   mac-address {{ management_interface.mac_address }}
 {%     endif %}
 {% endfor %}
