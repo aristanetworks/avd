@@ -84,8 +84,6 @@ management_api_http:
   enable_https: true
 ptp:
   mode: boundary
-  auto_clock_identity: true
-  clock_identity_prefix: 00:00:00
   clock_identity: 00:00:00:00:00:00
   priority1: 20
   priority2: 1

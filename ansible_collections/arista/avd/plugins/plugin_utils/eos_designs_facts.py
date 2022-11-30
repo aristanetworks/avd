@@ -469,8 +469,6 @@ class EosDesignsFacts(AvdFacts):
             ptp["device_config"] = {
                 "mode": get(self._switch_data_combined, "ptp.mode", default="boundary"),
                 "forward_unicast": get(self._switch_data_combined, "ptp.forward_unicast"),
-                "auto_clock_identity": auto_clock_identity,
-                "clock_identity_prefix": clock_identity_prefix,
                 "clock_identity": get(self._switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
                 "source": {"ip": get(self._switch_data_combined, "ptp.source.ip")},
                 "priority1": priority1,

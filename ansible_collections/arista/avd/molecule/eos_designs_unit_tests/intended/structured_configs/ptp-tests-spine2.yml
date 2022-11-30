@@ -60,8 +60,6 @@ management_api_http:
 ptp:
   mode: boundary
   forward_unicast: true
-  auto_clock_identity: true
-  clock_identity_prefix: 01:02:03
   clock_identity: 01:02:03:14:00:0a
   priority1: 20
   priority2: 10
