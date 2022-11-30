@@ -33,7 +33,7 @@ keys are returned as `list` items (any input `dict` values are lost).
 value of the input `list` items in each `dict`.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be
-written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit AS numbers, where the setting `bgp_as: 65001` will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. In the schema for `bgp_as` the `convert_types` option is configured to `['int']` which instructs the `arista.avd.validate` Action Plugin to automatically convert
+written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit AS numbers, where the setting `bgp_as: 65001` will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. In the schema for `bgp_as` the `convert_types` option is configured to `['int']` which means AVD Action Plugins will automatically convert
 `bgp_as: 65001` to `bgp_as: "65001"`.
 
 Type conversion is also used for introducing changes to the data models without affecting existing deployments. For example,
@@ -68,7 +68,7 @@ Type conversion is turned on by default.
 
 ## Validation Options
 
-By default `arista.avd.validate` plugin runs type conversion first and then performs validation of the converted data, reporting
+By default AVD Action Plugins run type conversion first and then performs validation of the converted data, reporting
 validation issues as warnings - not blocking the playbook. This behavior can be adjusted by setting the variables described
 below.
 
