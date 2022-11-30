@@ -384,6 +384,59 @@ dynamic_keys:
                     type: bool
                     default: true
 
+          ipvpn_gateway:
+            description: |
+              Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking | Optional. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+              L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                default: false
+              evpn_domain_id:
+                description: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                type: str
+              ipvpn_domain_id:
+                description: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                type: str
+              enable_d_path:
+                description: Enable D-path for use with BGP bestpath selection algorithm.
+                type: bool
+                default: true
+              maximum_routes:
+                description: Maximum routes to accept from IPVPN remote peers.
+                type: int
+                convert_types:
+                  - str
+              local_as:
+                description: Apply local-as to peering with IPVPN remote peers.
+                type: str
+                convert_types:
+                  - int
+              address_families:
+                description: IPVPN address families to enable for remote peers.
+                type: list
+                items:
+                  type: str
+                default: [ vpn-ipv4 ]
+              remote_peers:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    hostname:
+                      description: Hostname of remote IPVPN Peer.
+                      type: str
+                    ip_address:
+                      description: Peering IP of remote IPVPN Peer.
+                      type: str
+                      format: ipv4
+                    bgp_as:
+                      description: BGP ASN of remote IPVPN Peer.
+                      type: str
+                      convert_types:
+                        - int
+
           mlag:
             description: Enable / Disable auto MLAG, when two nodes are defined in node group.
             type: bool

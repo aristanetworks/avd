@@ -781,6 +781,65 @@ dynamic_keys:
             description: VLAN number assigned to Inband Management SVI on l2leafs
               in default VRF
             type: int
+          ipvpn_gateway:
+            description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
+              Interworking | Optional. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+
+              L3 Reachability is required for this to work, the preferred method to
+              establish underlay connectivity is to use core_interfaces.
+
+              '
+            keys:
+              address_families:
+                default:
+                - vpn-ipv4
+                description: IPVPN address families to enable for remote peers.
+                items:
+                  type: str
+                type: list
+              enable_d_path:
+                default: true
+                description: Enable D-path for use with BGP bestpath selection algorithm.
+                type: bool
+              enabled:
+                default: false
+                type: bool
+              evpn_domain_id:
+                description: Domain ID to assign to EVPN address family for use with
+                  D-path. Format <nn>:<nn>.
+                type: str
+              ipvpn_domain_id:
+                description: Domain ID to assign to IPVPN address families for use
+                  with D-path. Format <nn>:<nn>.
+                type: str
+              local_as:
+                convert_types:
+                - int
+                description: Apply local-as to peering with IPVPN remote peers.
+                type: str
+              maximum_routes:
+                convert_types:
+                - str
+                description: Maximum routes to accept from IPVPN remote peers.
+                type: int
+              remote_peers:
+                items:
+                  keys:
+                    bgp_as:
+                      convert_types:
+                      - int
+                      description: BGP ASN of remote IPVPN Peer.
+                      type: str
+                    hostname:
+                      description: Hostname of remote IPVPN Peer.
+                      type: str
+                    ip_address:
+                      description: Peering IP of remote IPVPN Peer.
+                      format: ipv4
+                      type: str
+                  type: dict
+                type: list
+            type: dict
           is_type:
             default: level-2
             type: str
