@@ -200,6 +200,7 @@ router bgp 65101
    neighbor 192.0.3.6 remove-private-as
    neighbor 192.0.3.6 remove-private-as ingress
    neighbor 192.0.3.6 description test_remove_private_as
+   no neighbor 192.0.3.6 route-reflector-client
    neighbor 192.0.3.7 remote-as 65438
    neighbor 192.0.3.7 remove-private-as all replace-as
    neighbor 192.0.3.7 remove-private-as ingress replace-as

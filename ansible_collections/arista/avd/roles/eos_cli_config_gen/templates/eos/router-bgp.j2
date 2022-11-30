@@ -222,6 +222,8 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.route_reflector_client is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} route-reflector-client
+{%         elif neighbor.route_reflector_client is arista.avd.defined(false) %}
+   no neighbor {{ neighbor.ip_address }} route-reflector-client
 {%         endif %}
 {%         if neighbor.ebgp_multihop is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} ebgp-multihop {{ neighbor.ebgp_multihop }}
