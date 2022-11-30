@@ -1,14 +1,19 @@
-# Collection Installation
+# Collection installation
 
-These instructions are for regular users to install via Ansible Galaxy. To setup a development environment use [these](../contribution/setup-environment.md) instructions.
+## Installation workflow
 
-**arista.avd** can also be consumed using the ["AVD All-in-one" container](https://github.com/arista-netdevops-community/avd-all-in-one-container).
+- Python **3.8** or later
+- ansible-core from **2.11.3** to **2.12.x** excluding **2.12.0** to **2.12.5**
+- Install [**arista.avd**](#install-collection-from-ansible-galaxy) collection
+- Install additional Python [requirements](./requirements.md#python-requirements-installation)
+- Modify `ansible.cfg` file to support additional [jinja2 extensions](./requirements.md#ansible-configuration-ini-file)
 
-## Install from Ansible Galaxy
+!!! note
+    Excluded versions have an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.12.6/changelogs/CHANGELOG-v2.12.rst#bugfixes) in **2.12.6** and **2.13.1**. Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
 
-The **arista.avd** collection is available on [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
+## Install Collection from Ansible Galaxy
 
-Make sure to install [Python requirements](requirements.md#additional-python-libraries-required) afterwards.
+These instructions are for regular users to install via Ansible Galaxy. To setup a development environment use [these](../contribution/setup-environment.md) instructions. **arista.avd** can also be consumed using the ["AVD All-in-one" container](https://github.com/arista-netdevops-community/avd-all-in-one-container). The **arista.avd** collection is available on [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
 
 ### Latest version
 

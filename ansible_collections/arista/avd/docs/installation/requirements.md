@@ -9,18 +9,11 @@
 
 If you leverage [CloudVision](https://www.arista.com/en/products/eos/eos-cloudvision) deployment with AVD, your CV instance must be supported by [CloudVision Ansible collection](https://cvp.avd.sh/)
 
+> ***NOTE:*** When using ansible-cvp modules, the user who is executing the ansible-playbook must have access to both CVP and the EOS CLI.
+
 ## Python
 
 - Python **3.8** or later
-
-## Supported Ansible Versions
-
-- ansible-core from **2.11.3** to **2.12.x** excluding **2.12.0** to **2.12.5**
-
-Excluded versions have an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.12.6/changelogs/CHANGELOG-v2.12.rst#bugfixes) in **2.12.6** and **2.13.1**.
-
-!!! note
-    Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
 
 ## Additional Python Libraries required
 
@@ -47,3 +40,14 @@ pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt
 
 !!! warning
     Depending of your operating system settings, `pip3` might be replaced by `pip`.
+
+### Ansible Configuration INI file
+
+- enable jinja2 extensions: loop controls and do
+  - [Jinja2 Extensions Documentation](https://jinja.palletsprojects.com/extensions/)
+- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
+
+```ini
+jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
+duplicate_dict_key=error
+```
