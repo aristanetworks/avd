@@ -68,7 +68,7 @@ design:
 ### Layer 2 Leaf Spine
 
 - The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
-- The Clos fabric can be represented as L3 spines, spines, and L2 leafs.
+- The Clos fabric can be represented as L3 spines, spines, and leafs.
 
 ## Node Type Variables
 
@@ -80,7 +80,7 @@ The following table provide information on the default node types that have been
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
 | super_spine        | ✅              | p2p          | none              | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
 | spine              | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
-| l3leaf             | ✅              | p2p          | none            | ✅                 | ✅                  | ✘  | ✅           | ✅                 |
+| l3leaf             | ✅              | p2p          | client            | ✅                 | ✅                  | ✅  | ✅           | ✅                 |
 | l2leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
 | overlay_controller | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
 
@@ -90,7 +90,7 @@ The following table provide information on the default node types that have been
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
 | l3spine              | ✅              | p2p          | none            | ✅                  | ✅                   | ✘   | ✅            | ✅                  |
 | spine             | ✘              | port-channel | none            | ✅                 | ✘                  | ✘  | ✅           | ✅                 |
-| l2leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
+| leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
 
 The variables should be applied to all devices in the fabric.
 
