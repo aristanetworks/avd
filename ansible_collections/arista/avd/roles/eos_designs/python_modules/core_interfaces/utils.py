@@ -101,6 +101,14 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_as")
 
     @cached_property
+    def _ptp_profiles(self) -> list:
+        return get(self._hostvars, "ptp_profiles", required=True)
+
+    @cached_property
+    def _ptp_profile(self) -> list:
+        return get(self._hostvars, "switch.ptp.profile", required=True)
+
+    @cached_property
     def _filtered_p2p_links(self) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
@@ -303,9 +311,10 @@ class UtilsMixin:
             }
 
         if p2p_link.get("ptp_enable") is True:
-            interface_cfg["ptp"] = {
-                "enable": True,
-            }
+            ptp_config = get_item(self._ptp_profiles, "profile", self._ptp_profile, default={})
+            ptp_config["enable"] = True
+            ptp_config.pop("profile", None)
+            interface_cfg["ptp"] = ptp_config
 
         if self._mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
