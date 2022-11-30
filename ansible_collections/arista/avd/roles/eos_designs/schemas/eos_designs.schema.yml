@@ -783,7 +783,7 @@ dynamic_keys:
             type: int
           ipvpn_gateway:
             description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
-              Interworking | Optional. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+              Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
 
               L3 Reachability is required for this to work, the preferred method to
               establish underlay connectivity is to use core_interfaces.
@@ -802,24 +802,28 @@ dynamic_keys:
                 description: Enable D-path for use with BGP bestpath selection algorithm.
                 type: bool
               enabled:
-                default: false
+                required: true
                 type: bool
               evpn_domain_id:
+                default: 0:1
                 description: Domain ID to assign to EVPN address family for use with
                   D-path. Format <nn>:<nn>.
                 type: str
               ipvpn_domain_id:
+                default: 0:2
                 description: Domain ID to assign to IPVPN address families for use
                   with D-path. Format <nn>:<nn>.
                 type: str
               local_as:
                 convert_types:
                 - int
+                default: none
                 description: Apply local-as to peering with IPVPN remote peers.
                 type: str
               maximum_routes:
                 convert_types:
                 - str
+                default: 0
                 description: Maximum routes to accept from IPVPN remote peers.
                 type: int
               remote_peers:
@@ -829,13 +833,16 @@ dynamic_keys:
                       convert_types:
                       - int
                       description: BGP ASN of remote IPVPN Peer.
+                      required: true
                       type: str
                     hostname:
                       description: Hostname of remote IPVPN Peer.
+                      required: true
                       type: str
                     ip_address:
                       description: Peering IP of remote IPVPN Peer.
                       format: ipv4
+                      required: true
                       type: str
                   type: dict
                 type: list
