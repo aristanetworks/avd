@@ -52,7 +52,7 @@ Ansible galaxy hosts all stable versions of this collection. Installation from a
 
 ## Additional resources
 
-- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#eos) on ansible documentation.
+- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on ansible documentation.
 - Ansible [CloudVision modules](https://cvp.avd.sh/en/stable/)
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
