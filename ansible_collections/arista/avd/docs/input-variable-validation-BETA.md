@@ -17,7 +17,7 @@ For details on the schema format see the [Schema Details](#schema-details) secti
 
 The validation of input variables is performed in most AVD Action Plugins. The validation also supports automatic conversion of
 variable types, if configured in the schema. The supported types that can be converted from depends on the type to be converted to.
-The current implementation supports the automatic conversions listed below. Conversions will only happen if set in the schema.
+The current implementation supports the automatic conversions listed below.
 
 | From (`convert_types`) | To (`type`) |
 | ---------------------- | ----------- |
@@ -28,7 +28,7 @@ The current implementation supports the automatic conversions listed below. Conv
 
 \* If `primary_key` is set on the `list` schema, conversion from `dict`-of-`dicts` to `list`-of-`dicts` will insert the `primary_key`
 with the value of the outer dictionary key in each `dict`. If `primary_key` is *not* set on the `list` schema, only the input `dict`
-keys are returned as `list` items (any value is lost).
+keys are returned as `list` items (any input `dict` values are lost).
 \*\* If `primary_key` is set on the `list` schema, conversion from `list` to `list`-of-`dicts` will insert the `primary_key` with the
 value of the input `list` items in each `dict`.
 
