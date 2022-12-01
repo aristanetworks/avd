@@ -1122,6 +1122,26 @@ ip_access_lists:
         vlan_mask: <str>
 ```
 
+## IP Access Lists Max Entries
+
+### Description
+
+The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
+Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
+If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
+The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  |  |
+
+### YAML
+
+```yaml
+ip_access_lists_max_entries: <int>
+```
+
 ## IP Community Lists
 
 ### Description

@@ -15,21 +15,25 @@ For details on the schema format see the [Schema Details](#schema-details) secti
 
 ## Automatic Type Conversion
 
-The validation of input variables is performed by the `arista.avd.validate` Action Plugin. The plugin also supports automatic
-conversion of variable types, if configured in the schema. The supported types that can be converted from depends on the type to
-be converted to. The current implementation supports the following automatic conversions:
+The validation of input variables is performed in most AVD Action Plugins. The validation also supports automatic conversion of
+variable types, if configured in the schema. The supported types that can be converted from depends on the type to be converted to.
+The current implementation supports the automatic conversions listed below.
 
 | From (`convert_types`) | To (`type`) |
 | ---------------------- | ----------- |
 | `bool`, `str` | `int` |
 | `int`, `str` | `bool` |
 | `bool`, `int` | `str` |
-| `dict`* | `list` |
+| `dict`*, `list`** | `list` |
 
-\* Conversion from `dict` to `list` is only supported when `primary_key` is set on the `list` schema.
+\* If `primary_key` is set on the `list` schema, conversion from `dict`-of-`dicts` to `list`-of-`dicts` will insert the `primary_key`
+with the value of the outer dictionary key in each `dict`. If `primary_key` is *not* set on the `list` schema, only the input `dict`
+keys are returned as `list` items (any input `dict` values are lost).
+\*\* If `primary_key` is set on the `list` schema, conversion from `list` to `list`-of-`dicts` will insert the `primary_key` with the
+value of the input `list` items in each `dict`.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be
-written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit AS numbers, where the setting `bgp_as: 65001` will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. In the schema for `bgp_as` the `convert_types` option is configured to `['int']` which instructs the `arista.avd.validate` Action Plugin to automatically convert
+written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit AS numbers, where the setting `bgp_as: 65001` will be interpreted as an integer in YAML, unless it is enclosed in quotes `bgp_as: "65001"`. In the schema for `bgp_as` the `convert_types` option is configured to `['int']` which means AVD Action Plugins will automatically convert
 `bgp_as: 65001` to `bgp_as: "65001"`.
 
 Type conversion is also used for introducing changes to the data models without affecting existing deployments. For example,
@@ -56,34 +60,36 @@ tenants:
 
 The input data will be converted automatically and validated according to the new model to allow for a gracious introduction of this data-model changes in late 3.x versions.
 
-Type conversion is turned on by default but can be disabled or adjusted with the options described in the next section.
+Type conversion is turned on by default.
+
+!!! CAUTION
+    Although conversion can be disabled, this is **not** recommended, and will most likely lead to issues with AVD or the generated
+    configuration. Data conversion also handles data deprecation and upgrades.
 
 ## Validation Options
 
-By default `arista.avd.validate` plugin runs type conversion first and then performs validation of the converted data, reporting
+By default AVD Action Plugins run type conversion first and then performs validation of the converted data, reporting
 validation issues as warnings - not blocking the playbook. This behavior can be adjusted by setting the variables described
 below.
 
-The validation task can be skipped entirely by adding `--skip-tags validate` to the `ansible-playbook` command-line.
-
 ```yaml
-# Conversion Mode for arista.avd.validate | Optional
+# Conversion Mode for AVD input data conversion | Optional
 # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
-# "disabled" means that conversion will not run.
+# "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
 # "warning" will produce warning messages.
 # "info" will produce regular log messages.
 # "debug" will produce hidden debug messages viewable with -v.
 # The converted data is set as facts which can be seen with -v, but is more readable with -vvv
-avd_validate_conversion_mode: < "disabled" | "warning" | "info" | "debug" | default -> "debug" >
+avd_data_conversion_mode: < "disabled" | "warning" | "info" | "debug" | default -> "debug" >
 
-# Validation Mode for arista.avd.validate | Optional
+# Validation Mode for AVD input data validation | Optional
 # During validation, messages will generated with information about the host(s) and key(s) which failed validation.
 # "disabled" means that validation will not run.
 # "error" will produce error messages and fail the task.
 # "warning" will produce warning messages.
 # "info" will produce regular log messages.
 # "debug" will produce hidden debug messages viewable with -v.
-avd_validate_validation_mode: < "disabled" | "error" | "warning" | "info" | "debug" | default -> "warning" >
+avd_data_validation_mode: < "disabled" | "error" | "warning" | "info" | "debug" | default -> "warning" >
 ```
 
 ## Schema Details

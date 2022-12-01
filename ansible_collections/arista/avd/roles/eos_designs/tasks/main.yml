@@ -27,8 +27,8 @@
   tags: [never, validate]
   arista.avd.validate:
     schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
-    conversion_mode: "{{ avd_validate_conversion_mode }}"
-    validation_mode: "{{ avd_validate_validation_mode }}"
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
   delegate_to: localhost
 
 - name: Set eos_designs facts
