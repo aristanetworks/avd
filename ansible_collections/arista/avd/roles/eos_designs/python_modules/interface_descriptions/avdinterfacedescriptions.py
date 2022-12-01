@@ -132,6 +132,11 @@ class AvdInterfaceDescriptions(AvdFacts):
         if self._mpls_lsr is True:
             return "LSR_Router_ID"
 
+        # Covers L2LS
+        if get(self._hostvars, "switch.overlay_routing_protocol") == "none":
+            return "Router_ID"
+
+        # Note that the current code will render this for HER and others
         return "EVPN_Overlay_Peering"
 
     def vtep_loopback_interface(self) -> str:

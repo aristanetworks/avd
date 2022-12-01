@@ -32,6 +32,22 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
+    172.17.20.1:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS1_Ethernet1
+    172.17.20.3:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS1_Ethernet2
+    172.17.20.9:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS2_Ethernet1
+    172.17.20.11:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS2_Ethernet2
     172.16.21.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65210'
@@ -40,22 +56,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65210'
       description: DC2-POD1-SPINE2_Ethernet1
-    172.17.20.1:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65201'
-      description: DC2-RS1_Ethernet1
-    172.17.20.9:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65201'
-      description: DC2-RS2_Ethernet1
-    172.17.20.3:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65201'
-      description: DC2-RS1_Ethernet2
-    172.17.20.11:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65201'
-      description: DC2-RS2_Ethernet2
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
@@ -128,64 +128,64 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
-    shutdown: false
     ip_address: 172.16.21.0/31
   Ethernet2:
     peer: DC2-POD1-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
-    shutdown: false
     ip_address: 172.16.21.2/31
   Ethernet3:
     peer: DC2-RS1
     peer_interface: Ethernet1
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS1_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.20.0/31
   Ethernet5:
     peer: DC2-RS2
     peer_interface: Ethernet1
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS2_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.20.8/31
   Ethernet6:
     peer: DC2-RS1
     peer_interface: Ethernet2
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS1_Ethernet2
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.20.2/31
   Ethernet7:
     peer: DC2-RS2
     peer_interface: Ethernet2
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS2_Ethernet2
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.20.10/31
   Ethernet4:
     peer: DC1-SUPER-SPINE1

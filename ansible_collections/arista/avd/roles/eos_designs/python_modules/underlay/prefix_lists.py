@@ -22,7 +22,7 @@ class PrefixListsMixin(UtilsMixin):
         if self._underlay_routing_protocol != "ebgp":
             return None
 
-        if self._overlay_routing_protocol is None:
+        if self._overlay_routing_protocol in ["none", None]:
             return None
 
         prefix_lists = {}
@@ -62,6 +62,6 @@ class PrefixListsMixin(UtilsMixin):
         sequence_numbers = {}
         sequence_numbers[10] = {"action": f"permit {self._loopback_ipv6_pool} eq 128"}
 
-        ipv6_prefix_lists["PL-LOOPBACKS-EVPN-OVERLAYV6"] = {"sequence_numbers": sequence_numbers}
+        ipv6_prefix_lists["PL-LOOPBACKS-EVPN-OVERLAY-V6"] = {"sequence_numbers": sequence_numbers}
 
         return ipv6_prefix_lists

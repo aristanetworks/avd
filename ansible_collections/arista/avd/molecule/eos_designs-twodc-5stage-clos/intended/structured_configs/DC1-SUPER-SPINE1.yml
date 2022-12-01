@@ -21,6 +21,11 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
+    172.17.10.1:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65101'
+      description: DC1-RS1_Ethernet1
+      bfd: true
     172.16.11.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65110.100'
@@ -37,11 +42,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65120'
       description: DC1-POD2-SPINE2_Ethernet1
-    172.17.10.1:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65101'
-      description: DC1-RS1_Ethernet1
-      bfd: true
     11.1.2.1:
       remote_as: '65200'
       description: DC2-SUPER-SPINE1
@@ -80,6 +80,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -87,13 +88,13 @@ ethernet_interfaces:
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.16.11.0/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -101,13 +102,13 @@ ethernet_interfaces:
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.16.11.2/31
   Ethernet3:
     peer: DC1-POD2-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -115,13 +116,13 @@ ethernet_interfaces:
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.16.12.0/31
   Ethernet4:
     peer: DC1-POD2-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -129,17 +130,16 @@ ethernet_interfaces:
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.16.12.2/31
   Ethernet5:
     peer: DC1-RS1
     peer_interface: Ethernet1
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS1_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.10.0/31
   Ethernet6:
     peer: DC2-SUPER-SPINE1

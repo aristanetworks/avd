@@ -22,7 +22,7 @@ class UtilsMixin:
         """
         Returns a list of peers
         """
-        peers = default(get(get(self._hostvars, "avd_topology_peers"), self._hostname), [])
+        peers = default(get(get(self._hostvars, "avd_topology_peers"), self._hostname, separator=".."), [])
         return peers
 
     @cached_property
@@ -151,7 +151,7 @@ class UtilsMixin:
                         "trunk_groups": get(uplink, "peer_trunk_groups"),
                         "bfd": get(uplink, "bfd"),
                         "ptp": get(uplink, "ptp"),
-                        "mac_securityg": get(uplink, "ptp"),
+                        "mac_security": get(uplink, "mac_security"),
                         "short_esi": get(uplink, "peer_short_esi"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),

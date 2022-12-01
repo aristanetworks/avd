@@ -34,14 +34,6 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65101'
       description: DC1-LEAF1A_Ethernet27
-    10.10.101.7:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65161'
-      description: MLAG-OSPF-L3LEAF1A_Ethernet1
-    10.10.101.9:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65161'
-      description: MLAG-OSPF-L3LEAF1B_Ethernet1
     10.10.101.1:
       peer_group: UNDERLAY-PEERS
       remote_as: '65151'
@@ -54,6 +46,14 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65153'
       description: MH-LEAF2A_Ethernet1
+    10.10.101.7:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65161'
+      description: MLAG-OSPF-L3LEAF1A_Ethernet1
+    10.10.101.9:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65161'
+      description: MLAG-OSPF-L3LEAF1B_Ethernet1
     172.31.254.33:
       peer_group: UNDERLAY-PEERS
       remote_as: '65102'

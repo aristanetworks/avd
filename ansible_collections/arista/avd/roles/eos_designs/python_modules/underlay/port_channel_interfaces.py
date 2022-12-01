@@ -22,17 +22,17 @@ class PortChannelInterfacesMixin(UtilsMixin):
         port_channel_interfaces = {}
         port_channel_list = []
         for link in self._underlay_links:
-            if link["type"] != "underlay_l2":
+            if get(link, "type") != "underlay_l2":
                 continue
 
-            if (channel_group_id := link["channel_group_id"]) in port_channel_list:
+            if (channel_group_id := get(link, "channel_group_id")) in port_channel_list:
                 continue
 
             port_channel_list.append(channel_group_id)
 
             port_channel_interface = {
                 "description": self._avd_interface_descriptions.underlay_port_channel_interfaces(
-                    link["peer"], link["peer_channel_group_id"], get(link, "channel_description")
+                    get(link, "peer"), get(link, "peer_channel_group_id"), get(link, "channel_description")
                 ),
                 "speed": get(link, "speed"),
                 "type": "switched",
@@ -48,14 +48,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["vlans"] = vlans
 
             if self._mlag is True:
-                port_channel_interface["mlag"] = int(link["channel_group_id"])
+                port_channel_interface["mlag"] = int(get(link, "channel_group_id"))
             # TODO - why is it elif in original Jinja template
-            if get(link, "short_esi") is not None:
+            if (short_esi := get(link, "short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
-                    "identifier": generate_esi(link["short_esi"], self._evpn_short_esi_prefix),
-                    "route_target": generate_route_target(link["short_esi"]),
+                    "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+                    "route_target": generate_route_target(short_esi),
                 }
-                port_channel_interface["lacp_id"] = generate_lacp_id(link["short_esi"])
+                port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
 
             # Structured Config
             port_channel_interface.update(default(get(link, "structured_config"), {}))

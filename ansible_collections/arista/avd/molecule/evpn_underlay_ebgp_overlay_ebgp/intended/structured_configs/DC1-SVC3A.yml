@@ -781,8 +781,8 @@ port_channel_interfaces:
     description: CUSTOM_DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mlag: 7
   Port-Channel10:
     description: CUSTOM_server03_ESI_PortChanne1
@@ -951,8 +951,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: CUSTOM_DC1-L2LEAF2A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -961,8 +961,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: CUSTOM_DC1-L2LEAF2B_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -972,9 +972,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.49/31
   Ethernet42:
     peer: DC1-SPINE2
@@ -982,9 +982,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.51/31
   Ethernet43:
     peer: DC1-SPINE3
@@ -992,9 +992,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.53/31
   Ethernet44:
     peer: DC1-SPINE4
@@ -1002,9 +1002,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.55/31
   Ethernet10:
     peer: server03_ESI

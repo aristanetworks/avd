@@ -611,9 +611,9 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE6_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
 mlag_configuration:
   domain_id: DC1_LEAF4

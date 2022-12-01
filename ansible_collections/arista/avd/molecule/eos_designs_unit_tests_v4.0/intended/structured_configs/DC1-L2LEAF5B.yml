@@ -114,8 +114,8 @@ port_channel_interfaces:
     description: DC1_LEAF2_Po14
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-112,120-121,130-131,160-161
     mlag: 1
 ethernet_interfaces:
   Ethernet3:
@@ -143,8 +143,8 @@ ethernet_interfaces:
     peer_interface: Ethernet15
     peer_type: l3leaf
     description: DC1-LEAF2A_Ethernet15
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -153,8 +153,8 @@ ethernet_interfaces:
     peer_interface: Ethernet15
     peer_type: l3leaf
     description: DC1-LEAF2B_Ethernet15
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active

@@ -15,6 +15,7 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
+  neighbors: {}
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

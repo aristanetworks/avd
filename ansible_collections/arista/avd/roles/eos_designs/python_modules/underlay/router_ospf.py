@@ -51,7 +51,7 @@ class RouterOspfMixin(UtilsMixin):
         if get(self._hostvars, "underlay_ospf_bfd_enable") is True:
             process["bfd_enable"] = True
 
-        if self._overlay_routing_protocol is None:
+        if self._overlay_routing_protocol == "none":
             process["redistribute"] = {
                 "connected": {},
             }

@@ -100,7 +100,8 @@ class RouterBgpMixin(UtilsMixin):
 
             router_bgp["neighbors"] = neighbors
 
-        return strip_empties_from_dict(router_bgp)
+        # Need to keep potentially empty dict for redistribute_routes
+        return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
 
     @cached_property
     def _router_bgp_address_family_ipv4(self) -> dict | None:
@@ -111,11 +112,13 @@ class RouterBgpMixin(UtilsMixin):
         return address_family_ipv4
 
     @cached_property
-    def _router_bgp_redistribute_routes(self) -> dict:
+    def _router_bgp_redistribute_routes(self) -> dict | None:
         """
         Return structured config for router_bgp.redistribute_routes
         """
-        if get(self._hostvars, "switch.overlay_routing_protocol") is None:
+        if self._overlay_routing_protocol is None:
+            return None
+        elif self._overlay_routing_protocol == "none":
             return {"connected": {}}
         else:
             return {"connected": {"route_map": "RM-CONN-2-BGP"}}

@@ -63,7 +63,7 @@ class RouterIsisMixin(UtilsMixin):
             router_isis["isis_af_defaults"].append("fast-reroute ti-lfa mode node-protection")
 
         # Overlay protocol
-        if self._overlay_routing_protocol is None:
+        if self._overlay_routing_protocol == "none":
             router_isis["redistribute_routes"] = [{"source_protocol": "connected"}]
 
         if self._underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:

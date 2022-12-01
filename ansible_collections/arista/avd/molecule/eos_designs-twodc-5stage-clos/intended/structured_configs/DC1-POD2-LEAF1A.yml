@@ -248,34 +248,34 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
-    shutdown: false
     ip_address: 172.17.120.1/31
   Ethernet2:
     peer: DC1-POD2-SPINE2
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
-    shutdown: false
     ip_address: 172.17.120.3/31
   Ethernet3:
     peer: DC1-RS2
     peer_interface: Ethernet3
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS2_Ethernet3
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.10.12/31
 loopback_interfaces:
   Loopback0:

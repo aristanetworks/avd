@@ -24,16 +24,16 @@ class EthernetInterfacesMixin(UtilsMixin):
         for link in natural_sort(self._underlay_links, "interface"):
             # common values
             ethernet_interface = {
-                "peer": link["peer"],
+                "peer": get(link, "peer"),
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self._avd_interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
+                "description": self._avd_interface_descriptions.underlay_ethernet_interfaces(get(link, "type"), get(link, "peer"), link["peer_interface"]),
                 "speed": get(link, "speed"),
                 "shutdown": self._shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
             # L3 interface
-            if link["type"] == "underlay_p2p":
+            if get(link, "type") == "underlay_p2p":
                 ethernet_interface.update(
                     {
                         "mtu": self._p2p_uplinks_mtu,
@@ -55,7 +55,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface["mpls"] = mpls_dict
 
                 # IP address
-                if link["ip_address"] is not None:
+                if get(link, "ip_address") is not None:
                     if "unnumbered" in link["ip_address"].lower():
                         ethernet_interface["ip_address"] = link["ip_address"]
                     else:
@@ -79,7 +79,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface["pim"] = {"ipv4": {"sparse_mode": True}}
 
             # L2 interface
-            elif link["type"] == "underlay_l2":
+            elif get(link, "type") == "underlay_l2":
                 ethernet_interface.update(
                     {
                         "type": "switched",
@@ -107,7 +107,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-            ethernet_interfaces[link["interface"]] = ethernet_interface
+            ethernet_interfaces[get(link, "interface")] = ethernet_interface
 
         if ethernet_interfaces:
             return ethernet_interfaces

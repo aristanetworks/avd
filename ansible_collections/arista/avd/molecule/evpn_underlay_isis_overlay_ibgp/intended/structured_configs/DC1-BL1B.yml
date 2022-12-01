@@ -150,9 +150,9 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.49/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -162,9 +162,9 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.51/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -174,9 +174,9 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet7
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.53/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -186,9 +186,9 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet7
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.55/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -218,13 +218,6 @@ router_isis:
   log_adjacency_changes: true
   net: 49.0001.0001.0001.0007.00
   router_id: 192.168.255.11
-  no_passive_interfaces:
-  - Ethernet1
-  - Ethernet2
-  - Ethernet3
-  - Ethernet4
-  - Vlan4093
-  - Loopback1
   is_type: level-2
   address_family:
   - ipv4 unicast

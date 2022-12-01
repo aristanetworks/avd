@@ -321,9 +321,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.81/31
   Ethernet42:
     peer: DC1-SPINE2
@@ -331,9 +331,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.83/31
   Ethernet43:
     peer: DC1-SPINE3
@@ -341,9 +341,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.85/31
   Ethernet44:
     peer: DC1-SPINE4
@@ -351,9 +351,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet6
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.87/31
   Ethernet7:
     peer_type: l3_interface

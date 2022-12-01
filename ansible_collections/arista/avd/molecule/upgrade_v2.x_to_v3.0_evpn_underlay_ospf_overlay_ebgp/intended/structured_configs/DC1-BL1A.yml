@@ -162,9 +162,9 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.41/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -173,9 +173,9 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.43/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -184,9 +184,9 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet6
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.45/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -195,9 +195,9 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet6
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.47/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -224,6 +224,7 @@ router_ospf:
     101:
       passive_interface_default: true
       router_id: 192.168.255.10
+      max_lsa: 12000
       no_passive_interfaces:
       - Ethernet1
       - Ethernet2
@@ -231,7 +232,6 @@ router_ospf:
       - Ethernet4
       - Vlan4093
       bfd_enable: true
-      max_lsa: 12000
 router_bfd:
   multihop:
     interval: 1200
