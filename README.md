@@ -20,22 +20,15 @@ Full documentation for the collection:
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](https://avd.sh/en/stable/roles/eos_designs/index.html)
-
-## Project documentation
-
-The documentation how to leverage ansible-avd collection is located here:
-
-- [Documentation](https://avd.sh/en/latest/)
-- [GitHub repository](https://github.com/aristanetworks/ansible-avd)
+- [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](./ansible_collections/arista/avd/roles/eos_designs/README.md)
 
 ## Collection installation
 
-Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.sh/en/stable/docs/installation/collection-installation.html).
+Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](./ansible_collections/arista/avd/docs/installation/collection-installation.md).
 
 ## Examples
 
-- [Getting started examples](https://avd.sh/en/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started examples](./ansible_collections/arista/avd/docs/getting-started/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources
@@ -47,14 +40,14 @@ Ansible galaxy hosts all stable versions of this collection. Installation from a
 
 ## Ask a question
 
-Support for this `arista.avd` collection is provided by the community directly in this repository. Easiest way to get support is to open [an issue](https://github.com/aristanetworks/ansible-avd/issues).
+Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.sh/en/stable/docs/contribution/overview.html) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](./ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problems or submit requests for enhancements.
 
 ## License
 
-Project is published under [Apache 2.0 License](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/LICENSE)
+Project is published under [Apache 2.0 License](./LICENSE)

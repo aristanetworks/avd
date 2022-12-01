@@ -18,7 +18,7 @@ The example is meant as a starting foundation. You may build more advanced fabri
 ## Installation & Requirements
 
 1. Install AVD - Installation guide found [here](../../docs/installation/collection-installation.md).
-2. Install Ansible module requirements - Instructions found [here](../../docs/installation/requirements.md).
+2. Install Ansible module requirements - Instructions found [here](../../docs/installation/collection-installation.md).
 3. Run the following playbook which will copy Getting Started examples to your current working directory.
 
 ``` bash

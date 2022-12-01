@@ -70,7 +70,7 @@ Contributing pull requests are gladly welcomed for this repository. If you are p
 #### Branching model
 
 - The **`devel`** branch corresponds to the release actively under development.
-- The **`releases/x.x.x`** branches correspond to stable releases.
+- The [release tags](https://github.com/aristanetworks/ansible-avd/tags) correspond to stable releases.
 - Fork repository and create a branch based on **`devel`** to set up a dev environment if you want to open a PR.
 - See the ansible-avd release for information about active branches.
 

@@ -47,7 +47,7 @@ Ansible galaxy hosts all stable versions of this collection. Installation from a
 
 ## Examples
 
-- [Getting started examples](https://avd.sh/en/stable/docs/getting-started/intro-to-ansible-and-avd.html)
+- [Getting started examples](./docs/getting-started/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources
