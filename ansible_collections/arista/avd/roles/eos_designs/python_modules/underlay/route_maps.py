@@ -28,7 +28,7 @@ class RouteMapsMixin(UtilsMixin):
 
         route_maps = {}
 
-        if self._overlay_routing_protocol not in [None, "none"]:
+        if self._overlay_routing_protocol != "none":
             # RM-CONN-2-BGP
             sequence_numbers = {}
             sequence_numbers[10] = {"type": "permit", "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"]}

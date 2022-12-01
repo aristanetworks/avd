@@ -22,7 +22,7 @@ class PrefixListsMixin(UtilsMixin):
         if self._underlay_routing_protocol != "ebgp":
             return None
 
-        if self._overlay_routing_protocol in ["none", None]:
+        if self._overlay_routing_protocol == "none":
             return None
 
         prefix_lists = {}
@@ -53,7 +53,7 @@ class PrefixListsMixin(UtilsMixin):
         if self._underlay_ipv6 is not True:
             return None
 
-        if self._overlay_routing_protocol is None:
+        if self._overlay_routing_protocol == "none":
             return None
 
         ipv6_prefix_lists = {}
