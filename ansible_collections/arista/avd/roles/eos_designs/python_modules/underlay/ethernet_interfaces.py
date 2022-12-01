@@ -3,7 +3,6 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 from .utils import UtilsMixin
@@ -21,7 +20,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         Return structured config for ethernet_interfaces
         """
         ethernet_interfaces = {}
-        for link in natural_sort(self._underlay_links, "interface"):
+        for link in self._underlay_links:
             # common values
             ethernet_interface = {
                 "peer": get(link, "peer"),

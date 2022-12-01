@@ -37,14 +37,14 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1.POD1.LEAF2A_Ethernet2
-    172.17.110.15:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.100'
-      description: DC1.POD1.LEAF2A_Ethernet12
     172.17.110.19:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1-POD1-LEAF2B_Ethernet2
+    172.17.110.15:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.100'
+      description: DC1.POD1.LEAF2A_Ethernet12
     172.17.110.23:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'

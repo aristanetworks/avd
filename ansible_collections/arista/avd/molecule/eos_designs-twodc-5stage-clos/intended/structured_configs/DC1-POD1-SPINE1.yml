@@ -44,23 +44,23 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65111.100'
       description: DC1-POD1-LEAF1A_Ethernet1
+    172.17.110.9:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.100'
+      description: DC1.POD1.LEAF2A_Ethernet1
+    172.17.110.17:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.100'
+      description: DC1-POD1-LEAF2B_Ethernet1
     172.17.10.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
       description: DC1-RS1_Ethernet2
       bfd: true
-    172.17.110.9:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.100'
-      description: DC1.POD1.LEAF2A_Ethernet1
     172.17.110.13:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1.POD1.LEAF2A_Ethernet11
-    172.17.110.17:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.100'
-      description: DC1-POD1-LEAF2B_Ethernet1
     172.17.110.21:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'

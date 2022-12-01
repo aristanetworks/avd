@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
@@ -159,7 +160,7 @@ class UtilsMixin:
                     }
                     underlay_links.append(strip_empties_from_dict(link))
 
-        return underlay_links
+        return natural_sort(underlay_links, "interface")
 
     @cached_property
     def _underlay_multicast(self) -> bool:

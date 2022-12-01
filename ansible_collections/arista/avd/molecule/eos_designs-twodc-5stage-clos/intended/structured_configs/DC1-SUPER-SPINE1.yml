@@ -21,11 +21,6 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.17.10.1:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65101'
-      description: DC1-RS1_Ethernet1
-      bfd: true
     172.16.11.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65110.100'
@@ -42,6 +37,11 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65120'
       description: DC1-POD2-SPINE2_Ethernet1
+    172.17.10.1:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65101'
+      description: DC1-RS1_Ethernet1
+      bfd: true
     11.1.2.1:
       remote_as: '65200'
       description: DC2-SUPER-SPINE1
