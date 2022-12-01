@@ -1855,6 +1855,7 @@ management_interfaces:
     # For documentation purpose only
     gateway: < IPv4 address of default gateway in management VRF >
     ipv6_gateway: < IPv6 address of default gateway in management VRF >
+    mac_address: < MAC address >
 ```
 
 #### Management HTTP
