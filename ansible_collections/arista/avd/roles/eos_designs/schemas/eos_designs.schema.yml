@@ -682,7 +682,9 @@ dynamic_keys:
                       is enabled.
                     type: bool
                   source_address:
-                    description: 'ipv4_address -> default ip address of Loopback0
+                    description: 'IPv4_address
+
+                      If not set, IP address of "Loopback0" will be used.
 
                       '
                     type: str
@@ -724,7 +726,7 @@ dynamic_keys:
 
                   '
                 items:
-                  description: Default -> all
+                  default: all
                   type: str
                 type: list
               trunk_groups:
@@ -759,7 +761,7 @@ dynamic_keys:
         mac_vrf_id_base:
           convert_types:
           - str
-          description: '10000-16770000 (default -> <mac_vrf_vni_base>)
+          description: 'If not set, "mac_vrf_vni_base" will be used.
 
             Base number for MAC VRF RD/RT ID (Required unless mac_vrf_vni_base is
             set)
@@ -769,19 +771,22 @@ dynamic_keys:
             e.g. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.
 
             '
+          max: 16770000
+          min: 0
           type: int
         mac_vrf_vni_base:
           convert_types:
           - str
-          description: '< 10000-16770000 >
-
-            Base number for MAC VRF VXLAN Network Identifier (Required with VXLAN)
+          description: 'Base number for MAC VRF VXLAN Network Identifier (Required
+            with VXLAN)
 
             VXLAN VNI is derived from the base number with simple addition.
 
             e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
 
             '
+          max: 16770000
+          min: 0
           type: int
         name:
           description: 'Specify a tenant name.
@@ -894,9 +899,13 @@ dynamic_keys:
                       type: int
                     local_as:
                       convert_types:
-                      - str
-                      description: Local BGP ASN
-                      type: int
+                      - int
+                      description: 'Local BGP ASN
+
+                        eg. "65001.1200"
+
+                        '
+                      type: str
                     maximum_routes:
                       convert_types:
                       - str
@@ -1000,6 +1009,7 @@ dynamic_keys:
                     ebgp_multihop:
                       convert_types:
                       - str
+                      description: Time-to-live in range of hops
                       max: 255
                       min: 1
                       type: int
@@ -1008,12 +1018,17 @@ dynamic_keys:
                       type: str
                     local_as:
                       convert_types:
-                      - str
-                      description: Local BGP ASN
-                      type: int
+                      - int
+                      description: 'Local BGP ASN
+
+                        eg. "65001.1200"
+
+                        '
+                      type: str
                     maximum_routes:
                       convert_types:
                       - str
+                      description: Maximum number of routes (0 means unlimited)
                       max: 4294967294
                       min: 0
                       type: int
@@ -1089,9 +1104,10 @@ dynamic_keys:
                 primary_key: ip_address
                 type: list
               description:
+                description: VRF description
                 type: str
               enable_mlag_ibgp_peering_vrfs:
-                description: 'MLAG IBGP peering per VRF, optional
+                description: 'MLAG IBGP peering per VRF (optional)
 
                   By default an IBGP peering is configured per VRF between MLAG peers
                   on separate VLANs.
@@ -1104,11 +1120,11 @@ dynamic_keys:
               ip_helpers:
                 convert_types:
                 - dict
-                description: IP Helper for DHCP relay
+                description: IP helper for DHCP relay
                 items:
                   keys:
                     ip_helper:
-                      description: IPv4 dhcp server IP
+                      description: IPv4 DHCP server IP
                       type: str
                     source_interface:
                       description: Interface name
@@ -1133,7 +1149,7 @@ dynamic_keys:
                       min: 1
                       type: int
                     gateway:
-                      description: IPv6_address
+                      format: ipv6
                       type: str
                     interface:
                       type: str
@@ -1258,7 +1274,7 @@ dynamic_keys:
                   type: dict
                 type: list
               mlag_ibgp_peering_ipv4_pool:
-                description: '< IPv4_address/Mask >
+                description: 'IPv4_address/Mask
 
                   The subnet used for iBGP peering in the VRF.
 
@@ -1274,7 +1290,7 @@ dynamic_keys:
                 convert_types:
                 - str
                 description: 'Manually define the VLAN used on the MLAG pair for the
-                  iBGP session, optional
+                  iBGP session (optional)
 
                   By default this parameter is calculated using the following formula:
                   <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1
@@ -1286,7 +1302,7 @@ dynamic_keys:
               name:
                 type: str
               ospf:
-                description: 'Dictionary for router OSPF configuration, optional.
+                description: 'Dictionary for router OSPF configuration (optional)
 
                   This will create an ospf routing instance in the tenant VRF. If
                   there is no nodes definition, the ospf instance will be
@@ -1315,19 +1331,19 @@ dynamic_keys:
                   process_id:
                     convert_types:
                     - str
-                    description: Default -> vrf_id
+                    description: If not set, "vrf_id" will be used.
                     type: int
                   redistribute_bgp:
                     keys:
                       enabled:
-                        default: false
+                        default: true
                         type: bool
                       route_map:
                         description: Route-map name
                         type: str
                     type: dict
                   router_id:
-                    description: Default -> switch router_id
+                    description: If not set, switch router_id will be used.
                     type: str
                 type: dict
               raw_eos_cli:
@@ -1341,7 +1357,7 @@ dynamic_keys:
               redistribute_ospf:
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf
-                  inside the VRF, optional
+                  inside the VRF (optional)
                 type: bool
               redistribute_static:
                 description: Non-selectively enabling or disabling redistribute static
@@ -1444,9 +1460,8 @@ dynamic_keys:
                           type: dict
                       type: dict
                     description:
+                      default: VLAN name
                       description: 'SVI description
-
-                        Default -> VLAN name
 
                         '
                       type: str
@@ -1481,7 +1496,11 @@ dynamic_keys:
                           default: false
                           type: bool
                         source_address:
-                          description: IPv4_address -> default IP address of Loopback0
+                          description: 'IPv4_address
+
+                            If not set, IP address of "Loopback0" will be used.
+
+                            '
                           type: str
                         version:
                           convert_types:
@@ -1505,17 +1524,17 @@ dynamic_keys:
                       type: str
                     ip_address_virtual_secondaries:
                       items:
-                        description: < IPv4_address/Mask >
+                        description: IPv4_address/Mask
                         type: str
                       type: list
                     ip_helpers:
                       convert_types:
                       - dict
-                      description: IP Helper for DHCP relay
+                      description: IP helper for DHCP relay
                       items:
                         keys:
                           ip_helper:
-                            description: IPv4 dhcp server IP
+                            description: IPv4 DHCP server IP
                             type: str
                           source_interface:
                             description: Interface name
@@ -1583,17 +1602,17 @@ dynamic_keys:
                             type: str
                           ip_address_virtual_secondaries:
                             items:
-                              description: < IPv4_address/Mask >
+                              description: IPv4_address/Mask
                               type: str
                             type: list
                           ip_helpers:
                             convert_types:
                             - dict
-                            description: IP Helper for DHCP relay
+                            description: IP helper for DHCP relay
                             items:
                               keys:
                                 ip_helper:
-                                  description: IPv4 dhcp server IP
+                                  description: IPv4 DHCP server IP
                                   type: str
                                 source_interface:
                                   description: Interface name
@@ -1687,7 +1706,7 @@ dynamic_keys:
                             type: dict
                           type: list
                         point_to_point:
-                          default: false
+                          default: true
                           type: bool
                         simple_auth_key:
                           description: Password used with simple authentication
@@ -1716,9 +1735,9 @@ dynamic_keys:
                         from "mac_vrf_id_base"
 
                         The rt_override allows us to override this value and statically
-                        define it, optional
+                        define it (optional)
 
-                        default -> vni_override
+                        If not set, vni_override will be used.
 
                         '
                       max: 16777215
@@ -1743,7 +1762,7 @@ dynamic_keys:
 
                         '
                       items:
-                        description: default -> all
+                        default: all
                         type: str
                       type: list
                     trunk_groups:
@@ -1762,7 +1781,7 @@ dynamic_keys:
                       description: 'By default the vni will be derived from "mac_vrf_vni_base"
 
                         The vni_override allows us to override this value and statically
-                        define it, optional
+                        define it (optional)
 
                         '
                       max: 16777215
@@ -1789,6 +1808,8 @@ dynamic_keys:
                   see "mlag_ibgp_peering_vrfs.base_vlan" for details
 
                   '
+                max: 1024
+                min: 1
                 type: int
               vrf_vni:
                 convert_types:
@@ -1804,9 +1825,11 @@ dynamic_keys:
                   to avoid overlap.
 
                   '
+                max: 1024
+                min: 1
                 type: int
               vtep_diagnostic:
-                description: 'Enable VTEP Network diagnostics (Optional).
+                description: 'Enable VTEP Network diagnostics (Optional)
 
                   This will create a loopback with virtual source-nat enable to perform
                   diagnostics from the switch
