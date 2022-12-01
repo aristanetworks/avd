@@ -43,7 +43,7 @@ pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt
 
 ### Ansible Configuration INI file
 
-- enable jinja2 extensions: loop controls and do
+- Enable Jinja2 extensions: `loopcontrols` and `do`
   - [Jinja2 Extensions Documentation](https://jinja.palletsprojects.com/extensions/)
 - By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
 
