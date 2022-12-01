@@ -330,6 +330,7 @@ cvx:
         password: < password >
         password_type: < 0 | 7 | 8a | default -> 7 >
       shutdown: < true | false >
+      peer_hosts: < IP address or hostname >
 ```
 
 #### Enable Password

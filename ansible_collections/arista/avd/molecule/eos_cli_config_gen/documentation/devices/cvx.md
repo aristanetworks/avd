@@ -48,6 +48,9 @@ interface Management1
 ```
 
 # CVX
+| Peer Hosts |
+| ---------- |
+| 1.1.1.1, 2.2.2.2 |
 
 CVX is enabled
 
