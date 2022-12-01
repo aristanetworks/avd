@@ -17,6 +17,7 @@ keys:
         name:
           type: str
           required: True
+          description: Event handler name
         action_type:
           type: str
           valid_values:

@@ -8,3 +8,4 @@ keys:
     description: OOB mgmt interface destination networks - override default route
     items:
       type: str
+      description: IPv4_network/Mask

@@ -518,17 +518,19 @@
       "title": "Custom Structured Configuration Prefix"
     },
     "cvp_ingestauth_key": {
-      "description": "CloudVision Ingest Authentication key is required for on-prem CVP",
+      "description": "CloudVision ingest authentication key is required for on-prem CVP",
       "type": "string",
       "title": "CVP Ingestauth Key"
     },
     "cvp_instance_ip": {
+      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.",
       "type": "string",
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
       "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.\n",
       "items": {
+        "description": "IPv4 address or CV as a Service hostname",
         "type": "string"
       },
       "type": "array",
@@ -536,7 +538,7 @@
     },
     "cvp_token_file": {
       "default": "/tmp/cv-onboarding-token",
-      "description": "cvp_token_file is path to token file on switch",
+      "description": "CVP token file is path to token file on switch and is only applicable to CV as a Service",
       "type": "string",
       "title": "CVP Token File"
     },
@@ -627,6 +629,7 @@
             "title": "Delay"
           },
           "name": {
+            "description": "Event handler name",
             "type": "string",
             "title": "Name"
           },
@@ -1001,13 +1004,21 @@
       "title": "L3 Edge"
     },
     "local_users": {
+      "description": "Dictionary of local users",
       "items": {
         "properties": {
+          "disabled": {
+            "description": "If \"disabled\" is true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.",
+            "type": "boolean",
+            "title": "Disabled"
+          },
           "name": {
+            "description": "Username",
             "type": "string",
             "title": "Name"
           },
           "no_password": {
+            "default": true,
             "description": "If set a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.",
             "type": "boolean",
             "title": "No Password"
@@ -1030,6 +1041,7 @@
             "title": "SHA512 Password"
           },
           "ssh_key": {
+            "description": "SSH key string",
             "type": "string",
             "title": "SSH Key"
           }
@@ -1057,7 +1069,7 @@
       "title": "MAC Address Table"
     },
     "management_eapi": {
-      "description": "Default is https management eAPI enabled",
+      "description": "Default is https management eAPI enabled.\nThe vrf is set to < mgmt_interface_vrf >\n",
       "properties": {
         "default_services": {
           "type": "boolean",
@@ -1081,28 +1093,32 @@
     "mgmt_destination_networks": {
       "description": "OOB mgmt interface destination networks - override default route",
       "items": {
+        "description": "IPv4_network/Mask",
         "type": "string"
       },
       "type": "array",
       "title": "Mgmt Destination Networks"
     },
     "mgmt_gateway": {
-      "description": "Management interface configuration",
+      "description": "Management interface configuration and it is IPv4 address",
       "type": "string",
       "title": "Mgmt Gateway"
     },
     "mgmt_interface": {
       "default": "Management1",
+      "description": "Management interface configuration",
       "type": "string",
       "title": "Mgmt Interface"
     },
     "mgmt_interface_vrf": {
       "default": "MGMT",
+      "description": "Management interface configuration",
       "type": "string",
       "title": "Mgmt Interface VRF"
     },
     "mgmt_vrf_routing": {
       "default": false,
+      "description": "Management interface configuration",
       "type": "boolean",
       "title": "Mgmt VRF Routing"
     },
@@ -1150,6 +1166,7 @@
     "name_servers": {
       "description": "Only eos_designs name_servers variables",
       "items": {
+        "description": "IPv4 address",
         "type": "string"
       },
       "type": "array",
@@ -1611,17 +1628,91 @@
       "title": "Shutdown Interfaces Towards Undeployed Peers"
     },
     "snmp_settings": {
-      "description": "Set SNMP settings",
+      "description": "Set SNMP settings. It is optional.",
       "properties": {
+        "compute_local_engineid": {
+          "default": false,
+          "description": "Generate a local engineId for SNMP by hashing via SHA1 the string\ngenerated via the concatenation of the hostname plus the management IP.\n{{ inventory_hostname }} + {{ switch.mgmt_ip }}\n",
+          "type": "boolean",
+          "title": "Compute Local Engineid"
+        },
+        "compute_v3_user_localized_key": {
+          "default": false,
+          "description": "Requires compute_local_engineid to be `true` if enabled, the SNMPv3\npassphrases for auth and priv are transfromed using RFC 2574,\nmatching the value they would take in EOS cli the algorithm requires\na local engineId which is unknown to AVD hence the necessity to generate\none beforehand.\n",
+          "type": "boolean",
+          "title": "Compute V3 User Localized Key"
+        },
         "contact": {
+          "description": "SNMP contact",
           "type": "string",
           "title": "Contact"
         },
         "location": {
           "default": false,
-          "description": "Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}",
+          "description": "SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}",
           "type": "boolean",
           "title": "Location"
+        },
+        "users": {
+          "items": {
+            "properties": {
+              "auth": {
+                "description": "It is optional",
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha",
+                  "sha256",
+                  "sha384",
+                  "sha512"
+                ],
+                "title": "Auth"
+              },
+              "auth_passphrase": {
+                "description": "Clear passphrase, requires auth, recommended to use vault",
+                "type": "string",
+                "title": "Auth Passphrase"
+              },
+              "group": {
+                "type": "string",
+                "title": "Group"
+              },
+              "name": {
+                "description": "Username",
+                "type": "string",
+                "title": "Name"
+              },
+              "priv": {
+                "description": "It is optional",
+                "type": "string",
+                "enum": [
+                  "des",
+                  "aes",
+                  "aes192",
+                  "aes256"
+                ],
+                "title": "Priv"
+              },
+              "priv_passphrase": {
+                "description": "Clear pasphrase, requires priv, recommended to use vault",
+                "type": "string",
+                "title": "Priv Passphrase"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Users"
         }
       },
       "additionalProperties": false,
@@ -1800,6 +1891,7 @@
     },
     "terminattr_ingestgrpcurl_port": {
       "default": 9910,
+      "description": "Port number",
       "type": "integer",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
@@ -1809,6 +1901,7 @@
       "title": "TerminAttr Smashexcludes"
     },
     "timezone": {
+      "description": "Clock timezone is optional",
       "type": "string",
       "title": "Timezone"
     },

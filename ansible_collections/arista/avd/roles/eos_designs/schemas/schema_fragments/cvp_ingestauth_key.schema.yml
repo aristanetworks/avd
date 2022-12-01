@@ -5,4 +5,4 @@ type: dict
 keys:
   cvp_ingestauth_key:
     type: str
-    description: CloudVision Ingest Authentication key is required for on-prem CVP
+    description: CloudVision ingest authentication key is required for on-prem CVP

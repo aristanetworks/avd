@@ -2931,9 +2931,20 @@ keys:
       '
     type: list
   cvp_ingestauth_key:
-    description: CloudVision Ingest Authentication key is required for on-prem CVP
+    description: CloudVision ingest authentication key is required for on-prem CVP
     type: str
   cvp_instance_ip:
+    description: 'IPv4 address.
+
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+
+      You can either provide a list of IPs to target on-premise CloudVision cluster
+      or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.'
     type: str
   cvp_instance_ips:
     description: 'You can either provide a list of IPs to target on-premise CloudVision
@@ -2946,11 +2957,13 @@ keys:
 
       '
     items:
+      description: IPv4 address or CV as a Service hostname
       type: str
     type: list
   cvp_token_file:
     default: /tmp/cv-onboarding-token
-    description: cvp_token_file is path to token file on switch
+    description: CVP token file is path to token file on switch and is only applicable
+      to CV as a Service
     type: str
   default_igmp_snooping_enabled:
     default: true
@@ -3043,6 +3056,7 @@ keys:
           description: Event-handler delay in seconds
           type: int
         name:
+          description: Event handler name
           required: true
           type: str
         regex:
@@ -3396,12 +3410,21 @@ keys:
   local_users:
     convert_types:
     - dict
+    description: Dictionary of local users
     items:
       keys:
+        disabled:
+          description: 'If "disabled" is true, the user will be removed and all other
+            settings are ignored.
+
+            Useful for removing the default "admin" user.'
+          type: bool
         name:
+          description: Username
           required: true
           type: str
         no_password:
+          default: true
           description: If set a password will not be configured for this user. "sha512_password"
             MUST not be defined for this user.
           type: bool
@@ -3422,6 +3445,7 @@ keys:
             an EOS device using the same username.
           type: str
         ssh_key:
+          description: SSH key string
           type: str
       type: dict
     primary_key: name
@@ -3440,7 +3464,11 @@ keys:
         type: int
     type: dict
   management_eapi:
-    description: Default is https management eAPI enabled
+    description: 'Default is https management eAPI enabled.
+
+      The vrf is set to < mgmt_interface_vrf >
+
+      '
     keys:
       default_services:
         type: bool
@@ -3454,19 +3482,23 @@ keys:
   mgmt_destination_networks:
     description: OOB mgmt interface destination networks - override default route
     items:
+      description: IPv4_network/Mask
       type: str
     type: list
   mgmt_gateway:
-    description: Management interface configuration
+    description: Management interface configuration and it is IPv4 address
     type: str
   mgmt_interface:
     default: Management1
+    description: Management interface configuration
     type: str
   mgmt_interface_vrf:
     default: MGMT
+    description: Management interface configuration
     type: str
   mgmt_vrf_routing:
     default: false
+    description: Management interface configuration
     type: bool
   mlag_ibgp_peering_vrfs:
     description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
@@ -3511,6 +3543,7 @@ keys:
   name_servers:
     description: Only eos_designs name_servers variables
     items:
+      description: IPv4 address
       type: str
     type: list
   network_services_keys:
@@ -3946,15 +3979,80 @@ keys:
       is used and the devices are not present in the network.'
     type: bool
   snmp_settings:
-    description: Set SNMP settings
+    description: Set SNMP settings. It is optional.
     keys:
+      compute_local_engineid:
+        default: false
+        description: 'Generate a local engineId for SNMP by hashing via SHA1 the string
+
+          generated via the concatenation of the hostname plus the management IP.
+
+          {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+
+          '
+        type: bool
+      compute_v3_user_localized_key:
+        default: false
+        description: 'Requires compute_local_engineid to be `true` if enabled, the
+          SNMPv3
+
+          passphrases for auth and priv are transfromed using RFC 2574,
+
+          matching the value they would take in EOS cli the algorithm requires
+
+          a local engineId which is unknown to AVD hence the necessity to generate
+
+          one beforehand.
+
+          '
+        type: bool
       contact:
+        description: SNMP contact
         type: str
       location:
         default: false
-        description: 'Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }}
-          {{ switch_rack }} {{ inventory_hostname }}'
+        description: SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{
+          pod_name }} {{ switch_rack }} {{ inventory_hostname }}
         type: bool
+      users:
+        items:
+          keys:
+            auth:
+              description: It is optional
+              type: str
+              valid_values:
+              - md5
+              - sha
+              - sha256
+              - sha384
+              - sha512
+            auth_passphrase:
+              description: Clear passphrase, requires auth, recommended to use vault
+              type: str
+            group:
+              type: str
+            name:
+              description: Username
+              type: str
+            priv:
+              description: It is optional
+              type: str
+              valid_values:
+              - des
+              - aes
+              - aes192
+              - aes256
+            priv_passphrase:
+              description: Clear pasphrase, requires priv, recommended to use vault
+              type: str
+            version:
+              type: str
+              valid_values:
+              - v1
+              - v2c
+              - v3
+          type: dict
+        type: list
     type: dict
   svi_profiles:
     convert_types:
@@ -4071,11 +4169,13 @@ keys:
     convert_types:
     - str
     default: 9910
+    description: Port number
     type: int
   terminattr_smashexcludes:
     default: ale,flexCounter,hardware,kni,pulse,strata
     type: str
   timezone:
+    description: Clock timezone is optional
     type: str
   trunk_groups:
     keys:
