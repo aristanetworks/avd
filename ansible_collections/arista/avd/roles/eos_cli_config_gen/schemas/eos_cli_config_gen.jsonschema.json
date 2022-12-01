@@ -9577,6 +9577,21 @@
       ],
       "title": "Service Routing Protocols Model"
     },
+    "service_unsupported_transceiver": {
+      "type": "object",
+      "properties": {
+        "license_name": {
+          "type": "string",
+          "title": "License Name"
+        },
+        "license_key": {
+          "type": "string",
+          "title": "License Key"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Service Unsupported Transceiver"
+    },
     "sflow": {
       "type": "object",
       "properties": {

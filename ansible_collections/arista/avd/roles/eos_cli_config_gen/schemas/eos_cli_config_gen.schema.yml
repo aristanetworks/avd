@@ -6460,6 +6460,13 @@ keys:
     valid_values:
     - multi-agent
     - ribd
+  service_unsupported_transceiver:
+    type: dict
+    keys:
+      license_name:
+        type: str
+      license_key:
+        type: str
   sflow:
     type: dict
     keys:
