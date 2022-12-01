@@ -83,7 +83,15 @@ ip hardware fib optimize prefixes profile urpf-internet
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | True |
+
+### IPv6 Routing Device Configuration
+
+```eos
+!
+ipv6 unicast-routing
+ipv6 hardware fib optimize prefixes profile internet
+```
 
 # Multicast
 
