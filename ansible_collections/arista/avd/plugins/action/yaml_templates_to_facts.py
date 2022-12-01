@@ -10,12 +10,13 @@ from datetime import datetime
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase
+from ansible.plugins.action import ActionBase, display
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
@@ -44,27 +45,28 @@ class ActionModule(ActionBase):
                 n = self._templar.template(n)
                 if not isidentifier(n):
                     raise AnsibleActionFail(
-                        f"The argument 'root_key' value of '{n}' is not valid. Keys must start with a letter or underscore character,                          "
-                        "                   and contain only letters, numbers and underscores."
+                        f"The argument 'root_key' value of '{n}' is not valid. Keys must start with a letter or underscore character, "
+                        "and contain only letters, numbers and underscores."
                     )
                 root_key = n
 
-            if "templates" in self._task.args:
-                t = self._task.args.get("templates")
-                if isinstance(t, list):
-                    template_list = t
-                else:
-                    raise AnsibleActionFail("The argument 'templates' is not a list")
-            else:
-                raise AnsibleActionFail("The argument 'templates' must be set")
+            template_list = self._task.args.get("templates")
+            if not isinstance(template_list, list):
+                raise AnsibleActionFail("The argument 'templates' must be set as a list")
 
-            dest = self._task.args.get("dest", False)
+            schema = self._task.args.get("schema")
+            if not isinstance(schema, dict):
+                raise AnsibleActionFail("The argument 'schema' must be set as a dict")
+
+            self.dest = self._task.args.get("dest", False)
             template_output = self._task.args.get("template_output", False)
             debug = self._task.args.get("debug", False)
             remove_avd_switch_facts = self._task.args.get("remove_avd_switch_facts", False)
+            conversion_mode = self._task.args.get("conversion_mode")
+            validation_mode = self._task.args.get("validation_mode")
 
         else:
-            raise AnsibleActionFail("The argument 'templates' must be set")
+            raise AnsibleActionFail("Required arguments 'templates' and 'schema' are not set on yaml_templates_to_facts")
 
         # Read ansible variables and perform templating to support inline jinja
         for var in task_vars:
@@ -76,6 +78,14 @@ class ActionModule(ActionBase):
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+
+        # Load schema tools and perform conversion and validation
+        hostname = task_vars["inventory_hostname"]
+        avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
+        result.update(avdschematools.convert_and_validate_data(task_vars))
+        if result.get("failed"):
+            # Input data validation failed so return errors.
+            return result
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
@@ -179,13 +189,13 @@ class ActionModule(ActionBase):
                 avd_yaml_templates_to_facts_debug.append(debug_item)
 
         # If the argument 'dest' is set, write the output data to a file.
-        if dest:
+        if self.dest:
             if debug:
-                debug_item = {"action": "dest", "dest": dest, "timestamps": {"write_file": datetime.now()}}
+                debug_item = {"action": "dest", "dest": self.dest, "timestamps": {"write_file": datetime.now()}}
 
             # Depending on the file suffix of 'dest' (default: 'json') we will format the data to yaml or just write the output data directly.
             # The Copy module used in 'write_file' will convert the output data to json automatically.
-            if dest.split(".")[-1] in ["yml", "yaml"]:
+            if self.dest.split(".")[-1] in ["yml", "yaml"]:
                 write_file_result = self.write_file(yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130), task_vars)
             else:
                 write_file_result = self.write_file(output, task_vars)
@@ -221,15 +231,16 @@ class ActionModule(ActionBase):
         return result
 
     def write_file(self, content, task_vars):
-        # The write_file function is implementing the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
-        # Reuse task data
+        """
+        This function implements the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
+        Reuse task data
+        """
         new_task = self._task.copy()
-
-        # remove 'yaml_templates_to_facts' options (except 'dest' which will be reused):
-        for remove in ("root_key", "templates", "template_output", "debug", "remove_avd_switch_facts"):
-            new_task.args.pop(remove, None)
-
-        new_task.args["content"] = content
+        new_task.args = {
+            "dest": self.dest,
+            "mode": self._task.args.get("mode"),
+            "content": content,
+        }
 
         copy_action = self._shared_loader_obj.action_loader.get(
             "ansible.legacy.copy",
