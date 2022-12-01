@@ -136,8 +136,7 @@ class ActionModule(ActionBase):
 
     def template(self, task_vars):
         searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
-        templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
-        output = template(self.templatefile, self.data, templar, searchpath)
+        output = template(self.templatefile, self.data, self._templar, searchpath)
         if self.add_md_toc:
             output = add_md_toc(output, skip_lines=self.md_toc_skip_lines)
 

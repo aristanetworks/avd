@@ -6,7 +6,7 @@ DEFAULT_AVD_IP_ADDRESSING_PYTHON_MODULE = "ansible_collections.arista.avd.roles.
 DEFAULT_AVD_IP_ADDRESSING_PYTHON_CLASS_NAME = "AvdIpAddressing"
 
 
-def load_ip_addressing(hostvars, templar) -> AvdIpAddressing:
+def load_ip_addressing(hostvars, templar, searchpath) -> AvdIpAddressing:
     """
     Load the python_module defined in `templates.ip_addressing.python_module`
     Return the class defined by `templates.ip_addressing.python_class_name`
@@ -28,4 +28,4 @@ def load_ip_addressing(hostvars, templar) -> AvdIpAddressing:
         AvdIpAddressing,
     )
 
-    return cls(hostvars=hostvars, templar=templar)
+    return cls(hostvars=hostvars, templar=templar, searchpath=searchpath)

@@ -45,9 +45,9 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "foo", required=True)
     '''
 
-    def __init__(self, hostvars, templar):
-        super().__init__(hostvars, templar)
-        self.avd_ip_addressing = load_ip_addressing(self._hostvars, self._templar)
+    def __init__(self, hostvars, templar, searchpath):
+        super().__init__(hostvars, templar, searchpath)
+        self.avd_ip_addressing = load_ip_addressing(self._hostvars, self._templar, searchpath)
 
     @cached_property
     def type(self):

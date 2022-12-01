@@ -60,10 +60,10 @@ class AvdStructuredConfig(
     The order of the @cached_properties methods imported from Mixins will also control the order in the output.
     """
 
-    def __init__(self, hostvars, templar):
-        super().__init__(hostvars, templar)
-        self._avd_ip_addressing = load_ip_addressing(hostvars, templar)
-        self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar)
+    def __init__(self, hostvars, templar, searchpath):
+        super().__init__(hostvars, templar, searchpath)
+        self._avd_ip_addressing = load_ip_addressing(hostvars, templar, searchpath)
+        self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar, searchpath)
 
     def render(self) -> dict:
         """

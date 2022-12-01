@@ -8,10 +8,10 @@ from collections import ChainMap
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
-from ansible.template import Templar
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath
 
 
 class ActionModule(ActionBase):
@@ -49,7 +49,8 @@ class ActionModule(ActionBase):
         # Caveat: Since we load default vars only once, it will be templated based on the vars of the random host triggering this task
         #         This should not be too bad, since all hosts are within the same fabric - hence they should also use the same "design"
         default_vars = self._templar.template(self._task._role.get_default_vars())
-        default_vars["ansible_search_path"] = task_vars.get("ansible_search_path")
+
+        self.searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
 
         if set_avd_switch_facts:
             avd_overlay_peers = {}
@@ -111,11 +112,10 @@ class ActionModule(ActionBase):
             # Using ChainMap to avoid copying data between defaults, hostvars and local template_vars
             host_hostvars = ChainMap({}, hostvars.get(host), default_vars)
             avd_switch_facts[host] = {}
-            templar = Templar(variables={}, loader=self._loader)
             # Add reference to dict "avd_switch_facts".
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars["avd_switch_facts"] = avd_switch_facts
-            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=templar)}
+            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=self._templar, searchpath=self.searchpath)}
             # Add reference to EosDesignsFacts object inside hostvars.
             # This is used to allow templates to access the facts object directly with "switch.*"
             host_hostvars["switch"] = avd_switch_facts[host]["switch"]
