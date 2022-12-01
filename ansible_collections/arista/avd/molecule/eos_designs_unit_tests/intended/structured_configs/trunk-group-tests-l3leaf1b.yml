@@ -223,15 +223,15 @@ vlans:
     name: l2vlan110_with_trunk_groups
   200:
     trunk_groups:
-    - trunk-group-tests-l2leaf3
     - TRUNK_GROUP_TESTS_L2LEAF1
+    - trunk-group-tests-l2leaf3
     - CUSTOM_MLAG_TG_NAME
     tenant: TRUNK_GROUP_TESTS
     name: svi200_with_trunk_groups
   210:
     trunk_groups:
-    - trunk-group-tests-l2leaf3
     - TRUNK_GROUP_TESTS_L2LEAF1
+    - trunk-group-tests-l2leaf3
     - CUSTOM_MLAG_TG_NAME
     tenant: TRUNK_GROUP_TESTS
     name: l2vlan210_with_trunk_groups

@@ -227,8 +227,8 @@ vlans:
     name: l2vlan110_with_trunk_groups
   200:
     trunk_groups:
-    - trunk-group-tests-l2leaf3
     - TRUNK_GROUP_TESTS_L2LEAF1
+    - trunk-group-tests-l2leaf3
     - TG_200
     - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
@@ -236,8 +236,8 @@ vlans:
     name: svi200_with_trunk_groups
   210:
     trunk_groups:
-    - trunk-group-tests-l2leaf3
     - TRUNK_GROUP_TESTS_L2LEAF1
+    - trunk-group-tests-l2leaf3
     - TG_200
     - TG_NOT_MATCHING_ANY_SERVERS
     - MLAG
