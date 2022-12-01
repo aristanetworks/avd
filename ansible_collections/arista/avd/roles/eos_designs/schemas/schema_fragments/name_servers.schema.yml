@@ -8,3 +8,4 @@ keys:
     description: Only eos_designs name_servers variables
     items:
       type: str
+      description: IPv4 address

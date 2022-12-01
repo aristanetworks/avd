@@ -5,12 +5,55 @@ type: dict
 keys:
   snmp_settings:
     type: dict
-    description: Set SNMP settings
+    description: Set SNMP settings. It is optional.
     keys:
       contact:
         type: str
+        description: SNMP contact
       location:
         type: bool
         default: False
+        description: SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}
+      compute_local_engineid:
+        type: bool
+        default: False
         description: |
-          Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}
+          Generate a local engineId for SNMP by hashing via SHA1 the string
+          generated via the concatenation of the hostname plus the management IP.
+          {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+      compute_v3_user_localized_key:
+        type: bool
+        default: False
+        description: |
+          Requires compute_local_engineid to be `true` if enabled, the SNMPv3
+          passphrases for auth and priv are transfromed using RFC 2574,
+          matching the value they would take in EOS cli the algorithm requires
+          a local engineId which is unknown to AVD hence the necessity to generate
+          one beforehand.
+      users:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Username
+            group:
+              type: str
+            version:
+              type: str
+              valid_values: ["v1", "v2c", "v3"]
+            auth:
+              type: str
+              valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
+              description: It is optional
+            auth_passphrase:
+              type: str
+              description: Clear passphrase, requires auth, recommended to use vault
+            priv:
+              type: str
+              valid_values: ["des", "aes", "aes192", "aes256"]
+              description: It is optional
+            priv_passphrase:
+              type: str
+              description: Clear pasphrase, requires priv, recommended to use vault
