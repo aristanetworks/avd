@@ -5,7 +5,7 @@ network_services_keys:
   - name: tenant_group1
 
 tenant_group1:
-  fake_tenant:
+  Tenant_A:
     mac_vrf_vni_base: 20000
     vrfs:
       Tenant_B_OP_Zone:
