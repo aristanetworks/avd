@@ -5062,11 +5062,12 @@
           },
           "l2_mtu": {
             "type": "integer",
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
           },
           "vlans": {
             "type": "string",
-            "description": "List of vlans as string",
+            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
             "title": "VLANs"
           },
           "snmp_trap_link_change": {
@@ -5086,11 +5087,12 @@
           },
           "encapsulation_dot1q_vlan": {
             "type": "integer",
-            "description": "The vlan tag to configure on sub-interface",
+            "description": "VLAN tag to configure on sub-interface",
             "title": "Encapsulation Dot1Q VLAN"
           },
           "vrf": {
             "type": "string",
+            "description": "VRF name",
             "title": "VRF"
           },
           "encapsulation_vlan": {
@@ -5103,7 +5105,7 @@
                     "type": "object",
                     "properties": {
                       "vlan": {
-                        "type": "string",
+                        "type": "integer",
                         "description": "Client VLAN ID",
                         "title": "VLAN"
                       },
@@ -5131,13 +5133,13 @@
               },
               "network": {
                 "type": "object",
-                "description": "Network encapsulation is all optional, and skipped if using client unmatched.",
+                "description": "Network encapsulation are all optional, and skipped if using client unmatched.",
                 "properties": {
                   "dot1q": {
                     "type": "object",
                     "properties": {
                       "vlan": {
-                        "type": "string",
+                        "type": "integer",
                         "description": "Network VLAN ID",
                         "title": "VLAN"
                       },
@@ -5201,6 +5203,7 @@
               "properties": {
                 "name": {
                   "type": "string",
+                  "description": "Group name",
                   "title": "Name"
                 },
                 "direction": {
@@ -5212,7 +5215,10 @@
                   "title": "Direction"
                 }
               },
-              "additionalProperties": false
+              "additionalProperties": false,
+              "required": [
+                "name"
+              ]
             },
             "title": "Link Tracking Groups"
           },
@@ -5242,7 +5248,7 @@
             "properties": {
               "encapsulation_dot1q_vlan": {
                 "type": "integer",
-                "description": "The vlan number",
+                "description": "Vlan tag to configure on sub-interface",
                 "title": "Encapsulation Dot1Q VLAN"
               }
             },
@@ -5255,18 +5261,22 @@
           },
           "peer": {
             "type": "string",
+            "description": "Key only used for documentation or validation purposes",
             "title": "Peer"
           },
           "peer_interface": {
             "type": "string",
+            "description": "Key only used for documentation or validation purposes",
             "title": "Peer Interface"
           },
           "peer_type": {
             "type": "string",
+            "description": "Key only used for documentation or validation purposes",
             "title": "Peer Type"
           },
           "speed": {
             "type": "string",
+            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
             "title": "Speed"
           },
           "mlag": {
@@ -5309,11 +5319,13 @@
                 "title": "Trust"
               },
               "dscp": {
-                "type": "string",
+                "type": "integer",
+                "description": "DSCP value",
                 "title": "DSCP"
               },
               "cos": {
                 "type": "integer",
+                "description": "COS value",
                 "title": "COS"
               }
             },
@@ -5329,7 +5341,7 @@
               },
               "interval": {
                 "type": "integer",
-                "description": "Rate in milliseconds",
+                "description": "Interval in milliseconds",
                 "title": "Interval"
               },
               "min_rx": {
@@ -5355,7 +5367,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "The policy-map name",
+                    "description": "Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -5397,7 +5409,7 @@
             "title": "Trunk Private VLAN Secondary"
           },
           "pvlan_mapping": {
-            "type": "integer",
+            "type": "string",
             "description": "List of vlans as string",
             "title": "PVLAN Mapping"
           },
@@ -5413,6 +5425,7 @@
                 },
                 "to": {
                   "type": "integer",
+                  "description": "VLAN ID",
                   "title": "To"
                 },
                 "direction": {
@@ -5435,7 +5448,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "Supported options are platform dependent",
+                "description": "Rate in kbps, pps or percent. Supported options are platform dependent.\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
                 "title": "Rate"
               }
             },
@@ -5455,11 +5468,12 @@
                   },
                   "unit": {
                     "type": "string",
+                    "default": "percent",
                     "enum": [
                       "percent",
                       "pps"
                     ],
-                    "default": "percent",
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -5476,11 +5490,12 @@
                   },
                   "unit": {
                     "type": "string",
+                    "default": "percent",
                     "enum": [
                       "percent",
                       "pps"
                     ],
-                    "default": "percent",
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -5497,11 +5512,12 @@
                   },
                   "unit": {
                     "type": "string",
+                    "default": "percent",
                     "enum": [
                       "percent",
                       "pps"
                     ],
-                    "default": "percent",
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -5518,11 +5534,12 @@
                   },
                   "unit": {
                     "type": "string",
+                    "default": "percent",
                     "enum": [
                       "percent",
                       "pps"
                     ],
-                    "default": "percent",
+                    "description": "Optional field and is hardware dependant",
                     "title": "Unit"
                   }
                 },
@@ -5577,7 +5594,7 @@
           },
           "isis_authentication_key": {
             "type": "string",
-            "description": "The type-7 encrypted password",
+            "description": "Type-7 encrypted password",
             "title": "ISIS Authentication Key"
           },
           "traffic_policy": {
@@ -5599,12 +5616,17 @@
           },
           "eos_cli": {
             "type": "string",
-            "description": "EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
+            "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
             "title": "EOS CLI"
           },
           "evpn_ethernet_segment": {
             "type": "object",
             "properties": {
+              "identifier": {
+                "type": "string",
+                "description": "EVPN Ethernet Segment Identifier (Type 1 format)",
+                "title": "Identifier"
+              },
               "redundancy": {
                 "type": "string",
                 "enum": [
@@ -5626,14 +5648,14 @@
                   },
                   "preference_value": {
                     "type": "integer",
-                    "description": "The preference_value and dont_preempt are set for preference algorithm and are optional",
                     "minimum": 0,
                     "maximum": 65535,
+                    "description": "Preference_value is only used when \"algorithm\" is \"preference\"",
                     "title": "Preference Value"
                   },
                   "dont_preempt": {
                     "type": "boolean",
-                    "description": "The preference_value and dont_preempt are set for preference algorithm and are optional",
+                    "description": "Dont_preempt is only used when \"algorithm\" is \"preference\"",
                     "default": false,
                     "title": "Dont Preempt"
                   },
@@ -5674,10 +5696,6 @@
                 "type": "string",
                 "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx",
                 "title": "Route Target"
-              },
-              "identifier": {
-                "type": "string",
-                "title": "Identifier"
               }
             },
             "additionalProperties": false,
@@ -5704,7 +5722,9 @@
               "enabled",
               "disabled",
               "True",
-              "False"
+              "False",
+              "true",
+              "false"
             ],
             "title": "Spanning Tree Bpdufilter"
           },
@@ -5714,7 +5734,9 @@
               "enabled",
               "disabled",
               "True",
-              "False"
+              "False",
+              "true",
+              "false"
             ],
             "title": "Spanning Tree Bpduguard"
           },
@@ -5793,7 +5815,8 @@
                 "title": "Role"
               },
               "vlan": {
-                "type": "integer",
+                "type": "string",
+                "description": "VLAN can be 'all' or list of vlans as string",
                 "title": "VLAN"
               },
               "transport": {
@@ -5811,7 +5834,7 @@
           },
           "ip_address": {
             "type": "string",
-            "description": "IP_address/mask",
+            "description": "IPv4 address/mask",
             "title": "IP Address"
           },
           "ipv6_enable": {
@@ -5820,12 +5843,12 @@
           },
           "ipv6_address": {
             "type": "string",
-            "description": "IPv6_address/mask",
+            "description": "IPv6 address/mask",
             "title": "IPv6 Address"
           },
           "ipv6_address_link_local": {
             "type": "string",
-            "description": "link_local_IPv6_address/mask",
+            "description": "link local IPv6 address/mask",
             "title": "IPv6 Address Link Local"
           },
           "ipv6_nd_ra_disabled": {
@@ -5847,12 +5870,12 @@
                 },
                 "valid_lifetime": {
                   "type": "string",
-                  "description": "The infinite or lifetime in seconds",
+                  "description": "Infinite or lifetime in seconds",
                   "title": "Valid Lifetime"
                 },
                 "preferred_lifetime": {
                   "type": "string",
-                  "description": "The infinite or lifetime in seconds",
+                  "description": "Infinite or lifetime in seconds",
                   "title": "Preferred Lifetime"
                 },
                 "no_autoconfig_flag": {
@@ -5860,10 +5883,10 @@
                   "title": "No Autoconfig Flag"
                 }
               },
-              "additionalProperties": false,
               "required": [
                 "ipv6_prefix"
-              ]
+              ],
+              "additionalProperties": false
             },
             "title": "IPv6 ND Prefixes"
           },
@@ -5923,59 +5946,8 @@
           },
           "service_profile": {
             "type": "string",
+            "description": "QOS profile",
             "title": "Service Profile"
-          },
-          "struct_cfg": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string",
-                "title": "Description"
-              },
-              "native_vlan_tag": {
-                "type": "boolean",
-                "title": "Native VLAN Tag"
-              },
-              "storm_control": {
-                "type": "object",
-                "properties": {
-                  "broadcast": {
-                    "type": "object",
-                    "properties": {
-                      "level": {
-                        "type": "integer",
-                        "title": "Level"
-                      },
-                      "unit": {
-                        "type": "string",
-                        "title": "Unit"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "title": "Broadcast"
-                  },
-                  "unknown_unicast": {
-                    "type": "object",
-                    "properties": {
-                      "level": {
-                        "type": "integer",
-                        "title": "Level"
-                      },
-                      "unit": {
-                        "type": "string",
-                        "title": "Unit"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "title": "Unknown Unicast"
-                  }
-                },
-                "additionalProperties": false,
-                "title": "Storm Control"
-              }
-            },
-            "additionalProperties": false,
-            "title": "Struct Cfg"
           },
           "ospf_network_point_to_point": {
             "type": "boolean",
@@ -6000,7 +5972,7 @@
           },
           "ospf_authentication_key": {
             "type": "string",
-            "description": "The encrypted_password",
+            "description": "Encrypted password",
             "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
@@ -6025,14 +5997,14 @@
                 },
                 "key": {
                   "type": "string",
-                  "description": "The encrypted_password",
+                  "description": "Encrypted password",
                   "title": "Key"
                 }
               },
-              "additionalProperties": false,
               "required": [
                 "id"
-              ]
+              ],
+              "additionalProperties": false
             },
             "title": "OSPF Message Digest Keys"
           },
@@ -6041,6 +6013,7 @@
             "properties": {
               "sampled": {
                 "type": "string",
+                "description": "Flow tracker name",
                 "title": "Sampled"
               }
             },
