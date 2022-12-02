@@ -6089,7 +6089,9 @@ keys:
             next_hop_self:
               type: bool
             password:
-              type: str
+              type: password
+              password_type: bgp
+              password_key_field: name
             default_originate:
               type: dict
               keys:
@@ -7172,7 +7174,9 @@ keys:
                     convert_types:
                     - int
                   password:
-                    type: str
+                    type: password
+                    password_type: bgp
+                    password_key_field: ip_address
                   remove_private_as:
                     type: dict
                     description: Remove private AS numbers in outbound AS path

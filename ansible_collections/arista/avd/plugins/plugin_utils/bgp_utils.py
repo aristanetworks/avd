@@ -218,7 +218,8 @@ def cbc_check_password(key: bytes, data: bytes) -> bool:
     It does not return the password but only raise an error if the passowrd cannot be decrypted
     """
     try:
-        cbc_decrypt(key, data)
-        return True
+        # It is possible that if only one character is changed towards the end of the encrypting string
+        # cbc_decrypt will succeed - hence this test
+        return cbc_encrypt(key, cbc_decrypt(key, data)) == data
     except Exception:
         return False

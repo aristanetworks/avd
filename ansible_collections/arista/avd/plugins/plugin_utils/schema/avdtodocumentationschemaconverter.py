@@ -228,6 +228,7 @@ class AvdToDocumentationSchemaConverter:
             "bool": "Boolean",
             "dict": "Dictionary",
             "list": "List",
+            "password": "String",
         }
         schema_type = schema.get("type")
         if not schema_type:

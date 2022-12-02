@@ -67,6 +67,7 @@ class AvdToJsonSchemaConverter:
             "bool": "boolean",
             "list": "array",
             "dict": "object",
+            "password": "string",
         }
         return {"type": TYPE_MAP[type]}
 

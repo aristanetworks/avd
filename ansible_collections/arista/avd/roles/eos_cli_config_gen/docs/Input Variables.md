@@ -4585,7 +4585,7 @@ router_bgp:
       bfd: <bool>
       ebgp_multihop: <int>
       next_hop_self: <bool>
-      password: <str>
+      password: <password>
       default_originate:
         enabled: <bool>
         always: <bool>
@@ -4885,7 +4885,7 @@ router_bgp:
         - ip_address: <str>
           peer_group: <str>
           remote_as: <str>
-          password: <str>
+          password: <password>
           remove_private_as:
             enabled: <bool>
             all: <bool>
