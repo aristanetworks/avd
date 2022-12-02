@@ -322,8 +322,6 @@ dynamic_keys:
               monitor_sessions:
                 type: list
                 description: Monitor Session configuration - Use defined switchports as source or destination for monitoring sessions
-                convert_types:
-                  - dict
                 items:
                   type: dict
                   keys:
@@ -522,6 +520,8 @@ dynamic_keys:
                       keys:
                         number:
                           type: int
+                          convert_types:
+                            - str
                           description: Subinterface number
                         short_esi:
                           type: str

@@ -8,6 +8,10 @@ keys:
     primary_key: key
     convert_types:
       - dict
+    description: |
+      Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
+      This provides the ability to define various keys of your choice to better organize/group your data.
+      This should be defined in top level group_var for the fabric.
     items:
       type: dict
       keys:
@@ -15,3 +19,4 @@ keys:
           type: str
         type:
           type: str
+          description: Type used for documentation

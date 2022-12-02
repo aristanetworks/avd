@@ -156,13 +156,19 @@ bgp_peer_groups:
 
 ## Connected Endpoints Keys
 
+### Description
+
+Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
+This provides the ability to define various keys of your choice to better organize/group your data.
+This should be defined in top level group_var for the fabric.
+
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;- key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation |
 
 ### YAML
 
@@ -696,7 +702,7 @@ evpn_vlan_aware_bundles: <bool>
 
 ### Description
 
-Fabric Name, required to match Ansible Group name covering all devices in the Fabric
+Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.
 ### Variables
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1443,6 +1449,13 @@ overlay_routing_protocol_address_family: <str>
 Specify RT type
 Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
 By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.
+Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+1. svi.nodes[inventory_hostname].structured_config
+2. svi_profile.nodes[inventory_hostname].structured_config
+3. svi_parent_profile.nodes[inventory_hostname].structured_config
+4. svi.structured_config
+5. svi_profile.structured_config
+6. svi_parent_profile.structured_config
 
 ### Variables
 
@@ -1563,7 +1576,7 @@ platform_speed_groups:
 
 ### Description
 
-POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name.
+POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.
 Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ### Variables
