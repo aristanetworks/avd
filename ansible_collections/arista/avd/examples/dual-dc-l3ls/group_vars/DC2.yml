@@ -106,6 +106,34 @@ l3leaf:
         evpn_l3:
           enabled: true
           inter_domain: true
+      structured_config:
+        router_bgp:
+          peer_groups:
+            IPv4-DCI-PEERS:
+              type: ipv4
+              remote_as: '65102'
+              next_hop_self: true
+              password: 4b21pAdCvWeAqpcKDFMdWw==
+              maximum_routes: 12000
+              route_map_out: RM-DCI-PEER-OUT
+          address_family_ipv4:
+            peer_groups:
+              IPv4-DCI-PEERS:
+                activate: true
+        route_maps:
+          RM-DCI-PEER-OUT:
+            sequence_numbers:
+              10:
+                type: permit
+                match:
+                - ip address prefix-list PL-DCI-PREFIXES
+        prefix_lists:
+          PL-DCI-PREFIXES:
+            sequence_numbers:
+              10:
+                action: permit 10.255.128.0/27 eq 32
+              20:
+                action: permit 10.255.129.0/27 eq 32
       nodes:
         dc2-leaf2a:
           id: 3
@@ -118,6 +146,11 @@ l3leaf:
             remote_peers:
               - hostname: dc1-leaf2a
               - hostname: dc1-leaf2b
+          structured_config:
+            router_bgp:
+              neighbors:
+                172.100.100.0:
+                  peer_group: IPv4-DCI-PEERS
         dc2-leaf2b:
           id: 4
           mgmt_ip: 172.16.1.204/24
@@ -129,6 +162,11 @@ l3leaf:
             remote_peers:
               - hostname: dc1-leaf2a
               - hostname: dc1-leaf2b
+          structured_config:
+            router_bgp:
+              neighbors:
+                172.100.100.2:
+                  peer_group: IPv4-DCI-PEERS
 
 # L2 Leaf switch group
 l2leaf:

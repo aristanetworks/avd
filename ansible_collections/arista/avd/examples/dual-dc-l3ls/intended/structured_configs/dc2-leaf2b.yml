@@ -37,6 +37,13 @@ router_bgp:
       ebgp_multihop: '15'
       send_community: all
       maximum_routes: 0
+    IPv4-DCI-PEERS:
+      type: ipv4
+      remote_as: '65102'
+      next_hop_self: true
+      password: 4b21pAdCvWeAqpcKDFMdWw==
+      maximum_routes: 12000
+      route_map_out: RM-DCI-PEER-OUT
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -47,6 +54,8 @@ router_bgp:
         activate: false
       EVPN-OVERLAY-CORE:
         activate: false
+      IPv4-DCI-PEERS:
+        activate: true
   neighbors:
     10.255.129.100:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -78,7 +87,7 @@ router_bgp:
     172.100.100.2:
       remote_as: '65102'
       description: dc1-leaf2b
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: IPv4-DCI-PEERS
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -466,6 +475,12 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-DCI-PEER-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-DCI-PREFIXES
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -487,6 +502,12 @@ loopback_interfaces:
     ip_address: 10.255.11.6/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 10.255.128.0/27 eq 32
+      20:
+        action: permit 10.255.129.0/27 eq 32
+  PL-DCI-PREFIXES:
     sequence_numbers:
       10:
         action: permit 10.255.128.0/27 eq 32

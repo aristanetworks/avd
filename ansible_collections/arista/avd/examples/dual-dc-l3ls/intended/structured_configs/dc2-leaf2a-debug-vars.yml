@@ -53,6 +53,19 @@ l3_edge:
     - Ethernet6
     - Ethernet6
     profile: DCI_profile
+structured_config:
+  route_maps:
+    RM-DCI-PEER-OUT:
+      sequence_numbers:
+        10:
+          type: permit
+          match:
+          - ip address prefix-list PL-DCI-PREFIXES
+  prefix_lists:
+    PL-DCI-PREFIXES:
+      sequence_numbers:
+        10:
+          action: permit 10.255.1.0/27 eq 32
 servers:
   dc1-leaf1-server1:
     adapters:
@@ -238,6 +251,20 @@ l3leaf:
         evpn_l3:
           enabled: true
           inter_domain: true
+      structured_config:
+        router_bgp:
+          peer_groups:
+            DCI-IPv4:
+              type: ipv4
+              remote_as: '65102'
+              next_hop_self: true
+              password: 4b21pAdCvWeAqpcKDFMdWw==
+              maximum_routes: 12000
+              route_map_out: RM-DCI-PEER-OUT
+          address_family_ipv4:
+            peer_groups:
+              MLAG-IPv4-UNDERLAY-PEER:
+                activate: true
       nodes:
         dc2-leaf2a:
           id: 3
@@ -249,6 +276,11 @@ l3leaf:
             remote_peers:
             - hostname: dc1-leaf2a
             - hostname: dc1-leaf2b
+          structured_config:
+            router_bgp:
+              neighbors:
+                172.100.100.0:
+                  peer_group: DCI-IPv4
         dc2-leaf2b:
           id: 4
           mgmt_ip: 172.16.1.204/24
@@ -259,6 +291,11 @@ l3leaf:
             remote_peers:
             - hostname: dc1-leaf2a
             - hostname: dc1-leaf2b
+          structured_config:
+            router_bgp:
+              neighbors:
+                172.100.100.2:
+                  peer_group: DCI-IPv4
 l2leaf:
   defaults:
     platform: vEOS-lab
@@ -340,6 +377,252 @@ group_names:
 - NETWORK_SERVICES
 ansible_facts:
   avd_switch_facts:
+    dc1-spine1:
+      switch:
+        type: spine
+        hostname: dc1-spine1
+        node_type_key: spine
+        connected_endpoints: false
+        default_downlink_interfaces: []
+        default_evpn_role: server
+        default_interfaces: {}
+        default_underlay_routing_protocol: ebgp
+        default_overlay_routing_protocol: ebgp
+        default_overlay_address_families:
+        - evpn
+        default_mpls_overlay_role: none
+        mpls_lsr: false
+        mlag_support: false
+        network_services_l1: false
+        network_services_l2: false
+        network_services_l3: false
+        underlay_router: true
+        uplink_type: p2p
+        vtep: false
+        ip_addressing:
+          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
+          python_class_name: AvdIpAddressing
+        interface_descriptions:
+          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
+          python_class_name: AvdInterfaceDescriptions
+          underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
+          underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
+          connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
+          connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
+          overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
+          vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
+        id: 1
+        mgmt_ip: 172.16.1.11/24
+        platform: vEOS-lab
+        max_parallel_uplinks: 1
+        uplink_interfaces: []
+        uplink_switch_interfaces: []
+        max_uplink_switches: 0
+        is_deployed: true
+        platform_settings:
+          platforms:
+          - VEOS
+          - VEOS-LAB
+          - vEOS
+          - vEOS-lab
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          feature_support:
+            queue_monitor_length_notify: false
+            interface_storm_control: false
+        mgmt_interface: Management1
+        underlay_routing_protocol: ebgp
+        overlay_routing_protocol: ebgp
+        overlay_address_families:
+        - evpn
+        endpoint_trunk_groups: []
+        vlans: ''
+        spanning_tree_mode: none
+        overlay_rd_type_admin_subfield: 10.255.0.1
+        loopback_ipv4_pool: 10.255.0.0/27
+        loopback_ipv4_offset: 0
+        router_id: 10.255.0.1
+        evpn_gateway_vxlan_l2: false
+        evpn_gateway_vxlan_l3: false
+        evpn_gateway_vxlan_l3_inter_domain: true
+        bgp_defaults:
+        - no bgp default ipv4-unicast
+        - distance bgp 20 200 200
+        - graceful-restart restart-time 300
+        - graceful-restart
+        bgp_peer_groups:
+          ipv4_underlay_peers:
+            name: IPv4-UNDERLAY-PEERS
+            password: 7x4B4rnJhZB438m9+BrBfQ==
+            structured_config: null
+          mlag_ipv4_underlay_peer:
+            name: MLAG-IPv4-UNDERLAY-PEER
+            password: 4b21pAdCvWeAqpcKDFMdWw==
+            structured_config: null
+          evpn_overlay_peers:
+            name: EVPN-OVERLAY-PEERS
+            password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+            structured_config: null
+          evpn_overlay_core:
+            name: EVPN-OVERLAY-CORE
+            password: null
+            structured_config: null
+          mpls_overlay_peers:
+            name: MPLS-OVERLAY-PEERS
+            password: null
+            structured_config: null
+          rr_overlay_peers:
+            name: RR-OVERLAY-PEERS
+            password: null
+            structured_config: null
+        evpn_role: server
+        mpls_overlay_role: none
+        bgp_as: '65100'
+        underlay_ipv6: false
+        mlag: false
+        uplinks: []
+        uplink_peers: []
+        overlay_routing_protocol_address_family: ipv4
+        bgp: true
+        evpn_encapsulation: vxlan
+        underlay:
+          bgp: true
+          mpls: false
+          ospf: false
+          isis: false
+        overlay:
+          peering_address: 10.255.0.1
+          ler: false
+          vtep: false
+          evpn: true
+          evpn_vxlan: true
+          evpn_mpls: false
+          vpn_ipv4: false
+          vpn_ipv6: false
+    dc1-spine2:
+      switch:
+        type: spine
+        hostname: dc1-spine2
+        node_type_key: spine
+        connected_endpoints: false
+        default_downlink_interfaces: []
+        default_evpn_role: server
+        default_interfaces: {}
+        default_underlay_routing_protocol: ebgp
+        default_overlay_routing_protocol: ebgp
+        default_overlay_address_families:
+        - evpn
+        default_mpls_overlay_role: none
+        mpls_lsr: false
+        mlag_support: false
+        network_services_l1: false
+        network_services_l2: false
+        network_services_l3: false
+        underlay_router: true
+        uplink_type: p2p
+        vtep: false
+        ip_addressing:
+          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
+          python_class_name: AvdIpAddressing
+        interface_descriptions:
+          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
+          python_class_name: AvdInterfaceDescriptions
+          underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
+          underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
+          connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
+          connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
+          overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
+          vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
+        id: 2
+        mgmt_ip: 172.16.1.12/24
+        platform: vEOS-lab
+        max_parallel_uplinks: 1
+        uplink_interfaces: []
+        uplink_switch_interfaces: []
+        max_uplink_switches: 0
+        is_deployed: true
+        platform_settings:
+          platforms:
+          - VEOS
+          - VEOS-LAB
+          - vEOS
+          - vEOS-lab
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          feature_support:
+            queue_monitor_length_notify: false
+            interface_storm_control: false
+        mgmt_interface: Management1
+        underlay_routing_protocol: ebgp
+        overlay_routing_protocol: ebgp
+        overlay_address_families:
+        - evpn
+        endpoint_trunk_groups: []
+        vlans: ''
+        spanning_tree_mode: none
+        overlay_rd_type_admin_subfield: 10.255.0.2
+        loopback_ipv4_pool: 10.255.0.0/27
+        loopback_ipv4_offset: 0
+        router_id: 10.255.0.2
+        evpn_gateway_vxlan_l2: false
+        evpn_gateway_vxlan_l3: false
+        evpn_gateway_vxlan_l3_inter_domain: true
+        bgp_defaults:
+        - no bgp default ipv4-unicast
+        - distance bgp 20 200 200
+        - graceful-restart restart-time 300
+        - graceful-restart
+        bgp_peer_groups:
+          ipv4_underlay_peers:
+            name: IPv4-UNDERLAY-PEERS
+            password: 7x4B4rnJhZB438m9+BrBfQ==
+            structured_config: null
+          mlag_ipv4_underlay_peer:
+            name: MLAG-IPv4-UNDERLAY-PEER
+            password: 4b21pAdCvWeAqpcKDFMdWw==
+            structured_config: null
+          evpn_overlay_peers:
+            name: EVPN-OVERLAY-PEERS
+            password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+            structured_config: null
+          evpn_overlay_core:
+            name: EVPN-OVERLAY-CORE
+            password: null
+            structured_config: null
+          mpls_overlay_peers:
+            name: MPLS-OVERLAY-PEERS
+            password: null
+            structured_config: null
+          rr_overlay_peers:
+            name: RR-OVERLAY-PEERS
+            password: null
+            structured_config: null
+        evpn_role: server
+        mpls_overlay_role: none
+        bgp_as: '65100'
+        underlay_ipv6: false
+        mlag: false
+        uplinks: []
+        uplink_peers: []
+        overlay_routing_protocol_address_family: ipv4
+        bgp: true
+        evpn_encapsulation: vxlan
+        underlay:
+          bgp: true
+          mpls: false
+          ospf: false
+          isis: false
+        overlay:
+          peering_address: 10.255.0.2
+          ler: false
+          vtep: false
+          evpn: true
+          evpn_vxlan: true
+          evpn_mpls: false
+          vpn_ipv4: false
+          vpn_ipv6: false
     dc1-leaf1a:
       switch:
         type: l3leaf
@@ -782,6 +1065,23 @@ ansible_facts:
         uplink_switch_interfaces:
         - Ethernet3
         - Ethernet3
+        struct_cfg:
+          router_bgp:
+            peer_groups:
+              DCI-IPv4:
+                type: ipv4
+                remote_as: '65202'
+                next_hop_self: true
+                password: 4b21pAdCvWeAqpcKDFMdWw==
+                maximum_routes: 12000
+                route_map_out: RM-DCI-PEER-OUT
+            address_family_ipv4:
+              peer_groups:
+                MLAG-IPv4-UNDERLAY-PEER:
+                  activate: true
+            neighbors:
+              172.100.100.1:
+                peer_group: DCI-IPv4
         max_uplink_switches: 2
         is_deployed: true
         platform_settings:
@@ -982,6 +1282,23 @@ ansible_facts:
         uplink_switch_interfaces:
         - Ethernet4
         - Ethernet4
+        struct_cfg:
+          router_bgp:
+            peer_groups:
+              DCI-IPv4:
+                type: ipv4
+                remote_as: '65202'
+                next_hop_self: true
+                password: 4b21pAdCvWeAqpcKDFMdWw==
+                maximum_routes: 12000
+                route_map_out: RM-DCI-PEER-OUT
+            address_family_ipv4:
+              peer_groups:
+                MLAG-IPv4-UNDERLAY-PEER:
+                  activate: true
+            neighbors:
+              172.100.100.3:
+                peer_group: DCI-IPv4
         max_uplink_switches: 2
         is_deployed: true
         platform_settings:
@@ -1832,6 +2149,23 @@ ansible_facts:
         uplink_switch_interfaces:
         - Ethernet3
         - Ethernet3
+        struct_cfg:
+          router_bgp:
+            peer_groups:
+              DCI-IPv4:
+                type: ipv4
+                remote_as: '65102'
+                next_hop_self: true
+                password: 4b21pAdCvWeAqpcKDFMdWw==
+                maximum_routes: 12000
+                route_map_out: RM-DCI-PEER-OUT
+            address_family_ipv4:
+              peer_groups:
+                MLAG-IPv4-UNDERLAY-PEER:
+                  activate: true
+            neighbors:
+              172.100.100.0:
+                peer_group: DCI-IPv4
         max_uplink_switches: 2
         is_deployed: true
         platform_settings:
@@ -2032,6 +2366,23 @@ ansible_facts:
         uplink_switch_interfaces:
         - Ethernet4
         - Ethernet4
+        struct_cfg:
+          router_bgp:
+            peer_groups:
+              DCI-IPv4:
+                type: ipv4
+                remote_as: '65102'
+                next_hop_self: true
+                password: 4b21pAdCvWeAqpcKDFMdWw==
+                maximum_routes: 12000
+                route_map_out: RM-DCI-PEER-OUT
+            address_family_ipv4:
+              peer_groups:
+                MLAG-IPv4-UNDERLAY-PEER:
+                  activate: true
+            neighbors:
+              172.100.100.2:
+                peer_group: DCI-IPv4
         max_uplink_switches: 2
         is_deployed: true
         platform_settings:
@@ -2686,252 +3037,6 @@ ansible_facts:
           evpn_mpls: false
           vpn_ipv4: false
           vpn_ipv6: false
-    dc1-spine1:
-      switch:
-        type: spine
-        hostname: dc1-spine1
-        node_type_key: spine
-        connected_endpoints: false
-        default_downlink_interfaces: []
-        default_evpn_role: server
-        default_interfaces: {}
-        default_underlay_routing_protocol: ebgp
-        default_overlay_routing_protocol: ebgp
-        default_overlay_address_families:
-        - evpn
-        default_mpls_overlay_role: none
-        mpls_lsr: false
-        mlag_support: false
-        network_services_l1: false
-        network_services_l2: false
-        network_services_l3: false
-        underlay_router: true
-        uplink_type: p2p
-        vtep: false
-        ip_addressing:
-          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
-          python_class_name: AvdIpAddressing
-        interface_descriptions:
-          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
-          python_class_name: AvdInterfaceDescriptions
-          underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
-          underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
-          connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
-          connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
-          overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
-          vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
-        id: 1
-        mgmt_ip: 172.16.1.11/24
-        platform: vEOS-lab
-        max_parallel_uplinks: 1
-        uplink_interfaces: []
-        uplink_switch_interfaces: []
-        max_uplink_switches: 0
-        is_deployed: true
-        platform_settings:
-          platforms:
-          - VEOS
-          - VEOS-LAB
-          - vEOS
-          - vEOS-lab
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          feature_support:
-            queue_monitor_length_notify: false
-            interface_storm_control: false
-        mgmt_interface: Management1
-        underlay_routing_protocol: ebgp
-        overlay_routing_protocol: ebgp
-        overlay_address_families:
-        - evpn
-        endpoint_trunk_groups: []
-        vlans: ''
-        spanning_tree_mode: none
-        overlay_rd_type_admin_subfield: 10.255.0.1
-        loopback_ipv4_pool: 10.255.0.0/27
-        loopback_ipv4_offset: 0
-        router_id: 10.255.0.1
-        evpn_gateway_vxlan_l2: false
-        evpn_gateway_vxlan_l3: false
-        evpn_gateway_vxlan_l3_inter_domain: true
-        bgp_defaults:
-        - no bgp default ipv4-unicast
-        - distance bgp 20 200 200
-        - graceful-restart restart-time 300
-        - graceful-restart
-        bgp_peer_groups:
-          ipv4_underlay_peers:
-            name: IPv4-UNDERLAY-PEERS
-            password: 7x4B4rnJhZB438m9+BrBfQ==
-            structured_config: null
-          mlag_ipv4_underlay_peer:
-            name: MLAG-IPv4-UNDERLAY-PEER
-            password: 4b21pAdCvWeAqpcKDFMdWw==
-            structured_config: null
-          evpn_overlay_peers:
-            name: EVPN-OVERLAY-PEERS
-            password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-            structured_config: null
-          evpn_overlay_core:
-            name: EVPN-OVERLAY-CORE
-            password: null
-            structured_config: null
-          mpls_overlay_peers:
-            name: MPLS-OVERLAY-PEERS
-            password: null
-            structured_config: null
-          rr_overlay_peers:
-            name: RR-OVERLAY-PEERS
-            password: null
-            structured_config: null
-        evpn_role: server
-        mpls_overlay_role: none
-        bgp_as: '65100'
-        underlay_ipv6: false
-        mlag: false
-        uplinks: []
-        uplink_peers: []
-        overlay_routing_protocol_address_family: ipv4
-        bgp: true
-        evpn_encapsulation: vxlan
-        underlay:
-          bgp: true
-          mpls: false
-          ospf: false
-          isis: false
-        overlay:
-          peering_address: 10.255.0.1
-          ler: false
-          vtep: false
-          evpn: true
-          evpn_vxlan: true
-          evpn_mpls: false
-          vpn_ipv4: false
-          vpn_ipv6: false
-    dc1-spine2:
-      switch:
-        type: spine
-        hostname: dc1-spine2
-        node_type_key: spine
-        connected_endpoints: false
-        default_downlink_interfaces: []
-        default_evpn_role: server
-        default_interfaces: {}
-        default_underlay_routing_protocol: ebgp
-        default_overlay_routing_protocol: ebgp
-        default_overlay_address_families:
-        - evpn
-        default_mpls_overlay_role: none
-        mpls_lsr: false
-        mlag_support: false
-        network_services_l1: false
-        network_services_l2: false
-        network_services_l3: false
-        underlay_router: true
-        uplink_type: p2p
-        vtep: false
-        ip_addressing:
-          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
-          python_class_name: AvdIpAddressing
-        interface_descriptions:
-          python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
-          python_class_name: AvdInterfaceDescriptions
-          underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
-          underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
-          connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
-          connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
-          overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
-          vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
-        id: 2
-        mgmt_ip: 172.16.1.12/24
-        platform: vEOS-lab
-        max_parallel_uplinks: 1
-        uplink_interfaces: []
-        uplink_switch_interfaces: []
-        max_uplink_switches: 0
-        is_deployed: true
-        platform_settings:
-          platforms:
-          - VEOS
-          - VEOS-LAB
-          - vEOS
-          - vEOS-lab
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          feature_support:
-            queue_monitor_length_notify: false
-            interface_storm_control: false
-        mgmt_interface: Management1
-        underlay_routing_protocol: ebgp
-        overlay_routing_protocol: ebgp
-        overlay_address_families:
-        - evpn
-        endpoint_trunk_groups: []
-        vlans: ''
-        spanning_tree_mode: none
-        overlay_rd_type_admin_subfield: 10.255.0.2
-        loopback_ipv4_pool: 10.255.0.0/27
-        loopback_ipv4_offset: 0
-        router_id: 10.255.0.2
-        evpn_gateway_vxlan_l2: false
-        evpn_gateway_vxlan_l3: false
-        evpn_gateway_vxlan_l3_inter_domain: true
-        bgp_defaults:
-        - no bgp default ipv4-unicast
-        - distance bgp 20 200 200
-        - graceful-restart restart-time 300
-        - graceful-restart
-        bgp_peer_groups:
-          ipv4_underlay_peers:
-            name: IPv4-UNDERLAY-PEERS
-            password: 7x4B4rnJhZB438m9+BrBfQ==
-            structured_config: null
-          mlag_ipv4_underlay_peer:
-            name: MLAG-IPv4-UNDERLAY-PEER
-            password: 4b21pAdCvWeAqpcKDFMdWw==
-            structured_config: null
-          evpn_overlay_peers:
-            name: EVPN-OVERLAY-PEERS
-            password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-            structured_config: null
-          evpn_overlay_core:
-            name: EVPN-OVERLAY-CORE
-            password: null
-            structured_config: null
-          mpls_overlay_peers:
-            name: MPLS-OVERLAY-PEERS
-            password: null
-            structured_config: null
-          rr_overlay_peers:
-            name: RR-OVERLAY-PEERS
-            password: null
-            structured_config: null
-        evpn_role: server
-        mpls_overlay_role: none
-        bgp_as: '65100'
-        underlay_ipv6: false
-        mlag: false
-        uplinks: []
-        uplink_peers: []
-        overlay_routing_protocol_address_family: ipv4
-        bgp: true
-        evpn_encapsulation: vxlan
-        underlay:
-          bgp: true
-          mpls: false
-          ospf: false
-          isis: false
-        overlay:
-          peering_address: 10.255.0.2
-          ler: false
-          vtep: false
-          evpn: true
-          evpn_vxlan: true
-          evpn_mpls: false
-          vpn_ipv4: false
-          vpn_ipv6: false
   avd_overlay_peers:
     dc1-spine1:
     - dc1-leaf1a
@@ -2991,6 +3096,252 @@ ansible_facts:
     dc2-leaf2b:
     - dc2-leaf2c
 avd_switch_facts:
+  dc1-spine1:
+    switch:
+      type: spine
+      hostname: dc1-spine1
+      node_type_key: spine
+      connected_endpoints: false
+      default_downlink_interfaces: []
+      default_evpn_role: server
+      default_interfaces: {}
+      default_underlay_routing_protocol: ebgp
+      default_overlay_routing_protocol: ebgp
+      default_overlay_address_families:
+      - evpn
+      default_mpls_overlay_role: none
+      mpls_lsr: false
+      mlag_support: false
+      network_services_l1: false
+      network_services_l2: false
+      network_services_l3: false
+      underlay_router: true
+      uplink_type: p2p
+      vtep: false
+      ip_addressing:
+        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
+        python_class_name: AvdIpAddressing
+      interface_descriptions:
+        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
+        python_class_name: AvdInterfaceDescriptions
+        underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
+        underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
+        connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
+        connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
+        overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
+        vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
+      id: 1
+      mgmt_ip: 172.16.1.11/24
+      platform: vEOS-lab
+      max_parallel_uplinks: 1
+      uplink_interfaces: []
+      uplink_switch_interfaces: []
+      max_uplink_switches: 0
+      is_deployed: true
+      platform_settings:
+        platforms:
+        - VEOS
+        - VEOS-LAB
+        - vEOS
+        - vEOS-lab
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        feature_support:
+          queue_monitor_length_notify: false
+          interface_storm_control: false
+      mgmt_interface: Management1
+      underlay_routing_protocol: ebgp
+      overlay_routing_protocol: ebgp
+      overlay_address_families:
+      - evpn
+      endpoint_trunk_groups: []
+      vlans: ''
+      spanning_tree_mode: none
+      overlay_rd_type_admin_subfield: 10.255.0.1
+      loopback_ipv4_pool: 10.255.0.0/27
+      loopback_ipv4_offset: 0
+      router_id: 10.255.0.1
+      evpn_gateway_vxlan_l2: false
+      evpn_gateway_vxlan_l3: false
+      evpn_gateway_vxlan_l3_inter_domain: true
+      bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+      bgp_peer_groups:
+        ipv4_underlay_peers:
+          name: IPv4-UNDERLAY-PEERS
+          password: 7x4B4rnJhZB438m9+BrBfQ==
+          structured_config: null
+        mlag_ipv4_underlay_peer:
+          name: MLAG-IPv4-UNDERLAY-PEER
+          password: 4b21pAdCvWeAqpcKDFMdWw==
+          structured_config: null
+        evpn_overlay_peers:
+          name: EVPN-OVERLAY-PEERS
+          password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+          structured_config: null
+        evpn_overlay_core:
+          name: EVPN-OVERLAY-CORE
+          password: null
+          structured_config: null
+        mpls_overlay_peers:
+          name: MPLS-OVERLAY-PEERS
+          password: null
+          structured_config: null
+        rr_overlay_peers:
+          name: RR-OVERLAY-PEERS
+          password: null
+          structured_config: null
+      evpn_role: server
+      mpls_overlay_role: none
+      bgp_as: '65100'
+      underlay_ipv6: false
+      mlag: false
+      uplinks: []
+      uplink_peers: []
+      overlay_routing_protocol_address_family: ipv4
+      bgp: true
+      evpn_encapsulation: vxlan
+      underlay:
+        bgp: true
+        mpls: false
+        ospf: false
+        isis: false
+      overlay:
+        peering_address: 10.255.0.1
+        ler: false
+        vtep: false
+        evpn: true
+        evpn_vxlan: true
+        evpn_mpls: false
+        vpn_ipv4: false
+        vpn_ipv6: false
+  dc1-spine2:
+    switch:
+      type: spine
+      hostname: dc1-spine2
+      node_type_key: spine
+      connected_endpoints: false
+      default_downlink_interfaces: []
+      default_evpn_role: server
+      default_interfaces: {}
+      default_underlay_routing_protocol: ebgp
+      default_overlay_routing_protocol: ebgp
+      default_overlay_address_families:
+      - evpn
+      default_mpls_overlay_role: none
+      mpls_lsr: false
+      mlag_support: false
+      network_services_l1: false
+      network_services_l2: false
+      network_services_l3: false
+      underlay_router: true
+      uplink_type: p2p
+      vtep: false
+      ip_addressing:
+        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
+        python_class_name: AvdIpAddressing
+      interface_descriptions:
+        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
+        python_class_name: AvdInterfaceDescriptions
+        underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
+        underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
+        connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
+        connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
+        overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
+        vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
+      id: 2
+      mgmt_ip: 172.16.1.12/24
+      platform: vEOS-lab
+      max_parallel_uplinks: 1
+      uplink_interfaces: []
+      uplink_switch_interfaces: []
+      max_uplink_switches: 0
+      is_deployed: true
+      platform_settings:
+        platforms:
+        - VEOS
+        - VEOS-LAB
+        - vEOS
+        - vEOS-lab
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        feature_support:
+          queue_monitor_length_notify: false
+          interface_storm_control: false
+      mgmt_interface: Management1
+      underlay_routing_protocol: ebgp
+      overlay_routing_protocol: ebgp
+      overlay_address_families:
+      - evpn
+      endpoint_trunk_groups: []
+      vlans: ''
+      spanning_tree_mode: none
+      overlay_rd_type_admin_subfield: 10.255.0.2
+      loopback_ipv4_pool: 10.255.0.0/27
+      loopback_ipv4_offset: 0
+      router_id: 10.255.0.2
+      evpn_gateway_vxlan_l2: false
+      evpn_gateway_vxlan_l3: false
+      evpn_gateway_vxlan_l3_inter_domain: true
+      bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+      bgp_peer_groups:
+        ipv4_underlay_peers:
+          name: IPv4-UNDERLAY-PEERS
+          password: 7x4B4rnJhZB438m9+BrBfQ==
+          structured_config: null
+        mlag_ipv4_underlay_peer:
+          name: MLAG-IPv4-UNDERLAY-PEER
+          password: 4b21pAdCvWeAqpcKDFMdWw==
+          structured_config: null
+        evpn_overlay_peers:
+          name: EVPN-OVERLAY-PEERS
+          password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+          structured_config: null
+        evpn_overlay_core:
+          name: EVPN-OVERLAY-CORE
+          password: null
+          structured_config: null
+        mpls_overlay_peers:
+          name: MPLS-OVERLAY-PEERS
+          password: null
+          structured_config: null
+        rr_overlay_peers:
+          name: RR-OVERLAY-PEERS
+          password: null
+          structured_config: null
+      evpn_role: server
+      mpls_overlay_role: none
+      bgp_as: '65100'
+      underlay_ipv6: false
+      mlag: false
+      uplinks: []
+      uplink_peers: []
+      overlay_routing_protocol_address_family: ipv4
+      bgp: true
+      evpn_encapsulation: vxlan
+      underlay:
+        bgp: true
+        mpls: false
+        ospf: false
+        isis: false
+      overlay:
+        peering_address: 10.255.0.2
+        ler: false
+        vtep: false
+        evpn: true
+        evpn_vxlan: true
+        evpn_mpls: false
+        vpn_ipv4: false
+        vpn_ipv6: false
   dc1-leaf1a:
     switch:
       type: l3leaf
@@ -3433,6 +3784,23 @@ avd_switch_facts:
       uplink_switch_interfaces:
       - Ethernet3
       - Ethernet3
+      struct_cfg:
+        router_bgp:
+          peer_groups:
+            DCI-IPv4:
+              type: ipv4
+              remote_as: '65202'
+              next_hop_self: true
+              password: 4b21pAdCvWeAqpcKDFMdWw==
+              maximum_routes: 12000
+              route_map_out: RM-DCI-PEER-OUT
+          address_family_ipv4:
+            peer_groups:
+              MLAG-IPv4-UNDERLAY-PEER:
+                activate: true
+          neighbors:
+            172.100.100.1:
+              peer_group: DCI-IPv4
       max_uplink_switches: 2
       is_deployed: true
       platform_settings:
@@ -3633,6 +4001,23 @@ avd_switch_facts:
       uplink_switch_interfaces:
       - Ethernet4
       - Ethernet4
+      struct_cfg:
+        router_bgp:
+          peer_groups:
+            DCI-IPv4:
+              type: ipv4
+              remote_as: '65202'
+              next_hop_self: true
+              password: 4b21pAdCvWeAqpcKDFMdWw==
+              maximum_routes: 12000
+              route_map_out: RM-DCI-PEER-OUT
+          address_family_ipv4:
+            peer_groups:
+              MLAG-IPv4-UNDERLAY-PEER:
+                activate: true
+          neighbors:
+            172.100.100.3:
+              peer_group: DCI-IPv4
       max_uplink_switches: 2
       is_deployed: true
       platform_settings:
@@ -4483,6 +4868,23 @@ avd_switch_facts:
       uplink_switch_interfaces:
       - Ethernet3
       - Ethernet3
+      struct_cfg:
+        router_bgp:
+          peer_groups:
+            DCI-IPv4:
+              type: ipv4
+              remote_as: '65102'
+              next_hop_self: true
+              password: 4b21pAdCvWeAqpcKDFMdWw==
+              maximum_routes: 12000
+              route_map_out: RM-DCI-PEER-OUT
+          address_family_ipv4:
+            peer_groups:
+              MLAG-IPv4-UNDERLAY-PEER:
+                activate: true
+          neighbors:
+            172.100.100.0:
+              peer_group: DCI-IPv4
       max_uplink_switches: 2
       is_deployed: true
       platform_settings:
@@ -4683,6 +5085,23 @@ avd_switch_facts:
       uplink_switch_interfaces:
       - Ethernet4
       - Ethernet4
+      struct_cfg:
+        router_bgp:
+          peer_groups:
+            DCI-IPv4:
+              type: ipv4
+              remote_as: '65102'
+              next_hop_self: true
+              password: 4b21pAdCvWeAqpcKDFMdWw==
+              maximum_routes: 12000
+              route_map_out: RM-DCI-PEER-OUT
+          address_family_ipv4:
+            peer_groups:
+              MLAG-IPv4-UNDERLAY-PEER:
+                activate: true
+          neighbors:
+            172.100.100.2:
+              peer_group: DCI-IPv4
       max_uplink_switches: 2
       is_deployed: true
       platform_settings:
@@ -5337,252 +5756,6 @@ avd_switch_facts:
         evpn_mpls: false
         vpn_ipv4: false
         vpn_ipv6: false
-  dc1-spine1:
-    switch:
-      type: spine
-      hostname: dc1-spine1
-      node_type_key: spine
-      connected_endpoints: false
-      default_downlink_interfaces: []
-      default_evpn_role: server
-      default_interfaces: {}
-      default_underlay_routing_protocol: ebgp
-      default_overlay_routing_protocol: ebgp
-      default_overlay_address_families:
-      - evpn
-      default_mpls_overlay_role: none
-      mpls_lsr: false
-      mlag_support: false
-      network_services_l1: false
-      network_services_l2: false
-      network_services_l3: false
-      underlay_router: true
-      uplink_type: p2p
-      vtep: false
-      ip_addressing:
-        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
-        python_class_name: AvdIpAddressing
-      interface_descriptions:
-        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
-        python_class_name: AvdInterfaceDescriptions
-        underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
-        underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
-        connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
-        connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
-        overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
-        vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
-      id: 1
-      mgmt_ip: 172.16.1.11/24
-      platform: vEOS-lab
-      max_parallel_uplinks: 1
-      uplink_interfaces: []
-      uplink_switch_interfaces: []
-      max_uplink_switches: 0
-      is_deployed: true
-      platform_settings:
-        platforms:
-        - VEOS
-        - VEOS-LAB
-        - vEOS
-        - vEOS-lab
-        reload_delay:
-          mlag: 300
-          non_mlag: 330
-        feature_support:
-          queue_monitor_length_notify: false
-          interface_storm_control: false
-      mgmt_interface: Management1
-      underlay_routing_protocol: ebgp
-      overlay_routing_protocol: ebgp
-      overlay_address_families:
-      - evpn
-      endpoint_trunk_groups: []
-      vlans: ''
-      spanning_tree_mode: none
-      overlay_rd_type_admin_subfield: 10.255.0.1
-      loopback_ipv4_pool: 10.255.0.0/27
-      loopback_ipv4_offset: 0
-      router_id: 10.255.0.1
-      evpn_gateway_vxlan_l2: false
-      evpn_gateway_vxlan_l3: false
-      evpn_gateway_vxlan_l3_inter_domain: true
-      bgp_defaults:
-      - no bgp default ipv4-unicast
-      - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
-      bgp_peer_groups:
-        ipv4_underlay_peers:
-          name: IPv4-UNDERLAY-PEERS
-          password: 7x4B4rnJhZB438m9+BrBfQ==
-          structured_config: null
-        mlag_ipv4_underlay_peer:
-          name: MLAG-IPv4-UNDERLAY-PEER
-          password: 4b21pAdCvWeAqpcKDFMdWw==
-          structured_config: null
-        evpn_overlay_peers:
-          name: EVPN-OVERLAY-PEERS
-          password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-          structured_config: null
-        evpn_overlay_core:
-          name: EVPN-OVERLAY-CORE
-          password: null
-          structured_config: null
-        mpls_overlay_peers:
-          name: MPLS-OVERLAY-PEERS
-          password: null
-          structured_config: null
-        rr_overlay_peers:
-          name: RR-OVERLAY-PEERS
-          password: null
-          structured_config: null
-      evpn_role: server
-      mpls_overlay_role: none
-      bgp_as: '65100'
-      underlay_ipv6: false
-      mlag: false
-      uplinks: []
-      uplink_peers: []
-      overlay_routing_protocol_address_family: ipv4
-      bgp: true
-      evpn_encapsulation: vxlan
-      underlay:
-        bgp: true
-        mpls: false
-        ospf: false
-        isis: false
-      overlay:
-        peering_address: 10.255.0.1
-        ler: false
-        vtep: false
-        evpn: true
-        evpn_vxlan: true
-        evpn_mpls: false
-        vpn_ipv4: false
-        vpn_ipv6: false
-  dc1-spine2:
-    switch:
-      type: spine
-      hostname: dc1-spine2
-      node_type_key: spine
-      connected_endpoints: false
-      default_downlink_interfaces: []
-      default_evpn_role: server
-      default_interfaces: {}
-      default_underlay_routing_protocol: ebgp
-      default_overlay_routing_protocol: ebgp
-      default_overlay_address_families:
-      - evpn
-      default_mpls_overlay_role: none
-      mpls_lsr: false
-      mlag_support: false
-      network_services_l1: false
-      network_services_l2: false
-      network_services_l3: false
-      underlay_router: true
-      uplink_type: p2p
-      vtep: false
-      ip_addressing:
-        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing
-        python_class_name: AvdIpAddressing
-      interface_descriptions:
-        python_module: ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions
-        python_class_name: AvdInterfaceDescriptions
-        underlay_ethernet_interfaces: interface_descriptions/underlay/ethernet-interfaces.j2
-        underlay_port_channel_interfaces: interface_descriptions/underlay/port-channel-interfaces.j2
-        connected_endpoints_ethernet_interfaces: interface_descriptions/connected_endpoints/ethernet-interfaces.j2
-        connected_endpoints_port_channel_interfaces: interface_descriptions/connected_endpoints/port-channel-interfaces.j2
-        overlay_loopback_interface: interface_descriptions/loopback_interfaces/overlay-loopback.j2
-        vtep_loopback_interface: interface_descriptions/loopback_interfaces/vtep-loopback.j2
-      id: 2
-      mgmt_ip: 172.16.1.12/24
-      platform: vEOS-lab
-      max_parallel_uplinks: 1
-      uplink_interfaces: []
-      uplink_switch_interfaces: []
-      max_uplink_switches: 0
-      is_deployed: true
-      platform_settings:
-        platforms:
-        - VEOS
-        - VEOS-LAB
-        - vEOS
-        - vEOS-lab
-        reload_delay:
-          mlag: 300
-          non_mlag: 330
-        feature_support:
-          queue_monitor_length_notify: false
-          interface_storm_control: false
-      mgmt_interface: Management1
-      underlay_routing_protocol: ebgp
-      overlay_routing_protocol: ebgp
-      overlay_address_families:
-      - evpn
-      endpoint_trunk_groups: []
-      vlans: ''
-      spanning_tree_mode: none
-      overlay_rd_type_admin_subfield: 10.255.0.2
-      loopback_ipv4_pool: 10.255.0.0/27
-      loopback_ipv4_offset: 0
-      router_id: 10.255.0.2
-      evpn_gateway_vxlan_l2: false
-      evpn_gateway_vxlan_l3: false
-      evpn_gateway_vxlan_l3_inter_domain: true
-      bgp_defaults:
-      - no bgp default ipv4-unicast
-      - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
-      bgp_peer_groups:
-        ipv4_underlay_peers:
-          name: IPv4-UNDERLAY-PEERS
-          password: 7x4B4rnJhZB438m9+BrBfQ==
-          structured_config: null
-        mlag_ipv4_underlay_peer:
-          name: MLAG-IPv4-UNDERLAY-PEER
-          password: 4b21pAdCvWeAqpcKDFMdWw==
-          structured_config: null
-        evpn_overlay_peers:
-          name: EVPN-OVERLAY-PEERS
-          password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-          structured_config: null
-        evpn_overlay_core:
-          name: EVPN-OVERLAY-CORE
-          password: null
-          structured_config: null
-        mpls_overlay_peers:
-          name: MPLS-OVERLAY-PEERS
-          password: null
-          structured_config: null
-        rr_overlay_peers:
-          name: RR-OVERLAY-PEERS
-          password: null
-          structured_config: null
-      evpn_role: server
-      mpls_overlay_role: none
-      bgp_as: '65100'
-      underlay_ipv6: false
-      mlag: false
-      uplinks: []
-      uplink_peers: []
-      overlay_routing_protocol_address_family: ipv4
-      bgp: true
-      evpn_encapsulation: vxlan
-      underlay:
-        bgp: true
-        mpls: false
-        ospf: false
-        isis: false
-      overlay:
-        peering_address: 10.255.0.2
-        ler: false
-        vtep: false
-        evpn: true
-        evpn_vxlan: true
-        evpn_mpls: false
-        vpn_ipv4: false
-        vpn_ipv6: false
 avd_overlay_peers:
   dc1-spine1:
   - dc1-leaf1a
@@ -5689,6 +5862,23 @@ switch:
   uplink_switch_interfaces:
   - Ethernet3
   - Ethernet3
+  struct_cfg:
+    router_bgp:
+      peer_groups:
+        DCI-IPv4:
+          type: ipv4
+          remote_as: '65102'
+          next_hop_self: true
+          password: 4b21pAdCvWeAqpcKDFMdWw==
+          maximum_routes: 12000
+          route_map_out: RM-DCI-PEER-OUT
+      address_family_ipv4:
+        peer_groups:
+          MLAG-IPv4-UNDERLAY-PEER:
+            activate: true
+      neighbors:
+        172.100.100.0:
+          peer_group: DCI-IPv4
   max_uplink_switches: 2
   is_deployed: true
   platform_settings:
@@ -5846,6 +6036,8 @@ ansible_playbook_python: /usr/local/opt/python@3.9/bin/python3.9
 ansible_config_file: /Users/xavier/Documents/Projects/arista-ansible/ansible-avd/ansible_collections/arista/avd/examples/dual-dc-l3ls/ansible.cfg
 groups:
   all:
+  - dc1-spine1
+  - dc1-spine2
   - dc1-leaf1a
   - dc1-leaf1b
   - dc1-leaf2a
@@ -5860,10 +6052,10 @@ groups:
   - dc2-leaf2c
   - dc2-spine1
   - dc2-spine2
-  - dc1-spine1
-  - dc1-spine2
   ungrouped: []
   FABRIC:
+  - dc1-spine1
+  - dc1-spine2
   - dc1-leaf1a
   - dc1-leaf1b
   - dc1-leaf2a
@@ -5878,8 +6070,6 @@ groups:
   - dc2-leaf2c
   - dc2-spine1
   - dc2-spine2
-  - dc1-spine1
-  - dc1-spine2
   DC1:
   - dc1-spine1
   - dc1-spine2
@@ -5946,7 +6136,7 @@ groups:
   - dc2-leaf2b
   - dc2-leaf1c
   - dc2-leaf2c
-omit: __omit_place_holder__e18f97b768feb5c028e17c52aefaf16c869d6052
+omit: __omit_place_holder__2b604cdb8ce6ab304a094ef9b6f0086228815feb
 ansible_version:
   string: 2.12.8
   full: 2.12.8
@@ -5960,6 +6150,6 @@ ansible_inventory_sources:
 - /Users/xavier/Documents/Projects/arista-ansible/ansible-avd/ansible_collections/arista/avd/examples/dual-dc-l3ls/inventory.yml
 ansible_skip_tags: []
 ansible_run_tags:
-- build
 - debug
+- build
 ansible_verbosity: 0
