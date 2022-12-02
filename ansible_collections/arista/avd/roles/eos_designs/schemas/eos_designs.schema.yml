@@ -233,8 +233,6 @@ dynamic_keys:
                 - dot1q-tunnel
                 - trunk
               monitor_sessions:
-                convert_types:
-                - dict
                 description: Monitor Session configuration - Use defined switchports
                   as source or destination for monitoring sessions
                 items:
@@ -423,6 +421,8 @@ dynamic_keys:
                               type: int
                           type: dict
                         number:
+                          convert_types:
+                          - str
                           description: Subinterface number
                           type: int
                         short_esi:
@@ -2000,6 +2000,18 @@ dynamic_keys:
                 items:
                   type: str
                 type: list
+              only_vlans_in_use:
+                default: false
+                description: 'Only configure VLANs, SVIs, VRFs in use by connected
+                  endpoints or downstream L2 switches.
+
+                  Note! This feature only considers configuration managed by eos_designs.
+
+                  This excludes structured_config, custom_structured_configuration_,
+                  raw_eos_cli, eos_cli, custom templates, configlets etc.
+
+                  '
+                type: bool
               tags:
                 default:
                 - all
@@ -2194,6 +2206,7 @@ dynamic_keys:
                       min: 1
                       type: int
                     name:
+                      description: Tracking group name
                       type: str
                     recovery_delay:
                       convert_types:
@@ -2291,7 +2304,7 @@ dynamic_keys:
               type: str
             type: list
           mlag_interfaces_speed:
-            description: < interface_speed | forced interface_speed | auto interface_speed
+            description: < interface_speed or forced interface_speed or auto interface_speed
               >
             documentation_options:
               table: mlag
@@ -2410,12 +2423,21 @@ dynamic_keys:
             description: 'Point-to-Point interface speed - will apply to uplinks on
               both ends
 
-              < interface_speed | forced interface_speed | auto interface_speed >
+              < interface_speed or forced interface_speed or auto interface_speed
+              >
 
               '
             type: str
           uplink_interfaces:
-            description: Local uplink interfaces
+            description: 'Local uplink interfaces
+
+              If uplink_interfaces is not defined, platform-specific defaults (defined
+              under default_interfaces) will be used instead.
+
+              Please note that default_interfaces are not defined by default - you
+              should define these yourself.
+
+              '
             items:
               pattern: Ethernet[\d/]+
               type: str
@@ -2445,7 +2467,16 @@ dynamic_keys:
             type: list
           uplink_switches:
             items:
-              description: Hostname of uplink switch
+              description: 'Hostname of uplink switch
+
+                If parallel uplinks are in use, update max_parallel_uplinks below
+                and specify each uplink switch multiple times
+
+                e.g. uplink_switches: [ ''DC1-SPINE1'', ''DC1-SPINE1'', ''DC1-SPINE2'',
+                ''DC1-SPINE2'' ]
+
+                '
+              required: true
               type: str
             type: list
           virtual_router_mac_address:
@@ -2625,11 +2656,21 @@ keys:
   connected_endpoints_keys:
     convert_types:
     - dict
+    description: 'Define connected endpoints keys, to define grouping of endpoints
+      connecting to the fabric.
+
+      This provides the ability to define various keys of your choice to better organize/group
+      your data.
+
+      This should be defined in top level group_var for the fabric.
+
+      '
     items:
       keys:
         key:
           type: str
         type:
+          description: Type used for documentation
           type: str
       type: dict
     primary_key: key
@@ -3120,7 +3161,7 @@ keys:
     type: bool
   fabric_name:
     description: Fabric Name, required to match Ansible Group name covering all devices
-      in the Fabric
+      in the Fabric, **must** be an inventory group name.
     required: true
     type: str
   inband_management_subnet:
@@ -3746,6 +3787,21 @@ keys:
       By configuring overlay_rt_type the Administrator subfield (first part of RT)
       can be set to other values.
 
+      Note: structured configuration is not merged recursively and will be taken directly
+      from the most specific level in the following order:
+
+      1. svi.nodes[inventory_hostname].structured_config
+
+      2. svi_profile.nodes[inventory_hostname].structured_config
+
+      3. svi_parent_profile.nodes[inventory_hostname].structured_config
+
+      4. svi.structured_config
+
+      5. svi_profile.structured_config
+
+      6. svi_parent_profile.structured_config
+
       '
     keys:
       admin_subfield:
@@ -3841,7 +3897,7 @@ keys:
     secondary_key: speeds
     type: list
   pod_name:
-    description: 'POD Name, only used in Fabric Documentation | Optional, fallback
+    description: 'POD Name, only used in Fabric Documentation (Optional), fallback
       to dc_name and then to fabric_name.
 
       Recommended to be common between Spines, Leafs within a POD (One l3ls topology)

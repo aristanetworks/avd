@@ -89,6 +89,7 @@ dynamic_keys:
                   keys:
                     name:
                       type: str
+                      description: Tracking group name
                     recovery_delay:
                       type: int
                       convert_types:
@@ -143,7 +144,10 @@ dynamic_keys:
             format: ipv4_cidr
 
           uplink_interfaces:
-            description: Local uplink interfaces
+            description: |
+              Local uplink interfaces
+              If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+              Please note that default_interfaces are not defined by default - you should define these yourself.
             type: list
             items:
               type: str
@@ -153,7 +157,11 @@ dynamic_keys:
             type: list
             items:
               type: str
-              description: Hostname of uplink switch
+              required: true
+              description: |
+                Hostname of uplink switch
+                If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times
+                e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ]
 
           max_uplink_switches:
             type: int
@@ -188,7 +196,7 @@ dynamic_keys:
           uplink_interface_speed:
             description: |
               Point-to-Point interface speed - will apply to uplinks on both ends
-              < interface_speed | forced interface_speed | auto interface_speed >
+              < interface_speed or forced interface_speed or auto interface_speed >
             type: str
 
           uplink_switch_interfaces:
@@ -332,6 +340,13 @@ dynamic_keys:
                 type: list
                 items:
                   type: str
+              only_vlans_in_use:
+                type: bool
+                default: false
+                description: |
+                  Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+                  Note! This feature only considers configuration managed by eos_designs.
+                  This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
 
           igmp_snooping_enabled:
             description: Activate or deactivate IGMP snooping on device level
@@ -468,7 +483,7 @@ dynamic_keys:
               table: "mlag"
 
           mlag_interfaces_speed:
-            description: < interface_speed | forced interface_speed | auto interface_speed >
+            description: < interface_speed or forced interface_speed or auto interface_speed >
             type: str
             documentation_options:
               table: "mlag"

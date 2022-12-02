@@ -183,6 +183,7 @@
       "title": "BGP Peer Groups"
     },
     "connected_endpoints_keys": {
+      "description": "Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.\nThis provides the ability to define various keys of your choice to better organize/group your data.\nThis should be defined in top level group_var for the fabric.\n",
       "items": {
         "properties": {
           "key": {
@@ -190,6 +191,7 @@
             "title": "Key"
           },
           "type": {
+            "description": "Type used for documentation",
             "type": "string",
             "title": "Type"
           }
@@ -730,7 +732,7 @@
       "title": "Evpn VLAN Aware Bundles"
     },
     "fabric_name": {
-      "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric",
+      "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
       "type": "string",
       "title": "Fabric Name"
     },
@@ -1440,7 +1442,7 @@
       "title": "Overlay Routing Protocol Address Family"
     },
     "overlay_rt_type": {
-      "description": "Specify RT type\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\n",
+      "description": "Specify RT type\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNote: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:\n1. svi.nodes[inventory_hostname].structured_config\n2. svi_profile.nodes[inventory_hostname].structured_config\n3. svi_parent_profile.nodes[inventory_hostname].structured_config\n4. svi.structured_config\n5. svi_profile.structured_config\n6. svi_parent_profile.structured_config\n",
       "properties": {
         "admin_subfield": {
           "description": "< \"bgp_as\" or <0-65535> or <0-4294967295>, default -> <mac_vrf_id> >",
@@ -1582,7 +1584,7 @@
       "title": "Platform Speed Groups"
     },
     "pod_name": {
-      "description": "POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines, Leafs within a POD (One l3ls topology)\n",
+      "description": "POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines, Leafs within a POD (One l3ls topology)\n",
       "type": "string",
       "title": "Pod Name"
     },
