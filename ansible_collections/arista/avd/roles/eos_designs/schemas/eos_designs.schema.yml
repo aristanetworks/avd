@@ -2191,8 +2191,10 @@ dynamic_keys:
               groups:
                 default:
                 - name: LT_GROUP1
-                description: 'By default a single group named "LT_GROUP1" is defined
-                  with default values.
+                description: 'Link Tracking Groups
+
+                  By default a single group named "LT_GROUP1" is defined with default
+                  values.
 
                   Any groups defined under "groups" will replace the default.
 
@@ -2258,7 +2260,14 @@ dynamic_keys:
           max_parallel_uplinks:
             convert_types:
             - str
-            description: Number of parallel links towards uplink switches
+            description: 'Number of parallel links towards uplink switches
+
+              Changing this value may change interface naming on uplinks (and corresponding
+              downlinks)
+
+              Can be used to reserve interfaces for future parallel uplinks
+
+              '
             type: int
           max_uplink_switches:
             convert_types:
@@ -2527,6 +2536,7 @@ dynamic_keys:
     type: dict
 keys:
   bfd_multihop:
+    description: BFD Multihop tuning
     keys:
       interval:
         convert_types:
@@ -3171,7 +3181,11 @@ keys:
     type: str
   evpn_vlan_aware_bundles:
     default: false
-    description: Enable vlan aware bundles for EVPN MAC-VRF
+    description: 'Enable vlan aware bundles for EVPN MAC-VRF
+
+      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
+
+      '
     type: bool
   fabric_name:
     description: Fabric Name, required to match Ansible Group name covering all devices
@@ -3236,6 +3250,7 @@ keys:
     type: dict
   isis_advertise_passive_only:
     default: false
+    description: Additional underlay ISIS parameters
     type: bool
   isis_area_id:
     default: '49.0001'
@@ -3254,6 +3269,7 @@ keys:
     - level-2
   isis_default_is_type:
     default: level-2
+    description: Additional underlay ISIS parameters
     type: str
     valid_values:
     - level-1-2
@@ -3956,7 +3972,7 @@ keys:
 
       # Use at the host level
 
-      is_deployed: < true | false | default -> true >
+      is_deployed: < true or false or default -> true >
 
       ```
 
@@ -4249,6 +4265,7 @@ keys:
     type: bool
   underlay_isis_instance_name:
     default: EVPN_UNDERLAY
+    description: Additional underlay ISIS parameters
     type: str
   underlay_multicast:
     default: false
@@ -4267,20 +4284,28 @@ keys:
     type: bool
   underlay_ospf_area:
     default: 0.0.0.0
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
     format: ipv4
     type: str
   underlay_ospf_bfd_enable:
     default: false
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
     type: bool
   underlay_ospf_max_lsa:
     convert_types:
     - str
     default: 12000
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
     type: int
   underlay_ospf_process_id:
     convert_types:
     - str
     default: 100
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
+      variants
     type: int
   underlay_rfc5549:
     default: false

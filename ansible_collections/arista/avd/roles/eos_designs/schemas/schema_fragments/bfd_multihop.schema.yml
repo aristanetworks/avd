@@ -5,6 +5,7 @@ type: dict
 keys:
   bfd_multihop:
     type: dict
+    description: BFD Multihop tuning
     keys:
       interval:
         type: int

@@ -4,6 +4,8 @@
 type: dict
 keys:
   evpn_vlan_aware_bundles:
-    description: Enable vlan aware bundles for EVPN MAC-VRF
+    description: |
+      Enable vlan aware bundles for EVPN MAC-VRF
+      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
     type: bool
     default: false

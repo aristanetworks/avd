@@ -80,6 +80,7 @@ dynamic_keys:
               groups:
                 type: list
                 description: |
+                  Link Tracking Groups
                   By default a single group named "LT_GROUP1" is defined with default values.
                   Any groups defined under "groups" will replace the default.
                 default:
@@ -176,7 +177,10 @@ dynamic_keys:
             type: int
             convert_types:
               - str
-            description: Number of parallel links towards uplink switches
+            description: |
+              Number of parallel links towards uplink switches
+              Changing this value may change interface naming on uplinks (and corresponding downlinks)
+              Can be used to reserve interfaces for future parallel uplinks
 
           uplink_ptp:
             description: Enable PTP on all infrastructure links
