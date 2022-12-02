@@ -6,6 +6,8 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 from .utils import UtilsMixin
@@ -16,6 +18,8 @@ class RouterBgpMixin(UtilsMixin):
     Mixin Class used to generate structured config for one key.
     Class should only be used as Mixin to a AvdStructuredConfig class
     """
+
+    _configure_bgp_mlag_peer_group: bool
 
     @cached_property
     def router_bgp(self) -> dict | None:
@@ -38,6 +42,10 @@ class RouterBgpMixin(UtilsMixin):
             "redistribute_routes": self._router_bgp_redistribute_routes,
             "vpws": self._router_bgp_vpws,
         }
+        # Configure MLAG iBGP peer-group if needed
+        if self._configure_bgp_mlag_peer_group:
+            merge(router_bgp, self._router_bgp_mlag_peer_group())
+
         # Strip None values from vlan before returning
         router_bgp = {key: value for key, value in router_bgp.items() if value is not None}
         return router_bgp
@@ -468,3 +476,48 @@ class RouterBgpMixin(UtilsMixin):
             return vpws
 
         return None
+
+    def _router_bgp_mlag_peer_group(self) -> dict:
+        """
+        Return a partial router_bgp structured_config covering the MLAG peer_group
+        and associated address_family activations
+
+        TODO: Partially duplicated from mlag. Should be moved to a common class
+        """
+        peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
+        router_bgp_cfg = {}
+        peer_group = {
+            "type": "ipv4",
+            "remote_as": self._bgp_as,
+            "next_hop_self": True,
+            "description": self._mlag_peer,
+            "password": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
+            "maximum_routes": 12000,
+            "send_community": "all",
+            "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
+        }
+
+        if self._mlag_ibgp_origin_incomplete is True:
+            peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
+
+        router_bgp_cfg["peer_groups"] = {peer_group_name: peer_group}
+
+        if get(self._hostvars, "switch.underlay_ipv6") is True:
+            router_bgp_cfg["address_family_ipv6"] = {
+                "peer_groups": {
+                    peer_group_name: {
+                        "activate": True,
+                    }
+                }
+            }
+
+        address_family_ipv4_peer_group = {"activate": True}
+        if self._underlay_rfc5549 is True:
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+
+        router_bgp_cfg["address_family_ipv4"] = {
+            "peer_groups": {
+                peer_group_name: address_family_ipv4_peer_group,
+            }
+        }
+        return strip_empties_from_dict(router_bgp_cfg)

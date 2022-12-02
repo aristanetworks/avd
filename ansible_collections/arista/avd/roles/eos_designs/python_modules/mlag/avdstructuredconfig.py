@@ -295,9 +295,11 @@ class AvdStructuredConfig(AvdFacts):
         """
         Return dict with one route-map
         Origin Incomplete for MLAG iBGP learned routes
+
+        TODO: Partially duplicated in network_services. Should be moved to a common class
         """
 
-        if not (self._mlag_l3 is True and self._mlag_ibgp_origin_incomplete is True and self._underlay_routing_protocol == "ebgp"):
+        if not (self._mlag_l3 is True and self._mlag_ibgp_origin_incomplete is True and self._underlay_bgp):
             return None
 
         return {
@@ -313,50 +315,31 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
+    def _underlay_bgp(self):
+        return get(self._hostvars, "switch.underlay.bgp") is True
+
+    @cached_property
+    def _peer_group_mlag_ipv4_underlay_peer_name(self) -> str:
+        return get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name", required=True)
+
+    @cached_property
     def router_bgp(self):
         """
         Return structured config for router bgp
-        MLAG iBGP peering
+
+        Peer group and underlay MLAG iBGP peering is created only for BGP underlay.
         """
 
-        if not (self._mlag_l3 is True and self._underlay_routing_protocol == "ebgp"):
+        if not (self._mlag_l3 is True and self._underlay_bgp):
             return None
 
-        router_bgp = {}
-        peer_group_name = get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name", required=True)
-        peer_group = {
-            "type": "ipv4",
-            "remote_as": self._bgp_as,
-            "next_hop_self": True,
-            "description": self._mlag_peer,
-            "password": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
-            "maximum_routes": 12000,
-            "send_community": "all",
-            "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
-        }
-        if self._mlag_ibgp_origin_incomplete is True:
-            peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
+        # MLAG Peer group
+        peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
+        router_bgp = self._router_bgp_mlag_peer_group()
 
-        router_bgp["peer_groups"] = {peer_group_name: peer_group}
-
-        if get(self._hostvars, "switch.underlay_ipv6") is True:
-            router_bgp["address_family_ipv6"] = {
-                "peer_groups": {
-                    peer_group_name: {
-                        "activate": True,
-                    }
-                }
-            }
-
-        address_family_ipv4_peer_group = {"activate": True}
-        if self._underlay_rfc5549 is True:
-            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
-
-        router_bgp["address_family_ipv4"] = {
-            "peer_groups": {
-                peer_group_name: address_family_ipv4_peer_group,
-            }
-        }
+        # Underlay MLAG peering
+        if not self._underlay_bgp:
+            return strip_empties_from_dict(router_bgp)
 
         if self._underlay_rfc5549 is True:
             vlan = default(self._mlag_peer_l3_vlan, self._mlag_peer_vlan)
@@ -379,3 +362,48 @@ class AvdStructuredConfig(AvdFacts):
             }
 
         return strip_empties_from_dict(router_bgp)
+
+    def _router_bgp_mlag_peer_group(self) -> dict:
+        """
+        Return a partial router_bgp structured_config covering the MLAG peer_group
+        and associated address_family activations
+
+        TODO: Duplicated in network_services. Should be moved to a common class
+        """
+        peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
+        router_bgp_cfg = {}
+        peer_group = {
+            "type": "ipv4",
+            "remote_as": self._bgp_as,
+            "next_hop_self": True,
+            "description": self._mlag_peer,
+            "password": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
+            "maximum_routes": 12000,
+            "send_community": "all",
+            "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
+        }
+        if self._mlag_ibgp_origin_incomplete is True:
+            peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
+
+        router_bgp_cfg["peer_groups"] = {peer_group_name: peer_group}
+
+        if get(self._hostvars, "switch.underlay_ipv6") is True:
+            router_bgp_cfg["address_family_ipv6"] = {
+                "peer_groups": {
+                    peer_group_name: {
+                        "activate": True,
+                    }
+                }
+            }
+
+        address_family_ipv4_peer_group = {"activate": True}
+        if self._underlay_rfc5549 is True:
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+
+        router_bgp_cfg["address_family_ipv4"] = {
+            "peer_groups": {
+                peer_group_name: address_family_ipv4_peer_group,
+            }
+        }
+
+        return router_bgp_cfg

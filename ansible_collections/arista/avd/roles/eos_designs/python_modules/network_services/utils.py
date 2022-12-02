@@ -298,3 +298,26 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _mpls_overlay_role(self) -> str | None:
         return get(self._hostvars, "switch.mpls_overlay_role")
+
+    @cached_property
+    def _mlag_ibgp_origin_incomplete(self) -> bool | None:
+        return get(self._hostvars, "switch.mlag_ibgp_origin_incomplete")
+
+    @cached_property
+    def _configure_bgp_mlag_peer_group(self) -> bool:
+        """
+        Flag set during creating of BGP VRFs if an MLAG peering is needed.
+        Decides if MLAG BGP peer-group should be configured.
+        Catches cases where underlay is not BGP but we still need MLAG iBGP peering
+        """
+        if (bgp_vrfs := self._router_bgp_vrfs) is None:
+            return False
+
+        for bgp_vrf in bgp_vrfs.values():
+            if "neighbors" not in bgp_vrf:
+                continue
+            for neighbor_settings in bgp_vrf["neighbors"].values():
+                if neighbor_settings.get("peer_group") == self._peer_group_mlag_ipv4_underlay_peer_name:
+                    return True
+
+        return False
