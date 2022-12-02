@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -37,7 +37,7 @@ class RouterOspfMixin(UtilsMixin):
             no_passive_interfaces.append(link["interface"])
 
         if self._mlag_l3 is True:
-            mlag_l3_vlan = default(get(self._hostvars, "switch.mlag_peer_l3_vlan"), get(self._hostvars, "switch.mlag_peer_vlan"))
+            mlag_l3_vlan = get(self._hostvars, "switch.mlag_peer_l3_vlan", default=get(self._hostvars, "switch.mlag_peer_vlan"))
             no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
 
         process = {
@@ -47,7 +47,6 @@ class RouterOspfMixin(UtilsMixin):
             "no_passive_interfaces": no_passive_interfaces,
         }
 
-        # TODO - setting this because the default value is false and it would show up in structured_config otherwise
         if get(self._hostvars, "underlay_ospf_bfd_enable") is True:
             process["bfd_enable"] = True
 

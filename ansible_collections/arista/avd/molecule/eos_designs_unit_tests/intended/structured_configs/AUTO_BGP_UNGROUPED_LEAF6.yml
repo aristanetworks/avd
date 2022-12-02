@@ -26,7 +26,6 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-  neighbors: {}
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:

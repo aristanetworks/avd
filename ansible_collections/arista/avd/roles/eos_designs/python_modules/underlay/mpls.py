@@ -19,12 +19,8 @@ class MplsMixin(UtilsMixin):
         if self._underlay_router is not True:
             return None
 
-        mpls = {}
-        if self._mpls_lsr is True:
-            mpls = {"ip": True}
-
         if self._ldp is True:
-            mpls = {
+            return {
                 "ip": True,
                 "ldp": {
                     "interface_disabled_default": True,
@@ -34,7 +30,7 @@ class MplsMixin(UtilsMixin):
                 },
             }
 
-        if mpls:
-            return mpls
+        if self._mpls_lsr is True:
+            return {"ip": True}
 
         return None

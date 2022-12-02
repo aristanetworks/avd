@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -23,16 +23,16 @@ class EthernetInterfacesMixin(UtilsMixin):
         for link in self._underlay_links:
             # common values
             ethernet_interface = {
-                "peer": get(link, "peer"),
+                "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self._avd_interface_descriptions.underlay_ethernet_interfaces(get(link, "type"), get(link, "peer"), link["peer_interface"]),
+                "description": self._avd_interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
                 "speed": get(link, "speed"),
                 "shutdown": self._shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
             # L3 interface
-            if get(link, "type") == "underlay_p2p":
+            if link["type"] == "underlay_p2p":
                 ethernet_interface.update(
                     {
                         "mtu": self._p2p_uplinks_mtu,
@@ -68,7 +68,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface.update(
                         {
                             "isis_enable": self._isis_instance_name,
-                            "isis_metric": default(get(self._hostvars, "isis_default_metric"), 50),
+                            "isis_metric": get(self._hostvars, "isis_default_metric", default=50),
                             "isis_network_point_to_point": True,
                             "isis_circuit_type": get(self._hostvars, "isis_default_circuit_type"),
                         }
@@ -77,8 +77,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if get(link, "underlay_multicast") is True:
                     ethernet_interface["pim"] = {"ipv4": {"sparse_mode": True}}
 
+                # Structured Config
+                ethernet_interface.update(get(link, "structured_config", default={}))
+
             # L2 interface
-            elif get(link, "type") == "underlay_l2":
+            elif link["type"] == "underlay_l2":
                 ethernet_interface.update(
                     {
                         "type": "switched",
@@ -91,7 +94,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "mode": "active",
                     }
                 else:
-                    vlans = default(get(link, "vlans"), [])
+                    vlans = get(link, "vlans", default=[])
                     ethernet_interface.update(
                         {
                             "vlans": list_compress(vlans),
@@ -100,13 +103,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                         }
                     )
 
-            # Structured Config
-            ethernet_interface.update(default(get(link, "structured_config"), {}))
-
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-            ethernet_interfaces[get(link, "interface")] = ethernet_interface
+            interface_name = link["interface"]
+            ethernet_interfaces[interface_name] = ethernet_interface
 
         if ethernet_interfaces:
             return ethernet_interfaces

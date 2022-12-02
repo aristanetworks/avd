@@ -102,12 +102,6 @@ ethernet_interfaces:
     channel_group:
       id: 1
       mode: active
-    storm_control:
-      broadcast:
-        level: 25
-      unknown_unicast:
-        level: 25
-    native_vlan_tag: true
   Ethernet2:
     peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
     peer_interface: Ethernet6
@@ -118,12 +112,6 @@ ethernet_interfaces:
     channel_group:
       id: 1
       mode: active
-    storm_control:
-      broadcast:
-        level: 25
-      unknown_unicast:
-        level: 25
-    native_vlan_tag: true
 mlag_configuration:
   domain_id: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
   local_interface: Vlan4094

@@ -174,12 +174,6 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
-    storm_control:
-      broadcast:
-        level: 25
-      unknown_unicast:
-        level: 25
-    native_vlan_tag: true
   Ethernet6:
     peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
     peer_interface: Ethernet2
@@ -190,12 +184,6 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
-    storm_control:
-      broadcast:
-        level: 25
-      unknown_unicast:
-        level: 25
-    native_vlan_tag: true
 mlag_configuration:
   domain_id: DC1_LEAF1
   local_interface: Vlan4094

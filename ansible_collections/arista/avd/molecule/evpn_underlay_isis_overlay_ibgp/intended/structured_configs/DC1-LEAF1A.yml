@@ -153,6 +153,12 @@ router_isis:
   - ipv4 unicast
   isis_af_defaults:
   - maximum-paths 4
+  no_passive_interfaces:
+  - Ethernet1
+  - Ethernet2
+  - Ethernet3
+  - Ethernet4
+  - Loopback0
 router_bfd:
   multihop:
     interval: 1200

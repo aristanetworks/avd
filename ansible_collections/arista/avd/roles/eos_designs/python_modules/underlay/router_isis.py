@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -25,7 +25,7 @@ class RouterIsisMixin(UtilsMixin):
             return None
 
         router_isis = {
-            "instance": get(self._hostvars, "switch.isis_instance_name"),
+            "instance": self._isis_instance_name,
             "log_adjacency_changes": True,
             "net": get(self._hostvars, "switch.isis_net"),
             "router_id": self._router_id,
@@ -40,10 +40,13 @@ class RouterIsisMixin(UtilsMixin):
             if link["type"] == "underlay_p2p":
                 no_passive_interfaces.append(link["interface"])
         if self._mlag_l3:
-            mlag_l3_vlan = default(get(self._hostvars, "switch.mlag_peer_l3_vlan"), get(self._hostvars, "swicth.mlag_peer_vlan"))
+            mlag_l3_vlan = get(self._hostvars, "switch.mlag_peer_l3_vlan", default=get(self._hostvars, "switch.mlag_peer_vlan"))
             no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
         if self._overlay_vtep is True:
             no_passive_interfaces.append(self._vtep_loopback)
+
+        if no_passive_interfaces:
+            router_isis["no_passive_interfaces"] = no_passive_interfaces
 
         if self._underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp"]:
             router_isis["mpls_ldp_sync_default"] = True
@@ -52,7 +55,7 @@ class RouterIsisMixin(UtilsMixin):
         if get(self._hostvars, "isis_ti_lfa.enabled") is True:
             router_isis["timers"] = {
                 "local_convergence": {
-                    "delay": default(get(self._hostvars, "isis_ti_lfa.local_convergence_delay"), "10000"),
+                    "delay": get(self._hostvars, "isis_ti_lfa.local_convergence_delay", default="10000"),
                     "protected_prefixes": True,
                 }
             }
@@ -68,7 +71,7 @@ class RouterIsisMixin(UtilsMixin):
 
         if self._underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:
             router_isis["advertise"] = {
-                "passive_only": default(get(self._hostvars, "isis_advertise_passive_only"), False),
+                "passive_only": get(self._hostvars, "isis_advertise_passive_only", default=False),
             }
             # NOTE enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out

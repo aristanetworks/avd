@@ -77,7 +77,8 @@ class RouterBgpMixin(UtilsMixin):
 
                 neighbor_interfaces[link["interface"]] = neighbor_interface
 
-            router_bgp["neighbor_interfaces"] = neighbor_interfaces
+            if neighbor_interfaces:
+                router_bgp["neighbor_interfaces"] = neighbor_interfaces
         # Neighbors
         else:
             neighbors = {}
@@ -98,7 +99,8 @@ class RouterBgpMixin(UtilsMixin):
 
                 neighbors[link["peer_ip_address"]] = neighbor
 
-            router_bgp["neighbors"] = neighbors
+            if neighbors:
+                router_bgp["neighbors"] = neighbors
 
         # Need to keep potentially empty dict for redistribute_routes
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
