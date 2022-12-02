@@ -42,6 +42,10 @@ class UtilsMixin:
         return get(self._hostvars, "evpn_short_esi_prefix", required=True)
 
     @cached_property
+    def _filter_peer_as(self) -> bool:
+        return self._underlay_filter_peer_as is True and self._evpn_role not in ["client", "server"]
+
+    @cached_property
     def _hostname(self) -> str:
         return get(self._hostvars, "switch.hostname", required=True)
 
@@ -116,6 +120,23 @@ class UtilsMixin:
     @cached_property
     def _underlay_filter_peer_as(self) -> bool:
         return get(self._hostvars, "underlay_filter_peer_as") is True
+
+    @cached_property
+    def _underlay_filter_peer_as_route_maps_asns(self) -> list:
+        """
+        Filtered ASNs
+        """
+        if self._filter_peer_as is False:
+            return []
+
+        filtered_asns = []
+
+        for link in self._underlay_links:
+            if link["type"] != "underlay_p2p":
+                continue
+            filtered_asns.append(link["bgp_as"])
+
+        return filtered_asns
 
     @cached_property
     def _underlay_ipv6(self) -> bool:

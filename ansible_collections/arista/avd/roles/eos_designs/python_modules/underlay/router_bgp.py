@@ -71,8 +71,7 @@ class RouterBgpMixin(UtilsMixin):
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                 }
 
-                if self._underlay_filter_peer_as is True and self._evpn_role not in ["client", "server"]:
-                    neighbor_interface["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
+                if self._filter_peer_as is True:
                     self._underlay_filter_peer_as_route_maps_asns.append(link["peer_bgp_as"])
 
                 neighbor_interfaces[link["interface"]] = neighbor_interface
@@ -93,9 +92,8 @@ class RouterBgpMixin(UtilsMixin):
                     "bfd": get(link, "bfd"),
                 }
 
-                if self._underlay_filter_peer_as is True and self._evpn_role not in ["client", "server"]:
+                if self._filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
-                    self._underlay_filter_peer_as_route_maps_asns.append(link["peer_bgp_as"])
 
                 neighbors[link["peer_ip_address"]] = neighbor
 
@@ -124,10 +122,3 @@ class RouterBgpMixin(UtilsMixin):
             return {"connected": {}}
         else:
             return {"connected": {"route_map": "RM-CONN-2-BGP"}}
-
-    @cached_property
-    def _underlay_filter_peer_as_route_maps_asns(self):
-        """
-        Keep track of filtered ASNs
-        """
-        return []

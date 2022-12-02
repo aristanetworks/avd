@@ -41,20 +41,19 @@ class RouteMapsMixin(UtilsMixin):
             route_maps["RM-CONN-2-BGP"] = {"sequence_numbers": sequence_numbers}
 
         # RM-BGP-AS{{ asn }}-OUT
-        if self._underlay_filter_peer_as is True and self._evpn_role not in ["client", "server"]:
-            for asn in self._underlay_filter_peer_as_route_maps_asns:
-                route_map_name = f"RM-BGP-AS{ asn }-OUT"
-                route_maps[route_map_name] = {
-                    "sequence_numbers": {
-                        10: {
-                            "type": "deny",
-                            "match": [f"as { asn }"],
-                        },
-                        20: {
-                            "type": "permit",
-                        },
+        for asn in self._underlay_filter_peer_as_route_maps_asns:
+            route_map_name = f"RM-BGP-AS{ asn }-OUT"
+            route_maps[route_map_name] = {
+                "sequence_numbers": {
+                    10: {
+                        "type": "deny",
+                        "match": [f"as { asn }"],
                     },
-                }
+                    20: {
+                        "type": "permit",
+                    },
+                },
+            }
 
         if route_maps:
             return route_maps
