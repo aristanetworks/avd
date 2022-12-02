@@ -1274,7 +1274,7 @@
           },
           "vlans": {
             "type": "string",
-            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
+            "description": "List of switchport vlans as string\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
             "title": "VLANs"
           },
           "native_vlan": {
@@ -1344,7 +1344,7 @@
               "l3dot1q",
               "l2dot1q"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
             "title": "Type"
           },
           "snmp_trap_link_change": {
@@ -1554,7 +1554,7 @@
               },
               "network": {
                 "type": "object",
-                "description": "Network encapsulations are all optional, and skipped if using client unmatched.",
+                "description": "Network encapsulations are all optional and skipped if using client unmatched",
                 "properties": {
                   "dot1q": {
                     "type": "object",
@@ -1566,12 +1566,12 @@
                       },
                       "outer": {
                         "type": "integer",
-                        "description": "Network Outer VLAN ID",
+                        "description": "Network outer VLAN ID",
                         "title": "Outer"
                       },
                       "inner": {
                         "type": "integer",
-                        "description": "Network Inner VLAN ID",
+                        "description": "Network inner VLAN ID",
                         "title": "Inner"
                       }
                     },
@@ -2337,7 +2337,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "Rate in kbps, pps or percent. Supported options are platform dependent.\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
+                "description": "Rate in kbps, pps or percent\nSupported options are platform dependent\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
                 "title": "Rate"
               }
             },
@@ -2556,7 +2556,7 @@
                 "properties": {
                   "override": {
                     "type": "string",
-                    "description": "Transceiver Type",
+                    "description": "Transceiver type",
                     "title": "Override"
                   }
                 },
@@ -2588,11 +2588,6 @@
             "additionalProperties": false,
             "title": "Traffic Policy"
           },
-          "eos_cli": {
-            "type": "string",
-            "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
-            "title": "EOS CLI"
-          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -2607,6 +2602,11 @@
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
             "title": "Peer Type"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
+            "title": "EOS CLI"
           }
         },
         "required": [

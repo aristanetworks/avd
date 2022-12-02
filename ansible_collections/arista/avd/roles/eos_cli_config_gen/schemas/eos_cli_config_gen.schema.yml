@@ -1012,7 +1012,7 @@ keys:
           type: str
           convert_types:
           - int
-          description: 'List of switchport vlans as string.
+          description: 'List of switchport vlans as string
 
             For a trunk port this would be a range like "1-200,300"
 
@@ -1067,8 +1067,11 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
-          description: l3dot1q and l2dot1q are used for sub-interfaces. The parent
-            interface should be defined as routed.
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces
+
+            The parent interface should be defined as routed
+
+            '
         snmp_trap_link_change:
           type: bool
         flowcontrol:
@@ -1201,8 +1204,8 @@ keys:
                   type: bool
             network:
               type: dict
-              description: Network encapsulations are all optional, and skipped if
-                using client unmatched.
+              description: Network encapsulations are all optional and skipped if
+                using client unmatched
               keys:
                 dot1q:
                   type: dict
@@ -1216,12 +1219,12 @@ keys:
                       type: int
                       convert_types:
                       - str
-                      description: Network Outer VLAN ID
+                      description: Network outer VLAN ID
                     inner:
                       type: int
                       convert_types:
                       - str
-                      description: Network Inner VLAN ID
+                      description: Network inner VLAN ID
                 client:
                   type: bool
         vlan_id:
@@ -1702,8 +1705,9 @@ keys:
           keys:
             rate:
               type: str
-              description: 'Rate in kbps, pps or percent. Supported options are platform
-                dependent.
+              description: 'Rate in kbps, pps or percent
+
+                Supported options are platform dependent
 
                 Examples:
 
@@ -1857,7 +1861,7 @@ keys:
               keys:
                 override:
                   type: str
-                  description: Transceiver Type
+                  description: Transceiver type
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -1869,10 +1873,6 @@ keys:
             output:
               type: str
               description: Egress traffic policy
-        eos_cli:
-          type: str
-          description: Multiline EOS CLI rendered directly on the ethernet interface
-            in the final EOS configuration
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -1882,6 +1882,10 @@ keys:
         peer_type:
           type: str
           description: Key only used for documentation or validation purposes
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the ethernet interface
+            in the final EOS configuration
   event_handlers:
     type: list
     primary_key: name
