@@ -3539,6 +3539,93 @@
       },
       "additionalProperties": false
     },
+    "management_api_gnmi": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "default": "eos-native",
+          "title": "Provider"
+        },
+        "transport": {
+          "type": "object",
+          "properties": {
+            "grpc": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Transport name",
+                    "title": "Name"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "description": "SSL profile name",
+                    "title": "SSL Profile"
+                  },
+                  "vrf": {
+                    "type": "string",
+                    "description": "VRF name is optional",
+                    "title": "VRF"
+                  },
+                  "notification_timestamp": {
+                    "type": "string",
+                    "enum": [
+                      "send-time",
+                      "last-change-time"
+                    ],
+                    "description": "Per the GNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
+                    "title": "Notification Timestamp"
+                  },
+                  "ip_access_group": {
+                    "type": "string",
+                    "description": "ACL name",
+                    "title": "IP Access Group"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "title": "Grpc"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Transport"
+        },
+        "enable_vrfs": {
+          "type": "array",
+          "description": "Enable VRFs will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "access_group": {
+                "type": "string",
+                "description": "Standard IPv4 ACL name",
+                "title": "Access Group"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Enable VRFs"
+        },
+        "octa": {
+          "type": "object",
+          "description": "Octa key will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.",
+          "title": "Octa"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Management API Gnmi"
+    },
     "management_api_http": {
       "type": "object",
       "properties": {
