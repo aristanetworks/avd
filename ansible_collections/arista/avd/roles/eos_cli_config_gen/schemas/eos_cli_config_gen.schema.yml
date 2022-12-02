@@ -4458,6 +4458,8 @@ keys:
               - int
             description:
               type: str
+            route_reflector_client:
+              type: bool
             shutdown:
               type: bool
             update_source:

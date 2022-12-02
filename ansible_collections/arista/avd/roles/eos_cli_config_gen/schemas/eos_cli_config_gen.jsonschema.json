@@ -6277,6 +6277,10 @@
                 "type": "string",
                 "title": "Description"
               },
+              "route_reflector_client": {
+                "type": "boolean",
+                "title": "Route Reflector Client"
+              },
               "shutdown": {
                 "type": "boolean",
                 "title": "Shutdown"
