@@ -134,8 +134,7 @@ class UtilsMixin:
         for link in self._underlay_links:
             if link["type"] != "underlay_p2p":
                 continue
-            if get(link, "bgp_as") is not None:
-                filtered_asns.append(link["bgp_as"])
+            filtered_asns.append(link["peer_bgp_as"])
 
         return filtered_asns
 
