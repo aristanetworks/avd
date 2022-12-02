@@ -23,8 +23,7 @@ class UtilsMixin:
         """
         Returns a list of peers
         """
-        peers = get(get(self._hostvars, "avd_topology_peers"), self._hostname, separator="..", default=[])
-        return peers
+        return get(self._hostvars, f"avd_topology_peers..{self._hostname}", separator="..", default=[])
 
     @cached_property
     def _bgp_as(self) -> str | None:
