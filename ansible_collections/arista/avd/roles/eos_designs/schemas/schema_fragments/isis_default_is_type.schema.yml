@@ -4,6 +4,7 @@
 type: dict
 keys:
   isis_default_is_type:
+    description: Additional underlay ISIS parameters
     type: str
     valid_values:
       - level-1-2

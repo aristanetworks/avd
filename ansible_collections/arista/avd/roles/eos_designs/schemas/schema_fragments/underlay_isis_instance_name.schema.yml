@@ -4,6 +4,7 @@
 type: dict
 keys:
   underlay_isis_instance_name:
+    description: Additional underlay ISIS parameters
     type: str
     default: "EVPN_UNDERLAY"
   # TODO

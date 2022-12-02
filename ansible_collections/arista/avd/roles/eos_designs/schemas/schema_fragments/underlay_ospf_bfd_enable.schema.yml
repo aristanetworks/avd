@@ -4,5 +4,6 @@
 type: dict
 keys:
   underlay_ospf_bfd_enable:
+    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants
     type: bool
     default: false
