@@ -93,9 +93,12 @@ Across all designs, the following functionality is provided:
 
 ### Layer 2 Leaf Spine
 
-| Underlay | Overlay | Topology |
-| -------- | ------- | -------- |
-| L2 | N/A | Arbitrary or leaf-spine |
+| Spine Uplinks | Leaf Uplinks | Topology |
+| L2 | L2 | Arbitrary or leaf-spine |
+| L3 + Static routes | L2 | Arbitrary or leaf-spine |
+| L3 + eBGP | L2 | Arbitrary or leaf-spine |
+| L3 + OSPF | L2 | Arbitrary or leaf-spine |
+| L3 + ISIS | L2 | Arbitrary or leaf-spine |
 
 ### (BETA) MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
