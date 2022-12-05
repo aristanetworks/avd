@@ -648,15 +648,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPv4-DCI-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote AS | 65102 |
-| Next-hop self | True |
-| Maximum routes | 12000 |
-
 #### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
@@ -686,7 +677,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 | 10.255.129.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 | 10.255.255.72 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 10.255.255.74 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
-| 172.100.100.0 | 65102 | default | - | - | Inherited from peer group IPv4-DCI-PEERS | - | - | - |
+| 172.100.100.0 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - |
 | 10.255.129.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF10 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 | 10.255.129.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF11 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 
@@ -749,12 +740,6 @@ router bgp 65202
    neighbor EVPN-OVERLAY-PEERS password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv4-DCI-PEERS peer group
-   neighbor IPv4-DCI-PEERS remote-as 65102
-   neighbor IPv4-DCI-PEERS next-hop-self
-   neighbor IPv4-DCI-PEERS password 7 4b21pAdCvWeAqpcKDFMdWw==
-   neighbor IPv4-DCI-PEERS maximum-routes 12000
-   neighbor IPv4-DCI-PEERS route-map RM-DCI-PEER-OUT out
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 7x4B4rnJhZB438m9+BrBfQ==
    neighbor IPv4-UNDERLAY-PEERS send-community
@@ -787,7 +772,7 @@ router bgp 65202
    neighbor 10.255.255.74 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.74 remote-as 65200
    neighbor 10.255.255.74 description dc2-spine2_Ethernet3
-   neighbor 172.100.100.0 peer group IPv4-DCI-PEERS
+   neighbor 172.100.100.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.100.100.0 remote-as 65102
    neighbor 172.100.100.0 description dc1-leaf2a
    redistribute connected route-map RM-CONN-2-BGP
@@ -843,7 +828,6 @@ router bgp 65202
    address-family ipv4
       no neighbor EVPN-OVERLAY-CORE activate
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv4-DCI-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
@@ -903,13 +887,6 @@ router bfd
 
 ### Prefix-lists Summary
 
-#### PL-DCI-PREFIXES
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 10.255.128.0/27 eq 32 |
-| 20 | permit 10.255.129.0/27 eq 32 |
-
 #### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
@@ -920,10 +897,6 @@ router bfd
 ### Prefix-lists Device Configuration
 
 ```eos
-!
-ip prefix-list PL-DCI-PREFIXES
-   seq 10 permit 10.255.128.0/27 eq 32
-   seq 20 permit 10.255.129.0/27 eq 32
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 10.255.128.0/27 eq 32
@@ -940,12 +913,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
-#### RM-DCI-PEER-OUT
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-DCI-PREFIXES | - | - | - |
-
 #### RM-MLAG-PEER-IN
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
@@ -958,9 +925,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-!
-route-map RM-DCI-PEER-OUT permit 10
-   match ip address prefix-list PL-DCI-PREFIXES
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
