@@ -2552,6 +2552,44 @@ maintenance:
           - <str>
 ```
 
+## Management API Gnmi
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>management_api_gnmi</samp>](## "management_api_gnmi") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;provider</samp>](## "management_api_gnmi.provider") | String |  | eos-native |  |  |
+| [<samp>&nbsp;&nbsp;transport</samp>](## "management_api_gnmi.transport") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;grpc</samp>](## "management_api_gnmi.transport.grpc") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "management_api_gnmi.transport.grpc.[].name") | String |  |  |  | Transport name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_api_gnmi.transport.grpc.[].ssl_profile") | String |  |  |  | SSL profile name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_api_gnmi.transport.grpc.[].vrf") | String |  |  |  | VRF name is optional |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notification_timestamp</samp>](## "management_api_gnmi.transport.grpc.[].notification_timestamp") | String |  |  | Valid Values:<br>- send-time<br>- last-change-time | Per the GNMI specification, the default timestamp field of a notification message is set to be<br>the time at which the value of the underlying data source changes or when the reported event takes place.<br>In order to facilitate integration in legacy environments oriented around polling style operations,<br>an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "management_api_gnmi.transport.grpc.[].ip_access_group") | String |  |  |  | ACL name |
+| [<samp>&nbsp;&nbsp;enable_vrfs</samp>](## "management_api_gnmi.enable_vrfs") | List, items: Dictionary |  |  |  | Enable VRFs will be deprecated in AVD v4.0.<br>These should not be mixed with the new keys above.<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "management_api_gnmi.enable_vrfs.[].name") | String | Required, Unique |  |  | VRF name |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "management_api_gnmi.enable_vrfs.[].access_group") | String |  |  |  | Standard IPv4 ACL name |
+| [<samp>&nbsp;&nbsp;octa</samp>](## "management_api_gnmi.octa") | Dictionary |  |  |  | Octa key will be deprecated in AVD v4.0.<br>These should not be mixed with the new keys above.<br>Octa activates `eos-native` provider and it is the only provider currently supported by EOS. |
+
+### YAML
+
+```yaml
+management_api_gnmi:
+  provider: <str>
+  transport:
+    grpc:
+      - name: <str>
+        ssl_profile: <str>
+        vrf: <str>
+        notification_timestamp: <str>
+        ip_access_group: <str>
+  enable_vrfs:
+    - name: <str>
+      access_group: <str>
+  octa:
+```
+
 ## Management API HTTP
 
 ### Variables
