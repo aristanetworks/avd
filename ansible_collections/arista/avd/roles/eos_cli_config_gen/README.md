@@ -330,6 +330,7 @@ cvx:
         password: < password >
         password_type: < 0 | 7 | 8a | default -> 7 >
       shutdown: < true | false >
+      peer_hosts: < IP address or hostname >
 ```
 
 #### Enable Password
@@ -1030,7 +1031,7 @@ ethernet_interfaces:
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     snmp_trap_link_change: < true | false >
     flowcontrol:
-      received: < "received" | "send" | "on" >
+      received: < "desired" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
@@ -2972,6 +2973,7 @@ router_bgp:
       remote_as: < bgp_as >
       local_as: < bgp_as >
       description: "< description as string >"
+      route_reflector_client: < true | false >
       ebgp_multihop: < integer >
       shutdown: < true | false >
       # Remove private AS numbers in outbound AS path

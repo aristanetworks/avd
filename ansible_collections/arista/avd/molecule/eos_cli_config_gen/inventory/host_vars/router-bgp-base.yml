@@ -140,6 +140,7 @@ router_bgp:
         enabled: true
       remove_private_as_ingress:
         enabled: true
+      route_reflector_client: false
     192.0.3.7:
       remote_as: 65438
       description: test_remove_private_as_all
@@ -150,6 +151,7 @@ router_bgp:
       remove_private_as_ingress:
         enabled: true
         replace_as: true
+      route_reflector_client: true
   neighbor_interfaces:
     Ethernet2:
       peer_group: PG-FOO-v4

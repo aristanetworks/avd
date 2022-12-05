@@ -49,6 +49,10 @@ interface Management1
 
 # CVX
 
+| Peer Hosts |
+| ---------- |
+| 1.1.1.1, 2.2.2.2 |
+
 CVX is enabled
 
 ## CVX services
@@ -63,6 +67,8 @@ CVX is enabled
 !
 cvx
    no shutdown
+   peer host 1.1.1.1
+   peer host 2.2.2.2
    service mcs
       redis password 7 070E334ddD1D18
       no shutdown

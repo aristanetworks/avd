@@ -126,15 +126,15 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | - | True |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True |
-| 192.0.3.4 | 65435 | default | - | large | - | - | - | False |
-| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - |
-| 192.0.3.6 | 65437 | default | - | - | - | - | - | - |
-| 192.0.3.7 | 65438 | default | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 192.0.3.1 | 65432 | default | - | all | - | - | - | True | - |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - |
+| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - |
+| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False |
+| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True |
 
 ### BGP Neighbor Interfaces
 
@@ -200,10 +200,12 @@ router bgp 65101
    neighbor 192.0.3.6 remove-private-as
    neighbor 192.0.3.6 remove-private-as ingress
    neighbor 192.0.3.6 description test_remove_private_as
+   no neighbor 192.0.3.6 route-reflector-client
    neighbor 192.0.3.7 remote-as 65438
    neighbor 192.0.3.7 remove-private-as all replace-as
    neighbor 192.0.3.7 remove-private-as ingress replace-as
    neighbor 192.0.3.7 description test_remove_private_as_all
+   neighbor 192.0.3.7 route-reflector-client
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
