@@ -6537,7 +6537,7 @@
           },
           "vlans": {
             "type": "string",
-            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
+            "description": "List of switchport vlans as string\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
             "title": "VLANs"
           },
           "snmp_trap_link_change": {
@@ -6552,7 +6552,7 @@
               "l3dot1q",
               "l2dot1q"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces. \\\nThe parent interface should be defined as routed.\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
             "title": "Type"
           },
           "encapsulation_dot1q_vlan": {
@@ -6603,7 +6603,7 @@
               },
               "network": {
                 "type": "object",
-                "description": "Network encapsulation are all optional, and skipped if using client unmatched.",
+                "description": "Network encapsulation are all optional, and skipped if using client unmatched",
                 "properties": {
                   "dot1q": {
                     "type": "object",
@@ -6729,28 +6729,11 @@
             "type": "integer",
             "title": "MTU"
           },
-          "peer": {
-            "type": "string",
-            "description": "Key only used for documentation or validation purposes",
-            "title": "Peer"
-          },
-          "peer_interface": {
-            "type": "string",
-            "description": "Key only used for documentation or validation purposes",
-            "title": "Peer Interface"
-          },
-          "peer_type": {
-            "type": "string",
-            "description": "Key only used for documentation or validation purposes",
-            "title": "Peer Type"
-          },
-          "speed": {
-            "type": "string",
-            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
-            "title": "Speed"
-          },
           "mlag": {
             "type": "integer",
+            "description": "MLAG ID",
+            "minimum": 1,
+            "maximum": 2000,
             "title": "MLAG"
           },
           "trunk_groups": {
@@ -6864,7 +6847,7 @@
                   },
                   "igp_sync": {
                     "type": "boolean",
-                    "title": "Igp Sync"
+                    "title": "IGP Sync"
                   }
                 },
                 "additionalProperties": false,
@@ -6918,7 +6901,7 @@
             "properties": {
               "rate": {
                 "type": "string",
-                "description": "Rate in kbps, pps or percent. Supported options are platform dependent.\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
+                "description": "Rate in kbps, pps or percent\nSupported options are platform dependent\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
                 "title": "Rate"
               }
             },
@@ -7026,7 +7009,7 @@
           },
           "isis_enable": {
             "type": "string",
-            "description": "ISIS Instance",
+            "description": "ISIS instance",
             "title": "ISIS Enable"
           },
           "isis_passive": {
@@ -7083,11 +7066,6 @@
             },
             "additionalProperties": false,
             "title": "Traffic Policy"
-          },
-          "eos_cli": {
-            "type": "string",
-            "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
-            "title": "EOS CLI"
           },
           "evpn_ethernet_segment": {
             "type": "object",
@@ -7169,16 +7147,16 @@
               }
             },
             "additionalProperties": false,
-            "title": "Evpn Ethernet Segment"
+            "title": "EVPN Ethernet Segment"
           },
           "esi": {
             "type": "string",
-            "description": "EVPN Ethernet Segment Identifier (Type 1 format)",
+            "description": "EVPN Ethernet Segment Identifier (Type 1 format)\nWill be deprecated in AVD 4.0 in favor of \"evpn_ethernet_segment.identifier\"\nIf both \"esi\" and \"evpn_ethernet_segment.identifier\" are defined, the new variable takes precedence\n",
             "title": "Esi"
           },
           "rt": {
             "type": "string",
-            "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx",
+            "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx\nWill be deprecated in AVD 4.0 in favor of \"evpn_ethernet_segment.route_target\"\nIf both \"rt\" and \"evpn_ethernet_segment.route_target\" are defined, the new variable takes precedence\n",
             "title": "Rt"
           },
           "lacp_id": {
@@ -7318,7 +7296,7 @@
           },
           "ipv6_address_link_local": {
             "type": "string",
-            "description": "link local IPv6 address/mask",
+            "description": "Link local IPv6 address/mask",
             "title": "IPv6 Address Link Local"
           },
           "ipv6_nd_ra_disabled": {
@@ -7396,15 +7374,15 @@
               "ipv4": {
                 "type": "object",
                 "properties": {
-                  "sparse_mode": {
-                    "type": "boolean",
-                    "title": "Sparse Mode"
-                  },
                   "dr_priority": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 429467295,
                     "title": "DR Priority"
+                  },
+                  "sparse_mode": {
+                    "type": "boolean",
+                    "title": "Sparse Mode"
                   }
                 },
                 "additionalProperties": false,
@@ -7489,6 +7467,26 @@
             },
             "additionalProperties": false,
             "title": "Flow Tracker"
+          },
+          "peer": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer"
+          },
+          "peer_interface": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Interface"
+          },
+          "peer_type": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Type"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
+            "title": "EOS CLI"
           }
         },
         "required": [

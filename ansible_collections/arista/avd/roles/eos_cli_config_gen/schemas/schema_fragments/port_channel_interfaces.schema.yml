@@ -37,7 +37,7 @@ keys:
           convert_types:
           - int
           description: |
-            List of switchport vlans as string.
+            List of switchport vlans as string
             For a trunk port this would be a range like "1-200,300"
             For an access port this would be a single vlan "123"
         snmp_trap_link_change:
@@ -50,8 +50,8 @@ keys:
           - l3dot1q
           - l2dot1q
           description: |
-            l3dot1q and l2dot1q are used for sub-interfaces. \
-            The parent interface should be defined as routed.
+            l3dot1q and l2dot1q are used for sub-interfaces
+            The parent interface should be defined as routed
         encapsulation_dot1q_vlan:
           type: int
           description: VLAN tag to configure on sub-interface
@@ -88,7 +88,7 @@ keys:
                   type: bool
             network:
               type: dict
-              description: Network encapsulation are all optional, and skipped if using client unmatched.
+              description: Network encapsulation are all optional, and skipped if using client unmatched
               keys:
                 dot1q:
                   type: dict
@@ -122,7 +122,7 @@ keys:
           - access
           - dot1q-tunnel
           - trunk
-          - "trunk phone"
+          - trunk phone
         native_vlan:
           type: int
           convert_types:
@@ -172,22 +172,13 @@ keys:
           type: int
           convert_types:
           - str
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes
-        speed:
-          type: str
-          description: Speed can be interface_speed or forced interface_speed or auto interface_speed
         mlag:
           type: int
           convert_types:
           - str
+          description: MLAG ID
+          min: 1
+          max: 2000
         trunk_groups:
           type: list
           items:
@@ -301,7 +292,8 @@ keys:
             rate:
               type: str
               description: |
-                Rate in kbps, pps or percent. Supported options are platform dependent.
+                Rate in kbps, pps or percent
+                Supported options are platform dependent
                 Examples:
                 - "5000 kbps"
                 - "1000 pps"
@@ -373,7 +365,7 @@ keys:
           type: bool
         isis_enable:
           type: str
-          description: ISIS Instance
+          description: ISIS instance
         isis_passive:
           type: bool
         isis_metric:
@@ -407,9 +399,6 @@ keys:
             output:
               type: str
               description: Egress traffic policy
-        eos_cli:
-          type: str
-          description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration
         evpn_ethernet_segment:
           type: dict
           keys:
@@ -468,10 +457,16 @@ keys:
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
         esi:
           type: str
-          description: EVPN Ethernet Segment Identifier (Type 1 format)
+          description: |
+            EVPN Ethernet Segment Identifier (Type 1 format)
+            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.identifier"
+            If both "esi" and "evpn_ethernet_segment.identifier" are defined, the new variable takes precedence
         rt:
           type: str
-          description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
+          description: |
+            EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
+            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.route_target"
+            If both "rt" and "evpn_ethernet_segment.route_target" are defined, the new variable takes precedence
         lacp_id:
           type: str
           description: LACP ID with format xxxx.xxxx.xxxx
@@ -556,7 +551,7 @@ keys:
           description: IPv6 address/mask
         ipv6_address_link_local:
           type: str
-          description: link local IPv6 address/mask
+          description: Link local IPv6 address/mask
         ipv6_nd_ra_disabled:
           type: bool
         ipv6_nd_managed_config_flag:
@@ -608,14 +603,14 @@ keys:
             ipv4:
               type: dict
               keys:
-                sparse_mode:
-                  type: bool
                 dr_priority:
                   type: int
                   convert_types:
                   - str
                   min: 0
                   max: 429467295
+                sparse_mode:
+                  type: bool
         service_profile:
           type: str
           description: QOS profile
@@ -668,3 +663,15 @@ keys:
             sampled:
               type: str
               description: Flow tracker name
+        peer:
+          type: str
+          description: Key only used for documentation or validation purposes
+        peer_interface:
+          type: str
+          description: Key only used for documentation or validation purposes
+        peer_type:
+          type: str
+          description: Key only used for documentation or validation purposes
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration

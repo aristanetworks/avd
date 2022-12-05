@@ -1201,6 +1201,7 @@ port_channel_interfaces:
       event:
         link_status: < true | false >
     shutdown: < true | false >
+    vrf: < vrf_name >
     vlans: "< list of vlans as string >"
     # l3dot1q and l2dot1q are used for sub-interfaces.
     # The parent interface should be defined as routed.
