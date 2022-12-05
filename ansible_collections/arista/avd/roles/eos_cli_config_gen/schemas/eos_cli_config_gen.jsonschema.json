@@ -1249,6 +1249,1381 @@
       "additionalProperties": false,
       "title": "Errdisable"
     },
+    "ethernet_interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
+          "speed": {
+            "type": "string",
+            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+            "title": "Speed"
+          },
+          "mtu": {
+            "type": "integer",
+            "title": "MTU"
+          },
+          "l2_mtu": {
+            "type": "integer",
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
+            "title": "L2 MTU"
+          },
+          "vlans": {
+            "type": "string",
+            "description": "List of switchport vlans as string\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
+            "title": "VLANs"
+          },
+          "native_vlan": {
+            "type": "integer",
+            "title": "Native VLAN"
+          },
+          "native_vlan_tag": {
+            "type": "boolean",
+            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence",
+            "title": "Native VLAN Tag"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "access",
+              "dot1q-tunnel",
+              "trunk",
+              "trunk phone"
+            ],
+            "title": "Mode"
+          },
+          "phone": {
+            "type": "object",
+            "properties": {
+              "trunk": {
+                "type": "string",
+                "enum": [
+                  "tagged",
+                  "untagged"
+                ],
+                "title": "Trunk"
+              },
+              "vlan": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4094,
+                "title": "VLAN"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Phone"
+          },
+          "l2_protocol": {
+            "type": "object",
+            "properties": {
+              "encapsulation_dot1q_vlan": {
+                "type": "integer",
+                "description": "Vlan tag to configure on sub-interface",
+                "title": "Encapsulation Dot1Q VLAN"
+              }
+            },
+            "additionalProperties": false,
+            "title": "L2 Protocol"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Trunk Groups"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "routed",
+              "switched",
+              "l3dot1q",
+              "l2dot1q"
+            ],
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "title": "Type"
+          },
+          "snmp_trap_link_change": {
+            "type": "boolean",
+            "title": "Snmp Trap Link Change"
+          },
+          "flowcontrol": {
+            "type": "object",
+            "properties": {
+              "received": {
+                "type": "string",
+                "enum": [
+                  "desired",
+                  "on",
+                  "off"
+                ],
+                "title": "Received"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Flowcontrol"
+          },
+          "vrf": {
+            "type": "string",
+            "description": "VRF name",
+            "title": "VRF"
+          },
+          "flow_tracker": {
+            "type": "object",
+            "properties": {
+              "sampled": {
+                "type": "string",
+                "description": "Flow tracker name",
+                "title": "Sampled"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Flow Tracker"
+          },
+          "error_correction_encoding": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "title": "Enabled"
+              },
+              "fire_code": {
+                "type": "boolean",
+                "title": "Fire Code"
+              },
+              "reed_solomon": {
+                "type": "boolean",
+                "title": "Reed Solomon"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Error Correction Encoding"
+          },
+          "link_tracking_groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Group name",
+                  "title": "Name"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "upstream",
+                    "downstream"
+                  ],
+                  "title": "Direction"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "name"
+              ]
+            },
+            "title": "Link Tracking Groups"
+          },
+          "evpn_ethernet_segment": {
+            "type": "object",
+            "properties": {
+              "identifier": {
+                "type": "string",
+                "description": "EVPN Ethernet Segment Identifier (Type 1 format)",
+                "title": "Identifier"
+              },
+              "redundancy": {
+                "type": "string",
+                "enum": [
+                  "all-active",
+                  "single-active"
+                ],
+                "title": "Redundancy"
+              },
+              "designated_forwarder_election": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string",
+                    "enum": [
+                      "modulus",
+                      "preference"
+                    ],
+                    "title": "Algorithm"
+                  },
+                  "preference_value": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "description": "Preference_value is only used when \"algorithm\" is \"preference\"",
+                    "title": "Preference Value"
+                  },
+                  "dont_preempt": {
+                    "type": "boolean",
+                    "description": "Dont_preempt is only used when \"algorithm\" is \"preference\"",
+                    "title": "Dont Preempt"
+                  },
+                  "hold_time": {
+                    "type": "integer",
+                    "title": "Hold Time"
+                  },
+                  "subsequent_hold_time": {
+                    "type": "integer",
+                    "title": "Subsequent Hold Time"
+                  },
+                  "candidate_reachability_required": {
+                    "type": "boolean",
+                    "title": "Candidate Reachability Required"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Designated Forwarder Election"
+              },
+              "mpls": {
+                "type": "object",
+                "properties": {
+                  "shared_index": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1024,
+                    "title": "Shared Index"
+                  },
+                  "tunnel_flood_filter_time": {
+                    "type": "integer",
+                    "title": "Tunnel Flood Filter Time"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "MPLS"
+              },
+              "route_target": {
+                "type": "string",
+                "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx",
+                "title": "Route Target"
+              }
+            },
+            "additionalProperties": false,
+            "title": "EVPN Ethernet Segment"
+          },
+          "encapsulation_dot1q_vlan": {
+            "type": "integer",
+            "description": "VLAN tag to configure on sub-interface",
+            "title": "Encapsulation Dot1Q VLAN"
+          },
+          "encapsulation_vlan": {
+            "type": "object",
+            "properties": {
+              "client": {
+                "type": "object",
+                "properties": {
+                  "dot1q": {
+                    "type": "object",
+                    "properties": {
+                      "vlan": {
+                        "type": "integer",
+                        "description": "Client VLAN ID",
+                        "title": "VLAN"
+                      },
+                      "outer": {
+                        "type": "integer",
+                        "description": "Client Outer VLAN ID",
+                        "title": "Outer"
+                      },
+                      "inner": {
+                        "type": "integer",
+                        "description": "Client Inner VLAN ID",
+                        "title": "Inner"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Dot1Q"
+                  },
+                  "unmatched": {
+                    "type": "boolean",
+                    "title": "Unmatched"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Client"
+              },
+              "network": {
+                "type": "object",
+                "description": "Network encapsulations are all optional and skipped if using client unmatched",
+                "properties": {
+                  "dot1q": {
+                    "type": "object",
+                    "properties": {
+                      "vlan": {
+                        "type": "integer",
+                        "description": "Network VLAN ID",
+                        "title": "VLAN"
+                      },
+                      "outer": {
+                        "type": "integer",
+                        "description": "Network outer VLAN ID",
+                        "title": "Outer"
+                      },
+                      "inner": {
+                        "type": "integer",
+                        "description": "Network inner VLAN ID",
+                        "title": "Inner"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Dot1Q"
+                  },
+                  "client": {
+                    "type": "boolean",
+                    "title": "Client"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Network"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Encapsulation VLAN"
+          },
+          "vlan_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "VLAN ID"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4 address/mask",
+            "title": "IP Address"
+          },
+          "ip_address_secondaries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "IP Address Secondaries"
+          },
+          "ip_helpers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ip_helper": {
+                  "type": "string",
+                  "title": "IP Helper"
+                },
+                "source_interface": {
+                  "type": "string",
+                  "description": "Source interface name",
+                  "title": "Source Interface"
+                },
+                "vrf": {
+                  "type": "string",
+                  "description": "VRF name",
+                  "title": "VRF"
+                }
+              },
+              "required": [
+                "ip_helper"
+              ],
+              "additionalProperties": false
+            },
+            "title": "IP Helpers"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "title": "IPv6 Enable"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "title": "IPv6 Address"
+          },
+          "ipv6_address_link_local": {
+            "type": "string",
+            "description": "Link local IPv6 address/mask",
+            "title": "IPv6 Address Link Local"
+          },
+          "ipv6_nd_ra_disabled": {
+            "type": "boolean",
+            "title": "IPv6 ND RA Disabled"
+          },
+          "ipv6_nd_managed_config_flag": {
+            "type": "boolean",
+            "title": "IPv6 ND Managed Config Flag"
+          },
+          "ipv6_nd_prefixes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ipv6_prefix": {
+                  "type": "string",
+                  "title": "IPv6 Prefix"
+                },
+                "valid_lifetime": {
+                  "type": "string",
+                  "description": "Infinite or lifetime in seconds",
+                  "title": "Valid Lifetime"
+                },
+                "preferred_lifetime": {
+                  "type": "string",
+                  "description": "Infinite or lifetime in seconds",
+                  "title": "Preferred Lifetime"
+                },
+                "no_autoconfig_flag": {
+                  "type": "boolean",
+                  "title": "No Autoconfig Flag"
+                }
+              },
+              "required": [
+                "ipv6_prefix"
+              ],
+              "additionalProperties": false
+            },
+            "title": "IPv6 ND Prefixes"
+          },
+          "access_group_in": {
+            "type": "string",
+            "description": "Access list name",
+            "title": "Access Group In"
+          },
+          "access_group_out": {
+            "type": "string",
+            "description": "Access list name",
+            "title": "Access Group Out"
+          },
+          "ipv6_access_group_in": {
+            "type": "string",
+            "description": "IPv6 access list name",
+            "title": "IPv6 Access Group In"
+          },
+          "ipv6_access_group_out": {
+            "type": "string",
+            "description": "IPv6 access list name",
+            "title": "IPv6 Access Group Out"
+          },
+          "mac_access_group_in": {
+            "type": "string",
+            "description": "MAC access list name",
+            "title": "MAC Access Group In"
+          },
+          "mac_access_group_out": {
+            "type": "string",
+            "description": "MAC access list name",
+            "title": "MAC Access Group Out"
+          },
+          "multicast": {
+            "type": "object",
+            "description": "Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both",
+            "properties": {
+              "ipv4": {
+                "type": "object",
+                "properties": {
+                  "boundaries": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "boundary": {
+                          "type": "string",
+                          "description": "ACL name or multicast IP subnet",
+                          "title": "Boundary"
+                        },
+                        "out": {
+                          "type": "boolean",
+                          "title": "Out"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Boundaries"
+                  },
+                  "static": {
+                    "type": "boolean",
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "object",
+                "properties": {
+                  "boundaries": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "boundary": {
+                          "type": "string",
+                          "description": "ACL name or multicast IP subnet",
+                          "title": "Boundary"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Boundaries"
+                  },
+                  "static": {
+                    "type": "boolean",
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "IPv6"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Multicast"
+          },
+          "ospf_network_point_to_point": {
+            "type": "boolean",
+            "title": "OSPF Network Point To Point"
+          },
+          "ospf_area": {
+            "type": "string",
+            "title": "OSPF Area"
+          },
+          "ospf_cost": {
+            "type": "integer",
+            "title": "OSPF Cost"
+          },
+          "ospf_authentication": {
+            "type": "string",
+            "enum": [
+              "none",
+              "simple",
+              "message-digest"
+            ],
+            "title": "OSPF Authentication"
+          },
+          "ospf_authentication_key": {
+            "type": "string",
+            "description": "Encrypted password",
+            "title": "OSPF Authentication Key"
+          },
+          "ospf_message_digest_keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "title": "ID"
+                },
+                "hash_algorithm": {
+                  "type": "string",
+                  "enum": [
+                    "md5",
+                    "sha1",
+                    "sha256",
+                    "sha384",
+                    "sha512"
+                  ],
+                  "title": "Hash Algorithm"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "Encrypted password",
+                  "title": "Key"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "title": "OSPF Message Digest Keys"
+          },
+          "pim": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "object",
+                "properties": {
+                  "dr_priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 429467295,
+                    "title": "DR Priority"
+                  },
+                  "sparse_mode": {
+                    "type": "boolean",
+                    "title": "Sparse Mode"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "IPv4"
+              }
+            },
+            "additionalProperties": false,
+            "title": "PIM"
+          },
+          "mac_security": {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "string",
+                "title": "Profile"
+              }
+            },
+            "additionalProperties": false,
+            "title": "MAC Security"
+          },
+          "channel_group": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "title": "ID"
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "on",
+                  "active",
+                  "passive"
+                ],
+                "title": "Mode"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Channel Group"
+          },
+          "isis_enable": {
+            "type": "string",
+            "description": "ISIS instance",
+            "title": "ISIS Enable"
+          },
+          "isis_passive": {
+            "type": "boolean",
+            "title": "ISIS Passive"
+          },
+          "isis_metric": {
+            "type": "integer",
+            "title": "ISIS Metric"
+          },
+          "isis_network_point_to_point": {
+            "type": "boolean",
+            "title": "ISIS Network Point To Point"
+          },
+          "isis_circuit_type": {
+            "type": "string",
+            "enum": [
+              "level-1-2",
+              "level-1",
+              "level-2"
+            ],
+            "title": "ISIS Circuit Type"
+          },
+          "isis_hello_padding": {
+            "type": "boolean",
+            "title": "ISIS Hello Padding"
+          },
+          "isis_authentication_mode": {
+            "type": "string",
+            "enum": [
+              "text",
+              "md5"
+            ],
+            "title": "ISIS Authentication Mode"
+          },
+          "isis_authentication_key": {
+            "type": "string",
+            "description": "Type-7 encrypted password",
+            "title": "ISIS Authentication Key"
+          },
+          "ptp": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "announce": {
+                "type": "object",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "title": "Interval"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "title": "Timeout"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Announce"
+              },
+              "delay_req": {
+                "type": "integer",
+                "title": "Delay Req"
+              },
+              "delay_mechanism": {
+                "type": "string",
+                "enum": [
+                  "e2e",
+                  "p2p"
+                ],
+                "title": "Delay Mechanism"
+              },
+              "sync_message": {
+                "type": "object",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "title": "Interval"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Sync Message"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "master",
+                  "dynamic"
+                ],
+                "title": "Role"
+              },
+              "vlan": {
+                "type": "string",
+                "description": "VLAN can be 'all' or list of vlans as string",
+                "title": "VLAN"
+              },
+              "transport": {
+                "type": "string",
+                "enum": [
+                  "ipv4",
+                  "ipv6",
+                  "layer2"
+                ],
+                "title": "Transport"
+              }
+            },
+            "additionalProperties": false,
+            "title": "PTP"
+          },
+          "profile": {
+            "type": "string",
+            "description": "Interface profile",
+            "title": "Profile"
+          },
+          "storm_control": {
+            "type": "object",
+            "properties": {
+              "all": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "All"
+              },
+              "broadcast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Broadcast"
+              },
+              "multicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Multicast"
+              },
+              "unknown_unicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "default": "percent",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "description": "Optional field and is hardware dependant",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Unknown Unicast"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Storm Control"
+          },
+          "logging": {
+            "type": "object",
+            "properties": {
+              "event": {
+                "type": "object",
+                "properties": {
+                  "link_status": {
+                    "type": "boolean",
+                    "title": "Link Status"
+                  },
+                  "congestion_drops": {
+                    "type": "boolean",
+                    "title": "Congestion Drops"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Event"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Logging"
+          },
+          "lldp": {
+            "type": "object",
+            "properties": {
+              "transmit": {
+                "type": "boolean",
+                "title": "Transmit"
+              },
+              "receive": {
+                "type": "boolean",
+                "title": "Receive"
+              },
+              "ztp_vlan": {
+                "type": "integer",
+                "description": "ZTP vlan number",
+                "title": "ZTP VLAN"
+              }
+            },
+            "additionalProperties": false,
+            "title": "LLDP"
+          },
+          "trunk_private_vlan_secondary": {
+            "type": "boolean",
+            "title": "Trunk Private VLAN Secondary"
+          },
+          "pvlan_mapping": {
+            "type": "string",
+            "description": "List of vlans as string",
+            "title": "PVLAN Mapping"
+          },
+          "vlan_translations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "description": "List of vlans as string (only one vlan if direction is \"both\")",
+                  "title": "From"
+                },
+                "to": {
+                  "type": "integer",
+                  "description": "VLAN ID",
+                  "title": "To"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "in",
+                    "out",
+                    "both"
+                  ],
+                  "default": "both",
+                  "title": "Direction"
+                }
+              },
+              "additionalProperties": false
+            },
+            "title": "VLAN Translations"
+          },
+          "dot1x": {
+            "type": "object",
+            "properties": {
+              "port_control": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "force-authorized",
+                  "force-unauthorized"
+                ],
+                "title": "Port Control"
+              },
+              "port_control_force_authorized_phone": {
+                "type": "boolean",
+                "title": "Port Control Force Authorized Phone"
+              },
+              "reauthentication": {
+                "type": "boolean",
+                "title": "Reauthentication"
+              },
+              "pae": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "authenticator"
+                    ],
+                    "title": "Mode"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "PAE"
+              },
+              "authentication_failure": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "title": "Allow VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Authentication Failure"
+              },
+              "host_mode": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "multi-host",
+                      "single-host"
+                    ],
+                    "title": "Mode"
+                  },
+                  "multi_host_authenticated": {
+                    "type": "boolean",
+                    "title": "Multi Host Authenticated"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Host Mode"
+              },
+              "mac_based_authentication": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "host_mode_common": {
+                    "type": "boolean",
+                    "title": "Host Mode Common"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "MAC Based Authentication"
+              },
+              "timeout": {
+                "type": "object",
+                "properties": {
+                  "idle_host": {
+                    "type": "integer",
+                    "minimum": 10,
+                    "maximum": 65535,
+                    "title": "Idle Host"
+                  },
+                  "quiet_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Quiet Period"
+                  },
+                  "reauth_period": {
+                    "type": "string",
+                    "description": "Value can be 60-4294967295 or 'server'",
+                    "title": "Reauth Period"
+                  },
+                  "reauth_timeout_ignore": {
+                    "type": "boolean",
+                    "title": "Reauth Timeout Ignore"
+                  },
+                  "tx_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "TX Period"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Timeout"
+              },
+              "reauthorization_request_limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "title": "Reauthorization Request Limit"
+              }
+            },
+            "additionalProperties": false,
+            "title": "dot1x"
+          },
+          "service_profile": {
+            "type": "string",
+            "description": "QOS profile",
+            "title": "Service Profile"
+          },
+          "shape": {
+            "type": "object",
+            "properties": {
+              "rate": {
+                "type": "string",
+                "description": "Rate in kbps, pps or percent\nSupported options are platform dependent\nExamples:\n- \"5000 kbps\"\n- \"1000 pps\"\n- \"20 percent\"\n",
+                "title": "Rate"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Shape"
+          },
+          "qos": {
+            "type": "object",
+            "properties": {
+              "trust": {
+                "type": "string",
+                "enum": [
+                  "dscp",
+                  "cos",
+                  "disabled"
+                ],
+                "title": "Trust"
+              },
+              "dscp": {
+                "type": "integer",
+                "description": "DSCP value",
+                "title": "DSCP"
+              },
+              "cos": {
+                "type": "integer",
+                "description": "COS value",
+                "title": "COS"
+              }
+            },
+            "additionalProperties": false,
+            "title": "QOS"
+          },
+          "spanning_tree_bpdufilter": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpdufilter"
+          },
+          "spanning_tree_bpduguard": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpduguard"
+          },
+          "spanning_tree_guard": {
+            "type": "string",
+            "enum": [
+              "loop",
+              "root",
+              "disabled"
+            ],
+            "title": "Spanning Tree Guard"
+          },
+          "spanning_tree_portfast": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "network"
+            ],
+            "title": "Spanning Tree Portfast"
+          },
+          "vmtracer": {
+            "type": "boolean",
+            "title": "VMTracer"
+          },
+          "priority_flow_control": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "priorities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "priority": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "title": "Priority"
+                    },
+                    "no_drop": {
+                      "type": "boolean",
+                      "title": "No Drop"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "priority"
+                  ]
+                },
+                "title": "Priorities"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Priority Flow Control"
+          },
+          "bfd": {
+            "type": "object",
+            "properties": {
+              "echo": {
+                "type": "boolean",
+                "title": "Echo"
+              },
+              "interval": {
+                "type": "integer",
+                "description": "Interval in milliseconds",
+                "title": "Interval"
+              },
+              "min_rx": {
+                "type": "integer",
+                "description": "Rate in milliseconds",
+                "title": "Min RX"
+              },
+              "multiplier": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 50,
+                "title": "Multiplier"
+              }
+            },
+            "additionalProperties": false,
+            "title": "BFD"
+          },
+          "service_policy": {
+            "type": "object",
+            "properties": {
+              "pbr": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Policy-map name",
+                    "title": "Input"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "PBR"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Service Policy"
+          },
+          "mpls": {
+            "type": "object",
+            "properties": {
+              "ip": {
+                "type": "boolean",
+                "title": "IP"
+              },
+              "ldp": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "boolean",
+                    "title": "Interface"
+                  },
+                  "igp_sync": {
+                    "type": "boolean",
+                    "title": "IGP Sync"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "LDP"
+              }
+            },
+            "additionalProperties": false,
+            "title": "MPLS"
+          },
+          "lacp_timer": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "fast",
+                  "normal"
+                ],
+                "title": "Mode"
+              },
+              "multiplier": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 3000,
+                "title": "Multiplier"
+              }
+            },
+            "additionalProperties": false,
+            "title": "LACP Timer"
+          },
+          "lacp_port_priority": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535,
+            "title": "LACP Port Priority"
+          },
+          "transceiver": {
+            "type": "object",
+            "properties": {
+              "media": {
+                "type": "object",
+                "properties": {
+                  "override": {
+                    "type": "string",
+                    "description": "Transceiver type",
+                    "title": "Override"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Media"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Transceiver"
+          },
+          "ip_proxy_arp": {
+            "type": "boolean",
+            "title": "IP Proxy ARP"
+          },
+          "traffic_policy": {
+            "type": "object",
+            "properties": {
+              "input": {
+                "type": "string",
+                "description": "Ingress traffic policy",
+                "title": "Input"
+              },
+              "output": {
+                "type": "string",
+                "description": "Egress traffic policy",
+                "title": "Output"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Traffic Policy"
+          },
+          "peer": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer"
+          },
+          "peer_interface": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Interface"
+          },
+          "peer_type": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Peer Type"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
+            "title": "EOS CLI"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Ethernet Interfaces"
+    },
     "event_handlers": {
       "type": "array",
       "items": {
@@ -6606,7 +7981,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Rd Evpn Domain"
+                "title": "Rd EVPN Domain"
               },
               "route_targets": {
                 "type": "object",
@@ -6652,7 +8027,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Evpn Domains"
+                    "title": "Import EVPN Domains"
                   },
                   "export_evpn_domains": {
                     "type": "array",
@@ -6674,7 +8049,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Export Evpn Domains"
+                    "title": "Export EVPN Domains"
                   },
                   "import_export_evpn_domains": {
                     "type": "array",
@@ -6696,7 +8071,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Export Evpn Domains"
+                    "title": "Import Export EVPN Domains"
                   }
                 },
                 "additionalProperties": false,
@@ -6766,7 +8141,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Rd Evpn Domain"
+                "title": "Rd EVPN Domain"
               },
               "eos_cli": {
                 "type": "string",
@@ -6817,7 +8192,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Evpn Domains"
+                    "title": "Import EVPN Domains"
                   },
                   "export_evpn_domains": {
                     "type": "array",
@@ -6839,7 +8214,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Export Evpn Domains"
+                    "title": "Export EVPN Domains"
                   },
                   "import_export_evpn_domains": {
                     "type": "array",
@@ -6861,7 +8236,7 @@
                       },
                       "additionalProperties": false
                     },
-                    "title": "Import Export Evpn Domains"
+                    "title": "Import Export EVPN Domains"
                   }
                 },
                 "additionalProperties": false,
@@ -7000,7 +8375,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "title": "Next Hop Self Received Evpn Routes"
+                  "title": "Next Hop Self Received EVPN Routes"
                 }
               },
               "additionalProperties": false,
@@ -7072,7 +8447,7 @@
                 }
               },
               "additionalProperties": false,
-              "title": "Evpn Hostflap Detection"
+              "title": "EVPN Hostflap Detection"
             },
             "route": {
               "type": "object",
@@ -7090,7 +8465,7 @@
             }
           },
           "additionalProperties": false,
-          "title": "Address Family Evpn"
+          "title": "Address Family EVPN"
         },
         "address_family_rtc": {
           "type": "object",
@@ -7731,7 +9106,7 @@
               },
               "evpn_multicast": {
                 "type": "boolean",
-                "title": "Evpn Multicast"
+                "title": "EVPN Multicast"
               },
               "evpn_multicast_address_family": {
                 "type": "object",
@@ -7751,7 +9126,7 @@
                   }
                 },
                 "additionalProperties": false,
-                "title": "Evpn Multicast Address Family"
+                "title": "EVPN Multicast Address Family"
               },
               "route_targets": {
                 "type": "object",
@@ -12291,7 +13666,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "title": "BFD Vtep Evpn"
+                  "title": "BFD Vtep EVPN"
                 },
                 "qos": {
                   "type": "object",

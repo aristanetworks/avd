@@ -1031,7 +1031,7 @@ ethernet_interfaces:
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     snmp_trap_link_change: < true | false >
     flowcontrol:
-      received: < "received" | "send" | "on" >
+      received: < "desired" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
