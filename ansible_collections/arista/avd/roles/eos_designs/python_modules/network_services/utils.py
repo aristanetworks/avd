@@ -310,7 +310,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         Decides if MLAG BGP peer-group should be configured.
         Catches cases where underlay is not BGP but we still need MLAG iBGP peering
         """
-        if (bgp_vrfs := self._router_bgp_vrfs) is None:
+        if self._underlay_bgp or (bgp_vrfs := self._router_bgp_vrfs) is None:
             return False
 
         for bgp_vrf in bgp_vrfs.values():
