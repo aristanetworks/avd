@@ -3,6 +3,7 @@
 
 # CVX
 {%     if cvx.peer_hosts is arista.avd.defined %}
+
 | Peer Hosts |
 | ---------- |
 {%         set peer_hosts = cvx.peer_hosts | arista.avd.natural_sort | join(', ') %}
