@@ -94,6 +94,7 @@ Across all designs, the following functionality is provided:
 ### Layer 2 Leaf Spine
 
 | Spine Uplinks | Leaf Uplinks | Topology |
+| -------- | ------- | -------- |
 | L2 | L2 | Arbitrary or leaf-spine |
 | L3 + Static routes | L2 | Arbitrary or leaf-spine |
 | L3 + eBGP | L2 | Arbitrary or leaf-spine |
