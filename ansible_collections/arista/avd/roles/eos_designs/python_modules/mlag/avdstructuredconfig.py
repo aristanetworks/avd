@@ -8,9 +8,9 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_d
 
 
 class AvdStructuredConfig(AvdFacts):
-    def __init__(self, hostvars, templar, searchpath):
-        super().__init__(hostvars, templar, searchpath)
-        self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar, searchpath)
+    def __init__(self, hostvars, templar):
+        super().__init__(hostvars, templar)
+        self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar)
 
     def render(self):
         """

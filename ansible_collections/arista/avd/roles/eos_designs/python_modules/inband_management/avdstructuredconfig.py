@@ -8,8 +8,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class AvdStructuredConfig(AvdFacts):
-    def __init__(self, hostvars, templar, searchpath):
-        super().__init__(hostvars, templar, searchpath)
+    def __init__(self, hostvars, templar):
+        super().__init__(hostvars, templar)
 
     @cached_property
     def _inband_management_role(self) -> str:

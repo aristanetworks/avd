@@ -5,10 +5,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import template_v
 
 
 class AvdFacts:
-    def __init__(self, hostvars, templar, searchpath):
+    def __init__(self, hostvars, templar):
         self._hostvars = hostvars
         self._templar = templar
-        self._searchpath = searchpath
 
     @classmethod
     def __keys(cls):  # pylint: disable=bad-option-value, unused-private-member # CH Sep-22: Some pylint bug.
@@ -66,6 +65,6 @@ class AvdFacts:
         Run the simplified templater using the passed Ansible "templar" engine.
         """
         try:
-            return template_var(template_file, template_vars, self._templar, self._searchpath)
+            return template_var(template_file, template_vars, self._templar)
         except Exception as e:
             raise AristaAvdError(f"Error during templating of template: {template_file}") from e

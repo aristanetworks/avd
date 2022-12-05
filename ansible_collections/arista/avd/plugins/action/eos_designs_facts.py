@@ -11,7 +11,7 @@ from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
 
 
 class ActionModule(ActionBase):
@@ -50,7 +50,8 @@ class ActionModule(ActionBase):
         #         This should not be too bad, since all hosts are within the same fabric - hence they should also use the same "design"
         default_vars = self._templar.template(self._task._role.get_default_vars())
 
-        self.searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
+        # Get updated templar instance to be passed along to our simplified "templater"
+        self.templar = get_templar(self, task_vars)
 
         if set_avd_switch_facts:
             avd_overlay_peers = {}
@@ -115,7 +116,7 @@ class ActionModule(ActionBase):
             # Add reference to dict "avd_switch_facts".
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars["avd_switch_facts"] = avd_switch_facts
-            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=self._templar, searchpath=self.searchpath)}
+            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=self.templar)}
             # Add reference to EosDesignsFacts object inside hostvars.
             # This is used to allow templates to access the facts object directly with "switch.*"
             host_hostvars["switch"] = avd_switch_facts[host]["switch"]
