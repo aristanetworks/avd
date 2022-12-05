@@ -1,4 +1,4 @@
-from pathlib import Path, PurePath
+from pathlib import Path
 
 from ansible.module_utils._text import to_text
 from jinja2 import FileSystemBytecodeCache
@@ -36,7 +36,7 @@ def template(template_file, template_vars, templar, searchpath):
     j2template, dummy = loader._get_file_contents(template_file_path)
     j2template = to_text(j2template)
 
-    cache_dir = Path(PurePath(template_file_path).parent, ".j2cache")
+    cache_dir = Path(template_file_path).parent.joinpath(".j2cache")
     # Create cache_dir if not existing. We can asume the parent dir is there since we found the template file.
     cache_dir.mkdir(0o775, False, True)
 
