@@ -160,11 +160,11 @@ tenants:
             description: TENANT_B_CPE_SITE3
             nodes:
               - SITE1-LER2
-            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            password: "toZKiUFLVUTU4hdS5V8F4Q=="
             remote_as: "65201"
           192.168.48.3:
             description: TENANT_B_CPE_SITE5
             nodes:
               - SITE2-LER1
-            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            password: "OajzUG59/YF0NkgvOQyRnQ=="
             remote_as: "65202"

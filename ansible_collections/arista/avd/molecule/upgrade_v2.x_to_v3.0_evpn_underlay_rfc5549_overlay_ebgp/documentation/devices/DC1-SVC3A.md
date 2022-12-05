@@ -1134,21 +1134,21 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_WAN_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_B_WAN_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
-| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_C_WAN_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_APP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_DB_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_WAN_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_B_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_B_WAN_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_C_OP_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG_PEER | Tenant_C_WAN_Zone | - | Inherited from peer group MLAG_PEER | Inherited from peer group MLAG_PEER | - | - | - | - |
 
 ### BGP Neighbor Interfaces
 
@@ -1225,13 +1225,13 @@ router bgp 65103
    neighbor MLAG_PEER remote-as 65103
    neighbor MLAG_PEER next-hop-self
    neighbor MLAG_PEER description DC1-SVC3B
-   neighbor MLAG_PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
+   neighbor MLAG_PEER password 7 arwUnrq9ydqIhjfTwRhAlg==
    neighbor MLAG_PEER send-community
    neighbor MLAG_PEER maximum-routes 12000
    neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY_PEERS peer group
    neighbor UNDERLAY_PEERS remote-as 65001
-   neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY_PEERS password 7 af6F4WLl4wUrWRZcwbEwkQ==
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001

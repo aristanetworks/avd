@@ -604,11 +604,11 @@ router isis CORE
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - |
-| 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - |
-| 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
+| 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
+| 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -680,7 +680,7 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
    neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+   neighbor MPLS-OVERLAY-PEERS password 7 SHsTgDgjVUU5a9blyxSt3Q==
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS
@@ -752,7 +752,7 @@ router bgp 65000
       route-target export vpn-ipv6 65000:20
       router-id 100.70.0.6
       neighbor 192.168.48.1 remote-as 65201
-      neighbor 192.168.48.1 password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+      neighbor 192.168.48.1 password 7 toZKiUFLVUTU4hdS5V8F4Q==
       neighbor 192.168.48.1 description TENANT_B_CPE_SITE3
       redistribute connected
       !

@@ -13,7 +13,7 @@ evpn_hostflap_detection:
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
     name: UNDERLAY-PEERS
-    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+    password: "0nsCUm70mvSTxVO0ldytrg=="
   EVPN_OVERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
     password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER: # Using legacy upper-case keys to test backwards-compatibility

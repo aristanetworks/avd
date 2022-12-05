@@ -27,7 +27,7 @@ else:
     DEEPMERGE_IMPORT_ERROR = None
 
 script_dir = os.path.dirname(__file__)
-with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="utf-8") as file:
+with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="UTF-8") as file:
     AVD_META_SCHEMA = json.load(file)
 
 

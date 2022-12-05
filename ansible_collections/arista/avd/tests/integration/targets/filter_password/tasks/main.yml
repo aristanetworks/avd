@@ -1,0 +1,9 @@
+---
+- name: Test Encrypt & Decrypt for BGP passwords
+  assert:
+    that:
+      - "{{ clear_password | arista.avd.encrypt(passwd_type='bgp', key=neighbor_ip) == neighbor_encrypted_password }}"
+      - "{{ clear_password | arista.avd.encrypt(passwd_type='bgp', key=peer_group) == peer_group_encrypted_password }}"
+      - "{{ non_string_clear_password | arista.avd.encrypt(passwd_type='bgp', key=peer_group) == expected_non_string_pg_encrypted_password}}"
+      - "{{ neighbor_encrypted_password | arista.avd.decrypt(passwd_type='bgp', key=neighbor_ip) == clear_password }}"
+      - "{{ peer_group_encrypted_password | arista.avd.decrypt(passwd_type='bgp', key=peer_group) == clear_password}}"

@@ -13,7 +13,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65000'
       bfd: true
-      password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+      password: SHsTgDgjVUU5a9blyxSt3Q==
       send_community: all
       maximum_routes: 0
   address_family_ipv4:
@@ -80,7 +80,7 @@ router_bgp:
       neighbors:
         192.168.48.3:
           description: TENANT_B_CPE_SITE5
-          password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+          password: OajzUG59/YF0NkgvOQyRnQ==
           remote_as: '65202'
       address_families:
         ipv4:

@@ -63,7 +63,6 @@ vlan_interfaces:
   Vlan87:
     description: SVI Description
     shutdown: true
-    ip_router_virtual_address: 10.10.87.254
     ip_address: 10.10.87.1/24
     access_group_in: ACL_IN
     access_group_out: ACL_OUT
@@ -83,8 +82,7 @@ vlan_interfaces:
   Vlan90:
     description: SVI Description
     ip_address: 10.10.83.1/24
-    ip_attached_host_route_export:
-      test: 10
+    ip_attached_host_route_export: {}
 
   Vlan92:
     description: SVI Description

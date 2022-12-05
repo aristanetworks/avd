@@ -220,6 +220,11 @@ router bgp {{ router_bgp.as }}
 {%         if neighbor.description is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} description {{ neighbor.description }}
 {%         endif %}
+{%         if neighbor.route_reflector_client is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} route-reflector-client
+{%         elif neighbor.route_reflector_client is arista.avd.defined(false) %}
+   no neighbor {{ neighbor.ip_address }} route-reflector-client
+{%         endif %}
 {%         if neighbor.ebgp_multihop is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} ebgp-multihop {{ neighbor.ebgp_multihop }}
 {%         endif %}
@@ -777,6 +782,13 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if vrf.evpn_multicast is arista.avd.defined(true) %}
       evpn multicast
+{%             if vrf.evpn_multicast_address_family.ipv4 is arista.avd.defined
+                   and vrf.evpn_multicast_address_family.ipv4.transit is arista.avd.defined(true) %}
+         address-family ipv4
+{%                 if vrf.evpn_multicast_address_family.ipv4.transit is arista.avd.defined(true) %}
+            transit
+{%                 endif %}
+{%             endif %}
 {%         endif %}
 {%         if vrf.route_targets.import is arista.avd.defined %}
 {%             for address_family in vrf.route_targets.import %}

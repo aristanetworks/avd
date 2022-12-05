@@ -610,20 +610,20 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 172.31.255.96 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.98 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.100 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 172.31.255.102 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - |
-| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - |
-| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - | - |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 172.31.255.96 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - |
+| 172.31.255.98 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - |
+| 172.31.255.100 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - |
+| 172.31.255.102 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - |
+| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - | - | - |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -676,7 +676,7 @@ router bgp 65105
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS remote-as 65001
-   neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY-PEERS password 7 0nsCUm70mvSTxVO0ldytrg==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
@@ -741,7 +741,7 @@ router bgp 65105
       route-target export vpn-ipv4 65000:123
       router-id 192.168.255.15
       neighbor 123.1.1.10 remote-as 1234
-      neighbor 123.1.1.10 password 7 AQQvKeimxJu+uGQ/yYvv9w==
+      neighbor 123.1.1.10 password 7 oBztv71m2uhR7hh58/OCNA==
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
       neighbor 123.1.1.10 description External IPv4 BGP peer
       neighbor 123.1.1.10 ebgp-multihop 3
@@ -752,7 +752,7 @@ router bgp 65105
       neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
       neighbor 123.1.1.10 route-map RM-123-1-1-10-IN in
       neighbor 123.1.1.11 remote-as 1234
-      neighbor 123.1.1.11 password 7 AQQvKeimxJu+uGQ/yYvv9w==
+      neighbor 123.1.1.11 password 7 oBztv71m2uhR7hh58/OCNA==
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3

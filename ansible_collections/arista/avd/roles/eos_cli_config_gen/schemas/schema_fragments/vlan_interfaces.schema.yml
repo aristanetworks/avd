@@ -1,0 +1,469 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  vlan_interfaces:
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: VLAN interface name like "Vlan123"
+        description:
+          type: str
+        shutdown:
+          type: bool
+        vrf:
+          type: str
+          description: VRF name
+        arp_aging_timeout:
+          type: int
+          convert_types:
+          - str
+          description: In seconds
+          min: 1
+          max: 65535
+        arp_cache_dynamic_capacity:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        arp_gratuitous_accept:
+          type: bool
+        arp_monitor_mac_address:
+          type: bool
+        ip_proxy_arp:
+          type: bool
+        ip_directed_broadcast:
+          type: bool
+        ip_address:
+          type: str
+          description: IPv4_address/Mask
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4_address/Mask
+        ip_virtual_router_addresses:
+          type: list
+          items:
+            type: str
+            description: IPv4 address or IPv4_address/Mask
+        ip_address_virtual:
+          type: str
+          description: IPv4_address/Mask
+        ip_address_virtual_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4_address/Mask
+        ip_igmp:
+          type: bool
+        ip_helpers:
+          type: list
+          description: List of DHCP servers
+          convert_types:
+          - dict
+          primary_key: ip_helper
+          items:
+            type: dict
+            keys:
+              ip_helper:
+                type: str
+                description: IP address or hostname of DHCP server
+              source_interface:
+                type: str
+                description: Interface used as source for forwarded DHCP packets
+              vrf:
+                type: str
+                description: VRF where DHCP server can be reached
+        ipv6_enable:
+          type: bool
+        ipv6_address:
+          type: str
+          description: IPv6_address/Mask
+        ipv6_address_virtual:
+          type: str
+          description: |
+            IPv6_address/Mask
+            "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
+            If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
+        ipv6_address_virtuals:
+          type: list
+          description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
+          items:
+            type: str
+            description: IPv6_address/Mask
+        ipv6_address_link_local:
+          type: str
+          description: IPv6_address/Mask
+        ipv6_virtual_router_address:
+          type: str
+          description: |
+            "ipv6_virtual_router_address" key will be deprecated in AVD v4.0
+            This should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
+        ipv6_virtual_router_addresses:
+          type: list
+          description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
+          items:
+            type: str
+            description: IPv6 address or IPv6_address/Mask
+        ipv6_nd_ra_disabled:
+          type: bool
+        ipv6_nd_managed_config_flag:
+          type: bool
+        ipv6_nd_prefixes:
+          type: list
+          convert_types:
+          - dict
+          primary_key: ipv6_prefix
+          items:
+            type: dict
+            keys:
+              ipv6_prefix:
+                type: str
+                description: IPv6_address/Mask
+              valid_lifetime:
+                type: str
+                description: In seconds <0-4294967295> or infinite
+                convert_types:
+                - int
+              preferred_lifetime:
+                type: str
+                description: In seconds <0-4294967295> or infinite
+                convert_types:
+                - int
+              no_autoconfig_flag:
+                type: bool
+        access_group_in:
+          type: str
+          description: IPv4 access-list name
+        access_group_out:
+          type: str
+          description: IPv4 access-list name
+        ipv6_access_group_in:
+          type: str
+          description: IPv6 access-list name
+        ipv6_access_group_out:
+          type: str
+          description: IPv6 access-list name
+        multicast:
+          type: dict
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
+                  primary_key: boundary
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: IPv4 access-list name or IPv4 multicast group prefix with mask
+                      out:
+                        type: bool
+                source_route_export:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    administrative_distance:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 255
+                static:
+                  type: bool
+            ipv6:
+              type: dict
+              keys:
+                boundaries:
+                  type: list
+                  description: Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
+                  primary_key: boundary
+                  items:
+                    type: dict
+                    keys:
+                      boundary:
+                        type: str
+                        description: IPv6 access-list name or IPv6 multicast group prefix with mask
+                source_route_export:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    administrative_distance:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 255
+                static:
+                  type: bool
+        ospf_network_point_to_point:
+          type: bool
+        ospf_area:
+          type: str
+          convert_types:
+          - int
+        ospf_cost:
+          type: int
+          convert_types:
+          - str
+        ospf_authentication:
+          type: str
+          valid_values:
+          - none
+          - simple
+          - message-digest
+        ospf_authentication_key:
+          type: str
+          description: Encrypted password used for simple authentication
+        ospf_message_digest_keys:
+          type: list
+          description: Keys used for message-digest authentication
+          convert_types:
+          - dict
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+              hash_algorithm:
+                type: str
+                valid_values:
+                - md5
+                - sha1
+                - sha256
+                - sha384
+                - sha512
+              key:
+                type: str
+                description: Encrypted password
+        pim:
+          type: dict
+          keys:
+            ipv4:
+              type: dict
+              keys:
+                dr_priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 429467295
+                sparse_mode:
+                  type: bool
+                local_interface:
+                  type: str
+        isis_enable:
+          type: str
+          description: ISIS instance name
+        isis_passive:
+          type: bool
+        isis_metric:
+          type: int
+          convert_types:
+          - str
+        isis_network_point_to_point:
+          type: bool
+        mtu:
+          type: int
+          convert_types:
+          - str
+        no_autostate:
+          type: bool
+        vrrp_ids:
+          type: list
+          description: Improved "vrrp" data model to support multiple VRRP IDs
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                description: VRID
+              priority_level:
+                type: int
+                convert_types:
+                - str
+                description: Instance priority
+              advertisement:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Interval in seconds
+              preempt:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  delay:
+                    type: dict
+                    keys:
+                      minimum:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Minimum preempt delay in seconds
+                      reload:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Reload preempt delay in seconds
+              timers:
+                type: dict
+                keys:
+                  delay:
+                    type: dict
+                    keys:
+                      reload:
+                        type: int
+                        description: Delay after reload in seconds.
+                        convert_types:
+                        - str
+              tracked_object:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Tracked object name
+                    decrement:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 254
+                      description: Decrement VRRP priority by 1-254
+                    shutdown:
+                      type: bool
+              ipv4:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv4 address
+                  version:
+                    type: int
+                    convert_types:
+                    - str
+                    valid_values:
+                    - 2
+                    - 3
+              ipv6:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv6 address
+        vrrp:
+          type: dict
+          description: |
+            "vrrp" key will be deprecated in AVD v4.0
+            This should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
+          keys:
+            virtual_router:
+              type: str
+              description: Virtual Router ID
+            priority:
+              type: int
+              convert_types:
+              - str
+              description: Instance priority
+            advertisement_interval:
+              type: int
+              convert_types:
+              - str
+            preempt_delay_minimum:
+              type: int
+              convert_types:
+              - str
+            ipv4:
+              type: str
+              description: Virtual IPv4 address
+            ipv6:
+              type: str
+              description: Virtual IPv6 address
+        ip_attached_host_route_export:
+          type: dict
+          keys:
+            distance:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 255
+        bfd:
+          type: dict
+          keys:
+            echo:
+              type: bool
+            interval:
+              type: int
+              convert_types:
+              - str
+              description: Rate in milliseconds
+            min_rx:
+              type: int
+              convert_types:
+              - str
+              description: Minimum RX hold time in milliseconds
+            multiplier:
+              type: int
+              convert_types:
+              - str
+              min: 3
+              max: 50
+        service_policy:
+          type: dict
+          keys:
+            pbr:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  description: Name of policy-map used for policy based routing
+        pvlan_mapping:
+          type: str
+          description: List of VLANs as string
+        tenant:
+          type: str
+          description: Key only used for documentation or validation purposes
+        tags:
+          type: list
+          items:
+            type: str
+          description: Key only used for documentation or validation purposes
+        type:
+          type: str
+          description: Key only used for documentation or validation purposes
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration

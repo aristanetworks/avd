@@ -56,6 +56,12 @@ keys:
             mka:
               type: dict
               keys:
+                key_server_priority:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 255
                 session:
                   type: dict
                   keys:
@@ -68,3 +74,24 @@ keys:
                       description: Rekey period in seconds
             sci:
               type: bool
+            l2_protocols:
+              type: dict
+              keys:
+                ethernet_flow_control:
+                  type: dict
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                        - encrypt
+                        - bypass
+                lldp:
+                  type: dict
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                        - bypass
+                        - "bypass unauthorized"

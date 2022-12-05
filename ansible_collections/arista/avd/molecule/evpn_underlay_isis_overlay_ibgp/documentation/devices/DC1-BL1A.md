@@ -634,10 +634,10 @@ router isis EVPN_UNDERLAY
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS | - | - |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -660,7 +660,7 @@ router bgp 65000
    neighbor OVERLAY-PEERS remote-as 65000
    neighbor OVERLAY-PEERS update-source Loopback0
    neighbor OVERLAY-PEERS bfd
-   neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor OVERLAY-PEERS password 7 64fqSH5CFUNLRHErezMrRg==
    neighbor OVERLAY-PEERS send-community
    neighbor OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group OVERLAY-PEERS

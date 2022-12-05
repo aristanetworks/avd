@@ -148,20 +148,20 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 1.1.1.1 | 1 | default | False | - | - | - | - | - |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | - | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG | - | - | - |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 1.1.1.1 | 1 | default | False | - | - | - | - | - | - |
+| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - | - |
+| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - | - |
+| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - | - |
+| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - | - |
+| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - | - |
+| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - | - |
+| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - | - |
+| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - | - |
+| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - | - |
+| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | - | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG | - | - | - | - |
+| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -203,29 +203,29 @@ router bgp 65100
    neighbor EVPN-OVERLAY update-source Loopback0
    neighbor EVPN-OVERLAY bfd
    neighbor EVPN-OVERLAY ebgp-multihop 5
-   neighbor EVPN-OVERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor EVPN-OVERLAY password 7 MY+KbyJy4kSu+X/blnVwsg==
    neighbor EVPN-OVERLAY send-community
    neighbor EVPN-OVERLAY maximum-routes 0
    neighbor IPV4-UNDERLAY peer group
    neighbor IPV4-UNDERLAY remote-as 65000
-   neighbor IPV4-UNDERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV4-UNDERLAY password 7 dt5J2fw8tymeDFPyoYLB3w==
    neighbor IPV4-UNDERLAY send-community
    neighbor IPV4-UNDERLAY maximum-routes 12000
    neighbor IPV4-UNDERLAY-MLAG peer group
    neighbor IPV4-UNDERLAY-MLAG remote-as 65100
    neighbor IPV4-UNDERLAY-MLAG next-hop-self
-   neighbor IPV4-UNDERLAY-MLAG password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV4-UNDERLAY-MLAG password 7 46jF9S9T7v5RRceVzhrlBg==
    neighbor IPV4-UNDERLAY-MLAG send-community
    neighbor IPV4-UNDERLAY-MLAG maximum-routes 12000
    neighbor IPV6-UNDERLAY peer group
    neighbor IPV6-UNDERLAY remote-as 65000
-   neighbor IPV6-UNDERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV6-UNDERLAY password 7 WkH9/oj4atEwv2MgOprY8A==
    neighbor IPV6-UNDERLAY send-community
    neighbor IPV6-UNDERLAY maximum-routes 12000
    neighbor IPV6-UNDERLAY-MLAG peer group
    neighbor IPV6-UNDERLAY-MLAG remote-as 65100
    neighbor IPV6-UNDERLAY-MLAG next-hop-self
-   neighbor IPV6-UNDERLAY-MLAG password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV6-UNDERLAY-MLAG password 7 CXS0NveSYzQRmm6SRGp42w==
    neighbor IPV6-UNDERLAY-MLAG send-community
    neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
    neighbor 1.1.1.1 remote-as 1

@@ -13,3 +13,6 @@ keys:
         items:
           type: str
           description: IP or hostname
+      source_interface:
+        type: str
+        description: Interface name

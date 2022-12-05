@@ -60,6 +60,7 @@ management cvx
    server host 10.90.224.188
    server host 10.90.224.189
    server host leaf1.atd.lab
+   source-interface loopback0
 ```
 
 # Authentication
