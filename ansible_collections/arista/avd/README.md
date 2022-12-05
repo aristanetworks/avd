@@ -59,7 +59,7 @@ Ansible galaxy hosts all stable versions of this collection. Installation from a
 
 ## Ask a question
 
-Support for this `arista.avd` collection is provided by the community directly in this repository. Easiest way to get support is to open [an issue](https://github.com/aristanetworks/ansible-avd/issues).
+Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
 
 ## Contributing
 
@@ -69,4 +69,4 @@ You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issue
 
 ## License
 
-Project is published under [Apache 2.0 License](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/LICENSE)
+The project is published under [Apache 2.0 License](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/LICENSE)

@@ -50,4 +50,4 @@ You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issue
 
 ## License
 
-Project is published under [Apache 2.0 License](./LICENSE)
+The project is published under [Apache 2.0 License](./LICENSE)
