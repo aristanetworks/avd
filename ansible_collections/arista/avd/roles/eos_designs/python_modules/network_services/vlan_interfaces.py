@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 from .utils import UtilsMixin
@@ -60,10 +61,32 @@ class VlanInterfacesMixin(UtilsMixin):
             # Only set VARP if ip_address is set
             vlan_interface_config["ip_virtual_router_addresses"] = svi.get("ip_virtual_router_addresses")
 
+        vlan_virtual_address = svi.get("ip_address_virtual")
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
             # Only set Anycast GW if VARP is not set
-            vlan_interface_config["ip_address_virtual"] = svi.get("ip_address_virtual")
+            vlan_interface_config["ip_address_virtual"] = vlan_virtual_address
             vlan_interface_config["ip_address_virtual_secondaries"] = svi.get("ip_address_virtual_secondaries")
+
+        vrf_diagnostic_loopback = get(vrf, "vtep_diagnostic.loopback")
+        vrf_l3_multicast_enabled = default(get(svi, "l3_multicast.enabled"), get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
+
+        pim_config_ipv4 = {}
+        if vrf_l3_multicast_enabled:
+            if vlan_virtual_address and not vrf_diagnostic_loopback:
+                raise AristaAvdMissingVariableError(
+                    f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{tenant['name']}'."
+                    "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
+                )
+            if self._mlag:
+                pim_config_ipv4["sparse_mode"] = True
+            else:
+                vlan_interface_config["ip_igmp"] = True
+
+            if vlan_virtual_address:
+                pim_config_ipv4["local_interface"] = f"Loopback{vrf_diagnostic_loopback}"
+
+            if pim_config_ipv4:
+                vlan_interface_config["pim"] = {"ipv4": pim_config_ipv4}
 
         if vlan_interface_config["ipv6_address"] is not None:
             # Only set VARPv6 if ipv6_address is set

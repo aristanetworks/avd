@@ -5,7 +5,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 from .utils import UtilsMixin
 
@@ -111,6 +111,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     if ospf_keys:
                                         interface["ospf_authentication"] = ospf_authentication
                                         interface["ospf_message_digest_keys"] = ospf_keys
+
+                            vrf_l3_multicast_enabled = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
+
+                            if pim_config := get(l3_interface, "pim.enabled") and vrf_l3_multicast_enabled:
+                                interface["pim"] = {"ipv4": {"sparse_mode": pim_config}}
 
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}

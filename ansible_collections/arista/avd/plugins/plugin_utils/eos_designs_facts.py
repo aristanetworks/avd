@@ -1739,7 +1739,7 @@ class EosDesignsFacts(AvdFacts):
         if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self._hostvars, "underlay_ipv6") is True and get(self._hostvars, "underlay_rfc5549") is True):
                 raise AristaAvdError(
-                    "'overlay_routing_protocol_address_family: ipv6' is only supported incombination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
+                    "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
                 )
         return overlay_routing_protocol_address_family
 

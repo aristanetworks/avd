@@ -107,5 +107,44 @@ vlans:
   9:
     tenant: Tenant_B
     name: MULTICAST_ENABLED_8
+  330:
+    tenant: Tenant_C
+    name: L3_MULTICAST_DISABLED_330
+  331:
+    tenant: Tenant_C
+    name: L3_MULTICAST_DISABLED_331
+  130:
+    tenant: Tenant_C
+    name: L3_MULTICAST_ENABLED_130
+  131:
+    tenant: Tenant_C
+    name: L3_MULTICAST_ENABLED_131
+  230:
+    tenant: Tenant_C
+    name: L3_MULTICAST_ENABLED_230
+  231:
+    tenant: Tenant_C
+    name: L3_MULTICAST_DISABLED_231
+  240:
+    tenant: Tenant_D
+    name: L3_MULTICAST_DISABLED_240
+  241:
+    tenant: Tenant_D
+    name: L3_MULTICAST_DISABLED_241
+  140:
+    tenant: Tenant_D
+    name: L3_MULTICAST_ENABLED_140
+  141:
+    tenant: Tenant_D
+    name: L3_MULTICAST_DISABLED_141
+  550:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_550
+  250:
+    tenant: Tenant_E
+    name: L3_MULTICAST_DISABLED_250
+  150:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_150
 ip_igmp_snooping:
   globally_enabled: true

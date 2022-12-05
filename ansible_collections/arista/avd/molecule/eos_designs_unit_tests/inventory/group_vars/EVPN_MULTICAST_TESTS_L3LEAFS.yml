@@ -50,3 +50,15 @@ l3leaf:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3 ]
+    EVPN_MULTICAST_L3LEAF3:
+      bgp_as: 65103-65104
+      mlag: false
+      nodes:
+        EVPN-MULTICAST-L3LEAF3A:
+          id: 1
+          mgmt_ip: 192.168.200.108/24
+          uplink_switch_interfaces: [ Ethernet4 ]
+        EVPN-MULTICAST-L3LEAF3B:
+          id: 2
+          mgmt_ip: 192.168.200.109/24
+          uplink_switch_interfaces: [ Ethernet5 ]

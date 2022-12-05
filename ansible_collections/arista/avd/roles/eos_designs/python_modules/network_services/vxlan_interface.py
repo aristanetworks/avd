@@ -67,6 +67,17 @@ class VxlanInterfaceMixin(UtilsMixin):
                         # This is legacy behavior so we will leave stricter enforcement to the schema
                         vrfs[key] = {"vni": vni}
 
+                        if default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled")):
+                            underlay_l3_multicast_group_ipv4_pool = get(
+                                tenant,
+                                "l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool",
+                                required=True,
+                                org_key=f"'l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant['name']}",
+                            )
+                            underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
+                            offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
+                            vrfs[key]["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
                     vlan_id = int(l2vlan["id"])

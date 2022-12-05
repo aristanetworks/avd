@@ -142,6 +142,40 @@ mac_address_table:
       underlay_l2_multicast_group_ipv4_pool: < IPv4_address/Mask >
       underlay_l2_multicast_group_ipv4_pool_offset: < int >
 
+    # Enable L3 Multicast for all SVIs and l3vlans within Tenant | Optional
+    # - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)
+    # - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication
+    # - Configures binding between VXLAN, VLAN, and multicast group ipv4 address using the following formula:
+    #   < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
+    # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+    # - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) must be configured to source IGMP traffic.
+    # - Enables "evpn multicast" on the router bgp VRF.
+    # - When enabled on an SVI:
+    #     - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
+    #     - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
+    #     - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
+    l3_multicast:
+      enabled: < true | false | default false >
+      underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask >
+      underlay_l3_multicast_group_ipv4_pool_offset: < int >
+      node_settings: # Optional
+        # For each group of nodes, allow configuration of EVPN PEG features | Optional
+        # and allow configuration of specific RPs and associated multicast groups
+        # Designed to be used in conjunction with enabling PIM on l3_interfaces to make the device a PEG (see below)
+        # An individual node should be in one node group only
+        # 'nodes' key is optional - settings apply everywhere if not defined
+        # These two options are mutually exclusive
+        - nodes: [ < node_1 >, < node_2 >, < node_N > ]    # Optional
+          evpn_peg:
+            transit: < true | false | default false >      # Enable EVPN PEG transit mode
+          rp_addresses:                                    # RP Addresses & associated groups
+            - rps:
+                - < rp_address_1 >
+                - < rp_address_2 >
+              groups:
+                - < group_prefix_1/mask >
+                - < group_prefix_2/mask >
+
     # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
     # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
     igmp_snooping_querier:
@@ -198,7 +232,7 @@ mac_address_table:
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
         vtep_diagnostic:
 
-          # Loopback interface number | Required (when vtep_diagnotics defined)
+          # Loopback interface number | Required (when vtep_diagnostics defined)
           loopback: < 2-2100 >
 
           # Loopback ip range, a unique ip is derived from this ranged and assigned
@@ -227,6 +261,18 @@ mac_address_table:
           nodes:
             - < hostname1 >
             - < hostname2 >
+
+        # Explicitly enable or disable evpn_l3_multicast to override setting of tenants.<tenant>.evpn_l3_multicast.enabled.
+        # Allow override of tenants.<tenant>.evpn_l3_multicast.pim_external_gateway
+        evpn_l3_multicast:
+          enabled: < true | false >
+          pim_external_gateway:
+            - nodes: [ < node_1 >, < node_2 >, < node_N > ]
+              transit: < true | false >
+              rp_addresses:
+                - address: < rp_address_1 >
+                  groups:
+                    - < group_prefix_1/mask >
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
@@ -273,6 +319,11 @@ mac_address_table:
             # Explicitly enable or disable evpn_l2_multicast to override setting of tenants.<tenant>.evpn_l2_multicast.enabled.
             # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
             evpn_l2_multicast:
+              enabled: < true | false >
+
+            # Explicitly enable or disable evpn_l3_multicast to override setting of tenants.<tenant>.evpn_l3_multicast.enabled and
+            # tenants.<tenant>.vrfs.<vrf>.evpn_l3_multicast.enabled
+            evpn_l3_multicast:
               enabled: < true | false >
 
             # Enable IGMP Snooping
@@ -414,6 +465,11 @@ mac_address_table:
                 - id: < int >
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
+
+            # Enable PIM sparse-mode on the interface; requires "l3_multicast" to be enabled on the VRF/Tenant
+            # Enabling this implicitly makes the device a PIM External Gateway (PEG)
+            pim:
+              enabled: true
 
           # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]

@@ -14,7 +14,9 @@ from .prefix_lists import PrefixListsMixin
 from .route_maps import RouteMapsMixin
 from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
+from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
+from .router_pim_sparse_mode import RouterPimSparseModeMixin
 from .static_routes import StaticRoutesMixin
 from .struct_cfg import StructCfgMixin
 from .virtual_source_nat_vrfs import VirtualSourceNatVrfsMixin
@@ -46,6 +48,8 @@ class AvdStructuredConfig(
     VxlanInterfaceMixin,
     VirtualSourceNatVrfsMixin,
     RouterIsisMixin,
+    RouterMulticastMixin,
+    RouterPimSparseModeMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "yaml_templates_to_facts" to render parts of the structured config.

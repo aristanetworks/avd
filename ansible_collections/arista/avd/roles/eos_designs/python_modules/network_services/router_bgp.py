@@ -24,7 +24,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return the structured config for router_bgp
 
-        Changin legacy behavior is to only render this on vtep or mpls_ler
+        Changing legacy behavior is to only render this on vtep or mpls_ler
         by instead skipping vlans/bundles if not vtep or mpls_ler
         TODO: Fix so this also works for L2LS with VRFs
         """
@@ -154,6 +154,10 @@ class RouterBgpMixin(UtilsMixin):
                     vrfs[vrf_name] = bgp_vrf
                     continue
 
+                vrf_evpn_l3_multicast_enabled = (
+                    default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled")) and self._overlay_vtep and self._overlay_evpn
+                )
+
                 bgp_vrf = {
                     "router_id": self._router_id,
                     "rd": f"{self._overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
@@ -161,6 +165,7 @@ class RouterBgpMixin(UtilsMixin):
                     "redistribute_routes": ["connected"],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
+                    "evpn_multicast": vrf_evpn_l3_multicast_enabled,
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
@@ -213,6 +218,16 @@ class RouterBgpMixin(UtilsMixin):
 
                 if address_families:
                     bgp_vrf["address_families"] = address_families
+
+                for node_item in (mc_node_settings := default(get(vrf, "l3_multicast.node_settings"), get(tenant, "l3_multicast.node_settings"), [])):
+                    if self._hostname in (mc_nodes := get(node_item, "nodes", required=False, default=[])) or not mc_nodes:
+                        if not mc_nodes and len(mc_node_settings) > 1:
+                            raise AristaAvdMissingVariableError(
+                                f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
+                                " entries with 'nodes' can be defined."
+                            )
+                        bgp_vrf["evpn_multicast_address_family"] = {"ipv4": get(node_item, "evpn_peg", default={})}
+                        break
 
                 # Strip None values from vlan before returning
                 bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
