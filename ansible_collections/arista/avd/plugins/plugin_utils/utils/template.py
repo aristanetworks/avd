@@ -37,7 +37,7 @@ def template(template_file, template_vars, templar, searchpath):
     j2template = to_text(j2template)
 
     cache_dir = Path(template_file_path).parent.joinpath(".j2cache")
-    # Create cache_dir if not existing. We can asume the parent dir is there since we found the template file.
+    # Create cache_dir if not existing. We can assume the parent dir is there since we found the template file.
     cache_dir.mkdir(0o775, False, True)
 
     bytecode_cache = FileSystemBytecodeCache(cache_dir)
