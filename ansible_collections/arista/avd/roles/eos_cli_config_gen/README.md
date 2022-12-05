@@ -1030,7 +1030,7 @@ ethernet_interfaces:
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     snmp_trap_link_change: < true | false >
     flowcontrol:
-      received: < "received" | "send" | "on" >
+      received: < "desired" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
@@ -1855,6 +1855,7 @@ management_interfaces:
     # For documentation purpose only
     gateway: < IPv4 address of default gateway in management VRF >
     ipv6_gateway: < IPv6 address of default gateway in management VRF >
+    mac_address: < MAC address >
 ```
 
 #### Management HTTP
@@ -2971,6 +2972,7 @@ router_bgp:
       remote_as: < bgp_as >
       local_as: < bgp_as >
       description: "< description as string >"
+      route_reflector_client: < true | false >
       ebgp_multihop: < integer >
       shutdown: < true | false >
       # Remove private AS numbers in outbound AS path

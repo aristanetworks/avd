@@ -100,8 +100,8 @@ templates: "{{ default_templates[design.type] }}"
 avd_structured_config_file_format: "yml"
 
 # Input Variable Validation
-avd_validate_conversion_mode: "debug"
-avd_validate_validation_mode: "warning"
+avd_data_conversion_mode: "debug"
+avd_data_validation_mode: "warning"
 
 # PTP profiles
 ptp_profiles:

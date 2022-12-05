@@ -10,4 +10,4 @@ management_interfaces:
     gateway: 10.73.255.2
 
 
-avd_validate_validation_mode: "error"
+avd_data_validation_mode: "error"

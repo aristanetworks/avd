@@ -17,12 +17,14 @@ WORDLIST = {
     "dr": "DR",
     "dscp": "DSCP",
     "eos": "EOS",
+    "evpn": "EVPN",
     "fcs": "FCS",
     "http": "HTTP",
     "icmp": "ICMP",
     "id": "ID",
     "ids": "IDs",
     "igmp": "IGMP",
+    "igp": "IGP",
     "ip": "IP",
     "ipv4": "IPv4",
     "ipv6": "IPv6",
@@ -45,6 +47,7 @@ WORDLIST = {
     "nd": "ND",
     "ntp": "NTP",
     "ospf": "OSPF",
+    "pae": "PAE",
     "pbr": "PBR",
     "pim": "PIM",
     "ptp": "PTP",
@@ -83,6 +86,7 @@ WORDLIST = {
     "vrfs": "VRFs",
     "vrrp": "VRRP",
     "vxlan": "VxLAN",
+    "ztp": "ZTP",
 }
 
 
