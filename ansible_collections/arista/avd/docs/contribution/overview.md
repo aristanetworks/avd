@@ -65,6 +65,15 @@ Should this happen, and if you followed the project guidelines, have sample test
 
 ### Contributing to Arista Validated Design
 
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it.
+
+#### Branching model
+
+- The **`devel`** branch corresponds to the release actively under development.
+- The [release tags](https://github.com/aristanetworks/ansible-avd/tags) correspond to stable releases.
+- Fork repository and create a branch based on **`devel`** to set up a dev environment if you want to open a PR.
+- See the ansible-avd release for information about active branches.
+
 #### Reporting Bugs
 
 - First, ensure that you're running the [latest stable version](https://github.com/aristanetworks/ansible-avd/releases) of AVD. If you're running an older version, it's possible that the bug has already been fixed.
