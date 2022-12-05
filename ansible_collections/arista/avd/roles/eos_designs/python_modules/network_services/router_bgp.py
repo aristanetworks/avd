@@ -19,8 +19,6 @@ class RouterBgpMixin(UtilsMixin):
     Class should only be used as Mixin to a AvdStructuredConfig class
     """
 
-    _configure_bgp_mlag_peer_group: bool
-
     @cached_property
     def router_bgp(self) -> dict | None:
         """
@@ -485,7 +483,7 @@ class RouterBgpMixin(UtilsMixin):
         TODO: Partially duplicated from mlag. Should be moved to a common class
         """
         peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
-        router_bgp_cfg = {}
+        router_bgp = {}
         peer_group = {
             "type": "ipv4",
             "remote_as": self._bgp_as,
@@ -500,10 +498,10 @@ class RouterBgpMixin(UtilsMixin):
         if self._mlag_ibgp_origin_incomplete is True:
             peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
 
-        router_bgp_cfg["peer_groups"] = {peer_group_name: peer_group}
+        router_bgp["peer_groups"] = {peer_group_name: peer_group}
 
         if get(self._hostvars, "switch.underlay_ipv6") is True:
-            router_bgp_cfg["address_family_ipv6"] = {
+            router_bgp["address_family_ipv6"] = {
                 "peer_groups": {
                     peer_group_name: {
                         "activate": True,
@@ -515,9 +513,9 @@ class RouterBgpMixin(UtilsMixin):
         if self._underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
-        router_bgp_cfg["address_family_ipv4"] = {
+        router_bgp["address_family_ipv4"] = {
             "peer_groups": {
                 peer_group_name: address_family_ipv4_peer_group,
             }
         }
-        return strip_empties_from_dict(router_bgp_cfg)
+        return strip_empties_from_dict(router_bgp)
