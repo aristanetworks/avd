@@ -156,8 +156,8 @@ mac_address_table:
     #     - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
     l3_multicast:
       enabled: < true | false | default false >
-      underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask >
-      underlay_l3_multicast_group_ipv4_pool_offset: < int >
+      evpn_underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask > # Required
+      evpn_underlay_l3_multicast_group_ipv4_pool_offset: < int > # Optional
       node_settings: # Optional
         # For each group of nodes, allow configuration of EVPN PEG features | Optional
         # and allow configuration of specific RPs and associated multicast groups
@@ -166,13 +166,13 @@ mac_address_table:
         # 'nodes' key is optional - settings apply everywhere if not defined
         # These two options are mutually exclusive
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]    # Optional
-          evpn_peg:
+          evpn_peg:                                        # Optional
             transit: < true | false | default false >      # Enable EVPN PEG transit mode
           rp_addresses:                                    # RP Addresses & associated groups
-            - rps:
+            - rps:                                         # A minimum of one RP must be specified if node_settings is defined
                 - < rp_address_1 >
                 - < rp_address_2 >
-              groups:
+              groups:                                      # Optional
                 - < group_prefix_1/mask >
                 - < group_prefix_2/mask >
 
@@ -262,17 +262,22 @@ mac_address_table:
             - < hostname1 >
             - < hostname2 >
 
-        # Explicitly enable or disable evpn_l3_multicast to override setting of tenants.<tenant>.evpn_l3_multicast.enabled.
-        # Allow override of tenants.<tenant>.evpn_l3_multicast.pim_external_gateway
-        evpn_l3_multicast:
+        # Explicitly enable or disable l3_multicast to override setting of tenants.<tenant>.l3_multicast.enabled.
+        # Allow override of tenants.<tenant>.l3_multicast.node_settings
+        l3_multicast:
           enabled: < true | false >
-          pim_external_gateway:
-            - nodes: [ < node_1 >, < node_2 >, < node_N > ]
-              transit: < true | false >
-              rp_addresses:
-                - address: < rp_address_1 >
-                  groups:
+          node_settings: # Optional
+            # For each group of nodes, allow configuration of EVPN PEG features | Optional
+            - nodes: [ < node_1 >, < node_2 >, < node_N > ]    # Optional
+              evpn_peg:                                        # Optional
+                transit: < true | false | default false >      # Enable EVPN PEG transit mode
+              rp_addresses:                                    # RP Addresses & associated groups
+                - rps:                                         # A minimum of one RP must be specified if node_settings is defined
+                    - < rp_address_1 >
+                    - < rp_address_2 >
+                  groups:                                      # Optional
                     - < group_prefix_1/mask >
+                    - < group_prefix_2/mask >
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
@@ -321,9 +326,9 @@ mac_address_table:
             evpn_l2_multicast:
               enabled: < true | false >
 
-            # Explicitly enable or disable evpn_l3_multicast to override setting of tenants.<tenant>.evpn_l3_multicast.enabled and
-            # tenants.<tenant>.vrfs.<vrf>.evpn_l3_multicast.enabled
-            evpn_l3_multicast:
+            # Explicitly enable or disable l3_multicast to override setting of tenants.<tenant>.l3_multicast.enabled and
+            # tenants.<tenant>.vrfs.<vrf>.l3_multicast.enabled
+            l3_multicast:
               enabled: < true | false >
 
             # Enable IGMP Snooping
