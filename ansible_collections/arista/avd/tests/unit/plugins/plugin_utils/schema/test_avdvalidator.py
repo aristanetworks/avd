@@ -18,12 +18,12 @@ PASSWORD_VALIDATOR_SCHEMA_BGP_TYPE = {
 PASSWORD_VALIDATOR_SCHEMA_BGP_TYPE_UNKNOWN_FIELD = {
     "type": "dict",
     "keys": {
-        "password": {"type": "str", "description": "BGP password", "password_type": "bgp", "password_key_field": "neighbor_ip_address"},
+        "password": {"type": "password", "description": "BGP password", "password_type": "bgp", "password_key_field": "neighbor_ip_address"},
         "neighbor_ip": {"type": "str", "description": "The neighbor IP"},
     },
 }
 
-# TODO - fow now just verify that the correct validator is unhappy - should verify on the error messahe probably
+# TODO - fow now just verify that the correct validator is unhappy - should verify on the error message probably
 PASSWORD_VALIDATOR_PARAMS = [
     pytest.param({"password": True, "neighbor_ip": "42.42.42.42"}, PASSWORD_VALIDATOR_SCHEMA_BGP_TYPE, ["type"], id="wrong_type"),
     pytest.param({"password": "3QGcqpU2YTwKh2jVQ4Vj/A==", "neighbor_ip": "42.42.42.42"}, PASSWORD_VALIDATOR_SCHEMA_BGP_TYPE, [], id="valid_password"),

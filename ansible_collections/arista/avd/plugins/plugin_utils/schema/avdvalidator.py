@@ -10,7 +10,7 @@ import os
 
 from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_check_password
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_all
 
 try:
     import jsonschema
@@ -114,14 +114,8 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
             childschema.setdefault("valid_values", []).extend(get_all(instance, childschema["dynamic_valid_values"]))
 
         # Validation of passwords
-        if childschema.get("password_type") and childschema.get("password_key_field"):
-            try:
-                password_type = childschema.get("password_type")
-                password_key_field = childschema.get("password_key_field")
-                password_key = get_all(instance, password_key_field, required=True)[0]
-                yield from _password_validator(validator, password_type, password_key, instance, schema)
-            except AristaAvdMissingVariableError:
-                yield jsonschema.ValidationError(f"A value is required for '{password_key_field}' to validate the '{key}'.")
+        if childschema["type"] == "password":
+            yield from _password_validator(validator, parent=instance, key=key, instance=instance[key], schema=childschema)
 
         # Perform regular validation of the child schema.
         yield from validator.descend(
@@ -173,25 +167,31 @@ def _is_dict(validator, instance):
     return isinstance(instance, (dict, ChainMap))
 
 
-def _password_validator(validator, password_type: str, password_key: str, instance: dict, schema: dict):
+def _password_validator(validator, parent: dict, key: str, instance: str, schema: dict):
     """
     This function validates if password is a valid password for the given password_type
 
     The schema validates that the password_type is a valid one so no check is run on this method
     """
-    password = instance["password"]
-    if not validator.is_type(password, "password"):
+    if not validator.is_type(instance, "password"):
         return
 
-    if password_type == "bgp":
-        if password_key is None:
-            yield jsonschema.ValidationError("password_key is missing")
-        else:
-            b_key = bytes(f"{password_key}_passwd", encoding="utf-8")
-            b_password = bytes(password, encoding="utf-8")
+    password_type = schema.get("password_type")
 
-            if not cbc_check_password(b_key, b_password):
-                yield jsonschema.ValidationError(f"BGP password {password} is not valid for password_key {password_key}")
+    if password_type == "bgp":
+        password_key_field = schema.get("password_key_field")
+
+        try:
+            password_key = get(parent, password_key_field, required=True)
+        except AristaAvdMissingVariableError:
+            yield jsonschema.ValidationError(f"A value is required for '{password_key_field}' to validate the password_key '{key}'.")
+            return
+
+        b_key = bytes(f"{password_key}_passwd", encoding="UTF-8")
+        b_password = bytes(instance, encoding="UTF-8")
+
+        if not cbc_check_password(b_key, b_password):
+            yield jsonschema.ValidationError(f"Value in BGP key {key} is not valid for password_key {password_key}")
 
 
 """

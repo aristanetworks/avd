@@ -215,7 +215,7 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
 def cbc_check_password(key: bytes, data: bytes) -> bool:
     """
     This function is used to verify if an encrypted password is decryptable.
-    It does not return the password but only raise an error if the passowrd cannot be decrypted
+    It does not return the password but only raise an error if the password cannot be decrypted
     """
     try:
         # It is possible that if only one character is changed towards the end of the encrypting string
