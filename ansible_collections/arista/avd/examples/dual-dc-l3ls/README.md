@@ -2,8 +2,8 @@
 
 ## Introduction
 
-This example is meant to be used as the logical evolution in AVD to new users. This document follows the single data center structure and asumes the reader was already been able to successfully deploy the scenario described in the section [AVD example for a single data center using L3LS](../dual-dc-l3ls/README.md).
-The main goal of this section is to provide a base scenario to enable the new users to grow in number of DCs (Data Center) and configure the interconnection between the different DCs that can be created.
+This example is meant to be used as the logical evolution in AVD to new users. This document follows the single data center structure and asumes the reader was already been able to successfully deploy the scenario described in the section [AVD example for a single data center using L3LS](../single-dc-l3ls/README.md).
+The main goal of this section is to provide a base scenario to enable the new users to grow in number of DCs (Data Center) and configure the interconnection between different DCs.
 
 The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs, using the following:
 
@@ -17,7 +17,9 @@ The example includes and describes all the AVD files and their content used to b
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
 - Two (virtual) layer2-only switches often used for management connectivity to the servers.
 
-In order to follow the principle of network design using patterns, both DCs have the same layout to keep a repetitive and understandable architecture, but this is no hard requirement and one DC could use 2 spines while the other could be using 4 spines to comply with redundancy and bandwidth requirements.
+In order to follow the principle of network design using patterns, both DCs have the same layout to keep a repetitive pattern using the Leaf and Spine architecture.
+
+There is, however, no hard requirement to have the exact same number of devices. As an example, one DC could use 2 spines while the other could be using 4 spines to comply with redundancy and bandwidth requirements.
 
 
 Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the switches using eAPI.
