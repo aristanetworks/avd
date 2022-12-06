@@ -22,8 +22,8 @@ bgp_peer_groups:
   MLAG_IPv4_UNDERLAY_PEER: # Using legacy upper-case keys to test backwards-compatibility
     name: MLAG-PEERS
     password: "15AwQNBEJ1nyF/kBEtoAGw=="
-  mpls_overlay_peers:
-    name: IPVPN-GATEWAY-PEERS
+  ipvpn_gateway_peers:
+    name: IPVPN-INTERWORKING-PEERS
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # test with inline jinja2 targeting eos_designs_facts
