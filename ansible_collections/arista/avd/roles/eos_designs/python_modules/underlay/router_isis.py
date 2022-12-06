@@ -18,10 +18,7 @@ class RouterIsisMixin(UtilsMixin):
         """
         return structured config for router_isis
         """
-        if self._underlay_router is not True:
-            return None
-
-        if self._underlay_routing_protocol not in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
+        if self._underlay_isis is not True:
             return None
 
         router_isis = {
@@ -39,16 +36,18 @@ class RouterIsisMixin(UtilsMixin):
         for link in self._underlay_links:
             if link["type"] == "underlay_p2p":
                 no_passive_interfaces.append(link["interface"])
+
         if self._mlag_l3:
             mlag_l3_vlan = get(self._hostvars, "switch.mlag_peer_l3_vlan", default=get(self._hostvars, "switch.mlag_peer_vlan"))
             no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
+
         if self._overlay_vtep is True:
             no_passive_interfaces.append(self._vtep_loopback)
 
         if no_passive_interfaces:
             router_isis["no_passive_interfaces"] = no_passive_interfaces
 
-        if self._underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp"]:
+        if self._underlay_ldp is True:
             router_isis["mpls_ldp_sync_default"] = True
 
         # TI-LFA
@@ -73,7 +72,7 @@ class RouterIsisMixin(UtilsMixin):
             router_isis["advertise"] = {
                 "passive_only": get(self._hostvars, "isis_advertise_passive_only", default=False),
             }
-            # NOTE enabling IPv6 only in SR cases as per existing behavior
+            # TODO - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
             if self._underlay_ipv6 is True:
                 router_isis["address_family"].append("ipv6 unicast")

@@ -18,10 +18,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return the structured config for router_bgp
         """
-        if self._underlay_router is not True:
-            return None
-
-        if self._underlay_routing_protocol != "ebgp":
+        if self._underlay_bgp is not True:
             return None
 
         router_bgp = {}
@@ -33,6 +30,7 @@ class RouterBgpMixin(UtilsMixin):
             "send_community": "all",
             "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.structured_config"),
         }
+
         router_bgp["peer_groups"] = {self._peer_group_ipv4_underlay_peers_name: peer_group}
 
         # Address Families
@@ -78,6 +76,7 @@ class RouterBgpMixin(UtilsMixin):
 
             if neighbor_interfaces:
                 router_bgp["neighbor_interfaces"] = neighbor_interfaces
+
         # Neighbors
         else:
             neighbors = {}
@@ -104,21 +103,14 @@ class RouterBgpMixin(UtilsMixin):
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
 
     @cached_property
-    def _router_bgp_address_family_ipv4(self) -> dict | None:
-        """
-        Return structured config for router_bgp.address_family_ipv4
-        """
-        address_family_ipv4 = {"peer_groups": {}}
-        return address_family_ipv4
-
-    @cached_property
     def _router_bgp_redistribute_routes(self) -> dict | None:
         """
         Return structured config for router_bgp.redistribute_routes
         """
         if self._overlay_routing_protocol is None:
             return None
-        elif self._overlay_routing_protocol == "none":
+
+        if self._overlay_routing_protocol == "none":
             return {"connected": {}}
-        else:
-            return {"connected": {"route_map": "RM-CONN-2-BGP"}}
+
+        return {"connected": {"route_map": "RM-CONN-2-BGP"}}

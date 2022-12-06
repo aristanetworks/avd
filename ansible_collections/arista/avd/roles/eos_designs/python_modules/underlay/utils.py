@@ -58,10 +58,6 @@ class UtilsMixin:
         return get(self._hostvars, "switch.ipv6_router_id")
 
     @cached_property
-    def _ldp(self) -> bool:
-        return self._underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"]
-
-    @cached_property
     def _loopback_ipv4_offset(self) -> int:
         return int(get(self._hostvars, "switch.loopback_ipv4_offset", required=True))
 
@@ -118,6 +114,10 @@ class UtilsMixin:
         return get(self._hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
 
     @cached_property
+    def _underlay_bgp(self) -> bool:
+        return get(self._hostvars, "switch.underlay.bgp") is True
+
+    @cached_property
     def _underlay_filter_peer_as(self) -> bool:
         return get(self._hostvars, "underlay_filter_peer_as") is True
 
@@ -129,18 +129,19 @@ class UtilsMixin:
         if self._filter_peer_as is False:
             return []
 
-        filtered_asns = []
-
-        for link in self._underlay_links:
-            if link["type"] != "underlay_p2p":
-                continue
-            filtered_asns.append(link["peer_bgp_as"])
-
-        return filtered_asns
+        return [link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"]
 
     @cached_property
     def _underlay_ipv6(self) -> bool:
         return get(self._hostvars, "underlay_ipv6") is True
+
+    @cached_property
+    def _underlay_isis(self) -> bool:
+        return get(self._hostvars, "switch.underlay.isis") is True
+
+    @cached_property
+    def _underlay_ldp(self) -> bool:
+        return get(self._hostvars, "switch.underlay.ldp") is True
 
     @cached_property
     def _underlay_links(self) -> list:
@@ -151,7 +152,7 @@ class UtilsMixin:
         underlay_links.extend(self._uplinks)
 
         for peer in self._avd_peers:
-            peer_facts = get(self._hostvars, f"avd_switch_facts..{peer}..switch", separator="..")
+            peer_facts = get(self._hostvars, f"avd_switch_facts..{peer}..switch", separator="..", required=True, org_key=f"avd_switch_facts.{peer}.switch")
             for uplink in peer_facts["uplinks"]:
                 if uplink["peer"] == self._hostname:
                     link = {
@@ -187,6 +188,10 @@ class UtilsMixin:
         return get(self._hostvars, "switch.underlay_mullticast") is True
 
     @cached_property
+    def _underlay_ospf(self) -> bool:
+        return get(self._hostvars, "switch.underlay.ospf") is True
+
+    @cached_property
     def _underlay_ospf_area(self) -> str:
         return get(self._hostvars, "underlay_ospf_area", required=True)
 
@@ -217,7 +222,7 @@ class UtilsMixin:
         trunk_groups = []
 
         for peer in self._avd_peers:
-            peer_facts = get(self._hostvars, f"avd_switch_facts..{peer}..switch", separator="..")
+            peer_facts = get(self._hostvars, f"avd_switch_facts..{peer}..switch", separator="..", required=True, org_key=f"avd_switch_facts.{peer}.switch")
             for uplink in peer_facts["uplinks"]:
                 if uplink["peer"] == self._hostname:
                     if (peer_trunk_groups := get(uplink, "peer_trunk_groups")) is None:

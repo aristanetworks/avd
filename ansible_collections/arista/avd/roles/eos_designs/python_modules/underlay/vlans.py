@@ -18,17 +18,20 @@ class VlansMixin(UtilsMixin):
         """
         Return structured config for vlans
 
-        All the vlans come from the vlan_trunk
+        This function goes through all the underlay trunk groups and returns an
+        inverted dict where the key is the vlan ID and the value is the list of
+        the unique trunk groups that should be configured under this vlan.
         """
 
         vlans = {}
         # TODO - can probably do this with sets but need list in the end so not sure it is worth it
         for vlan_trunk_group in self._underlay_vlan_trunk_groups:
             for vlan in range_expand(vlan_trunk_group["vlan_list"]):
-                vlans.setdefault(int(vlan), {"trunk_groups": []})["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
+                vlans.setdefault(int(vlan), {"trunk_groups": set()})["trunk_groups"].add(vlan_trunk_group["trunk_groups"])
+                # vlans.setdefault(int(vlan), {"trunk_groups": []})["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
 
         for vlan, vlan_dict in vlans.items():
-            vlan_dict["trunk_groups"] = sorted(list(set(vlan_dict["trunk_groups"])))
+            vlan_dict["trunk_groups"] = sorted(list(vlan_dict["trunk_groups"]))
 
         if vlans:
             return vlans

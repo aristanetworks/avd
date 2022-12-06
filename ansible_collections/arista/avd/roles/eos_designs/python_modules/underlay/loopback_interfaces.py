@@ -38,7 +38,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
         if self._mpls_lsr is True:
             loopback0["mpls"] = {}
 
-            if self._ldp is True:
+            if self._underlay_ldp is True:
                 loopback0["mpls"] = {"ldp": {"interface": True}}
 
         if self._underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:

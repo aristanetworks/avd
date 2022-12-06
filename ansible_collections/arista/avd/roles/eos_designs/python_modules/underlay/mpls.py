@@ -19,7 +19,7 @@ class MplsMixin(UtilsMixin):
         if self._underlay_router is not True:
             return None
 
-        if self._ldp is True:
+        if self._underlay_ldp is True:
             return {
                 "ip": True,
                 "ldp": {

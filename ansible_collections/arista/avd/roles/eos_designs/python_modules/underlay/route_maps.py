@@ -20,10 +20,7 @@ class RouteMapsMixin(UtilsMixin):
         - Route map for connected routes redistribution in BGP
         - Route map to filter peer AS in uderlay
         """
-        if self._underlay_router is not True:
-            return None
-
-        if self._underlay_routing_protocol != "ebgp":
+        if self._underlay_bgp is not True:
             return None
 
         route_maps = {}

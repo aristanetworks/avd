@@ -18,23 +18,14 @@ class RouterOspfMixin(UtilsMixin):
         """
         return structured config for router_ospf
         """
-        if self._underlay_router is not True:
-            return None
-
-        if self._underlay_routing_protocol not in ["ospf", "ospf-ldp"]:
+        if self._underlay_ospf is not True:
             return None
 
         ospf_processes = {}
 
         process_id = self._underlay_ospf_process_id
 
-        no_passive_interfaces = []
-
-        for link in self._underlay_links:
-            if link["type"] != "underlay_p2p":
-                continue
-
-            no_passive_interfaces.append(link["interface"])
+        no_passive_interfaces = [link["interface"] for link in self._underlay_links if link["type"] == "underlay_p2p"]
 
         if self._mlag_l3 is True:
             mlag_l3_vlan = get(self._hostvars, "switch.mlag_peer_l3_vlan", default=get(self._hostvars, "switch.mlag_peer_vlan"))

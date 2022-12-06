@@ -11,8 +11,6 @@ from .route_maps import RouteMapsMixin
 from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
 from .router_ospf import RouterOspfMixin
-
-# from .struct_cfg import StructCfgMixin
 from .vlans import VlansMixin
 
 

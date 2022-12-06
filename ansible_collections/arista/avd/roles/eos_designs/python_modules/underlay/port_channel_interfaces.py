@@ -25,32 +25,34 @@ class PortChannelInterfacesMixin(UtilsMixin):
             if link["type"] != "underlay_l2":
                 continue
 
-            if (channel_group_id := get(link, "channel_group_id")) in port_channel_list:
+            if (channel_group_id := link.get("channel_group_id")) in port_channel_list:
                 continue
 
             port_channel_list.append(channel_group_id)
 
+            port_channel_name = f"Port-Channel{link['channel_group_id']}"
+
             port_channel_interface = {
                 "description": self._avd_interface_descriptions.underlay_port_channel_interfaces(
-                    link["peer"], link["peer_channel_group_id"], get(link, "channel_description")
+                    link["peer"], link["peer_channel_group_id"], link.get("channel_description")
                 ),
-                "speed": get(link, "speed"),
+                "speed": link.get("speed"),
                 "type": "switched",
                 "shutdown": False,
                 "mode": "trunk",
                 "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
-                "link_tracking_groups": get(link, "link_tracking_groups"),
+                "link_tracking_groups": link.get("link_tracking_groups"),
             }
 
-            if (trunk_groups := get(link, "trunk_groups")) is not None:
+            if (trunk_groups := link.get("trunk_groups")) is not None:
                 port_channel_interface["trunk_groups"] = trunk_groups
-            elif (vlans := get(link, "vlans")) is not None:
+            elif (vlans := link.get("vlans")) is not None:
                 port_channel_interface["vlans"] = vlans
 
             if self._mlag is True:
-                port_channel_interface["mlag"] = int(get(link, "channel_group_id"))
+                port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
-            if (short_esi := get(link, "short_esi")) is not None:
+            if (short_esi := link.get("short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
                     "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
                     "route_target": generate_route_target(short_esi),
@@ -63,7 +65,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             # Remove None values
             port_channel_interface = {key: value for key, value in port_channel_interface.items() if value is not None}
 
-            port_channel_interfaces[f"Port-Channel{link['channel_group_id']}"] = port_channel_interface
+            port_channel_interfaces[port_channel_name] = port_channel_interface
 
         if port_channel_interfaces:
             return port_channel_interfaces

@@ -27,7 +27,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
                 "description": self._avd_interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
-                "speed": get(link, "speed"),
+                "speed": link.get("speed"),
                 "shutdown": self._shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
@@ -37,24 +37,27 @@ class EthernetInterfacesMixin(UtilsMixin):
                     {
                         "mtu": self._p2p_uplinks_mtu,
                         "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
-                        "ptp": get(link, "ptp"),
-                        "mac_security": get(link, "mac_security"),
+                        "ptp": link.get("ptp"),
+                        "mac_security": link.get("mac_security"),
                         "type": "routed",
-                        "ipv6_enable": get(link, "ipv6_enable"),
-                        "link_tracking_groups": get(link, "link_tracking_groups"),
+                        "ipv6_enable": link.get("ipv6_enable"),
+                        "link_tracking_groups": link.get("link_tracking_groups"),
                     }
                 )
 
                 # MPLS
                 if self._mpls_lsr is True:
                     mpls_dict = {"ip": True}
-                    if self._ldp is True:
-                        mpls_dict["ldp"] = {"interface": True, "igp_sync": True}
+                    if self._underlay_ldp is True:
+                        mpls_dict["ldp"] = {
+                            "interface": True,
+                            "igp_sync": True,
+                        }
 
                     ethernet_interface["mpls"] = mpls_dict
 
                 # IP address
-                if get(link, "ip_address") is not None:
+                if link.get("ip_address") is not None:
                     if "unnumbered" in link["ip_address"].lower():
                         ethernet_interface["ip_address"] = link["ip_address"]
                     else:
@@ -74,21 +77,17 @@ class EthernetInterfacesMixin(UtilsMixin):
                         }
                     )
 
-                if get(link, "underlay_multicast") is True:
+                if link.get("underlay_multicast") is True:
                     ethernet_interface["pim"] = {"ipv4": {"sparse_mode": True}}
 
                 # Structured Config
-                ethernet_interface.update(get(link, "structured_config", default={}))
+                ethernet_interface["struct_cfg"] = link.get("structured_config")
 
             # L2 interface
             elif link["type"] == "underlay_l2":
-                ethernet_interface.update(
-                    {
-                        "type": "switched",
-                    }
-                )
+                ethernet_interface["type"] = "switched"
 
-                if (channel_group_id := get(link, "channel_group_id")) is not None:
+                if (channel_group_id := link.get("channel_group_id")) is not None:
                     ethernet_interface["channel_group"] = {
                         "id": int(channel_group_id),
                         "mode": "active",
@@ -99,7 +98,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         {
                             "vlans": list_compress(vlans),
                             "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
-                            "link_tracking_groups": get(link, "link_tracking_groups"),
+                            "link_tracking_groups": link.get("link_tracking_groups"),
                         }
                     )
 
