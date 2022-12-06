@@ -34,3 +34,23 @@ static_routes:
   - destination_address_prefix: 10.3.5.0/24
     vrf: APP
     interface: Null0
+
+  - vrf: customer01
+    destination_address_prefix: 10.3.6.0/24
+    interface: Ethernet40
+    gateway: 11.2.1.1
+    track_bfd: true
+    tag: 1000
+    name: Track-BFD
+    distance: 100
+    metric: 300
+
+  - vrf: customer01
+    destination_address_prefix: 10.3.7.0/24
+    interface: Ethernet41
+    # Negative test case - Tacking should not be enabled
+    track_bfd: true
+    tag: 1000
+    name: No-Track-BFD
+    distance: 100
+    metric: 300
