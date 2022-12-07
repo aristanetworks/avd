@@ -432,25 +432,22 @@ port_channel_interfaces:
     description: server-1_PortChannel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 16
     service_profile: bar
+    mode: access
+    vlans: '110'
+    mlag: 16
   Port-Channel17:
     description: Set using structured_config on server adapter port-channel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 17
     service_profile: foo
+    mode: access
+    vlans: '110'
+    mlag: 17
   Port-Channel18:
     description: server-1_PortChannel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 18
     service_profile: foo
     eos_cli: 'comment
 
@@ -459,13 +456,13 @@ port_channel_interfaces:
       EOF
 
       '
+    mode: access
+    vlans: '110'
+    mlag: 18
   Port-Channel19:
     description: server-1_PortChannel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 19
     service_profile: foo
     eos_cli: 'comment
 
@@ -474,6 +471,9 @@ port_channel_interfaces:
       EOF
 
       '
+    mode: access
+    vlans: '110'
+    mlag: 19
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-POD1-LEAF2B
@@ -580,10 +580,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 16
-      mode: active
+    vlans: '110'
     service_profile: bar
     eos_cli: 'comment
 
@@ -592,6 +589,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 16
+      mode: active
   Ethernet17:
     peer: server-1
     peer_interface: Eth3
@@ -600,10 +600,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 17
-      mode: active
+    vlans: '110'
     service_profile: foo
     eos_cli: 'comment
 
@@ -612,6 +609,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 17
+      mode: active
   Ethernet18:
     peer: server-1
     peer_interface: Eth5
@@ -620,10 +620,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 18
-      mode: active
+    vlans: '110'
     service_profile: foo
     eos_cli: 'comment
 
@@ -632,6 +629,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 18
+      mode: active
   Ethernet19:
     peer: server-1
     peer_interface: Eth7
@@ -640,10 +640,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 19
-      mode: active
+    vlans: '110'
     service_profile: foo
     eos_cli: 'comment
 
@@ -652,6 +649,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 19
+      mode: active
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
