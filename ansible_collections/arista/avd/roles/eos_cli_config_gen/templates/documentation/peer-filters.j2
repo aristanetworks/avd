@@ -3,7 +3,7 @@
 ## Peer Filters
 
 ### Peer Filters Summary
-{%     for peer_filter in peer_filters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for peer_filter in peer_filters | arista.avd.natural_sort('name') %}
 
 #### {{ peer_filter.name }}
 

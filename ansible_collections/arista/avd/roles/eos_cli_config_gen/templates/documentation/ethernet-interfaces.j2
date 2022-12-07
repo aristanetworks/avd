@@ -231,7 +231,7 @@
 {%     endfor %}
 {%     set port_channel_interface_ipv4 = namespace() %}
 {%     set port_channel_interface_ipv4.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.type is arista.avd.defined
               and port_channel_interface.type in ['routed', 'l3dot1q']
               and port_channel_interface.ip_address is arista.avd.defined %}
@@ -295,7 +295,7 @@
 {%     endfor %}
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.type is arista.avd.defined
               and port_channel_interface.type in ['routed', 'l3dot1q']
               and (port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true)) %}
@@ -364,7 +364,7 @@
 {%         endif %}
 {%     endfor %}
 {%     set port_channel_interfaces_isis = [] %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.isis_enable is arista.avd.defined or
                port_channel_interface.isis_metric is arista.avd.defined or
                port_channel_interface.isis_circuit_type is arista.avd.defined or
