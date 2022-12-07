@@ -114,7 +114,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                             vrf_l3_multicast_enabled = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
 
-                            if pim_config := get(l3_interface, "pim.enabled") and vrf_l3_multicast_enabled:
+                            if (pim_config := get(l3_interface, "pim.enabled")) and vrf_l3_multicast_enabled:
                                 interface["pim"] = {"ipv4": {"sparse_mode": pim_config}}
 
                             # Strip None values from vlan before adding to list

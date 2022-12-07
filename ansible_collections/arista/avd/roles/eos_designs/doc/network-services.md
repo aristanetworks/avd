@@ -148,8 +148,8 @@ mac_address_table:
     # - Configures binding between VXLAN, VLAN, and multicast group ipv4 address using the following formula:
     #   < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
     # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
-    # - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) must be configured to source IGMP traffic.
-    # - Enables "evpn multicast" on the router bgp VRF.
+    # - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.
+    # - Enables `evpn multicast` on the router bgp VRF.
     # - When enabled on an SVI:
     #     - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
     #     - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
@@ -232,7 +232,7 @@ mac_address_table:
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
         vtep_diagnostic:
 
-          # Loopback interface number | Required (when vtep_diagnostics defined)
+          # Loopback interface number | Required (when vtep_diagnostic defined)
           loopback: < 2-2100 >
 
           # Loopback ip range, a unique ip is derived from this ranged and assigned
