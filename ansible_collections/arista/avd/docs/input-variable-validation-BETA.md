@@ -253,7 +253,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `password`, auto-conversion is supported from `int` |
 | <samp>max_length</samp> | Integer | | | | Maximum length |
 | <samp>min_length</samp> | Integer | | | | Minimum length |
-| <samp>password_type</samp> | String True | | | Enum ['bgp'] | The type of the password, currently only 'bgp' is supported |
+| <samp>password_type</samp> | String | True | | | Enum ['bgp'] | The type of the password, currently only 'bgp' is supported |
 | <samp>password_key_field</samp> | String | True | | | The field in the dict to use as key for the password.<br>It will only worked with keys in the same dictionary.|
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
