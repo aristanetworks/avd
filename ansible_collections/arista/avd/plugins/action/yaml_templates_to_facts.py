@@ -17,7 +17,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, load_python_class
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -77,9 +77,8 @@ class ActionModule(ActionBase):
                 except Exception as e:
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
-        # Create a new Ansible "templar" instance to be passed along to our simplified "templater"
-        searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
-        templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
+        # Get updated templar instance to be passed along to our simplified "templater"
+        self.templar = get_templar(self, task_vars)
 
         # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
         # We use ChainMap to avoid copying large amounts of data around, mapping in
@@ -116,7 +115,7 @@ class ActionModule(ActionBase):
                     debug_item["timestamps"]["run_template"] = datetime.now()
 
                 # Here we parse the template, expecting the result to be a YAML formatted string
-                template_result = templater(template, template_vars, templar, searchpath)
+                template_result = templater(template, template_vars, self.templar)
 
                 if debug:
                     debug_item["timestamps"]["load_yaml"] = datetime.now()
@@ -139,7 +138,7 @@ class ActionModule(ActionBase):
                 except AristaAvdMissingVariableError as exc:
                     raise AnsibleActionFail(f"Missing module_path or class_name in {template_item}") from exc
 
-                cls_instance = cls(hostvars=template_vars, templar=templar)
+                cls_instance = cls(hostvars=template_vars, templar=self.templar)
 
                 if debug:
                     debug_item["timestamps"]["render_python_class"] = datetime.now()
@@ -151,6 +150,7 @@ class ActionModule(ActionBase):
                     template_result_data = cls_instance.render()
                 except Exception as error:
                     raise AnsibleActionFail(error) from error
+
             else:
                 raise AnsibleActionFail("Invalid template data")
 
