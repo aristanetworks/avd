@@ -1,0 +1,4 @@
+{# eos - IP ICMP Redirect #}
+{% if ip_icmp_redirect is arista.avd.defined(false) %}
+no ip icmp redirect
+{% endif %}
