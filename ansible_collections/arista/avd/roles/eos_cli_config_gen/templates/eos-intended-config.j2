@@ -168,8 +168,16 @@
 {% include 'eos/ip-hardware.j2' %}
 {# IP Routing VRFs #}
 {% include 'eos/ip-routing-vrfs.j2' %}
-{# IPv6 Routing #}
+{# IPv6 Unicast Routing #}
 {% include 'eos/ipv6-unicast-routing.j2' %}
+{# eos - IP Routing IPv6 Interfaces #}
+{% include 'eos/ip-routing-ipv6-interfaces.j2' %}
+{# eos - IPv6 Unicast Routing VRFs #}
+{% include 'eos/ipv6-unicast-routing-vrfs.j2' %}
+{# eos - IPv6 ICMP Redirect #}
+{% include 'eos/ipv6-icmp-redirect.j2' %}
+{# eos - IPv6 Hardware #}
+{% include 'eos/ipv6-hardware.j2' %}
 {# Monitor Sessions #}
 {% include 'eos/monitor-sessions.j2' %}
 {# qos #}
