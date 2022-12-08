@@ -22,7 +22,7 @@ Arista best practices are used, simplifying configuration of several global and 
   - All interfaces between leaf and spine switches participate in the Best Master Clock Algorithm (BMCA).
   - All interfaces used for endpoints with ptp specifically enabled use `ptp role master`.
   - PTP priority 1 and priority 2 are automatically set based on the node_type and switch_id.
-  - PTP Clock Identity is automatically set based on a prefix (00:00:00 by default) + PTP priority 1 and priority 2.
+  - PTP Clock Identity is automatically set based on a prefix (00:1C:73 by default) + PTP priority 1 and priority 2.
 
 ## Enabling PTP
 
@@ -161,12 +161,12 @@ By default PTP clock identity is generated and set automatically.
 
 ```yml
 auto_clock_identity = < true | false | default -> true >
-clock_identity = < (clock_identity_prefix = 00:00:00 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX) >
+clock_identity = < (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX) >
 ```
 
 #### PTP Clock Identity prefix
 
-By default the 3-byte prefix is `00:00:00`, but this can be overridden if `auto_clock_identity` is set to `true` (which is the default).
+By default the 3-byte prefix is `00:1C:73`, but this can be overridden if `auto_clock_identity` is set to `true` (which is the default).
 > **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
 For example for all spine nodes:
