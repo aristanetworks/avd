@@ -31,7 +31,7 @@ By setting the `design.type` to `mpls`, the default node-types and templates des
 ```yaml
 # AVD Design | Optional
 design:
-  type: < "l3ls-evpn" | "mpls" | default -> "l3ls-evpn" >
+  type: < "l3ls-evpn" | "mpls" | l2ls | default -> "l3ls-evpn" >
 ```
 
 ## Node Type Variables

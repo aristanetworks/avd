@@ -55,6 +55,7 @@ To understand the interaction between `eos_designs` input variables and `eos_cli
 The following reference design types are included in the roles default variables:
 
 - L3LS EVPN: Layer 3 Leaf Spine with VXLAN EVPN
+- L2LS: Layer 2 Leaf Spine
 - MPLS (BETA): MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 ### Layer 3 Leaf Spine with VXLAN EVPN
@@ -89,6 +90,16 @@ Across all designs, the following functionality is provided:
 <div style="text-align:center">
   <img src="../../media/dissag-topology.gif" />
 </div>
+
+### Layer 2 Leaf Spine
+
+| Spine Uplinks | Leaf Uplinks | Topology |
+| -------- | ------- | -------- |
+| L2 | L2 | Arbitrary or leaf-spine |
+| L3 + Static routes | L2 | Arbitrary or leaf-spine |
+| L3 + eBGP | L2 | Arbitrary or leaf-spine |
+| L3 + OSPF | L2 | Arbitrary or leaf-spine |
+| L3 + ISIS | L2 | Arbitrary or leaf-spine |
 
 ### (BETA) MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 

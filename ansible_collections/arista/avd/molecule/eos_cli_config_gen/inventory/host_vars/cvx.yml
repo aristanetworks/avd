@@ -1,6 +1,9 @@
 ### CVX ###
 cvx:
   shutdown: false
+  peer_hosts:
+  - 1.1.1.1
+  - 2.2.2.2
   services:
     mcs:
       redis:
