@@ -463,7 +463,7 @@ class EosDesignsFacts(AvdFacts):
             default_priority2 = self.id % 256
             priority2 = get(self._switch_data_combined, "ptp.priority2", default=default_priority2)
             if auto_clock_identity is True:
-                clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:00:00")
+                clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
                 default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
 
             ptp["device_config"] = {
