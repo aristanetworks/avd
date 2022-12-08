@@ -120,7 +120,6 @@ nav:
       - Example for Campus Fabric: examples/campus-fabric/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
-      - Requirements: docs/installation/requirements.md
   - How-To:
       - Build Your First AVD Project: docs/how-to/first-project.md
       - Build Your First AVD & CVP Project: docs/how-to/first-cvp-avd-project.md

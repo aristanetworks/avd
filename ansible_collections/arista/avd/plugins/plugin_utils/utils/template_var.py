@@ -1,7 +1,7 @@
 from .template import template
 
 
-def template_var(template_file, template_vars, templar, searchpath):
+def template_var(template_file, template_vars, templar):
     """
     Wrap "template" for single values like IP addresses
 
@@ -23,4 +23,4 @@ def template_var(template_file, template_vars, templar, searchpath):
     str
         The rendered template
     """
-    return str(template(template_file, template_vars, templar, searchpath)).strip()
+    return str(template(template_file, template_vars, templar)).strip()
