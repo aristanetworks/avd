@@ -287,6 +287,11 @@ static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.3.11.4
   vrf: Tenant_D_OP_Zone
+- destination_address_prefix: 1.1.1.0/24
+  gateway: 10.3.11.4
+  track_bfd: true
+  name: Track-bfd-network-services
+  vrf: Tenant_D_OP_Zone
 - destination_address_prefix: 10.3.11.0/24
   vrf: Tenant_D_OP_Zone
   name: VARP
@@ -1045,6 +1050,11 @@ ipv6_static_routes:
 - destination_address_prefix: ::/0
   gateway: 2001:db8:311::4
   name: IPv6-test-2
+  vrf: Tenant_D_OP_Zone
+- destination_address_prefix: 2001:dba::/32
+  gateway: 2001:db8:310::1
+  name: Track-bfd-network-services
+  track_bfd: true
   vrf: Tenant_D_OP_Zone
 router_ospf:
   process_ids:

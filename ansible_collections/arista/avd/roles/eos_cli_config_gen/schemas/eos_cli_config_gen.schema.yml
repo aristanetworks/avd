@@ -2816,6 +2816,9 @@ keys:
         gateway:
           type: str
           description: IPv6 Address
+        track_bfd:
+          type: bool
+          description: Track next-hop using BFD
         distance:
           type: int
           convert_types:
@@ -8734,6 +8737,9 @@ keys:
         gateway:
           type: str
           description: IPv4 Address
+        track_bfd:
+          type: bool
+          description: Track next-hop using BFD
         distance:
           type: int
           convert_types:

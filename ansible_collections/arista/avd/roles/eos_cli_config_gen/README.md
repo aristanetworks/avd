@@ -3617,6 +3617,7 @@ static_routes:
     destination_address_prefix: < IPv4_network/Mask >
     interface: < interface >
     gateway: < IPv4_address >
+    track_bfd: < boolean >
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
@@ -3633,6 +3634,7 @@ ipv6_static_routes:
     destination_address_prefix: < IPv6_network/Mask >
     interface: < interface >
     gateway: < IPv6_address >
+    track_bfd: < boolean >
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
