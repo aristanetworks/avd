@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -37,13 +37,23 @@ class EthernetInterfacesMixin(UtilsMixin):
                     {
                         "mtu": self._p2p_uplinks_mtu,
                         "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
-                        "ptp": link.get("ptp"),
                         "mac_security": link.get("mac_security"),
                         "type": "routed",
                         "ipv6_enable": link.get("ipv6_enable"),
                         "link_tracking_groups": link.get("link_tracking_groups"),
                     }
                 )
+
+                # PTP
+                if get(link, "ptp.enable") is True:
+                    ptp_config = {"enable": True}
+                    ptp_profile = get(self._hostvars, "switch.ptp.profile")
+                    if ptp_profile is not None:
+                        ptp_profiles = get(self._hostvars, "ptp_profiles", default={})
+                        ptp_config.update(get_item(ptp_profiles, "profile", ptp_profile, default={}))
+                        ptp_config.pop("profile")
+
+                    ethernet_interface["ptp"] = ptp_config
 
                 # MPLS
                 if self._underlay_mpls is True:
