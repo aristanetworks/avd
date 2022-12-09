@@ -440,7 +440,6 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
-      virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
         130:
           vni: 10130
