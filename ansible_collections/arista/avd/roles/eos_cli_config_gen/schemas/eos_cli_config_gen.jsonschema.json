@@ -3867,7 +3867,7 @@
           },
           "track_bfd": {
             "type": "boolean",
-            "description": "Track this route using BFD",
+            "description": "Track next-hop using BFD",
             "title": "Track BFD"
           },
           "distance": {
@@ -12902,7 +12902,7 @@
           },
           "track_bfd": {
             "type": "boolean",
-            "description": "Track this route using BFD",
+            "description": "Track next-hop using BFD",
             "title": "Track BFD"
           },
           "distance": {
