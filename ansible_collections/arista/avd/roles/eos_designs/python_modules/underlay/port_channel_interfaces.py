@@ -60,7 +60,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
 
             # Structured Config
-            port_channel_interface.update(get(link, "structured_config", default={}))
+            port_channel_interface["struct_cfg"] = link.get("structured_config")
 
             # Remove None values
             port_channel_interface = {key: value for key, value in port_channel_interface.items() if value is not None}

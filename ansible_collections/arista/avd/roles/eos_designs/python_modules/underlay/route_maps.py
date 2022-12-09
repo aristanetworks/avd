@@ -28,7 +28,10 @@ class RouteMapsMixin(UtilsMixin):
         if self._overlay_routing_protocol != "none":
             # RM-CONN-2-BGP
             sequence_numbers = {}
-            sequence_numbers[10] = {"type": "permit", "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"]}
+            sequence_numbers[10] = {
+                "type": "permit",
+                "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
+            }
 
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 

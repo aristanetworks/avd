@@ -185,7 +185,7 @@ class UtilsMixin:
 
     @cached_property
     def _underlay_multicast(self) -> bool:
-        return get(self._hostvars, "switch.underlay_mullticast") is True
+        return get(self._hostvars, "switch.underlay_multicast") is True
 
     @cached_property
     def _underlay_ospf(self) -> bool:

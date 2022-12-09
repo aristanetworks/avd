@@ -171,6 +171,7 @@ router_ospf:
       no_passive_interfaces:
       - Ethernet1
       - Vlan4094
+      bfd_enable: false
 router_bfd:
   multihop:
     interval: 1200

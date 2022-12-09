@@ -139,6 +139,7 @@ router_ospf:
       no_passive_interfaces:
       - Vlan4094
       - Ethernet5
+      bfd_enable: false
       redistribute:
         connected: {}
 ip_igmp_snooping:

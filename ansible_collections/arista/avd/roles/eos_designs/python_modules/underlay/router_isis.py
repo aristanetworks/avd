@@ -32,10 +32,7 @@ class RouterIsisMixin(UtilsMixin):
         }
 
         # no passive interfaces
-        no_passive_interfaces = []
-        for link in self._underlay_links:
-            if link["type"] == "underlay_p2p":
-                no_passive_interfaces.append(link["interface"])
+        no_passive_interfaces = [link["interface"] for link in self._underlay_links if link["type"] == "underlay_p2p"]
 
         if self._mlag_l3:
             mlag_l3_vlan = get(self._hostvars, "switch.mlag_peer_l3_vlan", default=get(self._hostvars, "switch.mlag_peer_vlan"))

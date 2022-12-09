@@ -38,8 +38,8 @@ class RouterOspfMixin(UtilsMixin):
             "no_passive_interfaces": no_passive_interfaces,
         }
 
-        if get(self._hostvars, "underlay_ospf_bfd_enable") is True:
-            process["bfd_enable"] = True
+        # if get(self._hostvars, "underlay_ospf_bfd_enable") is True:
+        process["bfd_enable"] = get(self._hostvars, "underlay_ospf_bfd_enable")
 
         if self._overlay_routing_protocol == "none":
             process["redistribute"] = {

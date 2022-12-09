@@ -42,5 +42,4 @@ class AvdStructuredConfig(
 
     def __init__(self, hostvars, templar):
         super().__init__(hostvars, templar)
-        self._avd_ip_addressing = load_ip_addressing(hostvars, templar)
         self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar)
