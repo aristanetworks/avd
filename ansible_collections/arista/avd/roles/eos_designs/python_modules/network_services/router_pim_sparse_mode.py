@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from functools import cached_property
 
-import q
-
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
@@ -38,7 +36,6 @@ class RouterPimSparseModeMixin(UtilsMixin):
                         )
 
                     if self._hostname in mc_nodes or "nodes" not in node_item:
-                        q(self._hostname)
                         for rp_item in get(node_item, "rp_addresses"):
                             for rp_address in get(
                                 rp_item,
