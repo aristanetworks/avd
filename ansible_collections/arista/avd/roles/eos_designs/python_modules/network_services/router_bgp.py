@@ -217,7 +217,7 @@ class RouterBgpMixin(UtilsMixin):
 
                 for node_item in (mc_node_settings := get(vrf, "_l3_multicast_node_settings")):
                     if not (mc_nodes := get(node_item, "nodes", default=[])) and len(mc_node_settings) > 1:
-                        raise AristaAvdMissingVariableError(
+                        raise AristaAvdError(
                             f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
                             " entries with 'nodes' can be defined."
                         )
