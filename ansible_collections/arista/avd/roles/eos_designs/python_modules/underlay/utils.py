@@ -78,10 +78,6 @@ class UtilsMixin:
         return get(self._hostvars, "switch.mlag_l3") is True
 
     @cached_property
-    def _mpls_lsr(self) -> bool:
-        return get(self._hostvars, "switch.mpls_lsr") is True
-
-    @cached_property
     def _network_services_l3(self) -> bool:
         return get(self._hostvars, "switch.network_services_l3", required=True) is True
 

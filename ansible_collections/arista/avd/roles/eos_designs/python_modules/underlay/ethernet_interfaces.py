@@ -46,7 +46,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 )
 
                 # MPLS
-                if self._mpls_lsr is True:
+                if self._underlay_mpls is True:
                     mpls_dict = {"ip": True}
                     if self._underlay_ldp is True:
                         mpls_dict["ldp"] = {

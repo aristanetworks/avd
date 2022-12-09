@@ -36,7 +36,10 @@ class RouteMapsMixin(UtilsMixin):
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
             if self._underlay_ipv6 is True:
-                sequence_numbers[30] = {"type": "permit", "match": ["ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6"]}
+                sequence_numbers[30] = {
+                    "type": "permit",
+                    "match": ["ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6"],
+                }
 
             route_maps["RM-CONN-2-BGP"] = {"sequence_numbers": sequence_numbers}
 
