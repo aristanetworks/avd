@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from functools import cached_property
 
+import q
+
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
 
 
@@ -28,14 +30,15 @@ class RouterPimSparseModeMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 rps = []
-                for node_item in (mc_node_settings := default(get(vrf, "l3_multicast.node_settings"), get(tenant, "l3_multicast.node_settings"), [])):
-                    if self._hostname in (mc_nodes := get(node_item, "nodes", required=False, default=[])) or not mc_nodes:
-                        if not mc_nodes and len(mc_node_settings) > 1:
-                            raise AristaAvdMissingVariableError(
-                                f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
-                                " entries with 'nodes' can be defined."
-                            )
+                for node_item in (mc_node_settings := get(vrf, "_l3_multicast_node_settings")):
+                    if not (mc_nodes := get(node_item, "nodes", default=[])) and len(mc_node_settings) > 1:
+                        raise AristaAvdMissingVariableError(
+                            f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
+                            " entries with 'nodes' can be defined."
+                        )
 
+                    if self._hostname in mc_nodes or "nodes" not in node_item:
+                        q(self._hostname)
                         for rp_item in get(node_item, "rp_addresses"):
                             for rp_address in get(
                                 rp_item,
@@ -43,7 +46,7 @@ class RouterPimSparseModeMixin(UtilsMixin):
                                 required=True,
                                 org_key=f"l3_multicast.node_settings.rp_addresses.rps under VRF '{vrf['name']}' in tenant '{tenant['name']}'",
                             ):
-                                if rp_groups := get(rp_item, "groups", required=False, default=[]):
+                                if rp_groups := get(rp_item, "groups", default=[]):
                                     rps.append({"address": rp_address, "groups": rp_groups})
                                 else:
                                     rps.append({"address": rp_address})

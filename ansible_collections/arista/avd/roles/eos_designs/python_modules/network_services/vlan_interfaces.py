@@ -67,21 +67,19 @@ class VlanInterfacesMixin(UtilsMixin):
             vlan_interface_config["ip_address_virtual"] = vlan_virtual_address
             vlan_interface_config["ip_address_virtual_secondaries"] = svi.get("ip_address_virtual_secondaries")
 
-        vrf_diagnostic_loopback = get(vrf, "vtep_diagnostic.loopback")
-
         pim_config_ipv4 = {}
         if default(get(svi, "l3_multicast.enabled"), get(vrf, "_l3_multicast_enabled")):
-            if vlan_virtual_address and not vrf_diagnostic_loopback:
-                raise AristaAvdMissingVariableError(
-                    f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{tenant['name']}'."
-                    "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
-                )
             if self._mlag:
                 pim_config_ipv4["sparse_mode"] = True
             else:
                 vlan_interface_config["ip_igmp"] = True
 
             if vlan_virtual_address:
+                if (vrf_diagnostic_loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
+                    raise AristaAvdMissingVariableError(
+                        f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{tenant['name']}'."
+                        "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
+                    )
                 pim_config_ipv4["local_interface"] = f"Loopback{vrf_diagnostic_loopback}"
 
             if pim_config_ipv4:

@@ -215,7 +215,7 @@ class RouterBgpMixin(UtilsMixin):
                 if address_families:
                     bgp_vrf["address_families"] = address_families
 
-                for node_item in (mc_node_settings := default(get(vrf, "l3_multicast.node_settings"), get(tenant, "l3_multicast.node_settings"), [])):
+                for node_item in (mc_node_settings := get(vrf, "_l3_multicast_node_settings")):
                     if not (mc_nodes := get(node_item, "nodes", default=[])) and len(mc_node_settings) > 1:
                         raise AristaAvdMissingVariableError(
                             f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
