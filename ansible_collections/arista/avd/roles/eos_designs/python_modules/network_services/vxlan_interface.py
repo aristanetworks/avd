@@ -41,7 +41,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         else:
             vxlan["source_interface"] = vtep_loopback
 
-        if self._mlag_l3 and self._network_services_l3:
+        if self._mlag_l3 and self._network_services_l3 and self._overlay_evpn:
             vxlan["virtual_router_encapsulation_mac_address"] = "mlag-system-id"
 
         if self._overlay_routing_protocol == "her" and self._overlay_her_flood_list_per_vni is False:
