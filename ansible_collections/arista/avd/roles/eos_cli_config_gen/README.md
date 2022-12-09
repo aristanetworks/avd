@@ -2889,6 +2889,8 @@ router_bgp:
     enabled: < true | false >
     restart_time: < 1-3600 >
     stalepath_time: < 1-3600 >
+  # graceful-restart-help long-lived and restart-time are mutually exclusive in CLI
+  # restart-time will take precedence if both are configured.
   graceful_restart_helper:
     enabled: < true | false >
     restart_time: < 1-100000000>

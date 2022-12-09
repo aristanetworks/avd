@@ -5691,11 +5691,12 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 100000000,
-              "description": "Number of seconds",
+              "description": "Number of seconds\ngraceful-restart-help long-lived and restart-time are mutually exclusive in CLI.\nrestart-time will take precedence if both are configured.\n",
               "title": "Restart Time"
             },
             "long_lived": {
               "type": "boolean",
+              "description": "graceful-restart-help long-lived and restart-time are mutually exclusive in CLI.\nrestart-time will take precedence if both are configured.\n",
               "title": "Long Lived"
             }
           },

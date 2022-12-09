@@ -4035,9 +4035,22 @@ keys:
             - str
             min: 1
             max: 100000000
-            description: Number of seconds
+            description: 'Number of seconds
+
+              graceful-restart-help long-lived and restart-time are mutually exclusive
+              in CLI.
+
+              restart-time will take precedence if both are configured.
+
+              '
           long_lived:
             type: bool
+            description: 'graceful-restart-help long-lived and restart-time are mutually
+              exclusive in CLI.
+
+              restart-time will take precedence if both are configured.
+
+              '
       maximum_paths:
         type: dict
         keys:
