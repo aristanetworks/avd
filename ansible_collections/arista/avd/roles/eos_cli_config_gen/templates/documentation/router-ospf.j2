@@ -1,3 +1,4 @@
+{# doc - router ospf #}
 {% if router_ospf.process_ids is arista.avd.defined %}
 
 ## Router OSPF
@@ -259,22 +260,22 @@
 {%     set port_channel_interface_ospf = namespace(configured=false) %}
 {%     set vlan_interface_ospf = namespace(configured=false) %}
 {%     set loopback_interface_ospf = namespace(configured=false) %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.ospf_area is arista.avd.defined %}
 {%             set vlan_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%         if ethernet_interface.ospf_area is arista.avd.defined %}
 {%             set ethernet_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.ospf_area is arista.avd.defined %}
 {%             set port_channel_interface_ospf.configured = true %}
 {%         endif %}
 {%     endfor %}
-{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
 {%         if loopback_interface.ospf_area is arista.avd.defined %}
 {%             set loopback_interface_ospf.configured = true %}
 {%         endif %}
@@ -286,7 +287,7 @@
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
 {%         if ethernet_interface_ospf.configured %}
-{%             for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%                 if ethernet_interface.ospf_area is arista.avd.defined %}
 {%                     set ospf_area = ethernet_interface.ospf_area %}
 {%                     set ospf_cost = ethernet_interface.ospf_cost | arista.avd.default('-') %}
@@ -296,7 +297,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if port_channel_interface_ospf.configured %}
-{%             for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%                 if port_channel_interface.ospf_area is arista.avd.defined %}
 {%                     set ospf_area = port_channel_interface.ospf_area %}
 {%                     set ospf_cost = port_channel_interface.ospf_cost | arista.avd.default('-') %}
@@ -306,7 +307,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interface_ospf.configured %}
-{%             for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%                 if vlan_interface.ospf_area is arista.avd.defined %}
 {%                     set ospf_area = vlan_interface.ospf_area %}
 {%                     set ospf_cost = vlan_interface.ospf_cost | arista.avd.default('-') %}
@@ -316,7 +317,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if loopback_interface_ospf.configured %}
-{%             for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
 {%                 if loopback_interface.ospf_area is arista.avd.defined %}
 {%                     set ospf_area = loopback_interface.ospf_area %}
 {%                     set ospf_cost = loopback_interface.ospf_cost | arista.avd.default('-') %}

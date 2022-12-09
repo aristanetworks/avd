@@ -1,4 +1,4 @@
-{# eos - Tunnel Interfaces #}
+{# eos - tunnel interfaces #}
 {% for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ tunnel_interface.name }}

@@ -1,5 +1,5 @@
-{# eos - prefix-lists #}
-{% for prefix_list in prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - prefix lists #}
+{% for prefix_list in prefix_lists | arista.avd.natural_sort('name') %}
 !
 ip prefix-list {{ prefix_list.name }}
 {%     for sequence in prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}

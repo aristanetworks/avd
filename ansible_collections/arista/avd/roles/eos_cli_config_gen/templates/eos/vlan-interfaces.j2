@@ -1,4 +1,4 @@
-{# eos - VLAN Interfaces #}
+{# eos - vlan interfaces #}
 {% for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ vlan_interface.name }}

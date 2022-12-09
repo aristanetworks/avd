@@ -1,10 +1,11 @@
+{# doc - prefix lists #}
 {% if prefix_lists is arista.avd.defined %}
 
 ## Prefix-lists
 
 ### Prefix-lists Summary
 
-{%     for prefix_list in prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for prefix_list in prefix_lists | arista.avd.natural_sort('name') %}
 #### {{ prefix_list.name }}
 
 | Sequence | Action |

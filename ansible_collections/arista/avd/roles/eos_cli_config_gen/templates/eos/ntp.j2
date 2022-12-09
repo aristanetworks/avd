@@ -1,4 +1,4 @@
-{# eos - NTP #}
+{# eos - ntp #}
 {% if ntp is arista.avd.defined %}
 !
 {%     for authentication_key in ntp.authentication_keys | arista.avd.natural_sort('id') %}

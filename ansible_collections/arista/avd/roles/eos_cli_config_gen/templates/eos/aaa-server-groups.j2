@@ -1,4 +1,4 @@
-{# eos - AAA Group Servers#}
+{# eos - aaa server groups #}
 {% if aaa_server_groups is arista.avd.defined %}
 {%     for aaa_server_group in aaa_server_groups %}
 {%         if aaa_server_group.type is arista.avd.defined and aaa_server_group.name is arista.avd.defined %}

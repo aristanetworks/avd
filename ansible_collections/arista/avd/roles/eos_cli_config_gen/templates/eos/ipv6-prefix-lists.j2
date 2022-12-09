@@ -1,5 +1,5 @@
-{# eos - ipv6-prefix-lists #}
-{% for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - ipv6 prefix lists #}
+{% for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort('name') %}
 !
 ipv6 prefix-list {{ ipv6_prefix_list.name }}
 {%     for sequence in ipv6_prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
