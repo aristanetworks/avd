@@ -1,6 +1,5 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import load_interfacedescriptions
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
