@@ -1,4 +1,4 @@
-{# eos - IP Routing VRFs #}
+{# eos - ip routing vrfs #}
 {% for vrf in vrfs | arista.avd.natural_sort('name') %}
 {%     if vrf.ip_routing is arista.avd.defined(true) and vrf.name != 'default' %}
 ip routing vrf {{ vrf.name }}

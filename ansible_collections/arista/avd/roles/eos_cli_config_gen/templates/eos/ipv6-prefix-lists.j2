@@ -1,4 +1,4 @@
-{# eos - ipv6-prefix-lists #}
+{# eos - ipv6 prefix lists #}
 {% for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort('name') %}
 !
 ipv6 prefix-list {{ ipv6_prefix_list.name }}

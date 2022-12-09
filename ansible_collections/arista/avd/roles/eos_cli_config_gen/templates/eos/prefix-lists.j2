@@ -1,4 +1,4 @@
-{# eos - prefix-lists #}
+{# eos - prefix lists #}
 {% for prefix_list in prefix_lists | arista.avd.natural_sort('name') %}
 !
 ip prefix-list {{ prefix_list.name }}

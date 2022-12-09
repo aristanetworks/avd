@@ -1,4 +1,4 @@
-{# eos - match-lists #}
+{# eos - match list input #}
 {% if match_list_input is arista.avd.defined %}
 !
 {%     for match_list in match_list_input.string | arista.avd.natural_sort('name') %}

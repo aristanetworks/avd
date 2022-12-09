@@ -1,4 +1,4 @@
-{# Interfaces #}
+{# doc - pim sparse mode #}
 {% set pim_interfaces = [] %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}

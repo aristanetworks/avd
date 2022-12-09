@@ -1,4 +1,4 @@
-{# eos - ip-extcommunity-lists #}
+{# eos - ip extcommunity lists #}
 {% for ip_extcommunity_list in ip_extcommunity_lists | arista.avd.natural_sort('name') %}
 !
 {%     for entry in ip_extcommunity_list.entries | arista.avd.default([]) %}

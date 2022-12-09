@@ -1,4 +1,4 @@
-{# eos - peer-filters #}
+{# eos - peer filters #}
 {% for peer_filter in peer_filters | arista.avd.natural_sort('name') %}
 !
 peer-filter {{ peer_filter.name }}

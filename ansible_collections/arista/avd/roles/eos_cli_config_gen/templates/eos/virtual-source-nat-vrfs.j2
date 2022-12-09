@@ -1,4 +1,4 @@
-{# eos - virtual source-nat - introduced in 4.21 #}
+{# eos - virtual source nat vrfs #}
 {% if virtual_source_nat_vrfs is arista.avd.defined %}
 !
 {%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort('name') %}

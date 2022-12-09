@@ -1,4 +1,4 @@
-{# eos - Event handlers #}
+{# eos - event handlers #}
 {% if event_handlers is arista.avd.defined %}
 {%     for handler in event_handlers | arista.avd.natural_sort('name') %}
 !

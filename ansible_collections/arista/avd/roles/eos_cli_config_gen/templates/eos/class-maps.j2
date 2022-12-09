@@ -1,4 +1,4 @@
-{# QOS class-map #}
+{# eos - class maps #}
 {% for class_map in class_maps.qos | arista.avd.natural_sort('name') %}
 !
 class-map type qos match-any {{ class_map.name }}
