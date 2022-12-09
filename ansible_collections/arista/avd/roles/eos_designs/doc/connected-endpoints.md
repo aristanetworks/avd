@@ -109,7 +109,12 @@ Both data models support variable inheritance from profiles defined under [`port
 
         # PTP Enable | Optional
         ptp:
-          enable: < true | false >
+          enable: < true | false | default -> false | Required >
+          # These are the default settings:
+          # - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
+          # - `ptp role master` is set to ensure control over the PTP topology.
+          endpoint_role: < follower | bmca | default -> follower >
+          profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 >
 
         # Configure the downstream interfaces of a respective Link Tracking Group | Optional
         # If port_channel is defined in an adapter then port-channel interface is configured to be the downstream

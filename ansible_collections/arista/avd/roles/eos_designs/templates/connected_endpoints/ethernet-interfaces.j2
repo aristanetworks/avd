@@ -142,6 +142,16 @@ ethernet_interfaces:
 {%                     if adapter_settings.ptp.enable is arista.avd.defined %}
       enable: {{ adapter_settings.ptp.enable }}
 {%                     endif %}
+{%                     if adapter_settings.ptp.enable is arista.avd.defined(true) %}
+{%                         set ptp_profile = adapter_settings.ptp.profile | arista.avd.default(switch.ptp.profile) %}
+{%                         set ptp_config = (ptp_profiles | selectattr("profile", "arista.avd.defined", ptp_profile))[0] | arista.avd.default(adapter_settings.ptp) %}
+{%                         do ptp_config.update({"enable": true}) %}
+{%                         if adapter_settings.ptp.endpoint_role is not arista.avd.defined('bmca') %}
+{%                             do ptp_config.update({"role": "master"}) %}
+{%                         endif %}
+{%                         do ptp_config.pop("profile", none) %}
+    ptp: {{ ptp_config }}
+{%                     endif %}
 {%                 endif %}
 {%                 if adapter_settings.port_channel.lacp_fallback.mode is arista.avd.defined('static') %}
 {%                     if loop.first %}

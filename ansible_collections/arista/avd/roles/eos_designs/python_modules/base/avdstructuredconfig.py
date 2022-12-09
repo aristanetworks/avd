@@ -581,6 +581,15 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
+    def ptp(self):
+        """
+        ptp set to contents of switch.ptp.device_config if switch.ptp.enabled is True
+        """
+        if get(self._hostvars, "switch.ptp.enabled") is True:
+            return get(self._hostvars, "switch.ptp.device_config")
+        return None
+
+    @cached_property
     def eos_cli(self):
         """
         Aggregate the values of switch.raw_eos_cli and switch.platform_settings.platform_raw_eos_cli facts
