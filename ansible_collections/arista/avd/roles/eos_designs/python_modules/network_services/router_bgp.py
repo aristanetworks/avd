@@ -216,12 +216,13 @@ class RouterBgpMixin(UtilsMixin):
                     bgp_vrf["address_families"] = address_families
 
                 for node_item in (mc_node_settings := default(get(vrf, "l3_multicast.node_settings"), get(tenant, "l3_multicast.node_settings"), [])):
-                    if self._hostname in (mc_nodes := get(node_item, "nodes", default=[])) or not mc_nodes:
-                        if not mc_nodes and len(mc_node_settings) > 1:
-                            raise AristaAvdMissingVariableError(
-                                f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
-                                " entries with 'nodes' can be defined."
-                            )
+                    if not (mc_nodes := get(node_item, "nodes", default=[])) and len(mc_node_settings) > 1:
+                        raise AristaAvdMissingVariableError(
+                            f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
+                            " entries with 'nodes' can be defined."
+                        )
+
+                    if self._hostname in mc_nodes:
                         bgp_vrf["evpn_multicast_address_family"] = {"ipv4": get(node_item, "evpn_peg", default={})}
                         break
 

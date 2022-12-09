@@ -237,8 +237,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      evpn_multicast_address_family:
-        ipv4: {}
     TEN_E_L3_MULTICAST_TRANSIT:
       router_id: 192.168.255.3
       rd: 192.168.255.3:52
