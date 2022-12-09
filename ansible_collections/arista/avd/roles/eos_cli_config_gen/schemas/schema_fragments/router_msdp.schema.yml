@@ -52,9 +52,14 @@ keys:
               type: str
               required: true
               description: Peer IP Address
-            default_peer_prefix_list:
-              type: str
-              description: Prefix list to filter source of SA messages
+            default_peer:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                prefix_list:
+                  type: str
+                  description: Prefix list to filter source of SA messages
             local_interface:
               type: str
             description:
@@ -162,9 +167,14 @@ keys:
                     type: str
                     required: true
                     description: Peer IP Address
-                  default_peer_prefix_list:
-                    type: str
-                    description: Prefix list to filter source of SA messages
+                  default_peer:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      prefix_list:
+                        type: str
+                        description: Prefix list to filter source of SA messages
                   local_interface:
                     type: str
                   description:

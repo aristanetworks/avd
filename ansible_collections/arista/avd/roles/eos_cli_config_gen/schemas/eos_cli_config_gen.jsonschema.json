@@ -5708,10 +5708,21 @@
                 "description": "Peer IP Address",
                 "title": "IPv4 Address"
               },
-              "default_peer_prefix_list": {
-                "type": "string",
-                "description": "Prefix list to filter source of SA messages",
-                "title": "Default Peer Prefix List"
+              "default_peer": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "prefix_list": {
+                    "type": "string",
+                    "description": "Prefix list to filter source of SA messages",
+                    "title": "Prefix List"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Default Peer"
               },
               "local_interface": {
                 "type": "string",
@@ -5868,10 +5879,21 @@
                       "description": "Peer IP Address",
                       "title": "IPv4 Address"
                     },
-                    "default_peer_prefix_list": {
-                      "type": "string",
-                      "description": "Prefix list to filter source of SA messages",
-                      "title": "Default Peer Prefix List"
+                    "default_peer": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "prefix_list": {
+                          "type": "string",
+                          "description": "Prefix list to filter source of SA messages",
+                          "title": "Prefix List"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Default Peer"
                     },
                     "local_interface": {
                       "type": "string",

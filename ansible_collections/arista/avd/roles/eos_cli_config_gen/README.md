@@ -3602,7 +3602,9 @@ router_msdp:
       source_prefix: < ipv4_prefix/mask >
   peers:
     - ipv4_address: < ipv4_address >
-      default_peer_prefix_list: < prefix_list_name >
+      default_peer:
+        enabled: < true | false >
+        prefix_list: < prefix_list_name >
       local_interface: < interface >
       description: < description >
       disabled: < true | false >
@@ -3626,7 +3628,9 @@ router_msdp:
           source_prefix: < ipv4_prefix/mask >
       peers:
         - ipv4_address: < ipv4_address >
-          default_peer_prefix_list: < prefix_list_name >
+          default_peer:
+            enabled: < true | false >
+            prefix_list: < prefix_list_name >
           local_interface: < interface >
           description: < description >
           disabled: < true | false >

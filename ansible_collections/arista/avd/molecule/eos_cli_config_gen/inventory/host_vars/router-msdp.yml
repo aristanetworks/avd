@@ -10,7 +10,9 @@ router_msdp:
       source_prefix: 10.0.123.0/24
   peers:
     - ipv4_address: 1.2.3.4
-      default_peer_prefix_list: PLIST1
+      default_peer:
+        enabled: true
+        prefix_list: PLIST1
       mesh_groups:
         - name: MG1
         - name: MG2
@@ -26,6 +28,9 @@ router_msdp:
       sa_limit: 1000
     - ipv4_address: 4.3.2.1
       local_interface: Loopback21
+      default_peer:
+        enabled: false
+        prefix_list: PLIST2
   vrfs:
     - name: RED
       originator_id_local_interface: Loopback12
@@ -36,7 +41,8 @@ router_msdp:
           source_prefix: 10.0.22.0/24
       peers:
         - ipv4_address: 2.3.4.5
-          default_peer_prefix_list: PLIST2
+          default_peer:
+            enabled: true
           local_interface: Loopback13
           keepalive:
             keepalive_timer: 5

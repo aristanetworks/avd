@@ -21,8 +21,12 @@ router msdp
 {%         if peer.ipv4_address is arista.avd.defined %}
    !
    peer {{ peer.ipv4_address }}
-{%             if peer.default_peer_prefix_list is arista.avd.defined %}
-      default-peer prefix-list {{ peer.default_peer_prefix_list }}
+{%             if peer.default_peer.enabled is arista.avd.defined(true) %}
+{%                 set default_peer_cli = "default-peer" %}
+{%                 if peer.default_peer.prefix_list is arista.avd.defined %}
+{%                     set default_peer_cli = default_peer_cli ~ " prefix-list " ~ peer.default_peer.prefix_list %}
+{%                 endif %}
+      {{ default_peer_cli }}
 {%             endif %}
 {%             for mesh_group in peer.mesh_groups | arista.avd.default([]) %}
 {%                 if mesh_group.name is arista.avd.defined %}
@@ -75,8 +79,12 @@ router msdp
 {%                 if peer.ipv4_address is arista.avd.defined %}
       !
       peer {{ peer.ipv4_address }}
-{%                     if peer.default_peer_prefix_list is arista.avd.defined %}
-         default-peer prefix-list {{ peer.default_peer_prefix_list }}
+{%                     if peer.default_peer.enabled is arista.avd.defined(true) %}
+{%                         set default_peer_cli = "default-peer" %}
+{%                         if peer.default_peer.prefix_list is arista.avd.defined %}
+{%                             set default_peer_cli = default_peer_cli ~ " prefix-list " ~ peer.default_peer.prefix_list %}
+{%                         endif %}
+         {{ default_peer_cli }}
 {%                     endif %}
 {%                     for mesh_group in peer.mesh_groups | arista.avd.default([]) %}
 {%                         if mesh_group.name is arista.avd.defined %}

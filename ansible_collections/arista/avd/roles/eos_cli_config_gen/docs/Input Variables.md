@@ -3160,7 +3160,9 @@ router_l2_vpn:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_msdp.group_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 40000 | Limit for SAs matching the source address prefix |
 | [<samp>&nbsp;&nbsp;peers</samp>](## "router_msdp.peers") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_address</samp>](## "router_msdp.peers.[].ipv4_address") | String | Required, Unique |  |  | Peer IP Address |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_peer_prefix_list</samp>](## "router_msdp.peers.[].default_peer_prefix_list") | String |  |  |  | Prefix list to filter source of SA messages |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_peer</samp>](## "router_msdp.peers.[].default_peer") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_msdp.peers.[].default_peer.enabled") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_msdp.peers.[].default_peer.prefix_list") | String |  |  |  | Prefix list to filter source of SA messages |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "router_msdp.peers.[].local_interface") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_msdp.peers.[].description") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_msdp.peers.[].disabled") | Boolean |  |  |  | Disable the MSDP peer |
@@ -3184,7 +3186,9 @@ router_l2_vpn:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_msdp.vrfs.[].group_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 40000 | Limit for SAs matching the source address prefix |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peers</samp>](## "router_msdp.vrfs.[].peers") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_address</samp>](## "router_msdp.vrfs.[].peers.[].ipv4_address") | String | Required, Unique |  |  | Peer IP Address |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_peer_prefix_list</samp>](## "router_msdp.vrfs.[].peers.[].default_peer_prefix_list") | String |  |  |  | Prefix list to filter source of SA messages |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_peer</samp>](## "router_msdp.vrfs.[].peers.[].default_peer") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_msdp.vrfs.[].peers.[].default_peer.enabled") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_msdp.vrfs.[].peers.[].default_peer.prefix_list") | String |  |  |  | Prefix list to filter source of SA messages |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "router_msdp.vrfs.[].peers.[].local_interface") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_msdp.vrfs.[].peers.[].description") | String |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "router_msdp.vrfs.[].peers.[].disabled") | Boolean |  |  |  | Disable the MSDP peer |
@@ -3211,7 +3215,9 @@ router_msdp:
       limit: <int>
   peers:
     - ipv4_address: <str>
-      default_peer_prefix_list: <str>
+      default_peer:
+        enabled: <bool>
+        prefix_list: <str>
       local_interface: <str>
       description: <str>
       disabled: <bool>
@@ -3235,7 +3241,9 @@ router_msdp:
           limit: <int>
       peers:
         - ipv4_address: <str>
-          default_peer_prefix_list: <str>
+          default_peer:
+            enabled: <bool>
+            prefix_list: <str>
           local_interface: <str>
           description: <str>
           disabled: <bool>
