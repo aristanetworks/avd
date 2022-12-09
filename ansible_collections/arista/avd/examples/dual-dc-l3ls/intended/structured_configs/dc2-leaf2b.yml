@@ -1,6 +1,6 @@
 router_bgp:
   as: '65202'
-  router_id: 10.255.128.6
+  router_id: 10.255.128.16
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -48,29 +48,25 @@ router_bgp:
       EVPN-OVERLAY-CORE:
         activate: false
   neighbors:
-    10.255.129.100:
+    10.255.129.120:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc2-leaf2a
-    10.255.255.76:
+    10.255.255.116:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65200'
       description: dc2-spine1_Ethernet4
-    10.255.255.78:
+    10.255.255.118:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65200'
       description: dc2-spine2_Ethernet4
-    10.255.128.1:
+    10.255.128.11:
       peer_group: EVPN-OVERLAY-PEERS
       description: dc2-spine1
       remote_as: '65200'
-    10.255.128.2:
+    10.255.128.12:
       peer_group: EVPN-OVERLAY-PEERS
       description: dc2-spine2
       remote_as: '65200'
-    10.255.0.5:
-      peer_group: EVPN-OVERLAY-CORE
-      description: dc1-leaf2a
-      remote_as: '65102'
     10.255.0.6:
       peer_group: EVPN-OVERLAY-CORE
       description: dc1-leaf2b
@@ -95,8 +91,8 @@ router_bgp:
         inter_domain: true
   vrfs:
     VRF10:
-      router_id: 10.255.128.6
-      rd: 10.255.128.6:10
+      router_id: 10.255.128.16
+      rd: 10.255.128.16:10
       route_targets:
         import:
           evpn:
@@ -107,11 +103,11 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.129.100:
+        10.255.129.120:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
     VRF11:
-      router_id: 10.255.128.6
-      rd: 10.255.128.6:11
+      router_id: 10.255.128.16
+      rd: 10.255.128.16:11
       route_targets:
         import:
           evpn:
@@ -122,12 +118,12 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.129.100:
+        10.255.129.120:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
   vlans:
     11:
       tenant: TENANT1
-      rd: 10.255.128.6:10011
+      rd: 10.255.128.16:10011
       route_targets:
         both:
         - 10011:10011
@@ -138,10 +134,10 @@ router_bgp:
       - learned
       rd_evpn_domain:
         domain: remote
-        rd: 10.255.128.6:10011
+        rd: 10.255.128.16:10011
     12:
       tenant: TENANT1
-      rd: 10.255.128.6:10012
+      rd: 10.255.128.16:10012
       route_targets:
         both:
         - 10012:10012
@@ -152,10 +148,10 @@ router_bgp:
       - learned
       rd_evpn_domain:
         domain: remote
-        rd: 10.255.128.6:10012
+        rd: 10.255.128.16:10012
     21:
       tenant: TENANT1
-      rd: 10.255.128.6:10021
+      rd: 10.255.128.16:10021
       route_targets:
         both:
         - 10021:10021
@@ -166,10 +162,10 @@ router_bgp:
       - learned
       rd_evpn_domain:
         domain: remote
-        rd: 10.255.128.6:10021
+        rd: 10.255.128.16:10021
     22:
       tenant: TENANT1
-      rd: 10.255.128.6:10022
+      rd: 10.255.128.16:10022
       route_targets:
         both:
         - 10022:10022
@@ -180,10 +176,10 @@ router_bgp:
       - learned
       rd_evpn_domain:
         domain: remote
-        rd: 10.255.128.6:10022
+        rd: 10.255.128.16:10022
     3401:
       tenant: TENANT1
-      rd: 10.255.128.6:13401
+      rd: 10.255.128.16:13401
       route_targets:
         both:
         - 13401:13401
@@ -194,10 +190,10 @@ router_bgp:
       - learned
       rd_evpn_domain:
         domain: remote
-        rd: 10.255.128.6:13401
+        rd: 10.255.128.16:13401
     3402:
       tenant: TENANT1
-      rd: 10.255.128.6:13402
+      rd: 10.255.128.16:13402
       route_targets:
         both:
         - 13402:13402
@@ -208,7 +204,7 @@ router_bgp:
       - learned
       rd_evpn_domain:
         domain: remote
-        rd: 10.255.128.6:13402
+        rd: 10.255.128.16:13402
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -300,11 +296,11 @@ vlan_interfaces:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
     mtu: 1500
-    ip_address: 10.255.129.101/31
+    ip_address: 10.255.129.121/31
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 10.255.129.69/31
+    ip_address: 10.255.129.89/31
     no_autostate: true
     mtu: 1500
   Vlan11:
@@ -326,7 +322,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
     vrf: VRF10
     mtu: 1500
-    ip_address: 10.255.129.101/31
+    ip_address: 10.255.129.121/31
   Vlan21:
     tenant: TENANT1
     description: VRF11_VLAN21
@@ -346,7 +342,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
     vrf: VRF11
     mtu: 1500
-    ip_address: 10.255.129.101/31
+    ip_address: 10.255.129.121/31
 port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_dc2-leaf2a_Po3
@@ -402,7 +398,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 10.255.255.77/31
+    ip_address: 10.255.255.117/31
   Ethernet2:
     peer: dc2-spine2
     peer_interface: Ethernet4
@@ -411,7 +407,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 10.255.255.79/31
+    ip_address: 10.255.255.119/31
   Ethernet8:
     peer: dc2-leaf2c
     peer_interface: Ethernet2
@@ -448,7 +444,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: DC2_L3_LEAF2
   local_interface: Vlan4094
-  peer_address: 10.255.129.68
+  peer_address: 10.255.129.88
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
@@ -470,21 +466,21 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.255.128.6/32
+    ip_address: 10.255.128.16/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.255.129.5/32
+    ip_address: 10.255.129.15/32
   Loopback10:
     description: VRF10_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: VRF10
-    ip_address: 10.255.10.6/32
+    ip_address: 10.255.10.16/32
   Loopback11:
     description: VRF11_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: VRF11
-    ip_address: 10.255.11.6/32
+    ip_address: 10.255.11.16/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -527,6 +523,6 @@ vxlan_interface:
           vni: 11
 virtual_source_nat_vrfs:
   VRF10:
-    ip_address: 10.255.10.6
+    ip_address: 10.255.10.16
   VRF11:
-    ip_address: 10.255.11.6
+    ip_address: 10.255.11.16

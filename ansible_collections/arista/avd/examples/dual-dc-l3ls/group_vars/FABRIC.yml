@@ -50,15 +50,18 @@ bgp_peer_groups:
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
 
-
+# L3 Edge port definitions. This can be any port in the entire Fabric, where IP interfaces are defined.
 l3_edge:
+  # Define a new IP pool that will be used to asign IP addreses to L3 Edge interfaces.
   p2p_links_ip_pools:
     DCI_IP_pool: 172.100.100.0/24
+  # Define a new link profile which will match the IP pool, the used ASNs and include the defined interface into underlay routing
   p2p_links_profiles:
     DCI_profile:
       ip_pool: DCI_IP_pool
       as: [65102,65202]
       include_in_underlay_protocol: true
+  # Define each P2P L3 link and link the nodes, the interfaces and the profile used.
   p2p_links:
   - id: 1
     nodes: [dc1-leaf2a,dc2-leaf2a]
