@@ -67,7 +67,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                         # This is legacy behavior so we will leave stricter enforcement to the schema
                         vrfs[key] = {"vni": vni}
 
-                        if default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled")):
+                        if get(vrf, "_l3_multicast_enabled"):
                             underlay_l3_multicast_group_ipv4_pool = get(
                                 tenant,
                                 "l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool",

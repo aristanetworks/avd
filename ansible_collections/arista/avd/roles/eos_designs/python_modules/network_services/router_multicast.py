@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services.utils import UtilsMixin
 
 
@@ -26,7 +26,7 @@ class RouterMulticastMixin(UtilsMixin):
         vrfs = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
-                if default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled")):
+                if get(vrf, "_l3_multicast_enabled"):
                     vrfs.append({"name": vrf["name"], "ipv4": {"routing": True}})
 
         if vrfs:

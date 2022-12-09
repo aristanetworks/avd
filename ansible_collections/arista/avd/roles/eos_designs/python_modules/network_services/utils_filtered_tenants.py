@@ -126,6 +126,9 @@ class UtilsFilteredTenantsMixin(object):
                     and l3_interface.get("interfaces") is not None
                 )
             ]
+
+            vrf["_l3_multicast_enabled"] = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"), None)
+
             if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
                 filtered_vrfs.append(vrf)
 
