@@ -63,11 +63,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                     else:
                         ethernet_interface["ip_address"] = f"{link['ip_address']}/31"
 
-                if self._underlay_routing_protocol == "ospf":
+                if self._underlay_ospf is True:
                     ethernet_interface["ospf_network_point_to_point"] = True
                     ethernet_interface["ospf_area"] = self._underlay_ospf_area
 
-                if self._underlay_routing_protocol == "isis":
+                if self._underlay_isis is True:
                     ethernet_interface.update(
                         {
                             "isis_enable": self._isis_instance_name,

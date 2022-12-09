@@ -107,9 +107,6 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return structured config for router_bgp.redistribute_routes
         """
-        if self._overlay_routing_protocol is None:
-            return None
-
         if self._overlay_routing_protocol == "none":
             return {"connected": {}}
 

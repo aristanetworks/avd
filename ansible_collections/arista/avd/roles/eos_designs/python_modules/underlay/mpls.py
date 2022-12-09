@@ -16,7 +16,7 @@ class MplsMixin(UtilsMixin):
         """
         Return structured config for mpls
         """
-        if self._underlay_router is not True:
+        if self._underlay_mpls is not True:
             return None
 
         if self._underlay_ldp is True:
@@ -30,7 +30,4 @@ class MplsMixin(UtilsMixin):
                 },
             }
 
-        if self._mpls_lsr is True:
-            return {"ip": True}
-
-        return None
+        return {"ip": True}

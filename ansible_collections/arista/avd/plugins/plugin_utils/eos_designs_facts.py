@@ -1770,6 +1770,7 @@ class EosDesignsFacts(AvdFacts):
         bgp = self.bgp and self.underlay_routing_protocol == "ebgp"
         mpls = self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"] and self.mpls_lsr
         ldp = self.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] and mpls
+        sr = self.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] and mpls
         ospf = self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
         isis = self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
 
@@ -1777,6 +1778,7 @@ class EosDesignsFacts(AvdFacts):
             "bgp": bgp,
             "ldp": ldp,
             "mpls": mpls,
+            "sr": sr,
             "ospf": ospf,
             "isis": isis,
         }

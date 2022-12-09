@@ -90,8 +90,8 @@ class UtilsMixin:
         return get(self._hostvars, "switch.node_sid", required=True)
 
     @cached_property
-    def _overlay_routing_protocol(self) -> str | None:
-        return get(self._hostvars, "switch.overlay_routing_protocol")
+    def _overlay_routing_protocol(self) -> str:
+        return get(self._hostvars, "switch.overlay_routing_protocol", required=True)
 
     @cached_property
     def _overlay_vtep(self) -> bool:
@@ -140,7 +140,15 @@ class UtilsMixin:
         return get(self._hostvars, "switch.underlay.isis") is True
 
     @cached_property
+    def _underlay_sr(self) -> bool:
+        return get(self._hostvars, "switch.underlay.sr") is True
+
+    @cached_property
     def _underlay_ldp(self) -> bool:
+        return get(self._hostvars, "switch.underlay.ldp") is True
+
+    @cached_property
+    def _underlay_mpls(self) -> bool:
         return get(self._hostvars, "switch.underlay.ldp") is True
 
     @cached_property
@@ -206,10 +214,6 @@ class UtilsMixin:
     @cached_property
     def _underlay_router(self) -> str | None:
         return get(self._hostvars, "switch.underlay_router")
-
-    @cached_property
-    def _underlay_routing_protocol(self) -> str | None:
-        return get(self._hostvars, "switch.underlay_routing_protocol")
 
     @cached_property
     def _underlay_vlan_trunk_groups(self) -> list:

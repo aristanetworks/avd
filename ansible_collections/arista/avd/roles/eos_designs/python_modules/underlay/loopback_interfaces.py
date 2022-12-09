@@ -32,18 +32,17 @@ class LoopbackInterfacesMixin(UtilsMixin):
         if self._ipv6_router_id is not None:
             loopback0["ipv6_address"] = f"{self._ipv6_router_id}/128"
 
-        if self._underlay_routing_protocol in ["ospf", "ospf-ldp"]:
+        if self._underlay_ospf is True:
             loopback0["ospf_area"] = self._underlay_ospf_area
 
-        if self._mpls_lsr is True:
+        if self._underlay_ldp is True:
+            loopback0["mpls"] = {"ldp": {"interface": True}}
+        elif self._underlay_mpls is True:
             loopback0["mpls"] = {}
 
-            if self._underlay_ldp is True:
-                loopback0["mpls"] = {"ldp": {"interface": True}}
-
-        if self._underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
+        if self._underlay_isis is True:
             isis_config = {"isis_enable": self._isis_instance_name, "isis_passive": True}
-            if self._underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:
+            if self._underlay_sr is True:
                 isis_config["node_segment"] = {"ipv4_index": self._node_sid}
                 if self._underlay_ipv6 is True:
                     isis_config["node_segment"].update({"ipv6_index": self._node_sid})
@@ -65,10 +64,10 @@ class LoopbackInterfacesMixin(UtilsMixin):
             if self._network_services_l3 is True and self._vtep_vvtep_ip is not None:
                 vtep_loopback["ip_address_secondaries"] = [self._vtep_vvtep_ip]
 
-            if self._underlay_routing_protocol in ["ospf", "ospf-ldp"]:
+            if self._underlay_ospf is True:
                 vtep_loopback["ospf_area"] = self._underlay_ospf_area
 
-            if self._underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
+            if self._underlay_isis is True:
                 vtep_loopback.update({"isis_enable": self._isis_instance_name, "isis_passive": True})
 
             vtep_loopback = {key: value for key, value in vtep_loopback.items() if value is not None}

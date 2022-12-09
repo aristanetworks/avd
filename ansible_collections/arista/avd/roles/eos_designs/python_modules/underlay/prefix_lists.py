@@ -26,7 +26,10 @@ class PrefixListsMixin(UtilsMixin):
 
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
         sequence_numbers = {}
-        sequence_numbers[10] = {"action": f"permit {self._loopback_ipv4_pool} eq 32"}
+        sequence_numbers[10] = {
+            "action": f"permit {self._loopback_ipv4_pool} eq 32",
+        }
+
         if self._vtep_ip is not None and self._vtep_loopback.lower() != "loopback0":
             sequence_numbers[20] = {"action": f"permit {self._vtep_loopback_ipv4_pool} eq 32"}
 
@@ -42,10 +45,7 @@ class PrefixListsMixin(UtilsMixin):
         """
         Return structured config for IPv6 prefix_lists
         """
-        if self._underlay_router is not True:
-            return None
-
-        if self._underlay_routing_protocol != "ebgp":
+        if self._underlay_bgp is not True:
             return None
 
         if self._underlay_ipv6 is not True:

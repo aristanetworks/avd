@@ -65,7 +65,7 @@ class RouterIsisMixin(UtilsMixin):
         if self._overlay_routing_protocol == "none":
             router_isis["redistribute_routes"] = [{"source_protocol": "connected"}]
 
-        if self._underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:
+        if self._underlay_sr is True:
             router_isis["advertise"] = {
                 "passive_only": get(self._hostvars, "isis_advertise_passive_only", default=False),
             }
