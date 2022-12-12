@@ -592,6 +592,15 @@ class EosDesignsFacts(AvdFacts):
         )
 
     @cached_property
+    def system_mac_address(self):
+        """
+        system_mac_address is inherited from
+        Host variable var system_mac_address ->
+          Fabric Topology data model system_mac_address
+        """
+        return default(get(self._switch_data_combined, "system_mac_address"), get(self._hostvars, "system_mac_address"))
+
+    @cached_property
     def underlay_routing_protocol(self):
         underlay_routing_protocol = str(get(self._hostvars, "underlay_routing_protocol", default=self.default_underlay_routing_protocol)).lower()
         if underlay_routing_protocol not in ["ebgp", "isis", "isis-ldp", "isis-sr", "isis-sr-ldp", "ospf", "ospf-ldp", "none"]:
