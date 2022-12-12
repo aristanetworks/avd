@@ -80,7 +80,11 @@ port_channel_interfaces:
     description: DC1_LEAF2_Po7
     type: switched
     shutdown: false
-    vlans: none
+    vlans: 210
     mode: trunk
+vlans:
+  210:
+    tenant: Tenant_A
+    name: Tenant_B_OP_Zone_1
 ip_igmp_snooping:
   globally_enabled: true
