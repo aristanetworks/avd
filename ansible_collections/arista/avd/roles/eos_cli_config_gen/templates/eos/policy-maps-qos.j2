@@ -1,4 +1,4 @@
-{# QOS policy-map #}
+{# eos - policy map qos #}
 {% for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
 !
 policy-map type quality-of-service {{ policy_map.name }}

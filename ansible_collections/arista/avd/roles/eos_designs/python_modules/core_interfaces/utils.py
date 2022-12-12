@@ -101,6 +101,14 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_as")
 
     @cached_property
+    def _ptp_profiles(self) -> list:
+        return get(self._hostvars, "ptp_profiles", required=True)
+
+    @cached_property
+    def _ptp_profile(self) -> list:
+        return get(self._hostvars, "switch.ptp.profile", required=True)
+
+    @cached_property
     def _filtered_p2p_links(self) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
@@ -302,11 +310,6 @@ class UtilsMixin:
                 "profile": p2p_link["macsec_profile"],
             }
 
-        if p2p_link.get("ptp_enable") is True:
-            interface_cfg["ptp"] = {
-                "enable": True,
-            }
-
         if self._mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
             if p2p_link.get("include_in_underlay_protocol", True) is True and self._underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
@@ -327,8 +330,15 @@ class UtilsMixin:
         Covers config that is only applicable to ethernet interfaces.
         This config will only be used on both main interfaces and port-channel members.
         """
+        ptp_config = None
+        if p2p_link.get("ptp_enable") is True:
+            ptp_config = get_item(self._ptp_profiles, "profile", self._ptp_profile, default={})
+            ptp_config["enable"] = True
+            ptp_config.pop("profile", None)
+
         return {
             "speed": p2p_link.get("speed"),
+            "ptp": ptp_config,
         }
 
     def _get_port_channel_member_cfg(self, p2p_link: dict) -> dict:

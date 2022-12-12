@@ -1,4 +1,4 @@
-{# eos - Management Interfaces #}
+{# eos - management interfaces #}
 {% for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ management_interface.name }}

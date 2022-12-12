@@ -1,4 +1,4 @@
-{# eos- Loopback Interfaces #}
+{# eos - loopback interfaces #}
 {% for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ loopback_interface.name }}

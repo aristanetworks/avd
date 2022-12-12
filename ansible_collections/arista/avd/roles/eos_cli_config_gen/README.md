@@ -330,6 +330,7 @@ cvx:
         password: < password >
         password_type: < 0 | 7 | 8a | default -> 7 >
       shutdown: < true | false >
+      peer_hosts: < IP address or hostname >
 ```
 
 #### Enable Password
@@ -1200,6 +1201,7 @@ port_channel_interfaces:
       event:
         link_status: < true | false >
     shutdown: < true | false >
+    vrf: < vrf_name >
     vlans: "< list of vlans as string >"
     # l3dot1q and l2dot1q are used for sub-interfaces.
     # The parent interface should be defined as routed.
@@ -2892,6 +2894,16 @@ router_bgp:
     external_routes: < 1-255 >
     internal_routes: < 1-255 >
     local_routes: < 1-255 >
+  graceful_restart:
+    enabled: < true | false >
+    restart_time: < 1-3600 >
+    stalepath_time: < 1-3600 >
+  # graceful-restart-help long-lived and restart-time are mutually exclusive in CLI
+  # restart-time will take precedence if both are configured.
+  graceful_restart_helper:
+    enabled: < true | false >
+    restart_time: < 1-100000000>
+    long_lived: < true | false >
   maximum_paths:
     paths: < 1-600 >
     ecmp: < 1-600 >
@@ -3615,6 +3627,7 @@ static_routes:
     destination_address_prefix: < IPv4_network/Mask >
     interface: < interface >
     gateway: < IPv4_address >
+    track_bfd: < boolean >
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
@@ -3631,6 +3644,7 @@ ipv6_static_routes:
     destination_address_prefix: < IPv6_network/Mask >
     interface: < interface >
     gateway: < IPv6_address >
+    track_bfd: < boolean >
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >

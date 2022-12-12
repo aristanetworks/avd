@@ -1,4 +1,4 @@
-{# PBR policy-map #}
+{# eos - policy map pbr #}
 {% for policy_map in policy_maps.pbr | arista.avd.natural_sort('name') %}
 !
 policy-map type pbr {{ policy_map.name }}

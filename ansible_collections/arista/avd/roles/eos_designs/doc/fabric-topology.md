@@ -16,7 +16,7 @@ fabric_name > dc_name > pod_name
 fabric_name: < Fabric_Name >
 ```
 
-- DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage CLOS (Super-spines)
+- DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage Clos (Super-spines)
 
 ```yaml
 dc_name: < DC_Name >
@@ -38,23 +38,43 @@ pod_name: < POD_Name >
 
 ## Supported designs
 
-`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) to create your own node type
+`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, and L2LS. The sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) to create your own node type.
 
-### 3-stage CLOS Topology Support (Leaf & Spine)
+## Design type
 
-- The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage CLOS) and optionally, with dedicated overlay controllers.
-- 3 stage CLOS fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
+By setting the `design.type` variable, the default node-types and templates described in these documents will be used.
 
-### 5-stage CLOS Topology Support (Super Spine)
+!!! note
+    Please note, MPLS is currently in beta. For full node type information, see [MPLS Design](./fabric-topology-mpls-BETA.md) section.
 
-- The **eos_designs** role support lager deployments with super-spines (5-stage CLOS) and optionally, with dedicated overlay controllers.
-- 5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
+```yaml
+# AVD Design | Optional
+design:
+  type: < "l3ls-evpn" | "l2ls" | "mpls" | default -> "l3ls-evpn" >
+```
+
+### 3-stage Clos Topology Support (Leaf & Spine)
+
+- The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
+- 3 stage Clos fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
+
+### 5-stage Clos Topology Support (Super Spine)
+
+- The **eos_designs** role support lager deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
+- 5 stage Clos fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
+
+### Layer 2 Leaf Spine
+
+- The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
+- The Clos fabric can be represented as L3 spines, spines, and leafs.
 
 ## Node Type Variables
 
 The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](node-types.md)
+
+### L3LS
 
 | Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
@@ -63,6 +83,14 @@ The following table provide information on the default node types that have been
 | l3leaf             | ✅              | p2p          | client            | ✅                 | ✅                  | ✅  | ✅           | ✅                 |
 | l2leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
 | overlay_controller | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
+
+### L2LS
+
+| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| l3spine              | ✅              | p2p          | none            | ✅                  | ✅                   | ✘   | ✅            | ✅                  |
+| spine             | ✘              | port-channel | none            | ✅                 | ✘                  | ✘  | ✅           | ✅                 |
+| leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
 
 The variables should be applied to all devices in the fabric.
 
@@ -132,6 +160,14 @@ defaults <- node_group <- node_group.node <- node
 
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
+
+      # System Mac Address | Optional
+      # Set to the same MAC address as available in "show version" on the device.
+      # NOTE: the "mac_address" variable used in dhcp_provisioner role is
+      # different from this variable
+      # "system_mac_address" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      system_mac_address: < "xx:xx:xx:xx:xx:xx" >
 ```
 
 ## Node Variables details

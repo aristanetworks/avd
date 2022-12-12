@@ -1,0 +1,4 @@
+{# eos - ipv6 hardware #}
+{% if ipv6_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
+ipv6 hardware fib optimize prefixes profile {{ ipv6_hardware.fib.optimize.prefixes.profile }}
+{% endif %}

@@ -1,4 +1,4 @@
-{# cvx #}
+{# eos - cvx #}
 {% if cvx is arista.avd.defined %}
 !
 cvx
@@ -7,6 +7,9 @@ cvx
 {%     elif cvx.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
+{%     for peer_host in cvx.peer_hosts | arista.avd.natural_sort %}
+   peer host {{ peer_host }}
+{%     endfor %}
 {%     if cvx.services is arista.avd.defined %}
 {%         if cvx.services.mcs is arista.avd.defined %}
    service mcs

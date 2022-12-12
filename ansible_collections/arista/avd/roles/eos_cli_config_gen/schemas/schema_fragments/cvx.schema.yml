@@ -9,6 +9,11 @@ keys:
     keys:
       shutdown:
         type: bool
+      peer_hosts:
+        type: list
+        items:
+          type: str
+          description: IP address or hostname
       services:
         type: dict
         keys:

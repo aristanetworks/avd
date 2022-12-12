@@ -1,4 +1,4 @@
-{# Management API GNMI #}
+{# doc - management api gnmi #}
 {% if management_api_gnmi is defined and management_api_gnmi is not none %}
 
 ## Management API GNMI
@@ -15,7 +15,7 @@
 | VRF with GNMI | OCTA |
 | ------------- | ---- |
 {%         for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
-| {{ vrf }} | {{ octa }} |
+| {{ vrf.name }} | {{ octa }} |
 {%         endfor %}
 {%     endif %}
 {# new table view using the new flags #}

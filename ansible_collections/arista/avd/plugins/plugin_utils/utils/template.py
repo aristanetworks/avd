@@ -1,7 +1,10 @@
+from pathlib import Path
+
 from ansible.module_utils._text import to_text
+from jinja2 import FileSystemBytecodeCache
 
 
-def template(template_file, template_vars, templar, searchpath):
+def template(template_file, template_vars, templar):
     """
     Run Ansible Templar with template file.
 
@@ -28,11 +31,21 @@ def template(template_file, template_vars, templar, searchpath):
         The rendered template
     """
 
-    loader = templar._loader
-    template_file_path = loader.path_dwim_relative_stack(searchpath, "templates", template_file)
-    j2template, dummy = loader._get_file_contents(template_file_path)
+    dataloader = templar._loader
+    searchpath = templar.environment.loader.searchpath
+    template_file_path = dataloader.path_dwim_relative_stack(searchpath, "templates", template_file)
+    j2template, dummy = dataloader._get_file_contents(template_file_path)
     j2template = to_text(j2template)
 
-    templar.available_variables = template_vars
-    result = templar.template(j2template, convert_data=False, escape_backslashes=False)
+    cache_dir = Path(template_file_path).parent.joinpath(".j2cache")
+    # Create cache_dir if not existing. We can assume the parent dir is there since we found the template file.
+    cache_dir.mkdir(0o775, False, True)
+
+    bytecode_cache = FileSystemBytecodeCache(cache_dir)
+    with templar.set_temporary_context(
+        bytecode_cache=bytecode_cache,
+        available_variables=template_vars,
+    ):
+        result = templar.template(j2template, convert_data=False, escape_backslashes=False)
+
     return result
