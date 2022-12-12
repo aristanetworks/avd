@@ -102,6 +102,17 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.name", required=True)
 
     @cached_property
+    def _ptp_profile(self) -> str | None:
+        return get(self._hostvars, "switch.ptp.profile")
+
+    @cached_property
+    def _ptp_profiles(self) -> list:
+        """
+        Return eos_designs ptp_profiles or []
+        """
+        return get(self._hostvars, "ptp_profiles", default=[])
+
+    @cached_property
     def _router_id(self) -> str | None:
         return get(self._hostvars, "switch.router_id")
 

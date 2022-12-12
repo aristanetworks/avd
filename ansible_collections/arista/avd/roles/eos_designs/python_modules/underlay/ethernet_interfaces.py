@@ -47,10 +47,15 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # PTP
                 if get(link, "ptp.enable") is True:
                     ptp_config = {"enable": True}
-                    ptp_profile = get(self._hostvars, "switch.ptp.profile")
-                    if ptp_profile is not None:
-                        ptp_profiles = get(self._hostvars, "ptp_profiles", default={})
-                        ptp_config.update(get_item(ptp_profiles, "profile", ptp_profile, default={}))
+                    if self._ptp_profile is not None:
+                        ptp_config.update(
+                            get_item(
+                                self._ptp_profiles,
+                                "profile",
+                                self._ptp_profile,
+                                default={},
+                            )
+                        )
                         ptp_config.pop("profile")
 
                     ethernet_interface["ptp"] = ptp_config
