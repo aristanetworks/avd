@@ -6,3 +6,7 @@
       {{ switch.bgp_peer_groups.evpn_overlay_core.name }}:
         activate: false
 {% endif %}
+{% if switch.overlay.ipvpn_gateway %}
+      {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}:
+        activate: false
+{% endif %}

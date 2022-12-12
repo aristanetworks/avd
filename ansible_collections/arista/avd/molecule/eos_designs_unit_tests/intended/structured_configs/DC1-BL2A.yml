@@ -24,7 +24,7 @@ router_bgp:
       update_source: Loopback0
       local_as: '65001'
       bfd: true
-      password: vnEaG8gMeQf3d3cN6PktXQ==
+      password: nWwwZQLPI34O1AhoANg77g==
       send_community: all
       maximum_routes: 50000
     Tenant_C_BGP_PEER_GROUP:
@@ -51,6 +51,8 @@ router_bgp:
       UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
+        activate: false
+      IPVPN-INTERWORKING-PEERS:
         activate: false
   redistribute_routes:
     connected:

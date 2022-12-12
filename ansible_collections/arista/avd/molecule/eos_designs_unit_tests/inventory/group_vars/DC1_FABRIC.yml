@@ -24,7 +24,7 @@ bgp_peer_groups:
     password: "15AwQNBEJ1nyF/kBEtoAGw=="
   ipvpn_gateway_peers:
     name: IPVPN-INTERWORKING-PEERS
-    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    password: "nWwwZQLPI34O1AhoANg77g=="
 
 # test with inline jinja2 targeting eos_designs_facts
 spine_platform: "7050SX3"

@@ -467,8 +467,8 @@ default_interfaces:
         # Maximum number of routes to allow from the MPLS domain.
         maximum_routes: < integer | default -> 0 >
 
-        # Local-as to use when peering to the MPLS domain.
-        local_as: < bgp_asn | default -> none >
+        # Optional local-as to use when peering to the MPLS domain.
+        local_as: < bgp_asn >
 
         # Address families in which to perform interworking.
         address_families: < List of address families | default -> [ vpn-ipv4 ] >

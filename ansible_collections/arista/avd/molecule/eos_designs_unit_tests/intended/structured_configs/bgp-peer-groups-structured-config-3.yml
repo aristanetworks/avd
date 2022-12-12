@@ -23,6 +23,8 @@ router_bgp:
     peer_groups:
       MPLS-OVERLAY-PEERS:
         activate: false
+      IPVPN-GATEWAY-PEERS:
+        activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
