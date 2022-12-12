@@ -72,7 +72,7 @@ name_servers:
   - < IPv4_address_2 >
 
 # System Mac Address | Optional
-# Set to the same MAC addres as available in "show version" on the device.
+# Set to the same MAC address as available in "show version" on the device.
 # "system_mac_address" can also be set under "Fabric Topology".
 # If both are set, the setting under "Fabric Topology" takes precedence.
 system_mac_address: < "xx:xx:xx:xx:xx:xx" >

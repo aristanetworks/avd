@@ -162,7 +162,7 @@ defaults <- node_group <- node_group.node <- node
       mgmt_ip: < IPv4_address/Mask >
 
       # System Mac Address | Optional
-      # Set to the same MAC addres as available in "show version" on the device.
+      # Set to the same MAC address as available in "show version" on the device.
       # NOTE: the "mac_address" variable used in dhcp_provisioner role is
       # different from this variable
       # "system_mac_address" can also be set directly as a hostvar.
