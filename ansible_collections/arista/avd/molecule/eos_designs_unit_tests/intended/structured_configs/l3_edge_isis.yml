@@ -31,6 +31,10 @@ router_isis:
   - ipv4 unicast
   isis_af_defaults:
   - maximum-paths 4
+  no_passive_interfaces:
+  - ethernet2
+  - ethernet3
+  - ethernet4
 ethernet_interfaces:
   ethernet1:
     peer: peer1
@@ -40,16 +44,13 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 2000
-    ip_address: 192.168.0.0/31
-    speed: forced 10000full
     service_profile: TEST-QOS-PROFILE
+    ip_address: 192.168.0.0/31
     mac_security:
       profile: TEST-MACSEC-PROFILE
+    speed: forced 10000full
     ptp:
       enable: true
-    isis_enable: EVPN_UNDERLAY
-    isis_metric: 50
-    isis_network_point_to_point: true
   ethernet2:
     peer: peer2
     peer_interface: ethernet2

@@ -19,7 +19,8 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
         python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
-      - template: "l3_edge/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.l3_edge"
+        python_class_name: "AvdStructuredConfig"
       # Network Services feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
         python_class_name: "AvdStructuredConfig"
@@ -54,7 +55,8 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
         python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
-      - template: "l3_edge/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.l3_edge"
+        python_class_name: "AvdStructuredConfig"
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Overlay feature
@@ -92,7 +94,8 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
         python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
-      - template: "l3_edge/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.l3_edge"
+        python_class_name: "AvdStructuredConfig"
       # Network Services feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
         python_class_name: "AvdStructuredConfig"

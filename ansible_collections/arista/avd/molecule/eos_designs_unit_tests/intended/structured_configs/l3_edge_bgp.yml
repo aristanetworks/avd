@@ -70,11 +70,11 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 2000
-    ip_address: 192.168.0.0/31
-    speed: forced 10000full
     service_profile: TEST-QOS-PROFILE
+    ip_address: 192.168.0.0/31
     mac_security:
       profile: TEST-MACSEC-PROFILE
+    speed: forced 10000full
     ptp:
       enable: true
   ethernet2:
