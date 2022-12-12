@@ -119,7 +119,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### BGP design
 
-Note that new BGP connections are established from dc1-leaf2a and dc1-leaf2b to dc2-leaf2a and dc2-leaf2b. All BGP learnt routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
+Note that new BGP connections are established from dc1-leaf2a and dc1-leaf2b to dc2-leaf2a and dc2-leaf2b respectively. All BGP learnt routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
 
 From the overlay perspective, new each leaf sees its peer in the twin DC as a new Route Server and will advertise all EVPN learnt routes as they were directly connected locally, making all changes inside its DC transparent to the twin DC.
 
@@ -312,7 +312,7 @@ l3_edge:
 ```
 
 1. Define a new IP Pool, with the name "DCI_IP_pool" which will use the prefix "172.100.100.0/24" to assign IP addresses.
-2. Define a new link profile, called "DCI_profile" which will use the previously created IP pool, the ASN will be "65102" for left devices and "65102" for right devices. And interfaces will be included in the underlay routing protocol.
+2. Define a new link profile, called "DCI_profile" which will use the previously created IP pool, the ASN will be "65102" for left devices and "65202" for right devices. And interfaces will be included in the underlay routing protocol.
 3. Define a new link, with the left and right node hostname defined in AVD, along with the interface and finally assign a profile, which contains all required information to configure the link.
 
 ## Setting device specific configuration parameters
@@ -340,11 +340,11 @@ spine:
 
   nodes: # (6)!
     dc2-spine1:
-      id: 1 # (7)!
+      id: 11 # (7)!
       mgmt_ip: 172.16.1.21/24 # (8)!
 
     dc2-spine2:
-      id: 2
+      id: 12
       mgmt_ip: 172.16.1.22/24
 ```
 
@@ -354,7 +354,7 @@ spine:
 4. `bgp_as` defines the BGP AS number.
 5. `bgp_defaults` defines generic BGP settings.
 6. `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
-7. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.1/27 assigned to the Loopback0 interface.
+7. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
 8. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
 The following section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
@@ -386,13 +386,13 @@ l3leaf:
       bgp_as: 65201 # (15)!
       nodes:
         dc2-leaf1a:
-          id: 1
+          id: 11
           mgmt_ip: 172.16.1.201/24
           uplink_switch_interfaces: # (16)!
             - Ethernet1
             - Ethernet1
         dc2-leaf1b:
-          id: 2
+          id: 12
           mgmt_ip: 172.16.1.202/24
           uplink_switch_interfaces:
             - Ethernet2
@@ -408,7 +408,7 @@ l3leaf:
           inter_domain: true
       nodes:
         dc2-leaf2a:
-          id: 3
+          id: 13
           mgmt_ip: 172.16.1.203/24
           uplink_switch_interfaces:
             - Ethernet3
@@ -417,7 +417,7 @@ l3leaf:
             remote_peers: # (18)!
               - hostname: dc1-leaf2a
         dc2-leaf2b:
-          id: 4
+          id: 14
           mgmt_ip: 172.16.1.204/24
           uplink_switch_interfaces:
             - Ethernet4
@@ -492,7 +492,7 @@ l2leaf:
       uplink_switches: ['dc2-leaf1a', 'dc2-leaf1b']
       nodes:
         dc1-leaf1c:
-          id: 1
+          id: 11
           mgmt_ip: 172.16.1.251/24
           uplink_switch_interfaces:
             - Ethernet8
@@ -502,7 +502,7 @@ l2leaf:
       uplink_switches: ['dc2-leaf2a', 'dc2-leaf2b']
       nodes:
         dc1-leaf2c:
-          id: 2
+          id: 12
           mgmt_ip: 172.16.1.252/24
           uplink_switch_interfaces:
             - Ethernet8
