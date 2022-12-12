@@ -1757,7 +1757,7 @@ class EosDesignsFacts(AvdFacts):
                 "evpn_domain_id": get(self._switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="0:1"),
                 "ipvpn_domain_id": get(self._switch_data_combined, "ipvpn_gateway.ipvpn_domain_id", default="0:2"),
                 "max_routes": get(self._switch_data_combined, "ipvpn_gateway.maximum_routes", default=0),
-                "local_as": get(self._switch_data_combined, "ipvpn_gateway.local_as", default=None),
+                "local_as": get(self._switch_data_combined, "ipvpn_gateway.local_as"),
                 "remote_peers": get(self._switch_data_combined, "ipvpn_gateway.remote_peers", default=[]),
             }
 
