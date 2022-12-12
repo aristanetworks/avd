@@ -29,6 +29,7 @@ keys:
               description: IPv4_address/Mask
       p2p_links_profiles:
         type: list
+        primary_key: name
         convert_types:
           - dict
         description: Any setting supported under p2p_links can be set and inherited from profile
@@ -51,7 +52,7 @@ keys:
               description: Unique id per subnet_summary (starting from 1). Used to calculate ip addresses, required with ip_pool
             speed:
               type: str
-              description: < speed | auto speed | forced speed >
+              description: The value can be < speed/auto speed/forced speed >
             ip_pool:
               type: str
               description: IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link, Optional (Requires ip_pool or subnet or ip)

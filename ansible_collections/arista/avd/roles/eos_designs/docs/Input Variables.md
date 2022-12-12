@@ -331,12 +331,14 @@ By default Lists are replaced and Dictionaries are updated. The combine is done 
 
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| [<samp>custom_structured_configuration_prefix</samp>](## "custom_structured_configuration_prefix") | List |  | ['custom_structured_configuration_'] |  |  |
+| [<samp>custom_structured_configuration_prefix</samp>](## "custom_structured_configuration_prefix") | List, items: String |  | ['custom_structured_configuration_'] |  |  |
+| [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_structured_configuration_prefix.[].&lt;str&gt;") | String |  |  |  |  |
 
 ### YAML
 
 ```yaml
 custom_structured_configuration_prefix:
+  - <str>
 ```
 
 ## CVP Ingestauth Key
@@ -529,7 +531,7 @@ event_handlers:
     trigger: <str>
 ```
 
-## Evpn Ebgp Gateway Multihop
+## EVPN Ebgp Gateway Multihop
 
 ### Description
 
@@ -548,7 +550,7 @@ Adapt the value for your specific topology.
 evpn_ebgp_gateway_multihop: <int>
 ```
 
-## Evpn Ebgp Multihop
+## EVPN Ebgp Multihop
 
 ### Description
 
@@ -567,7 +569,7 @@ Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: <int>
 ```
 
-## Evpn Hostflap Detection
+## EVPN Hostflap Detection
 
 ### Variables
 
@@ -589,7 +591,7 @@ evpn_hostflap_detection:
   window: <int>
 ```
 
-## Evpn Import Pruning
+## EVPN Import Pruning
 
 ### Description
 
@@ -610,7 +612,7 @@ the path will be immediately discarded
 evpn_import_pruning: <bool>
 ```
 
-## Evpn Multicast
+## EVPN Multicast
 
 ### Description
 
@@ -635,7 +637,7 @@ Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP
 evpn_multicast: <bool>
 ```
 
-## Evpn Overlay BGP Rtc
+## EVPN Overlay BGP Rtc
 
 ### Description
 
@@ -654,7 +656,7 @@ Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: <bool>
 ```
 
-## Evpn Prevent Readvertise To Server
+## EVPN Prevent Readvertise To Server
 
 ### Description
 
@@ -674,7 +676,7 @@ from Route-server-1 to Router-server-2 just for Route-server-2 to throw them awa
 evpn_prevent_readvertise_to_server: <bool>
 ```
 
-## Evpn Short Esi Prefix
+## EVPN Short Esi Prefix
 
 ### Description
 
@@ -691,7 +693,7 @@ Configure prefix for "short_esi" values
 evpn_short_esi_prefix: <str>
 ```
 
-## Evpn VLAN Aware Bundles
+## EVPN VLAN Aware Bundles
 
 ### Description
 
@@ -936,13 +938,13 @@ Make sure to configure the variables in a group_vars file covering all devices m
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].profile") | String |  |  |  | Profile defined under p2p_profiles |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp_enable</samp>](## "l3_edge.p2p_links.[].ptp_enable") | Boolean |  | False |  | Enable PTP |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links.[].qos_profile") | String |  |  |  | QOS Service Profile |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  |  | < speed | auto speed | forced speed > |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  |  | The value can be < speed/auto speed/forced speed > |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links.[].subnet") | String |  |  |  | Subnet used on this P2P link, Optional (Requires ip_pool or subnet or ip) |
 | [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "l3_edge.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4_address/Mask |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_edge.p2p_links_ip_pools.[].name") | String | Required, Unique |  |  |  |
 | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  | Any setting supported under p2p_links can be set and inherited from profile |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  |  |
 
 ### YAML
 
