@@ -2,11 +2,11 @@
 
 ## Introduction
 
-This example is meant to be used as the logical evolution in AVD to new users. This document follows the single data center structure and asumes the reader was already been able to successfully deploy the scenario described in the section [AVD example for a single data center using L3LS](../single-dc-l3ls/README.md).
+This example is meant to be used as the logical evolution in AVD to new users. Therefore, this document follows the single data center structure and assumes the reader could deploy the scenario described in the section [AVD example for a single data center using L3LS](../single-dc-l3ls/README.md).
 
-The main goal of this section is to provide a base scenario to enable the new users to grow in number of DCs (Data Center) and configure the interconnection between different DCs.
+The main goal of this example is to provide a base scenario to enable the new users to grow in the number of DCs (Data Centers) and configure the interconnection between different DCs.
 
-The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs. This design will use the EVPN DC GW feature to avoid unnecessary BGP overlay convergence. This feature rewrites EVPN routes on a set of devices (called EVPN Gateways) and show the Gateways as next hop for advertisements outside of the EVPN domain using a DCI (DC Interconnect).
+The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs. This design will use the EVPN DC GW feature to avoid unnecessary BGP overlay convergence. This feature rewrites EVPN routes on a set of devices (called EVPN Gateways) and shows the Gateways the as next hop for advertisements outside of the EVPN domain using a DCI (DC Interconnect).
 
 ### DC1
 
@@ -22,7 +22,7 @@ The example includes and describes all the AVD files and their content used to b
 
 In order to follow the principle of network design using patterns, both DCs have the same layout to keep a repetitive pattern using the Leaf and Spine architecture.
 
-There is, however, no hard requirement to have the exact same number of devices. As an example, one DC could use 2 spines while the other could be using 4 spines to comply with redundancy and bandwidth requirements.
+There is, however, no hard requirement to have the exact same number of devices. For example, one DC could use 2 spines while the other could use 4 spines to comply with redundancy and bandwidth requirements.
 
 Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the switches using eAPI.
 
@@ -73,7 +73,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment is identical as the single DC example. The only change introduced in this topology is the DCI links, which are connected to port Ethernet 6 in leaves number two in each DC connecting to the twin DC:
+The drawing below shows the physical topology used in this example. The interface assignment is identical to the single DC example. The only change introduced in this topology is the DCI links, which are connected to port Ethernet 6 in dc1-leaf2a/b to dc2-leafa/b:
 
 ![Figure: Arista Leaf Spine physical topology](images/avd-dual-dc-l3ls-example.svg)
 
@@ -121,9 +121,9 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### BGP design
 
-Note that new BGP connections are established from dc1-leaf2a and dc1-leaf2b to dc2-leaf2a and dc2-leaf2b respectively. All BGP learnt routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
+New BGP connections are established from dc1-leaf2a and dc1-leaf2b to dc2-leaf2a and dc2-leaf2b respectively. In addition, all BGP learned routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
 
-From the overlay perspective, new each leaf sees its peer in the twin DC as a new Route Server and will advertise all EVPN learnt routes as they were directly connected locally, making all changes inside its DC transparent to the twin DC.
+From the overlay perspective, each new leaf sees its peer in the twin DC as a new Route Server and will advertise all EVPN learned routes as they were directly connected locally, making all changes inside its DC transparent to the twin DC.
 
 === "Underlay"
 
@@ -153,18 +153,18 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 !!! note
     The two servers on DC1 (`dc1-leaf1-server1` and `dc1-leaf2-server1`) and the two servers on DC2 (`dc2-leaf1-server1` and `dc2-leaf2-server1`) at the bottom are **not** configured by AVD, but the switch ports used to connect to the servers are.
 
-The same pattern used in the single DC example is followed, where
+The same pattern used in the single DC example is followed:
 
 - Group names use uppercase and underscore
 - All hostnames use lowercase and dashes
 
-The drawing also shows the relationships between groups and their children. Be aware that all declarations on a higher level are inheritet to chidren automatically.
+The drawing also shows the relationships between groups and their children. Be aware that all declarations on a higher level are inherited by chidren automatically.
 
 ### Content of the inventory.yml file
 
 This section describes the entire `ansible-avd-examples/dual-dc-l3ls/inventory.yml` file used to represent the above topology.
 
-In this example we will consider that no DNS is avaliable and will define the IPs that the Ansible host hast to reach per device.
+In this example, we will consider that no DNS is available and define the IPs that the Ansible host has to reach per device.
 
 ```yaml title="inventory.yml"
 ---
@@ -315,15 +315,15 @@ l3_edge:
 
 1. Define a new IP Pool, with the name "DCI_IP_pool" which will use the prefix "172.100.100.0/24" to assign IP addresses.
 2. Define a new link profile, called "DCI_profile" which will use the previously created IP pool, the ASN will be "65102" for left devices and "65202" for right devices. And interfaces will be included in the underlay routing protocol.
-3. Define a new link, with the left and right node hostname defined in AVD, along with the interface and finally assign a profile, which contains all required information to configure the link.
+3. Define a new link, with the left and right node hostname defined in AVD, along with the interface and finally assign a profile containing all required information to configure the link.
 
 ## Setting device specific configuration parameters
 
-Both `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` and `ansible-avd-examples/dual-dc-l3ls/group_vars/DC2.yml` files defines settings that apply to all children of `DC1` and `DC2` groups as specified in the inventory described earlier.
+Both `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` and `ansible-avd-examples/dual-dc-l3ls/group_vars/DC2.yml` files define settings that apply to all children of `DC1` and `DC2` groups as specified in the inventory described earlier.
 
-In this section we are going to discuss `DC2` as `DC1` is the same as discussed in the previous example. The only change, the one used to include the EVPN DC GW will be discussed later.
+In this section, we will discuss `DC2` as `DC1` is the same as shown in the previous example. The only change, the one used to include the EVPN DC GW will be discussed later.
 
-However, this time the settings defined are no longer fabric-wide but are limited to DC2. In this example, DC2 follows the same configuration as DC1, but we will be able to modify the behaviour of DC2 without impacting DC1.
+However, this time the settings defined are no longer fabric-wide but are limited to DC2. In this example, DC2 follows the same configuration as DC1, but we will be able to modify the behavior of DC2 without impacting DC1.
 
 ```yaml title="DC2.yml"
 ---
@@ -430,8 +430,8 @@ l3leaf:
 ```
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
-2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. Please note that this IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
-3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like spine and l3leaf in this example) to avoid overlapping IPs. The offset is "2" in this case because each spine switch uses one loopback address.
+2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. This IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
+3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like spine and l3leaf in this example) to avoid overlapping IPs. For example, the offset is "2" in this case because each spine switch uses one loopback address.
 4. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
 5. `uplink_interfaces` defines the interfaces used locally on the leaf switches.
 6. `uplink_switches` defines the uplink switches, which are dc1-spine1 and dc1-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
@@ -446,9 +446,9 @@ l3leaf:
 15. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
 16. `uplink_switch_interfaces` defines the interfaces used on the uplink switches (Ethernet1 on dc2-spine1 and dc2-spine2 in this example). Defining which spine interfaces the leaf is connected to under the leaf switch settings makes adding and removing leaf switches much easier. There is no need to add/remove any settings under the spine switch section; AVD takes care of that for you. This child device/parent device hierarchy also applies to L2 and L3 leaves.
 17. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
-18. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device and using the hostname, AVD will be able to get all the information from the device in order to generate the configuration: Router ID to peer with and BGP AS.
+18. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device in order to generate the configuration: Router ID to peer and BGP AS.
 
-Equally, because we are adding the EVPN DC GW functionality in DC2, we need to also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occour:
+Since we are adding the EVPN DC GW functionality in DC2, we need to also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
 
 ```yaml title="DC1.yml"
     DC1_L3_LEAF2:
@@ -515,9 +515,9 @@ As should be clear, an L2 leaf switch is much simpler than an L3 switch. Hence t
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
-This file is identic to the one provided in the previous example and VRFs and VLANs are configured on all devices, since no `tags` or `filter` are being used.
+This file is identical to the one provided in the previous example. VRFs and VLANs are configured on all devices since no `tags` or `filter` are being used.
 
-It is important to consider to add the new leaves in the inventory as described in the [Inventory](#content-of-the-inventoryyml-file) section, so they will rely on this file to configure the network services.
+It is important to consider adding the new leaves to the Inventory as described in the [Inventory](#content-of-the-inventoryyml-file) section, so they will rely on this file to configure the network services.
 
 ```yaml title="NETWORK_SERVICES.yml"
 --8<--
@@ -527,7 +527,7 @@ examples/dual-dc-l3ls/group_vars/NETWORK_SERVICES.yml
 
 ## Specifying endpoint connectivity in the EVPN/VXLAN fabric
 
-After the previous section, all VRFs and VLANs across the fabric are now defined accross all devices. The `ansible-avd-examples/dual-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
+After the previous section, all VRFs and VLANs across the fabric are now defined on each leaf node. The `ansible-avd-examples/dual-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
 
 ```yaml title="CONNECTED_ENDPOINTS.yml"
 --8<--
@@ -535,11 +535,11 @@ examples/dual-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml
 --8<--
 ```
 
-The configuration of the endpoints in DC2 is identic to the ones in DC1, so the only change resides in the name of the leaves used and their ports.
+The configuration of the endpoints in DC2 is identical to the ones in DC1. The only change resides in the name of the leaves used and their ports.
 
 ## The playbook
 
-The playbook is also the same, as the actions to execute in the fabric are the same. It is important to validate the `hosts` variable in the playbook to include all ansible groups, otherwise errors can be thrown.
+The playbook is also the same, as the actions to execute in the fabric are the same. It is important to validate the `hosts` variable in the playbook to include all Ansible groups. Otherwise may be seen.
 
 ### Testing AVD output without a lab
 
