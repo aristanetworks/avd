@@ -9,11 +9,13 @@ The main goal of this section is to provide a base scenario to enable the new us
 The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs. This design will use the EVPN DC GW feature to avoid unnecessary BGP overlay convergence. This feature rewrites EVPN routes on a set of devices (called EVPN Gateways) and show the Gateways as next hop for advertisements outside of the EVPN domain using a DCI (DC Interconnect).
 
 ### DC1
+
 - Two (virtual) spine switches.
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
 - Two (virtual) layer2-only switches often used for management connectivity to the servers.
 
 ### DC2
+
 - Two (virtual) spine switches.
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
 - Two (virtual) layer2-only switches often used for management connectivity to the servers.
