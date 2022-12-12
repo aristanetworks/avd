@@ -86,9 +86,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
     ip_address: 172.16.21.3/31
   Ethernet2:
     peer: DC2-SUPER-SPINE2
@@ -98,9 +98,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
     ip_address: 172.16.21.67/31
   Ethernet3:
     peer: DC2-POD1-LEAF1A
@@ -110,9 +110,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
     ip_address: 172.17.210.2/31
   Ethernet4:
     peer: DC2-POD1-LEAF2A
@@ -122,9 +122,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
     ip_address: 172.17.210.6/31
   Ethernet5:
     peer: DC1-POD2-SPINE2

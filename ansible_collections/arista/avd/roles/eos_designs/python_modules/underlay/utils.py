@@ -156,7 +156,13 @@ class UtilsMixin:
         underlay_links.extend(self._uplinks)
 
         for peer in self._avd_peers:
-            peer_facts = get(self._hostvars, f"avd_switch_facts..{peer}..switch", separator="..", required=True, org_key=f"avd_switch_facts.{peer}.switch")
+            peer_facts = get(
+                self._hostvars,
+                f"avd_switch_facts..{peer}..switch",
+                separator="..",
+                required=True,
+                org_key=f"avd_switch_facts.{peer}.switch",
+            )
             for uplink in peer_facts["uplinks"]:
                 if uplink["peer"] == self._hostname:
                     link = {
@@ -222,13 +228,24 @@ class UtilsMixin:
         trunk_groups = []
 
         for peer in self._avd_peers:
-            peer_facts = get(self._hostvars, f"avd_switch_facts..{peer}..switch", separator="..", required=True, org_key=f"avd_switch_facts.{peer}.switch")
+            peer_facts = get(
+                self._hostvars,
+                f"avd_switch_facts..{peer}..switch",
+                separator="..",
+                required=True,
+                org_key=f"avd_switch_facts.{peer}.switch",
+            )
             for uplink in peer_facts["uplinks"]:
                 if uplink["peer"] == self._hostname:
                     if (peer_trunk_groups := get(uplink, "peer_trunk_groups")) is None:
                         continue
 
-                    trunk_groups.append({"vlan_list": uplink["vlans"], "trunk_groups": peer_trunk_groups})
+                    trunk_groups.append(
+                        {
+                            "vlan_list": uplink["vlans"],
+                            "trunk_groups": peer_trunk_groups,
+                        }
+                    )
 
         if trunk_groups:
             return trunk_groups

@@ -91,11 +91,11 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
-    ptp:
-      enable: true
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
+    ptp:
+      enable: true
     ip_address: 172.16.11.64/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
@@ -105,11 +105,11 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
-    ptp:
-      enable: true
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
+    ptp:
+      enable: true
     ip_address: 172.16.11.66/31
   Ethernet3:
     peer: DC1-POD2-SPINE1
@@ -119,11 +119,11 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
-    ptp:
-      enable: true
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
+    ptp:
+      enable: true
     ip_address: 172.16.12.64/31
   Ethernet4:
     peer: DC1-POD2-SPINE2
@@ -133,11 +133,11 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
-    ptp:
-      enable: true
     mac_security:
       profile: MACSEC_PROFILE
     type: routed
+    ptp:
+      enable: true
     ip_address: 172.16.12.66/31
   Ethernet5:
     peer: DC1-RS2
