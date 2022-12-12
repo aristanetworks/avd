@@ -7,6 +7,8 @@ keys:
     type: list
     convert_types:
       - str
+    items:
+      type: str
     description: |
       Custom EOS Structured Configuration keys can be set on any group or host_var level using the name
       of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.

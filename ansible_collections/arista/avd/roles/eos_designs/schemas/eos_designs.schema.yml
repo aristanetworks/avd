@@ -2939,6 +2939,8 @@ keys:
       `eos_designs` role already.
 
       '
+    items:
+      type: str
     type: list
   cvp_ingestauth_key:
     description: CloudVision ingest authentication key is required for on-prem CVP
@@ -3388,7 +3390,7 @@ keys:
               description: QOS Service Profile
               type: str
             speed:
-              description: < speed | auto speed | forced speed >
+              description: The value can be < speed/auto speed/forced speed >
               type: str
             subnet:
               description: Subnet used on this P2P link, Optional (Requires ip_pool
@@ -3421,6 +3423,7 @@ keys:
             name:
               type: str
           type: dict
+        primary_key: name
         type: list
     type: dict
   local_users:
