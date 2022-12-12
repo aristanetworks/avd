@@ -356,9 +356,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
     ip_address: 172.17.110.5/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
@@ -368,9 +368,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
     ip_address: 172.17.110.7/31
   Ethernet3:
     peer: DC1-POD1-L2LEAF2A
