@@ -4,7 +4,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
 
 
@@ -102,15 +102,12 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.name", required=True)
 
     @cached_property
-    def _ptp_profile(self) -> str | None:
-        return get(self._hostvars, "switch.ptp.profile")
+    def _default_ptp_profile(self) -> dict:
+        if (ptp_profile_name := get(self._hostvars, "switch.ptp.profile")) is None:
+            return {}
 
-    @cached_property
-    def _ptp_profiles(self) -> list:
-        """
-        Return eos_designs ptp_profiles or []
-        """
-        return get(self._hostvars, "ptp_profiles", default=[])
+        ptp_profiles = get(self._hostvars, "ptp_profiles", [])
+        return get_item(ptp_profiles, "profile", ptp_profile_name, default={})
 
     @cached_property
     def _router_id(self) -> str | None:

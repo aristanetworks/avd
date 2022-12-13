@@ -110,7 +110,6 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -118,6 +117,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     ip_address: 10.254.2.0/31
   Ethernet2:
     peer: ptp-tests-leaf1
@@ -128,7 +128,6 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -136,6 +135,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     ip_address: 10.254.2.2/31
   Ethernet3:
     peer: ptp-tests-leaf2
@@ -146,7 +146,6 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -154,6 +153,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     ip_address: 10.254.2.4/31
   Ethernet4:
     peer: ptp-tests-leaf2
@@ -164,7 +164,6 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -172,6 +171,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     ip_address: 10.254.2.6/31
   Ethernet6:
     peer: ptp-tests-spine2

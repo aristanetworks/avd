@@ -125,7 +125,6 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -133,6 +132,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     ip_address: 10.254.2.1/31
   Ethernet2:
     peer: ptp-tests-spine1
@@ -143,7 +143,6 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ptp:
-      enable: true
       announce:
         interval: 0
         timeout: 3
@@ -151,6 +150,7 @@ ethernet_interfaces:
       sync_message:
         interval: -3
       transport: ipv4
+      enable: true
     ip_address: 10.254.2.3/31
   Ethernet13:
     peer: bmca-endpoint

@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -46,17 +46,13 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                 # PTP
                 if get(link, "ptp.enable") is True:
-                    ptp_config = {"enable": True}
-                    if self._ptp_profile is not None:
-                        ptp_config.update(
-                            get_item(
-                                self._ptp_profiles,
-                                "profile",
-                                self._ptp_profile,
-                                default={},
-                            )
-                        )
-                        ptp_config.pop("profile")
+                    ptp_config = {}
+
+                    # Apply PTP profile config
+                    ptp_config.update(self._default_ptp_profile)
+
+                    ptp_config["enable"] = True
+                    ptp_config.pop("profile", None)
 
                     ethernet_interface["ptp"] = ptp_config
 
