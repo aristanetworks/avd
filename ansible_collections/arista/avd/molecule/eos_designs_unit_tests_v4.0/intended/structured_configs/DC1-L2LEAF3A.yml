@@ -66,8 +66,8 @@ ethernet_interfaces:
     peer_interface: Ethernet9
     peer_type: l3leaf
     description: DC1-LEAF2A_Ethernet9
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -76,8 +76,8 @@ ethernet_interfaces:
     peer_interface: Ethernet9
     peer_type: l3leaf
     description: DC1-LEAF2B_Ethernet9
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -86,8 +86,8 @@ port_channel_interfaces:
     description: DC1_LEAF2_Po9
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-112,120-121,130-131,160-161
 vlans:
   130:
     tenant: Tenant_A

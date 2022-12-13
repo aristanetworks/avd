@@ -37,8 +37,8 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: DC1-POD1-LEAF1A_Ethernet3
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -47,9 +47,9 @@ port_channel_interfaces:
     description: DC1-POD1-LEAF1A_Po3
     type: switched
     shutdown: false
-    vlans: 4085
     mode: trunk
     service_profile: QOS-PROFILE
+    vlans: '4085'
 ip_igmp_snooping:
   globally_enabled: true
 vlans:

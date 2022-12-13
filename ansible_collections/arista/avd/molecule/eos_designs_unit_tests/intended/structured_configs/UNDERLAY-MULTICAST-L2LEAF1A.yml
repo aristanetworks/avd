@@ -30,8 +30,8 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: l3leaf
     description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet6
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -40,7 +40,7 @@ port_channel_interfaces:
     description: DC1_LEAF1_Po6
     type: switched
     shutdown: false
-    vlans: none
     mode: trunk
+    vlans: none
 ip_igmp_snooping:
   globally_enabled: true

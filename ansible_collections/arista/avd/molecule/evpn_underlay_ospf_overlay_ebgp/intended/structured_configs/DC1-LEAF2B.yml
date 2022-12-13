@@ -202,8 +202,8 @@ port_channel_interfaces:
     description: DC1-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 210
     mode: trunk
+    vlans: '210'
     mlag: 7
 ethernet_interfaces:
   Ethernet5:
@@ -231,9 +231,9 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.17/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -242,9 +242,9 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.19/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -253,9 +253,9 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.21/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -264,9 +264,9 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.23/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -275,8 +275,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF1A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -303,6 +303,7 @@ router_ospf:
     101:
       passive_interface_default: true
       router_id: 192.168.255.7
+      max_lsa: 12000
       no_passive_interfaces:
       - Ethernet1
       - Ethernet2
@@ -310,7 +311,6 @@ router_ospf:
       - Ethernet4
       - Vlan4093
       bfd_enable: true
-      max_lsa: 12000
 router_bfd:
   multihop:
     interval: 1200

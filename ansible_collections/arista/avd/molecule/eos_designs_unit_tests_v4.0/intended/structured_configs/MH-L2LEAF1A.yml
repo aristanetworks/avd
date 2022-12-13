@@ -69,8 +69,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l3leaf
     description: MH-LEAF2A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -89,11 +89,11 @@ port_channel_interfaces:
     description: MH-LEAF2A_Po2
     type: switched
     shutdown: false
-    vlans: 310
     mode: trunk
     link_tracking_groups:
     - name: l2leaf-server02
       direction: upstream
+    vlans: '310'
 vlans:
   310:
     tenant: Tenant_X

@@ -30,8 +30,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3spine
     description: ISIS-SPINE1_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -40,8 +40,8 @@ port_channel_interfaces:
     description: ISIS-SPINE1_Po1
     type: switched
     shutdown: false
-    vlans: 110
     mode: trunk
+    vlans: '110'
 vlans:
   110:
     tenant: L2LS_ISIS

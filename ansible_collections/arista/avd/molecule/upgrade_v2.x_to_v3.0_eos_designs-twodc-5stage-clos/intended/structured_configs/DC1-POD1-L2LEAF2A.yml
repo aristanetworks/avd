@@ -78,9 +78,9 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po3
     type: switched
     shutdown: false
-    vlans: 110-112,2500,2600,4085
     mode: trunk
     service_profile: QOS-PROFILE
+    vlans: 110-112,2500,2600,4085
     mlag: 1
 ethernet_interfaces:
   Ethernet3:
@@ -108,8 +108,8 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: DC1-POD1-LEAF2A_Ethernet3
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -118,8 +118,8 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: DC1-POD1-LEAF2B_Ethernet3
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active

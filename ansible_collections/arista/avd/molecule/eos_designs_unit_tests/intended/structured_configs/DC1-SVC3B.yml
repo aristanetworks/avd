@@ -763,8 +763,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mlag: 7
   Port-Channel14:
     description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
@@ -960,8 +960,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF2A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -970,8 +970,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF2B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -981,9 +981,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.129/31
   Ethernet50/1:
     peer: DC1-SPINE2
@@ -991,9 +991,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.131/31
   Ethernet51/1:
     peer: DC1-SPINE3
@@ -1001,9 +1001,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.133/31
   Ethernet52/1:
     peer: DC1-SPINE4
@@ -1011,9 +1011,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.135/31
   Ethernet11:
     peer: server04_inherit_all_from_profile

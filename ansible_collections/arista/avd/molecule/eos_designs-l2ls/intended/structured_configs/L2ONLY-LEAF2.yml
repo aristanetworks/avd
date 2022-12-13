@@ -22,8 +22,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: L2ONLY-SPINE1_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -32,8 +32,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: L2ONLY-SPINE2_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -58,8 +58,8 @@ port_channel_interfaces:
     description: L2ONLY_SPINES_Po2
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
 vlans:
   100:
     tenant: L2LS_L2ONLY
