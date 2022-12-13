@@ -276,10 +276,9 @@ class UtilsMixin:
         if (ptp_profile_name := get(adapter, "ptp.profile", default=self._ptp_profile)) is not None:
             ptp_config.update(get_item(self._ptp_profiles, "profile", ptp_profile_name, default={}))
 
-        # Apply Adapter PTP config
-        ptp_config.update(adapter["ptp"])
+        ptp_config["enable"] = True
 
-        if ptp_config.pop("endpoint_role", None) != "bmca":
+        if adapter.get("endpoint_role") != "bmca":
             ptp_config["role"] = "master"
 
         ptp_config.pop("profile", None)
