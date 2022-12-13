@@ -59,7 +59,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | -  | - |
+| Management0 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -139,9 +139,9 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| admin | 15 | network-admin |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 
@@ -422,13 +422,13 @@ interface Port-Channel551
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | - | default | 172.16.1.2/32 |
+| Loopback0 | Router_ID | default | 172.16.1.2/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | - | default | - |
+| Loopback0 | Router_ID | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -436,6 +436,7 @@ interface Port-Channel551
 ```eos
 !
 interface Loopback0
+   description Router_ID
    no shutdown
    ip address 172.16.1.2/32
    ip ospf area 0.0.0.0
