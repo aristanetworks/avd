@@ -1075,9 +1075,8 @@ port_channel_interfaces:
     description: EVPN-MULTICAST-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,310-311,330-331,550,4092
     mode: trunk
-    vlans: 1-9,110-111,210-211,256-257,310-311,4092
+    vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,310-311,330-331,550,4092
     mlag: 6
 ethernet_interfaces:
   Ethernet3:

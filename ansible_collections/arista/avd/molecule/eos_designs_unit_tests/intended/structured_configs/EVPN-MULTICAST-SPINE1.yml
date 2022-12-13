@@ -127,9 +127,9 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3A_Ethernet1
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.0/31
     pim:
       ipv4:
@@ -139,9 +139,9 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3B_Ethernet1
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.2/31
     pim:
       ipv4:
