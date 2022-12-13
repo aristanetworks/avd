@@ -38,8 +38,8 @@
   delegate_to: localhost
   assert:
     that:
-      - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState == 'Established'
-    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | replace('\"','') }}"
+      - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
+    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"','') }}"
     quiet: yes
   loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
@@ -55,8 +55,8 @@
   delegate_to: localhost
   assert:
     that:
-      - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState == 'Established'
-    fail_msg: "Session state {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | replace('\"','') }}"
+      - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
+    fail_msg: "Session state: {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"','') }}"
     quiet: yes
   loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
