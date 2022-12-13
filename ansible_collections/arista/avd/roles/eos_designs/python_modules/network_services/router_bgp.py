@@ -215,16 +215,8 @@ class RouterBgpMixin(UtilsMixin):
                 if address_families:
                     bgp_vrf["address_families"] = address_families
 
-                for node_item in (mc_node_settings := get(vrf, "_l3_multicast_node_settings")):
-                    if not (mc_nodes := get(node_item, "nodes", default=[])) and len(mc_node_settings) > 1:
-                        raise AristaAvdError(
-                            f"l3_multicast.node_settings in Tenant '{tenant['name']}' or VRF '{vrf['name']}': only one entry with no 'nodes' or multiple"
-                            " entries with 'nodes' can be defined."
-                        )
-
-                    if self._hostname in mc_nodes:
-                        bgp_vrf["evpn_multicast_address_family"] = {"ipv4": get(node_item, "evpn_peg", default={})}
-                        break
+                if (evpn_multicast_transit_mode := get(vrf, "_l3_multicast_evpn_peg_transit")) is True:
+                    bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}
 
                 # Strip None values from vlan before returning
                 bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}

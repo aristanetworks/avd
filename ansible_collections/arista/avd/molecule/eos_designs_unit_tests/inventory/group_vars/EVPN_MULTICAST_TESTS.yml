@@ -392,32 +392,29 @@ tenants:
       #  - If node is a vtep and evpn enabled, enable EVPN multicast
       enabled: true
       evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.96.0/20
-      node_settings:
+      evpn_peg:
         # Nodes should be in one node group only
         # Nodes is optional, settings apply everywhere if not defined
         - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
-          evpn_peg:
-            transit: false
-          rp_addresses:
-            - rps:
-                - 10.1.51.129
-                - 10.1.52.129
-              groups:
-                - 232.0.104.0/21
-                - 232.0.96.0/21
-            - rps:
-                - 10.1.50.100
-              groups:
-                - 232.0.112.0/21
+          transit: false
+
+      rp_addresses:
+        - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+          rps:
+            - 10.1.51.129
+            - 10.1.52.129
+          groups:
+            - 232.0.104.0/21
+            - 232.0.96.0/21
+        - rps:
+            - 10.1.50.100
+          groups:
+            - 232.0.112.0/21
 
         - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
-          # Implicitly false
-          # evpn_peg:
-          #   transit: false
-          rp_addresses:
-            - rps:
-                - 10.1.51.130
-                - 10.1.52.130
+          rps:
+            - 10.1.51.130
+            - 10.1.52.130
 
     vrfs:
       # This VRF inherits from Tenant
@@ -470,14 +467,13 @@ tenants:
         l3_multicast:
           enabled: true
           # Test no 'nodes' key in node_settings (applies to all devices)
-          node_settings:
-            - rp_addresses:
-                - rps:
-                    - 10.20.20.20
-                  groups:
-                    - 232.0.0.0/21
-                - rps:
-                    - 10.40.40.40
+          rp_addresses:
+            - rps:
+                - 10.20.20.20
+              groups:
+                - 232.0.0.0/21
+            - rps:
+                - 10.40.40.40
         vrf_vni: 55
         svis:
           550:
@@ -503,19 +499,18 @@ tenants:
         l3_multicast:
           enabled: true
           # Test transit mode
-          node_settings:
+          evpn_peg:
             - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
-              evpn_peg:
-                transit: true
-              rp_addresses:
-                - rps:
-                    - 10.30.30.30
+              transit: true
             - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
-              evpn_peg:
-                transit: true
-              rp_addresses:
-                - rps:
-                    - 10.60.60.60
+              transit: true
+          rp_addresses:
+            - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+              rps:
+                - 10.30.30.30
+            - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+              rps:
+                - 10.60.60.60
         vrf_vni: 52
         svis:
           250:
@@ -536,3 +531,5 @@ tenants:
             enabled: true
             pim:
               enabled: true
+
+# Add another test case here for setting no nodes on evpn_peg

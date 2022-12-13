@@ -217,9 +217,6 @@ router_bgp:
       redistribute_routes:
       - connected
       evpn_multicast: true
-      evpn_multicast_address_family:
-        ipv4:
-          transit: false
   vlans:
     310:
       tenant: Tenant_A

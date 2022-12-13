@@ -158,23 +158,16 @@ mac_address_table:
       enabled: < true | false | default false >
       evpn_underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask > # Required
       evpn_underlay_l3_multicast_group_ipv4_pool_offset: < int > # Optional
-      node_settings: # Optional
-        # For each group of nodes, allow configuration of EVPN PEG features | Optional
-        # and allow configuration of specific RPs and associated multicast groups
-        # Designed to be used in conjunction with enabling PIM on l3_interfaces to make the device a PEG (see below)
-        # An individual node should be in one node group only
-        # 'nodes' key is optional - settings apply everywhere if not defined
-        # These two options are mutually exclusive
-        - nodes: [ < node_1 >, < node_2 >, < node_N > ]    # Optional
-          evpn_peg:                                        # Optional
-            transit: < true | false | default false >      # Enable EVPN PEG transit mode
-          rp_addresses:                                    # RP Addresses & associated groups
-            - rps:                                         # A minimum of one RP must be specified if node_settings is defined
-                - < rp_address_1 >
-                - < rp_address_2 >
-              groups:                                      # Optional
-                - < group_prefix_1/mask >
-                - < group_prefix_2/mask >
+      evpn_peg:
+        # For each group of nodes, allow configuration of EVPN PEG options | Optional
+        # At least one RP address must be configured for EVPN PEG to be configured.
+        - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
+          transit: < true | false | default false >                    # Enable EVPN PEG transit mode
+      rp_addresses:
+          # For each group of nodes, allow configuration of RP Addresses & associated groups
+        - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
+          rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+          groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
 
     # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
     # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
@@ -266,18 +259,15 @@ mac_address_table:
         # Allow override of tenants.<tenant>.l3_multicast.node_settings
         l3_multicast:
           enabled: < true | false >
-          node_settings: # Optional
+          evpn_peg:
             # For each group of nodes, allow configuration of EVPN PEG features | Optional
-            - nodes: [ < node_1 >, < node_2 >, < node_N > ]    # Optional
-              evpn_peg:                                        # Optional
-                transit: < true | false | default false >      # Enable EVPN PEG transit mode
-              rp_addresses:                                    # RP Addresses & associated groups
-                - rps:                                         # A minimum of one RP must be specified if node_settings is defined
-                    - < rp_address_1 >
-                    - < rp_address_2 >
-                  groups:                                      # Optional
-                    - < group_prefix_1/mask >
-                    - < group_prefix_2/mask >
+            # At least one RP address must be configured for EVPN PEG to be configured.
+            - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
+              transit: < true | false | default false >                    # Enable EVPN PEG transit mode
+          rp_addresses:                                                    # For each group of nodes, allow configuration of RP Addresses & associated groups
+            - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
+              rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+              groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
