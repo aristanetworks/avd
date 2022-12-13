@@ -77,9 +77,9 @@ class MonitorSessionsMixin(UtilsMixin):
                     channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
 
                     port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                    for monitor_session in adapter["monitor_sessions"]:
-                        monitor_session["interface"] = port_channel_interface_name
-                        monitor_session_configs.append(monitor_session)
+                    monitor_session_configs.extend(
+                        [dict(monitor_session, interface=port_channel_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                    )
                     continue
 
                 # Monitor session on Ethernet interface
@@ -87,9 +87,10 @@ class MonitorSessionsMixin(UtilsMixin):
                     if node_name != self._hostname:
                         continue
 
-                    for monitor_session in adapter["monitor_sessions"]:
-                        monitor_session["interface"] = adapter["switch_ports"][node_index]
-                        monitor_session_configs.append(monitor_session)
+                    ethernet_interface_name = adapter["switch_ports"][node_index]
+                    monitor_session_configs.extend(
+                        [dict(monitor_session, interface=ethernet_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                    )
 
         for network_port in self._filtered_network_ports:
             if "monitor_sessions" not in network_port:
@@ -102,14 +103,14 @@ class MonitorSessionsMixin(UtilsMixin):
                     channel_group_id = get(network_port, "port_channel.channel_id", default=default_channel_group_id)
 
                     port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                    for monitor_session in adapter["monitor_sessions"]:
-                        monitor_session["interface"] = port_channel_interface_name
-                        monitor_session_configs.append(monitor_session)
+                    monitor_session_configs.extend(
+                        [dict(monitor_session, interface=port_channel_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                    )
                     continue
 
                 # Monitor session on Ethernet interface
-                for monitor_session in adapter["monitor_sessions"]:
-                    monitor_session["interface"] = ethernet_interface_name
-                    monitor_session_configs.append(monitor_session)
+                monitor_session_configs.extend(
+                    [dict(monitor_session, interface=ethernet_interface_name) for monitor_session in adapter["monitor_sessions"]],
+                )
 
         return monitor_session_configs

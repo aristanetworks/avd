@@ -6,6 +6,7 @@ from hashlib import sha256
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_route_target
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
@@ -15,7 +16,7 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressi
 class UtilsMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+    Class should only be used as Mixin to a AvdStructuredConfig class or other Mixins.
     """
 
     # Set type hints for Attributes of the main class as needed
@@ -75,11 +76,11 @@ class UtilsMixin:
         return filtered_network_ports
 
     def _match_regexes(self, regexes: list, value: str) -> bool:
-        for regex in regexes:
-            if re.match(rf"^{regex}$", value):
-                return True
-
-        return False
+        """
+        Match a list of regexes with the supplied value.
+        Regex must match the full value to pass, so regex is wrapped in ^$
+        """
+        return any(re.match(rf"^{regex}$", value) for regex in regexes)
 
     @cached_property
     def _port_profiles(self) -> list:
@@ -156,16 +157,15 @@ class UtilsMixin:
         )
         short_esi = str(short_esi)
         if short_esi.lower() == "auto":
-            esi_hash_switches = "".join(adapter["switches"][:2])
-            esi_hash_switch_ports = "".join(adapter["switch_ports"][:2])
-            esi_hash_endpoint_ports = "".join(endpoint_ports[:2])
             esi_hash = sha256(
-                f"{hash_extra_value}{esi_hash_switches}{esi_hash_switch_ports}{esi_hash_endpoint_ports}{channel_group_id}".encode("UTF-8")
+                "".join(
+                    [hash_extra_value] + adapter["switches"][:2] + adapter["switch_ports"][:2] + endpoint_ports[:2] + [str(channel_group_id)],
+                ).encode("UTF-8"),
             ).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", "\\1:", esi_hash)[:14]
 
         if len(short_esi.split(":")) != 3:
-            return None
+            raise AristaAvdError(f"Invalid 'short_esi': '{short_esi}' on connected endpoints adapter. Must be in the format xxxx:xxxx:xxxx")
 
         return short_esi
 
@@ -242,7 +242,7 @@ class UtilsMixin:
         """
         Return link_tracking_groups for one adapter
         """
-        if not (get(adapter, "link_tracking.enabled") is True and self._link_tracking_groups is not None):
+        if self._link_tracking_groups is None or get(adapter, "link_tracking.enabled") is not True:
             return None
 
         return [
@@ -278,7 +278,7 @@ class UtilsMixin:
 
         ptp_config["enable"] = True
 
-        if adapter.get("endpoint_role") != "bmca":
+        if get(adapter, "ptp.endpoint_role") != "bmca":
             ptp_config["role"] = "master"
 
         ptp_config.pop("profile", None)
