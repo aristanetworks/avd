@@ -105,7 +105,7 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_as")
 
     @cached_property
-    def _default_ptp_profile(self) -> dict:
+    def _ptp_profile(self) -> dict:
         if (ptp_profile_name := get(self._hostvars, "switch.ptp.profile")) is None:
             return {}
 
@@ -346,7 +346,7 @@ class UtilsMixin:
         ptp_config = {}
 
         # Apply PTP profile config
-        ptp_config.update(self._default_ptp_profile)
+        ptp_config.update(self._ptp_profile)
 
         ptp_config["enable"] = True
         ptp_config.pop("profile", None)
