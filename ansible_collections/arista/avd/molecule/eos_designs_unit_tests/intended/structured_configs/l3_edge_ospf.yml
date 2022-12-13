@@ -30,6 +30,7 @@ router_ospf:
       - ethernet2
       - ethernet3
       - ethernet4
+      bfd_enable: false
 ethernet_interfaces:
   ethernet1:
     peer: peer1

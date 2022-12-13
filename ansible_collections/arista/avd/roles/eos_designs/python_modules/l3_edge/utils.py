@@ -105,12 +105,12 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_as")
 
     @cached_property
-    def _ptp_profiles(self) -> list:
-        return get(self._hostvars, "ptp_profiles", [])
+    def _default_ptp_profile(self) -> dict:
+        if (ptp_profile_name := get(self._hostvars, "switch.ptp.profile")) is None:
+            return {}
 
-    @cached_property
-    def _ptp_profile(self) -> str | None:
-        return get(self._hostvars, "switch.ptp.profile")
+        ptp_profiles = get(self._hostvars, "ptp_profiles", [])
+        return get_item(ptp_profiles, "profile", ptp_profile_name, default={})
 
     @cached_property
     def _filtered_p2p_links(self) -> list:
@@ -337,16 +337,22 @@ class UtilsMixin:
         Covers config that is only applicable to ethernet interfaces.
         This config will only be used on both main interfaces and port-channel members.
         """
-        ptp_config = None
-        if p2p_link.get("ptp_enable") is True:
-            ptp_config = get_item(self._ptp_profiles, "profile", self._ptp_profile, default={})
-            ptp_config["enable"] = True
-            ptp_config.pop("profile", None)
 
-        return {
-            "speed": p2p_link.get("speed"),
-            "ptp": ptp_config,
-        }
+        ethernet_cfg = {"speed": p2p_link.get("speed")}
+
+        if p2p_link.get("ptp_enable") is not True:
+            return ethernet_cfg
+
+        ptp_config = {}
+
+        # Apply PTP profile config
+        ptp_config.update(self._default_ptp_profile)
+
+        ptp_config["enable"] = True
+        ptp_config.pop("profile", None)
+        ethernet_cfg["ptp"] = ptp_config
+
+        return ethernet_cfg
 
     def _get_port_channel_member_cfg(self, p2p_link: dict) -> dict:
         """
