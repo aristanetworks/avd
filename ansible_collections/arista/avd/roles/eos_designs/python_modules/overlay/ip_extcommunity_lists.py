@@ -16,9 +16,6 @@ class IpExtCommunityListsMixin(UtilsMixin):
         """
         Return structured config for ip_extcommunity_lists
         """
-        if self._configure_overlay is False:
-            return None
-
         if self._overlay_routing_protocol != "ibgp":
             return None
 

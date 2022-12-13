@@ -18,9 +18,6 @@ class RouteMapsMixin(UtilsMixin):
 
         TODO
         """
-        if self._configure_overlay is False:
-            return None
-
         if self._overlay_mpls is True:
             # some logic
             pass

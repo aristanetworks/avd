@@ -32,3 +32,14 @@ class AvdStructuredConfig(
         super().__init__(hostvars, templar)
         self._avd_ip_addressing = load_ip_addressing(hostvars, templar)
         self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar)
+
+    def render(self) -> dict:
+        """
+        Wrap class render function with a check if one of the following vars are True:
+        - switch.overlay.evpn
+        - switch.overlay.vpn_ipv4
+        - switch.overlay.vpn_ipv6
+        """
+        if self._configure_overlay is True:
+            return super().render()
+        return {}

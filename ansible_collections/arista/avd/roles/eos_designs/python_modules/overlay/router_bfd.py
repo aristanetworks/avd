@@ -16,9 +16,6 @@ class RouterBfdMixin(UtilsMixin):
         """
         return structured config for router_bfd
         """
-        if self._configure_overlay is False:
-            return None
-
         if self._bfd_multihop is None:
             return None
 

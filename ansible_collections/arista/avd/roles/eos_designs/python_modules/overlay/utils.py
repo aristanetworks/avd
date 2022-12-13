@@ -196,14 +196,37 @@ class UtilsMixin:
     def _mpls_overlay_role(self) -> str | None:
         return get(self._hostvars, "switch.mpls_overlay_role")
 
+    # The next two should probably be moved to facts
+    @cached_property
+    def _is_mpls_client(self) -> bool:
+        return self._mpls_overlay_role == "client" or (self._evpn_role == "client" and self._overlay_evpn_mpls is True)
+
+    @cached_property
+    def _is_mpls_server(self) -> bool:
+        return self._mpls_overlay_role == "server" or (self._evpn_role == "server" and self._overlay_evpn_mpls is True)
+
+    # maybe this needs to be moved to facts
+    def _is_peer_mpls_client(self, peer_facts: dict) -> bool:
+        return peer_facts.get("mpls_overlay_role", None) == "client" or (
+            peer_facts.get("evpn_role", None) == "client" and get(peer_facts, "overlay.evpn_mpls") is True
+        )
+
+    def _is_peer_mpls_server(self, peer_facts: dict) -> bool:
+        return peer_facts.get("mpls_overlay_role", None) == "server" or (
+            peer_facts.get("evpn_role", None) == "server" and get(peer_facts, "overlay.evpn_mpls") is True
+        )
+
     @cached_property
     def _mpls_route_reflectors(self) -> dict:
-        if self._mpls_overlay_role != "client":
+        if self._is_mpls_client is not True:
             return {}
 
         mpls_route_reflectors = {}
 
-        for route_reflector in sorted(get(self._hostvars, "switch.mpls_route_reflectors")):
+        for route_reflector in sorted(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
+            if route_reflector == self._hostname:
+                continue
+
             peer_facts = get(
                 self._hostvars,
                 f"avd_switch_facts..{route_reflector}..switch",
@@ -211,7 +234,8 @@ class UtilsMixin:
                 required=True,
                 org_key=f"avd_switch_facts.{route_reflector}.switch",
             )
-            if peer_facts.get("mpls_overlay_role") != "server":
+
+            if self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
             mpls_route_reflectors[route_reflector] = {
@@ -221,20 +245,25 @@ class UtilsMixin:
 
         return mpls_route_reflectors
 
+    @cached_property
     def _overlay_evpn_mpls(self) -> bool:
         return get(self._hostvars, "switch.overlay.evpn_mpls") is True
 
     @cached_property
-    def _mpls_rr_peers(self) -> dict:
-        if not self._overlay_mpls:
-            return {}
+    def _overlay_evpn_vxlan(self) -> bool:
+        return get(self._hostvars, "switch.overlay.evpn_vxlan") is True
 
-        if self._mpls_overlay_role != "server" or not (self._evpn_role == "server" and self._overlay_evpn_mpls):
+    @cached_property
+    def _mpls_rr_peers(self) -> dict:
+        if self._is_mpls_server is not True:
             return {}
 
         mpls_rr_peers = {}
 
         for route_reflector in sorted(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
+            if route_reflector == self._hostname:
+                continue
+
             peer_facts = get(
                 self._hostvars,
                 f"avd_switch_facts..{route_reflector}..switch",
@@ -242,7 +271,8 @@ class UtilsMixin:
                 required=True,
                 org_key=f"avd_switch_facts.{route_reflector}.switch",
             )
-            if peer_facts.get("mpls_overlay_role") != "server":
+
+            if self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
             mpls_rr_peers[route_reflector] = {
@@ -259,10 +289,12 @@ class UtilsMixin:
                 org_key=f"avd_switch_facts.{avd_peer}.switch",
             )
 
-            if peer_facts.get("mpls_overlay_role") != "server" or not (peer_facts.get("evpn_role") == "server" and self._overlay_evpn_mpls is True):
+            if self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
-            if self._hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in self._mpls_route_reflectors.keys():
+            if self._hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in get(
+                self._hostvars, "switch.mpls_route_reflectors", default=[]
+            ):
                 mpls_rr_peers[avd_peer] = {
                     "bgp_as": peer_facts.get("bgp_as"),
                     "ip_address": get(peer_facts, "overlay.peering_address", required=True),
@@ -305,7 +337,7 @@ class UtilsMixin:
                 required=True,
                 org_key=f"avd_switch_facts.{fabric_switch}.switch",
             )
-            if peer_facts.get("mpls_overlay_role") != "client":
+            if self._is_peer_mpls_client(peer_facts) is not True:
                 continue
 
             mpls_mesh_pe[fabric_switch] = {
@@ -324,10 +356,7 @@ class UtilsMixin:
 
     @cached_property
     def _mpls_route_clients(self) -> dict:
-        if not self._overlay_mpls:
-            return {}
-
-        if self._mpls_overlay_role != "server" or not (self._evpn_role == "server" and self._overlay_evpn_mpls):
+        if self._is_mpls_server is not True:
             return {}
 
         mpls_route_clients = {}
@@ -341,7 +370,7 @@ class UtilsMixin:
                 org_key=f"avd_switch_facts.{avd_peer}.switch",
             )
 
-            if peer_facts.get("mpls_overlay_role") != "client" or not (peer_facts.get("evpn_role") == "client" and self._overlay_evpn_mpls is True):
+            if self._is_peer_mpls_client(peer_facts) is not True:
                 continue
 
             if self._hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in self._mpls_route_reflectors.keys():
