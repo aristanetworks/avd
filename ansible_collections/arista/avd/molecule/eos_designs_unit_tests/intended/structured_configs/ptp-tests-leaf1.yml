@@ -181,7 +181,7 @@ ethernet_interfaces:
     vlans: 11
     ptp:
       announce:
-        interval: -1
+        interval: -2
         timeout: 3
       delay_req: -4
       sync_message:
