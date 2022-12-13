@@ -49,7 +49,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ptp_config = {}
 
                     # Apply PTP profile config
-                    ptp_config.update(self._default_ptp_profile)
+                    ptp_config.update(self._ptp_profile)
 
                     ptp_config["enable"] = True
                     ptp_config.pop("profile", None)

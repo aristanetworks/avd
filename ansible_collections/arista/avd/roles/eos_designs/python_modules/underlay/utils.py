@@ -102,7 +102,7 @@ class UtilsMixin:
         return get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.name", required=True)
 
     @cached_property
-    def _default_ptp_profile(self) -> dict:
+    def _ptp_profile(self) -> dict:
         if (ptp_profile_name := get(self._hostvars, "switch.ptp.profile")) is None:
             return {}
 
