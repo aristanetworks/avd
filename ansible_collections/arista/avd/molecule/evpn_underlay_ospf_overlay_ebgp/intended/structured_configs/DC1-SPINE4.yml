@@ -111,9 +111,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.6/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -122,9 +122,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.14/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -133,9 +133,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2B_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.22/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -144,9 +144,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.30/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -155,9 +155,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3B_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.38/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -166,9 +166,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.46/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -177,9 +177,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1B_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.54/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -194,6 +194,7 @@ router_ospf:
     101:
       passive_interface_default: true
       router_id: 192.168.255.4
+      max_lsa: 12000
       no_passive_interfaces:
       - Ethernet1
       - Ethernet2
@@ -203,7 +204,6 @@ router_ospf:
       - Ethernet6
       - Ethernet7
       bfd_enable: true
-      max_lsa: 12000
 router_bfd:
   multihop:
     interval: 1200

@@ -553,8 +553,8 @@ port_channel_interfaces:
     description: EVPN-MULTICAST-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 1-9,110-111,210-211,256-257,310-311,4092
     mode: trunk
+    vlans: 1-9,110-111,210-211,256-257,310-311,4092
     mlag: 6
 ethernet_interfaces:
   Ethernet3:
@@ -582,9 +582,9 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet2
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.3/31
     pim:
       ipv4:
@@ -594,8 +594,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: EVPN-MULTICAST-L2LEAF1A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 6
       mode: active

@@ -189,9 +189,9 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-SPINE1_Ethernet2
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.23/31
 mlag_configuration:
   domain_id: CUSTOM_TEMPLATES_L3LEAF1

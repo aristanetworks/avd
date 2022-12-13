@@ -287,9 +287,9 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,2500,2600,4085
     mode: trunk
     service_profile: QOS-PROFILE
+    vlans: 110-112,2500,2600,4085
     mlag: 3
   Port-Channel16:
     description: server-1_PortChannel
@@ -363,32 +363,32 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.17.110.9/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.17.110.11/31
   Ethernet3:
     peer: DC1-POD1-L2LEAF2A
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-POD1-L2LEAF2A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 3
       mode: active
@@ -397,8 +397,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-POD1-L2LEAF2B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 3
       mode: active

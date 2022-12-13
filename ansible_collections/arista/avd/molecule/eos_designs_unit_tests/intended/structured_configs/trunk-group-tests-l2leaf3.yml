@@ -22,8 +22,8 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: l3leaf
     description: TRUNK-GROUP-TESTS-L3LEAF1A_Ethernet5
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -32,8 +32,8 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: l3leaf
     description: TRUNK-GROUP-TESTS-L3LEAF1B_Ethernet5
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -53,9 +53,9 @@ port_channel_interfaces:
     description: TRUNK_GROUP_TESTS_L3LEAF1_Po5
     type: switched
     shutdown: false
+    mode: trunk
     trunk_groups:
     - UPLINK
-    mode: trunk
 vlans:
   200:
     tenant: TRUNK_GROUP_TESTS

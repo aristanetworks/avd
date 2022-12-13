@@ -277,6 +277,7 @@ class UtilsMixin:
             "service_profile": p2p_link.get("qos_profile", self._p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
         }
+
         if (ip := get(p2p_link, "ip")) is not None:
             interface_cfg["ip_address"] = ip[index]
 

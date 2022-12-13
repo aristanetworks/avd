@@ -140,13 +140,13 @@ ethernet_interfaces:
     peer_interface: Ethernet10
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet10
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
-    ip_address: 10.10.101.1/31
     link_tracking_groups:
     - name: LT_GROUP1
       direction: upstream
+    ip_address: 10.10.101.1/31
   Ethernet11:
     peer: ROUTER02_WITH_SUBIF
     peer_interface: Eth1

@@ -312,9 +312,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.33/31
   Ethernet2:
     peer: DC1-SPINE2
@@ -322,9 +322,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.35/31
   Ethernet3:
     peer: DC1-SPINE3
@@ -332,9 +332,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.37/31
   Ethernet4:
     peer: DC1-SPINE4
@@ -342,17 +342,17 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.39/31
   Ethernet7:
     peer: DC1-L2LEAF1A
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF1A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -361,8 +361,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF1B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -371,8 +371,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF3A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 9
       mode: active
@@ -449,8 +449,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-111,120-121,130-131,160-161
     evpn_ethernet_segment:
       identifier: 0000:1234:0808:0707:0606
       route_target: 08:08:07:07:06:06
@@ -459,8 +459,8 @@ port_channel_interfaces:
     description: DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-111,120-121,130-131,160-161
     evpn_ethernet_segment:
       identifier: 0000:1234:0606:0707:0808
       route_target: 06:06:07:07:08:08

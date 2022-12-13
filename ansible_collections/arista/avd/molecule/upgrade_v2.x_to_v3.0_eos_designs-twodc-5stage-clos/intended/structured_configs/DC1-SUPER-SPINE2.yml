@@ -88,58 +88,58 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet2
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.16.11.64/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet2
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.16.11.66/31
   Ethernet3:
     peer: DC1-POD2-SPINE1
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.16.12.64/31
   Ethernet4:
     peer: DC1-POD2-SPINE2
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet2
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.16.12.66/31
   Ethernet5:
     peer: DC1-RS2
     peer_interface: Ethernet1
     peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS2_Ethernet1
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
-    shutdown: false
     ip_address: 172.17.10.8/31
   Ethernet6:
     peer: DC2-SUPER-SPINE2

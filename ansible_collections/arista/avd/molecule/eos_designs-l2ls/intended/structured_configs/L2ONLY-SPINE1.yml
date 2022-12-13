@@ -47,15 +47,15 @@ port_channel_interfaces:
     description: L2ONLY-LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
     mlag: 1
   Port-Channel2:
     description: L2ONLY-LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
     mlag: 2
 ethernet_interfaces:
   Ethernet3:
@@ -83,8 +83,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: leaf
     description: L2ONLY-LEAF1_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -93,8 +93,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: leaf
     description: L2ONLY-LEAF2_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 2
       mode: active
