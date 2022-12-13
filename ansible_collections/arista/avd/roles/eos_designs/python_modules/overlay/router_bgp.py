@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
@@ -295,14 +296,15 @@ class RouterBgpMixin(UtilsMixin):
 
         peer_groups = {}
 
-        if self._overlay_mpls is True:
+        if self._overlay_evpn_vxlan is True:
+            overlay_peer_group_name = self._peer_group_evpn_overlay_peers
+        elif self._overlay_mpls is True:
             overlay_peer_group_name = self._peer_group_mpls_overlay_peers
             address_family_evpn["neighbor_default"] = {"encapsulation": "mpls"}
             if get(self._hostvars, "switch.overlay.ler") is True:
                 address_family_evpn["neighbor_default"]["next_hop_self_source_interface"] = "Loopback0"
         else:
-            # evpn_vxlan
-            overlay_peer_group_name = self._peer_group_evpn_overlay_peers
+            raise AristaAvdError("No name for overlay_peer_group")
 
         peer_groups[overlay_peer_group_name] = {"activate": True}
 
