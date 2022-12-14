@@ -4,6 +4,9 @@
 type: dict
 dynamic_keys:
   "network_services_keys.name":
+    $ref: "#/keys/network_services"
+keys:
+  network_services:
     type: list
     primary_key: name
     convert_types:
@@ -531,6 +534,12 @@ dynamic_keys:
                         description: Node
                     description:
                       type: str
+                    descriptions:
+                      type: list
+                      items:
+                        type: str
+                      description: |
+                        "descriptions" has precedence over "description"
                     enabled:
                       type: bool
                     mtu:

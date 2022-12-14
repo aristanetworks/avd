@@ -118,10 +118,10 @@ Keys are the same as used under endpoints adapters. Keys defined under endpoints
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "port_profiles.[].storm_control.multicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional var and is hardware dependent |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown_unicast</samp>](## "port_profiles.[].storm_control.unknown_unicast") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "port_profiles.[].storm_control.unknown_unicast.level") | Integer |  |  |  | Configure maximum storm-control level |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "port_profiles.[].storm_control.unknown_unicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional var and is hardware dependentOptional var and is hardware dependent |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "port_profiles.[].switch_ports") | List, items: String | Required |  |  | List of switch interfac(es) |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "port_profiles.[].storm_control.unknown_unicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional var and is hardware dependent |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "port_profiles.[].switch_ports") | List, items: String |  |  |  | List of switch interfac(es) |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "port_profiles.[].switch_ports.[].&lt;str&gt;") | String |  |  |  | Switchport interface |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "port_profiles.[].switches") | List, items: String | Required |  |  | List of switch(es) |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "port_profiles.[].switches") | List, items: String |  |  |  | List of switch(es) |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "port_profiles.[].switches.[].&lt;str&gt;") | String |  |  |  | Device |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "port_profiles.[].trunk_groups") | List, items: String |  |  |  | Required with "enable_trunk_groups: true"<br>Trunk Groups are used for limiting vlans on trunk ports to vlans with the same Trunk Group<br> |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "port_profiles.[].trunk_groups.[].&lt;str&gt;") | String |  |  |  |  |

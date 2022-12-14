@@ -4,6 +4,9 @@
 type: dict
 dynamic_keys:
   "connected_endpoints_keys.key":
+    $ref: "#/keys/connected_endpoints"
+keys:
+  connected_endpoints:
     type: list
     primary_key: name
     convert_types:
@@ -44,7 +47,6 @@ dynamic_keys:
                   description: Interface name
               switch_ports:
                 type: list
-                required: true
                 description: List of switch interfac(es)
                 items:
                   type: str
@@ -56,7 +58,6 @@ dynamic_keys:
               switches:
                 type: list
                 description: List of switch(es)
-                required: true
                 items:
                   type: str
                   description: Device
@@ -275,50 +276,11 @@ dynamic_keys:
                         default: "percent"
                         description: Optional var and is hardware dependent
                   broadcast:
-                    type: dict
-                    keys:
-                      level:
-                        type: int
-                        convert_types:
-                          - str
-                        description: Configure maximum storm-control level
-                      unit:
-                        type: str
-                        valid_values:
-                          - "percent"
-                          - "pps"
-                        default: "percent"
-                        description: Optional var and is hardware dependent
+                    $ref: "#/keys/connected_endpoints/items/keys/adapters/items/keys/storm_control/keys/all"
                   multicast:
-                    type: dict
-                    keys:
-                      level:
-                        type: int
-                        convert_types:
-                          - str
-                        description: Configure maximum storm-control level
-                      unit:
-                        type: str
-                        valid_values:
-                          - "percent"
-                          - "pps"
-                        default: "percent"
-                        description: Optional var and is hardware dependent
+                    $ref: "#/keys/connected_endpoints/items/keys/adapters/items/keys/storm_control/keys/all"
                   unknown_unicast:
-                    type: dict
-                    keys:
-                      level:
-                        type: int
-                        convert_types:
-                          - str
-                        description: Configure maximum storm-control level
-                      unit:
-                        type: str
-                        valid_values:
-                          - "percent"
-                          - "pps"
-                        default: "percent"
-                        description: Optional var and is hardware dependentOptional var and is hardware dependent
+                    $ref: "#/keys/connected_endpoints/items/keys/adapters/items/keys/storm_control/keys/all"
               monitor_sessions:
                 type: list
                 description: Monitor Session configuration - Use defined switchports as source or destination for monitoring sessions

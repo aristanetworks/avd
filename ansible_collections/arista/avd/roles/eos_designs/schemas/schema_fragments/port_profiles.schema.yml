@@ -7,7 +7,6 @@ keys:
     type: list
     documentation_options:
       filename: "connected_endpoints"
-    display_name: Port Profiles
     description: |
       Optional profiles to share common settings for connected_endpoints and/or network_ports
       Keys are the same as used under endpoints adapters. Keys defined under endpoints adapters take precedence.
@@ -20,6 +19,8 @@ keys:
         profile:
           type: str
           required: true
-          display_name: Profile Name
+        parent_profile:
+          type: str
+          description: Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
  # Since the ref below will inherit the profile setting from adapters, we have to override the keys we don't want.
-      $ref: '#/dynamic_keys/connected_endpoints_keys.key/items/keys/adapters/items'
+      $ref: '#/keys/connected_endpoints/items/keys/adapters/items'
