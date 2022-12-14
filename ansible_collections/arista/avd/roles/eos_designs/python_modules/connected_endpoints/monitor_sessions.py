@@ -18,7 +18,7 @@ class MonitorSessionsMixin(UtilsMixin):
     """
 
     @cached_property
-    def monitor_sessions(self):
+    def monitor_sessions(self) -> list | None:
         """
         Return structured_config for monitor_sessions
         """
@@ -61,7 +61,7 @@ class MonitorSessionsMixin(UtilsMixin):
         return None
 
     @cached_property
-    def _monitor_session_configs(self):
+    def _monitor_session_configs(self) -> list:
         """
         Return list of monitor session configs extracted from every interface
         """
