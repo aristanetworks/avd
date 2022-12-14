@@ -43,6 +43,7 @@ class UtilsMixin:
                 for adapter_index, adapter in enumerate(connected_endpoint["adapters"]):
                     if "profile" in adapter:
                         port_profile = get_item(self._merged_port_profiles, "profile", adapter["profile"], default={})
+                        # Notice reusing the same variable, but assigning a new instance with the merged adapter
                         adapter = merge(port_profile, adapter, list_merge="replace", destructive_merge=False)
                         adapter.pop("profile")
 
@@ -55,7 +56,8 @@ class UtilsMixin:
                     if len(adapter["switch_ports"]) != nodes_length or (endpoint_ports is not None and len(endpoint_ports) != nodes_length):
                         raise AristaAvdError(
                             f"Length of lists 'switches', 'switch_ports', 'endpoint_ports' (if used) did not match on adapter {adapter_index} on"
-                            f" connected_endpoint '{connected_endpoint['name']}' under '{connected_endpoints_key['key']}'"
+                            f" connected_endpoint '{connected_endpoint['name']}' under '{connected_endpoints_key['key']}'."
+                            " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )
 
                     filtered_adapters.append(adapter)
@@ -76,6 +78,7 @@ class UtilsMixin:
         for network_port in get(self._hostvars, "network_ports", default=[]):
             if "profile" in network_port:
                 port_profile = get_item(self._merged_port_profiles, "profile", network_port["profile"], default={})
+                # Notice reusing the same variable, but assigning a new instance with the merged network_port
                 network_port = merge(port_profile, network_port, list_merge="replace", destructive_merge=False)
                 network_port.pop("profile")
 
@@ -110,9 +113,9 @@ class UtilsMixin:
         for port_profile in self._port_profiles:
             if "parent_profile" in port_profile:
                 parent_profile = get_item(self._port_profiles, "profile", port_profile["parent_profile"], default={})
-                port_profile = merge(parent_profile, port_profile, list_merge="replace", destructive_merge=False)
-                port_profile.pop("parent_profile")
-            merged_port_profiles.append(port_profile)
+                merged_port_profile = merge(parent_profile, port_profile, list_merge="replace", destructive_merge=False)
+                merged_port_profile.pop("parent_profile")
+            merged_port_profiles.append(merged_port_profile)
 
         return merged_port_profiles
 
