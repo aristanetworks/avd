@@ -128,8 +128,6 @@ class UtilsFilteredTenantsMixin(object):
             ]
 
             vrf["_l3_multicast_enabled"] = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
-            vrf["_l3_multicast_evpn_peg"] = default(get(vrf, "l3_multicast.evpn_peg"), get(tenant, "l3_multicast.evpn_peg"), [])
-            # vrf["_l3_multicast_rp_addresses"] = default(get(vrf, "l3_multicast.rp_addresses"), get(tenant, "l3_multicast.rp_addresses"), [])
 
             rps = []
             for rp_address in default(get(vrf, "l3_multicast.rp_addresses"), get(tenant, "l3_multicast.rp_addresses"), []):
