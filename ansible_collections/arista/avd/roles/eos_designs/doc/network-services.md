@@ -164,7 +164,7 @@ mac_address_table:
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
           transit: < true | false | default false >                    # Enable EVPN PEG transit mode
       rp_addresses:
-          # For each group of nodes, allow configuration of RP Addresses & associated groups
+        # For each group of nodes, allow configuration of RP Addresses & associated groups
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
           rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
           groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
