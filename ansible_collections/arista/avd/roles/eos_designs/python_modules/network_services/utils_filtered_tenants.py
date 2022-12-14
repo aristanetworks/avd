@@ -6,6 +6,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
@@ -128,6 +129,11 @@ class UtilsFilteredTenantsMixin(object):
             ]
 
             vrf["_l3_multicast_enabled"] = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
+
+            if vrf["_l3_multicast_enabled"] is True and not get(self._hostvars, "evpn_multicast"):
+                raise AristaAvdError(
+                    "'l3_multicast: True' is only supported on a VRF/Tenant in combination with 'underlay_multicast: True' and 'evpn_multicast: True'"
+                )
 
             rps = []
             for rp_address in default(get(vrf, "l3_multicast.rp_addresses"), get(tenant, "l3_multicast.rp_addresses"), []):

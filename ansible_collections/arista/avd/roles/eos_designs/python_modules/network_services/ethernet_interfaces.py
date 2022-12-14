@@ -113,6 +113,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         interface["ospf_message_digest_keys"] = ospf_keys
 
                             if (pim_config := get(l3_interface, "pim.enabled")) and get(vrf, "_l3_multicast_enabled"):
+                                if not get(vrf, "_l3_multicast_rp_addresses"):
+                                    raise AristaAvdError(f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} with no RPs defined")
+
                                 interface["pim"] = {"ipv4": {"sparse_mode": pim_config}}
 
                             # Strip None values from vlan before adding to list
