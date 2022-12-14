@@ -113,9 +113,10 @@ class UtilsMixin:
         for port_profile in self._port_profiles:
             if "parent_profile" in port_profile:
                 parent_profile = get_item(self._port_profiles, "profile", port_profile["parent_profile"], default={})
-                merged_port_profile = merge(parent_profile, port_profile, list_merge="replace", destructive_merge=False)
-                merged_port_profile.pop("parent_profile")
-            merged_port_profiles.append(merged_port_profile)
+                # Notice reusing the same variable, but assigning a new instance with the merged port_profile
+                port_profile = merge(parent_profile, port_profile, list_merge="replace", destructive_merge=False)
+                port_profile.pop("parent_profile")
+            merged_port_profiles.append(port_profile)
 
         return merged_port_profiles
 
