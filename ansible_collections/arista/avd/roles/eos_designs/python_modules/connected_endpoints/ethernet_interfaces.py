@@ -29,8 +29,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                     if node_name != self._hostname:
                         continue
 
-                    # TODO: verify that length of all lists are the same
-
                     ethernet_interface_name = adapter["switch_ports"][node_index]
                     ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
 

@@ -39,17 +39,28 @@ class UtilsMixin:
                 if "adapters" not in connected_endpoint:
                     continue
 
-                connected_endpoint["adapters"] = [adapter for adapter in connected_endpoint["adapters"] if self._hostname in adapter.get("switches", [])]
-
+                filtered_adapters = []
                 for adapter_index, adapter in enumerate(connected_endpoint["adapters"]):
-                    if "profile" not in adapter:
+                    if "profile" in adapter:
+                        port_profile = get_item(self._merged_port_profiles, "profile", adapter["profile"], default={})
+                        adapter = merge(port_profile, adapter, list_merge="replace", destructive_merge=False)
+                        adapter.pop("profile")
+
+                    if self._hostname not in adapter.get("switches", []):
                         continue
 
-                    port_profile = get_item(self._merged_port_profiles, "profile", adapter["profile"], default={})
-                    adapter = merge(port_profile, adapter, list_merge="replace", destructive_merge=False)
-                    adapter.pop("profile")
-                    connected_endpoint["adapters"][adapter_index] = adapter
+                    # Verify that length of all lists are the same
+                    nodes_length = len(adapter["switches"])
+                    endpoint_ports = default(adapter.get("endpoint_ports"), adapter.get("server_ports"))
+                    if len(adapter["switch_ports"]) != nodes_length or (endpoint_ports is not None and len(endpoint_ports) != nodes_length):
+                        raise AristaAvdError(
+                            f"Length of lists 'switches', 'switch_ports', 'endpoint_ports' (if used) did not match on adapter {adapter_index} on"
+                            f" connected_endpoint '{connected_endpoint['name']}' under '{connected_endpoints_key['key']}'"
+                        )
 
+                    filtered_adapters.append(adapter)
+
+                connected_endpoint["adapters"] = filtered_adapters
                 connected_endpoint["type"] = connected_endpoints_key["type"]
                 filtered_connected_endpoints.append(connected_endpoint)
 
@@ -63,13 +74,13 @@ class UtilsMixin:
         """
         filtered_network_ports = []
         for network_port in get(self._hostvars, "network_ports", default=[]):
-            if not self._match_regexes(network_port.get("switches"), self._hostname):
-                continue
-
             if "profile" in network_port:
                 port_profile = get_item(self._merged_port_profiles, "profile", network_port["profile"], default={})
                 network_port = merge(port_profile, network_port, list_merge="replace", destructive_merge=False)
                 network_port.pop("profile")
+
+            if not self._match_regexes(network_port.get("switches"), self._hostname):
+                continue
 
             filtered_network_ports.append(network_port)
 
