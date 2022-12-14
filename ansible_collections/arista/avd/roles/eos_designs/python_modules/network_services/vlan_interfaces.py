@@ -74,7 +74,7 @@ class VlanInterfacesMixin(UtilsMixin):
             else:
                 vlan_interface_config["ip_igmp"] = True
 
-            if vlan_virtual_address:
+            if get(vlan_interface_config, "ip_address_virtual"):
                 if (vrf_diagnostic_loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
                     raise AristaAvdMissingVariableError(
                         f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{tenant['name']}'."
