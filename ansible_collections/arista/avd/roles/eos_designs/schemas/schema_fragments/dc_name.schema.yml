@@ -4,7 +4,6 @@
 type: dict
 keys:
   dc_name:
-    display_name: DC Name
     description: |
       Optional DC Name, only used in SNMP location and Fabric Documentation.
       Recommended to be common between all devices within a Site
