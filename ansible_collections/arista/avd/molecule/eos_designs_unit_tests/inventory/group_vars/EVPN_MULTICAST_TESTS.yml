@@ -466,7 +466,7 @@ tenants:
 
         l3_multicast:
           enabled: true
-          # Test no 'nodes' key in node_settings (applies to all devices)
+          # Test no 'nodes' key in rp_addresses (applies to all devices)
           rp_addresses:
             - rps:
                 - 10.20.20.20
@@ -514,7 +514,7 @@ tenants:
         vrf_vni: 52
         svis:
           250:
-            name: "L3_MULTICAST_DISABLED_250"
+            name: "L3_MULTICAST_ENABLED_250"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.1.15.1/24
@@ -532,4 +532,36 @@ tenants:
             pim:
               enabled: true
 
-# Add another test case here for setting no nodes on evpn_peg
+      # This VRF tests evpn_peg with no nodes defined
+      # Should apply transit setting on any node where an RP is defined
+      TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
+        description: "L3_MULTICAST_TRANSIT"
+        vtep_diagnostic:
+          loopback: 60
+          loopback_ip_range: 10.255.60.0/24
+        l3_multicast:
+          enabled: true
+          # Test transit mode
+          evpn_peg:
+            - transit: true
+          rp_addresses:
+            - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+              rps:
+                - 10.30.30.30
+            - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+              rps:
+                - 10.60.60.60
+        vrf_vni: 60
+        svis:
+          260:
+            name: "L3_MULTICAST_ENABLED_260"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.1.26.1/24
+        l3_interfaces:
+          - interfaces: [Ethernet10, Ethernet10]
+            ip_addresses: [10.1.60.0/31, 10.1.60.2/31]
+            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            enabled: true
+            pim:
+              enabled: true

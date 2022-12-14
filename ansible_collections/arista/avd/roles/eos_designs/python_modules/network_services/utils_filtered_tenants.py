@@ -148,7 +148,7 @@ class UtilsFilteredTenantsMixin(object):
                 vrf["_l3_multicast_rp_addresses"] = rps
 
             for evpn_peg in default(get(vrf, "l3_multicast.evpn_peg"), get(tenant, "l3_multicast.evpn_peg"), []):
-                if self._hostname in get(evpn_peg, "nodes", default=[]) or "nodes" not in evpn_peg:
+                if self._hostname in get(evpn_peg, "nodes", default=[]) or ("nodes" not in evpn_peg and rps):
                     vrf["_l3_multicast_evpn_peg_transit"] = get(evpn_peg, "transit")
 
             if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:

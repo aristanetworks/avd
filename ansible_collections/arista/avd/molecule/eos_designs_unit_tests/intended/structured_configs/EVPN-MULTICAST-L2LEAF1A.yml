@@ -51,7 +51,7 @@ port_channel_interfaces:
     type: switched
     shutdown: false
     mode: trunk
-    vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,310-311,330-331,550,4092
+    vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
 vlans:
   310:
     tenant: Tenant_A
@@ -140,9 +140,12 @@ vlans:
   550:
     tenant: Tenant_E
     name: L3_MULTICAST_ENABLED_550
+  260:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_260
   250:
     tenant: Tenant_E
-    name: L3_MULTICAST_DISABLED_250
+    name: L3_MULTICAST_ENABLED_250
   150:
     tenant: Tenant_E
     name: L3_MULTICAST_ENABLED_150
