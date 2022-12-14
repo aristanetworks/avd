@@ -176,11 +176,15 @@ class RouterBgpMixin(UtilsMixin):
 
         if self._evpn_gateway_vxlan_l2 is True or self._evpn_gateway_vxlan_l3 is True:
             peer_groups[self._peer_group_evpn_overlay_core] = {"activate": True}
+            if self._evpn_role == "server":
+                peer_groups[self._peer_group_evpn_overlay_core]["default_route_target"] = {"only": True}
+
+        # Transposing the Jinja2 logic which is that if the selfevpn_overlay_core peer group is not
+        # configured thenthe default_route_target is applied in the evpn_overlay_peers peer group.
+        elif self._evpn_role == "server":
+            peer_groups[self._peer_group_evpn_overlay_peers]["default_route_target"] = {"only": True}
 
         address_family_rtc["peer_groups"] = peer_groups
-
-        if self._evpn_role == "server":
-            address_family_rtc["default_route_target"] = {"only": True}
 
         return address_family_rtc
 
@@ -352,7 +356,7 @@ class RouterBgpMixin(UtilsMixin):
         if self._overlay_evpn_vxlan is True:
             peer_groups[self._peer_group_evpn_overlay_peers] = {"activate": True}
             if self._evpn_role == "server" or self._mpls_overlay_role == "server":
-                peer_groups[self._peer_group_mpls_overlay_peers]["default_route_target"] = {"only": True}
+                peer_groups[self._peer_group_evpn_overlay_peers]["default_route_target"] = {"only": True}
 
         return {"peer_groups": peer_groups}
 

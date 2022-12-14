@@ -166,7 +166,7 @@ class UtilsMixin:
 
     @cached_property
     def _evpn_prevent_readvertise_to_server(self) -> bool:
-        return get(self._hostvars, "switch.evpn_prevent_readvertise_to_server") is True
+        return get(self._hostvars, "evpn_prevent_readvertise_to_server") is True
 
     @cached_property
     def _peer_group_mpls_overlay_peers(self) -> str | None:

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 
@@ -19,10 +21,4 @@ class RouterBfdMixin(UtilsMixin):
         if self._bfd_multihop is None:
             return None
 
-        return {
-            "multihop": {
-                "interval": self._bfd_multihop.get("interval"),
-                "min_rx": self._bfd_multihop.get("min_rx"),
-                "multiplier": self._bfd_multihop.get("multiplier"),
-            }
-        }
+        return strip_empties_from_dict({"multihop": self._bfd_multihop})

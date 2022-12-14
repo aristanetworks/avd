@@ -16,7 +16,7 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '5'
+      ebgp_multihop: 5
       send_community: all
       maximum_routes: 0
   address_family_ipv4:

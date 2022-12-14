@@ -20,16 +20,13 @@ class IpExtCommunityListsMixin(UtilsMixin):
             return None
 
         if self._vtep_ip is not None:
-            return [
-                {
-                    "name": "ECL-EVPN-SOO",
-                    "entries": [
-                        {
-                            "type": "permit",
-                            "extcommunities": f"soo {self._vtep_ip}:1",
-                        },
-                    ],
-                }
-            ]
+            return {
+                "ECL-EVPN-SOO": [
+                    {
+                        "type": "permit",
+                        "extcommunities": f"soo {self._vtep_ip}:1",
+                    },
+                ],
+            }
 
         return None

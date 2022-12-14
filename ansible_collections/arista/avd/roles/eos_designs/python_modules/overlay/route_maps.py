@@ -29,8 +29,7 @@ class RouteMapsMixin(UtilsMixin):
 
         if self._overlay_routing_protocol == "ebgp":
             if self._evpn_prevent_readvertise_to_server is True:
-                # TO DO - see if we move this computation to utils
-                remote_asns = sorted(list(set(route_server.get("bgp_as") for route_server in self._evpn_route_servers)))
+                remote_asns = sorted(list(set(self._evpn_route_servers[route_server].get("bgp_as") for route_server in self._evpn_route_servers)))
                 for remote_asn in remote_asns:
                     route_map_name = f"RM-EVPN-FILTER-AS{ remote_asn }"
                     route_maps[route_map_name] = {

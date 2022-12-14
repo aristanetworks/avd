@@ -156,8 +156,7 @@ prefix_lists:
       20:
         action: permit 192.168.254.0/24 eq 32
 ip_extcommunity_lists:
-- name: ECL-EVPN-SOO
-  entries:
+  ECL-EVPN-SOO:
   - type: permit
     extcommunities: soo 192.168.254.111:1
 router_bfd:
