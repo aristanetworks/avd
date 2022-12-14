@@ -15,8 +15,8 @@
 
 ### Router MSDP Peers
 
-| Peer Address | VRF | Mesh Groups | Local Interface | Description |
-| ------------ | --- | ----------- | --------------- | ----------- |
+| Peer Address | Disabled | VRF | Default-peer | Default-peer Prefix List | Mesh Groups | Local Interface | Description | Inbound SA Filter | Outbound SA Filter |
+| ------------ | -------- | --- | ------------ | ------------------------ | ----------- | --------------- | ----------- | ----------------- | ------------------ |
 {%         for peer in msdp_info.peers %}
 {%             if peer.mesh_groups | arista.avd.default([]) | length > 0 %}
 {%                 set row_mesh_groups = [] %}
@@ -25,7 +25,7 @@
 {%                 endfor %}
 {%                 set row_mesh_groups = row_mesh_groups | join(", ") %}
 {%             endif %}
-| {{ peer.ipv4_address }} | {{ peer.vrf | arista.avd.default("default") }} | {{ row_mesh_groups | arista.avd.default("-") }} | {{ peer.local_interface | arista.avd.default("-") }} | {{ peer.description | arista.avd.default("-") }} |
+| {{ peer.ipv4_address }} | {{ peer.disabled | arista.avd.default(false) }} | {{ peer.vrf | arista.avd.default("default") }} | {{ peer.default_peer.enabled | arista.avd.default(false) }} | {{ peer.default_peer.prefix_list | arista.avd.default("-") }} | {{ row_mesh_groups | arista.avd.default("-") }} | {{ peer.local_interface | arista.avd.default("-") }} | {{ peer.description | arista.avd.default("-") }} | {{ peer.sa_filter.in_list | arista.avd.default("-") }} | {{ peer.sa_filter.out_list | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 

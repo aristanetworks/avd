@@ -89,11 +89,11 @@ interface Management1
 
 ### Router MSDP Peers
 
-| Peer Address | VRF | Mesh Groups | Local Interface | Description |
-| ------------ | --- | ----------- | --------------- | ----------- |
-| 1.2.3.4 | default | MG1, MG2 | Loopback11 | Some kind of MSDP Peer |
-| 4.3.2.1 | default | - | Loopback21 | - |
-| 2.3.4.5 | RED | - | Loopback13 | Some other kind of MSDP Peer |
+| Peer Address | Disabled | VRF | Default-peer | Default-peer Prefix List | Mesh Groups | Local Interface | Description | Inbound SA Filter | Outbound SA Filter |
+| ------------ | -------- | --- | ------------ | ------------------------ | ----------- | --------------- | ----------- | ----------------- | ------------------ |
+| 1.2.3.4 | True | default | True | PLIST1 | MG1, MG2 | Loopback11 | Some kind of MSDP Peer | ACL1 | ACL2 |
+| 4.3.2.1 | False | default | False | PLIST2 | - | Loopback21 | - | - | - |
+| 2.3.4.5 | False | RED | True | - | - | Loopback13 | Some other kind of MSDP Peer | ACL3 | ACL4 |
 
 ### Router MSDP Device Configuration
 
