@@ -4,6 +4,9 @@
 type: dict
 dynamic_keys:
   "node_type_keys.key":
+    $ref: "#/keys/node_type"
+keys:
+  node_type:
     documentation_options:
       filename: "fabric_topology"
     type: dict
@@ -14,7 +17,7 @@ dynamic_keys:
           - dict
         primary_key: group
         items:
-          "$ref": "#/dynamic_keys/node_type_keys.key/keys/defaults"
+          "$ref": "#/keys/node_type/keys/defaults"
           type: dict
           keys:
             group:
@@ -22,14 +25,14 @@ dynamic_keys:
               required: true
               description: The Node Group Name is used for MLAG domain
             nodes:
-              "$ref": "#/dynamic_keys/node_type_keys.key/keys/nodes"
+              "$ref": "#/keys/node_type/keys/nodes"
       nodes:
         type: list
         convert_types:
           - dict
         primary_key: name
         items:
-          "$ref": "#/dynamic_keys/node_type_keys.key/keys/defaults"
+          "$ref": "#/keys/node_type/keys/defaults"
           type: dict
           keys:
             name:
