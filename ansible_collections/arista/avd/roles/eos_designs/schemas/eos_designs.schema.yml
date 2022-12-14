@@ -1885,6 +1885,1134 @@ dynamic_keys:
     primary_key: name
     type: list
   node_type_keys.key:
+    $ref: '#/keys/node_type'
+keys:
+  bfd_multihop:
+    description: BFD Multihop tuning
+    keys:
+      interval:
+        convert_types:
+        - str
+        default: 300
+        type: int
+      min_rx:
+        convert_types:
+        - str
+        default: 300
+        type: int
+      multiplier:
+        convert_types:
+        - str
+        default: 3
+        type: int
+    type: dict
+  bgp_as:
+    convert_types:
+    - int
+    description: AS number to use to configure overlay when "overlay_routing_protocol"
+      == IBGP
+    type: str
+  bgp_ecmp:
+    convert_types:
+    - str
+    default: 4
+    description: Maximum ECMP for BGP multi-path
+    type: int
+  bgp_maximum_paths:
+    convert_types:
+    - str
+    default: 4
+    description: Maximum Paths for BGP multi-path
+    type: int
+  bgp_mesh_pes:
+    default: false
+    description: Whether to configure an iBGP full mesh between PEs, either because
+      there is no RR used or other reasons.
+    type: bool
+  bgp_peer_groups:
+    description: 'Leverage an Arista EOS switch to generate the encrypted password
+      using the correct peer group name.
+
+      Note that the name of the peer groups use ''-'' instead of ''_'' in EOS configuration.
+
+      '
+    keys:
+      EVPN_OVERLAY_PEERS:
+        keys:
+          name:
+            default: EVPN-OVERLAY-PEERS
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+        studios_options:
+          exclude: true
+        type: dict
+      IPv4_UNDERLAY_PEERS:
+        keys:
+          name:
+            default: IPv4-UNDERLAY-PEERS
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+          structured_config:
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+            type: dict
+        studios_options:
+          exclude: true
+        type: dict
+      MLAG_IPv4_UNDERLAY_PEER:
+        keys:
+          name:
+            default: MLAG-IPv4-UNDERLAY-PEER
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+        studios_options:
+          exclude: true
+        type: dict
+      evpn_overlay_core:
+        keys:
+          name:
+            default: EVPN-OVERLAY-CORE
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+        type: dict
+      evpn_overlay_peers:
+        keys:
+          name:
+            default: EVPN-OVERLAY-PEERS
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+        type: dict
+      ipv4_underlay_peers:
+        keys:
+          name:
+            default: IPv4-UNDERLAY-PEERS
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+          structured_config:
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+            type: dict
+        type: dict
+      mlag_ipv4_underlay_peer:
+        keys:
+          name:
+            default: MLAG-IPv4-UNDERLAY-PEER
+            type: str
+          password:
+            description: Encrypted Password
+            type: str
+        type: dict
+    type: dict
+  connected_endpoints_keys:
+    convert_types:
+    - dict
+    description: 'Define connected endpoints keys, to define grouping of endpoints
+      connecting to the fabric.
+
+      This provides the ability to define various keys of your choice to better organize/group
+      your data.
+
+      This should be defined in top level group_var for the fabric.
+
+      '
+    items:
+      keys:
+        key:
+          type: str
+        type:
+          description: Type used for documentation
+          type: str
+      type: dict
+    primary_key: key
+    type: list
+  core_interfaces:
+    description: 'The `core_interfaces` data model can be used to configure L3 P2P
+      links anywhere in the fabric.
+
+      It can be between two switches that are already part of the fabric inventory,
+      or it can be towards another device,
+
+      where only one end of the link is on a switch in the fabric.
+
+      '
+    keys:
+      p2p_links:
+        items:
+          keys:
+            as:
+              description: AS Numbers for BGP or Required with bgp peering
+              items:
+                description: The values can be like ["node_a_as", "node_b_as"]
+                type: str
+              type: list
+            bfd:
+              default: false
+              description: Enable BFD (only considered for BGP).
+              type: bool
+            id:
+              convert_types:
+              - str
+              description: 'Unique id per subnet_summary. Used to calculate ip addresses
+                or Required with ip_pool.
+
+                ID starting from 1
+
+                '
+              type: int
+            include_in_underlay_protocol:
+              default: true
+              description: Add this interface to underlay routing protocol.
+              type: bool
+            interfaces:
+              description: Interfaces where this link should be configured and Required
+                unless using port-channels
+              items:
+                description: 'The value can be like < node_a_interface >, < node_b_interface
+                  >
+
+                  ex. - [ Ethernet2, Ethernet2 ]
+
+                  '
+                type: str
+              type: list
+            ip:
+              description: Specific IP addresses used on this P2P link
+              items:
+                description: Node IPv4 address/Mask
+                type: str
+              type: list
+            ip_pool:
+              description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
+                A /31 will be taken from the pool per P2P link
+              type: str
+            ipv6_enable:
+              default: false
+              description: Allows turning on ipv6 for the link or profile (also autodetected
+                based on underlay_rfc5549 and include_in_underlay_protocol)
+              type: bool
+            isis_authentication_key:
+              default: $1c$sTNAlR6rKSw=
+              description: IS-IS parameters
+              type: str
+            isis_authentication_mode:
+              default: md5
+              description: IS-IS parameters
+              type: str
+            isis_circuit_type:
+              default: level-2
+              description: IS-IS parameters
+              type: str
+            isis_hello_padding:
+              default: false
+              description: IS-IS parameters
+              type: bool
+            isis_metric:
+              convert_types:
+              - str
+              default: 60
+              description: IS-IS parameters
+              type: int
+            macsec_profile:
+              description: MAC security profile
+              type: str
+            mpls_ip:
+              description: MPLS parameters. Default value is true if switch.mpls_lsr
+                is true
+              type: bool
+            mpls_ldp:
+              description: MPLS parameters. Default value is true for ldp underlay
+                variants, otherwise false
+              type: bool
+            mtu:
+              convert_types:
+              - str
+              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+              type: int
+            nodes:
+              description: Nodes where this link should be configured
+              items:
+                description: 'The values can be < node_a >, < node_b >
+
+                  ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+
+                  '
+                type: str
+              required: true
+              type: list
+            port_channel:
+              description: Port-channel parameters
+              keys:
+                mode:
+                  default: active
+                  type: str
+                nodes_child_interfaces:
+                  convert_types:
+                  - dict
+                  items:
+                    keys:
+                      interfaces:
+                        description: List of node interfaces. Ex.- [ 'node1 interface1',
+                          'node1 interface2' ]
+                        items:
+                          type: str
+                        type: list
+                      node:
+                        required: true
+                        type: str
+                    type: dict
+                  primary_key: node
+                  secondary_key: interfaces
+                  type: list
+              type: dict
+            profile:
+              description: P2P profile name. Profile defined under p2p_profiles
+              type: str
+            ptp_enable:
+              default: false
+              description: Enable PTP
+              type: bool
+            qos_profile:
+              description: QOS service profile
+              type: str
+            raw_eos_cli:
+              description: EOS CLI rendered directly on the point-to-point interface
+                in the final EOS configuration.
+              type: str
+            speed:
+              description: The values can be speed or auto speed or forced speed
+              type: str
+            subnet:
+              description: IPv4 address/Mask. Subnet used on this P2P link or Optional
+              type: str
+          type: dict
+        type: list
+      p2p_links_ip_pools:
+        items:
+          keys:
+            ipv4_pool:
+              description: IPv4 address/Mask
+              type: str
+            name:
+              description: P2P pool name
+              type: str
+          type: dict
+        type: list
+      p2p_links_profiles:
+        items:
+          keys:
+            ip_pool:
+              description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
+                A /31 will be taken from the pool per P2P link
+              type: str
+            ipv6_enable:
+              default: false
+              description: Allows turning on ipv6 for the link or profile (also autodetected
+                based on underlay_rfc5549 and include_in_underlay_protocol)
+              type: bool
+            isis_authentication_key:
+              default: $1c$sTNAlR6rKSw=
+              description: IS-IS parameters
+              type: str
+            isis_authentication_mode:
+              default: md5
+              description: IS-IS parameters
+              type: str
+            isis_circuit_type:
+              default: level-2
+              description: IS-IS parameters
+              type: str
+            isis_hello_padding:
+              default: false
+              description: IS-IS parameters
+              type: bool
+            isis_metric:
+              convert_types:
+              - str
+              default: 60
+              description: IS-IS parameters
+              type: int
+            mtu:
+              convert_types:
+              - str
+              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+              type: int
+            name:
+              description: P2P profile name. Any variable supported under p2p_links
+                can be inherited from a profile.
+              type: str
+            speed:
+              description: The values can be speed or auto speed or forced speed
+              type: str
+          type: dict
+        type: list
+    type: dict
+  custom_structured_configuration_list_merge:
+    default: replace
+    description: 'The List-merge strategy can be changed using `custom_structured_configuration_list_merge`
+      variable using any value accepted by `list_merge` on the Ansible Combine filter.
+
+      '
+    type: str
+    valid_values:
+    - replace
+    - append
+    - keep
+    - prepend
+    - append_rp
+    - prepend_rp
+  custom_structured_configuration_prefix:
+    convert_types:
+    - str
+    default:
+    - custom_structured_configuration_
+    description: 'Custom EOS Structured Configuration keys can be set on any group
+      or host_var level using the name
+
+      of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
+
+      The content of Custom Structured Configuration variables will be combined with
+      the structured config generated by the eos_designs role.
+
+      By default Lists are replaced and Dictionaries are updated. The combine is done
+      recursively, so it is possible to update a sub-key of a variable set by
+
+      `eos_designs` role already.
+
+      '
+    items:
+      type: str
+    type: list
+  cvp_ingestauth_key:
+    description: CloudVision ingest authentication key is required for on-prem CVP
+    type: str
+  cvp_instance_ip:
+    description: 'IPv4 address.
+
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+
+      You can either provide a list of IPs to target on-premise CloudVision cluster
+      or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.'
+    type: str
+  cvp_instance_ips:
+    description: 'You can either provide a list of IPs to target on-premise CloudVision
+      cluster or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.
+
+      '
+    items:
+      description: IPv4 address or CV as a Service hostname
+      type: str
+    type: list
+  cvp_token_file:
+    default: /tmp/cv-onboarding-token
+    description: CVP token file is path to token file on switch and is only applicable
+      to CV as a Service
+    type: str
+  dc_name:
+    description: 'Optional DC Name, only used in SNMP location and Fabric Documentation.
+
+      Recommended to be common between all devices within a Site
+
+      '
+    display_name: DC Name
+    type: str
+  default_igmp_snooping_enabled:
+    default: true
+    description: 'Disable IGMP snooping at fabric level.
+
+      If set, it overrides per vlan settings
+
+      '
+    type: bool
+  default_interfaces:
+    description: "- Set default uplink, downlink and mlag interfaces which will be
+      used if these interfaces are not defined on a device (either directly or through
+      inheritance).\n- These are defined based on the combination of node_type (e.g.
+      l3leaf or spine) and a regex for matching the platform.\n- A list of interfaces
+      or interface ranges can be specified.\n- Each list item supports range syntax
+      that can be expanded into a list of interfaces. Interface range examples:\n
+      \ - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1,
+      Ethernet52/1 ]\n  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1,
+      Ethernet1/33/1, Ethernet1/34/1 ]\n  - Ethernet49-50,53-54: Expands to [ Ethernet49,
+      Ethernet50, Ethernet53, Ethernet54 ]\n  - Ethernet1-2/1-4: Expands to [ Ethernet1/1,
+      Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3,
+      Ethernet2/4 ]\n- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces`
+      are directly inherited by `uplink_interfaces` and `mlag_interfaces`.\n- `downlink_interfaces`
+      are referenced by the child switch (e.g. the leaf in a leaf/spine network).
+      Essentially the child switch indexes into an upstream switch's `default_downlink_interfaces`
+      using the child switch ID.  This is then used to build `uplink_switch_interfaces`
+      for that child.\n  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces`
+      are mapped with consecutive downlinks per child ID.\n  - Example for `max_parallel_uplinks:
+      2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2
+      to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`\n- Please
+      note that no default interfaces are defined in AVD itself. You will need to
+      create your own based on the example below.\n\nExample:\n\n```yaml\n- types:
+      [ spine, l3leaf ]\n  platforms: [ \"7050[SC]X3\", vEOS.*, default ]\n  uplink_interfaces:
+      [ Ethernet49-54/1 ]\n  mlag_interfaces: [ Ethernet55-56/1 ]\n  downlink_interfaces:
+      [ Ethernet1-32/1 ]\n```\n"
+    items:
+      keys:
+        downlink_interfaces:
+          description: List of downlink interfaces or downlink interface ranges
+          items:
+            description: Interface range or interface
+            type: str
+          required: true
+          type: list
+        mlag_interfaces:
+          description: List of MLAG interfaces or MLAG interface ranges
+          items:
+            description: Interface range or interface
+            type: str
+          required: true
+          type: list
+        platforms:
+          description: 'List of platform families
+
+            This is defined as a Python regular expression that matches the full platform
+            type
+
+            '
+          items:
+            description: Arista platform family regular expression
+            type: str
+          required: true
+          type: list
+        types:
+          description: List of node type keys
+          items:
+            type: str
+          required: true
+          type: list
+        uplink_interfaces:
+          description: List of uplink interfaces or uplink interface ranges
+          items:
+            description: Interface range or interface
+            type: str
+          required: true
+          type: list
+      type: dict
+    type: list
+  default_node_types:
+    description: Uses hostname matches against a regular expression to determine the
+      node type.
+    items:
+      keys:
+        match_hostnames:
+          description: Regular expressions to match against hostnames
+          items:
+            description: Regex needs to match full hostname (i.e. is bounded by ^
+              and $ elements)
+            required: true
+            type: str
+          required: true
+          type: list
+        node_type:
+          description: Resulting node type when regex matches
+          required: true
+          type: str
+      type: dict
+    primary_key: node_type
+    type: list
+  design:
+    keys:
+      type:
+        default: l3ls-evpn
+        description: 'By setting the `design.type` to `mpls`,
+
+          the default node-types and templates described in these documents will be
+          used.
+
+          '
+        type: str
+        valid_values:
+        - l3ls-evpn
+        - mpls
+    type: dict
+  enable_trunk_groups:
+    default: false
+    description: 'Enable Trunk Group support across eos_designs
+
+      Warning: Because of the nature of the EOS Trunk Group feature, enabling this
+      is "all or nothing".
+
+      *All* vlans and *all* trunks towards connected endpoints must be using trunk
+      groups as well.
+
+      If trunk groups are not assigned to a trunk, no vlans will be enabled on that
+      trunk.
+
+      See "Details on enable_trunk_groups" below before enabling this feature
+
+      '
+    type: bool
+  event_handlers:
+    convert_types:
+    - dict
+    description: 'Gives ability to monitor and react to Syslog messages provides a
+      powerful and flexible tool that can be used to apply self-healing actions,
+
+      customize the system behavior, and implement workarounds to problems discovered
+      in the field.
+
+      '
+    items:
+      keys:
+        action:
+          description: Command to run when handler is triggered
+          type: str
+        action_type:
+          type: str
+          valid_values:
+          - bash
+          - increment
+        asynchronous:
+          default: false
+          description: Set the action to be non-blocking.
+          type: bool
+        delay:
+          convert_types:
+          - str
+          description: Event-handler delay in seconds
+          type: int
+        name:
+          description: Event handler name
+          required: true
+          type: str
+        regex:
+          description: Regular expression to use for searching log messages. Required
+            for on-logging trigger
+          type: str
+        trigger:
+          description: Configure event trigger condition.
+          type: str
+          valid_values:
+          - on-logging
+      type: dict
+    primary_key: name
+    type: list
+  evpn_ebgp_gateway_multihop:
+    convert_types:
+    - str
+    default: 15
+    description: 'Default of 15, considering a large value to avoid BGP reachability
+      issues in very complex DCI networks.
+
+      Adapt the value for your specific topology.
+
+      '
+    type: int
+  evpn_ebgp_multihop:
+    convert_types:
+    - str
+    default: 3
+    description: 'Default of 3, the recommended value for a 3 stage spine and leaf
+      topology.
+
+      Set to a higher value to allow for very large and complex topologies.
+
+      '
+    type: int
+  evpn_hostflap_detection:
+    keys:
+      enabled:
+        default: true
+        description: If set to false it will disable EVPN host-flap detection
+        type: bool
+      expiry_timeout:
+        convert_types:
+        - str
+        description: Time (in seconds) to purge a MAC duplication issue
+        type: int
+      threshold:
+        convert_types:
+        - str
+        default: 5
+        description: Minimum number of MAC moves that indicate a MAC duplication issue
+        type: int
+      window:
+        convert_types:
+        - str
+        default: 180
+        description: Time (in seconds) to detect a MAC duplication issue
+        type: int
+    type: dict
+  evpn_import_pruning:
+    default: false
+    description: 'Enable VPN import pruning (Min. EOS 4.24.2F)
+
+      The Route Target extended communities carried by incoming VPN paths will
+
+      be examined. If none of those Route Targets have been configured for import,
+
+      the path will be immediately discarded
+
+      '
+    type: bool
+  evpn_multicast:
+    default: false
+    description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
+      must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
+      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
+      Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning
+      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The
+      Following default platform setting will be configured: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All
+      forwarding agents will be restarted when this configuration is applied.\n  You
+      can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      \ Please contact an Arista representative for help with determining the appropriate
+      values for your environment.\n"
+    type: bool
+  evpn_overlay_bgp_rtc:
+    default: false
+    description: 'Enable Route Target Membership Constraint Address Family on EVPN
+      overlay BGP peerings (Min. EOS 4.25.1F)
+
+      Requires use eBGP as overlay protocol.
+
+      '
+    type: bool
+  evpn_prevent_readvertise_to_server:
+    default: false
+    description: 'Configure route-map on eBGP sessions towards route-servers, where
+      prefixes with the peer''s ASN in the AS Path are filtered away.
+
+      This is very useful in very large scale networks, where convergence will be
+      quicker by not having to return all updates received
+
+      from Route-server-1 to Router-server-2 just for Route-server-2 to throw them
+      away because of AS Path loop detection.
+
+      '
+    type: bool
+  evpn_short_esi_prefix:
+    default: '0000:0000:'
+    description: Configure prefix for "short_esi" values
+    type: str
+  evpn_vlan_aware_bundles:
+    default: false
+    description: 'Enable vlan aware bundles for EVPN MAC-VRF
+
+      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
+
+      '
+    type: bool
+  fabric_name:
+    description: Fabric Name, required to match Ansible Group name covering all devices
+      in the Fabric, **must** be an inventory group name.
+    required: true
+    type: str
+  inband_management_subnet:
+    description: 'Optional IP subnet assigned to Inband Management SVI on l2leafs
+      in default VRF.
+
+      Parent l3leafs will have SVI with "ip virtual-router" and host-route injection
+      based on ARP. This allows all l3leafs to reuse the same subnet
+
+      SVI IP address will be assigned as follows:
+
+      virtual-router: <subnet> + 1
+
+      l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+
+      l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+
+      l2leafs       : <subnet> + 3 + <l2leaf id>
+
+      GW on l2leafs : <subnet> + 1
+
+      Assign range larger than total l2leafs + 5'
+    type: str
+  inband_management_vlan:
+    convert_types:
+    - str
+    default: 4092
+    description: 'VLAN number assigned to Inband Management SVI on l2leafs in default
+      VRF.
+
+      '
+    type: int
+  internal_vlan_order:
+    description: Internal vlan allocation order and range
+    keys:
+      allocation:
+        default: ascending
+        type: str
+        valid_values:
+        - ascending
+        - descending
+      range:
+        keys:
+          beginning:
+            convert_types:
+            - str
+            default: 1006
+            description: VLAN ID
+            type: int
+          ending:
+            convert_types:
+            - str
+            default: 1199
+            description: VLAN ID
+            type: int
+        type: dict
+    required: true
+    type: dict
+  isis_advertise_passive_only:
+    default: false
+    description: Additional underlay ISIS parameters
+    type: bool
+  isis_area_id:
+    default: '49.0001'
+    description: Required when "underlay_routing_protocol" == ISIS variants
+    type: str
+  isis_default_circuit_type:
+    default: level-2
+    description: 'Fabric vevel variables. These fabric level parameters can be used
+      with core_interfaces running ISIS,
+
+      and may be overridden on link profile or link level.'
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
+  isis_default_is_type:
+    default: level-2
+    description: Additional underlay ISIS parameters
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
+  isis_default_metric:
+    convert_types:
+    - str
+    default: 50
+    description: 'Fabric level variables. These fabric level parameters can be used
+      with core_interfaces running ISIS,
+
+      and may be overridden on link profile or link level.'
+    type: int
+  isis_ti_lfa:
+    keys:
+      enabled:
+        default: false
+        type: bool
+      local_convergence_delay:
+        convert_types:
+        - str
+        default: 10000
+        description: Local convergence delay in mpls
+        type: int
+      protection:
+        type: str
+        valid_values:
+        - link
+        - node
+    type: dict
+  l3_edge:
+    description: 'The `l3_edge` data model can be used to configure extra L3 P2P links
+      anywhere in the fabric. It can be between two switches that are already part
+      of the fabric inventory, or it can be towards another device, where only one
+      end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`,
+      `spine` or `super-spine`.
+
+
+      The data model supports using IP pools, Subnet per link or specifying the IP
+      addresses manually.
+
+      For BGP peerings the AS number must be specified. If the AS number is different
+      than the AS number configured for the node, the local-as will be replaced on
+      this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+
+      Make sure to configure the variables in a group_vars file covering all devices
+      mentioned in the data model.
+
+      '
+    keys:
+      p2p_links:
+        description: Any setting supported under p2p_links can be set and inherited
+          from profile
+        items:
+          keys:
+            as:
+              description: AS Numbers for BGP, required with bgp peering
+              items:
+                type: str
+              type: list
+            bfd:
+              default: false
+              description: Enable BFD (only considered for BGP)
+              type: bool
+            id:
+              convert_types:
+              - str
+              description: Unique id per subnet_summary (starting from 1). Used to
+                calculate ip addresses, required with ip_pool
+              type: int
+            include_in_underlay_protocol:
+              default: false
+              description: Add this interface to underlay routing protocol
+              type: bool
+            interfaces:
+              description: Interfaces where this link should be configured
+              items:
+                type: str
+              required: true
+              type: list
+            ip:
+              description: Specific IP addresses used on this P2P link, Optional (Requires
+                ip_pool or subnet or ip)
+              items:
+                type: str
+              type: list
+            ip_pool:
+              description: IP Pool defined under p2p_links_ip_pools. A /31 will be
+                taken from the pool per P2P link, Optional (Requires ip_pool or subnet
+                or ip)
+              type: str
+            macsec_profile:
+              description: MAC Security Profile
+              type: str
+            mtu:
+              convert_types:
+              - str
+              description: MTU for this P2P link
+              type: int
+            nodes:
+              description: Nodes where this link should be configured
+              items:
+                type: str
+              required: true
+              type: list
+            profile:
+              description: Profile defined under p2p_profiles
+              type: str
+            ptp_enable:
+              default: false
+              description: Enable PTP
+              type: bool
+            qos_profile:
+              description: QOS Service Profile
+              type: str
+            speed:
+              description: The value can be < speed/auto speed/forced speed >
+              type: str
+            subnet:
+              description: Subnet used on this P2P link, Optional (Requires ip_pool
+                or subnet or ip)
+              type: str
+          type: dict
+        required: true
+        type: list
+      p2p_links_ip_pools:
+        convert_types:
+        - dict
+        items:
+          keys:
+            ipv4_pool:
+              description: IPv4_address/Mask
+              type: str
+            name:
+              type: str
+          type: dict
+        primary_key: name
+        secondary_key: ipv4_pool
+        type: list
+      p2p_links_profiles:
+        convert_types:
+        - dict
+        description: Any setting supported under p2p_links can be set and inherited
+          from profile
+        items:
+          keys:
+            name:
+              type: str
+          type: dict
+        primary_key: name
+        type: list
+    type: dict
+  local_users:
+    convert_types:
+    - dict
+    description: Dictionary of local users
+    items:
+      keys:
+        disabled:
+          description: 'If "disabled" is true, the user will be removed and all other
+            settings are ignored.
+
+            Useful for removing the default "admin" user.'
+          type: bool
+        name:
+          description: Username
+          required: true
+          type: str
+        no_password:
+          default: true
+          description: If set a password will not be configured for this user. "sha512_password"
+            MUST not be defined for this user.
+          type: bool
+        privilege:
+          convert_types:
+          - str
+          description: Initial privilege level with local EXEC authorization.
+          max: 15
+          min: 1
+          type: int
+        role:
+          description: EOS RBAC Role to be assigned to the user such as "network-admin"
+            or "network-operator"
+          type: str
+        sha512_password:
+          description: Must be the hash of the password. By default EOS salts the
+            password with the username, so the simplest is to generate the hash on
+            an EOS device using the same username.
+          type: str
+        ssh_key:
+          description: SSH key string
+          type: str
+      type: dict
+    primary_key: name
+    type: list
+  mac_address_table:
+    description: 'MAC address-table aging time
+
+      Use to change the EOS default of 300.
+
+      '
+    keys:
+      aging_time:
+        convert_types:
+        - str
+        description: Time in seconds
+        type: int
+    type: dict
+  management_eapi:
+    description: 'Default is https management eAPI enabled.
+
+      The vrf is set to < mgmt_interface_vrf >
+
+      '
+    keys:
+      default_services:
+        type: bool
+      enable_http:
+        default: false
+        type: bool
+      enable_https:
+        default: true
+        type: bool
+    type: dict
+  mgmt_destination_networks:
+    description: OOB mgmt interface destination networks - override default route
+    items:
+      description: IPv4_network/Mask
+      type: str
+    type: list
+  mgmt_gateway:
+    description: Management interface configuration and it is IPv4 address
+    type: str
+  mgmt_interface:
+    default: Management1
+    description: Management interface configuration
+    type: str
+  mgmt_interface_vrf:
+    default: MGMT
+    description: Management interface configuration
+    type: str
+  mgmt_vrf_routing:
+    default: false
+    description: Management interface configuration
+    type: bool
+  mlag_ibgp_peering_vrfs:
+    description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
+      iBGP peering (required when mlag leafs in topology)
+
+      The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan
+      + (vrf_id or vrf_vni) - 1
+
+      Depending on the values of vrf_id / vrf_id it may be required to adjust the
+      base_vlan to avoid overlaps or invalid vlan ids.
+
+      The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all
+      iBGP peerings.
+
+      '
+    keys:
+      base_vlan:
+        convert_types:
+        - str
+        default: 3000
+        max: 4000
+        min: 1
+        type: int
+    type: dict
+  name_server:
+    description: 'Only name_server from eos_ci_config_gen.
+
+      The variables will make it to the intended config.
+
+      '
+    keys:
+      nodes:
+        items:
+          type: str
+        type: list
+      source:
+        keys:
+          vrf:
+            type: str
+        type: dict
+    type: dict
+  name_servers:
+    description: Only eos_designs name_servers variables
+    items:
+      description: IPv4 address
+      type: str
+    type: list
+  network_services_keys:
+    convert_types:
+    - dict
+    description: 'Define network services keys, to define grouping of network services.
+
+      This provides the ability to define various keys of your choice to better organize/group
+      your data.
+
+      This should be defined in top level group_var for the fabric.
+
+      '
+    items:
+      keys:
+        name:
+          type: str
+      type: dict
+    primary_key: name
+    type: list
+  node_type:
     documentation_options:
       filename: fabric_topology
     keys:
@@ -2505,14 +3633,14 @@ dynamic_keys:
         convert_types:
         - dict
         items:
-          $ref: '#/dynamic_keys/node_type_keys.key/keys/defaults'
+          $ref: '#/keys/node_type/keys/defaults'
           keys:
             group:
               description: The Node Group Name is used for MLAG domain
               required: true
               type: str
             nodes:
-              $ref: '#/dynamic_keys/node_type_keys.key/keys/nodes'
+              $ref: '#/keys/node_type/keys/nodes'
           type: dict
         primary_key: group
         type: list
@@ -2520,7 +3648,7 @@ dynamic_keys:
         convert_types:
         - dict
         items:
-          $ref: '#/dynamic_keys/node_type_keys.key/keys/defaults'
+          $ref: '#/keys/node_type/keys/defaults'
           keys:
             mac_address:
               description: '`mac_address` can only be set under the node and is used
@@ -2534,1055 +3662,6 @@ dynamic_keys:
         primary_key: name
         type: list
     type: dict
-keys:
-  bfd_multihop:
-    description: BFD Multihop tuning
-    keys:
-      interval:
-        convert_types:
-        - str
-        default: 300
-        type: int
-      min_rx:
-        convert_types:
-        - str
-        default: 300
-        type: int
-      multiplier:
-        convert_types:
-        - str
-        default: 3
-        type: int
-    type: dict
-  bgp_as:
-    convert_types:
-    - int
-    description: AS number to use to configure overlay when "overlay_routing_protocol"
-      == IBGP
-    type: str
-  bgp_ecmp:
-    convert_types:
-    - str
-    default: 4
-    description: Maximum ECMP for BGP multi-path
-    type: int
-  bgp_maximum_paths:
-    convert_types:
-    - str
-    default: 4
-    description: Maximum Paths for BGP multi-path
-    type: int
-  bgp_mesh_pes:
-    default: false
-    description: Whether to configure an iBGP full mesh between PEs, either because
-      there is no RR used or other reasons.
-    type: bool
-  bgp_peer_groups:
-    description: 'Leverage an Arista EOS switch to generate the encrypted password
-      using the correct peer group name.
-
-      Note that the name of the peer groups use ''-'' instead of ''_'' in EOS configuration.
-
-      '
-    keys:
-      EVPN_OVERLAY_PEERS:
-        keys:
-          name:
-            default: EVPN-OVERLAY-PEERS
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-        studios_options:
-          exclude: true
-        type: dict
-      IPv4_UNDERLAY_PEERS:
-        keys:
-          name:
-            default: IPv4-UNDERLAY-PEERS
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-          structured_config:
-            description: Custom structured config added under router_bgp.peer_groups.<name>
-              for eos_cli_config_gen
-            type: dict
-        studios_options:
-          exclude: true
-        type: dict
-      MLAG_IPv4_UNDERLAY_PEER:
-        keys:
-          name:
-            default: MLAG-IPv4-UNDERLAY-PEER
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-        studios_options:
-          exclude: true
-        type: dict
-      evpn_overlay_core:
-        keys:
-          name:
-            default: EVPN-OVERLAY-CORE
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-        type: dict
-      evpn_overlay_peers:
-        keys:
-          name:
-            default: EVPN-OVERLAY-PEERS
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-        type: dict
-      ipv4_underlay_peers:
-        keys:
-          name:
-            default: IPv4-UNDERLAY-PEERS
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-          structured_config:
-            description: Custom structured config added under router_bgp.peer_groups.<name>
-              for eos_cli_config_gen
-            type: dict
-        type: dict
-      mlag_ipv4_underlay_peer:
-        keys:
-          name:
-            default: MLAG-IPv4-UNDERLAY-PEER
-            type: str
-          password:
-            description: Encrypted Password
-            type: str
-        type: dict
-    type: dict
-  connected_endpoints_keys:
-    convert_types:
-    - dict
-    description: 'Define connected endpoints keys, to define grouping of endpoints
-      connecting to the fabric.
-
-      This provides the ability to define various keys of your choice to better organize/group
-      your data.
-
-      This should be defined in top level group_var for the fabric.
-
-      '
-    items:
-      keys:
-        key:
-          type: str
-        type:
-          description: Type used for documentation
-          type: str
-      type: dict
-    primary_key: key
-    type: list
-  core_interfaces:
-    description: 'The `core_interfaces` data model can be used to configure L3 P2P
-      links anywhere in the fabric.
-
-      It can be between two switches that are already part of the fabric inventory,
-      or it can be towards another device,
-
-      where only one end of the link is on a switch in the fabric.
-
-      '
-    keys:
-      p2p_links:
-        items:
-          keys:
-            as:
-              description: AS Numbers for BGP or Required with bgp peering
-              items:
-                description: The values can be like ["node_a_as", "node_b_as"]
-                type: str
-              type: list
-            bfd:
-              default: false
-              description: Enable BFD (only considered for BGP).
-              type: bool
-            id:
-              convert_types:
-              - str
-              description: 'Unique id per subnet_summary. Used to calculate ip addresses
-                or Required with ip_pool.
-
-                ID starting from 1
-
-                '
-              type: int
-            include_in_underlay_protocol:
-              default: true
-              description: Add this interface to underlay routing protocol.
-              type: bool
-            interfaces:
-              description: Interfaces where this link should be configured and Required
-                unless using port-channels
-              items:
-                description: 'The value can be like < node_a_interface >, < node_b_interface
-                  >
-
-                  ex. - [ Ethernet2, Ethernet2 ]
-
-                  '
-                type: str
-              type: list
-            ip:
-              description: Specific IP addresses used on this P2P link
-              items:
-                description: Node IPv4 address/Mask
-                type: str
-              type: list
-            ip_pool:
-              description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
-                A /31 will be taken from the pool per P2P link
-              type: str
-            ipv6_enable:
-              default: false
-              description: Allows turning on ipv6 for the link or profile (also autodetected
-                based on underlay_rfc5549 and include_in_underlay_protocol)
-              type: bool
-            isis_authentication_key:
-              default: $1c$sTNAlR6rKSw=
-              description: IS-IS parameters
-              type: str
-            isis_authentication_mode:
-              default: md5
-              description: IS-IS parameters
-              type: str
-            isis_circuit_type:
-              default: level-2
-              description: IS-IS parameters
-              type: str
-            isis_hello_padding:
-              default: false
-              description: IS-IS parameters
-              type: bool
-            isis_metric:
-              convert_types:
-              - str
-              default: 60
-              description: IS-IS parameters
-              type: int
-            macsec_profile:
-              description: MAC security profile
-              type: str
-            mpls_ip:
-              description: MPLS parameters. Default value is true if switch.mpls_lsr
-                is true
-              type: bool
-            mpls_ldp:
-              description: MPLS parameters. Default value is true for ldp underlay
-                variants, otherwise false
-              type: bool
-            mtu:
-              convert_types:
-              - str
-              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
-              type: int
-            nodes:
-              description: Nodes where this link should be configured
-              items:
-                description: 'The values can be < node_a >, < node_b >
-
-                  ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
-
-                  '
-                type: str
-              required: true
-              type: list
-            port_channel:
-              description: Port-channel parameters
-              keys:
-                mode:
-                  default: active
-                  type: str
-                nodes_child_interfaces:
-                  convert_types:
-                  - dict
-                  items:
-                    keys:
-                      interfaces:
-                        description: List of node interfaces. Ex.- [ 'node1 interface1',
-                          'node1 interface2' ]
-                        items:
-                          type: str
-                        type: list
-                      node:
-                        required: true
-                        type: str
-                    type: dict
-                  primary_key: node
-                  secondary_key: interfaces
-                  type: list
-              type: dict
-            profile:
-              description: P2P profile name. Profile defined under p2p_profiles
-              type: str
-            ptp_enable:
-              default: false
-              description: Enable PTP
-              type: bool
-            qos_profile:
-              description: QOS service profile
-              type: str
-            raw_eos_cli:
-              description: EOS CLI rendered directly on the point-to-point interface
-                in the final EOS configuration.
-              type: str
-            speed:
-              description: The values can be speed or auto speed or forced speed
-              type: str
-            subnet:
-              description: IPv4 address/Mask. Subnet used on this P2P link or Optional
-              type: str
-          type: dict
-        type: list
-      p2p_links_ip_pools:
-        items:
-          keys:
-            ipv4_pool:
-              description: IPv4 address/Mask
-              type: str
-            name:
-              description: P2P pool name
-              type: str
-          type: dict
-        type: list
-      p2p_links_profiles:
-        items:
-          keys:
-            ip_pool:
-              description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
-                A /31 will be taken from the pool per P2P link
-              type: str
-            ipv6_enable:
-              default: false
-              description: Allows turning on ipv6 for the link or profile (also autodetected
-                based on underlay_rfc5549 and include_in_underlay_protocol)
-              type: bool
-            isis_authentication_key:
-              default: $1c$sTNAlR6rKSw=
-              description: IS-IS parameters
-              type: str
-            isis_authentication_mode:
-              default: md5
-              description: IS-IS parameters
-              type: str
-            isis_circuit_type:
-              default: level-2
-              description: IS-IS parameters
-              type: str
-            isis_hello_padding:
-              default: false
-              description: IS-IS parameters
-              type: bool
-            isis_metric:
-              convert_types:
-              - str
-              default: 60
-              description: IS-IS parameters
-              type: int
-            mtu:
-              convert_types:
-              - str
-              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
-              type: int
-            name:
-              description: P2P profile name. Any variable supported under p2p_links
-                can be inherited from a profile.
-              type: str
-            speed:
-              description: The values can be speed or auto speed or forced speed
-              type: str
-          type: dict
-        type: list
-    type: dict
-  custom_structured_configuration_list_merge:
-    default: replace
-    description: 'The List-merge strategy can be changed using `custom_structured_configuration_list_merge`
-      variable using any value accepted by `list_merge` on the Ansible Combine filter.
-
-      '
-    type: str
-    valid_values:
-    - replace
-    - append
-    - keep
-    - prepend
-    - append_rp
-    - prepend_rp
-  custom_structured_configuration_prefix:
-    convert_types:
-    - str
-    default:
-    - custom_structured_configuration_
-    description: 'Custom EOS Structured Configuration keys can be set on any group
-      or host_var level using the name
-
-      of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
-
-      The content of Custom Structured Configuration variables will be combined with
-      the structured config generated by the eos_designs role.
-
-      By default Lists are replaced and Dictionaries are updated. The combine is done
-      recursively, so it is possible to update a sub-key of a variable set by
-
-      `eos_designs` role already.
-
-      '
-    items:
-      type: str
-    type: list
-  cvp_ingestauth_key:
-    description: CloudVision ingest authentication key is required for on-prem CVP
-    type: str
-  cvp_instance_ip:
-    description: 'IPv4 address.
-
-      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
-
-      You can either provide a list of IPs to target on-premise CloudVision cluster
-      or
-
-      use DNS name for your CloudVision as a Service instance. If you have both on-prem
-      and
-
-      CVaaS defined, only on-prem is going to be configured.'
-    type: str
-  cvp_instance_ips:
-    description: 'You can either provide a list of IPs to target on-premise CloudVision
-      cluster or
-
-      use DNS name for your CloudVision as a Service instance. If you have both on-prem
-      and
-
-      CVaaS defined, only on-prem is going to be configured.
-
-      '
-    items:
-      description: IPv4 address or CV as a Service hostname
-      type: str
-    type: list
-  cvp_token_file:
-    default: /tmp/cv-onboarding-token
-    description: CVP token file is path to token file on switch and is only applicable
-      to CV as a Service
-    type: str
-  default_igmp_snooping_enabled:
-    default: true
-    description: 'Disable IGMP snooping at fabric level.
-
-      If set, it overrides per vlan settings
-
-      '
-    type: bool
-  default_node_types:
-    description: Uses hostname matches against a regular expression to determine the
-      node type.
-    items:
-      keys:
-        match_hostnames:
-          description: Regular expressions to match against hostnames
-          items:
-            description: Regex needs to match full hostname (i.e. is bounded by ^
-              and $ elements)
-            required: true
-            type: str
-          required: true
-          type: list
-        node_type:
-          description: Resulting node type when regex matches
-          required: true
-          type: str
-      type: dict
-    primary_key: node_type
-    type: list
-  design:
-    keys:
-      type:
-        default: l3ls-evpn
-        description: 'By setting the `design.type` to `mpls`,
-
-          the default node-types and templates described in these documents will be
-          used.
-
-          '
-        type: str
-        valid_values:
-        - l3ls-evpn
-        - mpls
-    type: dict
-  enable_trunk_groups:
-    default: false
-    description: 'Enable Trunk Group support across eos_designs
-
-      Warning: Because of the nature of the EOS Trunk Group feature, enabling this
-      is "all or nothing".
-
-      *All* vlans and *all* trunks towards connected endpoints must be using trunk
-      groups as well.
-
-      If trunk groups are not assigned to a trunk, no vlans will be enabled on that
-      trunk.
-
-      See "Details on enable_trunk_groups" below before enabling this feature
-
-      '
-    type: bool
-  event_handlers:
-    convert_types:
-    - dict
-    description: 'Gives ability to monitor and react to Syslog messages provides a
-      powerful and flexible tool that can be used to apply self-healing actions,
-
-      customize the system behavior, and implement workarounds to problems discovered
-      in the field.
-
-      '
-    items:
-      keys:
-        action:
-          description: Command to run when handler is triggered
-          type: str
-        action_type:
-          type: str
-          valid_values:
-          - bash
-          - increment
-        asynchronous:
-          default: false
-          description: Set the action to be non-blocking.
-          type: bool
-        delay:
-          convert_types:
-          - str
-          description: Event-handler delay in seconds
-          type: int
-        name:
-          description: Event handler name
-          required: true
-          type: str
-        regex:
-          description: Regular expression to use for searching log messages. Required
-            for on-logging trigger
-          type: str
-        trigger:
-          description: Configure event trigger condition.
-          type: str
-          valid_values:
-          - on-logging
-      type: dict
-    primary_key: name
-    type: list
-  evpn_ebgp_gateway_multihop:
-    convert_types:
-    - str
-    default: 15
-    description: 'Default of 15, considering a large value to avoid BGP reachability
-      issues in very complex DCI networks.
-
-      Adapt the value for your specific topology.
-
-      '
-    type: int
-  evpn_ebgp_multihop:
-    convert_types:
-    - str
-    default: 3
-    description: 'Default of 3, the recommended value for a 3 stage spine and leaf
-      topology.
-
-      Set to a higher value to allow for very large and complex topologies.
-
-      '
-    type: int
-  evpn_hostflap_detection:
-    keys:
-      enabled:
-        default: true
-        description: If set to false it will disable EVPN host-flap detection
-        type: bool
-      expiry_timeout:
-        convert_types:
-        - str
-        description: Time (in seconds) to purge a MAC duplication issue
-        type: int
-      threshold:
-        convert_types:
-        - str
-        default: 5
-        description: Minimum number of MAC moves that indicate a MAC duplication issue
-        type: int
-      window:
-        convert_types:
-        - str
-        default: 180
-        description: Time (in seconds) to detect a MAC duplication issue
-        type: int
-    type: dict
-  evpn_import_pruning:
-    default: false
-    description: 'Enable VPN import pruning (Min. EOS 4.24.2F)
-
-      The Route Target extended communities carried by incoming VPN paths will
-
-      be examined. If none of those Route Targets have been configured for import,
-
-      the path will be immediately discarded
-
-      '
-    type: bool
-  evpn_multicast:
-    default: false
-    description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
-      must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
-      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
-      Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning
-      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The
-      Following default platform setting will be configured: \"platform trident forwarding-table
-      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All
-      forwarding agents will be restarted when this configuration is applied.\n  You
-      can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
-      \ Please contact an Arista representative for help with determining the appropriate
-      values for your environment.\n"
-    type: bool
-  evpn_overlay_bgp_rtc:
-    default: false
-    description: 'Enable Route Target Membership Constraint Address Family on EVPN
-      overlay BGP peerings (Min. EOS 4.25.1F)
-
-      Requires use eBGP as overlay protocol.
-
-      '
-    type: bool
-  evpn_prevent_readvertise_to_server:
-    default: false
-    description: 'Configure route-map on eBGP sessions towards route-servers, where
-      prefixes with the peer''s ASN in the AS Path are filtered away.
-
-      This is very useful in very large scale networks, where convergence will be
-      quicker by not having to return all updates received
-
-      from Route-server-1 to Router-server-2 just for Route-server-2 to throw them
-      away because of AS Path loop detection.
-
-      '
-    type: bool
-  evpn_short_esi_prefix:
-    default: '0000:0000:'
-    description: Configure prefix for "short_esi" values
-    type: str
-  evpn_vlan_aware_bundles:
-    default: false
-    description: 'Enable vlan aware bundles for EVPN MAC-VRF
-
-      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
-
-      '
-    type: bool
-  fabric_name:
-    description: Fabric Name, required to match Ansible Group name covering all devices
-      in the Fabric, **must** be an inventory group name.
-    required: true
-    type: str
-  inband_management_subnet:
-    description: 'Optional IP subnet assigned to Inband Management SVI on l2leafs
-      in default VRF.
-
-      Parent l3leafs will have SVI with "ip virtual-router" and host-route injection
-      based on ARP. This allows all l3leafs to reuse the same subnet
-
-      SVI IP address will be assigned as follows:
-
-      virtual-router: <subnet> + 1
-
-      l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
-
-      l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-
-      l2leafs       : <subnet> + 3 + <l2leaf id>
-
-      GW on l2leafs : <subnet> + 1
-
-      Assign range larger than total l2leafs + 5'
-    type: str
-  inband_management_vlan:
-    convert_types:
-    - str
-    default: 4092
-    description: 'VLAN number assigned to Inband Management SVI on l2leafs in default
-      VRF.
-
-      '
-    type: int
-  internal_vlan_order:
-    description: Internal vlan allocation order and range
-    keys:
-      allocation:
-        default: ascending
-        type: str
-        valid_values:
-        - ascending
-        - descending
-      range:
-        keys:
-          beginning:
-            convert_types:
-            - str
-            default: 1006
-            description: VLAN ID
-            type: int
-          ending:
-            convert_types:
-            - str
-            default: 1199
-            description: VLAN ID
-            type: int
-        type: dict
-    required: true
-    type: dict
-  isis_advertise_passive_only:
-    default: false
-    description: Additional underlay ISIS parameters
-    type: bool
-  isis_area_id:
-    default: '49.0001'
-    description: Required when "underlay_routing_protocol" == ISIS variants
-    type: str
-  isis_default_circuit_type:
-    default: level-2
-    description: 'Fabric vevel variables. These fabric level parameters can be used
-      with core_interfaces running ISIS,
-
-      and may be overridden on link profile or link level.'
-    type: str
-    valid_values:
-    - level-1-2
-    - level-1
-    - level-2
-  isis_default_is_type:
-    default: level-2
-    description: Additional underlay ISIS parameters
-    type: str
-    valid_values:
-    - level-1-2
-    - level-1
-    - level-2
-  isis_default_metric:
-    convert_types:
-    - str
-    default: 50
-    description: 'Fabric level variables. These fabric level parameters can be used
-      with core_interfaces running ISIS,
-
-      and may be overridden on link profile or link level.'
-    type: int
-  isis_ti_lfa:
-    keys:
-      enabled:
-        default: false
-        type: bool
-      local_convergence_delay:
-        convert_types:
-        - str
-        default: 10000
-        description: Local convergence delay in mpls
-        type: int
-      protection:
-        type: str
-        valid_values:
-        - link
-        - node
-    type: dict
-  l3_edge:
-    description: 'The `l3_edge` data model can be used to configure extra L3 P2P links
-      anywhere in the fabric. It can be between two switches that are already part
-      of the fabric inventory, or it can be towards another device, where only one
-      end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`,
-      `spine` or `super-spine`.
-
-
-      The data model supports using IP pools, Subnet per link or specifying the IP
-      addresses manually.
-
-      For BGP peerings the AS number must be specified. If the AS number is different
-      than the AS number configured for the node, the local-as will be replaced on
-      this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
-
-
-      Make sure to configure the variables in a group_vars file covering all devices
-      mentioned in the data model.
-
-      '
-    keys:
-      p2p_links:
-        description: Any setting supported under p2p_links can be set and inherited
-          from profile
-        items:
-          keys:
-            as:
-              description: AS Numbers for BGP, required with bgp peering
-              items:
-                type: str
-              type: list
-            bfd:
-              default: false
-              description: Enable BFD (only considered for BGP)
-              type: bool
-            id:
-              convert_types:
-              - str
-              description: Unique id per subnet_summary (starting from 1). Used to
-                calculate ip addresses, required with ip_pool
-              type: int
-            include_in_underlay_protocol:
-              default: false
-              description: Add this interface to underlay routing protocol
-              type: bool
-            interfaces:
-              description: Interfaces where this link should be configured
-              items:
-                type: str
-              required: true
-              type: list
-            ip:
-              description: Specific IP addresses used on this P2P link, Optional (Requires
-                ip_pool or subnet or ip)
-              items:
-                type: str
-              type: list
-            ip_pool:
-              description: IP Pool defined under p2p_links_ip_pools. A /31 will be
-                taken from the pool per P2P link, Optional (Requires ip_pool or subnet
-                or ip)
-              type: str
-            macsec_profile:
-              description: MAC Security Profile
-              type: str
-            mtu:
-              convert_types:
-              - str
-              description: MTU for this P2P link
-              type: int
-            nodes:
-              description: Nodes where this link should be configured
-              items:
-                type: str
-              required: true
-              type: list
-            profile:
-              description: Profile defined under p2p_profiles
-              type: str
-            ptp_enable:
-              default: false
-              description: Enable PTP
-              type: bool
-            qos_profile:
-              description: QOS Service Profile
-              type: str
-            speed:
-              description: The value can be < speed/auto speed/forced speed >
-              type: str
-            subnet:
-              description: Subnet used on this P2P link, Optional (Requires ip_pool
-                or subnet or ip)
-              type: str
-          type: dict
-        required: true
-        type: list
-      p2p_links_ip_pools:
-        convert_types:
-        - dict
-        items:
-          keys:
-            ipv4_pool:
-              description: IPv4_address/Mask
-              type: str
-            name:
-              type: str
-          type: dict
-        primary_key: name
-        secondary_key: ipv4_pool
-        type: list
-      p2p_links_profiles:
-        convert_types:
-        - dict
-        description: Any setting supported under p2p_links can be set and inherited
-          from profile
-        items:
-          keys:
-            name:
-              type: str
-          type: dict
-        primary_key: name
-        type: list
-    type: dict
-  local_users:
-    convert_types:
-    - dict
-    description: Dictionary of local users
-    items:
-      keys:
-        disabled:
-          description: 'If "disabled" is true, the user will be removed and all other
-            settings are ignored.
-
-            Useful for removing the default "admin" user.'
-          type: bool
-        name:
-          description: Username
-          required: true
-          type: str
-        no_password:
-          default: true
-          description: If set a password will not be configured for this user. "sha512_password"
-            MUST not be defined for this user.
-          type: bool
-        privilege:
-          convert_types:
-          - str
-          description: Initial privilege level with local EXEC authorization.
-          max: 15
-          min: 1
-          type: int
-        role:
-          description: EOS RBAC Role to be assigned to the user such as "network-admin"
-            or "network-operator"
-          type: str
-        sha512_password:
-          description: Must be the hash of the password. By default EOS salts the
-            password with the username, so the simplest is to generate the hash on
-            an EOS device using the same username.
-          type: str
-        ssh_key:
-          description: SSH key string
-          type: str
-      type: dict
-    primary_key: name
-    type: list
-  mac_address_table:
-    description: 'MAC address-table aging time
-
-      Use to change the EOS default of 300.
-
-      '
-    keys:
-      aging_time:
-        convert_types:
-        - str
-        description: Time in seconds
-        type: int
-    type: dict
-  management_eapi:
-    description: 'Default is https management eAPI enabled.
-
-      The vrf is set to < mgmt_interface_vrf >
-
-      '
-    keys:
-      default_services:
-        type: bool
-      enable_http:
-        default: false
-        type: bool
-      enable_https:
-        default: true
-        type: bool
-    type: dict
-  mgmt_destination_networks:
-    description: OOB mgmt interface destination networks - override default route
-    items:
-      description: IPv4_network/Mask
-      type: str
-    type: list
-  mgmt_gateway:
-    description: Management interface configuration and it is IPv4 address
-    type: str
-  mgmt_interface:
-    default: Management1
-    description: Management interface configuration
-    type: str
-  mgmt_interface_vrf:
-    default: MGMT
-    description: Management interface configuration
-    type: str
-  mgmt_vrf_routing:
-    default: false
-    description: Management interface configuration
-    type: bool
-  mlag_ibgp_peering_vrfs:
-    description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
-      iBGP peering (required when mlag leafs in topology)
-
-      The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan
-      + (vrf_id or vrf_vni) - 1
-
-      Depending on the values of vrf_id / vrf_id it may be required to adjust the
-      base_vlan to avoid overlaps or invalid vlan ids.
-
-      The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all
-      iBGP peerings.
-
-      '
-    keys:
-      base_vlan:
-        convert_types:
-        - str
-        default: 3000
-        max: 4000
-        min: 1
-        type: int
-    type: dict
-  name_server:
-    description: 'Only name_server from eos_ci_config_gen.
-
-      The variables will make it to the intended config.
-
-      '
-    keys:
-      nodes:
-        items:
-          type: str
-        type: list
-      source:
-        keys:
-          vrf:
-            type: str
-        type: dict
-    type: dict
-  name_servers:
-    description: Only eos_designs name_servers variables
-    items:
-      description: IPv4 address
-      type: str
-    type: list
-  network_services_keys:
-    convert_types:
-    - dict
-    description: 'Define network services keys, to define grouping of network services.
-
-      This provides the ability to define various keys of your choice to better organize/group
-      your data.
-
-      This should be defined in top level group_var for the fabric.
-
-      '
-    items:
-      keys:
-        name:
-          type: str
-      type: dict
-    primary_key: name
-    type: list
   node_type_keys:
     convert_types:
     - dict
@@ -3956,6 +4035,29 @@ keys:
 
       '
     type: str
+  port_profiles:
+    convert_types:
+    - dict
+    description: 'Optional profiles to share common settings for connected_endpoints
+      and/or network_ports
+
+      Keys are the same as used under endpoints adapters. Keys defined under endpoints
+      adapters take precedence.
+
+      '
+    display_name: Port Profiles
+    documentation_options:
+      filename: connected_endpoints
+    items:
+      $ref: '#/dynamic_keys/connected_endpoints_keys.key/items/keys/adapters/items'
+      keys:
+        profile:
+          display_name: Profile Name
+          required: true
+          type: str
+      type: dict
+    primary_key: profile
+    type: list
   redundancy:
     description: Redundancy for chassis platforms with dual supervisors | Optional
     keys:
