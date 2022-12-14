@@ -95,7 +95,7 @@ class AvdSchemaTools:
         """
         Convert & Validate data according to the schema
 
-        Calls convertion and validation methods and gather resulting messages
+        Calls conversion and validation methods and gather resulting messages
 
         Returns dict which can contain either or both of the following keys:
         - failed: <bool>
