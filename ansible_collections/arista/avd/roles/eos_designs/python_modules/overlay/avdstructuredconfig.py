@@ -40,6 +40,6 @@ class AvdStructuredConfig(
         - switch.overlay.vpn_ipv4
         - switch.overlay.vpn_ipv6
         """
-        if self._configure_overlay is True:
+        if self._overlay_evpn is True or self._overlay_vpn_ipv4 is True or self._overlay_vpn_ipv6 is True:
             return super().render()
         return {}
