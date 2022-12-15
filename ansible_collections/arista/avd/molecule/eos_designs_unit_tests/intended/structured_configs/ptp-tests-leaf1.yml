@@ -170,25 +170,6 @@ ethernet_interfaces:
         interval: -3
       transport: ipv4
       enable: true
-  Ethernet3:
-    peer: Endpoint-with-specific-PTP-profile
-    peer_interface: eth3
-    peer_type: server
-    description: Endpoint-with-specific-PTP-profile_eth3
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 11
-    ptp:
-      announce:
-        interval: -2
-        timeout: 3
-      delay_req: -4
-      sync_message:
-        interval: -4
-      transport: ipv4
-      enable: true
-      role: master
   Ethernet5:
     peer: video-endpoint
     peer_interface: PCI1
@@ -206,6 +187,25 @@ ethernet_interfaces:
       delay_req: -3
       sync_message:
         interval: -3
+      transport: ipv4
+      enable: true
+      role: master
+  Ethernet3:
+    peer: Endpoint-with-specific-PTP-profile
+    peer_interface: eth3
+    peer_type: server
+    description: Endpoint-with-specific-PTP-profile_eth3
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 11
+    ptp:
+      announce:
+        interval: -2
+        timeout: 3
+      delay_req: -4
+      sync_message:
+        interval: -4
       transport: ipv4
       enable: true
       role: master

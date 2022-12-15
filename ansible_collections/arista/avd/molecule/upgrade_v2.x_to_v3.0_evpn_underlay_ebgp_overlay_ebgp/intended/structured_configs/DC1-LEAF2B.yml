@@ -376,27 +376,6 @@ ethernet_interfaces:
     channel_group:
       id: 9
       mode: active
-  Ethernet20:
-    peer: FIREWALL01
-    peer_interface: E1
-    peer_type: firewall
-    description: FIREWALL01_E1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
-    channel_group:
-      id: 20
-      mode: active
-  Ethernet21:
-    peer: ROUTER01
-    peer_interface: Eth1
-    peer_type: router
-    description: ROUTER01_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
   Ethernet10:
     peer: server01_MLAG
     peer_interface: Eth3
@@ -408,6 +387,19 @@ ethernet_interfaces:
     vlans: 210-211
     channel_group:
       id: 10
+      mode: active
+  Ethernet11:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth5
+    peer_type: server
+    description: server01_MTU_PROFILE_MLAG_Eth5
+    mtu: 1600
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
+    channel_group:
+      id: 11
       mode: active
   Ethernet12:
     peer: server01_MTU_ADAPTOR_MLAG
@@ -431,19 +423,27 @@ ethernet_interfaces:
     channel_group:
       id: 12
       mode: active
-  Ethernet11:
-    peer: server01_MTU_PROFILE_MLAG
-    peer_interface: Eth5
-    peer_type: server
-    description: server01_MTU_PROFILE_MLAG_Eth5
-    mtu: 1600
+  Ethernet20:
+    peer: FIREWALL01
+    peer_interface: E1
+    peer_type: firewall
+    description: FIREWALL01_E1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    channel_group:
+      id: 20
+      mode: active
+  Ethernet21:
+    peer: ROUTER01
+    peer_interface: Eth1
+    peer_type: router
+    description: ROUTER01_Eth1
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 11
-      mode: active
+    vlans: '110'
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
@@ -465,30 +465,30 @@ port_channel_interfaces:
       identifier: 0000:1234:0606:0707:0808
       route_target: 06:06:07:07:08:08
     lacp_id: 0606.0707.0808
-  Port-Channel20:
-    description: FIREWALL01_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
   Port-Channel10:
     description: server01_MLAG_PortChanne1
     type: switched
     shutdown: false
     mode: trunk
     vlans: 210-211
+  Port-Channel11:
+    description: server01_MTU_PROFILE_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mtu: 1600
+    mode: access
+    vlans: '110'
   Port-Channel12:
     description: server01_MTU_ADAPTOR_MLAG_PortChanne1
     type: switched
     shutdown: false
     mtu: 1601
-  Port-Channel11:
-    description: server01_MTU_PROFILE_MLAG_PortChanne1
+  Port-Channel20:
+    description: FIREWALL01_PortChanne1
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mtu: 1600
+    mode: trunk
+    vlans: 110-111,210-211
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

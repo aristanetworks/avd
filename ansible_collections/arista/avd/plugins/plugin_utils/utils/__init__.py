@@ -4,6 +4,7 @@ from .get import get
 from .get_all import get_all
 from .get_item import get_item
 from .get_templar import get_templar
+from .groupby import groupby
 from .load_python_class import load_python_class
 from .template import template
 from .template_var import template_var
@@ -16,6 +17,7 @@ __all__ = [
     "get_all",
     "get_item",
     "get_templar",
+    "groupby",
     "load_python_class",
     "template",
     "template_var",
