@@ -11,6 +11,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
@@ -429,6 +430,93 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "uplink_ptp")
 
     @cached_property
+    def default_ptp_priority1(self):
+        """
+        switch.default_ptp_priority1 set based on
+        node_type_keys.<node_type_key>.default_ptp_priority1
+        """
+        return get(self._node_type_key_data, "default_ptp_priority1", default=127)
+
+    @cached_property
+    def ptp(self):
+        """
+        Generates PTP config on node level as well as for interfaces, using various defaults.
+        - The following are set in roles/eos_designs/defaults/main/default-node-type-keys.yml
+            default_node_type_keys:
+              "l3ls-evpn":
+                spine:
+                  default_ptp_priority1: 20
+                l3leaf:
+                  default_ptp_priority1: 30
+        PTP priority2 is set in the code below, calculated based on the node id:
+            default_priority2 = self.id % 256
+        """
+        # Set defaults
+        default_ptp_enabled = get(self._hostvars, "ptp.enabled")
+        default_ptp_domain = get(self._hostvars, "ptp.domain", default=127)
+        default_ptp_profile = get(self._hostvars, "ptp.profile", default="aes67-r16-2016")
+        ptp = {}
+        ptp["enabled"] = get(self._switch_data_combined, "ptp.enabled", default=default_ptp_enabled)
+        if ptp["enabled"] is True:
+            auto_clock_identity = get(self._switch_data_combined, "ptp.auto_clock_identity", default=True)
+            priority1 = get(self._switch_data_combined, "ptp.priority1", default=self.default_ptp_priority1)
+            default_priority2 = self.id % 256
+            priority2 = get(self._switch_data_combined, "ptp.priority2", default=default_priority2)
+            if auto_clock_identity is True:
+                clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
+                default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
+
+            ptp["device_config"] = {
+                "mode": get(self._switch_data_combined, "ptp.mode", default="boundary"),
+                "forward_unicast": get(self._switch_data_combined, "ptp.forward_unicast"),
+                "clock_identity": get(self._switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
+                "source": {"ip": get(self._switch_data_combined, "ptp.source_ip")},
+                "priority1": priority1,
+                "priority2": priority2,
+                "ttl": get(self._switch_data_combined, "ptp.ttl"),
+                "domain": get(self._switch_data_combined, "ptp.domain", default=default_ptp_domain),
+                "message_type": {
+                    "general": {
+                        "dscp": get(self._switch_data_combined, "ptp.dscp.general_messages"),
+                    },
+                    "event": {
+                        "dscp": get(self._switch_data_combined, "ptp.dscp.event_messages"),
+                    },
+                },
+                "monitor": {
+                    "enabled": get(self._switch_data_combined, "ptp.monitor.enabled", default=True),
+                    "threshold": {
+                        "offset_from_master": get(self._switch_data_combined, "ptp.monitor.threshold.offset_from_master", default=250),
+                        "mean_path_delay": get(self._switch_data_combined, "ptp.monitor.threshold.mean_path_delay", default=1500),
+                        "drop": {
+                            "offset_from_master": get(self._switch_data_combined, "ptp.monitor.threshold.drop.offset_from_master"),
+                            "mean_path_delay": get(self._switch_data_combined, "ptp.monitor.threshold.drop.mean_path_delay"),
+                        },
+                    },
+                    "missing_message": {
+                        "intervals": {
+                            "announce": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.announce"),
+                            "follow_up": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.follow_up"),
+                            "sync": get(self._switch_data_combined, "ptp.monitor.missing_message.intervals.sync"),
+                        },
+                        "sequence_ids": {
+                            "enabled": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.enabled", default=True),
+                            "announce": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.announce", default=3),
+                            "delay_resp": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.delay_resp", default=3),
+                            "follow_up": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.follow_up", default=3),
+                            "sync": get(self._switch_data_combined, "ptp.monitor.missing_message.sequence_ids.sync", default=3),
+                        },
+                    },
+                },
+            }
+
+            ptp["profile"] = get(self._switch_data_combined, "ptp.profile", default_ptp_profile)
+            ptp = strip_null_from_data(ptp, (None, {}))
+
+            return ptp
+        return None
+
+    @cached_property
     def uplink_macsec(self):
         return get(self._switch_data_combined, "uplink_macsec")
 
@@ -502,6 +590,15 @@ class EosDesignsFacts(AvdFacts):
         return default(
             get(self._switch_data_combined, "mgmt_interface"), self.platform_settings.get("management_interface"), get(self._hostvars, "mgmt_interface")
         )
+
+    @cached_property
+    def system_mac_address(self):
+        """
+        system_mac_address is inherited from
+        Host variable var system_mac_address ->
+          Fabric Topology data model system_mac_address
+        """
+        return default(get(self._switch_data_combined, "system_mac_address"), get(self._hostvars, "system_mac_address"))
 
     @cached_property
     def underlay_routing_protocol(self):
@@ -1416,6 +1513,9 @@ class EosDesignsFacts(AvdFacts):
                     uplink["bfd"] = True
                 if self.uplink_ptp is not None:
                     uplink["ptp"] = self.uplink_ptp
+                elif self.ptp is not None:
+                    if self.ptp["enabled"] is True:
+                        uplink["ptp"] = {"enable": True}
                 if self.uplink_macsec is not None:
                     uplink["mac_security"] = self.uplink_macsec
                 if self.underlay_multicast is True and uplink_switch_facts.underlay_multicast is True:
@@ -1671,10 +1771,11 @@ class EosDesignsFacts(AvdFacts):
         Returns a dictionary of underlay parameters to configure on the node.
         """
         if self.uplink_type != "p2p" or not self.underlay_router:
-            return {"bgp": False, "mpls": False, "ospf": False, "isis": False}
+            return {"bgp": False, "ldp": False, "sr": False, "mpls": False, "ospf": False, "isis": False}
         bgp = self.bgp and self.underlay_routing_protocol == "ebgp"
         mpls = self.underlay_routing_protocol in ["isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"] and self.mpls_lsr
         ldp = self.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] and mpls
+        sr = self.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] and mpls
         ospf = self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
         isis = self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
 
@@ -1682,6 +1783,7 @@ class EosDesignsFacts(AvdFacts):
             "bgp": bgp,
             "ldp": ldp,
             "mpls": mpls,
+            "sr": sr,
             "ospf": ospf,
             "isis": isis,
         }

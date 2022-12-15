@@ -355,9 +355,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet14
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.145/31
   Ethernet2:
     peer: DC1-SPINE2
@@ -365,9 +365,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet14
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.147/31
   Ethernet3:
     peer: DC1-SPINE3
@@ -375,9 +375,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet14
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.149/31
   Ethernet4:
     peer: DC1-SPINE4
@@ -385,9 +385,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet14
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.151/31
 mlag_configuration:
   domain_id: DC1_CL1
@@ -442,7 +442,6 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
-      virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
         130:
           vni: 10130

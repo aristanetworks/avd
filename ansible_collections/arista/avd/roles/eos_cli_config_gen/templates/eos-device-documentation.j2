@@ -11,9 +11,9 @@
 {## Domain-list #}
 {% include 'documentation/domain-list.j2' %}
 {## Name Servers #}
-{% include 'documentation/name-servers.j2' %}
+{% include 'documentation/name-server.j2' %}
 {## Domain Lookup #}
-{% include 'documentation/domain-lookup.j2' %}
+{% include 'documentation/ip-domain-lookup.j2' %}
 {## Clock #}
 {% include 'documentation/clock.j2' %}
 {## NTP #}
@@ -21,7 +21,7 @@
 {## PTP #}
 {% include 'documentation/ptp.j2' %}
 {## System Control-Plane#}
-{% include 'documentation/system-control-plane.j2' %}
+{% include 'documentation/system.j2' %}
 {## Management SSH #}
 {% include 'documentation/management-ssh.j2' %}
 {## Management Tech-Support #}
@@ -89,7 +89,7 @@
 {## Mcs client #}
 {% include 'documentation/mcs-client.j2' %}
 {## SNMP #}
-{% include 'documentation/snmp-settings.j2' %}
+{% include 'documentation/snmp-server.j2' %}
 {## Monitor Sessions #}
 {% include 'documentation/monitor-sessions.j2' %}
 {# Tap Aggregation #}
@@ -101,11 +101,11 @@
 {## VM Tracer Sessions #}
 {% include 'documentation/vmtracer-sessions.j2' %}
 {## Event Handler #}
-{% include 'documentation/event-handler.j2' %}
+{% include 'documentation/event-handlers.j2' %}
 {## Flow Tracking #}
 {% include 'documentation/flow-trackings.j2' %}
 {## Object Tracking #}
-{% include 'documentation/object-tracking.j2' %}
+{% include 'documentation/trackers.j2' %}
 {# Monitor Connectivity #}
 {% include 'documentation/monitor-connectivity.j2' %}
 {# Hardware TCAM Profile #}
@@ -117,7 +117,7 @@
 {# LLDP #}
 {% include 'documentation/lldp.j2' %}
 {# LACP #}
-{% include 'documentation/lacp-configuration.j2' %}
+{% include 'documentation/lacp.j2' %}
 {# Spanning Tree #}
 {% include 'documentation/spanning-tree.j2' %}
 {# Internal VLAN Allocation Policy #}
@@ -153,11 +153,11 @@
 {## Service Routing Protocols Model #}
 {% include 'documentation/service-routing-protocols-model.j2' %}
 {## Virtual Router MAC Address #}
-{% include 'documentation/virtual-router-mac-address.j2' %}
+{% include 'documentation/ip-virtual-router-mac-address.j2' %}
 {## IP Routing #}
 {% include 'documentation/ip-routing.j2' %}
 {## IPv6 Routing #}
-{% include 'documentation/ipv6-routing.j2' %}
+{% include 'documentation/ipv6-unicast-routing.j2' %}
 {## Static Routes #}
 {% include 'documentation/static-routes.j2' %}
 {## IPv6 Static Routes #}
@@ -209,11 +209,11 @@
 {## Route-maps #}
 {% include 'documentation/route-maps.j2' %}
 {## IP Extended Community Lists #}
-{% include 'documentation/ip-extended-community-lists.j2' %}
+{% include 'documentation/ip-extcommunity-lists.j2' %}
 {## IP Extended Community Lists Regexp #}
-{% include 'documentation/ip-extended-community-lists-regexp.j2' %}
+{% include 'documentation/ip-extcommunity-lists-regexp.j2' %}
 {## Match-Lists #}
-{% include 'documentation/match-lists.j2' %}
+{% include 'documentation/match-list-input.j2' %}
 {# as-paths #}
 {% include 'documentation/as-path.j2' %}
 {# dot1x #}
@@ -233,9 +233,9 @@
 {## MAC Access-lists #}
 {% include 'documentation/mac-access-lists.j2' %}
 {# VRF Instances #}
-{% include 'documentation/vrf-instances.j2' %}
+{% include 'documentation/vrfs.j2' %}
 {# Virtual Source NAT #}
-{% include 'documentation/virtual-source-nat.j2' %}
+{% include 'documentation/virtual-source-nat-vrfs.j2' %}
 {# Platform #}
 {% include 'documentation/platform.j2' %}
 {# Router L2 VPN #}
@@ -253,7 +253,7 @@
 {## QOS #}
 {% include 'documentation/qos.j2' %}
 {## QOS Class Maps #}
-{% include 'documentation/class-maps-qos.j2' %}
+{% include 'documentation/class-maps.j2' %}
 {## QOS Policy Maps #}
 {% include 'documentation/policy-maps-qos.j2' %}
 {## QOS Profiles #}

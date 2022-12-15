@@ -1,6 +1,6 @@
-{# DOT1X Interfaces #}
+{# doc - dot1x #}
 {% set ethernet_interfaces_dot1x = [] %}
-{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.dot1x is arista.avd.defined %}
 {%         do ethernet_interfaces_dot1x.append(ethernet_interface) %}
 {%     endif %}

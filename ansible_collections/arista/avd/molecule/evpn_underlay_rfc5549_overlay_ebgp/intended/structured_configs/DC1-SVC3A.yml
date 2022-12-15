@@ -763,8 +763,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mlag: 7
   Port-Channel10:
     description: server03_ESI_PortChanne1
@@ -845,44 +845,44 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet2:
     peer: DC1-SPINE2
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet3:
     peer: DC1-SPINE3
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet4:
     peer: DC1-SPINE4
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet7:
     peer: DC1-L2LEAF2A
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-L2LEAF2A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -891,8 +891,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-L2LEAF2B_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -966,7 +966,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true
@@ -1047,7 +1047,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true

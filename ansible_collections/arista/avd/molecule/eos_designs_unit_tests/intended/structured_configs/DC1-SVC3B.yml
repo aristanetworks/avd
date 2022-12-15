@@ -763,8 +763,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mlag: 7
   Port-Channel14:
     description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
@@ -895,42 +895,42 @@ port_channel_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 22
   Port-Channel23:
     description: server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 23
   Port-Channel24:
     description: server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 24
   Port-Channel27:
     description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 27
   Port-Channel42:
     description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 42
   Port-Channel1291:
     description: server22_port_channel_with_custom_id_server22_port_channel_with_custom_id
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 1291
 ethernet_interfaces:
   Ethernet53/1:
@@ -960,8 +960,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF2A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -970,8 +970,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF2B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -981,9 +981,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.129/31
   Ethernet50/1:
     peer: DC1-SPINE2
@@ -991,9 +991,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.131/31
   Ethernet51/1:
     peer: DC1-SPINE3
@@ -1001,9 +1001,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.133/31
   Ethernet52/1:
     peer: DC1-SPINE4
@@ -1011,9 +1011,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet9/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.135/31
   Ethernet11:
     peer: server04_inherit_all_from_profile
@@ -1075,7 +1075,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: true
@@ -1158,7 +1158,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: true
@@ -1272,7 +1272,7 @@ ethernet_interfaces:
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
   Ethernet21:
     peer: server14_explicitly_enabled_interfaces
     peer_interface: Eth2
@@ -1281,7 +1281,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
   Ethernet22:
     peer: server15_port_channel_with_disabled_phy_interfaces
     peer_interface: Eth2
@@ -1290,7 +1290,7 @@ ethernet_interfaces:
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 22
       mode: active
@@ -1302,7 +1302,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 23
       mode: active
@@ -1314,7 +1314,7 @@ ethernet_interfaces:
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 24
       mode: active
@@ -1326,7 +1326,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
   Ethernet27:
     peer: server18_monitoring_session_source_po
     peer_interface: Eth4
@@ -1335,7 +1335,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 27
       mode: active
@@ -1354,7 +1354,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 42
       mode: active
@@ -1366,7 +1366,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 1291
       mode: active

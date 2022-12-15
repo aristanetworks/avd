@@ -1,4 +1,4 @@
-{# eos - community-lists #}
+{# eos - community lists #}
 {% if community_lists is arista.avd.defined %}
 !
 {%     for community_list in community_lists | arista.avd.natural_sort('name') %}

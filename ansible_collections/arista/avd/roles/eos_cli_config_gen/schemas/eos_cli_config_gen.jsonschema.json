@@ -3865,6 +3865,11 @@
             "description": "IPv6 Address",
             "title": "Gateway"
           },
+          "track_bfd": {
+            "type": "boolean",
+            "description": "Track next-hop using BFD",
+            "title": "Track BFD"
+          },
           "distance": {
             "type": "integer",
             "minimum": 1,
@@ -8391,6 +8396,54 @@
           "additionalProperties": false,
           "title": "Distance"
         },
+        "graceful_restart": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "restart_time": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Number of seconds",
+              "title": "Restart Time"
+            },
+            "stalepath_time": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600,
+              "description": "Number of seconds",
+              "title": "Stalepath Time"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Graceful Restart"
+        },
+        "graceful_restart_helper": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "restart_time": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000000,
+              "description": "Number of seconds\ngraceful-restart-help long-lived and restart-time are mutually exclusive in CLI.\nrestart-time will take precedence if both are configured.\n",
+              "title": "Restart Time"
+            },
+            "long_lived": {
+              "type": "boolean",
+              "description": "graceful-restart-help long-lived and restart-time are mutually exclusive in CLI.\nrestart-time will take precedence if both are configured.\n",
+              "title": "Long Lived"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Graceful Restart Helper"
+        },
         "maximum_paths": {
           "type": "object",
           "properties": {
@@ -12894,6 +12947,11 @@
             "type": "string",
             "description": "IPv4 Address",
             "title": "Gateway"
+          },
+          "track_bfd": {
+            "type": "boolean",
+            "description": "Track next-hop using BFD",
+            "title": "Track BFD"
           },
           "distance": {
             "type": "integer",

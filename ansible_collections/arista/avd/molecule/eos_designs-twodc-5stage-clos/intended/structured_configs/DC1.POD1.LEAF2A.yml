@@ -424,33 +424,30 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po1
     type: switched
     shutdown: false
-    vlans: 110-113,1100-1102,2500,2600-2601,4085
     mode: trunk
     service_profile: QOS-PROFILE
+    vlans: 110-113,1100-1102,2500,2600-2601,4085
     mlag: 3
   Port-Channel16:
     description: server-1_PortChannel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 16
     service_profile: bar
+    mode: access
+    vlans: '110'
+    mlag: 16
   Port-Channel17:
     description: Set using structured_config on server adapter port-channel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 17
     service_profile: foo
+    mode: access
+    vlans: '110'
+    mlag: 17
   Port-Channel18:
     description: server-1_PortChannel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 18
     service_profile: foo
     eos_cli: 'comment
 
@@ -459,13 +456,13 @@ port_channel_interfaces:
       EOF
 
       '
+    mode: access
+    vlans: '110'
+    mlag: 18
   Port-Channel19:
     description: server-1_PortChannel
     type: switched
     shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 19
     service_profile: foo
     eos_cli: 'comment
 
@@ -474,6 +471,9 @@ port_channel_interfaces:
       EOF
 
       '
+    mode: access
+    vlans: '110'
+    mlag: 19
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-POD1-LEAF2B
@@ -500,32 +500,32 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.17.110.9/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.17.110.11/31
   Ethernet3:
     peer: DC1-POD1-L2LEAF2A
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-POD1-L2LEAF2A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 3
       mode: active
@@ -534,8 +534,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-POD1-L2LEAF2B_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 3
       mode: active
@@ -544,24 +544,24 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.17.110.13/31
   Ethernet12:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet7
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
+    shutdown: false
     mtu: 1500
     service_profile: QOS-PROFILE
+    type: routed
     ptp:
       enable: true
-    type: routed
-    shutdown: false
     ip_address: 172.17.110.15/31
   Ethernet7:
     peer: DC2-POD1-LEAF1A
@@ -580,10 +580,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 16
-      mode: active
+    vlans: '110'
     service_profile: bar
     eos_cli: 'comment
 
@@ -592,6 +589,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 16
+      mode: active
   Ethernet17:
     peer: server-1
     peer_interface: Eth3
@@ -600,10 +600,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 17
-      mode: active
+    vlans: '110'
     service_profile: foo
     eos_cli: 'comment
 
@@ -612,6 +609,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 17
+      mode: active
   Ethernet18:
     peer: server-1
     peer_interface: Eth5
@@ -620,10 +620,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 18
-      mode: active
+    vlans: '110'
     service_profile: foo
     eos_cli: 'comment
 
@@ -632,6 +629,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 18
+      mode: active
   Ethernet19:
     peer: server-1
     peer_interface: Eth7
@@ -640,10 +640,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-    channel_group:
-      id: 19
-      mode: active
+    vlans: '110'
     service_profile: foo
     eos_cli: 'comment
 
@@ -652,6 +649,9 @@ ethernet_interfaces:
       EOF
 
       '
+    channel_group:
+      id: 19
+      mode: active
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094

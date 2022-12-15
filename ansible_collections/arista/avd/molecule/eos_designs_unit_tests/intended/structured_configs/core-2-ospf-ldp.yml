@@ -34,7 +34,6 @@ router_ospf:
     101:
       passive_interface_default: true
       router_id: 10.0.0.2
-      bfd_enable: true
       max_lsa: 12000
       no_passive_interfaces:
       - Ethernet1
@@ -45,6 +44,7 @@ router_ospf:
       - Ethernet6
       - Ethernet10
       - Port-Channel12
+      bfd_enable: true
 mpls:
   ip: true
   ldp:

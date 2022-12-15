@@ -87,15 +87,15 @@ port_channel_interfaces:
     description: BGP-LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
     mlag: 1
   Port-Channel2:
     description: BGP-LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
     mlag: 2
 ethernet_interfaces:
   Ethernet3:
@@ -123,8 +123,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: leaf
     description: BGP-LEAF1_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -133,8 +133,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: leaf
     description: BGP-LEAF2_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 2
       mode: active
@@ -164,6 +164,7 @@ route_maps:
         description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
 loopback_interfaces:
   Loopback0:
+    description: Router_ID
     shutdown: false
     ip_address: 192.168.255.1/32
 ip_igmp_snooping:

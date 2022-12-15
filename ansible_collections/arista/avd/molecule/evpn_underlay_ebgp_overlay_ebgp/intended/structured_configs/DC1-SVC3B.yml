@@ -781,8 +781,8 @@ port_channel_interfaces:
     description: CUSTOM_DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mlag: 7
   Port-Channel10:
     description: CUSTOM_server03_ESI_PortChanne1
@@ -923,7 +923,7 @@ port_channel_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
     mlag: 22
 ethernet_interfaces:
   Ethernet5:
@@ -951,8 +951,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: CUSTOM_DC1-L2LEAF2A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -961,8 +961,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: CUSTOM_DC1-L2LEAF2B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -972,9 +972,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.65/31
   Ethernet42:
     peer: DC1-SPINE2
@@ -982,9 +982,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.67/31
   Ethernet43:
     peer: DC1-SPINE3
@@ -992,9 +992,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.69/31
   Ethernet44:
     peer: DC1-SPINE4
@@ -1002,9 +1002,9 @@ ethernet_interfaces:
     peer_type: spine
     description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.71/31
   Ethernet10:
     peer: server03_ESI
@@ -1078,7 +1078,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true
@@ -1161,7 +1161,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true
@@ -1275,7 +1275,7 @@ ethernet_interfaces:
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
   Ethernet21:
     peer: server14_explicitly_enabled_interfaces
     peer_interface: Eth2
@@ -1284,7 +1284,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
+    vlans: '110'
   Ethernet22:
     peer: server15_port_channel_disabled_interfaces
     peer_interface: Eth2
@@ -1293,7 +1293,7 @@ ethernet_interfaces:
     type: switched
     shutdown: true
     mode: access
-    vlans: 110
+    vlans: '110'
     channel_group:
       id: 22
       mode: active

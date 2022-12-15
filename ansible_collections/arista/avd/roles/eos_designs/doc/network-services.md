@@ -387,12 +387,14 @@ mac_address_table:
             ipv6_address_virtual: < IPv6_address/Mask >
 
         # List of L3 interfaces | Optional.
-        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
+        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses and descriptions (if used) must match.
         l3_interfaces:
           - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
+            # `descriptions` has precedence over `description`
+            descriptions: [ <description1>, <description2>, description3> ]
             enabled: < true | false >
             mtu: < mtu >
             # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
@@ -430,6 +432,7 @@ mac_address_table:
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
+            track_bfd: < boolean >
             distance: < 1-255 >
             tag: < 0-4294967295 >
             name: < description >
@@ -440,6 +443,7 @@ mac_address_table:
         ipv6_static_routes:
           - destination_address_prefix: < IPv6_address/Mask >
             gateway: < IPv6_address >
+            track_bfd: < boolean >
             distance: < 1-255 >
             tag: < 0-4294967295 >
             name: < description >

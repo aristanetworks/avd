@@ -104,9 +104,9 @@ port_channel_interfaces:
     description: TRUNK_GROUP_TESTS_L3LEAF1_Po1
     type: switched
     shutdown: false
+    mode: trunk
     trunk_groups:
     - UPLINK
-    mode: trunk
     mlag: 1
   Port-Channel13:
     description: server_with_tg_300_portchannel
@@ -143,8 +143,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: TRUNK-GROUP-TESTS-L3LEAF1A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -153,8 +153,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: TRUNK-GROUP-TESTS-L3LEAF1B_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active

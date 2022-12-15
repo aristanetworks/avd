@@ -295,9 +295,11 @@ class AvdStructuredConfig(AvdFacts):
         """
         Return dict with one route-map
         Origin Incomplete for MLAG iBGP learned routes
+
+        TODO: Partially duplicated in network_services. Should be moved to a common class
         """
 
-        if not (self._mlag_l3 is True and self._mlag_ibgp_origin_incomplete is True and self._underlay_routing_protocol == "ebgp"):
+        if not (self._mlag_l3 is True and self._mlag_ibgp_origin_incomplete is True and self._underlay_bgp):
             return None
 
         return {
@@ -313,17 +315,63 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
+    def _underlay_bgp(self):
+        return get(self._hostvars, "switch.underlay.bgp") is True
+
+    @cached_property
+    def _peer_group_mlag_ipv4_underlay_peer_name(self) -> str:
+        return get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name", required=True)
+
+    @cached_property
     def router_bgp(self):
         """
         Return structured config for router bgp
-        MLAG iBGP peering
+
+        Peer group and underlay MLAG iBGP peering is created only for BGP underlay.
         """
 
-        if not (self._mlag_l3 is True and self._underlay_routing_protocol == "ebgp"):
+        if not (self._mlag_l3 is True and self._underlay_bgp):
             return None
 
+        # MLAG Peer group
+        peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
+        router_bgp = self._router_bgp_mlag_peer_group()
+
+        # Underlay MLAG peering
+        if not self._underlay_bgp:
+            return strip_empties_from_dict(router_bgp)
+
+        if self._underlay_rfc5549 is True:
+            vlan = default(self._mlag_peer_l3_vlan, self._mlag_peer_vlan)
+            neighbor_interface_name = f"Vlan{vlan}"
+            router_bgp["neighbor_interfaces"] = {
+                neighbor_interface_name: {
+                    "peer_group": peer_group_name,
+                    "remote_as": self._bgp_as,
+                    "description": self._mlag_peer,
+                }
+            }
+
+        else:
+            neighbor_name = get(self._hostvars, "switch.mlag_peer_l3_ip", default=self._mlag_peer_ip)
+            router_bgp["neighbors"] = {
+                neighbor_name: {
+                    "peer_group": peer_group_name,
+                    "description": self._mlag_peer,
+                }
+            }
+
+        return strip_empties_from_dict(router_bgp)
+
+    def _router_bgp_mlag_peer_group(self) -> dict:
+        """
+        Return a partial router_bgp structured_config covering the MLAG peer_group
+        and associated address_family activations
+
+        TODO: Duplicated in network_services. Should be moved to a common class
+        """
+        peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
         router_bgp = {}
-        peer_group_name = get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name", required=True)
         peer_group = {
             "type": "ipv4",
             "remote_as": self._bgp_as,
@@ -358,24 +406,4 @@ class AvdStructuredConfig(AvdFacts):
             }
         }
 
-        if self._underlay_rfc5549 is True:
-            vlan = default(self._mlag_peer_l3_vlan, self._mlag_peer_vlan)
-            neighbor_interface_name = f"Vlan{vlan}"
-            router_bgp["neighbor_interfaces"] = {
-                neighbor_interface_name: {
-                    "peer_group": peer_group_name,
-                    "remote_as": self._bgp_as,
-                    "description": self._mlag_peer,
-                }
-            }
-
-        else:
-            neighbor_name = get(self._hostvars, "switch.mlag_peer_l3_ip", default=self._mlag_peer_ip)
-            router_bgp["neighbors"] = {
-                neighbor_name: {
-                    "peer_group": peer_group_name,
-                    "description": self._mlag_peer,
-                }
-            }
-
-        return strip_empties_from_dict(router_bgp)
+        return router_bgp

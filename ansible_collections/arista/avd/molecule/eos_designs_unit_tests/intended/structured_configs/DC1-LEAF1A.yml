@@ -218,9 +218,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.1/31
   Ethernet28:
     peer: DC1-SPINE2
@@ -228,9 +228,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/1/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.3/31
   Ethernet29:
     peer: DC1-SPINE3
@@ -238,9 +238,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/1/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.5/31
   Ethernet30:
     peer: DC1-SPINE4
@@ -248,19 +248,10 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet1/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.7/31
-  Ethernet7:
-    peer: server02_SINGLE_NODE
-    peer_interface: Eth1
-    peer_type: server
-    description: server02_SINGLE_NODE_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
   Ethernet6:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
@@ -274,6 +265,15 @@ ethernet_interfaces:
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: false
+  Ethernet7:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    description: server02_SINGLE_NODE_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

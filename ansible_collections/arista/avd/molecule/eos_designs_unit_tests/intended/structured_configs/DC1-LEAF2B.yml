@@ -287,6 +287,11 @@ static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.3.11.4
   vrf: Tenant_D_OP_Zone
+- destination_address_prefix: 1.1.1.0/24
+  gateway: 10.3.11.4
+  track_bfd: true
+  name: Track-bfd-network-services
+  vrf: Tenant_D_OP_Zone
 - destination_address_prefix: 10.3.11.0/24
   vrf: Tenant_D_OP_Zone
   name: VARP
@@ -400,8 +405,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF1A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -410,8 +415,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF1B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -420,8 +425,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF3A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 9
       mode: active
@@ -430,8 +435,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF4A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 13
       mode: active
@@ -440,8 +445,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF5A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 141
       mode: active
@@ -450,8 +455,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF5B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 141
       mode: active
@@ -461,9 +466,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet5/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.65/31
   Ethernet50/1:
     peer: DC1-SPINE2
@@ -471,9 +476,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.67/31
   Ethernet51/1:
     peer: DC1-SPINE2
@@ -481,9 +486,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.69/31
   Ethernet52/1:
     peer: DC1-SPINE1
@@ -491,9 +496,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.71/31
   Ethernet53/1:
     peer: DC1-SPINE3
@@ -501,9 +506,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.73/31
   Ethernet54/1:
     peer: DC1-SPINE4
@@ -511,9 +516,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.75/31
   Ethernet55/1:
     peer: DC1-SPINE4
@@ -521,9 +526,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.77/31
   Ethernet56/1:
     peer: DC1-SPINE3
@@ -531,9 +536,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.79/31
   Ethernet24:
     peer_type: l3_interface
@@ -543,6 +548,48 @@ ethernet_interfaces:
     vrf: Tenant_OSPF
     ospf_area: 0
     ospf_network_point_to_point: true
+  Ethernet10:
+    peer: server01_MLAG
+    peer_interface: Eth3
+    peer_type: server
+    description: server01_MLAG_Eth3
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 210-211
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
+    channel_group:
+      id: 10
+      mode: active
+  Ethernet11:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth5
+    peer_type: server
+    description: server01_MTU_PROFILE_MLAG_Eth5
+    mtu: 1600
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
+    channel_group:
+      id: 11
+      mode: active
+  Ethernet12:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth7
+    peer_type: server
+    description: server01_MTU_ADAPTOR_MLAG_Eth7
+    mtu: 1601
+    type: switched
+    shutdown: false
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    channel_group:
+      id: 12
+      mode: active
   Ethernet20:
     peer: FIREWALL01
     peer_interface: E1
@@ -563,56 +610,14 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-  Ethernet10:
-    peer: server01_MLAG
-    peer_interface: Eth3
-    peer_type: server
-    description: server01_MLAG_Eth3
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 210-211
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-    channel_group:
-      id: 10
-      mode: active
-  Ethernet12:
-    peer: server01_MTU_ADAPTOR_MLAG
-    peer_interface: Eth7
-    peer_type: server
-    description: server01_MTU_ADAPTOR_MLAG_Eth7
-    mtu: 1601
-    type: switched
-    shutdown: false
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    channel_group:
-      id: 12
-      mode: active
-  Ethernet11:
-    peer: server01_MTU_PROFILE_MLAG
-    peer_interface: Eth5
-    peer_type: server
-    description: server01_MTU_PROFILE_MLAG_Eth5
-    mtu: 1600
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    channel_group:
-      id: 11
-      mode: active
+    vlans: '110'
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-112,120-121,130-131,160-161
     evpn_ethernet_segment:
       identifier: 0000:0000:0808:0707:0606
       route_target: 08:08:07:07:06:06
@@ -621,8 +626,8 @@ port_channel_interfaces:
     description: DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-112,120-121,130-131,160-161
     evpn_ethernet_segment:
       identifier: 0000:0000:0606:0707:0808
       route_target: 06:06:07:07:08:08
@@ -631,8 +636,8 @@ port_channel_interfaces:
     description: DC1-L2LEAF4A_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-112,120-121,130-131,160-161
     evpn_ethernet_segment:
       identifier: 0000:0000:a36b:7013:457b
       route_target: a3:6b:70:13:45:7b
@@ -641,18 +646,12 @@ port_channel_interfaces:
     description: DC1_L2LEAF5_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,120-121,130-131,160-161
     mode: trunk
+    vlans: 110-112,120-121,130-131,160-161
     evpn_ethernet_segment:
       identifier: 0000:0000:fa91:ce62:ce95
       route_target: fa:91:ce:62:ce:95
     lacp_id: fa91.ce62.ce95
-  Port-Channel20:
-    description: FIREWALL01_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
   Port-Channel10:
     description: server01_MLAG_PortChanne1
     type: switched
@@ -661,22 +660,28 @@ port_channel_interfaces:
     vlans: 210-211
     spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: disabled
-  Port-Channel12:
-    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    mtu: 1601
   Port-Channel11:
     description: server01_MTU_PROFILE_MLAG_PortChanne1
     type: switched
     shutdown: false
+    mtu: 1600
     mode: access
-    vlans: 110
+    vlans: '110'
     spanning_tree_bpdufilter: enabled
     spanning_tree_bpduguard: enabled
-    mtu: 1600
+  Port-Channel12:
+    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mtu: 1601
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+  Port-Channel20:
+    description: FIREWALL01_PortChanne1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

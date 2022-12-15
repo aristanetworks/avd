@@ -119,7 +119,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         elements = [peer, adapter_port_channel_description]
         return "_".join([str(element) for element in elements if element is not None])
 
-    def overlay_loopback_interface(self, overlay_loopback_description) -> str:
+    def overlay_loopback_interface(self, overlay_loopback_description: str = None) -> str:
         if template_path := get(self._hostvars, "switch.interface_descriptions.overlay_loopback_interface"):
             return self._template(template_path, overlay_loopback_description=overlay_loopback_description)
 
@@ -132,6 +132,11 @@ class AvdInterfaceDescriptions(AvdFacts):
         if self._mpls_lsr is True:
             return "LSR_Router_ID"
 
+        # Covers L2LS
+        if get(self._hostvars, "switch.overlay_routing_protocol") == "none":
+            return "Router_ID"
+
+        # Note that the current code will render this for HER and others
         return "EVPN_Overlay_Peering"
 
     def vtep_loopback_interface(self) -> str:

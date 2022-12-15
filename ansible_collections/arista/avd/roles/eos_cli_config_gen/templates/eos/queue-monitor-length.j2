@@ -1,3 +1,4 @@
+{# eos - queue monitor lenght #}
 {% if queue_monitor_length is arista.avd.defined and queue_monitor_length.enabled is not arista.avd.defined(false) %}
 !
 queue-monitor length

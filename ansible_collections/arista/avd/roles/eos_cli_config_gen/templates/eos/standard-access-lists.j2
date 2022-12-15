@@ -1,4 +1,4 @@
-{# eos - standard access-lists #}
+{# eos - standard access lists #}
 {% for standard_access_list in standard_access_lists | arista.avd.natural_sort('name') %}
 !
 ip access-list standard {{ standard_access_list.name }}

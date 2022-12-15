@@ -53,6 +53,9 @@ class RouteMapsMixin(UtilsMixin):
         if (route_maps_vrf_default := self._route_maps_vrf_default) is not None:
             route_maps.update(route_maps_vrf_default)
 
+        if self._configure_bgp_mlag_peer_group and self._mlag_ibgp_origin_incomplete:
+            route_maps.update(self._bgp_mlag_peer_group_route_map())
+
         if route_maps:
             return route_maps
 
@@ -117,3 +120,22 @@ class RouteMapsMixin(UtilsMixin):
             }
 
         return route_maps
+
+    def _bgp_mlag_peer_group_route_map(self):
+        """
+        Return dict with one route-map
+        Origin Incomplete for MLAG iBGP learned routes
+
+        TODO: Partially duplicated from mlag. Should be moved to a common class
+        """
+        return {
+            "RM-MLAG-PEER-IN": {
+                "sequence_numbers": {
+                    10: {
+                        "type": "permit",
+                        "set": ["origin incomplete"],
+                        "description": "Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
+                    }
+                }
+            }
+        }
