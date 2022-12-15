@@ -223,15 +223,6 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ipv6_enable: true
-  Ethernet7:
-    peer: server02_SINGLE_NODE
-    peer_interface: Eth1
-    peer_type: server
-    description: server02_SINGLE_NODE_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
   Ethernet6:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
@@ -257,6 +248,15 @@ ethernet_interfaces:
       unknown_unicast:
         level: 2
         unit: percent
+  Ethernet7:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    description: server02_SINGLE_NODE_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

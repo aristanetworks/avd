@@ -298,6 +298,15 @@ Both data models support variable inheritance from profiles defined under [`port
 
 ### Network Ports
 
+The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
+but all features and keys supported under `connected_endpoints.adapters` is also supported directly under `network_ports`.
+
+Since all ranges defined under `network_ports` will be expanded to individual port configurations, it is not possible to configure a
+port-channel with multiple interfaces on the same device. For this special case `connected_endpoints` should be used.
+
+The expansiont to individual port configurations also lead to inconsistent configurations when used with `short_esi: auto` or
+`designated_forwarder_algorithm: auto`, since those rely on information from multiple switches and interfaces.
+
 ```yaml
 # Network Ports | Optional
 # All switch_ports ranges are expanded into individual port configurations.
