@@ -22,7 +22,7 @@ fabric_name: < Fabric_Name >
 dc_name: < DC_Name >
 ```
 
-- POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+- POD Name (optional), fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ```yaml
 pod_name: < POD_Name >

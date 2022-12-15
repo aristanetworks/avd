@@ -213,8 +213,7 @@ Node types can be defined statically on each node or in each group of nodes.  As
 on the hostname.
 
 !!! warning
-  Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed.
-  This functionality will be restored as part of a later update to eos_validate_!!!state and this note will then be removed.
+    Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed. This functionality will be restored as part of a later update to eos_validate_state and this note will then be removed.
 
 ```yaml
 default_node_types:
@@ -226,3 +225,4 @@ default_node_types:
 
     # Required | Resultant node_type to be used if any of the regexes above match
     node_type: < node type, taken from node_type_keys above >
+```
