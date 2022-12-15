@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Generator
+
 from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
@@ -34,7 +36,7 @@ class AvdSchemaTools:
         self._set_conversion_mode(conversion_mode)
         self._set_validation_mode(validation_mode)
 
-    def _set_conversion_mode(self, conversion_mode):
+    def _set_conversion_mode(self, conversion_mode: str | None) -> None:
         if conversion_mode is None:
             conversion_mode = DEFAULT_CONVERSION_MODE
 
@@ -46,7 +48,7 @@ class AvdSchemaTools:
 
         self.conversion_mode = conversion_mode
 
-    def _set_validation_mode(self, validation_mode):
+    def _set_validation_mode(self, validation_mode: str | None) -> None:
         if validation_mode is None:
             validation_mode = DEFAULT_VALIDATION_MODE
 
@@ -58,7 +60,7 @@ class AvdSchemaTools:
 
         self.validation_mode = validation_mode
 
-    def convert_data(self, data) -> list[str]:
+    def convert_data(self, data: dict) -> list[str]:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
@@ -75,7 +77,7 @@ class AvdSchemaTools:
 
         return result_messages
 
-    def validate_data(self, data):
+    def validate_data(self, data: dict) -> list:
         """
         Validate data according to the schema
 
@@ -91,7 +93,7 @@ class AvdSchemaTools:
 
         return result_messages
 
-    def convert_and_validate_data(self, data):
+    def convert_and_validate_data(self, data: dict) -> dict:
         """
         Convert & Validate data according to the schema
 
@@ -121,7 +123,7 @@ class AvdSchemaTools:
 
         return result
 
-    def handle_validation_exceptions(self, exceptions, mode):
+    def handle_validation_exceptions(self, exceptions: Generator, mode: str) -> int:
         counter = 0
         for exception in exceptions:
             if not isinstance(exception, AristaAvdError):
