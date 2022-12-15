@@ -60,6 +60,5 @@ l3leaf:
               delay_resp: 12
               follow_up: 13
               sync: 14
-        clock_identity_prefix: "22:33:44"
         priority1: 1
         priority2: 2

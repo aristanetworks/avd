@@ -470,7 +470,7 @@ class EosDesignsFacts(AvdFacts):
                 "mode": get(self._switch_data_combined, "ptp.mode", default="boundary"),
                 "forward_unicast": get(self._switch_data_combined, "ptp.forward_unicast"),
                 "clock_identity": get(self._switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
-                "source": {"ip": get(self._switch_data_combined, "ptp.source.ip")},
+                "source": {"ip": get(self._switch_data_combined, "ptp.source_ip")},
                 "priority1": priority1,
                 "priority2": priority2,
                 "ttl": get(self._switch_data_combined, "ptp.ttl"),

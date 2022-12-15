@@ -15,6 +15,11 @@ core_interfaces:
       interfaces: [ Ethernet6, Ethernet6 ]
       ptp_enable: true
       include_in_underlay_protocol: false
+    - id: 2
+      nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet7, Ethernet7 ]
+      ptp_enable: true
+      include_in_underlay_protocol: false
 
 tenants:
   PTP:
