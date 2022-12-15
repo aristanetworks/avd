@@ -966,7 +966,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true
@@ -1047,7 +1047,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 210
+    vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true

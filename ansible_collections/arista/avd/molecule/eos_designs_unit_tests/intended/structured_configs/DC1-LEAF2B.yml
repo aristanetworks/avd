@@ -548,6 +548,48 @@ ethernet_interfaces:
     vrf: Tenant_OSPF
     ospf_area: 0
     ospf_network_point_to_point: true
+  Ethernet10:
+    peer: server01_MLAG
+    peer_interface: Eth3
+    peer_type: server
+    description: server01_MLAG_Eth3
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 210-211
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
+    channel_group:
+      id: 10
+      mode: active
+  Ethernet11:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth5
+    peer_type: server
+    description: server01_MTU_PROFILE_MLAG_Eth5
+    mtu: 1600
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
+    channel_group:
+      id: 11
+      mode: active
+  Ethernet12:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth7
+    peer_type: server
+    description: server01_MTU_ADAPTOR_MLAG_Eth7
+    mtu: 1601
+    type: switched
+    shutdown: false
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    channel_group:
+      id: 12
+      mode: active
   Ethernet20:
     peer: FIREWALL01
     peer_interface: E1
@@ -568,49 +610,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 110
-  Ethernet10:
-    peer: server01_MLAG
-    peer_interface: Eth3
-    peer_type: server
-    description: server01_MLAG_Eth3
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 210-211
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-    channel_group:
-      id: 10
-      mode: active
-  Ethernet12:
-    peer: server01_MTU_ADAPTOR_MLAG
-    peer_interface: Eth7
-    peer_type: server
-    description: server01_MTU_ADAPTOR_MLAG_Eth7
-    mtu: 1601
-    type: switched
-    shutdown: false
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    channel_group:
-      id: 12
-      mode: active
-  Ethernet11:
-    peer: server01_MTU_PROFILE_MLAG
-    peer_interface: Eth5
-    peer_type: server
-    description: server01_MTU_PROFILE_MLAG_Eth5
-    mtu: 1600
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    channel_group:
-      id: 11
-      mode: active
+    vlans: '110'
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
@@ -652,12 +652,6 @@ port_channel_interfaces:
       identifier: 0000:0000:fa91:ce62:ce95
       route_target: fa:91:ce:62:ce:95
     lacp_id: fa91.ce62.ce95
-  Port-Channel20:
-    description: FIREWALL01_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
   Port-Channel10:
     description: server01_MLAG_PortChanne1
     type: switched
@@ -666,22 +660,28 @@ port_channel_interfaces:
     vlans: 210-211
     spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: disabled
-  Port-Channel12:
-    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    mtu: 1601
   Port-Channel11:
     description: server01_MTU_PROFILE_MLAG_PortChanne1
     type: switched
     shutdown: false
+    mtu: 1600
     mode: access
-    vlans: 110
+    vlans: '110'
     spanning_tree_bpdufilter: enabled
     spanning_tree_bpduguard: enabled
-    mtu: 1600
+  Port-Channel12:
+    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mtu: 1601
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+  Port-Channel20:
+    description: FIREWALL01_PortChanne1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

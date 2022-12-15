@@ -252,15 +252,6 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.254.7/31
-  Ethernet7:
-    peer: server02_SINGLE_NODE
-    peer_interface: Eth1
-    peer_type: server
-    description: server02_SINGLE_NODE_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
   Ethernet6:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
@@ -274,6 +265,15 @@ ethernet_interfaces:
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: false
+  Ethernet7:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    description: server02_SINGLE_NODE_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
