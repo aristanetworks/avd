@@ -129,7 +129,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 30
+    vlans: '30'
     spanning_tree_portfast: edge
 mlag_configuration:
   domain_id: RACK2
