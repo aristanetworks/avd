@@ -109,7 +109,12 @@ Both data models support variable inheritance from profiles defined under [`port
 
         # PTP Enable | Optional
         ptp:
-          enable: < true | false >
+          enable: < true | false | default -> false | Required >
+          # These are the default settings:
+          # - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
+          # - `ptp role master` is set to ensure control over the PTP topology.
+          endpoint_role: < follower | bmca | default -> follower >
+          profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 >
 
         # Configure the downstream interfaces of a respective Link Tracking Group | Optional
         # If port_channel is defined in an adapter then port-channel interface is configured to be the downstream
@@ -292,6 +297,15 @@ Both data models support variable inheritance from profiles defined under [`port
 ```
 
 ### Network Ports
+
+The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
+but all features and keys supported under `connected_endpoints.adapters` is also supported directly under `network_ports`.
+
+Since all ranges defined under `network_ports` will be expanded to individual port configurations, it is not possible to configure a
+port-channel with multiple interfaces on the same device. For this special case `connected_endpoints` should be used.
+
+The expansiont to individual port configurations also lead to inconsistent configurations when used with `short_esi: auto` or
+`designated_forwarder_algorithm: auto`, since those rely on information from multiple switches and interfaces.
 
 ```yaml
 # Network Ports | Optional

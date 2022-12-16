@@ -1,13 +1,13 @@
-{# QOS Interfaces #}
+{# doc - qos interfaces #}
 {% set ethernet_interfaces_qos = [] %}
 {% set port_channel_interfaces_qos = [] %}
-{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.shape is arista.avd.defined or
           ethernet_interface.qos is arista.avd.defined %}
 {%         do ethernet_interfaces_qos.append(ethernet_interface) %}
 {%     endif %}
 {% endfor %}
-{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%     if port_channel_interface.shape is arista.avd.defined or
           port_channel_interface.qos is arista.avd.defined %}
 {%         do port_channel_interfaces_qos.append(port_channel_interface) %}

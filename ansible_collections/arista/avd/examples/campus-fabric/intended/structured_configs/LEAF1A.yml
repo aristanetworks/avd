@@ -88,8 +88,8 @@ port_channel_interfaces:
     description: SPINES_Po1
     type: switched
     shutdown: false
-    vlans: 10,110,120,130
     mode: trunk
+    vlans: 10,110,120,130
     mlag: 51
 ethernet_interfaces:
   Ethernet53:
@@ -117,8 +117,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3spine
     description: SPINE1_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 51
       mode: active
@@ -149,10 +149,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -183,10 +179,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -217,10 +209,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -251,10 +239,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -285,10 +269,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -319,10 +299,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -353,10 +329,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -387,10 +359,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -421,10 +389,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -455,10 +419,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -489,10 +449,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -523,10 +479,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -557,10 +509,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -591,10 +539,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -625,10 +569,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -659,10 +599,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -693,10 +629,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -727,10 +659,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -761,10 +689,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -795,10 +719,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -829,10 +749,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -863,10 +779,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -897,10 +809,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -931,10 +839,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -965,10 +869,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -999,10 +899,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1033,10 +929,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1067,10 +959,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1101,10 +989,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1135,10 +1019,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1169,10 +1049,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1203,10 +1079,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1237,10 +1109,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1271,10 +1139,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1305,10 +1169,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1339,10 +1199,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1373,10 +1229,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1407,10 +1259,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1441,10 +1289,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1475,10 +1319,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1509,10 +1349,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1543,10 +1379,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1577,10 +1409,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1611,10 +1439,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1645,10 +1469,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1679,10 +1499,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1713,10 +1529,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120
@@ -1747,10 +1559,6 @@ ethernet_interfaces:
       authentication_failure:
         action: allow
         allow_vlan: 130
-    struct_cfg:
-      phone:
-        trunk: untagged
-        vlan: 120
     phone:
       trunk: untagged
       vlan: 120

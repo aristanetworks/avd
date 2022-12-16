@@ -4,24 +4,27 @@
 
 - name: Gather ip reachability state (directly connected interfaces)
   eos_command:
-    commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ansible.netcommon.ipaddr('address') }} source {{ ethernet_interface.value.ip_address  | ansible.netcommon.ipaddr('address') }} repeat 1"
-  loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
+    commands: "ping {{ peer_ip | ansible.utils.ipaddr('address') }} source {{ ethernet_interface.ip_address | ansible.utils.ipaddr('address') }} repeat 1"
+  loop: "{{ ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
   loop_control:
     loop_var: ethernet_interface
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (ethernet_interfaces is defined and ethernet_interfaces is not none) and
-    (ethernet_interface.value.type is defined and ethernet_interface.value.type is not none and ethernet_interface.value.type == 'routed') and
-    (ethernet_interface.value.ip_address is defined and ethernet_interface.value.ip_address is not none) and
-    (ethernet_interface.value.peer is defined and ethernet_interface.value.peer is not none) and
-    (ethernet_interface.value.peer_interface is defined and ethernet_interface.value.peer_interface is not none) and
-    (hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] is defined and
-    hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] is not none)
+    ethernet_interfaces is arista.avd.defined and
+    ethernet_interface.type is arista.avd.defined('routed') and
+    ethernet_interface.ip_address is arista.avd.defined and
+    ethernet_interface.peer is arista.avd.defined and
+    ethernet_interface.peer_interface is arista.avd.defined and
+    peer_ip is arista.avd.defined
+  vars:
+    peer_ip: "{{ (hostvars[ethernet_interface.peer | arista.avd.default('_')].ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', ethernet_interface.peer_interface | arista.avd.default) | map(attribute='ip_address'))[0] | arista.avd.default }}"
+
   register: ip_reachability_state
   tags:
     - ip_reachability
 
 - name: Validate ip reachability (directly connected interfaces)
+  delegate_to: localhost
   assert:
     that:
       - ip_reachability_test.stdout[0] | regex_search('1 received')

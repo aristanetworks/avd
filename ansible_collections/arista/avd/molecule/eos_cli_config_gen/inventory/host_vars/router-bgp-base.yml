@@ -8,13 +8,19 @@ router_bgp:
     external_routes: 20
     internal_routes: 200
     local_routes: 200
+  graceful_restart:
+    enabled: true
+    restart_time: 555
+    stalepath_time: 666
+  graceful_restart_helper:
+    enabled: true
+    restart_time: 888
+    long_lived: true
   maximum_paths:
     paths: 32
     ecmp: 32
   bgp_defaults:
     - no bgp default ipv4-unicast
-    - graceful-restart restart-time 300
-    - graceful-restart
   bgp:
     bestpath:
       d_path: true
@@ -140,6 +146,7 @@ router_bgp:
         enabled: true
       remove_private_as_ingress:
         enabled: true
+      route_reflector_client: false
     192.0.3.7:
       remote_as: 65438
       description: test_remove_private_as_all
@@ -150,6 +157,7 @@ router_bgp:
       remove_private_as_ingress:
         enabled: true
         replace_as: true
+      route_reflector_client: true
   neighbor_interfaces:
     Ethernet2:
       peer_group: PG-FOO-v4

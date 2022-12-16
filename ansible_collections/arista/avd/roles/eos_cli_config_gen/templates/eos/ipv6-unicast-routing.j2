@@ -1,0 +1,5 @@
+{# eos - ipv6 unicast routing #}
+{% if ipv6_unicast_routing is arista.avd.defined(true) %}
+!
+ipv6 unicast-routing
+{% endif %}

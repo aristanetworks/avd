@@ -13,7 +13,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65000'
       bfd: true
-      password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+      password: SHsTgDgjVUU5a9blyxSt3Q==
       send_community: all
       maximum_routes: 0
   address_family_ipv4:
@@ -74,14 +74,14 @@ router_bgp:
           - '65000:20'
           vpn-ipv6:
           - '65000:20'
-      neighbors:
-        192.168.48.3:
-          description: TENANT_B_CPE_SITE5
-          password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
-          remote_as: '65202'
       redistribute_routes:
       - connected
       - ospf
+      neighbors:
+        192.168.48.3:
+          description: TENANT_B_CPE_SITE5
+          password: OajzUG59/YF0NkgvOQyRnQ==
+          remote_as: '65202'
       address_families:
         ipv4:
           neighbors:
@@ -146,10 +146,10 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - destination_address_prefix: 123.0.10.0/24
-  vrf: TENANT_B_INTRA
   gateway: 123.1.1.3
   name: TENANT_B_SITE_5_SUBNET
   interface: Ethernet6.10
+  vrf: TENANT_B_INTRA
 service_routing_protocols_model: multi-agent
 ip_routing: true
 ipv6_unicast_routing: true
@@ -192,7 +192,6 @@ loopback_interfaces:
     ip_address: 100.70.0.7/32
     ipv6_address: 2000:1234:ffff:ffff::7/128
     mpls:
-      ip: true
       ldp:
         interface: true
     isis_enable: CORE
@@ -206,19 +205,19 @@ router_isis:
   net: 49.0001.0000.0001.0007.00
   router_id: 100.70.0.7
   is_type: level-1-2
-  advertise:
-    passive_only: true
-  mpls_ldp_sync_default: true
-  timers:
-    local_convergence:
-      delay: 15000
-      protected_prefixes: true
   address_family:
   - ipv4 unicast
   - ipv6 unicast
   isis_af_defaults:
   - maximum-paths 4
   - fast-reroute ti-lfa mode link-protection
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      delay: 15000
+      protected_prefixes: true
+  advertise:
+    passive_only: true
   segment_routing_mpls:
     router_id: 100.70.0.7
     enabled: true
@@ -238,8 +237,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1000
+
+      '
     ip_address: 100.64.48.15/31
-    speed: forced 40gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 60
@@ -253,16 +254,17 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1000
-
-      '
+    speed: forced 40gfull
   Ethernet11:
-    type: routed
+    peer: SITE2-LSR2
+    peer_interface: Port-Channel12
+    peer_type: p
     description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
     shutdown: false
     channel_group:
       id: 11
       mode: active
+    speed: forced 40gfull
   Ethernet8:
     peer: CPE_TENANT_A_SITE2
     peer_interface: eth0
@@ -274,38 +276,38 @@ ethernet_interfaces:
     vlans: 10
     spanning_tree_portfast: edge
   Ethernet6.10:
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 10
     peer_type: l3_interface
-    vrf: TENANT_B_WAN
     ip_address: 192.168.48.2/31
     shutdown: false
     description: TENANT_B_SITE_5
-  Ethernet6.100:
     type: l3dot1q
-    encapsulation_dot1q_vlan: 100
-    peer_type: l3_interface
+    encapsulation_dot1q_vlan: 10
     vrf: TENANT_B_WAN
+  Ethernet6.100:
+    peer_type: l3_interface
     ip_address: 192.168.48.4/31
     shutdown: false
     description: TENANT_B_SITE_3_OSPF
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    vrf: TENANT_B_WAN
     ospf_area: 0
     ospf_network_point_to_point: true
     ospf_cost: 10
   Ethernet6:
-    type: routed
     peer_type: l3_interface
-    vrf: TENANT_B_WAN
     ip_address: 123.10.10.2/31
     shutdown: false
     description: TENANT_B_SITE_5_WAN_TEST
+    type: routed
+    vrf: TENANT_B_WAN
   Ethernet7:
     type: routed
+    peer_type: l3_interface
+    shutdown: false
     lldp:
       transmit: false
       receive: false
-    peer_type: l3_interface
-    shutdown: false
   Ethernet4:
     shutdown: false
     channel_group:
@@ -325,8 +327,10 @@ port_channel_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1600
+
+      '
     ip_address: 100.64.48.17/31
-    speed: forced 40gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 60
@@ -335,9 +339,6 @@ port_channel_interfaces:
     isis_circuit_type: level-2
     isis_authentication_mode: md5
     isis_authentication_key: asdadjiwtelogkkdng
-    eos_cli: 'link-debounce time 1600
-
-      '
     mpls:
       ip: true
       ldp:

@@ -1,5 +1,5 @@
-{# eos - Ethernet Interfaces #}
-{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - ethernet interfaces #}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
 {%         set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%         if port_channel_interfaces | arista.avd.default([]) |
@@ -159,6 +159,9 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ ethernet_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%         endif %}
+{%         if ethernet_interface.flow_tracker.sampled is arista.avd.defined %}
+   flow tracker sampled {{ ethernet_interface.flow_tracker.sampled }}
+{%         endif %}
 {%         if ethernet_interface.evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
 {%             if ethernet_interface.evpn_ethernet_segment.identifier is arista.avd.defined %}
@@ -287,7 +290,7 @@ interface {{ ethernet_interface.name }}
    ip address {{ ip_address_secondary }} secondary
 {%                 endfor %}
 {%             endif %}
-{%             for ip_helper in ethernet_interface.ip_helpers | arista.avd.convert_dicts('ip_helper') | arista.avd.natural_sort('ip_helper') %}
+{%             for ip_helper in ethernet_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%                 set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%                 if ip_helper.vrf is arista.avd.defined %}
 {%                     set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
@@ -324,7 +327,7 @@ interface {{ ethernet_interface.name }}
    ipv6 nd managed-config-flag
 {%         endif %}
 {%         if ethernet_interface.ipv6_nd_prefixes is arista.avd.defined %}
-{%             for prefix in ethernet_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
+{%             for prefix in ethernet_interface.ipv6_nd_prefixes %}
 {%                 set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
 {%                 if prefix.valid_lifetime is arista.avd.defined %}
 {%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
@@ -431,7 +434,7 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ ethernet_interface.ospf_area }}
 {%         endif %}
-{%         for ospf_message_digest_key in ethernet_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         for ospf_message_digest_key in ethernet_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%             if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
 {%             endif %}
@@ -546,12 +549,12 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
 {%         endif %}
-{%         if ethernet_interface.spanning_tree_bpduguard is arista.avd.defined(true) or ethernet_interface.spanning_tree_bpduguard is arista.avd.defined("enabled") %}
+{%         if ethernet_interface.spanning_tree_bpduguard is arista.avd.defined and ethernet_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%         elif ethernet_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
    spanning-tree bpduguard disable
 {%         endif %}
-{%         if ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined(true) or ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+{%         if ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined and ethernet_interface.spanning_tree_bpdufilter in [True, "True", "enabled"] %}
    spanning-tree bpdufilter enable
 {%         elif ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable

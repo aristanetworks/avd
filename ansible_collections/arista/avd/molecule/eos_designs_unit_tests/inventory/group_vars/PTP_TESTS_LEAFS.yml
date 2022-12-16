@@ -1,0 +1,64 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.254.1.0/27
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['ptp-tests-spine1', 'ptp-tests-spine1']
+    uplink_ipv4_pool: 10.254.2.0/24
+    vtep_loopback_ipv4_pool: 10.254.11.0/27
+    mlag_interfaces: ['Ethernet11', 'Ethernet12']
+    mlag_peer_ipv4_pool: 10.254.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.254.1.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    ptp:
+      enabled: true
+
+  nodes:
+    ptp-tests-leaf1:
+      id: 1
+      bgp_as: 65101
+      mgmt_ip: 192.168.0.101/24
+      uplink_switch_interfaces:
+        - Ethernet1
+        - Ethernet2
+      ptp:
+        clock_identity: "11:11:11:11:11:11"
+
+    ptp-tests-leaf2:
+      id: 2
+      bgp_as: 65102
+      mgmt_ip: 192.168.0.102/24
+      uplink_switch_interfaces:
+        - Ethernet3
+        - Ethernet4
+      ptp:
+        enabled: true
+        source_ip: 10.254.1.2
+        ttl: 16
+        forward_unicast: true
+        dscp:
+          general_messages: 46
+          event_messages: 48
+        monitor:
+          enabled: true
+          threshold:
+            offset_from_master: 1234
+            mean_path_delay: 4567
+          missing_message:
+            intervals:
+              sync: 8
+              follow_up: 9
+              announce: 10
+            sequence_ids:
+              enabled: true
+              announce: 11
+              delay_resp: 12
+              follow_up: 13
+              sync: 14
+        priority1: 1
+        priority2: 2

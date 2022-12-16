@@ -10,6 +10,7 @@
     - bgp_check
 
 - name: Validate ArBGP is configured and operating
+  delegate_to: localhost
   assert:
     that:
       - ip_route_summary.stdout_lines[0][0] | regex_search('multi-agent')
@@ -34,32 +35,34 @@
     - bgp_check
 
 - name: Validate ip bgp neighbors peer state
+  delegate_to: localhost
   assert:
     that:
-      - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState == 'Established'
-    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState | replace('\"','') }}"
+      - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
+    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"','') }}"
     quiet: yes
-  loop: "{{ router_bgp.neighbors | default({}, true) | dict2items }}"
+  loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
     loop_var: bgp_neighbor
   when: |
-    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == 'ipv4' and arbgp_state_results)
+    ((router_bgp.peer_groups | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', bgp_neighbor.peer_group) | first).type == 'ipv4' and arbgp_state_results)
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: ip_bgp_peer_state_results
   tags:
     - bgp_check
 
 - name: Validate bgp evpn neighbors peer state
+  delegate_to: localhost
   assert:
     that:
-      - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState == 'Established'
-    fail_msg: "Session state {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState | replace('\"','') }}"
+      - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
+    fail_msg: "Session state: {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"','') }}"
     quiet: yes
-  loop: "{{ router_bgp.neighbors | default({}, true) | dict2items }}"
+  loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
     loop_var: bgp_neighbor
   when: |
-    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == 'evpn'  and arbgp_state_results)
+    ((router_bgp.peer_groups | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', bgp_neighbor.peer_group) | first).type == 'evpn'  and arbgp_state_results)
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: bgp_evpn_peer_state_results
   tags:

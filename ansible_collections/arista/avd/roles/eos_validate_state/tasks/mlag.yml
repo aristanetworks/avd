@@ -10,11 +10,12 @@
     - mlag
 
 - name: Validate mlag status
+  delegate_to: localhost
   assert:
     that:
-      - mlag_state.stdout[0].state == 'active'
-      - mlag_state.stdout[0].negStatus == 'connected'
-    fail_msg: "State: {{ mlag_state.stdout[0].state| replace('\"','')  }} - negotiation_status: {{ mlag_state.stdout[0].negStatus| replace('\"','')  }}"
+      - mlag_state.stdout[0].state | arista.avd.default('Not configured') == 'active'
+      - mlag_state.stdout[0].negStatus | arista.avd.default('Not configured') == 'connected'
+    fail_msg: "State: {{ mlag_state.stdout[0].state | arista.avd.default('Not configured') | replace('\"','')  }} - Negotiation_status: {{ mlag_state.stdout[0].negStatus | arista.avd.default('Not configured') | replace('\"','')  }}"
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: mlag_state_results

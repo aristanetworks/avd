@@ -1,5 +1,5 @@
-{# eos - VLAN Interfaces #}
-{% for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - vlan interfaces #}
+{% for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ vlan_interface.name }}
 {%     if vlan_interface.description is arista.avd.defined %}
@@ -45,7 +45,7 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     for ip_helper in vlan_interface.ip_helpers | arista.avd.convert_dicts('ip_helper') | arista.avd.natural_sort('ip_helper') %}
+{%     for ip_helper in vlan_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%         if ip_helper.vrf is arista.avd.defined %}
 {%             set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
@@ -80,7 +80,7 @@ interface {{ vlan_interface.name }}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_prefixes is arista.avd.defined %}
-{%         for prefix in vlan_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
+{%         for prefix in vlan_interface.ipv6_nd_prefixes %}
 {%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
 {%             if prefix.valid_lifetime is arista.avd.defined %}
 {%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
@@ -161,7 +161,7 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ospf_authentication_key is arista.avd.defined %}
    ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key }}
 {%     endif %}
-{%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and
               ospf_message_digest_key.key is arista.avd.defined %}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}

@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY_PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: af6F4WLl4wUrWRZcwbEwkQ==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -154,63 +154,63 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1A_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet2:
     peer: DC1-LEAF2A
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet3:
     peer: DC1-LEAF2B
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2B_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet4:
     peer: DC1-SVC3A
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3A_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet5:
     peer: DC1-SVC3B
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3B_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet6:
     peer: DC1-BL1A
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1A_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet7:
     peer: DC1-BL1B
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1B_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
 loopback_interfaces:
   Loopback0:

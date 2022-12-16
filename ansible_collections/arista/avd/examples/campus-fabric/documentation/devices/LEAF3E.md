@@ -55,8 +55,8 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | -  | - |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | -  | - |
+| Management0 | oob_management | oob | MGMT | - | - |
+| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -142,9 +142,9 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| admin | 15 | network-admin |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 

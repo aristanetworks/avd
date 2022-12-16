@@ -17,7 +17,7 @@ router_bgp:
       route_map_in: RM-MLAG-PEER-IN
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -116,7 +116,7 @@ router_bgp:
         - '14:14'
       redistribute_routes:
       - learned
-      vlan: 150
+      vlan: '150'
     Tenant_A_WEB_Zone:
       rd: 192.168.255.19:11
       route_targets:
@@ -133,7 +133,7 @@ router_bgp:
         - 20160:20160
       redistribute_routes:
       - learned
-      vlan: 160
+      vlan: '160'
     Tenant_A_NFS:
       tenant: Tenant_A
       rd: 192.168.255.19:20161
@@ -158,7 +158,7 @@ router_bgp:
         - '21:21'
       redistribute_routes:
       - learned
-      vlan: 250
+      vlan: '250'
     Tenant_C_OP_Zone:
       rd: 192.168.255.19:30
       route_targets:
@@ -174,7 +174,7 @@ router_bgp:
         - '31:31'
       redistribute_routes:
       - learned
-      vlan: 350
+      vlan: '350'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -371,9 +371,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet15
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.161/31
   Ethernet2:
     peer: DC1-SPINE2
@@ -381,9 +381,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet15
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.163/31
   Ethernet3:
     peer: DC1-SPINE3
@@ -391,9 +391,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet15
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.165/31
   Ethernet4:
     peer: DC1-SPINE4
@@ -401,9 +401,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet15
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.167/31
 mlag_configuration:
   domain_id: DC1_CL1
@@ -456,9 +456,8 @@ vxlan_interface:
   Vxlan1:
     description: DC1-CL1B_VTEP
     vxlan:
-      source_interface: Loopback1
-      virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         130:
           vni: 10130

@@ -12,7 +12,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65000'
       bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
+      password: 64fqSH5CFUNLRHErezMrRg==
       send_community: all
       maximum_routes: 0
       route_reflector_client: true
@@ -105,9 +105,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.6/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -117,9 +117,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.14/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -129,9 +129,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2B_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.22/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -141,9 +141,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.30/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -153,9 +153,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3B_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.38/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -165,9 +165,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1A_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.46/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -177,9 +177,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1B_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.54/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -196,6 +196,11 @@ router_isis:
   log_adjacency_changes: true
   net: 49.0001.0001.0000.0004.00
   router_id: 192.168.255.4
+  is_type: level-2
+  address_family:
+  - ipv4 unicast
+  isis_af_defaults:
+  - maximum-paths 4
   no_passive_interfaces:
   - Ethernet1
   - Ethernet2
@@ -204,11 +209,6 @@ router_isis:
   - Ethernet5
   - Ethernet6
   - Ethernet7
-  is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
 router_bfd:
   multihop:
     interval: 1200

@@ -1,0 +1,43 @@
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+snmp_server:
+  engine_ids:
+    local: f5717f42424242424200
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS SNMP_SYSTEM_MAC_ENGINEID_1
+  users:
+  - name: usertest-auth-priv
+    group: usergroup
+    version: v3
+    localized: f5717f42424242424200
+    auth: sha
+    auth_passphrase: 6c3164e279e6606e37028356bfbe9f1d0ad65ec1
+    priv: aes192
+    priv_passphrase: cf2421b898bda979625eb46b766dce3e13044c78633b2762
+  - name: usertest-auth-no-priv
+    group: usergroup
+    version: v3
+    localized: f5717f42424242424200
+    auth: sha512
+    auth_passphrase: 004b542796d9c64301dfba392a9484ef6c5c46e5091ede1551756c71c507cf36e970dda92b250fbbc693162a3c8759e181432ea0d5a08d7492588a16b51c66ee
+  - name: usertest-no-auth-no-priv
+    group: usergroup
+    version: v3
+    localized: f5717f42424242424200
+  - name: usertest-v2c
+    group: usergroup
+    version: v2c
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ip_igmp_snooping:
+  globally_enabled: true

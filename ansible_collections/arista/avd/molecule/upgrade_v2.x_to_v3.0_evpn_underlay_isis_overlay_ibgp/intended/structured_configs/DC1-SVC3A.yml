@@ -11,7 +11,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: 65001
       bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
+      password: 64fqSH5CFUNLRHErezMrRg==
       send_community: all
       maximum_routes: 0
   address_family_ipv4:
@@ -88,11 +88,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      OVERLAY-PEERS:
-        remote_as: 65001
 vlans:
   4093:
     tenant: system
@@ -133,8 +128,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: none
     mode: trunk
+    vlans: none
     mlag: 7
 ethernet_interfaces:
   Ethernet5:
@@ -162,9 +157,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.25/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -174,9 +169,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.27/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -186,9 +181,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.29/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -198,9 +193,9 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet4
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.31/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -210,8 +205,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-L2LEAF2A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -220,8 +215,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-L2LEAF2B_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -250,6 +245,11 @@ router_isis:
   log_adjacency_changes: true
   net: 49.0001.0001.0001.0004.00
   router_id: 192.168.255.8
+  is_type: level-2
+  address_family:
+  - ipv4 unicast
+  isis_af_defaults:
+  - maximum-paths 4
   no_passive_interfaces:
   - Ethernet1
   - Ethernet2
@@ -257,11 +257,6 @@ router_isis:
   - Ethernet4
   - Vlan4093
   - Loopback1
-  is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
 router_bfd:
   multihop:
     interval: 1200
@@ -293,9 +288,9 @@ vxlan_interface:
   Vxlan1:
     description: DC1-SVC3A_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
 ntp:
   local_interface:
     name: Management1

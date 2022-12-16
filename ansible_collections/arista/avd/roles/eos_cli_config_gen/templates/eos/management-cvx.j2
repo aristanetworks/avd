@@ -1,4 +1,4 @@
-{# management cvx #}
+{# eos - management cvx #}
 {% if management_cvx is arista.avd.defined %}
 !
 management cvx
@@ -10,4 +10,7 @@ management cvx
 {%     for server_host in management_cvx.server_hosts | arista.avd.natural_sort %}
    server host {{ server_host }}
 {%     endfor %}
+{%     if management_cvx.source_interface is arista.avd.defined %}
+   source-interface {{ management_cvx.source_interface }}
+{%     endif %}
 {% endif %}

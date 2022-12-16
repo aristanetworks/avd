@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY_PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: af6F4WLl4wUrWRZcwbEwkQ==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -190,46 +190,37 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet2:
     peer: DC1-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet3:
     peer: DC1-SPINE3
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
   Ethernet4:
     peer: DC1-SPINE4
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ipv6_enable: true
-  Ethernet7:
-    peer: server02_SINGLE_NODE
-    peer_interface: Eth1
-    peer_type: server
-    description: server02_SINGLE_NODE_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
   Ethernet6:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
@@ -255,6 +246,15 @@ ethernet_interfaces:
       unknown_unicast:
         level: 2
         unit: percent
+  Ethernet7:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    description: server02_SINGLE_NODE_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: '110'
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -310,16 +310,16 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_APP_Zone_1
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan131:
     tenant: Tenant_A
     tags:
     - app
     description: Tenant_A_APP_Zone_2
     shutdown: false
-    vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
+    vrf: Tenant_A_APP_Zone
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -327,8 +327,8 @@ vlan_interfaces:
     - erp1
     description: Tenant_A_WEB_Zone_1
     shutdown: false
-    vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
+    vrf: Tenant_A_WEB_Zone
     ip_helpers:
       1.1.1.1:
         source_interface: lo100
@@ -339,15 +339,15 @@ vlan_interfaces:
     - web
     description: Tenant_A_WEBZone_2
     shutdown: true
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+    ip_address_virtual: 10.1.10.254/24
+    vrf: Tenant_A_WEB_Zone
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         130:
           vni: 10130

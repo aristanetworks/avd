@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  default_node_types:
+    type: list
+    primary_key: node_type
+    description: Uses hostname matches against a regular expression to determine the node type.
+    items:
+      type: dict
+      keys:
+        node_type:
+          type: str
+          required: true
+          description: Resulting node type when regex matches
+        match_hostnames:
+          type: list
+          required: true
+          description: Regular expressions to match against hostnames
+          items:
+            type: str
+            required: true
+            description: Regex needs to match full hostname (i.e. is bounded by ^ and $ elements)

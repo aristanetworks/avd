@@ -265,7 +265,7 @@ svi_profiles:
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
-              - name: < l3_leaf_inventory_hostname_1 >
+              - node: < l3_leaf_inventory_hostname_1 >
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
 
@@ -278,7 +278,7 @@ svi_profiles:
                 # Overrides the setting on SVI level.
                 structured_config: < dictionary >
 
-              - name: < l3_leaf_inventory_hostname_2 >
+              - node: < l3_leaf_inventory_hostname_2 >
                 ip_address: < IPv4_address/Mask >
 
             # Defined interface MTU
@@ -318,12 +318,14 @@ svi_profiles:
             ip_address_virtual: < IPv4_address/Mask >
 
         # List of L3 interfaces | Optional.
-        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
+        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses and descriptions (if used) must match.
         l3_interfaces:
           - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
+            # `descriptions` has precedence over `description`
+            descriptions: [ <description1>, <description2>, description3> ]
             enabled: < true | false >
             mtu: < mtu >
             # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration

@@ -34,9 +34,9 @@ bgp_as: 65000
 # BGP peer groups
 bgp_peer_groups:
   mpls_overlay_peers:
-    password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+    password: "SHsTgDgjVUU5a9blyxSt3Q=="
   rr_overlay_peers:
-    password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+    password: "04FdfTXWrEfpDTUc3mlSjg=="
 
 
 # RD/RT Format

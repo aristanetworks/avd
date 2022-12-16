@@ -1,4 +1,4 @@
-{# eos - Errdisable #}
+{# eos - errdisable #}
 {% if errdisable is arista.avd.defined %}
 !
 {%     for cause in errdisable.detect.causes | arista.avd.natural_sort %}

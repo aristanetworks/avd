@@ -80,14 +80,10 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.0/31
-    struct_cfg:
-      pim:
-        ipv4:
-          sparse_mode: true
     pim:
       ipv4:
         sparse_mode: true
@@ -96,14 +92,10 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l3leaf
     description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
+    shutdown: false
     mtu: 9000
     type: routed
-    shutdown: false
     ip_address: 172.31.255.2/31
-    struct_cfg:
-      pim:
-        ipv4:
-          sparse_mode: true
     pim:
       ipv4:
         sparse_mode: true

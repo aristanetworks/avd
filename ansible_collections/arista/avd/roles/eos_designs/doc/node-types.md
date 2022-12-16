@@ -19,6 +19,9 @@ node_type_keys:
     # Optional | Default evpn_role. Can be overridden in topology vars.
     default_evpn_role: < none | client | server | default -> none >
 
+    # Optional | Default PTP priority 1
+    default_ptp_priority1: < 0-255 | default 127 >
+
     # Optional | Set the default underlay routing_protocol.
     # Can be overridden by setting "underlay_routing_protocol" host/group_vars
     default_underlay_routing_protocol: < routing_protocol | default -> ebgp >
@@ -176,6 +179,7 @@ node_type_keys:
   spine:
     type: spine
     default_evpn_role: server
+    default_ptp_priority1: 20
   l3leaf:
     type: l3leaf
     connected_endpoints: true
@@ -185,6 +189,7 @@ node_type_keys:
       l2: true
       l3: true
     vtep: true
+    default_ptp_priority1: 30
   l2leaf:
     type: l2leaf
     connected_endpoints: true
@@ -201,3 +206,23 @@ node_type_keys:
 
 !!! info
     The default node definition is available in the [default section](../defaults/main/main.yml) of the eos_designs role.
+
+## Default Node Types
+
+Node types can be defined statically on each node or in each group of nodes.  As an alternative to this, regular expressions can be used to determine the node type based
+on the hostname.
+
+!!! warning
+  Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed.
+  This functionality will be restored as part of a later update to eos_validate_!!!state and this note will then be removed.
+
+```yaml
+default_node_types:
+    # Required | A list of regular expressions that match complete hostnames
+    # i.e. the regex is automatically bounded by ^ and $ elements
+  - match_hostnames:
+      - < regular expression 1 >
+      - < regular expression 2 etc >
+
+    # Required | Resultant node_type to be used if any of the regexes above match
+    node_type: < node type, taken from node_type_keys above >

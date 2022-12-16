@@ -1555,9 +1555,15 @@ mac_security:
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
       mka:
+        key_server_priority: < 0 - 255 >
         session:
           rekey_period: < 30-100000 in seconds >
       sci: < true | false >
+      l2_protocols:
+        ethernet_flow_control:
+          mode: < encrypt | bypass >
+        lldp:
+          mode: < bypass | bypass unauthorized >
 ```
 
 ### Maintenance Mode
@@ -1719,9 +1725,9 @@ ip_http_client_source_interfaces:
 ```yaml
 management_api_gnmi:
   enable_vrfs:
-    < vrf_name_1 >:
+    - name: < vrf_name_1 >
       access_group: < Standard IPv4 ACL name >
-    < vrf_name_2 >:
+    - name: < vrf_name_2 >
       access_group: < Standard IPv4 ACL name >
   octa:
 ```
@@ -2540,6 +2546,16 @@ router_bgp:
     external_routes: < 1-255 >
     internal_routes: < 1-255 >
     local_routes: < 1-255 >
+  graceful_restart:
+    enabled: < true | false >
+    restart_time: < 1-3600 >
+    stalepath_time: < 1-3600 >
+  # graceful-restart-help long-lived and restart-time are mutually exclusive in CLI
+  # restart-time will take precedence if both are configured.
+  graceful_restart_helper:
+    enabled: < true | false >
+    restart_time: < 1-100000000>
+    long_lived: < true | false >
   maximum_paths:
     paths: < 1-600 >
     ecmp: < 1-600 >
@@ -2864,6 +2880,10 @@ router_bgp:
     - name: < vrf_name_1 >
       rd: "< route distinguisher >"
       evpn_multicast: < true | false >
+      # evpn_multicast_address_family requires evpn_multicast: true to be set
+      evpn_multicast_address_family:
+        ipv4:
+          transit: < true | false >
       route_targets:
         import:
           - address_family: < address_family >

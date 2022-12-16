@@ -1,4 +1,4 @@
-{# static routes#}
+{# eos - static routes #}
 {% if static_routes is arista.avd.defined %}
 !
 {%     for static_route in static_routes %}
@@ -14,6 +14,9 @@
 {%         endif %}
 {%         if static_route.gateway is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.gateway %}
+{%             if static_route.track_bfd is arista.avd.defined(true) %}
+{%                 set static_route_cli = static_route_cli ~ " track bfd" %}
+{%             endif %}
 {%         endif %}
 {%         if static_route.distance is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.distance %}

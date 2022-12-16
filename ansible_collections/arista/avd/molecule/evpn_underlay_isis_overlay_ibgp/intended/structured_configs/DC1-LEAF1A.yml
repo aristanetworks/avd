@@ -11,7 +11,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65000'
       bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
+      password: 64fqSH5CFUNLRHErezMrRg==
       send_community: all
       maximum_routes: 0
   address_family_ipv4:
@@ -93,9 +93,9 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.1/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -105,9 +105,9 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.3/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -117,9 +117,9 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.5/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -129,9 +129,9 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.7/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
@@ -148,17 +148,17 @@ router_isis:
   log_adjacency_changes: true
   net: 49.0001.0001.0001.0001.00
   router_id: 192.168.255.5
+  is_type: level-2
+  address_family:
+  - ipv4 unicast
+  isis_af_defaults:
+  - maximum-paths 4
   no_passive_interfaces:
   - Ethernet1
   - Ethernet2
   - Ethernet3
   - Ethernet4
   - Loopback0
-  is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
 router_bfd:
   multihop:
     interval: 1200
@@ -190,5 +190,5 @@ vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback0
       udp_port: 4789
+      source_interface: Loopback0

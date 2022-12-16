@@ -1,4 +1,4 @@
-{# eos - MAC security #}
+{# eos - mac security #}
 {% if mac_security is arista.avd.defined %}
 !
 mac security
@@ -23,11 +23,20 @@ mac security
       {{ key_cli }}
 {%             endif %}
 {%         endfor %}
+{%         if profile.mka.key_server_priority is arista.avd.defined %}
+      mka key-server priority {{ profile.mka.key_server_priority }}
+{%         endif %}
 {%         if profile.mka.session.rekey_period is arista.avd.defined %}
       mka session rekey-period {{ profile.mka.session.rekey_period }}
 {%         endif %}
 {%         if profile.sci is arista.avd.defined(true) %}
       sci
+{%         endif %}
+{%         if profile.l2_protocols.ethernet_flow_control is arista.avd.defined %}
+      l2-protocol ethernet-flow-control {{ profile.l2_protocols.ethernet_flow_control.mode }}
+{%         endif %}
+{%         if profile.l2_protocols.lldp is arista.avd.defined %}
+      l2-protocol lldp {{ profile.l2_protocols.lldp.mode }}
 {%         endif %}
 {%     endfor %}
 {% endif %}

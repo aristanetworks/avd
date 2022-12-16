@@ -3,8 +3,8 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.31.0.1
 - destination_address_prefix: 10.1.0.0/16
-  vrf: default
   gateway: 10.1.100.100
+  vrf: default
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -33,8 +33,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: leaf
     description: ISIS-LEAF1_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -51,10 +51,11 @@ port_channel_interfaces:
     description: ISIS-LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110
     mode: trunk
+    vlans: '110'
 loopback_interfaces:
   Loopback0:
+    description: Router_ID
     shutdown: false
     ip_address: 192.168.255.1/32
     isis_enable: EVPN_UNDERLAY

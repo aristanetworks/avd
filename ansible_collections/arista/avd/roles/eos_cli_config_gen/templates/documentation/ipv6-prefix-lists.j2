@@ -1,10 +1,11 @@
+{# doc - ipv6 prefix lists #}
 {% if ipv6_prefix_lists is arista.avd.defined %}
 
 ## IPv6 Prefix-lists
 
 ### IPv6 Prefix-lists Summary
 
-{%     for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort('name') %}
 #### {{ ipv6_prefix_list.name }}
 
 | Sequence | Action |

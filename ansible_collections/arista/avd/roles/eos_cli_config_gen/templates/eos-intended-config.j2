@@ -3,7 +3,7 @@
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
 {# terminal settings #}
-{% include 'eos/terminal-settings.j2' %}
+{% include 'eos/terminal.j2' %}
 {# cli prompt #}
 {% include 'eos/prompt.j2' %}
 {# aliases #}
@@ -28,6 +28,8 @@
 {% include 'eos/ip-igmp-snooping.j2' %}
 {# event monitor #}
 {% include 'eos/event-monitor.j2' %}
+{# flow tracking #}
+{% include 'eos/flow-trackings.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
 {# interface defaults #}
@@ -51,7 +53,7 @@
 {# mcs client #}
 {% include 'eos/mcs-client.j2' %}
 {# match-list #}
-{% include 'eos/match-lists.j2' %}
+{% include 'eos/match-list-input.j2' %}
 {# as-paths #}
 {% include 'eos/as-path.j2' %}
 {# macsec #}
@@ -59,15 +61,15 @@
 {# hostname #}
 {% include 'eos/hostname.j2' %}
 {# domain lookup #}
-{% include 'eos/domain-lookup.j2' %}
+{% include 'eos/ip-domain-lookup.j2' %}
 {# name servers #}
-{% include 'eos/name-servers.j2' %}
+{% include 'eos/name-server.j2' %}
 {# dns domain #}
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
 {% include 'eos/domain-list.j2' %}
 {# Object Tracking #}
-{% include 'eos/object-tracking.j2' %}
+{% include 'eos/trackers.j2' %}
 {# ntp #}
 {% include 'eos/ntp.j2' %}
 {# ptp #}
@@ -83,15 +85,15 @@
 {# qos-profiles #}
 {% include 'eos/qos-profiles.j2' %}
 {# snmp settings #}
-{% include 'eos/snmp-settings.j2' %}
+{% include 'eos/snmp-server.j2' %}
 {# hardware configuration #}
 {% include 'eos/hardware.j2' %}
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
 {# platform #}
 {% include 'eos/platform.j2' %}
-{# unsupported transceiver #}
-{% include 'eos/unsupported-transceiver.j2' %}
+{# service unsupported-transceiver #}
+{% include 'eos/service-unsupported-transceiver.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
 {# aaa #}
@@ -111,7 +113,7 @@
 {# VLANs #}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
-{% include 'eos/vrf-instances.j2' %}
+{% include 'eos/vrfs.j2' %}
 {# Link Tracking #}
 {% include 'eos/link-tracking-groups.j2' %}
 {# CVX #}
@@ -124,6 +126,8 @@
 {% include 'eos/loopback-interfaces.j2' %}
 {# Management Interfaces #}
 {% include 'eos/management-interfaces.j2' %}
+{# Tunnel Interfaces #}
+{% include 'eos/tunnel-interfaces.j2' %}
 {# VLAN Interfaces #}
 {% include 'eos/vlan-interfaces.j2' %}
 {# VxLAN interface #}
@@ -135,11 +139,11 @@
 {# MAC address-table aging #}
 {% include 'eos/mac-address-table-aging-time.j2' %}
 {# Router virtual mac address #}
-{% include 'eos/virtual-router-mac-address.j2' %}
+{% include 'eos/ip-virtual-router-mac-address.j2' %}
 {# Router virtual source nat #}
-{% include 'eos/virtual-source-nat.j2' %}
+{% include 'eos/virtual-source-nat-vrfs.j2' %}
 {# event handler #}
-{% include 'eos/event-handler.j2' %}
+{% include 'eos/event-handlers.j2' %}
 {# BGP Groups configuration #}
 {% include 'eos/bgp-groups.j2' %}
 {# Interface Groups configuration #}
@@ -158,8 +162,22 @@
 {% include 'eos/mac-access-lists.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
-{# IPv6 Routing #}
-{% include 'eos/ipv6-routing.j2' %}
+{# IP ICMP Redirects #}
+{% include 'eos/ip-icmp-redirect.j2' %}
+{# IP Hardware #}
+{% include 'eos/ip-hardware.j2' %}
+{# IP Routing VRFs #}
+{% include 'eos/ip-routing-vrfs.j2' %}
+{# IPv6 Unicast Routing #}
+{% include 'eos/ipv6-unicast-routing.j2' %}
+{# eos - IP Routing IPv6 Interfaces #}
+{% include 'eos/ip-routing-ipv6-interfaces.j2' %}
+{# eos - IPv6 Unicast Routing VRFs #}
+{% include 'eos/ipv6-unicast-routing-vrfs.j2' %}
+{# eos - IPv6 ICMP Redirect #}
+{% include 'eos/ipv6-icmp-redirect.j2' %}
+{# eos - IPv6 Hardware #}
+{% include 'eos/ipv6-hardware.j2' %}
 {# Monitor Sessions #}
 {% include 'eos/monitor-sessions.j2' %}
 {# qos #}
@@ -169,9 +187,9 @@
 {# Community-lists, improved data model #}
 {% include 'eos/ip-community-lists.j2' %}
 {# IP Extended Community Lists #}
-{% include 'eos/ip-extended-community-lists.j2' %}
+{% include 'eos/ip-extcommunity-lists.j2' %}
 {# IP Extended Community Lists Regexp #}
-{% include 'eos/ip-extended-community-lists-regexp.j2' %}
+{% include 'eos/ip-extcommunity-lists-regexp.j2' %}
 {# Dynmaic Prefix-lists #}
 {% include 'eos/dynamic-prefix-lists.j2' %}
 {# Prefix-lists #}
@@ -179,7 +197,7 @@
 {# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
 {# System Control-Plane#}
-{% include 'eos/system-control-plane.j2' %}
+{% include 'eos/system.j2' %}
 {# mac address-table notification #}
 {% include 'eos/mac-address-table-notification.j2' %}
 {# maintenance #}
@@ -191,7 +209,7 @@
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
 {# QOS class-map #}
-{% include 'eos/class-maps-qos.j2' %}
+{% include 'eos/class-maps.j2' %}
 {# PBR policy-map #}
 {% include 'eos/policy-maps-pbr.j2' %}
 {# QOS policy-map #}

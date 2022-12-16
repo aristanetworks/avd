@@ -15,6 +15,7 @@
     - routing_table
 
 - name: Validate VTEP IP is in routing table
+  delegate_to: localhost
   assert:
     that:
       - vtep_reachability_test['stdout'][0] | regex_search(vtep_reachability_test.vtep_ip)
@@ -37,14 +38,15 @@
     loop_var: loopback0_address
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (loopback0_reachability.loopback0_range is arista.avd.defined) and
-    (loopback_interfaces.Loopback0.ip_address is arista.avd.defined) and
-    (type is arista.avd.defined('l3leaf'))
+    loopback0_reachability.loopback0_range is arista.avd.defined and
+    (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0'))[0].ip_address is arista.avd.defined and
+    type is arista.avd.defined('l3leaf')
   register: routing_table_loopback0_state
   tags:
     - routing_table
 
 - name: Validate lo0 is in routing table
+  delegate_to: localhost
   assert:
     that:
       - routing_table_loopback0_test['stdout'][0] | regex_search(routing_table_loopback0_test.loopback0_address)

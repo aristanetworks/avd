@@ -101,11 +101,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-struct_cfg:
-  router_bgp:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        remote_as: 65001
 vlans:
   4093:
     tenant: system
@@ -145,8 +140,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: none
     mode: trunk
+    vlans: none
     mlag: 7
 ethernet_interfaces:
   Ethernet5:
@@ -174,9 +169,9 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.33/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -185,9 +180,9 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.35/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -196,9 +191,9 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.37/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -207,9 +202,9 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.39/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -218,8 +213,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF2A_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -228,8 +223,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-L2LEAF2B_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 7
       mode: active
@@ -256,6 +251,7 @@ router_ospf:
     101:
       passive_interface_default: true
       router_id: 192.168.255.9
+      max_lsa: 12000
       no_passive_interfaces:
       - Ethernet1
       - Ethernet2
@@ -263,7 +259,6 @@ router_ospf:
       - Ethernet4
       - Vlan4093
       bfd_enable: true
-      max_lsa: 12000
 router_bfd:
   multihop:
     interval: 1200
@@ -276,9 +271,9 @@ vxlan_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
 ntp:
   local_interface:
     name: Management1

@@ -6,7 +6,7 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
       route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
@@ -27,6 +27,7 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
+    static: {}
   neighbors:
     10.10.101.4:
       peer_group: UNDERLAY-PEERS
@@ -76,7 +77,7 @@ router_bgp:
         - '21:21'
       redistribute_routes:
       - learned
-      vlan: 311
+      vlan: '311'
     Tenant_X_OP_Zone:
       rd: 192.168.255.35:20
       route_targets:
@@ -84,14 +85,14 @@ router_bgp:
         - '20:20'
       redistribute_routes:
       - learned
-      vlan: 310
+      vlan: '310'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - destination_address_prefix: 10.0.0.0/8
-  vrf: default
   gateway: 10.2.10.100
+  vrf: default
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -160,20 +161,20 @@ ethernet_interfaces:
     peer_interface: Ethernet21
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet21
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
-    ip_address: 10.10.101.5/31
     link_tracking_groups:
     - name: Eth-conn-to-router
       direction: upstream
+    ip_address: 10.10.101.5/31
   Ethernet2:
     peer: MH-L2LEAF1A
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: MH-L2LEAF1A_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 2
       mode: active
@@ -185,7 +186,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 310
+    vlans: '310'
     link_tracking_groups:
     - name: Eth-conn-to-router
       direction: downstream
@@ -194,8 +195,8 @@ port_channel_interfaces:
     description: MH-L2LEAF1A_Po1
     type: switched
     shutdown: false
-    vlans: 310
     mode: trunk
+    vlans: '310'
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -248,6 +249,8 @@ route_maps:
         - ip address prefix-list PL-STATIC-VRF-DEFAULT
   RM-BGP-UNDERLAY-PEERS-OUT:
     sequence_numbers:
+      20:
+        type: permit
       10:
         type: deny
         match:
@@ -256,8 +259,6 @@ route_maps:
         type: deny
         match:
         - ip address prefix-list PL-STATIC-VRF-DEFAULT
-      20:
-        type: permit
 router_bfd:
   multihop:
     interval: 1200
@@ -287,14 +288,14 @@ vlan_interfaces:
     - opzone
     description: Tenant_X_OP_Zone_1
     shutdown: false
-    vrf: Tenant_X_OP_Zone
     ip_address_virtual: 10.1.10.1/24
+    vrf: Tenant_X_OP_Zone
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF2A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         311:
           vni: 11311

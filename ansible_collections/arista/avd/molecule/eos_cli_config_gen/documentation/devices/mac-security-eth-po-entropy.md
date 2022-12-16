@@ -192,9 +192,9 @@ FIPS restrictions enabled.
 
 Settings:
 
-| Cipher | Rekey-Period | SCI |
-| ------ | ------------ | --- |
-| aes128-gcm | 30 | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI |
+| ------ | ------------------- | ------------ | --- |
+| aes128-gcm | 100 | 30 | True |
 
 Keys:
 
@@ -203,13 +203,19 @@ Keys:
 | 1234a | 025756085F535976 | - |
 | 1234c | 10195F4C5144405A | True |
 
+L2 Protocols:
+
+| L2 Protocol | Mode |
+| ----------- | ---- |
+| lldp | bypass unauthorized |
+
 **Profile A2:**
 
 Settings:
 
-| Cipher | Rekey-Period | SCI |
-| ------ | ------------ | --- |
-| - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI |
+| ------ | ------------------- | ------------ | --- |
+| - | - | - | - |
 
 Keys:
 
@@ -229,8 +235,10 @@ mac security
       cipher aes128-gcm
       key 1234a 7 025756085F535976
       key 1234c 7 10195F4C5144405A fallback
+      mka key-server priority 100
       mka session rekey-period 30
       sci
+      l2-protocol lldp bypass unauthorized
    profile A2
       key 1234b 7 12485744465E5A53
 ```

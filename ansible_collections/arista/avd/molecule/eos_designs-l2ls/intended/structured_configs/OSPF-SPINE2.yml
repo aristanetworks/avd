@@ -3,8 +3,8 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.31.0.1
 - destination_address_prefix: 10.0.0.0/8
-  vrf: default
   gateway: 10.1.100.100
+  vrf: default
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -58,15 +58,15 @@ port_channel_interfaces:
     description: OSPF-LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
     mlag: 1
   Port-Channel2:
     description: OSPF-LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 100
     mode: trunk
+    vlans: '100'
     mlag: 2
 ethernet_interfaces:
   Ethernet3:
@@ -94,8 +94,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: leaf
     description: OSPF-LEAF1_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -104,8 +104,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: leaf
     description: OSPF-LEAF2_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 2
       mode: active
@@ -129,6 +129,7 @@ mlag_configuration:
   reload_delay_non_mlag: 330
 loopback_interfaces:
   Loopback0:
+    description: Router_ID
     shutdown: false
     ip_address: 192.168.255.2/32
     ospf_area: 0.0.0.0
@@ -137,10 +138,11 @@ router_ospf:
     100:
       passive_interface_default: true
       router_id: 192.168.255.2
+      max_lsa: 12000
       no_passive_interfaces:
       - Vlan4094
       - Ethernet5
-      max_lsa: 12000
+      bfd_enable: false
       redistribute:
         connected: {}
         static: {}

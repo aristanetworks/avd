@@ -180,7 +180,11 @@ def _convert_types(validator, convert_types: list, instance, schema: dict):
                 return converted_instance
             elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
                 try:
-                    converted_instance = convert_dicts(instance, schema["primary_key"], secondary_key=schema.get("secondary_key"))
+                    converted_instance = convert_dicts(
+                        instance,
+                        schema["primary_key"],
+                        secondary_key=schema.get("secondary_key"),
+                    )
                 except Exception:
                     # Ignore errors and return original
                     converted_instance = instance

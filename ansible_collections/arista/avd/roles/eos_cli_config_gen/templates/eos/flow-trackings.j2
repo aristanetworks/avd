@@ -1,0 +1,44 @@
+{# eos - flow trackings #}
+{% for flow_tracking in flow_trackings | arista.avd.default([]) %}
+!
+flow tracking {{ flow_tracking.type }}
+{%     if flow_tracking.sample is arista.avd.defined %}
+   sample {{ flow_tracking.sample }}
+{%     endif %}
+{%     for tracker in flow_tracking.trackers %}
+   tracker {{ tracker.name }}
+{%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
+      record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
+{%         endif %}
+{%         if tracker.record_export.on_interval is arista.avd.defined %}
+      record export on interval {{ tracker.record_export.on_interval }}
+{%         endif %}
+{%         if tracker.record_export.mpls is arista.avd.defined(true) %}
+      record export mpls
+{%         endif %}
+{%         if tracker.exporters is arista.avd.defined %}
+{%             for exporter in tracker.exporters %}
+      exporter {{ exporter.name }}
+{%                 if exporter.collector.host is arista.avd.defined %}
+{%                     set collector_cli = 'collector ' ~ exporter.collector.host %}
+{%                     if exporter.collector.port is arista.avd.defined %}
+{%                         set collector_cli = collector_cli ~ ' port ' ~ exporter.collector.port %}
+{%                     endif %}
+         {{ collector_cli }}
+{%                 endif %}
+{%                 if exporter.format.ipfix_version is arista.avd.defined %}
+         format ipfix version {{ exporter.format.ipfix_version }}
+{%                 endif %}
+{%                 if exporter.local_interface is arista.avd.defined %}
+         local interface {{ exporter.local_interface }}
+{%                 endif %}
+{%                 if exporter.template_interval is arista.avd.defined %}
+         template interval {{ exporter.template_interval }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{%     if flow_tracking.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{% endfor %}

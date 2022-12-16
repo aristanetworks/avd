@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import cProfile
-import importlib
 import pstats
 from collections import ChainMap
 from datetime import datetime
@@ -15,9 +14,10 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AristaAvdError, compile_searchpath
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -70,14 +70,15 @@ class ActionModule(ActionBase):
         for var in task_vars:
             if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
                 continue
-            try:
-                task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
-            except Exception as e:
-                raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+            if self._templar.is_template(task_vars[var]):
+                # Var contains a jinja template.
+                try:
+                    task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
+                except Exception as e:
+                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
-        # Create a new Ansible "templar" instance to be passed along to our simplified "templater"
-        searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
-        templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
+        # Get updated templar instance to be passed along to our simplified "templater"
+        self.templar = get_templar(self, task_vars)
 
         # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
         # We use ChainMap to avoid copying large amounts of data around, mapping in
@@ -114,7 +115,7 @@ class ActionModule(ActionBase):
                     debug_item["timestamps"]["run_template"] = datetime.now()
 
                 # Here we parse the template, expecting the result to be a YAML formatted string
-                template_result = templater(template, template_vars, templar, searchpath)
+                template_result = templater(template, template_vars, self.templar)
 
                 if debug:
                     debug_item["timestamps"]["load_yaml"] = datetime.now()
@@ -132,25 +133,23 @@ class ActionModule(ActionBase):
             elif "python_module" in template_item:
                 module_path = template_item.get("python_module")
                 class_name = template_item.get("python_class_name", DEFAULT_PYTHON_CLASS_NAME)
+                try:
+                    cls = load_python_class(module_path, class_name, AvdFacts)
+                except AristaAvdMissingVariableError as exc:
+                    raise AnsibleActionFail(f"Missing module_path or class_name in {template_item}") from exc
+
+                cls_instance = cls(hostvars=template_vars, templar=self.templar)
+
+                if debug:
+                    debug_item["timestamps"]["render_python_class"] = datetime.now()
+
+                if not (getattr(cls_instance, "render")):
+                    raise AnsibleActionFail(f"{cls_instance} has no attribute render")
 
                 try:
-                    cls = getattr(importlib.import_module(module_path), class_name)
-                except ImportError as imp_exc:
-                    raise AnsibleActionFail(imp_exc) from imp_exc
-
-                if issubclass(cls, AvdFacts):
-                    cls_instance = cls(hostvars=template_vars, templar=templar)
-                    if debug:
-                        debug_item["timestamps"]["render_python_class"] = datetime.now()
-                    if getattr(cls_instance, "render"):
-                        try:
-                            template_result_data = cls_instance.render()
-                        except Exception as error:
-                            raise AnsibleActionFail(error) from error
-                    else:
-                        raise AristaAvdError(f"{cls_instance} has no attribute render")
-                else:
-                    raise AnsibleActionFail(f"{cls} is not an instance of AvdFacts class")
+                    template_result_data = cls_instance.render()
+                except Exception as error:
+                    raise AnsibleActionFail(error) from error
 
             else:
                 raise AnsibleActionFail("Invalid template data")
@@ -172,8 +171,8 @@ class ActionModule(ActionBase):
             if debug:
                 debug_item = {"action": "template_output", "timestamps": {"templating": datetime.now()}}
 
-            templar.available_variables = template_vars
-            output = templar.template(output)
+            with self._templar.set_temporary_context(available_variables=template_vars):
+                output = self._templar.template(output, fail_on_undefined=False)
 
             if debug:
                 debug_item["timestamps"]["done"] = datetime.now()

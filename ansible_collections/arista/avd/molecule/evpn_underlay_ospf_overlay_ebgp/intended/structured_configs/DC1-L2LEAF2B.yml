@@ -61,6 +61,9 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  210:
+    tenant: Tenant_A
+    name: Tenant_B_OP_Zone_1
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
@@ -81,8 +84,8 @@ port_channel_interfaces:
     description: DC1_SVC3_Po7
     type: switched
     shutdown: false
-    vlans: none
     mode: trunk
+    vlans: '210'
     mlag: 1
 ethernet_interfaces:
   Ethernet3:
@@ -110,8 +113,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: DC1-SVC3A_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -120,8 +123,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: DC1-SVC3B_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active

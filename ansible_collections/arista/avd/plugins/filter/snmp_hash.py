@@ -43,7 +43,7 @@ def key_from_passphrase(passphrase: str, auth_type: str) -> str:
     """
     b_passphrase = passphrase
     if isinstance(passphrase, str):
-        b_passphrase = passphrase.encode("utf-8", errors="strict")
+        b_passphrase = passphrase.encode("UTF-8", errors="strict")
     hash_object = get_hash_object(auth_type)
     count = 0
     password_index = 0

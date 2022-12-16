@@ -1,4 +1,5 @@
-{% if vlan_interfaces is defined and vlan_interfaces is not none %}
+{# doc - vlan interfaces #}
+{% if vlan_interfaces is arista.avd.defined %}
 
 ## VLAN Interfaces
 
@@ -6,21 +7,17 @@
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = vlan_interface.description | arista.avd.default('-') %}
 {%         set vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%         set mtu = vlan_interface.mtu | arista.avd.default('-') %}
-{%         if vlan_interface.shutdown is arista.avd.defined %}
-{%             set shutdown = vlan_interface.shutdown %}
-{%         else %}
-{%             set shutdown = '-' %}
-{%         endif %}
+{%         set shutdown = vlan_interface.shutdown | arista.avd.default('-') %}
 | {{ vlan_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
 {# PVLAN #}
 {%     set vlan_interface_pvlan = namespace() %}
 {%     set vlan_interface_pvlan.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.pvlan_mapping is arista.avd.defined %}
 {%             set vlan_interface_pvlan.configured = true %}
 {%             break %}
@@ -32,7 +29,7 @@
 
 | Interface | PVLAN Mapping |
 | --------- | ------------- |
-{%         for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%             if vlan_interface.pvlan_mapping is arista.avd.defined %}
 | {{ vlan_interface.name }} | {{ vlan_interface.pvlan_mapping }} |
 {%             endif %}
@@ -43,7 +40,7 @@
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         set row_vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%         set row_ip_addr = vlan_interface.ip_address | arista.avd.default('-') %}
 {%         set row_ip_vaddr = vlan_interface.ip_address_virtual | arista.avd.default('-') %}
@@ -55,7 +52,7 @@
 {%     endfor %}
 {# IPv6 #}
 {%     set vlan_interfaces_ipv6 = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) | arista.avd.convert_dicts('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
 {%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtual is arista.avd.defined %}
 {# add also a test against ipv6_address_virtual when supported #}
 {%             do vlan_interfaces_ipv6.append(vlan_interface) %}
@@ -67,7 +64,7 @@
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
-{%         for vlan_interface in vlan_interfaces_ipv6 | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vlan_interface in vlan_interfaces_ipv6 | arista.avd.natural_sort('name') %}
 {%             set row_vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%             set row_ip_addr = vlan_interface.ipv6_address | arista.avd.default('-') %}
 {%             set row_ip_vaddr = vlan_interface.ipv6_address_virtual | arista.avd.default('-') %}
@@ -86,7 +83,7 @@
 {%     endif %}
 {# VRRP #}
 {%     set vlan_interfaces_vrrp_details = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) | arista.avd.convert_dicts('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
 {%         if vlan_interface.vrrp_ids is arista.avd.defined %}
 {%             do vlan_interfaces_vrrp_details.append(vlan_interface) %}
 {%         endif %}
@@ -97,7 +94,7 @@
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
-{%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
 {%             for vrid in vlan_interface.vrrp_ids if vrid.id is arista.avd.defined %}
 {%                 set row_id = vrid.id %}
 {%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
@@ -130,7 +127,7 @@
 {# ISIS #}
 {%     set vlan_interface_isis = namespace() %}
 {%     set vlan_interface_isis.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.isis_enable is defined %}
 {%             set vlan_interface_isis.configured = true %}
 {%             break %}
@@ -142,7 +139,7 @@
 
 | Interface | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ----------- | ---- |
-{%         for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
 {%                 if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
@@ -158,7 +155,7 @@
 {%     endif %}
 {# Multicast Routing #}
 {%     set multicast_interfaces = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         if vlan_interface.multicast is arista.avd.defined %}
 {%             do multicast_interfaces.append(vlan_interface) %}
 {%         endif %}

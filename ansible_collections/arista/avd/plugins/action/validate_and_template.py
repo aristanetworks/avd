@@ -7,8 +7,9 @@ from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import compile_searchpath, template
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, template
 
 VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug"]
 VALID_VALIDATION_MODES = ["disabled", "error", "warning", "info", "debug"]
@@ -134,9 +135,10 @@ class ActionModule(ActionBase):
         return len(arista_avd_errors)
 
     def template(self, task_vars):
-        searchpath = compile_searchpath(task_vars.get("ansible_search_path"))
-        templar = self._templar.copy_with_new_env(searchpath=searchpath, available_variables={})
-        output = template(self.templatefile, self.data, templar, searchpath)
+        # Get updated templar instance to be passed along to our simplified "templater"
+        templar = get_templar(self, task_vars)
+
+        output = template(self.templatefile, self.data, templar)
         if self.add_md_toc:
             output = add_md_toc(output, skip_lines=self.md_toc_skip_lines)
 

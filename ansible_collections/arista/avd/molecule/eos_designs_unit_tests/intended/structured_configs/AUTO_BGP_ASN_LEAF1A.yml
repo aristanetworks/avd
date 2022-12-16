@@ -96,5 +96,5 @@ vxlan_interface:
   Vxlan1:
     description: AUTO_BGP_ASN_LEAF1A_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1

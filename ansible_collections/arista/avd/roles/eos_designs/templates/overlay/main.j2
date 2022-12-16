@@ -2,7 +2,7 @@
 {% if switch.overlay.evpn or switch.overlay.vpn_ipv4 or switch.overlay.vpn_ipv6 %}
 {%     set overlay_data = namespace() %}
 {# Set peer group names for overlay peering #}
-{%     if switch.overlay.vpn_ipv4 or switch.overlay.vpn_ipv6 or switch.overlay.evpn_mpls %}
+{%     if (switch.overlay.vpn_ipv4 or switch.overlay.vpn_ipv6 or switch.overlay.evpn_mpls) and not switch.overlay.evpn_vxlan %}
 {%         set overlay_data.mpls_overlay_peer_group = switch.bgp_peer_groups.mpls_overlay_peers %}
 {%     endif %}
 {%     if switch.overlay.evpn_vxlan %}

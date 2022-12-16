@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -188,9 +188,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1A_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.6/31
   Ethernet2:
     peer: DC1-LEAF2A
@@ -198,9 +198,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.22/31
   Ethernet3:
     peer: DC1-LEAF2B
@@ -208,9 +208,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2B_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.38/31
   Ethernet4:
     peer: DC1-SVC3A
@@ -218,9 +218,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3A_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.54/31
   Ethernet5:
     peer: DC1-SVC3B
@@ -228,9 +228,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3B_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.70/31
   Ethernet6:
     peer: DC1-BL1A
@@ -238,9 +238,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1A_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.86/31
   Ethernet7:
     peer: DC1-BL1B
@@ -248,9 +248,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1B_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.102/31
   Ethernet8:
     peer: DC1-BL2A
@@ -258,9 +258,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL2A_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.118/31
   Ethernet9:
     peer: DC1-BL2B
@@ -268,9 +268,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL2B_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.134/31
   Ethernet14:
     peer: DC1-CL1A
@@ -278,9 +278,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-CL1A_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.150/31
   Ethernet15:
     peer: DC1-CL1B
@@ -288,9 +288,9 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-CL1B_Ethernet4
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.166/31
 loopback_interfaces:
   Loopback0:

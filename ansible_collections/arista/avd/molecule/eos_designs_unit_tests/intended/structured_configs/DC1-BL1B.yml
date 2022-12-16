@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
+      password: 0nsCUm70mvSTxVO0ldytrg==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -113,10 +113,14 @@ router_bgp:
           - 65000:789
           vpn-ipv4:
           - 65000:123
+      redistribute_routes:
+      - connected
+      - static
+      - ospf
       neighbors:
         123.1.1.10:
           remote_as: 1234
-          password: AQQvKeimxJu+uGQ/yYvv9w==
+          password: oBztv71m2uhR7hh58/OCNA==
           description: External IPv4 BGP peer
           send_community: standard extended
           maximum_routes: 0
@@ -130,7 +134,7 @@ router_bgp:
           local_as: 123
         123.1.1.11:
           remote_as: 1234
-          password: AQQvKeimxJu+uGQ/yYvv9w==
+          password: oBztv71m2uhR7hh58/OCNA==
           description: External IPv4 BGP peer
           send_community: standard extended
           maximum_routes: 0
@@ -148,10 +152,6 @@ router_bgp:
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
-      redistribute_routes:
-      - connected
-      - static
-      - ospf
       address_families:
         ipv4:
           neighbors:
@@ -216,9 +216,6 @@ router_bgp:
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.254.15:14
-      rd_evpn_domain:
-        domain: remote
-        rd: 192.168.254.15:14
       route_targets:
         both:
         - '65105:14'
@@ -227,12 +224,12 @@ router_bgp:
           route_target: '65105:14'
       redistribute_routes:
       - learned
-      vlan: 150
-    Tenant_B_WAN_Zone:
-      rd: 192.168.254.15:21
+      vlan: '150'
       rd_evpn_domain:
         domain: remote
-        rd: 192.168.254.15:21
+        rd: 192.168.254.15:14
+    Tenant_B_WAN_Zone:
+      rd: 192.168.254.15:21
       route_targets:
         both:
         - '65105:21'
@@ -241,12 +238,12 @@ router_bgp:
           route_target: '65105:21'
       redistribute_routes:
       - learned
-      vlan: 250
-    Tenant_C_WAN_Zone:
-      rd: 192.168.254.15:31
+      vlan: '250'
       rd_evpn_domain:
         domain: remote
-        rd: 192.168.254.15:31
+        rd: 192.168.254.15:21
+    Tenant_C_WAN_Zone:
+      rd: 192.168.254.15:31
       route_targets:
         both:
         - '65105:31'
@@ -255,14 +252,17 @@ router_bgp:
           route_target: '65105:31'
       redistribute_routes:
       - learned
-      vlan: 350
+      vlan: '350'
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.15:31
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - destination_address_prefix: 10.3.4.0/24
-  vrf: Tenant_A_WAN_Zone
   gateway: 1.2.3.4
+  vrf: Tenant_A_WAN_Zone
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
@@ -351,14 +351,6 @@ management_api_http:
     MGMT: {}
   enable_https: true
   default_services: false
-struct_cfg:
-  sflow:
-    vrfs:
-      OOB:
-        destinations:
-          192.168.200.10: null
-          10.0.200.90: null
-        source_interface: '{{ switch.mgmt_interface }}'
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -366,9 +358,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet23
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.193/31
   Ethernet2:
     peer: DC1-SPINE2
@@ -376,9 +368,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet23
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.195/31
   Ethernet3:
     peer: DC1-SPINE3
@@ -386,9 +378,9 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet23
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.197/31
   Ethernet4:
     peer: DC1-SPINE4
@@ -396,34 +388,50 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet23
     speed: forced 100gfull
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.254.199/31
   Ethernet7:
-    type: routed
     peer_type: l3_interface
-    vrf: Tenant_A_WAN_Zone
     ip_address: 10.10.20.20/24
     mtu: 9000
     shutdown: false
     description: test
-  Ethernet8:
     type: routed
+    vrf: Tenant_A_WAN_Zone
+  Ethernet8:
     peer_type: l3_interface
-    vrf: Tenant_L3_VRF_Zone
     ip_address: 10.10.30.10/24
     mtu: 9000
     shutdown: false
     description: test
-  Ethernet9:
     type: routed
-    peer_type: l3_interface
     vrf: Tenant_L3_VRF_Zone
+  Ethernet9:
+    peer_type: l3_interface
     ip_address: 10.10.40.20/24
     mtu: 9000
     shutdown: false
     description: test
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
+  Ethernet10:
+    peer_type: l3_interface
+    ip_address: 10.10.40.20/24
+    mtu: 9000
+    shutdown: false
+    description: test-DC1-BL1B
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
+  Ethernet11:
+    peer_type: l3_interface
+    ip_address: 10.10.40.20/24
+    mtu: 9000
+    shutdown: false
+    description: DC1-BL1B descriptions preferred over single description
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
   Ethernet4000:
     description: My second test
     ip_address: 10.1.2.3/12
@@ -493,8 +501,8 @@ vlan_interfaces:
     - wan
     description: Tenant_A_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    vrf: Tenant_A_WAN_Zone
     ospf_area: 1
     ospf_network_point_to_point: false
     ospf_cost: 100
@@ -506,16 +514,16 @@ vlan_interfaces:
     - wan
     description: Tenant_B_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
+    vrf: Tenant_B_WAN_Zone
   Vlan350:
     tenant: Tenant_C
     tags:
     - wan
     description: Tenant_C_WAN_Zone_1
     shutdown: false
-    vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+    vrf: Tenant_C_WAN_Zone
 router_ospf:
   process_ids:
     14:
@@ -531,8 +539,8 @@ vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP
     vxlan:
-      source_interface: Loopback1
       udp_port: 4789
+      source_interface: Loopback1
       vlans:
         150:
           vni: 10150

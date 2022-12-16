@@ -1,4 +1,4 @@
-{# eos - IPv6 extended access-lists #}
+{# eos - ipv6 access lists #}
 {% for ipv6_access_list in ipv6_access_lists | arista.avd.natural_sort('name') %}
 !
 ipv6 access-list {{ ipv6_access_list.name }}

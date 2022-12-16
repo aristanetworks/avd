@@ -13,7 +13,7 @@ router_bgp:
       type: "vpn-ipv4, vpn-ipv6"
       remote_as: 65000
       local_as: 65000
-      password: "AQQvKeimxJu+uGQ/yYvv9w=="
+      password: "mWV4B6WpLCfOTyKATLWuBg=="
       send_community: all
       maximum_routes: 0
   neighbors:

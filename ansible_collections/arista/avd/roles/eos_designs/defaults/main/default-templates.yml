@@ -5,112 +5,115 @@ default_templates:
     structured_config:
       # Render Structured Configuration
       # Base features
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # MLAG feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.mlag"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
-      - template: "underlay/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay"
+        python_class_name: "AvdStructuredConfig"
       # Overlay feature
       - template: "overlay/main.j2"
       # Core Interfaces Feature
-      - template: "core_interfaces/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
+        python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
-      # Tenants feature
-      - template: "network_services/main.j2"
+      # Network Services feature
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
+        python_class_name: "AvdStructuredConfig"
       # Connected Endpoints feature
-      - template: "connected_endpoints/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.connected_endpoints"
+        python_class_name: "AvdStructuredConfig"
       # Inband Management feature
-      - template: "inband_management/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.inband_management"
+        python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
-      mlag_ibgp_peering_ip_primary: "ip_addressing/mlag-ibgp-peering-ip-primary.j2"
-      mlag_ibgp_peering_ip_secondary: "ip_addressing/mlag-ibgp-peering-ip-secondary.j2"
     interface_descriptions:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
       python_class_name: "AvdInterfaceDescriptions"
-      underlay_ethernet_interfaces: "interface_descriptions/underlay/ethernet-interfaces.j2"
-      underlay_port_channel_interfaces: "interface_descriptions/underlay/port-channel-interfaces.j2"
       connected_endpoints_ethernet_interfaces: "interface_descriptions/connected_endpoints/ethernet-interfaces.j2"
       connected_endpoints_port_channel_interfaces: "interface_descriptions/connected_endpoints/port-channel-interfaces.j2"
-      overlay_loopback_interface: "interface_descriptions/loopback_interfaces/overlay-loopback.j2"
-      vtep_loopback_interface: "interface_descriptions/loopback_interfaces/vtep-loopback.j2"
 
   mpls:
     structured_config:
       # Render Structured Configuration
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
-      - template: "underlay/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay"
+        python_class_name: "AvdStructuredConfig"
       # Core Interfaces Feature
-      - template: "core_interfaces/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
+        python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Connected Endpoints feature
-      - template: "connected_endpoints/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.connected_endpoints"
+        python_class_name: "AvdStructuredConfig"
       # Overlay feature
       - template: "overlay/main.j2"
-      # Tenants feature
-      - template: "network_services/main.j2"
+      # Network Services feature
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
+        python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
     interface_descriptions:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
       python_class_name: "AvdInterfaceDescriptions"
-      underlay_ethernet_interfaces: "interface_descriptions/underlay/ethernet-interfaces.j2"
-      underlay_port_channel_interfaces: "interface_descriptions/underlay/port-channel-interfaces.j2"
       connected_endpoints_ethernet_interfaces: "interface_descriptions/connected_endpoints/ethernet-interfaces.j2"
       connected_endpoints_port_channel_interfaces: "interface_descriptions/connected_endpoints/port-channel-interfaces.j2"
-      overlay_loopback_interface: "interface_descriptions/loopback_interfaces/overlay-loopback.j2"
 
   l2ls:
     structured_config:
       # Render Structured Configuration
       # Base features
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base.base"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
         python_class_name: "AvdStructuredConfig"
       # MLAG feature
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.mlag"
         python_class_name: "AvdStructuredConfig"
       # Underlay feature
-      - template: "underlay/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay"
+        python_class_name: "AvdStructuredConfig"
       # Core Interfaces Feature
-      - template: "core_interfaces/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.core_interfaces"
+        python_class_name: "AvdStructuredConfig"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
-      # Tenants feature
-      - template: "network_services/main.j2"
+      # Network Services feature
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.network_services"
+        python_class_name: "AvdStructuredConfig"
       # Connected Endpoints feature
-      - template: "connected_endpoints/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.connected_endpoints"
+        python_class_name: "AvdStructuredConfig"
       # Inband Management feature
-      - template: "inband_management/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.inband_management"
+        python_class_name: "AvdStructuredConfig"
       # Merge custom_structured_configuration last
-      - template: "custom_structured_configuration/main.j2"
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
+        python_class_name: "AvdStructuredConfig"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
-          strip_empty_keys: false
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
     interface_descriptions:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
       python_class_name: "AvdInterfaceDescriptions"
-      underlay_ethernet_interfaces: "interface_descriptions/underlay/ethernet-interfaces.j2"
-      underlay_port_channel_interfaces: "interface_descriptions/underlay/port-channel-interfaces.j2"
       connected_endpoints_ethernet_interfaces: "interface_descriptions/connected_endpoints/ethernet-interfaces.j2"
       connected_endpoints_port_channel_interfaces: "interface_descriptions/connected_endpoints/port-channel-interfaces.j2"

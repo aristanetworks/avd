@@ -30,8 +30,8 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: l3leaf
     description: EVPN-MULTICAST-L3LEAF1A_Ethernet6
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -40,8 +40,8 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: l3leaf
     description: EVPN-MULTICAST-L3LEAF1B_Ethernet6
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -50,8 +50,8 @@ port_channel_interfaces:
     description: EVPN_MULTICAST_L3LEAF1_Po6
     type: switched
     shutdown: false
-    vlans: 1-9,110-111,210-211,256-257,310-311,4096
     mode: trunk
+    vlans: 1-9,110-111,210-211,256-257,310-311,4092
 vlans:
   310:
     tenant: Tenant_A
@@ -77,9 +77,9 @@ vlans:
   257:
     tenant: Tenant_A
     name: MULTICAST_ENABLED_257
-  4096:
+  4092:
     tenant: Tenant_A
-    name: MULTICAST_ENABLED_4096
+    name: MULTICAST_ENABLED_4092
   5:
     tenant: Tenant_B
     name: MULTICAST_DISABLED_5
@@ -109,4 +109,3 @@ vlans:
     name: MULTICAST_ENABLED_8
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: {}

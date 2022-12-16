@@ -33,7 +33,6 @@ provisioner:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-
   inventory:
     links:
       hosts: 'inventory/hosts.yml'
@@ -43,12 +42,3 @@ provisioner:
     - --skip-tags=documentation
 verifier:
   name: ansible
-  inventory:
-    links:
-      hosts: 'inventory/hosts.yml'
-      group_vars: 'inventory/group_vars/'
-      host_vars: 'inventory/host_vars/'
-  config_options:
-    defaults:
-      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
-      gathering: explicit

@@ -1,4 +1,4 @@
-{# ntp and ntp_server is merged into a single documentation file since these data models will merge soon #}
+{# doc - ntp #}
 {% if ntp is arista.avd.defined %}
 
 ## NTP
@@ -56,7 +56,7 @@
 
 #### NTP Authentication Keys
 
-| ID | Algoritm |
+| ID | Algorithm |
 | -- | -------- |
 {%         for authentication_key in ntp.authentication_keys | arista.avd.natural_sort('id') %}
 {%             if authentication_key.id is arista.avd.defined and

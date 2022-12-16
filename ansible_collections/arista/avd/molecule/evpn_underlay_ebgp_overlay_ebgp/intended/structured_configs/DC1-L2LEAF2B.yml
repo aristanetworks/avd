@@ -150,8 +150,8 @@ port_channel_interfaces:
     description: CUSTOM_DC1_SVC3_Po7
     type: switched
     shutdown: false
-    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
+    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mlag: 1
 ethernet_interfaces:
   Ethernet3:
@@ -179,8 +179,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: CUSTOM_DC1-SVC3A_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -189,8 +189,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: CUSTOM_DC1-SVC3B_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active

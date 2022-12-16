@@ -113,12 +113,12 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - |
-| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - |
-| 192.168.255.4 | 65004 | default | - | all | - | - | - | - |
-| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - |
+| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | - | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - | - | - | - |
+| 192.168.255.4 | 65004 | default | - | all | - | - | - | - | - |
+| 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - | - |
 
 ### Router BGP VPN-IPv4 Address Family
 
@@ -166,7 +166,7 @@ router bgp 65103
    neighbor MPLS-IBGP-PEERS peer group
    neighbor MPLS-IBGP-PEERS remote-as 65000
    neighbor MPLS-IBGP-PEERS local-as 65000 no-prepend replace-as
-   neighbor MPLS-IBGP-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor MPLS-IBGP-PEERS password 7 mWV4B6WpLCfOTyKATLWuBg==
    neighbor MPLS-IBGP-PEERS send-community
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group MPLS-IBGP-PEERS

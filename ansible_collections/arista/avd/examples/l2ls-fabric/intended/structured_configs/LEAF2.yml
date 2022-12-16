@@ -77,8 +77,8 @@ port_channel_interfaces:
     description: SPINES_Po1
     type: switched
     shutdown: false
-    vlans: 10,20
     mode: trunk
+    vlans: 10,20
     mlag: 1
 ethernet_interfaces:
   Ethernet47:
@@ -106,8 +106,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: SPINE1_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -116,8 +116,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: SPINE2_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -129,7 +129,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 20
+    vlans: '20'
     spanning_tree_portfast: edge
 mlag_configuration:
   domain_id: RACK1

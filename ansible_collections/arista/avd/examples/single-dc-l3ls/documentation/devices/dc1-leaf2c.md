@@ -49,7 +49,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -94,10 +94,10 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| admin | 15 | network-admin |
-| ansible | 15 | network-admin |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
+| ansible | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 
@@ -150,10 +150,10 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 11 | VRF1_VLAN11 | - |
-| 12 | VRF1_VLAN12 | - |
-| 21 | VRF2_VLAN21 | - |
-| 22 | VRF2_VLAN22 | - |
+| 11 | VRF10_VLAN11 | - |
+| 12 | VRF10_VLAN12 | - |
+| 21 | VRF11_VLAN21 | - |
+| 22 | VRF11_VLAN22 | - |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
 
@@ -162,16 +162,16 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 11
-   name VRF1_VLAN11
+   name VRF10_VLAN11
 !
 vlan 12
-   name VRF1_VLAN12
+   name VRF10_VLAN12
 !
 vlan 21
-   name VRF2_VLAN21
+   name VRF11_VLAN21
 !
 vlan 22
-   name VRF2_VLAN22
+   name VRF11_VLAN22
 !
 vlan 3401
    name L2_VLAN3401
@@ -257,7 +257,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -273,7 +273,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes

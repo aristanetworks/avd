@@ -116,7 +116,7 @@ ip domain lookup vrf mgt source-interface Management0
 
 #### NTP Authentication Keys
 
-| ID | Algoritm |
+| ID | Algorithm |
 | -- | -------- |
 | 1 | md5 |
 | 2 | sha1 |

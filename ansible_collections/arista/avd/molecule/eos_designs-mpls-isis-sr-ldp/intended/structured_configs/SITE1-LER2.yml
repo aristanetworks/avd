@@ -13,7 +13,7 @@ router_bgp:
       update_source: Loopback0
       remote_as: '65000'
       bfd: true
-      password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+      password: SHsTgDgjVUU5a9blyxSt3Q==
       send_community: all
       maximum_routes: 0
   address_family_ipv4:
@@ -73,13 +73,13 @@ router_bgp:
           - '65000:20'
           vpn-ipv6:
           - '65000:20'
+      redistribute_routes:
+      - connected
       neighbors:
         192.168.48.1:
           description: TENANT_B_CPE_SITE3
-          password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+          password: toZKiUFLVUTU4hdS5V8F4Q==
           remote_as: '65201'
-      redistribute_routes:
-      - connected
       address_families:
         ipv4:
           neighbors:
@@ -177,7 +177,6 @@ loopback_interfaces:
     ip_address: 100.70.0.6/32
     ipv6_address: 2000:1234:ffff:ffff::6/128
     mpls:
-      ip: true
       ldp:
         interface: true
     isis_enable: CORE
@@ -191,19 +190,19 @@ router_isis:
   net: 49.0001.0000.0001.0006.00
   router_id: 100.70.0.6
   is_type: level-1-2
-  advertise:
-    passive_only: true
-  mpls_ldp_sync_default: true
-  timers:
-    local_convergence:
-      delay: 15000
-      protected_prefixes: true
   address_family:
   - ipv4 unicast
   - ipv6 unicast
   isis_af_defaults:
   - maximum-paths 4
   - fast-reroute ti-lfa mode link-protection
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      delay: 15000
+      protected_prefixes: true
+  advertise:
+    passive_only: true
   segment_routing_mpls:
     router_id: 100.70.0.6
     enabled: true
@@ -223,8 +222,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9214
+    eos_cli: 'link-debounce time 1000
+
+      '
     ip_address: 100.64.48.2/31
-    speed: forced 100gfull
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 50
@@ -238,9 +239,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1000
-
-      '
+    speed: forced 100gfull
   Ethernet2:
     peer: SITE1-LER1
     peer_interface: Ethernet2
@@ -249,8 +248,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9178
+    eos_cli: 'link-debounce time 1500
+
+      '
     ip_address: 100.64.48.5/31
-    speed: forced 10000full
     ipv6_enable: true
     isis_enable: CORE
     isis_metric: 500
@@ -264,9 +265,7 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-    eos_cli: 'link-debounce time 1500
-
-      '
+    speed: forced 10000full
   Ethernet8:
     peer: CPE_TENANT_A_SITE1
     peer_interface: Ethernet2
@@ -281,17 +280,13 @@ ethernet_interfaces:
       id: 8
       mode: active
   Ethernet5.100:
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 100
     peer_type: l3_interface
-    vrf: TENANT_B_WAN
     ip_address: 192.168.48.0/31
     shutdown: false
     description: TENANT_B_SITE_3
-  Ethernet5:
-    type: routed
-    peer_type: l3_interface
-    shutdown: false
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    vrf: TENANT_B_WAN
   Ethernet3:
     shutdown: false
     channel_group:
@@ -302,6 +297,10 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
+  Ethernet5:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
 port_channel_interfaces:
   Port-Channel8:
     description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
@@ -313,9 +312,6 @@ port_channel_interfaces:
     lacp_id: 0303.0202.0101
   Port-Channel8.111:
     type: l2dot1q
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0303:0202:0111
-      route_target: 03:03:02:02:01:11
     vlan_id: 111
     encapsulation_vlan:
       client:
@@ -323,11 +319,11 @@ port_channel_interfaces:
           vlan: 111
       network:
         client: true
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0111
+      route_target: 03:03:02:02:01:11
   Port-Channel8.222:
     type: l2dot1q
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0303:0202:0222
-      route_target: 03:03:02:02:02:22
     vlan_id: 222
     encapsulation_vlan:
       client:
@@ -335,11 +331,11 @@ port_channel_interfaces:
           vlan: 222
       network:
         client: true
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0222
+      route_target: 03:03:02:02:02:22
   Port-Channel8.333:
     type: l2dot1q
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0303:0202:0333
-      route_target: 03:03:02:02:03:33
     vlan_id: 434
     encapsulation_vlan:
       client:
@@ -347,6 +343,9 @@ port_channel_interfaces:
           vlan: 333
       network:
         client: true
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0333
+      route_target: 03:03:02:02:03:33
   Port-Channel3.1000:
     type: l2dot1q
     encapsulation_vlan:

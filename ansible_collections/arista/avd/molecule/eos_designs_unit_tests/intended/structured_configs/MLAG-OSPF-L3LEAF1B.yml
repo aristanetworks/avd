@@ -138,9 +138,9 @@ ethernet_interfaces:
     peer_interface: Ethernet18
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet18
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 10.10.101.9/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -167,10 +167,11 @@ router_ospf:
     100:
       passive_interface_default: true
       router_id: 192.168.255.37
+      max_lsa: 12000
       no_passive_interfaces:
       - Ethernet1
       - Vlan4094
-      max_lsa: 12000
+      bfd_enable: false
 router_bfd:
   multihop:
     interval: 1200
@@ -183,6 +184,6 @@ vxlan_interface:
   Vxlan1:
     description: MLAG-OSPF-L3LEAF1B_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789

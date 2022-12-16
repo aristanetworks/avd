@@ -1,11 +1,16 @@
-{# eos - NTP #}
+{# eos - ntp #}
 {% if ntp is arista.avd.defined %}
 !
 {%     for authentication_key in ntp.authentication_keys | arista.avd.natural_sort('id') %}
 {%         if authentication_key.id is arista.avd.defined and
               authentication_key.key is arista.avd.defined and
               authentication_key.hash_algorithm is arista.avd.defined %}
-ntp authentication-key {{ authentication_key.id }} {{ authentication_key.hash_algorithm }} {{ authentication_key.key }}
+{%             set ntp_auth_key_cli = "ntp authentication-key " ~ authentication_key.id ~ " " ~ authentication_key.hash_algorithm %}
+{%             if authentication_key.key_type is arista.avd.defined %}
+{%                 set ntp_auth_key_cli = ntp_auth_key_cli ~ " " ~ authentication_key.key_type %}
+{%             endif %}
+{%             set ntp_auth_key_cli = ntp_auth_key_cli ~ " " ~ authentication_key.key %}
+{{ ntp_auth_key_cli }}
 {%         endif %}
 {%     endfor %}
 {%     if ntp.trusted_keys is arista.avd.defined %}

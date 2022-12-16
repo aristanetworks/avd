@@ -1,4 +1,4 @@
-{# eos - IP IGMP Snooping #}
+{# eos - ip igmp snooping #}
 {% if ip_igmp_snooping is arista.avd.defined and ip_igmp_snooping != { "globally_enabled": true } %}
 !
 {%     if ip_igmp_snooping.globally_enabled is arista.avd.defined(false) %}

@@ -10,6 +10,7 @@
     - ntp
 
 - name: Validate ntp status
+  delegate_to: localhost
   assert:
     that:
       - ntp_status.stdout[0] | regex_search('synchronised to NTP server')

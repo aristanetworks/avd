@@ -25,13 +25,13 @@ evpn_hostflap_detection:
 # bgp peer groups passwords
 bgp_peer_groups:
   ipv4_underlay_peers:
-    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+    password: "af6F4WLl4wUrWRZcwbEwkQ=="
     name: "UNDERLAY_PEERS"
   evpn_overlay_peers:
     password: "q+VNViP5i4rVjW1cxFv2wA=="
   mlag_ipv4_underlay_peer:
     name: "MLAG_PEER"
-    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    password: "arwUnrq9ydqIhjfTwRhAlg=="
 
 # Spine Switches
 spine:

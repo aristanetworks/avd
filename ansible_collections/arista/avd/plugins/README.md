@@ -176,6 +176,36 @@ To use this filter:
 !!! note
     This isn't using the same range syntax as EOS for modular or break-out ports. For example, on EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD, the same range would be `et1-2/1-4`.
 
+#### Password filters
+
+The `arista.avd.encrypt` and `arista.avd.decrypt` filters are used to encrypt or decrypt supported passwords.
+
+To use these filters:
+
+```jinja
+{{ <var_with_clear_text_password> | encrypt(passwd_type=<type>, key=<encryption_key>) }}
+{{ <var_with_encrypted_password> | decrypt(passwd_type=<type>, key=<encryption_key>) }}
+```
+
+Supported types:
+
+- bgp
+
+##### BGP passwords
+
+BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
+
+An example usage for `arista.avd.encrypt` filter for BGP it ot use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+
+**example:**
+
+```jinja
+bgp_peer_groups:
+  ipv4_underlay_peers:
+      name: IPv4-UNDERLAY-PEERS
+          password: "{{ bgp_vault_password | encrypt(passwd_type="bgp", key="IPv4-UNDERLAY-PEERS") }}"
+```
+
 ## Plugin Tests
 
 Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates.
@@ -656,8 +686,8 @@ Example:
     dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
     mode: 0664
     schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
-    conversion_mode: "{{ avd_validate_conversion_mode }}"
-    validation_mode: "{{ avd_validate_validation_mode }}"
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
     add_md_toc: true
     md_toc_skip_lines: 3
   delegate_to: localhost

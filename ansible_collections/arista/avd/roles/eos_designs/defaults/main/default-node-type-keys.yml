@@ -3,6 +3,7 @@ default_node_type_keys:
     spine:
       type: spine
       default_evpn_role: server
+      default_ptp_priority1: 20
     l3leaf:
       type: l3leaf
       connected_endpoints: true
@@ -12,6 +13,7 @@ default_node_type_keys:
         l2: true
         l3: true
       vtep: true
+      default_ptp_priority1: 30
     l2leaf:
       type: l2leaf
       connected_endpoints: true

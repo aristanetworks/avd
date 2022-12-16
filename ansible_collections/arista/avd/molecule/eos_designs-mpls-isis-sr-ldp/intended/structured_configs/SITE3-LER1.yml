@@ -38,7 +38,6 @@ loopback_interfaces:
     ip_address: 100.70.0.10/32
     ipv6_address: 2000:1234:ffff:ffff::a/128
     mpls:
-      ip: true
       ldp:
         interface: true
     isis_enable: CORE
@@ -52,19 +51,19 @@ router_isis:
   net: 49.0001.0000.0001.0010.00
   router_id: 100.70.0.10
   is_type: level-1-2
-  advertise:
-    passive_only: true
-  mpls_ldp_sync_default: true
-  timers:
-    local_convergence:
-      delay: 15000
-      protected_prefixes: true
   address_family:
   - ipv4 unicast
   - ipv6 unicast
   isis_af_defaults:
   - maximum-paths 4
   - fast-reroute ti-lfa mode link-protection
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      delay: 15000
+      protected_prefixes: true
+  advertise:
+    passive_only: true
   segment_routing_mpls:
     router_id: 100.70.0.10
     enabled: true
@@ -75,7 +74,6 @@ mpls:
     router_id: 100.70.0.10
     shutdown: false
     transport_address_interface: Loopback0
-patch_panel: {}
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00

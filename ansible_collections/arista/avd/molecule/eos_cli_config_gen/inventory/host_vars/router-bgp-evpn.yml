@@ -190,3 +190,31 @@ router_bgp:
         Ethernet28:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
           peer_filter: SOME_FILTER
+    TENANT_A_PROJECT03:
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:13"
+      evpn_multicast: true
+      evpn_multicast_address_family:
+        ipv4:
+          transit: true
+      route_targets:
+        import:
+          evpn:
+            - "13:13"
+        export:
+          evpn:
+            - "13:13"
+    TENANT_A_PROJECT04:
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:14"
+      evpn_multicast: true
+      evpn_multicast_address_family:
+        ipv4:
+          transit: false
+      route_targets:
+        import:
+          evpn:
+            - "14:14"
+        export:
+          evpn:
+            - "14:14"

@@ -1,5 +1,5 @@
-{# eos- Port-Channel Interfaces #}
-{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - port channel interfaces #}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.description is arista.avd.defined %}
@@ -98,6 +98,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%     endif %}
+{%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
+   flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
+{%     endif %}
 {%     if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined or port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
 {%         if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined %}
@@ -177,12 +180,12 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
-{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("enabled") %}
+{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined and port_channel_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%     elif port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
    spanning-tree bpduguard disable
 {%     endif %}
-{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined and port_channel_interface.spanning_tree_bpdufilter in [True, "True", "enabled"] %}
    spanning-tree bpdufilter enable
 {%     elif port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable

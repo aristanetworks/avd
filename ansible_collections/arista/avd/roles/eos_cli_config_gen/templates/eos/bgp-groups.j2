@@ -1,3 +1,4 @@
+{# eos - bgp group #}
 {% for bgp_group in bgp_groups | arista.avd.natural_sort('name') %}
 !
 group bgp {{ bgp_group.name }}

@@ -1,4 +1,4 @@
-{# eos - extended access-lists #}
+{# eos - access lists #}
 {% for access_list in access_lists | arista.avd.natural_sort('name') %}
 !
 ip access-list {{ access_list.name }}

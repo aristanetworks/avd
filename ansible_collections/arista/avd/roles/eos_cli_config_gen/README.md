@@ -14,7 +14,8 @@ The **eos_cli_config_gen** role:
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_cli_config_gen](media/role_eos_cli_config_gen.gif)
+![Figure 1: Ansible Role eos_cli_config_gen](../../docs/_media/eos_cli_config_gen_dark.svg#only-dark)
+![Figure 1: Ansible Role eos_cli_config_gen](../../docs/_media/eos_cli_config_gen_light.svg#only-light)
 
 **Inputs:**
 
@@ -329,6 +330,7 @@ cvx:
         password: < password >
         password_type: < 0 | 7 | 8a | default -> 7 >
       shutdown: < true | false >
+      peer_hosts: < IP address or hostname >
 ```
 
 #### Enable Password
@@ -703,6 +705,32 @@ as_path:
           origin: < "any" | "egp" | "igp" | "incomplete" | default -> "any" >
 ```
 
+### Flow Tracking
+
+```yaml
+flow_trackings:
+  # Only 'sampled' is supported for type
+  - type: < "sampled" >
+    sample: < 1-4294967295 >
+    trackers:
+      - name: < tracker_name >
+        record_export:
+          on_inactive_timeout: < 3000-900000 >
+          on_interval: < 1000-36000000 >
+          mpls: < true | false >
+        exporters:
+          - name: < exporter_name >
+            collector:
+              host: < collector_ip_or_hostname >
+              port: < 1-65535 >
+            format:
+              # Note that platforms only support 10 today
+              ipfix_version: < ipfix_version as integer >
+            local_interface: < local_interface_name >
+        template_interval: < 5000-3600000 >
+    shutdown: < true | false >
+```
+
 ### Generate Device Documentation
 
 ```yaml
@@ -807,6 +835,8 @@ ethernet_interfaces:
     type: < routed | switched | l3dot1q | l2dot1q >
     snmp_trap_link_change: < true | false >
     vrf: < vrf_name >
+    flow_tracker:
+        sampled: < flow_tracker_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
       fire_code: < true | false >
@@ -975,6 +1005,8 @@ ethernet_interfaces:
       - < trunk_group_name_2 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    flow_tracker:
+        sampled: < flow_tracker_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
       fire_code: < true | false >
@@ -999,7 +1031,7 @@ ethernet_interfaces:
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     snmp_trap_link_change: < true | false >
     flowcontrol:
-      received: < "received" | "send" | "on" >
+      received: < "desired" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
@@ -1169,6 +1201,7 @@ port_channel_interfaces:
       event:
         link_status: < true | false >
     shutdown: < true | false >
+    vrf: < vrf_name >
     vlans: "< list of vlans as string >"
     # l3dot1q and l2dot1q are used for sub-interfaces.
     # The parent interface should be defined as routed.
@@ -1202,6 +1235,8 @@ port_channel_interfaces:
       vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    flow_tracker:
+        sampled: < flow_tracker_name >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
@@ -1344,6 +1379,34 @@ port_channel_interfaces:
       < id >:
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
+```
+
+#### Tunnel Interfaces
+
+```yaml
+tunnel_interfaces:
+- name: < interface_name >
+  description: < description >
+  shutdown: < true | false >
+  mtu: < 68-65535 >
+  vrf: < vrf_name >
+  ip_address: < ip_address >
+  ipv6_enable: < true | false >
+  ipv6_address: < ipv6_address >
+  access_group_in: < access_list_name >
+  access_group_out: < access_list_name >
+  ipv6_access_group_in: < access_list_name >
+  ipv6_access_group_out: < access_list_name >
+  tcp_mss_ceiling:
+    ipv4: < 64-65495 >
+    ipv6: < 64-65475 >
+    direction: < ingress | egress >
+  source_interface: < tunnel_source_interface_name >
+  destination: < tunnel_destination >
+  path_mtu_discovery: < true | false >
+  # EOS CLI rendered directly on the Tunnel interface in the final EOS configuration
+  eos_cli: |
+    < multiline eos cli >
 ```
 
 #### VLAN Interfaces
@@ -1660,9 +1723,15 @@ mac_security:
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
       mka:
+        key_server_priority: < 0 - 255 >
         session:
           rekey_period: < 30-100000 in seconds >
       sci: < true | false >
+      l2_protocols:
+        ethernet_flow_control:
+          mode: < encrypt | bypass >
+        lldp:
+          mode: < bypass | bypass unauthorized >
 ```
 
 ### Maintenance Mode
@@ -1788,6 +1857,7 @@ management_interfaces:
     # For documentation purpose only
     gateway: < IPv4 address of default gateway in management VRF >
     ipv6_gateway: < IPv6 address of default gateway in management VRF >
+    mac_address: < MAC address >
 ```
 
 #### Management HTTP
@@ -1880,6 +1950,7 @@ management_cvx:
   server_hosts:
     - < IP | hostname >
     - < IP | hostname >
+  source_interface: < interface name >
 ```
 
 #### Management Defaults
@@ -1995,7 +2066,8 @@ ntp:
   authentication_keys:
     - id: < key_identifier | 1-65534 >
       hash_algorithm: < md5 | sha1 >
-      key: "< type7_obfuscated_key >"
+      key: "< obfuscated_key >"
+      key_type: < 0 | 7 | 8a >
   trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 
@@ -2822,6 +2894,16 @@ router_bgp:
     external_routes: < 1-255 >
     internal_routes: < 1-255 >
     local_routes: < 1-255 >
+  graceful_restart:
+    enabled: < true | false >
+    restart_time: < 1-3600 >
+    stalepath_time: < 1-3600 >
+  # graceful-restart-help long-lived and restart-time are mutually exclusive in CLI
+  # restart-time will take precedence if both are configured.
+  graceful_restart_helper:
+    enabled: < true | false >
+    restart_time: < 1-100000000>
+    long_lived: < true | false >
   maximum_paths:
     paths: < 1-600 >
     ecmp: < 1-600 >
@@ -2902,6 +2984,7 @@ router_bgp:
       remote_as: < bgp_as >
       local_as: < bgp_as >
       description: "< description as string >"
+      route_reflector_client: < true | false >
       ebgp_multihop: < integer >
       shutdown: < true | false >
       # Remove private AS numbers in outbound AS path
@@ -3202,6 +3285,10 @@ router_bgp:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
       evpn_multicast: < true | false >
+      # evpn_multicast_address_family requires evpn_multicast: true to be set
+      evpn_multicast_address_family:
+        ipv4:
+          transit: < true | false >
       route_targets:
         import:
           < address_family >:
@@ -3540,6 +3627,7 @@ static_routes:
     destination_address_prefix: < IPv4_network/Mask >
     interface: < interface >
     gateway: < IPv4_address >
+    track_bfd: < boolean >
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
@@ -3556,6 +3644,7 @@ ipv6_static_routes:
     destination_address_prefix: < IPv6_network/Mask >
     interface: < interface >
     gateway: < IPv6_address >
+    track_bfd: < boolean >
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
