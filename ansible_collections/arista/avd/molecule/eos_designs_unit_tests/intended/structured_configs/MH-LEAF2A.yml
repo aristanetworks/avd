@@ -186,7 +186,7 @@ ethernet_interfaces:
     type: switched
     shutdown: false
     mode: access
-    vlans: 310
+    vlans: '310'
     link_tracking_groups:
     - name: Eth-conn-to-router
       direction: downstream

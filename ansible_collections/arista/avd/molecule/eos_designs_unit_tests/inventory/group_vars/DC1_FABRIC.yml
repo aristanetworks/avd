@@ -22,6 +22,9 @@ bgp_peer_groups:
   MLAG_IPv4_UNDERLAY_PEER: # Using legacy upper-case keys to test backwards-compatibility
     name: MLAG-PEERS
     password: "15AwQNBEJ1nyF/kBEtoAGw=="
+  ipvpn_gateway_peers:
+    name: IPVPN-INTERWORKING-PEERS
+    password: "nWwwZQLPI34O1AhoANg77g=="
 
 # test with inline jinja2 targeting eos_designs_facts
 spine_platform: "7050SX3"
@@ -195,6 +198,20 @@ l3leaf:
     DC1_BL2:
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
       mlag: false
+      ipvpn_gateway:
+        enabled: true
+        evpn_domain_id: "65000:3"
+        ipvpn_domain_id: "65000:4"
+        maximum_routes: 50000
+        local_as: 65001
+        address_families: [ vpn-ipv4, vpn-ipv6 ]
+        remote_peers:
+          - hostname: rr1
+            ip_address: 100.70.0.1
+            bgp_as: 64512
+          - hostname: rr2
+            ip_address: 100.70.0.2
+            bgp_as: 64512
       filter:
         tenants: [ all ]
         tags: [ wan ]

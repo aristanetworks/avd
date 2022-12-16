@@ -286,9 +286,6 @@ port_channel_interfaces:
     lacp_id: 0303.0202.0101
   Port-Channel8.111:
     type: l2dot1q
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0303:0202:0111
-      route_target: 03:03:02:02:01:11
     vlan_id: 111
     encapsulation_vlan:
       client:
@@ -296,11 +293,11 @@ port_channel_interfaces:
           vlan: 111
       network:
         client: true
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0111
+      route_target: 03:03:02:02:01:11
   Port-Channel8.222:
     type: l2dot1q
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0303:0202:0222
-      route_target: 03:03:02:02:02:22
     vlan_id: 222
     encapsulation_vlan:
       client:
@@ -308,11 +305,11 @@ port_channel_interfaces:
           vlan: 222
       network:
         client: true
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0222
+      route_target: 03:03:02:02:02:22
   Port-Channel8.333:
     type: l2dot1q
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0303:0202:0333
-      route_target: 03:03:02:02:03:33
     vlan_id: 434
     encapsulation_vlan:
       client:
@@ -320,6 +317,9 @@ port_channel_interfaces:
           vlan: 333
       network:
         client: true
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0333
+      route_target: 03:03:02:02:03:33
   Port-Channel3.1000:
     type: l2dot1q
     encapsulation_vlan:
