@@ -113,10 +113,11 @@ class RouterBgpMixin(UtilsMixin):
             }
 
         if self._overlay_ipvpn_gateway is True:
+            local_as = str(_as) if (_as := get(self._hostvars, "switch.ipvpn_gateway.local_as")) is not None else None
             peer_groups[self._peer_group_ipvpn_gateway_peers] = {
                 "type": "mpls",
                 "update_source": "Loopback0",
-                "local_as": get(self._hostvars, "switch.ipvpn_gateway.local_as"),
+                "local_as": local_as,
                 "bfd": True,
                 "password": get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.password"),
                 "send_community": "all",
@@ -300,11 +301,11 @@ class RouterBgpMixin(UtilsMixin):
 
         if self._overlay_mpls is True:
             # MPLS OVERLAY peer group
-            # TODO - for now Loopback0 is hardcoded as per original template
+            local_as = str(_as) if (_as := get(self._hostvars, "switch.ipvpn_gateway.local_as")) is not None else None
             peer_groups[self._peer_group_mpls_overlay_peers] = {
                 "type": "mpls",
                 "update_source": "Loopback0",
-                "local_as": get(self._hostvars, "switch.ipvpn_gateway.local_as"),
+                "local_as": local_as,
                 "remote_as": self._bgp_as,
                 "bfd": True,
                 "password": get(self._hostvars, "switch.bgp_peer_groups.mpls_overlay_peers.password"),
@@ -319,7 +320,6 @@ class RouterBgpMixin(UtilsMixin):
         # TODO - think if this can be grouped with ebgp_peer_group
         if self._overlay_evpn_vxlan is True:
             # EVPN OVERLAY peer group
-            # TODO - for now Loopback0 is hardcoded as per original template
             peer_groups[self._peer_group_evpn_overlay_peers] = {
                 "type": "evpn",
                 "update_source": "Loopback0",
@@ -347,10 +347,11 @@ class RouterBgpMixin(UtilsMixin):
             }
 
         if self._overlay_ipvpn_gateway is True:
+            local_as = str(_as) if (_as := get(self._hostvars, "switch.ipvpn_gateway.local_as")) is not None else None
             peer_groups[self._peer_group_ipvpn_gateway_peers] = {
                 "type": "mpls",
                 "update_source": "Loopback0",
-                "local_as": get(self._hostvars, "switch.ipvpn_gateway.local_as"),
+                "local_as": local_as,
                 "bfd": True,
                 "password": get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.password"),
                 "send_community": "all",
