@@ -132,7 +132,7 @@ mac_address_table:
 
     # Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant | Optional
     # - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication
-    # - Configures binding between VXLAN, VLAN, and multicast group ipv4 address using the following formula:
+    # - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
     #   < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
     # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
     # - Enables `redistribute igmp` on the router bgp MAC VRF.
@@ -145,7 +145,7 @@ mac_address_table:
     # Enable L3 Multicast for all SVIs and l3vlans within Tenant | Optional
     # - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)
     # - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication
-    # - Configures binding between VXLAN, VLAN, and multicast group ipv4 address using the following formula:
+    # - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
     #   < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
     # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
     # - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.
@@ -155,7 +155,7 @@ mac_address_table:
     #     - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
     #     - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
     l3_multicast:
-      enabled: < true | false | default false >
+      enabled: < true | false >
       evpn_underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask > # Required
       evpn_underlay_l3_multicast_group_ipv4_pool_offset: < int > # Optional
       evpn_peg:
@@ -163,18 +163,18 @@ mac_address_table:
         # The first group of settings where the device's hostname is present in the 'nodes' list will be used.
         # At least one RP address must be configured for EVPN PEG to be configured.
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
-          transit: < true | false | default false >                    # Enable EVPN PEG transit mode
+          transit: < true | false >                    # Enable EVPN PEG transit mode
       rp_addresses:
         # For each group of nodes, allow configuration of RP Addresses & associated groups
         - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
           nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
           groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
 
-    # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
-    # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+    # Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
+    # When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
     igmp_snooping_querier:
       # Will be enabled automatically if "evpn_l2_multicast" is enabled.
-       enabled: < true | false | default false >
+       enabled: < true | false >
        source_address: < ipv4_address -> default ip address of Loopback0 >
        version: < 1, 2, 3 -> default 2 (EOS) >
 
