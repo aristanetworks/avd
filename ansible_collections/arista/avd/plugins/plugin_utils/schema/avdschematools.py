@@ -101,9 +101,9 @@ class AvdSchemaTools:
 
         Returns dict which can contain either or both of the following keys:
         - failed: <bool>
-        - msg: <str with summarys messages from conversion and validation>
+        - msg: <str with concatenated summarys messages from conversion and validation>
 
-        The return value should be updated on Ansible Action "result"
+        The return value should be applied on Ansible Action "result" dictionary
         """
         result = {}
         result_messages = []
@@ -124,6 +124,15 @@ class AvdSchemaTools:
         return result
 
     def handle_validation_exceptions(self, exceptions: Generator, mode: str) -> int:
+        """
+        Iterate through the Generator of exceptions.
+        This method is actually where the content of the generator gets executed.
+
+        It displays various messages depending on the `mode` parameter
+
+        Returns:
+        - counter: <int> the number of AristaAvdError in the exceptions Generator
+        """
         counter = 0
         for exception in exceptions:
             if not isinstance(exception, AristaAvdError):

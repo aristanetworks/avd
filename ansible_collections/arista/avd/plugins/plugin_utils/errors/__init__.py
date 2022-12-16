@@ -1,9 +1,9 @@
-from .errors import AristaAvdError, AristaAvdMissingVariableError, AvdConversion, AvdSchemaError, AvdValidationError
+from .errors import AristaAvdError, AristaAvdMissingVariableError, AvdConversionWarning, AvdSchemaError, AvdValidationError
 
 __all__ = [
     "AristaAvdError",
     "AristaAvdMissingVariableError",
-    "AvdConversion",
+    "AvdConversionWarning",
     "AvdSchemaError",
     "AvdValidationError",
 ]
