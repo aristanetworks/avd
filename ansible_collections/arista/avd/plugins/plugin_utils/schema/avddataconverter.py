@@ -150,11 +150,11 @@ def _ref(validator, ref: str, instance, schema: dict):
 
 def _convert_types(validator, convert_types: list, instance, schema: dict):
     """
-    This function performs type convertion if necessary on a single data instance.
+    This function performs type conversion if necessary on a single data instance.
     It is invoked for child keys during "keys" conversion and for child items during
     "items" conversion
     Returns the converted value is returned to the calling converter.
-    Any convertion errors are ignored and the original value is returned
+    Any conversion errors are ignored and the original value is returned
     """
     schema_type = schema.get("type")
 

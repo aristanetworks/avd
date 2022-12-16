@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
+from collections import ChainMap
+
 __metaclass__ = type
 
 import copy
@@ -155,6 +157,10 @@ def _valid_values_validator(validator, valid_values, instance, schema: dict):
         yield jsonschema.ValidationError(f"'{instance}' is not one of {valid_values}")
 
 
+def _is_dict(validator, instance):
+    return isinstance(instance, (dict, ChainMap))
+
+
 """
 AvdSchemaValidator is used to validate AVD Data.
 It uses a combination of our own validators and builtin jsonschema validators
@@ -193,7 +199,7 @@ else:
                 "None": jsonschema._types.is_null,
                 "number": jsonschema._types.is_number,
                 "string": jsonschema._types.is_string,
-                "dict": jsonschema._types.is_object,
+                "dict": _is_dict,
                 "str": jsonschema._types.is_string,
                 "bool": jsonschema._types.is_bool,
                 "list": jsonschema._types.is_array,

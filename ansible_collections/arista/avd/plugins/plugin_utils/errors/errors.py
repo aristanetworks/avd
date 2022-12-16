@@ -50,3 +50,12 @@ class AvdValidationError(AristaAvdError):
         else:
             self.message = message
         super().__init__(self.message)
+
+
+class AvdConversionWarning(AristaAvdError):
+    def __init__(self, message: str = "Data was converted to conform to schema", key=None, oldtype="unknown", newtype="unknown"):
+        if key is not None:
+            self.message = f"'Data Type Converted: {key} from '{oldtype}' to '{newtype}'"
+        else:
+            self.message = message
+        super().__init__(self.message)
