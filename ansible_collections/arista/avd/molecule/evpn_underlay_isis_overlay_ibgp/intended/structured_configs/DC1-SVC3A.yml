@@ -9,11 +9,11 @@ router_bgp:
     OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
-      remote_as: '65000'
       bfd: true
       password: 64fqSH5CFUNLRHErezMrRg==
       send_community: all
       maximum_routes: 0
+      remote_as: '65000'
   address_family_ipv4:
     peer_groups:
       OVERLAY-PEERS:

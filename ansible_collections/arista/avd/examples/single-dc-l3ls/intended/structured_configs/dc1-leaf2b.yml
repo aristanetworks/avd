@@ -26,10 +26,10 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: 3
       password: Q4fqtbqcZ7oQuKfuWtNGRQ==
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:

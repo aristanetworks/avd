@@ -20,10 +20,10 @@ router_bgp:
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
-      remote_as: '65001'
       bfd: true
       send_community: all
       maximum_routes: 0
+      remote_as: '65001'
       description: Description for evpn_overlay_peers via structured_config
   address_family_ipv4:
     peer_groups:
