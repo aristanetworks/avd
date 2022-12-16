@@ -14,6 +14,20 @@ node_type_keys:
     vtep: true
     default_evpn_encapsulation: vxlan
     default_overlay_address_families: [ vpn-ipv4, evpn ]
+  pe:
+    type: pe
+    mpls_lsr: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l1: true
+      l2: true
+      l3: true
+    mpls_ler: true
+    default_overlay_routing_protocol: ibgp
+    default_underlay_routing_protocol: isis-sr
+    default_overlay_address_families: [ evpn ]
+    default_evpn_encapsulation: mpls
 
 bgp_peer_groups:
   ipv4_underlay_peers:
@@ -40,6 +54,10 @@ bgp_peer_groups:
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for rr_overlay_peers via structured_config
+  ipvpn_gateway_peers:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for ipvpn_gateway_peers via structured_config
 
 type: l3leaf
 mgmt_gateway: 192.168.0.1
@@ -72,6 +90,26 @@ l3leaf:
           bgp_as: 104
           evpn_role: server
           mpls_overlay_role: server
+
+pe:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    is_type: level-1-2
+    node_sid_base: 100
+    isis_system_id_prefix: '0000.0002'
+  node_groups:
+    bgp-peer-groups-structured-config-3:
+      nodes:
+        bgp-peer-groups-structured-config-3:
+          id: 106
+          bgp_as: 106
+          evpn_role: client
+          mpls_overlay_role: client
+          ipvpn_gateway:
+            enabled: true
 
 # MPLS Beta code is hardcoded to look for this dictionary.
 rr:

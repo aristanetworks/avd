@@ -37,8 +37,6 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         if self._underlay_ldp is True:
             loopback0["mpls"] = {"ldp": {"interface": True}}
-        elif self._underlay_mpls is True:
-            loopback0["mpls"] = {}
 
         if self._underlay_isis is True:
             isis_config = {"isis_enable": self._isis_instance_name, "isis_passive": True}

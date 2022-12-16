@@ -20,3 +20,9 @@
       description: {{ evpn_gw_remote_peer }}
       remote_as: "{{ overlay_data.evpn_gateway_remote_peers[evpn_gw_remote_peer].bgp_as }}"
 {% endfor %}
+{% for ipvpn_gw_remote_peer in switch.ipvpn_gateway.remote_peers | arista.avd.natural_sort("ip_address") %}
+    {{ ipvpn_gw_remote_peer.ip_address }}:
+      peer_group: {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}
+      description: {{ ipvpn_gw_remote_peer.hostname }}
+      remote_as: "{{ ipvpn_gw_remote_peer.bgp_as }}"
+{% endfor %}

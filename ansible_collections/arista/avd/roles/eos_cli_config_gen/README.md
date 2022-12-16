@@ -3678,6 +3678,62 @@ router_l2_vpn:
     prefix_list: < prefix_list_name >
 ```
 
+### Router MSDP
+
+```yaml
+router_msdp:
+  originator_id_local_interface: < interface >
+  rejected_limit: < 0-40000 >
+  forward_register_packets: < true | false >
+  connection_retry_interval: < 1-65535 >
+  group_limits:
+    - limit: < 0-40000 >
+      source_prefix: < ipv4_prefix/mask >
+  peers:
+    - ipv4_address: < ipv4_address >
+      default_peer:
+        enabled: < true | false >
+        prefix_list: < prefix_list_name >
+      local_interface: < interface >
+      description: < description >
+      disabled: < true | false >
+      sa_limit: < 0-40000 >
+      mesh_groups:
+        - name: < mesh_group_name >
+      keepalive:
+        keepalive_timer: < 1-65535 >
+        hold_timer: < 1-65535, must be greater than keepalive_timer >
+      sa_filter:
+        in_list: < acl_name >
+        out_list: < acl_name >
+  vrfs:
+    - name: < vrf_name, if vrf_name = default, the configuration will be applied to the global section >
+      originator_id_local_interface: < interface >
+      rejected_limit: < 0-40000 >
+      forward_register_packets: < true | false >
+      connection_retry_interval: < 1-65535 >
+      group_limits:
+        - limit: < 0-40000 >
+          source_prefix: < ipv4_prefix/mask >
+      peers:
+        - ipv4_address: < ipv4_address >
+          default_peer:
+            enabled: < true | false >
+            prefix_list: < prefix_list_name >
+          local_interface: < interface >
+          description: < description >
+          disabled: < true | false >
+          sa_limit: < 0-40000 >
+          mesh_groups:
+            - name: < mesh_group_name >
+          keepalive:
+            keepalive_timer: < 1-65535 >
+            hold_timer: < 1-65535, must be greater than keepalive_timer >
+          sa_filter:
+            in_list: < acl_name >
+            out_list: < acl_name >
+```
+
 ### Spanning Tree
 
 ```yaml

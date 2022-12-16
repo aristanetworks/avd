@@ -153,7 +153,7 @@ class UtilsMixin:
 
     @cached_property
     def _underlay_mpls(self) -> bool:
-        return get(self._hostvars, "switch.underlay.ldp") is True
+        return get(self._hostvars, "switch.underlay.mpls") is True
 
     @cached_property
     def _underlay_links(self) -> list:

@@ -1,0 +1,15 @@
+{% if switch.overlay.vpn_ipv6 %}
+  address_family_vpn_ipv6:
+{%     if switch.overlay.ler or switch.overlay.ipvpn_gateway %}
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: Loopback0
+{%     endif %}
+    peer_groups:
+{%     if switch.overlay.ipvpn_gateway %}
+      {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}:
+        activate: true
+{%     endif %}
+{%     if switch.overlay.dpath %}
+    domain_identifier: "{{ switch.ipvpn_gateway.ipvpn_domain_id }}"
+{%     endif %}
+{% endif %}

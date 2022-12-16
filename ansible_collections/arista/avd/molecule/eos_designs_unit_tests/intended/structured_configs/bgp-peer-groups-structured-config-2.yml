@@ -17,15 +17,6 @@ router_bgp:
       maximum_routes: 12000
       send_community: all
       description: Description for ipv4_underlay_peers via structured_config
-    MPLS-OVERLAY-PEERS:
-      type: mpls
-      update_source: Loopback0
-      remote_as: '65001'
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      route_reflector_client: true
-      description: Description for mpls_overlay_peers via structured_config
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -49,8 +40,6 @@ router_bgp:
         activate: true
       IPv4-UNDERLAY-PEERS:
         activate: true
-      MPLS-OVERLAY-PEERS:
-        activate: false
       EVPN-OVERLAY-PEERS:
         activate: false
       RR-OVERLAY-PEERS:
@@ -76,8 +65,6 @@ router_bgp:
         activate: true
   address_family_vpn_ipv4:
     peer_groups:
-      MPLS-OVERLAY-PEERS:
-        activate: true
       RR-OVERLAY-PEERS:
         activate: true
 static_routes:

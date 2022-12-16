@@ -13,7 +13,7 @@ spanning_tree:
   mode: mstp
   mst_instances:
     '0':
-      priority: 32768
+      priority: '32768'
 local_users:
   admin:
     privilege: 15
@@ -44,8 +44,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: DC1-LEAF2A_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -54,8 +54,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: DC1-LEAF2B_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -74,21 +74,21 @@ port_channel_interfaces:
     description: DC1_L3_LEAF2_Po8
     type: switched
     shutdown: false
-    vlans: 11-12,21-22,3401-3402
     mode: trunk
+    vlans: 11-12,21-22,3401-3402
 vlans:
   11:
     tenant: TENANT1
-    name: VRF1_VLAN11
+    name: VRF10_VLAN11
   12:
     tenant: TENANT1
-    name: VRF1_VLAN12
+    name: VRF10_VLAN12
   21:
     tenant: TENANT1
-    name: VRF2_VLAN21
+    name: VRF11_VLAN21
   22:
     tenant: TENANT1
-    name: VRF2_VLAN22
+    name: VRF11_VLAN22
   3401:
     tenant: TENANT1
     name: L2_VLAN3401

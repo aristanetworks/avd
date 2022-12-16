@@ -76,11 +76,11 @@ router_bgp:
         export:
           evpn:
           - '10:10'
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.1.96:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
     VRF11:
       router_id: 10.255.0.4
       rd: 10.255.0.4:11
@@ -91,11 +91,11 @@ router_bgp:
         export:
           evpn:
           - '11:11'
+      redistribute_routes:
+      - connected
       neighbors:
         10.255.1.96:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-      - connected
   vlans:
     11:
       tenant: TENANT1
@@ -205,10 +205,10 @@ vlans:
     - MLAG
   11:
     tenant: TENANT1
-    name: VRF1_VLAN11
+    name: VRF10_VLAN11
   12:
     tenant: TENANT1
-    name: VRF1_VLAN12
+    name: VRF10_VLAN12
   3009:
     tenant: TENANT1
     name: MLAG_iBGP_VRF10
@@ -216,10 +216,10 @@ vlans:
     - LEAF_PEER_L3
   21:
     tenant: TENANT1
-    name: VRF2_VLAN21
+    name: VRF11_VLAN21
   22:
     tenant: TENANT1
-    name: VRF2_VLAN22
+    name: VRF11_VLAN22
   3010:
     tenant: TENANT1
     name: MLAG_iBGP_VRF11
@@ -235,8 +235,8 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 10.255.1.97/31
     mtu: 1500
+    ip_address: 10.255.1.97/31
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
@@ -245,44 +245,44 @@ vlan_interfaces:
     mtu: 1500
   Vlan11:
     tenant: TENANT1
-    description: VRF1_VLAN11
+    description: VRF10_VLAN11
     shutdown: false
-    vrf: VRF10
     ip_address_virtual: 10.10.11.1/24
+    vrf: VRF10
   Vlan12:
     tenant: TENANT1
-    description: VRF1_VLAN12
+    description: VRF10_VLAN12
     shutdown: false
-    vrf: VRF10
     ip_address_virtual: 10.10.12.1/24
+    vrf: VRF10
   Vlan3009:
     tenant: TENANT1
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
     vrf: VRF10
-    ip_address: 10.255.1.97/31
     mtu: 1500
+    ip_address: 10.255.1.97/31
   Vlan21:
     tenant: TENANT1
-    description: VRF2_VLAN21
+    description: VRF11_VLAN21
     shutdown: false
-    vrf: VRF11
     ip_address_virtual: 10.10.21.1/24
+    vrf: VRF11
   Vlan22:
     tenant: TENANT1
-    description: VRF2_VLAN22
+    description: VRF11_VLAN22
     shutdown: false
-    vrf: VRF11
     ip_address_virtual: 10.10.22.1/24
+    vrf: VRF11
   Vlan3010:
     tenant: TENANT1
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
     vrf: VRF11
-    ip_address: 10.255.1.97/31
     mtu: 1500
+    ip_address: 10.255.1.97/31
 port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_dc1-leaf1a_Po3
@@ -297,8 +297,8 @@ port_channel_interfaces:
     description: DC1-LEAF1C_Po1
     type: switched
     shutdown: false
-    vlans: 11-12,21-22,3401-3402
     mode: trunk
+    vlans: 11-12,21-22,3401-3402
     mlag: 8
   Port-Channel5:
     description: dc1-leaf1-server1_PortChannel dc1-leaf1-server1
@@ -335,26 +335,26 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 10.255.255.5/31
   Ethernet2:
     peer: dc1-spine2
     peer_interface: Ethernet2
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 10.255.255.7/31
   Ethernet8:
     peer: dc1-leaf1c
     peer_interface: Ethernet2
     peer_type: l2leaf
     description: DC1-LEAF1C_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 8
       mode: active
@@ -431,9 +431,9 @@ vxlan_interface:
   Vxlan1:
     description: dc1-leaf1b_VTEP
     vxlan:
+      udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
-      udp_port: 4789
       vlans:
         11:
           vni: 10011

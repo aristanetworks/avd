@@ -22,7 +22,7 @@ fabric_name: < Fabric_Name >
 dc_name: < DC_Name >
 ```
 
-- POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+- POD Name (optional), fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ```yaml
 pod_name: < POD_Name >
@@ -451,6 +451,44 @@ default_interfaces:
       evpn_l3:
         enabled: < true | false | Default -> False >
         inter_domain: < true | false | Default -> True >
+```
+
+### BGP & IP-VPN Gateway
+
+```yaml
+< node_type_key >:
+
+  defaults:
+    # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking | Optional.
+    # The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+    # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+    ipvpn_gateway:
+        enabled: < true | false | default -> False >
+
+        # Domain IDs are required to perform D-Path lookups for loop prevention. If omitted, the defaults are used.
+        evpn_domain_id: < "nn:nn" | default -> "0:1" >
+        ipvpn_domain_id: < "nn:nn" | default -> "0:2" >
+
+        # D-path can be turned off for the inter-vpn export if desired.
+        enable_d_path: < true | false | default -> true >
+
+        # Maximum number of routes to allow from the MPLS domain.
+        maximum_routes: < integer | default -> 0 >
+
+        # Optional local-as to use when peering to the MPLS domain.
+        local_as: < bgp_asn >
+
+        # Address families in which to perform interworking.
+        address_families: < List of address families | default -> [ vpn-ipv4 ] >
+
+        # Define remote peers of the EVPN to IP-VPN Gateway. The hostname, ip_address and bgp_asn variables must be defined for each remote peer.
+        remote_peers:
+          - hostname: < Hostname of remote mpls-vpn peer >
+            ip_address: < Peering IP of remote mpls-vpn peer >
+            bgp_as: < bgp_asn of remote mpls-vpn peer >
+          - hostname: < Hostname of remote mpls-vpn peer >
+            ip_address: < Peering IP of remote mpls-vpn peer >
+            bgp_as: < bgp_asn of remote mpls-vpn peer >
 ```
 
 ### MLAG configuration management

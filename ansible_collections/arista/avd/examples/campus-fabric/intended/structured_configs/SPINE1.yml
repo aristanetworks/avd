@@ -86,8 +86,8 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 10.1.1.0/31
     mtu: 1500
+    ip_address: 10.1.1.0/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Vlan4094:
@@ -200,22 +200,22 @@ port_channel_interfaces:
     description: IDF1_Po51
     type: switched
     shutdown: false
-    vlans: 10,110,120,130
     mode: trunk
+    vlans: 10,110,120,130
     mlag: 1
   Port-Channel491:
     description: LEAF2A_Po11
     type: switched
     shutdown: false
-    vlans: 10,210,220,230
     mode: trunk
+    vlans: 10,210,220,230
     mlag: 491
   Port-Channel501:
     description: IDF3_AGG_Po971
     type: switched
     shutdown: false
-    vlans: 10,310,320,330
     mode: trunk
+    vlans: 10,310,320,330
     mlag: 501
 ethernet_interfaces:
   Ethernet55/1:
@@ -243,8 +243,8 @@ ethernet_interfaces:
     peer_interface: Ethernet51
     peer_type: leaf
     description: LEAF1A_Ethernet51
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -253,8 +253,8 @@ ethernet_interfaces:
     peer_interface: Ethernet1/1
     peer_type: leaf
     description: LEAF2A_Ethernet1/1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 491
       mode: active
@@ -263,8 +263,8 @@ ethernet_interfaces:
     peer_interface: Ethernet97/1
     peer_type: leaf
     description: LEAF3A_Ethernet97/1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 501
       mode: active
@@ -273,8 +273,8 @@ ethernet_interfaces:
     peer_interface: Ethernet97/1
     peer_type: leaf
     description: LEAF3B_Ethernet97/1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 501
       mode: active
@@ -298,6 +298,7 @@ mlag_configuration:
   reload_delay_non_mlag: 330
 loopback_interfaces:
   Loopback0:
+    description: Router_ID
     shutdown: false
     ip_address: 172.16.1.1/32
     ospf_area: 0.0.0.0
@@ -306,10 +307,11 @@ router_ospf:
     100:
       passive_interface_default: true
       router_id: 172.16.1.1
+      max_lsa: 12000
       no_passive_interfaces:
       - Vlan4093
       - Ethernet52/1
-      max_lsa: 12000
+      bfd_enable: false
       redistribute:
         connected: {}
 ip_igmp_snooping:
