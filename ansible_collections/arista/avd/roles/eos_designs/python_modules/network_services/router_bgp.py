@@ -161,7 +161,7 @@ class RouterBgpMixin(UtilsMixin):
                     "redistribute_routes": ["connected"],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
-                    "evpn_multicast": (get(vrf, "_l3_multicast_enabled") and self._overlay_vtep and self._overlay_evpn),
+                    "evpn_multicast": get(vrf, "_l3_multicast_enabled"),
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:

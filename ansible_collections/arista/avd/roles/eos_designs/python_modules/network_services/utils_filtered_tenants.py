@@ -6,7 +6,6 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
@@ -128,32 +127,29 @@ class UtilsFilteredTenantsMixin(object):
                 )
             ]
 
-            vrf["_l3_multicast_enabled"] = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
+            if self._evpn_multicast:
+                vrf["_l3_multicast_enabled"] = default(get(vrf, "l3_multicast.enabled"), get(tenant, "l3_multicast.enabled"))
 
-            if vrf["_l3_multicast_enabled"] is True and not get(self._hostvars, "evpn_multicast"):
-                raise AristaAvdError(
-                    "'l3_multicast: True' is only supported on a VRF/Tenant in combination with 'underlay_multicast: True' and 'evpn_multicast: True'"
-                )
+                rps = []
+                for rp_address in default(get(vrf, "l3_multicast.rp_addresses"), get(tenant, "l3_multicast.rp_addresses"), []):
+                    if self._hostname in get(rp_address, "nodes", default=[self._hostname]):
+                        for rp_ip in get(
+                            rp_address,
+                            "rps",
+                            required=True,
+                            org_key=f"l3_multicast.rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
+                        ):
+                            if rp_groups := get(rp_address, "groups"):
+                                rps.append({"address": rp_ip, "groups": rp_groups})
+                            else:
+                                rps.append({"address": rp_ip})
+                if rps:
+                    vrf["_l3_multicast_rp_addresses"] = rps
 
-            rps = []
-            for rp_address in default(get(vrf, "l3_multicast.rp_addresses"), get(tenant, "l3_multicast.rp_addresses"), []):
-                if self._hostname in get(rp_address, "nodes", default=[]) or "nodes" not in rp_address:
-                    for rp_ip in get(
-                        rp_address,
-                        "rps",
-                        required=True,
-                        org_key=f"l3_multicast.rp_addresses.rps under VRF '{vrf['name']}' in tenant '{tenant['name']}'",
-                    ):
-                        if rp_groups := get(rp_address, "groups", default=[]):
-                            rps.append({"address": rp_ip, "groups": rp_groups})
-                        else:
-                            rps.append({"address": rp_ip})
-            if rps:
-                vrf["_l3_multicast_rp_addresses"] = rps
-
-            for evpn_peg in default(get(vrf, "l3_multicast.evpn_peg"), get(tenant, "l3_multicast.evpn_peg"), []):
-                if self._hostname in get(evpn_peg, "nodes", default=[]) or ("nodes" not in evpn_peg and rps):
-                    vrf["_l3_multicast_evpn_peg_transit"] = get(evpn_peg, "transit")
+                for evpn_peg in default(get(vrf, "l3_multicast.evpn_peg"), get(tenant, "l3_multicast.evpn_peg"), []):
+                    if self._hostname in evpn_peg.get("nodes", [self._hostname]) and rps:
+                        vrf["_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
+                        break
 
             if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
                 filtered_vrfs.append(vrf)

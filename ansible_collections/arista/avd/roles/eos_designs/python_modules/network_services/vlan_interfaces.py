@@ -61,10 +61,9 @@ class VlanInterfacesMixin(UtilsMixin):
             # Only set VARP if ip_address is set
             vlan_interface_config["ip_virtual_router_addresses"] = svi.get("ip_virtual_router_addresses")
 
-        vlan_virtual_address = svi.get("ip_address_virtual")
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
             # Only set Anycast GW if VARP is not set
-            vlan_interface_config["ip_address_virtual"] = vlan_virtual_address
+            vlan_interface_config["ip_address_virtual"] = svi.get("ip_address_virtual")
             vlan_interface_config["ip_address_virtual_secondaries"] = svi.get("ip_address_virtual_secondaries")
 
         pim_config_ipv4 = {}
@@ -74,7 +73,7 @@ class VlanInterfacesMixin(UtilsMixin):
             else:
                 vlan_interface_config["ip_igmp"] = True
 
-            if get(vlan_interface_config, "ip_address_virtual"):
+            if "ip_address_virtual" in vlan_interface_config:
                 if (vrf_diagnostic_loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
                     raise AristaAvdMissingVariableError(
                         f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{tenant['name']}'."

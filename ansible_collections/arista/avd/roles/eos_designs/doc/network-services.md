@@ -160,13 +160,14 @@ mac_address_table:
       evpn_underlay_l3_multicast_group_ipv4_pool_offset: < int > # Optional
       evpn_peg:
         # For each group of nodes, allow configuration of EVPN PEG options | Optional
+        # The first group of settings where the device's hostname is present in the 'nodes' list will be used.
         # At least one RP address must be configured for EVPN PEG to be configured.
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
           transit: < true | false | default false >                    # Enable EVPN PEG transit mode
       rp_addresses:
         # For each group of nodes, allow configuration of RP Addresses & associated groups
-        - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
-          rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+        - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+          nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
           groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
 
     # Enable igmp snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
@@ -462,7 +463,7 @@ mac_address_table:
                   key: < key password >
 
             # Enable PIM sparse-mode on the interface; requires "l3_multicast" to be enabled on the VRF/Tenant
-            # Enabling this implicitly makes the device a PIM External Gateway (PEG)
+            # Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
             pim:
               enabled: true
 

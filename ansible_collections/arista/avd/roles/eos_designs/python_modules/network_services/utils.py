@@ -321,3 +321,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                     return True
 
         return False
+
+    @cached_property
+    def _evpn_multicast(self) -> bool:
+        return get(self._hostvars, "switch.evpn_multicast") is True
