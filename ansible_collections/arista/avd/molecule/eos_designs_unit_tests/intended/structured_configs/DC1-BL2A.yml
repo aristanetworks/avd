@@ -22,7 +22,7 @@ router_bgp:
     IPVPN-INTERWORKING-PEERS:
       type: mpls
       update_source: Loopback0
-      local_as: '65001'
+      local_as: 65001
       bfd: true
       password: nWwwZQLPI34O1AhoANg77g==
       send_community: all
@@ -93,11 +93,11 @@ router_bgp:
     100.70.0.1:
       peer_group: IPVPN-INTERWORKING-PEERS
       description: rr1
-      remote_as: '64512'
+      remote_as: 64512
     100.70.0.2:
       peer_group: IPVPN-INTERWORKING-PEERS
       description: rr2
-      remote_as: '64512'
+      remote_as: 64512
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -108,9 +108,6 @@ router_bgp:
       enabled: true
       expiry_timeout: 10
     domain_identifier: '65000:3'
-  bgp:
-    bestpath:
-      d_path: true
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
@@ -125,6 +122,9 @@ router_bgp:
       IPVPN-INTERWORKING-PEERS:
         activate: true
     domain_identifier: '65000:4'
+  bgp:
+    bestpath:
+      d_path: true
   vrfs:
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.16

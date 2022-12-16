@@ -33,9 +33,6 @@ router_bgp:
       MPLS-OVERLAY-PEERS:
         activate: true
     domain_identifier: 0:1
-  bgp:
-    bestpath:
-      d_path: true
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
@@ -45,6 +42,9 @@ router_bgp:
       IPVPN-GATEWAY-PEERS:
         activate: true
     domain_identifier: 0:2
+  bgp:
+    bestpath:
+      d_path: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

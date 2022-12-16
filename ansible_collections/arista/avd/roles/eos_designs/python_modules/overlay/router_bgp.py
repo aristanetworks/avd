@@ -21,13 +21,6 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return the structured config for router_bgp
         """
-        if self._overlay_mpls is True:
-            # some logic
-            pass
-        if self._overlay_evpn is True:
-            # some logic
-            pass
-
         router_bgp = {}
 
         if self._overlay_routing_protocol == "ebgp":
@@ -43,6 +36,11 @@ class RouterBgpMixin(UtilsMixin):
             # address_family_rtc
             router_bgp["address_family_rtc"] = self._ebgp_address_family_rtc()
 
+            # address_family_vpn_ipv4
+            router_bgp["address_family_vpn_ipv4"] = self._ebgp_address_family_vpn_ipv4()
+
+            # address_family_vpn_ipv6
+            router_bgp["address_family_vpn_ipv6"] = self._ebgp_address_family_vpn_ipv6()
             # neighbors
             router_bgp["neighbors"] = self._ebgp_neighbors()
 
@@ -71,6 +69,13 @@ class RouterBgpMixin(UtilsMixin):
 
             # neighbors
             router_bgp["neighbors"] = self._ibgp_neighbors()
+
+        if self._overlay_dpath is True:
+            router_bgp["bgp"] = {
+                "bestpath": {
+                    "d_path": True,
+                }
+            }
 
         # Need to keep potentially empty dict for redistribute_routes
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
@@ -107,6 +112,18 @@ class RouterBgpMixin(UtilsMixin):
                 "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.evpn_overlay_core.structured_config"),
             }
 
+        if self._overlay_ipvpn_gateway is True:
+            peer_groups[self._peer_group_ipvpn_gateway_peers] = {
+                "type": "mpls",
+                "update_source": "Loopback0",
+                "local_as": get(self._hostvars, "switch.ipvpn_gateway.local_as"),
+                "bfd": True,
+                "password": get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.password"),
+                "send_community": "all",
+                "maximum_routes": get(self._hostvars, "switch.ipvpn_gateway.max_routes"),
+                "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.structured_config"),
+            }
+
         return peer_groups
 
     def _ebgp_address_family_ipv4(self) -> dict:
@@ -120,6 +137,9 @@ class RouterBgpMixin(UtilsMixin):
 
         if self._evpn_gateway_vxlan_l2 is True or self._evpn_gateway_vxlan_l3 is True:
             peer_groups[self._peer_group_evpn_overlay_core] = {"activate": False}
+
+        if self._overlay_ipvpn_gateway is True:
+            peer_groups[self._peer_group_ipvpn_gateway_peers] = {"activate": False}
 
         return {"peer_groups": peer_groups}
 
@@ -158,6 +178,9 @@ class RouterBgpMixin(UtilsMixin):
                     "import_match_failure_action": "discard",
                 }
 
+        if self._overlay_dpath is True:
+            address_family_evpn["domain_identifier"] = get(self._hostvars, "switch.ipvpn_gateway.evpn_domain_id", required=True)
+
         return address_family_evpn
 
     def _ebgp_address_family_rtc(self) -> dict | None:
@@ -188,6 +211,47 @@ class RouterBgpMixin(UtilsMixin):
 
         return address_family_rtc
 
+    def _ebgp_address_family_vpn_ipv4(self) -> dict | None:
+        if self._overlay_vpn_ipv4 is not True:
+            return None
+
+        address_family_vpn_ipv4 = {}
+        if self._overlay_ler is True or self._overlay_ipvpn_gateway is True:
+            address_family_vpn_ipv4["neighbor_default_encapsulation_mpls_next_hop_self"] = {"source_interface": "Loopback0"}
+
+        if self._overlay_ipvpn_gateway is True:
+            address_family_vpn_ipv4["peer_groups"] = {
+                self._peer_group_ipvpn_gateway_peers: {
+                    "activate": True,
+                }
+            }
+
+        if self._overlay_dpath is True:
+            address_family_vpn_ipv4["domain_identifier"] = get(self._hostvars, "switch.ipvpn_gateway.ipvpn_domain_id", required=True)
+
+        return address_family_vpn_ipv4
+
+    def _ebgp_address_family_vpn_ipv6(self) -> dict | None:
+        # TODO - refactor as it is exactly the same as vpn_ipv4
+        if self._overlay_vpn_ipv4 is not True:
+            return None
+
+        address_family_vpn_ipv6 = {}
+        if self._overlay_ler is True or self._overlay_ipvpn_gateway is True:
+            address_family_vpn_ipv6["neighbor_default_encapsulation_mpls_next_hop_self"] = {"source_interface": "Loopback0"}
+
+        if self._overlay_ipvpn_gateway is True:
+            address_family_vpn_ipv6["peer_groups"] = {
+                self._peer_group_ipvpn_gateway_peers: {
+                    "activate": True,
+                }
+            }
+
+        if self._overlay_dpath is True:
+            address_family_vpn_ipv6["domain_identifier"] = get(self._hostvars, "switch.ipvpn_gateway.ipvpn_domain_id", required=True)
+
+        return address_family_vpn_ipv6
+
     def _ebgp_neighbors(self) -> dict | None:
         """ """
         neighbors = {}
@@ -211,11 +275,18 @@ class RouterBgpMixin(UtilsMixin):
                 "remote_as": self._evpn_route_clients[route_client]["bgp_as"],
             }
 
-        for gw_remote_peers in natural_sort(self._evpn_gateway_remote_peers):
-            neighbors[self._evpn_gateway_remote_peers[gw_remote_peers]["ip_address"]] = {
+        for gw_remote_peer in natural_sort(self._evpn_gateway_remote_peers):
+            neighbors[self._evpn_gateway_remote_peers[gw_remote_peer]["ip_address"]] = {
                 "peer_group": self._peer_group_evpn_overlay_core,
-                "description": gw_remote_peers,
-                "remote_as": self._evpn_gateway_remote_peers[gw_remote_peers]["bgp_as"],
+                "description": gw_remote_peer,
+                "remote_as": self._evpn_gateway_remote_peers[gw_remote_peer]["bgp_as"],
+            }
+
+        for ipvpn_gw_peer in natural_sort(self._ipvpn_gateway_remote_peers):
+            neighbors[self._ipvpn_gateway_remote_peers[ipvpn_gw_peer]["ip_address"]] = {
+                "peer_group": self._peer_group_ipvpn_gateway_peers,
+                "description": ipvpn_gw_peer,
+                "remote_as": self._ipvpn_gateway_remote_peers[ipvpn_gw_peer]["bgp_as"],
             }
 
         if neighbors:
@@ -227,13 +298,13 @@ class RouterBgpMixin(UtilsMixin):
         """ """
         peer_groups = {}
 
-        # TODO adapt logic from latest PR
         if self._overlay_mpls is True:
             # MPLS OVERLAY peer group
             # TODO - for now Loopback0 is hardcoded as per original template
             peer_groups[self._peer_group_mpls_overlay_peers] = {
                 "type": "mpls",
                 "update_source": "Loopback0",
+                "local_as": get(self._hostvars, "switch.ipvpn_gateway.local_as"),
                 "remote_as": self._bgp_as,
                 "bfd": True,
                 "password": get(self._hostvars, "switch.bgp_peer_groups.mpls_overlay_peers.password"),
@@ -275,6 +346,18 @@ class RouterBgpMixin(UtilsMixin):
                 "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.rr_overlay_peers.structured_config"),
             }
 
+        if self._overlay_ipvpn_gateway is True:
+            peer_groups[self._peer_group_ipvpn_gateway_peers] = {
+                "type": "mpls",
+                "update_source": "Loopback0",
+                "local_as": get(self._hostvars, "switch.ipvpn_gateway.local_as"),
+                "bfd": True,
+                "password": get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.password"),
+                "send_community": "all",
+                "maximum_routes": get(self._hostvars, "switch.ipvpn_gateway.max_routes"),
+                "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.structured_config"),
+            }
+
         return peer_groups
 
     def _ibgp_address_family_ipv4(self) -> dict:
@@ -292,6 +375,9 @@ class RouterBgpMixin(UtilsMixin):
         if self._mpls_overlay_role == "server" or (self._evpn_role == "server" and get(self._hostvars, "overlay.evpn_mpls") is True):
             peer_groups[self._peer_group_rr_overlay_peers] = {"activate": False}
 
+        if self._overlay_ipvpn_gateway is True:
+            peer_groups[self._peer_group_ipvpn_gateway_peers] = {"activate": False}
+
         return {"peer_groups": peer_groups}
 
     def _ibgp_address_family_evpn(self) -> dict:
@@ -302,7 +388,7 @@ class RouterBgpMixin(UtilsMixin):
 
         if self._overlay_evpn_vxlan is True:
             overlay_peer_group_name = self._peer_group_evpn_overlay_peers
-        elif self._overlay_mpls is True:
+        elif self._overlay_evpn_mpls is True:
             overlay_peer_group_name = self._peer_group_mpls_overlay_peers
             address_family_evpn["neighbor_default"] = {"encapsulation": "mpls"}
             if get(self._hostvars, "switch.overlay.ler") is True:
@@ -338,6 +424,9 @@ class RouterBgpMixin(UtilsMixin):
                     "import_match_failure_action": "discard",
                 }
 
+        if self._overlay_dpath is True:
+            address_family_evpn["domain_identifier"] = get(self._hostvars, "switch.ipvpn_gateway.evpn_domain_id", required=True)
+
         return address_family_evpn
 
     def _ibgp_address_family_rtc(self) -> dict | None:
@@ -365,16 +454,24 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         address_family_vpn_ipv4 = {}
-        if self._overlay_ler is True:
+        if self._overlay_ler is True or self._overlay_ipvpn_gateway is True:
             address_family_vpn_ipv4["neighbor_default_encapsulation_mpls_next_hop_self"] = {"source_interface": "Loopback0"}
 
         peer_groups = {}
-        peer_groups[self._peer_group_mpls_overlay_peers] = {"activate": True}
+        if self._overlay_mpls is True:
+            peer_groups[self._peer_group_mpls_overlay_peers] = {"activate": True}
 
         if self._peer_group_rr_overlay_peers is not None and self._mpls_overlay_role == "server":
             peer_groups[self._peer_group_rr_overlay_peers] = {"activate": True}
 
-        address_family_vpn_ipv4["peer_groups"] = peer_groups
+        if self._overlay_ipvpn_gateway is True:
+            peer_groups[self._peer_group_ipvpn_gateway_peers] = {"activate": True}
+
+        if peer_groups:
+            address_family_vpn_ipv4["peer_groups"] = peer_groups
+
+        if self._overlay_dpath is True:
+            address_family_vpn_ipv4["domain_identifier"] = get(self._hostvars, "switch.ipvpn_gateway.ipvpn_domain_id", required=True)
 
         return address_family_vpn_ipv4
 
@@ -384,16 +481,24 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         address_family_vpn_ipv6 = {}
-        if self._overlay_ler is True:
+        if self._overlay_ler is True or self._overlay_ipvpn_gateway is True:
             address_family_vpn_ipv6["neighbor_default_encapsulation_mpls_next_hop_self"] = {"source_interface": "Loopback0"}
 
         peer_groups = {}
-        peer_groups[self._peer_group_mpls_overlay_peers] = {"activate": True}
+        if self._overlay_mpls is True:
+            peer_groups[self._peer_group_mpls_overlay_peers] = {"activate": True}
 
         if self._peer_group_rr_overlay_peers is not None and self._mpls_overlay_role == "server":
             peer_groups[self._peer_group_rr_overlay_peers] = {"activate": True}
 
-        address_family_vpn_ipv6["peer_groups"] = peer_groups
+        if self._overlay_ipvpn_gateway is True:
+            peer_groups[self._peer_group_ipvpn_gateway_peers] = {"activate": True}
+
+        if peer_groups:
+            address_family_vpn_ipv6["peer_groups"] = peer_groups
+
+        if self._overlay_dpath is True:
+            address_family_vpn_ipv6["domain_identifier"] = get(self._hostvars, "switch.ipvpn_gateway.ipvpn_domain_id", required=True)
 
         return address_family_vpn_ipv6
 
@@ -440,6 +545,13 @@ class RouterBgpMixin(UtilsMixin):
                     "peer_group": self._peer_group_evpn_overlay_peers,
                     "description": route_client,
                 }
+
+        for ipvpn_gw_peer in natural_sort(self._ipvpn_gateway_remote_peers):
+            neighbors[self._ipvpn_gateway_remote_peers[ipvpn_gw_peer]["ip_address"]] = {
+                "peer_group": self._peer_group_ipvpn_gateway_peers,
+                "description": ipvpn_gw_peer,
+                "remote_as": self._ipvpn_gateway_remote_peers[ipvpn_gw_peer]["bgp_as"],
+            }
 
         if neighbors:
             return neighbors

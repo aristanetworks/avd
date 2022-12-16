@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
@@ -155,6 +156,23 @@ class UtilsMixin:
         )
 
     @cached_property
+    def _ipvpn_gateway_remote_peers(self) -> dict:
+        if self._overlay_ipvpn_gateway is not True:
+            return {}
+
+        ipvpn_gateway_remote_peers = {}
+
+        for ipvpn_gw_peer_dict in natural_sort(get(self._hostvars, "switch.ipvpn_gateway.remote_peers", default=[]), "hostname"):
+            # These remote gw are outside of the inventory
+
+            ipvpn_gateway_remote_peers[ipvpn_gw_peer_dict["hostname"]] = {
+                "bgp_as": ipvpn_gw_peer_dict["bgp_as"],
+                "ip_address": ipvpn_gw_peer_dict["ip_address"],
+            }
+
+        return ipvpn_gateway_remote_peers
+
+    @cached_property
     def _mpls_overlay_role(self) -> str | None:
         return get(self._hostvars, "switch.mpls_overlay_role")
 
@@ -249,6 +267,10 @@ class UtilsMixin:
         return mpls_rr_peers
 
     @cached_property
+    def _overlay_dpath(self) -> bool:
+        return get(self._hostvars, "switch.overlay.dpath") is True
+
+    @cached_property
     def _overlay_evpn(self) -> bool:
         return get(self._hostvars, "switch.overlay.evpn") is True
 
@@ -261,12 +283,16 @@ class UtilsMixin:
         return get(self._hostvars, "switch.overlay.evpn_vxlan") is True
 
     @cached_property
+    def _overlay_ipvpn_gateway(self) -> bool:
+        return get(self._hostvars, "switch.overlay.ipvpn_gateway", required=True) is True
+
+    @cached_property
     def _overlay_ler(self) -> bool:
         return get(self._hostvars, "switch.overlay.ler", required=True) is True
 
     @cached_property
     def _overlay_mpls(self) -> bool:
-        return self._overlay_evpn_mpls is True or self._overlay_vpn_ipv4 is True or self._overlay_vpn_ipv6 is True
+        return (self._overlay_evpn_mpls is True or self._overlay_vpn_ipv4 is True or self._overlay_vpn_ipv6 is True) and self._overlay_evpn_vxlan is not True
 
     @cached_property
     def _overlay_routing_protocol(self) -> str | None:
@@ -291,6 +317,10 @@ class UtilsMixin:
     @cached_property
     def _peer_group_evpn_overlay_peers(self) -> str | None:
         return get(self._hostvars, "switch.bgp_peer_groups.evpn_overlay_peers.name")
+
+    @cached_property
+    def _peer_group_ipvpn_gateway_peers(self) -> str | None:
+        return get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.name")
 
     @cached_property
     def _peer_group_mpls_overlay_peers(self) -> str | None:
