@@ -80,15 +80,15 @@ port_channel_interfaces:
     description: RACK1_Po1
     type: switched
     shutdown: false
-    vlans: 10,20
     mode: trunk
+    vlans: 10,20
     mlag: 1
   Port-Channel3:
     description: RACK2_Po1
     type: switched
     shutdown: false
-    vlans: 10,30
     mode: trunk
+    vlans: 10,30
     mlag: 3
   Port-Channel5:
     description: FIREWALL
@@ -123,8 +123,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: leaf
     description: LEAF1_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -133,8 +133,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: leaf
     description: LEAF2_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -143,8 +143,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: leaf
     description: LEAF3_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 3
       mode: active
@@ -153,8 +153,8 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: leaf
     description: LEAF4_Ethernet2
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 3
       mode: active

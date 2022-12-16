@@ -57,7 +57,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | -  | - |
+| Management0 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -137,10 +137,10 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| admin | 15 | network-admin |
-| arista | 15 | network-admin |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
+| arista | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 
@@ -345,8 +345,8 @@ interface Ethernet48
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | POD1_Po1 | switched | trunk | 10,20 | - | - | - | - | 1 | - |
-| Port-Channel3 | POD2_Po1 | switched | trunk | 10,30 | - | - | - | - | 3 | - |
+| Port-Channel1 | RACK1_Po1 | switched | trunk | 10,20 | - | - | - | - | 1 | - |
+| Port-Channel3 | RACK2_Po1 | switched | trunk | 10,30 | - | - | - | - | 3 | - |
 | Port-Channel5 | FIREWALL | switched | trunk | 10,20,30 | - | - | - | - | 5 | - |
 | Port-Channel47 | MLAG_PEER_SPINE2_Po47 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
@@ -355,7 +355,7 @@ interface Ethernet48
 ```eos
 !
 interface Port-Channel1
-   description POD1_Po1
+   description RACK1_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 10,20
@@ -363,7 +363,7 @@ interface Port-Channel1
    mlag 1
 !
 interface Port-Channel3
-   description POD2_Po1
+   description RACK2_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 10,30
@@ -393,7 +393,7 @@ interface Port-Channel47
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 1500 | false |
+| Vlan4094 | MLAG_PEER | default | 1500 | False |
 
 #### IPv4
 
@@ -429,7 +429,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -445,7 +445,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes

@@ -57,7 +57,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | -  | - |
+| Management0 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -137,10 +137,10 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-| admin | 15 | network-admin |
-| arista | 15 | network-admin |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
+| arista | 15 | network-admin | False |
 
 ### Local Users Device Configuration
 
@@ -191,7 +191,7 @@ aaa authorization exec default local
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| POD2 | Vlan4094 | 192.168.0.4 | Port-Channel47 |
+| RACK2 | Vlan4094 | 192.168.0.4 | Port-Channel47 |
 
 Dual primary detection is disabled.
 
@@ -200,7 +200,7 @@ Dual primary detection is disabled.
 ```eos
 !
 mlag configuration
-   domain-id POD2
+   domain-id RACK2
    local-interface Vlan4094
    peer-address 192.168.0.4
    peer-link Port-Channel47
@@ -362,7 +362,7 @@ interface Port-Channel47
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 1500 | false |
+| Vlan4094 | MLAG_PEER | default | 1500 | False |
 
 #### IPv4
 
@@ -398,7 +398,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -414,7 +414,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 | MGMT | false |
 
 ## Static Routes
