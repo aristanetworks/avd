@@ -7,7 +7,7 @@
 {%     endif %}
 {% endif %}
     peer_groups:
-{% if switch.overlay.evpn_mpls %}
+{% if switch.overlay.evpn_mpls and overlay_data.mpls_overlay_peer_group is arista.avd.defined %}
       {{ overlay_data.mpls_overlay_peer_group.name }}:
 {% else %}
       {{ overlay_data.evpn_overlay_peer_group.name }}:
@@ -31,4 +31,7 @@
 {% if switch.overlay.vtep and evpn_import_pruning is arista.avd.defined(true) %}
     route:
       import_match_failure_action: discard
+{% endif %}
+{% if switch.overlay.dpath %}
+    domain_identifier: "{{ switch.ipvpn_gateway.evpn_domain_id }}"
 {% endif %}

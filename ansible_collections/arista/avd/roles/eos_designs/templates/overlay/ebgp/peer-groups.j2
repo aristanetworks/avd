@@ -26,3 +26,18 @@
       maximum_routes: 0
       struct_cfg: {{ switch.bgp_peer_groups.evpn_overlay_core.structured_config | arista.avd.default }}
 {% endif %}
+{% if switch.overlay.ipvpn_gateway %}
+    {{ switch.bgp_peer_groups.ipvpn_gateway_peers.name }}:
+      type: mpls
+      update_source: Loopback0
+{%     if switch.ipvpn_gateway.local_as is arista.avd.defined %}
+      local_as: "{{ switch.ipvpn_gateway.local_as }}"
+{%     endif %}
+      bfd: true
+{%     if switch.bgp_peer_groups.ipvpn_gateway_peers.password is arista.avd.defined %}
+      password: "{{ switch.bgp_peer_groups.ipvpn_gateway_peers.password }}"
+{%     endif %}
+      send_community: all
+      maximum_routes: {{ switch.ipvpn_gateway.max_routes }}
+      struct_cfg: {{ switch.bgp_peer_groups.ipvpn_gateway_peers.structured_config | arista.avd.default }}
+{% endif %}
