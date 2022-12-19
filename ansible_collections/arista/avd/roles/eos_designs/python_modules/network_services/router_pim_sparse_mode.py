@@ -26,7 +26,7 @@ class RouterPimSparseModeMixin(UtilsMixin):
         vrfs = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
-                if vrf_rps := get(vrf, "_l3_multicast_rp_addresses"):
+                if vrf_rps := get(vrf, "_pim_rp_addresses"):
                     vrfs.append(
                         {
                             "name": vrf["name"],

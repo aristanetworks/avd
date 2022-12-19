@@ -154,7 +154,7 @@ mac_address_table:
     #     - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
     #     - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
     #     - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
-    l3_multicast:
+    evpn_l3_multicast:
       enabled: < true | false >
       evpn_underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask > # Required
       evpn_underlay_l3_multicast_group_ipv4_pool_offset: < int > # Optional
@@ -163,11 +163,11 @@ mac_address_table:
         # The first group of settings where the device's hostname is present in the 'nodes' list will be used.
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
           transit: < true | false >                    # Enable EVPN PEG transit mode
-      rp_addresses:
-        # For each group of nodes, allow configuration of RP Addresses & associated groups
-        - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
-          nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
-          groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
+    pim_rp_addresses:
+      # For each group of nodes, allow configuration of RP Addresses & associated groups
+      - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+        nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
+        groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
 
     # Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
     # When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
@@ -257,16 +257,16 @@ mac_address_table:
 
         # Explicitly enable or disable l3_multicast to override setting of tenants.<tenant>.l3_multicast.enabled.
         # Allow override of tenants.<tenant>.l3_multicast.node_settings
-        l3_multicast:
+        evpn_l3_multicast:
           enabled: < true | false >
           evpn_peg:
             # For each group of nodes, allow configuration of EVPN PEG features | Optional
             - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
               transit: < true | false | default false >                    # Enable EVPN PEG transit mode
-          rp_addresses:                                                    # For each group of nodes, allow configuration of RP Addresses & associated groups
-            - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
-              rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
-              groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
+        rp_addresses:                                                    # For each group of nodes, allow configuration of RP Addresses & associated groups
+          - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+            nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
+            groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >

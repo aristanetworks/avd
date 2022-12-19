@@ -220,10 +220,9 @@ tenants:
   # Tenant_C is for testing of EVPN L3/OISM only
   Tenant_C:
     mac_vrf_vni_base: 10000
-    l3_multicast:
+    evpn_l3_multicast:
       # Enabled =
       #  - Enable multicast-routing on VRF
-      #  - If rp_addresses is defined, create router pim sparse-mode
       #  - If node is a vtep and evpn enabled, enable EVPN multicast
       enabled: true
       evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.32.0/20
@@ -297,12 +296,12 @@ tenants:
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.2.24.1/24
-            l3_multicast:
+            evpn_l3_multicast:
               enabled: false
 
       TEN_C_L3_MULTICAST_DISABLED_330_331:
         description: "L3_MULTICAST_DISABLED_330_331"
-        l3_multicast:
+        evpn_l3_multicast:
           enabled: false
         vtep_diagnostic:
           loopback: 33
@@ -326,7 +325,7 @@ tenants:
   # Tenant_D is for testing of EVPN L3/OISM when disabled at the tenant level only
   Tenant_D:
     mac_vrf_vni_base: 10000
-    l3_multicast:
+    evpn_l3_multicast:
       enabled: false
       evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.64.0/20
     vrfs:
@@ -336,7 +335,7 @@ tenants:
         vtep_diagnostic:
           loopback: 41
           loopback_ip_range: 10.255.41.0/24
-        l3_multicast:
+        evpn_l3_multicast:
           enabled: true
         vrf_vni: 41
         svis:
@@ -357,7 +356,7 @@ tenants:
             name: "L3_MULTICAST_DISABLED_141"
             tags: ['test_l3']
             enabled: true
-            l3_multicast:
+            evpn_l3_multicast:
               enabled: false
             ip_address_virtual: 10.1.15.1/24
 
@@ -385,10 +384,9 @@ tenants:
   # Tenant_E is for testing of EVPN L3/OISM with PEG/Transit only
   Tenant_E:
     mac_vrf_vni_base: 10000
-    l3_multicast:
+    evpn_l3_multicast:
       # Enabled =
       #  - Enable multicast-routing on VRF
-      #  - If rp_addresses is defined, create router pim sparse-mode
       #  - If node is a vtep and evpn enabled, enable EVPN multicast
       enabled: true
       evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.96.0/20
@@ -398,23 +396,23 @@ tenants:
         - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
           transit: false
 
-      rp_addresses:
-        - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
-          rps:
-            - 10.1.51.129
-            - 10.1.52.129
-          groups:
-            - 232.0.104.0/21
-            - 232.0.96.0/21
-        - rps:
-            - 10.1.50.100
-          groups:
-            - 232.0.112.0/21
-
-        - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
-          rps:
-            - 10.1.51.130
-            - 10.1.52.130
+    # If pim_rp_addresses is defined and evpn_l3_multicast is enabled above create router pim sparse-mode
+    pim_rp_addresses:
+      - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+        rps:
+          - 10.1.51.129
+          - 10.1.52.129
+        groups:
+          - 232.0.104.0/21
+          - 232.0.96.0/21
+      - rps:
+          - 10.1.50.100
+        groups:
+          - 232.0.112.0/21
+      - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+        rps:
+          - 10.1.51.130
+          - 10.1.52.130
 
     vrfs:
       # This VRF inherits from Tenant
@@ -464,16 +462,16 @@ tenants:
           loopback: 55
           loopback_ip_range: 10.255.55.0/24
 
-        l3_multicast:
+        evpn_l3_multicast:
           enabled: true
-          # Test no 'nodes' key in rp_addresses (applies to all devices)
-          rp_addresses:
-            - rps:
-                - 10.20.20.20
-              groups:
-                - 232.0.0.0/21
-            - rps:
-                - 10.40.40.40
+        # Test no 'nodes' key in rp_addresses (applies to all devices)
+        pim_rp_addresses:
+          - rps:
+              - 10.20.20.20
+            groups:
+              - 232.0.0.0/21
+          - rps:
+              - 10.40.40.40
         vrf_vni: 55
         svis:
           550:
@@ -496,7 +494,7 @@ tenants:
         vtep_diagnostic:
           loopback: 52
           loopback_ip_range: 10.255.52.0/24
-        l3_multicast:
+        evpn_l3_multicast:
           enabled: true
           # Test transit mode
           evpn_peg:
@@ -504,13 +502,13 @@ tenants:
               transit: true
             - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
               transit: true
-          rp_addresses:
-            - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
-              rps:
-                - 10.30.30.30
-            - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
-              rps:
-                - 10.60.60.60
+        pim_rp_addresses:
+          - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            rps:
+              - 10.30.30.30
+          - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            rps:
+              - 10.60.60.60
         vrf_vni: 52
         svis:
           250:
@@ -539,18 +537,18 @@ tenants:
         vtep_diagnostic:
           loopback: 60
           loopback_ip_range: 10.255.60.0/24
-        l3_multicast:
+        evpn_l3_multicast:
           enabled: true
           # Test transit mode
           evpn_peg:
             - transit: true
-          rp_addresses:
-            - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
-              rps:
-                - 10.30.30.30
-            - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
-              rps:
-                - 10.60.60.60
+        pim_rp_addresses:
+          - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            rps:
+              - 10.30.30.30
+          - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            rps:
+              - 10.60.60.60
         vrf_vni: 60
         svis:
           260:

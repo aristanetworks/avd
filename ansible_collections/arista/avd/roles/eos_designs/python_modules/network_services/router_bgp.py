@@ -161,7 +161,7 @@ class RouterBgpMixin(UtilsMixin):
                     "redistribute_routes": ["connected"],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
-                    "evpn_multicast": get(vrf, "_l3_multicast_enabled"),
+                    "evpn_multicast": get(vrf, "_evpn_l3_multicast_enabled"),
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
@@ -215,7 +215,7 @@ class RouterBgpMixin(UtilsMixin):
                 if address_families:
                     bgp_vrf["address_families"] = address_families
 
-                if (evpn_multicast_transit_mode := get(vrf, "_l3_multicast_evpn_peg_transit")) is True:
+                if (evpn_multicast_transit_mode := get(vrf, "_evpn_l3_multicast_evpn_peg_transit")) is True:
                     bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}
 
                 # Strip None values from vlan before returning

@@ -67,7 +67,7 @@ class VlanInterfacesMixin(UtilsMixin):
             vlan_interface_config["ip_address_virtual_secondaries"] = svi.get("ip_address_virtual_secondaries")
 
         pim_config_ipv4 = {}
-        if default(get(svi, "l3_multicast.enabled"), get(vrf, "_l3_multicast_enabled")) is True:
+        if default(get(svi, "evpn_l3_multicast.enabled"), get(vrf, "_evpn_l3_multicast_enabled")) is True:
             if self._mlag:
                 pim_config_ipv4["sparse_mode"] = True
             else:
