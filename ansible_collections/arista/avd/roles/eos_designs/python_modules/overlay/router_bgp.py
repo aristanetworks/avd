@@ -99,7 +99,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups[self._peer_group_rr_overlay_peers] = self._generate_base_peer_group("mpls", "rr_overlay_peers")
                 peer_groups[self._peer_group_rr_overlay_peers]["remote_as"] = self._bgp_as
 
-        # same for ebgp and ibgp - TODO - check
+        # same for ebgp and ibgp
         if self._overlay_ipvpn_gateway is True:
             peer_groups[self._peer_group_ipvpn_gateway_peers] = self._generate_base_peer_group("mpls", "ipvpn_gateway_peers")
 
@@ -297,48 +297,48 @@ class RouterBgpMixin(UtilsMixin):
             for route_server, data in natural_sort(self._evpn_route_servers.items()):
                 neighbor = self._create_neighbor(route_server, self._peer_group_evpn_overlay_peers, remote_as=data["bgp_as"])
                 if self._evpn_prevent_readvertise_to_server is True:
-                    neighbor["route_map_out"] = f"RM-EVPN-FILTER-AS{self._evpn_route_servers[route_server]['bgp_as']}"
-                neighbors.update({data["ip_address"]: neighbor})
+                    neighbor["route_map_out"] = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
+                neighbors[data["ip_address"]] = neighbor
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
                 neighbor = self._create_neighbor(route_client, self._peer_group_evpn_overlay_peers, remote_as=data["bgp_as"])
-                neighbors.update({data["ip_address"]: neighbor})
+                neighbors[data["ip_address"]] = neighbor
 
             for gw_remote_peer, data in natural_sort(self._evpn_gateway_remote_peers.items()):
                 neighbor = self._create_neighbor(gw_remote_peer, self._peer_group_evpn_overlay_core, remote_as=data["bgp_as"])
-                neighbors.update({data["ip_address"]: neighbor})
+                neighbors[data["ip_address"]] = neighbor
 
         if self._overlay_routing_protocol == "ibgp":
             if self._overlay_mpls is True:
                 for route_reflector, data in natural_sort(self._mpls_route_reflectors.items()):
                     neighbor = self._create_neighbor(route_reflector, self._peer_group_mpls_overlay_peers)
-                    neighbors.update({data["ip_address"]: neighbor})
+                    neighbors[data["ip_address"]] = neighbor
 
                 for route_client, data in natural_sort(self._mpls_route_clients.items()):
                     neighbor = self._create_neighbor(route_client, self._peer_group_mpls_overlay_peers)
-                    neighbors.update({data["ip_address"]: neighbor})
+                    neighbors[data["ip_address"]] = neighbor
 
                 for mesh_pe, data in natural_sort(self._mpls_mesh_pe.items()):
                     neighbor = self._create_neighbor(mesh_pe, self._peer_group_mpls_overlay_peers)
-                    neighbors.update({data["ip_address"]: neighbor})
+                    neighbors[data["ip_address"]] = neighbor
 
                 if self._is_mpls_server is True:
                     for rr_peer, data in natural_sort(self._mpls_rr_peers.items()):
                         neighbor = self._create_neighbor(rr_peer, self._peer_group_rr_overlay_peers)
-                        neighbors.update({data["ip_address"]: neighbor})
+                        neighbors[data["ip_address"]] = neighbor
 
             if self._overlay_evpn_vxlan is True:
                 for route_server, data in natural_sort(self._evpn_route_servers.items()):
                     neighbor = self._create_neighbor(route_server, self._peer_group_evpn_overlay_peers)
-                    neighbors.update({data["ip_address"]: neighbor})
+                    neighbors[data["ip_address"]] = neighbor
 
                 for route_client, data in natural_sort(self._evpn_route_clients.items()):
                     neighbor = self._create_neighbor(route_client, self._peer_group_evpn_overlay_peers)
-                    neighbors.update({data["ip_address"]: neighbor})
+                    neighbors[data["ip_address"]] = neighbor
 
         for ipvpn_gw_peer, data in natural_sort(self._ipvpn_gateway_remote_peers.items()):
             neighbor = self._create_neighbor(ipvpn_gw_peer, self._peer_group_ipvpn_gateway_peers, remote_as=data["bgp_as"])
-            neighbors.update({data["ip_address"]: neighbor})
+            neighbors[data["ip_address"]] = neighbor
 
         if neighbors:
             return neighbors
