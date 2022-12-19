@@ -255,8 +255,8 @@ mac_address_table:
             - < hostname1 >
             - < hostname2 >
 
-        # Explicitly enable or disable l3_multicast to override setting of tenants.<tenant>.l3_multicast.enabled.
-        # Allow override of tenants.<tenant>.l3_multicast.node_settings
+        # Explicitly enable or disable evpn_l3_multicast to override setting of tenants.<tenant>.evpn_l3_multicast.enabled.
+        # Allow override of tenants.<tenant>.evpn_l3_multicast.node_settings
         evpn_l3_multicast:
           enabled: < true | false >
           evpn_peg:
@@ -315,9 +315,9 @@ mac_address_table:
             evpn_l2_multicast:
               enabled: < true | false >
 
-            # Explicitly enable or disable l3_multicast to override setting of tenants.<tenant>.l3_multicast.enabled and
-            # tenants.<tenant>.vrfs.<vrf>.l3_multicast.enabled
-            l3_multicast:
+            # Explicitly enable or disable evpn_l3_multicast to override setting of tenants <tenant>.evpn_l3_multicast.enabled and
+            # tenants.<tenant>.vrfs.<vrf>.evpn_l3_multicast.enabled
+            evpn_l3_multicast:
               enabled: < true | false >
 
             # Enable IGMP Snooping
@@ -460,7 +460,7 @@ mac_address_table:
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
 
-            # Enable PIM sparse-mode on the interface; requires "l3_multicast" to be enabled on the VRF/Tenant
+            # Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant
             # Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
             # At least one RP address must be configured for EVPN PEG to be configured.
             pim:
