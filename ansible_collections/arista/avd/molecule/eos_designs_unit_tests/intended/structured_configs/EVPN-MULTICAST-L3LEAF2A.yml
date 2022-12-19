@@ -1,5 +1,5 @@
 router_bgp:
-  as: '65102'
+  as: '65103'
   router_id: 192.168.255.5
   bgp_defaults:
   - maximum-paths 4 ecmp 4

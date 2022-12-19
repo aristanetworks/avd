@@ -13,6 +13,7 @@ l3leaf:
     virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
+    bgp_as: 65101-65105
   node_groups:
   # Tests:
   #  - MLAG pair
@@ -23,7 +24,6 @@ l3leaf:
   # - Multi vtep configuration
   # - proper configuration of vlan-aware bundles (igmp redistribution)
     EVPN_MULTICAST_L3LEAF1:
-      bgp_as: 65101
       nodes:
         EVPN-MULTICAST-L3LEAF1A:
           id: 1
@@ -43,7 +43,6 @@ l3leaf:
     # - proper configuration of bgp vlans (igmp redistribution)
     # - platform trident * configuration
     EVPN-MULTICAST-L3LEAF2:
-      bgp_as: 65102
       platform: "7050X3"
       nodes:
         EVPN-MULTICAST-L3LEAF2A:
@@ -51,14 +50,13 @@ l3leaf:
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3 ]
     EVPN_MULTICAST_L3LEAF3:
-      bgp_as: 65103-65104
       mlag: false
       nodes:
         EVPN-MULTICAST-L3LEAF3A:
-          id: 1
+          id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [ Ethernet4 ]
         EVPN-MULTICAST-L3LEAF3B:
-          id: 2
+          id: 5
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [ Ethernet5 ]

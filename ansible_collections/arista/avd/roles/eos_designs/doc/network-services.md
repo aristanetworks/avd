@@ -161,7 +161,6 @@ mac_address_table:
       evpn_peg:
         # For each group of nodes, allow configuration of EVPN PEG options | Optional
         # The first group of settings where the device's hostname is present in the 'nodes' list will be used.
-        # At least one RP address must be configured for EVPN PEG to be configured.
         - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
           transit: < true | false >                    # Enable EVPN PEG transit mode
       rp_addresses:
@@ -262,7 +261,6 @@ mac_address_table:
           enabled: < true | false >
           evpn_peg:
             # For each group of nodes, allow configuration of EVPN PEG features | Optional
-            # At least one RP address must be configured for EVPN PEG to be configured.
             - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
               transit: < true | false | default false >                    # Enable EVPN PEG transit mode
           rp_addresses:                                                    # For each group of nodes, allow configuration of RP Addresses & associated groups
@@ -464,6 +462,7 @@ mac_address_table:
 
             # Enable PIM sparse-mode on the interface; requires "l3_multicast" to be enabled on the VRF/Tenant
             # Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
+            # At least one RP address must be configured for EVPN PEG to be configured.
             pim:
               enabled: true
 
