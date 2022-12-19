@@ -3,7 +3,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .router_bgp import RouterBgpMixin
-from .router_isis import RouterIsisMixin
 from .router_ospf import RouterOspfMixin
 
 
@@ -13,7 +12,6 @@ class AvdStructuredConfig(
     PortChannelInterfacesMixin,
     RouterBgpMixin,
     RouterOspfMixin,
-    RouterIsisMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "yaml_templates_to_facts" to render parts of the structured config.

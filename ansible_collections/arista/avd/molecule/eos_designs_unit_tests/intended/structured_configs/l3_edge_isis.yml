@@ -31,10 +31,6 @@ router_isis:
   - ipv4 unicast
   isis_af_defaults:
   - maximum-paths 4
-  no_passive_interfaces:
-  - ethernet2
-  - ethernet3
-  - ethernet4
 ethernet_interfaces:
   ethernet1:
     peer: peer1
