@@ -59,7 +59,7 @@ leaf:
       uplink_interfaces: [Ethernet51]
       mlag_interfaces: [Ethernet53, Ethernet54]
       filter:
-        tags: [ 110, 120, 130 ]
+        tags: [ "110", "120", "130" ]
       nodes:
         LEAF1A:
           id: 3
@@ -74,7 +74,7 @@ leaf:
     IDF2:
       mlag: false
       filter:
-        tags: [ 210, 220, 230 ]
+        tags: [ "210", "220", "230" ]
       nodes:
         LEAF2A:
           id: 5
@@ -88,7 +88,7 @@ leaf:
       uplink_switches: [SPINE1, SPINE2]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
       filter:
-        tags: [ 310, 320, 330 ]
+        tags: [ "310", "320", "330" ]
       nodes:
         LEAF3A:
           id: 6
