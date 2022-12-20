@@ -99,7 +99,7 @@ vlan_interfaces:
   Vlan110:
     tenant: MY_FABRIC
     tags:
-    - 110
+    - '110'
     description: IDF1-Data
     shutdown: false
     ip_address: 10.1.10.2/23
@@ -108,7 +108,7 @@ vlan_interfaces:
   Vlan120:
     tenant: MY_FABRIC
     tags:
-    - 120
+    - '120'
     description: IDF1-Voice
     shutdown: false
     ip_address: 10.1.20.2/23
@@ -117,7 +117,7 @@ vlan_interfaces:
   Vlan130:
     tenant: MY_FABRIC
     tags:
-    - 130
+    - '130'
     description: IDF1-Guest
     shutdown: false
     ip_address: 10.1.30.2/23
@@ -126,7 +126,7 @@ vlan_interfaces:
   Vlan210:
     tenant: MY_FABRIC
     tags:
-    - 210
+    - '210'
     description: IDF2-Data
     shutdown: false
     ip_address: 10.2.10.2/23
@@ -135,7 +135,7 @@ vlan_interfaces:
   Vlan220:
     tenant: MY_FABRIC
     tags:
-    - 220
+    - '220'
     description: IDF2-Voice
     shutdown: false
     ip_address: 10.2.20.2/23
@@ -144,7 +144,7 @@ vlan_interfaces:
   Vlan230:
     tenant: MY_FABRIC
     tags:
-    - 230
+    - '230'
     description: IDF2-Guest
     shutdown: false
     ip_address: 10.2.30.2/23
@@ -153,7 +153,7 @@ vlan_interfaces:
   Vlan310:
     tenant: MY_FABRIC
     tags:
-    - 310
+    - '310'
     description: IDF3-Data
     shutdown: false
     ip_address: 10.3.10.2/23
@@ -162,7 +162,7 @@ vlan_interfaces:
   Vlan320:
     tenant: MY_FABRIC
     tags:
-    - 320
+    - '320'
     description: IDF3-Voice
     shutdown: false
     ip_address: 10.3.20.2/23
@@ -171,7 +171,7 @@ vlan_interfaces:
   Vlan330:
     tenant: MY_FABRIC
     tags:
-    - 330
+    - '330'
     description: IDF3-Guest
     shutdown: false
     ip_address: 10.3.30.2/23
