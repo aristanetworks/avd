@@ -64,11 +64,11 @@ l3_edge:
       profile: < p2p_profile_name >
 
       # IS-IS parameters
-      isis_hello_padding: false
-      isis_metric: 60
-      isis_circuit_type: level-2
-      isis_authentication_mode: md5
-      isis_authentication_key: $1c$sTNAlR6rKSw=
+      isis_hello_padding: < true | false >
+      isis_metric: < integer >
+      isis_circuit_type: < level-1-2 | level-1 | level-2 >
+      isis_authentication_mode: < text | md5 >
+      isis_authentication_key: < type-7 encrypted password >
 
       # MPLS Parameters
       mpls_ip: < true | false | default -> true if switch.mpls_lsr is true >
