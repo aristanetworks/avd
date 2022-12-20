@@ -17,6 +17,8 @@ l3_edge:
       ptp_enable: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
+      raw_eos_cli: |
+        ! TEST RAW_EOS_CLI
 
   p2p_links_ip_pools:
     pool1: 192.168.0.0/24
@@ -28,12 +30,13 @@ l3_edge:
       id: 1
       profile: profile1
 
-      # P2P link with underlay routing and IP set manually.
+      # P2P link with underlay routing and IP set manually, and ipv6_enabled.
     - nodes: [l3_edge_bgp, peer2]
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       as: [65000, 65002]
       include_in_underlay_protocol: true
+      ipv6_enable: true
 
       # P2P link with underlay routing and IP set as subnet.
     - nodes: [l3_edge_bgp, peer3]
@@ -48,4 +51,27 @@ l3_edge:
       ip_pool: pool1
       id: 4
       as: [65000, 65004]
+      include_in_underlay_protocol: true
+
+    # P2P link with Port-Channel with underlay routing and and IP set manually.
+    - nodes: [ l3_edge_bgp, peer5 ]
+      ip: [192.168.0.8/31, 192.168.0.9/31]
+      as: [65000, 65005]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          l3_edge_bgp: [ Ethernet5, Ethernet6 ]
+          peer5: [ Ethernet5, Ethernet6 ]
+      include_in_underlay_protocol: true
+
+    # P2P link with Port-Channel with underlay routing and IP set via ip_pool and id.
+    - nodes: [ l3_edge_bgp, peer6 ]
+      ip_pool: pool1
+      id: 6
+      as: [65000, 65006]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          l3_edge_bgp: [ Ethernet7, Ethernet8 ]
+          peer6: [ Ethernet7, Ethernet8 ]
       include_in_underlay_protocol: true

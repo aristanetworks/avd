@@ -28,6 +28,14 @@ router_bgp:
       remote_as: '65004'
       description: peer4
       peer_group: IPv4-UNDERLAY-PEERS
+    192.168.0.9:
+      remote_as: '65005'
+      description: peer5
+      peer_group: IPv4-UNDERLAY-PEERS
+    192.168.0.11:
+      remote_as: '65006'
+      description: peer6
+      peer_group: IPv4-UNDERLAY-PEERS
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -71,6 +79,9 @@ ethernet_interfaces:
     shutdown: false
     mtu: 2000
     service_profile: TEST-QOS-PROFILE
+    eos_cli: '! TEST RAW_EOS_CLI
+
+      '
     ip_address: 192.168.0.0/31
     mac_security:
       profile: TEST-MACSEC-PROFILE
@@ -86,6 +97,7 @@ ethernet_interfaces:
     shutdown: false
     mtu: 9000
     ip_address: 192.168.0.2/31
+    ipv6_enable: true
   ethernet3:
     peer: peer3
     peer_interface: ethernet3
@@ -104,3 +116,58 @@ ethernet_interfaces:
     shutdown: false
     mtu: 9000
     ip_address: 192.168.0.6/31
+  Ethernet5:
+    peer: peer5
+    peer_interface: Port-Channel5
+    peer_type: other
+    description: P2P_LINK_TO_peer5_Port-Channel5
+    shutdown: false
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet6:
+    peer: peer5
+    peer_interface: Port-Channel5
+    peer_type: other
+    description: P2P_LINK_TO_peer5_Port-Channel5
+    shutdown: false
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet7:
+    peer: peer6
+    peer_interface: Port-Channel7
+    peer_type: other
+    description: P2P_LINK_TO_peer6_Port-Channel7
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet8:
+    peer: peer6
+    peer_interface: Port-Channel7
+    peer_type: other
+    description: P2P_LINK_TO_peer6_Port-Channel7
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+port_channel_interfaces:
+  Port-Channel5:
+    peer: peer5
+    peer_interface: Port-Channel5
+    peer_type: other
+    description: P2P_LINK_TO_peer5_Port-Channel5
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ip_address: 192.168.0.8/31
+  Port-Channel7:
+    peer: peer6
+    peer_interface: Port-Channel7
+    peer_type: other
+    description: P2P_LINK_TO_peer6_Port-Channel7
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ip_address: 192.168.0.10/31

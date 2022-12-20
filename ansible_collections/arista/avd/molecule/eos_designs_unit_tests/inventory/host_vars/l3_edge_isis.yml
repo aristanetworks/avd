@@ -38,6 +38,11 @@ l3_edge:
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true
+      isis_hello_padding: false
+      isis_metric: 60
+      isis_circuit_type: level-2
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
 
       # P2P link with underlay routing and IP set as subnet.
     - nodes: [l3_edge_isis, peer3]
