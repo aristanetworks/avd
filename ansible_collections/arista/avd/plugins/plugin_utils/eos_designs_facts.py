@@ -1843,7 +1843,7 @@ class EosDesignsFacts(AvdFacts):
         )
 
     @cached_property
-    def overlay(self):
+    def overlay(self) -> dict:
         """
         Returns a dictionary of overlay parameters to configure on the node.
         """
@@ -1872,7 +1872,7 @@ class EosDesignsFacts(AvdFacts):
         }
 
     @cached_property
-    def ipvpn_gateway(self):
+    def ipvpn_gateway(self) -> dict | None:
         """
         Returns a dictionary of ipvpn interworking gateway parameters to configure on the node.
         """
