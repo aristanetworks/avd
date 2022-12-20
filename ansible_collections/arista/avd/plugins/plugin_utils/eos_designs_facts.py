@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import ipaddress
 import re
 from functools import cached_property
