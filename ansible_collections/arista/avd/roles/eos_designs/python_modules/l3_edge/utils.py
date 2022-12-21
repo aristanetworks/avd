@@ -25,16 +25,20 @@ class UtilsMixin:
     _avd_interface_descriptions: AvdInterfaceDescriptions
 
     @cached_property
+    def _l3_edge(self) -> list:
+        return get(self._hostvars, "l3_edge")
+
+    @cached_property
     def _p2p_links_profiles(self) -> list:
-        return get(self._hostvars, "core_interfaces.p2p_links_profiles", default=[])
+        return convert_dicts(get(self._hostvars, "l3_edge.p2p_links_profiles", default=[]), "name")
 
     @cached_property
     def _p2p_links_ip_pools(self) -> list:
-        return get(self._hostvars, "core_interfaces.p2p_links_ip_pools", default=[])
+        return convert_dicts(get(self._hostvars, "l3_edge.p2p_links_ip_pools", default=[]), primary_key="name", secondary_key="ipv4_pool")
 
     @cached_property
     def _p2p_links(self) -> list:
-        return get(self._hostvars, "core_interfaces.p2p_links", default=[])
+        return get(self._hostvars, "l3_edge.p2p_links", default=[])
 
     @cached_property
     def _hostname(self) -> str:
@@ -159,6 +163,7 @@ class UtilsMixin:
         elif "ip_pool" not in p2p_link or "id" not in p2p_link or not self._p2p_links_ip_pools:
             # Subnet not set and not possible to resolve from pool. Returning original
             return p2p_link
+
         else:
             # Resolving subnet from pool
             ip_pool = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={}).get("ipv4_pool")
@@ -208,8 +213,8 @@ class UtilsMixin:
             "peer_type": peer_type,
             "ip": ip[index],
             "peer_ip": ip[peer_index],
-            "bgp_as": str(bgp_as[index]),
-            "peer_bgp_as": str(bgp_as[peer_index]),
+            "bgp_as": str(bgp_as[index]) if bgp_as[index] is not None else None,
+            "peer_bgp_as": str(bgp_as[peer_index]) if bgp_as[peer_index] is not None else None,
         }
 
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
@@ -222,7 +227,7 @@ class UtilsMixin:
                 "node",
                 peer,
                 required=True,
-                var_name=f"{peer} under core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces",
+                var_name=f"{peer} under l3_edge.p2p_links.[].port_channel.nodes_child_interfaces",
             )["interfaces"]
             id = int("".join(re.findall(r"\d", member_interfaces[0])))
             peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
@@ -254,7 +259,7 @@ class UtilsMixin:
             )
             return data
 
-        raise AristaAvdMissingVariableError("core_interfaces.p2p_links must have either 'interfaces' or 'port_channel' with correct members set.")
+        raise AristaAvdMissingVariableError("l3_edge.p2p_links must have either 'interfaces' or 'port_channel' with correct members set.")
 
     def _get_common_interface_cfg(self, p2p_link: dict) -> dict:
         """
@@ -274,14 +279,14 @@ class UtilsMixin:
             "type": "routed",
             "shutdown": False,
             "mtu": p2p_link.get("mtu", self._p2p_uplinks_mtu),
-            "service_profile": p2p_link.get("qos_profile", self._p2p_uplinks_qos_profile),
+            # TODO: Set p2p_uplinks_qos_profile as default like it is in core_interfaces.
+            "service_profile": p2p_link.get("qos_profile"),
             "eos_cli": p2p_link.get("raw_eos_cli"),
         }
-
         if (ip := get(p2p_link, "ip")) is not None:
             interface_cfg["ip_address"] = ip[index]
 
-        if p2p_link.get("include_in_underlay_protocol", True) is True:
+        if p2p_link.get("include_in_underlay_protocol") is True:
             if self._underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
@@ -299,8 +304,9 @@ class UtilsMixin:
                         "isis_enable": self._isis_instance_name,
                         "isis_metric": default(p2p_link.get("isis_metric"), self._isis_default_metric, 50),
                         "isis_network_point_to_point": (p2p_link.get("isis_network_type", "point-to-point") == "point-to-point"),
-                        "isis_hello_padding": p2p_link.get("isis_hello_padding", True),
-                        "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self._isis_default_circuit_type, "level-2"),
+                        # TODO: Update defaults below to have same as core_interfaces - or vice versa
+                        "isis_hello_padding": p2p_link.get("isis_hello_padding"),
+                        "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self._isis_default_circuit_type),
                         "isis_authentication_mode": p2p_link.get("isis_authentication_mode"),
                         "isis_authentication_key": p2p_link.get("isis_authentication_key"),
                     }
@@ -313,7 +319,7 @@ class UtilsMixin:
 
         if self._mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
-            if p2p_link.get("include_in_underlay_protocol", True) is True and self._underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
+            if p2p_link.get("include_in_underlay_protocol") is True and self._underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
                 interface_cfg["mpls"].update(
                     {
                         "ldp": {
@@ -331,6 +337,7 @@ class UtilsMixin:
         Covers config that is only applicable to ethernet interfaces.
         This config will only be used on both main interfaces and port-channel members.
         """
+
         ethernet_cfg = {"speed": p2p_link.get("speed")}
 
         if p2p_link.get("ptp_enable") is not True:

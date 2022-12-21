@@ -60,7 +60,7 @@ In a Campus network, it is common to refer to the location of the switches as **
 - MDF
   - 2 Spine nodes
 - IDFs
-  - IDF1 supporting 192 users with a 2 leafs (2RU - 96 ports each)
+  - IDF1 supporting 96 users with a 2 leafs (1RU - 48 ports each)
   - IDF2 supporting 240 users with a Modular 5 slot chassis (48 ports per module)
   - IDF3 supporting 480 users with 5 leafs (2RU - 96 ports each)
 

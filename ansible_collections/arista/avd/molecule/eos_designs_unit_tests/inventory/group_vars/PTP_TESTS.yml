@@ -5,21 +5,29 @@ fabric_name: PTP_TESTS
 
 mgmt_gateway: 192.168.0.1
 
-# P2P links between leaf switches, connecting to the PTP Grandmaster.
+# P2P links between spine switches, connecting to the PTP Grandmaster.
 # Note that the config below will result in interfaces being configured as "no switchport", without an IP address.
 # This makes it possible to only forward PTP packets and nothing more.
 core_interfaces:
   p2p_links:
-    - id: 1
-      nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet6, Ethernet6 ]
       ptp_enable: true
       include_in_underlay_protocol: false
-    - id: 2
-      nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet7, Ethernet7 ]
       ptp_enable: true
       include_in_underlay_protocol: false
+
+# Testing the same as above with l3_edge
+l3_edge:
+  p2p_links:
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet8, Ethernet8 ]
+      ptp_enable: true
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      ptp_enable: true
 
 tenants:
   PTP:

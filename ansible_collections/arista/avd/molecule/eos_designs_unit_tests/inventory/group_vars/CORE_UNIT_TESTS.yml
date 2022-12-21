@@ -138,3 +138,14 @@ core_interfaces:
           core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
           core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
+
+
+l3_edge:
+  p2p_links:
+      # P2P link with mpls_ip and mpls_ldp set to false.
+    - nodes: [core-1-isis-sr-ldp, peer2]
+      interfaces: [ethernet21, ethernet21]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+      include_in_underlay_protocol: true
+      mpls_ip: false
+      mpls_ldp: false

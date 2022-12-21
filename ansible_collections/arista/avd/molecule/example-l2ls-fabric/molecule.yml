@@ -27,5 +27,7 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/l2ls-fabric/inventory.yml
+    - --extra-vars
+    - "avd_data_validation_mode=error"
 verifier:
   name: ansible
