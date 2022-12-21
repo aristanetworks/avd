@@ -1439,7 +1439,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def inband_management_vlan(self):
         if self.inband_management_role == "child":
-            return get(self._switch_data_combined, "inband_management_vlan", default=4092)
+            return int(get(self._switch_data_combined, "inband_management_vlan", default=4092))
         return None
 
     @cached_property
