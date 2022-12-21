@@ -37,9 +37,8 @@ class RouterBgpMixin(UtilsMixin):
                 "peer_group": self._peer_group_ipv4_underlay_peers_name,
             }
 
+            # RFC5549
             if self._underlay_rfc5549:
-                # RFC5549
-
                 interface = p2p_link["data"]["interface"]
                 neighbor_interfaces[interface] = neighbor
                 continue
