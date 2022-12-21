@@ -137,4 +137,45 @@ ethernet_interfaces:
     shutdown: false
     mtu: 9000
     ptp:
+      announce:
+        interval: 0
+        timeout: 3
+      delay_req: -3
+      sync_message:
+        interval: -3
+      transport: ipv4
+      enable: true
+  Ethernet8:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet8
+    peer_type: spine
+    description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ptp:
+      announce:
+        interval: 0
+        timeout: 3
+      delay_req: -3
+      sync_message:
+        interval: -3
+      transport: ipv4
+      enable: true
+  Ethernet9:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet9
+    peer_type: spine
+    description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ptp:
+      announce:
+        interval: 0
+        timeout: 3
+      delay_req: -3
+      sync_message:
+        interval: -3
+      transport: ipv4
       enable: true

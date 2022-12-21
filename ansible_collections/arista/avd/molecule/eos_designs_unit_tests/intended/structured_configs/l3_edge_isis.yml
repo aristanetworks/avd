@@ -1,0 +1,89 @@
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 1.2.3.1/32
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+router_isis:
+  instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
+  net: 49.0001.0001.0001.0001.00
+  router_id: 1.2.3.1
+  is_type: level-2
+  address_family:
+  - ipv4 unicast
+  isis_af_defaults:
+  - maximum-paths 4
+ethernet_interfaces:
+  ethernet1:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
+    description: P2P_LINK_TO_peer1_ethernet1
+    type: routed
+    shutdown: false
+    mtu: 2000
+    service_profile: TEST-QOS-PROFILE
+    ip_address: 192.168.0.0/31
+    mac_security:
+      profile: TEST-MACSEC-PROFILE
+    speed: forced 10000full
+    ptp:
+      enable: true
+  ethernet2:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
+    description: P2P_LINK_TO_peer2_ethernet2
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ip_address: 192.168.0.2/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 60
+    isis_network_point_to_point: true
+    isis_hello_padding: false
+    isis_circuit_type: level-2
+    isis_authentication_mode: md5
+    isis_authentication_key: $1c$sTNAlR6rKSw=
+  ethernet3:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
+    description: P2P_LINK_TO_peer3_ethernet3
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ip_address: 192.168.0.4/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true
+  ethernet4:
+    peer: peer4
+    peer_interface: ethernet4
+    peer_type: other
+    description: P2P_LINK_TO_peer4_ethernet4
+    type: routed
+    shutdown: false
+    mtu: 9000
+    ip_address: 192.168.0.6/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true

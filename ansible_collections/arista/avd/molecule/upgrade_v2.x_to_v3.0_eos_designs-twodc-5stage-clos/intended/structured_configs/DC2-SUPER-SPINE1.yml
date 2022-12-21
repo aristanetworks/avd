@@ -76,6 +76,7 @@ router_bgp:
       remote_as: '65100'
       description: DC1-SUPER-SPINE1
       peer_group: IPv4-UNDERLAY-PEERS
+      bfd: false
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
