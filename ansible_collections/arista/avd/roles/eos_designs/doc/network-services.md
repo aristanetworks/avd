@@ -263,10 +263,10 @@ mac_address_table:
             # For each group of nodes, allow configuration of EVPN PEG features | Optional
             - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
               transit: < true | false | default false >                    # Enable EVPN PEG transit mode
-        rp_addresses:                                                    # For each group of nodes, allow configuration of RP Addresses & associated groups
-          - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
-            nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
-            groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
+        pim_rp_addresses:                                                  # For each group of nodes, allow configuration of RP Addresses & associated groups
+          - rps: [ < rp_address_1 >, < rp_address_2 > ]                    # A minimum of one RP must be specified
+            nodes: [ < node_1 >, < node_2 >, < node_N > ]                  # Optional - will apply to all nodes if not set.
+            groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ]   # Optional
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
