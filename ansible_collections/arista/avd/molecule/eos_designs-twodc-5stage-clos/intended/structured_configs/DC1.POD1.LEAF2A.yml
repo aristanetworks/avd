@@ -26,17 +26,17 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 5
     EVPN-OVERLAY-CORE:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '15'
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 15
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -95,16 +95,16 @@ router_bgp:
       route_map: RM-CONN-2-BGP
     attached-host: {}
   address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-CORE:
         domain_remote: true
         activate: true
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-        inter_domain: true
     route:
       import_match_failure_action: discard
   address_family_rtc:

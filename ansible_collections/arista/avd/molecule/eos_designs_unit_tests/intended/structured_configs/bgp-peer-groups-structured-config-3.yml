@@ -7,10 +7,10 @@ router_bgp:
     MPLS-OVERLAY-PEERS:
       type: mpls
       update_source: Loopback0
-      remote_as: '65001'
       bfd: true
       send_community: all
       maximum_routes: 0
+      remote_as: '65001'
       description: Description for mpls_overlay_peers via structured_config
     IPVPN-GATEWAY-PEERS:
       type: mpls
@@ -40,9 +40,9 @@ router_bgp:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-      MPLS-OVERLAY-PEERS:
-        activate: true
       IPVPN-GATEWAY-PEERS:
+        activate: true
+      MPLS-OVERLAY-PEERS:
         activate: true
     domain_identifier: 0:2
 static_routes:

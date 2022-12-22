@@ -15,18 +15,18 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 3
     IPVPN-INTERWORKING-PEERS:
       type: mpls
       update_source: Loopback0
-      local_as: '65001'
       bfd: true
       password: nWwwZQLPI34O1AhoANg77g==
       send_community: all
       maximum_routes: 50000
+      local_as: '65001'
     Tenant_C_WAN_Zone_BGP_PEER_GROUP:
       remote_as: 666
       description: Tenant C VRF WAN Zone peer group
