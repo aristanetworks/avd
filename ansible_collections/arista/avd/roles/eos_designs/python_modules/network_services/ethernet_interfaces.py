@@ -112,6 +112,21 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         interface["ospf_authentication"] = ospf_authentication
                                         interface["ospf_message_digest_keys"] = ospf_keys
 
+                            if get(l3_interface, "pim.enabled"):
+                                if not vrf.get("_evpn_l3_multicast_enabled"):
+                                    raise AristaAvdError(
+                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires evpn_l3_multicast: enabled: true"
+                                        f" under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                    )
+
+                                if not vrf.get("_pim_rp_addresses"):
+                                    raise AristaAvdError(
+                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires at least one RP defined in"
+                                        f" pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                    )
+
+                                interface["pim"] = {"ipv4": {"sparse_mode": True}}
+
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 

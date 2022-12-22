@@ -36,8 +36,16 @@ router_bgp:
       description: EVPN-MULTICAST-L3LEAF1B_Ethernet1
     172.31.255.5:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65102'
+      remote_as: '65103'
       description: EVPN-MULTICAST-L3LEAF2A_Ethernet1
+    172.31.255.7:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65104'
+      description: EVPN-MULTICAST-L3LEAF3A_Ethernet1
+    172.31.255.9:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65105'
+      description: EVPN-MULTICAST-L3LEAF3B_Ethernet1
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: EVPN-MULTICAST-L3LEAF1A
@@ -49,7 +57,15 @@ router_bgp:
     192.168.255.5:
       peer_group: EVPN-OVERLAY-PEERS
       description: EVPN-MULTICAST-L3LEAF2A
-      remote_as: '65102'
+      remote_as: '65103'
+    192.168.255.6:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: EVPN-MULTICAST-L3LEAF3A
+      remote_as: '65104'
+    192.168.255.7:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: EVPN-MULTICAST-L3LEAF3B
+      remote_as: '65105'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -119,6 +135,30 @@ ethernet_interfaces:
     mtu: 9000
     type: routed
     ip_address: 172.31.255.4/31
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4:
+    peer: EVPN-MULTICAST-L3LEAF3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3A_Ethernet1
+    shutdown: false
+    mtu: 9000
+    type: routed
+    ip_address: 172.31.255.6/31
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet5:
+    peer: EVPN-MULTICAST-L3LEAF3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3B_Ethernet1
+    shutdown: false
+    mtu: 9000
+    type: routed
+    ip_address: 172.31.255.8/31
     pim:
       ipv4:
         sparse_mode: true

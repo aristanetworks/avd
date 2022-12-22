@@ -1,5 +1,5 @@
 router_bgp:
-  as: '65102'
+  as: '65103'
   router_id: 192.168.255.5
   bgp_defaults:
   - maximum-paths 4 ecmp 4
@@ -110,6 +110,123 @@ router_bgp:
           - '22:22'
       redistribute_routes:
       - connected
+    TEN_C_L3_MULTICAST_DISABLED_330_331:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:33
+      route_targets:
+        import:
+          evpn:
+          - '33:33'
+        export:
+          evpn:
+          - '33:33'
+      redistribute_routes:
+      - connected
+      evpn_multicast: false
+    TEN_C_L3_MULTICAST_ENABLED_130_131:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:31
+      route_targets:
+        import:
+          evpn:
+          - '31:31'
+        export:
+          evpn:
+          - '31:31'
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
+    TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:32
+      route_targets:
+        import:
+          evpn:
+          - '32:32'
+        export:
+          evpn:
+          - '32:32'
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
+    TEN_D_L3_MULTICAST_DISABLED_240_241:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:42
+      route_targets:
+        import:
+          evpn:
+          - '42:42'
+        export:
+          evpn:
+          - '42:42'
+      redistribute_routes:
+      - connected
+      evpn_multicast: false
+    TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:41
+      route_targets:
+        import:
+          evpn:
+          - '41:41'
+        export:
+          evpn:
+          - '41:41'
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
+    TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:55
+      route_targets:
+        import:
+          evpn:
+          - '55:55'
+        export:
+          evpn:
+          - '55:55'
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
+    TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:60
+      route_targets:
+        import:
+          evpn:
+          - 60:60
+        export:
+          evpn:
+          - 60:60
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
+    TEN_E_L3_MULTICAST_TRANSIT:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:52
+      route_targets:
+        import:
+          evpn:
+          - '52:52'
+        export:
+          evpn:
+          - '52:52'
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
+    TEN_E_PEG_L3_MULTICAST_ENABLED:
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:51
+      route_targets:
+        import:
+          evpn:
+          - '51:51'
+        export:
+          evpn:
+          - '51:51'
+      redistribute_routes:
+      - connected
+      evpn_multicast: true
   vlans:
     310:
       tenant: Tenant_A
@@ -265,6 +382,118 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
+    330:
+      tenant: Tenant_C
+      rd: 192.168.255.5:10330
+      route_targets:
+        both:
+        - 10330:10330
+      redistribute_routes:
+      - learned
+    331:
+      tenant: Tenant_C
+      rd: 192.168.255.5:10331
+      route_targets:
+        both:
+        - 10331:10331
+      redistribute_routes:
+      - learned
+    130:
+      tenant: Tenant_C
+      rd: 192.168.255.5:10130
+      route_targets:
+        both:
+        - 10130:10130
+      redistribute_routes:
+      - learned
+    131:
+      tenant: Tenant_C
+      rd: 192.168.255.5:10131
+      route_targets:
+        both:
+        - 10131:10131
+      redistribute_routes:
+      - learned
+    230:
+      tenant: Tenant_C
+      rd: 192.168.255.5:10230
+      route_targets:
+        both:
+        - 10230:10230
+      redistribute_routes:
+      - learned
+    231:
+      tenant: Tenant_C
+      rd: 192.168.255.5:10231
+      route_targets:
+        both:
+        - 10231:10231
+      redistribute_routes:
+      - learned
+    240:
+      tenant: Tenant_D
+      rd: 192.168.255.5:10240
+      route_targets:
+        both:
+        - 10240:10240
+      redistribute_routes:
+      - learned
+    241:
+      tenant: Tenant_D
+      rd: 192.168.255.5:10241
+      route_targets:
+        both:
+        - 10241:10241
+      redistribute_routes:
+      - learned
+    140:
+      tenant: Tenant_D
+      rd: 192.168.255.5:10140
+      route_targets:
+        both:
+        - 10140:10140
+      redistribute_routes:
+      - learned
+    141:
+      tenant: Tenant_D
+      rd: 192.168.255.5:10141
+      route_targets:
+        both:
+        - 10141:10141
+      redistribute_routes:
+      - learned
+    550:
+      tenant: Tenant_E
+      rd: 192.168.255.5:10550
+      route_targets:
+        both:
+        - 10550:10550
+      redistribute_routes:
+      - learned
+    260:
+      tenant: Tenant_E
+      rd: 192.168.255.5:10260
+      route_targets:
+        both:
+        - 10260:10260
+      redistribute_routes:
+      - learned
+    250:
+      tenant: Tenant_E
+      rd: 192.168.255.5:10250
+      route_targets:
+        both:
+        - 10250:10250
+      redistribute_routes:
+      - learned
+    150:
+      tenant: Tenant_E
+      rd: 192.168.255.5:10150
+      route_targets:
+        both:
+        - 10150:10150
+      redistribute_routes:
+      - learned
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -275,6 +504,28 @@ router_multicast:
   ipv4:
     routing: true
     software_forwarding: sfe
+  vrfs:
+  - name: TEN_C_L3_MULTICAST_ENABLED_130_131
+    ipv4:
+      routing: true
+  - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+    ipv4:
+      routing: true
+  - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+    ipv4:
+      routing: true
+  - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    ipv4:
+      routing: true
+  - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+    ipv4:
+      routing: true
+  - name: TEN_E_L3_MULTICAST_TRANSIT
+    ipv4:
+      routing: true
+  - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    ipv4:
+      routing: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -307,6 +558,42 @@ vrfs:
     tenant: Tenant_B
     ip_routing: true
     description: MULTICAST_ENABLED_3_DISABLED_4
+  TEN_C_L3_MULTICAST_DISABLED_330_331:
+    tenant: Tenant_C
+    ip_routing: true
+    description: L3_MULTICAST_DISABLED_330_331
+  TEN_C_L3_MULTICAST_ENABLED_130_131:
+    tenant: Tenant_C
+    ip_routing: true
+    description: L3_MULTICAST_ENABLED_130_131
+  TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231:
+    tenant: Tenant_C
+    ip_routing: true
+    description: L3_MULTICAST_ENABLED_230_DISABLED_231
+  TEN_D_L3_MULTICAST_DISABLED_240_241:
+    tenant: Tenant_D
+    ip_routing: true
+    description: L3_MULTICAST_DISABLED_240_241
+  TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141:
+    tenant: Tenant_D
+    ip_routing: true
+    description: L3_MULTICAST_ENABLED_140_DISABLED_141
+  TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE:
+    tenant: Tenant_E
+    ip_routing: true
+    description: L3_MULTICAST_ENABLED_PEG_OVERRIDE
+  TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
+    tenant: Tenant_E
+    ip_routing: true
+    description: L3_MULTICAST_TRANSIT
+  TEN_E_L3_MULTICAST_TRANSIT:
+    tenant: Tenant_E
+    ip_routing: true
+    description: L3_MULTICAST_TRANSIT
+  TEN_E_PEG_L3_MULTICAST_ENABLED:
+    tenant: Tenant_E
+    ip_routing: true
+    description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
   Management1:
     description: oob_management
@@ -344,6 +631,51 @@ loopback_interfaces:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 192.168.254.5/32
+  Loopback33:
+    description: TEN_C_L3_MULTICAST_DISABLED_330_331_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
+    ip_address: 10.255.3.5/32
+  Loopback31:
+    description: TEN_C_L3_MULTICAST_ENABLED_130_131_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+    ip_address: 10.255.1.5/32
+  Loopback32:
+    description: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+    ip_address: 10.255.2.5/32
+  Loopback42:
+    description: TEN_D_L3_MULTICAST_DISABLED_240_241_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
+    ip_address: 10.255.42.5/32
+  Loopback41:
+    description: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+    ip_address: 10.255.41.5/32
+  Loopback55:
+    description: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    ip_address: 10.255.55.5/32
+  Loopback60:
+    description: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+    ip_address: 10.255.60.5/32
+  Loopback52:
+    description: TEN_E_L3_MULTICAST_TRANSIT_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_E_L3_MULTICAST_TRANSIT
+    ip_address: 10.255.52.5/32
+  Loopback51:
+    description: TEN_E_PEG_L3_MULTICAST_ENABLED_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
+    ip_address: 10.255.51.5/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -418,6 +750,48 @@ vlans:
   9:
     tenant: Tenant_B
     name: MULTICAST_ENABLED_8
+  330:
+    tenant: Tenant_C
+    name: L3_MULTICAST_DISABLED_330
+  331:
+    tenant: Tenant_C
+    name: L3_MULTICAST_DISABLED_331
+  130:
+    tenant: Tenant_C
+    name: L3_MULTICAST_ENABLED_130
+  131:
+    tenant: Tenant_C
+    name: L3_MULTICAST_ENABLED_131
+  230:
+    tenant: Tenant_C
+    name: L3_MULTICAST_ENABLED_230
+  231:
+    tenant: Tenant_C
+    name: L3_MULTICAST_DISABLED_231
+  240:
+    tenant: Tenant_D
+    name: L3_MULTICAST_DISABLED_240
+  241:
+    tenant: Tenant_D
+    name: L3_MULTICAST_DISABLED_241
+  140:
+    tenant: Tenant_D
+    name: L3_MULTICAST_ENABLED_140
+  141:
+    tenant: Tenant_D
+    name: L3_MULTICAST_DISABLED_141
+  550:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_550
+  260:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_260
+  250:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_250
+  150:
+    tenant: Tenant_E
+    name: L3_MULTICAST_ENABLED_150
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -564,6 +938,149 @@ vlan_interfaces:
     shutdown: false
     ip_address_virtual: 10.0.4.1/24
     vrf: MULTICAST_ENABLED_3_DISABLED_4
+  Vlan330:
+    tenant: Tenant_C
+    tags:
+    - test_l3
+    description: L3_MULTICAST_DISABLED_330
+    shutdown: false
+    ip_address_virtual: 10.3.33.1/24
+    vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
+  Vlan331:
+    tenant: Tenant_C
+    tags:
+    - test_l3
+    description: L3_MULTICAST_DISABLED_331
+    shutdown: false
+    ip_address_virtual: 10.3.34.1/24
+    vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
+  Vlan130:
+    tenant: Tenant_C
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_130
+    shutdown: false
+    ip_address_virtual: 10.1.13.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback31
+    vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+  Vlan131:
+    tenant: Tenant_C
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_131
+    shutdown: false
+    ip_address: 10.1.14.4/24
+    ip_virtual_router_addresses:
+    - 10.1.14.1
+    ip_igmp: true
+    vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+  Vlan230:
+    tenant: Tenant_C
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_230
+    shutdown: false
+    ip_address_virtual: 10.2.23.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback32
+    vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+  Vlan231:
+    tenant: Tenant_C
+    tags:
+    - test_l3
+    description: L3_MULTICAST_DISABLED_231
+    shutdown: false
+    ip_address_virtual: 10.2.24.1/24
+    vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+  Vlan240:
+    tenant: Tenant_D
+    tags:
+    - test_l3
+    description: L3_MULTICAST_DISABLED_240
+    shutdown: false
+    ip_address_virtual: 10.1.24.1/24
+    vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
+  Vlan241:
+    tenant: Tenant_D
+    tags:
+    - test_l3
+    description: L3_MULTICAST_DISABLED_241
+    shutdown: false
+    ip_address_virtual: 10.1.25.1/24
+    vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
+  Vlan140:
+    tenant: Tenant_D
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_140
+    shutdown: false
+    ip_address_virtual: 10.1.14.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback41
+    vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+  Vlan141:
+    tenant: Tenant_D
+    tags:
+    - test_l3
+    description: L3_MULTICAST_DISABLED_141
+    shutdown: false
+    ip_address_virtual: 10.1.15.1/24
+    vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+  Vlan550:
+    tenant: Tenant_E
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_550
+    shutdown: false
+    ip_address_virtual: 10.1.56.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback55
+    vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+  Vlan260:
+    tenant: Tenant_E
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_260
+    shutdown: false
+    ip_address_virtual: 10.1.26.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback60
+    vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+  Vlan250:
+    tenant: Tenant_E
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_250
+    shutdown: false
+    ip_address_virtual: 10.1.15.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback52
+    vrf: TEN_E_L3_MULTICAST_TRANSIT
+  Vlan150:
+    tenant: Tenant_E
+    tags:
+    - test_l3
+    description: L3_MULTICAST_ENABLED_150
+    shutdown: false
+    ip_address_virtual: 10.1.15.1/24
+    ip_igmp: true
+    pim:
+      ipv4:
+        local_interface: Loopback51
+    vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 vxlan_interface:
   Vxlan1:
     description: EVPN-MULTICAST-L3LEAF2A_VTEP
@@ -617,6 +1134,34 @@ vxlan_interface:
         9:
           vni: 10009
           multicast_group: 232.0.16.9
+        330:
+          vni: 10330
+        331:
+          vni: 10331
+        130:
+          vni: 10130
+        131:
+          vni: 10131
+        230:
+          vni: 10230
+        231:
+          vni: 10231
+        240:
+          vni: 10240
+        241:
+          vni: 10241
+        140:
+          vni: 10140
+        141:
+          vni: 10141
+        550:
+          vni: 10550
+        260:
+          vni: 10260
+        250:
+          vni: 10250
+        150:
+          vni: 10150
       vrfs:
         MULTICAST_DISABLED_310_311:
           vni: 13
@@ -630,3 +1175,62 @@ vxlan_interface:
           vni: 21
         MULTICAST_ENABLED_3_DISABLED_4:
           vni: 22
+        TEN_C_L3_MULTICAST_DISABLED_330_331:
+          vni: 33
+        TEN_C_L3_MULTICAST_ENABLED_130_131:
+          vni: 31
+          multicast_group: 232.0.32.31
+        TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231:
+          vni: 32
+          multicast_group: 232.0.32.32
+        TEN_D_L3_MULTICAST_DISABLED_240_241:
+          vni: 42
+        TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141:
+          vni: 41
+          multicast_group: 232.0.64.40
+        TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE:
+          vni: 55
+          multicast_group: 232.0.96.54
+        TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
+          vni: 60
+          multicast_group: 232.0.96.59
+        TEN_E_L3_MULTICAST_TRANSIT:
+          vni: 52
+          multicast_group: 232.0.96.51
+        TEN_E_PEG_L3_MULTICAST_ENABLED:
+          vni: 51
+          multicast_group: 232.0.96.50
+virtual_source_nat_vrfs:
+  TEN_C_L3_MULTICAST_DISABLED_330_331:
+    ip_address: 10.255.3.5
+  TEN_C_L3_MULTICAST_ENABLED_130_131:
+    ip_address: 10.255.1.5
+  TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231:
+    ip_address: 10.255.2.5
+  TEN_D_L3_MULTICAST_DISABLED_240_241:
+    ip_address: 10.255.42.5
+  TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141:
+    ip_address: 10.255.41.5
+  TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE:
+    ip_address: 10.255.55.5
+  TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
+    ip_address: 10.255.60.5
+  TEN_E_L3_MULTICAST_TRANSIT:
+    ip_address: 10.255.52.5
+  TEN_E_PEG_L3_MULTICAST_ENABLED:
+    ip_address: 10.255.51.5
+router_pim_sparse_mode:
+  vrfs:
+  - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    ipv4:
+      rp_addresses:
+      - address: 10.20.20.20
+        groups:
+        - 232.0.0.0/21
+      - address: 10.40.40.40
+  - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    ipv4:
+      rp_addresses:
+      - address: 10.1.50.100
+        groups:
+        - 232.0.112.0/21
