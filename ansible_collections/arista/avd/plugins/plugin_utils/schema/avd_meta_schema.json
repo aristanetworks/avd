@@ -263,7 +263,9 @@
                         "required": { "$ref": "#/$def/required" },
                         "deprecation": { "$ref": "#/$def/deprecation" },
                         "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                        "documentation_options": { "$ref": "#/$def/documentation_options" },
+                        "$schema": { "type": "string" },
+                        "$id": { "type": "string" }
                     },
                     "additionalProperties": false
                 },

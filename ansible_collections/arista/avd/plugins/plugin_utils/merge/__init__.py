@@ -1,3 +1,4 @@
 from .merge import merge
+from .mergeonschema import MergeOnSchema
 
-__all__ = ["merge"]
+__all__ = ["merge", "MergeOnSchema"]

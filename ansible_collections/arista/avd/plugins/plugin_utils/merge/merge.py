@@ -1,13 +1,11 @@
-import copy
+from copy import deepcopy
+
+from deepmerge import Merger
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 
-try:
-    import deepmerge
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
+from .mergeonschema import MergeOnSchema
 
 
 def _strategy_keep(config, path, base, nxt):
@@ -33,20 +31,27 @@ MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
 }
 
 
-def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merge=True):
+def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merge=True, schema: AvdSchema = None):
     if not destructive_merge:
-        base = copy.deepcopy(base)
+        base = deepcopy(base)
 
     if list_merge not in MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY:
         raise AristaAvdError(f"merge: 'list_merge' argument can only be equal to one of {list(MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.keys())}")
 
-    list_strategy = MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")
+    list_strategies = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
 
-    dict_strategy = "merge" if recursive else "override"
+    if list_merge != "replace" and isinstance(schema, AvdSchema):
+        # If list_merge is "replace" we don't have to try the merge.
+        # If schema is defined we first try to merge lists based on primary_key in the schema
+        # If "primary_key" is not set and equal, we will fallback to the supplied "list_merge" strategy
+        merge_on_schema = MergeOnSchema(schema)
+        list_strategies.insert(0, merge_on_schema.strategy)
 
-    merger = deepmerge.Merger(
+    dict_strategies = ["merge" if recursive else "override"]
+
+    merger = Merger(
         # List of tuples with strategies for each type
-        [(list, [list_strategy]), (dict, [dict_strategy]), (set, ["union"])],
+        [(list, list_strategies), (dict, dict_strategies), (set, ["union"])],
         # Fallback strategy applied to all other types
         ["override"],
         # Strategy for type conflict
@@ -56,11 +61,11 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merg
         if isinstance(nxt, list):
             for nxt_item in nxt:
                 if not destructive_merge:
-                    nxt_item = copy.deepcopy(nxt_item)
+                    nxt_item = deepcopy(nxt_item)
                 merger.merge(base, nxt_item)
         else:
             if not destructive_merge:
-                nxt = copy.deepcopy(nxt)
+                nxt = deepcopy(nxt)
             merger.merge(base, nxt)
 
     return base

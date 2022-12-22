@@ -16,6 +16,7 @@ from ansible.utils.vars import isidentifier
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
@@ -61,9 +62,12 @@ class ActionModule(ActionBase):
             remove_avd_switch_facts = self._task.args.get("remove_avd_switch_facts", False)
             conversion_mode = self._task.args.get("conversion_mode")
             validation_mode = self._task.args.get("validation_mode")
+            output_schema = self._task.args.get("output_schema")
 
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
+
+        output_avd_schema = AvdSchema(output_schema)
 
         # Read ansible variables and perform templating to support inline jinja
         for var in task_vars:
@@ -162,12 +166,25 @@ class ActionModule(ActionBase):
             else:
                 raise AnsibleActionFail("Invalid template data")
 
-            # If there is any data produced by the template, combine it on top of previous output.
+            # If there is any data produced by the template, convert and merge it on top of previous output.
             if template_result_data:
+                if debug:
+                    debug_item["timestamps"]["data_conversion_from_schema"] = datetime.now()
+
+                # Some modules/templates return a list of dicts, others only return a dict. Here we normalize to list.
+                if not isinstance(template_result_data, list):
+                    template_result_data = [template_result_data]
+
+                # Convert each returned dict according to output_schema to normalize the data to correct format before merging
+                for result_item in template_result_data:
+                    conversion_errors = list(output_avd_schema.convert(result_item))
+                    if conversion_errors:
+                        raise AnsibleActionFail(conversion_errors)
+
                 if debug:
                     debug_item["timestamps"]["combine_data"] = datetime.now()
 
-                merge(output, template_result_data, list_merge=list_merge)
+                merge(output, template_result_data, list_merge=list_merge, schema=output_avd_schema)
 
             if debug:
                 debug_item["timestamps"]["done"] = datetime.now()
