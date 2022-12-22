@@ -15,17 +15,17 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 3
     EVPN-OVERLAY-CORE:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '15'
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 15
   address_family_ipv4:
     peer_groups:
       UNDERLAY-PEERS:
@@ -75,16 +75,16 @@ router_bgp:
       description: MY_EVPN_GW_USER_DEFINED
       remote_as: '65555'
   address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: false
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-CORE:
         domain_remote: true
         activate: true
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-        inter_domain: false
     evpn_hostflap_detection:
       window: 180
       threshold: 5

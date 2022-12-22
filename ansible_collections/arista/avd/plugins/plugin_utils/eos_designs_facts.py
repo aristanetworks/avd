@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import ipaddress
 import re
 from functools import cached_property
@@ -1737,7 +1739,7 @@ class EosDesignsFacts(AvdFacts):
         if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self._hostvars, "underlay_ipv6") is True and get(self._hostvars, "underlay_rfc5549") is True):
                 raise AristaAvdError(
-                    "'overlay_routing_protocol_address_family: ipv6' is only supported incombination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
+                    "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
                 )
         return overlay_routing_protocol_address_family
 
@@ -1789,7 +1791,61 @@ class EosDesignsFacts(AvdFacts):
         }
 
     @cached_property
-    def overlay(self):
+    def _overlay_evpn(self) -> bool:
+        # Set overlay.evpn to enable EVPN on the node
+        return (
+            self.bgp
+            and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
+            and self.overlay_routing_protocol in ["ebgp", "ibgp"]
+            and "evpn" in self.overlay_address_families
+        )
+
+    @cached_property
+    def _overlay_ipvpn_gateway(self) -> bool:
+        # Set ipvpn_gateway to trigger ipvpn interworking configuration.
+        return self._overlay_evpn and get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False)
+
+    @cached_property
+    def _overlay_ler(self) -> bool:
+        return (
+            self.underlay["mpls"]
+            and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
+            and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
+        )
+
+    @cached_property
+    def _overlay_vtep(self) -> bool:
+        # Set overlay.vtep to enable VXLAN edge PE features
+        return (
+            self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
+            and (self.network_services_l2 or self.network_services_l3)
+            and self.underlay_router
+            and self.uplink_type == "p2p"
+            and self.vtep
+        )
+
+    @cached_property
+    def _overlay_vpn_ipv4(self) -> bool:
+        # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
+        if self.bgp is not True:
+            return False
+
+        return (self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families) or (
+            "vpn-ipv4" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and self._overlay_ipvpn_gateway
+        )
+
+    @cached_property
+    def _overlay_vpn_ipv6(self) -> bool:
+        # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
+        if self.bgp is not True:
+            return False
+
+        return (self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families) or (
+            "vpn-ipv6" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and self._overlay_ipvpn_gateway
+        )
+
+    @cached_property
+    def overlay(self) -> dict:
         """
         Returns a dictionary of overlay parameters to configure on the node.
         """
@@ -1798,59 +1854,27 @@ class EosDesignsFacts(AvdFacts):
             peering_address = self.ipv6_router_id
         else:
             peering_address = self.router_id
-        # Set overlay.ler to enable MPLS edge PE features
-        ler = (
-            self.underlay["mpls"]
-            and (self.mpls_overlay_role in ["client", "server"] or self.evpn_role in ["client", "server"])
-            and (self.network_services_l1 or self.network_services_l2 or self.network_services_l3)
-        )
-        # Set overlay.vtep to enable VXLAN edge PE features
-        vtep = (
-            self.overlay_routing_protocol in ["ebgp", "ibgp", "her", "cvx"]
-            and (self.network_services_l2 or self.network_services_l3)
-            and self.underlay_router
-            and self.uplink_type == "p2p"
-            and self.vtep
-        )
-        # Set overlay.evpn to enable EVPN on the node
-        evpn = (
-            self.bgp
-            and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
-            and self.overlay_routing_protocol in ["ebgp", "ibgp"]
-            and "evpn" in self.overlay_address_families
-        )
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
-        evpn_vxlan = evpn and self.evpn_encapsulation == "vxlan"
-        evpn_mpls = evpn and self.evpn_encapsulation == "mpls"
-        # Set ipvpn_gateway to trigger ipvpn interworking configuration.
-        ipvpn_gateway = evpn and get(self._switch_data_combined, "ipvpn_gateway.enabled", default=False)
-        # Set overlay.vpn_ipv4 and vpn_ipv6 to enable IP-VPN configuration on the node.
-        # TODO - separate _overlay_<flag> methods for vpn_ipv4/6 logic
-        vpn_ipv4 = self.bgp and (
-            (self.overlay_routing_protocol == "ibgp" and "vpn-ipv4" in self.overlay_address_families)
-            or ("vpn-ipv4" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and ipvpn_gateway)
-        )
-        vpn_ipv6 = self.bgp and (
-            (self.overlay_routing_protocol == "ibgp" and "vpn-ipv6" in self.overlay_address_families)
-            or ("vpn-ipv6" in get(self._switch_data_combined, "ipvpn_gateway.address_families", default=["vpn-ipv4"]) and ipvpn_gateway)
-        )
+        evpn_vxlan = self._overlay_evpn and self.evpn_encapsulation == "vxlan"
+        evpn_mpls = self._overlay_evpn and self.evpn_encapsulation == "mpls"
         # Set dpath based on ipvpn_gateway parameters
-        dpath = ipvpn_gateway and get(self._switch_data_combined, "ipvpn_gateway.enable_d_path", default=True)
+        dpath = self._overlay_ipvpn_gateway and get(self._switch_data_combined, "ipvpn_gateway.enable_d_path", default=True)
+
         return {
             "peering_address": peering_address,
-            "ler": ler,
-            "vtep": vtep,
-            "evpn": evpn,
+            "ler": self._overlay_ler,
+            "vtep": self._overlay_vtep,
+            "evpn": self._overlay_evpn,
             "evpn_vxlan": evpn_vxlan,
             "evpn_mpls": evpn_mpls,
-            "vpn_ipv4": vpn_ipv4,
-            "vpn_ipv6": vpn_ipv6,
-            "ipvpn_gateway": ipvpn_gateway,
+            "vpn_ipv4": self._overlay_vpn_ipv4,
+            "vpn_ipv6": self._overlay_vpn_ipv6,
+            "ipvpn_gateway": self._overlay_ipvpn_gateway,
             "dpath": dpath,
         }
 
     @cached_property
-    def ipvpn_gateway(self):
+    def ipvpn_gateway(self) -> dict | None:
         """
         Returns a dictionary of ipvpn interworking gateway parameters to configure on the node.
         """

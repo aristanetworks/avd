@@ -13,20 +13,20 @@ router_bgp:
     MPLS-OVERLAY-PEERS:
       type: mpls
       update_source: Loopback0
-      remote_as: '65000'
       bfd: true
       password: SHsTgDgjVUU5a9blyxSt3Q==
       send_community: all
       maximum_routes: 0
+      remote_as: '65000'
       route_reflector_client: true
     RR-OVERLAY-PEERS:
       type: mpls
       update_source: Loopback0
-      remote_as: '65000'
       bfd: true
       password: 04FdfTXWrEfpDTUc3mlSjg==
       send_community: all
       maximum_routes: 0
+      remote_as: '65000'
   address_family_ipv4:
     peer_groups:
       MPLS-OVERLAY-PEERS:

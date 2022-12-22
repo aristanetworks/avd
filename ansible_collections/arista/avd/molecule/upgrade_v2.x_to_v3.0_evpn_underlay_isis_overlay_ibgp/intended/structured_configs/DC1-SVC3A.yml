@@ -9,11 +9,11 @@ router_bgp:
     OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
-      remote_as: 65001
       bfd: true
       password: 64fqSH5CFUNLRHErezMrRg==
       send_community: all
       maximum_routes: 0
+      remote_as: 65001
   address_family_ipv4:
     peer_groups:
       OVERLAY-PEERS:
@@ -257,6 +257,10 @@ router_isis:
   - Ethernet4
   - Vlan4093
   - Loopback1
+ip_extcommunity_lists:
+  ECL-EVPN-SOO:
+  - type: permit
+    extcommunities: soo 192.168.254.8:1
 router_bfd:
   multihop:
     interval: 1200
@@ -277,10 +281,6 @@ route_maps:
         type: permit
         set:
         - extcommunity soo 192.168.254.8:1 additive
-ip_extcommunity_lists:
-  ECL-EVPN-SOO:
-  - type: permit
-    extcommunities: soo 192.168.254.8:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
