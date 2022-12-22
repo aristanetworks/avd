@@ -4,34 +4,34 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    MPLS-OVERLAY-PEERS:
-      type: mpls
-      update_source: Loopback0
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      remote_as: '65001'
-      description: Description for mpls_overlay_peers via structured_config
-    IPVPN-GATEWAY-PEERS:
-      type: mpls
-      update_source: Loopback0
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      description: Description for ipvpn_gateway_peers via structured_config
+  - type: mpls
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65001'
+    name: MPLS-OVERLAY-PEERS
+    description: Description for mpls_overlay_peers via structured_config
+  - type: mpls
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    name: IPVPN-GATEWAY-PEERS
+    description: Description for ipvpn_gateway_peers via structured_config
   address_family_ipv4:
     peer_groups:
-      MPLS-OVERLAY-PEERS:
-        activate: false
-      IPVPN-GATEWAY-PEERS:
-        activate: false
+    - activate: false
+      name: MPLS-OVERLAY-PEERS
+    - activate: false
+      name: IPVPN-GATEWAY-PEERS
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
     peer_groups:
-      MPLS-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: MPLS-OVERLAY-PEERS
     domain_identifier: 0:1
   bgp:
     bestpath:
@@ -40,10 +40,10 @@ router_bgp:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-      IPVPN-GATEWAY-PEERS:
-        activate: true
-      MPLS-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: IPVPN-GATEWAY-PEERS
+    - activate: true
+      name: MPLS-OVERLAY-PEERS
     domain_identifier: 0:2
 static_routes:
 - vrf: MGMT
@@ -57,21 +57,21 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 loopback_interfaces:
-  Loopback0:
-    description: MPLS_Overlay_peering
-    shutdown: false
-    ip_address: 192.168.255.114/32
-    isis_enable: CORE
-    isis_passive: true
-    node_segment:
-      ipv4_index: 206
+- description: MPLS_Overlay_peering
+  shutdown: false
+  ip_address: 192.168.255.114/32
+  isis_enable: CORE
+  isis_passive: true
+  node_segment:
+    ipv4_index: 206
+  name: Loopback0
 router_isis:
   instance: CORE
   log_adjacency_changes: true

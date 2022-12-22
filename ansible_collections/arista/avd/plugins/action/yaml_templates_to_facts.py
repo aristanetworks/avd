@@ -16,7 +16,6 @@ from ansible.utils.vars import isidentifier
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
@@ -67,8 +66,6 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
-        output_avd_schema = AvdSchema(output_schema)
-
         # Read ansible variables and perform templating to support inline jinja
         for var in task_vars:
             if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
@@ -88,6 +85,12 @@ class ActionModule(ActionBase):
             if result.get("failed"):
                 # Input data validation failed so return errors.
                 return result
+
+        if output_schema:
+            output_avdschematools = AvdSchemaTools(output_schema, hostname, display, conversion_mode, validation_mode)
+            output_avdschema = output_avdschematools.avdschema
+        else:
+            output_avdschema = None
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
@@ -116,7 +119,7 @@ class ActionModule(ActionBase):
                 debug_item["timestamps"] = {"starting": datetime.now()}
 
             template_options = template_item.get("options", {})
-            list_merge = template_options.get("list_merge", "append")
+            list_merge = template_options.get("list_merge", "append_rp")
 
             strip_empty_keys = template_options.get("strip_empty_keys", True)
 
@@ -168,23 +171,23 @@ class ActionModule(ActionBase):
 
             # If there is any data produced by the template, convert and merge it on top of previous output.
             if template_result_data:
-                if debug:
-                    debug_item["timestamps"]["data_conversion_from_schema"] = datetime.now()
-
                 # Some modules/templates return a list of dicts, others only return a dict. Here we normalize to list.
                 if not isinstance(template_result_data, list):
                     template_result_data = [template_result_data]
 
-                # Convert each returned dict according to output_schema to normalize the data to correct format before merging
-                for result_item in template_result_data:
-                    conversion_errors = list(output_avd_schema.convert(result_item))
-                    if conversion_errors:
-                        raise AnsibleActionFail(conversion_errors)
+                # If output_schema is set, perform inplace conversion of each returned dict according to output_schema
+                # to normalize the data to correct format before merging
+                if output_schema:
+                    if debug:
+                        debug_item["timestamps"]["data_conversion_from_schema"] = datetime.now()
+
+                    for result_item in template_result_data:
+                        output_avdschematools.convert_data(result_item)
 
                 if debug:
                     debug_item["timestamps"]["combine_data"] = datetime.now()
 
-                merge(output, template_result_data, list_merge=list_merge, schema=output_avd_schema)
+                merge(output, *template_result_data, list_merge=list_merge, schema=output_avdschema)
 
             if debug:
                 debug_item["timestamps"]["done"] = datetime.now()

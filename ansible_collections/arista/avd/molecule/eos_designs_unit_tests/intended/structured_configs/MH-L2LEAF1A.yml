@@ -31,70 +31,70 @@ snmp_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-    '0':
-      priority: 16384
+  - priority: 16384
+    id: '0'
 local_users:
-  admin:
-    disabled: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
+- disabled: true
+  name: admin
+- privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  name: cvpadmin
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.201.201/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.201/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
   default_services: false
 link_tracking_groups:
 - name: l2leaf-server02
   recovery_delay: 300
 ethernet_interfaces:
-  Ethernet1:
-    peer: MH-LEAF2A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: MH-LEAF2A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet10:
-    peer: server02
-    peer_interface: Eth1
-    peer_type: server
-    description: server02_Eth1
-    type: switched
-    shutdown: false
-    link_tracking_groups:
-    - name: l2leaf-server02
-      direction: downstream
+- peer: MH-LEAF2A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: MH-LEAF2A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
+- peer: server02
+  peer_interface: Eth1
+  peer_type: server
+  description: server02_Eth1
+  type: switched
+  shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server02
+    direction: downstream
+  name: Ethernet10
 port_channel_interfaces:
-  Port-Channel1:
-    description: MH-LEAF2A_Po2
-    type: switched
-    shutdown: false
-    mode: trunk
-    link_tracking_groups:
-    - name: l2leaf-server02
-      direction: upstream
-    vlans: '310'
+- description: MH-LEAF2A_Po2
+  type: switched
+  shutdown: false
+  mode: trunk
+  link_tracking_groups:
+  - name: l2leaf-server02
+    direction: upstream
+  vlans: '310'
+  name: Port-Channel1
 vlans:
-  310:
-    tenant: Tenant_X
-    name: Tenant_X_OP_Zone_1
+- tenant: Tenant_X
+  name: Tenant_X_OP_Zone_1
+  id: 310
 ip_igmp_snooping:
   globally_enabled: true
