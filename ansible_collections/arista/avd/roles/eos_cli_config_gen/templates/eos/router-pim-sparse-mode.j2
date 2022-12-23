@@ -8,12 +8,29 @@ router pim sparse-mode
       bfd
 {%         endif %}
 {%         for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
-{%             if rp_address.groups is arista.avd.defined %}
-{%                 for group in rp_address.groups | arista.avd.natural_sort %}
-      rp address {{ rp_address.address }} {{ group }}
-{%                 endfor %}
+{%             set rp_options_cli = "" %}
+{%             if rp_address.priority is arista.avd.defined %}
+{%                 set rp_options_cli = rp_options_cli ~ " priority " ~ rp_address.priority %}
+{%             endif %}
+{%             if rp_address.hashmask is arista.avd.defined %}
+{%                 set rp_options_cli = rp_options_cli ~ " hashmask " ~ rp_address.hashmask %}
+{%             endif %}
+{%             if rp_address.override is arista.avd.defined(true) %}
+{%                 set rp_options_cli = rp_options_cli ~ " override" %}
+{%             endif %}
+{%             if rp_address.groups is arista.avd.defined or rp_address.access_lists is arista.avd.defined %}
+{%                 if rp_address.groups is arista.avd.defined %}
+{%                     for group in rp_address.groups | arista.avd.natural_sort %}
+      rp address {{ rp_address.address }} {{ group }}{{ rp_options_cli }}
+{%                     endfor %}
+{%                 endif %}
+{%                 if rp_address.access_lists is arista.avd.defined %}
+{%                     for access_list in rp_address.access_lists | arista.avd.natural_sort %}
+      rp address {{ rp_address.address }} access-list {{ access_list }}{{ rp_options_cli }}
+{%                     endfor %}
+{%                 endif %}
 {%             else %}
-      rp address {{ rp_address.address }}
+      rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%             endif %}
 {%         endfor %}
 {%         for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
@@ -38,12 +55,29 @@ router pim sparse-mode
          bfd
 {%             endif %}
 {%             for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
-{%                 if rp_address.groups is arista.avd.defined %}
-{%                     for group in rp_address.groups | arista.avd.natural_sort %}
-         rp address {{ rp_address.address }} {{ group }}
-{%                     endfor %}
+{%                 set rp_options_cli = "" %}
+{%                 if rp_address.priority is arista.avd.defined %}
+{%                     set rp_options_cli = rp_options_cli ~ " priority " ~ rp_address.priority %}
+{%                 endif %}
+{%                 if rp_address.hashmask is arista.avd.defined %}
+{%                     set rp_options_cli = rp_options_cli ~ " hashmask " ~ rp_address.hashmask %}
+{%                 endif %}
+{%                 if rp_address.override is arista.avd.defined(true) %}
+{%                     set rp_options_cli = rp_options_cli ~ " override" %}
+{%                 endif %}
+{%                 if rp_address.groups is arista.avd.defined or rp_address.access_lists is arista.avd.defined %}
+{%                     if rp_address.groups is arista.avd.defined %}
+{%                         for group in rp_address.groups | arista.avd.natural_sort %}
+         rp address {{ rp_address.address }} {{ group }}{{ rp_options_cli }}
+{%                         endfor %}
+{%                     endif %}
+{%                     if rp_address.access_lists is arista.avd.defined %}
+{%                         for access_list in rp_address.access_lists | arista.avd.natural_sort %}
+         rp address {{ rp_address.address }} access-list {{ access_list }}{{ rp_options_cli }}
+{%                         endfor %}
+{%                     endif %}
 {%                 else %}
-         rp address {{ rp_address.address }}
+         rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}

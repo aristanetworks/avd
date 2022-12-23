@@ -12203,6 +12203,29 @@
                       "type": "string"
                     },
                     "title": "Groups"
+                  },
+                  "access_lists": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Access Lists"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255,
+                    "title": "Priority"
+                  },
+                  "hashmask": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 32,
+                    "title": "Hashmask"
+                  },
+                  "override": {
+                    "type": "boolean",
+                    "title": "Override"
                   }
                 },
                 "required": [
@@ -12290,8 +12313,34 @@
                             "type": "string"
                           },
                           "title": "Groups"
+                        },
+                        "access_lists": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Access Lists"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 255,
+                          "title": "Priority"
+                        },
+                        "hashmask": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 32,
+                          "title": "Hashmask"
+                        },
+                        "override": {
+                          "type": "boolean",
+                          "title": "Override"
                         }
                       },
+                      "required": [
+                        "address"
+                      ],
                       "additionalProperties": false
                     },
                     "title": "RP Addresses"
