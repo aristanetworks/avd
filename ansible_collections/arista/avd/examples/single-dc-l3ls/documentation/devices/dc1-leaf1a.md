@@ -6,7 +6,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-- [Monitoring](#monitoring)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -39,14 +38,12 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Virtual Source NAT](#virtual-source-nat)
   - [Virtual Source NAT Summary](#virtual-source-nat-summary)
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -121,8 +118,6 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
 ```
-
-# Monitoring
 
 # MLAG
 
@@ -553,7 +548,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:1c:73:00:00:99
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -574,6 +568,7 @@ no ip routing vrf MGMT
 ip routing vrf VRF10
 ip routing vrf VRF11
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -869,8 +864,6 @@ route-map RM-MLAG-PEER-IN permit 10
    set origin incomplete
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -908,5 +901,3 @@ vrf instance VRF11
 ip address virtual source-nat vrf VRF10 address 10.255.10.3
 ip address virtual source-nat vrf VRF11 address 10.255.11.3
 ```
-
-# Quality Of Service

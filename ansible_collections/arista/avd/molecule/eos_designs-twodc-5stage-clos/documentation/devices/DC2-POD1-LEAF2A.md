@@ -37,11 +37,9 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
 # Management
@@ -356,7 +354,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -373,6 +370,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -579,8 +577,6 @@ route-map RM-CONN-2-BGP permit 20
    match ip address prefix-list PL-L2LEAF-INBAND-MGMT
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -595,8 +591,6 @@ route-map RM-CONN-2-BGP permit 20
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service
 
 # EOS CLI
 

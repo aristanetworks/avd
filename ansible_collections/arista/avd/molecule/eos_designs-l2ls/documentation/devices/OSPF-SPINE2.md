@@ -3,8 +3,6 @@
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -31,12 +29,9 @@
   - [Router OSPF](#router-ospf)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -65,10 +60,6 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
-
-# Authentication
-
-# Monitoring
 
 # MLAG
 
@@ -330,7 +321,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:1c:73:00:00:99
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -347,6 +337,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -425,10 +416,6 @@ router ospf 100
 ```eos
 ```
 
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -443,5 +430,3 @@ router ospf 100
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service
