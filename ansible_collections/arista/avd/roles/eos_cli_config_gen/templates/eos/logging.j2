@@ -3,12 +3,14 @@
 !
 {%     if logging.buffered.level is arista.avd.defined('disabled') %}
 no logging buffered
-{%     elif logging.buffered.level is arista.avd.defined %}
+{%     elif logging.buffered.size is arista.avd.defined or logging.buffered.level is arista.avd.defined %}
 {%         set logging_buffered_cli = "logging buffered" %}
 {%         if logging.buffered.size is arista.avd.defined %}
 {%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.size %}
 {%         endif %}
-{%         set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.level %}
+{%         if logging.buffered.level is arista.avd.defined  %}
+{%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.level %}
+{%         endif %}
 {{ logging_buffered_cli }}
 {%     endif %}
 {%     if logging.trap is arista.avd.defined('disabled') %}
