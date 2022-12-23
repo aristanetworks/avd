@@ -1,5 +1,5 @@
 {# doc - ip routing #}
-
+{% if ip_routing is arista.avd.defined or vrfs is arista.avd.defined %}
 ## IP Routing
 
 ### IP Routing Summary
@@ -7,19 +7,20 @@
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | {{ ip_routing | arista.avd.default(false) }} |
-{% for vrf in vrfs | arista.avd.natural_sort('name') %}
-{%     if vrf.ip_routing is arista.avd.defined(true) %}
+{%     for vrf in vrfs | arista.avd.natural_sort('name') %}
+{%         if vrf.ip_routing is arista.avd.defined(true) %}
 | {{ vrf.name }} | true |
-{%     elif vrf.ip_routing is arista.avd.defined(false) %}
+{%         elif vrf.ip_routing is arista.avd.defined(false) %}
 | {{ vrf.name }} | false |
-{%     endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
 
 ### IP Routing Device Configuration
 
 ```eos
-{% include 'eos/ip-routing.j2' %}
-{% include 'eos/ip-icmp-redirect.j2' %}
-{% include 'eos/ip-hardware.j2' %}
-{% include 'eos/ip-routing-vrfs.j2' %}
+{%     include 'eos/ip-routing.j2' %}
+{%     include 'eos/ip-icmp-redirect.j2' %}
+{%     include 'eos/ip-hardware.j2' %}
+{%     include 'eos/ip-routing-vrfs.j2' %}
 ```
+{% endif %}
