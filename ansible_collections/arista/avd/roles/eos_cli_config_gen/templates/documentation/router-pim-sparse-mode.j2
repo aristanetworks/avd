@@ -11,11 +11,15 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 
 ##### IP Rendezvous Information
 
-| Rendezvous Point Address | Group Address |
-| ------------------------ | ------------- |
+| Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
 {%             for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
 {%                 set rp_groups = rp_address.groups | arista.avd.default(['-']) | join(', ') %}
-| {{ rp_address.address }} | {{ rp_groups }} |
+{%                 set access_lists = rp_address.access_lists | arista.avd.default(['-']) | join(', ') %}
+{%                 set priority = rp_address.priority | arista.avd.default('-') %}
+{%                 set hashmask = rp_address.hashmask | arista.avd.default('-') %}
+{%                 set override = rp_address.override | arista.avd.default('-') %}
+| {{ rp_address.address }} | {{ rp_groups }} | {{ access_lists }} | {{ priority }} | {{ hashmask }} | {{ override }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
@@ -42,13 +46,17 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 | {{ vrf.name }} | {{ vrf.ipv4.bfd | arista.avd.default(false) }} |
 {%         endfor %}
 
-| VRF Name | Rendezvous Point Address | Group Address |
-| -------- | ------------------------ | ------------- |
+| VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
 {%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
 {%                     set rp_groups = rp_address.groups | arista.avd.default(['-']) | join(', ') %}
-| {{ vrf.name }} | {{ rp_address.address }} | {{ rp_groups }} |
+{%                     set access_lists = rp_address.access_lists | arista.avd.default(['-']) | join(', ') %}
+{%                     set priority = rp_address.priority | arista.avd.default('-') %}
+{%                     set hashmask = rp_address.hashmask | arista.avd.default('-') %}
+{%                     set override = rp_address.override | arista.avd.default('-') %}
+| {{ vrf.name }} | {{ rp_address.address }} | {{ rp_groups }} | {{ access_lists }} | {{ priority }} | {{ hashmask }} | {{ override }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

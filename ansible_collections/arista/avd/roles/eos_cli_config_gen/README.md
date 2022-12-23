@@ -2179,6 +2179,11 @@ router_pim_sparse_mode:
         groups:
           < group_prefix_1/mask >:
           < group_prefix_2/mask >:
+        access_lists:
+          - < access_list_name >
+        priority: < 0-255 >
+        hashmask: < 0-32 >
+        override: < true | false >
       < rp_address_2 >:
     anycast_rps:
       < anycast_rp_address_1 >:
@@ -2195,10 +2200,10 @@ router_pim_sparse_mode:
               - < group_prefix_1/mask >
               - < group_prefix_2/mask >
             access_lists:
-              - access_list: < access_list_name >
-                priority: < 0-255 >
-                hashmask: < 0-32 >
-                override: < bool >
+              - < access_list_name >
+            priority: < 0-255 >
+            hashmask: < 0-32 >
+            override: < true | false >
 ```
 
 ### Monitoring

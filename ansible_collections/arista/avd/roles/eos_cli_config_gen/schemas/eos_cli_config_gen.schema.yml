@@ -8282,6 +8282,20 @@ keys:
                   - dict
                   items:
                     type: str
+                access_lists:
+                  type: list
+                  items:
+                    type: str
+                priority:
+                  type: int
+                  min: 0
+                  max: 255
+                hashmask:
+                  type: int
+                  min: 0
+                  max: 32
+                override:
+                  type: bool
           anycast_rps:
             type: list
             primary_key: address
@@ -8332,6 +8346,7 @@ keys:
                       address:
                         type: str
                         description: RP Address
+                        required: true
                       groups:
                         type: list
                         items:
@@ -8339,20 +8354,17 @@ keys:
                       access_lists:
                         type: list
                         items:
-                          type: dict
-                          keys:
-                            access_list:
-                              type: str
-                            priority:
-                              type: int
-                              min: 0
-                              max: 255
-                            hashmask:
-                              type: int
-                              min: 0
-                              max: 32
-                            override:
-                              type: bool
+                          type: str
+                      priority:
+                        type: int
+                        min: 0
+                        max: 255
+                      hashmask:
+                        type: int
+                        min: 0
+                        max: 32
+                      override:
+                        type: bool
   router_traffic_engineering:
     type: dict
     keys:
