@@ -42,6 +42,20 @@ router pim sparse-mode
 {%                     for group in rp_address.groups | arista.avd.natural_sort %}
          rp address {{ rp_address.address }} {{ group }}
 {%                     endfor %}
+{%                 elif rp_address.access_lists is arista.avd.defined %}
+{%                     for access_list in rp_address.access_lists | arista.avd.natural_sort('access_list') %}
+{%                         set rp_acl_cli = "rp address " ~ rp_address.address ~ " access-list " ~ access_list.access_list %}
+{%                         if access_list.priority is arista.avd.defined %}
+{%                             set rp_acl_cli = rp_acl_cli ~ " priority " ~ access_list.priority %}
+{%                         endif %}
+{%                         if access_list.hashmask is arista.avd.defined %}
+{%                             set rp_acl_cli = rp_acl_cli ~ " hashmask " ~ access_list.hashmask %}
+{%                         endif %}
+{%                         if access_list.override is arista.avd.defined(true) %}
+{%                             set rp_acl_cli = rp_acl_cli ~ " override" %}
+{%                         endif %}
+         {{ rp_acl_cli }}
+{%                     endfor %}
 {%                 else %}
          rp address {{ rp_address.address }}
 {%                 endif %}

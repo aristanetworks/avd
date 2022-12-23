@@ -12203,6 +12203,32 @@
                       "type": "string"
                     },
                     "title": "Groups"
+                  },
+                  "access_lists": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "title": "Priority"
+                        },
+                        "hashmask": {
+                          "type": "integer",
+                          "title": "Hashmask"
+                        },
+                        "override": {
+                          "type": "boolean",
+                          "title": "Override"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "title": "Access Lists"
                   }
                 },
                 "required": [
