@@ -57,6 +57,200 @@ keys:
             By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
             Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
             This setting can be overridden per VRF.
+        bgp_peer_groups:
+          type: list
+          description: |
+            Dictionary of BGP peer groups definitions (Optional).
+            This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
+            Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+            peer_group names should not overlap between VRFs.
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: BGP peer group name
+              remote_as:
+                type: int
+                convert_types:
+                  - str
+                description: Remote ASN
+              description:
+                type: str
+              send_community:
+                type: str
+                description: |
+                  'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
+              next_hop_self:
+                type: bool
+              maximum_routes:
+                type: int
+                convert_types:
+                  - str
+                min: 0
+                max: 4294967294
+              default_originate:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  always:
+                    type: bool
+              update_source:
+                type: str
+              ebgp_multihop:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 255
+              nodes:
+                type: list
+                items:
+                  type: str
+                description: |
+                  Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                  If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
+              set_ipv4_next_hop:
+                type: str
+                description: |
+                  IPv4_address
+                  Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+                  Next hop takes precedence over route_map_out.
+              set_ipv6_next_hop:
+                type: str
+                description: |
+                  IPv6_address
+                  Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+                  Next hop takes precedence over route_map_out.
+              route_map_out:
+                type: str
+                description: Route-map name
+              route_map_in:
+                type: str
+                description: Route-map name
+              local_as:
+                type: str
+                convert_types:
+                  - int
+                description: |
+                  Local BGP ASN
+                  eg. "65001.1200"
+              weight:
+                type: int
+                convert_types:
+                  - str
+                min: 0
+                max: 65535
+              bfd:
+                type: bool
+        evpn_l2_multicast:
+          description: |
+            Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant | Optional
+            - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication
+            - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
+              < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
+            - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+            - Enables `redistribute igmp` on the router bgp MAC VRF.
+            - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: IPv4_address/Mask
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              convert_types:
+                - str
+        evpn_l3_multicast:
+          description: |
+            Enable L3 Multicast for all SVIs and l3vlans within Tenant | Optional
+            - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)
+            - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication
+            - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
+              < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
+            - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+            - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.
+            - Enables `evpn multicast` on the router bgp VRF.
+            - When enabled on an SVI:
+                 - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
+                 - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
+                 - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            evpn_underlay_l3_multicast_group_ipv4_pool:
+              type: str
+              description: IPv4_address/Mask
+              required: true
+            evpn_underlay_l3_multicast_group_ipv4_pool_offset:
+              type: int
+              convert_types:
+                - str
+            evpn_peg:
+              type: list
+              description: |
+                For each group of nodes, allow configuration of EVPN PEG options (Optional)
+                The first group of settings where the device's hostname is present in the 'nodes' list will be used.
+              items:
+                type: dict
+                keys:
+                  nodes:
+                    description: (Optional) will apply to all nodes with RP addresses configured if not set.
+                    type: list
+                    items:
+                      type: str
+                  transit:
+                    description: Enable EVPN PEG transit mode
+                    type: bool
+        pim_rp_addresses:
+          description: |
+            For each group of nodes, allow configuration of RP Addresses & associated groups
+          type: list
+          items:
+            type: dict
+            keys:
+              rps:
+                description: A minimum of one RP must be specified
+                type: list
+                items:
+                  type: str
+                  description: RP address
+              nodes:
+                description: (Optional) will apply to all nodes with RP addresses configured if not set.
+                type: list
+                items:
+                  type: str
+              groups:
+                type: list
+                items:
+                  type: str
+                  description: Group_prefix/mask
+        igmp_snooping_querier:
+          description: |
+            Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
+            When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              description: Will be enabled automatically if "evpn_l2_multicast" is enabled.
+            source_address:
+              type: str
+              format: ipv4
+              description: Default IP address of Loopback0
+            version:
+              type: int
+              convert_types:
+                - str
+              valid_values:
+                - 1
+                - 2
+                - 3
+              default: 2
         vrfs:
           type: list
           primary_key: name
@@ -297,7 +491,7 @@ keys:
                       keys:
                         enabled:
                           type: bool
-                          default: false
+                          description: Will be enabled automatically if evpn_l2_multicast is enabled.
                         source_address:
                           type: str
                           description: |
@@ -985,6 +1179,7 @@ keys:
                 description: |
                   Explicitly enable or disable evpn_l2_multicast to override setting of tenants.<tenant>.evpn_l2_multicast.enabled.
                   When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled - overriding those individual settings.
+
               igmp_snooping_enabled:
                 type: bool
                 default: true
@@ -997,7 +1192,6 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    default: false
                     description: Will be enabled automatically if evpn_l2_multicast is enabled.
                   source_address:
                     type: str

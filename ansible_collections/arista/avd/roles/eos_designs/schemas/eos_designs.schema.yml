@@ -793,26 +793,25 @@ keys:
                 based on underlay_rfc5549 and include_in_underlay_protocol)
               type: bool
             isis_authentication_key:
-              default: $1c$sTNAlR6rKSw=
-              description: IS-IS parameters
+              description: type-7 encrypted password
               type: str
             isis_authentication_mode:
-              default: md5
-              description: IS-IS parameters
               type: str
+              valid_values:
+              - md5
+              - text
             isis_circuit_type:
-              default: level-2
-              description: IS-IS parameters
               type: str
+              valid_values:
+              - level-1
+              - level-2
+              - level-1-2
             isis_hello_padding:
               default: false
-              description: IS-IS parameters
               type: bool
             isis_metric:
               convert_types:
               - str
-              default: 60
-              description: IS-IS parameters
               type: int
             macsec_profile:
               description: MAC security profile
@@ -884,7 +883,7 @@ keys:
               description: The values can be speed or auto speed or forced speed
               type: str
             subnet:
-              description: IPv4 address/Mask. Subnet used on this P2P link or Optional
+              description: IPv4 address/Mask. Subnet used on this P2P link (Optional)
               type: str
           type: dict
         type: list
@@ -1443,106 +1442,11 @@ keys:
       '
     keys:
       p2p_links:
-        description: Any setting supported under p2p_links can be set and inherited
-          from profile
-        items:
-          keys:
-            as:
-              description: AS Numbers for BGP, required with bgp peering
-              items:
-                type: str
-              type: list
-            bfd:
-              default: false
-              description: Enable BFD (only considered for BGP)
-              type: bool
-            id:
-              convert_types:
-              - str
-              description: Unique id per subnet_summary (starting from 1). Used to
-                calculate ip addresses, required with ip_pool
-              type: int
-            include_in_underlay_protocol:
-              default: false
-              description: Add this interface to underlay routing protocol
-              type: bool
-            interfaces:
-              description: Interfaces where this link should be configured
-              items:
-                type: str
-              required: true
-              type: list
-            ip:
-              description: Specific IP addresses used on this P2P link, Optional (Requires
-                ip_pool or subnet or ip)
-              items:
-                type: str
-              type: list
-            ip_pool:
-              description: IP Pool defined under p2p_links_ip_pools. A /31 will be
-                taken from the pool per P2P link, Optional (Requires ip_pool or subnet
-                or ip)
-              type: str
-            macsec_profile:
-              description: MAC Security Profile
-              type: str
-            mtu:
-              convert_types:
-              - str
-              description: MTU for this P2P link
-              type: int
-            nodes:
-              description: Nodes where this link should be configured
-              items:
-                type: str
-              required: true
-              type: list
-            profile:
-              description: Profile defined under p2p_profiles
-              type: str
-            ptp_enable:
-              default: false
-              description: Enable PTP
-              type: bool
-            qos_profile:
-              description: QOS Service Profile
-              type: str
-            speed:
-              description: The value can be < speed/auto speed/forced speed >
-              type: str
-            subnet:
-              description: Subnet used on this P2P link, Optional (Requires ip_pool
-                or subnet or ip)
-              type: str
-          type: dict
-        required: true
-        type: list
+        $ref: '#/keys/core_interfaces/keys/p2p_links'
       p2p_links_ip_pools:
-        convert_types:
-        - dict
-        items:
-          keys:
-            ipv4_pool:
-              description: IPv4_address/Mask
-              type: str
-            name:
-              type: str
-          type: dict
-        primary_key: name
-        secondary_key: ipv4_pool
-        type: list
+        $ref: '#/keys/core_interfaces/keys/p2p_links_ip_pools'
       p2p_links_profiles:
-        convert_types:
-        - dict
-        description: Any setting supported under p2p_links can be set and inherited
-          from profile
-        items:
-          keys:
-            name:
-              type: str
-          type: dict
-        primary_key: name
-        type: list
+        $ref: '#/keys/core_interfaces/keys/p2p_links_profiles'
     type: dict
   local_users:
     convert_types:
@@ -1688,6 +1592,115 @@ keys:
     - dict
     items:
       keys:
+        bgp_peer_groups:
+          description: 'Dictionary of BGP peer groups definitions (Optional).
+
+            This will configure BGP peer groups to be used inside the tenant VRF for
+            peering with external devices.
+
+            Since BGP peer groups are configured at higher BGP level, shared between
+            VRFs,
+
+            peer_group names should not overlap between VRFs.
+
+            '
+          items:
+            keys:
+              bfd:
+                type: bool
+              default_originate:
+                keys:
+                  always:
+                    type: bool
+                  enabled:
+                    type: bool
+                type: dict
+              description:
+                type: str
+              ebgp_multihop:
+                convert_types:
+                - str
+                max: 255
+                min: 1
+                type: int
+              local_as:
+                convert_types:
+                - int
+                description: 'Local BGP ASN
+
+                  eg. "65001.1200"
+
+                  '
+                type: str
+              maximum_routes:
+                convert_types:
+                - str
+                max: 4294967294
+                min: 0
+                type: int
+              name:
+                description: BGP peer group name
+                type: str
+              next_hop_self:
+                type: bool
+              nodes:
+                description: 'Nodes is required to restrict configuration of BGP neighbors
+                  to certain nodes in the network.
+
+                  If not set the peer-group is created on the device which has a bgp_peer
+                  mapped to corresponding peer_group.
+
+                  '
+                items:
+                  type: str
+                type: list
+              remote_as:
+                convert_types:
+                - str
+                description: Remote ASN
+                type: int
+              route_map_in:
+                description: Route-map name
+                type: str
+              route_map_out:
+                description: Route-map name
+                type: str
+              send_community:
+                description: '''all'' or a combination of ''standard'', ''extended'',
+                  ''large'' and ''link-bandwidth (w/options)''
+
+                  '
+                type: str
+              set_ipv4_next_hop:
+                description: 'IPv4_address
+
+                  Next hop settings can be either ipv4 or ipv6 for one neighbor, this
+                  will be applied by a uniquely generated route-map per neighbor.
+
+                  Next hop takes precedence over route_map_out.
+
+                  '
+                type: str
+              set_ipv6_next_hop:
+                description: 'IPv6_address
+
+                  Next hop settings can be either ipv4 or ipv6 for one neighbor, this
+                  will be applied by a uniquely generated route-map per neighbor.
+
+                  Next hop takes precedence over route_map_out.
+
+                  '
+                type: str
+              update_source:
+                type: str
+              weight:
+                convert_types:
+                - str
+                max: 65535
+                min: 0
+                type: int
+            type: dict
+          type: list
         enable_mlag_ibgp_peering_vrfs:
           description: 'MLAG IBGP peering per VRF.
 
@@ -1702,6 +1715,106 @@ keys:
 
             '
           type: bool
+        evpn_l2_multicast:
+          description: "Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant
+            | Optional\n- Multicast group binding is created only for Multicast traffic.
+            BULL traffic will use ingress-replication\n- Configures binding between
+            VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n
+            \ < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id
+            - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset
+            >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8
+            Source-Specific Multicast range.\n- Enables `redistribute igmp` on the
+            router bgp MAC VRF.\n- When evpn_l2_multicast.enabled is true for a VLAN
+            or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always
+            be enabled - overriding those individual settings.\n"
+          keys:
+            enabled:
+              type: bool
+            underlay_l2_multicast_group_ipv4_pool:
+              description: IPv4_address/Mask
+              type: str
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              convert_types:
+              - str
+              type: int
+          type: dict
+        evpn_l3_multicast:
+          description: "Enable L3 Multicast for all SVIs and l3vlans within Tenant
+            | Optional\n- In the evpn-l3ls design type, this enables L3 EVPN Multicast
+            (aka OISM)\n- Multicast group binding for VRF is created only for Multicast
+            traffic. BULL traffic will use ingress-replication\n- Configures binding
+            between VXLAN, VLAN, and multicast group IPv4 address using the following
+            formula:\n  < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool
+            > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
+            >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8
+            Source-Specific Multicast range.\n- If enabled on an SVI using the anycast
+            default gateway feature, a diagnostic loopback (see below) MUST be configured
+            to source IGMP traffic.\n- Enables `evpn multicast` on the router bgp
+            VRF.\n- When enabled on an SVI:\n     - If switch is part of an MLAG pair,
+            enables \"pim ipv4 sparse-mode\" on the SVI.\n     - If switch is standalone
+            or A-A MH, enables \"ip igmp\" on the SVI.\n     - If \"ip address virtual\"
+            is configured, enables \"pim ipv4 local-interface\" and uses the diagnostic
+            Loopback defined in the VRF\n"
+          keys:
+            enabled:
+              type: bool
+            evpn_peg:
+              description: 'For each group of nodes, allow configuration of EVPN PEG
+                options (Optional)
+
+                The first group of settings where the device''s hostname is present
+                in the ''nodes'' list will be used.
+
+                '
+              items:
+                keys:
+                  nodes:
+                    description: (Optional) will apply to all nodes with RP addresses
+                      configured if not set.
+                    items:
+                      type: str
+                    type: list
+                  transit:
+                    description: Enable EVPN PEG transit mode
+                    type: bool
+                type: dict
+              type: list
+            evpn_underlay_l3_multicast_group_ipv4_pool:
+              description: IPv4_address/Mask
+              required: true
+              type: str
+            evpn_underlay_l3_multicast_group_ipv4_pool_offset:
+              convert_types:
+              - str
+              type: int
+          type: dict
+        igmp_snooping_querier:
+          description: 'Enable IGMP snooping querier for each SVI/l2vlan within tenant,
+            by default using IP address of Loopback 0.
+
+            When enabled, IGMP snooping querier will only be configured on L3 devices,
+            i.e., uplink_type: p2p.
+
+            '
+          keys:
+            enabled:
+              description: Will be enabled automatically if "evpn_l2_multicast" is
+                enabled.
+              type: bool
+            source_address:
+              description: Default IP address of Loopback0
+              format: ipv4
+              type: str
+            version:
+              convert_types:
+              - str
+              default: 2
+              type: int
+              valid_values:
+              - 1
+              - 2
+              - 3
+          type: dict
         l2vlans:
           convert_types:
           - dict
@@ -1748,7 +1861,6 @@ keys:
                   '
                 keys:
                   enabled:
-                    default: false
                     description: Will be enabled automatically if evpn_l2_multicast
                       is enabled.
                     type: bool
@@ -1869,6 +1981,32 @@ keys:
             '
           required: true
           type: str
+        pim_rp_addresses:
+          description: 'For each group of nodes, allow configuration of RP Addresses
+            & associated groups
+
+            '
+          items:
+            keys:
+              groups:
+                items:
+                  description: Group_prefix/mask
+                  type: str
+                type: list
+              nodes:
+                description: (Optional) will apply to all nodes with RP addresses
+                  configured if not set.
+                items:
+                  type: str
+                type: list
+              rps:
+                description: A minimum of one RP must be specified
+                items:
+                  description: RP address
+                  type: str
+                type: list
+            type: dict
+          type: list
         vlan_aware_bundle_number_base:
           convert_types:
           - str
@@ -2571,7 +2709,8 @@ keys:
                     igmp_snooping_querier:
                       keys:
                         enabled:
-                          default: false
+                          description: Will be enabled automatically if evpn_l2_multicast
+                            is enabled.
                           type: bool
                         source_address:
                           description: 'IPv4_address
