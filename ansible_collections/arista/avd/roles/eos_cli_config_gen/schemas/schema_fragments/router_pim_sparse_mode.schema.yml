@@ -33,19 +33,6 @@ keys:
                   - dict
                   items:
                     type: str
-                access_lists:
-                  type: list
-                  items:
-                    type: dict
-                    keys:
-                      access_list:
-                        type: str
-                      priority:
-                        type: int
-                      hashmask:
-                        type: int
-                      override:
-                        type: bool
           anycast_rps:
             type: list
             primary_key: address
@@ -100,3 +87,20 @@ keys:
                         type: list
                         items:
                           type: str
+                      access_lists:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            access_list:
+                              type: str
+                            priority:
+                              type: int
+                              min: 0
+                              max: 255
+                            hashmask:
+                              type: int
+                              min: 0
+                              max: 32
+                            override:
+                              type: bool

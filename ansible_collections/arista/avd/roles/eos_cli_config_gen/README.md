@@ -2196,8 +2196,8 @@ router_pim_sparse_mode:
               - < group_prefix_2/mask >
             access_lists:
               - access_list: < access_list_name >
-                priority: < int >
-                hashmask: < int >
+                priority: < 0-255 >
+                hashmask: < 0-32 >
                 override: < bool >
 ```
 
