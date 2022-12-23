@@ -95,9 +95,9 @@ BFD enabled: False
 
 ##### IP Rendezvous Information
 
-| Rendezvous Point Address | Group Address |
-| ------------------------ | ------------- |
-| 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32, 239.12.12.14/32, 239.12.12.16/32, 239.12.12.20/32, 239.12.12.21/32 |
+| Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
+| 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32, 239.12.12.14/32, 239.12.12.16/32, 239.12.12.20/32, 239.12.12.21/32 | - | - | - | - |
 
 ##### IP Anycast Information
 
@@ -112,10 +112,10 @@ BFD enabled: False
 | MCAST_VRF1 | False |
 | MCAST_VRF2_ALL_GROUPS | False |
 
-| VRF Name | Rendezvous Point Address | Group Address |
-| -------- | ------------------------ | ------------- |
-| MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
-| MCAST_VRF2_ALL_GROUPS | 10.238.3.161 | - |
+| VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 | - | - | - | - |
+| MCAST_VRF2_ALL_GROUPS | 10.238.3.161 | - | - | - | - | - |
 
 #### Router Multicast Device Configuration
 

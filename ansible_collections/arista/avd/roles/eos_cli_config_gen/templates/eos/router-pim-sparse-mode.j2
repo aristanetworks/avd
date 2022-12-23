@@ -21,16 +21,16 @@ router pim sparse-mode
 {%             if rp_address.groups is arista.avd.defined or rp_address.access_lists is arista.avd.defined %}
 {%                 if rp_address.groups is arista.avd.defined %}
 {%                     for group in rp_address.groups | arista.avd.natural_sort %}
-         rp address {{ rp_address.address }} {{ group }}{{ rp_options_cli }}
+      rp address {{ rp_address.address }} {{ group }}{{ rp_options_cli }}
 {%                     endfor %}
 {%                 endif %}
 {%                 if rp_address.access_lists is arista.avd.defined %}
 {%                     for access_list in rp_address.access_lists | arista.avd.natural_sort %}
-         rp address {{ rp_address.address }} access-list {{ access_list }}{{ rp_options_cli }}
+      rp address {{ rp_address.address }} access-list {{ access_list }}{{ rp_options_cli }}
 {%                     endfor %}
 {%                 endif %}
 {%             else %}
-         rp address {{ rp_address.address }}{{ rp_options_cli }}
+      rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%             endif %}
 {%         endfor %}
 {%         for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
