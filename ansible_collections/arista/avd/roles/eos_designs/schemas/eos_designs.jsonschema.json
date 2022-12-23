@@ -962,32 +962,33 @@
                 "title": "IPv6 Enable"
               },
               "isis_authentication_key": {
-                "default": "$1c$sTNAlR6rKSw=",
-                "description": "IS-IS parameters",
+                "description": "type-7 encrypted password",
                 "type": "string",
                 "title": "ISIS Authentication Key"
               },
               "isis_authentication_mode": {
-                "default": "md5",
-                "description": "IS-IS parameters",
                 "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
                 "title": "ISIS Authentication Mode"
               },
               "isis_circuit_type": {
-                "default": "level-2",
-                "description": "IS-IS parameters",
                 "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
                 "title": "ISIS Circuit Type"
               },
               "isis_hello_padding": {
                 "default": false,
-                "description": "IS-IS parameters",
                 "type": "boolean",
                 "title": "ISIS Hello Padding"
               },
               "isis_metric": {
-                "default": 60,
-                "description": "IS-IS parameters",
                 "type": "integer",
                 "title": "ISIS Metric"
               },
@@ -1085,7 +1086,7 @@
                 "title": "Speed"
               },
               "subnet": {
-                "description": "IPv4 address/Mask. Subnet used on this P2P link or Optional",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional)",
                 "type": "string",
                 "title": "Subnet"
               }
@@ -1621,154 +1622,18 @@
       "description": "The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.\n\nThe data model supports using IP pools, Subnet per link or specifying the IP addresses manually.\nFor BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).\n\nMake sure to configure the variables in a group_vars file covering all devices mentioned in the data model.\n",
       "properties": {
         "p2p_links": {
-          "description": "Any setting supported under p2p_links can be set and inherited from profile",
-          "items": {
-            "properties": {
-              "as": {
-                "description": "AS Numbers for BGP, required with bgp peering",
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "title": "As"
-              },
-              "bfd": {
-                "default": false,
-                "description": "Enable BFD (only considered for BGP)",
-                "type": "boolean",
-                "title": "BFD"
-              },
-              "id": {
-                "description": "Unique id per subnet_summary (starting from 1). Used to calculate ip addresses, required with ip_pool",
-                "type": "integer",
-                "title": "ID"
-              },
-              "include_in_underlay_protocol": {
-                "default": false,
-                "description": "Add this interface to underlay routing protocol",
-                "type": "boolean",
-                "title": "Include In Underlay Protocol"
-              },
-              "interfaces": {
-                "description": "Interfaces where this link should be configured",
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "title": "Interfaces"
-              },
-              "ip": {
-                "description": "Specific IP addresses used on this P2P link, Optional (Requires ip_pool or subnet or ip)",
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "title": "IP"
-              },
-              "ip_pool": {
-                "description": "IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link, Optional (Requires ip_pool or subnet or ip)",
-                "type": "string",
-                "title": "IP Pool"
-              },
-              "macsec_profile": {
-                "description": "MAC Security Profile",
-                "type": "string",
-                "title": "Macsec Profile"
-              },
-              "mtu": {
-                "description": "MTU for this P2P link",
-                "type": "integer",
-                "title": "MTU"
-              },
-              "nodes": {
-                "description": "Nodes where this link should be configured",
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "title": "Nodes"
-              },
-              "profile": {
-                "description": "Profile defined under p2p_profiles",
-                "type": "string",
-                "title": "Profile"
-              },
-              "ptp_enable": {
-                "default": false,
-                "description": "Enable PTP",
-                "type": "boolean",
-                "title": "PTP Enable"
-              },
-              "qos_profile": {
-                "description": "QOS Service Profile",
-                "type": "string",
-                "title": "QOS Profile"
-              },
-              "speed": {
-                "description": "The value can be < speed/auto speed/forced speed >",
-                "type": "string",
-                "title": "Speed"
-              },
-              "subnet": {
-                "description": "Subnet used on this P2P link, Optional (Requires ip_pool or subnet or ip)",
-                "type": "string",
-                "title": "Subnet"
-              }
-            },
-            "required": [
-              "interfaces",
-              "nodes"
-            ],
-            "additionalProperties": false,
-            "type": "object"
-          },
-          "type": "array",
+          "$ref": "#/keys/core_interfaces/keys/p2p_links",
           "title": "P2P Links"
         },
         "p2p_links_ip_pools": {
-          "items": {
-            "properties": {
-              "ipv4_pool": {
-                "description": "IPv4_address/Mask",
-                "type": "string",
-                "title": "IPv4 Pool"
-              },
-              "name": {
-                "type": "string",
-                "title": "Name"
-              }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-              "name"
-            ]
-          },
-          "type": "array",
+          "$ref": "#/keys/core_interfaces/keys/p2p_links_ip_pools",
           "title": "P2P Links IP Pools"
         },
         "p2p_links_profiles": {
-          "description": "Any setting supported under p2p_links can be set and inherited from profile",
-          "items": {
-            "properties": {
-              "name": {
-                "type": "string",
-                "title": "Name"
-              }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-              "name"
-            ]
-          },
-          "type": "array",
+          "$ref": "#/keys/core_interfaces/keys/p2p_links_profiles",
           "title": "P2P Links Profiles"
         }
       },
-      "required": [
-        "p2p_links"
-      ],
       "additionalProperties": false,
       "type": "object",
       "title": "L3 Edge"
@@ -1945,10 +1810,216 @@
     "network_services": {
       "items": {
         "properties": {
+          "bgp_peer_groups": {
+            "description": "Dictionary of BGP peer groups definitions (Optional).\nThis will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.\nSince BGP peer groups are configured at higher BGP level, shared between VRFs,\npeer_group names should not overlap between VRFs.\n",
+            "items": {
+              "properties": {
+                "bfd": {
+                  "type": "boolean",
+                  "title": "BFD"
+                },
+                "default_originate": {
+                  "properties": {
+                    "always": {
+                      "type": "boolean",
+                      "title": "Always"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object",
+                  "title": "Default Originate"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "ebgp_multihop": {
+                  "maximum": 255,
+                  "minimum": 1,
+                  "type": "integer",
+                  "title": "Ebgp Multihop"
+                },
+                "local_as": {
+                  "description": "Local BGP ASN\neg. \"65001.1200\"\n",
+                  "type": "string",
+                  "title": "Local As"
+                },
+                "maximum_routes": {
+                  "maximum": 4294967294,
+                  "minimum": 0,
+                  "type": "integer",
+                  "title": "Maximum Routes"
+                },
+                "name": {
+                  "description": "BGP peer group name",
+                  "type": "string",
+                  "title": "Name"
+                },
+                "next_hop_self": {
+                  "type": "boolean",
+                  "title": "Next Hop Self"
+                },
+                "nodes": {
+                  "description": "Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.\nIf not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.\n",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Nodes"
+                },
+                "remote_as": {
+                  "description": "Remote ASN",
+                  "type": "integer",
+                  "title": "Remote As"
+                },
+                "route_map_in": {
+                  "description": "Route-map name",
+                  "type": "string",
+                  "title": "Route Map In"
+                },
+                "route_map_out": {
+                  "description": "Route-map name",
+                  "type": "string",
+                  "title": "Route Map Out"
+                },
+                "send_community": {
+                  "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'\n",
+                  "type": "string",
+                  "title": "Send Community"
+                },
+                "set_ipv4_next_hop": {
+                  "description": "IPv4_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                  "type": "string",
+                  "title": "Set IPv4 Next Hop"
+                },
+                "set_ipv6_next_hop": {
+                  "description": "IPv6_address\nNext hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.\nNext hop takes precedence over route_map_out.\n",
+                  "type": "string",
+                  "title": "Set IPv6 Next Hop"
+                },
+                "update_source": {
+                  "type": "string",
+                  "title": "Update Source"
+                },
+                "weight": {
+                  "maximum": 65535,
+                  "minimum": 0,
+                  "type": "integer",
+                  "title": "Weight"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "BGP Peer Groups"
+          },
           "enable_mlag_ibgp_peering_vrfs": {
             "description": "MLAG IBGP peering per VRF.\nBy default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.\nSetting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.\nThis setting can be overridden per VRF.\n",
             "type": "boolean",
             "title": "Enable MLAG Ibgp Peering VRFs"
+          },
+          "evpn_l2_multicast": {
+            "description": "Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant | Optional\n- Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication\n- Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n  < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.\n- Enables `redistribute igmp` on the router bgp MAC VRF.\n- When evpn_l2_multicast.enabled is true for a VLAN or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled - overriding those individual settings.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "underlay_l2_multicast_group_ipv4_pool": {
+                "description": "IPv4_address/Mask",
+                "type": "string",
+                "title": "Underlay L2 Multicast Group IPv4 Pool"
+              },
+              "underlay_l2_multicast_group_ipv4_pool_offset": {
+                "type": "integer",
+                "title": "Underlay L2 Multicast Group IPv4 Pool Offset"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "EVPN L2 Multicast"
+          },
+          "evpn_l3_multicast": {
+            "description": "Enable L3 Multicast for all SVIs and l3vlans within Tenant | Optional\n- In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)\n- Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication\n- Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n  < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.\n- If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.\n- Enables `evpn multicast` on the router bgp VRF.\n- When enabled on an SVI:\n     - If switch is part of an MLAG pair, enables \"pim ipv4 sparse-mode\" on the SVI.\n     - If switch is standalone or A-A MH, enables \"ip igmp\" on the SVI.\n     - If \"ip address virtual\" is configured, enables \"pim ipv4 local-interface\" and uses the diagnostic Loopback defined in the VRF\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "evpn_peg": {
+                "description": "For each group of nodes, allow configuration of EVPN PEG options (Optional)\nThe first group of settings where the device's hostname is present in the 'nodes' list will be used.\n",
+                "items": {
+                  "properties": {
+                    "nodes": {
+                      "description": "(Optional) will apply to all nodes with RP addresses configured if not set.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array",
+                      "title": "Nodes"
+                    },
+                    "transit": {
+                      "description": "Enable EVPN PEG transit mode",
+                      "type": "boolean",
+                      "title": "Transit"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object"
+                },
+                "type": "array",
+                "title": "EVPN Peg"
+              },
+              "evpn_underlay_l3_multicast_group_ipv4_pool": {
+                "description": "IPv4_address/Mask",
+                "type": "string",
+                "title": "EVPN Underlay L3 Multicast Group IPv4 Pool"
+              },
+              "evpn_underlay_l3_multicast_group_ipv4_pool_offset": {
+                "type": "integer",
+                "title": "EVPN Underlay L3 Multicast Group IPv4 Pool Offset"
+              }
+            },
+            "required": [
+              "evpn_underlay_l3_multicast_group_ipv4_pool"
+            ],
+            "additionalProperties": false,
+            "type": "object",
+            "title": "EVPN L3 Multicast"
+          },
+          "igmp_snooping_querier": {
+            "description": "Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.\nWhen enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.\n",
+            "properties": {
+              "enabled": {
+                "description": "Will be enabled automatically if \"evpn_l2_multicast\" is enabled.",
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "source_address": {
+                "description": "Default IP address of Loopback0",
+                "format": "ipv4",
+                "type": "string",
+                "title": "Source Address"
+              },
+              "version": {
+                "default": 2,
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  3
+                ],
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "title": "IGMP Snooping Querier"
           },
           "l2vlans": {
             "description": "Define L2 network services organized by vlan id.",
@@ -1988,7 +2059,6 @@
                   "description": "Enable igmp snooping querier, by default using IP address of Loopback 0.\nWhen enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.\n",
                   "properties": {
                     "enabled": {
-                      "default": false,
                       "description": "Will be enabled automatically if evpn_l2_multicast is enabled.",
                       "type": "boolean",
                       "title": "Enabled"
@@ -2084,6 +2154,42 @@
             "description": "Specify a tenant name.\nTenant provide a construct to group L3 VRFs and L2 VLANs.\nNetworks services can be filtered by tenant name.\n",
             "type": "string",
             "title": "Name"
+          },
+          "pim_rp_addresses": {
+            "description": "For each group of nodes, allow configuration of RP Addresses & associated groups\n",
+            "items": {
+              "properties": {
+                "groups": {
+                  "items": {
+                    "description": "Group_prefix/mask",
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Groups"
+                },
+                "nodes": {
+                  "description": "(Optional) will apply to all nodes with RP addresses configured if not set.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Nodes"
+                },
+                "rps": {
+                  "description": "A minimum of one RP must be specified",
+                  "items": {
+                    "description": "RP address",
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "RPs"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "PIM RP Addresses"
           },
           "vlan_aware_bundle_number_base": {
             "default": 0,
@@ -2816,7 +2922,7 @@
                       "igmp_snooping_querier": {
                         "properties": {
                           "enabled": {
-                            "default": false,
+                            "description": "Will be enabled automatically if evpn_l2_multicast is enabled.",
                             "type": "boolean",
                             "title": "Enabled"
                           },

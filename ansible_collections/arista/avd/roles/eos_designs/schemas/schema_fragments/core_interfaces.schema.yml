@@ -86,7 +86,7 @@ keys:
               description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link
             subnet:
               type: str
-              description: IPv4 address/Mask. Subnet used on this P2P link or Optional
+              description: IPv4 address/Mask. Subnet used on this P2P link (Optional)
             ip:
               type: list
               description: Specific IP addresses used on this P2P link
@@ -127,25 +127,24 @@ keys:
             isis_hello_padding:
               type: bool
               default: false
-              description: IS-IS parameters
             isis_metric:
               type: int
               convert_types:
                 - str
-              default: 60
-              description: IS-IS parameters
             isis_circuit_type:
               type: str
-              default: level-2
-              description: IS-IS parameters
+              valid_values:
+                - level-1
+                - level-2
+                - level-1-2
             isis_authentication_mode:
               type: str
-              default: md5
-              description: IS-IS parameters
+              valid_values:
+                - md5
+                - text
             isis_authentication_key:
               type: str
-              default: $1c$sTNAlR6rKSw=
-              description: IS-IS parameters
+              description: type-7 encrypted password
             mpls_ip:
               type: bool
               description: MPLS parameters. Default value is true if switch.mpls_lsr is true
