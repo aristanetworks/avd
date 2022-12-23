@@ -55,7 +55,7 @@ EXAMPLES = r"""
   tags: [build, provision]
   configlet_build_config:
     configlet_dir: '/path/to/configlets/folder/'
-    configlet_prefix: 'AVD_'
+    configlet_prefix: 'AVD'
     configlet_extension: 'cfg'
 """
 
@@ -75,16 +75,16 @@ except ImportError:
     YAML_IMP_ERR = traceback.format_exc()
 
 
-def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
+def get_configlet(src_folder, prefix, extension="cfg"):
     """
     Get available configlets to deploy to CVP.
 
     Parameters
     ----------
-    src_folder : str, optional
+    src_folder : str
         Path where to find configlet, by default ""
-    prefix : str, optional
-        Prefix to append to configlet name, by default 'AVD'
+    prefix : str
+        Prefix to append to configlet name
     extension : str, optional
         File extension to lookup configlet file, by default 'cfg'
 
@@ -93,6 +93,9 @@ def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
     dict
         Dictionary of configlets found in source folder.
     """
+    if src_folder is None:
+        src_folder = ""
+
     src_configlets = glob.glob(src_folder + "/*." + extension)
     configlets = {}
     for file in src_configlets:
