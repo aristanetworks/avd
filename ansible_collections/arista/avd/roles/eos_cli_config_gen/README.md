@@ -2194,6 +2194,11 @@ router_pim_sparse_mode:
             groups:
               - < group_prefix_1/mask >
               - < group_prefix_2/mask >
+            access_lists:
+              - access_list: < access_list_name >
+                priority: < int >
+                hashmask: < int >
+                override: < bool >
 ```
 
 ### Monitoring
