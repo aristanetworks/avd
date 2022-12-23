@@ -62,7 +62,7 @@ default_platform_settings:
       non_mlag: 330
     feature_support:
       queue_monitor_length_notify: false
-  - platforms: ['7280R', '7280R2']
+  - platforms: ['7280R', '7280R2', '7020R']
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
