@@ -59,3 +59,20 @@ class AvdConversionWarning(AristaAvdError):
         else:
             self.message = message
         super().__init__(self.message)
+
+
+class AvdDeprecationWarning(AristaAvdError):
+    def __init__(self, key, new_key=None, remove_in_version=None, remove_after_date=None):
+        messages = [f"The input data model '{key}' is deprecated."]
+        self.version = remove_in_version
+        self.date = remove_after_date
+        # if remove_in_version is not None:
+        #     messages.append(f"Support will be removed in AVD {remove_in_version}.")
+        # elif remove_after_date is not None:
+        #     messages.append(f"Support will be removed the first major AVD version released after {remove_after_date}.")
+
+        if new_key is not None:
+            messages.append(f"Use '{new_key}' instead.")
+
+        self.message = " ".join(messages)
+        super().__init__(self.message)

@@ -120,6 +120,8 @@ class AvdSchema:
             yield self._error_handler(error)
 
     def _error_handler(self, error: Exception):
+        if isinstance(error, AristaAvdError):
+            return error
         if isinstance(error, jsonschema.ValidationError):
             return AvdValidationError(error=error)
         if isinstance(error, jsonschema.SchemaError):
