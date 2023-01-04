@@ -72,7 +72,11 @@ router_bgp:
       remote_as: '65001'
     1.1.1.1:
       peer_group: EVPN-OVERLAY-CORE
-      description: MY_EVPN_GW_USER_DEFINED
+      description: MY_EVPN_GW1_USER_DEFINED
+      remote_as: '65555'
+    2.2.2.2:
+      peer_group: EVPN-OVERLAY-CORE
+      description: MY_EVPN_GW2_USER_DEFINED
       remote_as: '65555'
   address_family_evpn:
     neighbor_default:
