@@ -54,7 +54,7 @@ class UtilsMixin:
 
         evpn_gateway_remote_peers = {}
 
-        for gw_remote_peer_dict in sorted(get(self._hostvars, "switch.evpn_gateway_remote_peers", default=[])):
+        for gw_remote_peer_dict in natural_sort(get(self._hostvars, "switch.evpn_gateway_remote_peers", default=[]), sort_key="hostname"):
             # These remote gw can be outside of the inventory
             gw_remote_peer = gw_remote_peer_dict["hostname"]
             peer_facts = self._get_peer_facts(gw_remote_peer, required=False)
@@ -115,7 +115,7 @@ class UtilsMixin:
 
         evpn_route_servers = {}
 
-        for route_server in sorted(get(self._hostvars, "switch.evpn_route_servers", default=[])):
+        for route_server in natural_sort(get(self._hostvars, "switch.evpn_route_servers", default=[])):
             peer_facts = self._get_peer_facts(route_server)
             if not peer_facts or peer_facts.get("evpn_role") != "server":
                 continue
@@ -228,7 +228,7 @@ class UtilsMixin:
 
         mpls_route_reflectors = {}
 
-        for route_reflector in sorted(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
+        for route_reflector in natural_sort(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
             if route_reflector == self._hostname:
                 continue
 
@@ -247,7 +247,7 @@ class UtilsMixin:
 
         mpls_rr_peers = {}
 
-        for route_reflector in sorted(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
+        for route_reflector in natural_sort(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
             if route_reflector == self._hostname:
                 continue
 
