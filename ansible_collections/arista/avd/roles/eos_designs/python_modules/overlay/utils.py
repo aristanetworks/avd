@@ -54,7 +54,7 @@ class UtilsMixin:
 
         evpn_gateway_remote_peers = {}
 
-        for gw_remote_peer_dict in natural_sort(get(self._hostvars, "switch.evpn_gateway_remote_peers", default=[])):
+        for gw_remote_peer_dict in natural_sort(get(self._hostvars, "switch.evpn_gateway_remote_peers", default=[]), sort_key="hostname"):
             # These remote gw can be outside of the inventory
             gw_remote_peer = gw_remote_peer_dict["hostname"]
             peer_facts = self._get_peer_facts(gw_remote_peer, required=False)
