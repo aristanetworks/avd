@@ -57,6 +57,7 @@ interface Management1
 | -----| ----- |
 | Console | informational |
 | Monitor | debugging |
+| Buffer | - |
 
 **Syslog facility value:** syslog
 
@@ -64,6 +65,7 @@ interface Management1
 
 ```eos
 !
+logging buffered 64000
 logging console informational
 logging monitor debugging
 logging facility syslog
