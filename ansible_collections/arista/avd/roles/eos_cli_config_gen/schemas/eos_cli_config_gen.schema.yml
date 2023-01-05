@@ -9701,9 +9701,6 @@ keys:
           type: str
           description: 'IPv6_address/Mask
 
-            "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of
-            the new "ipv6_address_virtuals"
-
             If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
             addresses will be configured
 

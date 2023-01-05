@@ -14370,7 +14370,7 @@
           },
           "ipv6_address_virtual": {
             "type": "string",
-            "description": "IPv6_address/Mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "description": "IPv6_address/Mask\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
             "title": "IPv6 Address Virtual"
           },
           "ipv6_address_virtuals": {
