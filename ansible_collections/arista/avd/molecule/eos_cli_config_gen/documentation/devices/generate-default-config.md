@@ -41,7 +41,7 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ### IP Routing Device Configuration
 
@@ -53,7 +53,7 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 # Multicast
 

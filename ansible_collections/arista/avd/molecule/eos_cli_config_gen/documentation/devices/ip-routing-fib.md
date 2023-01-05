@@ -32,7 +32,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -68,7 +68,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
+| default | true |
 
 ### IP Routing Device Configuration
 
@@ -83,7 +83,7 @@ ip hardware fib optimize prefixes profile urpf-internet
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
+| default | true |
 
 ### IPv6 Routing Device Configuration
 

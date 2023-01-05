@@ -33,7 +33,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -69,7 +69,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ### IP Routing Device Configuration
 
@@ -81,7 +81,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ## IPv6 Static Routes
 
@@ -94,7 +94,7 @@ interface Management1
 | default | 2a01:cb04:4e6:d400::/64 | 2a01:cb04:4e6:d100::1 | vlan101 | 200 | 666 | RT-TO-FAKE-DB-ZONE | 100 |
 | customer01 | 2a01:cb04:4e6:a300::/64 | 2a01:cb04:4e6:100::1 | vlan101 | 1 | - | - | - |
 | customer01 | 2a01:cb04:4e6:a400::/64 | 2a01:cb04:4e6:100::1 | vlan101 | 201 | 667 | RT-TO-FAKE-DMZ | - |
-| customer01 | 2b01:cb04:4e6:a400::/64 | 2a01:cb04:4e6:102::1 (tracked with BFD) | vlan102 | 201 | 102 | Track-BFD | 100 |
+| customer01 | 2b01:cb04:4e6:a400::/64 | 2a01:cb04:4e6:102::1 | vlan102 | 201 | 102 | Track-BFD | 100 |
 | customer01 | 2c01:cb04:4e6:a400::/64 | - | vlan102 | 201 | 102 | No-Track-BFD | - |
 
 ### Static Routes Device Configuration
@@ -106,7 +106,7 @@ ipv6 route 2a01:cb04:4e6:d400::/64 Vlan101 2a01:cb04:4e6:d100::1 200 tag 666 nam
 ipv6 route 2a01:cb04:4e6:d400::/64 Vlan101 2a01:cb04:4e6:d100::1 200 tag 666 name RT-TO-FAKE-DB-ZONE metric 100
 ipv6 route vrf customer01 2a01:cb04:4e6:a300::/64 Vlan101 2a01:cb04:4e6:100::1
 ipv6 route vrf customer01 2a01:cb04:4e6:a400::/64 Vlan101 2a01:cb04:4e6:100::1 201 tag 667 name RT-TO-FAKE-DMZ
-ipv6 route vrf customer01 2b01:cb04:4e6:a400::/64 Vlan102 2a01:cb04:4e6:102::1 track bfd 201 tag 102 name Track-BFD metric 100
+ipv6 route vrf customer01 2b01:cb04:4e6:a400::/64 Vlan102 2a01:cb04:4e6:102::1 201 tag 102 name Track-BFD metric 100
 ipv6 route vrf customer01 2c01:cb04:4e6:a400::/64 Vlan102 201 tag 102 name No-Track-BFD
 ```
 

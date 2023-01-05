@@ -36,7 +36,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -116,7 +116,7 @@ ip domain lookup vrf mgt source-interface Management0
 
 #### NTP Authentication Keys
 
-| ID | Algorithm |
+| ID | Algoritm |
 | -- | -------- |
 | 1 | md5 |
 | 2 | sha1 |
@@ -158,7 +158,7 @@ ntp server vrf mgt 10.10.111.2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ### IP Routing Device Configuration
 
@@ -170,7 +170,7 @@ ntp server vrf mgt 10.10.111.2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 # Multicast
 

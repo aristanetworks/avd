@@ -33,7 +33,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -69,7 +69,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ### IP Routing Device Configuration
 
@@ -81,7 +81,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ## Router BGP
 
@@ -126,13 +126,13 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
-| 192.168.255.3 | - | default | - | - | 52000 (warning-limit 2000, warning-only) | Allowed, allowed 5 times | - | - | - |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50 percent) | - | - | - | - |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.3 | - | default | - | - | 52000 (warning-limit 2000, warning-only) | Allowed, allowed 5 times | - | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50 percent) | - | - | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - |
 
 ### BGP Neighbor Interfaces
 
@@ -184,12 +184,12 @@ interface Management1
 
 ### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | IPv4: True<br>Transit: False |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
-| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
+| TENANT_A_PROJECT03 | 192.168.255.3:13 | - |
+| TENANT_A_PROJECT04 | 192.168.255.3:14 | - |
 
 ### Router BGP Device Configuration
 
@@ -309,8 +309,6 @@ router bgp 65101
    vrf TENANT_A_PROJECT03
       rd 192.168.255.3:13
       evpn multicast
-         address-family ipv4
-            transit
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.3

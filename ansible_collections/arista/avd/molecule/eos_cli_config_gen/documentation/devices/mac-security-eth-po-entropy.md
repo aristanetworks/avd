@@ -41,7 +41,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -66,9 +66,9 @@ interface Management1
 
 ## Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
-| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
+| ---------------- | --------------------- | -------------------- | ------------ |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY |
 
 ## Management Security Configuration
 
@@ -158,7 +158,7 @@ interface Port-Channel3
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 ### IP Routing Device Configuration
 
@@ -170,7 +170,7 @@ interface Port-Channel3
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
+| default | false |
 
 # Multicast
 
@@ -192,9 +192,9 @@ FIPS restrictions enabled.
 
 Settings:
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| aes128-gcm | 100 | 30 | True |
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+| aes128-gcm | 30 | True |
 
 Keys:
 
@@ -203,19 +203,13 @@ Keys:
 | 1234a | 025756085F535976 | - |
 | 1234c | 10195F4C5144405A | True |
 
-L2 Protocols:
-
-| L2 Protocol | Mode |
-| ----------- | ---- |
-| lldp | bypass unauthorized |
-
 **Profile A2:**
 
 Settings:
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+| - | - | - |
 
 Keys:
 
@@ -235,10 +229,8 @@ mac security
       cipher aes128-gcm
       key 1234a 7 025756085F535976
       key 1234c 7 10195F4C5144405A fallback
-      mka key-server priority 100
       mka session rekey-period 30
       sci
-      l2-protocol lldp bypass unauthorized
    profile A2
       key 1234b 7 12485744465E5A53
 ```
