@@ -5252,6 +5252,11 @@
             "type": "string",
             "description": "MAC address",
             "title": "MAC Address"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the management interface in the final EOS configuration",
+            "title": "EOS CLI"
           }
         },
         "required": [
