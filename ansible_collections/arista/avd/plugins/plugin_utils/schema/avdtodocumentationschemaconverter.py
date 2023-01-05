@@ -399,6 +399,23 @@ class AvdToDocumentationSchemaConverter:
             return "<br>".join(descriptions)
         return None
 
+    def deprecation(self, schema: dict):
+        if (deprecation := schema.get("deprecation")) is None:
+            return None
+
+        output = ["<span style='color:red'>This key is deprecated."]
+        if (remove_in_version := deprecation.get("remove_in_version")) is not None:
+            output.append(f"Support will be removed in AVD {remove_in_version}.")
+
+        elif (remove_after_date := deprecation.get("remove_after_date")) is not None:
+            output.append(f"Support will be removed the first major AVD version released after {remove_after_date}.")
+
+        if (new_key := deprecation.get("new_key")) is not None:
+            output.append(f"Use <samp>{new_key}</samp> instead.")
+
+        output.append("</span>")
+        return " ".join(output)
+
     def _get_tables(self, schema: dict):
         table = schema.get("documentation_options", {}).get("table", DEFAULT_TABLE)
         tables = [table]
