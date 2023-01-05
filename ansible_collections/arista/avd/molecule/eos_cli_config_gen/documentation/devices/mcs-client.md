@@ -5,6 +5,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
+  - [MCS client Summary](#mcs-client-summary)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
@@ -32,7 +33,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -47,6 +48,28 @@ interface Management1
 # Authentication
 
 # Monitoring
+
+## MCS client Summary
+
+MCS client is enabled
+
+| Secondary CVX cluster | Server Hosts | Enabled |
+| --------------------- | ------------ | ------- |
+| default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | True |
+
+### MCS client configuration
+
+```eos
+!
+mcs client
+   no shutdown
+   !
+   cvx secondary default
+      no shutdown
+      server host 10.90.224.188
+      server host 10.90.224.189
+      server host leaf2.atd.lab
+```
 
 # Internal VLAN Allocation Policy
 
@@ -68,7 +91,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -80,7 +103,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 

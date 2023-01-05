@@ -37,7 +37,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -248,7 +248,7 @@ interface Loopback2
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | false |
+| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | - | - |
 | Vlan4094 | MLAG_PEER | default | 1500 | - |
 
@@ -298,7 +298,7 @@ interface Vlan4094
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -310,7 +310,7 @@ interface Vlan4094
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ## Router ISIS
 

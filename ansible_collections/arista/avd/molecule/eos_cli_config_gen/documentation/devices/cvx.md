@@ -3,6 +3,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [CVX](#cvx)
+  - [CVX services](#cvx-services)
+  - [CVX configuration](#cvx-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -32,7 +35,7 @@
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
 ### Management Interfaces Device Configuration
 
@@ -42,6 +45,33 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+# CVX
+
+| Peer Hosts |
+| ---------- |
+| 1.1.1.1, 2.2.2.2 |
+
+CVX is enabled
+
+## CVX services
+
+| Service | Enabled | Settings |
+| ------- | ------- | -------- |
+| MCS | True | Redis Password Set |
+
+## CVX configuration
+
+```eos
+!
+cvx
+   no shutdown
+   peer host 1.1.1.1
+   peer host 2.2.2.2
+   service mcs
+      redis password 7 070E334ddD1D18
+      no shutdown
 ```
 
 # Authentication
@@ -68,7 +98,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 ### IP Routing Device Configuration
 
@@ -80,7 +110,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false |
+| default | False |
 
 # Multicast
 
