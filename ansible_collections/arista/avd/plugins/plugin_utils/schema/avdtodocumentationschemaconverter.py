@@ -413,6 +413,9 @@ class AvdToDocumentationSchemaConverter:
         if (new_key := deprecation.get("new_key")) is not None:
             output.append(f"Use <samp>{new_key}</samp> instead.")
 
+        if (url := deprecation.get("url")) is not None:
+            output.append(f"See [here]({url}) for details.")
+
         output.append("</span>")
         return " ".join(output)
 
