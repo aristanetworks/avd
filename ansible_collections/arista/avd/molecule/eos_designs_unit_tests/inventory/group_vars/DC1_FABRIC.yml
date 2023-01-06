@@ -187,8 +187,11 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet23, Ethernet23, Ethernet23, Ethernet23 ]
           evpn_gateway:
             remote_peers:
-              - hostname: "MY_EVPN_GW_USER_DEFINED"
+              - hostname: "MY_EVPN_GW1_USER_DEFINED"
                 ip_address: 1.1.1.1
+                bgp_as: 65555
+              - hostname: "MY_EVPN_GW2_USER_DEFINED"
+                ip_address: 2.2.2.2
                 bgp_as: 65555
             evpn_l2:
               enabled: true
