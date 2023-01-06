@@ -19,7 +19,7 @@ class MergeOnSchema:
 
     def __init__(self, schema: AvdSchema = None):
         if DEEPMERGE_IMPORT_ERROR:
-            raise AristaAvdError("AVD requires python deepmerge to be installed")
+            raise AristaAvdError("AVD requires python deepmerge to be installed") from DEEPMERGE_IMPORT_ERROR
 
         self.schema = schema
 

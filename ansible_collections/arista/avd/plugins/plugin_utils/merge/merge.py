@@ -38,7 +38,7 @@ MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
 
 def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merge=True, schema: AvdSchema = None):
     if DEEPMERGE_IMPORT_ERROR:
-        raise AristaAvdError("AVD requires python deepmerge to be installed")
+        raise AristaAvdError("AVD requires python deepmerge to be installed") from DEEPMERGE_IMPORT_ERROR
 
     if not destructive_merge:
         base = deepcopy(base)
