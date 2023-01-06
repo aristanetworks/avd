@@ -329,6 +329,11 @@
                     "type": "string",
                     "description": "Relative path to new key"
                 },
+                "removed": {
+                    "type": "boolean",
+                    "description": "Support for this key has been removed",
+                    "default": false
+                },
                 "remove_in_version": {
                     "type": "string",
                     "description": "Version in which the key will be removed"

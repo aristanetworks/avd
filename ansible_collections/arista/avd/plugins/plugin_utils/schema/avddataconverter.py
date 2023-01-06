@@ -182,8 +182,10 @@ class AvdDataConverter:
         deprecation:
           warning: bool, default = True
           new_key: str
+          removed: bool
           remove_in_version: str
           remove_after_date: str
+          url: str
         """
 
         deprecation_warning = deprecation.get("warning", True)
@@ -196,4 +198,5 @@ class AvdDataConverter:
             remove_in_version=deprecation.get("remove_in_version"),
             remove_after_date=deprecation.get("remove_after_date"),
             url=deprecation.get("url"),
+            removed=deprecation.get("removed", False),
         )

@@ -9707,6 +9707,7 @@ keys:
             '
           deprecation:
             warning: true
+            removed: true
             new_key: ipv6_address_virtuals
             remove_in_version: v5.0.0
             url: http://avd.sh

@@ -146,6 +146,7 @@ class AvdSchemaTools:
                     version=exception.version,
                     date=exception.date,
                     collection_name=self.plugin_name,
+                    removed=exception.removed,
                 )
                 continue
 
