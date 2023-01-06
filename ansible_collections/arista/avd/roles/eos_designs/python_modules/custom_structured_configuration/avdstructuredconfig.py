@@ -32,7 +32,7 @@ class AvdStructuredConfig(AvdFacts):
     def _router_bgp(self) -> dict | None:
         return get(self._hostvars, "router_bgp")
 
-    def _extract_and_apply_struct_cfg_from_list_of_dicts(self, list_of_dicts: list) -> list:
+    def _extract_and_apply_struct_cfg_from_list_of_dicts(self, list_of_dicts: list, primary_key: str) -> list:
         if not list_of_dicts:
             return []
 
@@ -42,7 +42,8 @@ class AvdStructuredConfig(AvdFacts):
                 continue
 
             struct_cfg = item.pop("struct_cfg")
-            struct_cfgs.append(dict(item, **struct_cfg))
+            struct_cfg[primary_key] = item[primary_key]
+            struct_cfgs.append(struct_cfg)
 
         return struct_cfgs
 
@@ -52,20 +53,26 @@ class AvdStructuredConfig(AvdFacts):
 
         return []
 
+    def _struct_cfgs(self) -> list:
+        if (struct_cfgs := self._hostvars.pop("struct_cfgs", None)) is not None:
+            return struct_cfgs
+
+        return []
+
     def _ethernet_interfaces(self) -> list:
-        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._hostvars.get("ethernet_interfaces"))) == []:
+        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._hostvars.get("ethernet_interfaces"), "name")) == []:
             return []
 
         return [{"ethernet_interfaces": struct_cfgs}]
 
     def _port_channel_interfaces(self) -> list:
-        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._hostvars.get("port_channel_interfaces"))) == []:
+        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._hostvars.get("port_channel_interfaces"), "name")) == []:
             return []
 
         return [{"port_channel_interfaces": struct_cfgs}]
 
     def _vlan_interfaces(self) -> list:
-        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._hostvars.get("vlan_interfaces"))) == []:
+        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._hostvars.get("vlan_interfaces"), "name")) == []:
             return []
 
         return [{"vlan_interfaces": struct_cfgs}]
@@ -74,7 +81,7 @@ class AvdStructuredConfig(AvdFacts):
         if self._router_bgp is None:
             return []
 
-        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._router_bgp.get("peer_groups"))) == []:
+        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._router_bgp.get("peer_groups"), "name")) == []:
             return []
 
         return [
@@ -89,7 +96,7 @@ class AvdStructuredConfig(AvdFacts):
         if self._router_bgp is None:
             return []
 
-        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._router_bgp.get("vrfs"))) == []:
+        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._router_bgp.get("vrfs"), "name")) == []:
             return []
 
         return [
@@ -104,7 +111,7 @@ class AvdStructuredConfig(AvdFacts):
         if self._router_bgp is None:
             return []
 
-        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._router_bgp.get("vlans"))) == []:
+        if (struct_cfgs := self._extract_and_apply_struct_cfg_from_list_of_dicts(self._router_bgp.get("vlans"), "id")) == []:
             return []
 
         return [
@@ -138,6 +145,7 @@ class AvdStructuredConfig(AvdFacts):
         """
 
         struct_cfgs = self._struct_cfg()
+        struct_cfgs.extend(self._struct_cfgs())
         struct_cfgs.extend(self._ethernet_interfaces())
         struct_cfgs.extend(self._port_channel_interfaces())
         struct_cfgs.extend(self._vlan_interfaces())
