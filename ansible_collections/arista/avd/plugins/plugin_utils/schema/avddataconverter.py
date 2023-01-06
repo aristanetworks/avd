@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
@@ -70,12 +72,7 @@ class AvdDataConverter:
 
             # Perform type conversion of the data for the child key if required based on "convert_types"
             if "convert_types" in childschema:
-                oldtype = type(data[key]).__name__
-                data[key] = self.convert_types(childschema["convert_types"], data[key], childschema, path + [key])
-                newtype = type(data[key]).__name__
-                if oldtype != newtype:
-                    path_str = ".".join(path + [key])
-                    yield AvdConversionWarning(key=path_str, oldtype=oldtype, newtype=newtype)
+                yield from self.convert_types(childschema["convert_types"], data, key, childschema, path + [key])
 
             yield from self.convert_data(data[key], childschema, path + [key])
 
@@ -94,12 +91,7 @@ class AvdDataConverter:
 
             # Perform type conversion of the data for the child key if required based on "convert_types"
             if "convert_types" in childschema:
-                oldtype = type(data[key]).__name__
-                data[key] = self.convert_types(childschema["convert_types"], data[key], childschema, path + [key])
-                newtype = type(data[key]).__name__
-                if oldtype != newtype:
-                    path_str = ".".join(path + [key])
-                    yield AvdConversionWarning(key=path_str, oldtype=oldtype, newtype=newtype)
+                yield from self.convert_types(childschema["convert_types"], data, key, childschema, path + [key])
 
             # Dive in to child keys/schemas
             yield from self.convert_data(data[key], childschema, path + [key])
@@ -114,51 +106,61 @@ class AvdDataConverter:
         for index, item in enumerate(data):
             # Perform type conversion of the items data if required based on "convert_types"
             if "convert_types" in items:
-                oldtype = type(data[index]).__name__
-                data[index] = self.convert_types(items["convert_types"], data[index], items, path + [f"[{index}]"])
-                newtype = type(data[index]).__name__
-                if oldtype != newtype:
-                    path_str = ".".join(path + [f"[{index}]"])
-                    yield AvdConversionWarning(key=path_str, oldtype=oldtype, newtype=newtype)
+                yield from self.convert_types(items["convert_types"], data, index, items, path + [f"[{index}]"])
 
             # Dive in to child items/schema
             yield from self.convert_data(item, items, path + [f"[{index}]"])
 
-    def convert_types(self, convert_types: list, data, schema: dict, path: list):
+    def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, path: list):
         """
         This function performs type conversion if necessary on a single data instance.
         It is invoked for child keys during "keys" conversion and for child items during
         "items" conversion
-        Returns the converted value is returned to the calling converter.
+
+        "data" is either the parent dict or the parent list.
+        "index" is either the key of the parent dict or the index of the parent list.
+
+        Conversion is performed in-place using the provided "data" and "index"
+
+        Yields AvdConversionWarning and/or AvdDeprecationWarning except for simple str/int/bool conversions
+
         Any conversion errors are ignored and the original value is returned
         """
         schema_type = schema.get("type")
 
+        # Get value from input data
+        value = data[index]
+
         # For simple conversions, skip conversion if the value is of the correct type
-        if schema_type in SIMPLE_CONVERTERS and isinstance(data, SCHEMA_TO_PY_TYPE_MAP.get(schema_type)):
-            return data
+        if schema_type in SIMPLE_CONVERTERS and isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(schema_type)):
+            return
+
+        # Prepare string for var path used in warning messages.
+        path_str = ".".join(path)
 
         for convert_type in convert_types:
-            if isinstance(data, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)):
+            if isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)):
                 if schema_type in SIMPLE_CONVERTERS:
                     try:
-                        return SIMPLE_CONVERTERS[schema_type](data)
+                        data[index] = SIMPLE_CONVERTERS[schema_type](value)
                     except Exception:
-                        # Ignore errors and return original
-                        return data
+                        # Ignore errors
+                        return
 
                 elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
                     try:
-                        return convert_dicts(data, schema["primary_key"], secondary_key=schema.get("secondary_key"))
+                        data[index] = convert_dicts(value, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                     except Exception:
-                        # Ignore errors and return original
-                        return data
+                        # Ignore errors
+                        return
+
+                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
 
                 elif convert_type == "dict" and schema_type == "list":
                     try:
-                        return list(data)
+                        data[index] = list(value)
                     except Exception:
-                        # Ignore errors and return original
-                        return data
+                        # Ignore errors
+                        return
 
-        return data
+                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
