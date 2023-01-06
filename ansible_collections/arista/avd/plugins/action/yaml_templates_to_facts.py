@@ -55,9 +55,6 @@ class ActionModule(ActionBase):
                 raise AnsibleActionFail("The argument 'templates' must be set as a list")
 
             schema = self._task.args.get("schema")
-            if not isinstance(schema, dict):
-                raise AnsibleActionFail("The argument 'schema' must be set as a dict")
-
             self.dest = self._task.args.get("dest", False)
             template_output = self._task.args.get("template_output", False)
             debug = self._task.args.get("debug", False)
@@ -66,7 +63,7 @@ class ActionModule(ActionBase):
             validation_mode = self._task.args.get("validation_mode")
 
         else:
-            raise AnsibleActionFail("Required arguments 'templates' and 'schema' are not set on yaml_templates_to_facts")
+            raise AnsibleActionFail("The argument 'templates' must be set")
 
         # Read ansible variables and perform templating to support inline jinja
         for var in task_vars:
@@ -79,13 +76,14 @@ class ActionModule(ActionBase):
                 except Exception as e:
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
-        # Load schema tools and perform conversion and validation
         hostname = task_vars["inventory_hostname"]
-        avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
-        result.update(avdschematools.convert_and_validate_data(task_vars))
-        if result.get("failed"):
-            # Input data validation failed so return errors.
-            return result
+        if schema:
+            # Load schema tools and perform conversion and validation
+            avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
+            result.update(avdschematools.convert_and_validate_data(task_vars))
+            if result.get("failed"):
+                # Input data validation failed so return errors.
+                return result
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)

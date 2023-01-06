@@ -28,7 +28,7 @@ options:
     type: str
   schema:
     description: Schema conforming to "AVD Meta Schema"
-    required: true
+    required: false
     type: dict
   templates:
     description: List of dicts for Jinja templates to be run.
