@@ -7668,11 +7668,7 @@ keys:
   router_l2_vpn:
     type: dict
     keys:
-      nd_rs_flooding_disabled:
-        type: bool
-      virtual_router_nd_ra_flooding_disabled:
-        type: bool
-      arp_selective_install:
+      arp_learning_bridged:
         type: bool
       arp_proxy:
         type: dict
@@ -7680,6 +7676,12 @@ keys:
           prefix_list:
             type: str
             description: Prefix-list Name
+      arp_selective_install:
+        type: bool
+      nd_rs_flooding_disabled:
+        type: bool
+      virtual_router_nd_ra_flooding_disabled:
+        type: bool
   router_msdp:
     type: dict
     keys:

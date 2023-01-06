@@ -95,23 +95,26 @@ interface Management1
 
 ## Router L2 VPN Summary
 
-   Neighbor discovery router solicitation VTEP flooding is disabled.
+   ARP learning bridged is enabled.
 
-   Virtual router neighbor advertisement VTEP flooding is disabled.
+   VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list pl-router-l2-vpn.
 
    Selective ARP is enabled.
 
-   VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list pl-router-l2-vpn.
+   Neighbor discovery router solicitation VTEP flooding is disabled.
+
+   Virtual router neighbor advertisement VTEP flooding is disabled.
 
 ## Router L2 VPN Device Configuration
 
 ```eos
 !
 router l2-vpn
+   arp learning bridged
+   arp proxy prefix-list pl-router-l2-vpn
+   arp selective-install
    nd rs flooding disabled
    virtual-router neighbor advertisement flooding disabled
-   arp selective-install
-   arp proxy prefix-list pl-router-l2-vpn
 ```
 
 # Quality Of Service

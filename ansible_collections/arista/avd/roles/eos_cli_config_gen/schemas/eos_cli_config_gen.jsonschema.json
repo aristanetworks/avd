@@ -11252,17 +11252,9 @@
     "router_l2_vpn": {
       "type": "object",
       "properties": {
-        "nd_rs_flooding_disabled": {
+        "arp_learning_bridged": {
           "type": "boolean",
-          "title": "ND RS Flooding Disabled"
-        },
-        "virtual_router_nd_ra_flooding_disabled": {
-          "type": "boolean",
-          "title": "Virtual Router ND RA Flooding Disabled"
-        },
-        "arp_selective_install": {
-          "type": "boolean",
-          "title": "ARP Selective Install"
+          "title": "ARP Learning Bridged"
         },
         "arp_proxy": {
           "type": "object",
@@ -11275,6 +11267,18 @@
           },
           "additionalProperties": false,
           "title": "ARP Proxy"
+        },
+        "arp_selective_install": {
+          "type": "boolean",
+          "title": "ARP Selective Install"
+        },
+        "nd_rs_flooding_disabled": {
+          "type": "boolean",
+          "title": "ND RS Flooding Disabled"
+        },
+        "virtual_router_nd_ra_flooding_disabled": {
+          "type": "boolean",
+          "title": "Virtual Router ND RA Flooding Disabled"
         }
       },
       "additionalProperties": false,
