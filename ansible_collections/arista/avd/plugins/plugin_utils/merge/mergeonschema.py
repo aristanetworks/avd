@@ -1,7 +1,12 @@
-from deepmerge import STRATEGY_END, Merger
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdSchemaError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+
+try:
+    from deepmerge import STRATEGY_END
+except ImportError as imp_exc:
+    DEEPMERGE_IMPORT_ERROR = imp_exc
+else:
+    DEEPMERGE_IMPORT_ERROR = None
 
 
 class MergeOnSchema:
@@ -13,9 +18,16 @@ class MergeOnSchema:
     """
 
     def __init__(self, schema: AvdSchema = None):
+        if DEEPMERGE_IMPORT_ERROR:
+            raise AristaAvdError("AVD requires python deepmerge to be installed")
+
         self.schema = schema
 
-    def strategy(self, config: Merger, path: list, base: list, nxt: list):
+    def strategy(self, config, path: list, base: list, nxt: list):
+        """
+        The argument "config" should be an instance of deepmerge.Merger,
+        but Ansible sanity test breaks type hinting with imported libs
+        """
         # Skip if no schema is supplied
         if not self.schema:
             return STRATEGY_END

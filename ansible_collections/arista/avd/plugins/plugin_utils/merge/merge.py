@@ -1,11 +1,16 @@
 from copy import deepcopy
 
-from deepmerge import Merger
-
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 
 from .mergeonschema import MergeOnSchema
+
+try:
+    from deepmerge import Merger
+except ImportError as imp_exc:
+    DEEPMERGE_IMPORT_ERROR = imp_exc
+else:
+    DEEPMERGE_IMPORT_ERROR = None
 
 
 def _strategy_keep(config, path, base, nxt):
@@ -32,6 +37,9 @@ MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
 
 
 def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merge=True, schema: AvdSchema = None):
+    if DEEPMERGE_IMPORT_ERROR:
+        raise AristaAvdError("AVD requires python deepmerge to be installed")
+
     if not destructive_merge:
         base = deepcopy(base)
 
