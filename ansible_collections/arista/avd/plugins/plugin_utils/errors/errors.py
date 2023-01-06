@@ -62,7 +62,7 @@ class AvdConversionWarning(AristaAvdError):
 
 
 class AvdDeprecationWarning(AristaAvdError):
-    def __init__(self, key, new_key=None, remove_in_version=None, remove_after_date=None):
+    def __init__(self, key, new_key=None, remove_in_version=None, remove_after_date=None, url=None):
         messages = [f"The input data model '{key}' is deprecated."]
         self.version = remove_in_version
         self.date = remove_after_date
@@ -73,6 +73,9 @@ class AvdDeprecationWarning(AristaAvdError):
 
         if new_key is not None:
             messages.append(f"Use '{new_key}' instead.")
+
+        if url is not None:
+            messages.append(f"See {url} for details.")
 
         self.message = " ".join(messages)
         super().__init__(self.message)

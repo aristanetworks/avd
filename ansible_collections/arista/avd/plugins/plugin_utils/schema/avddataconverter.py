@@ -195,4 +195,5 @@ class AvdDataConverter:
             new_key=deprecation.get("new_key"),
             remove_in_version=deprecation.get("remove_in_version"),
             remove_after_date=deprecation.get("remove_after_date"),
+            url=deprecation.get("url"),
         )

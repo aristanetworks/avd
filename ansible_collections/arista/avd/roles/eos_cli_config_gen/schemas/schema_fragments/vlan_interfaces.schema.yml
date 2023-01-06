@@ -98,6 +98,7 @@ keys:
             warning: true
             new_key: ipv6_address_virtuals
             remove_in_version: v5.0.0
+            url: http://avd.sh
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.

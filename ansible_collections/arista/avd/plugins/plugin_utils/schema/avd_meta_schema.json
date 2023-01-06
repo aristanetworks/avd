@@ -336,6 +336,10 @@
                 "remove_after_date": {
                     "type": "string",
                     "description": "Date after which the key will be removed"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "URL detailing the deprecation and migration guidelines"
                 }
             }
         }
