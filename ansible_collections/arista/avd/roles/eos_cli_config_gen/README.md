@@ -1859,6 +1859,8 @@ management_interfaces:
     gateway: < IPv4 address of default gateway in management VRF >
     ipv6_gateway: < IPv6 address of default gateway in management VRF >
     mac_address: < MAC address >
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 #### Management HTTP

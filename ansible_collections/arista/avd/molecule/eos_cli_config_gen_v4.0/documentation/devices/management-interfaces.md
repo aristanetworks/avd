@@ -48,6 +48,7 @@ interface Management1
 interface Vlan123
    description inband_management
    ip address 10.73.0.123/24
+   ip virtual-router address 10.73.0.1
 ```
 
 # Authentication

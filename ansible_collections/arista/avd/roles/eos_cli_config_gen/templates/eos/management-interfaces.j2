@@ -28,4 +28,7 @@ interface {{ management_interface.name }}
 {%     if management_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ management_interface.ipv6_address }}
 {%     endif %}
+{%     if management_interface.eos_cli is arista.avd.defined %}
+   {{ management_interface.eos_cli | indent(3, false) }}
+{%     endif %}
 {% endfor %}
