@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=../../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+# Dummy schema to test strings of different formats
+type: dict
+keys:
+  string_format_ipv4:
+    type: str
+    formats:
+      - ipv4
+  string_format_ipv4_cidr:
+    type: str
+    formats:
+      - ipv4_cidr
+  string_format_ipv6:
+    type: str
+    formats:
+      - ipv6
+  string_format_ipv6_cidr:
+    type: str
+    formats:
+      - ipv6_cidr
+  string_format_ip:
+    type: str
+    formats:
+      - ipv4
+      - ipv6
+  string_format_cidr:
+    type: str
+    formats:
+      - ipv4_cidr
+      - ipv6_cidr
+  string_format_mac:
+    type: str
+    formats:
+      - mac
+  string_format_regex_interface:
+    type: str
+    formats:
+      - regex,Ethernet[0-9/.]+

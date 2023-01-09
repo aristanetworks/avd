@@ -124,29 +124,34 @@
                             "description": "Default value",
                             "type": "string"
                         },
-                        "format": {
-                            "type": "string",
-                            "enum": [
-                                "ipv4",
-                                "ipv4_cidr",
-                                "ipv6",
-                                "ipv6_cidr",
-                                "ip",
-                                "cidr",
-                                "mac"
-                            ]
+                        "formats": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "type": "string",
+                                "oneOf": [
+                                    {
+                                        "enum": [
+                                            "ipv4",
+                                            "ipv4_cidr",
+                                            "ipv6",
+                                            "ipv6_cidr",
+                                            "mac"
+                                        ]
+                                    },
+                                    {
+                                        "$comment": "Take regex under formats. Regex is given like regex,<regex>",
+                                        "format": "regex",
+                                        "pattern": "^regex,.*$"
+                                    }
+                                ]
+                            }
                         },
                         "max_length": {
                             "type": "number"
                         },
                         "min_length": {
                             "type": "number"
-                        },
-                        "pattern": {
-                            "type": "string",
-                            "format": "regex",
-                            "description": " A regular expression which will be matched on the variable value.\nThe regular expression should be valid according to the ECMA 262 dialect\nRemember to use double escapes"
-
                         },
                         "valid_values": {
                             "type": "array",
