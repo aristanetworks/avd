@@ -387,6 +387,9 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: "active"
+    lldp:
+      receive: false
+      transmit: false
 
   Ethernet8:
     peer: DC1-LEAF1B
