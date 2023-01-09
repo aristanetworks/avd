@@ -208,7 +208,7 @@ tenants:
         evpn_l2_multicast:
           enabled: true
       9:
-        name: "MULTICAST_ENABLED_8"
+        name: "MULTICAST_ENABLED_9"
         tags: ['test_l2']
         evpn_l2_multicast:
           enabled: true
