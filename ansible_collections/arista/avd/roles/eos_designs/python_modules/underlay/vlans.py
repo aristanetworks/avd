@@ -31,7 +31,7 @@ class VlansMixin(UtilsMixin):
                 vlans.setdefault(int(vlan), {"trunk_groups": []})["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
 
         for vlan, vlan_dict in vlans.items():
-            vlan_dict["trunk_groups"] = natural_sort(list(set(vlan_dict["trunk_groups"])))
+            vlan_dict["trunk_groups"] = natural_sort(set(vlan_dict["trunk_groups"]))
 
         if vlans:
             return vlans
