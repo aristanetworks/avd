@@ -19616,6 +19616,7 @@
           },
           "ip_address": {
             "type": "string",
+            "oneOf": [],
             "description": "IPv4_address/Mask",
             "title": "IP Address"
           },
@@ -19625,6 +19626,7 @@
           },
           "ipv6_address": {
             "type": "string",
+            "oneOf": [],
             "description": "IPv6_address/Mask",
             "title": "IPv6 Address"
           },

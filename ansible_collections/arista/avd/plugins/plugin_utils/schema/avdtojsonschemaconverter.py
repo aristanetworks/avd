@@ -34,7 +34,7 @@ class AvdToJsonSchemaConverter:
             "max": self.convert_max,
             "min": self.convert_min,
             "valid_values": self.convert_valid_values,
-            "format": self.convert_format,
+            "formats": self.convert_formats,
             "max_length": self.convert_max_length,
             "min_length": self.convert_min_length,
             "pattern": self.convert_pattern,
@@ -117,20 +117,20 @@ class AvdToJsonSchemaConverter:
     def convert_valid_values(self, valid_values: list, parent_schema: dict) -> dict:
         return {"enum": valid_values}
 
-    def convert_format(self, format: str, parent_schema: dict) -> dict:
+    def convert_formats(self, formats: str, parent_schema: dict) -> dict:
         FORMAT_MAP = {
-            "ipv4": "ipv4",
-            "ipv4_cidr": None,
-            "ipv6": "ipv6",
-            "ipv6_cidr": None,
-            "ip": None,
-            "cidr": None,
-            "mac": None,
+            "ipv4": lambda *args: {"format": "ipv4"},
+            "ipv6": lambda *args: {"format": "ipv6"},
+            "regex": lambda *args: {"format": "regex", "pattern": f"{','.join(args)}"},
         }
-        if (newformat := FORMAT_MAP[format]) is None:
-            return {}
+        oneof = []
+        for formatstr in formats:
+            formattype = formatstr.split(",")[0]
+            formatargs = formatstr.split(",")[1:]
+            if formattype in FORMAT_MAP:
+                oneof.append(FORMAT_MAP[formattype](*formatargs))
 
-        return {"format": newformat}
+        return {"oneOf": oneof}
 
     def convert_max_length(self, max: int, parent_schema: dict) -> dict:
         vartype = parent_schema["type"]

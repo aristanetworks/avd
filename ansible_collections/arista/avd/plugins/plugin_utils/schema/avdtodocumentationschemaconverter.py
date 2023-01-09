@@ -373,8 +373,10 @@ class AvdToDocumentationSchemaConverter:
             restrictions.append(f"Min Length: {schema['min_length']}")
         if schema.get("max_length") is not None:
             restrictions.append(f"Max Length: {schema['max_length']}")
-        if schema.get("format") is not None:
-            restrictions.append(f"Format: {schema['format']}")
+        if schema.get("formats") is not None:
+            restrictions.append("Required Formats:")
+            for strformat in schema["formats"]:
+                restrictions.append(f"- {strformat}")
         if schema.get("dynamic_valid_values") is not None:
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"
