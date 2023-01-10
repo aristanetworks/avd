@@ -326,7 +326,7 @@ router_bgp:
         - 10256:10256
       redistribute_routes:
       - learned
-      vlan: 256
+      vlan: '256'
     MULTICAST_ENABLED_257:
       tenant: Tenant_A
       rd: 192.168.255.3:10257
@@ -336,7 +336,7 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
-      vlan: 257
+      vlan: '257'
     MULTICAST_ENABLED_4092:
       tenant: Tenant_A
       rd: 192.168.255.3:14092
@@ -346,7 +346,7 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
-      vlan: 4092
+      vlan: '4092'
     MULTICAST_DISABLED_5_6:
       rd: 192.168.255.3:22
       route_targets:
@@ -381,8 +381,18 @@ router_bgp:
         - 10007:10007
       redistribute_routes:
       - learned
-      vlan: 7
+      vlan: '7'
     MULTICAST_ENABLED_8:
+      tenant: Tenant_B
+      rd: 192.168.255.3:10008
+      route_targets:
+        both:
+        - 10008:10008
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: '8'
+    MULTICAST_ENABLED_9:
       tenant: Tenant_B
       rd: 192.168.255.3:10009
       route_targets:
@@ -391,7 +401,7 @@ router_bgp:
       redistribute_routes:
       - learned
       - igmp
-      vlan: 9
+      vlan: '9'
     TEN_C_L3_MULTICAST_DISABLED_330_331:
       rd: 192.168.255.3:33
       route_targets:
@@ -667,7 +677,7 @@ vlans:
     name: MULTICAST_ENABLED_8
   9:
     tenant: Tenant_B
-    name: MULTICAST_ENABLED_8
+    name: MULTICAST_ENABLED_9
   330:
     tenant: Tenant_C
     name: L3_MULTICAST_DISABLED_330

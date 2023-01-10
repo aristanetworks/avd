@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, groupby
 
 from .utils import UtilsMixin
 
@@ -330,11 +330,12 @@ class RouterBgpMixin(UtilsMixin):
                     bundles[bundle_name] = bundle
 
             # L2 Vlans per Tenant
-            for l2vlan in tenant["l2vlans"]:
-                if (bundle := self._router_bgp_vlans_vlan(l2vlan, tenant)) is not None:
+            # If multiple L2 Vlans share the same name, they will be part of the same bundle
+            for bundle_name, l2vlans in groupby(tenant["l2vlans"], "name"):
+                l2vlans = list(l2vlans)
+                if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant)) is not None:
                     # We are reusing the regular bgp vlan function so need to add vlan info
-                    bundle["vlan"] = l2vlan["id"]
-                    bundle_name = l2vlan["name"]
+                    bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
                     bundles[bundle_name] = bundle
 
         if bundles:

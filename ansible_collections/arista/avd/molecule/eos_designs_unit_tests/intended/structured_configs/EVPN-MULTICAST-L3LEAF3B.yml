@@ -781,7 +781,7 @@ vlans:
     name: MULTICAST_ENABLED_8
   9:
     tenant: Tenant_B
-    name: MULTICAST_ENABLED_8
+    name: MULTICAST_ENABLED_9
   330:
     tenant: Tenant_C
     name: L3_MULTICAST_DISABLED_330
