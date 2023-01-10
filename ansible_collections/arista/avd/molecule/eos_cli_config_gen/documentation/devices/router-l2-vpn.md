@@ -95,15 +95,15 @@ interface Management1
 
 ## Router L2 VPN Summary
 
-   ARP learning bridged is enabled.
+- ARP learning bridged is enabled.
 
-   VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list pl-router-l2-vpn.
+- VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list pl-router-l2-vpn.
 
-   Selective ARP is enabled.
+- Selective ARP is enabled.
 
-   Neighbor discovery router solicitation VTEP flooding is disabled.
+- Neighbor discovery router solicitation VTEP flooding is disabled.
 
-   Virtual router neighbor advertisement VTEP flooding is disabled.
+- Virtual router neighbor advertisement VTEP flooding is disabled.
 
 ## Router L2 VPN Device Configuration
 
