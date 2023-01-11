@@ -809,6 +809,7 @@ CVP_CONFIGLETS:
     \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
 CVP_TOPOLOGY:
   DC1_FABRIC:
+    devices: []
     parent_container: Tenant
   DC1_L2LEAF1:
     devices: []
@@ -817,8 +818,10 @@ CVP_TOPOLOGY:
     devices: []
     parent_container: DC1_L2LEAFS
   DC1_L2LEAFS:
+    devices: []
     parent_container: DC1_FABRIC
   DC1_L3LEAFS:
+    devices: []
     parent_container: DC1_FABRIC
   DC1_LEAF1:
     devices:

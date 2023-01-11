@@ -1030,4 +1030,3 @@ CVP_TOPOLOGY:
     - DC1-SPINE1
     - DC1-SPINE2
     parent_container: DC1_FABRIC
-changed: false
