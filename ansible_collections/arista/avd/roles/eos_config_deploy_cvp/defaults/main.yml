@@ -35,5 +35,9 @@ state: 'present'
 # CVP Deployment methodology, whether to execute or stage tasks
 execute_tasks: false
 
-# Version of the Cloudvision collection to use for upload
-cv_collection: v1
+# Version of the CloudVision collection to use for upload
+cv_collection: v3
+
+# Controls how configlets are applied to containers
+# If set to strict, all configlets not listed in vars will be detached
+apply_mode: loose

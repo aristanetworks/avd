@@ -22,7 +22,7 @@
   arista.cvp.cv_container_v3:
     topology: "{{ CVP_CONTAINERS }}"
     state: present
-    apply_mode: loose
+    apply_mode: "{{ apply_mode }}"
   register: CVP_CONTAINER_RESULTS
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
