@@ -198,6 +198,8 @@ keys:
                 keys:
                   id:
                     type: str
+                    convert_types:
+                      - int
                   filter:
                     type: dict
                     keys:

@@ -244,7 +244,7 @@ interface Vlan24
 | Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
 | ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
 | 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
-| 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
+| 200 | 3 | normal | - | PL-OSPF-FILTERING |  |
 | 600 | 0.0.0.1 | normal | - | - |  |
 | 600 | 0.0.10.11 | stub | - | - | no-summary |
 | 600 | 0.0.20.20 | nssa | - | - |  |
@@ -309,7 +309,7 @@ router ospf 200 vrf ospf_zone
    router-id 192.168.254.1
    area 0.0.0.2 filter 1.1.1.0/24
    area 0.0.0.2 filter 2.2.2.0/24
-   area 0.0.0.3 filter prefix-list PL-OSPF-FILTERING
+   area 3 filter prefix-list PL-OSPF-FILTERING
    max-lsa 5
    timers lsa rx min interval 100
    default-information originate always
