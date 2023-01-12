@@ -617,6 +617,8 @@ mac_address_table:
         rt_override: < 1-16777215 | default -> vni_override >
 
         # VLAN name | Required
+        # For EVPN vlan-aware-bundles the VLAN name is also used as the bundle name for l2vlans.
+        # If the same name is used on multiple VLANs they will be added to the same bundle.
         name: < description >
 
         # Tags leveraged for network services filtering. | Optional
