@@ -177,6 +177,9 @@ mac_address_table:
        source_address: < ipv4_address -> default ip address of Loopback0 >
        version: < 1, 2, 3 -> default 2 (EOS) >
 
+    # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
+    evpn_multi_domain: < true | false | default --> true >
+
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
@@ -270,6 +273,10 @@ mac_address_table:
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
+
+        # Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
+        # Overrides tenants.<tenant>.evpn_multi_domain ( default --> true ).
+        evpn_multi_domain: < true | false | default --> true >
 
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
@@ -372,6 +379,11 @@ mac_address_table:
             # VXLAN | Optional - default true
             # Extend this SVI over VXLAN
             vxlan: < true | false | default -> true >
+
+            # Explicitly extend this VLAN to remote EVPN domains.
+            # Overrides tenants.<tenant>.evpn_multi_domain ( default --> true ).
+            # Overrides tenants.<tenant>.vrf.<vrf>.evpn_multi_domain ( default --> true ).
+            evpn_multi_domain: < true | false | default --> true >
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
@@ -650,6 +662,10 @@ mac_address_table:
           enabled: < true | false | default false >
           source_address: < ipv4_address -> default ip address of Loopback0 >
           version: < 1, 2, 3 -> default 2 (EOS) >
+
+        # Explicitly extend this VLAN to remote EVPN domains.
+        # Overrides tenants.<tenant>.evpn_multi_domain ( default --> true ).
+        evpn_multi_domain: < true | false | default --> true >
 
         # Structured configuration and eos cli commands rendered on router_bgp.vlans
         # This configuration will not be applied to vlan aware bundles
