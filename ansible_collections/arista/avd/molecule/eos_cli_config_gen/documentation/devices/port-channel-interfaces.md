@@ -192,6 +192,8 @@ interface Ethernet18
 interface Ethernet50
    description SRV-POD03_Eth1
    channel-group 5 mode active
+   no lldp transmit
+   no lldp receive
 ```
 
 ## Port-Channel Interfaces

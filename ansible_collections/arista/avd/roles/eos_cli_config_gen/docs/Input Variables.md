@@ -5131,21 +5131,23 @@ router_isis:
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>router_l2_vpn</samp>](## "router_l2_vpn") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;nd_rs_flooding_disabled</samp>](## "router_l2_vpn.nd_rs_flooding_disabled") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;virtual_router_nd_ra_flooding_disabled</samp>](## "router_l2_vpn.virtual_router_nd_ra_flooding_disabled") | Boolean |  |  |  |  |
-| [<samp>&nbsp;&nbsp;arp_selective_install</samp>](## "router_l2_vpn.arp_selective_install") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;arp_learning_bridged</samp>](## "router_l2_vpn.arp_learning_bridged") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;arp_proxy</samp>](## "router_l2_vpn.arp_proxy") | Dictionary |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_l2_vpn.arp_proxy.prefix_list") | String |  |  |  | Prefix-list Name |
+| [<samp>&nbsp;&nbsp;arp_selective_install</samp>](## "router_l2_vpn.arp_selective_install") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;nd_rs_flooding_disabled</samp>](## "router_l2_vpn.nd_rs_flooding_disabled") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;virtual_router_nd_ra_flooding_disabled</samp>](## "router_l2_vpn.virtual_router_nd_ra_flooding_disabled") | Boolean |  |  |  |  |
 
 ### YAML
 
 ```yaml
 router_l2_vpn:
-  nd_rs_flooding_disabled: <bool>
-  virtual_router_nd_ra_flooding_disabled: <bool>
-  arp_selective_install: <bool>
+  arp_learning_bridged: <bool>
   arp_proxy:
     prefix_list: <str>
+  arp_selective_install: <bool>
+  nd_rs_flooding_disabled: <bool>
+  virtual_router_nd_ra_flooding_disabled: <bool>
 ```
 
 ## Router Msdp
