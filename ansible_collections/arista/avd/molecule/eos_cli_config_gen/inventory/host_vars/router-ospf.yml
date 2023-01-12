@@ -80,7 +80,7 @@ router_ospf:
             networks:
               - 1.1.1.0/24
               - 2.2.2.0/24
-        '0.0.0.3':
+        3:
           filter:
             prefix_list: PL-OSPF-FILTERING
       max_metric: # not expected to produce config. Just here to test proper variable checks.

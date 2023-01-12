@@ -3760,6 +3760,10 @@ keys:
         mac_address:
           type: str
           description: MAC address
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the management interface
+            in the final EOS configuration
   management_security:
     type: dict
     keys:
@@ -8169,6 +8173,8 @@ keys:
                 keys:
                   id:
                     type: str
+                    convert_types:
+                    - int
                   filter:
                     type: dict
                     keys:
