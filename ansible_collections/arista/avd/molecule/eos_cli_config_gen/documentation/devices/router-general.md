@@ -119,7 +119,9 @@ router general
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
+      exit
    !
+   exit
 ```
 
 # Multicast
