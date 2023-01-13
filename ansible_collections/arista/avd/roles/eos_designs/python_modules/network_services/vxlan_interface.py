@@ -4,6 +4,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
@@ -49,15 +50,21 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         vlans = {}
         vrfs = {}
+        # vnis is a dict of {<vni>: <tenant>}. Only used to detect duplicates.
+        vnis = {}
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._get_vxlan_interface_config_for_vlan(svi, tenant):
                         vlan_id = int(svi["id"])
+                        if (vni := vlan["vni"]) in vnis:
+                            self._raise_duplicate_vni_error(vni, f"SVI '{vlan_id} in vrf '{vrf['name']}'", tenant["name"], vnis[vni])
+
+                        vnis[vni] = tenant["name"]
                         vlans[vlan_id] = vlan
 
                 if self._network_services_l3 and self._overlay_evpn:
-                    key = vrf["name"]
+                    vrf_name = vrf["name"]
                     vni = default(
                         vrf.get("vrf_vni"),
                         vrf.get("vrf_id"),
@@ -65,7 +72,11 @@ class VxlanInterfaceMixin(UtilsMixin):
                     if vni is not None:
                         # Silently ignore if we cannot set a VNI
                         # This is legacy behavior so we will leave stricter enforcement to the schema
-                        vrfs[key] = {"vni": vni}
+                        if vni in vnis:
+                            self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", tenant["name"], vnis[vni])
+
+                        vnis[vni] = tenant["name"]
+                        vrfs[vrf_name] = {"vni": vni}
 
                         if get(vrf, "_evpn_l3_multicast_enabled"):
                             underlay_l3_multicast_group_ipv4_pool = get(
@@ -78,11 +89,15 @@ class VxlanInterfaceMixin(UtilsMixin):
                                 tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0
                             )
                             offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
-                            vrfs[key]["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+                            vrfs[vrf_name]["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
                     vlan_id = int(l2vlan["id"])
+                    if (vni := vlan["vni"]) in vnis:
+                        self._raise_duplicate_vni_error(vni, f"L2VLAN '{vlan_id}'", tenant["name"], vnis[vni])
+
+                    vnis[vni] = tenant["name"]
                     vlans[vlan_id] = vlan
 
         if vlans:
@@ -111,7 +126,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         vxlan_interface_vlan = {}
         vlan_id = int(vlan["id"])
         if (vni_override := vlan.get("vni_override")) is not None:
-            vxlan_interface_vlan["vni"] = vni_override
+            vxlan_interface_vlan["vni"] = int(vni_override)
         else:
             mac_vrf_vni_base = int(get(tenant, "mac_vrf_vni_base", required=True, org_key=f"'mac_vrf_vni_base' for Tenant: {tenant['name']}"))
             vxlan_interface_vlan["vni"] = mac_vrf_vni_base + vlan_id
@@ -180,3 +195,10 @@ class VxlanInterfaceMixin(UtilsMixin):
                 overlay_her_flood_lists.setdefault(int(vlan), []).append(vtep_ip)
 
         return overlay_her_flood_lists
+
+    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant_name: str, duplicate_vni_tenant: str):
+        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant '{tenant_name}' during configuration of {context}."
+        if duplicate_vni_tenant != tenant_name:
+            msg = f"{msg} Other VNI is in Tenant '{duplicate_vni_tenant}'."
+
+        raise AristaAvdError(msg)

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+
 from .utils import UtilsMixin
 
 
@@ -14,9 +16,12 @@ class VlansMixin(UtilsMixin):
     @cached_property
     def vlans(self) -> dict | None:
         """
-        Return structured config for vlans
+        Return structured config for vlans.
 
-        Consist of svis, mlag peering vlans and l2vlans from filtered tenants
+        Consist of svis, mlag peering vlans and l2vlans from filtered tenants.
+
+        This function also detects duplicate vlans and raise an error in case of duplicates between
+        SVIs in all VRFs and L2VLANs deployed on this device.
         """
 
         if not self._network_services_l2:
@@ -27,12 +32,20 @@ class VlansMixin(UtilsMixin):
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
+                    if vlan_id in vlans:
+                        self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], vlans[vlan_id])
+
                     vlans[vlan_id] = self._get_vlan_config(svi, tenant)
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
+
+                if vlan_id in vlans:
+                    self._raise_duplicate_vlan_error(
+                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], vlans[vlan_id]
+                    )
 
                 vlans[vlan_id] = {
                     "tenant": tenant["name"],
@@ -43,6 +56,9 @@ class VlansMixin(UtilsMixin):
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
                 vlan_id = int(l2vlan["id"])
+                if vlan_id in vlans:
+                    self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], vlans[vlan_id])
+
                 vlans[vlan_id] = self._get_vlan_config(l2vlan, tenant)
 
         if vlans:
@@ -71,3 +87,10 @@ class VlansMixin(UtilsMixin):
             vlans_vlan["trunk_groups"] = trunk_groups
 
         return vlans_vlan
+
+    def _raise_duplicate_vlan_error(self, vlan_id: int, context: str, tenant_name: str, duplicate_vlan_config: dict):
+        msg = f"Duplicate VLAN ID '{vlan_id}' found in Tenant '{tenant_name}' during configuration of {context}."
+        if (duplicate_vlan_tenant := duplicate_vlan_config["tenant"]) != tenant_name:
+            msg = f"{msg} Other VLAN is in Tenant '{duplicate_vlan_tenant}'."
+
+        raise AristaAvdError(msg)

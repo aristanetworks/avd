@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+
 from .utils import UtilsMixin
 
 
@@ -14,9 +16,12 @@ class VrfsMixin(UtilsMixin):
     @cached_property
     def vrfs(self) -> dict | None:
         """
-        Return structured config for vrfs
+        Return structured config for vrfs.
 
-        Used for creating VRFs except VRF "default"
+        Used for creating VRFs except VRF "default".
+
+        This function also detects duplicate vlans and raise an error in case of duplicates between
+        all Tenants deployed on this device.
         """
 
         if not self._network_services_l3:
@@ -28,6 +33,9 @@ class VrfsMixin(UtilsMixin):
                 vrf_name = vrf["name"]
                 if vrf_name == "default":
                     continue
+
+                if vrf_name in vrfs:
+                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], vrfs[vrf_name])
 
                 new_vrf = {
                     "tenant": tenant["name"],
@@ -63,3 +71,10 @@ class VrfsMixin(UtilsMixin):
                 return True
 
         return False
+
+    def _raise_duplicate_vrf_error(self, vrf_name: str, tenant_name: str, duplicate_vrf_config: dict):
+        msg = f"Duplicate VRF '{vrf_name}' found in Tenant '{tenant_name}'."
+        if (duplicate_vlan_tenant := duplicate_vrf_config["tenant"]) != tenant_name:
+            msg = f"{msg} Other VRF is in Tenant '{duplicate_vlan_tenant}'."
+
+        raise AristaAvdError(msg)

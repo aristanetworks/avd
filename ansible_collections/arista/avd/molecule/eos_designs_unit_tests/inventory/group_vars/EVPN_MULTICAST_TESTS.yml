@@ -170,7 +170,7 @@ tenants:
             ip_address_virtual: 10.0.4.1/24
       MULTICAST_DISABLED_5_6:
         description: "MULTICAST_DISABLED_5_6"
-        vrf_vni: 22
+        vrf_vni: 23
         svis:
           # Expected results:
           # - vlan 5 and 6 not configured with multicast
