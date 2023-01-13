@@ -968,8 +968,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def overlay_rd_type_admin_subfield(self):
         tmp_overlay_rd_type_admin_subfield = default(get(self._hostvars, "evpn_rd_type.admin_subfield"), get(self._hostvars, "overlay_rd_type.admin_subfield"))
-        tmp_overlay_rd_type_admin_subfield_offset = default(
-            get(self._hostvars, "evpn_rd_type.admin_subfield_offset"), get(self._hostvars, "overlay_rd_type.admin_subfield_offset"), 0
+        tmp_overlay_rd_type_admin_subfield_offset = int(
+            default(get(self._hostvars, "evpn_rd_type.admin_subfield_offset"), get(self._hostvars, "overlay_rd_type.admin_subfield_offset"), 0)
         )
         if tmp_overlay_rd_type_admin_subfield is None:
             return self.router_id
@@ -979,6 +979,14 @@ class EosDesignsFacts(AvdFacts):
             return self.bgp_as
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
+
+        try:
+            # Try to convert input var (str) to int
+            tmp_overlay_rd_type_admin_subfield = int(tmp_overlay_rd_type_admin_subfield)
+        except ValueError:
+            # Ignore if we could not convert
+            pass
+
         if isinstance(tmp_overlay_rd_type_admin_subfield, int) and tmp_overlay_rd_type_admin_subfield > 0 and tmp_overlay_rd_type_admin_subfield <= 4294967295:
             return tmp_overlay_rd_type_admin_subfield + tmp_overlay_rd_type_admin_subfield_offset
         if isinstance(tmp_overlay_rd_type_admin_subfield, str):

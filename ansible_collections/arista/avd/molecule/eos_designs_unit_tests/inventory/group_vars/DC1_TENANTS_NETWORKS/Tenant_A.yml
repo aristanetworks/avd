@@ -255,3 +255,9 @@ Tenant_A:
     162:
       name: l2vlan_with_no_tags
       # No "tags" defined - should render on switches with tag "all" or no tags
+    163:
+      name: overlapping_name
+    164:
+      name: overlapping_name
+    165:
+      name: overlapping_name
