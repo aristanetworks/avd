@@ -25,6 +25,12 @@ plugins:
       name: inventory_to_container
       namespace: ''
       version_added: 1.0.0
+    validate_and_template:
+      description: Validate input data according to Schema, render Jinja2 template
+        and write result to a file.
+      name: validate_and_template
+      namespace: ''
+      version_added: 3.8.0
     yaml_templates_to_facts:
       description: Set facts from YAML via Jinja2 templates
       name: yaml_templates_to_facts
@@ -34,4 +40,4 @@ plugins:
   shell: {}
   strategy: {}
   vars: {}
-version: 3.7.0
+version: 3.8.0
