@@ -14,10 +14,9 @@ try:
     from cryptography.hazmat.backends import default_backend
     from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-    _CRYPTO_LIB = "cryptography"
-except ImportError as exc:
-    raise AristaAvdError from exc
-
+    HAS_CRYPTOGRAPHY = True
+except ImportError:
+    HAS_CRYPTOGRAPHY = False
 
 SEED = b"\xd5\xa8\xc9\x1e\xf5\xd5\x8a\x23"
 
@@ -178,6 +177,9 @@ def cbc_encrypt(key: bytes, data: bytes) -> bytes:
     """
     Encrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
     """
+    if not HAS_CRYPTOGRAPHY:
+        raise AristaAvdError("AVD could not import the required 'cryptography' Python library")
+
     hashed_key = hashkey(key)
     padding = (8 - ((len(data) + 4) % 8)) % 8
     ciphertext = ENC_SIG + bytes([padding * 16 + 0xE]) + data + bytes(padding)
@@ -196,6 +198,9 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
 
     raises TODO
     """
+    if not HAS_CRYPTOGRAPHY:
+        raise AristaAvdError("AVD could not import the required 'cryptography' Python library")
+
     data = base64.b64decode(data)
     hashed_key = hashkey(key)
 
@@ -217,6 +222,9 @@ def cbc_check_password(key: bytes, data: bytes) -> bool:
     This function is used to verify if an encrypted password is decryptable.
     It does not return the password but only raise an error if the passowrd cannot be decrypted
     """
+    if not HAS_CRYPTOGRAPHY:
+        raise AristaAvdError("AVD could not import the required 'cryptography' Python library")
+
     try:
         cbc_decrypt(key, data)
         return True
