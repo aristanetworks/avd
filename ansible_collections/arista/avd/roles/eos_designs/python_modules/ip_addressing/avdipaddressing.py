@@ -9,6 +9,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 
 from .utils import UtilsMixin
 
+# from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import _ip
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
 
 class AvdIpAddressing(AvdFacts, UtilsMixin):
     """
@@ -21,18 +25,18 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     be overridden by a custom python class.
     """
 
-    def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
-        pool_network = ipaddress.ip_network(pool, strict=False)
-        prefixlen_diff = prefixlen - pool_network.prefixlen
-        subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
-        if (subnet_offset + 1) * subnet_size > pool_network.num_addresses:
-            raise AristaAvdError(f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}")
-        subnet = ipaddress.ip_network((int(pool_network.network_address) + subnet_offset * subnet_size, prefixlen))
-        try:
-            ip = subnet[ip_offset]
-        except IndexError as e:
-            raise AristaAvdError(f"Unable to get {ip_offset+1} hosts in subnet {subnet} taken from pool {pool}") from e
-        return str(ip)
+    # def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
+    #     pool_network = ipaddress.ip_network(pool, strict=False)
+    #     prefixlen_diff = prefixlen - pool_network.prefixlen
+    #     subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
+    #     if (subnet_offset + 1) * subnet_size > pool_network.num_addresses:
+    #         raise AristaAvdError(f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}")
+    #     subnet = ipaddress.ip_network((int(pool_network.network_address) + subnet_offset * subnet_size, prefixlen))
+    #     try:
+    #         ip = subnet[ip_offset]
+    #     except IndexError as e:
+    #         raise AristaAvdError(f"Unable to get {ip_offset+1} hosts in subnet {subnet} taken from pool {pool}") from e
+    #     return str(ip)
 
     def _template(self, template_path, **kwargs):
         template_vars = ChainMap(kwargs, self._hostvars)
@@ -162,7 +166,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return self._ip(self._uplink_ipv4_pool, 31, offset, 1)
+        return _ip(self._uplink_ipv4_pool, 31, offset, 1)
 
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """
@@ -179,7 +183,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return self._ip(self._uplink_ipv4_pool, 31, offset, 0)
+        return _ip(self._uplink_ipv4_pool, 31, offset, 0)
 
     def router_id(self) -> str:
         """
@@ -197,7 +201,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return self._ip(self._loopback_ipv4_pool, 32, offset, 0)
+        return _ip(self._loopback_ipv4_pool, 32, offset, 0)
 
     def ipv6_router_id(self) -> str:
         """
@@ -215,7 +219,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv6_offset
-        return self._ip(self._loopback_ipv6_pool, 128, offset, 0)
+        return _ip(self._loopback_ipv6_pool, 128, offset, 0)
 
     def vtep_ip_mlag(self) -> str:
         """
@@ -235,7 +239,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
-        return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+        return _ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
     def vtep_ip(self) -> str:
         """
@@ -253,4 +257,4 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+        return _ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)

@@ -9,6 +9,7 @@ from typing import NoReturn
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import get_ip_from_pool
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
 
 from .utils import UtilsMixin
@@ -126,6 +127,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                             context="VXLAN VNIs for VRFs",
                             context_keys=["name", "vni"],
                         )
+                            vrfs[vrf_name]["multicast_group"] = get_ip_from_pool(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
@@ -188,7 +190,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             )
             underlay_l2_multicast_group_ipv4_pool_offset = get(tenant, "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset", default=0)
             offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
-            vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
+            vxlan_interface_vlan["multicast_group"] = get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
         if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni:
             vxlan_interface_vlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get(vlan_id, [])))

@@ -6,6 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import _ip
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -55,7 +57,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                     "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
                     "shutdown": False,
                     "vrf": vrf["name"],
-                    "ip_address": f"{self.shared_utils.ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
+                    "ip_address": f"{_ip(loopback_ipv4_pool, 32, offset, 0)}/32",
                 }
                 append_if_not_duplicate(
                     list_of_dicts=loopback_interfaces,
