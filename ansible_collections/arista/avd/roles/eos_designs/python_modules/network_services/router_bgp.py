@@ -251,7 +251,7 @@ class RouterBgpMixin(UtilsMixin):
 
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
-                if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant)) is not None:
+                if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None:
                     vlan_id = int(l2vlan["id"])
                     vlans[vlan_id] = vlan
 
@@ -260,7 +260,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def _router_bgp_vlans_vlan(self, vlan, tenant, vrf={}) -> dict | None:
+    def _router_bgp_vlans_vlan(self, vlan, tenant, vrf) -> dict | None:
         """
         Return structured config for one given vlan under router_bgp.vlans
         """
