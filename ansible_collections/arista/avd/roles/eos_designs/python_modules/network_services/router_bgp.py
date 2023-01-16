@@ -290,7 +290,10 @@ class RouterBgpMixin(UtilsMixin):
             "eos_cli": get(vlan, "bgp.raw_eos_cli"),
             "struct_cfg": get(vlan, "bgp.structured_config"),
         }
-        if self._evpn_gateway_vxlan_l2 and default(vlan.get("evpn_multi_domain"), vrf.get("evpn_multi_domain"), tenant.get("evpn_multi_domain"), True) is True:
+        if (
+            self._evpn_gateway_vxlan_l2
+            and default(vlan.get("evpn_l2_multi_domain"), vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain"), True) is True
+        ):
             bgp_vlan["rd_evpn_domain"] = {"domain": "remote", "rd": vlan_rd}
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
 
@@ -367,7 +370,7 @@ class RouterBgpMixin(UtilsMixin):
             "redistribute_routes": ["learned"],
             "vlan": list_compress([int(vlan["id"]) for vlan in vlans]),
         }
-        if self._evpn_gateway_vxlan_l2 and default(vrf.get("evpn_multi_domain"), tenant.get("evpn_multi_domain", True)) is True:
+        if self._evpn_gateway_vxlan_l2 and default(vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain", True)) is True:
             bundle["rd_evpn_domain"] = {"domain": "remote", "rd": bundle_rd}
             bundle["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": bundle_rt}]
 

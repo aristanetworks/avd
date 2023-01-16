@@ -1,6 +1,6 @@
 Tenant_C:
   mac_vrf_vni_base: 30000
-  evpn_multi_domain: false
+  evpn_l2_multi_domain: false
   bgp_peer_groups:
     - name: Tenant_C_BGP_PEER_GROUP
       remote_as: 666
