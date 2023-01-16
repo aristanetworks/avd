@@ -333,7 +333,7 @@ class RouterBgpMixin(UtilsMixin):
             # If multiple L2 Vlans share the same name, they will be part of the same bundle
             for bundle_name, l2vlans in groupby(tenant["l2vlans"], "name"):
                 l2vlans = list(l2vlans)
-                if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant)) is not None:
+                if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
                     bundles[bundle_name] = bundle
