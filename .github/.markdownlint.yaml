@@ -88,3 +88,8 @@ MD049:
 MD050:
   # Strong style should be consistent
   style: "asterisk"
+
+# MD050/link-fragments Link fragments should be valid
+# Disabling for current table implementation
+MD051:
+  false
