@@ -12113,7 +12113,7 @@
               "maximum_paths": {
                 "type": "integer",
                 "minimum": 1,
-                "maximum": 32,
+                "maximum": 64,
                 "title": "Maximum Paths"
               },
               "max_metric": {
