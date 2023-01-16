@@ -219,9 +219,15 @@ router_bgp:
       route_targets:
         both:
         - '65104:14'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65104:14'
       redistribute_routes:
       - learned
       vlan: '150'
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.14:14
     Tenant_B_WAN_Zone:
       rd: 192.168.254.14:21
       route_targets:
@@ -235,9 +241,15 @@ router_bgp:
       route_targets:
         both:
         - '65104:31'
+        import_export_evpn_domains:
+        - domain: remote
+          route_target: '65104:31'
       redistribute_routes:
       - learned
       vlan: '350'
+      rd_evpn_domain:
+        domain: remote
+        rd: 192.168.254.14:31
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
