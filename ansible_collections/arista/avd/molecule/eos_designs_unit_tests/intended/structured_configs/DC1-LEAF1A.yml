@@ -107,71 +107,31 @@ router_bgp:
           - '1234:41'
       redistribute_routes:
       - connected
-  vlans:
-    130:
-      tenant: Tenant_A
-      rd: 1.1.1.1:20130
+  vlan_aware_bundles:
+    Tenant_A_APP_Zone:
+      rd: 1.1.1.1:12
       route_targets:
         both:
-        - 1234:20130
+        - '1234:12'
       redistribute_routes:
       - learned
-    131:
-      tenant: Tenant_A
-      rd: 1.1.1.1:20131
+      vlan: 130-132
+    Tenant_A_WEB_Zone:
+      rd: 1.1.1.1:11
       route_targets:
         both:
-        - 1234:20131
+        - '1234:11'
       redistribute_routes:
       - learned
-    132:
-      tenant: Tenant_A
-      rd: 1.1.1.1:20132
+      vlan: 120-121
+    Tenant_D_WAN_Zone:
+      rd: 1.1.1.1:41
       route_targets:
         both:
-        - 1234:20132
+        - '1234:41'
       redistribute_routes:
       - learned
-    120:
-      tenant: Tenant_A
-      rd: 1.1.1.1:20120
-      route_targets:
-        both:
-        - 1234:20120
-      redistribute_routes:
-      - learned
-    121:
-      tenant: Tenant_A
-      rd: 1.1.1.1:20121
-      route_targets:
-        both:
-        - 1234:20121
-      redistribute_routes:
-      - learned
-    450:
-      tenant: Tenant_D
-      rd: 1.1.1.1:40450
-      route_targets:
-        both:
-        - 1234:40450
-      redistribute_routes:
-      - learned
-    451:
-      tenant: Tenant_D
-      rd: 1.1.1.1:40451
-      route_targets:
-        both:
-        - 1234:40451
-      redistribute_routes:
-      - learned
-    452:
-      tenant: Tenant_D
-      rd: 1.1.1.1:40452
-      route_targets:
-        both:
-        - 1234:40452
-      redistribute_routes:
-      - learned
+      vlan: 450-452
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

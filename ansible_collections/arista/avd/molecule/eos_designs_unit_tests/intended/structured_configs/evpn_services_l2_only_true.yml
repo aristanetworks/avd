@@ -35,112 +35,48 @@ router_bgp:
       threshold: 5
       enabled: true
       expiry_timeout: 10
-  vlans:
-    130:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20130
+  vlan_aware_bundles:
+    Tenant_A_APP_Zone:
+      rd: 192.168.255.109:12
       route_targets:
         both:
-        - 20130:20130
+        - '12:12'
       redistribute_routes:
       - learned
-    131:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20131
+      vlan: 130-132
+    Tenant_A_DB_Zone:
+      rd: 192.168.255.109:13
       route_targets:
         both:
-        - 20131:20131
+        - '13:13'
       redistribute_routes:
       - learned
-    132:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20132
+      vlan: 140-141
+    Tenant_A_OP_Zone:
+      rd: 192.168.255.109:9
       route_targets:
         both:
-        - 20132:20132
+        - '9:9'
       redistribute_routes:
       - learned
-    140:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20140
+      vlan: 110-112
+    Tenant_A_WAN_Zone:
+      rd: 192.168.255.109:14
       route_targets:
         both:
-        - 20140:20140
+        - '14:14'
       redistribute_routes:
       - learned
-    141:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20141
+      vlan: 150-151
+    Tenant_A_WEB_Zone:
+      rd: 192.168.255.109:11
       route_targets:
         both:
-        - 20141:20141
+        - '11:11'
       redistribute_routes:
       - learned
-    110:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20110
-      route_targets:
-        both:
-        - 20110:20110
-      redistribute_routes:
-      - learned
-    111:
-      tenant: Tenant_A
-      rd: 192.168.255.109:50111
-      route_targets:
-        both:
-        - 50111:50111
-      redistribute_routes:
-      - learned
-    112:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20112
-      route_targets:
-        both:
-        - 20112:20112
-      redistribute_routes:
-      - learned
-    150:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20150
-      route_targets:
-        both:
-        - 20150:20150
-      redistribute_routes:
-      - learned
-    151:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20151
-      route_targets:
-        both:
-        - 20151:20151
-      redistribute_routes:
-      - learned
-    120:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20120
-      route_targets:
-        both:
-        - 20120:20120
-      redistribute_routes:
-      - learned
-    121:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20121
-      route_targets:
-        both:
-        - 20121:20121
-      redistribute_routes:
-      - learned
-    160:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20160
-      route_targets:
-        both:
-        - 20160:20160
-      redistribute_routes:
-      - learned
-    161:
+      vlan: 120-121
+    Tenant_A_NFS:
       tenant: Tenant_A
       rd: 192.168.255.109:20161
       route_targets:
@@ -148,7 +84,17 @@ router_bgp:
         - 20161:20161
       redistribute_routes:
       - learned
-    162:
+      vlan: '161'
+    Tenant_A_VMOTION:
+      tenant: Tenant_A
+      rd: 192.168.255.109:20160
+      route_targets:
+        both:
+        - 20160:20160
+      redistribute_routes:
+      - learned
+      vlan: '160'
+    l2vlan_with_no_tags:
       tenant: Tenant_A
       rd: 192.168.255.109:20162
       route_targets:
@@ -156,7 +102,8 @@ router_bgp:
         - 20162:20162
       redistribute_routes:
       - learned
-    163:
+      vlan: '162'
+    overlapping_name:
       tenant: Tenant_A
       rd: 192.168.255.109:20163
       route_targets:
@@ -164,126 +111,55 @@ router_bgp:
         - 20163:20163
       redistribute_routes:
       - learned
-    164:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20164
+      vlan: 163-165
+    Tenant_B_OP_Zone:
+      rd: 192.168.255.109:20
       route_targets:
         both:
-        - 20164:20164
+        - '20:20'
       redistribute_routes:
       - learned
-    165:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20165
+      vlan: 210-211
+    Tenant_B_WAN_Zone:
+      rd: 192.168.255.109:21
       route_targets:
         both:
-        - 20165:20165
+        - '21:21'
       redistribute_routes:
       - learned
-    210:
-      tenant: Tenant_B
-      rd: 192.168.255.109:20210
+      vlan: '250'
+    Tenant_C_OP_Zone:
+      rd: 192.168.255.109:30
       route_targets:
         both:
-        - 20210:20210
+        - '30:30'
       redistribute_routes:
       - learned
-    211:
-      tenant: Tenant_B
-      rd: 192.168.255.109:20211
+      vlan: 310-311
+    Tenant_C_WAN_Zone:
+      rd: 192.168.255.109:31
       route_targets:
         both:
-        - 20211:20211
+        - '31:31'
       redistribute_routes:
       - learned
-    250:
-      tenant: Tenant_B
-      rd: 192.168.255.109:20250
+      vlan: '350'
+    Tenant_D_OP_Zone:
+      rd: 192.168.255.109:40
       route_targets:
         both:
-        - 20250:20250
+        - '40:40'
       redistribute_routes:
       - learned
-    310:
-      tenant: Tenant_C
-      rd: 192.168.255.109:30310
+      vlan: 410-413
+    Tenant_D_WAN_Zone:
+      rd: 192.168.255.109:41
       route_targets:
         both:
-        - 30310:30310
+        - '41:41'
       redistribute_routes:
       - learned
-    311:
-      tenant: Tenant_C
-      rd: 192.168.255.109:30311
-      route_targets:
-        both:
-        - 30311:30311
-      redistribute_routes:
-      - learned
-    350:
-      tenant: Tenant_C
-      rd: 192.168.255.109:30350
-      route_targets:
-        both:
-        - 30350:30350
-      redistribute_routes:
-      - learned
-    410:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40410
-      route_targets:
-        both:
-        - 40410:40410
-      redistribute_routes:
-      - learned
-    411:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40411
-      route_targets:
-        both:
-        - 40411:40411
-      redistribute_routes:
-      - learned
-    412:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40412
-      route_targets:
-        both:
-        - 40412:40412
-      redistribute_routes:
-      - learned
-    413:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40413
-      route_targets:
-        both:
-        - 40413:40413
-      redistribute_routes:
-      - learned
-    450:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40450
-      route_targets:
-        both:
-        - 40450:40450
-      redistribute_routes:
-      - learned
-    451:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40451
-      route_targets:
-        both:
-        - 40451:40451
-      redistribute_routes:
-      - learned
-    452:
-      tenant: Tenant_D
-      rd: 192.168.255.109:40452
-      route_targets:
-        both:
-        - 40452:40452
-      redistribute_routes:
-      - learned
+      vlan: 450-452
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

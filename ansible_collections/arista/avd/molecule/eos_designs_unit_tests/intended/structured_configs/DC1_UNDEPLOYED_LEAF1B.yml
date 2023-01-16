@@ -222,96 +222,48 @@ router_bgp:
       neighbors:
         10.255.251.24:
           peer_group: MLAG-PEERS
-  vlans:
-    130:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20130
+  vlan_aware_bundles:
+    Tenant_A_APP_Zone:
+      rd: 192.168.255.22:12
       route_targets:
         both:
-        - 20130:20130
+        - '12:12'
       redistribute_routes:
       - learned
-    131:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20131
+      vlan: 130-131
+    Tenant_A_DB_Zone:
+      rd: 192.168.255.22:13
       route_targets:
         both:
-        - 20131:20131
+        - '13:13'
       redistribute_routes:
       - learned
-    140:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20140
+      vlan: 140-141
+    Tenant_A_OP_Zone:
+      rd: 192.168.255.22:9
       route_targets:
         both:
-        - 20140:20140
+        - '9:9'
       redistribute_routes:
       - learned
-    141:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20141
+      vlan: 110-112
+    Tenant_A_WAN_Zone:
+      rd: 192.168.255.22:14
       route_targets:
         both:
-        - 20141:20141
+        - '14:14'
       redistribute_routes:
       - learned
-    110:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20110
+      vlan: '150'
+    Tenant_A_WEB_Zone:
+      rd: 192.168.255.22:11
       route_targets:
         both:
-        - 20110:20110
+        - '11:11'
       redistribute_routes:
       - learned
-    111:
-      tenant: Tenant_A
-      rd: 192.168.255.22:50111
-      route_targets:
-        both:
-        - 50111:50111
-      redistribute_routes:
-      - learned
-    112:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20112
-      route_targets:
-        both:
-        - 20112:20112
-      redistribute_routes:
-      - learned
-    150:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20150
-      route_targets:
-        both:
-        - 20150:20150
-      redistribute_routes:
-      - learned
-    120:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20120
-      route_targets:
-        both:
-        - 20120:20120
-      redistribute_routes:
-      - learned
-    121:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20121
-      route_targets:
-        both:
-        - 20121:20121
-      redistribute_routes:
-      - learned
-    160:
-      tenant: Tenant_A
-      rd: 192.168.255.22:20160
-      route_targets:
-        both:
-        - 20160:20160
-      redistribute_routes:
-      - learned
-    161:
+      vlan: 120-121
+    Tenant_A_NFS:
       tenant: Tenant_A
       rd: 192.168.255.22:20161
       route_targets:
@@ -319,54 +271,48 @@ router_bgp:
         - 20161:20161
       redistribute_routes:
       - learned
-    210:
-      tenant: Tenant_B
-      rd: 192.168.255.22:20210
+      vlan: '161'
+    Tenant_A_VMOTION:
+      tenant: Tenant_A
+      rd: 192.168.255.22:20160
       route_targets:
         both:
-        - 20210:20210
+        - 20160:20160
       redistribute_routes:
       - learned
-    211:
-      tenant: Tenant_B
-      rd: 192.168.255.22:20211
+      vlan: '160'
+    Tenant_B_OP_Zone:
+      rd: 192.168.255.22:20
       route_targets:
         both:
-        - 20211:20211
+        - '20:20'
       redistribute_routes:
       - learned
-    250:
-      tenant: Tenant_B
-      rd: 192.168.255.22:20250
+      vlan: 210-211
+    Tenant_B_WAN_Zone:
+      rd: 192.168.255.22:21
       route_targets:
         both:
-        - 20250:20250
+        - '21:21'
       redistribute_routes:
       - learned
-    310:
-      tenant: Tenant_C
-      rd: 192.168.255.22:30310
+      vlan: '250'
+    Tenant_C_OP_Zone:
+      rd: 192.168.255.22:30
       route_targets:
         both:
-        - 30310:30310
+        - '30:30'
       redistribute_routes:
       - learned
-    311:
-      tenant: Tenant_C
-      rd: 192.168.255.22:30311
+      vlan: 310-311
+    Tenant_C_WAN_Zone:
+      rd: 192.168.255.22:31
       route_targets:
         both:
-        - 30311:30311
+        - '31:31'
       redistribute_routes:
       - learned
-    350:
-      tenant: Tenant_C
-      rd: 192.168.255.22:30350
-      route_targets:
-        both:
-        - 30350:30350
-      redistribute_routes:
-      - learned
+      vlan: '350'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

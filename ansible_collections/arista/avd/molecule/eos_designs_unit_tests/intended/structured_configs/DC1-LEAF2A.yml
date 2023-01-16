@@ -197,88 +197,40 @@ router_bgp:
           - '100000:41'
       redistribute_routes:
       - connected
-  vlans:
-    130:
-      tenant: Tenant_A
-      rd: 65001:20130
+  vlan_aware_bundles:
+    Tenant_A_APP_Zone:
+      rd: '65001:12'
       route_targets:
         both:
-        - 100000:20130
+        - '100000:12'
       redistribute_routes:
       - learned
-    131:
-      tenant: Tenant_A
-      rd: 65001:20131
+      vlan: 130-131
+    Tenant_A_DB_Zone:
+      rd: '65001:13'
       route_targets:
         both:
-        - 100000:20131
+        - '100000:13'
       redistribute_routes:
       - learned
-    140:
-      tenant: Tenant_A
-      rd: 65001:20140
+      vlan: 140-141
+    Tenant_A_OP_Zone:
+      rd: '65001:9'
       route_targets:
         both:
-        - 100000:20140
+        - '100000:9'
       redistribute_routes:
       - learned
-    141:
-      tenant: Tenant_A
-      rd: 65001:20141
+      vlan: 110-112
+    Tenant_A_WEB_Zone:
+      rd: '65001:11'
       route_targets:
         both:
-        - 100000:20141
+        - '100000:11'
       redistribute_routes:
       - learned
-    110:
-      tenant: Tenant_A
-      rd: 65001:20110
-      route_targets:
-        both:
-        - 100000:20110
-      redistribute_routes:
-      - learned
-    111:
-      tenant: Tenant_A
-      rd: 65001:50111
-      route_targets:
-        both:
-        - 100000:50111
-      redistribute_routes:
-      - learned
-    112:
-      tenant: Tenant_A
-      rd: 65001:20112
-      route_targets:
-        both:
-        - 100000:20112
-      redistribute_routes:
-      - learned
-    120:
-      tenant: Tenant_A
-      rd: 65001:20120
-      route_targets:
-        both:
-        - 100000:20120
-      redistribute_routes:
-      - learned
-    121:
-      tenant: Tenant_A
-      rd: 65001:20121
-      route_targets:
-        both:
-        - 100000:20121
-      redistribute_routes:
-      - learned
-    160:
-      tenant: Tenant_A
-      rd: 65001:20160
-      route_targets:
-        both:
-        - 100000:20160
-      redistribute_routes:
-      - learned
-    161:
+      vlan: 120-121
+    Tenant_A_NFS:
       tenant: Tenant_A
       rd: 65001:20161
       route_targets:
@@ -286,94 +238,48 @@ router_bgp:
         - 100000:20161
       redistribute_routes:
       - learned
-    210:
-      tenant: Tenant_B
-      rd: 65001:20210
+      vlan: '161'
+    Tenant_A_VMOTION:
+      tenant: Tenant_A
+      rd: 65001:20160
       route_targets:
         both:
-        - 100000:20210
+        - 100000:20160
       redistribute_routes:
       - learned
-    211:
-      tenant: Tenant_B
-      rd: 65001:20211
+      vlan: '160'
+    Tenant_B_OP_Zone:
+      rd: '65001:20'
       route_targets:
         both:
-        - 100000:20211
+        - '100000:20'
       redistribute_routes:
       - learned
-    310:
-      tenant: Tenant_C
-      rd: 65001:30310
+      vlan: 210-211
+    Tenant_C_OP_Zone:
+      rd: '65001:30'
       route_targets:
         both:
-        - 100000:30310
+        - '100000:30'
       redistribute_routes:
       - learned
-    311:
-      tenant: Tenant_C
-      rd: 65001:30311
+      vlan: 310-311
+    Tenant_D_OP_Zone:
+      rd: '65001:40'
       route_targets:
         both:
-        - 100000:30311
+        - '100000:40'
       redistribute_routes:
       - learned
-    410:
-      tenant: Tenant_D
-      rd: 65001:40410
+      vlan: 410-413
+    Tenant_D_WAN_Zone:
+      rd: '65001:41'
       route_targets:
         both:
-        - 100000:40410
+        - '100000:41'
       redistribute_routes:
       - learned
-    411:
-      tenant: Tenant_D
-      rd: 65001:40411
-      route_targets:
-        both:
-        - 100000:40411
-      redistribute_routes:
-      - learned
-    412:
-      tenant: Tenant_D
-      rd: 65001:40412
-      route_targets:
-        both:
-        - 100000:40412
-      redistribute_routes:
-      - learned
-    413:
-      tenant: Tenant_D
-      rd: 65001:40413
-      route_targets:
-        both:
-        - 100000:40413
-      redistribute_routes:
-      - learned
-    450:
-      tenant: Tenant_D
-      rd: 65001:40450
-      route_targets:
-        both:
-        - 100000:40450
-      redistribute_routes:
-      - learned
-    451:
-      tenant: Tenant_D
-      rd: 65001:40451
-      route_targets:
-        both:
-        - 100000:40451
-      redistribute_routes:
-      - learned
-    452:
-      tenant: Tenant_D
-      rd: 65001:40452
-      route_targets:
-        both:
-        - 100000:40452
-      redistribute_routes:
-      - learned
+      vlan: 450-452
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

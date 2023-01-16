@@ -213,37 +213,31 @@ router_bgp:
           - '65104:31'
       redistribute_routes:
       - connected
-  vlans:
-    150:
-      tenant: Tenant_A
-      rd: 192.168.254.14:20150
+  vlan_aware_bundles:
+    Tenant_A_WAN_Zone:
+      rd: 192.168.254.14:14
       route_targets:
         both:
-        - 65104:20150
+        - '65104:14'
       redistribute_routes:
       - learned
-    250:
-      tenant: Tenant_B
-      rd: 192.168.254.14:20250
+      vlan: '150'
+    Tenant_B_WAN_Zone:
+      rd: 192.168.254.14:21
       route_targets:
         both:
-        - 65104:20250
+        - '65104:21'
       redistribute_routes:
       - learned
-    350:
-      tenant: Tenant_C
-      rd: 192.168.254.14:30350
+      vlan: '250'
+    Tenant_C_WAN_Zone:
+      rd: 192.168.254.14:31
       route_targets:
         both:
-        - 65104:30350
-        import_export_evpn_domains:
-        - domain: remote
-          route_target: 65104:30350
+        - '65104:31'
       redistribute_routes:
       - learned
-      rd_evpn_domain:
-        domain: remote
-        rd: 192.168.254.14:30350
+      vlan: '350'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

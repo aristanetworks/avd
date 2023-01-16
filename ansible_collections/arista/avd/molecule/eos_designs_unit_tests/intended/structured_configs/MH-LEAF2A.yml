@@ -69,23 +69,23 @@ router_bgp:
           - '20:20'
       redistribute_routes:
       - connected
-  vlans:
-    311:
-      tenant: Tenant_X
-      rd: 192.168.255.35:11311
+  vlan_aware_bundles:
+    default:
+      rd: 192.168.255.35:21
       route_targets:
         both:
-        - 11311:11311
+        - '21:21'
       redistribute_routes:
       - learned
-    310:
-      tenant: Tenant_X
-      rd: 192.168.255.35:11310
+      vlan: '311'
+    Tenant_X_OP_Zone:
+      rd: 192.168.255.35:20
       route_targets:
         both:
-        - 11310:11310
+        - '20:20'
       redistribute_routes:
       - learned
+      vlan: '310'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
