@@ -275,8 +275,8 @@ mac_address_table:
         redistribute_ospf: < true | false, Default -> true >
 
         # Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
-        # Overrides tenants.<tenant>.evpn_multi_domain ( default --> true ).
-        evpn_multi_domain: < true | false | default --> true >
+        # Overrides tenants.<tenant>.evpn_multi_domain.
+        evpn_multi_domain: < true | false >
 
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
@@ -381,9 +381,9 @@ mac_address_table:
             vxlan: < true | false | default -> true >
 
             # Explicitly extend this VLAN to remote EVPN domains.
-            # Overrides tenants.<tenant>.evpn_multi_domain ( default --> true ).
-            # Overrides tenants.<tenant>.vrf.<vrf>.evpn_multi_domain ( default --> true ).
-            evpn_multi_domain: < true | false | default --> true >
+            # Overrides tenants.<tenant>.evpn_multi_domain.
+            # Overrides tenants.<tenant>.vrf.<vrf>.evpn_multi_domain.
+            evpn_multi_domain: < true | false >
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
@@ -664,8 +664,8 @@ mac_address_table:
           version: < 1, 2, 3 -> default 2 (EOS) >
 
         # Explicitly extend this VLAN to remote EVPN domains.
-        # Overrides tenants.<tenant>.evpn_multi_domain ( default --> true ).
-        evpn_multi_domain: < true | false | default --> true >
+        # Overrides tenants.<tenant>.evpn_multi_domain.
+        evpn_multi_domain: < true | false >
 
         # Structured configuration and eos cli commands rendered on router_bgp.vlans
         # This configuration will not be applied to vlan aware bundles
