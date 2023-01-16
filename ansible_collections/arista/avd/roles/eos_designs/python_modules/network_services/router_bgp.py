@@ -260,12 +260,10 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def _router_bgp_vlans_vlan(self, vlan, tenant, vrf=None) -> dict | None:
+    def _router_bgp_vlans_vlan(self, vlan, tenant, vrf={}) -> dict | None:
         """
         Return structured config for one given vlan under router_bgp.vlans
         """
-        if vrf is None:
-            vrf = {}
         if vlan.get("vxlan") is False:
             return None
 
