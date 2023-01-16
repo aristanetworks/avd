@@ -1266,6 +1266,11 @@
             "type": "boolean",
             "title": "Shutdown"
           },
+          "load_interval": {
+            "type": "integer",
+            "description": "Number of seconds in range of \"0-600\"",
+            "title": "Load Interval"
+          },
           "speed": {
             "type": "string",
             "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",

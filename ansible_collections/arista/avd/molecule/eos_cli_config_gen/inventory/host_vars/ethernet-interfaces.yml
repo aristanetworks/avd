@@ -579,3 +579,7 @@ ethernet_interfaces:
         source_interface: Loopback0
         vrf: MGMT
       10.10.64.151:
+
+  Ethernet48:
+    description: Load Interval
+    load_interval: 5
