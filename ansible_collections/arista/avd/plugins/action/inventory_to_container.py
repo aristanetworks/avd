@@ -83,10 +83,10 @@ class ActionModule(ActionBase):
             # Only evaluate parent_groups which are part of all_groups_from_root. A group can have multiple parents.
             parent_groups: set[Group] = set(group.parent_groups).intersection(all_groups_from_root)
             # Ensure that we have only one parent group. Otherwise we cannot build a tree.
-            if len(parent_groups) != 1:
+            if len(parent_groups) > 1:
                 raise AnsibleActionFail(
-                    f"arista.avd.inventory_to_container: Group '{group}' have no or more than one parent group below the 'container_root'. Unable to build"
-                    " tree."
+                    f"arista.avd.inventory_to_container: Group '{group}' has more than one parent group ({parent_groups}) below the 'container_root'."
+                    " Unable to build CloudVision container hierarchy."
                 )
             parent_container = parent_groups.pop().name
 
