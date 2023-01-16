@@ -33,7 +33,7 @@ class ActionModule(ActionBase):
         validation_mode = self._task.args.get("validation_mode")
 
         dest = self._task.args.get("dest")
-        if dest is not None and not isinstance(self.dest, str):
+        if dest is not None and not isinstance(dest, str):
             raise AnsibleActionFail("The argument 'dest' must be a string if set")
 
         self.add_md_toc = self._task.args.get("add_md_toc", False)
