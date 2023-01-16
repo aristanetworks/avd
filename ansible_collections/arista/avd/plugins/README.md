@@ -634,13 +634,15 @@ For Markdown files the plugin can also run `md_toc` on the output before writing
 The module is used in `eos_cli_config_gen` for generating configuration and documentation outputs. By combining conversion, validation
 and template generation in a single tasks, we can avoid Ansible's variable precendence from interfering with the converted vars.
 
+If `dest` is not set, the template output will be returned under the `output` key in the result.
+
 The module arguments are:
 
 ```yaml
   # Path to Jinja2 Template file | Required
   template: <str>
 
-  # Destination path. The rendered template will be written to this file | Required
+  # Destination path. The rendered template will be written to this file | Optional
   dest: <str>
 
   # File mode for dest file | Optional
