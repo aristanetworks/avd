@@ -2,4 +2,8 @@ ansible_collections/arista/avd/molecule/
 ansible_collections/arista/avd/examples/*/documentation/
 ansible_collections/arista/avd/tests/unit/filters/toc_files/
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/
+<<<<<<< HEAD
 ansible_collections/arista/avd/roles/eos_designs/docs/
+=======
+ansible_collections/arista/avd/roles/eos_designs/docs/Input\ Variables.md
+>>>>>>> c18ceb691 (Doc: Updating navigation with data models)

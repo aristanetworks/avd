@@ -4,6 +4,8 @@
 type: dict
 keys:
   ip_community_lists:
+    documentation_options:
+      filename: Filters
     type: list
     secondary_key: entries
     primary_key: name

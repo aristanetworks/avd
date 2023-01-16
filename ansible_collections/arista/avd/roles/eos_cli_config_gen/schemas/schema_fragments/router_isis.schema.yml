@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_isis:
+    documentation_options:
+      filename: Routing
     type: dict
     keys:
       instance:

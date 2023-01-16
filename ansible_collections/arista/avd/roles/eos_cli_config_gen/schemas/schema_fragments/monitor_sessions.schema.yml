@@ -4,6 +4,8 @@
 type: dict
 keys:
   monitor_sessions:
+    documentation_options:
+      filename: Monitoring
     type: list
     convert_types:
     - dict

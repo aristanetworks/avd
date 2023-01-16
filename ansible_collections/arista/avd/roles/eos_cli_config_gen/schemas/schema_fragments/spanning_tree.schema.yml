@@ -4,6 +4,8 @@
 type: dict
 keys:
   spanning_tree:
+    documentation_options:
+      filename: Spanning Tree
     type: dict
     keys:
       root_super:

@@ -19,6 +19,9 @@
   ansible.builtin.set_fact:
     role_documentation_schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='documentation') }}"
 
+# - debug:
+#     msg: "{{ role_documentation_schema }}"
+
 - name: Output eos_cli_config_gen Documentation
   tags: [eos_cli_config_gen]
   template:

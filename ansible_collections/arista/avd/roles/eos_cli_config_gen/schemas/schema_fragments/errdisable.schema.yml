@@ -4,6 +4,8 @@
 type: dict
 keys:
   errdisable:
+    documentation_options:
+      filename: Errdisable
     type: dict
     keys:
       detect:

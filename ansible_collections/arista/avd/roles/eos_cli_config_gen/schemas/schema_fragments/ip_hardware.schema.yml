@@ -4,6 +4,8 @@
 type: dict
 keys:
   ip_hardware:
+    documentation_options:
+      filename: IP Hardware
     type: dict
     keys:
       fib:

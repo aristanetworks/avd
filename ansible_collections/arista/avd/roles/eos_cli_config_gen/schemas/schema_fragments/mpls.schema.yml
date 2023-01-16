@@ -4,6 +4,8 @@
 type: dict
 keys:
   mpls:
+    documentation_options:
+      filename: MPLS
     type: dict
     keys:
       ip:

@@ -4,6 +4,8 @@
 type: dict
 keys:
   ptp:
+    documentation_options:
+      filename: PTP
     type: dict
     keys:
       mode:

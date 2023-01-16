@@ -4,6 +4,8 @@
 type: dict
 keys:
   daemons:
+    documentation_options:
+      filename: Monitoring
     type: list
     primary_key: name
     convert_types:

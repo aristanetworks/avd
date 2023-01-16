@@ -4,6 +4,8 @@
 type: dict
 keys:
   banners:
+    documentation_options:
+      filename: Banners
     type: dict
     keys:
       login:

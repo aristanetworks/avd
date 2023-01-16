@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_bgp:
+    documentation_options:
+      filename: Routing
     type: dict
     keys:
       as:

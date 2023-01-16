@@ -4,6 +4,8 @@
 type: dict
 keys:
   vlans:
+    documentation_options:
+      filename: VLANs
     type: list
     primary_key: id
     convert_types:

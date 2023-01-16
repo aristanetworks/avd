@@ -4,6 +4,8 @@
 type: dict
 keys:
   load_interval:
+    documentation_options:
+      filename: Monitoring
     type: dict
     keys:
       default:

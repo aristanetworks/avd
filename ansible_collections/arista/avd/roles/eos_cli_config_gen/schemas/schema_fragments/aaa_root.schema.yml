@@ -4,6 +4,8 @@
 type: dict
 keys:
   aaa_root:
+    documentation_options:
+      filename: Authentication
     type: dict
     keys:
       secret:

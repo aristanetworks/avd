@@ -4,6 +4,8 @@
 type: dict
 keys:
   ethernet_interfaces:
+    documentation_options:
+      filename: Interfaces
     type: list
     primary_key: name
     convert_types:

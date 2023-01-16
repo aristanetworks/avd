@@ -4,5 +4,7 @@
 type: dict
 keys:
   dns_domain:
+    documentation_options:
+      filename: Management
     type: str
     description: Domain Name

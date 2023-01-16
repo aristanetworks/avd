@@ -4,6 +4,8 @@
 type: dict
 keys:
   management_security:
+    documentation_options:
+      filename: Management
     type: dict
     keys:
       entropy_source:

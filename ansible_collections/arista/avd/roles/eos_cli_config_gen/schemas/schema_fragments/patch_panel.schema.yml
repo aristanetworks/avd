@@ -4,6 +4,8 @@
 type: dict
 keys:
   patch_panel:
+    documentation_options:
+      filename: Patch Panel
     type: dict
     keys:
       patches:

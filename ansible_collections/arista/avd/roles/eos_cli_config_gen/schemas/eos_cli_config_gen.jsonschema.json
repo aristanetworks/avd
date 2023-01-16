@@ -759,7 +759,7 @@
     "custom_templates": {
       "type": "array",
       "title": "Extensibility with Custom Templates",
-      "description": "- Custom templates can be added below the playbook directory.\n- If a location above the directory is desired, a symbolic link can be used.\n- Example under the `playbooks` directory create symbolic link with the following command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n  ```\n\n- The output will be rendered at the end of the configuration.\n- The order of custom templates in the list can be important if they overlap.\n- It is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd `custom_templates` to group/host variables:\n",
+      "description": "- Custom templates can be added below the playbook directory.\n- If a location above the directory is desired, a symbolic link can be used.\n- Example under the `playbooks` directory create symbolic link with the following command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n  ```\n\n- The output will be rendered at the end of the configuration.\n- The order of custom templates in the list can be important if they overlap.\n- It is recommended to use a `!` delimiter at the top of each custom template.\n\nAdd `custom_templates` to group/host variables:\n",
       "items": {
         "type": "string",
         "description": "Template relative path below playbook directory"

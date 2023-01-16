@@ -4,6 +4,8 @@
 type: dict
 keys:
   vrfs:
+    documentation_options:
+      filename: Routing
     type: list
     primary_key: name
     convert_types:

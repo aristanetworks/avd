@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 !!! warning
     This document describes the data model for AVD 4.x. It may or may not work in previous versions.
 
@@ -6816,3 +6817,6 @@ vxlan_interface:
       flood_vtep_learned_data_plane: <bool>
     eos_cli: <str>
 ```
+=======
+# Input Variables
+>>>>>>> c18ceb691 (Doc: Updating navigation with data models)

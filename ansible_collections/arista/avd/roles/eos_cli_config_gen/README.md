@@ -48,7 +48,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 - The output will be rendered at the end of the configuration.
 - The order of custom templates in the list can be important if they overlap.
-- It is recommenended to use a `!` delimiter at the top of each custom template.
+- It is recommended to use a `!` delimiter at the top of each custom template.
 
 Add custom template to group/host variables:
 
@@ -65,6 +65,7 @@ custom_templates:
 - Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional.
 
+<<<<<<< HEAD
 ### ACLs
 
 #### IP Extended Access-Lists
@@ -3938,6 +3939,8 @@ mac_address_table:
       moves: < 2-10 >
 ```
 
+=======
+>>>>>>> c18ceb691 (Doc: Updating navigation with data models)
 ## License
 
 Project is published under [Apache 2.0 License](../../LICENSE)
