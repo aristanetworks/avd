@@ -240,7 +240,7 @@ keys:
               convert_types:
                 - str
               min: 1
-              max: 64
+              max: 128
             max_metric:
               type: dict
               keys:
