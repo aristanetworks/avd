@@ -32,15 +32,15 @@ def test_ip_with_low_subnet_size(pool, prefixlen, subnet_offset, ip_offset):
     assert str(exc_info.value) == f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}"
 
 
-@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset, expected", [(pool, 8, subnet_offset, ip_offset, "negative shift count")])
-def test_ip_with_lower_prefixlen(pool, prefixlen, subnet_offset, ip_offset, expected):
+@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [(pool, 8, subnet_offset, ip_offset)])
+def test_ip_with_lower_prefixlen(pool, prefixlen, subnet_offset, ip_offset):
     """
     Invalid cases for get_ip_from_pool with change in prefixlen value as 8 to capture invalid prefixlen wrt pool.
     """
 
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(AristaAvdError) as exc_info:
         get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert str(exc_info.value) == expected
+    assert f"prefixlen {prefixlen} is smaller than pool_network prefixlen" in str(exc_info.value)
 
 
 @pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [(pool, prefixlen, 256, ip_offset)])
