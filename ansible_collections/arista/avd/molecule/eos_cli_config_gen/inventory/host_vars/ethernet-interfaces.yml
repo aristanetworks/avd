@@ -582,4 +582,5 @@ ethernet_interfaces:
 
   Ethernet48:
     description: Load Interval
+    type: switched
     load_interval: 5

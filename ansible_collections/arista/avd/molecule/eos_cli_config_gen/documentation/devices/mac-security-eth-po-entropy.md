@@ -102,17 +102,17 @@ management security
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-AGG01_Ethernet1 | *trunk | *1-5 | *- | *- | 3 |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
+| Ethernet3 | DC1-AGG01_Ethernet1 | *trunk | *1-5 | *- | *- | 3 | - |
 
 *Inherited from Port-Channel Interface
 
 #### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | - | routed | - | 1.1.1.1/24 | default | - | - | - | - |
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out | Load Interval |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- | ------------- |
+| Ethernet1 | - | routed | - | 1.1.1.1/24 | default | - | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 

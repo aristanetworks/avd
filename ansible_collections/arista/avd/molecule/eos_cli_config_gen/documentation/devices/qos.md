@@ -74,20 +74,20 @@ interface Management1
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet7 |  Test-with-policymap | trunk | 110-111,210-211 | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
+| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 | - |
+| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 | - |
+| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - | - |
+| Ethernet7 |  Test-with-policymap | trunk | 110-111,210-211 | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 #### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out | Load Interval |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- | ------------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 

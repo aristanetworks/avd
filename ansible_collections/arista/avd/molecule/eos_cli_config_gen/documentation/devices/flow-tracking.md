@@ -120,11 +120,11 @@ flow tracking sampled
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet40 |  - | access | - | - | - | - |
-| Ethernet41 |  - | access | - | - | - | - |
-| Ethernet42 |  - | access | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
+| Ethernet40 |  - | access | - | - | - | - | - |
+| Ethernet41 |  - | access | - | - | - | - | - |
+| Ethernet42 |  - | access | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 

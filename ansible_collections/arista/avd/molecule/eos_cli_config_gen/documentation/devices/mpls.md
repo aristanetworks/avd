@@ -71,16 +71,16 @@ interface Management1
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
 #### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - |
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out | Load Interval |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- | ------------- |
+| Ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 

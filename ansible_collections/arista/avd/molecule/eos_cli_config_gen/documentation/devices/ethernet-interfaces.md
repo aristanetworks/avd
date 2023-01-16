@@ -74,46 +74,46 @@ interface Management1
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet4 |  Molecule IPv6 | access | - | - | - | - |
-| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet7 |  Molecule L2 | access | - | - | - | - |
-| Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
-| Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
-| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
-| Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
-| Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
-| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
-| Ethernet21 |  200MBit/s shape | access | - | - | - | - |
-| Ethernet22 |  10% shape | access | - | - | - | - |
-| Ethernet23 |  Error-correction encoding | access | - | - | - | - |
-| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
-| Ethernet25 |  Molecule MAC | access | - | - | - | - |
-| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
-| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
-| Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - |
-| Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
-| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
-| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
-| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
-| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
-| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
-| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - |
-| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - |
-| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - |
-| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - |
-| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - |
-| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - |
-| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - |
-| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - |
-| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
-| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
-| Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
-| Ethernet48 |  Load Interval | access | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
+| Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - | - |
+| Ethernet4 |  Molecule IPv6 | access | - | - | - | - | - |
+| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - | - |
+| Ethernet7 |  Molecule L2 | access | - | - | - | - | - |
+| Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - | - |
+| Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - | - |
+| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - |
+| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - | - |
+| Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - | - |
+| Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - | - |
+| Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - | - |
+| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - | - |
+| Ethernet21 |  200MBit/s shape | access | - | - | - | - | - |
+| Ethernet22 |  10% shape | access | - | - | - | - | - |
+| Ethernet23 |  Error-correction encoding | access | - | - | - | - | - |
+| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - | - |
+| Ethernet25 |  Molecule MAC | access | - | - | - | - | - |
+| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - | - |
+| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - | - |
+| Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - | - |
+| Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - | - |
+| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - | - |
+| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - | - |
+| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - | - |
+| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - | - |
+| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - | - |
+| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - | - |
+| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - | - |
+| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - | - |
+| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - | - |
+| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - | - |
+| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - | - |
+| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - | - |
+| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - | - |
+| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - | - |
+| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - | - |
+| Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - | - |
+| Ethernet48 |  Load Interval | access | - | - | - | - | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -167,23 +167,23 @@ interface Management1
 
 #### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.128.1/31 | default | 1500 | - | - | - |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
-| Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
-| Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
-| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
-| Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out | Load Interval |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- | ------------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.128.1/31 | default | 1500 | - | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - | - |
+| Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - | - |
+| Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - | - |
+| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - | - |
+| Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - | - |
 
 #### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
+| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | Load Interval |
+| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ | ------------- |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - |
 
 #### ISIS
 
