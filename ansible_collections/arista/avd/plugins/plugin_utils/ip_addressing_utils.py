@@ -3,7 +3,7 @@ import ipaddress
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 
-def _ip(pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
+def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
     pool_network = ipaddress.ip_network(pool, strict=False)
     prefixlen_diff = prefixlen - pool_network.prefixlen
     subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
