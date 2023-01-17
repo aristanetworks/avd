@@ -4,7 +4,6 @@ from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
@@ -25,9 +24,11 @@ SIMPLE_CONVERTERS = {
 class AvdDataConverter:
     """
     AvdDataConverter is used to convert AVD Data Types based on schema options.
+
+    avdschema argument is an instance of AvdSchema. Type hinting is not working because of circular import
     """
 
-    def __init__(self, avdschema: AvdSchema):
+    def __init__(self, avdschema):
         self._avdschema = avdschema
 
         self.converters = {
