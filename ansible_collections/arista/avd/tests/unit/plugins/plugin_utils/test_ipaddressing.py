@@ -40,7 +40,7 @@ def test_ip_with_lower_prefixlen(pool, prefixlen, subnet_offset, ip_offset):
 
     with pytest.raises(AristaAvdError) as exc_info:
         get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert f"prefixlen {prefixlen} is smaller than pool_network prefixlen" in str(exc_info.value)
+    assert f"Prefix length {prefixlen} is smaller than pool network prefix length" in str(exc_info.value)
 
 
 @pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [(pool, prefixlen, 256, ip_offset)])
