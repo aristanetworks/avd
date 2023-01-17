@@ -51,7 +51,7 @@ class AvdSchema:
         self._schema = schema
         try:
             self._validator = AvdValidator(schema)
-            self._dataconverter = AvdDataConverter(schema)
+            self._dataconverter = AvdDataConverter(self)
             self._schemaresolver = AvdSchemaResolver(schema)
         except Exception as e:
             raise AristaAvdError("An error occured during creation of the validator") from e
@@ -85,9 +85,9 @@ class AvdSchema:
                 yield schema_validation_error
                 return
 
-            conversion_errors = self._dataconverter.iter_errors(data, _schema=schema)
+            conversion_errors = self._dataconverter.convert_data(data, schema=schema)
         else:
-            conversion_errors = self._dataconverter.iter_errors(data)
+            conversion_errors = self._dataconverter.convert_data(data)
 
         try:
             for conversion_error in conversion_errors:
