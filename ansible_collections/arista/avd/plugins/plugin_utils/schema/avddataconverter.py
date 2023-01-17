@@ -4,6 +4,7 @@ from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
@@ -26,7 +27,7 @@ class AvdDataConverter:
     AvdDataConverter is used to convert AVD Data Types based on schema options.
     """
 
-    def __init__(self, avdschema):
+    def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
 
         self.converters = {
@@ -34,7 +35,11 @@ class AvdDataConverter:
             "keys": self.convert_keys,
         }
 
-    def convert_data(self, data, schema: dict = None, path: list = None) -> Generator:
+    def convert_data(self, data, schema: dict = None, path: list[str] = None) -> Generator:
+        """
+        Perform in-place conversion of data according to the provided schema.
+        Main entry function which is recursively called from the child functions performing the actual conversion of keys/items.
+        """
         if schema is None:
             # Get fully resolved schema (where all $ref has been expanded recursively)
             # Performs inplace update of the argument so we give an empty dict.
@@ -43,6 +48,7 @@ class AvdDataConverter:
             resolve_errors = self._avdschema.resolve(schema)
             for resolve_error in resolve_errors:
                 if isinstance(resolve_error, Exception):
+                    # TODO: Raise/yield multiple errors
                     raise AristaAvdError(resolve_error)
 
         if path is None:
@@ -56,7 +62,7 @@ class AvdDataConverter:
             # Converters will do inplace update of data. Any returns will be yielded conversion messages.
             yield from converter(schema[key], data, schema, path)
 
-    def convert_keys(self, keys: dict, data: dict, schema: dict, path: list):
+    def convert_keys(self, keys: dict, data: dict, schema: dict, path: list[str]):
         """
         This function performs conversion on each key with the relevant subschema
         """
@@ -96,7 +102,7 @@ class AvdDataConverter:
             # Dive in to child keys/schemas
             yield from self.convert_data(data[key], childschema, path + [key])
 
-    def convert_items(self, items: dict, data: list, schema: dict, path: list):
+    def convert_items(self, items: dict, data: list, schema: dict, path: list[str]):
         """
         This function performs conversion on each item with the items subschema
         """
@@ -111,7 +117,7 @@ class AvdDataConverter:
             # Dive in to child items/schema
             yield from self.convert_data(item, items, path + [f"[{index}]"])
 
-    def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, path: list):
+    def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, path: list[str]):
         """
         This function performs type conversion if necessary on a single data instance.
         It is invoked for child keys during "keys" conversion and for child items during
@@ -145,6 +151,7 @@ class AvdDataConverter:
                         data[index] = SIMPLE_CONVERTERS[schema_type](value)
                     except Exception:
                         # Ignore errors
+                        # TODO: Log message
                         return
 
                 elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
@@ -152,6 +159,7 @@ class AvdDataConverter:
                         data[index] = convert_dicts(value, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                     except Exception:
                         # Ignore errors
+                        # TODO: Log message
                         return
 
                     yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
@@ -161,6 +169,7 @@ class AvdDataConverter:
                         data[index] = list(value)
                     except Exception:
                         # Ignore errors
+                        # TODO: Log message
                         return
 
                     yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
