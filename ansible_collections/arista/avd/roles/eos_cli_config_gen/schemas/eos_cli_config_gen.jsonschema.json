@@ -8265,6 +8265,9 @@
           "title": "CPU"
         }
       },
+      "required": [
+        "enabled"
+      ],
       "additionalProperties": false,
       "title": "Queue Monitor Length"
     },
