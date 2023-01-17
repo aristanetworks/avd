@@ -30,8 +30,7 @@
   include_vars:
     file: "{{ filename }}"
   delegate_to: localhost
-  # errors='ignore' is needed for compatibility with ansible-core < 2.12
-  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+  when: structured_config is not defined and lookup('first_found', filename, skip=True)
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 

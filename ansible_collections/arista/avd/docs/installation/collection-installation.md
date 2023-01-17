@@ -3,9 +3,9 @@
 ## Installation workflow
 
 - Install [Python](https://www.python.org/downloads/) **3.8** or later
-- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.11.3** to **2.12.x** excluding **2.12.0** to **2.12.5**
+- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.12.6** to **2.14.x** excluding **2.13.0**
 !!! note
-    Excluded versions have an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.12.6/changelogs/CHANGELOG-v2.12.rst#bugfixes) in **2.12.6** and **2.13.1**. Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
+    Excluded version **2.13.0** has an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.13.1/changelogs/CHANGELOG-v2.13.rst#bugfixes) in **2.13.1**. Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection
 - Install additional Python [requirements](#python-requirements-installation)
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
