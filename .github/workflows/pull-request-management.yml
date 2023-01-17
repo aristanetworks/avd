@@ -273,6 +273,8 @@ jobs:
         include:
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core==2.12.6'
+          - avd_scenario: 'eos_designs_unit_tests'
+            ansible_version: 'ansible-core>=2.13.1,<2.14.0'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
