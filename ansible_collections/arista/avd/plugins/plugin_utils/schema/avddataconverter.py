@@ -26,6 +26,7 @@ class AvdDataConverter:
     AvdDataConverter is used to convert AVD Data Types based on schema options.
 
     avdschema argument is an instance of AvdSchema. Type hinting is not working because of circular import
+    TODO: Refactor to take a fully resolved schema as dict
     """
 
     def __init__(self, avdschema):
