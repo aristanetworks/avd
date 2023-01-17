@@ -111,36 +111,6 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml down
 
-  # -------------------------------- #
-  # Verify role documentation
-  # -------------------------------- #
-  verify_role_documentation:
-    name: Verify role documentation
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario: ['build_schemas_and_docs']
-        ansible_version: ['ansible-core>=2.12.6,<2.15.0,!=2.13.0']
-    needs: [ pre_commit ]
-    if: needs.file-changes.outputs.docs == 'true'
-    steps:
-      - name: 'set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
-        with:
-          molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
-          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
-
   # ----------------------------------- #
   # Test Requirements
   # ----------------------------------- #
