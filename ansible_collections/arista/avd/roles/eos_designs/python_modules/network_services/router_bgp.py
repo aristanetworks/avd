@@ -245,13 +245,13 @@ class RouterBgpMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
-                    if (vlan := self._router_bgp_vlans_vlan(svi, tenant)) is not None:
+                    if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
                         vlan_id = int(svi["id"])
                         vlans[vlan_id] = vlan
 
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
-                if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant)) is not None:
+                if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None:
                     vlan_id = int(l2vlan["id"])
                     vlans[vlan_id] = vlan
 
@@ -260,7 +260,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def _router_bgp_vlans_vlan(self, vlan, tenant) -> dict | None:
+    def _router_bgp_vlans_vlan(self, vlan, tenant, vrf) -> dict | None:
         """
         Return structured config for one given vlan under router_bgp.vlans
         """
@@ -290,7 +290,10 @@ class RouterBgpMixin(UtilsMixin):
             "eos_cli": get(vlan, "bgp.raw_eos_cli"),
             "struct_cfg": get(vlan, "bgp.structured_config"),
         }
-        if self._evpn_gateway_vxlan_l2:
+        if (
+            self._evpn_gateway_vxlan_l2
+            and default(vlan.get("evpn_l2_multi_domain"), vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain"), True) is True
+        ):
             bgp_vlan["rd_evpn_domain"] = {"domain": "remote", "rd": vlan_rd}
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
 
@@ -333,7 +336,7 @@ class RouterBgpMixin(UtilsMixin):
             # If multiple L2 Vlans share the same name, they will be part of the same bundle
             for bundle_name, l2vlans in groupby(tenant["l2vlans"], "name"):
                 l2vlans = list(l2vlans)
-                if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant)) is not None:
+                if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
                     bundles[bundle_name] = bundle
@@ -367,7 +370,7 @@ class RouterBgpMixin(UtilsMixin):
             "redistribute_routes": ["learned"],
             "vlan": list_compress([int(vlan["id"]) for vlan in vlans]),
         }
-        if self._evpn_gateway_vxlan_l2:
+        if self._evpn_gateway_vxlan_l2 and default(vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain", True)) is True:
             bundle["rd_evpn_domain"] = {"domain": "remote", "rd": bundle_rd}
             bundle["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": bundle_rt}]
 

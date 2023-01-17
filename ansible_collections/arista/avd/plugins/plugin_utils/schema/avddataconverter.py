@@ -1,238 +1,177 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import annotations
 
-__metaclass__ = type
-
-import copy
+from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
-try:
-    import jsonschema
-    import jsonschema._types
-    import jsonschema._validators
-    import jsonschema.protocols
-    import jsonschema.validators
-except ImportError as imp_exc:
-    JSONSCHEMA_IMPORT_ERROR = imp_exc
-else:
-    JSONSCHEMA_IMPORT_ERROR = None
-
-try:
-    from deepmerge import always_merger
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
+SCHEMA_TO_PY_TYPE_MAP = {
+    "str": str,
+    "int": int,
+    "bool": bool,
+    "float": float,
+    "dict": dict,
+    "list": list,
+}
+SIMPLE_CONVERTERS = {
+    "str": str,
+    "int": int,
+    "bool": bool,
+}
 
 
-def _keys(validator, keys: dict, instance: dict, schema: dict):
+class AvdDataConverter:
     """
-    This function performs conversion on each key with the relevant subschema
-    """
-    if not validator.is_type(instance, "object"):
-        return
+    AvdDataConverter is used to convert AVD Data Types based on schema options.
 
-    # Don't run validator if $ref is part of the schema.
-    # Instead $ref validator will pop $ref and run all validators.
-    if "$ref" in schema:
-        return
-
-    # We run through all the regular keys first, to ensure that all data has been converted
-    # in case some of it is referenced in "dynamic_keys" below
-    yield from _resolve_and_convert_keys(validator, keys, instance, schema)
-
-    # Compile "dynamic_keys"
-    dynamic_keys = {}
-    schema_dynamic_keys = schema.get("dynamic_keys", {})
-    for dynamic_key, childschema in schema_dynamic_keys.items():
-        resolved_keys = get_all(instance, dynamic_key)
-        for resolved_key in resolved_keys:
-            dynamic_keys.setdefault(resolved_key, childschema)
-
-    yield from _resolve_and_convert_keys(validator, dynamic_keys, instance, schema)
-
-
-def _resolve_and_convert_keys(validator, keys: dict, instance: dict, schema: dict):
-    """
-    This function is run from _keys() and should not be run elsewhere
-
-    First time with regular keys, and next with resolved dynamic_keys
-    We run through all the regular keys first, to ensure that all data has been converted
-    in case some of it is referenced in "dynamic_keys"
+    avdschema argument is an instance of AvdSchema. Type hinting is not working because of circular import
+    TODO: Refactor to take a fully resolved schema as dict
     """
 
-    # Run over each child key and perform resolving of $ref, data conversion before
-    # descending into conversion of the child schema
-    for key, childschema in keys.items():
-        if key not in instance:
-            # Skip key since there is nothing to convert if the key is not set in instance
-            continue
+    def __init__(self, avdschema):
+        self._avdschema = avdschema
 
-        # Resolve $ref, before running schema actions below which operates on the child schema
-        if "$ref" in childschema:
-            scope, resolved = validator.resolver.resolve(childschema["$ref"])
-            # We are not allowed to modify the resolved schema directly, so we will create a new copy
-            merged_childschema = copy.deepcopy(resolved)
-            always_merger.merge(merged_childschema, childschema)
-            merged_childschema.pop("$ref", None)
-            childschema = merged_childschema
+        self.converters = {
+            "items": self.convert_items,
+            "keys": self.convert_keys,
+        }
 
-        # Perform type conversion of the instance data for the child key if required based on "convert_types"
-        if "convert_types" in childschema:
-            instance[key] = _convert_types(validator, childschema["convert_types"], instance[key], childschema)
+    def convert_data(self, data, schema: dict = None, path: list[str] = None) -> Generator:
+        """
+        Perform in-place conversion of data according to the provided schema.
+        Main entry function which is recursively called from the child functions performing the actual conversion of keys/items.
+        """
+        if schema is None:
+            # Get fully resolved schema (where all $ref has been expanded recursively)
+            # Performs inplace update of the argument so we give an empty dict.
+            # By default it will resolve the full schema
+            schema = {}
+            resolve_errors = self._avdschema.resolve(schema)
+            for resolve_error in resolve_errors:
+                if isinstance(resolve_error, Exception):
+                    # TODO: Raise/yield multiple errors
+                    raise AristaAvdError(resolve_error)
 
-        # Descend to the child schema with instance data for the child key.
-        yield from validator.descend(
-            instance[key],
-            childschema,
-            path=key,
-            schema_path=key,
-        )
+        if path is None:
+            path = []
 
+        for key, converter in self.converters.items():
+            if key not in schema:
+                # Ignore keys not in schema
+                continue
 
-def _items(validator, items: dict, instance: list, schema: dict):
-    """
-    This function performs conversion on each item with the items subschema
-    """
-    if not validator.is_type(instance, "array"):
-        return
+            # Converters will do inplace update of data. Any returns will be yielded conversion messages.
+            yield from converter(schema[key], data, schema, path)
 
-    # Don't run validator if $ref is part of the schema.
-    # Instead $ref validator will pop $ref and run all validators.
-    if "$ref" in schema:
-        return
+    def convert_keys(self, keys: dict, data: dict, schema: dict, path: list[str]):
+        """
+        This function performs conversion on each key with the relevant subschema
+        """
+        if not isinstance(data, dict):
+            return
 
-    # Resolve $ref for items, to support schema actions below which operates on the child schema
-    if "$ref" in items:
-        scope, resolved = validator.resolver.resolve(items["$ref"])
-        merged_childschema = copy.deepcopy(resolved)
-        always_merger.merge(merged_childschema, items)
-        merged_childschema.pop("$ref", None)
-        items = merged_childschema
+        # We run through all the regular keys first, to ensure that all data has been converted
+        # in case some of it is referenced in "dynamic_keys" below
+        for key, childschema in keys.items():
+            if key not in data:
+                # Skip key since there is nothing to convert if the key is not set in data
+                continue
 
-    # Perform type conversion of instance items if required based on "convert_types"
-    if "convert_types" in items:
-        for index, instance_item in enumerate(instance):
-            instance[index] = _convert_types(validator, items["convert_types"], instance_item, items)
+            # Perform type conversion of the data for the child key if required based on "convert_types"
+            if "convert_types" in childschema:
+                yield from self.convert_types(childschema["convert_types"], data, key, childschema, path + [key])
 
-    # Perform regular validation of child elements.
-    # Using schema ["items"] to use the original schema instead of the $ref merged one.
-    for index, instance_item in enumerate(instance):
-        yield from validator.descend(
-            instance=instance_item,
-            schema=schema["items"],
-            path=index,
-        )
+            yield from self.convert_data(data[key], childschema, path + [key])
 
+        # Compile "dynamic_keys"
+        dynamic_keys = {}
+        schema_dynamic_keys = schema.get("dynamic_keys", {})
+        for dynamic_key, childschema in schema_dynamic_keys.items():
+            resolved_keys = get_all(data, dynamic_key)
+            for resolved_key in resolved_keys:
+                dynamic_keys.setdefault(resolved_key, childschema)
 
-def _ref(validator, ref: str, instance, schema: dict):
-    """
-    This function resolves the $ref referenced schema,
-    then merges with any schema defined at the same level
-    Then performs validation on the resolved+merged schema.
+        for key, childschema in dynamic_keys.items():
+            if key not in data:
+                # Skip key since there is nothing to convert if the key is not set in data
+                continue
 
-    Since this will run all validation tasks on the same level,
-    a check for $ref has been added to the other validators, to
-    avoid duplicate validation (and duplicate errors)
-    """
-    scope, resolved = validator.resolver.resolve(ref)
-    validator.resolver.push_scope(scope)
-    merged_schema = copy.deepcopy(resolved)
-    always_merger.merge(merged_schema, schema)
-    merged_schema.pop("$ref", None)
-    try:
-        yield from validator.descend(instance, merged_schema)
-    finally:
-        validator.resolver.pop_scope()
+            # Perform type conversion of the data for the child key if required based on "convert_types"
+            if "convert_types" in childschema:
+                yield from self.convert_types(childschema["convert_types"], data, key, childschema, path + [key])
 
+            # Dive in to child keys/schemas
+            yield from self.convert_data(data[key], childschema, path + [key])
 
-def _convert_types(validator, convert_types: list, instance, schema: dict):
-    """
-    This function performs type conversion if necessary on a single data instance.
-    It is invoked for child keys during "keys" conversion and for child items during
-    "items" conversion
-    Returns the converted value is returned to the calling converter.
-    Any conversion errors are ignored and the original value is returned
-    """
-    schema_type = schema.get("type")
+    def convert_items(self, items: dict, data: list, schema: dict, path: list[str]):
+        """
+        This function performs conversion on each item with the items subschema
+        """
+        if not isinstance(data, list):
+            return
 
-    simple_converters = {
-        "str": str,
-        "int": int,
-        "bool": bool,
-    }
+        for index, item in enumerate(data):
+            # Perform type conversion of the items data if required based on "convert_types"
+            if "convert_types" in items:
+                yield from self.convert_types(items["convert_types"], data, index, items, path + [f"[{index}]"])
 
-    # For simple conversions, skip conversion if the value is of the correct type
-    if validator.is_type(instance, schema_type) and schema_type in simple_converters:
-        return instance
+            # Dive in to child items/schema
+            yield from self.convert_data(item, items, path + [f"[{index}]"])
 
-    for convert_type in convert_types:
-        if validator.is_type(instance, convert_type):
-            if schema_type in simple_converters:
-                try:
-                    converted_instance = simple_converters[schema_type](instance)
-                except Exception:
-                    # Ignore errors and return original
-                    converted_instance = instance
-                    pass
-                return converted_instance
-            elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
-                try:
-                    converted_instance = convert_dicts(
-                        instance,
-                        schema["primary_key"],
-                        secondary_key=schema.get("secondary_key"),
-                    )
-                except Exception:
-                    # Ignore errors and return original
-                    converted_instance = instance
-                    pass
-                return converted_instance
-            elif convert_type == "dict" and schema_type == "list":
-                try:
-                    converted_instance = list(instance)
-                except Exception:
-                    # Ignore errors and return original
-                    converted_instance = instance
-                    pass
-                return converted_instance
-    return instance
+    def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, path: list[str]):
+        """
+        This function performs type conversion if necessary on a single data instance.
+        It is invoked for child keys during "keys" conversion and for child items during
+        "items" conversion
 
+        "data" is either the parent dict or the parent list.
+        "index" is either the key of the parent dict or the index of the parent list.
 
-def _is_float(validator, instance):
-    return isinstance(instance, float)
+        Conversion is performed in-place using the provided "data" and "index"
 
+        Yields AvdConversionWarning and/or AvdDeprecationWarning except for simple str/int/bool conversions
 
-"""
-AvdDataConverter is used to convert AVD Data Types based on schema options.
-We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
-since the same TypeChecker is used by the converters themselves.
-"""
-if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
-    AvdDataConverter = None
-else:
-    AvdDataConverter = jsonschema.validators.create(
-        meta_schema=AVD_META_SCHEMA,
-        validators={"$ref": _ref, "items": _items, "keys": _keys},
-        type_checker=jsonschema.TypeChecker(
-            {
-                "any": jsonschema._types.is_any,
-                "array": jsonschema._types.is_array,
-                "boolean": jsonschema._types.is_bool,
-                "integer": jsonschema._types.is_integer,
-                "object": jsonschema._types.is_object,
-                "null": jsonschema._types.is_null,
-                "None": jsonschema._types.is_null,
-                "number": jsonschema._types.is_number,
-                "string": jsonschema._types.is_string,
-                "dict": jsonschema._types.is_object,
-                "str": jsonschema._types.is_string,
-                "bool": jsonschema._types.is_bool,
-                "list": jsonschema._types.is_array,
-                "int": jsonschema._types.is_integer,
-                "float": _is_float,
-            }
-        ),
-    )
+        Any conversion errors are ignored and the original value is returned
+        """
+        schema_type = schema.get("type")
+
+        # Get value from input data
+        value = data[index]
+
+        # For simple conversions, skip conversion if the value is of the correct type
+        if schema_type in SIMPLE_CONVERTERS and isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(schema_type)):
+            return
+
+        # Prepare string for var path used in warning messages.
+        path_str = ".".join(path)
+
+        for convert_type in convert_types:
+            if isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)):
+                if schema_type in SIMPLE_CONVERTERS:
+                    try:
+                        data[index] = SIMPLE_CONVERTERS[schema_type](value)
+                    except Exception:
+                        # Ignore errors
+                        # TODO: Log message
+                        return
+
+                elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
+                    try:
+                        data[index] = convert_dicts(value, schema["primary_key"], secondary_key=schema.get("secondary_key"))
+                    except Exception:
+                        # Ignore errors
+                        # TODO: Log message
+                        return
+
+                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+
+                elif convert_type == "dict" and schema_type == "list":
+                    try:
+                        data[index] = list(value)
+                    except Exception:
+                        # Ignore errors
+                        # TODO: Log message
+                        return
+
+                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
