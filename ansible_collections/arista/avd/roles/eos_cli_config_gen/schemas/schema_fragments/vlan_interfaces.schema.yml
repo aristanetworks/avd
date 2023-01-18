@@ -104,7 +104,6 @@ keys:
             If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
           deprecation:
             warning: true
-            removed: true
             new_key: ipv6_address_virtuals
             remove_in_version: "5.0.0"
         ipv6_address_virtuals:
