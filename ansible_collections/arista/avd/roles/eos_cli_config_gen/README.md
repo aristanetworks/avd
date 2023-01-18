@@ -3517,7 +3517,7 @@ router_ospf:
           default_information_originate:
             metric: < Integer 1-65535 > # Value of the route metric
             metric_type: < 1 | 2 > # OSPF metric type
-      maximum_paths: < Integer 1-32 >
+      maximum_paths: < Integer 1-128 >
       max_metric:
         router_lsa:
           external_lsa:

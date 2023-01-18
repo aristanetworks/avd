@@ -16,6 +16,7 @@ Tenant_B:
           ip_address_virtual: 10.2.11.1/24
     Tenant_B_WAN_Zone:
       vrf_vni: 21
+      evpn_l2_multi_domain: false
       svis:
         250:
           name: Tenant_B_WAN_Zone_1
