@@ -10,7 +10,6 @@ WORDLIST = {
     "cpu": "CPU",
     "cvp": "CVP",
     "cvx": "CVX",
-    "dc": "DC",
     "dhcp": "DHCP",
     "dns": "DNS",
     "dot1br": "dot1br",
