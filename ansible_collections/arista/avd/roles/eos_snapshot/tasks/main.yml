@@ -37,6 +37,8 @@
   with_items: "{{ commands_list }}"
   failed_when: false
   register: cli_output
+  when: ("'text' in output_format") or
+        ("'markdown' in output_format")
 
 - name: run show commands on remote EOS devices with json output
   eos_command:
