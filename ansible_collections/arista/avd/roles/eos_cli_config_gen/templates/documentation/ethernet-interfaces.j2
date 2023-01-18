@@ -7,8 +7,8 @@
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%         if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%             set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -36,8 +36,7 @@
 {%                     set l2 = namespace() %}
 {%                     set l2.trunk_groups = "-" %}
 {%                 endif %}
-{%                 set load_interval = ethernet_interface.load_interval | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} | {{ load_interval }} |
+| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%             endif %}
 {%         elif ethernet_interface.type is not defined or ethernet_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
@@ -58,8 +57,7 @@
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = "-" %}
 {%             endif %}
-{%             set load_interval = ethernet_interface.load_interval | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} |  {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - | {{ load_interval }} |
+| {{ ethernet_interface.name }} |  {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - |
 {%         endif %}
 {%     endfor %}
 
@@ -246,8 +244,8 @@
 
 #### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out | Load Interval |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- | ------------- |
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -265,8 +263,7 @@
 {%                     set shutdown = port_channel_interface.shutdown | arista.avd.default("*-") %}
 {%                     set acl_in = port_channel_interface.access_group_in | arista.avd.default("*-") %}
 {%                     set acl_out = port_channel_interface.access_group_out | arista.avd.default("*-") %}
-{%                     set load_interval = ethernet_interface.load_interval | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ip_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ acl_in }} | *{{ acl_out }} | {{ load_interval }} |
+| {{ ethernet_interface.name }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ip_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ acl_in }} | *{{ acl_out }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface.ip_address is arista.avd.defined %}
@@ -278,8 +275,7 @@
 {%                     set shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
 {%                     set acl_in = ethernet_interface.access_group_in | arista.avd.default("-") %}
 {%                     set acl_out = ethernet_interface.access_group_out | arista.avd.default("-") %}
-{%                     set load_interval = ethernet_interface.load_interval | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | - | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ acl_in }} | {{ acl_out }} | {{ load_interval }} |
+| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | - | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ acl_in }} | {{ acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -312,8 +308,8 @@
 
 #### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | Load Interval |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ | ------------- |
+| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -333,8 +329,7 @@
 {%                     set managed_config_flag = port_channel_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
 {%                     set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-{%                     set load_interval = ethernet_interface.load_interval | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} | {{ load_interval }} |
+| {{ ethernet_interface.name }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
@@ -348,8 +343,7 @@
 {%                     set managed_config_flag = ethernet_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
 {%                     set ipv6_acl_in = ethernet_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = ethernet_interface.ipv6_access_group_out | arista.avd.default("-") %}
-{%                     set load_interval = ethernet_interface.load_interval | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} | {{ load_interval }} |
+| {{ ethernet_interface.name }} | {{ description }} | {{ type }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

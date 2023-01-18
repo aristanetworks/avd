@@ -69,8 +69,8 @@ interface Management1
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 

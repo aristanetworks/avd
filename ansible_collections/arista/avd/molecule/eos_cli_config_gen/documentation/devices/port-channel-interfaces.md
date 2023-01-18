@@ -73,28 +73,28 @@ interface Management1
 
 #### L2
 
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group | Load Interval |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- | ------------- |
-| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 | - |
-| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 | - |
-| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 | - |
-| Ethernet10/1 | LAG Member | *access | *110 | *- | *- | 101 | - |
-| Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 | - |
-| Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 | - |
-| Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 | - |
-| Ethernet11/2 | LAG Member LACP fallback LLDP ZTP VLAN | *trunk | *112 | *- | *- | 112 | - |
-| Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 | - |
-| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 | - |
-| Ethernet18 | LAG Member | *access | *110 | *- | *- | 109 | - |
-| Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet10/1 | LAG Member | *access | *110 | *- | *- | 101 |
+| Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
+| Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 |
+| Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
+| Ethernet11/2 | LAG Member LACP fallback LLDP ZTP VLAN | *trunk | *112 | *- | *- | 112 |
+| Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
+| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
+| Ethernet18 | LAG Member | *access | *110 | *- | *- | 109 |
+| Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
 
 #### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out | Load Interval |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- | ------------- |
-| Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- | - |
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
 
 #### ISIS

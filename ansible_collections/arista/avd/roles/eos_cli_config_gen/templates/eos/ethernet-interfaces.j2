@@ -27,10 +27,8 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
-{%     if print_ethernet is arista.avd.defined(true) %}
-{%         if ethernet_interface.load_interval is arista.avd.defined %}
+{%     if ethernet_interface.load_interval is arista.avd.defined %}
    load-interval {{ ethernet_interface.load_interval }}
-{%         endif %}
 {%     endif %}
 {%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interface.mtu is arista.avd.defined %}
