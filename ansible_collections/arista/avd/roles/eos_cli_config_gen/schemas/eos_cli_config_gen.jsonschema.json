@@ -292,6 +292,17 @@
     "aaa_authorization": {
       "type": "object",
       "properties": {
+        "policy": {
+          "type": "object",
+          "properties": {
+            "local_default_role": {
+              "type": "string",
+              "title": "Local Default Role"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Policy"
+        },
         "exec": {
           "type": "object",
           "properties": {
@@ -311,6 +322,20 @@
         "serial_console": {
           "type": "boolean",
           "title": "Serial Console"
+        },
+        "dynamic": {
+          "type": "object",
+          "properties": {
+            "dot1x_additional_groups": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "dot1x Additional Groups"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Dynamic"
         },
         "commands": {
           "type": "object",

@@ -212,6 +212,11 @@ keys:
       filename: data_model/Authentication
     type: dict
     keys:
+      policy:
+        type: dict
+        keys:
+          local_default_role:
+            type: str
       exec:
         type: dict
         keys:
@@ -232,6 +237,13 @@ keys:
         type: bool
       serial_console:
         type: bool
+      dynamic:
+        type: dict
+        keys:
+          dot1x_additional_groups:
+            type: list
+            items:
+              type: str
       commands:
         type: dict
         keys:
