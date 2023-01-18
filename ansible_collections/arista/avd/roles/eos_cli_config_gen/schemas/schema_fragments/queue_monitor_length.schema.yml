@@ -11,9 +11,6 @@ keys:
       enabled:
         type: bool
         required: true
-        description: |
-          "enabled: true" will be required in AVD4.0.
-          In AVD3.x default is true as long as queue_monitor_length is defined and not None
       log:
         type: int
         convert_types:
@@ -21,7 +18,7 @@ keys:
         description: "Logging interval in seconds"
       notifying:
         type: bool
-        description: should only be used for platforms supporting the "queue-monitor length notifying" CLI
+        description: Should only be used for platforms supporting the "queue-monitor length notifying" CLI
       cpu:
         type: dict
         keys:
