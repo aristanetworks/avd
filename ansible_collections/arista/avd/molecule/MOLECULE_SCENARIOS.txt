@@ -1,4 +1,3 @@
-build_schemas_and_docs
 eos_cli_config_gen
 eos_cli_config_gen_v4.0
 eos_config_deploy_cvp

@@ -68,9 +68,11 @@ Type conversion is turned on by default.
 
 ## Validation Options
 
-By default AVD Action Plugins run type conversion first and then performs validation of the converted data, reporting
-validation issues as warnings - not blocking the playbook. This behavior can be adjusted by setting the variables described
-below.
+Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
+performs validation of the converted data.
+
+By default the data conversions are logged with `-v` and data validation issues will trigger warnings - not blocking further processing.
+This behavior can be adjusted by setting the variables described below.
 
 ```yaml
 # Conversion Mode for AVD input data conversion | Optional
@@ -79,8 +81,8 @@ below.
 # "warning" will produce warning messages.
 # "info" will produce regular log messages.
 # "debug" will produce hidden debug messages viewable with -v.
-# The converted data is set as facts which can be seen with -v, but is more readable with -vvv
-avd_data_conversion_mode: < "disabled" | "warning" | "info" | "debug" | default -> "debug" >
+# "quiet" will not produce any messages
+avd_data_conversion_mode: < "disabled" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
 
 # Validation Mode for AVD input data validation | Optional
 # During validation, messages will generated with information about the host(s) and key(s) which failed validation.

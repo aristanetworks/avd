@@ -1,0 +1,5 @@
+---
+- name: Run arista.avd._build_schemas playbook
+  import_playbook: arista.avd._build_schemas
+- name: Run arista.avd._build_documentation playbook
+  import_playbook: arista.avd._build_documentation

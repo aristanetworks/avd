@@ -30,6 +30,10 @@ router general
       routes dynamic prefix-list {{ dynamic_prefix_list.name }}
 {%             endif %}
 {%         endfor %}
+{#    EOS issue #}
+      exit
    !
 {%     endfor %}
+{#    EOS issue #}
+   exit
 {% endif %}
