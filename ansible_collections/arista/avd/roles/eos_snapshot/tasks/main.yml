@@ -31,7 +31,7 @@
     mode: 0775
   when: ("text" in output_format or "markdown" in output_format)
 
-- name: run show commands on remote EOS devices
+- name: run show commands on remote EOS devices with text output
   eos_command:
     commands: "{{ item }}"
   with_items: "{{ commands_list }}"
