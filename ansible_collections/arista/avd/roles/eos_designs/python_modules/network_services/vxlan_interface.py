@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import NoReturn
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
@@ -196,7 +197,7 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         return overlay_her_flood_lists
 
-    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant_name: str, duplicate_vni_tenant: str):
+    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant_name: str, duplicate_vni_tenant: str) -> NoReturn:
         msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant '{tenant_name}' during configuration of {context}."
         if duplicate_vni_tenant != tenant_name:
             msg = f"{msg} Other VNI is in Tenant '{duplicate_vni_tenant}'."

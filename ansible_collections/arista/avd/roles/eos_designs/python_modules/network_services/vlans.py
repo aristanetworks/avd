@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import NoReturn
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
@@ -88,7 +89,7 @@ class VlansMixin(UtilsMixin):
 
         return vlans_vlan
 
-    def _raise_duplicate_vlan_error(self, vlan_id: int, context: str, tenant_name: str, duplicate_vlan_config: dict):
+    def _raise_duplicate_vlan_error(self, vlan_id: int, context: str, tenant_name: str, duplicate_vlan_config: dict) -> NoReturn:
         msg = f"Duplicate VLAN ID '{vlan_id}' found in Tenant '{tenant_name}' during configuration of {context}."
         if (duplicate_vlan_tenant := duplicate_vlan_config["tenant"]) != tenant_name:
             msg = f"{msg} Other VLAN is in Tenant '{duplicate_vlan_tenant}'."
