@@ -116,7 +116,7 @@ class ActionModule(ActionBase):
             hostname2 : dict | None
             ...
         bool
-            Did validation fail for one or more of the hosts
+            True if validation failed for one or more of the hosts
         """
         # Load schema tools once with empty host.
         avdschematools = AvdSchemaTools(self._schema, "", display, self._conversion_mode, self._validation_mode)
@@ -128,6 +128,7 @@ class ActionModule(ActionBase):
             all_hostvars[host] = ChainMap({}, hostvars.get(host), default_vars)
 
             # Set correct hostname and perform conversion and validation
+            avdschematools.hostname = host
             result = avdschematools.convert_and_validate_data(all_hostvars[host])
             failed = failed or result.get("failed", False)
 

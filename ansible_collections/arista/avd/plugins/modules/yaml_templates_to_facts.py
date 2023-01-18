@@ -82,7 +82,7 @@ options:
     required: false
     type: str
   mode:
-    description: File mode for dest file.
+    description: File mode (ex. 0664) for dest file. See 'ansible.builtin.copy' module for details.
     required: false
     type: str
   template_output:
@@ -96,7 +96,7 @@ options:
       - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
       - Conversion will perform type conversion of input variables as defined in the schema.
       - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
-      - During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
+      - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
       - conversion_mode:disabled means that conversion will not run.
       - conversion_mode:warning will produce warning messages.
       - conversion_mode:info will produce regular log messages.
@@ -110,7 +110,7 @@ options:
     description:
       - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
       - Validation will validate the input variables according to the schema.
-      - During validation, messages will generated with information about the host(s) and key(s) which failed validation.
+      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
       - validation_mode:disabled means that validation will not run.
       - validation_mode:error will produce error messages and fail the task.
       - validation_mode:warning will produce warning messages.
