@@ -29,6 +29,9 @@ class VxlanInterfaceMixin(UtilsMixin):
         Returns structured config for vxlan_interface
 
         Only used for VTEPs
+
+        This function also detects duplicate VNIs and raise an error in case of duplicates between
+        all Network Services deployed on this device.
         """
         if not self._overlay_vtep:
             return None
