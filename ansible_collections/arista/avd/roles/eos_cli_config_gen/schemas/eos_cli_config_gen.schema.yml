@@ -999,6 +999,8 @@ keys:
           type: bool
         load_interval:
           type: int
+          min: 0
+          max: 600
           convert_types:
           - str
           description: Number of seconds in range between "0-600"

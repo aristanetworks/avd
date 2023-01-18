@@ -1268,7 +1268,9 @@
           },
           "load_interval": {
             "type": "integer",
-            "description": "Number of seconds in range of \"0-600\"",
+            "minimum": 0,
+            "maximum": 600,
+            "description": "Number of seconds in range between \"0-600\"",
             "title": "Load Interval"
           },
           "speed": {
