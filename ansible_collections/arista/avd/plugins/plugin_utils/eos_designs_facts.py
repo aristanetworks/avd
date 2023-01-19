@@ -586,7 +586,7 @@ class EosDesignsFacts(AvdFacts):
         """
         switch.vtep_vvtep_ip set based on Global var vtep_vvtep_ip
         """
-        return get(self._hostvars, "vtep_vvtep_ip", default=None)
+        return get(self._hostvars, "vtep_vvtep_ip")
 
     @cached_property
     def mgmt_interface(self):
