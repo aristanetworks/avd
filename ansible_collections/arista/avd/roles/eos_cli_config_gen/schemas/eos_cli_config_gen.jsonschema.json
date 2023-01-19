@@ -328,6 +328,7 @@
           "properties": {
             "dot1x_additional_groups": {
               "type": "array",
+              "minItems": 1,
               "items": {
                 "type": "string"
               },

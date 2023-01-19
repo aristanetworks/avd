@@ -242,6 +242,7 @@ keys:
         keys:
           dot1x_additional_groups:
             type: list
+            min_length: 1
             items:
               type: str
       commands:
