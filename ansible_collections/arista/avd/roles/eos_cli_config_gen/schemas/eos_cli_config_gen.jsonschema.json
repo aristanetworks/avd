@@ -2697,6 +2697,11 @@
             "additionalProperties": false,
             "title": "Sflow"
           },
+          "port_profile": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Port Profile"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",

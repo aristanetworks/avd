@@ -12,6 +12,7 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
+- [Connected Endpoints](#connected-endpoints)
 
 # Fabric Switches and Management IP
 
@@ -105,3 +106,7 @@
 | FABRIC | dc1-leaf1b | 10.255.1.3/32 |
 | FABRIC | dc1-leaf2a | 10.255.1.5/32 |
 | FABRIC | dc1-leaf2b | 10.255.1.5/32 |
+
+# Connected Endpoints
+
+No connected endpoint configured!

@@ -12,6 +12,8 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
+- [Connected Endpoints](#connected-endpoints)
+  - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
 
@@ -233,3 +235,14 @@
 | DC1_POD1 | DC1.POD1.LEAF2A | 172.18.110.4/32 |
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.18.210.3/32 |
 | DC2_POD1 | DC2-POD1-LEAF2A | 172.18.210.4/32 |
+
+# Connected Endpoints
+
+No connected endpoint configured!
+
+## Port Profiles
+
+| Profile Name | Parent Profile |
+| ------------ | -------------- |
+| NESTED_TENANT_A | - |
+| TENANT_A | - |

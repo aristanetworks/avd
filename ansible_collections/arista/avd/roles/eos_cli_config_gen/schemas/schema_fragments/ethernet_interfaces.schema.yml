@@ -832,6 +832,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        port_profile:
+          type: str
+          description: Key only used for documentation or validation purposes
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
