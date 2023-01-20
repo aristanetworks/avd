@@ -6,7 +6,7 @@
 - The tenant shares a common vni range for mac vrf assignment.
 - The filtering model allows for granular deployment of network service to the fabric leveraging the tenant name and tags applied to the service definition.
   - This allows for the re-use of SVI/VLAN IDs across the fabric.
-  - An error will be returned at runtime in case of duplicate SVI/VLAN IDs, VRF names or VNIs are targeted towards the same device.
+  - An error will be returned at runtime in case of duplicate SVI/VLAN IDs, VRF names or VNIs targeted towards the same device.
 
 ## Variables and Options
 
