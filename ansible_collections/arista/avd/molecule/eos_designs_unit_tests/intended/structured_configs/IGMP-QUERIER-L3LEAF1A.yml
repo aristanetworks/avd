@@ -55,14 +55,14 @@ router_bgp:
       - connected
     IGMP_QUERIER_TEST_3:
       router_id: 192.168.255.1
-      rd: 192.168.255.1:21
+      rd: 192.168.255.1:41
       route_targets:
         import:
           evpn:
-          - '21:21'
+          - '41:41'
         export:
           evpn:
-          - '21:21'
+          - '41:41'
       redistribute_routes:
       - connected
   vlans:
@@ -532,4 +532,4 @@ vxlan_interface:
         IGMP_QUERIER_TEST_2:
           vni: 21
         IGMP_QUERIER_TEST_3:
-          vni: 21
+          vni: 41
