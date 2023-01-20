@@ -1,5 +1,5 @@
-ansible-core>=2.11.3,<2.13.0,!=2.12.0,!=2.12.1,!=2.12.2,!=2.12.3,!=2.12.4,!=2.12.5
-ansible-lint<6.0.0
+ansible-core>=2.11.3,<2.15.0,!=2.12.0,!=2.12.1,!=2.12.2,!=2.12.3,!=2.12.4,!=2.12.5,!=2.13.0
+ansible-lint
 galaxy-importer>=0.3.1
 pycodestyle
 flake8
@@ -9,7 +9,7 @@ pre-commit>=2.9.2
 pre-commit-hooks>=3.3.0
 identify>=1.4.20
 docker
-molecule>=3.2.0,<3.5.0
+molecule>=3.2.0
 molecule-docker>=0.2.4
 yamllint
 treelib
