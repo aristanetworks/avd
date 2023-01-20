@@ -45,7 +45,7 @@
 
 - name: Include vars from validate_state_vars.yml
   ansible.builtin.include_vars:
-    ansible.builtin.file: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    file: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
   delegate_to: localhost
   run_once: true
   tags:
