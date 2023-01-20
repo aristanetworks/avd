@@ -3,6 +3,7 @@ ip_routing: true
 hardware_counters:
   features:
   - vlan-interface: in
+  - vlan-interface: out
   - flow-spec: in
 vlan_internal_order:
   allocation: ascending
