@@ -160,8 +160,7 @@ class AvdStructuredConfig(AvdFacts):
         if (hardware_counter_features := get(self._hostvars, "hardware_counters.features")) is None:
             return None
 
-        features = [{feature: direction} for feature, direction in hardware_counter_features.items()]
-        return {"features": features}
+        return {"features": hardware_counter_features}
 
     @cached_property
     def hardware(self):
