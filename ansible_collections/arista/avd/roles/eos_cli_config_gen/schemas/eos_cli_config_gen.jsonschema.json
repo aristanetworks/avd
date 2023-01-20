@@ -1117,7 +1117,7 @@
           "properties": {
             "delay": {
               "type": "integer",
-              "title": "Dalay in Seconds"
+              "title": "Delay in Seconds"
             },
             "hold_period": {
               "type": "integer",
