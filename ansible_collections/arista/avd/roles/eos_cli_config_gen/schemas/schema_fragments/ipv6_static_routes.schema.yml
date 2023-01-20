@@ -5,7 +5,7 @@ type: dict
 keys:
   ipv6_static_routes:
     documentation_options:
-      filename: Routing
+      filename: data_model/Routing
     type: list
     items:
       type: dict

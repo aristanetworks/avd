@@ -5,7 +5,7 @@ type: dict
 keys:
   roles:
     documentation_options:
-      filename: Authentication
+      filename: data_model/Authentication
     type: list
     items:
       type: dict

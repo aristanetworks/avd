@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 !!! warning
     This document describes the data model for AVD 4.x. It may or may not work in previous versions.
 
@@ -6818,5 +6819,12 @@ vxlan_interface:
     eos_cli: <str>
 ```
 =======
+=======
+---
+search:
+  boost: 2
+---
+
+>>>>>>> 09cfa9bb7 (updates to schema docs and mkdocs navigation)
 # Input Variables
 >>>>>>> c18ceb691 (Doc: Updating navigation with data models)

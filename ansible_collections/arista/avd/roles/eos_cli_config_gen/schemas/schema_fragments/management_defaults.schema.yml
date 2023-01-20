@@ -5,7 +5,7 @@ type: dict
 keys:
   management_defaults:
     documentation_options:
-      filename: Management
+      filename: data_model/Management
     type: dict
     keys:
       secret:

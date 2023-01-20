@@ -6,7 +6,7 @@ allow_other_keys: true
 keys:
   ipv6_prefix_lists:
     documentation_options:
-      filename: Filters
+      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:

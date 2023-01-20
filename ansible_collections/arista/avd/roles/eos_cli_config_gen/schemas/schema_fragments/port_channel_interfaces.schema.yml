@@ -5,7 +5,7 @@ type: dict
 keys:
   port_channel_interfaces:
     documentation_options:
-      filename: Interfaces
+      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:

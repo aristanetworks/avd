@@ -5,7 +5,7 @@ type: dict
 keys:
   router_multicast:
     documentation_options:
-      filename: Multicast
+      filename: data_model/Multicast
     type: dict
     keys:
       ipv4:

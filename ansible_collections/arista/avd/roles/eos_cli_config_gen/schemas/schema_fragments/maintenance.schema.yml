@@ -6,7 +6,7 @@ allow_other_keys: true
 keys:
   maintenance:
     documentation_options:
-      filename: Maintenance Mode
+      filename: data_model/Maintenance Mode
     type: dict
     display_name: Maintenance Mode
     keys:

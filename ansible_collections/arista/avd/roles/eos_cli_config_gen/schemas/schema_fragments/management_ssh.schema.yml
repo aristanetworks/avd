@@ -6,7 +6,7 @@ allow_other_keys: true
 keys:
   management_ssh:
     documentation_options:
-      filename: Management
+      filename: data_model/Management
     type: dict
     keys:
       access_groups:

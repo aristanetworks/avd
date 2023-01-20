@@ -5,7 +5,7 @@ type: dict
 keys:
   monitor_sessions:
     documentation_options:
-      filename: Monitoring
+      filename: data_model/Monitoring
     type: list
     convert_types:
     - dict

@@ -5,7 +5,7 @@ type: dict
 keys:
   tacacs_servers:
     documentation_options:
-      filename: Authentication
+      filename: data_model/Authentication
     type: dict
     keys:
       hosts:

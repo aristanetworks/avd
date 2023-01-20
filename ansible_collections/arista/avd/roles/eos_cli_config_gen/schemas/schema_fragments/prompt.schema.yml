@@ -5,5 +5,5 @@ type: dict
 keys:
   prompt:
     documentation_options:
-      filename: Prompt
+      filename: data_model/Prompt
     type: str

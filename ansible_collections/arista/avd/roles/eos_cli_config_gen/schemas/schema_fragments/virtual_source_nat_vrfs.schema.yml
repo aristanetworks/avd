@@ -5,7 +5,7 @@ type: dict
 keys:
   virtual_source_nat_vrfs:
     documentation_options:
-      filename: Virtual Source NAT
+      filename: data_model/Virtual Source NAT
     type: list
     primary_key: name
     convert_types:

@@ -5,7 +5,7 @@ type: dict
 keys:
   redundancy:
     documentation_options:
-      filename: Hardware
+      filename: data_model/Hardware
     type: dict
     keys:
       protocol:

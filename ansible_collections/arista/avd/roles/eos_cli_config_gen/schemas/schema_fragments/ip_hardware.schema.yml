@@ -5,7 +5,7 @@ type: dict
 keys:
   ip_hardware:
     documentation_options:
-      filename: IP Hardware
+      filename: data_model/IP Hardware
     type: dict
     keys:
       fib:

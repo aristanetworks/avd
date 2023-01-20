@@ -5,7 +5,7 @@ type: dict
 keys:
   aliases:
     documentation_options:
-      filename: Aliases
+      filename: data_model/Aliases
     type: str
     description: |
       Multi-line string with one or more alias commands.

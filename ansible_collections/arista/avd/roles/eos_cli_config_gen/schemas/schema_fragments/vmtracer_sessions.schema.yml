@@ -5,7 +5,7 @@ type: dict
 keys:
   vmtracer_sessions:
     documentation_options:
-      filename: System Control-Plane
+      filename: data_model/System Control-Plane
     type: list
     primary_key: name
     convert_types:

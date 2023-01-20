@@ -5,7 +5,7 @@ type: dict
 keys:
   vlans:
     documentation_options:
-      filename: VLANs
+      filename: data_model/VLANs
     type: list
     primary_key: id
     convert_types:

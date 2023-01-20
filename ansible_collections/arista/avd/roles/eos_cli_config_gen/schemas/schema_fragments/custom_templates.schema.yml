@@ -5,7 +5,7 @@ type: dict
 keys:
   custom_templates:
     documentation_options:
-      filename: Custom Templates
+      filename: inputs/Role Inputs
     type: list
     display_name: Extensibility with Custom Templates
     description: |

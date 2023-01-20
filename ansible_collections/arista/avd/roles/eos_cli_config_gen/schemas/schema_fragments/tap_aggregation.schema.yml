@@ -5,7 +5,7 @@ type: dict
 keys:
   tap_aggregation:
     documentation_options:
-      filename: Monitoring
+      filename: data_model/Monitoring
     type: dict
     keys:
       mode:

@@ -6,7 +6,7 @@ allow_other_keys: true
 keys:
   sflow:
     documentation_options:
-      filename: Monitoring
+      filename: data_model/Monitoring
     type: dict
     keys:
       sample:

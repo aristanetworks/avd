@@ -5,7 +5,7 @@ type: dict
 keys:
   peer_filters:
     documentation_options:
-      filename: Filters
+      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:

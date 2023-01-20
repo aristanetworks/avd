@@ -5,7 +5,7 @@ type: dict
 keys:
   router_msdp:
     documentation_options:
-      filename: Routing
+      filename: data_model/Routing
     type: dict
     keys:
       originator_id_local_interface:

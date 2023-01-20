@@ -19,7 +19,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Inputs:**
 
-- Structured EOS configuration file in yaml format.
+- Structured EOS configuration according to supported data models.
 
 **Outputs:**
 
@@ -28,7 +28,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Tasks:**
 
-1. Include device structured configuration that was previously generated.
+1. Import device structured configuration from YAML file unless `structured_config` flag is set by `eos_designs`.
 2. Generate EOS configuration in CLI format.
 3. Generate Device Documentation in Markdown format.
 
@@ -36,33 +36,11 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
-## Extensibility with Custom Templates
-
-- Custom templates can be added below the playbook directory.
-- If a location above the directory is desired, a symbolic link can be used.
-- Example under the `playbooks` directory create symbolic link with the following command:
-
-  ```bash
-  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
-  ```
-
-- The output will be rendered at the end of the configuration.
-- The order of custom templates in the list can be important if they overlap.
-- It is recommended to use a `!` delimiter at the top of each custom template.
-
-Add custom template to group/host variables:
-
-```yaml
-custom_templates:
-  - < template 1 relative path below playbook directory >
-  - < template 2 relative path below playbook directory >
-```
-
 ## Input Variables
 
-- The input variables are documented inline within yaml formatted output with: "< >"
-- Variables are organized in order of how they appear in the CLI syntax.
-- Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
+- The input variables are documented in the [Data Model](docs/data_model/ACLs.md) section.
+- Variables are organized by subject. For example, `AAA` input data is listed under `Authentication`.
+- Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional.
 
 <<<<<<< HEAD

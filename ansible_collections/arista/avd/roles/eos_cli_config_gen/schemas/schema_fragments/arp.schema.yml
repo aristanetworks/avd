@@ -5,7 +5,7 @@ type: dict
 keys:
   arp:
     documentation_options:
-      filename: Routing
+      filename: data_model/Routing
     type: dict
     keys:
       aging:

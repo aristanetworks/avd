@@ -5,7 +5,7 @@ type: dict
 keys:
   flow_trackings:
     documentation_options:
-      filename: Flow Tracking
+      filename: data_model/Flow Tracking
     type: list
     primary_key: type
     items:

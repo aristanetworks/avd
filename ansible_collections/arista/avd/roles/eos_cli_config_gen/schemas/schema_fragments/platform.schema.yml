@@ -5,7 +5,7 @@ type: dict
 keys:
   platform:
     documentation_options:
-      filename: Hardware
+      filename: data_model/Hardware
     type: dict
     keys:
       trident:

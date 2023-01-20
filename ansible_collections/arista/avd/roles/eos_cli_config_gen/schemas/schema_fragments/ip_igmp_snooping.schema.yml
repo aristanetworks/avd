@@ -5,7 +5,7 @@ type: dict
 keys:
   ip_igmp_snooping:
     documentation_options:
-      filename: Multicast
+      filename: data_model/Multicast
     type: dict
     keys:
       globally_enabled:

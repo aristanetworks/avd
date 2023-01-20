@@ -5,7 +5,7 @@ type: dict
 keys:
   interface_defaults:
     documentation_options:
-      filename: Interfaces
+      filename: data_model/Interfaces
     type: dict
     keys:
       ethernet:

@@ -5,7 +5,7 @@ type: dict
 keys:
   ptp:
     documentation_options:
-      filename: PTP
+      filename: data_model/PTP
     type: dict
     keys:
       mode:

@@ -5,7 +5,7 @@ type: dict
 keys:
   as_path:
     documentation_options:
-      filename: Filters
+      filename: data_model/Filters
     type: dict
     keys:
       regex_mode:

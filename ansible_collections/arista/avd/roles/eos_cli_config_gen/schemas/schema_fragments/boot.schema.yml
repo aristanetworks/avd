@@ -5,7 +5,7 @@ type: dict
 keys:
   boot:
     documentation_options:
-      filename: System Boot Settings
+      filename: data_model/System Boot Settings
     display_name: System Boot Settings
     description: |
       Set the Aboot password

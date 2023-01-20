@@ -11,6 +11,16 @@
         path: "{{ role_documentation_dir }}"
         state: directory
         mode: 0775
+    - name: "Create {{ role_documentation_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_documentation_dir }}/inputs"
+        state: directory
+        mode: 0775
+    - name: "Create {{ role_documentation_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_documentation_dir }}/data_model"
+        state: directory
+        mode: 0775
   delegate_to: localhost
   run_once: true
 

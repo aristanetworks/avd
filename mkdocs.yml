@@ -17,10 +17,13 @@ theme:
   features:
     - navigation.instant
     - navigation.top
+    - navigation.indexes
     - search.highlight
     - header.autohide
     - content.code.annotate
     - content.tabs.link
+    - toc.integrate
+    - toc.follow
   highlightjs: true
   icon:
     repo: fontawesome/brands/github
@@ -69,10 +72,7 @@ plugins:
       glob:
         - molecule/*
         - tests/*
-  - include_dir_to_nav:
-      # Input variables will still be available to view in case
-      # new schemas are introduced and _defaults.schema.yml
-      file_pattern: '^(?!Input Variables).*md$'
+  - include_dir_to_nav
 
 markdown_extensions:
   - admonition
@@ -154,7 +154,8 @@ nav:
               - Connected Endpoints MPLS (BETA): roles/eos_designs/doc/connected-endpoints-mpls-BETA.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
-          - Data Models: roles/eos_cli_config_gen/docs
+          - Role Inputs: roles/eos_cli_config_gen/docs/inputs/Role Inputs.md
+          - Data Model: roles/eos_cli_config_gen/docs/data_model
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md

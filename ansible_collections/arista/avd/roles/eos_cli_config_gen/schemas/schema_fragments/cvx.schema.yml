@@ -5,7 +5,7 @@ type: dict
 keys:
   cvx:
     documentation_options:
-      filename: Authentication
+      filename: data_model/Authentication
     type: dict
     description: "CVX server features are not supported on physical switches. See `management_cvx` for client configurations."
     keys:

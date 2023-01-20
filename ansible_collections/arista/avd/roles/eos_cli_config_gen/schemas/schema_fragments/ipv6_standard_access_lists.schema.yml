@@ -6,7 +6,7 @@ allow_other_keys: true
 keys:
   ipv6_standard_access_lists:
     documentation_options:
-      filename: ACLs
+      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:

@@ -5,6 +5,6 @@ type: dict
 keys:
   ip_virtual_router_mac_address:
     documentation_options:
-      filename: Routing
+      filename: data_model/Routing
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)

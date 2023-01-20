@@ -5,7 +5,7 @@ type: dict
 keys:
   ipv6_access_lists:
     documentation_options:
-      filename: ACLs
+      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:

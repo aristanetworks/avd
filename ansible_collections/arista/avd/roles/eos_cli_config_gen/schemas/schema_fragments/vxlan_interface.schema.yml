@@ -5,7 +5,7 @@ type: dict
 keys:
   vxlan_interface:
     documentation_options:
-      filename: Interfaces
+      filename: data_model/Interfaces
     type: dict
     keys:
       Vxlan1:

@@ -5,7 +5,7 @@ type: dict
 keys:
   queue_monitor_length:
     documentation_options:
-      filename: Quality of Service
+      filename: data_model/Quality of Service
     type: dict
     keys:
       enabled:

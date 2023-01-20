@@ -5,7 +5,7 @@ type: dict
 keys:
   mpls:
     documentation_options:
-      filename: MPLS
+      filename: data_model/MPLS
     type: dict
     keys:
       ip:

@@ -5,7 +5,7 @@ type: dict
 keys:
   ipv6_hardware:
     documentation_options:
-      filename: IPv6 Hardware
+      filename: data_model/IPv6 Hardware
     type: dict
     keys:
       fib:

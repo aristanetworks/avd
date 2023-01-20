@@ -5,7 +5,7 @@ type: dict
 keys:
   ip_access_lists_max_entries:
     documentation_options:
-      filename: ACLs
+      filename: data_model/ACLs
     type: int
     convert_types:
       - str

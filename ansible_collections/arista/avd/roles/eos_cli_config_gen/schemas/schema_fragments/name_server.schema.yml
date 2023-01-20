@@ -5,7 +5,7 @@ type: dict
 keys:
   name_server:
     documentation_options:
-      filename: Management
+      filename: data_model/Management
     type: dict
     keys:
       source:

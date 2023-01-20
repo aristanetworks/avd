@@ -5,7 +5,7 @@ type: dict
 keys:
   management_api_gnmi:
     documentation_options:
-      filename: Management
+      filename: data_model/Management
     type: dict
     keys:
       provider:

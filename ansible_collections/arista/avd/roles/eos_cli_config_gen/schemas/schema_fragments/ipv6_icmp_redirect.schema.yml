@@ -5,5 +5,5 @@ type: dict
 keys:
   ipv6_icmp_redirect:
     documentation_options:
-      filename: IP ICMP Redirect
+      filename: data_model/IP ICMP Redirect
     type: bool

@@ -5,7 +5,7 @@ type: dict
 keys:
   mcs_client:
     documentation_options:
-      filename: MCS Client
+      filename: data_model/MCS Client
     type: dict
     keys:
       shutdown:

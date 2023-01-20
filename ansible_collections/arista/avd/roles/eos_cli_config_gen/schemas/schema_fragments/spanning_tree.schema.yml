@@ -5,7 +5,7 @@ type: dict
 keys:
   spanning_tree:
     documentation_options:
-      filename: Spanning Tree
+      filename: data_model/Spanning Tree
     type: dict
     keys:
       root_super:

@@ -5,7 +5,7 @@ type: dict
 keys:
   errdisable:
     documentation_options:
-      filename: Errdisable
+      filename: data_model/Errdisable
     type: dict
     keys:
       detect:
