@@ -4,6 +4,6 @@
   gather_facts: false
   connection: local
   tasks:
-    - name: generate intended configuration
-      import_role:
+    - name: Generate intended configuration
+      ansible.builtin.import_role:
         name: arista.avd.dhcp_provisioner

@@ -471,9 +471,9 @@ AVD comes with a role to [generate your folder structure](https://github.com/ari
 
 ```yaml
 tasks:
-    - name: build local folders
+    - name: Build local folders
       tags: [build]
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.build_output_folders
       vars:
         fabric_dir_name: '{{ fabric_name }}'
@@ -485,9 +485,9 @@ AVD provides the [**`eos_designs`**](https://github.com/aristanetworks/ansible-a
 
 ```yaml
   tasks:
-    - name: generate intended variables
+    - name: Generate intended variables
       tags: [build]
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
 ```
 
@@ -497,9 +497,9 @@ After device data have been generated, AVD can build EOS configuration as well a
 
 ```yaml
   tasks:
-    - name: generate device intended config and documentation
+    - name: Generate device intended config and documentation
       tags: [build]
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
 ```
 
@@ -513,9 +513,9 @@ Once your configuration files have been generated, you can use [`arista.avd.eos_
 
 ```yaml
   tasks:
-    - name: deploy configuration to device
+    - name: Deploy configuration to device
       tags: [deploy, never]
-      import_role:
+      ansible.builtin.import_role:
          name: arista.avd.eos_config_deploy_eapi
 ```
 
@@ -528,16 +528,16 @@ The complete playbook is below. Feel free to update it to create your workflow.
 - name: Build Switch configuration
   hosts: all
   tasks:
-    - name: generate intended variables
+    - name: Generate intended variables
       tags: [build]
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
-    - name: generate device intended config and documentation
+    - name: Generate device intended config and documentation
       tags: [build]
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
-    - name: deploy configuration to device
+    - name: Deploy configuration to device
       tags: [deploy, never]
-      import_role:
+      ansible.builtin.import_role:
          name: arista.avd.eos_config_deploy_eapi
 ```

@@ -101,8 +101,8 @@ The following options may be specified for this module:
 ## Examples
 
 ```yaml
-- name: generate intended variables
-  inventory_to_container:
+- name: Generate intended variables
+  arista.avd.inventory_to_container:
     inventory: 'inventory.yml'
     container_root: 'DC1_FABRIC'
     configlet_dir: 'intended_configs'
