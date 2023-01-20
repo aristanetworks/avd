@@ -906,6 +906,20 @@ keys:
         type: bool
       dynamic_authorization:
         type: bool
+      mac_based_authentication:
+        type: dict
+        keys:
+          delay:
+            type: int
+          hold_period:
+            type: int
+      radius_av_pair:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+          framed_mtu:
+            type: int
   dynamic_prefix_lists:
     type: list
     items:
