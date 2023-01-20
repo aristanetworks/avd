@@ -1111,6 +1111,32 @@
         "dynamic_authorization": {
           "type": "boolean",
           "title": "Dynamic Authorization"
+        },
+        "mac_based_authentication": {
+          "type": "object",
+          "properties": {
+            "delay": {
+              "type": "integer",
+              "title": "Dalay in Seconds"
+            },
+            "hold_period": {
+              "type": "integer",
+              "title": "Hold period in Seconds"
+            }
+          }
+        },
+        "radius_av_pair": {
+          "type": "object",
+          "properties": {
+            "service_type": {
+              "type": "boolean",
+              "title": "Radius av-pair service type"
+            },
+            "framed_mtu": {
+              "type": "integer",
+              "title": "Framed MTU size"
+            }
+          }
         }
       },
       "additionalProperties": false
