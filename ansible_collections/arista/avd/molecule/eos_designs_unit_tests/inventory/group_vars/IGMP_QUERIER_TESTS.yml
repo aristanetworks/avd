@@ -129,7 +129,7 @@ tenants:
     vrfs:
       IGMP_QUERIER_TEST_3:
         description: "IGMP_QUERIER_TEST_3"
-        vrf_vni: 21
+        vrf_vni: 41
         svis:
           # Expected results:
           # igmp querier enabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
