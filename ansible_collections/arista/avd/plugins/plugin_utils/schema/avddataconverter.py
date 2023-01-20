@@ -188,8 +188,7 @@ class AvdDataConverter:
           url: str
         """
 
-        deprecation_warning = deprecation.get("warning", True)
-        if not deprecation_warning:
+        if not deprecation.get("warning", True):
             return
 
         yield AvdDeprecationWarning(

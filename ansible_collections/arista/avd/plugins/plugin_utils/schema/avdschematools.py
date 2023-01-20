@@ -140,6 +140,8 @@ class AvdSchemaTools:
                 continue
 
             if isinstance(exception, AvdDeprecationWarning):
+                # Deprecation warnings are not subject to "conversion_mode".
+                # Instead we display using Ansible's deprecation notices.
                 message = f"[{self.hostname}]: {exception}"
                 self.ansible_display.deprecated(
                     msg=message,
