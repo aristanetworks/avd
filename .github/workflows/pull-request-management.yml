@@ -386,10 +386,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - name: 'Install Python requirements'
+      - name: 'Install Python & Ansible requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
+          ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
       - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
