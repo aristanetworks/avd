@@ -206,10 +206,10 @@ class AvdSchema:
 
         if schema["type"] == "dict":
             if key in schema.get("keys", []):
-                resolved_schema = self.simple_resolve(schema["keys"][key])
+                resolved_schema = self.get_resolved_schema(schema["keys"][key])
                 return self.subschema(datapath[1:], resolved_schema)
             if key in schema.get("dynamic_keys", []):
-                resolved_schema = self.simple_resolve(schema["dynamic_keys"][key])
+                resolved_schema = self.get_resolved_schema(schema["dynamic_keys"][key])
                 return self.subschema(datapath[1:], resolved_schema)
 
         if schema["type"] == "list" and key in schema.get("items", {}).get("keys", []):
@@ -218,7 +218,7 @@ class AvdSchema:
         # Falling through here in case the schema is not covering the requested datapath
         raise AvdSchemaError(f"The datapath '{datapath}' could not be found in the schema")
 
-    def simple_resolve(self, schema):
+    def get_resolved_schema(self, schema):
         # Get fully resolved schema (where all $ref has been expanded recursively)
         # Performs inplace update of the argument so we give an empty dict.
         # By default it will resolve the full schema
@@ -226,5 +226,6 @@ class AvdSchema:
         resolve_errors = self.resolve(resolved_schema, schema)
         for resolve_error in resolve_errors:
             if isinstance(resolve_error, Exception):
+                # TODO: Raise multiple errors or abstract them
                 raise AristaAvdError("AvdToDocumentationSchemaConverter: Resolve Error during conversion of schema") from resolve_error
         return resolved_schema
