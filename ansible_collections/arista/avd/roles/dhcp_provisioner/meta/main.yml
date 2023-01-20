@@ -8,8 +8,8 @@ galaxy_info:
   galaxy_tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
   platforms:
     - name: EL
-      versions: [7, 8]
+      versions: ["7", "8"]
     - name: Ubuntu
-      versions: [ 20.04 ]
-  dependencies:
-    "arista.cvp": "*"
+      versions: [ "focal" ]
+dependencies:
+  - role: arista.cvp

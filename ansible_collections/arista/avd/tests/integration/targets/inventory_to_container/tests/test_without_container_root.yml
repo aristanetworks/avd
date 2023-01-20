@@ -9,7 +9,7 @@
     destination: "{{ actual_output }}"
 
 - name: Validate output
-  assert:
+  ansible.builtin.assert:
     that:
       - cvp_vars is failed
       - "'missing required arguments:' in cvp_vars.msg"

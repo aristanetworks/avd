@@ -10,7 +10,7 @@
   register: diff_output
 
 - name: Validate output
-  assert:
+  ansible.builtin.assert:
     that:
       - result is success
       - result.changed == false

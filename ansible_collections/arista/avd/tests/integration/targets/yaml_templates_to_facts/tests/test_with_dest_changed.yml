@@ -1,5 +1,5 @@
 - name: Test with dest (no change) - Remove test file to force change in template action
-  file:
+  ansible.builtin.file:
     path: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
     state: absent
 

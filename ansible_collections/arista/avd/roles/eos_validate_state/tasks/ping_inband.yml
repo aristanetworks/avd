@@ -1,8 +1,8 @@
 ---
 
 - name: Gather fabric reachability from Management Interface {{ management_interface.name }}
-  eos_command:
-    commands: "ping {{ loopback0_address | ansible.utils.ipaddr('address') }} repeat 1 interface {{ management_interface.name }}"
+  arista.eos.eos_command:
+    commands: "ping {{ loopback0_address | ansible.utils.ipaddr('address') }} repeat 1 interface {{ management_interface.name }}"  # noqa: jinja[invalid]
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address

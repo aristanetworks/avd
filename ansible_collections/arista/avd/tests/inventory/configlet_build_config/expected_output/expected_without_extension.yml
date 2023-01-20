@@ -1,4 +1,3 @@
-changed: false
 cvp_configlets:
   Prefix_default_extension: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n\
     \   exec /usr/bin/TerminAttr -cvaddr=10.255.0.1:9910 -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\

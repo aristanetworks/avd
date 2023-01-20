@@ -1,4 +1,4 @@
-- name: "create configlets on CVP {{ inventory_hostname }}."
+- name: "Create configlets on CVP {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_configlet_v3:
     configlets: "{{ cvp_vars.cvp_configlets }}"

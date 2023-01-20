@@ -1,7 +1,7 @@
 ---
 - name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
   tags: [always, avd_version]
-  set_fact:
+  ansible.builtin.set_fact:
     avd_collection_version: version
   vars:
     versions: "{{ lookup('pipe', 'ansible-galaxy collection list -p ' ~ collection_path ~ ' --format yaml ' ~ ansible_collection_name) | from_yaml }}"
@@ -13,7 +13,7 @@
 
 - name: Create required output directories if not present
   tags: [build, provision]
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0775
@@ -27,8 +27,8 @@
 
 - name: Include device intended structure configuration variables
   tags: [build, provision]
-  include_vars:
-    file: "{{ filename }}"
+  ansible.builtin.include_vars:
+    ansible.builtin.file: "{{ filename }}"
   delegate_to: localhost
   when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
   vars:

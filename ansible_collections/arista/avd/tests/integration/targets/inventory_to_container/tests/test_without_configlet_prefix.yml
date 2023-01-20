@@ -1,18 +1,19 @@
 - name: Test without configlet prefix
   register: cvp_vars
-  inventory_to_container:
+  arista.avd.inventory_to_container:
     inventory: '{{ inventory_path }}/inventory.yml'
     container_root: 'DC1_FABRIC'
     configlet_dir: '{{ configlet_path }}'
     device_filter: ['DC1-LE']
     destination: "{{ actual_output }}"
 
-- local_action: shell diff "{{ expected_output }}/expected_with_all_param.yml" "{{ actual_output }}"
+- name: Compare actual output with expected output
+  ansible.builtin.local_action: shell diff "{{ expected_output }}/expected_with_all_param.yml" "{{ actual_output }}"
   failed_when: "diff_output.rc > 1"
   register: diff_output
 
 - name: Validate output
-  assert:
+  ansible.builtin.assert:
     that:
       - cvp_vars is success
       - cvp_vars.cvp_topology != {}
@@ -23,7 +24,7 @@
   with_items: "{{ cvp_vars.cvp_configlets }}"
 
 - name: Validate cvp_topology
-  assert:
+  ansible.builtin.assert:
     that:
       - item is defined
       - item == "Tenant"

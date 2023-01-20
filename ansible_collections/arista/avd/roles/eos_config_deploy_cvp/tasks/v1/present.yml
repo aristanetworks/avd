@@ -51,13 +51,13 @@
 # Load tasks when device_filter is string
 - name: Load conditional cv_device execution if device_filter is string.
   tags: [provision, apply]
-  include_tasks: "./cv-device-filter-string.yml"
+  ansible.builtin.include_tasks: "./cv-device-filter-string.yml"
   when: "device_filter is string"
 
 # Load tasks when device_filter is list
 - name: Load conditional cv_device execution if device_filter is list.
   tags: [provision, apply]
-  include_tasks: "./cv-device-filter-list.yml"
+  ansible.builtin.include_tasks: "./cv-device-filter-list.yml"
   when: "device_filter is not string"
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"

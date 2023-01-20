@@ -1,6 +1,6 @@
 ---
 - name: Test Encrypt & Decrypt for BGP passwords
-  assert:
+  ansible.builtin.assert:
     that:
       - "{{ clear_password | arista.avd.encrypt(passwd_type='bgp', key=neighbor_ip) == neighbor_encrypted_password }}"
       - "{{ clear_password | arista.avd.encrypt(passwd_type='bgp', key=peer_group) == peer_group_encrypted_password }}"

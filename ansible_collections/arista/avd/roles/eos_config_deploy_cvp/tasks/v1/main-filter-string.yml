@@ -1,5 +1,5 @@
 ---
-- name: generate intended variables
+- name: Generate intended variables
   tags: [always]
   arista.avd.inventory_to_container:
     # Inventory is read from memory unless 'avd_inventory_to_container_file' is set

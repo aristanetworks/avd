@@ -3,7 +3,7 @@
 # BGP Validation tests
 
 - name: Gather ip route summary and ArBGP state
-  eos_command:
+  arista.eos.eos_command:
     commands: "show ip route summary"
   register: ip_route_summary
   tags:
@@ -11,11 +11,11 @@
 
 - name: Validate ArBGP is configured and operating
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - ip_route_summary.stdout_lines[0][0] | regex_search('multi-agent')
       - ip_route_summary.stdout_lines[0][1] | regex_search('multi-agent')
-    fail_msg: "{{ ip_route_summary.stdout_lines[0][0] | replace('\"','') }}, {{ ip_route_summary.stdout_lines[0][1] | replace('\"','') }}"
+    fail_msg: "{{ ip_route_summary.stdout_lines[0][0] | replace('\"', '') }}, {{ ip_route_summary.stdout_lines[0][1] | replace('\"', '') }}"
     quiet: yes
   when: (service_routing_protocols_model is defined and service_routing_protocols_model == 'multi-agent')
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
@@ -24,7 +24,7 @@
     - bgp_check
 
 - name: Gather bgp summary (ip and evpn)
-  eos_command:
+  arista.eos.eos_command:
     commands:
       - command: "show ip bgp summary | json"
       - command: "show bgp evpn summary | json"
@@ -36,10 +36,10 @@
 
 - name: Validate ip bgp neighbors peer state
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
-    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"','') }}"
+    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"', '') }}"
     quiet: yes
   loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
@@ -53,10 +53,10 @@
 
 - name: Validate bgp evpn neighbors peer state
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
-    fail_msg: "Session state: {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"','') }}"
+    fail_msg: "Session state: {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"', '') }}"
     quiet: yes
   loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:

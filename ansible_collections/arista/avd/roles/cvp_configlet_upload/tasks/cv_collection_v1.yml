@@ -1,9 +1,9 @@
-- name: "collecting facts from CVP {{ inventory_hostname }}."
+- name: "Collecting facts from CVP {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_facts:
   register: cvp_facts
 
-- name: "create configlets on CVP {{ inventory_hostname }}."
+- name: "Create configlets on CVP {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_configlet:
     cvp_facts: "{{ cvp_facts.ansible_facts }}"
