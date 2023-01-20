@@ -81,6 +81,34 @@
           "additionalProperties": false,
           "title": "System"
         },
+        "dot1x": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "start-stop",
+                    "stop-only"
+                  ],
+                  "title": "Type"
+                },
+                "group": {
+                  "description": "Group Name",
+                  "type": "string",
+                  "title": "Group"
+                }
+              },
+              "additionalProperties": false,
+              "title": "Default"
+            }
+          },
+          "additionalProperties": false,
+          "title": "System"
+        },
         "commands": {
           "type": "object",
           "properties": {
