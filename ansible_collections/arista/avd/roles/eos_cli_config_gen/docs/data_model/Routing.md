@@ -1409,7 +1409,7 @@ search:
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_information_originate</samp> | Dictionary |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp> | Integer |  |  | Min: 1<br>Max: 65535 | Metric for default route |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_type</samp> | Integer |  |  | Valid Values:<br>- 1<br>- 2 | OSPF metric type for default route |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp> | Integer |  |  | Min: 1<br>Max: 32 |  |
+    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp> | Integer |  |  | Min: 1<br>Max: 128 |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_metric</samp> | Dictionary |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_lsa</samp> | Dictionary |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;external_lsa</samp> | Dictionary |  |  |  |  |
