@@ -431,6 +431,12 @@ dot1x:
   system_auth_control: < true | false >
   protocol_lldp_bypass: < true | false >
   dynamic_authorization: < true | false >
+  mac_based_authentication:
+    delay: < 0-300 in seconds >
+    hold_period: < 1-300 seconds >
+  radius_av_pair:
+    service_type: < true | false >
+    framed_mtu: < 68-9236 >
 ```
 
 ### Banners
