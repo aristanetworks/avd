@@ -76,14 +76,14 @@ router_bgp:
       - connected
     MULTICAST_DISABLED_5_6:
       router_id: 192.168.255.7
-      rd: 192.168.255.7:22
+      rd: 192.168.255.7:23
       route_targets:
         import:
           evpn:
-          - '22:22'
+          - '23:23'
         export:
           evpn:
-          - '22:22'
+          - '23:23'
       redistribute_routes:
       - connected
     MULTICAST_ENABLED_1_2:
@@ -1202,7 +1202,7 @@ vxlan_interface:
         MULTICAST_ENABLED_210_DISABLED_211:
           vni: 12
         MULTICAST_DISABLED_5_6:
-          vni: 22
+          vni: 23
         MULTICAST_ENABLED_1_2:
           vni: 21
         MULTICAST_ENABLED_3_DISABLED_4:

@@ -101,6 +101,18 @@ router_bgp:
       EVPN-OVERLAY-CORE:
         activate: true
   vrfs:
+    Tenant_A_L3_VRF_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.254.15:15
+      route_targets:
+        import:
+          evpn:
+          - '65105:15'
+        export:
+          evpn:
+          - '65105:15'
+      redistribute_routes:
+      - connected
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.15
       rd: 192.168.254.15:14
@@ -169,18 +181,6 @@ router_bgp:
               activate: true
             fd5a:fe45:8831:06c5::b:
               activate: true
-    Tenant_L3_VRF_Zone:
-      router_id: 192.168.255.15
-      rd: 192.168.254.15:15
-      route_targets:
-        import:
-          evpn:
-          - '65105:15'
-        export:
-          evpn:
-          - '65105:15'
-      redistribute_routes:
-      - connected
     Tenant_B_OP_Zone:
       router_id: 192.168.255.15
       rd: 192.168.254.15:20
@@ -309,10 +309,10 @@ local_users:
 vrfs:
   MGMT:
     ip_routing: false
-  Tenant_A_WAN_Zone:
+  Tenant_A_L3_VRF_Zone:
     tenant: Tenant_A
     ip_routing: true
-  Tenant_L3_VRF_Zone:
+  Tenant_A_WAN_Zone:
     tenant: Tenant_A
     ip_routing: true
   Tenant_B_OP_Zone:
@@ -384,6 +384,38 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.254.199/31
+  Ethernet8:
+    peer_type: l3_interface
+    ip_address: 10.10.30.10/24
+    mtu: 9000
+    shutdown: false
+    description: test
+    type: routed
+    vrf: Tenant_A_L3_VRF_Zone
+  Ethernet9:
+    peer_type: l3_interface
+    ip_address: 10.10.40.20/24
+    mtu: 9000
+    shutdown: false
+    description: test
+    type: routed
+    vrf: Tenant_A_L3_VRF_Zone
+  Ethernet10:
+    peer_type: l3_interface
+    ip_address: 10.10.40.20/24
+    mtu: 9000
+    shutdown: false
+    description: test-DC1-BL1B
+    type: routed
+    vrf: Tenant_A_L3_VRF_Zone
+  Ethernet11:
+    peer_type: l3_interface
+    ip_address: 10.10.40.20/24
+    mtu: 9000
+    shutdown: false
+    description: DC1-BL1B descriptions preferred over single description
+    type: routed
+    vrf: Tenant_A_L3_VRF_Zone
   Ethernet7:
     peer_type: l3_interface
     ip_address: 10.10.20.20/24
@@ -392,38 +424,6 @@ ethernet_interfaces:
     description: test
     type: routed
     vrf: Tenant_A_WAN_Zone
-  Ethernet8:
-    peer_type: l3_interface
-    ip_address: 10.10.30.10/24
-    mtu: 9000
-    shutdown: false
-    description: test
-    type: routed
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet9:
-    peer_type: l3_interface
-    ip_address: 10.10.40.20/24
-    mtu: 9000
-    shutdown: false
-    description: test
-    type: routed
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet10:
-    peer_type: l3_interface
-    ip_address: 10.10.40.20/24
-    mtu: 9000
-    shutdown: false
-    description: test-DC1-BL1B
-    type: routed
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet11:
-    peer_type: l3_interface
-    ip_address: 10.10.40.20/24
-    mtu: 9000
-    shutdown: false
-    description: DC1-BL1B descriptions preferred over single description
-    type: routed
-    vrf: Tenant_L3_VRF_Zone
   Ethernet4000:
     description: My second test
     ip_address: 10.1.2.3/12
@@ -541,10 +541,10 @@ vxlan_interface:
         350:
           vni: 30350
       vrfs:
+        Tenant_A_L3_VRF_Zone:
+          vni: 15
         Tenant_A_WAN_Zone:
           vni: 14
-        Tenant_L3_VRF_Zone:
-          vni: 15
         Tenant_B_OP_Zone:
           vni: 20
         Tenant_B_WAN_Zone:

@@ -199,7 +199,7 @@ Tenant_A:
           address_family: evpn
           route_target: '65000:789'
           # nodes not set - so all devices should get this additional route target
-    Tenant_L3_VRF_Zone:
+    Tenant_A_L3_VRF_Zone:
       vrf_vni: 15
       l3_interfaces:
         - interfaces: [Ethernet8, Ethernet9, Ethernet8, Ethernet9]
@@ -222,8 +222,8 @@ Tenant_A:
           description: "Single description"
           descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
           # no description nor desciptions is tested in Tenant_OSPF below
-    Tenant_OSPF:
-      vrf_id: 30
+    Tenant_A_OSPF:
+      vrf_id: 16
       ospf:
         enabled: true
       l3_interfaces:
