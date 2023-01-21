@@ -6,7 +6,7 @@ search:
 # Interfaces
 ## Ethernet Interfaces
 
-=== "Ethernet Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -474,7 +474,7 @@ search:
     ```
 ## Interface Defaults
 
-=== "Interface Defaults"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -494,7 +494,7 @@ search:
     ```
 ## Interface Profiles
 
-=== "Interface Profiles"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -514,7 +514,7 @@ search:
     ```
 ## Loopback Interfaces
 
-=== "Loopback Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -572,7 +572,7 @@ search:
     ```
 ## Port Channel Interfaces
 
-=== "Port Channel Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -914,7 +914,7 @@ search:
     ```
 ## Switchport Default
 
-=== "Switchport Default"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -938,7 +938,7 @@ search:
     ```
 ## Tunnel Interfaces
 
-=== "Tunnel Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -992,7 +992,7 @@ search:
     ```
 ## VLAN Interfaces
 
-=== "VLAN Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1254,7 +1254,7 @@ search:
     ```
 ## VxLAN Interface
 
-=== "VxLAN Interface"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

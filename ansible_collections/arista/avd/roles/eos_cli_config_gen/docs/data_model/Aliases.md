@@ -6,7 +6,7 @@ search:
 # Aliases
 ## Aliases
 
-=== "Aliases"
+=== "Table"
 
     Multi-line string with one or more alias commands.
 

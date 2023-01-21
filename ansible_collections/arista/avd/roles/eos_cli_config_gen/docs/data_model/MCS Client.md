@@ -6,7 +6,7 @@ search:
 # MCS Client
 ## MCS Client
 
-=== "MCS Client"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

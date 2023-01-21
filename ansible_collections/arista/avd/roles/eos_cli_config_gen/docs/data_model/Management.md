@@ -6,7 +6,7 @@ search:
 # Management
 ## Clock
 
-=== "Clock"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -22,7 +22,7 @@ search:
     ```
 ## DNS Domain
 
-=== "DNS Domain"
+=== "Table"
 
     Domain Name
 
@@ -37,7 +37,7 @@ search:
     ```
 ## Domain List
 
-=== "Domain List"
+=== "Table"
 
     Search list of DNS domains
 
@@ -54,7 +54,7 @@ search:
     ```
 ## IP Domain Lookup
 
-=== "IP Domain Lookup"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -74,7 +74,7 @@ search:
     ```
 ## IP HTTP Client Source Interfaces
 
-=== "IP HTTP Client Source Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -92,7 +92,7 @@ search:
     ```
 ## IP SSH Client Source Interfaces
 
-=== "IP SSH Client Source Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -110,7 +110,7 @@ search:
     ```
 ## Management API Gnmi
 
-=== "Management API Gnmi"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -148,7 +148,7 @@ search:
     ```
 ## Management API HTTP
 
-=== "Management API HTTP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -184,7 +184,7 @@ search:
     ```
 ## Management API Models
 
-=== "Management API Models"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -208,7 +208,7 @@ search:
     ```
 ## Management Console
 
-=== "Management Console"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -224,7 +224,7 @@ search:
     ```
 ## Management CVX
 
-=== "Management CVX"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -246,7 +246,7 @@ search:
     ```
 ## Management Defaults
 
-=== "Management Defaults"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -264,7 +264,7 @@ search:
     ```
 ## Management Interfaces
 
-=== "Management Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -304,7 +304,7 @@ search:
     ```
 ## Management Security
 
-=== "Management Security"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -342,7 +342,7 @@ search:
     ```
 ## Management SSH
 
-=== "Management SSH"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -404,7 +404,7 @@ search:
     ```
 ## Management Tech Support
 
-=== "Management Tech Support"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -430,7 +430,7 @@ search:
     ```
 ## Name Server
 
-=== "Name Server"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -452,7 +452,7 @@ search:
     ```
 ## NTP
 
-=== "NTP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

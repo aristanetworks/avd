@@ -6,7 +6,7 @@ search:
 # VLANs
 ## VLANs
 
-=== "VLANs"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

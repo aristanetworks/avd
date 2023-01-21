@@ -6,7 +6,7 @@ search:
 # System Control-Plane
 ## System
 
-=== "System"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -40,7 +40,7 @@ search:
     ```
 ## VMTracer Sessions
 
-=== "VMTracer Sessions"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

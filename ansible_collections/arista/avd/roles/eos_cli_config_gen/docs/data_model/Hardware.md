@@ -6,7 +6,7 @@ search:
 # Hardware
 ## Hardware
 
-=== "Hardware"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -30,7 +30,7 @@ search:
     ```
 ## Hardware Counters
 
-=== "Hardware Counters"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -50,7 +50,7 @@ search:
     ```
 ## Platform
 
-=== "Platform"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -88,7 +88,7 @@ search:
     ```
 ## Redundancy
 
-=== "Redundancy"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -104,7 +104,7 @@ search:
     ```
 ## Hardware TCAM Profiles
 
-=== "Hardware TCAM Profiles"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

@@ -6,7 +6,7 @@ search:
 # Virtual Source NAT
 ## Virtual Source Nat VRFs
 
-=== "Virtual Source Nat VRFs"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

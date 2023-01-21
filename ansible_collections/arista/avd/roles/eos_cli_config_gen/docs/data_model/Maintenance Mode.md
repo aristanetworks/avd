@@ -6,7 +6,7 @@ search:
 # Maintenance Mode
 ## BGP Groups
 
-=== "BGP Groups"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -32,7 +32,7 @@ search:
     ```
 ## Maintenance Interface Groups
 
-=== "Maintenance Interface Groups"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -60,7 +60,7 @@ search:
     ```
 ## Maintenance Mode
 
-=== "Maintenance Mode"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

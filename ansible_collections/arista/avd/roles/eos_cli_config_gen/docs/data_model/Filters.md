@@ -6,7 +6,7 @@ search:
 # Filters
 ## As Path
 
-=== "As Path"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -34,7 +34,7 @@ search:
     ```
 ## Community Lists (legacy model)
 
-=== "Community Lists (legacy model)"
+=== "Table"
 
     AVD supports 2 different data models for community lists:
 
@@ -62,7 +62,7 @@ search:
     ```
 ## Dynamic Prefix Lists
 
-=== "Dynamic Prefix Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -86,7 +86,7 @@ search:
     ```
 ## IP Community Lists
 
-=== "IP Community Lists"
+=== "Table"
 
     AVD supports 2 different data models for community lists:
 
@@ -132,7 +132,7 @@ search:
     ```
 ## IP Extended Community Lists
 
-=== "IP Extended Community Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -154,7 +154,7 @@ search:
     ```
 ## IP Extended Community Lists RegExp
 
-=== "IP Extended Community Lists RegExp"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -176,7 +176,7 @@ search:
     ```
 ## IPv6 Prefix Lists
 
-=== "IPv6 Prefix Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -198,7 +198,7 @@ search:
     ```
 ## Match Lists
 
-=== "Match Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -222,7 +222,7 @@ search:
     ```
 ## Peer Filters
 
-=== "Peer Filters"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -244,7 +244,7 @@ search:
     ```
 ## Prefix Lists
 
-=== "Prefix Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -266,7 +266,7 @@ search:
     ```
 ## Route Maps
 
-=== "Route Maps"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

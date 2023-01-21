@@ -6,7 +6,7 @@ search:
 # Routing
 ## ARP
 
-=== "ARP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -24,7 +24,7 @@ search:
     ```
 ## IP Routing
 
-=== "IP Routing"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -38,7 +38,7 @@ search:
     ```
 ## IP Routing IPv6 Interfaces
 
-=== "IP Routing IPv6 Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -52,7 +52,7 @@ search:
     ```
 ## IP Virtual Router MAC Address
 
-=== "IP Virtual Router MAC Address"
+=== "Table"
 
     MAC address (hh:hh:hh:hh:hh:hh)
 
@@ -67,7 +67,7 @@ search:
     ```
 ## IPv6 Static Routes
 
-=== "IPv6 Static Routes"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -99,7 +99,7 @@ search:
     ```
 ## IPv6 Unicast Routing
 
-=== "IPv6 Unicast Routing"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -113,7 +113,7 @@ search:
     ```
 ## Router BFD
 
-=== "Router BFD"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -163,7 +163,7 @@ search:
     ```
 ## Router BGP
 
-=== "Router BGP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1029,7 +1029,7 @@ search:
     ```
 ## Router General configuration
 
-=== "Router General configuration"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1067,7 +1067,7 @@ search:
     ```
 ## Router IGMP Configuration
 
-=== "Router IGMP Configuration"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1083,7 +1083,7 @@ search:
     ```
 ## Router ISIS
 
-=== "Router ISIS"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1191,7 +1191,7 @@ search:
     ```
 ## Router L2 VPN
 
-=== "Router L2 VPN"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1217,7 +1217,7 @@ search:
     ```
 ## Router Msdp
 
-=== "Router Msdp"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1331,7 +1331,7 @@ search:
     ```
 ## Router OSPF Configuration
 
-=== "Router OSPF Configuration"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1481,7 +1481,7 @@ search:
     ```
 ## Router Traffic Engineering
 
-=== "Router Traffic Engineering"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1535,7 +1535,7 @@ search:
     ```
 ## Service Routing Configuration BGP
 
-=== "Service Routing Configuration BGP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1551,7 +1551,7 @@ search:
     ```
 ## Service Routing Protocols Model
 
-=== "Service Routing Protocols Model"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1565,7 +1565,7 @@ search:
     ```
 ## Static Routes
 
-=== "Static Routes"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -1597,7 +1597,7 @@ search:
     ```
 ## VRFs
 
-=== "VRFs"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

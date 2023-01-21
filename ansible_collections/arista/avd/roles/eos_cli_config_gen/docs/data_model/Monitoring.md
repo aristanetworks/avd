@@ -6,12 +6,14 @@ search:
 # Monitoring
 ## Daemon TerminAttr
 
-=== "Daemon TerminAttr"
+=== "Table"
 
     You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
     Streaming to multiple clusters both on-prem and cloud service is supported.
-    > Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
-      which always contain the latest recommended versions and minimum required versions per EOS release.
+
+    !!! note
+        For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
+        which always contain the latest recommended versions and minimum required versions per EOS release.
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -28,7 +30,7 @@ search:
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp> | String |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp> | String |  |  |  | Token file path<br>e.g. "/tmp/token"<br> |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvobscurekeyfile</samp> | Boolean |  |  |  | Encrypt the private key used for authentication to CloudVision<br> |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvproxy</samp> | String |  |  |  | Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.<br>The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0<br> |
+    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvproxy</samp> | String |  |  |  | Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.<br>The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0<br> |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvsourceip</samp> | String |  |  |  | Set source IP address in case of in-band managament<br> |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvvrf</samp> | String |  |  |  | The VRF to use to connect to CloudVision<br> |
     | <samp>&nbsp;&nbsp;cvauth</samp> | Dictionary |  |  |  | Authentication scheme used to connect to CloudVision<br> |
@@ -36,7 +38,7 @@ search:
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp> | String |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp> | String |  |  |  | Token file path<br>e.g. "/tmp/token"<br> |
     | <samp>&nbsp;&nbsp;cvobscurekeyfile</samp> | Boolean |  |  |  | Encrypt the private key used for authentication to CloudVision<br> |
-    | <samp>&nbsp;&nbsp;cvproxy</samp> | String |  |  |  | Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.<br>The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0<br> |
+    | <samp>&nbsp;&nbsp;cvproxy</samp> | String |  |  |  | Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.<br>The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0<br> |
     | <samp>&nbsp;&nbsp;cvsourceip</samp> | String |  |  |  | Set source IP address in case of in-band managament<br> |
     | <samp>&nbsp;&nbsp;cvvrf</samp> | String |  |  |  | The VRF to use to connect to CloudVision<br> |
     | <samp>&nbsp;&nbsp;cvgnmi</samp> | Boolean |  |  |  | Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1<br> |
@@ -109,7 +111,7 @@ search:
     ```
 ## Custom Daemons
 
-=== "Custom Daemons"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -129,7 +131,7 @@ search:
     ```
 ## Event Handlers
 
-=== "Event Handlers"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -157,7 +159,7 @@ search:
     ```
 ## Event Monitor
 
-=== "Event Monitor"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -173,7 +175,7 @@ search:
     ```
 ## Load Interval
 
-=== "Load Interval"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -189,7 +191,7 @@ search:
     ```
 ## Logging
 
-=== "Logging"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -257,7 +259,7 @@ search:
     ```
 ## Monitor Connectivity
 
-=== "Monitor Connectivity"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -321,7 +323,7 @@ search:
     ```
 ## Monitor Sessions
 
-=== "Monitor Sessions"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -377,7 +379,7 @@ search:
     ```
 ## Sflow
 
-=== "Sflow"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -447,7 +449,7 @@ search:
     ```
 ## Snmp Server
 
-=== "Snmp Server"
+=== "Table"
 
     SNMP settings
 
@@ -588,7 +590,7 @@ search:
     ```
 ## Tap Aggregation
 
-=== "Tap Aggregation"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -638,7 +640,7 @@ search:
     ```
 ## Trackers
 
-=== "Trackers"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

@@ -6,7 +6,7 @@ search:
 # LACP
 ## LACP
 
-=== "LACP"
+=== "Table"
 
     Set Link Aggregation Control Protocol (LACP) parameters.
 

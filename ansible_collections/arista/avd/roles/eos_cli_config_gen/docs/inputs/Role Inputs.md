@@ -6,7 +6,7 @@ search:
 # Role Inputs
 ## Extensibility with Custom Templates
 
-=== "Extensibility with Custom Templates"
+=== "Table"
 
     - Custom templates can be added below the playbook directory.
     - If a location above the directory is desired, a symbolic link can be used.
@@ -36,7 +36,7 @@ search:
     ```
 ## Generate Default Config
 
-=== "Generate Default Config"
+=== "Table"
 
     The `generate_default_config` knob allows to omit default EOS configuration.
     This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
@@ -61,7 +61,7 @@ search:
     ```
 ## Generate Device Documentation
 
-=== "Generate Device Documentation"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

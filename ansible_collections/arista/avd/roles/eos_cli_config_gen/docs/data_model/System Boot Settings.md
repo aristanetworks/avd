@@ -6,7 +6,7 @@ search:
 # System Boot Settings
 ## System Boot Settings
 
-=== "System Boot Settings"
+=== "Table"
 
     Set the Aboot password
 

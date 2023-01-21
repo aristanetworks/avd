@@ -6,7 +6,7 @@ search:
 # Link Tracking Groups
 ## Link Tracking Groups
 
-=== "Link Tracking Groups"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

@@ -7,7 +7,7 @@ search:
 {% for table in documentation_file.tables %}
 ## {{ table.display_name }}
 
-=== "{{ table.display_name }}"
+=== "Table"
 
 {%     if table.description is arista.avd.defined %}
 {%         set lines = table.description.split("\n") %}

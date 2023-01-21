@@ -6,7 +6,7 @@ search:
 # IP Hardware
 ## IP Hardware
 
-=== "IP Hardware"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

@@ -6,7 +6,7 @@ search:
 # LLDP
 ## LLDP
 
-=== "LLDP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

@@ -6,7 +6,7 @@ search:
 # IP ICMP Redirect
 ## IP ICMP Redirect
 
-=== "IP ICMP Redirect"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -20,7 +20,7 @@ search:
     ```
 ## IPv6 ICMP Redirect
 
-=== "IPv6 ICMP Redirect"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

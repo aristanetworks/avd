@@ -6,7 +6,7 @@ search:
 # IP DHCP Relay
 ## IP DHCP Relay
 
-=== "IP DHCP Relay"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

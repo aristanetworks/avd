@@ -6,7 +6,7 @@ search:
 # Prompt
 ## Prompt
 
-=== "Prompt"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

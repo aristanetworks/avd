@@ -6,7 +6,7 @@ search:
 # Service Unsupported Transceiver
 ## Service Unsupported Transceiver
 
-=== "Service Unsupported Transceiver"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

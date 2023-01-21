@@ -6,7 +6,7 @@ search:
 # ACLs
 ## IP Extended Access-Lists (legacy model)
 
-=== "IP Extended Access-Lists (legacy model)"
+=== "Table"
 
     AVD currently supports 2 different data models for extended ACLs:
 
@@ -40,7 +40,7 @@ search:
     ```
 ## IP Extended Access-Lists (improved model)
 
-=== "IP Extended Access-Lists (improved model)"
+=== "Table"
 
     AVD currently supports 2 different data models for extended ACLs:
 
@@ -122,7 +122,7 @@ search:
     ```
 ## IP Access Lists Max Entries
 
-=== "IP Access Lists Max Entries"
+=== "Table"
 
     The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
     Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
@@ -140,7 +140,7 @@ search:
     ```
 ## IPv6 Extended Access-Lists
 
-=== "IPv6 Extended Access-Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -164,7 +164,7 @@ search:
     ```
 ## IPv6 Standard Access Lists
 
-=== "IPv6 Standard Access Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -188,7 +188,7 @@ search:
     ```
 ## MAC Access Lists
 
-=== "MAC Access Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -212,7 +212,7 @@ search:
     ```
 ## Standard Access Lists
 
-=== "Standard Access Lists"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

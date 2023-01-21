@@ -6,7 +6,7 @@ search:
 # Flow Tracking
 ## Flow Trackings
 
-=== "Flow Trackings"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

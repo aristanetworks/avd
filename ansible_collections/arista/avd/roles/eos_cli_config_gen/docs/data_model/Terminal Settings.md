@@ -6,7 +6,7 @@ search:
 # Terminal Settings
 ## Terminal Settings
 
-=== "Terminal Settings"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

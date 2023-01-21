@@ -6,7 +6,7 @@ search:
 # PTP
 ## PTP
 
-=== "PTP"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

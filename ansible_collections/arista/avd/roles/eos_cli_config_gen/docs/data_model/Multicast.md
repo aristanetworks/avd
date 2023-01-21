@@ -6,7 +6,7 @@ search:
 # Multicast
 ## IP IGMP Snooping
 
-=== "IP IGMP Snooping"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -84,7 +84,7 @@ search:
     ```
 ## Router Multicast
 
-=== "Router Multicast"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -130,7 +130,7 @@ search:
     ```
 ## Router PIM Sparse Mode
 
-=== "Router PIM Sparse Mode"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

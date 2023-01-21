@@ -640,10 +640,10 @@ keys:
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
       Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming
-      to multiple clusters both on-prem and cloud service is supported.\n> Note For
-      TerminAttr version recommendation and EOS compatibility matrix, please refer
-      to the latest TerminAttr Release Notes\n  which always contain the latest recommended
-      versions and minimum required versions per EOS release.\n"
+      to multiple clusters both on-prem and cloud service is supported.\n\n!!! note\n
+      \   For TerminAttr version recommendation and EOS compatibility matrix, please
+      refer to the latest TerminAttr Release Notes\n    which always contain the latest
+      recommended versions and minimum required versions per EOS release.\n"
     keys:
       cvaddrs:
         type: list
@@ -715,7 +715,7 @@ keys:
               description: 'Proxy server through which CloudVision is reachable. Useful
                 when the CloudVision server is hosted in the cloud.
 
-                The expected form is http://[user:password@]ip:port, e.g.: ''http://arista:arista@10.83.12.78:3128''.
+                The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`.
                 Available as of TerminAttr v1.13.0
 
                 '
@@ -760,7 +760,7 @@ keys:
         description: 'Proxy server through which CloudVision is reachable. Useful
           when the CloudVision server is hosted in the cloud.
 
-          The expected form is http://[user:password@]ip:port, e.g.: ''http://arista:arista@10.83.12.78:3128''.
+          The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`.
           Available as of TerminAttr v1.13.0
 
           '

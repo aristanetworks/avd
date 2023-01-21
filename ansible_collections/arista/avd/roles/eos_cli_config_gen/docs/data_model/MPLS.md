@@ -6,7 +6,7 @@ search:
 # MPLS
 ## MPLS
 
-=== "MPLS"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

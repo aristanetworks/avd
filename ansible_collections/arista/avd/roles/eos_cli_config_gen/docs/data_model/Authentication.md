@@ -6,7 +6,7 @@ search:
 # Authentication
 ## AAA Accounting
 
-=== "AAA Accounting"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -66,7 +66,7 @@ search:
     ```
 ## AAA Authentication
 
-=== "AAA Authentication"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -112,7 +112,7 @@ search:
     ```
 ## AAA Authorization
 
-=== "AAA Authorization"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -144,7 +144,7 @@ search:
     ```
 ## AAA Root
 
-=== "AAA Root"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -162,7 +162,7 @@ search:
     ```
 ## AAA Server Groups
 
-=== "AAA Server Groups"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -186,7 +186,7 @@ search:
     ```
 ## CVX
 
-=== "CVX"
+=== "Table"
 
     CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
 
@@ -219,7 +219,7 @@ search:
     ```
 ## Enable Password
 
-=== "Enable Password"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -237,7 +237,7 @@ search:
     ```
 ## IP Radius Source Interfaces
 
-=== "IP Radius Source Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -255,7 +255,7 @@ search:
     ```
 ## IP Tacacs Source Interfaces
 
-=== "IP Tacacs Source Interfaces"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -273,7 +273,7 @@ search:
     ```
 ## Local Users
 
-=== "Local Users"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -301,7 +301,7 @@ search:
     ```
 ## Radius Servers
 
-=== "Radius Servers"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -321,7 +321,7 @@ search:
     ```
 ## Roles
 
-=== "Roles"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -347,7 +347,7 @@ search:
     ```
 ## Tacacs Servers
 
-=== "Tacacs Servers"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

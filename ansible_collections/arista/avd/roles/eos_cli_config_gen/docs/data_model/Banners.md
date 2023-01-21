@@ -6,7 +6,7 @@ search:
 # Banners
 ## Banners
 
-=== "Banners"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

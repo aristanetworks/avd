@@ -6,7 +6,7 @@ search:
 # Patch Panel
 ## Patch Panel
 
-=== "Patch Panel"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

@@ -6,7 +6,7 @@ search:
 # EOS CLI
 ## EOS CLI
 
-=== "EOS CLI"
+=== "Table"
 
     Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
 

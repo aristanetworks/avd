@@ -6,7 +6,7 @@ search:
 # Traffic Policies
 ## Traffic Policies
 
-=== "Traffic Policies"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

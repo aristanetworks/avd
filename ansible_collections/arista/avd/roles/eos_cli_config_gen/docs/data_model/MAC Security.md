@@ -6,7 +6,7 @@ search:
 # MAC Security
 ## MAC Security (MACsec)
 
-=== "MAC Security (MACsec)"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

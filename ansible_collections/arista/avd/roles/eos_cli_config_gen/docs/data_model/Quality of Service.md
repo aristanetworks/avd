@@ -6,7 +6,7 @@ search:
 # Quality of Service
 ## QOS Class-maps
 
-=== "QOS Class-maps"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -44,7 +44,7 @@ search:
     ```
 ## Policy Maps
 
-=== "Policy Maps"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -96,7 +96,7 @@ search:
     ```
 ## QOS
 
-=== "QOS"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -126,7 +126,7 @@ search:
     ```
 ## QOS Profiles
 
-=== "QOS Profiles"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -200,7 +200,7 @@ search:
     ```
 ## Queue Monitor Length
 
-=== "Queue Monitor Length"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -228,7 +228,7 @@ search:
     ```
 ## Queue Monitor Streaming
 
-=== "Queue Monitor Streaming"
+=== "Table"
 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
