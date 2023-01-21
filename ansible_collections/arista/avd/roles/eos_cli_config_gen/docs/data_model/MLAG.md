@@ -4,7 +4,6 @@ search:
 ---
 
 # MLAG
-
 ## Multi-Chassis Link Aggregation (MLAG) Configuration
 
 === "Multi-Chassis Link Aggregation (MLAG) Configuration"

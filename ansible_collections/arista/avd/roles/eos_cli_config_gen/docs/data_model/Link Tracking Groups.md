@@ -4,7 +4,6 @@ search:
 ---
 
 # Link Tracking Groups
-
 ## Link Tracking Groups
 
 === "Link Tracking Groups"

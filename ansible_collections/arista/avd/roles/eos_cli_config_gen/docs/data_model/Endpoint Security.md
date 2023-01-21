@@ -4,7 +4,6 @@ search:
 ---
 
 # Endpoint Security
-
 ## Global 802.1x Authentication
 
 === "Global 802.1x Authentication"

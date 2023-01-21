@@ -4,7 +4,6 @@ search:
 ---
 
 # EOS CLI
-
 ## EOS CLI
 
 === "EOS CLI"

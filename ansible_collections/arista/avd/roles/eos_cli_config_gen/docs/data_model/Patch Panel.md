@@ -4,7 +4,6 @@ search:
 ---
 
 # Patch Panel
-
 ## Patch Panel
 
 === "Patch Panel"

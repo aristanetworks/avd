@@ -4,7 +4,6 @@ search:
 ---
 
 # ACLs
-
 ## IP Extended Access-Lists (legacy model)
 
 === "IP Extended Access-Lists (legacy model)"
@@ -39,7 +38,6 @@ search:
           - sequence: <int>
             action: <str>
     ```
-
 ## IP Extended Access-Lists (improved model)
 
 === "IP Extended Access-Lists (improved model)"
@@ -122,7 +120,6 @@ search:
             vlan_inner: <bool>
             vlan_mask: <str>
     ```
-
 ## IP Access Lists Max Entries
 
 === "IP Access Lists Max Entries"
@@ -141,7 +138,6 @@ search:
     ```yaml
     ip_access_lists_max_entries: <int>
     ```
-
 ## IPv6 Extended Access-Lists
 
 === "IPv6 Extended Access-Lists"
@@ -166,7 +162,6 @@ search:
           - sequence: <int>
             action: <str>
     ```
-
 ## IPv6 Standard Access Lists
 
 === "IPv6 Standard Access Lists"
@@ -191,7 +186,6 @@ search:
           - sequence: <int>
             action: <str>
     ```
-
 ## MAC Access Lists
 
 === "MAC Access Lists"
@@ -216,7 +210,6 @@ search:
           - sequence: <int>
             action: <str>
     ```
-
 ## Standard Access Lists
 
 === "Standard Access Lists"

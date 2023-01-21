@@ -4,7 +4,6 @@ search:
 ---
 
 # LACP
-
 ## LACP
 
 === "LACP"

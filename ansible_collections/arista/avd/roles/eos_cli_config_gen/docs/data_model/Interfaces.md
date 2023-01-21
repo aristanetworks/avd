@@ -4,7 +4,6 @@ search:
 ---
 
 # Interfaces
-
 ## Ethernet Interfaces
 
 === "Ethernet Interfaces"
@@ -473,7 +472,6 @@ search:
         peer_type: <str>
         eos_cli: <str>
     ```
-
 ## Interface Defaults
 
 === "Interface Defaults"
@@ -494,7 +492,6 @@ search:
         shutdown: <bool>
       mtu: <int>
     ```
-
 ## Interface Profiles
 
 === "Interface Profiles"
@@ -515,7 +512,6 @@ search:
         commands:
           - <str>
     ```
-
 ## Loopback Interfaces
 
 === "Loopback Interfaces"
@@ -574,7 +570,6 @@ search:
           ipv6_index: <int>
         eos_cli: <str>
     ```
-
 ## Port Channel Interfaces
 
 === "Port Channel Interfaces"
@@ -917,7 +912,6 @@ search:
         peer_type: <str>
         eos_cli: <str>
     ```
-
 ## Switchport Default
 
 === "Switchport Default"
@@ -942,7 +936,6 @@ search:
         trunk: <str>
         vlan: <int>
     ```
-
 ## Tunnel Interfaces
 
 === "Tunnel Interfaces"
@@ -997,7 +990,6 @@ search:
         path_mtu_discovery: <bool>
         eos_cli: <str>
     ```
-
 ## VLAN Interfaces
 
 === "VLAN Interfaces"
@@ -1260,7 +1252,6 @@ search:
         type: <str>
         eos_cli: <str>
     ```
-
 ## VxLAN Interface
 
 === "VxLAN Interface"

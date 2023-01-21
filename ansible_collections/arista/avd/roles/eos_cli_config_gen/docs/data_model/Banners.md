@@ -4,7 +4,6 @@ search:
 ---
 
 # Banners
-
 ## Banners
 
 === "Banners"

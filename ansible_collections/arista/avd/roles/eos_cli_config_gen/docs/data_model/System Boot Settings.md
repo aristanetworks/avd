@@ -4,7 +4,6 @@ search:
 ---
 
 # System Boot Settings
-
 ## System Boot Settings
 
 === "System Boot Settings"

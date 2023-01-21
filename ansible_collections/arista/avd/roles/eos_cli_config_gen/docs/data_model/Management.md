@@ -4,7 +4,6 @@ search:
 ---
 
 # Management
-
 ## Clock
 
 === "Clock"
@@ -21,7 +20,6 @@ search:
     clock:
       timezone: <str>
     ```
-
 ## DNS Domain
 
 === "DNS Domain"
@@ -37,7 +35,6 @@ search:
     ```yaml
     dns_domain: <str>
     ```
-
 ## Domain List
 
 === "Domain List"
@@ -55,7 +52,6 @@ search:
     domain_list:
       - <str>
     ```
-
 ## IP Domain Lookup
 
 === "IP Domain Lookup"
@@ -76,7 +72,6 @@ search:
         - name: <str>
           vrf: <str>
     ```
-
 ## IP HTTP Client Source Interfaces
 
 === "IP HTTP Client Source Interfaces"
@@ -95,7 +90,6 @@ search:
       - name: <str>
         vrf: <str>
     ```
-
 ## IP SSH Client Source Interfaces
 
 === "IP SSH Client Source Interfaces"
@@ -114,7 +108,6 @@ search:
       - name: <str>
         vrf: <str>
     ```
-
 ## Management API Gnmi
 
 === "Management API Gnmi"
@@ -153,7 +146,6 @@ search:
           access_group: <str>
       octa:
     ```
-
 ## Management API HTTP
 
 === "Management API HTTP"
@@ -190,7 +182,6 @@ search:
         certificate: <str>
         private_key: <str>
     ```
-
 ## Management API Models
 
 === "Management API Models"
@@ -215,7 +206,6 @@ search:
             - path: <str>
               disabled: <bool>
     ```
-
 ## Management Console
 
 === "Management Console"
@@ -232,7 +222,6 @@ search:
     management_console:
       idle_timeout: <int>
     ```
-
 ## Management CVX
 
 === "Management CVX"
@@ -255,7 +244,6 @@ search:
         - <str>
       source_interface: <str>
     ```
-
 ## Management Defaults
 
 === "Management Defaults"
@@ -274,7 +262,6 @@ search:
       secret:
         hash: <str>
     ```
-
 ## Management Interfaces
 
 === "Management Interfaces"
@@ -315,7 +302,6 @@ search:
         mac_address: <str>
         eos_cli: <str>
     ```
-
 ## Management Security
 
 === "Management Security"
@@ -354,7 +340,6 @@ search:
             file: <str>
             key: <str>
     ```
-
 ## Management SSH
 
 === "Management SSH"
@@ -417,7 +402,6 @@ search:
           enable: <bool>
       log_level: <str>
     ```
-
 ## Management Tech Support
 
 === "Management Tech Support"
@@ -444,7 +428,6 @@ search:
         include_commands:
           - command: <str>
     ```
-
 ## Name Server
 
 === "Name Server"
@@ -467,7 +450,6 @@ search:
       nodes:
         - <str>
     ```
-
 ## NTP
 
 === "NTP"

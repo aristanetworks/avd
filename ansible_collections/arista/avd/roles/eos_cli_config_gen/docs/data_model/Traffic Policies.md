@@ -4,7 +4,6 @@ search:
 ---
 
 # Traffic Policies
-
 ## Traffic Policies
 
 === "Traffic Policies"

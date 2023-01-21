@@ -4,7 +4,6 @@ search:
 ---
 
 # Aliases
-
 ## Aliases
 
 === "Aliases"

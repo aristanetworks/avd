@@ -4,7 +4,6 @@ search:
 ---
 
 # Monitoring
-
 ## Daemon TerminAttr
 
 === "Daemon TerminAttr"
@@ -108,7 +107,6 @@ search:
         port: <int>
       ingestvrf: <str>
     ```
-
 ## Custom Daemons
 
 === "Custom Daemons"
@@ -129,7 +127,6 @@ search:
         exec: <str>
         enabled: <bool>
     ```
-
 ## Event Handlers
 
 === "Event Handlers"
@@ -158,7 +155,6 @@ search:
         regex: <str>
         asynchronous: <bool>
     ```
-
 ## Event Monitor
 
 === "Event Monitor"
@@ -175,7 +171,6 @@ search:
     event_monitor:
       enabled: <bool>
     ```
-
 ## Load Interval
 
 === "Load Interval"
@@ -192,7 +187,6 @@ search:
     load_interval:
       default: <int>
     ```
-
 ## Logging
 
 === "Logging"
@@ -261,7 +255,6 @@ search:
             - name: <str>
               action: <str>
     ```
-
 ## Monitor Connectivity
 
 === "Monitor Connectivity"
@@ -326,7 +319,6 @@ search:
               local_interfaces: <str>
               url: <str>
     ```
-
 ## Monitor Sessions
 
 === "Monitor Sessions"
@@ -383,7 +375,6 @@ search:
           enabled: <bool>
           size: <int>
     ```
-
 ## Sflow
 
 === "Sflow"
@@ -454,7 +445,6 @@ search:
           - name: <str>
             enabled: <bool>
     ```
-
 ## Snmp Server
 
 === "Snmp Server"
@@ -596,7 +586,6 @@ search:
         - name: <str>
           enable: <bool>
     ```
-
 ## Tap Aggregation
 
 === "Tap Aggregation"
@@ -647,7 +636,6 @@ search:
         fcs_append: <bool>
         fcs_error: <str>
     ```
-
 ## Trackers
 
 === "Trackers"

@@ -4,7 +4,6 @@ search:
 ---
 
 # MAC Security
-
 ## MAC Security (MACsec)
 
 === "MAC Security (MACsec)"

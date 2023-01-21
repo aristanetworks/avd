@@ -4,7 +4,6 @@ search:
 ---
 
 # Prompt
-
 ## Prompt
 
 === "Prompt"

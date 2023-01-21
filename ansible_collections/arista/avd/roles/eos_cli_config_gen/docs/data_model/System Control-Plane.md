@@ -4,7 +4,6 @@ search:
 ---
 
 # System Control-Plane
-
 ## System
 
 === "System"
@@ -39,7 +38,6 @@ search:
           - acl_name: <str>
             vrf: <str>
     ```
-
 ## VMTracer Sessions
 
 === "VMTracer Sessions"

@@ -4,7 +4,6 @@ search:
 ---
 
 # Authentication
-
 ## AAA Accounting
 
 === "AAA Accounting"
@@ -65,7 +64,6 @@ search:
             logging: <bool>
         commands_default:
     ```
-
 ## AAA Authentication
 
 === "AAA Authentication"
@@ -112,7 +110,6 @@ search:
           duration: <int>
           window: <int>
     ```
-
 ## AAA Authorization
 
 === "AAA Authorization"
@@ -145,7 +142,6 @@ search:
           - level: <str>
             default: <str>
     ```
-
 ## AAA Root
 
 === "AAA Root"
@@ -164,7 +160,6 @@ search:
       secret:
         sha512_password: <str>
     ```
-
 ## AAA Server Groups
 
 === "AAA Server Groups"
@@ -189,7 +184,6 @@ search:
           - server: <str>
             vrf: <str>
     ```
-
 ## CVX
 
 === "CVX"
@@ -223,7 +217,6 @@ search:
             password_type: <str>
           shutdown: <bool>
     ```
-
 ## Enable Password
 
 === "Enable Password"
@@ -242,7 +235,6 @@ search:
       hash_algorithm: <str>
       key: <str>
     ```
-
 ## IP Radius Source Interfaces
 
 === "IP Radius Source Interfaces"
@@ -261,7 +253,6 @@ search:
       - name: <str>
         vrf: <str>
     ```
-
 ## IP Tacacs Source Interfaces
 
 === "IP Tacacs Source Interfaces"
@@ -280,7 +271,6 @@ search:
       - name: <str>
         vrf: <str>
     ```
-
 ## Local Users
 
 === "Local Users"
@@ -309,7 +299,6 @@ search:
         no_password: <bool>
         ssh_key: <str>
     ```
-
 ## Radius Servers
 
 === "Radius Servers"
@@ -330,7 +319,6 @@ search:
         vrf: <str>
         key: <str>
     ```
-
 ## Roles
 
 === "Roles"
@@ -357,7 +345,6 @@ search:
             mode: <str>
             command: <str>
     ```
-
 ## Tacacs Servers
 
 === "Tacacs Servers"

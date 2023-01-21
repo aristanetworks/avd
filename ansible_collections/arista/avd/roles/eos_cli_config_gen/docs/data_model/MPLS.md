@@ -4,7 +4,6 @@ search:
 ---
 
 # MPLS
-
 ## MPLS
 
 === "MPLS"

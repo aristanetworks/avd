@@ -4,7 +4,6 @@ search:
 ---
 
 # IP DHCP Relay
-
 ## IP DHCP Relay
 
 === "IP DHCP Relay"

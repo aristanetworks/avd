@@ -4,7 +4,6 @@ search:
 ---
 
 # Spanning Tree
-
 ## Spanning Tree
 
 === "Spanning Tree"

@@ -4,7 +4,6 @@ search:
 ---
 
 # Filters
-
 ## As Path
 
 === "As Path"
@@ -33,7 +32,6 @@ search:
               match: <str>
               origin: <str>
     ```
-
 ## Community Lists (legacy model)
 
 === "Community Lists (legacy model)"
@@ -62,7 +60,6 @@ search:
       - name: <str>
         action: <str>
     ```
-
 ## Dynamic Prefix Lists
 
 === "Dynamic Prefix Lists"
@@ -87,7 +84,6 @@ search:
           ipv4: <str>
           ipv6: <str>
     ```
-
 ## IP Community Lists
 
 === "IP Community Lists"
@@ -134,7 +130,6 @@ search:
               - <str>
             regexp: <str>
     ```
-
 ## IP Extended Community Lists
 
 === "IP Extended Community Lists"
@@ -157,7 +152,6 @@ search:
           - type: <str>
             extcommunities: <str>
     ```
-
 ## IP Extended Community Lists RegExp
 
 === "IP Extended Community Lists RegExp"
@@ -180,7 +174,6 @@ search:
           - type: <str>
             regexp: <str>
     ```
-
 ## IPv6 Prefix Lists
 
 === "IPv6 Prefix Lists"
@@ -203,7 +196,6 @@ search:
           - sequence: <int>
             action: <str>
     ```
-
 ## Match Lists
 
 === "Match Lists"
@@ -228,7 +220,6 @@ search:
             - sequence: <int>
               match_regex: <str>
     ```
-
 ## Peer Filters
 
 === "Peer Filters"
@@ -251,7 +242,6 @@ search:
           - sequence: <int>
             match: <str>
     ```
-
 ## Prefix Lists
 
 === "Prefix Lists"
@@ -274,7 +264,6 @@ search:
           - sequence: <int>
             action: <str>
     ```
-
 ## Route Maps
 
 === "Route Maps"

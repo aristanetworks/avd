@@ -4,7 +4,6 @@ search:
 ---
 
 # Errdisable
-
 ## Errdisable
 
 === "Errdisable"

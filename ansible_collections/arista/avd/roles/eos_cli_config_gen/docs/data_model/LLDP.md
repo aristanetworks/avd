@@ -4,7 +4,6 @@ search:
 ---
 
 # LLDP
-
 ## LLDP
 
 === "LLDP"

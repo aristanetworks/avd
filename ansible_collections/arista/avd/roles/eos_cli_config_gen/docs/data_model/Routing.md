@@ -4,7 +4,6 @@ search:
 ---
 
 # Routing
-
 ## ARP
 
 === "ARP"
@@ -23,7 +22,6 @@ search:
       aging:
         timeout_default: <int>
     ```
-
 ## IP Routing
 
 === "IP Routing"
@@ -38,7 +36,6 @@ search:
     ```yaml
     ip_routing: <bool>
     ```
-
 ## IP Routing IPv6 Interfaces
 
 === "IP Routing IPv6 Interfaces"
@@ -53,7 +50,6 @@ search:
     ```yaml
     ip_routing_ipv6_interfaces: <bool>
     ```
-
 ## IP Virtual Router MAC Address
 
 === "IP Virtual Router MAC Address"
@@ -69,7 +65,6 @@ search:
     ```yaml
     ip_virtual_router_mac_address: <str>
     ```
-
 ## IPv6 Static Routes
 
 === "IPv6 Static Routes"
@@ -102,7 +97,6 @@ search:
         name: <str>
         metric: <int>
     ```
-
 ## IPv6 Unicast Routing
 
 === "IPv6 Unicast Routing"
@@ -117,7 +111,6 @@ search:
     ```yaml
     ipv6_unicast_routing: <bool>
     ```
-
 ## Router BFD
 
 === "Router BFD"
@@ -168,7 +161,6 @@ search:
           min_rx: <int>
           local_discriminator: <str>
     ```
-
 ## Router BGP
 
 === "Router BGP"
@@ -1035,7 +1027,6 @@ search:
                   route_map: <str>
           eos_cli: <str>
     ```
-
 ## Router General configuration
 
 === "Router General configuration"
@@ -1074,7 +1065,6 @@ search:
             dynamic_prefix_lists:
               - name: <str>
     ```
-
 ## Router IGMP Configuration
 
 === "Router IGMP Configuration"
@@ -1091,7 +1081,6 @@ search:
     router_igmp:
       ssm_aware: <bool>
     ```
-
 ## Router ISIS
 
 === "Router ISIS"
@@ -1200,7 +1189,6 @@ search:
             index: <int>
       no_passive_interfaces:
     ```
-
 ## Router L2 VPN
 
 === "Router L2 VPN"
@@ -1227,7 +1215,6 @@ search:
       nd_rs_flooding_disabled: <bool>
       virtual_router_nd_ra_flooding_disabled: <bool>
     ```
-
 ## Router Msdp
 
 === "Router Msdp"
@@ -1342,7 +1329,6 @@ search:
                 in_list: <str>
                 out_list: <str>
     ```
-
 ## Router OSPF Configuration
 
 === "Router OSPF Configuration"
@@ -1493,7 +1479,6 @@ search:
                 override_metric: <int>
           mpls_ldp_sync_default: <bool>
     ```
-
 ## Router Traffic Engineering
 
 === "Router Traffic Engineering"
@@ -1548,7 +1533,6 @@ search:
                         weight: <int>
                         index: <int>
     ```
-
 ## Service Routing Configuration BGP
 
 === "Service Routing Configuration BGP"
@@ -1565,7 +1549,6 @@ search:
     service_routing_configuration_bgp:
       no_equals_default: <bool>
     ```
-
 ## Service Routing Protocols Model
 
 === "Service Routing Protocols Model"
@@ -1580,7 +1563,6 @@ search:
     ```yaml
     service_routing_protocols_model: <str>
     ```
-
 ## Static Routes
 
 === "Static Routes"
@@ -1613,7 +1595,6 @@ search:
         name: <str>
         metric: <int>
     ```
-
 ## VRFs
 
 === "VRFs"

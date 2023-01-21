@@ -4,7 +4,6 @@ search:
 ---
 
 # VLAN Internal Order
-
 ## VLAN Internal Order
 
 === "VLAN Internal Order"

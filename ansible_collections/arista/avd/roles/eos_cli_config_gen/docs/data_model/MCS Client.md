@@ -4,7 +4,6 @@ search:
 ---
 
 # MCS Client
-
 ## MCS Client
 
 === "MCS Client"

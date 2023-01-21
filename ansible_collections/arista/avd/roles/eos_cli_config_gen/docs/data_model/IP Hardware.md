@@ -4,7 +4,6 @@ search:
 ---
 
 # IP Hardware
-
 ## IP Hardware
 
 === "IP Hardware"

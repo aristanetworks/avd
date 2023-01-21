@@ -4,7 +4,6 @@ search:
 ---
 
 # VLANs
-
 ## VLANs
 
 === "VLANs"

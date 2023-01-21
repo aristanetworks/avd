@@ -4,7 +4,6 @@ search:
 ---
 
 # Multicast
-
 ## IP IGMP Snooping
 
 === "IP IGMP Snooping"
@@ -83,7 +82,6 @@ search:
           fast_leave: <bool>
           proxy: <bool>
     ```
-
 ## Router Multicast
 
 === "Router Multicast"
@@ -130,7 +128,6 @@ search:
           ipv4:
             routing: <bool>
     ```
-
 ## Router PIM Sparse Mode
 
 === "Router PIM Sparse Mode"

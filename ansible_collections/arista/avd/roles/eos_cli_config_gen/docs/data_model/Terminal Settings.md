@@ -4,7 +4,6 @@ search:
 ---
 
 # Terminal Settings
-
 ## Terminal Settings
 
 === "Terminal Settings"

@@ -4,7 +4,6 @@ search:
 ---
 
 # Role Inputs
-
 ## Extensibility with Custom Templates
 
 === "Extensibility with Custom Templates"
@@ -35,7 +34,6 @@ search:
     custom_templates:
       - <str>
     ```
-
 ## Generate Default Config
 
 === "Generate Default Config"
@@ -61,7 +59,6 @@ search:
     ```yaml
     generate_default_config: <bool>
     ```
-
 ## Generate Device Documentation
 
 === "Generate Device Documentation"

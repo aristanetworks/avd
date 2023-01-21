@@ -4,7 +4,6 @@ search:
 ---
 
 # IPv6 Hardware
-
 ## IPv6 Hardware
 
 === "IPv6 Hardware"
