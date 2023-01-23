@@ -1221,7 +1221,7 @@ ethernet_interfaces:
         unit: percent
     channel_group:
       id: 17
-      mode: active
+      mode: passive
     lacp_port_priority: 8192
   Ethernet18:
     peer: server11_inherit_profile_port_channel_lacp_fallback
