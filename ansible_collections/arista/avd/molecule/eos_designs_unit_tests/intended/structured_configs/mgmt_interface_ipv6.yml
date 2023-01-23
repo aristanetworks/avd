@@ -107,6 +107,15 @@ vlans:
   162:
     tenant: Tenant_A
     name: l2vlan_with_no_tags
+  163:
+    tenant: Tenant_A
+    name: overlapping_name
+  164:
+    tenant: Tenant_A
+    name: overlapping_name
+  165:
+    tenant: Tenant_A
+    name: overlapping_name
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
