@@ -1,8 +1,6 @@
 hardware_counters:
   features:
     - vlan-interface: in
-    # in 3.8, this will trigger a warning in eos_cli_config_gen because of the
-    # conversion
     - vlan-interface: out
     - flow-spec: in
 
