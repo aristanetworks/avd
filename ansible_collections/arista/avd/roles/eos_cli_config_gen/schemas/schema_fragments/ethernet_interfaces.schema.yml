@@ -24,7 +24,7 @@ keys:
           max: 600
           convert_types:
           - str
-          description: Number of seconds in range between "0-600"
+          description: Interval in seconds for updating interface counters"
         speed:
           type: str
           description: Speed can be interface_speed or forced interface_speed or auto interface_speed
