@@ -104,7 +104,6 @@ l3leaf:
           id: 1
           rack: "rackA"
           mgmt_ip: 192.168.200.105/24
-          ipv6_mgmt_ip: 0200::105/64
           mac_address: '0c:1d:c0:1d:62:01'
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]

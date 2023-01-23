@@ -57,15 +57,6 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.ipv6_mgmt_ip")
 
     @cached_property
-    def _mgmt_ipv6_enable(self):
-        """
-        Enables ipv6 on the mgmt interface based on presence of switch.ipv6_mgmt_ip
-        """
-        if get(self._hostvars, "switch.ipv6_mgmt_ip") is not None:
-            return True
-        return False
-
-    @cached_property
     def _hostname(self):
         """
         hostname variable set based on switch.hostname fact
@@ -135,7 +126,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
         """
-        if self._ipv6_mgmt_gateway is None or not self._mgmt_ipv6_enable:
+        if self._ipv6_mgmt_gateway is None or self._ipv6_mgmt_ip is None:
             return None
 
         ipv6_static_routes = []
@@ -550,7 +541,7 @@ class AvdStructuredConfig(AvdFacts):
             inserting ipv6 variables if self._mgmt_ipv6_enable is turned on
             """
             if self._ipv6_mgmt_ip is not None:
-                interface_settings["ipv6_enable"] = self._mgmt_ipv6_enable
+                interface_settings["ipv6_enable"] = self._ipv6_mgmt_ip is not None
                 interface_settings["ipv6_address"] = self._ipv6_mgmt_ip
                 interface_settings["ipv6_gateway"] = self._ipv6_mgmt_gateway
 

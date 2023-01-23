@@ -28,10 +28,6 @@ snmp_settings:
 
 # OOB Management network default gateway.
 mgmt_gateway: 192.168.200.5
-ipv6_mgmt_gateway: 0200::1/64
-ipv6_mgmt_destination_networks:
-  - 0200:1::/64
-  - 0200:2::/64
 
 # dns servers.
 name_servers:
