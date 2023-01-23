@@ -1,7 +1,7 @@
 {# j2lint: disable=jinja-statements-delimiter #}
 {
     "devices": {
-{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{% for node in ansible_play_hosts | arista.avd.natural_sort %}
         "{{ node }}": {
 {%     for command in commands_list %}
             "{{ command | replace(" ","_") }}":
