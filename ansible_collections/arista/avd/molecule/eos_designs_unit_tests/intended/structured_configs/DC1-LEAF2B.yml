@@ -616,7 +616,6 @@ ethernet_interfaces:
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
-    speed: forced 10000
     type: switched
     shutdown: false
     mode: trunk

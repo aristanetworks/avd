@@ -110,7 +110,6 @@ port_channel_interfaces:
     - MLAG
   Port-Channel1:
     description: DC1_LEAF2_Po7
-    speed: forced 10000
     type: switched
     shutdown: false
     mode: trunk
