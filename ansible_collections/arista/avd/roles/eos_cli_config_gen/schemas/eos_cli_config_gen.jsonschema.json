@@ -2896,26 +2896,7 @@
         "features": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "title": "Name"
-              },
-              "direction": {
-                "type": "string",
-                "enum": [
-                  "in",
-                  "out"
-                ],
-                "title": "Direction"
-              }
-            },
-            "required": [
-              "name",
-              "direction"
-            ],
-            "additionalProperties": false
+            "type": "object"
           },
           "title": "Features"
         }
