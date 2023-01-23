@@ -74,6 +74,8 @@ class AvdSchemaTools:
         exceptions = self.avdschema.convert(data)
         if conversion_counter := self.handle_validation_exceptions(exceptions, self.conversion_mode):
             result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
+            if self.conversion_mode == "debug":
+                result_messages.append("Run with -v to see details")
 
         return result_messages
 
@@ -90,6 +92,8 @@ class AvdSchemaTools:
         exceptions = self.avdschema.validate(data)
         if validation_counter := self.handle_validation_exceptions(exceptions, self.validation_mode):
             result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")
+            if self.validation_mode == "debug":
+                result_messages.append("Run with -v to see details")
 
         return result_messages
 
