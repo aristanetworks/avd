@@ -34,7 +34,7 @@ class PrefixListsMixin(UtilsMixin):
             sequence_numbers[20] = {"action": f"permit {self._vtep_loopback_ipv4_pool} eq 32"}
 
         if self._vtep_vvtep_ip is not None and self._network_services_l3 is True:
-            sequence_numbers[30] = {"action": f"permit {self.vtep_vvtep_ip}"}
+            sequence_numbers[30] = {"action": f"permit {self._vtep_vvtep_ip}"}
 
         prefix_lists["PL-LOOPBACKS-EVPN-OVERLAY"] = {"sequence_numbers": sequence_numbers}
 
