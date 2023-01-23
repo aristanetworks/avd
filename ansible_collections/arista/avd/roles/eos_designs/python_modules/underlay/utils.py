@@ -278,4 +278,4 @@ class UtilsMixin:
 
     @cached_property
     def _vtep_vvtep_ip(self) -> str:
-        return get(self._hostvars, "switch.vtep_vvtep_ip")
+        return get(self._hostvars, "vtep_vvtep_ip")
