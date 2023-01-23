@@ -1270,7 +1270,7 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 600,
-            "description": "Number of seconds in range between \"0-600\"",
+            "description": "Interval in seconds for updating interface counters\"",
             "title": "Load Interval"
           },
           "speed": {
