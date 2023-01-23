@@ -6,8 +6,9 @@ search:
 # Interfaces
 ## Ethernet Interfaces
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -474,8 +475,9 @@ search:
     ```
 ## Interface Defaults
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -494,8 +496,9 @@ search:
     ```
 ## Interface Profiles
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -514,8 +517,9 @@ search:
     ```
 ## Loopback Interfaces
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -572,8 +576,9 @@ search:
     ```
 ## Port Channel Interfaces
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -914,8 +919,9 @@ search:
     ```
 ## Switchport Default
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -938,8 +944,9 @@ search:
     ```
 ## Tunnel Interfaces
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -992,8 +999,9 @@ search:
     ```
 ## VLAN Interfaces
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -1254,8 +1262,9 @@ search:
     ```
 ## VxLAN Interface
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

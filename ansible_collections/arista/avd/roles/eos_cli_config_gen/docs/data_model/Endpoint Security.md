@@ -6,8 +6,9 @@ search:
 # Endpoint Security
 ## Global 802.1x Authentication
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

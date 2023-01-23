@@ -6,8 +6,9 @@ search:
 # Errdisable
 ## Errdisable
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

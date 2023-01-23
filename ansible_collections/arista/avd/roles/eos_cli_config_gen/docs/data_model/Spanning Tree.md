@@ -6,8 +6,9 @@ search:
 # Spanning Tree
 ## Spanning Tree
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

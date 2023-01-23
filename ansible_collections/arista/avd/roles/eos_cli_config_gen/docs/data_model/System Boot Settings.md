@@ -6,10 +6,10 @@ search:
 # System Boot Settings
 ## System Boot Settings
 
+Set the Aboot password
+
+
 === "Table"
-
-    Set the Aboot password
-
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

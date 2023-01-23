@@ -6,8 +6,9 @@ search:
 # IPv6 Hardware
 ## IPv6 Hardware
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

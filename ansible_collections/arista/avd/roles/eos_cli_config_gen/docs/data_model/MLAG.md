@@ -6,8 +6,9 @@ search:
 # MLAG
 ## Multi-Chassis Link Aggregation (MLAG) Configuration
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

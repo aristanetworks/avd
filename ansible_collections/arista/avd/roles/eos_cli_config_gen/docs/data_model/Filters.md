@@ -6,8 +6,9 @@ search:
 # Filters
 ## As Path
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -34,18 +35,18 @@ search:
     ```
 ## Community Lists (legacy model)
 
+AVD supports 2 different data models for community lists:
+
+- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
+- The improved `ip_community_lists` data model.
+
+Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
+Community list names must be unique.
+
+The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
+
+
 === "Table"
-
-    AVD supports 2 different data models for community lists:
-
-    - The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-    - The improved `ip_community_lists` data model.
-
-    Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-    Community list names must be unique.
-
-    The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
-
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -62,8 +63,9 @@ search:
     ```
 ## Dynamic Prefix Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -86,28 +88,28 @@ search:
     ```
 ## IP Community Lists
 
+AVD supports 2 different data models for community lists:
+
+- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
+- The improved `ip_community_lists` data model.
+
+Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
+Community list names must be unique.
+
+The improved data model has a better design documented below:
+
+communities and regexp MUST not be configured together in the same entry
+possible community strings are (case insensitive):
+ - GSHUT
+ - internet
+ - local-as
+ - no-advertise
+ - no-export
+ - <1-4294967040>
+ - aa:nn
+
+
 === "Table"
-
-    AVD supports 2 different data models for community lists:
-
-    - The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-    - The improved `ip_community_lists` data model.
-
-    Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-    Community list names must be unique.
-
-    The improved data model has a better design documented below:
-
-    communities and regexp MUST not be configured together in the same entry
-    possible community strings are (case insensitive):
-     - GSHUT
-     - internet
-     - local-as
-     - no-advertise
-     - no-export
-     - <1-4294967040>
-     - aa:nn
-
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -132,8 +134,9 @@ search:
     ```
 ## IP Extended Community Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -154,8 +157,9 @@ search:
     ```
 ## IP Extended Community Lists RegExp
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -176,8 +180,9 @@ search:
     ```
 ## IPv6 Prefix Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -198,8 +203,9 @@ search:
     ```
 ## Match Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -222,8 +228,9 @@ search:
     ```
 ## Peer Filters
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -244,8 +251,9 @@ search:
     ```
 ## Prefix Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -266,8 +274,9 @@ search:
     ```
 ## Route Maps
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

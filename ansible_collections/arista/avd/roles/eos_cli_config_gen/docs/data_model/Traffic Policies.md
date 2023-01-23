@@ -6,8 +6,9 @@ search:
 # Traffic Policies
 ## Traffic Policies
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

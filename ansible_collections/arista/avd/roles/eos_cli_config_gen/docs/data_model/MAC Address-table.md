@@ -6,8 +6,9 @@ search:
 # MAC Address-table
 ## MAC Address Table
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

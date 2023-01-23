@@ -6,8 +6,9 @@ search:
 # DHCP Relay
 ## DHCP Relay
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

@@ -6,15 +6,15 @@ search:
 # Monitoring
 ## Daemon TerminAttr
 
+You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
+Streaming to multiple clusters both on-prem and cloud service is supported.
+
+!!! note
+    For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
+    which always contain the latest recommended versions and minimum required versions per EOS release.
+
+
 === "Table"
-
-    You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
-    Streaming to multiple clusters both on-prem and cloud service is supported.
-
-    !!! note
-        For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
-        which always contain the latest recommended versions and minimum required versions per EOS release.
-
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -111,8 +111,9 @@ search:
     ```
 ## Custom Daemons
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -131,8 +132,9 @@ search:
     ```
 ## Event Handlers
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -159,8 +161,9 @@ search:
     ```
 ## Event Monitor
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -175,8 +178,9 @@ search:
     ```
 ## Load Interval
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -191,8 +195,9 @@ search:
     ```
 ## Logging
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -259,8 +264,9 @@ search:
     ```
 ## Monitor Connectivity
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -323,8 +329,9 @@ search:
     ```
 ## Monitor Sessions
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -379,8 +386,9 @@ search:
     ```
 ## Sflow
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -449,9 +457,9 @@ search:
     ```
 ## Snmp Server
 
-=== "Table"
+SNMP settings
 
-    SNMP settings
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -590,8 +598,9 @@ search:
     ```
 ## Tap Aggregation
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -640,8 +649,9 @@ search:
     ```
 ## Trackers
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

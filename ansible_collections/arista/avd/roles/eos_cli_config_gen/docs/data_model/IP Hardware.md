@@ -6,8 +6,9 @@ search:
 # IP Hardware
 ## IP Hardware
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

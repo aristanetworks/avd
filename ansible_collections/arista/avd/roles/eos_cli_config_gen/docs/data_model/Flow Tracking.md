@@ -6,8 +6,9 @@ search:
 # Flow Tracking
 ## Flow Trackings
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

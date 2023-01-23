@@ -6,9 +6,9 @@ search:
 # LACP
 ## LACP
 
-=== "Table"
+Set Link Aggregation Control Protocol (LACP) parameters.
 
-    Set Link Aggregation Control Protocol (LACP) parameters.
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

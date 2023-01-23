@@ -6,18 +6,18 @@ search:
 # ACLs
 ## IP Extended Access-Lists (legacy model)
 
+AVD currently supports 2 different data models for extended ACLs:
+
+- The legacy `access_lists` data model, for compatibility with existing deployments
+- The improved `ip_access_lists` data model, for access to more EOS features
+
+Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+Access list names must be unique.
+
+The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
+
+
 === "Table"
-
-    AVD currently supports 2 different data models for extended ACLs:
-
-    - The legacy `access_lists` data model, for compatibility with existing deployments
-    - The improved `ip_access_lists` data model, for access to more EOS features
-
-    Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-    Access list names must be unique.
-
-    The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
-
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -40,18 +40,18 @@ search:
     ```
 ## IP Extended Access-Lists (improved model)
 
+AVD currently supports 2 different data models for extended ACLs:
+
+- The legacy `access_lists` data model, for compatibility with existing deployments
+- The improved `ip_access_lists` data model, for access to more EOS features
+
+Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+Access list names must be unique.
+
+The improved data model has a more sophisticated design documented below:
+
+
 === "Table"
-
-    AVD currently supports 2 different data models for extended ACLs:
-
-    - The legacy `access_lists` data model, for compatibility with existing deployments
-    - The improved `ip_access_lists` data model, for access to more EOS features
-
-    Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-    Access list names must be unique.
-
-    The improved data model has a more sophisticated design documented below:
-
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -122,12 +122,12 @@ search:
     ```
 ## IP Access Lists Max Entries
 
-=== "Table"
+The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
+Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
+If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
+The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
 
-    The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
-    Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
-    If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
-    The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -140,8 +140,9 @@ search:
     ```
 ## IPv6 Extended Access-Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -164,8 +165,9 @@ search:
     ```
 ## IPv6 Standard Access Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -188,8 +190,9 @@ search:
     ```
 ## MAC Access Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
@@ -212,8 +215,9 @@ search:
     ```
 ## Standard Access Lists
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

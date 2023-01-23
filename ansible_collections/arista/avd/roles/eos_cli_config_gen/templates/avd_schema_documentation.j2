@@ -7,18 +7,9 @@ search:
 {% for table in documentation_file.tables %}
 ## {{ table.display_name }}
 
-=== "Table"
+{{ table.description }}
 
-{%     if table.description is arista.avd.defined %}
-{%         set lines = table.description.split("\n") %}
-{%         for line in lines %}
-{%             if line == "" %}
-{{ line }}
-{%             else %}
-{{ "    " + line }}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

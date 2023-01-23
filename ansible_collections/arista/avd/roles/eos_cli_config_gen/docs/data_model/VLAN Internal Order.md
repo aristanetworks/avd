@@ -6,8 +6,9 @@ search:
 # VLAN Internal Order
 ## VLAN Internal Order
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |

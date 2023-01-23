@@ -6,8 +6,9 @@ search:
 # Terminal Settings
 ## Terminal Settings
 
-=== "Table"
 
+
+=== "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
