@@ -39,16 +39,12 @@ search:
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | <samp>hardware_counters</samp> | Dictionary |  |  |  |  |
     | <samp>&nbsp;&nbsp;features</samp> | List, items: Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp> | String | Required, Unique |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp> | String | Required |  | Valid Values:<br>- in<br>- out |  |
 
 === "YAML"
 
     ```yaml
     hardware_counters:
       features:
-        - name: <str>
-          direction: <str>
     ```
 ## Platform
 
