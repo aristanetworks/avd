@@ -58,6 +58,7 @@ interface Management1
 | Feature | Flow Direction |
 | ------- | -------------- |
 | ip | in |
+| ip | out |
 | gre | out |
 
 ### Hardware Counters Configuration
@@ -65,6 +66,7 @@ interface Management1
 ```eos
 !
 hardware counter feature ip in
+hardware counter feature ip out
 hardware counter feature gre out
 ```
 
