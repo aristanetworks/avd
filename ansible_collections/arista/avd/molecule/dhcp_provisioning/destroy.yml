@@ -4,7 +4,7 @@
   gather_facts: false
   connection: local
   tasks:
-    - name: Delete local folDers
+    - name: Delete local folders
       delegate_to: 127.0.0.1
       run_once: true
       ansible.builtin.file:
