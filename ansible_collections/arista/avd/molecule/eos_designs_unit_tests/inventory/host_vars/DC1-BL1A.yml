@@ -18,6 +18,8 @@ cvp_ingestauth_key: ""
 # Testing overlay loopback description override
 overlay_loopback_description: "MY_OVERLAY_LOOPBACK"
 
+vtep_vvtep_ip: 192.168.255.255/32
+
 # Testing event_handlers
 event_handlers:
   evpn-blacklist-recovery:
