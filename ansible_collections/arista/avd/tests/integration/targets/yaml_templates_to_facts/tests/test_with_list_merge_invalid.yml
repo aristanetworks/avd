@@ -12,7 +12,10 @@
           strip_empty_keys: false
           list_merge: "append12"
 
-- assert:
+- vars:
+    error_msg: >-
+      Unexpected failure during module execution: merge: 'list_merge' argument can only be equal to one of ['replace', 'keep', 'append', 'prepend', 'append_rp', 'prepend_rp']
+  assert:
     that:
       - result.failed == True
-      - result.msg == {{ lookup('file', './error_invalid_merge_option.txt') }}
+      - result.msg == error_msg
