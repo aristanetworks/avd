@@ -90,14 +90,14 @@ The drawing below shows the physical topology used in this example. The interfac
 | dc1-leaf2b                                          | 172.16.1.104                |
 | dc1-leaf1c                                          | 172.16.1.151                |
 | dc1-leaf2c                                          | 172.16.1.152                |
-| dc2-spine1                                          | 172.16.1.21                 |
-| dc2-spine2                                          | 172.16.1.22                 |
-| dc2-leaf1a                                          | 172.16.1.111                |
-| dc2-leaf1b                                          | 172.16.1.112                |
-| dc2-leaf2a                                          | 172.16.1.113                |
-| dc2-leaf2b                                          | 172.16.1.114                |
-| dc2-leaf1c                                          | 172.16.1.161                |
-| dc2-leaf2c                                          | 172.16.1.162                |
+| dc2-spine1                                          | 172.16.2.21                 |
+| dc2-spine2                                          | 172.16.2.22                 |
+| dc2-leaf1a                                          | 172.16.2.111                |
+| dc2-leaf1b                                          | 172.16.2.112                |
+| dc2-leaf2a                                          | 172.16.2.113                |
+| dc2-leaf2b                                          | 172.16.2.114                |
+| dc2-leaf1c                                          | 172.16.2.161                |
+| dc2-leaf2c                                          | 172.16.2.162                |
 | **Point-to-point links between leaf and spine**     | **(Underlay)**              |
 | DC1                                                 | 10.255.255.0/26             |
 | DC2                                                 | 10.255.255.64/26            |
@@ -127,11 +127,11 @@ From the overlay perspective, each new leaf sees its peer in the twin DC as a ne
 
 === "Underlay"
 
-    ![Figure: Arista Underlay BGP Design](images/bgp-underlay.svg)
+  ![Figure: Arista Underlay BGP Design](images/bgp-underlay.svg)
 
 === "Overlay"
 
-    ![Figure: Arista Underlay BGP Design](images/bgp-overlay.svg)
+  ![Figure: Arista Overlay BGP Design](images/bgp-overlay.svg)
 
 ### Basic EOS config
 
@@ -201,25 +201,25 @@ all:
             DC2_SPINES:
               hosts:
                 dc2-spine1:
-                  ansible_host: 172.16.1.21
+                  ansible_host: 172.16.2.21
                 dc2-spine2:
-                  ansible_host: 172.16.1.22
+                  ansible_host: 172.16.2.22
             DC2_L3_LEAVES:
               hosts:
                 dc2-leaf1a:
-                  ansible_host: 172.16.1.201
+                  ansible_host: 172.16.2.201
                 dc2-leaf1b:
-                  ansible_host: 172.16.1.202
+                  ansible_host: 172.16.2.202
                 dc2-leaf2a:
-                  ansible_host: 172.16.1.203
+                  ansible_host: 172.16.2.203
                 dc2-leaf2b:
-                  ansible_host: 172.16.1.204
+                  ansible_host: 172.16.2.204
             DC2_L2_LEAVES:
               hosts:
                 dc2-leaf1c:
-                  ansible_host: 172.16.1.251
+                  ansible_host: 172.16.2.251
                 dc2-leaf2c:
-                  ansible_host: 172.16.1.252
+                  ansible_host: 172.16.2.252
 
         NETWORK_SERVICES:
           children:
@@ -291,7 +291,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
 The `ansible-avd-examples/dual-dc-l3ls/group_vars/FABRIC.yml` file defines generic settings that apply to all children of the `FABRIC` group as specified in the inventory described earlier.
 
-In this section, only additions to previous example will be discussed:
+In this section, only additions to the previous example will be discussed:
 
 ```yaml title="FABRIC.yml"
 l3_edge:
@@ -327,7 +327,7 @@ However, this time the settings defined are no longer fabric-wide but are limite
 
 ```yaml title="DC2.yml"
 ---
-mgmt_gateway: 172.16.1.1 # (1)!
+mgmt_gateway: 172.16.2.1 # (1)!
 
 spine:
   defaults:
@@ -343,11 +343,11 @@ spine:
   nodes: # (6)!
     dc2-spine1:
       id: 11 # (7)!
-      mgmt_ip: 172.16.1.21/24 # (8)!
+      mgmt_ip: 172.16.2.21/24 # (8)!
 
     dc2-spine2:
       id: 12
-      mgmt_ip: 172.16.1.22/24
+      mgmt_ip: 172.16.2.22/24
 ```
 
 1. The default gateway for the management interface of all devices in DC2 is defined.
@@ -389,13 +389,13 @@ l3leaf:
       nodes:
         dc2-leaf1a:
           id: 11
-          mgmt_ip: 172.16.1.201/24
+          mgmt_ip: 172.16.2.201/24
           uplink_switch_interfaces: # (16)!
             - Ethernet1
             - Ethernet1
         dc2-leaf1b:
           id: 12
-          mgmt_ip: 172.16.1.202/24
+          mgmt_ip: 172.16.2.202/24
           uplink_switch_interfaces:
             - Ethernet2
             - Ethernet2
@@ -411,7 +411,7 @@ l3leaf:
       nodes:
         dc2-leaf2a:
           id: 13
-          mgmt_ip: 172.16.1.203/24
+          mgmt_ip: 172.16.2.203/24
           uplink_switch_interfaces:
             - Ethernet3
             - Ethernet3
@@ -420,7 +420,7 @@ l3leaf:
               - hostname: dc1-leaf2a
         dc2-leaf2b:
           id: 14
-          mgmt_ip: 172.16.1.204/24
+          mgmt_ip: 172.16.2.204/24
           uplink_switch_interfaces:
             - Ethernet4
             - Ethernet4
@@ -434,7 +434,7 @@ l3leaf:
 3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like spine and l3leaf in this example) to avoid overlapping IPs. For example, the offset is "2" in this case because each spine switch uses one loopback address.
 4. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
 5. `uplink_interfaces` defines the interfaces used locally on the leaf switches.
-6. `uplink_switches` defines the uplink switches, which are dc1-spine1 and dc1-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
+6. `uplink_switches` defines the uplink switches, which are dc2-spine1 and dc2-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
 7. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
 8. `mlag_interfaces` defines the MLAG interfaces used on each leaf switch, in this case, Ethernet3 and Ethernet4. These two interfaces will form PortChannel3 used for the MLAG peer link. Note that PortChannel3 is selected since the first interface is Ethernet3.
 9. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
