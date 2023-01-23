@@ -1,0 +1,12 @@
+hardware_counters:
+  features:
+    - vlan-interface: in
+    - vlan-interface: out
+    - flow-spec: in
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    hardware_counters:
+      id: 42
