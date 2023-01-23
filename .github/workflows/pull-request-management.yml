@@ -307,7 +307,7 @@ jobs:
   # ----------------------------------- #
   ansible_test_sanity:
     name: Run ansible-test sanity validation
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     #needs: [ molecule_eos_designs, molecule_cloudvision ]
     #if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
@@ -331,7 +331,7 @@ jobs:
 
   ansible_test_units:
     name: Run ansible-test units test cases
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     steps:
       - name: 'Set environment variables'
@@ -353,7 +353,7 @@ jobs:
 
   ansible_test_integration:
     name: Run ansible-test integration test cases
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     steps:
       - name: 'Set environment variables'
@@ -375,7 +375,7 @@ jobs:
 
   ansible_lint:
     name: Run ansible-lint test case
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     steps:
       - name: 'Set environment variables'
