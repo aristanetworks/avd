@@ -1,0 +1,13 @@
+release_summary: |
+  Release 3.8.1 - See documentation on avd.sh for details.
+bugfixes:
+- Fix(eos_cli_config_gen) - Update Schema for OSPF maximum paths from 32 to 128 (#2424) (https://github.com/aristanetworks/ansible-avd/pull/2435)
+- Fix(eos_cli_config_gen) - Workaround for router-general EOS CLI issue (#2408) (https://github.com/aristanetworks/ansible-avd/pull/2436)
+- Fix(eos_designs) - Detect duplicate VLAN, VRF, VNI within network_services (#2411) (https://github.com/aristanetworks/ansible-avd/pull/2449)
+- Fix(eos_designs) - Renders lacp fallback when port-channel mode is passive (https://github.com/aristanetworks/ansible-avd/pull/2452)
+- Fix(eos_designs) - vtep_vvtep_ip doesn't generate any config (#2442) (https://github.com/aristanetworks/ansible-avd/pull/2455)
+- Fix(eos_designs) - Fix issue with hardware_counters python code (#2447) (https://github.com/aristanetworks/ansible-avd/pull/2454)
+- Fix(eos_snapshot) - eos snapshot produces incorrect json and yaml output (#2426 2439) (https://github.com/aristanetworks/ansible-avd/pull/2434)
+- Fix(eos_snapshot) - Conditional in tasks are not honored and support for limit (#2457) (https://github.com/aristanetworks/ansible-avd/pull/2460)
+- Fix(eos_designs) - Remove speed from port-channel interfaces (#2463) (https://github.com/aristanetworks/ansible-avd/pull/2465)
+- Bump - Support additional ansible-core versions 2.13 and 2.14 (https://github.com/aristanetworks/ansible-avd/pull/2433)
