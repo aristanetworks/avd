@@ -1438,6 +1438,54 @@ hardware_counters:
   features:
 ```
 
+## Influxdb
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| [<samp>influxdb</samp>](## "influxdb") | Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;vrf</samp>](## "influxdb.vrf") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;destinations</samp>](## "influxdb.destinations") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "influxdb.destinations.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;database</samp>](## "influxdb.destinations.[].database") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "influxdb.destinations.[].url") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "influxdb.destinations.[].policy") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "influxdb.destinations.[].username") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "influxdb.destinations.[].password") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_enc</samp>](## "influxdb.destinations.[].password_enc") | String |  |  |  |  |
+| [<samp>&nbsp;&nbsp;source_standard_enabled</samp>](## "influxdb.source_standard_enabled") | Boolean |  |  |  |  |
+| [<samp>&nbsp;&nbsp;source_sockets</samp>](## "influxdb.source_sockets") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "influxdb.source_sockets.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "influxdb.source_sockets.[].url") | String | Required |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_limit</samp>](## "influxdb.source_sockets.[].connection_limit") | Integer |  |  |  |  |
+| [<samp>&nbsp;&nbsp;tags</samp>](## "influxdb.tags") | List, items: Dictionary |  |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "influxdb.tags.[].name") | String | Required, Unique |  |  |  |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "influxdb.tags.[].value") | String |  |  |  |  |
+
+### YAML
+
+```yaml
+influxdb:
+  vrf: <str>
+  destinations:
+    - name: <str>
+      database: <str>
+      url: <str>
+      policy: <str>
+      username: <str>
+      password: <str>
+      password_enc: <str>
+  source_standard_enabled: <bool>
+  source_sockets:
+    - name: <str>
+      url: <str>
+      connection_limit: <int>
+  tags:
+    - name: <str>
+      value: <str>
+```
+
 ## Interface Defaults
 
 ### Variables

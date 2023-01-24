@@ -2897,6 +2897,109 @@
       "additionalProperties": false,
       "title": "Hardware Counters"
     },
+    "influxdb": {
+      "type": "object",
+      "properties": {
+        "vrf": {
+          "type": "string",
+          "title": "VRF"
+        },
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "database": {
+                "type": "string",
+                "title": "Database"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              },
+              "policy": {
+                "type": "string",
+                "title": "Policy"
+              },
+              "username": {
+                "type": "string",
+                "title": "Username"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
+              },
+              "password_enc": {
+                "type": "string",
+                "title": "Password Enc"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Destinations"
+        },
+        "source_standard_enabled": {
+          "type": "boolean",
+          "title": "Source Standard Enabled"
+        },
+        "source_sockets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "url": {
+                "type": "string",
+                "title": "URL"
+              },
+              "connection_limit": {
+                "type": "integer",
+                "title": "Connection Limit"
+              }
+            },
+            "required": [
+              "name",
+              "url"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Source Sockets"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "value": {
+                "type": "string",
+                "title": "Value"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Tags"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Influxdb"
+    },
     "interface_defaults": {
       "type": "object",
       "properties": {

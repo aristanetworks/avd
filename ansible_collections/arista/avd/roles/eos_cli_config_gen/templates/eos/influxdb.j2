@@ -1,0 +1,37 @@
+{# eos - influxdb #}
+{% if influxdb is arista.avd.defined %}
+!
+monitor telemetry influx
+{%     for destination in influxdb.destinations %}
+   destination influxdb {{ destination.name }}
+      url {{ destination.url }}
+      database name {{ destination.database }}
+{%         if destination.username is arista.avd.defined %}
+{%             set password_enc = destination.password_enc | default("0") %}
+      username {{ destination.username }} password {{ password_enc }} {{ destination.password }}
+{%         endif %}
+{%         if destination.policy is arista.avd.defined %}
+      retention policy {{ destination.policy }}
+{%         endif %}
+{%         if influxdb.vrf is arista.avd.defined %}
+      vrf {{ influxdb.vrf }}
+{%         endif %}
+{%     endfor %}
+{%     if influxdb.tags is arista.avd.defined %}
+{%         for tag in influxdb.tags %}
+   tag global {{ tag.name }} {{ tag.value }}
+{%         endfor %}
+{%     endif %}
+{%     set standard_group = influxdb.source_standard_enabled | default(True) %}
+{%     if not standard_group %}
+   source group standard disabled
+{%     endif %}
+{%     if influxdb.source_sockets is arista.avd.defined %}
+{%         for source in influxdb.source_sockets %}
+   source socket {{ source.name }}
+        url {{ source.url }}
+        connection limit {{ source.connection_limit }}
+{%         endfor %}
+{%     endif %}
+!
+{% endif %}

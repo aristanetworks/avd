@@ -2091,6 +2091,57 @@ keys:
         type: list
         items:
           type: dict
+  influxdb:
+    type: dict
+    keys:
+      vrf:
+        type: str
+      destinations:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            database:
+              type: str
+            url:
+              type: str
+            policy:
+              type: str
+            username:
+              type: str
+            password:
+              type: str
+            password_enc:
+              type: str
+      source_standard_enabled:
+        type: bool
+      source_sockets:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            url:
+              type: str
+              required: true
+            connection_limit:
+              type: int
+      tags:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            value:
+              type: str
   interface_defaults:
     type: dict
     keys:

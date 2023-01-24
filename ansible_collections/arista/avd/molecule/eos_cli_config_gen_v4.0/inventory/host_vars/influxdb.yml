@@ -1,0 +1,29 @@
+influxdb:
+  vrf: default # Note that at the moment only 1 vrf can be used for all destinations
+  source_standard_enabled: False
+  source_sockets:
+    - name: test1
+      connection_limit: 10
+      url: unix:///var/run/new.sock
+    - name: test2
+      connection_limit: 20
+      url: unix:///var/run/new.sock2
+  destinations:
+    - name: mydestination
+      url: https://myurl.com:443
+      database: mydatabase
+      policy: mypolicy
+      username: labuser
+      password: "{{ vault_influxdb_password }}"
+    - name: destination2
+      url: https://url2.com:443
+      database: database2
+      policy: policy2
+      username: labuser
+      password: "{{ vault_influxdb_password }}"
+      password_enc: 8a
+  tags:
+    - name: mytag
+      value: myvalue
+    - name: second-tag
+      value: second-value
