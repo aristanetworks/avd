@@ -6,7 +6,7 @@ This example is meant to be used as the logical evolution in AVD to new users. T
 
 The main goal of this example is to provide a base scenario to enable the new users to grow in the number of DCs (Data Centers) and configure the interconnection between different DCs.
 
-The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs. This design will use the EVPN DC GW feature to avoid unnecessary BGP overlay convergence. This feature rewrites EVPN routes on a set of devices (called EVPN Gateways) and shows the Gateways the as next hop for advertisements outside of the EVPN domain using a DCI (DC Interconnect).
+The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering two twin DCs. This design will use the EVPN DC GW feature to avoid unnecessary BGP overlay convergence. This feature rewrites EVPN routes on a set of devices (called EVPN Gateways) and shows the Gateways as the next hop for advertisements outside the EVPN domain using a DCI (DC Interconnect).
 
 ### DC1
 
@@ -127,11 +127,11 @@ From the overlay perspective, each new leaf sees its peer in the twin DC as a ne
 
 === "Underlay"
 
-  ![Figure: Arista Underlay BGP Design](images/bgp-underlay.svg)
+    ![Figure: Arista Underlay BGP Design](images/bgp-underlay.svg)
 
 === "Overlay"
 
-  ![Figure: Arista Overlay BGP Design](images/bgp-overlay.svg)
+    ![Figure: Arista Overlay BGP Design](images/bgp-overlay.svg)
 
 ### Basic EOS config
 
