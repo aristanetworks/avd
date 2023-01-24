@@ -1,12 +1,14 @@
 ---
-# Please note, comments below are intended for site documentation only
-- name: Run AVD # (1)!
+- name: Run AVD
   hosts: FABRIC
   gather_facts: false
   tasks:
-    - name: Generate AVD Structured Configurations and Fabric Documentation # (2)!
+    - name: Generate AVD Structured Configurations and Fabric Documentation
       import_role:
         name: arista.avd.eos_designs
-    - name: Generate Device Configurations and Documentation # (3)!
+    - name: Generate Device Configurations and Documentation
       import_role:
         name: arista.avd.eos_cli_config_gen
+    - name: Deploy Donfiguration to Devices
+      import_role:
+        name: arista.avd.eos_config_deploy_eapi

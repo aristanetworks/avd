@@ -166,74 +166,13 @@ This section describes the entire `ansible-avd-examples/dual-dc-l3ls/inventory.y
 
 In this example, we will consider that no DNS is available and define the IPs that the Ansible host has to reach per device.
 
-```yaml title="inventory.yml"
----
-all:
-  children:
-    FABRIC:
-      children:
-        DC1:
-          children:
-            DC1_SPINES:
-              hosts:
-                dc1-spine1:
-                  ansible_host: 172.16.1.11
-                dc1-spine2:
-                  ansible_host: 172.16.1.12
-            DC1_L3_LEAVES:
-              hosts:
-                dc1-leaf1a:
-                  ansible_host: 172.16.1.101
-                dc1-leaf1b:
-                  ansible_host: 172.16.1.102
-                dc1-leaf2a:
-                  ansible_host: 172.16.1.103
-                dc1-leaf2b:
-                  ansible_host: 172.16.1.104
-            DC1_L2_LEAVES:
-              hosts:
-                dc1-leaf1c:
-                  ansible_host: 172.16.1.151
-                dc1-leaf2c:
-                  ansible_host: 172.16.1.152
-        DC2:
-          children:
-            DC2_SPINES:
-              hosts:
-                dc2-spine1:
-                  ansible_host: 172.16.2.21
-                dc2-spine2:
-                  ansible_host: 172.16.2.22
-            DC2_L3_LEAVES:
-              hosts:
-                dc2-leaf1a:
-                  ansible_host: 172.16.2.201
-                dc2-leaf1b:
-                  ansible_host: 172.16.2.202
-                dc2-leaf2a:
-                  ansible_host: 172.16.2.203
-                dc2-leaf2b:
-                  ansible_host: 172.16.2.204
-            DC2_L2_LEAVES:
-              hosts:
-                dc2-leaf1c:
-                  ansible_host: 172.16.2.251
-                dc2-leaf2c:
-                  ansible_host: 172.16.2.252
+=== "inventory.yml"
 
-        NETWORK_SERVICES:
-          children:
-            DC1_L3_LEAVES:
-            DC1_L2_LEAVES:
-            DC2_L3_LEAVES:
-            DC2_L2_LEAVES:
-        CONNECTED_ENDPOINTS:
-          children:
-            DC1_L3_LEAVES:
-            DC1_L2_LEAVES:
-            DC2_L3_LEAVES:
-            DC2_L2_LEAVES:
-```
+    ```yaml
+    --8<--
+    examples/dual-dc-l3ls/inventory.yml
+    --8<--
+    ```
 
 ## Defining device types
 
@@ -243,7 +182,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    examples/single-dc-l3ls/group_vars/DC1_SPINES.yml
+    examples/dual-dc-l3ls/group_vars/DC1_SPINES.yml
     --8<--
     ```
 
@@ -251,7 +190,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    examples/single-dc-l3ls/group_vars/DC1_L3_LEAVES.yml
+    examples/dual-dc-l3ls/group_vars/DC1_L3_LEAVES.yml
     --8<--
     ```
 
@@ -259,7 +198,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    examples/single-dc-l3ls/group_vars/DC1_L2_LEAVES.yml
+    examples/dual-dc-l3ls/group_vars/DC1_L2_LEAVES.yml
     --8<--
     ```
 
@@ -545,21 +484,13 @@ The playbook is also the same, as the actions to execute in the fabric are the s
 
 Example of using this playbook without devices (local tasks):
 
-```yaml title="playbook.yml"
-- name: Run AVD
-  hosts: FABRIC
-  gather_facts: false
-  tasks:
-    - name: generate intended variables
-      import_role:
-        name: arista.avd.eos_designs
-    - name: generate device intended config and documentation
-      import_role:
-        name: arista.avd.eos_cli_config_gen
-    # - name: deploy configuration to device
-    #   import_role:
-    #      name: arista.avd.eos_config_deploy_eapi
-```
+=== "playbook.yml"
+
+    ```yaml
+    --8<--
+    examples/dual-dc-l3ls/playbook.yml
+    --8<--
+    ```
 
 By simply commenting out (or deleting) the last task definition, the playbook will generate all of the output (variables, configurations, documentation), but will not attempt to communicate with any devices.
 
