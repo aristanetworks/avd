@@ -146,7 +146,7 @@ l3_edge:
       ipv4_pool: 172.16.0.0/24
     - name: pool_29_mask
       ipv4_pool: 172.16.1.0/24
-      ipv4_pool_mask: 29
+      prefix_size: 29
   p2p_links:
       # P2P link with mpls_ip and mpls_ldp set to false.
     - nodes: [core-1-isis-sr-ldp, peer2]
