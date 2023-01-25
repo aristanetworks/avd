@@ -36,7 +36,6 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "description": self._avd_interface_descriptions.underlay_port_channel_interfaces(
                     link["peer"], link["peer_channel_group_id"], link.get("channel_description")
                 ),
-                "speed": link.get("speed"),
                 "type": "switched",
                 "shutdown": False,
                 "mode": "trunk",
