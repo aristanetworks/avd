@@ -123,7 +123,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 New BGP connections are established from `dc1-leaf2a` and `dc1-leaf2b` to `dc2-leaf2a` and `dc2-leaf2b` respectively. In addition, all BGP learned routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
 
-From the overlay perspective, each new leaf sees its peer in the twin DC as a new Route Server and will advertise all EVPN learned routes as they were directly connected locally, making all changes inside its DC transparent to the twin DC.
+From the overlay perspective, each new leaf sees its peer in the twin DC as a new Route Server and will advertise all EVPN learned routes as they were directly connected to itself, making all changes inside its DC transparent to the twin DC.
 
 === "Underlay"
 
@@ -389,8 +389,8 @@ l3leaf:
 
 Since we are adding the EVPN DC GW functionality in DC2, we need to also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
 
-!!! note
-    This is a snipped part of `DC1.yml` reflecting the changes needed compared to single DC L3LS example. The goal is to configure EVPN DC GW functionality.
+!!! important
+    The following is a snipped part of `DC1.yml` reflecting the changes needed compared to single DC L3LS example. The goal is to configure EVPN DC GW functionality.
 
 ```yaml title="DC1.yml"
     DC1_L3_LEAF2:
@@ -479,7 +479,7 @@ The configuration of the endpoints in DC2 is identical to the ones in DC1. The o
 
 ## The playbook
 
-The playbook is also the same, as the actions to execute in the fabric are the same. It is important to validate the `hosts` variable in the playbook to include all Ansible groups. Otherwise may be seen.
+The playbook is also the same, as the actions to execute in the fabric are the same. It is important to validate the `hosts` variable in the playbook to include all Ansible groups.
 
 ### Testing AVD output without a lab
 
