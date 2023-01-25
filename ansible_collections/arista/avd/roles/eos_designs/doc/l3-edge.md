@@ -11,6 +11,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
 l3_edge:
   p2p_links_ip_pools:
     < p2p_pool_name_1 >: < IPv4_address/Mask >
+      ipv4_pool_mask: < subnet mask size | default -> 31 >
   p2p_links_profiles:
     < p2p_profile_name >:
       < any variable supported under p2p_links can be inherited from a profile >
