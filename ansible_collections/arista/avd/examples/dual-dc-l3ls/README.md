@@ -121,7 +121,7 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### BGP design
 
-New BGP connections are established from dc1-leaf2a and dc1-leaf2b to dc2-leaf2a and dc2-leaf2b respectively. In addition, all BGP learned routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
+New BGP connections are established from `dc1-leaf2a` and `dc1-leaf2b` to `dc2-leaf2a` and `dc2-leaf2b` respectively. In addition, all BGP learned routes are redistributed into the underlay. This allows for an easier troubleshooting, as all router IDs (Loopback0 IP addresses) and VTEPs (Loopback1 IP addresses) are reachable at a fabric level.
 
 From the overlay perspective, each new leaf sees its peer in the twin DC as a new Route Server and will advertise all EVPN learned routes as they were directly connected locally, making all changes inside its DC transparent to the twin DC.
 
@@ -151,7 +151,7 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 ![Figure: Ansible inventory and vars](images/ansible-groups.svg)
 
 !!! note
-    The two servers on DC1 (`dc1-leaf1-server1` and `dc1-leaf2-server1`) and the two servers on DC2 (`dc2-leaf1-server1` and `dc2-leaf2-server1`) at the bottom are **not** configured by AVD, but the switch ports used to connect to the servers are.
+    The two servers on DC1 (`dc1-leaf1-server1` and `dc1-leaf2-server1`) and the two servers on DC2 (`dc2-leaf1-server1` and `dc2-leaf2-server1`) at the bottom are **not** configured by AVD, but the switch ports used to connect to the servers are. For this reason, the diagram shows them outside of the `FABRIC` definition.
 
 The same pattern used in the single DC example is followed:
 
@@ -230,7 +230,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
 The `ansible-avd-examples/dual-dc-l3ls/group_vars/FABRIC.yml` file defines generic settings that apply to all children of the `FABRIC` group as specified in the inventory described earlier.
 
-In this section, only additions to the previous example will be discussed:
+In this section, only additions to the previous example will be discussed. The only added change that must be inherited by both DCs is the L3 links between the L3 leaves, and it is represented at a fabric level using the following structure:
 
 ```yaml title="FABRIC.yml"
 l3_edge:
@@ -260,9 +260,9 @@ l3_edge:
 
 Both `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` and `ansible-avd-examples/dual-dc-l3ls/group_vars/DC2.yml` files define settings that apply to all children of `DC1` and `DC2` groups as specified in the inventory described earlier.
 
-In this section, we will discuss `DC2` as `DC1` is the same as shown in the previous example. The only change, the one used to include the EVPN DC GW will be discussed later.
+In this section, we will discuss `DC2` device definitions. From `DC1` only the changes will be discussed, as definitions are the same as in the single DC L3LS example. The only change, the one used to include the EVPN DC GW, will be discussed later.
 
-However, this time the settings defined are no longer fabric-wide but are limited to DC2. In this example, DC2 follows the same configuration as DC1, but we will be able to modify the behavior of DC2 without impacting DC1.
+By changing only `DC2.yml` file, the defined settings are limited to DC2. In this example, DC2 follows the same configuration as DC1, but it could be totally different, keeping the DC1 definition intact while DC2 can be adjusted to meet different requirements.
 
 ```yaml title="DC2.yml"
 ---
@@ -389,6 +389,9 @@ l3leaf:
 
 Since we are adding the EVPN DC GW functionality in DC2, we need to also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
 
+!!! note
+    This is a snipped part of `DC1.yml` reflecting the changes needed compared to single DC L3LS example. The goal is to configure EVPN DC GW functionality.
+
 ```yaml title="DC1.yml"
     DC1_L3_LEAF2:
       bgp_as: 65102
@@ -419,7 +422,7 @@ Since we are adding the EVPN DC GW functionality in DC2, we need to also add it 
               - hostname: dc2-leaf2b
 ```
 
-Finally, more of the same, but this time for the L2 leaf switches:
+Finally, the definition in DC2 for the L2 leaf switches:
 
 ```yaml title="DC2.yml"
 l2leaf:
@@ -429,28 +432,26 @@ l2leaf:
     spanning_tree_mode: mstp
 
   node_groups:
-    DC1_L2_LEAF1:
+    DC2_L2_LEAF1:
       uplink_switches: ['dc2-leaf1a', 'dc2-leaf1b']
       nodes:
-        dc1-leaf1c:
+        dc2-leaf1c:
           id: 11
-          mgmt_ip: 172.16.1.251/24
+          mgmt_ip: 172.16.2.251/24
           uplink_switch_interfaces:
             - Ethernet8
             - Ethernet8
 
-    DC1_L2_LEAF2:
+    DC2_L2_LEAF2:
       uplink_switches: ['dc2-leaf2a', 'dc2-leaf2b']
       nodes:
-        dc1-leaf2c:
+        dc2-leaf2c:
           id: 12
-          mgmt_ip: 172.16.1.252/24
+          mgmt_ip: 172.16.2.252/24
           uplink_switch_interfaces:
             - Ethernet8
             - Ethernet8
 ```
-
-As should be clear, an L2 leaf switch is much simpler than an L3 switch. Hence there are fewer settings to define.
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
