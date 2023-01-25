@@ -169,8 +169,8 @@ class UtilsMixin:
             ip_pool = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={}).get("ipv4_pool")
             pool_prefix = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={}).get("ipv4_pool_mask")
             if pool_prefix is None:
-            	pool_prefix = 31
-            
+                pool_prefix = 31
+
             if not ip_pool:
                 # Not possible to resolve from pool. Returning original
                 return p2p_link
