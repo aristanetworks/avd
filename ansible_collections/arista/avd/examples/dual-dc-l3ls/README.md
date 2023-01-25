@@ -73,7 +73,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment is identical to the single DC example. The only change introduced in this topology is the DCI links, which are connected to port Ethernet 6 in dc1-leaf2a/b to dc2-leafa/b:
+The drawing below shows the physical topology used in this example. The interface assignment is identical to the single DC example. The only change introduced in this topology is the DCI links, which are connected to port Ethernet 6 in dc1-leaf2a/b to dc2-leaf2a/b:
 
 ![Figure: Arista Leaf Spine physical topology](images/avd-dual-dc-l3ls-example.svg)
 
