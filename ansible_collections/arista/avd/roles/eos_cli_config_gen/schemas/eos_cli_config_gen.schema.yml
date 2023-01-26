@@ -997,6 +997,13 @@ keys:
           type: str
         shutdown:
           type: bool
+        load_interval:
+          type: int
+          min: 0
+          max: 600
+          convert_types:
+          - str
+          description: Interval in seconds for updating interface counters"
         speed:
           type: str
           description: Speed can be interface_speed or forced interface_speed or auto
