@@ -233,23 +233,9 @@ The `ansible-avd-examples/dual-dc-l3ls/group_vars/FABRIC.yml` file defines gener
 In this section, only additions to the previous example will be discussed. The only added change that must be inherited by both DCs is the L3 links between the L3 leaves, and it is represented at a fabric level using the following structure:
 
 ```yaml title="FABRIC.yml"
-l3_edge:
-  p2p_links_ip_pools:
-    DCI_IP_pool: 172.100.100.0/24 # (1)!
-  p2p_links_profiles:
-    DCI_profile: # (2)!
-      ip_pool: DCI_IP_pool
-      as: [65102,65202]
-      include_in_underlay_protocol: true
-  p2p_links:
-  - id: 1 # (3)!
-    nodes: [dc1-leaf2a,dc2-leaf2a]
-    interfaces: [Ethernet6,Ethernet6]
-    profile: DCI_profile
-  - id: 2
-    nodes: [dc1-leaf2b,dc2-leaf2b]
-    interfaces: [Ethernet6,Ethernet6]
-    profile: DCI_profile
+    --8<--
+    examples/dual-dc-l3ls/group_vars/FABRIC.yml:54:73
+    --8<--
 ```
 
 1. Define a new IP Pool, with the name "DCI_IP_pool" which will use the prefix "172.100.100.0/24" to assign IP addresses.
@@ -393,64 +379,17 @@ Since we are adding the EVPN DC GW functionality in DC2, we need to also add it 
     The following is a snipped part of `DC1.yml` reflecting the changes needed compared to single DC L3LS example. The goal is to configure EVPN DC GW functionality.
 
 ```yaml title="DC1.yml"
-    DC1_L3_LEAF2:
-      bgp_as: 65102
-      evpn_gateway:
-        evpn_l2:
-          enabled: true
-        evpn_l3:
-          enabled: true
-          inter_domain: true
-      nodes:
-        dc1-leaf2a:
-          id: 3
-          mgmt_ip: 172.16.1.103/24
-          uplink_switch_interfaces:
-            - Ethernet3
-            - Ethernet3
-          evpn_gateway:
-            remote_peers:
-              - hostname: dc2-leaf2a
-        dc1-leaf2b:
-          id: 4
-          mgmt_ip: 172.16.1.104/24
-          uplink_switch_interfaces:
-            - Ethernet4
-            - Ethernet4
-          evpn_gateway:
-            remote_peers:
-              - hostname: dc2-leaf2b
+    --8<--
+    examples/dual-dc-l3ls/group_vars/DC1.yml:100:129
+    --8<--
 ```
 
 Finally, the definition in DC2 for the L2 leaf switches:
 
 ```yaml title="DC2.yml"
-l2leaf:
-  defaults:
-    platform: vEOS-lab
-    uplink_interfaces: ['Ethernet1', 'Ethernet2']
-    spanning_tree_mode: mstp
-
-  node_groups:
-    DC2_L2_LEAF1:
-      uplink_switches: ['dc2-leaf1a', 'dc2-leaf1b']
-      nodes:
-        dc2-leaf1c:
-          id: 11
-          mgmt_ip: 172.16.2.251/24
-          uplink_switch_interfaces:
-            - Ethernet8
-            - Ethernet8
-
-    DC2_L2_LEAF2:
-      uplink_switches: ['dc2-leaf2a', 'dc2-leaf2b']
-      nodes:
-        dc2-leaf2c:
-          id: 12
-          mgmt_ip: 172.16.2.252/24
-          uplink_switch_interfaces:
-            - Ethernet8
-            - Ethernet8
+    --8<--
+    examples/dual-dc-l3ls/group_vars/DC2.yml:132:157
+    --8<--
 ```
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
