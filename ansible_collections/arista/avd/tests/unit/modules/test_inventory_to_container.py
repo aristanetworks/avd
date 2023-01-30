@@ -17,8 +17,8 @@ from ansible_collections.arista.avd.plugins.modules.inventory_to_container impor
     is_in_filter,
     isIterable,
     isLeaf,
-    serialize,
 )
+from ansible_collections.arista.avd.plugins.modules.inventory_to_container import serialize_yaml_inventory_data as serialize
 
 IS_ITERABLE_VALID = [
     ("string1", "string2", "string3", "string4"),

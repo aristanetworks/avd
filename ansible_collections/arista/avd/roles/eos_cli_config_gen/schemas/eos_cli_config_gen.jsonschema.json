@@ -1266,6 +1266,13 @@
             "type": "boolean",
             "title": "Shutdown"
           },
+          "load_interval": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600,
+            "description": "Interval in seconds for updating interface counters\"",
+            "title": "Load Interval"
+          },
           "speed": {
             "type": "string",
             "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
