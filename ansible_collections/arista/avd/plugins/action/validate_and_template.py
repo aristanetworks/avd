@@ -23,17 +23,18 @@ class ActionModule(ActionBase):
             self.templatefile = self._task.args["template"]
             if not isinstance(self.templatefile, str):
                 raise AnsibleActionFail("The argument 'template' must be a string")
-            self.dest = self._task.args["dest"]
-            if not isinstance(self.dest, str):
-                raise AnsibleActionFail("The argument 'dest' must be a string")
             schema = self._task.args["schema"]
             if not isinstance(schema, dict):
                 raise AnsibleActionFail("The argument 'schema' must be a dict")
         else:
-            raise AnsibleActionFail("The arguments 'template', 'dest' and 'schema' must be set")
+            raise AnsibleActionFail("The arguments 'template' and 'schema' must be set")
 
         conversion_mode = self._task.args.get("conversion_mode")
         validation_mode = self._task.args.get("validation_mode")
+
+        dest = self._task.args.get("dest")
+        if dest is not None and not isinstance(dest, str):
+            raise AnsibleActionFail("The argument 'dest' must be a string if set")
 
         self.add_md_toc = self._task.args.get("add_md_toc", False)
         if not isinstance(self.add_md_toc, bool):
@@ -55,11 +56,11 @@ class ActionModule(ActionBase):
         # Template to file
         # Update result from Ansible "copy" operation (setting 'changed' flag accordingly)
         if not result.get("failed"):
-            result.update(self.template(task_vars))
+            result.update(self.template(task_vars, dest))
 
         return result
 
-    def template(self, task_vars):
+    def template(self, task_vars, dest):
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
 
@@ -67,19 +68,23 @@ class ActionModule(ActionBase):
         if self.add_md_toc:
             output = add_md_toc(output, skip_lines=self.md_toc_skip_lines)
 
-        write_file_result = self.write_file(output, task_vars)
+        if dest is None:
+            # Return dict with template output in 'output' key for fileless operation
+            return {"output": output}
+
+        write_file_result = self.write_file(output, dest, task_vars)
 
         # Return result with the result from the copy operation
         return write_file_result
 
-    def write_file(self, content, task_vars):
+    def write_file(self, content, dest, task_vars):
         """
         This function implements the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
         Reuse task data
         """
         new_task = self._task.copy()
         new_task.args = {
-            "dest": self.dest,
+            "dest": dest,
             "mode": self._task.args.get("mode"),
             "content": content,
         }
