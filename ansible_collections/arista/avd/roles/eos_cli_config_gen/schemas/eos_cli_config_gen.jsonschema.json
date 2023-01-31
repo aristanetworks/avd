@@ -90,7 +90,6 @@
                 "type": {
                   "type": "string",
                   "enum": [
-                    "none",
                     "start-stop",
                     "stop-only"
                   ],
@@ -107,7 +106,7 @@
             }
           },
           "additionalProperties": false,
-          "title": "System"
+          "title": "dot1x"
         },
         "commands": {
           "type": "object",
