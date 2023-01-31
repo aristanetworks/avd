@@ -1144,26 +1144,30 @@
           "properties": {
             "delay": {
               "type": "integer",
-              "title": "Delay in Seconds"
+              "title": "Delay"
             },
             "hold_period": {
               "type": "integer",
-              "title": "Hold period in Seconds"
+              "title": "Hold Period"
             }
-          }
+          },
+          "additionalProperties": false,
+          "title": "MAC Based Authentication"
         },
         "radius_av_pair": {
           "type": "object",
           "properties": {
             "service_type": {
               "type": "boolean",
-              "title": "Radius av-pair service type"
+              "title": "Service Type"
             },
             "framed_mtu": {
               "type": "integer",
-              "title": "Framed MTU size"
+              "title": "Framed MTU"
             }
-          }
+          },
+          "additionalProperties": false,
+          "title": "Radius Av Pair"
         }
       },
       "additionalProperties": false

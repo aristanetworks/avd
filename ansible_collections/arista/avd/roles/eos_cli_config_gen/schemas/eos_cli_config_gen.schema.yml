@@ -911,8 +911,12 @@ keys:
         keys:
           delay:
             type: int
+            convert_types:
+            - str
           hold_period:
             type: int
+            convert_types:
+            - str
       radius_av_pair:
         type: dict
         keys:
@@ -920,6 +924,8 @@ keys:
             type: bool
           framed_mtu:
             type: int
+            convert_types:
+            - str
   dynamic_prefix_lists:
     type: list
     items:
