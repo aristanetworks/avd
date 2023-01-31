@@ -210,7 +210,11 @@ aaa authorization commands 10,15 default group tacacs+ local
 | Commands - Console | 0 | start-stop |  -  | True |
 | Exec - Default | - | start-stop | TACACS | - |
 | System - Default | - | start-stop | TACACS | - |
+<<<<<<< HEAD
+| Dot1x - Default  | - | start-stop | RADIUS | - |
+=======
 | Dot1x - Default  | - | start-stop | TACACS | - |
+>>>>>>> afb82c060bd4a520ba1e8c75fc4c327fbd36212c
 | Commands - Default | all | start-stop | TACACS | True |
 | Commands - Default | 0 | start-stop | - | True |
 
@@ -222,7 +226,11 @@ aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
 aaa accounting exec default start-stop group TACACS
 aaa accounting system default start-stop group TACACS
+<<<<<<< HEAD
+aaa accounting dot1x default start-stop group RADIUS
+=======
 aaa accounting dot1x default start-stop group TACACS
+>>>>>>> afb82c060bd4a520ba1e8c75fc4c327fbd36212c
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
 ```
