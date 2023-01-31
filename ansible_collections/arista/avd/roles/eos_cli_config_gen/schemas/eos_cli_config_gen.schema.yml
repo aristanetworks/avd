@@ -55,7 +55,6 @@ keys:
               type:
                 type: str
                 valid_values:
-                - none
                 - start-stop
                 - stop-only
               group:

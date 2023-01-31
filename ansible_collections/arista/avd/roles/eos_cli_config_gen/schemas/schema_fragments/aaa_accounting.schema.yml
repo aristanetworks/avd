@@ -47,10 +47,7 @@ keys:
             keys:
               type:
                 type: str
-                valid_values:
-                - none
-                - start-stop
-                - stop-only
+                valid_values: ["start-stop", "stop-only"]
               group:
                 description: Group Name
                 type: str
