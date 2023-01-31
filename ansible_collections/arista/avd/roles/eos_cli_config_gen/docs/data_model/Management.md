@@ -4,9 +4,8 @@ search:
 ---
 
 # Management
+
 ## Clock
-
-
 
 === "Table"
 
@@ -21,10 +20,10 @@ search:
     clock:
       timezone: <str>
     ```
+
 ## DNS Domain
 
 Domain Name
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -36,10 +35,10 @@ Domain Name
     ```yaml
     dns_domain: <str>
     ```
+
 ## Domain List
 
 Search list of DNS domains
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -53,9 +52,8 @@ Search list of DNS domains
     domain_list:
       - <str>
     ```
+
 ## IP Domain Lookup
-
-
 
 === "Table"
 
@@ -74,9 +72,8 @@ Search list of DNS domains
         - name: <str>
           vrf: <str>
     ```
+
 ## IP HTTP Client Source Interfaces
-
-
 
 === "Table"
 
@@ -93,9 +90,8 @@ Search list of DNS domains
       - name: <str>
         vrf: <str>
     ```
+
 ## IP SSH Client Source Interfaces
-
-
 
 === "Table"
 
@@ -112,9 +108,8 @@ Search list of DNS domains
       - name: <str>
         vrf: <str>
     ```
+
 ## Management API Gnmi
-
-
 
 === "Table"
 
@@ -151,9 +146,8 @@ Search list of DNS domains
           access_group: <str>
       octa:
     ```
+
 ## Management API HTTP
-
-
 
 === "Table"
 
@@ -188,9 +182,8 @@ Search list of DNS domains
         certificate: <str>
         private_key: <str>
     ```
+
 ## Management API Models
-
-
 
 === "Table"
 
@@ -213,9 +206,8 @@ Search list of DNS domains
             - path: <str>
               disabled: <bool>
     ```
+
 ## Management Console
-
-
 
 === "Table"
 
@@ -230,9 +222,8 @@ Search list of DNS domains
     management_console:
       idle_timeout: <int>
     ```
+
 ## Management CVX
-
-
 
 === "Table"
 
@@ -253,9 +244,8 @@ Search list of DNS domains
         - <str>
       source_interface: <str>
     ```
+
 ## Management Defaults
-
-
 
 === "Table"
 
@@ -272,9 +262,8 @@ Search list of DNS domains
       secret:
         hash: <str>
     ```
+
 ## Management Interfaces
-
-
 
 === "Table"
 
@@ -313,9 +302,8 @@ Search list of DNS domains
         mac_address: <str>
         eos_cli: <str>
     ```
+
 ## Management Security
-
-
 
 === "Table"
 
@@ -352,9 +340,8 @@ Search list of DNS domains
             file: <str>
             key: <str>
     ```
+
 ## Management SSH
-
-
 
 === "Table"
 
@@ -415,9 +402,8 @@ Search list of DNS domains
           enable: <bool>
       log_level: <str>
     ```
+
 ## Management Tech Support
-
-
 
 === "Table"
 
@@ -442,9 +428,8 @@ Search list of DNS domains
         include_commands:
           - command: <str>
     ```
+
 ## Name Server
-
-
 
 === "Table"
 
@@ -465,9 +450,8 @@ Search list of DNS domains
       nodes:
         - <str>
     ```
+
 ## NTP
-
-
 
 === "Table"
 

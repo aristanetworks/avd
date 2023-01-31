@@ -4,9 +4,8 @@ search:
 ---
 
 # IP Hardware
+
 ## IP Hardware
-
-
 
 === "Table"
 

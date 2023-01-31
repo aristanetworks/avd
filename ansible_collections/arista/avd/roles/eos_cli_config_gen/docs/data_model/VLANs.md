@@ -4,9 +4,8 @@ search:
 ---
 
 # VLANs
+
 ## VLANs
-
-
 
 === "Table"
 

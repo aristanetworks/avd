@@ -4,9 +4,8 @@ search:
 ---
 
 # Authentication
+
 ## AAA Accounting
-
-
 
 === "Table"
 
@@ -65,9 +64,8 @@ search:
             logging: <bool>
         commands_default:
     ```
+
 ## AAA Authentication
-
-
 
 === "Table"
 
@@ -112,9 +110,8 @@ search:
           duration: <int>
           window: <int>
     ```
+
 ## AAA Authorization
-
-
 
 === "Table"
 
@@ -145,9 +142,8 @@ search:
           - level: <str>
             default: <str>
     ```
+
 ## AAA Root
-
-
 
 === "Table"
 
@@ -164,9 +160,8 @@ search:
       secret:
         sha512_password: <str>
     ```
+
 ## AAA Server Groups
-
-
 
 === "Table"
 
@@ -189,10 +184,10 @@ search:
           - server: <str>
             vrf: <str>
     ```
+
 ## CVX
 
 CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -222,9 +217,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
             password_type: <str>
           shutdown: <bool>
     ```
+
 ## Enable Password
-
-
 
 === "Table"
 
@@ -241,9 +235,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
       hash_algorithm: <str>
       key: <str>
     ```
+
 ## IP Radius Source Interfaces
-
-
 
 === "Table"
 
@@ -260,9 +253,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
       - name: <str>
         vrf: <str>
     ```
+
 ## IP Tacacs Source Interfaces
-
-
 
 === "Table"
 
@@ -279,9 +271,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
       - name: <str>
         vrf: <str>
     ```
+
 ## Local Users
-
-
 
 === "Table"
 
@@ -308,9 +299,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
         no_password: <bool>
         ssh_key: <str>
     ```
+
 ## Radius Servers
-
-
 
 === "Table"
 
@@ -329,9 +319,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
         vrf: <str>
         key: <str>
     ```
+
 ## Roles
-
-
 
 === "Table"
 
@@ -356,9 +345,8 @@ CVX server features are not supported on physical switches. See `management_cvx`
             mode: <str>
             command: <str>
     ```
+
 ## Tacacs Servers
-
-
 
 === "Table"
 

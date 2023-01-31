@@ -4,6 +4,7 @@ search:
 ---
 
 # ACLs
+
 ## IP Extended Access-Lists (legacy model)
 
 AVD currently supports 2 different data models for extended ACLs:
@@ -15,7 +16,6 @@ Both data models can coexists without conflicts, as different keys are used: `ac
 Access list names must be unique.
 
 The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
-
 
 === "Table"
 
@@ -38,6 +38,7 @@ The legacy data model supports simplified ACL definition with `sequence` to `act
           - sequence: <int>
             action: <str>
     ```
+
 ## IP Extended Access-Lists (improved model)
 
 AVD currently supports 2 different data models for extended ACLs:
@@ -49,7 +50,6 @@ Both data models can coexists without conflicts, as different keys are used: `ac
 Access list names must be unique.
 
 The improved data model has a more sophisticated design documented below:
-
 
 === "Table"
 
@@ -120,13 +120,13 @@ The improved data model has a more sophisticated design documented below:
             vlan_inner: <bool>
             vlan_mask: <str>
     ```
+
 ## IP Access Lists Max Entries
 
 The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
 Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
 If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
 The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -138,9 +138,8 @@ The numbers must be based on the hardware tests and AVD does not provide any gui
     ```yaml
     ip_access_lists_max_entries: <int>
     ```
+
 ## IPv6 Extended Access-Lists
-
-
 
 === "Table"
 
@@ -163,9 +162,8 @@ The numbers must be based on the hardware tests and AVD does not provide any gui
           - sequence: <int>
             action: <str>
     ```
+
 ## IPv6 Standard Access Lists
-
-
 
 === "Table"
 
@@ -188,9 +186,8 @@ The numbers must be based on the hardware tests and AVD does not provide any gui
           - sequence: <int>
             action: <str>
     ```
+
 ## MAC Access Lists
-
-
 
 === "Table"
 
@@ -213,9 +210,8 @@ The numbers must be based on the hardware tests and AVD does not provide any gui
           - sequence: <int>
             action: <str>
     ```
+
 ## Standard Access Lists
-
-
 
 === "Table"
 

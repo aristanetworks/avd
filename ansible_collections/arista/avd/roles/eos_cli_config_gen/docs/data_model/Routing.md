@@ -4,9 +4,8 @@ search:
 ---
 
 # Routing
+
 ## ARP
-
-
 
 === "Table"
 
@@ -23,9 +22,8 @@ search:
       aging:
         timeout_default: <int>
     ```
+
 ## IP Routing
-
-
 
 === "Table"
 
@@ -38,9 +36,8 @@ search:
     ```yaml
     ip_routing: <bool>
     ```
+
 ## IP Routing IPv6 Interfaces
-
-
 
 === "Table"
 
@@ -53,10 +50,10 @@ search:
     ```yaml
     ip_routing_ipv6_interfaces: <bool>
     ```
+
 ## IP Virtual Router MAC Address
 
 MAC address (hh:hh:hh:hh:hh:hh)
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -68,9 +65,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
     ```yaml
     ip_virtual_router_mac_address: <str>
     ```
+
 ## IPv6 Static Routes
-
-
 
 === "Table"
 
@@ -101,9 +97,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
         name: <str>
         metric: <int>
     ```
+
 ## IPv6 Unicast Routing
-
-
 
 === "Table"
 
@@ -116,9 +111,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
     ```yaml
     ipv6_unicast_routing: <bool>
     ```
+
 ## Router BFD
-
-
 
 === "Table"
 
@@ -167,9 +161,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
           min_rx: <int>
           local_discriminator: <str>
     ```
+
 ## Router BGP
-
-
 
 === "Table"
 
@@ -1034,9 +1027,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
                   route_map: <str>
           eos_cli: <str>
     ```
+
 ## Router General configuration
-
-
 
 === "Table"
 
@@ -1073,9 +1065,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
             dynamic_prefix_lists:
               - name: <str>
     ```
+
 ## Router IGMP Configuration
-
-
 
 === "Table"
 
@@ -1090,9 +1081,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
     router_igmp:
       ssm_aware: <bool>
     ```
+
 ## Router ISIS
-
-
 
 === "Table"
 
@@ -1199,9 +1189,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
             index: <int>
       no_passive_interfaces:
     ```
+
 ## Router L2 VPN
-
-
 
 === "Table"
 
@@ -1226,9 +1215,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
       nd_rs_flooding_disabled: <bool>
       virtual_router_nd_ra_flooding_disabled: <bool>
     ```
+
 ## Router Msdp
-
-
 
 === "Table"
 
@@ -1341,9 +1329,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
                 in_list: <str>
                 out_list: <str>
     ```
+
 ## Router OSPF Configuration
-
-
 
 === "Table"
 
@@ -1492,9 +1479,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
                 override_metric: <int>
           mpls_ldp_sync_default: <bool>
     ```
+
 ## Router Traffic Engineering
-
-
 
 === "Table"
 
@@ -1547,9 +1533,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
                         weight: <int>
                         index: <int>
     ```
+
 ## Service Routing Configuration BGP
-
-
 
 === "Table"
 
@@ -1564,9 +1549,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
     service_routing_configuration_bgp:
       no_equals_default: <bool>
     ```
+
 ## Service Routing Protocols Model
-
-
 
 === "Table"
 
@@ -1579,9 +1563,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
     ```yaml
     service_routing_protocols_model: <str>
     ```
+
 ## Static Routes
-
-
 
 === "Table"
 
@@ -1612,9 +1595,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
         name: <str>
         metric: <int>
     ```
+
 ## VRFs
-
-
 
 === "Table"
 

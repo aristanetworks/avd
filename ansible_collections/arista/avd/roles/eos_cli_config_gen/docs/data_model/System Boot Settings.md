@@ -4,10 +4,10 @@ search:
 ---
 
 # System Boot Settings
+
 ## System Boot Settings
 
 Set the Aboot password
-
 
 === "Table"
 

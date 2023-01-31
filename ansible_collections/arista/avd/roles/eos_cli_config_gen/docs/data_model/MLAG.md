@@ -4,9 +4,8 @@ search:
 ---
 
 # MLAG
+
 ## Multi-Chassis Link Aggregation (MLAG) Configuration
-
-
 
 === "Table"
 

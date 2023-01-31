@@ -4,9 +4,8 @@ search:
 ---
 
 # PTP
+
 ## PTP
-
-
 
 === "Table"
 

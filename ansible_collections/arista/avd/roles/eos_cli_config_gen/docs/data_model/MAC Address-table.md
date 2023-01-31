@@ -4,9 +4,8 @@ search:
 ---
 
 # MAC Address-table
+
 ## MAC Address Table
-
-
 
 === "Table"
 

@@ -4,9 +4,8 @@ search:
 ---
 
 # IP ICMP Redirect
+
 ## IP ICMP Redirect
-
-
 
 === "Table"
 
@@ -19,9 +18,8 @@ search:
     ```yaml
     ip_icmp_redirect: <bool>
     ```
+
 ## IPv6 ICMP Redirect
-
-
 
 === "Table"
 

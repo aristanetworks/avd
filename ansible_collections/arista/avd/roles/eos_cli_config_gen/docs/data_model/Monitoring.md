@@ -4,6 +4,7 @@ search:
 ---
 
 # Monitoring
+
 ## Daemon TerminAttr
 
 You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
@@ -12,7 +13,6 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
 !!! note
     For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
     which always contain the latest recommended versions and minimum required versions per EOS release.
-
 
 === "Table"
 
@@ -109,9 +109,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
         port: <int>
       ingestvrf: <str>
     ```
+
 ## Custom Daemons
-
-
 
 === "Table"
 
@@ -130,9 +129,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
         exec: <str>
         enabled: <bool>
     ```
+
 ## Event Handlers
-
-
 
 === "Table"
 
@@ -159,9 +157,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
         regex: <str>
         asynchronous: <bool>
     ```
+
 ## Event Monitor
-
-
 
 === "Table"
 
@@ -176,9 +173,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
     event_monitor:
       enabled: <bool>
     ```
+
 ## Load Interval
-
-
 
 === "Table"
 
@@ -193,9 +189,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
     load_interval:
       default: <int>
     ```
+
 ## Logging
-
-
 
 === "Table"
 
@@ -262,9 +257,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
             - name: <str>
               action: <str>
     ```
+
 ## Monitor Connectivity
-
-
 
 === "Table"
 
@@ -327,9 +321,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
               local_interfaces: <str>
               url: <str>
     ```
+
 ## Monitor Sessions
-
-
 
 === "Table"
 
@@ -384,9 +377,8 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
           enabled: <bool>
           size: <int>
     ```
+
 ## Sflow
-
-
 
 === "Table"
 
@@ -455,10 +447,10 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
           - name: <str>
             enabled: <bool>
     ```
+
 ## Snmp Server
 
 SNMP settings
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -596,9 +588,8 @@ SNMP settings
         - name: <str>
           enable: <bool>
     ```
+
 ## Tap Aggregation
-
-
 
 === "Table"
 
@@ -647,9 +638,8 @@ SNMP settings
         fcs_append: <bool>
         fcs_error: <str>
     ```
+
 ## Trackers
-
-
 
 === "Table"
 

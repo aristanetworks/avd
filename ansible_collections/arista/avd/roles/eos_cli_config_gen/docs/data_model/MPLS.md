@@ -4,9 +4,8 @@ search:
 ---
 
 # MPLS
+
 ## MPLS
-
-
 
 === "Table"
 

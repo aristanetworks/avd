@@ -4,10 +4,10 @@ search:
 ---
 
 # EOS CLI
+
 ## EOS CLI
 
 Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

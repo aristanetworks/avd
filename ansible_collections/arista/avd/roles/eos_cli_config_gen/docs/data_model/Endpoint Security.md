@@ -4,9 +4,8 @@ search:
 ---
 
 # Endpoint Security
+
 ## Global 802.1x Authentication
-
-
 
 === "Table"
 

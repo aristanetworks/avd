@@ -4,9 +4,8 @@ search:
 ---
 
 # Flow Tracking
+
 ## Flow Trackings
-
-
 
 === "Table"
 

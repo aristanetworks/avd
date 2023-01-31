@@ -4,6 +4,7 @@ search:
 ---
 
 # Role Inputs
+
 ## Extensibility with Custom Templates
 
 - Custom templates can be added below the playbook directory.
@@ -20,7 +21,6 @@ search:
 
 Add `custom_templates` to group/host variables:
 
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -34,6 +34,7 @@ Add `custom_templates` to group/host variables:
     custom_templates:
       - <str>
     ```
+
 ## Generate Default Config
 
 The `generate_default_config` knob allows to omit default EOS configuration.
@@ -47,7 +48,6 @@ The following commands will be omitted when `generate_default_config` is set to 
 - Default configuration for `enable password`
 - Transceiver qsfp default mode
 - End of configuration delimiter
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -59,9 +59,8 @@ The following commands will be omitted when `generate_default_config` is set to 
     ```yaml
     generate_default_config: <bool>
     ```
+
 ## Generate Device Documentation
-
-
 
 === "Table"
 

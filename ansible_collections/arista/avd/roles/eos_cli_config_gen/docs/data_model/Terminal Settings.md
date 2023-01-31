@@ -4,9 +4,8 @@ search:
 ---
 
 # Terminal Settings
+
 ## Terminal Settings
-
-
 
 === "Table"
 

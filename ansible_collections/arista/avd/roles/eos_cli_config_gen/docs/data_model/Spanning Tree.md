@@ -4,9 +4,8 @@ search:
 ---
 
 # Spanning Tree
+
 ## Spanning Tree
-
-
 
 === "Table"
 

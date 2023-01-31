@@ -4,9 +4,8 @@ search:
 ---
 
 # DHCP Relay
+
 ## DHCP Relay
-
-
 
 === "Table"
 

@@ -4,9 +4,8 @@ search:
 ---
 
 # MCS Client
+
 ## MCS Client
-
-
 
 === "Table"
 

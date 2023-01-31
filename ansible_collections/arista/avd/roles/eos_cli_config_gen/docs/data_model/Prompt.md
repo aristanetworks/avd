@@ -4,9 +4,8 @@ search:
 ---
 
 # Prompt
+
 ## Prompt
-
-
 
 === "Table"
 

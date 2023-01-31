@@ -4,9 +4,8 @@ search:
 ---
 
 # LLDP
+
 ## LLDP
-
-
 
 === "Table"
 

@@ -4,9 +4,8 @@ search:
 ---
 
 # Interfaces
+
 ## Ethernet Interfaces
-
-
 
 === "Table"
 
@@ -16,6 +15,7 @@ search:
     | <samp>&nbsp;&nbsp;- name</samp> | String | Required, Unique |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | String |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp> | Boolean |  |  |  |  |
+    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;load_interval</samp> | Integer |  |  | Min: 0<br>Max: 600 | Interval in seconds for updating interface counters" |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp> | String |  |  |  | Speed can be interface_speed or forced interface_speed or auto interface_speed |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp> | Integer |  |  |  |  |
     | <samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp> | Integer |  |  |  | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI<br> |
@@ -248,6 +248,7 @@ search:
       - name: <str>
         description: <str>
         shutdown: <bool>
+        load_interval: <int>
         speed: <str>
         mtu: <int>
         l2_mtu: <int>
@@ -473,9 +474,8 @@ search:
         peer_type: <str>
         eos_cli: <str>
     ```
+
 ## Interface Defaults
-
-
 
 === "Table"
 
@@ -494,9 +494,8 @@ search:
         shutdown: <bool>
       mtu: <int>
     ```
+
 ## Interface Profiles
-
-
 
 === "Table"
 
@@ -515,9 +514,8 @@ search:
         commands:
           - <str>
     ```
+
 ## Loopback Interfaces
-
-
 
 === "Table"
 
@@ -574,9 +572,8 @@ search:
           ipv6_index: <int>
         eos_cli: <str>
     ```
+
 ## Port Channel Interfaces
-
-
 
 === "Table"
 
@@ -917,9 +914,8 @@ search:
         peer_type: <str>
         eos_cli: <str>
     ```
+
 ## Switchport Default
-
-
 
 === "Table"
 
@@ -942,9 +938,8 @@ search:
         trunk: <str>
         vlan: <int>
     ```
+
 ## Tunnel Interfaces
-
-
 
 === "Table"
 
@@ -997,9 +992,8 @@ search:
         path_mtu_discovery: <bool>
         eos_cli: <str>
     ```
+
 ## VLAN Interfaces
-
-
 
 === "Table"
 
@@ -1260,9 +1254,8 @@ search:
         type: <str>
         eos_cli: <str>
     ```
+
 ## VxLAN Interface
-
-
 
 === "Table"
 

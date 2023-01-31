@@ -4,9 +4,8 @@ search:
 ---
 
 # Link Tracking Groups
+
 ## Link Tracking Groups
-
-
 
 === "Table"
 

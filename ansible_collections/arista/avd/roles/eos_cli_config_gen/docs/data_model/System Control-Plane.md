@@ -4,9 +4,8 @@ search:
 ---
 
 # System Control-Plane
+
 ## System
-
-
 
 === "Table"
 
@@ -39,9 +38,8 @@ search:
           - acl_name: <str>
             vrf: <str>
     ```
+
 ## VMTracer Sessions
-
-
 
 === "Table"
 

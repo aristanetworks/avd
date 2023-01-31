@@ -4,9 +4,8 @@ search:
 ---
 
 # Banners
+
 ## Banners
-
-
 
 === "Table"
 

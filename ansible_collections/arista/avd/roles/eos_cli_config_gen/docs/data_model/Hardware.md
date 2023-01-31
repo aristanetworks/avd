@@ -4,9 +4,8 @@ search:
 ---
 
 # Hardware
+
 ## Hardware
-
-
 
 === "Table"
 
@@ -29,9 +28,8 @@ search:
         - speed_group: <int>
           serdes: <str>
     ```
+
 ## Hardware Counters
-
-
 
 === "Table"
 
@@ -46,9 +44,8 @@ search:
     hardware_counters:
       features:
     ```
+
 ## Platform
-
-
 
 === "Table"
 
@@ -85,9 +82,8 @@ search:
         multicast_replication:
           default: <str>
     ```
+
 ## Redundancy
-
-
 
 === "Table"
 
@@ -102,9 +98,8 @@ search:
     redundancy:
       protocol: <str>
     ```
+
 ## Hardware TCAM Profiles
-
-
 
 === "Table"
 

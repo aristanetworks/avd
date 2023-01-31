@@ -4,9 +4,8 @@ search:
 ---
 
 # Traffic Policies
+
 ## Traffic Policies
-
-
 
 === "Table"
 

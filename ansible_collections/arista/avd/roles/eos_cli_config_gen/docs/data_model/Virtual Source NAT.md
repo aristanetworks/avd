@@ -4,9 +4,8 @@ search:
 ---
 
 # Virtual Source NAT
+
 ## Virtual Source Nat VRFs
-
-
 
 === "Table"
 

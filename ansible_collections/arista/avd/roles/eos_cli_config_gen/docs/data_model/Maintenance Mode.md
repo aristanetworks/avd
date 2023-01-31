@@ -4,9 +4,8 @@ search:
 ---
 
 # Maintenance Mode
+
 ## BGP Groups
-
-
 
 === "Table"
 
@@ -31,9 +30,8 @@ search:
         bgp_maintenance_profiles:
           - <str>
     ```
+
 ## Maintenance Interface Groups
-
-
 
 === "Table"
 
@@ -60,9 +58,8 @@ search:
         interface_maintenance_profiles:
           - <str>
     ```
+
 ## Maintenance Mode
-
-
 
 === "Table"
 

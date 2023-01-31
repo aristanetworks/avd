@@ -4,9 +4,8 @@ search:
 ---
 
 # Quality of Service
+
 ## QOS Class-maps
-
-
 
 === "Table"
 
@@ -43,9 +42,8 @@ search:
           ipv6:
             access_group: <str>
     ```
+
 ## Policy Maps
-
-
 
 === "Table"
 
@@ -96,9 +94,8 @@ search:
                 traffic_class: <int>
                 drop_precedence: <int>
     ```
+
 ## QOS
-
-
 
 === "Table"
 
@@ -127,9 +124,8 @@ search:
           - <str>
       rewrite_dscp: <bool>
     ```
+
 ## QOS Profiles
-
-
 
 === "Table"
 
@@ -202,9 +198,8 @@ search:
             shape:
               rate: <str>
     ```
+
 ## Queue Monitor Length
-
-
 
 === "Table"
 
@@ -231,9 +226,8 @@ search:
           high: <int>
           low: <int>
     ```
+
 ## Queue Monitor Streaming
-
-
 
 === "Table"
 

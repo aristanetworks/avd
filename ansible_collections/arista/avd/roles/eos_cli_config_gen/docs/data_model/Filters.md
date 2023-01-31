@@ -4,9 +4,8 @@ search:
 ---
 
 # Filters
+
 ## As Path
-
-
 
 === "Table"
 
@@ -33,6 +32,7 @@ search:
               match: <str>
               origin: <str>
     ```
+
 ## Community Lists (legacy model)
 
 AVD supports 2 different data models for community lists:
@@ -44,7 +44,6 @@ Both data models can coexist without conflicts, as different keys are used: `com
 Community list names must be unique.
 
 The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
-
 
 === "Table"
 
@@ -61,9 +60,8 @@ The legacy data model supports simplified community list definition that only al
       - name: <str>
         action: <str>
     ```
+
 ## Dynamic Prefix Lists
-
-
 
 === "Table"
 
@@ -86,6 +84,7 @@ The legacy data model supports simplified community list definition that only al
           ipv4: <str>
           ipv6: <str>
     ```
+
 ## IP Community Lists
 
 AVD supports 2 different data models for community lists:
@@ -107,7 +106,6 @@ possible community strings are (case insensitive):
  - no-export
  - <1-4294967040>
  - aa:nn
-
 
 === "Table"
 
@@ -132,9 +130,8 @@ possible community strings are (case insensitive):
               - <str>
             regexp: <str>
     ```
+
 ## IP Extended Community Lists
-
-
 
 === "Table"
 
@@ -155,9 +152,8 @@ possible community strings are (case insensitive):
           - type: <str>
             extcommunities: <str>
     ```
+
 ## IP Extended Community Lists RegExp
-
-
 
 === "Table"
 
@@ -178,9 +174,8 @@ possible community strings are (case insensitive):
           - type: <str>
             regexp: <str>
     ```
+
 ## IPv6 Prefix Lists
-
-
 
 === "Table"
 
@@ -201,9 +196,8 @@ possible community strings are (case insensitive):
           - sequence: <int>
             action: <str>
     ```
+
 ## Match Lists
-
-
 
 === "Table"
 
@@ -226,9 +220,8 @@ possible community strings are (case insensitive):
             - sequence: <int>
               match_regex: <str>
     ```
+
 ## Peer Filters
-
-
 
 === "Table"
 
@@ -249,9 +242,8 @@ possible community strings are (case insensitive):
           - sequence: <int>
             match: <str>
     ```
+
 ## Prefix Lists
-
-
 
 === "Table"
 
@@ -272,9 +264,8 @@ possible community strings are (case insensitive):
           - sequence: <int>
             action: <str>
     ```
+
 ## Route Maps
-
-
 
 === "Table"
 

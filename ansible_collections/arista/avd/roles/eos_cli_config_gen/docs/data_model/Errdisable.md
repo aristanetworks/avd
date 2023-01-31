@@ -4,9 +4,8 @@ search:
 ---
 
 # Errdisable
+
 ## Errdisable
-
-
 
 === "Table"
 

@@ -4,6 +4,7 @@ search:
 ---
 
 # Aliases
+
 ## Aliases
 
 Multi-line string with one or more alias commands.
@@ -15,7 +16,6 @@ aliases: |
   alias wr copy running-config startup-config
   alias siib show ip interface brief
 ```
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

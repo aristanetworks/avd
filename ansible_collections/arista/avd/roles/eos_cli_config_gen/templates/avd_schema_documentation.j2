@@ -5,10 +5,12 @@ search:
 
 # {{ documentation_file.filename.split("/")[-1] }}
 {% for table in documentation_file.tables %}
+
 ## {{ table.display_name }}
 
+{%     if table.description %}
 {{ table.description }}
-
+{%     endif %}
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

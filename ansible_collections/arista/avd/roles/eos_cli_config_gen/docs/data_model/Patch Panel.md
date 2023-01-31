@@ -4,9 +4,8 @@ search:
 ---
 
 # Patch Panel
+
 ## Patch Panel
-
-
 
 === "Table"
 
