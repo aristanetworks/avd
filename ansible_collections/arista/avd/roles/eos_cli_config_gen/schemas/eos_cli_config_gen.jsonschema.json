@@ -3213,7 +3213,7 @@
     "ip_community_lists": {
       "type": "array",
       "title": "IP Community Lists",
-      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved data model has a better design documented below:\n\ncommunities and regexp MUST not be configured together in the same entry\npossible community strings are (case insensitive):\n - GSHUT\n - internet\n - local-as\n - no-advertise\n - no-export\n - <1-4294967040>\n - aa:nn\n",
+      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved data model has a better design documented below:\n\ncommunities and regexp MUST not be configured together in the same entry\npossible community strings are (case insensitive):\n\n  - GSHUT\n  - internet\n  - local-as\n  - no-advertise\n  - no-export\n  - <1-4294967040>\n  - aa:nn\n",
       "items": {
         "type": "object",
         "properties": {

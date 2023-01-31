@@ -2460,8 +2460,8 @@ keys:
       vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved
       data model has a better design documented below:\n\ncommunities and regexp MUST
       not be configured together in the same entry\npossible community strings are
-      (case insensitive):\n - GSHUT\n - internet\n - local-as\n - no-advertise\n -
-      no-export\n - <1-4294967040>\n - aa:nn\n"
+      (case insensitive):\n\n  - GSHUT\n  - internet\n  - local-as\n  - no-advertise\n
+      \ - no-export\n  - <1-4294967040>\n  - aa:nn\n"
     items:
       type: dict
       keys:
