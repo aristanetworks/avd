@@ -136,3 +136,6 @@ ptp_profiles:
     sync_message:
       interval: 0
     transport: "ipv4"
+
+eos_designs_documentation:
+  generate_connected_endpoints: true
