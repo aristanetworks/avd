@@ -29,7 +29,8 @@
     path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
     state: directory
     mode: 0775
-  when: ("text" in output_format or "markdown" in output_format)
+  when: ('text' in output_format) or
+        ('markdown' in output_format)
 
 - name: run show commands on remote EOS devices with text output
   eos_command:
@@ -37,8 +38,8 @@
   with_items: "{{ commands_list }}"
   failed_when: false
   register: cli_output
-  when: ("'text' in output_format") or
-        ("'markdown' in output_format")
+  when: ('text' in output_format) or
+        ('markdown' in output_format)
 
 - name: run show commands on remote EOS devices with json output
   eos_command:
@@ -48,8 +49,8 @@
   with_items: "{{ commands_list }}"
   failed_when: false
   register: cli_output_json
-  when: ("'json' in output_format") or
-        ("'yaml' in output_format")
+  when: ('json' in output_format) or
+        ('yaml' in output_format)
 
 - name: save collected commands in text files
   delegate_to: localhost
@@ -58,7 +59,7 @@
     dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item | replace('/', '_') }}.txt"
     mode: 0664
   loop: "{{ cli_output.results }}"
-  when: "'text' in output_format"
+  when: ('text' in output_format)
 
 - name: Generate json report for fabric
   delegate_to: localhost
@@ -67,7 +68,7 @@
     dest: "{{ snapshots_backup_dir }}/report.json"
     mode: 0664
   run_once: true
-  when: "'json' in output_format"
+  when: ('json' in output_format)
 
 - name: Generate yaml report for fabric
   delegate_to: localhost
@@ -76,8 +77,8 @@
     dest: "{{ snapshots_backup_dir }}/report.yaml"
     mode: 0664
   run_once: true
-  when: "'yaml' in output_format"
+  when: ('yaml' in output_format)
 
 - name: Generate markdown report for fabric
   include_tasks: "markdown.yml"
-  when: "'markdown' in output_format"
+  when: ('markdown' in output_format)

@@ -332,7 +332,7 @@ servers:
             unit: percent
         port_channel:
           description: server10_no_profile_port_channel_lacp_fallback
-          mode: active
+          mode: passive
           lacp_fallback:
             mode: static
 

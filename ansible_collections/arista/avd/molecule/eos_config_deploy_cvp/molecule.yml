@@ -22,9 +22,6 @@ platforms:
     managed: false
     groups:
       - DC1_LEAF1
-      - DC1_LEAFS
-      - DC1_FABRIC
-      - AVD_LAB
 provisioner:
   name: ansible
   config_options:

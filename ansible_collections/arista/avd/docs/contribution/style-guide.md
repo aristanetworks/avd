@@ -10,7 +10,7 @@ Furthermore the CI Pipeline (& pre-commit) for AVD enforces:
 
 - Maximum line length 160
 - [Black](https://black.readthedocs.io/en/stable/index.html) version 22.8.0
-- [isort](https://pycqa.github.io/isort/) version 5.10.1
+- [isort](https://pycqa.github.io/isort/) version 5.12.0
 - [Flake-8](https://flake8.pycqa.org/en/4.0.1/index.html) version 4.0.1
 - [pylint](https://pylint.pycqa.org/en/2.6/) version 2.6.0
 

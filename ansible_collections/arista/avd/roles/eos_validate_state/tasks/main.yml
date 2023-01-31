@@ -8,7 +8,7 @@
     versions: "{{ lookup('pipe', 'ansible-galaxy collection list -p ' ~ collection_path ~ ' --format yaml ' ~ ansible_collection_name) | from_yaml }}"
     collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
     version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
-    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
   run_once: true
   failed_when: false
 
@@ -27,7 +27,7 @@
 - name: Include device intended structure configuration variables
   include_vars: "{{ filename }}"
   delegate_to: localhost
-  when: structured_config is not defined and lookup('first_found', filename, skip=True)
+  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
   tags:

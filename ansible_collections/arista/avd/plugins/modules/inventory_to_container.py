@@ -32,8 +32,8 @@ description:
   - its specific data structure.
 options:
   inventory:
-    description: YAML inventory file
-    required: true
+    description: Optional YAML inventory file to parse. If not set the loaded inventory will be parsed.
+    required: false
     type: str
   container_root:
     description: Ansible group name to consider to be Root of our topology.
@@ -254,9 +254,9 @@ def get_device_option_value(device_data_dict, option_name):
         return None
 
 
-def serialize(dict_inventory, parent_container=None, tree_topology=None):
+def serialize_yaml_inventory_data(dict_inventory, parent_container=None, tree_topology=None):
     """
-    Build a tree topology from inventory.
+    Build a tree topology from YAML inventory file content.
 
     Parameters
     ----------
@@ -288,13 +288,13 @@ def serialize(dict_inventory, parent_container=None, tree_topology=None):
             # If subgroup has kids
             if isIterable(v1) and "children" in v1:
                 tree_topology.create_node(k1, k1, parent=parent_container)
-                serialize(dict_inventory=v1["children"], parent_container=k1, tree_topology=tree_topology)
+                serialize_yaml_inventory_data(dict_inventory=v1["children"], parent_container=k1, tree_topology=tree_topology)
             elif k1 == "children" and isIterable(v1):
                 # Extract sub-group information
                 for k2, v2 in v1.items():
                     # Add subgroup to tree
                     tree_topology.create_node(k2, k2, parent=parent_container)
-                    serialize(dict_inventory=v2, parent_container=k2, tree_topology=tree_topology)
+                    serialize_yaml_inventory_data(dict_inventory=v2, parent_container=k2, tree_topology=tree_topology)
         return tree_topology
 
 
@@ -361,7 +361,7 @@ def get_containers(inventory_content, parent_container, device_filter):
     JSON
         CVP Container structure to use with cv_container.
     """
-    serialized_inventory = serialize(dict_inventory=inventory_content)
+    serialized_inventory = serialize_yaml_inventory_data(dict_inventory=inventory_content)
     tree_dc = serialized_inventory.subtree(parent_container)
     container_list = [tree_dc[node].tag for node in tree_dc.expand_tree()]
     container_json = {}
@@ -383,7 +383,7 @@ def get_containers(inventory_content, parent_container, device_filter):
 def main():
     """Main entry point for module execution."""
     argument_spec = dict(
-        inventory=dict(type="str", required=True),
+        inventory=dict(type="str", required=False),
         container_root=dict(type="str", required=True),
         configlet_dir=dict(type="str", required=False),
         configlet_prefix=dict(type="str", required=False, default="AVD"),
@@ -397,11 +397,12 @@ def main():
     if not HAS_YAML:
         module.fail_json(msg="yaml lib is required for this module")
 
-    if not HAS_TREELIB:
-        module.fail_json(msg="Treelib lib is required for this module")
-
     # Build cv_container structure from YAML inventory.
+    # Notice that if 'inventory' is not set, the action plugin will append the CVP_TOPOLOGY based on the loaded inventory.
     if module.params["inventory"] is not None and module.params["container_root"] is not None:
+        if not HAS_TREELIB:
+            module.fail_json(msg="Treelib lib is required for this module, when reading inventory from YAML inventory file")
+
         # "ansible-avd/examples/evpn-l3ls-cvp-deployment/inventory.yml"
         inventory_file = module.params["inventory"]
         parent_container = module.params["container_root"]
@@ -424,11 +425,6 @@ def main():
         result["CVP_CONFIGLETS"] = get_configlet(
             src_folder=module.params["configlet_dir"], prefix=module.params["configlet_prefix"], device_filter=module.params["device_filter"]
         )
-
-    # Write vars to file if set by user
-    if module.params["destination"] is not None:
-        with open(module.params["destination"], "w", encoding="utf8") as file:
-            yaml.dump(result, file)
 
     module.exit_json(**result)
 
