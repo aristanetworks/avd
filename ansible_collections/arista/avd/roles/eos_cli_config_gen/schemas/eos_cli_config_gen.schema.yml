@@ -2453,15 +2453,44 @@ keys:
     convert_types:
     - dict
     display_name: IP Community Lists
-    description: "AVD supports 2 different data models for community lists:\n\n- The
-      legacy `community_lists` data model that can be used for compatibility with
-      the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth
-      data models can coexist without conflicts, as different keys are used: `community_lists`
-      vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved
-      data model has a better design documented below:\n\ncommunities and regexp MUST
-      not be configured together in the same entry\npossible community strings are
-      (case insensitive):\n\n  - GSHUT\n  - internet\n  - local-as\n  - no-advertise\n
-      \ - no-export\n  - <1-4294967040>\n  - aa:nn\n"
+    description: 'AVD supports 2 different data models for community lists:
+
+
+      - The legacy `community_lists` data model that can be used for compatibility
+      with the existing deployments.
+
+      - The improved `ip_community_lists` data model.
+
+
+      Both data models can coexist without conflicts, as different keys are used:
+      `community_lists` vs `ip_community_lists`.
+
+      Community list names must be unique.
+
+
+      The improved data model has a better design documented below:
+
+
+      communities and regexp MUST not be configured together in the same entry
+
+      possible community strings are (case insensitive):
+
+
+      - GSHUT
+
+      - internet
+
+      - local-as
+
+      - no-advertise
+
+      - no-export
+
+      - <1-4294967040>
+
+      - aa:nn
+
+      '
     items:
       type: dict
       keys:

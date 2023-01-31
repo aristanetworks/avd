@@ -100,13 +100,13 @@ The improved data model has a better design documented below:
 communities and regexp MUST not be configured together in the same entry
 possible community strings are (case insensitive):
 
-  - GSHUT
-  - internet
-  - local-as
-  - no-advertise
-  - no-export
-  - <1-4294967040>
-  - aa:nn
+- GSHUT
+- internet
+- local-as
+- no-advertise
+- no-export
+- <1-4294967040>
+- aa:nn
 
 === "Table"
 
