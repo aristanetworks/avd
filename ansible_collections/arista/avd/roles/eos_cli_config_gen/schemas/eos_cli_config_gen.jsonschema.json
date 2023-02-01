@@ -2337,6 +2337,34 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "eapol": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean",
+                    "title": "Disabled"
+                  },
+                  "authentication_failure_fallback_mba": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "timeout": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 65535,
+                        "title": "Timeout"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Authentication Failure Fallback Mba"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Eapol"
               }
             },
             "additionalProperties": false,
