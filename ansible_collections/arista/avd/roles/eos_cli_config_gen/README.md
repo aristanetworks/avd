@@ -1120,6 +1120,11 @@ ethernet_interfaces:
         reauth_timeout_ignore: < true | false >
         tx_period: < 1-65535 >
       reauthorization_request_limit: < 1-10 >
+      eapol:
+        disabled: < true | false >
+        authentication_failure_fallback_mba:
+          enabled: < true | false >
+          timeout: < 0-65535 > in seconds
     traffic_policy:
       input: < ingress traffic policy >
       output: < egress traffic policy >
