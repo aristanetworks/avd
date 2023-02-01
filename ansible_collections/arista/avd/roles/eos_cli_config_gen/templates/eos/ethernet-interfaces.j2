@@ -274,6 +274,18 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.dot1x.reauthorization_request_limit is arista.avd.defined %}
    dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
 {%             endif %}
+{%             if ethernet_interface.dot1x.eapol is arista.avd.defined %}
+{%                 if ethernet_interface.dot1x.eapol.disabled is arista.avd.defined (true) %}
+   dot1x eapol disabled
+{%                 endif %}
+{%                 if ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba is arista.avd.defined and ethernet_interface.dot1x.eapol.disabled is arista.avd.defined(false) %}
+{%                     set auth_failure_fallback_mba = "dot1x eapol authentication failure fallback mba" %}
+{%                     if ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.enabled is arista.avd.defined(true) %}
+{%                         set auth_failure_fallback_mba = auth_failure_fallback_mba ~ " timeout " ~ ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.timeout %}
+{%                     endif %}
+   {{ auth_failure_fallback_mba }}
+{%                 endif %}
+{%             endif %}
 {%         endif %}
 {%         if ethernet_interface.snmp_trap_link_change is arista.avd.defined(false) %}
    no snmp trap link-change
