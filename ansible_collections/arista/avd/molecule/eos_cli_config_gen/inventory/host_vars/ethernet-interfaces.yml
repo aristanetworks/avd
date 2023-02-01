@@ -584,3 +584,18 @@ ethernet_interfaces:
     description: Load Interval
     type: switched
     load_interval: 5
+
+  Ethernet49:
+    description: DOT1X Testing - Eapool disabled
+    dot1x:
+      eapol:
+        disabled: true
+
+  Ethernet50:
+    description: DOT1X Testing - Eapool enabled
+    dot1x:
+      eapol:
+        disabled: false
+        authentication_failure_fallback_mba:
+          enabled: true
+          timeout: 600
