@@ -586,13 +586,13 @@ ethernet_interfaces:
     load_interval: 5
 
   Ethernet49:
-    description: DOT1X Testing - Eapool disabled
+    description: DOT1X Testing - Eapol disabled
     dot1x:
       eapol:
         disabled: true
 
   Ethernet50:
-    description: DOT1X Testing - Eapool enabled
+    description: DOT1X Testing - Eapol enabled
     dot1x:
       eapol:
         disabled: false
