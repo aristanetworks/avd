@@ -91,6 +91,8 @@ interface Management1
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | access | - | - | - | - |
+| Ethernet49 |  DOT1X Testing - Eapool disabled | access | - | - | - | - |
+| Ethernet50 |  DOT1X Testing - Eapool enabled | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -639,6 +641,16 @@ interface Ethernet48
    description Load Interval
    load-interval 5
    switchport
+!
+interface Ethernet49
+   description DOT1X Testing - Eapool disabled
+   switchport
+   dot1x eapol disabled
+!
+interface Ethernet50
+   description DOT1X Testing - Eapool enabled
+   switchport
+   dot1x eapol authentication failure fallback mba timeout 600
 ```
 
 # BFD
@@ -674,25 +686,27 @@ interface Ethernet48
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
-| Ethernet29 | - | auto | True | - | - | - | - |
-| Ethernet30 | - | force-authorized | False | - | - | - | - |
-| Ethernet31 | - | force-unauthorized | - | - | - | - | - |
-| Ethernet32 | - | auto | - | True | - | - | - |
-| Ethernet33 | authenticator | - | - | - | - | - | - |
-| Ethernet34 | - | - | - | - | allow vlan 800 | - | - |
-| Ethernet35 | - | - | - | - | drop | - | - |
-| Ethernet36 | - | - | - | - | - | single-host | - |
-| Ethernet37 | - | - | - | - | - | multi-host | - |
-| Ethernet38 | - | - | - | - | - | multi-host | - |
-| Ethernet39 | - | - | - | - | - | - | True |
-| Ethernet40 | - | - | - | - | - | - | True |
-| Ethernet41 | - | - | - | - | - | - | True |
-| Ethernet42 | - | - | - | - | - | - | True |
-| Ethernet43 | - | - | - | - | - | - | - |
-| Ethernet44 | - | - | - | - | - | - | - |
-| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapool | Auth Failure Fallback MBA |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ | ------------------------- |
+| Ethernet29 | - | auto | True | - | - | - | - | - | - |
+| Ethernet30 | - | force-authorized | False | - | - | - | - | - | - |
+| Ethernet31 | - | force-unauthorized | - | - | - | - | - | - | - |
+| Ethernet32 | - | auto | - | True | - | - | - | - | - |
+| Ethernet33 | authenticator | - | - | - | - | - | - | - | - |
+| Ethernet34 | - | - | - | - | allow vlan 800 | - | - | - | - |
+| Ethernet35 | - | - | - | - | drop | - | - | - | - |
+| Ethernet36 | - | - | - | - | - | single-host | - | - | - |
+| Ethernet37 | - | - | - | - | - | multi-host | - | - | - |
+| Ethernet38 | - | - | - | - | - | multi-host | - | - | - |
+| Ethernet39 | - | - | - | - | - | - | True | - | - |
+| Ethernet40 | - | - | - | - | - | - | True | - | - |
+| Ethernet41 | - | - | - | - | - | - | True | - | - |
+| Ethernet42 | - | - | - | - | - | - | True | - | - |
+| Ethernet43 | - | - | - | - | - | - | - | - | - |
+| Ethernet44 | - | - | - | - | - | - | - | - | - |
+| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | - | - |
+| Ethernet49 | - | - | - | - | - | - | - | True | - |
+| Ethernet50 | - | - | - | - | - | - | - | False | True |
 
 # Quality Of Service
 
