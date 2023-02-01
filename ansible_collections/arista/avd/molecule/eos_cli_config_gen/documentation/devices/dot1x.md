@@ -98,13 +98,20 @@ interface Management1
 | ------------------- | -------------------- | ----------------------|
 | True | True | True |
 
-```eos
-dot1x
-   mac based authentication delay 300 seconds
-   mac based authentication hold_period 300 seconds
-   radius av-pair service-type
-   radius av-pair framed-mtu 1500
-```
+
+
+### 802.1X MAC based authentication
+
+| delay | Hold period |
+| ----- | ----------- |
+| 300 | 300 |
+
+### 802.1X Radius AV pair
+
+| Service type | framed MTU |
+| ------------ | ---------- |
+| true | 1500 |
+
 
 # ACL
 
