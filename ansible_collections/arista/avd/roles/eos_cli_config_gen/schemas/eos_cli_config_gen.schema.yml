@@ -911,10 +911,14 @@ keys:
         keys:
           delay:
             type: int
+            min: 0
+            max: 300
             convert_types:
             - str
           hold_period:
             type: int
+            min: 1
+            max: 300
             convert_types:
             - str
       radius_av_pair:
@@ -924,6 +928,8 @@ keys:
             type: bool
           framed_mtu:
             type: int
+            min: 68
+            max: 9236
             convert_types:
             - str
   dynamic_prefix_lists:

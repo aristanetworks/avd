@@ -1144,10 +1144,14 @@
           "properties": {
             "delay": {
               "type": "integer",
+              "minimum": 0,
+              "maximum": 300,
               "title": "Delay"
             },
             "hold_period": {
               "type": "integer",
+              "minimum": 1,
+              "maximum": 300,
               "title": "Hold Period"
             }
           },
@@ -1163,6 +1167,8 @@
             },
             "framed_mtu": {
               "type": "integer",
+              "minimum": 68,
+              "maximum": 9236,
               "title": "Framed MTU"
             }
           },
