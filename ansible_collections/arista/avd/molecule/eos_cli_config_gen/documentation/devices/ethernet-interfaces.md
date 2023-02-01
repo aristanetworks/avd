@@ -113,6 +113,7 @@ interface Management1
 | Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
+| Ethernet48 |  Load Interval | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -656,6 +657,11 @@ interface Ethernet47
    ip helper-address 10.10.96.101 source-interface Loopback0
    ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
    ip helper-address 10.10.96.151 vrf MGMT
+!
+interface Ethernet48
+   description Load Interval
+   load-interval 5
+   switchport
 ```
 
 # Routing

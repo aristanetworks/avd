@@ -37,3 +37,6 @@ execute_tasks: false
 
 # Version of the Cloudvision collection to use for upload
 cv_collection: v1
+
+# For "inventory_to_container" the inventory is read from memory unless 'avd_inventory_to_container_file' is set
+avd_inventory_to_container_file: null

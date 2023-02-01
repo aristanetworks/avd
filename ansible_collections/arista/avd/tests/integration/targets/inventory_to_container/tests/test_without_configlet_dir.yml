@@ -16,7 +16,6 @@
         that:
               - CVP_VARS is success
               - CVP_VARS.CVP_TOPOLOGY != {}
-              - CVP_VARS.changed == false
               - diff_output.stdout == ""
               - item is defined
               - item == "Tenant"

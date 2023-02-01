@@ -835,6 +835,7 @@ ethernet_interfaces:
   <Ethernet_interface_1 >:
     description: < description >
     shutdown: < true | false >
+    load_interval: < load interval>
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
     # l3dot1q and l2dot1q are used for sub-interfaces.
@@ -996,6 +997,7 @@ ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
+    load_interval: < load interval>
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
