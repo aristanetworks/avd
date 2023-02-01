@@ -25,7 +25,7 @@
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapool | Auth Failure Fallback MBA |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol | Auth Failure Fallback MBA |
 | --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ | ------------------------- |
 {%         for ethernet_interface in ethernet_interfaces_dot1x %}
 {%             set pae_mode = ethernet_interface.dot1x.pae.mode | arista.avd.default('-') %}
