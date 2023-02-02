@@ -349,33 +349,33 @@ port_channel_interfaces:
     description: interface_with_sflow_ingress_egress_enabled
     mode: routed
     sflow:
-      enabled: true
+      enable: true
       egress:
-        enabled: true
+        enable: true
 
   Port-Channel117:
     description: interface_with_sflow_ingress_egress_unmodified_enabled
     mode: routed
     sflow:
-      enabled: true
+      enable: true
       egress:
-        unmodified_enabled: true
+        unmodified_enable: true
 
   Port-Channel118:
     description: interface_with_sflow_ingress_egress_disabled
     mode: routed
     sflow:
-      enabled: false
+      enable: false
       egress:
-        enabled: false
+        enable: false
 
   Port-Channel119:
     description: interface_with_sflow_ingress_egress_unmodified_disabled
     mode: routed
     sflow:
-      enabled: false
+      enable: false
       egress:
-        unmodified_enabled: false
+        unmodified_enable: false
 
 # Children interfaces
 ethernet_interfaces:

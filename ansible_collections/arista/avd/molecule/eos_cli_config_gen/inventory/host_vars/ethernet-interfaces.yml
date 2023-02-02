@@ -588,31 +588,31 @@ ethernet_interfaces:
   Ethernet49:
     description: SFlow Interface Testing - SFlow ingress enabled
     sflow:
-      enabled: true
+      enable: true
 
   Ethernet50:
     description: SFlow Interface Testing - SFlow egress enabled
     sflow:
       egress:
-        enabled: true
+        enable: true
 
   Ethernet51:
     description: SFlow Interface Testing - SFlow ingress and egress unmodified enabled
     sflow:
-      enabled: true
+      enable: true
       egress:
-        unmodified_enabled: true
+        unmodified_enable: true
 
   Ethernet52:
     description: SFlow Interface Testing - SFlow ingress and egress disabled
     sflow:
-      enabled: false
+      enable: false
       egress:
-        enabled: false
+        enable: false
 
   Ethernet53:
     description: SFlow Interface Testing - SFlow ingress and egress unmodified disabled
     sflow:
-      enabled: false
+      enable: false
       egress:
-        unmodified_enabled: false
+        unmodified_enable: false

@@ -386,22 +386,24 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.traffic_policy.output is arista.avd.defined %}
    traffic-policy output {{ port_channel_interface.traffic_policy.output }}
 {%     endif %}
+{%     if port_channel_interface.sflow is arista.avd.defined %}
+{%         if port_channel_interface.sflow.enable is arista.avd.defined(true) %}
+   sflow enable
+{%         elif port_channel_interface.sflow.enable is arista.avd.defined(false) %}
+   no sflow enable
+{%         endif %}
+{%         if port_channel_interface.sflow.egress.enable is arista.avd.defined(true) %}
+   sflow egress enable
+{%         elif port_channel_interface.sflow.egress.enable is arista.avd.defined(false) %}
+   no sflow egress enable
+{%         endif %}
+{%         if port_channel_interface.sflow.egress.unmodified_enable is arista.avd.defined(true) %}
+   sflow egress unmodified enable
+{%         elif port_channel_interface.sflow.egress.unmodified_enable is arista.avd.defined(false) %}
+   no sflow egress unmodified enable
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interface.eos_cli is arista.avd.defined %}
    {{ port_channel_interface.eos_cli | indent(3, false) }}
-{%     endif %}
-{%     if port_channel_interface.sflow.enabled is arista.avd.defined(true) %}
-   sflow enable
-{%     elif port_channel_interface.sflow.enabled is arista.avd.defined(false) %}
-   no sflow enable
-{%     endif %}
-{%     if port_channel_interface.sflow.egress.enabled is arista.avd.defined(true) %}
-   sflow egress enable
-{%     elif port_channel_interface.sflow.egress.enabled is arista.avd.defined(false) %}
-   no sflow egress enable
-{%     endif %}
-{%     if port_channel_interface.sflow.egress.unmodified_enabled is arista.avd.defined(true) %}
-   sflow egress unmodified enable
-{%     elif port_channel_interface.sflow.egress.unmodified_enabled is arista.avd.defined(false) %}
-   no sflow egress unmodified enable
 {%     endif %}
 {% endfor %}

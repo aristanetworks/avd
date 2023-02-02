@@ -569,20 +569,22 @@ interface {{ ethernet_interface.name }}
    spanning-tree guard {{ ethernet_interface.spanning_tree_guard }}
 {%             endif %}
 {%         endif %}
-{%         if ethernet_interface.sflow.enabled is arista.avd.defined(true) %}
+{%         if ethernet_interface.sflow is arista.avd.defined %}
+{%             if ethernet_interface.sflow.enable is arista.avd.defined(true) %}
    sflow enable
-{%         elif ethernet_interface.sflow.enabled is arista.avd.defined(false) %}
+{%             elif ethernet_interface.sflow.enable is arista.avd.defined(false) %}
    no sflow enable
-{%         endif %}
-{%         if ethernet_interface.sflow.egress.enabled is arista.avd.defined(true) %}
+{%             endif %}
+{%             if ethernet_interface.sflow.egress.enable is arista.avd.defined(true) %}
    sflow egress enable
-{%         elif ethernet_interface.sflow.egress.enabled is arista.avd.defined(false) %}
+{%             elif ethernet_interface.sflow.egress.enable is arista.avd.defined(false) %}
    no sflow egress enable
-{%         endif %}
-{%         if ethernet_interface.sflow.egress.unmodified_enabled is arista.avd.defined(true) %}
+{%             endif %}
+{%             if ethernet_interface.sflow.egress.unmodified_enable is arista.avd.defined(true) %}
    sflow egress unmodified enable
-{%         elif ethernet_interface.sflow.egress.unmodified_enabled is arista.avd.defined(false) %}
+{%             elif ethernet_interface.sflow.egress.unmodified_enable is arista.avd.defined(false) %}
    no sflow egress unmodified enable
+{%             endif %}
 {%         endif %}
 {%         if ethernet_interface.vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
