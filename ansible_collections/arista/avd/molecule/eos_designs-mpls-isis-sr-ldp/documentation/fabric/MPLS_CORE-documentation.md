@@ -127,8 +127,8 @@
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-| routers | router | Router |
 | cpes | cpe | CPE |
+| routers | router | Router |
 
 ## Cpes
 

@@ -115,10 +115,10 @@
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-| servers | server | Server |
 | firewalls | firewall | Firewall |
-| routers | router | Router |
 | load_balancers | load_balancer | Load Balancer |
+| routers | router | Router |
+| servers | server | Server |
 | storage_arrays | storage_array | Storage Array |
 
 ## Servers

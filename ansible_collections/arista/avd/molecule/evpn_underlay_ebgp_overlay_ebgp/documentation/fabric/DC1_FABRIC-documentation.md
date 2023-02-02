@@ -14,9 +14,9 @@
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
   - [Connected Endpoint Keys](#connected-endpoint-keys)
-  - [Servers](#servers)
   - [Firewalls](#firewalls)
   - [Routers](#routers)
+  - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
@@ -179,11 +179,25 @@
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-| servers | server | Server |
 | firewalls | firewall | Firewall |
-| routers | router | Router |
 | load_balancers | load_balancer | Load Balancer |
+| routers | router | Router |
+| servers | server | Server |
 | storage_arrays | storage_array | Storage Array |
+
+## Firewalls
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| FIREWALL01 | E0 | DC1-LEAF2A | Ethernet20 | CUSTOM_FIREWALL01_E0 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
+| FIREWALL01 | E1 | DC1-LEAF2B | Ethernet20 | CUSTOM_FIREWALL01_E1 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
+
+## Routers
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| ROUTER01 | Eth0 | DC1-LEAF2A | Ethernet21 | CUSTOM_ROUTER01_Eth0 | False | switched | access | 110 | TENANT_A |
+| ROUTER01 | Eth1 | DC1-LEAF2B | Ethernet21 | CUSTOM_ROUTER01_Eth1 | False | switched | access | 110 | TENANT_A |
 
 ## Servers
 
@@ -225,20 +239,6 @@
 | server14_explicitly_enabled_interfaces | Eth2 | DC1-SVC3B | Ethernet21 | CUSTOM_server14_explicitly_enabled_interfaces_Eth2 | False | switched | access | 110 | TENANT_A |
 | server15_port_channel_disabled_interfaces | Eth1 | DC1-SVC3A | Ethernet22 | CUSTOM_server15_port_channel_disabled_interfaces_Eth1 | True | switched | access | 110 | TENANT_A |
 | server15_port_channel_disabled_interfaces | Eth2 | DC1-SVC3B | Ethernet22 | CUSTOM_server15_port_channel_disabled_interfaces_Eth2 | True | switched | access | 110 | TENANT_A |
-
-## Firewalls
-
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| FIREWALL01 | E0 | DC1-LEAF2A | Ethernet20 | CUSTOM_FIREWALL01_E0 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
-| FIREWALL01 | E1 | DC1-LEAF2B | Ethernet20 | CUSTOM_FIREWALL01_E1 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
-
-## Routers
-
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| ROUTER01 | Eth0 | DC1-LEAF2A | Ethernet21 | CUSTOM_ROUTER01_Eth0 | False | switched | access | 110 | TENANT_A |
-| ROUTER01 | Eth1 | DC1-LEAF2B | Ethernet21 | CUSTOM_ROUTER01_Eth1 | False | switched | access | 110 | TENANT_A |
 
 ## Port Profiles
 

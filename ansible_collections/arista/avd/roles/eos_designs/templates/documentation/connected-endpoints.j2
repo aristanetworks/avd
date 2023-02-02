@@ -42,13 +42,13 @@ No connected endpoint configured!
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-{%     for key in all_connected_endpoints_keys %}
+{%     for key in all_connected_endpoints_keys | arista.avd.natural_sort %}
 {%         set type = all_connected_endpoints_keys[key].type %}
 {%         set description = all_connected_endpoints_keys[key].description | arista.avd.default("-") %}
 | {{ key }} | {{ type }} | {{ description }} |
 {%     endfor %}
 {% endif %}
-{% for key in all_connected_endpoints %}
+{% for key in all_connected_endpoints | arista.avd.natural_sort %}
 
 ## {{ key | replace("_", " ") | capitalize }}
 
