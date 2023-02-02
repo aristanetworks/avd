@@ -9251,11 +9251,11 @@ keys:
     keys:
       length:
         type: int
-        min: 1
+        min: 0
         max: 32767
       width:
         type: int
-        min: 1
+        min: 10
         max: 32767
   trackers:
     type: list
