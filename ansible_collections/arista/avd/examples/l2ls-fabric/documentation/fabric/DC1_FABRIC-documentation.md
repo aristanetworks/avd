@@ -13,6 +13,9 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
+  - [Connected Endpoint Keys](#connected-endpoint-keys)
+  - [Servers](#servers)
+  - [Firewalls](#firewalls)
   - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
@@ -85,7 +88,29 @@
 
 # Connected Endpoints
 
-No connected endpoint configured!
+## Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| servers | server | - |
+| firewalls | firewall | - |
+| routers | router | - |
+
+## Servers
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| Host2 | Eth1 | LEAF4 | Ethernet3 | Host2_Eth1 | False | switched | access | 30 | PP-ORANGE |
+| HostA | Eth1 | LEAF1 | Ethernet3 | HostA_Eth1 | False | switched | access | 10 | PP-BLUE |
+| HostB | Eth1 | LEAF2 | Ethernet3 | HostB_Eth1 | False | switched | access | 20 | PP-GREEN |
+| HostC | Eth1 | LEAF3 | Ethernet3 | HostC_Eth1 | False | switched | access | 10 | PP-BLUE |
+
+## Firewalls
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
+| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
 
 ## Port Profiles
 

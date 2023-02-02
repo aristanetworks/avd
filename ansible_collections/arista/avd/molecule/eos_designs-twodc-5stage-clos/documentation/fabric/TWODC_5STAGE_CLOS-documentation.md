@@ -13,6 +13,8 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
+  - [Connected Endpoint Keys](#connected-endpoint-keys)
+  - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
@@ -238,7 +240,28 @@
 
 # Connected Endpoints
 
-No connected endpoint configured!
+## Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| servers | server | Server |
+| firewalls | firewall | Firewall |
+| routers | router | Router |
+| load_balancers | load_balancer | Load Balancer |
+| storage_arrays | storage_array | Storage Array |
+
+## Servers
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| server-1 | Eth2 | DC1-POD1-LEAF2B | Ethernet16 | server-1_Eth2 | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth4 | DC1-POD1-LEAF2B | Ethernet17 | Set using structured_config on server adapter | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth6 | DC1-POD1-LEAF2B | Ethernet18 | server-1_Eth6 | False | switched | access | 110 | NESTED_TENANT_A |
+| server-1 | Eth8 | DC1-POD1-LEAF2B | Ethernet19 | server-1_Eth8 | False | switched | access | 110 | NESTED_TENANT_A |
+| server-1 | Eth1 | DC1.POD1.LEAF2A | Ethernet16 | server-1_Eth1 | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth3 | DC1.POD1.LEAF2A | Ethernet17 | Set using structured_config on server adapter | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth5 | DC1.POD1.LEAF2A | Ethernet18 | server-1_Eth5 | False | switched | access | 110 | NESTED_TENANT_A |
+| server-1 | Eth7 | DC1.POD1.LEAF2A | Ethernet19 | server-1_Eth7 | False | switched | access | 110 | NESTED_TENANT_A |
 
 ## Port Profiles
 

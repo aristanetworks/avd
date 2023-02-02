@@ -13,6 +13,8 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
+  - [Connected Endpoint Keys](#connected-endpoint-keys)
+  - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
@@ -170,7 +172,25 @@
 
 # Connected Endpoints
 
-No connected endpoint configured!
+## Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| servers | server | Server |
+| firewalls | firewall | Firewall |
+| routers | router | Router |
+| load_balancers | load_balancer | Load Balancer |
+| storage_arrays | storage_array | Storage Array |
+
+## Servers
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| server01_MLAG | Eth2 | DC1-LEAF2A | Ethernet10 | server01_MLAG_Eth2 | False | switched | trunk | 210-211 | TENANT_B |
+| server01_MLAG | Eth3 | DC1-LEAF2B | Ethernet10 | server01_MLAG_Eth3 | False | switched | trunk | 210-211 | TENANT_B |
+| server02_SINGLE_NODE | Eth1 | DC1-LEAF1A | Ethernet7 | server02_SINGLE_NODE_Eth1 | False | switched | access | 110 | TENANT_A |
+| server02_SINGLE_NODE_TRUNK | Eth1 | DC1-LEAF1A | Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
+| server03_ESI | Eth1 | DC1-SVC3A | Ethernet10 | server03_ESI_Eth1 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
 
 ## Port Profiles
 

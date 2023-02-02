@@ -14,6 +14,8 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
+  - [Connected Endpoint Keys](#connected-endpoint-keys)
+  - [Cpes](#cpes)
   - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
@@ -121,7 +123,20 @@
 
 # Connected Endpoints
 
-No connected endpoint configured!
+## Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| routers | router | Router |
+| cpes | cpe | CPE |
+
+## Cpes
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| CPE_TENANT_A_SITE1 | Ethernet1 | SITE1-LER1 | Ethernet8 | CPE_TENANT_A_SITE1_Ethernet1 | False | switched | trunk | 10 | TENANT_A_WAN_SERVICE_10 |
+| CPE_TENANT_A_SITE1 | Ethernet2 | SITE1-LER2 | Ethernet8 | CPE_TENANT_A_SITE1_Ethernet2 | False | switched | trunk | 10 | TENANT_A_WAN_SERVICE_10 |
+| CPE_TENANT_A_SITE2 | eth0 | SITE2-LER1 | Ethernet8 | CPE_TENANT_A_SITE2_eth0 | False | switched | trunk | 10 | TENANT_A_WAN_SERVICE_10 |
 
 ## Port Profiles
 

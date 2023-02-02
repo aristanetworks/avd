@@ -13,7 +13,10 @@
 {# Populate endpoints #}
 {%     for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort %}
 {%         set peer_type = node_hostvars.ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default('undefined') %}
-{%         if peer_type in all_connected_endpoints_keys %}
+{%         if peer_type in all_connected_endpoints_keys.values() | map(attribute='type') | list %}
+{#             Retrieving key from peer_type using magic Jinja - it relies on the fact that once using items, key and value #}
+{#             can be accessed using "0" and "1" in the tuple #}
+{%             set connected_endpoint_key = all_connected_endpoints_keys.items() | selectattr("1.type", "equalto", peer_type) | map(attribute="0") | first %}
 {%             set connected_endpoint = namespace () %}
 {%             set connected_endpoint.fabric_switch = node %}
 {%             set connected_endpoint.fabric_port = ethernet_interface %}
@@ -26,7 +29,7 @@
 {%             set connected_endpoint.mode = node_hostvars.ethernet_interfaces[ethernet_interface].mode | arista.avd.default("-") %}
 {%             set connected_endpoint.vlans = node_hostvars.ethernet_interfaces[ethernet_interface].vlans | arista.avd.default("-") %}
 {%             set connected_endpoint.profile = node_hostvars.ethernet_interfaces[ethernet_interface].port_profile | arista.avd.default("-") %}
-{%             do all_connected_endpoints.setdefault(peer_type, []).append(connected_endpoint) %}
+{%             do all_connected_endpoints.setdefault(connected_endpoint_key, []).append(connected_endpoint) %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
@@ -37,10 +40,12 @@ No connected endpoint configured!
 
 ## Connected Endpoint Keys
 
-| Type | Description |
-| ---- | ----------- |
+| Key | Type | Description |
+| --- | ---- | ----------- |
 {%     for key in all_connected_endpoints_keys %}
-| {{ key | replace("_", " ") | capitalize }} | {{ connected_endpoints_keys[key].description | arista.avd.default("-") }} |
+{%         set type = all_connected_endpoints_keys[key].type %}
+{%         set description = all_connected_endpoints_keys[key].description | arista.avd.default("-") %}
+| {{ key }} | {{ type }} | {{ description }} |
 {%     endfor %}
 {% endif %}
 {% for key in all_connected_endpoints %}
