@@ -388,14 +388,14 @@ class RouterBgpMixin(UtilsMixin):
         Returns None if not set, since the calling functions will use
         per-vlan or per-vrf numbers by default.
         """
-        admin_subfield = str(default(get(self._hostvars, "evpn_rt_type.admin_subfield"), get(self._hostvars, "overlay_rt_type.admin_subfield"), ""))
-        if admin_subfield == "":
+        admin_subfield = default(get(self._hostvars, "evpn_rt_type.admin_subfield"), get(self._hostvars, "overlay_rt_type.admin_subfield"))
+        if admin_subfield is None:
             return None
 
         if admin_subfield == "bgp_as":
             return self._bgp_as
 
-        if re_fullmatch(r"[0-9]+", admin_subfield):
+        if re_fullmatch(r"[0-9]+", str(admin_subfield)):
             return admin_subfield
 
         return None

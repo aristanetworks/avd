@@ -967,13 +967,11 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def overlay_rd_type_admin_subfield(self):
-        tmp_overlay_rd_type_admin_subfield = str(
-            default(get(self._hostvars, "evpn_rd_type.admin_subfield"), get(self._hostvars, "overlay_rd_type.admin_subfield", ""))
-        )
+        tmp_overlay_rd_type_admin_subfield = default(get(self._hostvars, "evpn_rd_type.admin_subfield"), get(self._hostvars, "overlay_rd_type.admin_subfield"))
         tmp_overlay_rd_type_admin_subfield_offset = int(
             default(get(self._hostvars, "evpn_rd_type.admin_subfield_offset"), get(self._hostvars, "overlay_rd_type.admin_subfield_offset"), 0)
         )
-        if tmp_overlay_rd_type_admin_subfield == "":
+        if tmp_overlay_rd_type_admin_subfield is None:
             return self.router_id
 
         if tmp_overlay_rd_type_admin_subfield == "vtep_loopback":
@@ -985,7 +983,7 @@ class EosDesignsFacts(AvdFacts):
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
 
-        if re.fullmatch(r"[0-9]+", tmp_overlay_rd_type_admin_subfield):
+        if re.fullmatch(r"[0-9]+", str(tmp_overlay_rd_type_admin_subfield)):
             return str(int(tmp_overlay_rd_type_admin_subfield) + tmp_overlay_rd_type_admin_subfield_offset)
 
         try:
