@@ -91,8 +91,8 @@ interface Management1
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | access | - | - | - | - |
-| Ethernet49 |  DOT1X Testing - Eapool disabled | access | - | - | - | - |
-| Ethernet50 |  DOT1X Testing - Eapool enabled | access | - | - | - | - |
+| Ethernet49 |  DOT1X Testing - Eapol disabled | access | - | - | - | - |
+| Ethernet50 |  DOT1X Testing - Eapol enabled | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -643,12 +643,12 @@ interface Ethernet48
    switchport
 !
 interface Ethernet49
-   description DOT1X Testing - Eapool disabled
+   description DOT1X Testing - Eapol disabled
    switchport
    dot1x eapol disabled
 !
 interface Ethernet50
-   description DOT1X Testing - Eapool enabled
+   description DOT1X Testing - Eapol enabled
    switchport
    dot1x eapol authentication failure fallback mba timeout 600
 ```
@@ -686,7 +686,7 @@ interface Ethernet50
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapool | Auth Failure Fallback MBA |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol | Auth Failure Fallback MBA |
 | --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ | ------------------------- |
 | Ethernet29 | - | auto | True | - | - | - | - | - | - |
 | Ethernet30 | - | force-authorized | False | - | - | - | - | - | - |
