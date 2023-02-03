@@ -4,7 +4,6 @@
   - [Ussage xx](#ussage-xx)
   - [todo2](#todo2)
 - [todo3](#todo3)
-
 # md-toc
 a python script to generate the toc (table of contents) of markdown
 

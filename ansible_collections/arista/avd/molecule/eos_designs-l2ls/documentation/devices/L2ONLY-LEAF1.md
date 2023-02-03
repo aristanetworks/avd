@@ -3,8 +3,6 @@
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
@@ -21,12 +19,9 @@
   - [Static Routes](#static-routes)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -55,10 +50,6 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
-
-# Authentication
-
-# Monitoring
 
 # Internal VLAN Allocation Policy
 
@@ -168,7 +159,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -185,6 +175,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -224,10 +215,6 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 ```eos
 ```
 
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -242,5 +229,3 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

@@ -42,11 +42,9 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -568,7 +566,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:dc:00:00:00:0a
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -591,6 +588,7 @@ ip routing vrf Tenant_A_WAN_Zone
 ip routing vrf Tenant_B_WAN_Zone
 ip routing vrf Tenant_C_WAN_Zone
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -894,8 +892,6 @@ route-map RM-MLAG-PEER-IN permit 10
    set origin incomplete
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -919,5 +915,3 @@ vrf instance Tenant_B_WAN_Zone
 !
 vrf instance Tenant_C_WAN_Zone
 ```
-
-# Quality Of Service
