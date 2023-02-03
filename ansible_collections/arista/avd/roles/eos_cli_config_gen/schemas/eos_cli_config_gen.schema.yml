@@ -9708,7 +9708,7 @@ keys:
           deprecation:
             warning: true
             new_key: ipv6_address_virtuals
-            remove_in_version: v5.0.0
+            remove_in_version: 5.0.0
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual

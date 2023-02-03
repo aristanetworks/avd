@@ -358,6 +358,17 @@ class AvdToDocumentationSchemaConverter:
         return None
 
     def deprecation(self, schema: dict) -> tuple[str, str]:
+        """
+        Build deprecation details for documentation if deprecation is set on the schema element.
+
+        Returns
+        -------
+        deprecation_label : str | None
+            If deprecated or removed this is "removed" or "deprecated". Should be added as label
+            on the key by the calling function.
+        deprecation : str | None
+            Deprecation or removal message which should be added to the key comment field by the calling function.
+        """
         if (deprecation := schema.get("deprecation")) is None:
             return None, None
 
@@ -373,7 +384,7 @@ class AvdToDocumentationSchemaConverter:
         output = [f"This key {state_verb} {state}."]
 
         if (remove_in_version := deprecation.get("remove_in_version")) is not None:
-            output.append(f"Support {removed_verb} removed in AVD {remove_in_version}.")
+            output.append(f"Support {removed_verb} removed in AVD version {remove_in_version}.")
         elif (remove_after_date := deprecation.get("remove_after_date")) is not None:
             output.append(f"Support {removed_verb} removed in the first major AVD version released after {remove_after_date}.")
         elif removed:
