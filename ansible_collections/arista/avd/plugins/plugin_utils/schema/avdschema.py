@@ -1,6 +1,4 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avddataconverter import AvdDataConverter
@@ -120,6 +118,8 @@ class AvdSchema:
             yield self._error_handler(error)
 
     def _error_handler(self, error: Exception):
+        if isinstance(error, AristaAvdError):
+            return error
         if isinstance(error, jsonschema.ValidationError):
             return AvdValidationError(error=error)
         if isinstance(error, jsonschema.SchemaError):
