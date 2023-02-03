@@ -46,6 +46,19 @@ class VlanInterfacesMixin(UtilsMixin):
         return None
 
     def _get_vlan_interface_config_for_svi(self, svi, vrf, tenant) -> dict:
+        def _check_virtual_router_mac_address(vlan_interface_config: dict, variables: list):
+            """
+            Helper function
+
+            Check if any variable in the list of variables is not None in vlan_interface_config
+            and if it is the case, raise an Exception if virtual_router_mac_address is None
+            """
+            if any(vlan_interface_config[var] for var in variables) and self._virtual_router_mac_address is None:
+                quoted_vars = [f"'{var}'" for var in variables]
+                raise AristaAvdMissingVariableError(
+                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
+                )
+
         vlan_interface_config = {
             "tenant": tenant["name"],
             "tags": svi.get("tags"),
@@ -60,21 +73,13 @@ class VlanInterfacesMixin(UtilsMixin):
         # Only set VARP if ip_address is set
         if vlan_interface_config["ip_address"] is not None:
             vlan_interface_config["ip_virtual_router_addresses"] = svi.get("ip_virtual_router_addresses")
-            if vlan_interface_config["ip_virtual_router_addresses"] is not None and self._virtual_router_mac_address is None:
-                raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using 'ip_virtual_router_addresses' under 'svi'"
-                )
+            _check_virtual_router_mac_address(vlan_interface_config, ["ip_virtual_router_addresses"])
 
         # Only set Anycast GW if VARP is not set
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
             vlan_interface_config["ip_address_virtual"] = svi.get("ip_address_virtual")
             vlan_interface_config["ip_address_virtual_secondaries"] = svi.get("ip_address_virtual_secondaries")
-            if (
-                vlan_interface_config["ip_address_virtual"] is not None or vlan_interface_config["ip_address_virtual_secondaries"] is not None
-            ) and self._virtual_router_mac_address is None:
-                raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using 'ip_address_virtual' under 'svi'"
-                )
+            _check_virtual_router_mac_address(vlan_interface_config, ["ip_address_virtual", "ip_address_virtual_secondaries"])
 
         pim_config_ipv4 = {}
         if default(get(svi, "evpn_l3_multicast.enabled"), get(vrf, "_evpn_l3_multicast_enabled")) is True:
@@ -97,22 +102,13 @@ class VlanInterfacesMixin(UtilsMixin):
         # Only set VARPv6 if ipv6_address is set
         if vlan_interface_config["ipv6_address"] is not None:
             vlan_interface_config["ipv6_virtual_router_addresses"] = svi.get("ipv6_virtual_router_addresses")
-            if vlan_interface_config["ipv6_virtual_router_addresses"] is not None and self._virtual_router_mac_address is None:
-                raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using 'ipv6_virtual_router_addresses' under 'svi'"
-                )
+            _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_virtual_router_addresses"])
 
         # Only set Anycast v6 GW if VARPv6 is not set
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
             vlan_interface_config["ipv6_address_virtual"] = svi.get("ipv6_address_virtual")
             vlan_interface_config["ipv6_address_virtuals"] = svi.get("ipv6_address_virtuals")
-            if (
-                vlan_interface_config["ipv6_address_virtual"] is not None or vlan_interface_config["ipv6_address_virtuals"] is not None
-            ) and self._virtual_router_mac_address is None:
-                raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using 'ipv6_address_virtual' or 'ipv6_address_virtuals' under"
-                    " 'svi'"
-                )
+            _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_address_virtual", "ipv6_address_virtuals"])
 
         if vrf["name"] != "default":
             vlan_interface_config["vrf"] = vrf["name"]
