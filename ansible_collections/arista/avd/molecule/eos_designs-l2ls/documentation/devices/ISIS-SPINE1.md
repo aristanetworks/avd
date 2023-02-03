@@ -4,8 +4,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
@@ -26,12 +24,9 @@
   - [Router ISIS](#router-isis)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -87,10 +82,6 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
-
-# Authentication
-
-# Monitoring
 
 # Internal VLAN Allocation Policy
 
@@ -257,7 +248,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:1c:73:00:00:9a
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -274,6 +264,7 @@ ip virtual-router mac-address 00:1c:73:00:00:9a
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -358,10 +349,6 @@ router isis EVPN_UNDERLAY
 ```eos
 ```
 
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -376,5 +363,3 @@ router isis EVPN_UNDERLAY
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

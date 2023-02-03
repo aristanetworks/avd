@@ -32,12 +32,9 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -347,7 +344,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:dc:00:00:00:0a
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -364,6 +360,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -542,10 +539,6 @@ router bfd
 ```eos
 ```
 
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -560,5 +553,3 @@ router bfd
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

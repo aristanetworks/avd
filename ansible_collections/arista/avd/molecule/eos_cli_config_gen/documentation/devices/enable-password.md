@@ -5,17 +5,6 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -57,47 +46,3 @@ sha512 encrypted enable password is configured
 enable password sha512 $6$nXycSRhVPaxRINPL$tM1MNjjRCbFD5di4XWsj8CPkm8Pdwmf9fVqRV015y3DXD4t1vi8CAWQpFP8Vbi9Y2i7.JuFey5UaafXvI6quD1
 !
 ```
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

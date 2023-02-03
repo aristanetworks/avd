@@ -50,7 +50,7 @@ class ActionModule(ActionBase):
         self.data.update(task_vars["hostvars"].get(hostname))
 
         # Load schema tools and perform conversion and validation
-        avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
+        avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode, task_vars["ansible_role_name"])
         result.update(avdschematools.convert_and_validate_data(self.data))
 
         # Template to file

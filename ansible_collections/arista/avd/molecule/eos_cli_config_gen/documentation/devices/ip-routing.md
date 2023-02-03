@@ -3,21 +3,12 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -47,24 +38,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
 # Routing
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -85,6 +59,7 @@ no ip icmp redirect
 ip routing vrf TEST1
 no ip routing vrf TEST2
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -108,12 +83,6 @@ ipv6 unicast-routing vrf TEST1
 no ipv6 icmp redirect
 ```
 
-# Multicast
-
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -132,5 +101,3 @@ vrf instance TEST1
 !
 vrf instance TEST2
 ```
-
-# Quality Of Service
