@@ -13,7 +13,6 @@ l3leaf:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 32
     vtep_loopback_ipv4_pool: 192.168.254.0/24
-    virtual_router_mac_address: 00:1c:73:00:DC:01
     platform: vEOS-LAB
     uplink_switches: ["DC1-SPINE1"]
     uplink_interfaces: ["Ethernet1"]
