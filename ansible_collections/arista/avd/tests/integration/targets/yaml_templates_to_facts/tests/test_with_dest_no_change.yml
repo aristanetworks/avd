@@ -4,7 +4,7 @@
     timezone: "test"
     hours: 36
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     dest: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
     templates:
       - template: "templates/template.j2"
@@ -15,7 +15,7 @@
     timezone: "test"
     hours: 36
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     dest: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
     templates:
       - template: "templates/template.j2"

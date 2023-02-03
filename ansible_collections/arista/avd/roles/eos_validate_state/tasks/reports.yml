@@ -3,7 +3,7 @@
 # Validation reports
 
 - name: Generate Results (Set eos_validate_state_report)
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     templates:
       - template: generate_state_report_results.j2
   delegate_to: localhost
