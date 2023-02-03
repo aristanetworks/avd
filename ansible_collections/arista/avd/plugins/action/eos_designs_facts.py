@@ -96,7 +96,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def get_all_hostvars(self, fabric_hosts, hostvars: object, default_vars: dict):
+    def get_all_hostvars(self, fabric_hosts: list, hostvars: object, default_vars: dict):
         """
         Fetch hostvars for all hosts and perform data conversion & validation
 
