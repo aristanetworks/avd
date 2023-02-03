@@ -1932,6 +1932,7 @@ keys:
             '
           valid_values:
           - on-logging
+          - on-startup-config
         regex:
           type: str
           description: 'Regular expression to use for searching log messages. Required

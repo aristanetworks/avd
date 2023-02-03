@@ -2664,7 +2664,8 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
-              "on-logging"
+              "on-logging",
+              "on-startup-config"
             ],
             "title": "Trigger"
           },
