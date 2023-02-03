@@ -340,7 +340,7 @@
                 },
                 "remove_after_date": {
                     "type": "string",
-                    "description": "Date after which the key will be removed"
+                    "description": "Date after which the key will be removed in the next major version"
                 },
                 "url": {
                     "type": "string",
