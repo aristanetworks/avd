@@ -1,4 +1,4 @@
-! ansible-avd-examples/single-dc-l3ls/switch-basic-configurations/dc1-leaf1b-basic-configuration.txt
+! ansible-avd-examples/dual-dc-l3ls/switch-basic-configurations/dc1-leaf1b-basic-configuration.txt
 ! Basic EOS config
 !
 ! Hostname of the device

@@ -1,4 +1,6 @@
 ---
+### group_vars/FABRIC.yml
+
 # Ansible connectivity definitions
 # eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
 ansible_connection: ansible.netcommon.httpapi

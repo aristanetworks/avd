@@ -26,17 +26,17 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '3'
       password: Q4fqtbqcZ7oQuKfuWtNGRQ==
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 3
     EVPN-OVERLAY-CORE:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '15'
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 15
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -79,16 +79,16 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-CORE:
         domain_remote: true
         activate: true
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-        inter_domain: true
   vrfs:
     VRF10:
       router_id: 10.255.0.5
@@ -357,8 +357,8 @@ port_channel_interfaces:
     description: DC1-LEAF2C_Po1
     type: switched
     shutdown: false
-    vlans: 11-12,21-22,3401-3402
     mode: trunk
+    vlans: 11-12,21-22,3401-3402
     mlag: 8
   Port-Channel5:
     description: dc1-leaf2-server1_PortChannel dc1-leaf2-server1
@@ -395,26 +395,26 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 10.255.255.9/31
   Ethernet2:
     peer: dc1-spine2
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 10.255.255.11/31
   Ethernet8:
     peer: dc1-leaf2c
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-LEAF2C_Ethernet1
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 8
       mode: active

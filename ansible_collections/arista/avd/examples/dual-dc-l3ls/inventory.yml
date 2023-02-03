@@ -1,4 +1,5 @@
 ---
+# inventory.yml
 all:
   children:
     FABRIC:
@@ -52,15 +53,15 @@ all:
                 dc2-leaf2c:
                   ansible_host: 172.16.1.252
 
-        NETWORK_SERVICES:
-          children:
-            DC1_L3_LEAVES:
-            DC1_L2_LEAVES:
-            DC2_L3_LEAVES:
-            DC2_L2_LEAVES:
-        CONNECTED_ENDPOINTS:
-          children:
-            DC1_L3_LEAVES:
-            DC1_L2_LEAVES:
-            DC2_L3_LEAVES:
-            DC2_L2_LEAVES:
+    NETWORK_SERVICES:
+      children:
+        DC1_L3_LEAVES:
+        DC1_L2_LEAVES:
+        DC2_L3_LEAVES:
+        DC2_L2_LEAVES:
+    CONNECTED_ENDPOINTS:
+      children:
+        DC1_L3_LEAVES:
+        DC1_L2_LEAVES:
+        DC2_L3_LEAVES:
+        DC2_L2_LEAVES:

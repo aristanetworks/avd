@@ -1,4 +1,6 @@
 ---
+### group_vars/NETWORK_SERVICES.yml
+
 tenants:
   # Definition of tenants. Additional level of abstraction to VRFs
   TENANT1:

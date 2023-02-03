@@ -1,4 +1,6 @@
 ---
+### group_vars/CONNECTED_ENDPOINTS.yml
+
 # Definition of connected endpoints in the fabric.
 servers:
   # Name of the defined server.

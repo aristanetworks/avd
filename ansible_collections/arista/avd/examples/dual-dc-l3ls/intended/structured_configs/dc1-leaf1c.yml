@@ -44,8 +44,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: DC1-LEAF1A_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -54,8 +54,8 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
     description: DC1-LEAF1B_Ethernet8
-    type: switched
     shutdown: false
+    type: switched
     channel_group:
       id: 1
       mode: active
@@ -74,8 +74,8 @@ port_channel_interfaces:
     description: DC1_L3_LEAF1_Po8
     type: switched
     shutdown: false
-    vlans: 11-12,21-22,3401-3402
     mode: trunk
+    vlans: 11-12,21-22,3401-3402
 vlans:
   11:
     tenant: TENANT1
