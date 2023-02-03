@@ -9,9 +9,10 @@
     destination: "{{ actual_output }}"
 
 - name: Compare actual output with expected output
-  ansible.builtin.local_action: shell diff "{{ expected_output }}/expected_with_all_param.yml" "{{ actual_output }}"
+  ansible.builtin.shell: diff "{{ expected_output }}/expected_with_all_param.yml" "{{ actual_output }}"
   failed_when: "diff_output.rc > 1"
   register: diff_output
+  delegate_to: localhost
 
 - name: Validate output
   ansible.builtin.assert:
