@@ -49,8 +49,8 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", destructive_merg
     list_strategies = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
 
     if list_merge != "replace" and isinstance(schema, AvdSchema):
-        # If list_merge is "replace" we don't have to try the merge.
-        # If schema is defined we first try to merge lists based on primary_key in the schema
+        # If list_merge is not "replace" and we have a valid schema, we prepend the list_strategies
+        # with our schema based list merger "MergeOnSchema"
         # If "primary_key" is not set and equal, we will fallback to the supplied "list_merge" strategy
         merge_on_schema = MergeOnSchema(schema)
         list_strategies.insert(0, merge_on_schema.strategy)

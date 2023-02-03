@@ -53,6 +53,7 @@ class MergeOnSchema:
             # Skipping items if they are not dicts or don't have primary_key
             if not (isinstance(nxt_item, dict) and primary_key in nxt_item):
                 continue
+
             for base_index, base_item in enumerate(base):
                 # Skipping items if they are not dicts or don't have primary_key
                 if not (isinstance(base_item, dict) and primary_key in base_item):
