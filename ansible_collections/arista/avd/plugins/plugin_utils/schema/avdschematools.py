@@ -5,6 +5,7 @@ from typing import Generator
 from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
 
 VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug", "quiet"]
@@ -19,12 +20,7 @@ class AvdSchemaTools:
     """
 
     def __init__(
-        self,
-        schema: dict,
-        hostname: str,
-        ansible_display: Display,
-        conversion_mode: str = None,
-        validation_mode: str = None,
+        self, schema: dict, hostname: str, ansible_display: Display, conversion_mode: str = None, validation_mode: str = None, plugin_name: str = None
     ) -> None:
         try:
             self.avdschema = AvdSchema(schema)
@@ -33,6 +29,7 @@ class AvdSchemaTools:
 
         self.hostname = hostname
         self.ansible_display = ansible_display
+        self.plugin_name = plugin_name
         self._set_conversion_mode(conversion_mode)
         self._set_validation_mode(validation_mode)
 
@@ -74,6 +71,8 @@ class AvdSchemaTools:
         exceptions = self.avdschema.convert(data)
         if conversion_counter := self.handle_validation_exceptions(exceptions, self.conversion_mode):
             result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
+            if self.conversion_mode == "debug":
+                result_messages.append("Run with -v to see details")
 
         return result_messages
 
@@ -90,6 +89,8 @@ class AvdSchemaTools:
         exceptions = self.avdschema.validate(data)
         if validation_counter := self.handle_validation_exceptions(exceptions, self.validation_mode):
             result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")
+            if self.validation_mode == "debug":
+                result_messages.append("Run with -v to see details")
 
         return result_messages
 
@@ -136,6 +137,19 @@ class AvdSchemaTools:
         counter = 0
         for exception in exceptions:
             if not isinstance(exception, AristaAvdError):
+                continue
+
+            if isinstance(exception, AvdDeprecationWarning):
+                # Deprecation warnings are not subject to "conversion_mode".
+                # Instead we display using Ansible's deprecation notices.
+                message = f"[{self.hostname}]: {exception}"
+                self.ansible_display.deprecated(
+                    msg=message,
+                    version=exception.version,
+                    date=exception.date,
+                    collection_name=self.plugin_name,
+                    removed=exception.removed,
+                )
                 continue
 
             counter += 1

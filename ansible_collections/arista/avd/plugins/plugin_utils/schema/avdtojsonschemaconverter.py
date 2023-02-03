@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import json
 import os
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import get_deprecation
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
 
 script_dir = os.path.dirname(__file__)
@@ -73,14 +76,18 @@ class AvdToJsonSchemaConverter:
     def convert_keys(self, keys: dict, parent_schema: dict) -> dict:
         output = {"properties": {}}
         required = []
-        for key in keys:
-            output["properties"][key] = self.convert_schema(keys[key])
+        for key, subschema in keys.items():
+            if "deprecation" in subschema and get_deprecation(subschema)[0] == "removed":
+                # Skip key if marked as removed in the AVD schema
+                continue
+
+            output["properties"][key] = self.convert_schema(subschema)
 
             # Add an auto-generated title in case one is not set
             if "title" not in output["properties"][key]:
                 output["properties"][key]["title"] = key_to_display_name(str(key))
 
-            if keys[key].get("required") is True:
+            if subschema.get("required") is True:
                 required.append(key)
 
         if required:
@@ -150,6 +157,14 @@ class AvdToJsonSchemaConverter:
         return {"title": display_name}
 
     def convert_description(self, description: str, parent_schema: dict) -> dict:
+        if "deprecation" in parent_schema:
+            label, deprecation_text = get_deprecation(parent_schema)
+            if deprecation_text is not None:
+                return {
+                    "description": f"{description}\n{deprecation_text}",
+                    "deprecated": True,
+                }
+
         return {"description": description}
 
     def convert_ref(self, ref: str, parent_schema: dict) -> dict:

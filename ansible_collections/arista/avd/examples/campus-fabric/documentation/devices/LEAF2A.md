@@ -9,7 +9,6 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [AAA Authorization](#aaa-authorization)
-- [Monitoring](#monitoring)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -29,14 +28,11 @@
   - [Static Routes](#static-routes)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -169,8 +165,6 @@ Authorization for configuration commands is disabled.
 aaa authorization exec default local
 !
 ```
-
-# Monitoring
 
 # Spanning Tree
 
@@ -5336,7 +5330,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -5353,6 +5346,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -5393,8 +5387,6 @@ ip route 0.0.0.0/0 10.10.10.1
 
 ```eos
 ```
-
-# Filters
 
 # 802.1X Port Security
 
@@ -5645,8 +5637,6 @@ ip route 0.0.0.0/0 10.10.10.1
 | Ethernet7/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
 | Ethernet7/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -5661,5 +5651,3 @@ ip route 0.0.0.0/0 10.10.10.1
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

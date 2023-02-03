@@ -43,11 +43,9 @@
 - [Filters](#filters)
   - [Route-maps](#route-maps)
   - [IP Extended Community Lists](#ip-extended-community-lists)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -523,7 +521,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:dc:00:00:00:0a
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -540,6 +537,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -757,8 +755,6 @@ route-map RM-EVPN-SOO-OUT permit 10
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.10:1
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -773,5 +769,3 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.10:1
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

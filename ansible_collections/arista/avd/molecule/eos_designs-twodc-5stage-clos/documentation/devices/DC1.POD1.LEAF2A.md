@@ -40,14 +40,12 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Virtual Source NAT](#virtual-source-nat)
   - [Virtual Source NAT Summary](#virtual-source-nat-summary)
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
-- [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
 # Management
@@ -691,7 +689,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -716,6 +713,7 @@ ip routing vrf vrf_with_loopbacks_dc1_pod1_only
 ip routing vrf vrf_with_loopbacks_from_overlapping_pool
 ip routing vrf vrf_with_loopbacks_from_pod_pools
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -1158,8 +1156,6 @@ route-map RM-MLAG-PEER-IN permit 10
    set origin incomplete
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -1205,8 +1201,6 @@ ip address virtual source-nat vrf vrf_with_loopbacks_dc1_pod1_only address 10.10
 ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.4
 ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.101.4
 ```
-
-# Quality Of Service
 
 # EOS CLI
 

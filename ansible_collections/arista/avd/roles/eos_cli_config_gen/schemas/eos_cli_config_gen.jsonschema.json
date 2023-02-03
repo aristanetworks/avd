@@ -13721,13 +13721,13 @@
       "properties": {
         "length": {
           "type": "integer",
-          "minimum": 1,
+          "minimum": 0,
           "maximum": 32767,
           "title": "Length"
         },
         "width": {
           "type": "integer",
-          "minimum": 1,
+          "minimum": 10,
           "maximum": 32767,
           "title": "Width"
         }
@@ -14398,7 +14398,8 @@
           },
           "ipv6_address_virtual": {
             "type": "string",
-            "description": "IPv6_address/Mask\n\"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "description": "IPv6_address/Mask\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
+            "deprecated": true,
             "title": "IPv6 Address Virtual"
           },
           "ipv6_address_virtuals": {
