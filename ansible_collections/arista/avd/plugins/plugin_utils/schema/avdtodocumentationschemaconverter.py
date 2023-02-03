@@ -375,7 +375,7 @@ class AvdToDocumentationSchemaConverter:
         if (remove_in_version := deprecation.get("remove_in_version")) is not None:
             output.append(f"Support {removed_verb} removed in AVD {remove_in_version}.")
         elif (remove_after_date := deprecation.get("remove_after_date")) is not None:
-            output.append(f"Support {removed_verb} removed the first major AVD version released after {remove_after_date}.")
+            output.append(f"Support {removed_verb} removed in the first major AVD version released after {remove_after_date}.")
         elif removed:
             output.append(f"Support {removed_verb} removed in AVD.")
 
