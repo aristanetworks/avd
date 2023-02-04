@@ -180,7 +180,8 @@
                                 "type": "string",
                                 "enum": [
                                     "dict",
-                                    "list"
+                                    "list",
+                                    "str"
                                 ]
                             }
                         },

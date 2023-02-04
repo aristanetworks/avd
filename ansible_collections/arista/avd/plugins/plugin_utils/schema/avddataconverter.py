@@ -177,6 +177,16 @@ class AvdDataConverter:
 
                     yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
 
+                elif convert_type == "str" and schema_type == "list":
+                    try:
+                        data[index] = list(map(str.strip, value.split(",")))
+                    except Exception:
+                        # Ignore errors
+                        # TODO: Log message
+                        return
+
+                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+
     def deprecation(self, deprecation: dict, data, schema: dict, path: list):
         """
         deprecation:
