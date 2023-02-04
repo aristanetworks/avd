@@ -4,35 +4,35 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
   neighbors:
-    192.168.0.0:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65000'
-      description: UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
+  - peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    description: UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
+    ip_address: 192.168.0.0
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -41,45 +41,45 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: UNDERLAY_FILTER_PEER_AS_SPINE1
-    peer_interface: Ethernet1
-    peer_type: spine
-    description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
-    shutdown: false
-    mtu: 9000
-    type: routed
-    ip_address: 192.168.0.1/31
+- peer: UNDERLAY_FILTER_PEER_AS_SPINE1
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
+  shutdown: false
+  mtu: 9000
+  type: routed
+  ip_address: 192.168.0.1/31
+  name: Ethernet1
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.3/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.3/32
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.3/32
+  name: Loopback0
+- description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.3/32
+  name: Loopback1
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
+- sequence_numbers:
+  - action: permit 192.168.255.0/24 eq 32
+    sequence: 10
+  - action: permit 192.168.254.0/24 eq 32
+    sequence: 20
+  name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- sequence_numbers:
+  - type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    sequence: 10
+  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300

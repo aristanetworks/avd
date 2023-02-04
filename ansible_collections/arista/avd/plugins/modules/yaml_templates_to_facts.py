@@ -120,6 +120,10 @@ options:
     default: "warning"
     type: str
     choices: [ "error", "warning", "info", "debug", "disabled" ]
+  output_schema:
+    description: AVD Schema for output data. Used for automatic merge of data.
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""

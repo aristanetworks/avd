@@ -190,11 +190,11 @@ class AvdSchema:
         if not isinstance(datapath, list):
             raise AvdSchemaError(f"The datapath argument must be a list. Got {type(datapath)}")
 
-        if not schema:
+        if schema:
+            for validation_error in self.validate_schema(schema):
+                raise validation_error
+        else:
             schema = self._schema
-
-        for validation_error in self.validate_schema(schema):
-            raise validation_error
 
         if len(datapath) == 0:
             return schema

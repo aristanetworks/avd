@@ -10,59 +10,59 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: BGP-SPINE1
-    peer_interface: Ethernet2
-    peer_type: l3spine
-    description: BGP-SPINE1_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: BGP-SPINE2
-    peer_interface: Ethernet2
-    peer_type: l3spine
-    description: BGP-SPINE2_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet10:
-    peer: Endpoint
-    peer_type: network_port
-    description: Endpoint
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 100
-  Ethernet11:
-    peer: Endpoint
-    peer_type: network_port
-    description: Endpoint
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 100
+- peer: BGP-SPINE1
+  peer_interface: Ethernet2
+  peer_type: l3spine
+  description: BGP-SPINE1_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
+- peer: BGP-SPINE2
+  peer_interface: Ethernet2
+  peer_type: l3spine
+  description: BGP-SPINE2_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet2
+- peer: Endpoint
+  peer_type: network_port
+  description: Endpoint
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '100'
+  name: Ethernet10
+- peer: Endpoint
+  peer_type: network_port
+  description: Endpoint
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '100'
+  name: Ethernet11
 port_channel_interfaces:
-  Port-Channel1:
-    description: BGP_SPINES_Po2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: '100'
+- description: BGP_SPINES_Po2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '100'
+  name: Port-Channel1
 vlans:
-  100:
-    tenant: L2LS_BGP
-    name: SVI_100
+- tenant: L2LS_BGP
+  name: SVI_100
+  id: 100
 ip_igmp_snooping:
   globally_enabled: true

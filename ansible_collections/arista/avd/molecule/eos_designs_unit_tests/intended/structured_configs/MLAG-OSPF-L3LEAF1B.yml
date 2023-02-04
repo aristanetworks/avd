@@ -4,32 +4,32 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   neighbors:
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE1
-      remote_as: '65001'
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE1
+    remote_as: '65001'
+    ip_address: 192.168.255.1
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -61,117 +61,117 @@ snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1B
 local_users:
-  admin:
-    disabled: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
+- disabled: true
+  name: admin
+- privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  name: cvpadmin
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.201.115/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.115/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
   default_services: false
 spanning_tree:
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: '4094'
 vlans:
-  4094:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
+- tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+  id: 4094
 vlan_interfaces:
-  Vlan4094:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 10.10.255.7/31
-    no_autostate: true
-    mtu: 1500
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
+- description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.10.255.7/31
+  no_autostate: true
+  mtu: 1500
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  name: Vlan4094
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Po5
-    type: switched
-    shutdown: false
-    vlans: 2-4094
-    mode: trunk
-    trunk_groups:
-    - LEAF_PEER_L3
-    - MLAG
+- description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Po5
+  type: switched
+  shutdown: false
+  vlans: 2-4094
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+  name: Port-Channel5
 ethernet_interfaces:
-  Ethernet5:
-    peer: MLAG-OSPF-L3LEAF1A
-    peer_interface: Ethernet5
-    peer_type: mlag_peer
-    description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet5
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet6:
-    peer: MLAG-OSPF-L3LEAF1A
-    peer_interface: Ethernet6
-    peer_type: mlag_peer
-    description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet6
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet18
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet18
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 10.10.101.9/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
+- peer: MLAG-OSPF-L3LEAF1A
+  peer_interface: Ethernet5
+  peer_type: mlag_peer
+  description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet5
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  name: Ethernet5
+- peer: MLAG-OSPF-L3LEAF1A
+  peer_interface: Ethernet6
+  peer_type: mlag_peer
+  description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet6
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  name: Ethernet6
+- peer: DC1-SPINE1
+  peer_interface: Ethernet18
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet18
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.10.101.9/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  name: Ethernet1
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094
   peer_address: 10.10.255.6
   peer_link: Port-Channel5
-  reload_delay_mlag: 300
-  reload_delay_non_mlag: 330
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.37/32
-    ospf_area: 0.0.0.0
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.36/32
-    ospf_area: 0.0.0.0
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.37/32
+  ospf_area: 0.0.0.0
+  name: Loopback0
+- description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.36/32
+  ospf_area: 0.0.0.0
+  name: Loopback1
 router_ospf:
   process_ids:
-    100:
-      passive_interface_default: true
-      router_id: 192.168.255.37
-      max_lsa: 12000
-      no_passive_interfaces:
-      - Ethernet1
-      - Vlan4094
-      bfd_enable: false
+  - passive_interface_default: true
+    router_id: 192.168.255.37
+    max_lsa: 12000
+    no_passive_interfaces:
+    - Ethernet1
+    - Vlan4094
+    bfd_enable: false
+    id: 100
 router_bfd:
   multihop:
     interval: 1200

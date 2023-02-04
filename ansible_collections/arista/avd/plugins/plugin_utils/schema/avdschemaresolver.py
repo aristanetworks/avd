@@ -106,7 +106,7 @@ def _ref(validator, ref, resolved_schema: dict, schema: dict):
 """
 AvdSchemaResolver is used to resolve $ref in AVD Schemas.
 
-It is used to generate full documentation convering all nested schemas.
+It is used to generate full documentation covering all nested schemas.
 
 Since we return generators, we cannot return the resolved schema.
 Instead we use the "instance" of jsonschema - the variable normally holding

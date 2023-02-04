@@ -1,0 +1,18 @@
+access_lists:
+  - name: ACL-01
+    sequence_numbers:
+      - sequence: 10
+        action: "remark ACL to restrict access to switch API to CVP and Ansible"
+      - sequence: 20
+        action: "deny ip host 192.0.2.1 any"
+      - sequence: 30
+        action: "permit ip 192.0.2.0/24 any"
+  - name: ACL-02
+    counters_per_entry: false
+    sequence_numbers:
+      - sequence: 10
+        action: "remark ACL to restrict access RFC1918 addresses"
+      - sequence: 25
+        action: "permit ip 172.24.0.0/16 any"
+      - sequence: 30
+        action: "permit ip any any"

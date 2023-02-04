@@ -6,43 +6,43 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 10 ecmp 10
   peer_groups:
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
     evpn_hostflap_detection:
       window: 180
       threshold: 30
       enabled: true
   neighbors:
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE1
-      remote_as: '65001'
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE2
-      remote_as: '65001'
-    192.168.255.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE3
-      remote_as: '65001'
-    192.168.255.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE4
-      remote_as: '65001'
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE1
+    remote_as: '65001'
+    ip_address: 192.168.255.1
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE2
+    remote_as: '65001'
+    ip_address: 192.168.255.2
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE3
+    remote_as: '65001'
+    ip_address: 192.168.255.3
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE4
+    remote_as: '65001'
+    ip_address: 192.168.255.4
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -73,100 +73,100 @@ name_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-    '0':
-      priority: 4096
+  - priority: 4096
+    id: '0'
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+- privilege: 15
+  role: network-admin
+  no_password: true
+  name: admin
+- privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  name: cvpadmin
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.105/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.105/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.1/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
-  Ethernet2:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.3/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
-  Ethernet3:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.5/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
-  Ethernet4:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.7/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
+- peer: DC1-SPINE1
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.1/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  name: Ethernet1
+- peer: DC1-SPINE2
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.3/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  name: Ethernet2
+- peer: DC1-SPINE3
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.5/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  name: Ethernet3
+- peer: DC1-SPINE4
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.7/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  name: Ethernet4
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.5/32
-    ospf_area: 0.0.0.0
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.5/32
-    ospf_area: 0.0.0.0
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.5/32
+  ospf_area: 0.0.0.0
+  name: Loopback0
+- description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.5/32
+  ospf_area: 0.0.0.0
+  name: Loopback1
 router_ospf:
   process_ids:
-    101:
-      passive_interface_default: true
-      router_id: 192.168.255.5
-      max_lsa: 12000
-      no_passive_interfaces:
-      - Ethernet1
-      - Ethernet2
-      - Ethernet3
-      - Ethernet4
-      bfd_enable: true
+  - passive_interface_default: true
+    router_id: 192.168.255.5
+    max_lsa: 12000
+    no_passive_interfaces:
+    - Ethernet1
+    - Ethernet2
+    - Ethernet3
+    - Ethernet4
+    bfd_enable: true
+    id: 101
 router_bfd:
   multihop:
     interval: 1200
