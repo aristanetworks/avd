@@ -35,3 +35,6 @@ maintenance:
           - BGP_GROUP_2
         interface_groups:
           - INTERFACE_GROUP_1
+    # Adding a unit with no profile for issue/2488
+    System:
+

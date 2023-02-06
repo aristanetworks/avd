@@ -67,6 +67,7 @@ Default maintenance unit profile: **IP1**
 
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
 | ---- | ---------------- | ---------- | ------------ | ------- |
+| System | - | - | IP1 | No |
 | UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
 ### Maintenance configuration
@@ -96,6 +97,8 @@ maintenance
    !
    profile unit UP2
       on-boot duration 600
+   !
+   unit System
    !
    unit UNIT1
       group bgp BGP_GROUP_1
