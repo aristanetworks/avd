@@ -13,38 +13,38 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-    '0':
-      priority: 4096
+  - priority: 4096
+    id: '0'
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.110/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.110/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
-  Loopback0:
-    description: MPLS_Overlay_peering
-    shutdown: false
-    ip_address: 100.70.0.10/32
-    ipv6_address: 2000:1234:ffff:ffff::a/128
-    mpls:
-      ldp:
-        interface: true
-    isis_enable: CORE
-    isis_passive: true
-    node_segment:
-      ipv4_index: 210
-      ipv6_index: 210
+- description: MPLS_Overlay_peering
+  shutdown: false
+  ip_address: 100.70.0.10/32
+  ipv6_address: 2000:1234:ffff:ffff::a/128
+  mpls:
+    ldp:
+      interface: true
+  isis_enable: CORE
+  isis_passive: true
+  node_segment:
+    ipv4_index: 210
+    ipv6_index: 210
+  name: Loopback0
 router_isis:
   instance: CORE
   log_adjacency_changes: true

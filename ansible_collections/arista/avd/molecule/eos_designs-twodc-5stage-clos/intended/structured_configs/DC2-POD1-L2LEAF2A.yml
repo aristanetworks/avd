@@ -16,59 +16,59 @@ snmp_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-    '0':
-      priority: 8192
+  - priority: 8192
+    id: '0'
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+- privilege: 15
+  role: network-admin
+  sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+  name: admin
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.25/24
-    gateway: 192.168.1.254
-    type: oob
-  Vlan4092:
-    description: L2LEAF_INBAND_MGMT
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.21.210.5/24
-    gateway: 172.21.210.1
-    type: inband
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.25/24
+  gateway: 192.168.1.254
+  type: oob
+  name: Management1
+- description: L2LEAF_INBAND_MGMT
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.21.210.5/24
+  gateway: 172.21.210.1
+  type: inband
+  name: Vlan4092
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 eos_cli: "interface Loopback1011\n  description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC2-POD1-LEAF2A
-    peer_interface: Ethernet3
-    peer_type: l3leaf
-    description: DC2-POD1-LEAF2A_Ethernet3
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
+- peer: DC2-POD1-LEAF2A
+  peer_interface: Ethernet3
+  peer_type: l3leaf
+  description: DC2-POD1-LEAF2A_Ethernet3
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
 port_channel_interfaces:
-  Port-Channel1:
-    description: DC2-POD1-LEAF2A_Po3
-    type: switched
-    shutdown: false
-    mode: trunk
-    service_profile: QOS-PROFILE
-    vlans: '4092'
+- description: DC2-POD1-LEAF2A_Po3
+  type: switched
+  shutdown: false
+  mode: trunk
+  service_profile: QOS-PROFILE
+  vlans: '4092'
+  name: Port-Channel1
 ip_igmp_snooping:
   globally_enabled: true
 vlans:
-  4092:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
+- tenant: system
+  name: L2LEAF_INBAND_MGMT
+  id: 4092

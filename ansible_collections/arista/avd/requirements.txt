@@ -7,5 +7,5 @@ jsonschema>=4.5.1
 requests>=2.25.1
 PyYAML>=5.4.1
 md-toc>=7.1.0
-deepmerge>=1.0.1
+deepmerge>=1.1.0
 cryptography>=38.0.4

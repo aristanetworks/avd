@@ -4,31 +4,31 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
-      next_hop_unchanged: true
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -43,19 +43,19 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.0.21/24
-    gateway: 192.168.0.1
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.21/24
+  gateway: 192.168.0.1
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ptp:
   mode: boundary
@@ -89,93 +89,93 @@ ptp:
         follow_up: 13
         sync: 14
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 10.255.0.2/32
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.255.0.2/32
+  name: Loopback0
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 10.255.0.0/27 eq 32
+- sequence_numbers:
+  - action: permit 10.255.0.0/27 eq 32
+    sequence: 10
+  name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- sequence_numbers:
+  - type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    sequence: 10
+  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 ethernet_interfaces:
-  Ethernet6:
-    peer: ptp-tests-spine1
-    peer_interface: Ethernet6
-    peer_type: spine
-    description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ptp:
-      announce:
-        interval: 0
-        timeout: 3
-      delay_req: -3
-      sync_message:
-        interval: -3
-      transport: ipv4
-      enable: true
-  Ethernet7:
-    peer: ptp-tests-spine1
-    peer_interface: Ethernet7
-    peer_type: spine
-    description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ptp:
-      announce:
-        interval: 0
-        timeout: 3
-      delay_req: -3
-      sync_message:
-        interval: -3
-      transport: ipv4
-      enable: true
-  Ethernet8:
-    peer: ptp-tests-spine1
-    peer_interface: Ethernet8
-    peer_type: spine
-    description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ptp:
-      announce:
-        interval: 0
-        timeout: 3
-      delay_req: -3
-      sync_message:
-        interval: -3
-      transport: ipv4
-      enable: true
-  Ethernet9:
-    peer: ptp-tests-spine1
-    peer_interface: Ethernet9
-    peer_type: spine
-    description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ptp:
-      announce:
-        interval: 0
-        timeout: 3
-      delay_req: -3
-      sync_message:
-        interval: -3
-      transport: ipv4
-      enable: true
+- peer: ptp-tests-spine1
+  peer_interface: Ethernet6
+  peer_type: spine
+  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  name: Ethernet6
+- peer: ptp-tests-spine1
+  peer_interface: Ethernet7
+  peer_type: spine
+  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  name: Ethernet7
+- peer: ptp-tests-spine1
+  peer_interface: Ethernet8
+  peer_type: spine
+  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  name: Ethernet8
+- peer: ptp-tests-spine1
+  peer_interface: Ethernet9
+  peer_type: spine
+  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  name: Ethernet9

@@ -6,313 +6,331 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    MLAG-PEERS:
-      type: ipv4
-      remote_as: '65103'
-      next_hop_self: true
-      description: DC1-SVC3A
-      password: 15AwQNBEJ1nyF/kBEtoAGw==
-      maximum_routes: 12000
-      send_community: all
-      route_map_in: RM-MLAG-PEER-IN
-    UNDERLAY-PEERS:
-      type: ipv4
-      password: 0nsCUm70mvSTxVO0ldytrg==
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - type: ipv4
+    remote_as: '65103'
+    next_hop_self: true
+    description: DC1-SVC3A
+    password: 15AwQNBEJ1nyF/kBEtoAGw==
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-MLAG-PEER-IN
+    name: MLAG-PEERS
+  - type: ipv4
+    password: 0nsCUm70mvSTxVO0ldytrg==
+    maximum_routes: 12000
+    send_community: all
+    name: UNDERLAY-PEERS
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      MLAG-PEERS:
-        activate: true
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - activate: true
+      name: MLAG-PEERS
+    - activate: true
+      name: UNDERLAY-PEERS
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
   neighbors:
-    10.255.251.6:
-      peer_group: MLAG-PEERS
-      description: DC1-SVC3A
-    172.31.254.128:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE1_Ethernet9/1
-    172.31.254.130:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE2_Ethernet1/9/1
-    172.31.254.132:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE3_Ethernet1/9/1
-    172.31.254.134:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE4_Ethernet9/1
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE1
-      remote_as: '65001'
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE2
-      remote_as: '65001'
-    192.168.255.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE3
-      remote_as: '65001'
-    192.168.255.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE4
-      remote_as: '65001'
+  - peer_group: MLAG-PEERS
+    description: DC1-SVC3A
+    ip_address: 10.255.251.6
+  - peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE1_Ethernet9/1
+    ip_address: 172.31.254.128
+  - peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE2_Ethernet1/9/1
+    ip_address: 172.31.254.130
+  - peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE3_Ethernet1/9/1
+    ip_address: 172.31.254.132
+  - peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE4_Ethernet9/1
+    ip_address: 172.31.254.134
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE1
+    remote_as: '65001'
+    ip_address: 192.168.255.1
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE2
+    remote_as: '65001'
+    ip_address: 192.168.255.2
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE3
+    remote_as: '65001'
+    ip_address: 192.168.255.3
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE4
+    remote_as: '65001'
+    ip_address: 192.168.255.4
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-    Tenant_A_APP_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:12'
-      route_targets:
-        import:
-          evpn:
-          - '12:12'
-        export:
-          evpn:
-          - '12:12'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_A_DB_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:13'
-      route_targets:
-        import:
-          evpn:
-          - '13:13'
-        export:
-          evpn:
-          - '13:13'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_A_OP_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:9'
-      route_targets:
-        import:
-          evpn:
-          - '9:9'
-        export:
-          evpn:
-          - '9:9'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_A_WAN_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:14'
-      route_targets:
-        import:
-          evpn:
-          - '14:14'
-          - 65000:456
-        export:
-          evpn:
-          - '14:14'
-          - 65000:789
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_A_WEB_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:11'
-      route_targets:
-        import:
-          evpn:
-          - '11:11'
-        export:
-          evpn:
-          - '11:11'
-      redistribute_routes:
-      - connected
-      neighbors:
-        172.31.11.6:
-          peer_group: MLAG-PEERS
-    Tenant_B_OP_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:20'
-      route_targets:
-        import:
-          evpn:
-          - '20:20'
-        export:
-          evpn:
-          - '20:20'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_B_WAN_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:21'
-      route_targets:
-        import:
-          evpn:
-          - '21:21'
-        export:
-          evpn:
-          - '21:21'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_C_OP_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:30'
-      route_targets:
-        import:
-          evpn:
-          - '30:30'
-        export:
-          evpn:
-          - '30:30'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-    Tenant_C_WAN_Zone:
-      router_id: 192.168.255.13
-      rd: '65103:31'
-      route_targets:
-        import:
-          evpn:
-          - '31:31'
-        export:
-          evpn:
-          - '31:31'
-      redistribute_routes:
-      - connected
-      neighbors:
-        10.255.251.6:
-          peer_group: MLAG-PEERS
-  vlan_aware_bundles:
-    Tenant_A_APP_Zone:
-      rd: '65103:12'
-      route_targets:
-        both:
+  - router_id: 192.168.255.13
+    rd: '65103:12'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '12:12'
-      redistribute_routes:
-      - learned
-      vlan: 130-131
-    Tenant_A_DB_Zone:
-      rd: '65103:13'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_A_APP_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:13'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '13:13'
-      redistribute_routes:
-      - learned
-      vlan: 140-141
-    Tenant_A_OP_Zone:
-      rd: '65103:9'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_A_DB_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:9'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '9:9'
-      redistribute_routes:
-      - learned
-      vlan: 110-112
-    Tenant_A_WAN_Zone:
-      rd: '65103:14'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '9:9'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_A_OP_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:14'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '14:14'
-      redistribute_routes:
-      - learned
-      vlan: '150'
-    Tenant_A_WEB_Zone:
-      rd: '65103:11'
-      route_targets:
-        both:
+        - 65000:456
+      export:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+        - 65000:789
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_A_WAN_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:11'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '11:11'
-      redistribute_routes:
-      - learned
-      vlan: 120-121
-    Tenant_A_NFS:
-      tenant: Tenant_A
-      rd: 65103:20161
-      route_targets:
-        both:
-        - 20161:20161
-      redistribute_routes:
-      - learned
-      vlan: '161'
-    Tenant_A_VMOTION:
-      tenant: Tenant_A
-      rd: 65103:20160
-      route_targets:
-        both:
-        - 20160:20160
-      redistribute_routes:
-      - learned
-      vlan: '160'
-    Tenant_B_OP_Zone:
-      rd: '65103:20'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 172.31.11.6
+    name: Tenant_A_WEB_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:20'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '20:20'
-      redistribute_routes:
-      - learned
-      vlan: 210-211
-    Tenant_B_WAN_Zone:
-      rd: '65103:21'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_B_OP_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:21'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '21:21'
-      redistribute_routes:
-      - learned
-      vlan: '250'
-    Tenant_C_OP_Zone:
-      rd: '65103:30'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_B_WAN_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:30'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '30:30'
-      redistribute_routes:
-      - learned
-      vlan: 310-311
-    Tenant_C_WAN_Zone:
-      rd: '65103:31'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '30:30'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_C_OP_Zone
+  - router_id: 192.168.255.13
+    rd: '65103:31'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '31:31'
-      redistribute_routes:
-      - learned
-      vlan: '350'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '31:31'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-PEERS
+      ip_address: 10.255.251.6
+    name: Tenant_C_WAN_Zone
+  vlan_aware_bundles:
+  - rd: '65103:12'
+    route_targets:
+      both:
+      - '12:12'
+    redistribute_routes:
+    - learned
+    vlan: 130-131
+    name: Tenant_A_APP_Zone
+  - rd: '65103:13'
+    route_targets:
+      both:
+      - '13:13'
+    redistribute_routes:
+    - learned
+    vlan: 140-141
+    name: Tenant_A_DB_Zone
+  - rd: '65103:9'
+    route_targets:
+      both:
+      - '9:9'
+    redistribute_routes:
+    - learned
+    vlan: 110-112
+    name: Tenant_A_OP_Zone
+  - rd: '65103:14'
+    route_targets:
+      both:
+      - '14:14'
+    redistribute_routes:
+    - learned
+    vlan: '150'
+    name: Tenant_A_WAN_Zone
+  - rd: '65103:11'
+    route_targets:
+      both:
+      - '11:11'
+    redistribute_routes:
+    - learned
+    vlan: 120-121
+    name: Tenant_A_WEB_Zone
+  - tenant: Tenant_A
+    rd: 65103:20161
+    route_targets:
+      both:
+      - 20161:20161
+    redistribute_routes:
+    - learned
+    vlan: '161'
+    name: Tenant_A_NFS
+  - tenant: Tenant_A
+    rd: 65103:20160
+    route_targets:
+      both:
+      - 20160:20160
+    redistribute_routes:
+    - learned
+    vlan: '160'
+    name: Tenant_A_VMOTION
+  - rd: '65103:20'
+    route_targets:
+      both:
+      - '20:20'
+    redistribute_routes:
+    - learned
+    vlan: 210-211
+    name: Tenant_B_OP_Zone
+  - rd: '65103:21'
+    route_targets:
+      both:
+      - '21:21'
+    redistribute_routes:
+    - learned
+    vlan: '250'
+    name: Tenant_B_WAN_Zone
+  - rd: '65103:30'
+    route_targets:
+      both:
+      - '30:30'
+    redistribute_routes:
+    - learned
+    vlan: 310-311
+    name: Tenant_C_OP_Zone
+  - rd: '65103:31'
+    route_targets:
+      both:
+      - '31:31'
+    redistribute_routes:
+    - learned
+    vlan: '350'
+    name: Tenant_C_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -347,1071 +365,1071 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-    '0':
-      priority: 4096
+  - priority: 4096
+    id: '0'
   no_spanning_tree_vlan: 4090,4092
 local_users:
-  admin:
-    disabled: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
+- disabled: true
+  name: admin
+- privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  name: cvpadmin
 vrfs:
-  MGMT:
-    ip_routing: false
-  Tenant_A_APP_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-  Tenant_A_DB_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-  Tenant_A_OP_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-    description: Tenant_A_OP_Zone
-  Tenant_A_WAN_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-  Tenant_A_WEB_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-  Tenant_B_OP_Zone:
-    tenant: Tenant_B
-    ip_routing: true
-  Tenant_B_WAN_Zone:
-    tenant: Tenant_B
-    ip_routing: true
-  Tenant_C_OP_Zone:
-    tenant: Tenant_C
-    ip_routing: true
-  Tenant_C_WAN_Zone:
-    tenant: Tenant_C
-    ip_routing: true
+- ip_routing: false
+  name: MGMT
+- tenant: Tenant_A
+  ip_routing: true
+  name: Tenant_A_APP_Zone
+- tenant: Tenant_A
+  ip_routing: true
+  name: Tenant_A_DB_Zone
+- tenant: Tenant_A
+  ip_routing: true
+  description: Tenant_A_OP_Zone
+  name: Tenant_A_OP_Zone
+- tenant: Tenant_A
+  ip_routing: true
+  name: Tenant_A_WAN_Zone
+- tenant: Tenant_A
+  ip_routing: true
+  name: Tenant_A_WEB_Zone
+- tenant: Tenant_B
+  ip_routing: true
+  name: Tenant_B_OP_Zone
+- tenant: Tenant_B
+  ip_routing: true
+  name: Tenant_B_WAN_Zone
+- tenant: Tenant_C
+  ip_routing: true
+  name: Tenant_C_OP_Zone
+- tenant: Tenant_C
+  ip_routing: true
+  name: Tenant_C_WAN_Zone
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.109/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.109/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
   default_services: false
 vlans:
-  4090:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
-  4092:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
-  130:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_1
-  131:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_2
-  3011:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_APP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  140:
-    tenant: Tenant_A
-    name: Tenant_A_DB_BZone_1
-  141:
-    tenant: Tenant_A
-    name: Tenant_A_DB_Zone_2
-  3012:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_DB_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
-  3008:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_OP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  150:
-    tenant: Tenant_A
-    name: Tenant_A_WAN_Zone_1
-  3013:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_WAN_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  120:
-    tenant: Tenant_A
-    name: Tenant_A_WEB_Zone_1
-  121:
-    tenant: Tenant_A
-    name: Tenant_A_WEBZone_2
-  3010:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_WEB_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
-  210:
-    tenant: Tenant_B
-    name: Tenant_B_OP_Zone_1
-  211:
-    tenant: Tenant_B
-    name: Tenant_B_OP_Zone_2
-  3019:
-    tenant: Tenant_B
-    name: MLAG_iBGP_Tenant_B_OP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  250:
-    tenant: Tenant_B
-    name: Tenant_B_WAN_Zone_1
-  3020:
-    tenant: Tenant_B
-    name: MLAG_iBGP_Tenant_B_WAN_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  310:
-    tenant: Tenant_C
-    name: Tenant_C_OP_Zone_1
-  311:
-    tenant: Tenant_C
-    name: Tenant_C_OP_Zone_2
-  2:
-    tenant: Tenant_C
-    name: MLAG_iBGP_Tenant_C_OP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  350:
-    tenant: Tenant_C
-    name: Tenant_C_WAN_Zone_1
-  3030:
-    tenant: Tenant_C
-    name: MLAG_iBGP_Tenant_C_WAN_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
+- tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 4090
+- tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+  id: 4092
+- tenant: Tenant_A
+  name: Tenant_A_APP_Zone_1
+  id: 130
+- tenant: Tenant_A
+  name: Tenant_A_APP_Zone_2
+  id: 131
+- tenant: Tenant_A
+  name: MLAG_iBGP_Tenant_A_APP_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3011
+- tenant: Tenant_A
+  name: Tenant_A_DB_BZone_1
+  id: 140
+- tenant: Tenant_A
+  name: Tenant_A_DB_Zone_2
+  id: 141
+- tenant: Tenant_A
+  name: MLAG_iBGP_Tenant_A_DB_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3012
+- tenant: Tenant_A
+  name: Tenant_A_OP_Zone_1
+  id: 110
+- tenant: Tenant_A
+  name: Tenant_A_OP_Zone_2
+  id: 111
+- tenant: Tenant_A
+  name: Tenant_A_OP_Zone_3
+  id: 112
+- tenant: Tenant_A
+  name: MLAG_iBGP_Tenant_A_OP_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3008
+- tenant: Tenant_A
+  name: Tenant_A_WAN_Zone_1
+  id: 150
+- tenant: Tenant_A
+  name: MLAG_iBGP_Tenant_A_WAN_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3013
+- tenant: Tenant_A
+  name: Tenant_A_WEB_Zone_1
+  id: 120
+- tenant: Tenant_A
+  name: Tenant_A_WEBZone_2
+  id: 121
+- tenant: Tenant_A
+  name: MLAG_iBGP_Tenant_A_WEB_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3010
+- tenant: Tenant_A
+  name: Tenant_A_VMOTION
+  id: 160
+- tenant: Tenant_A
+  name: Tenant_A_NFS
+  id: 161
+- tenant: Tenant_B
+  name: Tenant_B_OP_Zone_1
+  id: 210
+- tenant: Tenant_B
+  name: Tenant_B_OP_Zone_2
+  id: 211
+- tenant: Tenant_B
+  name: MLAG_iBGP_Tenant_B_OP_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3019
+- tenant: Tenant_B
+  name: Tenant_B_WAN_Zone_1
+  id: 250
+- tenant: Tenant_B
+  name: MLAG_iBGP_Tenant_B_WAN_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3020
+- tenant: Tenant_C
+  name: Tenant_C_OP_Zone_1
+  id: 310
+- tenant: Tenant_C
+  name: Tenant_C_OP_Zone_2
+  id: 311
+- tenant: Tenant_C
+  name: MLAG_iBGP_Tenant_C_OP_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 2
+- tenant: Tenant_C
+  name: Tenant_C_WAN_Zone_1
+  id: 350
+- tenant: Tenant_C
+  name: MLAG_iBGP_Tenant_C_WAN_Zone
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 3030
 vlan_interfaces:
-  Vlan4090:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan4092:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 10.255.252.7/31
-    no_autostate: true
-    mtu: 1500
-  Vlan130:
-    tenant: Tenant_A
-    tags:
-    - app
-    - erp1
-    description: Tenant_A_APP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.30.1/24
-    vrf: Tenant_A_APP_Zone
-  Vlan131:
-    tenant: Tenant_A
-    tags:
-    - app
-    description: Tenant_A_APP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.1.31.1/24
-    vrf: Tenant_A_APP_Zone
-  Vlan3011:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
-    vrf: Tenant_A_APP_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan140:
-    tenant: Tenant_A
-    tags:
-    - db
-    - erp1
-    description: Tenant_A_DB_BZone_1
-    shutdown: false
-    ip_address_virtual: 10.1.40.1/24
-    vrf: Tenant_A_DB_Zone
-  Vlan141:
-    tenant: Tenant_A
-    tags:
-    - db
-    description: Tenant_A_DB_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.1.41.1/24
-    vrf: Tenant_A_DB_Zone
-  Vlan3012:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
-    vrf: Tenant_A_DB_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan110:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.10.1/24
-    vrf: Tenant_A_OP_Zone
-  Vlan111:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.1.11.1/24
-    vrf: Tenant_A_OP_Zone
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        vrf: MGMT
-  Vlan112:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_3
-    shutdown: false
-    mtu: 1560
-    vrf: Tenant_A_OP_Zone
-    ip_helpers:
-      2.2.2.2:
-        source_interface: lo101
-        vrf: MGMT
-  Vlan3008:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
-    vrf: Tenant_A_OP_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan150:
-    tenant: Tenant_A
-    tags:
-    - wan
-    description: Tenant_A_WAN_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.40.1/24
-    vrf: Tenant_A_WAN_Zone
-    ospf_area: 1
-    ospf_network_point_to_point: false
-    ospf_cost: 100
-    ospf_authentication: simple
-    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
-  Vlan3013:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
-    vrf: Tenant_A_WAN_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan120:
-    tenant: Tenant_A
-    tags:
-    - web
-    - erp1
-    description: Tenant_A_WEB_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.20.1/24
-    ip_address_virtual_secondaries:
-    - 10.2.20.1/24
-    - 10.2.21.1/24
-    vrf: Tenant_A_WEB_Zone
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        vrf: TEST
-  Vlan121:
-    tenant: Tenant_A
-    tags:
-    - web
-    description: Tenant_A_WEBZone_2
-    shutdown: true
-    mtu: 1560
-    ip_address_virtual: 10.1.10.254/24
-    vrf: Tenant_A_WEB_Zone
-  Vlan3010:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
-    vrf: Tenant_A_WEB_Zone
-    mtu: 1500
-    ip_address: 172.31.11.7/31
-  Vlan210:
-    tenant: Tenant_B
-    tags:
-    - opzone
-    description: Tenant_B_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.2.10.1/24
-    vrf: Tenant_B_OP_Zone
-  Vlan211:
-    tenant: Tenant_B
-    tags:
-    - opzone
-    description: Tenant_B_OP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.2.11.1/24
-    vrf: Tenant_B_OP_Zone
-  Vlan3019:
-    tenant: Tenant_B
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
-    vrf: Tenant_B_OP_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan250:
-    tenant: Tenant_B
-    tags:
-    - wan
-    description: Tenant_B_WAN_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.2.50.1/24
-    vrf: Tenant_B_WAN_Zone
-  Vlan3020:
-    tenant: Tenant_B
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
-    vrf: Tenant_B_WAN_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan310:
-    tenant: Tenant_C
-    tags:
-    - opzone
-    description: Tenant_C_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.3.10.1/24
-    vrf: Tenant_C_OP_Zone
-  Vlan311:
-    tenant: Tenant_C
-    tags:
-    - opzone
-    description: Tenant_C_OP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.3.11.1/24
-    vrf: Tenant_C_OP_Zone
-  Vlan2:
-    tenant: Tenant_C
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
-    vrf: Tenant_C_OP_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
-  Vlan350:
-    tenant: Tenant_C
-    tags:
-    - wan
-    description: Tenant_C_WAN_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.3.50.1/24
-    vrf: Tenant_C_WAN_Zone
-  Vlan3030:
-    tenant: Tenant_C
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
-    vrf: Tenant_C_WAN_Zone
-    mtu: 1500
-    ip_address: 10.255.251.7/31
+- description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan4090
+- description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.252.7/31
+  no_autostate: true
+  mtu: 1500
+  name: Vlan4092
+- tenant: Tenant_A
+  tags:
+  - app
+  - erp1
+  description: Tenant_A_APP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.30.1/24
+  vrf: Tenant_A_APP_Zone
+  name: Vlan130
+- tenant: Tenant_A
+  tags:
+  - app
+  description: Tenant_A_APP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.1.31.1/24
+  vrf: Tenant_A_APP_Zone
+  name: Vlan131
+- tenant: Tenant_A
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
+  vrf: Tenant_A_APP_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3011
+- tenant: Tenant_A
+  tags:
+  - db
+  - erp1
+  description: Tenant_A_DB_BZone_1
+  shutdown: false
+  ip_address_virtual: 10.1.40.1/24
+  vrf: Tenant_A_DB_Zone
+  name: Vlan140
+- tenant: Tenant_A
+  tags:
+  - db
+  description: Tenant_A_DB_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.1.41.1/24
+  vrf: Tenant_A_DB_Zone
+  name: Vlan141
+- tenant: Tenant_A
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
+  vrf: Tenant_A_DB_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3012
+- tenant: Tenant_A
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.10.1/24
+  vrf: Tenant_A_OP_Zone
+  name: Vlan110
+- tenant: Tenant_A
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.1.11.1/24
+  vrf: Tenant_A_OP_Zone
+  ip_helpers:
+  - source_interface: lo100
+    vrf: MGMT
+    ip_helper: 1.1.1.1
+  name: Vlan111
+- tenant: Tenant_A
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_3
+  shutdown: false
+  mtu: 1560
+  vrf: Tenant_A_OP_Zone
+  ip_helpers:
+  - source_interface: lo101
+    vrf: MGMT
+    ip_helper: 2.2.2.2
+  name: Vlan112
+- tenant: Tenant_A
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
+  vrf: Tenant_A_OP_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3008
+- tenant: Tenant_A
+  tags:
+  - wan
+  description: Tenant_A_WAN_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.40.1/24
+  vrf: Tenant_A_WAN_Zone
+  ospf_area: '1'
+  ospf_network_point_to_point: false
+  ospf_cost: 100
+  ospf_authentication: simple
+  ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
+  name: Vlan150
+- tenant: Tenant_A
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
+  vrf: Tenant_A_WAN_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3013
+- tenant: Tenant_A
+  tags:
+  - web
+  - erp1
+  description: Tenant_A_WEB_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.20.1/24
+  ip_address_virtual_secondaries:
+  - 10.2.20.1/24
+  - 10.2.21.1/24
+  vrf: Tenant_A_WEB_Zone
+  ip_helpers:
+  - source_interface: lo100
+    vrf: TEST
+    ip_helper: 1.1.1.1
+  name: Vlan120
+- tenant: Tenant_A
+  tags:
+  - web
+  description: Tenant_A_WEBZone_2
+  shutdown: true
+  mtu: 1560
+  ip_address_virtual: 10.1.10.254/24
+  vrf: Tenant_A_WEB_Zone
+  name: Vlan121
+- tenant: Tenant_A
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
+  vrf: Tenant_A_WEB_Zone
+  mtu: 1500
+  ip_address: 172.31.11.7/31
+  name: Vlan3010
+- tenant: Tenant_B
+  tags:
+  - opzone
+  description: Tenant_B_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.2.10.1/24
+  vrf: Tenant_B_OP_Zone
+  name: Vlan210
+- tenant: Tenant_B
+  tags:
+  - opzone
+  description: Tenant_B_OP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.2.11.1/24
+  vrf: Tenant_B_OP_Zone
+  name: Vlan211
+- tenant: Tenant_B
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
+  vrf: Tenant_B_OP_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3019
+- tenant: Tenant_B
+  tags:
+  - wan
+  description: Tenant_B_WAN_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.2.50.1/24
+  vrf: Tenant_B_WAN_Zone
+  name: Vlan250
+- tenant: Tenant_B
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
+  vrf: Tenant_B_WAN_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3020
+- tenant: Tenant_C
+  tags:
+  - opzone
+  description: Tenant_C_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.3.10.1/24
+  vrf: Tenant_C_OP_Zone
+  name: Vlan310
+- tenant: Tenant_C
+  tags:
+  - opzone
+  description: Tenant_C_OP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.3.11.1/24
+  vrf: Tenant_C_OP_Zone
+  name: Vlan311
+- tenant: Tenant_C
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
+  vrf: Tenant_C_OP_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan2
+- tenant: Tenant_C
+  tags:
+  - wan
+  description: Tenant_C_WAN_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.3.50.1/24
+  vrf: Tenant_C_WAN_Zone
+  name: Vlan350
+- tenant: Tenant_C
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
+  vrf: Tenant_C_WAN_Zone
+  mtu: 1500
+  ip_address: 10.255.251.7/31
+  name: Vlan3030
 port_channel_interfaces:
-  Port-Channel2000:
-    description: MLAG_PEER_DC1-SVC3A_Po2000
-    type: switched
-    shutdown: false
-    vlans: 1-4094
-    mode: trunk
-    trunk_groups:
-    - LEAF_PEER_L3
-    - MLAG
-  Port-Channel7:
-    description: DC1_L2LEAF2_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-    mlag: 7
-  Port-Channel14:
-    description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
-    type: switched
-    shutdown: false
-    mode: trunk
-    l2_mtu: 8000
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    mlag: 14
-  Port-Channel15:
-    description: server08_no_profile_port_channel_server08_no_profile_port_channel
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    mlag: 15
-  Port-Channel17:
-    description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    mlag: 17
-    lacp_fallback_mode: static
-    lacp_fallback_timeout: 90
-  Port-Channel18:
-    description: server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
-    type: switched
-    shutdown: false
-    mode: trunk
-    l2_mtu: 8000
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    mlag: 18
-    lacp_fallback_mode: static
-    lacp_fallback_timeout: 10
-  Port-Channel19:
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
-    type: switched
-    shutdown: false
-    mode: trunk
-    l2_mtu: 8000
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    mlag: 19
-    lacp_fallback_mode: static
-    lacp_fallback_timeout: 10
-  Port-Channel22:
-    description: server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    mlag: 22
-  Port-Channel23:
-    description: server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-    mlag: 23
-  Port-Channel24:
-    description: server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-    mlag: 24
-  Port-Channel27:
-    description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    mlag: 27
-  Port-Channel42:
-    description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    mlag: 42
-  Port-Channel1291:
-    description: server22_port_channel_with_custom_id_server22_port_channel_with_custom_id
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    mlag: 1291
+- description: MLAG_PEER_DC1-SVC3A_Po2000
+  type: switched
+  shutdown: false
+  vlans: 1-4094
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+  name: Port-Channel2000
+- description: DC1_L2LEAF2_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+  mlag: 7
+  name: Port-Channel7
+- description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+  type: switched
+  shutdown: false
+  mode: trunk
+  l2_mtu: 8000
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  mlag: 14
+  name: Port-Channel14
+- description: server08_no_profile_port_channel_server08_no_profile_port_channel
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  mlag: 15
+  name: Port-Channel15
+- description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  mlag: 17
+  lacp_fallback_mode: static
+  lacp_fallback_timeout: 90
+  name: Port-Channel17
+- description: server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+  type: switched
+  shutdown: false
+  mode: trunk
+  l2_mtu: 8000
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  mlag: 18
+  lacp_fallback_mode: static
+  lacp_fallback_timeout: 10
+  name: Port-Channel18
+- description: server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+  type: switched
+  shutdown: false
+  mode: trunk
+  l2_mtu: 8000
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  mlag: 19
+  lacp_fallback_mode: static
+  lacp_fallback_timeout: 10
+  name: Port-Channel19
+- description: server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  mlag: 22
+  name: Port-Channel22
+- description: server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  mlag: 23
+  name: Port-Channel23
+- description: server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  mlag: 24
+  name: Port-Channel24
+- description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  mlag: 27
+  name: Port-Channel27
+- description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  mlag: 42
+  name: Port-Channel42
+- description: server22_port_channel_with_custom_id_server22_port_channel_with_custom_id
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  mlag: 1291
+  name: Port-Channel1291
 ethernet_interfaces:
-  Ethernet53/1:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet53/1
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet53/1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 2000
-      mode: active
-    speed: 100g
-  Ethernet54/1:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet54/1
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet54/1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 2000
-      mode: active
-    speed: 100g
-  Ethernet7:
-    peer: DC1-L2LEAF2A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF2A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF2B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF2B_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet49/1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet9/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet9/1
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.254.129/31
-  Ethernet50/1:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet1/9/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/9/1
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.254.131/31
-  Ethernet51/1:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet1/9/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/9/1
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.254.133/31
-  Ethernet52/1:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet9/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet9/1
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.254.135/31
-  Ethernet11:
-    peer: server04_inherit_all_from_profile
-    peer_interface: Eth2
-    peer_type: server
-    description: server04_inherit_all_from_profile_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet12:
-    peer: server05_no_profile
-    peer_interface: Eth2
-    peer_type: server
-    description: server05_no_profile_Eth2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet13:
-    peer: server06_override_profile
-    peer_interface: Eth2
-    peer_type: server
-    description: server06_override_profile_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '210'
-    spanning_tree_portfast: network
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 20
-        unit: pps
-      broadcast:
-        level: 200
-        unit: percent
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet14:
-    peer: server07_inherit_all_from_profile_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    description: server07_inherit_all_from_profile_port_channel_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 14
-      mode: active
-  Ethernet15:
-    peer: server08_no_profile_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    description: server08_no_profile_port_channel_Eth2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 15
-      mode: 'on'
-  Ethernet16:
-    peer: server09_override_profile_no_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    description: server09_override_profile_no_port_channel_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '210'
-    spanning_tree_portfast: network
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 20
-        unit: pps
-      broadcast:
-        level: 200
-        unit: percent
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet17:
-    peer: server10_no_profile_port_channel_lacp_fallback
-    peer_interface: Eth2
-    peer_type: server
-    description: server10_no_profile_port_channel_lacp_fallback_Eth2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 17
-      mode: passive
-    lacp_port_priority: 32768
-  Ethernet18:
-    peer: server11_inherit_profile_port_channel_lacp_fallback
-    peer_interface: Eth2
-    peer_type: server
-    description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 18
-      mode: active
-    lacp_port_priority: 32768
-  Ethernet19:
-    peer: server12_inherit_nested_profile_port_channel_lacp_fallback
-    peer_interface: Eth2
-    peer_type: server
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 19
-      mode: active
-    lacp_port_priority: 32768
-  Ethernet20:
-    peer: server13_disabled_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    description: server13_disabled_interfaces_Eth2
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-  Ethernet21:
-    peer: server14_explicitly_enabled_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    description: server14_explicitly_enabled_interfaces_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-  Ethernet22:
-    peer: server15_port_channel_with_disabled_phy_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    description: server15_port_channel_with_disabled_phy_interfaces_Eth2
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 22
-      mode: active
-  Ethernet23:
-    peer: server16_port_channel_with_disabled_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    description: server16_port_channel_with_disabled_port_channel_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 23
-      mode: active
-  Ethernet24:
-    peer: server17_port_channel_with_disabled_phy_and_po_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 24
-      mode: active
-  Ethernet25:
-    peer: server18_monitoring_session_source_phys_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    description: server18_monitoring_session_source_phys_interfaces_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-  Ethernet27:
-    peer: server18_monitoring_session_source_po
-    peer_interface: Eth4
-    peer_type: server
-    description: server18_monitoring_session_source_po_Eth4
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 27
-      mode: active
-  Ethernet26:
-    peer: server19_monitoring_session_destination_phys
-    peer_interface: Eth2
-    peer_type: server
-    description: server19_monitoring_session_destination_phys_Eth2
-    type: switched
-    shutdown: false
-  Ethernet42:
-    peer: server21_monitoring_session_destination_po
-    peer_interface: Eth2
-    peer_type: server
-    description: server21_monitoring_session_destination_po_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 42
-      mode: active
-  Ethernet29:
-    peer: server22_port_channel_with_custom_id
-    peer_interface: Eth2
-    peer_type: server
-    description: server22_port_channel_with_custom_id_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 1291
-      mode: active
+- peer: DC1-SVC3A
+  peer_interface: Ethernet53/1
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-SVC3A_Ethernet53/1
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 2000
+    mode: active
+  speed: 100g
+  name: Ethernet53/1
+- peer: DC1-SVC3A
+  peer_interface: Ethernet54/1
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-SVC3A_Ethernet54/1
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 2000
+    mode: active
+  speed: 100g
+  name: Ethernet54/1
+- peer: DC1-L2LEAF2A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF2A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+  name: Ethernet7
+- peer: DC1-L2LEAF2B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF2B_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+  name: Ethernet8
+- peer: DC1-SPINE1
+  peer_interface: Ethernet9/1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet9/1
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.254.129/31
+  name: Ethernet49/1
+- peer: DC1-SPINE2
+  peer_interface: Ethernet1/9/1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/9/1
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.254.131/31
+  name: Ethernet50/1
+- peer: DC1-SPINE3
+  peer_interface: Ethernet1/9/1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/9/1
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.254.133/31
+  name: Ethernet51/1
+- peer: DC1-SPINE4
+  peer_interface: Ethernet9/1
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE4_Ethernet9/1
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.254.135/31
+  name: Ethernet52/1
+- peer: server04_inherit_all_from_profile
+  peer_interface: Eth2
+  peer_type: server
+  description: server04_inherit_all_from_profile_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  name: Ethernet11
+- peer: server05_no_profile
+  peer_interface: Eth2
+  peer_type: server
+  description: server05_no_profile_Eth2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  name: Ethernet12
+- peer: server06_override_profile
+  peer_interface: Eth2
+  peer_type: server
+  description: server06_override_profile_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '210'
+  spanning_tree_portfast: network
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: 20
+      unit: pps
+    broadcast:
+      level: 200
+      unit: percent
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  name: Ethernet13
+- peer: server07_inherit_all_from_profile_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  description: server07_inherit_all_from_profile_port_channel_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  channel_group:
+    id: 14
+    mode: active
+  name: Ethernet14
+- peer: server08_no_profile_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  description: server08_no_profile_port_channel_Eth2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  channel_group:
+    id: 15
+    mode: 'on'
+  name: Ethernet15
+- peer: server09_override_profile_no_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  description: server09_override_profile_no_port_channel_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '210'
+  spanning_tree_portfast: network
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: 20
+      unit: pps
+    broadcast:
+      level: 200
+      unit: percent
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  name: Ethernet16
+- peer: server10_no_profile_port_channel_lacp_fallback
+  peer_interface: Eth2
+  peer_type: server
+  description: server10_no_profile_port_channel_lacp_fallback_Eth2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  channel_group:
+    id: 17
+    mode: passive
+  lacp_port_priority: 32768
+  name: Ethernet17
+- peer: server11_inherit_profile_port_channel_lacp_fallback
+  peer_interface: Eth2
+  peer_type: server
+  description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  channel_group:
+    id: 18
+    mode: active
+  lacp_port_priority: 32768
+  name: Ethernet18
+- peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+  peer_interface: Eth2
+  peer_type: server
+  description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: 10
+      unit: percent
+    broadcast:
+      level: 100
+      unit: pps
+    multicast:
+      level: 1
+      unit: percent
+    unknown_unicast:
+      level: 2
+      unit: percent
+  channel_group:
+    id: 19
+    mode: active
+  lacp_port_priority: 32768
+  name: Ethernet19
+- peer: server13_disabled_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  description: server13_disabled_interfaces_Eth2
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  name: Ethernet20
+- peer: server14_explicitly_enabled_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  description: server14_explicitly_enabled_interfaces_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  name: Ethernet21
+- peer: server15_port_channel_with_disabled_phy_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  description: server15_port_channel_with_disabled_phy_interfaces_Eth2
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 22
+    mode: active
+  name: Ethernet22
+- peer: server16_port_channel_with_disabled_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  description: server16_port_channel_with_disabled_port_channel_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 23
+    mode: active
+  name: Ethernet23
+- peer: server17_port_channel_with_disabled_phy_and_po_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 24
+    mode: active
+  name: Ethernet24
+- peer: server18_monitoring_session_source_phys_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  description: server18_monitoring_session_source_phys_interfaces_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  name: Ethernet25
+- peer: server18_monitoring_session_source_po
+  peer_interface: Eth4
+  peer_type: server
+  description: server18_monitoring_session_source_po_Eth4
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 27
+    mode: active
+  name: Ethernet27
+- peer: server19_monitoring_session_destination_phys
+  peer_interface: Eth2
+  peer_type: server
+  description: server19_monitoring_session_destination_phys_Eth2
+  type: switched
+  shutdown: false
+  name: Ethernet26
+- peer: server21_monitoring_session_destination_po
+  peer_interface: Eth2
+  peer_type: server
+  description: server21_monitoring_session_destination_po_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 42
+    mode: active
+  name: Ethernet42
+- peer: server22_port_channel_with_custom_id
+  peer_interface: Eth2
+  peer_type: server
+  description: server22_port_channel_with_custom_id_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 1291
+    mode: active
+  name: Ethernet29
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092
   peer_address: 10.255.252.6
   peer_link: Port-Channel2000
-  reload_delay_mlag: 300
-  reload_delay_non_mlag: 330
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
 route_maps:
-  RM-MLAG-PEER-IN:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - origin incomplete
-        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- sequence_numbers:
+  - type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    sequence: 10
+  name: RM-MLAG-PEER-IN
+- sequence_numbers:
+  - type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    sequence: 10
+  name: RM-CONN-2-BGP
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.13/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.12/32
-  Loopback100:
-    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
-    shutdown: false
-    vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.1.13/32
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.13/32
+  name: Loopback0
+- description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.12/32
+  name: Loopback1
+- description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: Tenant_A_OP_Zone
+  ip_address: 10.255.1.13/32
+  name: Loopback100
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
+- sequence_numbers:
+  - action: permit 192.168.255.0/24 eq 32
+    sequence: 10
+  - action: permit 192.168.254.0/24 eq 32
+    sequence: 20
+  name: PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200
@@ -1420,8 +1438,8 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-    120:
-      enabled: false
+  - enabled: false
+    id: 120
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
@@ -1431,64 +1449,64 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-        130:
-          vni: 10130
-        131:
-          vni: 10131
-        140:
-          vni: 10140
-        141:
-          vni: 10141
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 10112
-        150:
-          vni: 10150
-        120:
-          vni: 10120
-        121:
-          vni: 10121
-        160:
-          vni: 10160
-        161:
-          vni: 10161
-        210:
-          vni: 20210
-        211:
-          vni: 20211
-        250:
-          vni: 20250
-        310:
-          vni: 30310
-        311:
-          vni: 30311
-        350:
-          vni: 30350
+      - vni: 10130
+        id: 130
+      - vni: 10131
+        id: 131
+      - vni: 10140
+        id: 140
+      - vni: 10141
+        id: 141
+      - vni: 10110
+        id: 110
+      - vni: 50111
+        id: 111
+      - vni: 10112
+        id: 112
+      - vni: 10150
+        id: 150
+      - vni: 10120
+        id: 120
+      - vni: 10121
+        id: 121
+      - vni: 10160
+        id: 160
+      - vni: 10161
+        id: 161
+      - vni: 20210
+        id: 210
+      - vni: 20211
+        id: 211
+      - vni: 20250
+        id: 250
+      - vni: 30310
+        id: 310
+      - vni: 30311
+        id: 311
+      - vni: 30350
+        id: 350
       vrfs:
-        Tenant_A_APP_Zone:
-          vni: 12
-        Tenant_A_DB_Zone:
-          vni: 13
-        Tenant_A_OP_Zone:
-          vni: 10
-        Tenant_A_WAN_Zone:
-          vni: 14
-        Tenant_A_WEB_Zone:
-          vni: 11
-        Tenant_B_OP_Zone:
-          vni: 20
-        Tenant_B_WAN_Zone:
-          vni: 21
-        Tenant_C_OP_Zone:
-          vni: 30
-        Tenant_C_WAN_Zone:
-          vni: 31
+      - vni: 12
+        name: Tenant_A_APP_Zone
+      - vni: 13
+        name: Tenant_A_DB_Zone
+      - vni: 10
+        name: Tenant_A_OP_Zone
+      - vni: 14
+        name: Tenant_A_WAN_Zone
+      - vni: 11
+        name: Tenant_A_WEB_Zone
+      - vni: 20
+        name: Tenant_B_OP_Zone
+      - vni: 21
+        name: Tenant_B_WAN_Zone
+      - vni: 30
+        name: Tenant_C_OP_Zone
+      - vni: 31
+        name: Tenant_C_WAN_Zone
 virtual_source_nat_vrfs:
-  Tenant_A_OP_Zone:
-    ip_address: 10.255.1.13
+- ip_address: 10.255.1.13
+  name: Tenant_A_OP_Zone
 monitor_sessions:
 - name: MonitoringSessionServer18WithDest
   sources:

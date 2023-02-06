@@ -28,59 +28,59 @@ name_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-    '0':
-      priority: 16384
+  - priority: 16384
+    id: '0'
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+- privilege: 15
+  role: network-admin
+  no_password: true
+  name: admin
+- privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  name: cvpadmin
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.112/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.112/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet7
-    peer_type: l3leaf
-    description: DC1-LEAF2A_Ethernet7
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet7
-    peer_type: l3leaf
-    description: DC1-LEAF2B_Ethernet7
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
+- peer: DC1-LEAF2A
+  peer_interface: Ethernet7
+  peer_type: l3leaf
+  description: DC1-LEAF2A_Ethernet7
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
+- peer: DC1-LEAF2B
+  peer_interface: Ethernet7
+  peer_type: l3leaf
+  description: DC1-LEAF2B_Ethernet7
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet2
 port_channel_interfaces:
-  Port-Channel1:
-    description: DC1_LEAF2_Po7
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: none
+- description: DC1_LEAF2_Po7
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
+  name: Port-Channel1
 ip_igmp_snooping:
   globally_enabled: true
