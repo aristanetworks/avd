@@ -42,7 +42,7 @@ interface Management1
 
 | Handler | Action Type | Action | Trigger |
 | ------- | ----------- | ------ | ------- |
-| CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="\`ls \-1 $FN\.\*\-\* \| tail \-n 1\`"; if \[ \-z "$LFN" \-o \-n \"\`diff \-I 'last modified' $FN $LFN\`" \]; then cp $FN $FN\.\`date \+%Y%m%d\-%H%M%S\`; ls \-1r $FN\.\*\-\* \| tail \-n \+11 \| xargs \-I % rm %; fi</code> | on-startup-config |
+| CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="\`ls -1 $FN.*-* \| tail -n 1\`"; if [ -z "$LFN" -o -n "\`diff -I 'last modified' $FN $LFN\`" ]; then cp $FN $FN.\`date +%Y%m%d-%H%M%S\`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config |
 | evpn-blacklist-recovery | bash | FastCli -p 15 -c "clear bgp evpn host-flap" | on-logging |
 
 ### Event Handler Device Configuration
@@ -51,7 +51,7 @@ interface Management1
 !
 event-handler CONFIG_VERSIONING
    trigger on-startup-config
-   action bash FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
+   action bash <code>FN=/mnt/flash/startup-config; LFN="\`ls -1 $FN.*-* \| tail -n 1\`"; if [ -z "$LFN" -o -n "\`diff -I 'last modified' $FN $LFN\`" ]; then cp $FN $FN.\`date +%Y%m%d-%H%M%S\`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code>
    delay 0
 !
 event-handler evpn-blacklist-recovery
