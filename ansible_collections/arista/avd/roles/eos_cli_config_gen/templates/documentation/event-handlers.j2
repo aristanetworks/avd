@@ -8,7 +8,13 @@
 | Handler | Action Type | Action | Trigger |
 | ------- | ----------- | ------ | ------- |
 {%     for handler in event_handlers | arista.avd.natural_sort('name') %}
-| {{ handler.name }} | {{ handler.action_type }} | {% if handler.action_type == 'bash' %}<code>{{ handler.action | replace('|', '\|') }}</code>{% else %}{{ handler.action | replace('|', '\|') }}{% endif %} | {{ handler.trigger }} |
+| {{ handler.name }} | {{ handler.action_type }} | 
+{%-         if handler.action_type == 'bash' %}
+<code>{{ handler.action | replace('|', '\|') }}</code>
+{%-         else %}
+{{ handler.action | replace('|', '\|') }}
+{%-         endif %}
+ | {{ handler.trigger }} |
 {%     endfor %}
 
 ### Event Handler Device Configuration
