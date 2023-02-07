@@ -180,7 +180,7 @@ def jinja2_environment(template_dir, template_type):
         template = env.get_template("rst.j2")
         outputname = "%s.rst"
     else:
-        raise Exception(f"unknown module format type: {template_type}")  # pylint: disable=broad-exception-raised
+        raise TypeError(f"unknown module format type: {template_type}")
 
     return env, template, outputname
 
@@ -219,7 +219,7 @@ def add_fragments(doc, filename):
                 doc["notes"].extend(notes)
 
         if "options" not in fragment and "logging_options" not in fragment and "connection_options" not in fragment:
-            raise Exception(f"missing options in fragment ({fragment_name}), possibly misformatted?: {filename}")  # pylint: disable=broad-exception-raised
+            raise ValueError(f"missing options in fragment ({fragment_name}), possibly misformatted?: {filename}")
 
         for key, value in iteritems(fragment):
             if key in doc:
@@ -231,9 +231,7 @@ def add_fragments(doc, filename):
                 elif isinstance(doc[key], MutableSequence):
                     value = sorted(frozenset(value + doc[key]))
                 else:
-                    raise Exception(  # pylint: disable=broad-exception-raised
-                        f"Attempt to extend a documentation fragement ({fragment_name}) of unknown type: {filename}"
-                    )
+                    raise TypeError(f"Attempt to extend a documentation fragement ({fragment_name}) of unknown type: {filename}")
             doc[key] = value
 
 

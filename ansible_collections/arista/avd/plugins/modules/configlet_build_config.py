@@ -109,7 +109,7 @@ def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
 def main():
     """Main entry point for module execution."""
     # TODO - ansible module prefers constructor over literal
-    #        for dicyt
+    #        for dict
     # pylint: disable=use-dict-literal
     argument_spec = dict(
         configlet_dir=dict(type="str", required=True),
