@@ -15,4 +15,4 @@
 - assert:
     that:
       - result.failed == True
-      - result.msg == {{ lookup('file', './error.txt') }}
+      - result.msg == {{ lookup('file', './error_invalid_merge_option.txt') }}
