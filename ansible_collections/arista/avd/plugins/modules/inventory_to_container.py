@@ -382,6 +382,9 @@ def get_containers(inventory_content, parent_container, device_filter):
 
 def main():
     """Main entry point for module execution."""
+    # TODO - ansible module prefers constructor over literal
+    #        for dicyt
+    # pylint: disable=use-dict-literal
     argument_spec = dict(
         inventory=dict(type="str", required=False),
         container_root=dict(type="str", required=True),

@@ -95,9 +95,8 @@ def rst_ify(text):
         t = _CONST.sub(r"``" + r"\1" + r"``", t)
     except Exception as error_caught:
         error = str(error_caught)
-        pass
     if error:
-        raise AnsibleError("Could not process (%s) : %s" % (str(text), error))
+        raise AnsibleError(f"Could not process ({str(text)}) : {error}")
     return t
 
 
@@ -164,6 +163,7 @@ def write_data(text, outputname, module, output_dir=None):
 
 
 def jinja2_environment(template_dir, template_type):
+    # sourcery skip: raise-specific-error
     env = Environment(
         loader=FileSystemLoader(template_dir),
         variable_start_string="@{",
@@ -180,7 +180,7 @@ def jinja2_environment(template_dir, template_type):
         template = env.get_template("rst.j2")
         outputname = "%s.rst"
     else:
-        raise Exception("unknown module format type: %s" % template_type)
+        raise Exception(f"unknown module format type: {template_type}")  # pylint: disable=broad-exception-raised
 
     return env, template, outputname
 
@@ -219,7 +219,7 @@ def add_fragments(doc, filename):
                 doc["notes"].extend(notes)
 
         if "options" not in fragment and "logging_options" not in fragment and "connection_options" not in fragment:
-            raise Exception("missing options in fragment (%s), possibly misformatted?: %s" % (fragment_name, filename))
+            raise Exception(f"missing options in fragment ({fragment_name}), possibly misformatted?: {filename}")  # pylint: disable=broad-exception-raised
 
         for key, value in iteritems(fragment):
             if key in doc:
@@ -231,7 +231,9 @@ def add_fragments(doc, filename):
                 elif isinstance(doc[key], MutableSequence):
                     value = sorted(frozenset(value + doc[key]))
                 else:
-                    raise Exception("Attempt to extend a documentation fragement (%s) of unknown type: %s" % (fragment_name, filename))
+                    raise Exception(  # pylint: disable=broad-exception-raised
+                        f"Attempt to extend a documentation fragement ({fragment_name}) of unknown type: {filename}"
+                    )
             doc[key] = value
 
 
@@ -252,7 +254,7 @@ def get_docstring(filename, verbose=False):
 def process_module(fname, template, outputname, aliases=None):
     module_name = fname.replace(".py", "")
 
-    print_("Processing  module %s" % (MODULEDIR + fname))
+    print_(f"Processing  module {MODULEDIR + fname}")
     doc, examples, returndocs, metadata = get_docstring(MODULEDIR + fname, verbose=True)
 
     # add some defaults for plugins that dont have most of the info
@@ -263,12 +265,12 @@ def process_module(fname, template, outputname, aliases=None):
     required_fields = ("short_description",)
     for field in required_fields:
         if field not in doc:
-            print_("%s: WARNING: MODULE MISSING field '%s'" % (fname, field))
+            print_(f"{fname}: WARNING: MODULE MISSING field '{field}'")
 
     not_nullable_fields = ("short_description",)
     for field in not_nullable_fields:
         if field in doc and doc[field] in (None, ""):
-            print_("%s: WARNING: MODULE field '%s' DOCUMENTATION is null/empty value=%s" % (fname, field, doc[field]))
+            print_(f"{fname}: WARNING: MODULE field '{field}' DOCUMENTATION is null/empty value={doc[field]}")
 
     #
     # The present template gets everything from doc so we spend most of this
@@ -294,14 +296,14 @@ def process_module(fname, template, outputname, aliases=None):
         for k, v in iteritems(doc["options"]):
             # Error out if there's no description
             if "description" not in doc["options"][k]:
-                raise AnsibleError("Missing required description for option %s in %s " % (k, module_name))
+                raise AnsibleError(f"Missing required description for option {k} in {module_name} ")
 
             # Error out if required isn't a boolean (people have been putting
             # information on when something is required in here.  Those need
             # to go in the description instead).
             required_value = doc["options"][k].get("required", False)
             if not isinstance(required_value, bool):
-                raise AnsibleError("Invalid required value '%s' for option '%s' in '%s' (must be truthy)" % (required_value, k, module_name))
+                raise AnsibleError(f"Invalid required value '{required_value}' for option '{k}' in '{module_name}' (must be truthy)")
 
             # Strip old version_added information for options
             if "version_added" in doc["options"][k] and too_old(doc["options"][k]["version_added"]):
@@ -319,14 +321,14 @@ def process_module(fname, template, outputname, aliases=None):
         for k, v in iteritems(doc["connection_options"]):
             # Error out if there's no description
             if "description" not in doc["connection_options"][k]:
-                raise AnsibleError("Missing required description for connection_option %s in %s " % (k, module_name))
+                raise AnsibleError(f"Missing required description for connection_option {k} in {module_name} ")
 
             # Error out if required isn't a boolean (people have been putting
             # information on when something is required in here.  Those need
             # to go in the description instead).
             required_value = doc["connection_options"][k].get("required", False)
             if not isinstance(required_value, bool):
-                raise AnsibleError("Invalid required value '%s' for connection_option '%s' in '%s' (must be truthy)" % (required_value, k, module_name))
+                raise AnsibleError(f"Invalid required value '{required_value}' for connection_option '{k}' in '{module_name}' (must be truthy)")
 
             # Strip old version_added information for options
             if "version_added" in doc["connection_options"][k] and too_old(doc["connection_options"][k]["version_added"]):
@@ -344,14 +346,14 @@ def process_module(fname, template, outputname, aliases=None):
         for k, v in iteritems(doc["logging_options"]):
             # Error out if there's no description
             if "description" not in doc["logging_options"][k]:
-                raise AnsibleError("Missing required description for logging_option %s in %s " % (k, module_name))
+                raise AnsibleError(f"Missing required description for logging_option {k} in {module_name} ")
 
             # Error out if required isn't a boolean (people have been putting
             # information on when something is required in here.  Those need
             # to go in the description instead).
             required_value = doc["logging_options"][k].get("required", False)
             if not isinstance(required_value, bool):
-                raise AnsibleError("Invalid required value '%s' for logging_option '%s' in '%s' (must be truthy)" % (required_value, k, module_name))
+                raise AnsibleError(f"Invalid required value '{required_value}' for logging_option '{k}' in '{module_name}' (must be truthy)")
 
             # Strip old version_added information for options
             if "version_added" in doc["logging_options"][k] and too_old(doc["logging_options"][k]["version_added"]):
@@ -378,7 +380,7 @@ def process_module(fname, template, outputname, aliases=None):
             returndocs_keys.sort()
             doc["returndocs_keys"] = returndocs_keys
         except Exception as e:
-            print_("%s:%s:yaml error:%s:returndocs=%s" % (fname, module_name, e, returndocs))
+            print_(f"{fname}:{module_name}:yaml error:{e}:returndocs={returndocs}")
             doc["returndocs"] = None
             doc["returndocs_keys"] = None
     else:
@@ -407,32 +409,32 @@ def main():
             module_names.append(module.replace(".py", ""))
 
     index_file_path = os.path.join(OUTPUTDIR, "index.rst")
-    index_file = open(index_file_path, "w")
-    index_file.write("Arista Cloudvision Ansible Modules\n")
-    index_file.write("==================================\n")
-    index_file.write("\n")
-    index_file.write(".. toctree::\n")
-    index_file.write("  :caption: Project Documentation\n")
-    index_file.write("  :name: mastertoc::\n")
-    index_file.write("  :maxdepth: 1\n")
-    index_file.write("\n")
-    index_file.write("   Collection Overview <../README.md>\n")
-    index_file.write("\n")
-    index_file.write(".. toctree::\n")
-    index_file.write("  :caption: Roles List\n")
-    index_file.write("  :name: roletoc::\n")
-    index_file.write("  :maxdepth: 1\n")
-    index_file.write("\n")
-    index_file.write("   DHCP Configuration <../ansible_collections/arista/cvp/roles/dhcp_configuration/README.md>\n")
-    index_file.write("\n")
-    index_file.write(".. toctree::\n")
-    index_file.write("  :caption: Modules List\n")
-    index_file.write("  :name: moduletoc::\n")
-    index_file.write("  :maxdepth: 1\n")
-    index_file.write("\n")
+    with open(index_file_path, "w", encoding="UTF-8") as index_file:
+        index_file.write("Arista Cloudvision Ansible Modules\n")
+        index_file.write("==================================\n")
+        index_file.write("\n")
+        index_file.write(".. toctree::\n")
+        index_file.write("  :caption: Project Documentation\n")
+        index_file.write("  :name: mastertoc::\n")
+        index_file.write("  :maxdepth: 1\n")
+        index_file.write("\n")
+        index_file.write("   Collection Overview <../README.md>\n")
+        index_file.write("\n")
+        index_file.write(".. toctree::\n")
+        index_file.write("  :caption: Roles List\n")
+        index_file.write("  :name: roletoc::\n")
+        index_file.write("  :maxdepth: 1\n")
+        index_file.write("\n")
+        index_file.write("   DHCP Configuration <../ansible_collections/arista/cvp/roles/dhcp_configuration/README.md>\n")
+        index_file.write("\n")
+        index_file.write(".. toctree::\n")
+        index_file.write("  :caption: Modules List\n")
+        index_file.write("  :name: moduletoc::\n")
+        index_file.write("  :maxdepth: 1\n")
+        index_file.write("\n")
 
-    for module_name in module_names:
-        index_file.write("   Module arista.cvp.%s <%s>\n" % (module_name, module_name))
+        for module_name in module_names:
+            index_file.write(f"   Module arista.cvp.{module_name} <{module_name}>\n")
 
 
 if __name__ == "__main__":
