@@ -3,6 +3,7 @@ import json
 import os
 from collections import ChainMap
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 try:
@@ -156,50 +157,102 @@ def _is_dict(validator, instance):
     return isinstance(instance, (dict, ChainMap))
 
 
-"""
-AvdSchemaValidator is used to validate AVD Data.
-It uses a combination of our own validators and builtin jsonschema validators
-mapped to our own keywords.
-We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
-since the same TypeChecker is used by the validators themselves.
-"""
-if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
-    AvdValidator = None
-else:
-    AvdValidator = jsonschema.validators.create(
-        meta_schema=AVD_META_SCHEMA,
-        validators={
-            "$ref": _ref_validator,
-            "type": jsonschema._validators.type,
-            "max": jsonschema._validators.maximum,
-            "min": jsonschema._validators.minimum,
-            "valid_values": _valid_values_validator,
-            "format": jsonschema._validators.format,
-            "max_length": jsonschema._validators.maxLength,
-            "min_length": jsonschema._validators.minLength,
-            "pattern": jsonschema._validators.pattern,
-            "items": jsonschema._validators.items,
-            "primary_key": _primary_key_validator,
-            "keys": _keys_validator,
-            "dynamic_keys": _dynamic_keys_validator,
-        },
-        type_checker=jsonschema.TypeChecker(
-            {
-                "any": jsonschema._types.is_any,
-                "array": jsonschema._types.is_array,
-                "boolean": jsonschema._types.is_bool,
-                "integer": jsonschema._types.is_integer,
-                "object": jsonschema._types.is_object,
-                "null": jsonschema._types.is_null,
-                "None": jsonschema._types.is_null,
-                "number": jsonschema._types.is_number,
-                "string": jsonschema._types.is_string,
-                "dict": _is_dict,
-                "str": jsonschema._types.is_string,
-                "bool": jsonschema._types.is_bool,
-                "list": jsonschema._types.is_array,
-                "int": jsonschema._types.is_integer,
-            }
+# """
+# AvdSchemaValidator is used to validate AVD Data.
+# It uses a combination of our own validators and builtin jsonschema validators
+# mapped to our own keywords.
+# We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
+# since the same TypeChecker is used by the validators themselves.
+# """
+# if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
+#    AvdValidator = None
+# else:
+#    AvdValidator = jsonschema.validators.create(
+#        meta_schema=AVD_META_SCHEMA,
+#        validators={
+#            "$ref": _ref_validator,
+#            "type": jsonschema._validators.type,
+#            "max": jsonschema._validators.maximum,
+#            "min": jsonschema._validators.minimum,
+#            "valid_values": _valid_values_validator,
+#            "format": jsonschema._validators.format,
+#            "max_length": jsonschema._validators.maxLength,
+#            "min_length": jsonschema._validators.minLength,
+#            "pattern": jsonschema._validators.pattern,
+#            "items": jsonschema._validators.items,
+#            "primary_key": _primary_key_validator,
+#            "keys": _keys_validator,
+#            "dynamic_keys": _dynamic_keys_validator,
+#        },
+#        type_checker=jsonschema.TypeChecker(
+#            {
+#                "any": jsonschema._types.is_any,
+#                "array": jsonschema._types.is_array,
+#                "boolean": jsonschema._types.is_bool,
+#                "integer": jsonschema._types.is_integer,
+#                "object": jsonschema._types.is_object,
+#                "null": jsonschema._types.is_null,
+#                "None": jsonschema._types.is_null,
+#                "number": jsonschema._types.is_number,
+#                "string": jsonschema._types.is_string,
+#                "dict": _is_dict,
+#                "str": jsonschema._types.is_string,
+#                "bool": jsonschema._types.is_bool,
+#                "list": jsonschema._types.is_array,
+#                "int": jsonschema._types.is_integer,
+#            }
+#        )
+#        # version="0.1",
+#    )
+class AvdValidator:
+    def __new__(cls, *args, **kwargs):
+        """
+        AvdSchemaValidator is used to validate AVD Data.
+        It uses a combination of our own validators and builtin jsonschema validators
+        mapped to our own keywords.
+        We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
+        since the same TypeChecker is used by the validators themselves.
+        """
+        if JSONSCHEMA_IMPORT_ERROR:
+            raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
+        if DEEPMERGE_IMPORT_ERROR:
+            raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
+
+        ValidatorClass = jsonschema.validators.create(
+            meta_schema=AVD_META_SCHEMA,
+            validators={
+                "$ref": _ref_validator,
+                "type": jsonschema._validators.type,
+                "max": jsonschema._validators.maximum,
+                "min": jsonschema._validators.minimum,
+                "valid_values": _valid_values_validator,
+                "format": jsonschema._validators.format,
+                "max_length": jsonschema._validators.maxLength,
+                "min_length": jsonschema._validators.minLength,
+                "pattern": jsonschema._validators.pattern,
+                "items": jsonschema._validators.items,
+                "primary_key": _primary_key_validator,
+                "keys": _keys_validator,
+                "dynamic_keys": _dynamic_keys_validator,
+            },
+            type_checker=jsonschema.TypeChecker(
+                {
+                    "any": jsonschema._types.is_any,
+                    "array": jsonschema._types.is_array,
+                    "boolean": jsonschema._types.is_bool,
+                    "integer": jsonschema._types.is_integer,
+                    "object": jsonschema._types.is_object,
+                    "null": jsonschema._types.is_null,
+                    "None": jsonschema._types.is_null,
+                    "number": jsonschema._types.is_number,
+                    "string": jsonschema._types.is_string,
+                    "dict": _is_dict,
+                    "str": jsonschema._types.is_string,
+                    "bool": jsonschema._types.is_bool,
+                    "list": jsonschema._types.is_array,
+                    "int": jsonschema._types.is_integer,
+                }
+            )
+            # version="0.1",
         )
-        # version="0.1",
-    )
+        return ValidatorClass(args, kwargs)
