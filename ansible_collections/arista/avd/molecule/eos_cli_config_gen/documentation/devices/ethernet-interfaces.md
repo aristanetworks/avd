@@ -650,6 +650,7 @@ interface Ethernet49
 interface Ethernet50
    description DOT1X Testing - Eapol enabled
    switchport
+   dot1x eapol authentication failure fallback mba timeout 600
 ```
 
 # BFD
