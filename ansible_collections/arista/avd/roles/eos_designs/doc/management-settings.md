@@ -60,6 +60,7 @@ terminattr_disable_aaa: "< boolean | default -> false >"
 mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
 mgmt_interface_vrf: < vrf_name | default -> MGMT >
+mgmt_interface_description: < description | default -> "oob_management" >
 mgmt_gateway: < IPv4 address >
 # OOB mgmt interface destination networks - override default route
 mgmt_destination_networks:
