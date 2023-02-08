@@ -109,27 +109,23 @@ The following options may be specified for this module:
     configlet_prefix: 'AVD'
     device_filter: ['DC1-LE']
     # destination: 'generated_vars/{{inventory_hostname}}.yml'
-  register: cvp_vars
+  register: CVP_VARS
 
-- name: 'Collecting facts from CVP {{inventory_hostname}}.'
+- name: 'Collecting facts from CVP {{ inventory_hostname }}.'
   arista.cvp.cv_facts:
-  register: cvp_facts
+  register: CVP_FACTS
 
-- name: 'Create configlets on CVP {{inventory_hostname}}.'
+- name: 'Create configlets on CVP {{ inventory_hostname }}.'
   arista.cvp.cv_configlet:
     cvp_facts: "{{ cvp_facts.ansible_facts }}"
     configlets: "{{ cvp_vars.cvp_configlets }}"
     configlet_filter: ["AVD"]
 
-- name: "Building Container topology on {{inventory_hostname}}"
+- name: "Building Container topology on {{ inventory_hostname }}"
   arista.cvp.cv_container:
     topology: '{{ cvp_vars.cvp_topology }}'
     cvp_facts: '{{ cvp_facts.ansible_facts }}'
     save_topology: true
-```
-
-### Author
-
 - Ansible Arista Team (@aristanetworks)
 
 ### Status

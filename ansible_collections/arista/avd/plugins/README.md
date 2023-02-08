@@ -364,7 +364,7 @@ tasks:
       container_root: "{{ container_root }}"
       configlet_dir: "intended/configs"
       configlet_prefix: "{{ configlets_prefix }}"
-      destination: "{{ playbook_dir }}/intended/structured_configs/{{inventory_hostname}}.yml"
+      destination: "{{ playbook_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml"
 ```
 
 Inventory example applied to this example:
@@ -397,7 +397,7 @@ Generated output ready to be used by [`arista.cvp`](https://github.com/aristanet
 
 ```yaml
 ---
-cvp_devices:
+CVP_DEVICES:
   DC1-SPINE1:
     name: DC1-SPINE1
     parentContainerName: DC1_SPINES
@@ -405,7 +405,7 @@ cvp_devices:
         - DC1-AVD_DC1-SPINE1
     imageBundle: []
 
-cvp_containers:
+CVP_CONTAINERS:
   DC1_LEAF1:
     parent_container: DC1_L3LEAFS
   DC1_FABRIC:
@@ -640,7 +640,7 @@ The module arguments are:
 
 ```yaml
   # Path to Jinja2 Template file | Required
-  ansible.builtin.template: <str>
+  template: <str>
 
   # Destination path. The rendered template will be written to this file | Optional
   dest: <str>

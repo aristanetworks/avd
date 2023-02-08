@@ -6,13 +6,13 @@
 {%     set local_var.device_filter = device_filter %}
 {% endif %}
 ---
-cvp_devices:
+CVP_DEVICES:
 {% for device in groups[container_root] | arista.avd.natural_sort %}
 {%     if device | arista.avd.is_in_filter(local_var.device_filter) %}
 {%         if (hostvars[device]['is_deployed'] is defined and hostvars[device]['is_deployed'] == true) or (hostvars[device]['is_deployed'] is not defined) %}
   {{ device }}:
     name: {{ device }}
-{%             for container_name, container in cvp_vars.cvp_topology.items() | arista.avd.natural_sort %}
+{%             for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() | arista.avd.natural_sort %}
 {%                 if 'devices' in container %}
 {%                     for device_container in container['devices'] %}
 {%                         if device == device_container %}
@@ -32,8 +32,8 @@ cvp_devices:
 {%         endif %}
 {%     endif %}
 {% endfor %}
-cvp_containers:
-{% for container_name, container in cvp_vars.cvp_topology.items() | arista.avd.natural_sort %}
+CVP_CONTAINERS:
+{% for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() | arista.avd.natural_sort %}
   {{ container_name }}:
     parent_container: {{ container['parent_container'] }}
 {%     if hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] is defined and hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] is iterable %}

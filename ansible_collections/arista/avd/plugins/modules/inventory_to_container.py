@@ -74,17 +74,17 @@ EXAMPLES = r"""
     # destination: 'generated_vars/{{ inventory_hostname }}.yml'
   register: cvp_vars
 
-- name: 'Collecting facts from CVP {{inventory_hostname}}.'
+- name: 'Collecting facts from CVP {{ inventory_hostname }}.'
   arista.cvp.cv_facts:
-  register: cvp_facts
+  register: CVP_FACTS
 
-- name: 'Create configlets on CVP {{inventory_hostname}}.'
+- name: 'Create configlets on CVP {{ inventory_hostname }}.'
   arista.cvp.cv_configlet:
     cvp_facts: "{{ cvp_facts.ansible_facts }}"
     configlets: "{{ cvp_vars.cvp_configlets }}"
     configlet_filter: ["AVD"]
 
-- name: "Building Container topology on {{inventory_hostname}}"
+- name: "Building Container topology on {{ inventory_hostname }}"
   arista.cvp.cv_container:
     topology: '{{ cvp_vars.cvp_topology }}'
     cvp_facts: '{{ cvp_facts.ansible_facts }}'
@@ -419,13 +419,13 @@ def main():
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 raise AnsibleValidationError("Failed to parse inventory file") from exc
-        result["cvp_topology"] = get_containers(
+        result["CVP_TOPOLOGY"] = get_containers(
             inventory_content=inventory_content, parent_container=parent_container, device_filter=module.params["device_filter"]
         )
 
     # If set, build configlet topology
     if module.params["configlet_dir"] is not None:
-        result["cvp_configlets"] = get_configlet(
+        result["CVP_CONFIGLETS"] = get_configlet(
             src_folder=module.params["configlet_dir"], prefix=module.params["configlet_prefix"], device_filter=module.params["device_filter"]
         )
 

@@ -9,4 +9,4 @@
     configlet_prefix: "{{ configlets_prefix }}"
     destination: "{{ structured_cvp_dir }}/{{ inventory_hostname }}_configlets.yml"
     device_filter: ['{{ device_filter }}']
-  register: cvp_vars
+  register: CVP_VARS
