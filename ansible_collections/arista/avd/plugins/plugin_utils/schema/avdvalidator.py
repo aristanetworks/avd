@@ -205,7 +205,7 @@ def _is_dict(validator, instance):
 #        # version="0.1",
 #    )
 class AvdValidator:
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, schema):
         """
         AvdSchemaValidator is used to validate AVD Data.
         It uses a combination of our own validators and builtin jsonschema validators
@@ -255,4 +255,5 @@ class AvdValidator:
             )
             # version="0.1",
         )
-        return ValidatorClass(args, kwargs)
+
+        return ValidatorClass(schema)
