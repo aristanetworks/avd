@@ -1588,7 +1588,13 @@ class EosDesignsFacts(AvdFacts):
                     uplink["peer_channel_description"] = self.group
 
                 if self.mlag_role == "secondary":
-                    mlag_peer_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
+                    mlag_peer_switch_facts: EosDesignsFacts = get(
+                        self._hostvars,
+                        f"avd_switch_facts..{self.mlag_peer}..switch",
+                        required=True,
+                        separator="..",
+                        org_key=f"avd_switch_facts.{self.mlag_peer}.switch",
+                    )
 
                     uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_interfaces[0]))
                     uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_switch_interfaces[0]))
