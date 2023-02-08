@@ -6140,8 +6140,8 @@ tcam_profile:
 | Variable | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | [<samp>terminal</samp>](## "terminal") | Dictionary |  |  |  |  |
-| [<samp>&nbsp;&nbsp;length</samp>](## "terminal.length") | Integer |  |  | Min: 1<br>Max: 32767 |  |
-| [<samp>&nbsp;&nbsp;width</samp>](## "terminal.width") | Integer |  |  | Min: 1<br>Max: 32767 |  |
+| [<samp>&nbsp;&nbsp;length</samp>](## "terminal.length") | Integer |  |  | Min: 0<br>Max: 32767 |  |
+| [<samp>&nbsp;&nbsp;width</samp>](## "terminal.width") | Integer |  |  | Min: 10<br>Max: 32767 |  |
 
 ### YAML
 
@@ -6411,7 +6411,7 @@ virtual_source_nat_vrfs:
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "vlan_interfaces.[].ip_helpers.[].vrf") | String |  |  |  | VRF where DHCP server can be reached |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "vlan_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "vlan_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask |
-| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtual</samp>](## "vlan_interfaces.[].ipv6_address_virtual") | String |  |  |  | IPv6_address/Mask<br>"ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"<br>If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured<br> |
+| [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtual</samp>](## "vlan_interfaces.[].ipv6_address_virtual") <span style="color:red">deprecated</span> | String |  |  |  | IPv6_address/Mask<br>If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.</span> |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtuals</samp>](## "vlan_interfaces.[].ipv6_address_virtuals") | List, items: String |  |  |  | The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses. |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_address_virtuals.[].&lt;str&gt;") | String |  |  |  | IPv6_address/Mask |
 | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_link_local</samp>](## "vlan_interfaces.[].ipv6_address_link_local") | String |  |  |  | IPv6_address/Mask |

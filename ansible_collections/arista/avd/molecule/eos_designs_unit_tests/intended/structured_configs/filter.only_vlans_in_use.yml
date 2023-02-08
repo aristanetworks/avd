@@ -10,28 +10,28 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 vlans:
-  2:
-    tenant: test
-    name: vlan2
-  1:
-    tenant: test
-    name: vlan1
+- tenant: test
+  name: vlan2
+  id: 2
+- tenant: test
+  name: vlan1
+  id: 1
 ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: testserver
-    peer_interface: Nic1
-    peer_type: server
-    description: testserver_Nic1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-2
+- peer: testserver
+  peer_interface: Nic1
+  peer_type: server
+  description: testserver_Nic1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-2
+  name: Ethernet1

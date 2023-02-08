@@ -25,15 +25,12 @@
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
-- [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
 # Management
@@ -253,7 +250,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -270,6 +266,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -421,8 +418,6 @@ router bfd
    multihop interval 300 min-rx 300 multiplier 3
 ```
 
-# Multicast
-
 # Filters
 
 ## Prefix-lists
@@ -461,8 +456,6 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -477,8 +470,6 @@ route-map RM-CONN-2-BGP permit 10
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service
 
 # EOS CLI
 

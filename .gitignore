@@ -134,3 +134,6 @@ ansible_collections/arista/avd/examples/*/config_backup
 
 # Ignore TAR GZ files
 *.tar.gz
+
+# Ansible galaxy-importer
+importer_result.json

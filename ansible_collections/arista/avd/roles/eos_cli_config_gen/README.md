@@ -3806,7 +3806,7 @@ boot:
 ```yaml
 terminal:
   length: < 0-32767 >
-  width: < 0-32767 >
+  width: < 10-32767 >
 ```
 
 ### Traffic Policies

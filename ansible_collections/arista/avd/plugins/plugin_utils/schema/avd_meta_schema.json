@@ -47,6 +47,7 @@
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },
                         "dynamic_valid_values": { "$ref": "#/$def/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$def/deprecation" },
                         "$ref": { "$ref": "#/$def/$ref" },
                         "documentation_options": { "$ref": "#/$def/documentation_options" }
                     },
@@ -87,6 +88,7 @@
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },
                         "dynamic_valid_values": { "$ref": "#/$def/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$def/deprecation" },
                         "$ref": { "$ref": "#/$def/$ref" },
                         "documentation_options": { "$ref": "#/$def/documentation_options" }
                     },
@@ -156,6 +158,7 @@
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },
                         "dynamic_valid_values": { "$ref": "#/$def/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$def/deprecation" },
                         "$ref": { "$ref": "#/$def/$ref" },
                         "documentation_options": { "$ref": "#/$def/documentation_options" }
                     },
@@ -177,7 +180,8 @@
                                 "type": "string",
                                 "enum": [
                                     "dict",
-                                    "list"
+                                    "list",
+                                    "str"
                                 ]
                             }
                         },
@@ -211,6 +215,7 @@
                         "display_name": { "$ref": "#/$def/display_name" },
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },
+                        "deprecation": { "$ref": "#/$def/deprecation" },
                         "$ref": { "$ref": "#/$def/$ref" },
                         "documentation_options": { "$ref": "#/$def/documentation_options" }
                     },
@@ -257,8 +262,11 @@
                         "display_name": { "$ref": "#/$def/display_name" },
                         "description": { "$ref": "#/$def/description" },
                         "required": { "$ref": "#/$def/required" },
+                        "deprecation": { "$ref": "#/$def/deprecation" },
                         "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                        "documentation_options": { "$ref": "#/$def/documentation_options" },
+                        "$schema": { "type": "string" },
+                        "$id": { "type": "string" }
                     },
                     "additionalProperties": false
                 },
@@ -309,6 +317,39 @@
                 }
             },
             "additionalProperties": false
+        },
+        "deprecation": {
+            "type": "object",
+            "description": "Deprecation settings",
+            "required": ["warning"],
+            "properties": {
+                "warning": {
+                    "type": "boolean",
+                    "description": "Emit deprecation warning if key is set",
+                    "default": true
+                },
+                "new_key": {
+                    "type": "string",
+                    "description": "Relative path to new key"
+                },
+                "removed": {
+                    "type": "boolean",
+                    "description": "Support for this key has been removed",
+                    "default": false
+                },
+                "remove_in_version": {
+                    "type": "string",
+                    "description": "Version in which the key will be removed"
+                },
+                "remove_after_date": {
+                    "type": "string",
+                    "description": "Date after which the key will be removed in the next major version"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "URL detailing the deprecation and migration guidelines"
+                }
+            }
         }
     },
     "title": "Arista AVD Schema",

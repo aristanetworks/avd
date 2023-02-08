@@ -3,20 +3,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -45,20 +34,6 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-
-# Authentication
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
 
 # Interfaces
 
@@ -92,33 +67,3 @@ interface defaults
       shutdown
    mtu 9000
 ```
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

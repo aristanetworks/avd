@@ -3,21 +3,12 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -47,24 +38,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
 # Routing
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -83,6 +57,7 @@ no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -93,12 +68,6 @@ ip routing vrf TENANT_A_PROJECT02
 | MGMT | false |
 | TENANT_A_PROJECT01 | false |
 | TENANT_A_PROJECT02 | false |
-
-# Multicast
-
-# Filters
-
-# ACL
 
 # VRF Instances
 
@@ -120,5 +89,3 @@ vrf instance TENANT_A_PROJECT01
 !
 vrf instance TENANT_A_PROJECT02
 ```
-
-# Quality Of Service

@@ -4,8 +4,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -39,12 +37,9 @@
   - [Patch Panel Configuration](#patch-panel-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
 # Management
@@ -101,10 +96,6 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
-
-# Authentication
-
-# Monitoring
 
 # Spanning Tree
 
@@ -460,7 +451,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:1c:73:00:dc:00
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -481,6 +471,7 @@ no ip routing vrf MGMT
 ip routing vrf TENANT_B_INTRA
 ip routing vrf TENANT_B_WAN
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -911,10 +902,6 @@ patch panel
 ```eos
 ```
 
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -935,8 +922,6 @@ vrf instance TENANT_B_INTRA
 !
 vrf instance TENANT_B_WAN
 ```
-
-# Quality Of Service
 
 # EOS CLI
 

@@ -6,47 +6,47 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
   neighbors:
-    172.31.255.4:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
-      description: AUTO_NODE_TYPE_SPINE01_Ethernet2
-    172.31.255.6:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
-      description: AUTO_NODE_TYPE_SPINE02_Ethernet2
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: AUTO_NODE_TYPE_SPINE01
-      remote_as: '65100'
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: AUTO_NODE_TYPE_SPINE02
-      remote_as: '65100'
+  - peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: AUTO_NODE_TYPE_SPINE01_Ethernet2
+    ip_address: 172.31.255.4
+  - peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: AUTO_NODE_TYPE_SPINE02_Ethernet2
+    ip_address: 172.31.255.6
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: AUTO_NODE_TYPE_SPINE01
+    remote_as: '65100'
+    ip_address: 192.168.255.1
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: AUTO_NODE_TYPE_SPINE02
+    remote_as: '65100'
+    ip_address: 192.168.255.2
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -61,65 +61,65 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-    '0':
-      priority: 4096
+  - priority: 4096
+    id: '0'
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.203.13/24
-    gateway: 192.168.203.1
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.203.13/24
+  gateway: 192.168.203.1
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: AUTO_NODE_TYPE_SPINE01
-    peer_interface: Ethernet2
-    peer_type: spine
-    description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet2
-    shutdown: false
-    mtu: 9000
-    type: routed
-    ip_address: 172.31.255.5/31
-  Ethernet2:
-    peer: AUTO_NODE_TYPE_SPINE02
-    peer_interface: Ethernet2
-    peer_type: spine
-    description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet2
-    shutdown: false
-    mtu: 9000
-    type: routed
-    ip_address: 172.31.255.7/31
+- peer: AUTO_NODE_TYPE_SPINE01
+  peer_interface: Ethernet2
+  peer_type: spine
+  description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet2
+  shutdown: false
+  mtu: 9000
+  type: routed
+  ip_address: 172.31.255.5/31
+  name: Ethernet1
+- peer: AUTO_NODE_TYPE_SPINE02
+  peer_interface: Ethernet2
+  peer_type: spine
+  description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet2
+  shutdown: false
+  mtu: 9000
+  type: routed
+  ip_address: 172.31.255.7/31
+  name: Ethernet2
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.4/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.4/32
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.4/32
+  name: Loopback0
+- description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.4/32
+  name: Loopback1
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
+- sequence_numbers:
+  - action: permit 192.168.255.0/24 eq 32
+    sequence: 10
+  - action: permit 192.168.254.0/24 eq 32
+    sequence: 20
+  name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- sequence_numbers:
+  - type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    sequence: 10
+  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300

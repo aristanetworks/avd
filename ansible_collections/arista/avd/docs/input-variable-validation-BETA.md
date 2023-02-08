@@ -152,6 +152,11 @@ This also means that a poorly written schema could have conflicting schema optio
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |
+| <samp>deprecation</samp> | Dictionary | | | | Deprecation Settings |
+| <samp>&nbsp;&nbsp;warning</samp> | Boolean | True | True | | Emit deprecation warning if key is set |
+| <samp>&nbsp;&nbsp;new_key</samp> | String | | | | Relative path to new key |
+| <samp>&nbsp;&nbsp;remove_in_version</samp> | String | | | | Version in which the key will be removed |
+| <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
 | <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
@@ -173,6 +178,11 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |
+| <samp>deprecation</samp> | Dictionary | | | | Deprecation Settings |
+| <samp>&nbsp;&nbsp;warning</samp> | Boolean | True | True | | Emit deprecation warning if key is set |
+| <samp>&nbsp;&nbsp;new_key</samp> | String | | | | Relative path to new key |
+| <samp>&nbsp;&nbsp;remove_in_version</samp> | String | | | | Version in which the key will be removed |
+| <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
 | <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
@@ -199,6 +209,11 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |
+| <samp>deprecation</samp> | Dictionary | | | | Deprecation Settings |
+| <samp>&nbsp;&nbsp;warning</samp> | Boolean | True | True | | Emit deprecation warning if key is set |
+| <samp>&nbsp;&nbsp;new_key</samp> | String | | | | Relative path to new key |
+| <samp>&nbsp;&nbsp;remove_in_version</samp> | String | | | | Version in which the key will be removed |
+| <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
 | <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
@@ -221,6 +236,11 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |
+| <samp>deprecation</samp> | Dictionary | | | | Deprecation Settings |
+| <samp>&nbsp;&nbsp;warning</samp> | Boolean | True | True | | Emit deprecation warning if key is set |
+| <samp>&nbsp;&nbsp;new_key</samp> | String | | | | Relative path to new key |
+| <samp>&nbsp;&nbsp;remove_in_version</samp> | String | | | | Version in which the key will be removed |
+| <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
 | <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
@@ -240,6 +260,11 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |
+| <samp>deprecation</samp> | Dictionary | | | | Deprecation Settings |
+| <samp>&nbsp;&nbsp;warning</samp> | Boolean | True | True | | Emit deprecation warning if key is set |
+| <samp>&nbsp;&nbsp;new_key</samp> | String | | | | Relative path to new key |
+| <samp>&nbsp;&nbsp;remove_in_version</samp> | String | | | | Version in which the key will be removed |
+| <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Allows for easy reuse of schema definitions.<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
 | <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |

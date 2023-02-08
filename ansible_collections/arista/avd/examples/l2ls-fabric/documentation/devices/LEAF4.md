@@ -10,7 +10,6 @@
   - [Local Users](#local-users)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
-- [Monitoring](#monitoring)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -34,12 +33,9 @@
   - [Static Routes](#static-routes)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -182,8 +178,6 @@ Authorization for configuration commands is disabled.
 aaa authorization exec default local
 !
 ```
-
-# Monitoring
 
 # MLAG
 
@@ -391,7 +385,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -408,6 +401,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -447,10 +441,6 @@ ip route vrf MGMT 0.0.0.0/0 172.100.100.1
 ```eos
 ```
 
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -465,5 +455,3 @@ ip route vrf MGMT 0.0.0.0/0 172.100.100.1
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

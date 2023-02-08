@@ -3,18 +3,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -44,24 +35,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
 # Routing
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -77,6 +51,7 @@ interface Management1
 ip routing
 ip hardware fib optimize prefixes profile urpf-internet
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -92,11 +67,3 @@ ip hardware fib optimize prefixes profile urpf-internet
 ipv6 unicast-routing
 ipv6 hardware fib optimize prefixes profile internet
 ```
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

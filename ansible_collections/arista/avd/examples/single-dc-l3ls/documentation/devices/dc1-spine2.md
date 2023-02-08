@@ -6,7 +6,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-- [Monitoring](#monitoring)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -24,15 +23,12 @@
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
-- [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -107,8 +103,6 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
 ```
-
-# Monitoring
 
 # Spanning Tree
 
@@ -229,7 +223,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -246,6 +239,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -404,8 +398,6 @@ router bfd
    multihop interval 300 min-rx 300 multiplier 3
 ```
 
-# Multicast
-
 # Filters
 
 ## Prefix-lists
@@ -444,8 +436,6 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -460,5 +450,3 @@ route-map RM-CONN-2-BGP permit 10
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

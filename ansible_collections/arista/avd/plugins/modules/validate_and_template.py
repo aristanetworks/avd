@@ -53,7 +53,7 @@ options:
     required: false
   conversion_mode:
     description:
-      - Run data conversion in either "warning", "info", "debug" or "disabled" mode.
+      - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
       - Conversion will perform type conversion of input variables as defined in the schema.
       - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
       - During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
@@ -61,10 +61,11 @@ options:
       - conversion_mode:warning will produce warning messages.
       - conversion_mode:info will produce regular log messages.
       - conversion_mode:debug will produce hidden messages viewable with -v.
+      - conversion_mode:quiet will not produce any messages.
     required: false
     default: "debug"
     type: str
-    choices: [ "warning", "info", "debug", "disabled" ]
+    choices: [ "warning", "info", "debug", "quiet", "disabled" ]
   validation_mode:
     description:
       - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.

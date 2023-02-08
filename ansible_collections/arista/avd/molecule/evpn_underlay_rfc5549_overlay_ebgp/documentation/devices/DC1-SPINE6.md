@@ -27,16 +27,13 @@
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
-- [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -275,7 +272,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -292,6 +288,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -443,8 +440,6 @@ router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
 ```
 
-# Multicast
-
 # Filters
 
 ## Prefix-lists
@@ -505,8 +500,6 @@ route-map RM-CONN-2-BGP permit 30
    match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -521,5 +514,3 @@ route-map RM-CONN-2-BGP permit 30
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

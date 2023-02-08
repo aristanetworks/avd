@@ -18,7 +18,7 @@ from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
 from .static_routes import StaticRoutesMixin
-from .struct_cfg import StructCfgMixin
+from .struct_cfgs import StructCfgsMixin
 from .virtual_source_nat_vrfs import VirtualSourceNatVrfsMixin
 from .vlan_interfaces import VlanInterfacesMixin
 from .vlans import VlansMixin
@@ -43,7 +43,7 @@ class AvdStructuredConfig(
     RouterOspfMixin,
     VrfsMixin,
     EosCliMixin,
-    StructCfgMixin,
+    StructCfgsMixin,
     PrefixListsMixin,
     VxlanInterfaceMixin,
     VirtualSourceNatVrfsMixin,

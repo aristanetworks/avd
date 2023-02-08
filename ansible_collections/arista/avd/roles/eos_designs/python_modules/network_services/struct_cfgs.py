@@ -2,13 +2,10 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-
 from .utils import UtilsMixin
 
 
-class StructCfgMixin(UtilsMixin):
+class StructCfgsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
     Class should only be used as Mixin to a AvdStructuredConfig class
@@ -18,7 +15,7 @@ class StructCfgMixin(UtilsMixin):
     _hostvars: dict
 
     @cached_property
-    def struct_cfg(self) -> dict | None:
+    def struct_cfgs(self) -> dict | None:
         """
         Return the combined structured config from VRFs
         """
@@ -34,7 +31,6 @@ class StructCfgMixin(UtilsMixin):
                     structured_configs.append(structured_config)
 
         if structured_configs:
-            list_merge = get(self._hostvars, "custom_structured_configuration_list_merge", required=True)
-            return merge({}, *structured_configs, recursive=True, list_merge=list_merge)
+            return structured_configs
 
         return None

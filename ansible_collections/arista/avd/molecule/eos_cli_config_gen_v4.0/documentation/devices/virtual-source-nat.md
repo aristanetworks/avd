@@ -3,21 +3,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [Virtual Source NAT](#virtual-source-nat)
   - [Virtual Source NAT Summary](#virtual-source-nat-summary)
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -47,50 +35,6 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-# Multicast
-
-# Filters
-
-# ACL
-
 # Virtual Source NAT
 
 ## Virtual Source NAT Summary
@@ -107,5 +51,3 @@ interface Management1
 ip address virtual source-nat vrf TEST_01 address 1.1.1.1
 ip address virtual source-nat vrf TEST_02 address 1.1.1.2
 ```
-
-# Quality Of Service

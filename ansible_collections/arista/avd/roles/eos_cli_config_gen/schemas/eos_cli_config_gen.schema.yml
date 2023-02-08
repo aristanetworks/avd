@@ -9278,11 +9278,11 @@ keys:
     keys:
       length:
         type: int
-        min: 1
+        min: 0
         max: 32767
       width:
         type: int
-        min: 1
+        min: 10
         max: 32767
   trackers:
     type: list
@@ -9715,13 +9715,14 @@ keys:
           type: str
           description: 'IPv6_address/Mask
 
-            "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of
-            the new "ipv6_address_virtuals"
-
             If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
             addresses will be configured
 
             '
+          deprecation:
+            warning: true
+            new_key: ipv6_address_virtuals
+            remove_in_version: 5.0.0
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual

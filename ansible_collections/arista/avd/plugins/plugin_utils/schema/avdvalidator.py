@@ -1,12 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-from collections import ChainMap
-
-__metaclass__ = type
-
 import copy
 import json
 import os
+from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 

@@ -3,19 +3,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
 - [ACL](#acl)
   - [MAC Access-lists](#mac-access-lists)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -44,48 +33,6 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-
-# Authentication
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-# Multicast
-
-# Filters
 
 # ACL
 
@@ -150,5 +97,3 @@ mac access-list TEST4
    permit any 02:00:00:12:34:56 00:00:00:00:00:00
    deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00
 ```
-
-# Quality Of Service

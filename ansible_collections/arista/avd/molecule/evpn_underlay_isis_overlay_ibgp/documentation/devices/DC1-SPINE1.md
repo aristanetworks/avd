@@ -28,13 +28,9 @@
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -352,7 +348,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -369,6 +364,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -544,12 +540,6 @@ router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
 ```
 
-# Multicast
-
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -564,5 +554,3 @@ router bfd
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service

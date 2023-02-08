@@ -973,28 +973,25 @@ class EosDesignsFacts(AvdFacts):
         )
         if tmp_overlay_rd_type_admin_subfield is None:
             return self.router_id
+
         if tmp_overlay_rd_type_admin_subfield == "vtep_loopback":
             return self.vtep_ip
+
         if tmp_overlay_rd_type_admin_subfield == "bgp_as":
             return self.bgp_as
+
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
 
+        if re.fullmatch(r"[0-9]+", str(tmp_overlay_rd_type_admin_subfield)):
+            return str(int(tmp_overlay_rd_type_admin_subfield) + tmp_overlay_rd_type_admin_subfield_offset)
+
         try:
-            # Try to convert input var (str) to int
-            tmp_overlay_rd_type_admin_subfield = int(tmp_overlay_rd_type_admin_subfield)
+            ipaddress.ip_address(tmp_overlay_rd_type_admin_subfield)
+            return tmp_overlay_rd_type_admin_subfield
         except ValueError:
-            # Ignore if we could not convert
             pass
 
-        if isinstance(tmp_overlay_rd_type_admin_subfield, int) and tmp_overlay_rd_type_admin_subfield > 0 and tmp_overlay_rd_type_admin_subfield <= 4294967295:
-            return tmp_overlay_rd_type_admin_subfield + tmp_overlay_rd_type_admin_subfield_offset
-        if isinstance(tmp_overlay_rd_type_admin_subfield, str):
-            try:
-                ipaddress.ip_address(tmp_overlay_rd_type_admin_subfield)
-                return tmp_overlay_rd_type_admin_subfield
-            except ValueError:
-                pass
         return self.router_id
 
     @cached_property

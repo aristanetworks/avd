@@ -14,3 +14,6 @@ role_schema_fragments_glob: "{{ role_schema_fragments_dir }}/{{ role_schema_frag
 # JSON Schema file
 role_schema_json_schema_file_name: "{{ role_name }}.jsonschema.json"
 role_schema_json_schema_path: "{{ role_schema_dir }}/{{ role_schema_json_schema_file_name }}"
+
+# Structured Config Schema file
+structured_config_schema_path: "{{ role_path }}/../eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml"

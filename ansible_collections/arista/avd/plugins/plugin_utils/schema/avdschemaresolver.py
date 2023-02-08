@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
@@ -30,13 +30,10 @@ with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="UTF-8") as file:
 
 
 def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
-    # Don't run resolver if $ref is part of the schema.
-    # Instead $ref resolver will pop $ref and run all resolvers.
-    if "$ref" in schema:
-        return
-
     # Resolve the child schemas
     for key, childschema in keys.items():
+        if "$ref" in childschema:
+            _ref_on_child(validator, childschema["$ref"], resolved_schema["keys"][key])
         yield from validator.descend(
             resolved_schema["keys"][key],
             childschema,
@@ -46,13 +43,10 @@ def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
 
 
 def _dynamic_keys(validator, dynamic_keys: dict, resolved_schema: dict, schema: dict):
-    # Don't run resolver if $ref is part of the schema.
-    # Instead $ref resolver will pop $ref and run all resolvers.
-    if "$ref" in schema:
-        return
-
     # Resolve the child schemas
     for key, childschema in dynamic_keys.items():
+        if "$ref" in childschema:
+            _ref_on_child(validator, childschema["$ref"], resolved_schema["dynamic_keys"][key])
         yield from validator.descend(
             resolved_schema["dynamic_keys"][key],
             childschema,
@@ -62,12 +56,9 @@ def _dynamic_keys(validator, dynamic_keys: dict, resolved_schema: dict, schema: 
 
 
 def _items(validator, items: dict, resolved_schema: dict, schema: dict):
-    # Don't run resolver if $ref is part of the schema.
-    # Instead $ref resolver will pop $ref and run all resolvers.
-    if "$ref" in schema:
-        return
-
     # Resolve the child schema
+    if "$ref" in items:
+        _ref_on_child(validator, items["$ref"], resolved_schema["items"])
     yield from validator.descend(
         resolved_schema["items"],
         items,
@@ -76,37 +67,24 @@ def _items(validator, items: dict, resolved_schema: dict, schema: dict):
     )
 
 
-def _ref(validator, ref, resolved_schema: dict, schema: dict):
+def _ref_on_child(validator, ref, child_schema: dict):
     """
     This function resolves the $ref referenced schema,
     then merges with any schema defined at the same level
-    Then performs other actions on the resolved+merged schema.
 
-    Since this will run all resolve tasks on the same level,
-    a check for $ref has been added to the other resolvers, to
-    avoid duplicate resolving (and duplicate errors)
-
-    This is the only function where the schema actully changes,
-    so this is also where the resolved_schema is updated.
+    In place update of supplied child_schema
     """
-    scope, resolved = validator.resolver.resolve(ref)
-    validator.resolver.push_scope(scope)
-    merged_schema = copy.deepcopy(resolved)
-    always_merger.merge(merged_schema, schema)
-    merged_schema.pop("$ref", None)
-
-    resolved_schema.update(copy.deepcopy(merged_schema))
-
-    try:
-        yield from validator.descend(resolved_schema, merged_schema)
-    finally:
-        validator.resolver.pop_scope()
+    scope, ref_schema = validator.resolver.resolve(ref)
+    merged_schema = copy.deepcopy(ref_schema)
+    child_schema.pop("$ref", None)
+    always_merger.merge(merged_schema, child_schema)
+    child_schema.update(ref_schema)
 
 
 """
 AvdSchemaResolver is used to resolve $ref in AVD Schemas.
 
-It is used to generate full documentation convering all nested schemas.
+It is used to generate full documentation covering all nested schemas.
 
 Since we return generators, we cannot return the resolved schema.
 Instead we use the "instance" of jsonschema - the variable normally holding
@@ -120,7 +98,6 @@ else:
     AvdSchemaResolver = jsonschema.validators.create(
         meta_schema=AVD_META_SCHEMA,
         validators={
-            "$ref": _ref,
             "items": _items,
             "keys": _keys,
             "dynamic_keys": _dynamic_keys,

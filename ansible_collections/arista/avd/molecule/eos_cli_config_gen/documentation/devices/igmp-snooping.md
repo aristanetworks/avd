@@ -3,23 +3,14 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -48,10 +39,6 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-
-# Authentication
-
-# Monitoring
 
 # Internal VLAN Allocation Policy
 
@@ -89,30 +76,6 @@ vlan 3010
    trunk group LEAF_PEER_L3
 ```
 
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
 # Multicast
 
 ## IP IGMP Snooping
@@ -127,9 +90,3 @@ IGMP snooping is globally disabled
 !
 no ip igmp snooping
 ```
-
-# Filters
-
-# ACL
-
-# Quality Of Service

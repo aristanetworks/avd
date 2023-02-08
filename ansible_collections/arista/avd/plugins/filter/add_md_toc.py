@@ -62,7 +62,7 @@ def add_md_toc(md_input, skip_lines=0, toc_levels=2, toc_marker="<!-- toc -->"):
     with StringIO(md_input) as md:
         stdin = sys.stdin
         sys.stdin = md
-        toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines)
+        toc = md_toc.build_toc("-", keep_header_levels=toc_levels, skip_lines=skip_lines).rstrip()
         sys.stdin = stdin
 
     # Insert TOC between markers

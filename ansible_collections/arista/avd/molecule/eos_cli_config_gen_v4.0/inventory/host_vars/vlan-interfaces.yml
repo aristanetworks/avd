@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=../../../../roles/eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json
+
 ### VLAN Interfaces ###
 vlan_interfaces:
 # Standard SVI configuration

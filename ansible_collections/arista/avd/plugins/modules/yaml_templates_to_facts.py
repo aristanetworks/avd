@@ -26,6 +26,10 @@ options:
     description: Root key under which the facts will be defined. If not set the facts well be set directly on root level.
     required: false
     type: str
+  schema:
+    description: Schema conforming to "AVD Meta Schema"
+    required: false
+    type: dict
   templates:
     description: List of dicts for Jinja templates to be run.
     required: true
@@ -77,12 +81,49 @@ options:
       Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     required: false
     type: str
+  mode:
+    description: File mode (ex. 0664) for dest file. See 'ansible.builtin.copy' module for details.
+    required: false
+    type: str
   template_output:
     description: |
       If true the output data will be run through another jinja2 rendering before returning.
       This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
+  conversion_mode:
+    description:
+      - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
+      - Conversion will perform type conversion of input variables as defined in the schema.
+      - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+      - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+      - conversion_mode:disabled means that conversion will not run.
+      - conversion_mode:warning will produce warning messages.
+      - conversion_mode:info will produce regular log messages.
+      - conversion_mode:debug will produce hidden messages viewable with -v.
+      - conversion_mode:quiet will not produce any messages.
+    required: false
+    default: "debug"
+    type: str
+    choices: [ "warning", "info", "debug", "quiet", "disabled" ]
+  validation_mode:
+    description:
+      - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
+      - Validation will validate the input variables according to the schema.
+      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
+      - validation_mode:disabled means that validation will not run.
+      - validation_mode:error will produce error messages and fail the task.
+      - validation_mode:warning will produce warning messages.
+      - validation_mode:info will produce regular log messages.
+      - validation_mode:debug will produce hidden messages viewable with -v.
+    required: false
+    default: "warning"
+    type: str
+    choices: [ "error", "warning", "info", "debug", "disabled" ]
+  output_schema:
+    description: AVD Schema for output data. Used for automatic merge of data.
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""

@@ -45,7 +45,6 @@
   - [Prefix-lists](#prefix-lists)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -55,7 +54,6 @@
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -763,7 +761,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:dc:00:00:00:0a
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -792,6 +789,7 @@ ip routing vrf Tenant_A_WEB_Zone
 ip routing vrf Tenant_B_OP_Zone
 ip routing vrf Tenant_C_OP_Zone
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -1192,8 +1190,6 @@ route-map RM-MLAG-PEER-IN permit 10
    set origin incomplete
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -1258,5 +1254,3 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.12
 !
 platform sand lag hardware-only
 ```
-
-# Quality Of Service

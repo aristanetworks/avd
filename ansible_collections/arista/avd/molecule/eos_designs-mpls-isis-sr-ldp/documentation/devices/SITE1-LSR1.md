@@ -4,8 +4,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -24,13 +22,9 @@
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
 # Management
@@ -87,10 +81,6 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
-
-# Authentication
-
-# Monitoring
 
 # Spanning Tree
 
@@ -272,7 +262,6 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -289,6 +278,7 @@ service routing protocols model multi-agent
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -412,12 +402,6 @@ mpls ldp
 | Ethernet4 | True | True | True |
 | Loopback0 | - | True | - |
 
-# Multicast
-
-# Filters
-
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -432,8 +416,6 @@ mpls ldp
 !
 vrf instance MGMT
 ```
-
-# Quality Of Service
 
 # EOS CLI
 

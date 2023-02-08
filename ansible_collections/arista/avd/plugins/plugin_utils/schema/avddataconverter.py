@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning, AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
@@ -35,6 +35,7 @@ class AvdDataConverter:
         self.converters = {
             "items": self.convert_items,
             "keys": self.convert_keys,
+            "deprecation": self.deprecation,
         }
 
     def convert_data(self, data, schema: dict = None, path: list[str] = None) -> Generator:
@@ -175,3 +176,36 @@ class AvdDataConverter:
                         return
 
                     yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+
+                elif convert_type == "str" and schema_type == "list":
+                    try:
+                        data[index] = list(map(str.strip, value.split(",")))
+                    except Exception:
+                        # Ignore errors
+                        # TODO: Log message
+                        return
+
+                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+
+    def deprecation(self, deprecation: dict, data, schema: dict, path: list):
+        """
+        deprecation:
+          warning: bool, default = True
+          new_key: str
+          removed: bool
+          remove_in_version: str
+          remove_after_date: str
+          url: str
+        """
+
+        if not deprecation.get("warning", True):
+            return
+
+        yield AvdDeprecationWarning(
+            key=".".join(path),
+            new_key=deprecation.get("new_key"),
+            remove_in_version=deprecation.get("remove_in_version"),
+            remove_after_date=deprecation.get("remove_after_date"),
+            url=deprecation.get("url"),
+            removed=deprecation.get("removed", False),
+        )

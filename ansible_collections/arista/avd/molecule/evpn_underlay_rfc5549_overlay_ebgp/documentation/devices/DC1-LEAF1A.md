@@ -40,14 +40,12 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -482,7 +480,6 @@ service routing protocols model multi-agent
 !
 ip virtual-router mac-address 00:dc:00:00:00:0a
 ```
-
 ## IP Routing
 
 ### IP Routing Summary
@@ -503,6 +500,7 @@ no ip routing vrf MGMT
 ip routing vrf Tenant_A_APP_Zone
 ip routing vrf Tenant_A_WEB_Zone
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -773,8 +771,6 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
-# ACL
-
 # VRF Instances
 
 ## VRF Instances Summary
@@ -812,5 +808,3 @@ vrf instance Tenant_A_WEB_Zone
 !
 platform sand lag hardware-only
 ```
-
-# Quality Of Service

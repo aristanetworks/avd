@@ -3,22 +3,10 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [Management Security Configuration](#management-security-configuration)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
 # Management
 
@@ -47,8 +35,6 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-
-# Authentication
 
 # Management Security
 
@@ -91,47 +77,3 @@ management security
    ssl profile tls-versions-profile
       tls versions 1.0 1.1
 ```
-
-# Monitoring
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | False |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service
