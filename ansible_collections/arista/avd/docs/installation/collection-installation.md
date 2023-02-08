@@ -77,7 +77,7 @@ Installing 'arista.avd:3.6.0' to '/root/.ansible/collections/ansible_collections
 ```
 
 !!! warning
-After an upgrade, some python requirements may have changed,, follow the
+After an upgrade, some python requirements may have changed. Follow the
 instructions in the Python [requirements](#python-requirements-installation)
 section to update your python packages.
 
