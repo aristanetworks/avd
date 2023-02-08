@@ -124,6 +124,7 @@ ethernet_interfaces:
 - peer: HostC
   peer_interface: Eth1
   peer_type: server
+  port_profile: PP-BLUE
   description: HostC_Eth1
   type: switched
   shutdown: false

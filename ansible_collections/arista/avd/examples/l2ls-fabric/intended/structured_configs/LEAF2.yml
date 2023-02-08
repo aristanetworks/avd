@@ -124,6 +124,7 @@ ethernet_interfaces:
 - peer: HostB
   peer_interface: Eth1
   peer_type: server
+  port_profile: PP-GREEN
   description: HostB_Eth1
   type: switched
   shutdown: false

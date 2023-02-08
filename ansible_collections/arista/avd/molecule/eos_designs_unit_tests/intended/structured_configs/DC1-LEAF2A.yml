@@ -579,6 +579,7 @@ ethernet_interfaces:
 - peer: server01_MLAG
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_B
   description: server01_MLAG_Eth2
   type: switched
   shutdown: false
@@ -593,6 +594,7 @@ ethernet_interfaces:
 - peer: server01_MTU_PROFILE_MLAG
   peer_interface: Eth4
   peer_type: server
+  port_profile: TENANT_A_MTU
   description: server01_MTU_PROFILE_MLAG_Eth4
   mtu: 1600
   type: switched
@@ -621,6 +623,7 @@ ethernet_interfaces:
 - peer: FIREWALL01
   peer_interface: E0
   peer_type: firewall
+  port_profile: TENANT_A_B
   description: FIREWALL01_E0
   type: switched
   shutdown: false
@@ -633,6 +636,7 @@ ethernet_interfaces:
 - peer: ROUTER01
   peer_interface: Eth0
   peer_type: router
+  port_profile: TENANT_A
   description: ROUTER01_Eth0
   type: switched
   shutdown: false
@@ -641,6 +645,7 @@ ethernet_interfaces:
   name: Ethernet21
 - peer: PC
   peer_type: network_port
+  port_profile: DOT1X_PORT_PROFILE
   description: PC
   type: switched
   shutdown: false
@@ -664,6 +669,7 @@ ethernet_interfaces:
   name: Ethernet24
 - peer: PC
   peer_type: network_port
+  port_profile: DOT1X_PORT_PROFILE
   description: PC
   type: switched
   shutdown: false

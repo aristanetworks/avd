@@ -161,6 +161,7 @@ ethernet_interfaces:
 - peer: FIREWALL
   peer_interface: Eth1
   peer_type: firewall
+  port_profile: PP-FIREWALL
   description: FIREWALL_Eth1
   type: switched
   shutdown: false

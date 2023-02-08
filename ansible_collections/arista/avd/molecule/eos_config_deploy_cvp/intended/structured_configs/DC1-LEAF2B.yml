@@ -645,6 +645,7 @@ ethernet_interfaces:
 - peer: server01_MLAG
   peer_interface: Eth3
   peer_type: server
+  port_profile: TENANT_B
   description: server01_MLAG_Eth3
   type: switched
   shutdown: false
