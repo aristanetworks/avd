@@ -188,6 +188,7 @@ class UtilsMixin:
             peer: <peer name>
             peer_type: <type of peer>
             interface: <interface on this node>
+            description: <description for interface on this node>
             peer_interface: <interface on peer>
             port_channel_id: <id on this node | None>
             port_channel_members:
@@ -208,6 +209,8 @@ class UtilsMixin:
         ip = get(p2p_link, "ip", default=[None, None])
         # Set bgp_as or fallback to list with None values
         bgp_as = get(p2p_link, "as", default=[None, None])
+        # Set descriptions or fallback to list with None values
+        descriptions = get(p2p_link, "descriptions", default=[None, None])
 
         data = {
             "peer": peer,
@@ -216,6 +219,7 @@ class UtilsMixin:
             "peer_ip": ip[peer_index],
             "bgp_as": str(bgp_as[index]) if bgp_as[index] is not None else None,
             "peer_bgp_as": str(bgp_as[peer_index]) if bgp_as[peer_index] is not None else None,
+            "description": descriptions[index] if descriptions[index] is not None else None,
         }
 
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
@@ -272,11 +276,12 @@ class UtilsMixin:
         index = p2p_link["nodes"].index(self._hostname)
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
+        default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         interface_cfg = {
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],
-            "description": f"P2P_LINK_TO_{peer}_{peer_interface}",
+            "description": get(p2p_link, "data.description", default=default_description),
             "type": "routed",
             "shutdown": False,
             "mtu": p2p_link.get("mtu", self._p2p_uplinks_mtu),
@@ -364,11 +369,12 @@ class UtilsMixin:
         """
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
+        default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         return {
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],
-            "description": f"P2P_LINK_TO_{peer}_{peer_interface}",
+            "description": get(p2p_link, "data.description", default=default_description),
             "shutdown": False,
             "channel_group": {
                 "id": p2p_link["data"]["port_channel_id"],
