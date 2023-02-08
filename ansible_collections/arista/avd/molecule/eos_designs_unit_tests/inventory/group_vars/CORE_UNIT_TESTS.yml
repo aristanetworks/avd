@@ -141,6 +141,12 @@ core_interfaces:
 
 
 l3_edge:
+  p2p_links_ip_pools:
+    - name: pool_default_mask
+      ipv4_pool: 172.16.0.0/24
+    - name: pool_29_mask
+      ipv4_pool: 172.16.1.0/24
+      prefix_size: 29
   p2p_links:
       # P2P link with mpls_ip and mpls_ldp set to false.
     - nodes: [core-1-isis-sr-ldp, peer2]
@@ -149,3 +155,19 @@ l3_edge:
       include_in_underlay_protocol: true
       mpls_ip: false
       mpls_ldp: false
+    - nodes: [core-1-isis-sr-ldp, peer3]
+      interfaces: [ethernet22, ethernet22]
+      ip_pool: pool_default_mask
+      id: 1
+    - nodes: [core-1-isis-sr-ldp, peer4]
+      interfaces: [ethernet23, ethernet23]
+      ip_pool: pool_default_mask
+      id: 2
+    - nodes: [core-1-isis-sr-ldp, peer5]
+      interfaces: [ethernet24, ethernet22]
+      ip_pool: pool_29_mask
+      id: 1
+    - nodes: [core-1-isis-sr-ldp, peer6]
+      interfaces: [ethernet25, ethernet23]
+      ip_pool: pool_29_mask
+      id: 2

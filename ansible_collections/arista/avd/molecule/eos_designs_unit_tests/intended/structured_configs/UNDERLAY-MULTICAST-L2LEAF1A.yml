@@ -10,37 +10,37 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.109/24
-    gateway: 192.168.200.5
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.109/24
+  gateway: 192.168.200.5
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: UNDERLAY-MULTICAST-L3LEAF1A
-    peer_interface: Ethernet6
-    peer_type: l3leaf
-    description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet6
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
+- peer: UNDERLAY-MULTICAST-L3LEAF1A
+  peer_interface: Ethernet6
+  peer_type: l3leaf
+  description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet6
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
 port_channel_interfaces:
-  Port-Channel1:
-    description: DC1_LEAF1_Po6
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: none
+- description: DC1_LEAF1_Po6
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
+  name: Port-Channel1
 ip_igmp_snooping:
   globally_enabled: true

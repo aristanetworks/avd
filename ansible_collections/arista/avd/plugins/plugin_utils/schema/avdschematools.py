@@ -62,12 +62,14 @@ class AvdSchemaTools:
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
 
-        avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
+        Returns list[str] with one conversion summary message if any conversions were performed
         """
         if self.conversion_mode == "disabled":
             return []
 
         result_messages = []
+
+        # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.convert(data)
         if conversion_counter := self.handle_validation_exceptions(exceptions, self.conversion_mode):
             result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
@@ -80,12 +82,14 @@ class AvdSchemaTools:
         """
         Validate data according to the schema
 
-        avd_schema.validate returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
+        Returns list[str] with one validation summary message if any validation errors was found
         """
         if self.validation_mode == "disabled":
             return []
 
         result_messages = []
+
+        # avd_schema.validate returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.validate(data)
         if validation_counter := self.handle_validation_exceptions(exceptions, self.validation_mode):
             result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")

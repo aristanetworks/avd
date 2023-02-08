@@ -33,7 +33,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 16384
-  no_spanning_tree_vlan: 4091
+  no_spanning_tree_vlan: '4091'
 local_users:
   admin:
     privilege: 15
@@ -163,8 +163,8 @@ mlag_configuration:
   local_interface: Vlan4091
   peer_address: 10.255.252.27
   peer_link: Port-Channel3
-  reload_delay_mlag: 300
-  reload_delay_non_mlag: 330
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
   vlans:

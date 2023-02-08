@@ -61,6 +61,7 @@
     schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
+    output_schema: "{{ lookup('ansible.builtin.file', structured_config_schema_path) | from_yaml }}"
   delegate_to: localhost
   check_mode: false
   register: structured_config

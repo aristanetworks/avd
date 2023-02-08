@@ -12,6 +12,7 @@ l3_edge:
   p2p_links_ip_pools:
     - name: < p2p_pool_name_1 >
       ipv4_pool: < IPv4_address/Mask >
+      prefix_size: < subnet mask size | default -> 31 >
   p2p_links_profiles:
     - name: < p2p_profile_name >
       # any setting supported under p2p_links can be set and inherited from profile

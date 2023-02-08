@@ -4,38 +4,38 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      maximum_routes: 12000
-      send_community: all
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: true
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
   neighbors:
-    192.168.0.3:
-      remote_as: '65002'
-      description: peer2
-      peer_group: IPv4-UNDERLAY-PEERS
-    192.168.0.5:
-      remote_as: '65003'
-      description: peer3
-      peer_group: IPv4-UNDERLAY-PEERS
-    192.168.0.7:
-      remote_as: '65004'
-      description: peer4
-      peer_group: IPv4-UNDERLAY-PEERS
-    192.168.0.9:
-      remote_as: '65005'
-      description: peer5
-      peer_group: IPv4-UNDERLAY-PEERS
-    192.168.0.11:
-      remote_as: '65006'
-      description: peer6
-      peer_group: IPv4-UNDERLAY-PEERS
+  - remote_as: '65002'
+    description: peer2
+    peer_group: IPv4-UNDERLAY-PEERS
+    ip_address: 192.168.0.3
+  - remote_as: '65003'
+    description: peer3
+    peer_group: IPv4-UNDERLAY-PEERS
+    ip_address: 192.168.0.5
+  - remote_as: '65004'
+    description: peer4
+    peer_group: IPv4-UNDERLAY-PEERS
+    ip_address: 192.168.0.7
+  - remote_as: '65005'
+    description: peer5
+    peer_group: IPv4-UNDERLAY-PEERS
+    ip_address: 192.168.0.9
+  - remote_as: '65006'
+    description: peer6
+    peer_group: IPv4-UNDERLAY-PEERS
+    ip_address: 192.168.0.11
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -46,128 +46,128 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 1.2.3.1/32
+- description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 1.2.3.1/32
+  name: Loopback0
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 1.2.3.4/24 eq 32
+- sequence_numbers:
+  - action: permit 1.2.3.4/24 eq 32
+    sequence: 10
+  name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- sequence_numbers:
+  - type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    sequence: 10
+  name: RM-CONN-2-BGP
 ethernet_interfaces:
-  ethernet1:
-    peer: peer1
-    peer_interface: ethernet1
-    peer_type: other
-    description: P2P_LINK_TO_peer1_ethernet1
-    type: routed
-    shutdown: false
-    mtu: 2000
-    service_profile: TEST-QOS-PROFILE
-    eos_cli: '! TEST RAW_EOS_CLI
+- peer: peer1
+  peer_interface: ethernet1
+  peer_type: other
+  description: P2P_LINK_TO_peer1_ethernet1
+  type: routed
+  shutdown: false
+  mtu: 2000
+  service_profile: TEST-QOS-PROFILE
+  eos_cli: '! TEST RAW_EOS_CLI
 
-      '
-    ip_address: 192.168.0.0/31
-    mac_security:
-      profile: TEST-MACSEC-PROFILE
-    speed: forced 10000full
-    ptp:
-      enable: true
-  ethernet2:
-    peer: peer2
-    peer_interface: ethernet2
-    peer_type: other
-    description: P2P_LINK_TO_peer2_ethernet2
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ip_address: 192.168.0.2/31
-    ipv6_enable: true
-  ethernet3:
-    peer: peer3
-    peer_interface: ethernet3
-    peer_type: other
-    description: P2P_LINK_TO_peer3_ethernet3
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ip_address: 192.168.0.4/31
-  ethernet4:
-    peer: peer4
-    peer_interface: ethernet4
-    peer_type: other
-    description: P2P_LINK_TO_peer4_ethernet4
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ip_address: 192.168.0.6/31
-  Ethernet5:
-    peer: peer5
-    peer_interface: Port-Channel5
-    peer_type: other
-    description: P2P_LINK_TO_peer5_Port-Channel5
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet6:
-    peer: peer5
-    peer_interface: Port-Channel5
-    peer_type: other
-    description: P2P_LINK_TO_peer5_Port-Channel5
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet7:
-    peer: peer6
-    peer_interface: Port-Channel7
-    peer_type: other
-    description: P2P_LINK_TO_peer6_Port-Channel7
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: peer6
-    peer_interface: Port-Channel7
-    peer_type: other
-    description: P2P_LINK_TO_peer6_Port-Channel7
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
+    '
+  ip_address: 192.168.0.0/31
+  mac_security:
+    profile: TEST-MACSEC-PROFILE
+  speed: forced 10000full
+  ptp:
+    enable: true
+  name: ethernet1
+- peer: peer2
+  peer_interface: ethernet2
+  peer_type: other
+  description: P2P_LINK_TO_peer2_ethernet2
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ip_address: 192.168.0.2/31
+  ipv6_enable: true
+  name: ethernet2
+- peer: peer3
+  peer_interface: ethernet3
+  peer_type: other
+  description: P2P_LINK_TO_peer3_ethernet3
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ip_address: 192.168.0.4/31
+  name: ethernet3
+- peer: peer4
+  peer_interface: ethernet4
+  peer_type: other
+  description: P2P_LINK_TO_peer4_ethernet4
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ip_address: 192.168.0.6/31
+  name: ethernet4
+- peer: peer5
+  peer_interface: Port-Channel5
+  peer_type: other
+  description: P2P_LINK_TO_peer5_Port-Channel5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  name: Ethernet5
+- peer: peer5
+  peer_interface: Port-Channel5
+  peer_type: other
+  description: P2P_LINK_TO_peer5_Port-Channel5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  name: Ethernet6
+- peer: peer6
+  peer_interface: Port-Channel7
+  peer_type: other
+  description: P2P_LINK_TO_peer6_Port-Channel7
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  name: Ethernet7
+- peer: peer6
+  peer_interface: Port-Channel7
+  peer_type: other
+  description: P2P_LINK_TO_peer6_Port-Channel7
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  name: Ethernet8
 port_channel_interfaces:
-  Port-Channel5:
-    peer: peer5
-    peer_interface: Port-Channel5
-    peer_type: other
-    description: P2P_LINK_TO_peer5_Port-Channel5
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ip_address: 192.168.0.8/31
-  Port-Channel7:
-    peer: peer6
-    peer_interface: Port-Channel7
-    peer_type: other
-    description: P2P_LINK_TO_peer6_Port-Channel7
-    type: routed
-    shutdown: false
-    mtu: 9000
-    ip_address: 192.168.0.10/31
+- peer: peer5
+  peer_interface: Port-Channel5
+  peer_type: other
+  description: P2P_LINK_TO_peer5_Port-Channel5
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ip_address: 192.168.0.8/31
+  name: Port-Channel5
+- peer: peer6
+  peer_interface: Port-Channel7
+  peer_type: other
+  description: P2P_LINK_TO_peer6_Port-Channel7
+  type: routed
+  shutdown: false
+  mtu: 9000
+  ip_address: 192.168.0.10/31
+  name: Port-Channel7
