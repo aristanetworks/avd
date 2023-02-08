@@ -395,7 +395,7 @@ aaa_accounting:
       group: < group_name >
   dot1x:
     default:
-      type: < none | start-stop | stop-only >
+      type: < start-stop | stop-only >
       group: < group_name >
   commands:
     console:
