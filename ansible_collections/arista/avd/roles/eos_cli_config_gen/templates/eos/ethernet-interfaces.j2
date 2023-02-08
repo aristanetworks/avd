@@ -275,9 +275,9 @@ interface {{ ethernet_interface.name }}
    dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
 {%             endif %}
 {%             if ethernet_interface.dot1x.eapol is arista.avd.defined %}
-{%                 if ethernet_interface.dot1x.eapol.disabled is arista.avd.defined (true) %}
+{%                 if ethernet_interface.dot1x.eapol.disabled is arista.avd.defined(true) %}
    dot1x eapol disabled
-{%                 elif ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba is arista.avd.defined %}
+{%                 elif ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.enable is arista.avd.defined(true) %}
 {%                     set auth_failure_fallback_mba = "dot1x eapol authentication failure fallback mba" %}
 {%                     if ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.enabled is arista.avd.defined(true) %}
 {%                         set auth_failure_fallback_mba = auth_failure_fallback_mba ~ " timeout " ~ ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.timeout %}
