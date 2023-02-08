@@ -7,7 +7,7 @@
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| {{ router_bgp.as }}|  {{ router_bgp.router_id | arista.avd.default('-') }} |
+| {{ router_bgp.as | arista.avd.default('-') }}|  {{ router_bgp.router_id | arista.avd.default('-') }} |
 {%     if router_bgp.bgp_cluster_id is arista.avd.defined %}
 
 | BGP AS | Cluster ID |
