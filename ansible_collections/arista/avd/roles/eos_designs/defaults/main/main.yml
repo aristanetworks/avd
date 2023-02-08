@@ -91,7 +91,12 @@ network_services_keys:
 
 # custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
-custom_structured_configuration_list_merge: 'replace'
+
+# From AVD 4.0 most data models will use lists instead of dicts.
+# Input data is auto-converted from dicts to lists so it is more likely that "custom_structured_configuration_list_merge: replace" will overwrite list data unintentionally.
+# So "replace" should be avoided for most use cases going forward.
+# "append_rp" means "append unique items", so similar to append, but avoid duplicates in the resulting list.
+custom_structured_configuration_list_merge: 'append_rp'
 
 node_type_keys: "{{ default_node_type_keys[design.type] }}"
 

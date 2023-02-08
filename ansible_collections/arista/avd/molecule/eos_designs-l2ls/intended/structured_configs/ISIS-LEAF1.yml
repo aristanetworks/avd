@@ -10,41 +10,41 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-  MGMT:
-    ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.105/24
-    gateway: 172.31.0.1
-    type: oob
+- description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.105/24
+  gateway: 172.31.0.1
+  type: oob
+  name: Management1
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 ethernet_interfaces:
-  Ethernet1:
-    peer: ISIS-SPINE1
-    peer_interface: Ethernet1
-    peer_type: l3spine
-    description: ISIS-SPINE1_Ethernet1
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
+- peer: ISIS-SPINE1
+  peer_interface: Ethernet1
+  peer_type: l3spine
+  description: ISIS-SPINE1_Ethernet1
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
 port_channel_interfaces:
-  Port-Channel1:
-    description: ISIS-SPINE1_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: '110'
+- description: ISIS-SPINE1_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '110'
+  name: Port-Channel1
 vlans:
-  110:
-    tenant: L2LS_ISIS
-    name: SVI_110
+- tenant: L2LS_ISIS
+  name: SVI_110
+  id: 110
 ip_igmp_snooping:
   globally_enabled: true
