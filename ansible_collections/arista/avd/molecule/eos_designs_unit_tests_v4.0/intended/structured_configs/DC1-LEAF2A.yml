@@ -708,8 +708,8 @@ vlan_interfaces:
     - 10.2.21.1/24
     vrf: Tenant_A_WEB_Zone
     ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
+      2.2.2.2:
+        source_interface: lo102
         vrf: TEST
   Vlan121:
     tenant: Tenant_A

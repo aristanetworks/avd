@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ipaddress
 from functools import cached_property
+from re import fullmatch as re_fullmatch
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
@@ -394,8 +395,8 @@ class RouterBgpMixin(UtilsMixin):
         if admin_subfield == "bgp_as":
             return self._bgp_as
 
-        if isinstance(admin_subfield, int) and admin_subfield >= 0 and admin_subfield <= 4294967295:
-            return str(admin_subfield)
+        if re_fullmatch(r"[0-9]+", str(admin_subfield)):
+            return admin_subfield
 
         return None
 
