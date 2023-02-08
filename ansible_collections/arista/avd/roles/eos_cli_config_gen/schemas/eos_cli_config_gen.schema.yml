@@ -3562,7 +3562,6 @@ keys:
               type: bool
             profile:
               type: str
-              required: true
               description: 'Name of Unit Profile
 
                 '
