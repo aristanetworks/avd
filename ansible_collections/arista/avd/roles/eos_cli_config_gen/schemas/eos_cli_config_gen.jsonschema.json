@@ -4933,8 +4933,7 @@
               }
             },
             "required": [
-              "name",
-              "profile"
+              "name"
             ],
             "additionalProperties": false
           },
