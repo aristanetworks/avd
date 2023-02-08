@@ -1,5 +1,5 @@
 - name: Test without container_root
-  register: CVP_VARS
+  register: cvp_vars
   ignore_errors: yes
   inventory_to_container:
         inventory: '{{ inventory_path }}/inventory.yml'
@@ -10,7 +10,7 @@
 
 - name: Validate output
   assert:
-        that:
-              - CVP_VARS is failed
-              - "'missing required arguments:' in CVP_VARS.msg"
-              - CVP_VARS.changed == false
+    that:
+      - cvp_vars is failed
+      - "'missing required arguments:' in cvp_vars.msg"
+      - cvp_vars.changed == false

@@ -21,7 +21,7 @@
     configlet_prefix: "{{ configlets_prefix }}"
     destination: "{{ structured_cvp_dir }}/{{ inventory_hostname }}_configlets.yml"
     device_filter: "{{ device_filter }}"
-  register: CVP_VARS
+  register: cvp_vars
 
 - name: "Build DEVICES and CONTAINER definition for {{ inventory_hostname }}"
   tags: [generate, build, provision]

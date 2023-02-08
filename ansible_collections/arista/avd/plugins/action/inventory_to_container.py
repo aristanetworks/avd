@@ -26,12 +26,12 @@ class ActionModule(ActionBase):
         result = self._execute_module(module_name="inventory_to_container", module_args=module_args, task_vars=task_vars, tmp=tmp)
 
         if not result.get("failed") and module_args.get("inventory") is None and module_args.get("container_root") is not None:
-            result["CVP_TOPOLOGY"] = self.build_cvp_topology_from_inventory(task_vars, module_args)
+            result["cvp_topology"] = self.build_cvp_topology_from_inventory(task_vars, module_args)
 
         # Write vars to file if set by user
         if (destination := module_args.get("destination")) is not None:
             # file should only contain subset of result data, so we build a smaller dict
-            file_data_keys = ["CVP_CONFIGLETS", "CVP_TOPOLOGY"]
+            file_data_keys = ["cvp_configlets", "cvp_topology"]
             file_data = {key: result[key] for key in file_data_keys if key in result}
 
             with open(destination, "w", encoding="utf8") as file:
