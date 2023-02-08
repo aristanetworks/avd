@@ -2,11 +2,11 @@
   register: cvp_vars
   ignore_errors: yes
   inventory_to_container:
-        inventory: '{{ inventory_path }}/inventory.yml'
-        configlet_dir: '{{ configlet_path }}'
-        configlet_prefix: 'AVD'
-        device_filter: ['DC1-LE']
-        destination: "{{ actual_output }}"
+    inventory: '{{ inventory_path }}/inventory.yml'
+    configlet_dir: '{{ configlet_path }}'
+    configlet_prefix: 'AVD'
+    device_filter: ['DC1-LE']
+    destination: "{{ actual_output }}"
 
 - name: Validate output
   assert:
