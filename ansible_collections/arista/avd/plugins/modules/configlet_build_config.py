@@ -93,7 +93,7 @@ def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
     dict
         Dictionary of configlets found in source folder.
     """
-    src_configlets = glob.glob(src_folder + "/*." + extension)
+    src_configlets = glob.glob(f"{src_folder}/*.{extension}")
     configlets = {}
     for file in src_configlets:
         if prefix != "none":
@@ -108,6 +108,9 @@ def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
 
 def main():
     """Main entry point for module execution."""
+    # TODO - ansible module prefers constructor over literal
+    #        for dict
+    # pylint: disable=use-dict-literal
     argument_spec = dict(
         configlet_dir=dict(type="str", required=True),
         configlet_prefix=dict(type="str", required=True),
