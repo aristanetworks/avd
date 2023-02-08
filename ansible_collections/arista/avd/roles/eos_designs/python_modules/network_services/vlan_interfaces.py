@@ -48,8 +48,6 @@ class VlanInterfacesMixin(UtilsMixin):
     def _get_vlan_interface_config_for_svi(self, svi, vrf, tenant) -> dict:
         def _check_virtual_router_mac_address(vlan_interface_config: dict, variables: list):
             """
-            Helper function
-
             Check if any variable in the list of variables is not None in vlan_interface_config
             and if it is the case, raise an Exception if virtual_router_mac_address is None
             """
