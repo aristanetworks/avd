@@ -75,6 +75,7 @@ Process install dependency map
 Starting collection install process
 Installing 'arista.avd:3.6.0' to '/root/.ansible/collections/ansible_collections/arista/avd'
 ```
+
 !!! warning
 After an upgrade, some python requirements may have changed,, follow the
 instructions in the Python [requirements](#python-requirements-installation)
