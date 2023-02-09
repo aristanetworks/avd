@@ -40,7 +40,7 @@
 {%             set host_mode = ethernet_interface.dot1x.host_mode.mode | arista.avd.default('-') %}
 {%             set mac_based_authentication_enabled = ethernet_interface.dot1x.mac_based_authentication.enabled | arista.avd.default('-') %}
 {%             set auth_failure_fallback_mba = ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.enabled | arista.avd.default('-') %}
-| {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} | {{ auth_failure_fallback_mba }} |
+| {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} |
 {%         endfor %}
 {%     endif %}
 {% endif %}
