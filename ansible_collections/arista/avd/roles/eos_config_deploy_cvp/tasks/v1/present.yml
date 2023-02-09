@@ -3,7 +3,7 @@
 - name: "Collecting facts from CVP {{ inventory_hostname }}."
   tags: [always]
   arista.cvp.cv_facts:
-  register: CVP_FACTS
+  register: cvp_facts
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
