@@ -410,6 +410,24 @@ radius_servers:
     key: < encrypted_key >
 ```
 
+#### Radius Server
+
+```yaml
+radius_server:
+ attribute_32_include_in_access_req:
+   hostname: < true | false >
+   format: < LINE >
+ dynamic_authorization:
+   port: < port_number >
+   tls_ssl_profile: < profile >
+ hosts:
+   - host: < host IP address or name >
+     vrf: < vrf_name >
+     key: < encrypted_key >
+     timeout: < 1-1000 > in seconds
+     retransmit: < 0-100 >
+```
+
 #### Tacacs+ Servers
 
 ```yaml
