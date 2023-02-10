@@ -46,6 +46,20 @@ keys:
               group:
                 description: Group Name
                 type: str
+      dot1x:
+        type: dict
+        keys:
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values:
+                - start-stop
+                - stop-only
+              group:
+                description: Group Name
+                type: str
       commands:
         type: dict
         keys:

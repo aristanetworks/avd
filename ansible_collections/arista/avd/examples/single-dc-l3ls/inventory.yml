@@ -28,11 +28,11 @@ all:
                 dc1-leaf2c:
                   ansible_host: 172.16.1.152
 
-        NETWORK_SERVICES:
-          children:
-            DC1_L3_LEAVES:
-            DC1_L2_LEAVES:
-        CONNECTED_ENDPOINTS:
-          children:
-            DC1_L3_LEAVES:
-            DC1_L2_LEAVES:
+    NETWORK_SERVICES:
+      children:
+        DC1_L3_LEAVES:
+        DC1_L2_LEAVES:
+    CONNECTED_ENDPOINTS:
+      children:
+        DC1_L3_LEAVES:
+        DC1_L2_LEAVES:

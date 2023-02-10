@@ -76,6 +76,11 @@ Starting collection install process
 Installing 'arista.avd:3.6.0' to '/root/.ansible/collections/ansible_collections/arista/avd'
 ```
 
+!!! warning
+After an upgrade, some python requirements may have changed. Follow the
+instructions in the Python [requirements](#python-requirements-installation)
+section to update your python packages.
+
 !!! note
     You can find some additional information about how to use Ansible's collections on the following Ansible pages:
 
