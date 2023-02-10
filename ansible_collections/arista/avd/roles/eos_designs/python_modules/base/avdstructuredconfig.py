@@ -486,7 +486,7 @@ class AvdStructuredConfig(AvdFacts):
         if mgmt_interface is not None and self._mgmt_ip is not None and self._mgmt_interface_vrf is not None:
             return {
                 mgmt_interface: {
-                    "description": "oob_management",
+                    "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
                     "shutdown": False,
                     "vrf": self._mgmt_interface_vrf,
                     "ip_address": self._mgmt_ip,

@@ -1,0 +1,33 @@
+---
+scenario:
+  converge_sequence:
+    - converge
+  test_sequence:
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: dummy
+    # image: avdteam/base:3.8-v2.0
+    # pre_build_image: true
+    managed: false
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      duplicate_dict_key: error
+  playbooks:
+    converge: '../../examples/dual-dc-l3ls/build.yml'
+  ansible_args:
+    - --inventory
+    - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/dual-dc-l3ls/inventory.yml
+    - --extra-vars
+    - "avd_data_validation_mode=error"
+verifier:
+  name: ansible
