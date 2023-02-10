@@ -12,11 +12,6 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
-vlans:
-- name: NETWORK_SERVICES_VLAN
-  state: suspend
-  id: 100
-  tenant: test
 ethernet_interfaces:
 - peer: uplink-native-vlan-parent
   peer_interface: Ethernet1
@@ -36,5 +31,9 @@ port_channel_interfaces:
   native_vlan: 100
   vlans: '100'
   name: Port-Channel1
+vlans:
+- tenant: test
+  name: NETWORK_SERVICES_VLAN
+  id: 100
 ip_igmp_snooping:
   globally_enabled: true
