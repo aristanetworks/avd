@@ -122,6 +122,7 @@ core_interfaces:
       isis_circuit_type: level-1-2
       isis_metric: 70
       qos_profile: test_qos_profile
+      descriptions: ["Custom description on core-1-isis-sr-ldp eth6", "Custom description on core-2-ospf-ldp eth6"]
 
     # Different link profile
     - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]

@@ -46,12 +46,14 @@ l3_edge:
       include_in_underlay_protocol: true
 
       # P2P link with underlay routing and IP set via ip_pool and id.
+      # Descriptions set manually
     - nodes: [l3_edge_bgp, peer4]
       interfaces: [ethernet4, ethernet4]
       ip_pool: pool1
       id: 4
       as: [65000, 65004]
       include_in_underlay_protocol: true
+      descriptions: ["Custom description on l3_edge_bgp eth4", "Custom description on peer4 eth4"]
 
     # P2P link with Port-Channel with underlay routing and and IP set manually.
     - nodes: [ l3_edge_bgp, peer5 ]
