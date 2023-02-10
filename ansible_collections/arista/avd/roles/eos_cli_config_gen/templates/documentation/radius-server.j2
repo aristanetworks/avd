@@ -1,0 +1,20 @@
+{# doc - radius servers #}
+{% if radius_server.hosts is defined and radius_server is not none %}
+
+## RADIUS Servers
+
+### RADIUS Servers
+
+| VRF | RADIUS Servers |
+| --- | ---------------|
+{%     for radius_servers in radius_server.hosts %}
+{%         set vrf = radius_servers.vrf | arista.avd.default('default') %}
+| {{ vrf }} | {{ radius_servers.host }} |
+{%     endfor %}
+
+### RADIUS Servers Device Configuration
+
+```eos
+{%     include 'eos/radius-server.j2' %}
+```
+{% endif %}
