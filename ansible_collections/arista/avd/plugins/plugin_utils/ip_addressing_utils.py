@@ -4,6 +4,21 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 
 
 def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
+    """
+    get_ip_from_pool returns IP from given pool.
+
+    Parameters
+    ----------
+    pool : IP pool in string format, example: "1.2.3.4/24"
+    prefixlen : Integer
+    subnet_offset : Integer
+    ip_offset : Integer
+
+    Returns
+    -------
+    IPv4 address
+    """
+
     pool_network = ipaddress.ip_network(pool, strict=False)
     prefixlen_diff = prefixlen - pool_network.prefixlen
     try:

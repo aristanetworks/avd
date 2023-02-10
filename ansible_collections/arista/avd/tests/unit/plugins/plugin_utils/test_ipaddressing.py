@@ -7,55 +7,28 @@ from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils imp
 (pool, prefixlen, subnet_offset, ip_offset) = ("1.2.3.4/24", 32, 1, 0)
 
 
-@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset, expected", [(pool, prefixlen, subnet_offset, ip_offset, "1.2.3.1")])
-def test_ip_with_default_values(pool, prefixlen, subnet_offset, ip_offset, expected):
+@pytest.mark.parametrize(
+    "pool, prefixlen, subnet_offset, ip_offset, expected",
+    [
+        ("1.2.3.0/32", prefixlen, subnet_offset, ip_offset, f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool 1.2.3.0/32"),
+        (pool, 8, subnet_offset, ip_offset, "Prefix length 8 is smaller than pool network prefix length"),
+        (pool, prefixlen, 256, ip_offset, f"Unable to get 257 /{prefixlen} subnets from pool {pool}"),
+        (pool, prefixlen, subnet_offset, 1, "Unable to get 2 hosts in subnet"),
+    ],
+)
+def test_get_ip_from_pool_invalid(pool, prefixlen, subnet_offset, ip_offset, expected):
+    """
+    Invalid cases for get_ip_from_pool.
+    """
+    with pytest.raises(AristaAvdError) as exc_info:
+        get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
+    assert expected in str(exc_info.value)
+
+
+def test_get_ip_from_pool_valid():
     """
     Valid cases for get_ip_from_pool with default values.
     """
 
     resp = get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert resp == expected
-
-
-@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [("1.2.3.0/32", prefixlen, subnet_offset, ip_offset)])
-def test_ip_with_low_subnet_size(pool, prefixlen, subnet_offset, ip_offset):
-    """
-    Invalid cases for get_ip_from_pool with change in pool value as "1.2.3.0/32" to make low subnet_size.
-    """
-
-    with pytest.raises(AristaAvdError) as exc_info:
-        get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert str(exc_info.value) == f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}"
-
-
-@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [(pool, 8, subnet_offset, ip_offset)])
-def test_ip_with_lower_prefixlen(pool, prefixlen, subnet_offset, ip_offset):
-    """
-    Invalid cases for get_ip_from_pool with change in prefixlen value as 8 to capture invalid prefixlen wrt pool.
-    """
-
-    with pytest.raises(AristaAvdError) as exc_info:
-        get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert f"Prefix length {prefixlen} is smaller than pool network prefix length" in str(exc_info.value)
-
-
-@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [(pool, prefixlen, 256, ip_offset)])
-def test_ip_with_high_subnet_offset(pool, prefixlen, subnet_offset, ip_offset):
-    """
-    Invalid cases for get_ip_from_pool with change in subnet_offset value as 256.
-    """
-
-    with pytest.raises(AristaAvdError) as exc_info:
-        get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert str(exc_info.value) == f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}"
-
-
-@pytest.mark.parametrize("pool, prefixlen, subnet_offset, ip_offset", [(pool, prefixlen, subnet_offset, 1)])
-def test_ip_with_more_ip_offset(pool, prefixlen, subnet_offset, ip_offset):
-    """
-    Invalid cases for get_ip_from_pool with change in ip_offset value as 1.
-    """
-
-    with pytest.raises(AristaAvdError) as exc_info:
-        get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
-    assert f"Unable to get {ip_offset+1} hosts in subnet" in str(exc_info.value)
+    assert resp == "1.2.3.1"
