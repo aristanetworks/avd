@@ -127,6 +127,7 @@ The `ip_access_lists` data model allows to limit the number of ACL entries that 
 Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
 If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
 The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

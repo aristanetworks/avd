@@ -451,6 +451,7 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
 ## Snmp Server
 
 SNMP settings
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

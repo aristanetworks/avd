@@ -24,6 +24,7 @@ search:
 ## DNS Domain
 
 Domain Name
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
@@ -39,6 +40,7 @@ Domain Name
 ## Domain List
 
 Search list of DNS domains
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

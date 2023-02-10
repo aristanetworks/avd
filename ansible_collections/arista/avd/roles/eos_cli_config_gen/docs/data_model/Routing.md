@@ -54,6 +54,7 @@ search:
 ## IP Virtual Router MAC Address
 
 MAC address (hh:hh:hh:hh:hh:hh)
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

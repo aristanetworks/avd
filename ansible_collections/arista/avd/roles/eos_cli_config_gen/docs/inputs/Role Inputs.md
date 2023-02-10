@@ -48,6 +48,7 @@ The following commands will be omitted when `generate_default_config` is set to 
 - Default configuration for `enable password`
 - Transceiver qsfp default mode
 - End of configuration delimiter
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

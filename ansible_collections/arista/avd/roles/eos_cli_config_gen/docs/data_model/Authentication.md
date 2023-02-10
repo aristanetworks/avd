@@ -188,6 +188,7 @@ search:
 ## CVX
 
 CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

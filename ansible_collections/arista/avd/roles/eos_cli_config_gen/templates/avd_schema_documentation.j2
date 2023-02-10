@@ -7,10 +7,11 @@ search:
 {% for table in documentation_file.tables %}
 
 ## {{ table.display_name }}
-
 {%     if table.description %}
-{{ table.description }}
+
+{{ table.description | trim }}
 {%     endif %}
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

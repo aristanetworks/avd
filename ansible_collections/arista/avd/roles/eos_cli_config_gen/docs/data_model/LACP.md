@@ -8,6 +8,7 @@ search:
 ## LACP
 
 Set Link Aggregation Control Protocol (LACP) parameters.
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
