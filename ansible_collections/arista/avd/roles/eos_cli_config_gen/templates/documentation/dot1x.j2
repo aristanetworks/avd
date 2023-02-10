@@ -20,7 +20,6 @@
 {%         set protocol_lldp_bypass = dot1x.protocol_lldp_bypass | arista.avd.default('-') %}
 {%         set dynamic_authorization = dot1x.dynamic_authorization | arista.avd.default('-') %}
 | {{ system_auth_control }} | {{ protocol_lldp_bypass }} | {{ dynamic_authorization }} |
-
 {%         if dot1x.mac_based_authentication or dot1x.radius_av_pair is arista.avd.defined %}
 {%             if dot1x.mac_based_authentication is arista.avd.defined %}
 ### 802.1X MAC based authentication
