@@ -1,4 +1,4 @@
-CVP_TOPOLOGY:
+cvp_topology:
   DC1_FABRIC:
     parent_container: Tenant
   DC1_L2LEAF1:
