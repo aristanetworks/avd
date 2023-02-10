@@ -4,13 +4,13 @@
     timezone: "test"
     hours: 36
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     dest: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
     debug: true
     templates:
       - template: "templates/template.j2"
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result is success
       - result.ansible_facts is defined

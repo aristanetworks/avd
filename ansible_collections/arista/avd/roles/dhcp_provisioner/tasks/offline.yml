@@ -2,7 +2,7 @@
 # Tasks to build offline dhcpd.conf file
 
 - name: Execute DHCP configuration role
-  import_role:
+  ansible.builtin.import_role:
     name: arista.cvp.dhcp_configuration
   vars:
     mode: offline

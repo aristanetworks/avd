@@ -1,7 +1,7 @@
 - name: Test without container_root
-  register: cvp_vars
+  register: CVP_VARS
   ignore_errors: yes
-  inventory_to_container:
+  arista.avd.inventory_to_container:
     inventory: '{{ inventory_path }}/inventory.yml'
     configlet_dir: '{{ configlet_path }}'
     configlet_prefix: 'AVD'
@@ -9,8 +9,8 @@
     destination: "{{ actual_output }}"
 
 - name: Validate output
-  assert:
+  ansible.builtin.assert:
     that:
-      - cvp_vars is failed
-      - "'missing required arguments:' in cvp_vars.msg"
-      - cvp_vars.changed == false
+      - CVP_VARS is failed
+      - "'missing required arguments:' in CVP_VARS.msg"
+      - CVP_VARS.changed == false

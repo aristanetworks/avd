@@ -359,12 +359,12 @@ To use this module:
 tasks:
   - name: generate intended variables
     tags: [always]
-    inventory_to_container:
+    arista.avd.inventory_to_container:
       inventory: "{{ inventory_file }}"
       container_root: "{{ container_root }}"
       configlet_dir: "intended/configs"
       configlet_prefix: "{{ configlets_prefix }}"
-      destination: "{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml"
+      destination: "{{ playbook_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml"
 ```
 
 Inventory example applied to this example:
@@ -397,7 +397,7 @@ Generated output ready to be used by [`arista.cvp`](https://github.com/aristanet
 
 ```yaml
 ---
-cvp_devices:
+CVP_DEVICES:
   DC1-SPINE1:
     name: DC1-SPINE1
     parentContainerName: DC1_SPINES
@@ -405,7 +405,7 @@ cvp_devices:
         - DC1-AVD_DC1-SPINE1
     imageBundle: []
 
-cvp_containers:
+CVP_CONTAINERS:
   DC1_LEAF1:
     parent_container: DC1_L3LEAFS
   DC1_FABRIC:
@@ -428,7 +428,7 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 **options:**
 
 ```yaml
-- configlet_build_config:
+- arista.avd.configlet_build_config:
     configlet_dir:  "< Directory where configlets are located | Required >"
     configlet_prefix: "< Prefix to append on configlet | Required >"
     destination: "< File where to save information | Optional >"
@@ -441,7 +441,7 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 # tasks file for configlet_build_config
 - name: generate intended variables
   tags: [build, provision]
-  configlet_build_config:
+  arista.avd.configlet_build_config:
     configlet_dir: "/path/to/configlets/folder/"
     configlet_prefix: "AVD_"
     configlet_extension: "cfg"
@@ -462,7 +462,7 @@ The module is used in `eos_designs` to generate the `structured_configuration` b
 The module arguments are:
 
 ```yaml
-- yaml_templates_to_facts:
+- arista.avd.yaml_templates_to_facts:
     root_key: < optional root_key name >
     templates:
         # Path to template file
@@ -495,7 +495,7 @@ The module arguments are:
 ```yaml
 - name: Set AVD facts
   tags: [build, provision]
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     templates: "{{ templates.facts }}"
   delegate_to: localhost
   check_mode: no
@@ -503,7 +503,7 @@ The module arguments are:
 
 - name: Generate device configuration in structured format
   tags: [build, provision]
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     templates: "{{ templates.structured_config }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
     template_output: True
@@ -640,7 +640,7 @@ The module arguments are:
 
 ```yaml
   # Path to Jinja2 Template file | Required
-  ansible.builtin.template: <str>
+  template: <str>
 
   # Destination path. The rendered template will be written to this file | Optional
   dest: <str>

@@ -1,4 +1,4 @@
 ---
-root_dir: '{{playbook_dir}}'
+root_dir: '{{ playbook_dir }}'
 
 avd_data_validation_mode: "error"

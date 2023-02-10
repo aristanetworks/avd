@@ -1,6 +1,8 @@
 ---
 - name: Recreate required output directories
   tags: [eos_cli_config_gen]
+  delegate_to: localhost
+  run_once: true
   block:
     - name: "Cleanup {{ role_documentation_dir }}"
       ansible.builtin.file:
@@ -21,8 +23,6 @@
         path: "{{ role_documentation_dir }}/data_model"
         state: directory
         mode: 0775
-  delegate_to: localhost
-  run_once: true
 
 - name: Import and Convert eos_cli_config_gen schema
   tags: [eos_cli_config_gen]
@@ -34,7 +34,7 @@
 
 - name: Output eos_cli_config_gen Documentation
   tags: [eos_cli_config_gen]
-  template:
+  ansible.builtin.template:
     src: avd_schema_documentation.j2
     dest: "{{ role_documentation_dir ~ '/' ~ documentation_file.filename ~ '.md'  }}"
     mode: 0664

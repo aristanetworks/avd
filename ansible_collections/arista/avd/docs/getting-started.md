@@ -66,16 +66,16 @@ Please refer to [`eos_designs` documentation](../roles/eos_designs/README.md)
 
   tasks:
 
-    - name: generate intended variables
-      import_role:
+    - name: Generate intended variables
+      ansible.builtin.import_role:
          name: arista.avd.eos_designs
 
-    - name: generate device intended config and documentation
-      import_role:
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
          name: arista.avd.eos_cli_config_gen
 
-    - name: deploy configuration via CVP
-      import_role:
+    - name: Deploy configuration via CVP
+      ansible.builtin.import_role:
          name: arista.avd.eos_config_deploy_cvp
 ```
 
@@ -88,16 +88,16 @@ Please refer to [`eos_designs` documentation](../roles/eos_designs/README.md)
 
   tasks:
 
-    - name: generate intended variables
-      import_role:
+    - name: Generate intended variables
+      ansible.builtin.import_role:
          name: arista.avd.eos_designs
 
-    - name: generate device intended config and documentation
-      import_role:
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
          name: arista.avd.eos_cli_config_gen
 
-    - name: deploy configuration to device
-      import_role:
+    - name: Deploy configuration to device
+      ansible.builtin.import_role:
          name: arista.avd.eos_config_deploy_eapi
 ```
 

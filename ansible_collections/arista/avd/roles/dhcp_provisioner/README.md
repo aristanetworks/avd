@@ -56,8 +56,8 @@ all:
   gather_facts: false
   tasks:
     - name: Create dhcp configuration file
-      import_role:
-          name: arista.avd.dhcp_provisioner
+      ansible.builtin.import_role:
+        name: arista.avd.dhcp_provisioner
       vars:
         ztp_network_summary: 10.73.1.0/24
         ztp_pool_start: 10.73.1.200

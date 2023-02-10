@@ -1,5 +1,5 @@
 ---
-- name: generate intended variables
+- name: Generate intended variables
   tags: [always]
   arista.avd.inventory_to_container:
     # Inventory is read from memory unless 'avd_inventory_to_container_file' is set
@@ -9,4 +9,4 @@
     configlet_prefix: "{{ configlets_prefix }}"
     destination: "{{ structured_cvp_dir }}/{{ inventory_hostname }}_configlets.yml"
     device_filter: "{{ device_filter }}"
-  register: cvp_vars
+  register: CVP_VARS

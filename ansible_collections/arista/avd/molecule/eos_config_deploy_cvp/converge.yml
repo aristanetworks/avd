@@ -4,13 +4,13 @@
   gather_facts: false
   connection: local
   vars:
-    root_dir: '{{playbook_dir}}'
+    root_dir: '{{ playbook_dir }}'
   tasks:
-    - name: generate intended variables
-      import_role:
+    - name: Generate intended variables
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
-    - name: generate device intended config and documentation
-      import_role:
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
 
 - name: "Converge -- Build Cloudvision Configuration"
@@ -18,11 +18,11 @@
   gather_facts: false
   connection: local
   vars:
-    root_dir: '{{playbook_dir}}'
+    root_dir: '{{ playbook_dir }}'
   tasks:
-    - name: run CVP provisioning
+    - name: Run CVP provisioning
       # tags: generate
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
         container_root: 'DC1_FABRIC'

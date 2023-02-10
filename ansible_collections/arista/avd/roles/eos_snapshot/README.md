@@ -78,7 +78,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
     - arista.avd
   tasks:
     - name: Collect commands
-      import_role:
+      ansible.builtin.import_role:
         name: eos_snapshot
 ```
 

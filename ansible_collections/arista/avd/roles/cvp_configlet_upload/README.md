@@ -62,8 +62,8 @@ For complete list of authentication options available with CloudVision Ansible c
 
 ```yaml
 tasks:
-  - name: upload cvp configlets
-    import_role:
+  - name: Upload cvp configlets
+    ansible.builtin.import_role:
         name: arista.avd.cvp_configlet_upload
     vars:
       configlet_directory: 'configlets/'

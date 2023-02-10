@@ -4,8 +4,8 @@
   gather_facts: false
   connection: local
   tasks:
-    - name: create local output folders
+    - name: Create local output folders
       delegate_to: 127.0.0.1
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.build_output_folders
       run_once: true
