@@ -27,7 +27,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS rackE DC1-L2LEAF5B
+  location: EOS_DESIGNS_UNIT_TESTS rackE DC1.L2LEAF5B
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -101,7 +101,7 @@ vlan_interfaces:
     mtu: 1500
 port_channel_interfaces:
   Port-Channel3:
-    description: MLAG_PEER_DC1-L2LEAF5A_Po3
+    description: MLAG_PEER_DC1.L2LEAF5A_Po3
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -117,20 +117,20 @@ port_channel_interfaces:
     mlag: 1
 ethernet_interfaces:
   Ethernet3:
-    peer: DC1-L2LEAF5A
+    peer: DC1.L2LEAF5A
     peer_interface: Ethernet3
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-L2LEAF5A_Ethernet3
+    description: MLAG_PEER_DC1.L2LEAF5A_Ethernet3
     type: switched
     shutdown: false
     channel_group:
       id: 3
       mode: active
   Ethernet4:
-    peer: DC1-L2LEAF5A
+    peer: DC1.L2LEAF5A
     peer_interface: Ethernet4
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-L2LEAF5A_Ethernet4
+    description: MLAG_PEER_DC1.L2LEAF5A_Ethernet4
     type: switched
     shutdown: false
     channel_group:
