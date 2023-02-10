@@ -15,7 +15,7 @@
   tags: [provision]
   arista.cvp.cv_configlet:
     cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
-    configlets: "{{ cvp_vars.CVP_CONFIGLETS }}"
+    configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
     configlet_filter: ["{{ configlets_prefix }}"]
   register: CVP_CONFIGLETS_STATUS
 
