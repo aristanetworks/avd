@@ -4,6 +4,8 @@
 type: dict
 keys:
   terminal:
+    documentation_options:
+      filename: data_model/Terminal Settings
     type: dict
     display_name: Terminal Settings
     keys:

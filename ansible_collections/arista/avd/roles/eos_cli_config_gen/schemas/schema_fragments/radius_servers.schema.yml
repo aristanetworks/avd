@@ -4,6 +4,8 @@
 type: dict
 keys:
   radius_servers:
+    documentation_options:
+      filename: data_model/Authentication
     type: list
     items:
       type: dict

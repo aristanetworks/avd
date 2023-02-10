@@ -4,6 +4,8 @@
 type: dict
 keys:
   domain_list:
+    documentation_options:
+      filename: data_model/Management
     type: list
     description: Search list of DNS domains
     items:

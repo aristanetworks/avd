@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_bfd:
+    documentation_options:
+      filename: data_model/Routing
     type: dict
     keys:
       interval:

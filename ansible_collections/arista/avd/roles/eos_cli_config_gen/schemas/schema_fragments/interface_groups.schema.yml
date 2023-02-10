@@ -4,6 +4,8 @@
 type: dict
 keys:
   interface_groups:
+    documentation_options:
+      filename: data_model/Maintenance Mode
     type: list
     display_name: Maintenance Interface Groups
     primary_key: name

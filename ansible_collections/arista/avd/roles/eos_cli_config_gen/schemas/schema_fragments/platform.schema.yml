@@ -4,6 +4,8 @@
 type: dict
 keys:
   platform:
+    documentation_options:
+      filename: data_model/Hardware
     type: dict
     keys:
       trident:

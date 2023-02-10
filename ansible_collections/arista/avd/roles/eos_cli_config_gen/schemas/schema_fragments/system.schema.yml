@@ -5,6 +5,8 @@ type: dict
 allow_other_keys: true
 keys:
   system:
+    documentation_options:
+      filename: data_model/System Control-Plane
     type: dict
     keys:
       control_plane:

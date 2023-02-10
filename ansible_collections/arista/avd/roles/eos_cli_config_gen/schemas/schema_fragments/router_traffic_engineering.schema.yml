@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_traffic_engineering:
+    documentation_options:
+      filename: data_model/Routing
     type: dict
     keys:
       router_id:

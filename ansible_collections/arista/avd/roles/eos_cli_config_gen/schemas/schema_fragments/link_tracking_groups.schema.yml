@@ -4,6 +4,8 @@
 type: dict
 keys:
   link_tracking_groups:
+    documentation_options:
+      filename: data_model/Link Tracking Groups
     type: list
     primary_key: name
     convert_types:

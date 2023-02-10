@@ -11,6 +11,16 @@
         path: "{{ role_documentation_dir }}"
         state: directory
         mode: 0775
+    - name: "Create {{ role_documentation_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_documentation_dir }}/inputs"
+        state: directory
+        mode: 0775
+    - name: "Create {{ role_documentation_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_documentation_dir }}/data_model"
+        state: directory
+        mode: 0775
   delegate_to: localhost
   run_once: true
 
@@ -18,6 +28,9 @@
   tags: [eos_cli_config_gen]
   ansible.builtin.set_fact:
     role_documentation_schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='documentation') }}"
+
+# - debug:
+#     msg: "{{ role_documentation_schema }}"
 
 - name: Output eos_cli_config_gen Documentation
   tags: [eos_cli_config_gen]
