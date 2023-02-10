@@ -11,9 +11,9 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>banners</samp> | Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;login</samp> | String |  |  |  | Multiline string ending with EOF on the last line |
-    | <samp>&nbsp;&nbsp;motd</samp> | String |  |  |  | Multiline string ending with EOF on the last line |
+    | [<samp>banners</samp>](## "banners") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;login</samp>](## "banners.login") | String |  |  |  | Multiline string ending with EOF on the last line |
+    | [<samp>&nbsp;&nbsp;motd</samp>](## "banners.motd") | String |  |  |  | Multiline string ending with EOF on the last line |
 
 === "YAML"
 

@@ -21,7 +21,7 @@ aliases: |
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>aliases</samp> | String |  |  |  |  |
+    | [<samp>aliases</samp>](## "aliases") | String |  |  |  |  |
 
 === "YAML"
 

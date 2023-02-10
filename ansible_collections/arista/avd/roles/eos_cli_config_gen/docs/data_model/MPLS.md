@@ -11,13 +11,13 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>mpls</samp> | Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;ip</samp> | Boolean |  |  |  |  |
-    | <samp>&nbsp;&nbsp;ldp</samp> | Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_disabled_default</samp> | Boolean |  |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp> | String |  |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp> | Boolean |  |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;transport_address_interface</samp> | String |  |  |  | Interface Name |
+    | [<samp>mpls</samp>](## "mpls") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ip</samp>](## "mpls.ip") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ldp</samp>](## "mpls.ldp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_disabled_default</samp>](## "mpls.ldp.interface_disabled_default") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "mpls.ldp.router_id") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "mpls.ldp.shutdown") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transport_address_interface</samp>](## "mpls.ldp.transport_address_interface") | String |  |  |  | Interface Name |
 
 === "YAML"
 

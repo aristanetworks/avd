@@ -11,9 +11,9 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>service_unsupported_transceiver</samp> | Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;license_name</samp> | String |  |  |  |  |
-    | <samp>&nbsp;&nbsp;license_key</samp> | String |  |  |  |  |
+    | [<samp>service_unsupported_transceiver</samp>](## "service_unsupported_transceiver") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;license_name</samp>](## "service_unsupported_transceiver.license_name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;license_key</samp>](## "service_unsupported_transceiver.license_key") | String |  |  |  |  |
 
 === "YAML"
 

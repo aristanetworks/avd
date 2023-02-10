@@ -11,7 +11,7 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>ip_icmp_redirect</samp> | Boolean |  |  |  |  |
+    | [<samp>ip_icmp_redirect</samp>](## "ip_icmp_redirect") | Boolean |  |  |  |  |
 
 === "YAML"
 
@@ -25,7 +25,7 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>ipv6_icmp_redirect</samp> | Boolean |  |  |  |  |
+    | [<samp>ipv6_icmp_redirect</samp>](## "ipv6_icmp_redirect") | Boolean |  |  |  |  |
 
 === "YAML"
 

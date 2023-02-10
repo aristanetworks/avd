@@ -13,7 +13,7 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>eos_cli</samp> | String |  |  |  |  |
+    | [<samp>eos_cli</samp>](## "eos_cli") | String |  |  |  |  |
 
 === "YAML"
 

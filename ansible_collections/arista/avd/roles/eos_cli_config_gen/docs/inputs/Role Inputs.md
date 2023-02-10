@@ -25,8 +25,8 @@ Add `custom_templates` to group/host variables:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>custom_templates</samp> | List, items: String |  |  |  |  |
-    | <samp>&nbsp;&nbsp;- &lt;str&gt;</samp> | String |  |  |  | Template relative path below playbook directory |
+    | [<samp>custom_templates</samp>](## "custom_templates") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_templates.[].&lt;str&gt;") | String |  |  |  | Template relative path below playbook directory |
 
 === "YAML"
 
@@ -53,7 +53,7 @@ The following commands will be omitted when `generate_default_config` is set to 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>generate_default_config</samp> | Boolean |  | True |  |  |
+    | [<samp>generate_default_config</samp>](## "generate_default_config") | Boolean |  | True |  |  |
 
 === "YAML"
 
@@ -67,7 +67,7 @@ The following commands will be omitted when `generate_default_config` is set to 
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>generate_device_documentation</samp> | Boolean |  | True |  |  |
+    | [<samp>generate_device_documentation</samp>](## "generate_device_documentation") | Boolean |  | True |  |  |
 
 === "YAML"
 

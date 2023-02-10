@@ -11,7 +11,7 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>prompt</samp> | String |  |  |  |  |
+    | [<samp>prompt</samp>](## "prompt") | String |  |  |  |  |
 
 === "YAML"
 

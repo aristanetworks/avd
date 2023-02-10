@@ -13,10 +13,10 @@ Set the Aboot password
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | <samp>boot</samp> | Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;secret</samp> | Dictionary |  |  |  |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp> | String |  | sha512 | Valid Values:<br>- md5<br>- sha512 |  |
-    | <samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp> | String |  |  |  | Hashed Password |
+    | [<samp>boot</samp>](## "boot") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;secret</samp>](## "boot.secret") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "boot.secret.hash_algorithm") | String |  | sha512 | Valid Values:<br>- md5<br>- sha512 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "boot.secret.key") | String |  |  |  | Hashed Password |
 
 === "YAML"
 
