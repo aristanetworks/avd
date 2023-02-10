@@ -7,13 +7,13 @@
   tasks:
 
     - name: Generate AVD Structured Configurations and Fabric Documentation
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
 
     - name: Generate Device Configurations and Documentation
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
 
     - name: Deploy Configurations to Devices
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_eapi
