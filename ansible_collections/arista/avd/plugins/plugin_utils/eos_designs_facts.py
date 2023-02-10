@@ -1052,12 +1052,6 @@ class EosDesignsFacts(AvdFacts):
         return None
 
     @cached_property
-    def uplink_native_vlan(self):
-        if self.uplink_type == "port-channel":
-            return get(self._switch_data_combined, "uplink_native_vlan")
-        return None
-
-    @cached_property
     def router_id(self):
         """
         Render ipv4 address for router_id using dynamically loaded python module.
