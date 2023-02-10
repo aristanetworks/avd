@@ -238,7 +238,8 @@ defaults <- node_group <- node_group.node <- node
 
     # Uplink native vlan | Optional
     # Only applicable to switches with layer-2 port-channel uplinks
-    # The vlan will be created in both ends of the link even if it is not defined under network services
+    # A suspended (disabled) vlan will be created in both ends of the link unless the vlan
+    # is defined under network services.
     # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
     uplink_native_vlan: < vlan_id >
 

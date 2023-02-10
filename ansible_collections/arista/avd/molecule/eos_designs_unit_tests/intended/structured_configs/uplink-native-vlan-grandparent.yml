@@ -14,6 +14,7 @@ management_api_http:
   enable_https: true
 vlans:
 - name: NETWORK_SERVICES_VLAN
+  state: suspend
   id: 100
   tenant: test
 ethernet_interfaces:

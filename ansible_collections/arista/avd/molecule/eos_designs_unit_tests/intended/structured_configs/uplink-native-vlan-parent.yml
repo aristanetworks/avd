@@ -13,9 +13,11 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- name: UPLINK_NATIVE_VLAN
+- name: NATIVE_VLAN
+  state: suspend
   id: 200
 - name: NETWORK_SERVICES_VLAN
+  state: suspend
   id: 100
   tenant: test
 ethernet_interfaces:

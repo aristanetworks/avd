@@ -40,7 +40,12 @@ class VlansMixin(UtilsMixin):
         switch_vlans = range_expand(get(self._hostvars, "switch.vlans"))
         uplink_native_vlans = set(link["native_vlan"] for link in self._underlay_links if "native_vlan" in link and link["native_vlan"] not in switch_vlans)
         for peer_uplink_native_vlan in uplink_native_vlans:
-            vlans.setdefault(int(peer_uplink_native_vlan), {}).update({"name": "UPLINK_NATIVE_VLAN"})
+            vlans.setdefault(int(peer_uplink_native_vlan), {}).update(
+                {
+                    "name": "NATIVE_VLAN",
+                    "state": "suspend",
+                }
+            )
 
         if vlans:
             return vlans
