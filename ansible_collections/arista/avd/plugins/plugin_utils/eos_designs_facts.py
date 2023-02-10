@@ -940,6 +940,9 @@ class EosDesignsFacts(AvdFacts):
         Return the compressed list of vlans to be defined on this switch
 
         Ex. "1-100, 201-202"
+
+        This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
+        This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
         """
         return list_compress(self._vlans)
 
@@ -1046,6 +1049,12 @@ class EosDesignsFacts(AvdFacts):
     def uplink_ipv4_pool(self):
         if self.underlay_router is True:
             return get(self._switch_data_combined, "uplink_ipv4_pool")
+        return None
+
+    @cached_property
+    def uplink_native_vlan(self):
+        if self.uplink_type == "port-channel":
+            return get(self._switch_data_combined, "uplink_native_vlan")
         return None
 
     @cached_property
@@ -1615,6 +1624,9 @@ class EosDesignsFacts(AvdFacts):
                     uplink["vlans"] = list_compress(uplink_vlans)
                 else:
                     uplink["vlans"] = "none"
+
+                if uplink_native_vlan := get(self._switch_data_combined, "uplink_native_vlan"):
+                    uplink["native_vlan"] = uplink_native_vlan
 
                 if self.short_esi is not None:
                     uplink["peer_short_esi"] = self.short_esi

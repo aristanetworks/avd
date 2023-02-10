@@ -1,0 +1,58 @@
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- ip_routing: false
+  name: MGMT
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+vlans:
+- name: UPLINK_NATIVE_VLAN
+  id: 200
+- name: NETWORK_SERVICES_VLAN
+  id: 100
+  tenant: test
+ethernet_interfaces:
+- peer: uplink-native-vlan-grandparent
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: UPLINK-NATIVE-VLAN-GRANDPARENT_Ethernet1
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
+- peer: uplink-native-vlan-child
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: UPLINK-NATIVE-VLAN-CHILD_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 2
+    mode: active
+  name: Ethernet2
+port_channel_interfaces:
+- description: UPLINK-NATIVE-VLAN-GRANDPARENT_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  native_vlan: 100
+  vlans: '100'
+  name: Port-Channel1
+- description: UPLINK-NATIVE-VLAN-CHILD_Po2
+  type: switched
+  shutdown: false
+  mode: trunk
+  native_vlan: 200
+  vlans: '100'
+  name: Port-Channel2
+ip_igmp_snooping:
+  globally_enabled: true
