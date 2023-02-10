@@ -44,3 +44,17 @@ interface Management1
 | ------------------- | -------------------- | ----------------------|
 | True | True | True |
 
+
+
+### 802.1X MAC based authentication
+
+| delay | Hold period |
+| ----- | ----------- |
+| 300 | 300 |
+
+### 802.1X Radius AV pair
+
+| Service type | framed MTU |
+| ------------ | ---------- |
+| true | 1500 |
+
