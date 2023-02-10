@@ -138,7 +138,7 @@ ethernet_interfaces:
 - peer: core-1-isis-sr-ldp
   peer_interface: Ethernet6
   peer_type: core_router
-  description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6
+  description: Custom description on core-2-ospf-ldp eth6
   type: routed
   shutdown: false
   mtu: 1602
