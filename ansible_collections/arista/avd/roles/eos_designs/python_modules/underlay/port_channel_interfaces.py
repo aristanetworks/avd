@@ -41,6 +41,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "mode": "trunk",
                 "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
                 "link_tracking_groups": link.get("link_tracking_groups"),
+                "native_vlan": link.get("native_vlan"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:

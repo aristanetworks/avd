@@ -940,6 +940,9 @@ class EosDesignsFacts(AvdFacts):
         Return the compressed list of vlans to be defined on this switch
 
         Ex. "1-100, 201-202"
+
+        This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
+        This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
         """
         return list_compress(self._vlans)
 
@@ -1621,6 +1624,9 @@ class EosDesignsFacts(AvdFacts):
                     uplink["vlans"] = list_compress(uplink_vlans)
                 else:
                     uplink["vlans"] = "none"
+
+                if uplink_native_vlan := get(self._switch_data_combined, "uplink_native_vlan"):
+                    uplink["native_vlan"] = uplink_native_vlan
 
                 if self.short_esi is not None:
                     uplink["peer_short_esi"] = self.short_esi
