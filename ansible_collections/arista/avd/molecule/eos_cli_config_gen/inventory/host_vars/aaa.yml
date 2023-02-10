@@ -29,6 +29,40 @@ radius_servers:
     vrf: default
     key: 071B245F5A
 
+### Radius Server
+radius_server:
+  attribute_32_include_in_access:
+    hostname: true
+  dynamic_authorisation:
+    port: 1700
+    tls_ssl_profile: SSL_PROFILE
+  hosts:
+    - host: 10.10.10.157
+      vrf: mgt
+      timeout: 1
+      retransmit: 1
+      key: 071B245F5A
+    - host: 10.10.10.159
+      vrf: mgt
+      retransmit: 1
+      key: 071B245F5A
+    - host: 10.10.10.160
+      vrf: mgt
+      timeout: 1
+      key: 071B245F5A
+    - host: 10.10.10.161
+      vrf: mgt
+      key: 071B245F5A
+    - host: 10.10.10.249
+      timeout: 1
+      retransmit: 1
+      key: 071B245F5A
+    - host: 10.10.10.158
+      vrf: default
+      timeout: 1
+      retransmit: 1
+      key: 071B245F5A
+
 ### AAA Server Groups
 aaa_server_groups:
   - name: TACACS1
