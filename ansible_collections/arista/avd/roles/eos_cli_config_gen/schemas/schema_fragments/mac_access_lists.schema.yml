@@ -4,6 +4,8 @@
 type: dict
 keys:
   mac_access_lists:
+    documentation_options:
+      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:

@@ -4,6 +4,8 @@
 type: dict
 keys:
   aaa_accounting:
+    documentation_options:
+      filename: data_model/Authentication
     type: dict
     keys:
       exec:
@@ -36,6 +38,18 @@ keys:
               type:
                 type: str
                 valid_values: ["none", "start-stop", "stop-only"]
+              group:
+                description: Group Name
+                type: str
+      dot1x:
+        type: dict
+        keys:
+          default:
+            type: dict
+            keys:
+              type:
+                type: str
+                valid_values: ["start-stop", "stop-only"]
               group:
                 description: Group Name
                 type: str

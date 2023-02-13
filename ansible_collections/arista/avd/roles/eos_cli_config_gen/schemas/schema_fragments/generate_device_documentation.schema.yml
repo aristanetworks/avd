@@ -4,5 +4,7 @@
 type: dict
 keys:
   generate_device_documentation:
+    documentation_options:
+      filename: inputs/Role Inputs
     type: bool
     default: true

@@ -130,7 +130,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
   tasks:
 
     - name: validate states on EOS devices
-      import_role:
+      ansible.builtin.import_role:
          name: arista.avd.eos_validate_state
 ```
 

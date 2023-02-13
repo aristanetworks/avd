@@ -1,22 +1,24 @@
 - name: Test without configlet_dir
   register: CVP_VARS
-  inventory_to_container:
-        inventory: '{{ inventory_path }}/inventory.yml'
-        container_root: 'DC1_FABRIC'
-        configlet_prefix: 'AVD'
-        device_filter: ['DC1-LE']
-        destination: "{{ actual_output }}"
+  arista.avd.inventory_to_container:
+    inventory: '{{ inventory_path }}/inventory.yml'
+    container_root: 'DC1_FABRIC'
+    configlet_prefix: 'AVD'
+    device_filter: ['DC1-LE']
+    destination: "{{ actual_output }}"
 
-- local_action: shell diff "{{ expected_output }}/expected_without_configlet_dir.yml" "{{ actual_output }}"
+- name: Compare actual output with expected output
+  ansible.builtin.shell: diff "{{ expected_output }}/expected_without_configlet_dir.yml" "{{ actual_output }}"
   failed_when: "diff_output.rc > 1"
   register: diff_output
+  delegate_to: localhost
 
 - name: Validate output
-  assert:
-        that:
-              - CVP_VARS is success
-              - CVP_VARS.CVP_TOPOLOGY != {}
-              - diff_output.stdout == ""
-              - item is defined
-              - item == "Tenant"
+  ansible.builtin.assert:
+    that:
+      - CVP_VARS is success
+      - CVP_VARS.CVP_TOPOLOGY != {}
+      - diff_output.stdout == ""
+      - item is defined
+      - item == "Tenant"
   with_items: "{{ CVP_VARS.CVP_TOPOLOGY.DC1_FABRIC.parent_container }}"

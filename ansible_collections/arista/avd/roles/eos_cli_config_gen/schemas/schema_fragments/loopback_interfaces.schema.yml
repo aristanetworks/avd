@@ -4,6 +4,8 @@
 type: dict
 keys:
   loopback_interfaces:
+    documentation_options:
+      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:

@@ -4,10 +4,11 @@
   gather_facts: false
   tasks:
     - name: "Copy all examples to {{ pwd }}"
-      copy:
+      ansible.builtin.copy:
         src: "{{ examples_dir }}/"
         dest: "{{ pwd }}"
         force: false
+        mode: 0664
       vars:
         pwd: "{{ lookup('env', 'PWD') }}"
         examples_dir: "{{ playbook_dir ~ '/../examples' }}"

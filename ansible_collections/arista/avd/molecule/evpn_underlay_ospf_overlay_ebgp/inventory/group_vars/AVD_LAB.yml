@@ -1,5 +1,5 @@
 # Nashua EVE-NG LAB shared attributes
-root_dir: '{{playbook_dir}}'
+root_dir: '{{ playbook_dir }}'
 
 # local users
 local_users:

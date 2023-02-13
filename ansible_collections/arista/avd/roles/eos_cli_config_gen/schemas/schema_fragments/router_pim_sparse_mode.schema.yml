@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_pim_sparse_mode:
+    documentation_options:
+      filename: data_model/Multicast
     type: dict
     keys:
       ipv4:

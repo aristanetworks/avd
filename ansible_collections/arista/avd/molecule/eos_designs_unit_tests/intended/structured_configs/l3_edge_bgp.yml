@@ -110,7 +110,7 @@ ethernet_interfaces:
 - peer: peer4
   peer_interface: ethernet4
   peer_type: other
-  description: P2P_LINK_TO_peer4_ethernet4
+  description: Custom description on l3_edge_bgp eth4
   type: routed
   shutdown: false
   mtu: 9000

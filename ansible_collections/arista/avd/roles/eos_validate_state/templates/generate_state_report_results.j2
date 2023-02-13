@@ -73,7 +73,7 @@ eos_validate_state_report:
   result: "PASS"
 {%         else %}
   result: "FAIL"
-  failure_reason: "{{ copy_hostvars[node].environment_temperature_results.msg | replace('\"','') }}"
+  failure_reason: "{{ copy_hostvars[node].environment_temperature_results.msg | replace('\"', '') }}"
 {%         endif %}
 {%     endif %}
 {% endfor %}
@@ -195,7 +195,7 @@ eos_validate_state_report:
   result: "PASS"
 {%         else %}
   result: "FAIL"
-  failure_reason: "{{ copy_hostvars[node].vxlan_interface_state_results.msg | replace('\"','') }}"
+  failure_reason: "{{ copy_hostvars[node].vxlan_interface_state_results.msg | replace('\"', '') }}"
 {%         endif %}
 {%     endif %}
 {% endfor %}
@@ -252,7 +252,7 @@ eos_validate_state_report:
   result: "PASS"
 {%         else %}
   result: "FAIL"
-  failure_reason: "{{ copy_hostvars[node].mlag_state_results.msg | replace('\"','') }}"
+  failure_reason: "{{ copy_hostvars[node].mlag_state_results.msg | replace('\"', '') }}"
 {%         endif %}
 {%     endif %}
 {% endfor %}
@@ -290,7 +290,7 @@ eos_validate_state_report:
   result: "PASS"
 {%         else %}
   result: "FAIL"
-  failure_reason: "{{ copy_hostvars[node].arbgp_state_results.msg | replace('\"','') }}"
+  failure_reason: "{{ copy_hostvars[node].arbgp_state_results.msg | replace('\"', '') }}"
 {%         endif %}
 {%     endif %}
 {% endfor %}
@@ -349,7 +349,7 @@ eos_validate_state_report:
   result: "PASS"
 {%         else %}
   result: "FAIL"
-  failure_reason: "Reload Cause: {{ copy_hostvars[node].reload_cause_results.msg | replace('\"','') }}"
+  failure_reason: "Reload Cause: {{ copy_hostvars[node].reload_cause_results.msg | replace('\"', '') }}"
 {%         endif %}
 {%     endif %}
 {% endfor %}

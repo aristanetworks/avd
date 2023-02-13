@@ -4,7 +4,7 @@
     timezone: "test"
     hours: 36
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     dest: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
     templates:
       - template: "templates/template.j2"
@@ -15,16 +15,19 @@
     timezone: "test"
     hours: 36
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     dest: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
     templates:
       - template: "templates/template.j2"
 
-- local_action: shell diff "{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.yml" "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
+- name: Compare actual output with expected output
+  ansible.builtin.shell: diff "{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.yml" "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
   failed_when: "diff_output.rc > 1"
   register: diff_output
+  delegate_to: localhost
 
-- assert:
+- name: Validate result
+  ansible.builtin.assert:
     that:
       - result is success
       - result.changed == false

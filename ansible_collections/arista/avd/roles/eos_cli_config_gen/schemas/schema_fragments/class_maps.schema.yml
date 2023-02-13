@@ -4,6 +4,8 @@
 type: dict
 keys:
   class_maps:
+    documentation_options:
+      filename: data_model/Quality of Service
     type: dict
     display_name: QOS Class-maps
     keys:

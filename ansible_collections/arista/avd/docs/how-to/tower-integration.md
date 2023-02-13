@@ -242,8 +242,8 @@ inventory_file: '/tmp/inventory.yml'
         mode: '0755'
       delegate_to: 127.0.0.1
 
-    - name: run CVP provisioning
-      import_role:
+    - name: Run CVP provisioning
+      ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
         container_root: 'DC1_FABRIC'

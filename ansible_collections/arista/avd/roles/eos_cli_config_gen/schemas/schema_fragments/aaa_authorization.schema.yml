@@ -4,6 +4,8 @@
 type: dict
 keys:
   aaa_authorization:
+    documentation_options:
+      filename: data_model/Authentication
     type: dict
     keys:
       exec:

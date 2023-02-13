@@ -1,6 +1,8 @@
 ---
 - name: Create required output directories
   tags: [eos_cli_config_gen]
+  delegate_to: localhost
+  run_once: true
   block:
     - name: "Create {{ role_schema_dir }}"
       ansible.builtin.file:
@@ -12,8 +14,6 @@
         path: "{{ role_schema_fragments_dir }}"
         state: directory
         mode: 0775
-  delegate_to: localhost
-  run_once: true
 
 - name: Gather AVD Schema Fragments for eos_cli_config_gen
   tags: [eos_cli_config_gen]

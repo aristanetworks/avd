@@ -101,8 +101,8 @@ The following options may be specified for this module:
 ## Examples
 
 ```yaml
-- name: generate intended variables
-  inventory_to_container:
+- name: Generate intended variables
+  arista.avd.inventory_to_container:
     inventory: 'inventory.yml'
     container_root: 'DC1_FABRIC'
     configlet_dir: 'intended_configs'
@@ -111,25 +111,21 @@ The following options may be specified for this module:
     # destination: 'generated_vars/{{inventory_hostname}}.yml'
   register: CVP_VARS
 
-- name: 'Collecting facts from CVP {{inventory_hostname}}.'
+- name: 'Collecting facts from CVP {{ inventory_hostname }}.'
   arista.cvp.cv_facts:
   register: CVP_FACTS
 
-- name: 'Create configlets on CVP {{inventory_hostname}}.'
+- name: 'Create configlets on CVP {{ inventory_hostname }}.'
   arista.cvp.cv_configlet:
-    cvp_facts: "{{CVP_FACTS.ansible_facts}}"
-    configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
+    cvp_facts: "{{ cvp_facts.ansible_facts }}"
+    configlets: "{{ cvp_vars.cvp_configlets }}"
     configlet_filter: ["AVD"]
 
-- name: "Building Container topology on {{inventory_hostname}}"
+- name: "Building Container topology on {{ inventory_hostname }}"
   arista.cvp.cv_container:
-    topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
-    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+    topology: '{{ cvp_vars.cvp_topology }}'
+    cvp_facts: '{{ cvp_facts.ansible_facts }}'
     save_topology: true
-```
-
-### Author
-
 - Ansible Arista Team (@aristanetworks)
 
 ### Status

@@ -42,6 +42,9 @@ l3_edge:
       # AS Numbers for BGP | Required with bgp peering
       as: [ < node_a_as >, < node_b_as > ]
 
+      # Interface Description | Optional
+      descriptions: [ < node_a_description >, < node_b_description > ]
+
       # Add this interface to underlay routing protocol | Optional
       include_in_underlay_protocol: < true | false | default -> false >
 

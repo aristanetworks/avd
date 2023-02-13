@@ -91,6 +91,10 @@ aaa_accounting:
     default:
       type: start-stop
       group: TACACS
+  dot1x:
+    default:
+      type: start-stop
+      group: RADIUS
   commands:
     console:
       - commands: all

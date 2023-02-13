@@ -1,8 +1,8 @@
 ---
 
 - name: Gather ip reachability state between devices (loopback0 <-> loopback0)
-  eos_command:
-    commands: "ping {{ loopback0_address | ansible.utils.ipaddr('address') }} source {{ source_ip_address | ansible.utils.ipaddr('address') }} repeat 1"
+  arista.eos.eos_command:
+    commands: "ping {{ loopback0_address | ansible.utils.ipaddr('address') }} source {{ source_ip_address | ansible.utils.ipaddr('address') }} repeat 1"  # noqa: jinja[invalid]
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address
@@ -20,7 +20,7 @@
 
 - name: Validate ip reachability between devices (loopback0 <-> loopback0)
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - loopback0_reachability_test.stdout[0] | regex_search("1 received")
     fail_msg: "100% packet loss"
@@ -34,7 +34,8 @@
   tags:
     - loopback0_reachability
 
-- include_tasks: ping_inband.yml
+- name: Ping inband management interfaces
+  ansible.builtin.include_tasks: ping_inband.yml
   loop: "{{ management_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
   loop_control:
     loop_var: management_interface
@@ -46,7 +47,7 @@
 
 - name: Validate ip reachability from Inband Management to loopback0 in fabric
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search('1 received')
     fail_msg: "100% packet loss"

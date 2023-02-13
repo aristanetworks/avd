@@ -1,5 +1,5 @@
 ---
-root_dir: '{{playbook_dir}}'
+root_dir: '{{ playbook_dir }}'
 # ZTP & DHCP configuration section
 ztp_network_summary: 172.17.0.0/16
 ztp_pool_start: 172.17.255.200
