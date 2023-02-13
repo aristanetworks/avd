@@ -41,7 +41,7 @@ repos:
         types: [python]
 
   - repo: https://github.com/pycqa/pylint
-    rev: "pylint-2.6.0"
+    rev: "v2.16.1"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files
