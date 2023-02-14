@@ -195,7 +195,7 @@ Supported types:
 
 BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
 
-An example usage for `arista.avd.encrypt` filter for BGP it ot use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **example:**
 

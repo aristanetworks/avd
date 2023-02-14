@@ -443,20 +443,20 @@ ethernet_interfaces:
       id: 13
       mode: active
   Ethernet14/1:
-    peer: DC1-L2LEAF5A
+    peer: DC1.L2LEAF5A
     peer_interface: Ethernet1
     peer_type: l2leaf
-    description: DC1-L2LEAF5A_Ethernet1
+    description: DC1.L2LEAF5A_Ethernet1
     shutdown: false
     type: switched
     channel_group:
       id: 141
       mode: active
   Ethernet15/1:
-    peer: DC1-L2LEAF5B
+    peer: DC1.L2LEAF5B
     peer_interface: Ethernet1
     peer_type: l2leaf
-    description: DC1-L2LEAF5B_Ethernet1
+    description: DC1.L2LEAF5B_Ethernet1
     shutdown: false
     type: switched
     channel_group:
