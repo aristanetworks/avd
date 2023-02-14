@@ -43,7 +43,6 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 - Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional.
 
-
 ## License
 
 Project is published under [Apache 2.0 License](../../LICENSE)
