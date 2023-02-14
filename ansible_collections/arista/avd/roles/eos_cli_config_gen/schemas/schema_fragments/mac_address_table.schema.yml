@@ -4,6 +4,8 @@
 type: dict
 keys:
   mac_address_table:
+    documentation_options:
+      filename: data_model/MAC Address-table
     type: dict
     keys:
       aging_time:

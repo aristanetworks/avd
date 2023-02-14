@@ -3,8 +3,8 @@
 # IP Reachability tests
 
 - name: Gather ip reachability state (directly connected interfaces)
-  eos_command:
-    commands: "ping {{ peer_ip | ansible.utils.ipaddr('address') }} source {{ ethernet_interface.ip_address | ansible.utils.ipaddr('address') }} repeat 1"
+  arista.eos.eos_command:
+    commands: "ping {{ peer_ip | ansible.utils.ipaddr('address') }} source {{ ethernet_interface.ip_address | ansible.utils.ipaddr('address') }} repeat 1"  # noqa: jinja[invalid]
   loop: "{{ ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
   loop_control:
     loop_var: ethernet_interface
@@ -25,7 +25,7 @@
 
 - name: Validate ip reachability (directly connected interfaces)
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - ip_reachability_test.stdout[0] | regex_search('1 received')
     fail_msg: "100% packet loss"

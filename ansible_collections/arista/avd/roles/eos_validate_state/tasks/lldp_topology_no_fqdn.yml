@@ -3,7 +3,7 @@
 # LLDP Topology Tests
 
 - name: Gather lldp topology
-  eos_command:
+  arista.eos.eos_command:
     commands: "show lldp neighbors detail | json"
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: lldp_topology_state
@@ -12,12 +12,12 @@
 
 - name: Validate lldp topology when there is no domain name
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that:
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0] is defined
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName == ethernet_interface.peer
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId == "\"" ~ ethernet_interface.peer_interface ~ "\""
-    fail_msg: "{{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName | default('Interface Down') | replace('\"','') }} - {{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId | default('N/A') | replace('\"','') }}"
+    fail_msg: "{{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName | default('Interface Down') | replace('\"', '') }} - {{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId | default('N/A') | replace('\"', '') }}"
     quiet: true
   loop: "{{ ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
   loop_control:

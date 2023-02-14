@@ -4,6 +4,8 @@
 type: dict
 keys:
   ip_http_client_source_interfaces:
+    documentation_options:
+      filename: data_model/Management
     type: list
     items:
       type: dict

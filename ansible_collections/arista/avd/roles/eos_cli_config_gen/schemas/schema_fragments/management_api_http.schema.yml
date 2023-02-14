@@ -4,6 +4,8 @@
 type: dict
 keys:
   management_api_http:
+    documentation_options:
+      filename: data_model/Management
     type: dict
     keys:
       enable_http:

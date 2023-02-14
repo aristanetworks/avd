@@ -759,7 +759,7 @@
     "custom_templates": {
       "type": "array",
       "title": "Extensibility with Custom Templates",
-      "description": "- Custom templates can be added below the playbook directory.\n- If a location above the directory is desired, a symbolic link can be used.\n- Example under the `playbooks` directory create symbolic link with the following command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n  ```\n\n- The output will be rendered at the end of the configuration.\n- The order of custom templates in the list can be important if they overlap.\n- It is recommenended to use a `!` delimiter at the top of each custom template.\n\nAdd `custom_templates` to group/host variables:\n",
+      "description": "- Custom templates can be added below the playbook directory.\n- If a location above the directory is desired, a symbolic link can be used.\n- Example under the `playbooks` directory create symbolic link with the following command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n  ```\n\n- The output will be rendered at the end of the configuration.\n- The order of custom templates in the list can be important if they overlap.\n- It is recommended to use a `!` delimiter at the top of each custom template.\n\nAdd `custom_templates` to group/host variables:\n",
       "items": {
         "type": "string",
         "description": "Template relative path below playbook directory"
@@ -827,7 +827,7 @@
     },
     "daemon_terminattr": {
       "type": "object",
-      "description": "You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming to multiple clusters both on-prem and cloud service is supported.\n> Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes\n  which always contain the latest recommended versions and minimum required versions per EOS release.\n",
+      "description": "You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming to multiple clusters both on-prem and cloud service is supported.\n\n!!! note\n    For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes\n    which always contain the latest recommended versions and minimum required versions per EOS release.\n",
       "properties": {
         "cvaddrs": {
           "type": "array",
@@ -891,7 +891,7 @@
               },
               "cvproxy": {
                 "type": "string",
-                "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n",
+                "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0\n",
                 "title": "Cvproxy"
               },
               "cvsourceip": {
@@ -945,7 +945,7 @@
         },
         "cvproxy": {
           "type": "string",
-          "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0\n",
+          "description": "Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.\nThe expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0\n",
           "title": "Cvproxy"
         },
         "cvsourceip": {
@@ -3241,7 +3241,7 @@
     "ip_community_lists": {
       "type": "array",
       "title": "IP Community Lists",
-      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved data model has a better design documented below:\n\ncommunities and regexp MUST not be configured together in the same entry\npossible community strings are (case insensitive):\n - GSHUT\n - internet\n - local-as\n - no-advertise\n - no-export\n - <1-4294967040>\n - aa:nn\n",
+      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved data model has a better design documented below:\n\ncommunities and regexp MUST not be configured together in the same entry\npossible community strings are (case insensitive):\n\n- GSHUT\n- internet\n- local-as\n- no-advertise\n- no-export\n- <1-4294967040>\n- aa:nn\n",
       "items": {
         "type": "object",
         "properties": {

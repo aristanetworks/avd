@@ -4,6 +4,8 @@
 type: dict
 keys:
   ntp:
+    documentation_options:
+      filename: data_model/Management
     type: dict
     keys:
       local_interface:

@@ -4,6 +4,8 @@
 type: dict
 keys:
   event_monitor:
+    documentation_options:
+      filename: data_model/Monitoring
     type: dict
     keys:
       enabled:

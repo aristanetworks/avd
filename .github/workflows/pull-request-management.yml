@@ -95,19 +95,19 @@ jobs:
     if: needs.file-changes.outputs.docs == 'true'
     steps:
       - uses: actions/checkout@v3
-      - name: 'start docker-compose stack'
+      - name: 'Start docker-compose stack'
         run: |
           cp development/docker-compose.yml .
           sed -i 's/cd\sansible-avd\/\s\&\&//g' docker-compose.yml
           docker-compose -f docker-compose.yml up -d webdoc_avd
           docker-compose -f docker-compose.yml ps
-      - name: 'test connectivity to mkdoc server'
+      - name: 'Test connectivity to mkdoc server'
         run: |
           until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
-      - name: check links for 404
+      - name: Check links for 404
         run: |
           docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
-      - name: 'stop docker-compose stack'
+      - name: 'Stop docker-compose stack'
         run: |
           docker-compose -f docker-compose.yml down
 
@@ -124,7 +124,7 @@ jobs:
       matrix:
         python_version: [ "3.8", "3.9", "3.10" ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
@@ -159,7 +159,7 @@ jobs:
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
@@ -194,7 +194,7 @@ jobs:
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
@@ -248,7 +248,7 @@ jobs:
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
@@ -282,7 +282,7 @@ jobs:
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
@@ -312,19 +312,19 @@ jobs:
     #needs: [ molecule_eos_designs, molecule_cloudvision ]
     #if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
           pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
-      - name: 'run ansible-test sanity'
+      - name: 'Run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
           ansible-test sanity --color yes -v --requirements --docker
@@ -334,19 +334,19 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'run ansible-test units test cases'
+      - name: 'Run ansible-test units test cases'
         run: |
           cd ansible_collections/arista/avd/
           ansible-test units --requirements --docker -vv
@@ -356,22 +356,45 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [ pre_commit ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt
           pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'run ansible-test integration test cases'
+      - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
           ansible-test integration --requirements --docker -vv
+
+  ansible_lint:
+    name: Run ansible-lint test case
+    runs-on: ubuntu-20.04
+    needs: [ pre_commit ]
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: 'Install Python & Ansible requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+          ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
+      - name: 'Run ansible-test integration test cases'
+        run: |
+          cd ansible_collections/arista/avd/
+          ansible-lint --force-color --strict -v
   # ----------------------------------- #
   # Galaxy Importer
   # ----------------------------------- #
@@ -383,18 +406,18 @@ jobs:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
-      - name: install requirements
+      - name: Install requirements
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'build ansible package'
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+      - name: 'Build ansible package'
         run: make collection-build
-      - name: 'run galaxy-importer checks'
+      - name: 'Run galaxy-importer checks'
         run: python -m galaxy_importer.main *.tar.gz
       - uses: actions/upload-artifact@v3
         with:

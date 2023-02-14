@@ -2,7 +2,7 @@
 # tasks file for build_directories
 
 - name: "Cleanup existing folders in {{ output_dir }}"
-  file:
+  ansible.builtin.file:
     path: "{{ output_dir }}"
     state: absent
     mode: 0775
@@ -10,7 +10,7 @@
   run_once: True
 
 - name: "Create folder {{ output_dir }}"
-  file:
+  ansible.builtin.file:
     path: "{{ output_dir }}"
     state: directory
     mode: 0775
@@ -18,7 +18,7 @@
   run_once: True
 
 - name: "Create folder {{ structured_dir_name }} for structured YAML files"
-  file:
+  ansible.builtin.file:
     path: "{{ structured_dir }}"
     state: directory
     mode: 0775
@@ -26,7 +26,7 @@
   run_once: True
 
 - name: "Create folder {{ eos_config_dir_name }} for EOS Configuration files"
-  file:
+  ansible.builtin.file:
     path: "{{ eos_config_dir }}"
     state: directory
     mode: 0775
@@ -34,7 +34,7 @@
   run_once: True
 
 - name: "Create folder {{ structured_cvp_dir_name }} for CVP structured YAML files"
-  file:
+  ansible.builtin.file:
     path: "{{ structured_cvp_dir }}"
     state: directory
     mode: 0775
@@ -42,7 +42,7 @@
   run_once: True
 
 - name: "Create documentation folder: {{ documentation_dir_name }}"
-  file:
+  ansible.builtin.file:
     path: "{{ documentation_dir }}"
     state: directory
     mode: 0775
@@ -50,7 +50,7 @@
   run_once: True
 
 - name: "Create folder {{ fabric_dir_name }} for Fabric documentation"
-  file:
+  ansible.builtin.file:
     path: "{{ fabric_dir }}"
     state: directory
     mode: 0775
@@ -58,7 +58,7 @@
   run_once: True
 
 - name: "Create folder {{ devices_dir_name }} for EOS documentation"
-  file:
+  ansible.builtin.file:
     path: "{{ devices_dir }}"
     state: directory
     mode: 0775
@@ -66,7 +66,7 @@
   run_once: True
 
 - name: "Create folder {{ post_running_config_backup_dir }} for EOS post backup dir"
-  file:
+  ansible.builtin.file:
     path: "{{ post_running_config_backup_dir }}"
     state: directory
     mode: 0775
@@ -74,7 +74,7 @@
   run_once: True
 
 - name: "Create folder {{ pre_running_config_backup_dir }} for EOS pre backup dir"
-  file:
+  ansible.builtin.file:
     path: "{{ pre_running_config_backup_dir }}"
     state: directory
     mode: 0775
@@ -82,7 +82,7 @@
   run_once: True
 
 - name: "Create folder {{ eos_validate_state_name }} for EOS state report dir"
-  file:
+  ansible.builtin.file:
     path: "{{ eos_validate_state_dir }}"
     state: directory
     mode: 0775
@@ -90,7 +90,7 @@
   run_once: True
 
 - name: Create output directory for each EOS device
-  file:
+  ansible.builtin.file:
     path: "{{ snapshots_backup_dir }}"
     state: directory
     mode: 0775

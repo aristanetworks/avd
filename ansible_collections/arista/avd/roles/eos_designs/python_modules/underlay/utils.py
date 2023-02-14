@@ -188,6 +188,7 @@ class UtilsMixin:
                         "peer_channel_group_id": get(uplink, "channel_group_id"),
                         "channel_description": get(uplink, "peer_channel_description"),
                         "vlans": get(uplink, "vlans"),
+                        "native_vlan": get(uplink, "native_vlan"),
                         "trunk_groups": get(uplink, "peer_trunk_groups"),
                         "bfd": get(uplink, "bfd"),
                         "ptp": get(uplink, "ptp"),

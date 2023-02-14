@@ -129,7 +129,7 @@ options:
 EXAMPLES = r"""
 # tasks file for configlet_build_config
 - name: Generate device configuration in structured format
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     root_key: structured_config
     templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"

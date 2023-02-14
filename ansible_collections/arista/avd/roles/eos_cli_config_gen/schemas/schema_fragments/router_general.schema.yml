@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_general:
+    documentation_options:
+      filename: data_model/Routing
     type: dict
     display_name: Router General configuration
     keys:

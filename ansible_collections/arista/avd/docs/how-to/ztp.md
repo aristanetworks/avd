@@ -79,6 +79,6 @@ Playbook is fairly simple:
   gather_facts: true
   tasks:
     - name: 'Execute DHCP configuration role'
-      import_role:
+      ansible.builtin.import_role:
         name: arista.cvp.dhcp_configuration
 ```
