@@ -5394,8 +5394,8 @@ ip route 0.0.0.0/0 10.10.10.1
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
 | Ethernet3/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
 | Ethernet3/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
 | Ethernet3/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |

@@ -2370,8 +2370,8 @@ ip route 0.0.0.0/0 10.10.10.1
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
 | Ethernet1 | authenticator | auto | - | True | allow vlan 330 | multi-host | True |
 | Ethernet2 | authenticator | auto | - | True | allow vlan 330 | multi-host | True |
 | Ethernet3 | authenticator | auto | - | True | allow vlan 330 | multi-host | True |
