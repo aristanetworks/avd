@@ -4,6 +4,8 @@
 type: dict
 keys:
   dhcp_relay:
+    documentation_options:
+      filename: data_model/DHCP Relay
     type: dict
     keys:
       servers:

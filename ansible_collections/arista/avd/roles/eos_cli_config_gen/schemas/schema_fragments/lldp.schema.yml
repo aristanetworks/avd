@@ -4,6 +4,8 @@
 type: dict
 keys:
   lldp:
+    documentation_options:
+      filename: data_model/LLDP
     type: dict
     keys:
       timer:

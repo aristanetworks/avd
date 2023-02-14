@@ -2,7 +2,7 @@
 # tasks file for dhcp_provisioner
 
 - name: Create required output directories if not present
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0775
@@ -14,17 +14,17 @@
   run_once: true
 
 - name: Build DHCP intended variables
-  template:
+  ansible.builtin.template:
     src: ztp_configuration.j2
     dest: "{{ structured_cvp_dir }}/ztp_configuration.yml"
     mode: 0664
   delegate_to: localhost
   run_once: true
 
-- name: include DHCP variables to build dhcpd.conf file
-  include_vars: "{{ structured_cvp_dir }}/ztp_configuration.yml"
+- name: Include DHCP variables to build dhcpd.conf file
+  ansible.builtin.include_vars: "{{ structured_cvp_dir }}/ztp_configuration.yml"
   run_once: true
 
-- name: start creation/update process.
+- name: Start creation/update process.
   tags: [provision]
-  include_tasks: "./{{ ztp_mode }}.yml"
+  ansible.builtin.include_tasks: "./{{ ztp_mode }}.yml"

@@ -72,7 +72,7 @@
   delegate_to: localhost
   check_mode: false
   ansible.builtin.copy:
-    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    content: "{{ lookup('template', 'documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
     dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
     mode: 0664
 

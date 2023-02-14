@@ -4,6 +4,8 @@
 type: dict
 keys:
   custom_templates:
+    documentation_options:
+      filename: inputs/Role Inputs
     type: list
     display_name: Extensibility with Custom Templates
     description: |
@@ -17,7 +19,7 @@ keys:
 
       - The output will be rendered at the end of the configuration.
       - The order of custom templates in the list can be important if they overlap.
-      - It is recommenended to use a `!` delimiter at the top of each custom template.
+      - It is recommended to use a `!` delimiter at the top of each custom template.
 
       Add `custom_templates` to group/host variables:
     items:

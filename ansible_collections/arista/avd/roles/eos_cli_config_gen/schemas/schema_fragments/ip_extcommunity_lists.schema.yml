@@ -4,6 +4,8 @@
 type: dict
 keys:
   ip_extcommunity_lists:
+    documentation_options:
+      filename: data_model/Filters
     type: list
     primary_key: name
     secondary_key: entries

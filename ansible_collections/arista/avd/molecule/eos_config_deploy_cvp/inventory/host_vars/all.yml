@@ -1,2 +1,2 @@
 ---
-root_dir: '{{playbook_dir}}'
+root_dir: '{{ playbook_dir }}'

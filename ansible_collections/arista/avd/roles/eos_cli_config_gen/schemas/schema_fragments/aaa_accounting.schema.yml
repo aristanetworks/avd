@@ -4,6 +4,8 @@
 type: dict
 keys:
   aaa_accounting:
+    documentation_options:
+      filename: data_model/Authentication
     type: dict
     keys:
       exec:

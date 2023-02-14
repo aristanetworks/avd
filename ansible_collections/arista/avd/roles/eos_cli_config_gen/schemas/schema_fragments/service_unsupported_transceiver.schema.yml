@@ -4,6 +4,8 @@
 type: dict
 keys:
   service_unsupported_transceiver:
+    documentation_options:
+      filename: data_model/Service Unsupported Transceiver
     type: dict
     keys:
       license_name:

@@ -4,6 +4,8 @@
 type: dict
 keys:
   switchport_default:
+    documentation_options:
+      filename: data_model/Interfaces
     type: dict
     keys:
       mode:

@@ -4,6 +4,8 @@
 type: dict
 keys:
   ip_radius_source_interfaces:
+    documentation_options:
+      filename: data_model/Authentication
     type: list
     items:
       type: dict

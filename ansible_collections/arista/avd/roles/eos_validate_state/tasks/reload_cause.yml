@@ -2,8 +2,8 @@
 
 # Reload Cause - Optional
 
-- name: gather reload cause information
-  eos_command:
+- name: Gather reload cause information
+  arista.eos.eos_command:
     commands: "show reload cause"
   register: reload_cause
   tags:
@@ -11,11 +11,11 @@
     - optional
     - never
 
-- name: validate reload cause
+- name: Validate reload cause
   delegate_to: localhost
-  assert:
+  ansible.builtin.assert:
     that: reload_cause.stdout_lines[0][2] == 'Reload requested by the user.'
-    fail_msg: "{{ reload_cause.stdout_lines[0][2] | replace('\"','') }}"
+    fail_msg: "{{ reload_cause.stdout_lines[0][2] | replace('\"', '') }}"
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: reload_cause_results

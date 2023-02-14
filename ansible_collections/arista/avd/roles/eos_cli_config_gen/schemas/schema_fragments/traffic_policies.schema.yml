@@ -4,6 +4,8 @@
 type: dict
 keys:
   traffic_policies:
+    documentation_options:
+      filename: data_model/Traffic Policies
     type: dict
     keys:
       options:

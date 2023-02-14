@@ -1,4 +1,4 @@
-Tenant_B:
+tenant_b:
   mac_vrf_vni_base: 20000
   vrfs:
     Tenant_B_OP_Zone:

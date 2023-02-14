@@ -940,6 +940,9 @@ class EosDesignsFacts(AvdFacts):
         Return the compressed list of vlans to be defined on this switch
 
         Ex. "1-100, 201-202"
+
+        This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
+        This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
         """
         return list_compress(self._vlans)
 
@@ -1588,7 +1591,13 @@ class EosDesignsFacts(AvdFacts):
                     uplink["peer_channel_description"] = self.group
 
                 if self.mlag_role == "secondary":
-                    mlag_peer_switch_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts.{self.mlag_peer}.switch", required=True)
+                    mlag_peer_switch_facts: EosDesignsFacts = get(
+                        self._hostvars,
+                        f"avd_switch_facts..{self.mlag_peer}..switch",
+                        required=True,
+                        separator="..",
+                        org_key=f"avd_switch_facts.{self.mlag_peer}.switch",
+                    )
 
                     uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_interfaces[0]))
                     uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts.uplink_switch_interfaces[0]))
@@ -1615,6 +1624,9 @@ class EosDesignsFacts(AvdFacts):
                     uplink["vlans"] = list_compress(uplink_vlans)
                 else:
                     uplink["vlans"] = "none"
+
+                if uplink_native_vlan := get(self._switch_data_combined, "uplink_native_vlan"):
+                    uplink["native_vlan"] = uplink_native_vlan
 
                 if self.short_esi is not None:
                     uplink["peer_short_esi"] = self.short_esi

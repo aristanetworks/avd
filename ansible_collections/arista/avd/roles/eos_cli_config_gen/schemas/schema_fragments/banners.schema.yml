@@ -4,6 +4,8 @@
 type: dict
 keys:
   banners:
+    documentation_options:
+      filename: data_model/Banners
     type: dict
     keys:
       login:
