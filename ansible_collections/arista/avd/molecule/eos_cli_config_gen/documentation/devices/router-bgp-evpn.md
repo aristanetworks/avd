@@ -98,10 +98,10 @@ interface Management1
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY-PEERS | True |
-| MLAG-IPv4-UNDERLAY-PEER | False |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY-PEERS | True | vxlan |
+| MLAG-IPv4-UNDERLAY-PEER | False | default |
 
 #### EVPN Host Flapping Settings
 
