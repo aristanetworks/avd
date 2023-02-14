@@ -91,7 +91,7 @@ def range_expand(range_to_expand):
 
                     def expand_subinterfaces(interface_string):
                         result = []
-                        if last_subinterface:
+                        if last_subinterface is not None:
                             for subinterface in range(first_subinterface, last_subinterface + 1):
                                 result.append(f"{interface_string}.{subinterface}")
                         else:
