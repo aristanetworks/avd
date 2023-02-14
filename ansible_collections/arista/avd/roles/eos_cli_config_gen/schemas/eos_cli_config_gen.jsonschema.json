@@ -9568,6 +9568,14 @@
                   "domain_remote": {
                     "type": "boolean",
                     "title": "Domain Remote"
+                  },
+                  "encapsulation": {
+                    "type": "string",
+                    "enum": [
+                      "vxlan",
+                      "mpls"
+                    ],
+                    "title": "Encapsulation"
                   }
                 },
                 "additionalProperties": false,
