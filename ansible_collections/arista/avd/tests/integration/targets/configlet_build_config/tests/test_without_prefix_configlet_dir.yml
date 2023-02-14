@@ -6,7 +6,7 @@
   register: result
 
 - name: Validate output
-  assert:
+  ansible.builtin.assert:
     that:
       - result is failed
       - result.changed == false

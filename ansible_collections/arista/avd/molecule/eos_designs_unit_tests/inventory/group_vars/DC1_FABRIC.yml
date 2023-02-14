@@ -347,10 +347,11 @@ l2leaf:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
       nodes:
-        DC1-L2LEAF5A:
+        # Testing with l2 leaf in MLAG with dotted hostnames
+        DC1.L2LEAF5A:
           id: 14
           mgmt_ip: 192.168.200.120/24
-        DC1-L2LEAF5B:
+        DC1.L2LEAF5B:
           id: 15
           mgmt_ip: 192.168.200.121/24
 

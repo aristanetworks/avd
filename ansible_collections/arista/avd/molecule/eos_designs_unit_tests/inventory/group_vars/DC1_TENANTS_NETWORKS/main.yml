@@ -66,7 +66,7 @@ svi_profiles:
 
 tenants:
   # Tenant_A Specific Information - VRFs / VLANs
-  Tenant_A: "{{ Tenant_A }}"
-  Tenant_B: "{{ Tenant_B }}"
-  Tenant_C: "{{ Tenant_C }}"
-  Tenant_D: "{{ Tenant_D }}"
+  Tenant_A: "{{ tenant_a }}"
+  Tenant_B: "{{ tenant_b }}"
+  Tenant_C: "{{ tenant_c }}"
+  Tenant_D: "{{ tenant_d }}"

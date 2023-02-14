@@ -4,6 +4,8 @@
 type: dict
 keys:
   event_handlers:
+    documentation_options:
+      filename: data_model/Monitoring
     type: list
     primary_key: name
     convert_types:

@@ -4,7 +4,7 @@
     timezone: "test"
     hours:
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     root_key: structured_config
     templates:
       - template: "templates/template.j2"

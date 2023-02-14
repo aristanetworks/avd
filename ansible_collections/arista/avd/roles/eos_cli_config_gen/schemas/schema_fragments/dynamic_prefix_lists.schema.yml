@@ -4,6 +4,8 @@
 type: dict
 keys:
   dynamic_prefix_lists:
+    documentation_options:
+      filename: data_model/Filters
     type: list
     items:
       type: dict

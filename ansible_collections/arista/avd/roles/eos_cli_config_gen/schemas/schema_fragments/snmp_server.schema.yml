@@ -4,6 +4,8 @@
 type: dict
 keys:
   snmp_server:
+    documentation_options:
+      filename: data_model/Monitoring
     type: dict
     description: SNMP settings
     keys:

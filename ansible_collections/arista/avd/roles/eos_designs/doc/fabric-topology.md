@@ -236,6 +236,13 @@ defaults <- node_group <- node_group.node <- node
     # e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ]
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
+    # Uplink native vlan | Optional
+    # Only applicable to switches with layer-2 port-channel uplinks
+    # A suspended (disabled) vlan will be created in both ends of the link unless the vlan
+    # is defined under network services.
+    # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+    uplink_native_vlan: < vlan_id >
+
     # Maximum number of uplink switches. | Optional
     # Changing this value may change IP Addressing on uplinks.
     # Can be used to reserve IP space for future expansions.

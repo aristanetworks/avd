@@ -4,5 +4,7 @@
 type: dict
 keys:
   service_routing_protocols_model:
+    documentation_options:
+      filename: data_model/Routing
     type: str
     valid_values: ["multi-agent", "ribd"]

@@ -26,7 +26,7 @@ description:
   - the input data is not valid.
   - For Markdown files the plugin can also run md_toc on the output before writing to the file.
 options:
-  template:
+  ansible.builtin.template:
     description: Path to Jinja2 Template file
     required: true
     type: str

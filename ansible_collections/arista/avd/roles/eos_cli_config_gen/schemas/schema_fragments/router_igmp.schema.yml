@@ -4,6 +4,8 @@
 type: dict
 keys:
   router_igmp:
+    documentation_options:
+      filename: data_model/Routing
     type: dict
     display_name: Router IGMP Configuration
     keys:

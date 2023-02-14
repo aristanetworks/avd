@@ -4,12 +4,16 @@
 type: dict
 keys:
   daemon_terminattr:
+    documentation_options:
+      filename: data_model/Monitoring
     type: dict
     description: |
       You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
       Streaming to multiple clusters both on-prem and cloud service is supported.
-      > Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
-        which always contain the latest recommended versions and minimum required versions per EOS release.
+
+      !!! note
+          For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
+          which always contain the latest recommended versions and minimum required versions per EOS release.
     keys:
       cvaddrs:
         type: list
@@ -66,7 +70,7 @@ keys:
               type: str
               description: |
                 Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
-                The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0
+                The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0
             cvsourceip:
               type: str
               description: |
@@ -98,7 +102,7 @@ keys:
         type: str
         description: |
           Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
-          The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0
+          The expected form is http://[user:password@]ip:port, e.g.: `http://arista:arista@10.83.12.78:3128`. Available as of TerminAttr v1.13.0
       cvsourceip:
         type: str
         description: |

@@ -108,6 +108,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface.update(
                         {
                             "vlans": list_compress(vlans),
+                            "native_vlan": link.get("native_vlan"),
                             "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
                             "link_tracking_groups": link.get("link_tracking_groups"),
                         }

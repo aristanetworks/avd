@@ -1,7 +1,7 @@
 ---
 - name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision, online]
-  include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+  ansible.builtin.include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
 
 - name: "Create configlets on CVP {{ inventory_hostname }}."
   tags: [provision]
@@ -36,7 +36,7 @@
 - name: "Configure devices on {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_device_v3:
-    devices: "{{ CVP_DEVICES }}"
+    devices: "{{ CVP_DEVICES }}"  # noqa: args[module]
     state: present
   register: CVP_DEVICES_RESULTS
 

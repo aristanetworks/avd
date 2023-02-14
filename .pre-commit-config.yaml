@@ -68,6 +68,15 @@ repos:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
 
+  - repo: local
+    hooks:
+      - id: schemas
+        name: Build AVD Schemas and Documentation
+        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook arista.avd._build_schemas_and_docs'
+        language: system
+        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
+        pass_filenames: false
+
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.1
     hooks:
@@ -77,12 +86,3 @@ repos:
           - --config=.github/.markdownlint.yaml
           - --ignore-path=.github/.markdownlintignore
           - --fix
-
-  - repo: local
-    hooks:
-      - id: schemas
-        name: Build AVD Schemas and Documentation
-        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook arista.avd._build_schemas_and_docs'
-        language: system
-        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
-        pass_filenames: false

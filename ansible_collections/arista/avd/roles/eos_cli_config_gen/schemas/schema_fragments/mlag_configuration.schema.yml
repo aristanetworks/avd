@@ -4,6 +4,8 @@
 type: dict
 keys:
   mlag_configuration:
+    documentation_options:
+      filename: data_model/MLAG
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
     keys:

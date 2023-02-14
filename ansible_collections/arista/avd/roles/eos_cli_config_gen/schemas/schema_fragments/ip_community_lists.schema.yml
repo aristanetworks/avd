@@ -4,6 +4,8 @@
 type: dict
 keys:
   ip_community_lists:
+    documentation_options:
+      filename: data_model/Filters
     type: list
     secondary_key: entries
     primary_key: name
@@ -23,13 +25,14 @@ keys:
 
       communities and regexp MUST not be configured together in the same entry
       possible community strings are (case insensitive):
-       - GSHUT
-       - internet
-       - local-as
-       - no-advertise
-       - no-export
-       - <1-4294967040>
-       - aa:nn
+
+      - GSHUT
+      - internet
+      - local-as
+      - no-advertise
+      - no-export
+      - <1-4294967040>
+      - aa:nn
     items:
       type: dict
       keys:

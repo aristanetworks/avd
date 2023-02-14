@@ -314,11 +314,11 @@ A simple example of a play defined in a playbook is shown below:
   hosts: FABRIC
   gather_facts: false
   tasks:
-    - name: generate intended variables
-      import_role:
+    - name: Generate intended variables
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
-    - name: generate device intended config and documentation
-      import_role:
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
 ```
 
@@ -390,14 +390,14 @@ If you want to push to switches in the entire fabric using eAPI and your playboo
   hosts: FABRIC
   gather_facts: false
   tasks:
-    - name: generate intended variables
-      import_role:
+    - name: Generate intended variables
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
-    - name: generate device intended config and documentation
-      import_role:
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
-    - name: deploy configuration to device
-      import_role:
+    - name: Deploy configuration to device
+      ansible.builtin.import_role:
          name: arista.avd.eos_config_deploy_eapi
 ```
 
@@ -423,14 +423,14 @@ If you want to push to switches in the entire fabric using CloudVision and your 
   hosts: FABRIC
   gather_facts: false
   tasks:
-    - name: generate intended variables
-      import_role:
+    - name: Generate intended variables
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
-    - name: generate device intended config and documentation
-      import_role:
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
-    - name: deploy configuration to device
-      import_role:
+    - name: Deploy configuration to device
+      ansible.builtin.import_role:
          name: arista.avd.eos_config_deploy_eapi
 
 - name: Push to CVP
@@ -439,8 +439,8 @@ If you want to push to switches in the entire fabric using CloudVision and your 
   connection: local
 
   tasks:
-    - name: run CVP provisioning
-      import_role:
+    - name: Run CVP provisioning
+      ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
         container_root: 'DC1'
