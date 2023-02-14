@@ -5,6 +5,27 @@ Arista.Avd Release Notes
 .. contents:: Topics
 
 
+v3.8.2
+======
+
+Release Summary
+---------------
+
+Release 3.8.2 - See documentation on avd.sh for details.
+
+
+Bugfixes
+--------
+
+- Doc - Fix typo in plugins README.md (#2495) (https://github.com/aristanetworks/ansible-avd/pull/2533)
+- Fix(eos_cli_config_gen) - Add variable protection for router_bgp.as in doc template (#2503) (https://github.com/aristanetworks/ansible-avd/pull/2535)
+- Fix(eos_cli_config_gen) - Correct schema min values for terminal length/width (#2481) (https://github.com/aristanetworks/ansible-avd/pull/2528)
+- Fix(eos_cli_config_gen) - Fix the router_multicast vrfs indentation (#2476) (https://github.com/aristanetworks/ansible-avd/pull/2527)
+- Fix(eos_cli_config_gen) - Relax schema for maintenance unit profile (#2492) (https://github.com/aristanetworks/ansible-avd/pull/2532)
+- Fix(eos_designs) - Correct range_expand behaviour with .0 4byte ASNs (#2529) (https://github.com/aristanetworks/ansible-avd/pull/2541)
+- Fix(eos_designs) - Fix error with dotted hostname, l2leaf and mlag (#2502) (https://github.com/aristanetworks/ansible-avd/pull/2534)
+- Refactor(eos_designs) - Use python for all default interface descriptions (#2490) (https://github.com/aristanetworks/ansible-avd/pull/2531)
+
 v3.8.1
 ======
 
