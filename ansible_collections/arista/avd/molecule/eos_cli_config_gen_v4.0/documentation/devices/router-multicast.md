@@ -109,14 +109,14 @@ router multicast
       routing
       multipath deterministic router-id
       software-forwarding sfe
-      !
-      vrf MCAST_VRF1
-         ipv4
-            routing
-      !
-      vrf MCAST_VRF2
-         ipv4
-            routing
+   !
+   vrf MCAST_VRF1
+      ipv4
+         routing
+   !
+   vrf MCAST_VRF2
+      ipv4
+         routing
 ```
 
 
