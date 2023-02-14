@@ -13677,13 +13677,13 @@
       "properties": {
         "length": {
           "type": "integer",
-          "minimum": 1,
+          "minimum": 0,
           "maximum": 32767,
           "title": "Length"
         },
         "width": {
           "type": "integer",
-          "minimum": 1,
+          "minimum": 10,
           "maximum": 32767,
           "title": "Width"
         }
