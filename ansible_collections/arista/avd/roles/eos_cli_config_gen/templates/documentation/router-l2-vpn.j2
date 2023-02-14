@@ -12,6 +12,14 @@
 
 - VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}.
 {%     endif %}
+{%     if router_l2_vpn.nd_learning_bridged is arista.avd.defined(true) %}
+
+- ND learning bridged is enabled.
+{%     endif %}
+{%     if router_l2_vpn.nd_proxy.prefix_list is arista.avd.defined %}
+
+- VXLAN ND Proxying is disabled for IPv6 addresses defined in the prefix-list {{ router_l2_vpn.nd_proxy.prefix_list }}.
+{%     endif %}
 {%     if router_l2_vpn.arp_selective_install is arista.avd.defined(true) %}
 
 - Selective ARP is enabled.

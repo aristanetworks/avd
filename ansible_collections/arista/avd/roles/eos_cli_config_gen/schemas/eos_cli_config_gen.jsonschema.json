@@ -11316,6 +11316,22 @@
           "additionalProperties": false,
           "title": "ARP Proxy"
         },
+        "nd_learning_bridged": {
+          "type": "boolean",
+          "title": "ND Learning Bridged"
+        },
+        "nd_proxy": {
+          "type": "object",
+          "properties": {
+            "prefix_list": {
+              "type": "string",
+              "description": "Prefix-list Name",
+              "title": "Prefix List"
+            }
+          },
+          "additionalProperties": false,
+          "title": "ND Proxy"
+        },
         "arp_selective_install": {
           "type": "boolean",
           "title": "ARP Selective Install"

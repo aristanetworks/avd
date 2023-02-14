@@ -16,6 +16,14 @@ keys:
           prefix_list:
             type: str
             description: Prefix-list Name
+      nd_learning_bridged:
+        type: bool
+      nd_proxy:
+        type: dict
+        keys:
+          prefix_list:
+            type: str
+            description: Prefix-list Name
       arp_selective_install:
         type: bool
       nd_rs_flooding_disabled:
