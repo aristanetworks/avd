@@ -634,9 +634,9 @@ router isis CORE
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| MPLS-OVERLAY-PEERS | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| MPLS-OVERLAY-PEERS | True | default |
 
 #### EVPN Neighbor Default Encapsulation
 

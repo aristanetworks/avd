@@ -821,10 +821,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY-CORE | True |
-| EVPN-OVERLAY-PEERS | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY-CORE | True | default |
+| EVPN-OVERLAY-PEERS | True | default |
 
 #### EVPN DCI Gateway Summary
 

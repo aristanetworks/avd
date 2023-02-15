@@ -626,9 +626,9 @@ router isis EVPN_UNDERLAY
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| OVERLAY-PEERS | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| OVERLAY-PEERS | True | default |
 
 ### Router BGP Device Configuration
 
