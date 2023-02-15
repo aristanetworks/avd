@@ -30,6 +30,7 @@ radius_servers:
     key: 071B245F5A
 
 ### Radius Server
+# New data model to replace "radius_servers"
 radius_server:
   attribute_32_include_in_access:
     hostname: true
