@@ -11361,7 +11361,7 @@
           "properties": {
             "prefix_list": {
               "type": "string",
-              "description": "Prefix-list Name",
+              "description": "Prefix-list name. ARP Proxying is disabled for IPv4 addresses defined in the prefix-list.",
               "title": "Prefix List"
             }
           },
@@ -11371,6 +11371,22 @@
         "arp_selective_install": {
           "type": "boolean",
           "title": "ARP Selective Install"
+        },
+        "nd_learning_bridged": {
+          "type": "boolean",
+          "title": "ND Learning Bridged"
+        },
+        "nd_proxy": {
+          "type": "object",
+          "properties": {
+            "prefix_list": {
+              "type": "string",
+              "description": "Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list.",
+              "title": "Prefix List"
+            }
+          },
+          "additionalProperties": false,
+          "title": "ND Proxy"
         },
         "nd_rs_flooding_disabled": {
           "type": "boolean",

@@ -45,6 +45,10 @@ interface Management1
 
 - Selective ARP is enabled.
 
+- ND learning bridged is enabled.
+
+- VXLAN ND Proxying is disabled for IPv6 addresses defined in the prefix-list pl-router-l2-vpn.
+
 - Neighbor discovery router solicitation VTEP flooding is disabled.
 
 - Virtual router neighbor advertisement VTEP flooding is disabled.
@@ -57,6 +61,8 @@ router l2-vpn
    arp learning bridged
    arp proxy prefix-list pl-router-l2-vpn
    arp selective-install
+   nd learning bridged
+   nd proxy prefix-list pl-router-l2-vpn
    nd rs flooding disabled
    virtual-router neighbor advertisement flooding disabled
 ```
