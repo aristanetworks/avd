@@ -8,7 +8,7 @@ keys:
       format:
         type: str
         description: Name of ACL
-  dynamic_authorisation:
+  dynamic_authorization:
     type: dict
     keys:
       port:
