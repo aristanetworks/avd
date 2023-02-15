@@ -301,7 +301,6 @@ interface Ethernet8
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
-| Port-Channel8 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
 | Port-Channel8.111 | 0000:0000:0303:0202:0111 | all-active | 03:03:02:02:01:11 |
 | Port-Channel8.222 | 0000:0000:0303:0202:0222 | all-active | 03:03:02:02:02:22 |
 | Port-Channel8.333 | 0000:0000:0303:0202:0333 | all-active | 03:03:02:02:03:33 |
@@ -347,10 +346,6 @@ interface Port-Channel8
    description CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
 !
 interface Port-Channel8.111
    vlan id 111
