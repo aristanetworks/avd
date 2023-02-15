@@ -1,7 +1,13 @@
 {# eos - aaa authorization #}
 {% if aaa_authorization is arista.avd.defined %}
+{%     if aaa_authorization.policy.local_default_role is arista.avd.defined %}
+aaa authorization policy local default-role {{ aaa_authorization.policy.local_default_role }}
+{%     endif %}
 {%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
 aaa authorization serial-console
+{%     endif %}
+{%     if aaa_authorization.dynamic.dot1x_additional_groups is arista.avd.defined %}
+aaa authorization dynamic dot1x additional-groups group {{ aaa_authorization.dynamic.dot1x_additional_groups | join(" group ") }}
 {%     endif %}
 {%     if aaa_authorization.exec.default is arista.avd.defined %}
 aaa authorization exec default {{ aaa_authorization.exec.default }}

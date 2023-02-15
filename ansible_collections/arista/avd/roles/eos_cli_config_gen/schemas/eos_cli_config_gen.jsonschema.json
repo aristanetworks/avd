@@ -292,6 +292,17 @@
     "aaa_authorization": {
       "type": "object",
       "properties": {
+        "policy": {
+          "type": "object",
+          "properties": {
+            "local_default_role": {
+              "type": "string",
+              "title": "Local Default Role"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Policy"
+        },
         "exec": {
           "type": "object",
           "properties": {
@@ -311,6 +322,21 @@
         "serial_console": {
           "type": "boolean",
           "title": "Serial Console"
+        },
+        "dynamic": {
+          "type": "object",
+          "properties": {
+            "dot1x_additional_groups": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "title": "dot1x Additional Groups"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Dynamic"
         },
         "commands": {
           "type": "object",
@@ -2644,6 +2670,32 @@
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
             "title": "Peer Type"
+          },
+          "sflow": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "egress": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "unmodified_enable": {
+                    "type": "boolean",
+                    "title": "Unmodified Enable"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Egress"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Sflow"
           },
           "eos_cli": {
             "type": "string",
@@ -7507,6 +7559,32 @@
             "description": "Key only used for documentation or validation purposes",
             "title": "Peer Type"
           },
+          "sflow": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "egress": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "unmodified_enable": {
+                    "type": "boolean",
+                    "title": "Unmodified Enable"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Egress"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Sflow"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration",
@@ -9568,6 +9646,14 @@
                   "domain_remote": {
                     "type": "boolean",
                     "title": "Domain Remote"
+                  },
+                  "encapsulation": {
+                    "type": "string",
+                    "enum": [
+                      "vxlan",
+                      "mpls"
+                    ],
+                    "title": "Encapsulation"
                   }
                 },
                 "additionalProperties": false,
@@ -11275,7 +11361,7 @@
           "properties": {
             "prefix_list": {
               "type": "string",
-              "description": "Prefix-list Name",
+              "description": "Prefix-list name. ARP Proxying is disabled for IPv4 addresses defined in the prefix-list.",
               "title": "Prefix List"
             }
           },
@@ -11285,6 +11371,22 @@
         "arp_selective_install": {
           "type": "boolean",
           "title": "ARP Selective Install"
+        },
+        "nd_learning_bridged": {
+          "type": "boolean",
+          "title": "ND Learning Bridged"
+        },
+        "nd_proxy": {
+          "type": "object",
+          "properties": {
+            "prefix_list": {
+              "type": "string",
+              "description": "Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list.",
+              "title": "Prefix List"
+            }
+          },
+          "additionalProperties": false,
+          "title": "ND Proxy"
         },
         "nd_rs_flooding_disabled": {
           "type": "boolean",
