@@ -11309,7 +11309,7 @@
           "properties": {
             "prefix_list": {
               "type": "string",
-              "description": "Prefix-list Name",
+              "description": "Prefix-list name. ARP Proxying is disabled for IPv4 addresses defined in the prefix-list.",
               "title": "Prefix List"
             }
           },
@@ -11325,7 +11325,7 @@
           "properties": {
             "prefix_list": {
               "type": "string",
-              "description": "Prefix-list Name",
+              "description": "Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list.",
               "title": "Prefix List"
             }
           },
