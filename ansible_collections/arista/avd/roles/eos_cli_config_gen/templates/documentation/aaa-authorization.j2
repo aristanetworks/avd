@@ -10,6 +10,12 @@
 {%     if aaa_authorization.exec.default is arista.avd.defined %}
 | Exec | {{ aaa_authorization.exec.default }} |
 {%     endif %}
+{%     if aaa_authorization.policy.local_default_role is arista.avd.defined %}
+| Default Role | {{ aaa_authorization.policy.local_default_role }} |
+{%     endif %}
+{%     if aaa_authorization.dynamic.dot1x_additional_groups is arista.avd.defined %}
+| Additional Dynamic Authorization Groups | {{ aaa_authorization.dynamic.dot1x_additional_groups | join(", ") }} |
+{%     endif %}
 {%     if aaa_authorization.config_commands is arista.avd.defined(true) %}
 
 Authorization for configuration commands is enabled.

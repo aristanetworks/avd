@@ -98,10 +98,10 @@ interface Management1
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY-PEERS | True |
-| MLAG-IPv4-UNDERLAY-PEER | False |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY-PEERS | True | vxlan |
+| MLAG-IPv4-UNDERLAY-PEER | False | default |
 
 #### EVPN Host Flapping Settings
 
@@ -233,6 +233,7 @@ router bgp 65101
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
+      neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !

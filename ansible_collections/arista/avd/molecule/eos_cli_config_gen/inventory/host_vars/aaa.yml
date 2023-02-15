@@ -101,10 +101,16 @@ aaa_authentication:
 
 ## AAA Authorization
 aaa_authorization:
+  policy:
+    local_default_role: network-admin
   exec:
     default: group CUST local
   config_commands: true
   serial_console: true
+  dynamic:
+    dot1x_additional_groups:
+      - radius
+      - group1
   commands:
     all_default: group aaaAuth
     privilege:
