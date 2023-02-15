@@ -22,7 +22,7 @@
 {{ dynamic_authorization_cli }}
 {%         endif %}
 {%     endif %}
-{%     for radius_host in radius_server.hosts | arista.avd.natural_sort('host' %}
+{%     for radius_host in radius_server.hosts | arista.avd.natural_sort('host') %}
 {%         set radius_cli = "radius-server host " ~ radius_host.host %}
 {%         if radius_host.vrf is arista.avd.defined %}
 {%             set radius_cli = radius_cli ~ " vrf " ~ radius_host.vrf %}
