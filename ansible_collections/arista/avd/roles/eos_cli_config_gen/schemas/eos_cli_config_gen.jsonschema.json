@@ -2671,6 +2671,32 @@
             "description": "Key only used for documentation or validation purposes",
             "title": "Peer Type"
           },
+          "sflow": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "egress": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "unmodified_enable": {
+                    "type": "boolean",
+                    "title": "Unmodified Enable"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Egress"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Sflow"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -7532,6 +7558,32 @@
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
             "title": "Peer Type"
+          },
+          "sflow": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "egress": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "unmodified_enable": {
+                    "type": "boolean",
+                    "title": "Unmodified Enable"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Egress"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Sflow"
           },
           "eos_cli": {
             "type": "string",

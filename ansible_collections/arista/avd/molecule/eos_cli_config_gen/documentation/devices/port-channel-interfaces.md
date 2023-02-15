@@ -3,6 +3,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Monitoring](#monitoring)
+  - [SFlow](#sflow)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -41,6 +43,23 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
+# Monitoring
+
+## SFlow
+
+### SFlow Summary
+
+sFlow is disabled.
+
+### SFlow Interfaces
+
+| Interface | Ingress Enabled | Egress Enabled |
+| --------- | --------------- | -------------- |
+| Port-Channel117 | True | True |
+| Port-Channel118 | True | True (unmodified) |
+| Port-Channel119 | False | False |
+| Port-Channel120 | False | False (unmodified) |
 
 # Interfaces
 
@@ -576,6 +595,30 @@ interface Port-Channel115
    switchport
    switchport trunk native vlan tag
    switchport mode trunk
+!
+interface Port-Channel117
+   description interface_with_sflow_ingress_egress_enabled
+   no switchport
+   sflow enable
+   sflow egress enable
+!
+interface Port-Channel118
+   description interface_with_sflow_ingress_egress_unmodified_enabled
+   no switchport
+   sflow enable
+   sflow egress unmodified enable
+!
+interface Port-Channel119
+   description interface_with_sflow_ingress_egress_disabled
+   no switchport
+   no sflow enable
+   no sflow egress enable
+!
+interface Port-Channel120
+   description interface_with_sflow_ingress_egress_unmodified_disabled
+   no switchport
+   no sflow enable
+   no sflow egress unmodified enable
 ```
 
 # BFD
