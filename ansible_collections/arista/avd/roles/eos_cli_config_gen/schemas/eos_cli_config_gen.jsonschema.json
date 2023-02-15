@@ -8191,7 +8191,7 @@
       "additionalProperties": false,
       "title": "Attribute 32 Include In Access Req"
     },
-    "dynamic_authorisation": {
+    "dynamic_authorization": {
       "type": "object",
       "properties": {
         "port": {
@@ -8203,12 +8203,12 @@
         },
         "tls_ssl_profile": {
           "type": "string",
-          "description": "Name of tls profole",
+          "description": "Name of TLS profile",
           "title": "TLS SSL Profile"
         }
       },
       "additionalProperties": false,
-      "title": "Dynamic Authorisation"
+      "title": "Dynamic Authorization"
     },
     "hosts": {
       "type": "array",
@@ -8242,7 +8242,10 @@
             "title": "Key"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "host"
+        ]
       },
       "title": "Hosts"
     },
