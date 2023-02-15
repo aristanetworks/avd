@@ -20,7 +20,7 @@ keys:
         description: Port
       tls_ssl_profile:
         type: str
-        description: Name of tls profole
+        description: Name of TLS profile
   hosts:
     type: list
     primary_key: host
