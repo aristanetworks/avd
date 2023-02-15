@@ -505,6 +505,9 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.domain_remote is arista.avd.defined(true) %}
       neighbor {{ peer_group.name }} domain remote
 {%             endif %}
+{%             if peer_group.encapsulation is arista.avd.defined %}
+      neighbor {{ peer_group.name }} encapsulation {{ peer_group.encapsulation }}
+{%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
 {%             set evpn_neighbor_default_nhs_received_evpn_routes_cli = "neighbor default next-hop-self received-evpn-routes route-type ip-prefix" %}

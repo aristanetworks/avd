@@ -120,9 +120,9 @@ interface Management1
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY | True | default |
 
 ### Router BGP VLANs
 
