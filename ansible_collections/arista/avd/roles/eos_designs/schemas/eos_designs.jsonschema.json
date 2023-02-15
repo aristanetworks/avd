@@ -54,10 +54,7 @@
         },
         "required": [
           "types",
-          "platforms",
-          "uplink_interfaces",
-          "mlag_interfaces",
-          "downlink_interfaces"
+          "platforms"
         ],
         "additionalProperties": false
       },

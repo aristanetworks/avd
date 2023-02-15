@@ -51,21 +51,18 @@ keys:
             description: Arista platform family regular expression
         uplink_interfaces:
           type: list
-          required: true
           description: List of uplink interfaces or uplink interface ranges
           items:
             type: str
             description: Interface range or interface
         mlag_interfaces:
           type: list
-          required: true
           description: List of MLAG interfaces or MLAG interface ranges
           items:
             type: str
             description: Interface range or interface
         downlink_interfaces:
           type: list
-          required: true
           description: List of downlink interfaces or downlink interface ranges
           items:
             type: str
