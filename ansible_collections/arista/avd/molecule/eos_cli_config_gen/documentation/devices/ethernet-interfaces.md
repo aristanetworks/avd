@@ -3,6 +3,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Monitoring](#monitoring)
+  - [SFlow](#sflow)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
 - [BFD](#bfd)
@@ -42,6 +44,24 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
+# Monitoring
+
+## SFlow
+
+### SFlow Summary
+
+sFlow is disabled.
+
+### SFlow Interfaces
+
+| Interface | Ingress Enabled | Egress Enabled |
+| --------- | --------------- | -------------- |
+| Ethernet50 | True | - |
+| Ethernet51 | - | True |
+| Ethernet52 | True | True (unmodified) |
+| Ethernet53 | False | False |
+| Ethernet54 | False | False (unmodified) |
 
 # Interfaces
 
@@ -91,8 +111,6 @@ interface Management1
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | access | - | - | - | - |
-| Ethernet49 |  DOT1X Testing - Eapol disabled | access | - | - | - | - |
-| Ethernet50 |  DOT1X Testing - Eapol enabled | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -642,14 +660,6 @@ interface Ethernet48
    load-interval 5
    switchport
 !
-interface Ethernet49
-   description DOT1X Testing - Eapol disabled
-   switchport
-   dot1x eapol disabled
-!
-interface Ethernet50
-   description DOT1X Testing - Eapol enabled
-   switchport
 ```
 
 # BFD

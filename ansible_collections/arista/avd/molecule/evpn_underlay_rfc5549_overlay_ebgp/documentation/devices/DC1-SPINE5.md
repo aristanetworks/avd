@@ -375,9 +375,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY-PEERS | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY-PEERS | True | default |
 
 ### Router BGP Device Configuration
 

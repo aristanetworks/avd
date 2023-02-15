@@ -436,10 +436,10 @@
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
 {%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort('name') %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} |
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ peer_group.encapsulation | arista.avd.default("default") }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}

@@ -146,11 +146,11 @@ interface Management1
 
 #### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY-PEERS | True |
-| IPv4-UNDERLAY-PEERS | False |
-| MLAG-IPv4-UNDERLAY-PEER | False |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY-PEERS | True | default |
+| IPv4-UNDERLAY-PEERS | False | default |
+| MLAG-IPv4-UNDERLAY-PEER | False | default |
 
 ### Router BGP VLAN Aware Bundles
 
