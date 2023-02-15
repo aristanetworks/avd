@@ -30,7 +30,7 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dynamic_authorization</samp>](## "dynamic_authorization") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;port</samp>](## "dynamic_authorization.port") | Integer |  |  | Min: 0<br>Max: 65535 | Port |
+    | [<samp>&nbsp;&nbsp;port</samp>](## "dynamic_authorization.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port |
     | [<samp>&nbsp;&nbsp;tls_ssl_profile</samp>](## "dynamic_authorization.tls_ssl_profile") | String |  |  |  | Name of TLS profile |
 
 === "YAML"

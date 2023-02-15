@@ -17,7 +17,7 @@ keys:
         max: 65535
         convert_types:
         - str
-        description: Port
+        description: TCP Port
       tls_ssl_profile:
         type: str
         description: Name of TLS profile

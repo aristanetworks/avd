@@ -8198,7 +8198,7 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 65535,
-          "description": "Port",
+          "description": "TCP Port",
           "title": "Port"
         },
         "tls_ssl_profile": {
