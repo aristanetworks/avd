@@ -19,7 +19,7 @@
   tags: [eos_designs]
   run_once: true
   ansible.builtin.copy:
-    content: "{{ query('ansible.builtin.file', *schema_files) | map('from_yaml') | ansible.builtin.combine(recursive=True) | to_nice_yaml(indent=2) }}"
+    content: "{{ query('ansible.builtin.file', *schema_files) | map('from_yaml') | ansible.builtin.combine(recursive=True) | to_nice_yaml(indent=2, sort_keys=false) }}"
     dest: "{{ role_schema_path }}"
     mode: 0664
   vars:
