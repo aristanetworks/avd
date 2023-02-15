@@ -6,8 +6,7 @@
 {%         set attribute_32_include_in_access_cli = "radius-server attribute 32 include-in-access-req" %}
 {%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined (true) %}
 {%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " hostname" %}
-{%         endif %}
-{%         if radius_server.attribute_32_include_in_access_req.format is arista.avd.defined and not radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined %}
+{%         elif radius_server.attribute_32_include_in_access_req.format is arista.avd.defined %}
 {%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " format " ~ radius_server.attribute_32_include_in_access.format %}
 {%         endif %}
 {{ attribute_32_include_in_access_cli }}
