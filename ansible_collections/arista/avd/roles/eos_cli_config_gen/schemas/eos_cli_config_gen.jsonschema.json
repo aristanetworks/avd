@@ -11316,6 +11316,10 @@
           "additionalProperties": false,
           "title": "ARP Proxy"
         },
+        "arp_selective_install": {
+          "type": "boolean",
+          "title": "ARP Selective Install"
+        },
         "nd_learning_bridged": {
           "type": "boolean",
           "title": "ND Learning Bridged"
@@ -11331,10 +11335,6 @@
           },
           "additionalProperties": false,
           "title": "ND Proxy"
-        },
-        "arp_selective_install": {
-          "type": "boolean",
-          "title": "ARP Selective Install"
         },
         "nd_rs_flooding_disabled": {
           "type": "boolean",

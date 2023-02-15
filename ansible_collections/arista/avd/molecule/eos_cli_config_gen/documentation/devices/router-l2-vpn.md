@@ -43,11 +43,11 @@ interface Management1
 
 - VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list pl-router-l2-vpn.
 
+- Selective ARP is enabled.
+
 - ND learning bridged is enabled.
 
 - VXLAN ND Proxying is disabled for IPv6 addresses defined in the prefix-list pl-router-l2-vpn.
-
-- Selective ARP is enabled.
 
 - Neighbor discovery router solicitation VTEP flooding is disabled.
 
@@ -60,9 +60,9 @@ interface Management1
 router l2-vpn
    arp learning bridged
    arp proxy prefix-list pl-router-l2-vpn
+   arp selective-install
    nd learning bridged
    nd proxy prefix-list pl-router-l2-vpn
-   arp selective-install
    nd rs flooding disabled
    virtual-router neighbor advertisement flooding disabled
 ```

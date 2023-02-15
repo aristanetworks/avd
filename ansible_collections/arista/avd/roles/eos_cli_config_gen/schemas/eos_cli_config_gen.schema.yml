@@ -7956,6 +7956,8 @@ keys:
             type: str
             description: Prefix-list name. ARP Proxying is disabled for IPv4 addresses
               defined in the prefix-list.
+      arp_selective_install:
+        type: bool
       nd_learning_bridged:
         type: bool
       nd_proxy:
@@ -7965,8 +7967,6 @@ keys:
             type: str
             description: Prefix-list name. ND Proxying is disabled for IPv6 addresses
               defined in the prefix-list.
-      arp_selective_install:
-        type: bool
       nd_rs_flooding_disabled:
         type: bool
       virtual_router_nd_ra_flooding_disabled:
