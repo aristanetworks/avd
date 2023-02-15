@@ -23,6 +23,7 @@ keys:
         description: Name of tls profole
   hosts:
     type: list
+    primary_key: host
     items:
       type: dict
       keys:
