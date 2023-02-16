@@ -96,7 +96,7 @@ tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 | mgt | 10.10.10.157 | 1 | 1 |
 | mgt | 10.10.10.159 | - | 1 |
 | mgt | 10.10.10.160 | 1 | - |
-| mgt | 10.10.10.161 | - | - |
+| mgt | 10.10.10.248 | - | - |
 | default | 10.10.10.249 | 1 | 1 |
 | default | 10.10.10.158 | 1 | 1 |
 
@@ -113,7 +113,7 @@ radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7 071B245F5A
 radius-server host 10.10.10.158 vrf default timeout 1 retransmit 1 key 7 071B245F5A
 radius-server host 10.10.10.159 vrf mgt retransmit 1 key 7 071B245F5A
 radius-server host 10.10.10.160 vrf mgt timeout 1 key 7 071B245F5A
-radius-server host 10.10.10.161 vrf mgt key 7 071B245F5A
+radius-server host 10.10.10.248 vrf mgt key 7 071B245F5A
 radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 071B245F5A
 ```
 
@@ -245,7 +245,7 @@ aaa accounting commands 0 default start-stop logging
 | mgt | 10.10.10.157 |
 | mgt | 10.10.10.159 |
 | mgt | 10.10.10.160 |
-| mgt | 10.10.10.161 |
+| mgt | 10.10.10.248 |
 | default | 10.10.10.249 |
 | default | 10.10.10.158 |
 
@@ -257,6 +257,6 @@ radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7 071B245F5A
 radius-server host 10.10.10.158 vrf default timeout 1 retransmit 1 key 7 071B245F5A
 radius-server host 10.10.10.159 vrf mgt retransmit 1 key 7 071B245F5A
 radius-server host 10.10.10.160 vrf mgt timeout 1 key 7 071B245F5A
-radius-server host 10.10.10.161 vrf mgt key 7 071B245F5A
+radius-server host 10.10.10.248 vrf mgt key 7 071B245F5A
 radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 071B245F5A
 ```

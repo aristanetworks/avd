@@ -51,7 +51,7 @@ radius_server:
       vrf: mgt
       timeout: 1
       key: 071B245F5A
-    - host: 10.10.10.161
+    - host: 10.10.10.248
       vrf: mgt
       key: 071B245F5A
     - host: 10.10.10.249
@@ -78,7 +78,6 @@ aaa_server_groups:
       - server: 192.168.10.157
         vrf: mgt
       - server: 10.10.10.248
-
 
 ## AAA Authentication
 aaa_authentication:
