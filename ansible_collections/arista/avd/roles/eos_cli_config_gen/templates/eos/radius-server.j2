@@ -15,12 +15,11 @@
 {%         set dynamic_authorization_cli = "radius-server dynamic-authorization" %}
 {%         if radius_server.dynamic_authorization.port is arista.avd.defined %}
 {%             set dynamic_authorization_cli = dynamic_authorization_cli ~ " port " ~ radius_server.dynamic_authorization.port %}
-{{ dynamic_authorization_cli }}
 {%         endif %}
 {%         if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
 {%             set dynamic_authorization_cli = dynamic_authorization_cli ~ " tls ssl-profile " ~ radius_server.dynamic_authorization.tls_ssl_profile %}
-{{ dynamic_authorization_cli }}
 {%         endif %}
+{{ dynamic_authorization_cli }}
 {%     endif %}
 {%     for radius_host in radius_server.hosts | arista.avd.natural_sort('host') %}
 {%         set radius_cli = "radius-server host " ~ radius_host.host %}
