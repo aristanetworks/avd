@@ -13,7 +13,7 @@ search:
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>attribute_32_include_in_access_req</samp>](## "attribute_32_include_in_access_req") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;hostname</samp>](## "attribute_32_include_in_access_req.hostname") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;format</samp>](## "attribute_32_include_in_access_req.format") | String |  |  |  | Name of ACL |
+    | [<samp>&nbsp;&nbsp;format</samp>](## "attribute_32_include_in_access_req.format") | String |  |  |  | Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored. |
 
 === "YAML"
 

@@ -8184,7 +8184,7 @@
         },
         "format": {
           "type": "string",
-          "description": "Name of ACL",
+          "description": "Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.",
           "title": "Format"
         }
       },
