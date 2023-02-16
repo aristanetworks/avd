@@ -7,7 +7,7 @@ keys:
         type: bool
       format:
         type: str
-        description: Name of ACL
+        description: Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.
   dynamic_authorization:
     type: dict
     keys:
