@@ -212,6 +212,11 @@ keys:
       filename: data_model/Authentication
     type: dict
     keys:
+      policy:
+        type: dict
+        keys:
+          local_default_role:
+            type: str
       exec:
         type: dict
         keys:
@@ -232,6 +237,14 @@ keys:
         type: bool
       serial_console:
         type: bool
+      dynamic:
+        type: dict
+        keys:
+          dot1x_additional_groups:
+            type: list
+            min_length: 1
+            items:
+              type: str
       commands:
         type: dict
         keys:
@@ -1964,6 +1977,18 @@ keys:
         peer_type:
           type: str
           description: Key only used for documentation or validation purposes
+        sflow:
+          type: dict
+          keys:
+            enable:
+              type: bool
+            egress:
+              type: dict
+              keys:
+                enable:
+                  type: bool
+                unmodified_enable:
+                  type: bool
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -5498,6 +5523,18 @@ keys:
         peer_type:
           type: str
           description: Key only used for documentation or validation purposes
+        sflow:
+          type: dict
+          keys:
+            enable:
+              type: bool
+            egress:
+              type: dict
+              keys:
+                enable:
+                  type: bool
+                unmodified_enable:
+                  type: bool
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
@@ -6912,6 +6949,11 @@ keys:
                   description: Outbound route-map name
                 domain_remote:
                   type: bool
+                encapsulation:
+                  type: str
+                  valid_values:
+                  - vxlan
+                  - mpls
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -7937,9 +7979,19 @@ keys:
         keys:
           prefix_list:
             type: str
-            description: Prefix-list Name
+            description: Prefix-list name. ARP Proxying is disabled for IPv4 addresses
+              defined in the prefix-list.
       arp_selective_install:
         type: bool
+      nd_learning_bridged:
+        type: bool
+      nd_proxy:
+        type: dict
+        keys:
+          prefix_list:
+            type: str
+            description: Prefix-list name. ND Proxying is disabled for IPv6 addresses
+              defined in the prefix-list.
       nd_rs_flooding_disabled:
         type: bool
       virtual_router_nd_ra_flooding_disabled:

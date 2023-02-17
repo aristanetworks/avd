@@ -758,6 +758,11 @@ keys:
                   description: Outbound route-map name
                 domain_remote:
                   type: bool
+                encapsulation:
+                  type: str
+                  valid_values:
+                    - "vxlan"
+                    - "mpls"
           evpn_hostflap_detection:
             type: dict
             keys:

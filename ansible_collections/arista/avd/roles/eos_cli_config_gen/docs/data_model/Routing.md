@@ -385,6 +385,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_evpn.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_evpn.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote</samp>](## "router_bgp.address_family_evpn.peer_groups.[].domain_remote") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "router_bgp.address_family_evpn.peer_groups.[].encapsulation") | String |  |  | Valid Values:<br>- vxlan<br>- mpls |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_hostflap_detection</samp>](## "router_bgp.address_family_evpn.evpn_hostflap_detection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_evpn.evpn_hostflap_detection.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "router_bgp.address_family_evpn.evpn_hostflap_detection.window") | Integer |  |  | Min: 0<br>Max: 4294967295 | Time (in seconds) to detect a MAC duplication issue |
@@ -816,6 +817,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
             route_map_in: <str>
             route_map_out: <str>
             domain_remote: <bool>
+            encapsulation: <str>
         evpn_hostflap_detection:
           enabled: <bool>
           window: <int>
@@ -1200,8 +1202,11 @@ MAC address (hh:hh:hh:hh:hh:hh)
     | [<samp>router_l2_vpn</samp>](## "router_l2_vpn") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;arp_learning_bridged</samp>](## "router_l2_vpn.arp_learning_bridged") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;arp_proxy</samp>](## "router_l2_vpn.arp_proxy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_l2_vpn.arp_proxy.prefix_list") | String |  |  |  | Prefix-list Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_l2_vpn.arp_proxy.prefix_list") | String |  |  |  | Prefix-list name. ARP Proxying is disabled for IPv4 addresses defined in the prefix-list. |
     | [<samp>&nbsp;&nbsp;arp_selective_install</samp>](## "router_l2_vpn.arp_selective_install") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;nd_learning_bridged</samp>](## "router_l2_vpn.nd_learning_bridged") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;nd_proxy</samp>](## "router_l2_vpn.nd_proxy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_l2_vpn.nd_proxy.prefix_list") | String |  |  |  | Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list. |
     | [<samp>&nbsp;&nbsp;nd_rs_flooding_disabled</samp>](## "router_l2_vpn.nd_rs_flooding_disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;virtual_router_nd_ra_flooding_disabled</samp>](## "router_l2_vpn.virtual_router_nd_ra_flooding_disabled") | Boolean |  |  |  |  |
 
@@ -1213,6 +1218,9 @@ MAC address (hh:hh:hh:hh:hh:hh)
       arp_proxy:
         prefix_list: <str>
       arp_selective_install: <bool>
+      nd_learning_bridged: <bool>
+      nd_proxy:
+        prefix_list: <str>
       nd_rs_flooding_disabled: <bool>
       virtual_router_nd_ra_flooding_disabled: <bool>
     ```

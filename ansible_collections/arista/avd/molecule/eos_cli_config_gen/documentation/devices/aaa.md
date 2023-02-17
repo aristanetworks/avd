@@ -164,6 +164,8 @@ aaa authentication policy lockout failure 3 window 900 duration 300
 | Type | User Stores |
 | ---- | ----------- |
 | Exec | group CUST local |
+| Default Role | network-admin |
+| Additional Dynamic Authorization Groups | radius, group1 |
 
 Authorization for configuration commands is enabled.
 
@@ -180,7 +182,9 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
+aaa authorization policy local default-role network-admin
 aaa authorization serial-console
+aaa authorization dynamic dot1x additional-groups group radius group group1
 aaa authorization exec default group CUST local
 aaa authorization commands all default group aaaAuth
 aaa authorization commands 5 default group radius
