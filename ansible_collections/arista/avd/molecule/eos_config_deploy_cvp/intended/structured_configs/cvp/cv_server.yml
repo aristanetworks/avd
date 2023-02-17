@@ -1,5 +1,5 @@
 ---
-CVP_DEVICES:
+cvp_devices:
   DC1-BL1A:
     name: DC1-BL1A
     parentContainerName: DC1_BL1
@@ -72,7 +72,7 @@ CVP_DEVICES:
     configlets:
       - AVD_DC1-SPINE4
     imageBundle: []
-CVP_CONTAINERS:
+cvp_containers:
   DC1_BL1:
     parent_container: DC1_LEAFS
   DC1_FABRIC:
