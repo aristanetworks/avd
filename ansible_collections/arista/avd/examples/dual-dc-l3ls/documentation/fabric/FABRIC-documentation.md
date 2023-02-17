@@ -154,4 +154,3 @@
 | FABRIC | dc2-leaf1b | 10.255.129.13/32 |
 | FABRIC | dc2-leaf2a | 10.255.129.15/32 |
 | FABRIC | dc2-leaf2b | 10.255.129.15/32 |
-

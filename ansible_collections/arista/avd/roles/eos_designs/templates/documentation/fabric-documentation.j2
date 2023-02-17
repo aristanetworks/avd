@@ -186,7 +186,7 @@
 | {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.loopback1_ip_address }} |
 {%     endif %}
 {% endfor %}
-
 {% if eos_designs_documentation.connected_endpoints is arista.avd.defined(true) %}
+
 {%     include 'documentation/connected-endpoints.j2' %}
 {% endif %}

@@ -105,4 +105,3 @@
 | FABRIC | dc1-leaf1b | 10.255.1.3/32 |
 | FABRIC | dc1-leaf2a | 10.255.1.5/32 |
 | FABRIC | dc1-leaf2b | 10.255.1.5/32 |
-
