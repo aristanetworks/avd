@@ -1,10 +1,10 @@
 ---
-# .ansible-lint
+profile: production
 
 skip_list:
   - name[template] # Remove warnings on task names where Jinja template is not at the end
   - run-once[task] # Remove warnings on using run_once with other strategies
-  - experimental # False positive when having a var names "roles" inside hostvars file. Roles is not listed as reserved
   - meta-no-info # Ansible-lint does not honor meta-schema with standalone: false
+
 kinds:
-  - text: "**/molecule/**/{host_vars,group_vars,vars,defaults}/**/*.{yaml,yml}"
+ - text: "**/molecule/**/inventory/host_vars/roles.yml"
