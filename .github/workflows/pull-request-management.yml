@@ -103,7 +103,7 @@ jobs:
           docker-compose -f docker-compose.yml ps
       - name: 'Test connectivity to mkdoc server'
         run: |
-          until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
+          bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
       - name: Check links for 404
         run: |
           docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
