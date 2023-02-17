@@ -320,5 +320,5 @@ fabric-wide connected endpoints documentation.
 
 ```yaml
 eos_designs_documentation:
-  generate_connected_endpoints: < true | false | default -> true >
+  connected_endpoints: < true | false | default -> false >
 ```

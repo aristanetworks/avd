@@ -12,9 +12,6 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
-- [Connected Endpoints](#connected-endpoints)
-  - [Connected Endpoint Keys](#connected-endpoint-keys)
-  - [Servers](#servers)
 
 # Fabric Switches and Management IP
 
@@ -109,25 +106,3 @@
 | FABRIC | dc1-leaf2a | 10.255.1.5/32 |
 | FABRIC | dc1-leaf2b | 10.255.1.5/32 |
 
-# Connected Endpoints
-
-## Connected Endpoint Keys
-
-| Key | Type | Description |
-| --- | ---- | ----------- |
-| firewalls | firewall | Firewall |
-| load_balancers | load_balancer | Load Balancer |
-| routers | router | Router |
-| servers | server | Server |
-| storage_arrays | storage_array | Storage Array |
-
-## Servers
-
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| dc1-leaf1-server1 | PCI1 | dc1-leaf1a | Ethernet5 | dc1-leaf1-server1_PCI1 | False | switched | trunk | 11-12,21-22 | - |
-| dc1-leaf1-server1 | PCI2 | dc1-leaf1b | Ethernet5 | dc1-leaf1-server1_PCI2 | False | switched | trunk | 11-12,21-22 | - |
-| dc1-leaf1-server1 | iLO | dc1-leaf1c | Ethernet5 | dc1-leaf1-server1_iLO | False | switched | access | 11 | - |
-| dc1-leaf2-server1 | PCI1 | dc1-leaf2a | Ethernet5 | dc1-leaf2-server1_PCI1 | False | switched | trunk | 11-12,21-22 | - |
-| dc1-leaf2-server1 | PCI2 | dc1-leaf2b | Ethernet5 | dc1-leaf2-server1_PCI2 | False | switched | trunk | 11-12,21-22 | - |
-| dc1-leaf2-server1 | iLO | dc1-leaf2c | Ethernet5 | dc1-leaf2-server1_iLO | False | switched | access | 11 | - |

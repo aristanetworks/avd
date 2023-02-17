@@ -12,7 +12,6 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
-- [Connected Endpoints](#connected-endpoints)
 
 # Fabric Switches and Management IP
 
@@ -101,6 +100,3 @@
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
 
-# Connected Endpoints
-
-No connected endpoint configured!

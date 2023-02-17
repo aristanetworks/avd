@@ -91,8 +91,8 @@ local_users:
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
   name: ansible
 vrfs:
-- name: MGMT
-  ip_routing: false
+- ip_routing: false
+  name: MGMT
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -148,17 +148,17 @@ loopback_interfaces:
   ip_address: 10.255.0.1/32
   name: Loopback0
 prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.255.0.0/27 eq 32
+- sequence_numbers:
+  - action: permit 10.255.0.0/27 eq 32
+    sequence: 10
+  name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
+- sequence_numbers:
+  - type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    sequence: 10
+  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300

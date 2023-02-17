@@ -12,10 +12,6 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
-- [Connected Endpoints](#connected-endpoints)
-  - [Connected Endpoint Keys](#connected-endpoint-keys)
-  - [Servers](#servers)
-  - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
 
@@ -165,51 +161,3 @@
 | DC1_FABRIC | DC1-SVC3A | 192.168.254.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.8/32 |
 
-# Connected Endpoints
-
-## Connected Endpoint Keys
-
-| Key | Type | Description |
-| --- | ---- | ----------- |
-| firewalls | firewall | Firewall |
-| load_balancers | load_balancer | Load Balancer |
-| routers | router | Router |
-| servers | server | Server |
-| storage_arrays | storage_array | Storage Array |
-
-## Servers
-
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| server01_MLAG | Eth2 | DC1-LEAF2A | Ethernet10 | server01_MLAG_Eth2 | False | switched | trunk | 210-211 | TENANT_B |
-| server01_MLAG | Eth3 | DC1-LEAF2B | Ethernet10 | server01_MLAG_Eth3 | False | switched | trunk | 210-211 | TENANT_B |
-| server01_MTU_ADAPTOR_MLAG | Eth6 | DC1-LEAF2A | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | False | switched | - | - | - |
-| server01_MTU_ADAPTOR_MLAG | Eth7 | DC1-LEAF2B | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | False | switched | - | - | - |
-| server01_MTU_PROFILE_MLAG | Eth4 | DC1-LEAF2A | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | False | switched | access | 110 | TENANT_A_MTU |
-| server01_MTU_PROFILE_MLAG | Eth5 | DC1-LEAF2B | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | False | switched | access | 110 | TENANT_A_MTU |
-| server02_SINGLE_NODE | Eth1 | DC1-LEAF1A | Ethernet7 | server02_SINGLE_NODE_Eth1 | False | switched | access | 110 | TENANT_A |
-| server02_SINGLE_NODE_TRUNK | Eth1 | DC1-LEAF1A | Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | False | switched | trunk | 1-4094 | ALL_WITH_SECURITY |
-| server03_ESI | Eth1 | DC1-SVC3A | Ethernet10 | server03_ESI_Eth1 | False | switched | trunk | 110-111,210-211 | TENANT_A_B |
-| server04_inherit_all_from_profile | Eth1 | DC1-SVC3A | Ethernet11 | server04_inherit_all_from_profile_Eth1 | False | switched | trunk | 1-4094 | ALL_WITH_SECURITY |
-| server04_inherit_all_from_profile | Eth2 | DC1-SVC3B | Ethernet11 | server04_inherit_all_from_profile_Eth2 | False | switched | trunk | 1-4094 | ALL_WITH_SECURITY |
-| server05_no_profile | Eth1 | DC1-SVC3A | Ethernet12 | server05_no_profile_Eth1 | False | switched | trunk | 1-4094 | - |
-| server05_no_profile | Eth2 | DC1-SVC3B | Ethernet12 | server05_no_profile_Eth2 | False | switched | trunk | 1-4094 | - |
-| server06_override_profile | Eth1 | DC1-SVC3A | Ethernet13 | server06_override_profile_Eth1 | False | switched | access | 210 | ALL_WITH_SECURITY |
-| server06_override_profile | Eth2 | DC1-SVC3B | Ethernet13 | server06_override_profile_Eth2 | False | switched | access | 210 | ALL_WITH_SECURITY |
-| server07_inherit_all_from_profile_port_channel | Eth1 | DC1-SVC3A | Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth1 | False | switched | trunk | 1-4094 | ALL_WITH_SECURITY_PORT_CHANNEL |
-| server07_inherit_all_from_profile_port_channel | Eth2 | DC1-SVC3B | Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth2 | False | switched | trunk | 1-4094 | ALL_WITH_SECURITY_PORT_CHANNEL |
-| server08_no_profile_port_channel | Eth1 | DC1-SVC3A | Ethernet15 | server08_no_profile_port_channel_Eth1 | False | switched | trunk | 1-4094 | - |
-| server08_no_profile_port_channel | Eth2 | DC1-SVC3B | Ethernet15 | server08_no_profile_port_channel_Eth2 | False | switched | trunk | 1-4094 | - |
-| server09_override_profile_no_port_channel | Eth1 | DC1-SVC3A | Ethernet16 | server09_override_profile_no_port_channel_Eth1 | False | switched | access | 210 | ALL_WITH_SECURITY_PORT_CHANNEL |
-| server09_override_profile_no_port_channel | Eth2 | DC1-SVC3B | Ethernet16 | server09_override_profile_no_port_channel_Eth2 | False | switched | access | 210 | ALL_WITH_SECURITY_PORT_CHANNEL |
-
-## Port Profiles
-
-| Profile Name | Parent Profile |
-| ------------ | -------------- |
-| TENANT_A_B | - |
-| TENANT_A | - |
-| TENANT_A_MTU | - |
-| TENANT_B | - |
-| ALL_WITH_SECURITY | - |
-| ALL_WITH_SECURITY_PORT_CHANNEL | - |

@@ -138,4 +138,4 @@ ptp_profiles:
     transport: "ipv4"
 
 eos_designs_documentation:
-  generate_connected_endpoints: true
+  connected_endpoints: false

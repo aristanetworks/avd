@@ -12,7 +12,6 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
-- [Connected Endpoints](#connected-endpoints)
 
 # Fabric Switches and Management IP
 
@@ -167,6 +166,3 @@
 | DC1_FABRIC | DC1-SVC3A | 192.168.254.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.8/32 |
 
-# Connected Endpoints
-
-No connected endpoint configured!

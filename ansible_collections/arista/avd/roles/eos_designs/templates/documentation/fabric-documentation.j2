@@ -187,6 +187,6 @@
 {%     endif %}
 {% endfor %}
 
-{% if eos_designs_documentation.generate_connected_endpoints is arista.avd.defined(true) %}
+{% if eos_designs_documentation.connected_endpoints is arista.avd.defined(true) %}
 {%     include 'documentation/connected-endpoints.j2' %}
 {% endif %}
