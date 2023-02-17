@@ -42,7 +42,7 @@ interface Management1
 
 | Handler | Action Type | Action | Trigger |
 | ------- | ----------- | ------ | ------- |
-| evpn-blacklist-recovery | bash | FastCli -p 15 -c "clear bgp evpn host-flap" | on-logging |
+| evpn-blacklist-recovery | bash | <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging |
 
 ### Event Handler Device Configuration
 
