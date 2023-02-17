@@ -3920,6 +3920,9 @@ keys:
       source_interface:
         type: str
         description: Interface name
+      vrf:
+        type: str
+        description: VRF Name
   management_defaults:
     documentation_options:
       filename: data_model/Management

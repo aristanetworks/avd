@@ -9,6 +9,14 @@
 {%     set servers = management_cvx.server_hosts | arista.avd.default('-') | join(', ') %}
 | {{ shut }} | {{ servers }} |
 
+{%     if management_cvx.source_interface is arista.avd.defined %}
+### Management CVX Source Interface
+
+| Interface | VRF |
+| --------- | --- |
+| {{ management_cvx.source_interface }} | {{ management_cvx.vrf | arista.avd.default('-') }} |
+{%     endif %}
+
 ### Management CVX configuration
 
 ```eos
