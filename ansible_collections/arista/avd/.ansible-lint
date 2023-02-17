@@ -7,4 +7,4 @@ skip_list:
   - meta-no-info # Ansible-lint does not honor meta-schema with standalone: false
 
 kinds:
- - text: "**/molecule/**/inventory/host_vars/roles.yml"
+ - yaml: "**/molecule/**/inventory/host_vars/roles.yml"
