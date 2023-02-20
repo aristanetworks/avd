@@ -20,11 +20,12 @@
 Example:
 
 ```yaml
-- types: [ spine, l3leaf ]
-  platforms: [ "7050[SC]X3", vEOS.*, default ]
-  uplink_interfaces: [ Ethernet49-54/1 ]
-  mlag_interfaces: [ Ethernet55-56/1 ]
-  downlink_interfaces: [ Ethernet1-32/1 ]
+default_interfaces:
+  - types: [ spine, l3leaf ]
+    platforms: [ "7050[SC]X3", vEOS.*, default ]
+    uplink_interfaces: [ Ethernet49-54/1 ]
+    mlag_interfaces: [ Ethernet55-56/1 ]
+    downlink_interfaces: [ Ethernet1-32/1 ]
 ```
 
 ### Variables

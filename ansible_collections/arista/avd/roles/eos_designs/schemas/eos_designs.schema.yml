@@ -26,10 +26,10 @@ keys:
       2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2
       to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`\n- Please
       note that no default interfaces are defined in AVD itself. You will need to
-      create your own based on the example below.\n\nExample:\n\n```yaml\n- types:
-      [ spine, l3leaf ]\n  platforms: [ \"7050[SC]X3\", vEOS.*, default ]\n  uplink_interfaces:
-      [ Ethernet49-54/1 ]\n  mlag_interfaces: [ Ethernet55-56/1 ]\n  downlink_interfaces:
-      [ Ethernet1-32/1 ]\n```\n"
+      create your own based on the example below.\n\nExample:\n\n```yaml\ndefault_interfaces:\n
+      \ - types: [ spine, l3leaf ]\n    platforms: [ \"7050[SC]X3\", vEOS.*, default
+      ]\n    uplink_interfaces: [ Ethernet49-54/1 ]\n    mlag_interfaces: [ Ethernet55-56/1
+      ]\n    downlink_interfaces: [ Ethernet1-32/1 ]\n```\n"
     items:
       type: dict
       keys:
