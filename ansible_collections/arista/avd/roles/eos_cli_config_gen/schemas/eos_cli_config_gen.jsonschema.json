@@ -10571,6 +10571,10 @@
                       "type": "string",
                       "title": "Description"
                     },
+                    "route_reflector_client": {
+                      "type": "boolean",
+                      "title": "Route Reflector Client"
+                    },
                     "ebgp_multihop": {
                       "type": "integer",
                       "minimum": 1,
