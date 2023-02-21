@@ -347,84 +347,84 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - id: 1
-    querier:
+  - querier:
       enabled: true
       address: 192.168.255.1
-  - id: 2
-    querier:
-      enabled: true
-      address: 192.168.255.1
-      version: 3
-  - id: 3
-    querier:
-      enabled: false
-      address: 192.168.255.1
-  - id: 101
-    querier:
-      enabled: true
-      address: 192.168.255.1
-  - id: 102
-    querier:
+    id: 1
+  - querier:
       enabled: true
       address: 192.168.255.1
       version: 3
-  - id: 103
-    querier:
+    id: 2
+  - querier:
       enabled: false
       address: 192.168.255.1
-  - id: 11
-    querier:
+    id: 3
+  - querier:
+      enabled: true
+      address: 192.168.255.1
+    id: 101
+  - querier:
+      enabled: true
+      address: 192.168.255.1
+      version: 3
+    id: 102
+  - querier:
+      enabled: false
+      address: 192.168.255.1
+    id: 103
+  - querier:
       enabled: true
       address: 1.1.1.1
       version: 3
-  - id: 12
-    querier:
+    id: 11
+  - querier:
       enabled: true
       address: 1.1.1.1
       version: 2
-  - id: 111
-    querier:
+    id: 12
+  - querier:
       enabled: true
       address: 1.1.1.1
       version: 3
-  - id: 112
-    querier:
+    id: 111
+  - querier:
       enabled: true
       address: 1.1.1.1
       version: 2
-  - id: 113
-    querier:
+    id: 112
+  - querier:
       enabled: false
       address: 1.1.1.1
       version: 3
-  - id: 21
-    querier:
+    id: 113
+  - querier:
       enabled: true
       address: 192.168.255.1
-  - id: 22
-    querier:
+    id: 21
+  - querier:
       enabled: true
       address: 1.1.1.1
       version: 3
-  - id: 23
-    querier:
+    id: 22
+  - querier:
       enabled: true
       address: 2.2.2.2
       version: 1
-  - id: 121
-    querier:
+    id: 23
+  - querier:
       enabled: true
       address: 2.2.2.2
       version: 1
-  - id: 122
-    querier:
+    id: 121
+  - querier:
       enabled: true
       address: 192.168.255.1
-  - id: 123
-    querier:
+    id: 122
+  - querier:
       enabled: false
       address: 192.168.255.1
+    id: 123
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - tenant: Tenant_A

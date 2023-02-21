@@ -32,18 +32,12 @@ class IpIgmpSnoopingMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
-                    vrf_data = {}
                     if vlan := self._ip_igmp_snooping_vlan(svi, tenant):
-                        vrf_data["id"] = int(svi["id"])
-                        vrf_data.update(vlan)
-                        vlans.append(vrf_data)
+                        vlans.append(dict(vlan, id=int(svi["id"])))
 
             for l2vlan in tenant["l2vlans"]:
-                l2vlan_data = {}
                 if vlan := self._ip_igmp_snooping_vlan(l2vlan, tenant):
-                    l2vlan_data["id"] = int(l2vlan["id"])
-                    l2vlan_data.update(vlan)
-                    vlans.append(l2vlan_data)
+                    vlans.append(dict(vlan, id=int(l2vlan["id"])))
 
         if vlans:
             ip_igmp_snooping["vlans"] = vlans
