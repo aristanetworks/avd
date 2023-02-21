@@ -717,18 +717,18 @@ interface Ethernet55
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
    description Address Locking Interface Testing 1
-   address locking ipv4
    switchport
+   address locking ipv4
 !
 interface Ethernet56
    description Address Locking Interface Testing 2
-   address locking ipv4 ipv6
    switchport
+   address locking ipv4 ipv6
 !
 interface Ethernet57
    description Address Locking Interface Testing 3
-   address locking ipv6
    switchport
+   address locking ipv6
 ```
 
 ## BFD
