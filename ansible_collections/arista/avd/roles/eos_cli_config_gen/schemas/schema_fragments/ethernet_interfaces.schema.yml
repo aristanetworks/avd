@@ -127,6 +127,15 @@ keys:
               direction:
                 type: str
                 valid_values: ["upstream", "downstream"]
+        address_locking:
+          type: dict
+          keys:
+            ipv4:
+              type: bool
+              description: Toggle address locking for IPv4
+            ipv6:
+              type: bool
+              description: Toggle address locking for IPv6
         evpn_ethernet_segment:
           type: dict
           keys:

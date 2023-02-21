@@ -63,6 +63,16 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.mac_security.profile is arista.avd.defined %}
    mac security profile {{ ethernet_interface.mac_security.profile }}
 {%     endif %}
+{%     if ethernet_interface.address_locking.ipv4 is arista.avd.defined(true) or ethernet_interface.address_locking.ipv6 is arista.avd.defined(true) %}
+{%         set address_locking_cli = "address locking" %}
+{%         if ethernet_interface.address_locking.ipv4 is arista.avd.defined(true) %}
+{%             set address_locking_cli = address_locking_cli + " ipv4" %}
+{%         endif %}
+{%         if ethernet_interface.address_locking.ipv6 is arista.avd.defined(true) %}
+{%             set address_locking_cli = address_locking_cli + " ipv6" %}
+{%         endif %}
+   {{ address_locking_cli }}
+{%     endif %}
 {%     if ethernet_interface.error_correction_encoding.enabled is arista.avd.defined(false) %}
    no error-correction encoding
 {%     else %}

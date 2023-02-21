@@ -535,8 +535,23 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     set address_locking_intfs = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.address_locking.ipv4 is arista.avd.defined(true) or ethernet_interface.address_locking.ipv6 %}
+{%             do address_locking_intfs.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if address_locking_intfs | length > 0 %}
 
-#### Ethernet Interfaces Device Configuration
+### Address Locking
+
+| Interface | IPv4 Address Locking | IPv6 Address Locking |
+{%         for locking_intf in address_locking_intfs %}
+| {{ locking_intf.name }} | {{ locking_intf.address_locking.ipv4 | arista.avd.default(false) }} | {{ locking_intf.address_locking.ipv6 | arista.avd.default(false) }} |
+{%         endfor %}
+
+{%     endif %}
+### Ethernet Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ethernet-interfaces.j2' %}
