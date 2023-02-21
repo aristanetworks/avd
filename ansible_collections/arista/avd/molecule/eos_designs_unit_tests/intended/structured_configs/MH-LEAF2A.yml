@@ -222,14 +222,14 @@ prefix_lists:
   - action: permit 192.168.254.0/24 eq 32
     sequence: 20
   name: PL-LOOPBACKS-EVPN-OVERLAY
-- sequence_numbers:
-  - action: permit 10.2.10.0/24
-    sequence: 10
-  name: PL-SVI-VRF-DEFAULT
-- sequence_numbers:
-  - action: permit 10.0.0.0/8
-    sequence: 10
-  name: PL-STATIC-VRF-DEFAULT
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.2.10.0/24
+- name: PL-STATIC-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.0.0/8
 route_maps:
 - sequence_numbers:
   - type: permit
