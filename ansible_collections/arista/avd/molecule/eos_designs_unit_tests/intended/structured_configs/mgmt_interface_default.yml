@@ -150,5 +150,5 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false
