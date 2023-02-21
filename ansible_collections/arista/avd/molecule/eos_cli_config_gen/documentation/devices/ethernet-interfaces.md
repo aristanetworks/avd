@@ -118,6 +118,9 @@ sFlow is disabled.
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 | Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
+| Ethernet55 |  Address Locking Interface Testing 1 | access | - | - | - | - |
+| Ethernet56 |  Address Locking Interface Testing 2 | access | - | - | - | - |
+| Ethernet57 |  Address Locking Interface Testing 3 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -233,6 +236,14 @@ sFlow is disabled.
 | Ethernet4 | True | - | - |
 
 #### Ethernet Interfaces Device Configuration
+### Address Locking
+
+| Interface | IPv4 Address Locking | IPv6 Address Locking |
+| Ethernet55 | True | False |
+| Ethernet56 | True | True |
+| Ethernet57 | False | True |
+
+### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -705,6 +716,19 @@ interface Ethernet55
    ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
+   description Address Locking Interface Testing 1
+   address locking ipv4
+   switchport
+!
+interface Ethernet56
+   description Address Locking Interface Testing 2
+   address locking ipv4 ipv6
+   switchport
+!
+interface Ethernet57
+   description Address Locking Interface Testing 3
+   address locking ipv6
+   switchport
 ```
 
 ## BFD

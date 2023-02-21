@@ -132,10 +132,10 @@ keys:
           keys:
             ipv4:
               type: bool
-              description: Toggle address locking for IPv4
+              description: Enable address locking for IPv4
             ipv6:
               type: bool
-              description: Toggle address locking for IPv6
+              description: Enable address locking for IPv6
         evpn_ethernet_segment:
           type: dict
           keys:

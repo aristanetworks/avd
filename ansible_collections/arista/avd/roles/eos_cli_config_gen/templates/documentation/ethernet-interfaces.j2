@@ -537,7 +537,7 @@
 {%     endif %}
 {%     set address_locking_intfs = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.address_locking.ipv4 is arista.avd.defined(true) or ethernet_interface.address_locking.ipv6 %}
+{%         if ethernet_interface.address_locking.ipv4 is arista.avd.defined(true) or ethernet_interface.address_locking.ipv6 is arista.avd.defined(true) %}
 {%             do address_locking_intfs.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
