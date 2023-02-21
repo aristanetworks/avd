@@ -1457,8 +1457,8 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-    120:
-      enabled: false
+  - enabled: false
+    id: 120
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
