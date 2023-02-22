@@ -802,16 +802,16 @@ port_channel_interfaces:
   spanning_tree_bpduguard: enabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   mlag: 14
   name: Port-Channel14
@@ -825,16 +825,16 @@ port_channel_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   mlag: 15
   name: Port-Channel15
@@ -848,16 +848,16 @@ port_channel_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   mlag: 17
   lacp_fallback_mode: static
@@ -874,16 +874,16 @@ port_channel_interfaces:
   spanning_tree_bpduguard: 'True'
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   mlag: 18
   lacp_fallback_mode: static
@@ -900,16 +900,16 @@ port_channel_interfaces:
   spanning_tree_bpduguard: 'True'
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   mlag: 19
   lacp_fallback_mode: static
@@ -1066,16 +1066,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   name: Ethernet11
 - peer: server05_no_profile
@@ -1091,16 +1091,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   name: Ethernet12
 - peer: server06_override_profile
@@ -1117,16 +1117,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: 'True'
   storm_control:
     all:
-      level: 20
+      level: '20'
       unit: pps
     broadcast:
-      level: 200
+      level: '200'
       unit: percent
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   name: Ethernet13
 - peer: server07_inherit_all_from_profile_port_channel
@@ -1143,16 +1143,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   channel_group:
     id: 14
@@ -1171,16 +1171,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   channel_group:
     id: 15
@@ -1200,16 +1200,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: 'True'
   storm_control:
     all:
-      level: 20
+      level: '20'
       unit: pps
     broadcast:
-      level: 200
+      level: '200'
       unit: percent
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   name: Ethernet16
 - peer: server10_no_profile_port_channel_lacp_fallback
@@ -1225,16 +1225,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   channel_group:
     id: 17
@@ -1255,16 +1255,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: 'True'
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   channel_group:
     id: 18
@@ -1285,16 +1285,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: 'True'
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   channel_group:
     id: 19
