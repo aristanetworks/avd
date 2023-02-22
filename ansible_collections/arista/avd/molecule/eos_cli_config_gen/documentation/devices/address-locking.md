@@ -63,7 +63,6 @@ interface Management1
 | 2.2.2.2 | dead.beef.cafe |
 | 3.3.3.3 | de:af:be:ef:ca:fe |
 
-
 ## Address Locking Configuration
 
 ```eos

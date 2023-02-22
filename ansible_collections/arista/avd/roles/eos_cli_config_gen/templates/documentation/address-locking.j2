@@ -20,8 +20,8 @@
 {%     if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
 | Disable enforcement for locked ipv6 addresses | True |
 {%     endif %}
-
 {%     if address_locking.dhcp_servers_ipv4 is arista.avd.defined %}
+
 ## DHCP Servers
 
 | Server IP |
@@ -29,9 +29,9 @@
 {%         for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
 | {{ ip }} |
 {%         endfor %}
-
 {%     endif %}
 {%     if address_locking.leases is arista.avd.defined %}
+
 ## Leases
 
 | Lease IP Address | Lease MAC Address |
@@ -39,7 +39,6 @@
 {%         for lease in address_locking.leases | arista.avd.natural_sort('ip') %}
 | {{ lease.ip }} | {{ lease.mac }} |
 {%         endfor %}
-
 {%     endif %}
 
 ## Address Locking Configuration
