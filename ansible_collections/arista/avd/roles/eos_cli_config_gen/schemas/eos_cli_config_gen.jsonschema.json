@@ -2089,7 +2089,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2111,7 +2111,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2133,7 +2133,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2155,7 +2155,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -6992,7 +6992,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7014,7 +7014,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7036,7 +7036,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7058,7 +7058,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
