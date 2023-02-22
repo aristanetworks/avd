@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Address Locking](#address-locking)
+  - [Address Locking Interfaces](#address-locking-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
@@ -47,6 +49,17 @@ interface Management1
 ```
 
 ## Monitoring
+# Address Locking
+
+## Address Locking Interfaces
+
+| Interface | IPv4 Address Locking | IPv6 Address Locking |
+| --------- | -------------------- | -------------------- |
+| Ethernet55 | True | False |
+| Ethernet56 | True | True |
+| Ethernet57 | False | True |
+
+# Monitoring
 
 ### SFlow
 

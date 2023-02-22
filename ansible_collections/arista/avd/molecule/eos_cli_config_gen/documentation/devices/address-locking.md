@@ -7,7 +7,10 @@
   - [Address Locking Summary](#address-locking-summary)
   - [DHCP Servers](#dhcp-servers)
   - [Leases](#leases)
+  - [Address Locking Interfaces](#address-locking-interfaces)
   - [Address Locking Configuration](#address-locking-configuration)
+- [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
 
 # Management
 
@@ -63,6 +66,13 @@ interface Management1
 | 2.2.2.2 | dead.beef.cafe |
 | 3.3.3.3 | de:af:be:ef:ca:fe |
 
+## Address Locking Interfaces
+
+| Interface | IPv4 Address Locking | IPv6 Address Locking |
+| --------- | -------------------- | -------------------- |
+| Ethernet1 | True | False |
+| Ethernet2 | True | True |
+| Ethernet3 | False | True |
 
 ## Address Locking Configuration
 
@@ -78,4 +88,40 @@ address locking
    locked-address expiration mac disabled
    locked-address ipv4 enforcement disabled
    locked-address ipv6 enforcement disabled
+```
+
+# Interfaces
+
+## Ethernet Interfaces
+
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1 |  Address Locking Interface Testing 1 | access | - | - | - | - |
+| Ethernet2 |  Address Locking Interface Testing 2 | access | - | - | - | - |
+| Ethernet3 |  Address Locking Interface Testing 3 | access | - | - | - | - |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   description Address Locking Interface Testing 1
+   switchport
+   address locking ipv4
+!
+interface Ethernet2
+   description Address Locking Interface Testing 2
+   switchport
+   address locking ipv4 ipv6
+!
+interface Ethernet3
+   description Address Locking Interface Testing 3
+   switchport
+   address locking ipv6
 ```
