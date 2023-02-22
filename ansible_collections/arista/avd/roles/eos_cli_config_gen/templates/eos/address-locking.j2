@@ -1,5 +1,6 @@
 {# eos - address locking #}
 {% if address_locking is arista.avd.defined %}
+!
 address locking
 {%     if address_locking.disabled is arista.avd.defined(true) %}
    disabled

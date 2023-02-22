@@ -484,6 +484,76 @@
         "additionalProperties": false
       }
     },
+    "address_locking": {
+      "type": "object",
+      "properties": {
+        "dhcp_servers_ipv4": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "DHCP server IPv4 address"
+          },
+          "title": "DHCP Servers IPv4"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "Disable IP locking on configured ports",
+          "title": "Disabled"
+        },
+        "leases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ip": {
+                "type": "string",
+                "description": "IP address",
+                "title": "IP"
+              },
+              "mac": {
+                "type": "string",
+                "description": "MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)",
+                "title": "MAC"
+              }
+            },
+            "required": [
+              "ip",
+              "mac"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Leases"
+        },
+        "local_interface": {
+          "type": "string",
+          "title": "Local Interface"
+        },
+        "locked_address": {
+          "type": "object",
+          "properties": {
+            "expiration_mac_disabled": {
+              "type": "boolean",
+              "description": "Configure deauthorizing locked addresses upon MAC aging out",
+              "title": "Expiration MAC Disabled"
+            },
+            "ipv4_enforcement_disabled": {
+              "type": "boolean",
+              "description": "Configure enforcement for locked IPv4 addresses",
+              "title": "IPv4 Enforcement Disabled"
+            },
+            "ipv6_enforcement_disabled": {
+              "type": "boolean",
+              "description": "Configure enforcement for locked IPv6 addresses",
+              "title": "IPv6 Enforcement Disabled"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Locked Address"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Address Locking"
+    },
     "aliases": {
       "type": "string",
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
