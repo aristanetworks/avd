@@ -2,6 +2,7 @@
 address_locking:
   dhcp_servers_ipv4:
     - 1.1.1.1
+    - 4.4.4.4
   disabled: true
   leases:
     - ip: 2.2.2.2
