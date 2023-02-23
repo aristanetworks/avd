@@ -8748,6 +8748,10 @@
                 "type": "string",
                 "title": "Password"
               },
+              "passive": {
+                "type": "boolean",
+                "title": "Passive"
+              },
               "default_originate": {
                 "type": "object",
                 "properties": {
@@ -8902,6 +8906,10 @@
               "route_reflector_client": {
                 "type": "boolean",
                 "title": "Route Reflector Client"
+              },
+              "passive": {
+                "type": "boolean",
+                "title": "Passive"
               },
               "shutdown": {
                 "type": "boolean",
@@ -10520,6 +10528,10 @@
                     "password": {
                       "type": "string",
                       "title": "Password"
+                    },
+                    "passive": {
+                      "type": "boolean",
+                      "title": "Passive"
                     },
                     "remove_private_as": {
                       "type": "object",

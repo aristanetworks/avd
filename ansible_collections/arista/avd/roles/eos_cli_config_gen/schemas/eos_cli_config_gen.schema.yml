@@ -6385,6 +6385,8 @@ keys:
               type: bool
             password:
               type: str
+            passive:
+              type: bool
             default_originate:
               type: dict
               keys:
@@ -6498,6 +6500,8 @@ keys:
             description:
               type: str
             route_reflector_client:
+              type: bool
+            passive:
               type: bool
             shutdown:
               type: bool
@@ -7473,6 +7477,8 @@ keys:
                     - int
                   password:
                     type: str
+                  passive:
+                    type: bool
                   remove_private_as:
                     type: dict
                     description: Remove private AS numbers in outbound AS path

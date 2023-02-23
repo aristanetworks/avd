@@ -156,6 +156,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ default_originate_cli }}
 {%         endif %}
+{%         if peer_group.passive is arista.avd.defined(true) %}
+   neighbor {{ peer_group.name }} passive
+{%         endif %}
 {%         if peer_group.send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group.name }} send-community
 {%         elif peer_group.send_community is arista.avd.defined %}
@@ -271,6 +274,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.password is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password }}
+{%         endif %}
+{%         if neighbor.passive is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} passive
 {%         endif %}
 {%         if neighbor.weight is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} weight {{ neighbor.weight }}
@@ -884,6 +890,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.password is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password }}
+{%             endif %}
+{%             if neighbor.passive is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} passive
 {%             endif %}
 {%             if neighbor.weight is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} weight {{ neighbor.weight }}

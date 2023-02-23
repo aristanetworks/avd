@@ -75,17 +75,23 @@ interface Management1
 | -------- | ----- |
 | Link-Bandwidth | enabled |
 
+#### test-passive
+
+| Settings | Value |
+| -------- | ----- |
+| Passive | True |
+
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | - | True | - |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) | - |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - |
-| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - |
-| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - |
-| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False |
-| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 192.0.3.1 | 65432 | default | - | all | - | - | - | True | - | True |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) | - | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - | - |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - | - |
+| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - | - |
+| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False | - |
+| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - |
 
 ### BGP Neighbor Interfaces
 
@@ -125,10 +131,13 @@ router bgp 65101
    neighbor test-link-bandwidth1 link-bandwidth default 100G
    neighbor test-link-bandwidth2 peer group
    neighbor test-link-bandwidth2 link-bandwidth
+   neighbor test-passive peer group
+   neighbor test-passive passive
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
    neighbor 192.0.3.1 rib-in pre-policy retain
+   neighbor 192.0.3.1 passive
    neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
    neighbor 192.0.3.1 link-bandwidth default 100G
