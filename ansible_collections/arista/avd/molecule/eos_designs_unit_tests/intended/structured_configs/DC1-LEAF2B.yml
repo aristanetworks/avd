@@ -1019,14 +1019,14 @@ ipv6_static_routes:
   vrf: Tenant_D_OP_Zone
 router_ospf:
   process_ids:
-  - vrf: Tenant_A_OSPF
+  - id: 16
+    vrf: Tenant_A_OSPF
     passive_interface_default: true
     router_id: 192.168.255.11
     no_passive_interfaces:
     - Ethernet24
     redistribute:
       bgp: {}
-    id: 16
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP

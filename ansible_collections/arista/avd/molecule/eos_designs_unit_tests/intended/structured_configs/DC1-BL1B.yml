@@ -530,7 +530,8 @@ vlan_interfaces:
   name: Vlan350
 router_ospf:
   process_ids:
-  - vrf: Tenant_A_WAN_Zone
+  - id: 14
+    vrf: Tenant_A_WAN_Zone
     passive_interface_default: true
     router_id: 192.168.255.15
     no_passive_interfaces:
@@ -538,7 +539,6 @@ router_ospf:
     max_lsa: 15000
     redistribute:
       bgp: {}
-    id: 14
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP
