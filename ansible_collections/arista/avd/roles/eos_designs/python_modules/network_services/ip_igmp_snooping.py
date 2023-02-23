@@ -28,17 +28,16 @@ class IpIgmpSnoopingMixin(UtilsMixin):
         if not (igmp_snooping_enabled is True):
             return ip_igmp_snooping
 
-        vlans = {}
+        vlans = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._ip_igmp_snooping_vlan(svi, tenant):
-                        vlan_id = int(svi["id"])
-                        vlans[vlan_id] = vlan
+                        vlans.append(dict(vlan, id=int(svi["id"])))
+
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._ip_igmp_snooping_vlan(l2vlan, tenant):
-                    vlan_id = int(l2vlan["id"])
-                    vlans[vlan_id] = vlan
+                    vlans.append(dict(vlan, id=int(l2vlan["id"])))
 
         if vlans:
             ip_igmp_snooping["vlans"] = vlans
