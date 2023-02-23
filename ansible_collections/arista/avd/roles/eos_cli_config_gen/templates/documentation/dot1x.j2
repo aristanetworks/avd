@@ -37,16 +37,8 @@
 
 | Service type | framed MTU |
 | ------------ | ---------- |
-{%                 if dot1x.radius_av_pair.service_type is arista.avd.defined(true) %}
-{%                     set radius_av_pair_service = "true" %}
-{%                 else %}
-{%                     set radius_av_pair_service = " - " %}
-{%                 endif %}
-{%                 if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
-{%                     set framed_mtu = dot1x.radius_av_pair.framed_mtu %}
-{%                 else %}
-{%                     set framed_mtu = " - " %}
-{%                 endif %}
+{%                 set radius_av_pair_service = dot1x.radius_av_pair.service_type | arista.avd.default('-') %}
+{%                 set framed_mtu = dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') %}
 | {{ radius_av_pair_service }} | {{ framed_mtu }} |
 
 {%             endif %}
