@@ -237,6 +237,7 @@ jobs:
           - 'example-campus-fabric'
           - 'example-l2ls-fabric'
           - 'example-single-dc-l3ls'
+          - 'example-dual-dc-l3ls'
         ansible_version:
           - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
         # Also test minimum ansible version for one scenario.
