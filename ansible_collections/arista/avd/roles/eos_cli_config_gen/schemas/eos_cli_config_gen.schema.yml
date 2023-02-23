@@ -3022,14 +3022,14 @@ keys:
           level:
             type: str
             valid_values:
+            - alerts
+            - critical
             - debugging
+            - emergencies
+            - errors
             - informational
             - notifications
             - warnings
-            - errors
-            - critical
-            - alerts
-            - emergencies
             - disabled
             description: 'Buffer logging severity level
 
@@ -3037,14 +3037,15 @@ keys:
       trap:
         type: str
         valid_values:
+        - alerts
+        - critical
         - debugging
+        - emergencies
+        - errors
         - informational
         - notifications
+        - system
         - warnings
-        - errors
-        - critical
-        - alerts
-        - emergencies
         - disabled
         description: 'Trap logging severity level
 
@@ -3055,14 +3056,15 @@ keys:
           level:
             type: str
             valid_values:
+            - alerts
+            - all
+            - critical
             - debugging
+            - emergencies
+            - errors
             - informational
             - notifications
             - warnings
-            - errors
-            - critical
-            - alerts
-            - emergencies
             - disabled
             description: 'Synchronous logging severity level
 
