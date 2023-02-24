@@ -397,7 +397,7 @@ Generated output ready to be used by [`arista.cvp`](https://github.com/aristanet
 
 ```yaml
 ---
-CVP_DEVICES:
+cvp_devices:
   DC1-SPINE1:
     name: DC1-SPINE1
     parentContainerName: DC1_SPINES
@@ -405,7 +405,7 @@ CVP_DEVICES:
         - DC1-AVD_DC1-SPINE1
     imageBundle: []
 
-CVP_CONTAINERS:
+cvp_containers:
   DC1_LEAF1:
     parent_container: DC1_L3LEAFS
   DC1_FABRIC:
@@ -640,7 +640,7 @@ The module arguments are:
 
 ```yaml
   # Path to Jinja2 Template file | Required
-  template: <str>
+  ansible.builtin.template: <str>
 
   # Destination path. The rendered template will be written to this file | Optional
   dest: <str>

@@ -2771,7 +2771,8 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
-              "on-logging"
+              "on-logging",
+              "on-startup-config"
             ],
             "title": "Trigger"
           },
@@ -4256,14 +4257,14 @@
             "level": {
               "type": "string",
               "enum": [
+                "alerts",
+                "critical",
                 "debugging",
+                "emergencies",
+                "errors",
                 "informational",
                 "notifications",
                 "warnings",
-                "errors",
-                "critical",
-                "alerts",
-                "emergencies",
                 "disabled"
               ],
               "description": "Buffer logging severity level\n",
@@ -4276,14 +4277,15 @@
         "trap": {
           "type": "string",
           "enum": [
+            "alerts",
+            "critical",
             "debugging",
+            "emergencies",
+            "errors",
             "informational",
             "notifications",
+            "system",
             "warnings",
-            "errors",
-            "critical",
-            "alerts",
-            "emergencies",
             "disabled"
           ],
           "description": "Trap logging severity level\n",
@@ -4295,14 +4297,15 @@
             "level": {
               "type": "string",
               "enum": [
+                "alerts",
+                "all",
+                "critical",
                 "debugging",
+                "emergencies",
+                "errors",
                 "informational",
                 "notifications",
                 "warnings",
-                "errors",
-                "critical",
-                "alerts",
-                "emergencies",
                 "disabled"
               ],
               "description": "Synchronous logging severity level\n",
