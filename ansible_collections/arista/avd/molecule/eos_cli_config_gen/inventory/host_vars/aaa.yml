@@ -32,9 +32,9 @@ radius_servers:
 ### Radius Server
 # New data model to replace "radius_servers"
 radius_server:
-  attribute_32_include_in_access:
+  attribute_32_include_in_access_req:
     hostname: true
-  dynamic_authorisation:
+  dynamic_authorization:
     port: 1700
     tls_ssl_profile: SSL_PROFILE
   hosts:
