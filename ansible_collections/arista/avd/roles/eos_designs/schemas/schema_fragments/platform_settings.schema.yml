@@ -4,6 +4,8 @@
 type: dict
 keys:
   platform_settings:
+    documentation_options:
+      filename: Platform Specific Settings
     type: list
     items:
       type: dict

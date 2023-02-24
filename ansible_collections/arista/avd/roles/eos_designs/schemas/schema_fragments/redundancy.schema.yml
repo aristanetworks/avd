@@ -4,6 +4,8 @@
 type: dict
 keys:
   redundancy:
+    documentation_options:
+      filename: Platform Specific Settings
     type: dict
     description: Redundancy for chassis platforms with dual supervisors | Optional
     keys:

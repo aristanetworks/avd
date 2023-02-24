@@ -4,6 +4,8 @@
 type: dict
 keys:
   platform_speed_groups:
+    documentation_options:
+      filename: Platform Specific Settings
     type: list
     primary_key: platform
     secondary_key: speeds

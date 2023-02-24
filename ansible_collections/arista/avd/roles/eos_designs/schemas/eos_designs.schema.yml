@@ -1683,6 +1683,8 @@ keys:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
   platform_settings:
+    documentation_options:
+      filename: Platform Specific Settings
     type: list
     items:
       type: dict
@@ -1728,6 +1730,8 @@ keys:
           description: EOS CLI rendered directly on the root level of the final EOS
             configuration
   platform_speed_groups:
+    documentation_options:
+      filename: Platform Specific Settings
     type: list
     primary_key: platform
     secondary_key: speeds
@@ -1757,6 +1761,8 @@ keys:
                   convert_types:
                   - str
   redundancy:
+    documentation_options:
+      filename: Platform Specific Settings
     type: dict
     description: Redundancy for chassis platforms with dual supervisors | Optional
     keys:
