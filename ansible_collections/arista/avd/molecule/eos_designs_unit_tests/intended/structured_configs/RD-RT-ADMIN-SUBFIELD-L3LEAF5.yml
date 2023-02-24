@@ -72,12 +72,12 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: TEST1
+  tenant: Tenant_A
   ip_routing: true
   description: TEST1
-  name: TEST1
 management_interfaces:
 - description: oob_management
   shutdown: false

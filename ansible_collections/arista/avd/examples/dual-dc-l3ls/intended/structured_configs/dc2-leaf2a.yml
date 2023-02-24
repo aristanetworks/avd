@@ -236,14 +236,14 @@ local_users:
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
   name: ansible
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: TENANT1
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  tenant: TENANT1
   ip_routing: true
-  name: VRF10
-- tenant: TENANT1
+- name: VRF11
+  tenant: TENANT1
   ip_routing: true
-  name: VRF11
 management_interfaces:
 - description: oob_management
   shutdown: false

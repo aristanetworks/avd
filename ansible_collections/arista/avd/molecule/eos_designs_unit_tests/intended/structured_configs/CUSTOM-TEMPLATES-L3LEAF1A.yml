@@ -89,11 +89,11 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: CUSTOM_TEMPLATES_TENANT
+- name: MGMT
+  ip_routing: false
+- name: TEST_VRF
+  tenant: CUSTOM_TEMPLATES_TENANT
   ip_routing: true
-  name: TEST_VRF
 management_interfaces:
 - description: oob_management
   shutdown: false
