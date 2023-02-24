@@ -3,7 +3,8 @@ from __future__ import annotations
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avddataconverter import AvdDataConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA, AvdValidator
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AvdValidator
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
 
 try:
     import jsonschema
@@ -26,15 +27,23 @@ DEFAULT_SCHEMA = {
 
 
 class AvdSchema:
-    def __init__(self, schema: dict = None):
+    def __init__(self, schema: dict = None, schema_id: str = None):
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
         if DEEPMERGE_IMPORT_ERROR:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
+        self.store = create_store()
         if not schema:
-            schema = DEFAULT_SCHEMA
-        self._schema_validator = jsonschema.Draft7Validator(AVD_META_SCHEMA)
+            if schema_id:
+                if schema_id not in self.store:
+                    raise AristaAvdError(f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}")
+
+                schema = self.store.get(schema_id, {})
+            else:
+                schema = DEFAULT_SCHEMA
+
+        self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
         self.load_schema(schema)
 
     def validate_schema(self, schema: dict):
@@ -48,9 +57,9 @@ class AvdSchema:
             raise validation_error
         self._schema = schema
         try:
-            self._validator = AvdValidator(schema)
+            self._validator = AvdValidator(schema, self.store)
             self._dataconverter = AvdDataConverter(self)
-            self._schemaresolver = AvdSchemaResolver(schema)
+            self._schemaresolver = AvdSchemaResolver(schema, self.store)
         except Exception as e:
             raise AristaAvdError("An error occured during creation of the validator") from e
 

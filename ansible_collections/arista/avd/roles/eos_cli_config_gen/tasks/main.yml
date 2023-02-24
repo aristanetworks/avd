@@ -40,7 +40,7 @@
     template: eos-intended-config.j2
     dest: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     mode: 0664
-    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
+    schema_id: "{{ role_name }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
   delegate_to: localhost
@@ -52,7 +52,7 @@
     template: "eos-device-documentation.j2"
     dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
     mode: 0664
-    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
+    schema_id: "{{ role_name }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
     add_md_toc: true

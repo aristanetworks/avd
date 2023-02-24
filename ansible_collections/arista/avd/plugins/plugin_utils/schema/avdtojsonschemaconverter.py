@@ -1,15 +1,8 @@
 from __future__ import annotations
 
-import json
-import os
-
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import get_deprecation
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
-
-script_dir = os.path.dirname(__file__)
-with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="UTF-8") as file:
-    AVD_META_SCHEMA = json.load(file)
 
 
 class AvdToJsonSchemaConverter:

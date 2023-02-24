@@ -1,3 +1,4 @@
+$id: eos_cli_config_gen
 type: dict
 allow_other_keys: true
 keys:

@@ -24,21 +24,13 @@
         state: directory
         mode: 0775
 
-- name: Import and Convert eos_cli_config_gen schema
-  tags: [eos_cli_config_gen]
-  ansible.builtin.set_fact:
-    role_documentation_schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='documentation') }}"
-
-# - debug:
-#     msg: "{{ role_documentation_schema }}"
-
 - name: Output eos_cli_config_gen Documentation
   tags: [eos_cli_config_gen]
   ansible.builtin.template:
     src: avd_schema_documentation.j2
     dest: "{{ role_documentation_dir ~ '/' ~ documentation_file.filename ~ '.md'  }}"
     mode: 0664
-  loop: "{{ role_documentation_schema }}"
+  loop: "{{ lookup('arista.avd.convert_to_documentation_schema', role_name) }}"
   loop_control:
     loop_var: documentation_file
     label: "{{ documentation_file.filename }}"
