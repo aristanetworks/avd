@@ -50,14 +50,4 @@ class PrefixListsMixin(UtilsMixin):
             return None
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
-        return [
-            {
-                "name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", 
-                "sequence_numbers": [
-                    {
-                        "sequence": 10,
-                        "action": f"permit {self._loopback_ipv6_pool} eq 128"
-                    }
-                ]
-            }
-        ]
+        return [{"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": [{"sequence": 10, "action": f"permit {self._loopback_ipv6_pool} eq 128"}]}]

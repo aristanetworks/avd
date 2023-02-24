@@ -181,24 +181,26 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
-    def prefix_lists(self) -> dict | None:
+    def prefix_lists(self) -> list | None:
         if self._inband_management_role != "parent":
             return None
 
         if not self._underlay_bgp:
             return None
 
-        sequence_numbers = {
-            ((index + 1) * 10): {
+        sequence_numbers = [
+            {
+                "sequence": ((index + 1) * 10),
                 "action": f"permit {subnet}",
             }
             for index, subnet in enumerate(self._inband_management_data["subnets"])
-        }
-        return {
-            "PL-L2LEAF-INBAND-MGMT": {
+        ]
+        return [
+            {
+                "name": "PL-L2LEAF-INBAND-MGMT",
                 "sequence_numbers": sequence_numbers,
             }
-        }
+        ]
 
     @cached_property
     def route_maps(self) -> dict | None:

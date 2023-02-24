@@ -147,10 +147,10 @@ prefix_lists:
     action: permit 172.16.210.0/24 eq 32
   - sequence: 20
     action: permit 172.18.210.0/24 eq 32
-- sequence_numbers:
-  - action: permit 172.21.210.0/24
-    sequence: 10
-  name: PL-L2LEAF-INBAND-MGMT
+- name: PL-L2LEAF-INBAND-MGMT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.21.210.0/24
 route_maps:
 - sequence_numbers:
   - type: permit
