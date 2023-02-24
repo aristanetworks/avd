@@ -239,16 +239,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: 'False'
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   name: Ethernet6
 - peer: server02_SINGLE_NODE
