@@ -126,7 +126,7 @@ def main():
 
     # If set, build configlet topology
     if module.params["configlet_dir"] is not None:
-        result["CVP_CONFIGLETS"] = get_configlet(
+        result["cvp_configlets"] = get_configlet(
             src_folder=module.params["configlet_dir"], prefix=module.params["configlet_prefix"], extension=module.params["configlet_extension"]
         )
 

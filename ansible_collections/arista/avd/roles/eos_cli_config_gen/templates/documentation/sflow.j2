@@ -1,5 +1,5 @@
 {# doc - sflow #}
-{% if sflow is arista.avd.defined %}
+{% if sflow is arista.avd.defined or sflow_interfaces | length > 0 %}
 
 ## SFlow
 
@@ -84,10 +84,28 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 | {{ extension.name }} | {{ extension.enabled }} |
 {%         endfor %}
 {%     endif %}
+{%     if sflow_interfaces | length > 0 %}
+
+### SFlow Interfaces
+
+| Interface | Ingress Enabled | Egress Enabled |
+| --------- | --------------- | -------------- |
+{%         for sflow_interface in sflow_interfaces | arista.avd.natural_sort('name') %}
+{%             set sflow_ingress_enable = sflow_interface.sflow.enable | arista.avd.default("-") %}
+{%             if sflow_interface.sflow.egress.enable is arista.avd.defined %}
+{%                 set sflow_egress_enable = sflow_interface.sflow.egress.enable %}
+{%             elif sflow_interface.sflow.egress.unmodified_enable is arista.avd.defined %}
+{%                 set sflow_egress_enable = sflow_interface.sflow.egress.unmodified_enable ~ " (unmodified)" %}
+{%             endif %}
+| {{ sflow_interface.name }} | {{ sflow_ingress_enable }} | {{ sflow_egress_enable | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if sflow is arista.avd.defined %}
 
 ### SFlow Device Configuration
 
 ```eos
-{%     include 'eos/sflow.j2' %}
+{%         include 'eos/sflow.j2' %}
 ```
+{%     endif %}
 {% endif %}

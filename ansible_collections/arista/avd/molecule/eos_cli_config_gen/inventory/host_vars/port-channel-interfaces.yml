@@ -345,6 +345,38 @@ port_channel_interfaces:
     native_vlan: 100
     mode: trunk
 
+  Port-Channel117:
+    description: interface_with_sflow_ingress_egress_enabled
+    type: routed
+    sflow:
+      enable: true
+      egress:
+        enable: true
+
+  Port-Channel118:
+    description: interface_with_sflow_ingress_egress_unmodified_enabled
+    type: routed
+    sflow:
+      enable: true
+      egress:
+        unmodified_enable: true
+
+  Port-Channel119:
+    description: interface_with_sflow_ingress_egress_disabled
+    type: routed
+    sflow:
+      enable: false
+      egress:
+        enable: false
+
+  Port-Channel120:
+    description: interface_with_sflow_ingress_egress_unmodified_disabled
+    type: routed
+    sflow:
+      enable: false
+      egress:
+        unmodified_enable: false
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
