@@ -15,7 +15,7 @@ l2leaf:
     - name: uplink-native-vlan-child
       id: 3
       # vlan 200 is not in network services vlans, so we test that both ends have vlan 200 configured
-      # with name UPLINK_NATIVE_VLAN and configured as native-vlan on uplink port-channel. Vlan 200 should _not_ be permitted on the trunk.
+      # with name NATIVE and configured as native-vlan on uplink port-channel. Vlan 200 should _not_ be permitted on the trunk.
       uplink_native_vlan: 200
       uplink_switches: [ uplink-native-vlan-parent ]
       uplink_interfaces: [ Ethernet2 ]
