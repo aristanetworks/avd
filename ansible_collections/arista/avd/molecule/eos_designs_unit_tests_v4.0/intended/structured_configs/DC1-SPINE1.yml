@@ -190,8 +190,8 @@ local_users:
     ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
       cvpadmin@hostmachine.local
 vrfs:
-  MGMT:
-    ip_routing: false
+- name: MGMT
+  ip_routing: false
 management_interfaces:
   Management1:
     description: oob_management

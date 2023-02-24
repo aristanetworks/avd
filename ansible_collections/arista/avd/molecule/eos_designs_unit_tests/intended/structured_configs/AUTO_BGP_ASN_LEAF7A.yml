@@ -62,8 +62,8 @@ spanning_tree:
     id: '0'
   no_spanning_tree_vlan: 4093-4094
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: oob_management
   shutdown: false

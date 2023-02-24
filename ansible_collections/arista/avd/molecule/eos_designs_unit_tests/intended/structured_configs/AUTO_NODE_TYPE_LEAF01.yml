@@ -64,8 +64,8 @@ spanning_tree:
   - priority: 4096
     id: '0'
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: oob_management
   shutdown: false

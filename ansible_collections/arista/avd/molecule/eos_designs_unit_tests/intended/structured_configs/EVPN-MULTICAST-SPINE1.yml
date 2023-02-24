@@ -87,8 +87,8 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: oob_management
   shutdown: false

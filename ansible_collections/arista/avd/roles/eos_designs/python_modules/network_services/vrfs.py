@@ -15,7 +15,7 @@ class VrfsMixin(UtilsMixin):
     """
 
     @cached_property
-    def vrfs(self) -> dict | None:
+    def vrfs(self) -> list | None:
         """
         Return structured config for vrfs.
 
@@ -28,17 +28,19 @@ class VrfsMixin(UtilsMixin):
         if not self._network_services_l3:
             return None
 
-        vrfs = {}
+        vrfs = []
+        new_vrf = {}
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
                 if vrf_name == "default":
                     continue
 
-                if vrf_name in vrfs:
-                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], vrfs[vrf_name])
+                if new_vrf and vrf_name in new_vrf["name"]:
+                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], new_vrf)
 
                 new_vrf = {
+                    "name": vrf_name,
                     "tenant": tenant["name"],
                     "ip_routing": True,
                 }
@@ -48,7 +50,7 @@ class VrfsMixin(UtilsMixin):
                 if "description" in vrf:
                     new_vrf["description"] = vrf["description"]
 
-                vrfs[vrf_name] = new_vrf
+                vrfs.append(new_vrf)
 
         if vrfs:
             return vrfs

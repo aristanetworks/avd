@@ -82,11 +82,11 @@ spanning_tree:
   - priority: 4096
     id: '0'
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: PTP
+- name: MGMT
+  ip_routing: false
+- name: VRF1
+  tenant: PTP
   ip_routing: true
-  name: VRF1
 management_interfaces:
 - description: oob_management
   shutdown: false

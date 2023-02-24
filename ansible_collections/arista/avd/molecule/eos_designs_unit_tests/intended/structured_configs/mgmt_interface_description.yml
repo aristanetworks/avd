@@ -10,8 +10,8 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: Custom Management Interface Description
   shutdown: false
