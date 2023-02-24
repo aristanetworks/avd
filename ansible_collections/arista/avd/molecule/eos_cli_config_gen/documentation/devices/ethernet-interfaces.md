@@ -676,23 +676,23 @@ interface Ethernet48
 
 | Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
 | --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
-| Ethernet29 | - | auto | True | - | - | - | - |
-| Ethernet30 | - | force-authorized | False | - | - | - | - |
-| Ethernet31 | - | force-unauthorized | - | - | - | - | - |
-| Ethernet32 | - | auto | - | True | - | - | - |
-| Ethernet33 | authenticator | - | - | - | - | - | - |
-| Ethernet34 | - | - | - | - | allow vlan 800 | - | - |
-| Ethernet35 | - | - | - | - | drop | - | - |
-| Ethernet36 | - | - | - | - | - | single-host | - |
-| Ethernet37 | - | - | - | - | - | multi-host | - |
-| Ethernet38 | - | - | - | - | - | multi-host | - |
-| Ethernet39 | - | - | - | - | - | - | True |
-| Ethernet40 | - | - | - | - | - | - | True |
-| Ethernet41 | - | - | - | - | - | - | True |
-| Ethernet42 | - | - | - | - | - | - | True |
-| Ethernet43 | - | - | - | - | - | - | - |
-| Ethernet44 | - | - | - | - | - | - | - |
-| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True |
+| Ethernet29 | - | auto | True | - | - | - | - | - |
+| Ethernet30 | - | force-authorized | False | - | - | - | - | - |
+| Ethernet31 | - | force-unauthorized | - | - | - | - | - | - |
+| Ethernet32 | - | auto | - | True | - | - | - | - |
+| Ethernet33 | authenticator | - | - | - | - | - | - | - |
+| Ethernet34 | - | - | - | - | allow vlan 800 | - | - | - |
+| Ethernet35 | - | - | - | - | drop | - | - | - |
+| Ethernet36 | - | - | - | - | - | single-host | - | - |
+| Ethernet37 | - | - | - | - | - | multi-host | - | - |
+| Ethernet38 | - | - | - | - | - | multi-host | - | - |
+| Ethernet39 | - | - | - | - | - | - | True | - |
+| Ethernet40 | - | - | - | - | - | - | True | - |
+| Ethernet41 | - | - | - | - | - | - | True | - |
+| Ethernet42 | - | - | - | - | - | - | True | - |
+| Ethernet43 | - | - | - | - | - | - | - | - |
+| Ethernet44 | - | - | - | - | - | - | - | - |
+| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | - |
 
 # Quality Of Service
 
