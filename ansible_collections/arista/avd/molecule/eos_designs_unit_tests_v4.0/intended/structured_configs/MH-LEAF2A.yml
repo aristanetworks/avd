@@ -221,30 +221,30 @@ prefix_lists:
       10:
         action: permit 10.2.10.0/24
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-      30:
-        type: permit
-        match:
-        - ip address prefix-list PL-SVI-VRF-DEFAULT
-  RM-EVPN-EXPORT-VRF-DEFAULT:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-SVI-VRF-DEFAULT
-  RM-BGP-UNDERLAY-PEERS-OUT:
-    sequence_numbers:
-      20:
-        type: permit
-      10:
-        type: deny
-        match:
-        - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
 router_bfd:
   multihop:
     interval: 1200

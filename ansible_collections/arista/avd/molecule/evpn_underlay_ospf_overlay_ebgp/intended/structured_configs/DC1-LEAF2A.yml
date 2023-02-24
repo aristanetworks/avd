@@ -322,13 +322,13 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP

@@ -438,24 +438,24 @@ prefix_lists:
       20:
         action: permit 192.168.254.0/24 eq 32
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - ip next-hop 123.1.1.1
-  RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - ipv6 next-hop fd5a:fe45:8831:06c5::1
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ip next-hop 123.1.1.1
+- name: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ipv6 next-hop fd5a:fe45:8831:06c5::1
 router_bfd:
   multihop:
     interval: 1200

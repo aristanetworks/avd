@@ -218,19 +218,19 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 loopback_interfaces:
 - description: EVPN_Overlay_Peering
   shutdown: false

@@ -155,44 +155,44 @@ prefix_lists:
     sequence: 10
   name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
-- sequence_numbers:
-  - type: deny
+- name: RM-EVPN-FILTER-AS65200
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65200
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65200
-- sequence_numbers:
-  - type: deny
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65201
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65201
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65201
-- sequence_numbers:
-  - type: deny
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65210
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65210
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65210
-- sequence_numbers:
-  - type: deny
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65211
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65211
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65211
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
