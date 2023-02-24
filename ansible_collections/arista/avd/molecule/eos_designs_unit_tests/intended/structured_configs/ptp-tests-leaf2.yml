@@ -197,12 +197,12 @@ loopback_interfaces:
   ip_address: 10.254.11.2/32
   name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 10.254.1.0/27 eq 32
-    sequence: 10
-  - action: permit 10.254.11.0/27 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.0/27 eq 32
+  - sequence: 20
+    action: permit 10.254.11.0/27 eq 32
 route_maps:
 - sequence_numbers:
   - type: permit

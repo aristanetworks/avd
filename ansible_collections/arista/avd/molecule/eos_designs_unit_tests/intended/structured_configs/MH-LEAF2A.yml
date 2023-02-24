@@ -216,20 +216,20 @@ loopback_interfaces:
   ip_address: 10.255.1.35/32
   name: Loopback100
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
-- sequence_numbers:
-  - action: permit 10.2.10.0/24
-    sequence: 10
-  name: PL-SVI-VRF-DEFAULT
-- sequence_numbers:
-  - action: permit 10.0.0.0/8
-    sequence: 10
-  name: PL-STATIC-VRF-DEFAULT
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.2.10.0/24
+- name: PL-STATIC-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.0.0/8
 route_maps:
 - sequence_numbers:
   - type: permit

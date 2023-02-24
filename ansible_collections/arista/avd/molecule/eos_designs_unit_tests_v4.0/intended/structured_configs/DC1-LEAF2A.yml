@@ -558,12 +558,12 @@ loopback_interfaces:
     vrf: Tenant_A_OP_Zone
     ip_address: 10.255.1.10/32
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:

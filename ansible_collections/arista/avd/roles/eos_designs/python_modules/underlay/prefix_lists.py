@@ -12,7 +12,7 @@ class PrefixListsMixin(UtilsMixin):
     """
 
     @cached_property
-    def prefix_lists(self) -> dict | None:
+    def prefix_lists(self) -> list | None:
         """
         Return structured config for prefix_lists
         """
@@ -22,21 +22,16 @@ class PrefixListsMixin(UtilsMixin):
         if self._overlay_routing_protocol == "none":
             return None
 
-        prefix_lists = {}
-
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
-        sequence_numbers = {}
-        sequence_numbers[10] = {
-            "action": f"permit {self._loopback_ipv4_pool} eq 32",
-        }
+        sequence_numbers = [{"sequence": 10, "action": f"permit {self._loopback_ipv4_pool} eq 32"}]
 
         if self._vtep_ip is not None and self._vtep_loopback.lower() != "loopback0":
-            sequence_numbers[20] = {"action": f"permit {self._vtep_loopback_ipv4_pool} eq 32"}
+            sequence_numbers.append({"sequence": 20, "action": f"permit {self._vtep_loopback_ipv4_pool} eq 32"})
 
         if self._vtep_vvtep_ip is not None and self._network_services_l3 is True:
-            sequence_numbers[30] = {"action": f"permit {self._vtep_vvtep_ip}"}
+            sequence_numbers.append({"sequence": 30, "action": f"permit {self._vtep_vvtep_ip}"})
 
-        prefix_lists["PL-LOOPBACKS-EVPN-OVERLAY"] = {"sequence_numbers": sequence_numbers}
+        prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
 
         return prefix_lists
 
@@ -55,12 +50,14 @@ class PrefixListsMixin(UtilsMixin):
             return None
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
-        return {
-            "PL-LOOPBACKS-EVPN-OVERLAY-V6": {
-                "sequence_numbers": {
-                    10: {
-                        "action": f"permit {self._loopback_ipv6_pool} eq 128",
+        return [
+            {
+                "name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", 
+                "sequence_numbers": [
+                    {
+                        "sequence": 10,
+                        "action": f"permit {self._loopback_ipv6_pool} eq 128"
                     }
-                }
+                ]
             }
-        }
+        ]

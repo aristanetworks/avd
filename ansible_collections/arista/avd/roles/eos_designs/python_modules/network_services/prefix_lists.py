@@ -12,7 +12,7 @@ class PrefixListsMixin(UtilsMixin):
     """
 
     @cached_property
-    def prefix_lists(self) -> dict | None:
+    def prefix_lists(self) -> list | None:
         """
         Return structured config for prefix_lists
 
@@ -28,16 +28,16 @@ class PrefixListsMixin(UtilsMixin):
 
         prefix_lists = []
         if subnets:
-            prefix_lists_data = {"sequence_numbers": [], "name": "PL-SVI-VRF-DEFAULT"}
+            prefix_list = {"name": "PL-SVI-VRF-DEFAULT", "sequence_numbers": []}
             for index, subnet in enumerate(subnets):
                 sequence = 10 * (index + 1)
-                prefix_lists_data["sequence_numbers"].append({"action": f"permit {subnet}", "sequence": sequence})
-            prefix_lists.append(prefix_lists_data)
+                prefix_list["sequence_numbers"].append({"sequence": sequence, "action": f"permit {subnet}"})
+            prefix_lists.append(prefix_list)
 
         if static_routes:
-            prefix_lists_data = {"sequence_numbers": [], "name": "PL-STATIC-VRF-DEFAULT"}
+            prefix_list = {"name": "PL-STATIC-VRF-DEFAULT", "sequence_numbers": []}
             for index, static_route in enumerate(static_routes):
                 sequence = 10 * (index + 1)
-                prefix_lists_data["sequence_numbers"].append({"action": f"permit {static_route}", "sequence": sequence})
-            prefix_lists.append(prefix_lists_data)
+                prefix_list["sequence_numbers"].append({"sequence": sequence, "action": f"permit {static_route}"})
+            prefix_lists.append(prefix_list)
         return prefix_lists
