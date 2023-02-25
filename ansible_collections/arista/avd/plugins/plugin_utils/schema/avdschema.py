@@ -213,16 +213,15 @@ class AvdSchema:
         if not isinstance(key, str):
             raise AvdSchemaError(f"All datapath items must be strings. Got {type(key)}")
 
-        if schema["type"] == "dict":
-            if key in schema.get("keys", []):
-                resolved_schema = self.get_resolved_schema(schema["keys"][key])
-                return self.subschema(datapath[1:], resolved_schema)
-            if key in schema.get("dynamic_keys", []):
-                resolved_schema = self.get_resolved_schema(schema["dynamic_keys"][key])
-                return self.subschema(datapath[1:], resolved_schema)
+        resolved_schema = self.get_resolved_schema(schema)
+        if resolved_schema["type"] == "dict":
+            if key in resolved_schema.get("keys", []):
+                return self.subschema(datapath[1:], resolved_schema["keys"][key])
+            if key in resolved_schema.get("dynamic_keys", []):
+                return self.subschema(datapath[1:], resolved_schema["dynamic_keys"][key])
 
-        if schema["type"] == "list" and key in schema.get("items", {}).get("keys", []):
-            return self.subschema(datapath[1:], schema["items"]["keys"][key])
+        if resolved_schema["type"] == "list" and key in resolved_schema.get("items", {}).get("keys", []):
+            return self.subschema(datapath[1:], resolved_schema["items"]["keys"][key])
 
         # Falling through here in case the schema is not covering the requested datapath
         raise AvdSchemaError(f"The datapath '{datapath}' could not be found in the schema")
