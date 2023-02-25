@@ -7514,6 +7514,8 @@ keys:
                     - int
                   description:
                     type: str
+                  route_reflector_client:
+                    type: bool
                   ebgp_multihop:
                     type: int
                     min: 1
