@@ -45,3 +45,11 @@ keys:
             If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         ssh_key:
           type: str
+        shell:
+          type: str
+          description: |
+            Specify shell for the user
+          valid_values:
+            - /bin/bash
+            - /bin/sh
+            - /sbin/nologin
