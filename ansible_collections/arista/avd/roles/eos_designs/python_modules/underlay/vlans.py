@@ -44,7 +44,7 @@ class VlansMixin(UtilsMixin):
         for peer_uplink_native_vlan in uplink_native_vlans:
             vlans.setdefault(int(peer_uplink_native_vlan), {}).update(
                 {
-                    "name": "NATIVE_VLAN",
+                    "name": "NATIVE",
                     "state": "suspend",
                 }
             )

@@ -2089,7 +2089,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2111,7 +2111,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2133,7 +2133,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2155,7 +2155,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -6994,7 +6994,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7016,7 +7016,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7038,7 +7038,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7060,7 +7060,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -10572,6 +10572,10 @@
                     "description": {
                       "type": "string",
                       "title": "Description"
+                    },
+                    "route_reflector_client": {
+                      "type": "boolean",
+                      "title": "Route Reflector Client"
                     },
                     "ebgp_multihop": {
                       "type": "integer",

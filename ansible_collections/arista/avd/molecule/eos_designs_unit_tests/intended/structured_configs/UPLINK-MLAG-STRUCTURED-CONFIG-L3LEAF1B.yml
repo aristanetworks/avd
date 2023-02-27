@@ -127,9 +127,9 @@ port_channel_interfaces:
   name: Port-Channel5
   storm_control:
     broadcast:
-      level: 25
+      level: '25'
     unknown_unicast:
-      level: 25
+      level: '25'
   native_vlan_tag: true
 ethernet_interfaces:
 - peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
