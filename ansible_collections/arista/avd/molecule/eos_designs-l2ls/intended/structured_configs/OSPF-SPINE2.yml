@@ -135,7 +135,8 @@ loopback_interfaces:
   name: Loopback0
 router_ospf:
   process_ids:
-  - passive_interface_default: true
+  - id: 100
+    passive_interface_default: true
     router_id: 192.168.255.2
     max_lsa: 12000
     no_passive_interfaces:
@@ -145,7 +146,6 @@ router_ospf:
     redistribute:
       connected: {}
       static: {}
-    id: 100
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99

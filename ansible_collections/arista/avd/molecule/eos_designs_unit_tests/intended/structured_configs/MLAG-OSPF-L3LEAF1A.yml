@@ -164,14 +164,14 @@ loopback_interfaces:
   name: Loopback1
 router_ospf:
   process_ids:
-  - passive_interface_default: true
+  - id: 100
+    passive_interface_default: true
     router_id: 192.168.255.36
     max_lsa: 12000
     no_passive_interfaces:
     - Ethernet1
     - Vlan4094
     bfd_enable: false
-    id: 100
 router_bfd:
   multihop:
     interval: 1200
