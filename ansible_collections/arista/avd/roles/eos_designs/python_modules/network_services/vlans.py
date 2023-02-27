@@ -38,7 +38,7 @@ class VlansMixin(UtilsMixin):
                         self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], vlan)
 
                     vlan = self._get_vlan_config(svi, tenant)
-                    vlans.append(dict(id=vlan_id, **vlan))
+                    vlans.append({"id": vlan_id, **vlan})
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
@@ -65,7 +65,7 @@ class VlansMixin(UtilsMixin):
                     self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], vlan)
 
                 vlan = self._get_vlan_config(l2vlan, tenant)
-                vlans.append(dict(id=vlan_id, **vlan))
+                vlans.append({"id": vlan_id, **vlan})
 
         if vlans:
             return vlans
