@@ -13,7 +13,7 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- name: NATIVE_VLAN
+- name: NATIVE
   state: suspend
   id: 200
 - tenant: test

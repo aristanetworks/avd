@@ -13,4 +13,7 @@ management cvx
 {%     if management_cvx.source_interface is arista.avd.defined %}
    source-interface {{ management_cvx.source_interface }}
 {%     endif %}
+{%     if management_cvx.vrf is arista.avd.defined %}
+   vrf {{ management_cvx.vrf }}
+{%     endif %}
 {% endif %}
