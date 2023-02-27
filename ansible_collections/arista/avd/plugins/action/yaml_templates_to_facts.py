@@ -149,7 +149,7 @@ class ActionModule(ActionBase):
                 try:
                     template_result_data = cls_instance.render()
                 except Exception as error:
-                    raise AnsibleActionFail(error) from error
+                    raise AnsibleActionFail(message=str(error)) from error
 
             else:
                 raise AnsibleActionFail("Invalid template data")
