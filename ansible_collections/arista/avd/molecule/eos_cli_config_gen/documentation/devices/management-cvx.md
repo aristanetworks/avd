@@ -39,6 +39,12 @@ interface Management1
 | -------- | ----------- |
 | False | 10.90.224.188, 10.90.224.189, leaf1.atd.lab |
 
+### Management CVX Source Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Loopback0 | MGMT |
+
 ### Management CVX configuration
 
 ```eos
@@ -48,5 +54,6 @@ management cvx
    server host 10.90.224.188
    server host 10.90.224.189
    server host leaf1.atd.lab
-   source-interface loopback0
+   source-interface Loopback0
+   vrf MGMT
 ```

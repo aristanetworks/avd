@@ -5257,6 +5257,11 @@
           "type": "string",
           "description": "Interface name",
           "title": "Source Interface"
+        },
+        "vrf": {
+          "type": "string",
+          "description": "VRF Name",
+          "title": "VRF"
         }
       },
       "additionalProperties": false,
@@ -10600,6 +10605,10 @@
                     "description": {
                       "type": "string",
                       "title": "Description"
+                    },
+                    "route_reflector_client": {
+                      "type": "boolean",
+                      "title": "Route Reflector Client"
                     },
                     "ebgp_multihop": {
                       "type": "integer",

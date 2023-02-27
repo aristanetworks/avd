@@ -3943,6 +3943,9 @@ keys:
       source_interface:
         type: str
         description: Interface name
+      vrf:
+        type: str
+        description: VRF Name
   management_defaults:
     documentation_options:
       filename: data_model/Management
@@ -7530,6 +7533,8 @@ keys:
                     - int
                   description:
                     type: str
+                  route_reflector_client:
+                    type: bool
                   ebgp_multihop:
                     type: int
                     min: 1
