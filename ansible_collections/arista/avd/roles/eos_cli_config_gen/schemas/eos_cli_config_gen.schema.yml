@@ -5989,7 +5989,7 @@ keys:
         type: str
   radius_server:
     documentation_options:
-      filename: data_model/Hardware
+      filename: data_model/Authentication
     type: dict
     keys:
       attribute_32_include_in_access_req:
