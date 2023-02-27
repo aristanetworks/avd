@@ -5229,6 +5229,11 @@
           "type": "string",
           "description": "Interface name",
           "title": "Source Interface"
+        },
+        "vrf": {
+          "type": "string",
+          "description": "VRF Name",
+          "title": "VRF"
         }
       },
       "additionalProperties": false,
