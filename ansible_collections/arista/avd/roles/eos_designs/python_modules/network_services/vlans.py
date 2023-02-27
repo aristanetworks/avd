@@ -4,7 +4,7 @@ from functools import cached_property
 from typing import NoReturn
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_item
 from .utils import UtilsMixin
 
 
@@ -29,43 +29,45 @@ class VlansMixin(UtilsMixin):
             return None
 
         vlans = []
-        vlan = {}
+        vlan_ids = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
-                    if vlan_id in vlan:
-                        self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], vlan)
+                    if vlan_id in vlan_ids:
+                        self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], get_item(vlans, "id", vlan_id))
 
-                    vlan = self._get_vlan_config(svi, tenant)
-                    vlans.append({"id": vlan_id, **vlan})
+                    vlans.append({"id": vlan_id, **self._get_vlan_config(svi, tenant)})
+
+                    vlan_ids.append(vlan_id)
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                if vlan_id in vlan:
+                if vlan_id in vlan_ids:
                     self._raise_duplicate_vlan_error(
-                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], vlan
-                    )
+                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], get_item(vlans, "id", vlan_id))
 
-                vlan = {
+                vlans.append({
                     "id": vlan_id,
                     "name": f"MLAG_iBGP_{vrf['name']}",
                     "trunk_groups": [self._trunk_groups_mlag_l3_name],
                     "tenant": tenant["name"],
-                }
-                vlans.append(vlan)
+                })
+
+                vlan_ids.append(vlan_id)
 
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
                 vlan_id = int(l2vlan["id"])
-                if vlan_id in vlan:
-                    self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], vlan)
+                if vlan_id in vlan_ids:
+                    self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], get_item(vlans, "id", vlan_id))
 
-                vlan = self._get_vlan_config(l2vlan, tenant)
-                vlans.append({"id": vlan_id, **vlan})
+                vlans.append({"id": vlan_id, **self._get_vlan_config(l2vlan, tenant)})
+
+                vlan_ids.append(vlan_id)
 
         if vlans:
             return vlans

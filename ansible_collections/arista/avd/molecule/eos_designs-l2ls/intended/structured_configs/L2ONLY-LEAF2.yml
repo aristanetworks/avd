@@ -61,8 +61,8 @@ port_channel_interfaces:
   vlans: '100'
   name: Port-Channel1
 vlans:
-- tenant: L2LS_L2ONLY
+- id: 100
   name: L2VLAN_100
-  id: 100
+  tenant: L2LS_L2ONLY
 ip_igmp_snooping:
   globally_enabled: true

@@ -83,8 +83,8 @@ port_channel_interfaces:
   vlans: '210'
   name: Port-Channel1
 vlans:
-- tenant: Tenant_A
+- id: 210
   name: Tenant_B_OP_Zone_1
-  id: 210
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true

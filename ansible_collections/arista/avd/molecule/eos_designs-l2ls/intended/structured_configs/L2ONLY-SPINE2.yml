@@ -24,9 +24,9 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: L2LS_L2ONLY
+- id: 100
   name: L2VLAN_100
-  id: 100
+  tenant: L2LS_L2ONLY
 vlan_interfaces:
 - description: MLAG_PEER
   shutdown: false

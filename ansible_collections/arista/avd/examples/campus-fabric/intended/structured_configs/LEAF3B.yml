@@ -56,15 +56,15 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: MY_FABRIC
+- id: 310
   name: IDF3-Data
-  id: 310
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 320
   name: IDF3-Voice
-  id: 320
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 330
   name: IDF3-Guest
-  id: 330
+  tenant: MY_FABRIC
 - tenant: system
   name: L2LEAF_INBAND_MGMT
   id: 10

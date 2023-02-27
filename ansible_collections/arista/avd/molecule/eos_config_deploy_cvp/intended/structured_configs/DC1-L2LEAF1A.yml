@@ -83,24 +83,24 @@ port_channel_interfaces:
   vlans: 110-111,120-121,130-131
   name: Port-Channel1
 vlans:
-- tenant: Tenant_A
+- id: 130
   name: Tenant_A_APP_Zone_1
-  id: 130
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 131
   name: Tenant_A_APP_Zone_2
-  id: 131
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: Tenant_A_OP_Zone_2
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 120
   name: Tenant_A_WEB_Zone_1
-  id: 120
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 121
   name: Tenant_A_WEBZone_2
-  id: 121
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
   vlans:

@@ -147,14 +147,14 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: Tenant_A
+- id: 210
   name: Tenant_B_OP_Zone_1
-  id: 210
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3019
+  tenant: Tenant_A
 vlan_interfaces:
 - description: MLAG_PEER
   shutdown: false
