@@ -93,10 +93,3 @@ keys:
             required: true
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements)
-  management_protocols:
-    type: dict
-    documentation_options:
-      filename: Test
-    keys:
-      snmp:
-        $ref: eos_cli_config_gen#/keys/snmp_server

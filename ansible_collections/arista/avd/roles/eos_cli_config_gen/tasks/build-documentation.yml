@@ -30,7 +30,7 @@
     src: avd_schema_documentation.j2
     dest: "{{ role_documentation_dir ~ '/' ~ documentation_file.filename ~ '.md'  }}"
     mode: 0664
-  loop: "{{ lookup('arista.avd.convert_to_documentation_schema', role_name) }}"
+  loop: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
   loop_control:
     loop_var: documentation_file
     label: "{{ documentation_file.filename }}"

@@ -29,6 +29,6 @@
   tags: [eos_cli_config_gen]
   run_once: true
   ansible.builtin.copy:
-    content: "{{ lookup('arista.avd.convert_to_jsonschema', role_name) | to_nice_json(indent=2, sort_keys=false) }}"
+    content: "{{ role_name | arista.avd.convert_schema(type='jsonschema') | to_nice_json(indent=2, sort_keys=false) }}"
     dest: "{{ role_schema_json_schema_path }}"
     mode: 0664
