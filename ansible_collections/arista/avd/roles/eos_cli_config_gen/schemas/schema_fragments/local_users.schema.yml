@@ -50,6 +50,6 @@ keys:
           description: |
             Specify shell for the user
           valid_values:
-            - /bin/bash
-            - /bin/sh
-            - /sbin/nologin
+          - /bin/bash
+          - /bin/sh
+          - /sbin/nologin
