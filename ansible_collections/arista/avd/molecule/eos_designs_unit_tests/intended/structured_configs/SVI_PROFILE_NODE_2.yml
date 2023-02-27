@@ -115,60 +115,60 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: svi_profile_tests
+- id: 110
   name: svi_profile_tests_110_description
-  id: 110
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 111
   name: svi_profile_tests_111_description
-  id: 111
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 112
   name: svi_profile_tests_112_description
-  id: 112
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 113
   name: svi_profile_tests_113_description
-  id: 113
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 114
   name: svi_profile_tests_114_description
-  id: 114
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 115
   name: svi_profile_tests_115_description
-  id: 115
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 210
   name: igmp_snooping_enabled_210
-  id: 210
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 211
   name: igmp_snooping_enabled_211
-  id: 211
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 212
   name: igmp_snooping_enabled_212
-  id: 212
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 310
   name: vxlan_disabled_310
-  id: 310
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 311
   name: vxlan_disabled_311
-  id: 311
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 312
   name: vxlan_disabled_312
-  id: 312
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 410
   name: static_routes_410
-  id: 410
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 411
   name: static_routes_411
-  id: 411
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 412
   name: static_routes_412
-  id: 412
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 510
   name: ospf_enabled_510
-  id: 510
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 511
   name: ospf_enabled_511
-  id: 511
-- tenant: svi_profile_tests
+  tenant: svi_profile_tests
+- id: 512
   name: ospf_enabled_512
-  id: 512
+  tenant: svi_profile_tests
 ip_igmp_snooping:
   globally_enabled: true
   vlans:

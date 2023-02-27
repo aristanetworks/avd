@@ -59,23 +59,23 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: TEST
+- id: 3900
   name: SVI_ON_ALL_LEAFS
-  id: 3900
-- tenant: TEST
+  tenant: TEST
+- id: 3903
   name: SVI_ON_LEAF2-3
-  id: 3903
-- tenant: TEST
+  tenant: TEST
+- id: 3000
   name: MLAG_iBGP_TEST
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3000
-- tenant: TEST
+  tenant: TEST
+- id: 2900
   name: L2VLAN_ON_ALL_LEAFS
-  id: 2900
-- tenant: TEST
+  tenant: TEST
+- id: 2903
   name: L2VLAN_ON_LEAF2-3
-  id: 2903
+  tenant: TEST
 vlan_interfaces:
 - description: MLAG_PEER_L3_PEERING
   shutdown: false

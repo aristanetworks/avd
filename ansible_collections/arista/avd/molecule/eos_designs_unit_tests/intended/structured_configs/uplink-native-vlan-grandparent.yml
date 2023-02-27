@@ -32,8 +32,8 @@ port_channel_interfaces:
   vlans: '100'
   name: Port-Channel1
 vlans:
-- tenant: test
+- id: 100
   name: NETWORK_SERVICES_VLAN
-  id: 100
+  tenant: test
 ip_igmp_snooping:
   globally_enabled: true

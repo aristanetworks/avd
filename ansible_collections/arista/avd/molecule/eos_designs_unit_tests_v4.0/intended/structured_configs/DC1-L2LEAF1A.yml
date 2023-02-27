@@ -62,38 +62,33 @@ management_api_http:
   enable_https: true
   default_services: false
 vlans:
-  4091:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
-  130:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_1
-  131:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_2
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
-  120:
-    tenant: Tenant_A
-    name: Tenant_A_WEB_Zone_1
-  121:
-    tenant: Tenant_A
-    name: Tenant_A_WEBZone_2
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
+- id: 130
+  name: Tenant_A_APP_Zone_1
+  tenant: Tenant_A
+- id: 131
+  name: Tenant_A_APP_Zone_2
+  tenant: Tenant_A
+- id: 110
+  name: Tenant_A_OP_Zone_1
+  tenant: Tenant_A
+- id: 111
+  name: Tenant_A_OP_Zone_2
+  tenant: Tenant_A
+- id: 112
+  name: Tenant_A_OP_Zone_3
+  tenant: Tenant_A
+- id: 120
+  name: Tenant_A_WEB_Zone_1
+  tenant: Tenant_A
+- id: 121
+  name: Tenant_A_WEBZone_2
+  tenant: Tenant_A
+- id: 160
+  name: Tenant_A_VMOTION
+  tenant: Tenant_A
+- id: 161
+  name: Tenant_A_NFS
+  tenant: Tenant_A
 vlan_interfaces:
   Vlan4091:
     description: MLAG_PEER

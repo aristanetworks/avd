@@ -95,8 +95,8 @@ port_channel_interfaces:
       direction: upstream
     vlans: '310'
 vlans:
-  310:
-    tenant: Tenant_X
-    name: Tenant_X_OP_Zone_1
+- id: 310
+  name: Tenant_X_OP_Zone_1
+  tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true

@@ -15,7 +15,7 @@ class VlansMixin(UtilsMixin):
     """
 
     @cached_property
-    def vlans(self) -> dict | None:
+    def vlans(self) -> list | None:
         """
         Return structured config for vlans.
 
@@ -28,39 +28,44 @@ class VlansMixin(UtilsMixin):
         if not self._network_services_l2:
             return None
 
-        vlans = {}
+        vlans = []
+        vlan = {}
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
-                    if vlan_id in vlans:
-                        self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], vlans[vlan_id])
+                    if vlan_id in vlan:
+                        self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], vlan)
 
-                    vlans[vlan_id] = self._get_vlan_config(svi, tenant)
+                    vlan = self._get_vlan_config(svi, tenant)
+                    vlans.append(dict(id=vlan_id,**vlan))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                if vlan_id in vlans:
+                if vlan_id in vlan:
                     self._raise_duplicate_vlan_error(
-                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], vlans[vlan_id]
+                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], vlan
                     )
 
-                vlans[vlan_id] = {
-                    "tenant": tenant["name"],
+                vlan = {
+                    "id":vlan_id,
                     "name": f"MLAG_iBGP_{vrf['name']}",
                     "trunk_groups": [self._trunk_groups_mlag_l3_name],
+                    "tenant": tenant["name"],
                 }
+                vlans.append(vlan)
 
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
                 vlan_id = int(l2vlan["id"])
-                if vlan_id in vlans:
-                    self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], vlans[vlan_id])
+                if vlan_id in vlan:
+                    self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], vlan)
 
-                vlans[vlan_id] = self._get_vlan_config(l2vlan, tenant)
+                vlan = self._get_vlan_config(l2vlan, tenant)
+                vlans.append(dict(id=vlan_id,**vlan))
 
         if vlans:
             return vlans
@@ -74,8 +79,8 @@ class VlansMixin(UtilsMixin):
         Can be used for svis and l2vlans
         """
         vlans_vlan = {
-            "tenant": tenant["name"],
             "name": vlan["name"],
+            "tenant": tenant["name"],
         }
         if self._enable_trunk_groups:
             trunk_groups = vlan.get("trunk_groups", [])

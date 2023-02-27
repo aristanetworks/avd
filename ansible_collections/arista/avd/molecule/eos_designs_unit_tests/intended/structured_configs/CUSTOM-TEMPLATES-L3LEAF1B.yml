@@ -119,14 +119,14 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: CUSTOM_TEMPLATES_TENANT
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: CUSTOM_TEMPLATES_TENANT
+  tenant: CUSTOM_TEMPLATES_TENANT
+- id: 3000
   name: MLAG_iBGP_TEST_VRF
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3000
+  tenant: CUSTOM_TEMPLATES_TENANT
 vlan_interfaces:
 - description: MLAG_PEER_L3_PEERING
   shutdown: false
