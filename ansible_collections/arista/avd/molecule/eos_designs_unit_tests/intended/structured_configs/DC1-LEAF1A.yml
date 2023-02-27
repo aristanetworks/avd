@@ -309,30 +309,30 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 130
   name: Tenant_A_APP_Zone_1
-  id: 130
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 131
   name: Tenant_A_APP_Zone_2
-  id: 131
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 132
   name: Tenant_A_APP_Zone_3
-  id: 132
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 120
   name: Tenant_A_WEB_Zone_1
-  id: 120
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 121
   name: Tenant_A_WEBZone_2
-  id: 121
-- tenant: Tenant_D
+  tenant: Tenant_A
+- id: 450
   name: Tenant_D_v6_WAN_Zone_1
-  id: 450
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 451
   name: Tenant_D_v6_WAN_Zone_2
-  id: 451
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 452
   name: Tenant_D_v6_WAN_Zone_3
-  id: 452
+  tenant: Tenant_D
 ip_igmp_snooping:
   globally_enabled: true
   vlans:

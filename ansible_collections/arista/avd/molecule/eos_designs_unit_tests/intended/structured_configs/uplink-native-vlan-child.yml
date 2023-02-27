@@ -16,9 +16,9 @@ vlans:
 - name: NATIVE
   state: suspend
   id: 200
-- tenant: test
+- id: 100
   name: NETWORK_SERVICES_VLAN
-  id: 100
+  tenant: test
 ethernet_interfaces:
 - peer: uplink-native-vlan-parent
   peer_interface: Ethernet2

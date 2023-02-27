@@ -15,7 +15,7 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
     loopback_interfaces: dict
 
     @cached_property
-    def virtual_source_nat_vrfs(self) -> dict | None:
+    def virtual_source_nat_vrfs(self) -> list | None:
         """
         Return structured config for virtual_source_nat_vrfs
 
@@ -28,12 +28,14 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
         if (loopback_interfaces := self.loopback_interfaces) is None:
             return None
 
-        virtual_source_nat_vrfs = {}
+        virtual_source_nat_vrfs = []
         for loopback_interface in loopback_interfaces.values():
-            vrf_name = loopback_interface["vrf"]
-            virtual_source_nat_vrfs[vrf_name] = {
-                "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
-            }
+            virtual_source_nat_vrfs.append(
+                {
+                    "name": loopback_interface["vrf"],
+                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
+                }
+            )
 
         if virtual_source_nat_vrfs:
             return virtual_source_nat_vrfs

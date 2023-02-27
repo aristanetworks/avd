@@ -758,102 +758,102 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 310
   name: MULTICAST_DISABLED_310
-  id: 310
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 311
   name: MULTICAST_DISABLED_311
-  id: 311
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 110
   name: MULTICAST_ENABLED_110
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: MULTICAST_ENABLED_111
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 210
   name: MULTICAST_ENABLED_210
-  id: 210
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 211
   name: MULTICAST_DISABLED_211
-  id: 211
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 256
   name: MULTICAST_DISABLED_256
-  id: 256
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 257
   name: MULTICAST_ENABLED_257
-  id: 257
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 4092
   name: MULTICAST_ENABLED_4092
-  id: 4092
-- tenant: Tenant_B
+  tenant: Tenant_A
+- id: 5
   name: MULTICAST_DISABLED_5
-  id: 5
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 6
   name: MULTICAST_DISABLED_6
-  id: 6
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 1
   name: MULTICAST_ENABLED_1
-  id: 1
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 2
   name: MULTICAST_ENABLED_2
-  id: 2
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 3
   name: MULTICAST_ENABLED_3
-  id: 3
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 4
   name: MULTICAST_DISABLED_4
-  id: 4
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 7
   name: MULTICAST_DISABLED_7
-  id: 7
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 8
   name: MULTICAST_ENABLED_8
-  id: 8
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 9
   name: MULTICAST_ENABLED_9
-  id: 9
-- tenant: Tenant_C
+  tenant: Tenant_B
+- id: 330
   name: L3_MULTICAST_DISABLED_330
-  id: 330
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 331
   name: L3_MULTICAST_DISABLED_331
-  id: 331
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 130
   name: L3_MULTICAST_ENABLED_130
-  id: 130
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 131
   name: L3_MULTICAST_ENABLED_131
-  id: 131
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 230
   name: L3_MULTICAST_ENABLED_230
-  id: 230
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 231
   name: L3_MULTICAST_DISABLED_231
-  id: 231
-- tenant: Tenant_D
+  tenant: Tenant_C
+- id: 240
   name: L3_MULTICAST_DISABLED_240
-  id: 240
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 241
   name: L3_MULTICAST_DISABLED_241
-  id: 241
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 140
   name: L3_MULTICAST_ENABLED_140
-  id: 140
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 141
   name: L3_MULTICAST_DISABLED_141
-  id: 141
-- tenant: Tenant_E
+  tenant: Tenant_D
+- id: 550
   name: L3_MULTICAST_ENABLED_550
-  id: 550
-- tenant: Tenant_E
+  tenant: Tenant_E
+- id: 260
   name: L3_MULTICAST_ENABLED_260
-  id: 260
-- tenant: Tenant_E
+  tenant: Tenant_E
+- id: 250
   name: L3_MULTICAST_ENABLED_250
-  id: 250
-- tenant: Tenant_E
+  tenant: Tenant_E
+- id: 150
   name: L3_MULTICAST_ENABLED_150
-  id: 150
+  tenant: Tenant_E
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -1263,24 +1263,24 @@ vxlan_interface:
         multicast_group: 232.0.96.50
         name: TEN_E_PEG_L3_MULTICAST_ENABLED
 virtual_source_nat_vrfs:
-- ip_address: 10.255.3.6
-  name: TEN_C_L3_MULTICAST_DISABLED_330_331
-- ip_address: 10.255.1.6
-  name: TEN_C_L3_MULTICAST_ENABLED_130_131
-- ip_address: 10.255.2.6
-  name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-- ip_address: 10.255.42.6
-  name: TEN_D_L3_MULTICAST_DISABLED_240_241
-- ip_address: 10.255.41.6
-  name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-- ip_address: 10.255.55.6
-  name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-- ip_address: 10.255.60.6
-  name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-- ip_address: 10.255.52.6
-  name: TEN_E_L3_MULTICAST_TRANSIT
-- ip_address: 10.255.51.6
-  name: TEN_E_PEG_L3_MULTICAST_ENABLED
+- name: TEN_C_L3_MULTICAST_DISABLED_330_331
+  ip_address: 10.255.3.6
+- name: TEN_C_L3_MULTICAST_ENABLED_130_131
+  ip_address: 10.255.1.6
+- name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+  ip_address: 10.255.2.6
+- name: TEN_D_L3_MULTICAST_DISABLED_240_241
+  ip_address: 10.255.42.6
+- name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+  ip_address: 10.255.41.6
+- name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+  ip_address: 10.255.55.6
+- name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+  ip_address: 10.255.60.6
+- name: TEN_E_L3_MULTICAST_TRANSIT
+  ip_address: 10.255.52.6
+- name: TEN_E_PEG_L3_MULTICAST_ENABLED
+  ip_address: 10.255.51.6
 router_pim_sparse_mode:
   vrfs:
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE

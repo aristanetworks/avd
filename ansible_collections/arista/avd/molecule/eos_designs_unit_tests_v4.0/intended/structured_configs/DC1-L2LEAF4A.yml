@@ -89,33 +89,33 @@ port_channel_interfaces:
     mode: trunk
     vlans: 110-112,120-121,130-131,160-161
 vlans:
-  130:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_1
-  131:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_2
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
-  120:
-    tenant: Tenant_A
-    name: Tenant_A_WEB_Zone_1
-  121:
-    tenant: Tenant_A
-    name: Tenant_A_WEBZone_2
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
+- id: 130
+  name: Tenant_A_APP_Zone_1
+  tenant: Tenant_A
+- id: 131
+  name: Tenant_A_APP_Zone_2
+  tenant: Tenant_A
+- id: 110
+  name: Tenant_A_OP_Zone_1
+  tenant: Tenant_A
+- id: 111
+  name: Tenant_A_OP_Zone_2
+  tenant: Tenant_A
+- id: 112
+  name: Tenant_A_OP_Zone_3
+  tenant: Tenant_A
+- id: 120
+  name: Tenant_A_WEB_Zone_1
+  tenant: Tenant_A
+- id: 121
+  name: Tenant_A_WEBZone_2
+  tenant: Tenant_A
+- id: 160
+  name: Tenant_A_VMOTION
+  tenant: Tenant_A
+- id: 161
+  name: Tenant_A_NFS
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
