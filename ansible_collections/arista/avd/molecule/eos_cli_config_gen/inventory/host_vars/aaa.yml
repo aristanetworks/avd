@@ -38,27 +38,27 @@ radius_server:
     port: 1700
     tls_ssl_profile: SSL_PROFILE
   hosts:
-    - host: 10.10.10.157
+    - host: 10.10.11.157
       vrf: mgt
       timeout: 1
       retransmit: 1
       key: 071B245F5A
-    - host: 10.10.10.159
+    - host: 10.10.11.159
       vrf: mgt
       retransmit: 1
       key: 071B245F5A
-    - host: 10.10.10.160
+    - host: 10.10.11.160
       vrf: mgt
       timeout: 1
       key: 071B245F5A
-    - host: 10.10.10.248
+    - host: 10.10.11.248
       vrf: mgt
       key: 071B245F5A
-    - host: 10.10.10.249
+    - host: 10.10.11.249
       timeout: 1
       retransmit: 1
       key: 071B245F5A
-    - host: 10.10.10.158
+    - host: 10.10.11.158
       vrf: default
       timeout: 1
       retransmit: 1
