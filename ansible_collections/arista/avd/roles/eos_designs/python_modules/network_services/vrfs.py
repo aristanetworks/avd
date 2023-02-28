@@ -4,6 +4,7 @@ from functools import cached_property
 from typing import NoReturn
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_item
 
 from .utils import UtilsMixin
 
@@ -29,15 +30,17 @@ class VrfsMixin(UtilsMixin):
             return None
 
         vrfs = []
-        new_vrf = {}
+        vrf_names = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
                 if vrf_name == "default":
                     continue
 
-                if new_vrf and vrf_name in new_vrf["name"]:
-                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], new_vrf)
+                if vrf_name in vrf_names:
+                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], get_item(vrfs, "name", vrf_name))
+
+                vrf_names.append(vrf_name)
 
                 new_vrf = {
                     "name": vrf_name,
