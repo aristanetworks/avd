@@ -135,7 +135,7 @@ vlan_interfaces:
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         vrf: TEST
-        local_interface: Loopback43
+        local_interface: Loopback44
         link_address: a0::4
 
   Vlan44:
