@@ -126,6 +126,10 @@ class UtilsMixin:
         return get(self._hostvars, "underlay_filter_peer_as") is True
 
     @cached_property
+    def _underlay_filter_redistribute_connected(self) -> bool:
+        return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True
+
+    @cached_property
     def _underlay_filter_peer_as_route_maps_asns(self) -> list:
         """
         Filtered ASNs

@@ -22,8 +22,7 @@ router_bgp:
     - activate: false
       name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'

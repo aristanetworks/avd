@@ -184,6 +184,11 @@ evpn_import_pruning: < true | false | default -> false >
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
 evpn_prevent_readvertise_to_server: < true | false | default -> false >
 
+# Filter redistribution of connected into underlay routing protocol.
+# Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.
+# Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.
+underlay_filter_redistribute_connected: < true | false | default -> true >
+
 # Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
 # This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
 # all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
