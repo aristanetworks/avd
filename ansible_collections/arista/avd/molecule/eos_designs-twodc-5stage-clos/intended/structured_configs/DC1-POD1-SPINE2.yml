@@ -18,8 +18,7 @@ router_bgp:
     - activate: true
       name: IPv4-UNDERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'

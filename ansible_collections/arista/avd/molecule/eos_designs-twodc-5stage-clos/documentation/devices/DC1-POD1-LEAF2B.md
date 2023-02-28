@@ -39,7 +39,6 @@
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -948,7 +947,7 @@ router bgp 65112.100
    neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.2 description DC1.POD1.LEAF2A
    redistribute attached-host
-   redistribute connected route-map RM-CONN-2-BGP
+   redistribute connected
    !
    vlan 110
       rd 172.16.110.5:99110
@@ -1095,45 +1094,9 @@ router bfd
 
 # Filters
 
-## Prefix-lists
-
-### Prefix-lists Summary
-
-#### PL-L2LEAF-INBAND-MGMT
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.21.110.0/24 |
-
-#### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.16.110.0/24 eq 32 |
-| 20 | permit 172.18.110.0/24 eq 32 |
-
-### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-L2LEAF-INBAND-MGMT
-   seq 10 permit 172.21.110.0/24
-!
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 172.16.110.0/24 eq 32
-   seq 20 permit 172.18.110.0/24 eq 32
-```
-
 ## Route-maps
 
 ### Route-maps Summary
-
-#### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
-| 20 | permit | ip address prefix-list PL-L2LEAF-INBAND-MGMT | - | - | - |
 
 #### RM-EVPN-FILTER-AS65101
 
@@ -1165,12 +1128,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ### Route-maps Device Configuration
 
 ```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-!
-route-map RM-CONN-2-BGP permit 20
-   match ip address prefix-list PL-L2LEAF-INBAND-MGMT
 !
 route-map RM-EVPN-FILTER-AS65101 deny 10
    match as 65101
