@@ -605,13 +605,13 @@ vrfs:
   ip_routing: true
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.106/24
   gateway: 192.168.200.1
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -1417,118 +1417,118 @@ vxlan_interface:
       mlag_source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - vni: 10310
-        id: 310
-      - vni: 10311
-        id: 311
-      - vni: 10110
+      - id: 310
+        vni: 10310
+      - id: 311
+        vni: 10311
+      - id: 110
+        vni: 10110
         multicast_group: 232.0.0.109
-        id: 110
-      - vni: 10111
+      - id: 111
+        vni: 10111
         multicast_group: 232.0.0.110
-        id: 111
-      - vni: 10210
+      - id: 210
+        vni: 10210
         multicast_group: 232.0.0.209
-        id: 210
-      - vni: 10211
-        id: 211
-      - vni: 10256
-        id: 256
-      - vni: 10257
+      - id: 211
+        vni: 10211
+      - id: 256
+        vni: 10256
+      - id: 257
+        vni: 10257
         multicast_group: 232.0.1.0
-        id: 257
-      - vni: 14092
+      - id: 4092
+        vni: 14092
         multicast_group: 232.0.15.251
-        id: 4092
-      - vni: 10005
-        id: 5
-      - vni: 10006
-        id: 6
-      - vni: 10001
+      - id: 5
+        vni: 10005
+      - id: 6
+        vni: 10006
+      - id: 1
+        vni: 10001
         multicast_group: 232.0.16.1
-        id: 1
-      - vni: 10002
+      - id: 2
+        vni: 10002
         multicast_group: 232.0.16.2
-        id: 2
-      - vni: 10003
+      - id: 3
+        vni: 10003
         multicast_group: 232.0.16.3
-        id: 3
-      - vni: 10004
-        id: 4
-      - vni: 10007
-        id: 7
-      - vni: 10008
+      - id: 4
+        vni: 10004
+      - id: 7
+        vni: 10007
+      - id: 8
+        vni: 10008
         multicast_group: 232.0.16.8
-        id: 8
-      - vni: 10009
+      - id: 9
+        vni: 10009
         multicast_group: 232.0.16.9
-        id: 9
-      - vni: 10330
-        id: 330
-      - vni: 10331
-        id: 331
-      - vni: 10130
-        id: 130
-      - vni: 10131
-        id: 131
-      - vni: 10230
-        id: 230
-      - vni: 10231
-        id: 231
-      - vni: 10240
-        id: 240
-      - vni: 10241
-        id: 241
-      - vni: 10140
-        id: 140
-      - vni: 10141
-        id: 141
-      - vni: 10550
-        id: 550
-      - vni: 10260
-        id: 260
-      - vni: 10250
-        id: 250
-      - vni: 10150
-        id: 150
+      - id: 330
+        vni: 10330
+      - id: 331
+        vni: 10331
+      - id: 130
+        vni: 10130
+      - id: 131
+        vni: 10131
+      - id: 230
+        vni: 10230
+      - id: 231
+        vni: 10231
+      - id: 240
+        vni: 10240
+      - id: 241
+        vni: 10241
+      - id: 140
+        vni: 10140
+      - id: 141
+        vni: 10141
+      - id: 550
+        vni: 10550
+      - id: 260
+        vni: 10260
+      - id: 250
+        vni: 10250
+      - id: 150
+        vni: 10150
       vrfs:
-      - vni: 13
-        name: MULTICAST_DISABLED_310_311
-      - vni: 11
-        name: MULTICAST_ENABLED_110_111
-      - vni: 12
-        name: MULTICAST_ENABLED_210_DISABLED_211
-      - vni: 23
-        name: MULTICAST_DISABLED_5_6
-      - vni: 21
-        name: MULTICAST_ENABLED_1_2
-      - vni: 22
-        name: MULTICAST_ENABLED_3_DISABLED_4
-      - vni: 33
-        name: TEN_C_L3_MULTICAST_DISABLED_330_331
-      - vni: 31
+      - name: MULTICAST_DISABLED_310_311
+        vni: 13
+      - name: MULTICAST_ENABLED_110_111
+        vni: 11
+      - name: MULTICAST_ENABLED_210_DISABLED_211
+        vni: 12
+      - name: MULTICAST_DISABLED_5_6
+        vni: 23
+      - name: MULTICAST_ENABLED_1_2
+        vni: 21
+      - name: MULTICAST_ENABLED_3_DISABLED_4
+        vni: 22
+      - name: TEN_C_L3_MULTICAST_DISABLED_330_331
+        vni: 33
+      - name: TEN_C_L3_MULTICAST_ENABLED_130_131
+        vni: 31
         multicast_group: 232.0.32.31
-        name: TEN_C_L3_MULTICAST_ENABLED_130_131
-      - vni: 32
+      - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+        vni: 32
         multicast_group: 232.0.32.32
-        name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-      - vni: 42
-        name: TEN_D_L3_MULTICAST_DISABLED_240_241
-      - vni: 41
+      - name: TEN_D_L3_MULTICAST_DISABLED_240_241
+        vni: 42
+      - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+        vni: 41
         multicast_group: 232.0.64.40
-        name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-      - vni: 55
+      - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+        vni: 55
         multicast_group: 232.0.96.54
-        name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-      - vni: 60
+      - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+        vni: 60
         multicast_group: 232.0.96.59
-        name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-      - vni: 52
+      - name: TEN_E_L3_MULTICAST_TRANSIT
+        vni: 52
         multicast_group: 232.0.96.51
-        name: TEN_E_L3_MULTICAST_TRANSIT
-      - vni: 51
+      - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+        vni: 51
         multicast_group: 232.0.96.50
-        name: TEN_E_PEG_L3_MULTICAST_ENABLED
 virtual_source_nat_vrfs:
 - ip_address: 10.255.3.4
   name: TEN_C_L3_MULTICAST_DISABLED_330_331

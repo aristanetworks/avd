@@ -209,13 +209,13 @@ vrfs:
   tenant: Tenant_C
   ip_routing: true
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.117/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.117/24
+  gateway: 192.168.200.5
+  type: oob
 tcam_profile:
   system: vxlan-routing
 platform:
@@ -346,18 +346,18 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-        150:
-          vni: 10150
-        250:
-          vni: 20250
-        350:
-          vni: 30350
+      - id: 150
+        vni: 10150
+      - id: 250
+        vni: 20250
+      - id: 350
+        vni: 30350
       vrfs:
-        Tenant_A_WAN_Zone:
-          vni: 14
-        Tenant_B_OP_Zone:
-          vni: 20
-        Tenant_B_WAN_Zone:
-          vni: 21
-        Tenant_C_WAN_Zone:
-          vni: 31
+      - name: Tenant_A_WAN_Zone
+        vni: 14
+      - name: Tenant_B_OP_Zone
+        vni: 20
+      - name: Tenant_B_WAN_Zone
+        vni: 21
+      - name: Tenant_C_WAN_Zone
+        vni: 31

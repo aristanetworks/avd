@@ -320,36 +320,36 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10110
-        id: 110
-      - vni: 10111
-        id: 111
-      - vni: 10112
-        id: 112
-      - vni: 10113
-        id: 113
-      - vni: 10114
-        id: 114
-      - vni: 10115
-        id: 115
-      - vni: 10210
-        id: 210
-      - vni: 10211
-        id: 211
-      - vni: 10212
-        id: 212
-      - vni: 10410
-        id: 410
-      - vni: 10411
-        id: 411
-      - vni: 10412
-        id: 412
-      - vni: 10510
-        id: 510
-      - vni: 10511
-        id: 511
-      - vni: 10512
-        id: 512
+      - id: 110
+        vni: 10110
+      - id: 111
+        vni: 10111
+      - id: 112
+        vni: 10112
+      - id: 113
+        vni: 10113
+      - id: 114
+        vni: 10114
+      - id: 115
+        vni: 10115
+      - id: 210
+        vni: 10210
+      - id: 211
+        vni: 10211
+      - id: 212
+        vni: 10212
+      - id: 410
+        vni: 10410
+      - id: 411
+        vni: 10411
+      - id: 412
+        vni: 10412
+      - id: 510
+        vni: 10510
+      - id: 511
+        vni: 10511
+      - id: 512
+        vni: 10512
       vrfs:
-      - vni: 1
-        name: svi_profile_tests_vrf
+      - name: svi_profile_tests_vrf
+        vni: 1

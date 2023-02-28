@@ -606,67 +606,67 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-        130:
-          vni: 10130
-        131:
-          vni: 10131
-        132:
-          vni: 10132
-        140:
-          vni: 10140
-        141:
-          vni: 10141
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 10112
-        150:
-          vni: 10150
-        151:
-          vni: 10151
-        120:
-          vni: 10120
-        121:
-          vni: 10121
-        160:
-          vni: 10160
-        161:
-          vni: 10161
-        162:
-          vni: 10162
-        210:
-          vni: 20210
-        211:
-          vni: 20211
-        250:
-          vni: 20250
-        310:
-          vni: 30310
-        311:
-          vni: 30311
-        350:
-          vni: 30350
+      - id: 130
+        vni: 10130
+      - id: 131
+        vni: 10131
+      - id: 132
+        vni: 10132
+      - id: 140
+        vni: 10140
+      - id: 141
+        vni: 10141
+      - id: 110
+        vni: 10110
+      - id: 111
+        vni: 50111
+      - id: 112
+        vni: 10112
+      - id: 150
+        vni: 10150
+      - id: 151
+        vni: 10151
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
+      - id: 160
+        vni: 10160
+      - id: 161
+        vni: 10161
+      - id: 162
+        vni: 10162
+      - id: 210
+        vni: 20210
+      - id: 211
+        vni: 20211
+      - id: 250
+        vni: 20250
+      - id: 310
+        vni: 30310
+      - id: 311
+        vni: 30311
+      - id: 350
+        vni: 30350
       vrfs:
-        Tenant_A_APP_Zone:
-          vni: 12
-        Tenant_A_DB_Zone:
-          vni: 13
-        Tenant_A_OP_Zone:
-          vni: 10
-        Tenant_A_WAN_Zone:
-          vni: 14
-        Tenant_A_WEB_Zone:
-          vni: 11
-        Tenant_B_OP_Zone:
-          vni: 20
-        Tenant_B_WAN_Zone:
-          vni: 21
-        Tenant_C_OP_Zone:
-          vni: 30
-        Tenant_C_WAN_Zone:
-          vni: 31
+      - name: Tenant_A_APP_Zone
+        vni: 12
+      - name: Tenant_A_DB_Zone
+        vni: 13
+      - name: Tenant_A_OP_Zone
+        vni: 10
+      - name: Tenant_A_WAN_Zone
+        vni: 14
+      - name: Tenant_A_WEB_Zone
+        vni: 11
+      - name: Tenant_B_OP_Zone
+        vni: 20
+      - name: Tenant_B_WAN_Zone
+        vni: 21
+      - name: Tenant_C_OP_Zone
+        vni: 30
+      - name: Tenant_C_WAN_Zone
+        vni: 31
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.109

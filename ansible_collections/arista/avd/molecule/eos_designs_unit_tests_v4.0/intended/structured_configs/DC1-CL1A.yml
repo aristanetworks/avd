@@ -227,13 +227,13 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-  Management0:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.119/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.119/24
+  gateway: 192.168.200.5
+  type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -443,39 +443,39 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-        130:
-          vni: 10130
-        131:
-          vni: 10131
-        140:
-          vni: 10140
-        141:
-          vni: 10141
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 10112
-        150:
-          vni: 10150
-        120:
-          vni: 10120
-        121:
-          vni: 10121
-        160:
-          vni: 10160
-        161:
-          vni: 10161
-        210:
-          vni: 20210
-        211:
-          vni: 20211
-        250:
-          vni: 20250
-        310:
-          vni: 30310
-        311:
-          vni: 30311
-        350:
-          vni: 30350
+      - id: 130
+        vni: 10130
+      - id: 131
+        vni: 10131
+      - id: 140
+        vni: 10140
+      - id: 141
+        vni: 10141
+      - id: 110
+        vni: 10110
+      - id: 111
+        vni: 50111
+      - id: 112
+        vni: 10112
+      - id: 150
+        vni: 10150
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
+      - id: 160
+        vni: 10160
+      - id: 161
+        vni: 10161
+      - id: 210
+        vni: 20210
+      - id: 211
+        vni: 20211
+      - id: 250
+        vni: 20250
+      - id: 310
+        vni: 30310
+      - id: 311
+        vni: 30311
+      - id: 350
+        vni: 30350

@@ -67,12 +67,13 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def management_interfaces(self) -> dict | None:
+    def management_interfaces(self) -> list | None:
         if self._inband_management_role != "child":
             return None
 
-        return {
-            self._inband_management_interface: {
+        return [
+            {
+                "name": self._inband_management_interface,
                 "description": "L2LEAF_INBAND_MGMT",
                 "shutdown": False,
                 "mtu": self._p2p_uplinks_mtu,
@@ -80,10 +81,10 @@ class AvdStructuredConfig(AvdFacts):
                 "gateway": self._inband_management_gateway,
                 "type": "inband",
             }
-        }
+        ]
 
     @cached_property
-    def static_routes(self) -> dict | None:
+    def static_routes(self) -> list | None:
         if self._inband_management_role != "child":
             return None
 

@@ -27,20 +27,20 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.1.23/24
   gateway: 192.168.1.254
   type: oob
-  name: Management1
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan4092
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.210.4/24
   gateway: 172.21.210.1
   type: inband
-  name: Vlan4092
 management_api_http:
   enable_vrfs:
   - name: MGMT

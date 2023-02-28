@@ -177,13 +177,13 @@ vrfs:
   tenant: Tenant_A
   ip_routing: true
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.105/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.105/24
+  gateway: 192.168.200.5
+  type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -376,18 +376,18 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-        130:
-          vni: 10130
-        131:
-          vni: 10131
-        132:
-          vni: 10132
-        120:
-          vni: 10120
-        121:
-          vni: 10121
+      - id: 130
+        vni: 10130
+      - id: 131
+        vni: 10131
+      - id: 132
+        vni: 10132
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
       vrfs:
-        Tenant_A_APP_Zone:
-          vni: 12
-        Tenant_A_WEB_Zone:
-          vni: 11
+      - name: Tenant_A_APP_Zone
+        vni: 12
+      - name: Tenant_A_WEB_Zone
+        vni: 11

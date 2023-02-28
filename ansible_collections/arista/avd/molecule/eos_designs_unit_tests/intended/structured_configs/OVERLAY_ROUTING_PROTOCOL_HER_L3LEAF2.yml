@@ -110,29 +110,29 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 13900
+      - id: 3900
+        vni: 13900
         flood_vteps:
         - 192.168.253.1
         - 192.168.253.3
-        id: 3900
-      - vni: 13902
+      - id: 3902
+        vni: 13902
         flood_vteps:
         - 192.168.253.1
-        id: 3902
-      - vni: 13903
+      - id: 3903
+        vni: 13903
         flood_vteps:
         - 192.168.253.3
-        id: 3903
-      - vni: 12900
+      - id: 2900
+        vni: 12900
         flood_vteps:
         - 192.168.253.1
         - 192.168.253.3
-        id: 2900
-      - vni: 12902
+      - id: 2902
+        vni: 12902
         flood_vteps:
         - 192.168.253.1
-        id: 2902
-      - vni: 12903
+      - id: 2903
+        vni: 12903
         flood_vteps:
         - 192.168.253.3
-        id: 2903
