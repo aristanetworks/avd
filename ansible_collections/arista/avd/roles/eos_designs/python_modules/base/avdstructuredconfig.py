@@ -28,6 +28,13 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "mgmt_gateway")
 
     @cached_property
+    def _ipv6_mgmt_gateway(self):
+        """
+        Returns the value for ipv6_mgmt_gateway variable used in ipv6_static_routes and management_interfaces data-models
+        """
+        return get(self._hostvars, "ipv6_mgmt_gateway")
+
+    @cached_property
     def _platform_settings(self):
         """
         Returns the value for switch.platform_settings fact used in queue_monitor_length, tcam_profile, platform
@@ -41,6 +48,22 @@ class AvdStructuredConfig(AvdFacts):
         Returns the value for switch.mgmt_ip fact used in snmp_server and management_interfaces data-models
         """
         return get(self._hostvars, "switch.mgmt_ip")
+
+    @cached_property
+    def _ipv6_mgmt_ip(self):
+        """
+        Returns the value for switch.ipv6_mgmt_ip fact used in management_interfaces data-models
+        """
+        return get(self._hostvars, "switch.ipv6_mgmt_ip")
+
+    @cached_property
+    def _mgmt_ipv6_enable(self):
+        """
+        Enables ipv6 on the mgmt interface based on presence of switch.ipv6_mgmt_ip
+        """
+        if get(self._hostvars, "switch.ipv6_mgmt_ip") is not None:
+            return True
+        return False
 
     @cached_property
     def _hostname(self):
@@ -106,6 +129,35 @@ class AvdStructuredConfig(AvdFacts):
             )
 
         return static_routes
+
+    @cached_property
+    def ipv6_static_routes(self):
+        """
+        ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
+        """
+        if self._ipv6_mgmt_gateway is None or not self._mgmt_ipv6_enable:
+            return None
+
+        ipv6_static_routes = []
+        if (ipv6_mgmt_destination_networks := get(self._hostvars, "ipv6_mgmt_destination_networks")) is not None:
+            for mgmt_destination_network in ipv6_mgmt_destination_networks:
+                ipv6_static_routes.append(
+                    {
+                        "vrf": self._mgmt_interface_vrf,
+                        "destination_address_prefix": mgmt_destination_network,
+                        "gateway": self._ipv6_mgmt_gateway,
+                    }
+                )
+        else:
+            ipv6_static_routes.append(
+                {
+                    "vrf": self._mgmt_interface_vrf,
+                    "destination_address_prefix": "::/0",
+                    "gateway": self._ipv6_mgmt_gateway,
+                }
+            )
+
+        return ipv6_static_routes
 
     @cached_property
     def service_routing_protocols_model(self):
@@ -481,22 +533,30 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def management_interfaces(self) -> list | None:
         """
-        management_interfaces set based on switch.mgmt_interface, switch.mgmt_ip facts,
-        mgmt_gateway and mgmt_interface_vrf variable
+        management_interfaces set based on switch.mgmt_interface, switch.mgmt_ip, switch.ipv6_mgmt_ip facts,
+        mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables
         """
         mgmt_interface = get(self._hostvars, "switch.mgmt_interface")
-        if mgmt_interface is not None and self._mgmt_ip is not None and self._mgmt_interface_vrf is not None:
-            return [
-                {
-                    "name": mgmt_interface,
-                    "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
-                    "shutdown": False,
-                    "vrf": self._mgmt_interface_vrf,
-                    "ip_address": self._mgmt_ip,
-                    "gateway": self._mgmt_gateway,
-                    "type": "oob",
-                }
-            ]
+        if mgmt_interface is not None and self._mgmt_interface_vrf is not None and (self._mgmt_ip is not None or self._ipv6_mgmt_ip is not None):
+            interface_settings = {
+                "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
+                "shutdown": False,
+                "vrf": self._mgmt_interface_vrf,
+                "ip_address": self._mgmt_ip,
+                "gateway": self._mgmt_gateway,
+                "type": "oob",
+            }
+            """
+            inserting ipv6 variables if self._mgmt_ipv6_enable is turned on
+            """
+            if self._ipv6_mgmt_ip is not None:
+                interface_settings["ipv6_enable"] = self._mgmt_ipv6_enable
+                interface_settings["ipv6_address"] = self._ipv6_mgmt_ip
+                interface_settings["ipv6_gateway"] = self._ipv6_mgmt_gateway
+
+            return {
+                mgmt_interface: interface_settings,
+            }
 
         return None
 

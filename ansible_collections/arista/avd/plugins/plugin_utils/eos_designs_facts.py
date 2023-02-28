@@ -366,6 +366,10 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "mgmt_ip")
 
     @cached_property
+    def ipv6_mgmt_ip(self):
+        return get(self._switch_data_combined, "ipv6_mgmt_ip")
+
+    @cached_property
     def platform(self):
         return get(self._switch_data_combined, "platform")
 
