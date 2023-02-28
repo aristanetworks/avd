@@ -27,12 +27,12 @@ keys:
             max: 2147483647
           level:
             type: str
-            valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+            valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
             description: |
               Buffer logging severity level
       trap:
         type: str
-        valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+        valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
         description: |
           Trap logging severity level
       synchronous:
@@ -40,7 +40,7 @@ keys:
         keys:
           level:
             type: str
-            valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+            valid_values: ["alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
             description: |
               Synchronous logging severity level
             default: "critical"
