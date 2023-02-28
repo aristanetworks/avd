@@ -1,5 +1,6 @@
 # Minimum config to only test the specific feature.
 mgmt_interface_vrf: MGMT
+type: l2leaf
 ipv6_mgmt_gateway: 0200::1
 l2leaf:
   defaults:
