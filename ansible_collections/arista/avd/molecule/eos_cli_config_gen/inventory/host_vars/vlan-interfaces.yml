@@ -128,6 +128,26 @@ vlan_interfaces:
       10.10.64.150:
         source_interface: Loopback0
 
+  Vlan43:
+    description: SVI Description
+    shutdown: false
+    ipv6_address: a0::1/64
+    ipv6_dhcp_relay_destinations:
+      - address: a0::2
+        vrf: TEST
+        local_interface: Loopback43
+        link_address: a0::4
+
+  Vlan44:
+    description: SVI Description
+    shutdown: false
+    ipv6_address: a0::4/64
+    ipv6_dhcp_relay_destinations:
+      - address: a0::5
+        vrf: TEST
+        source_address: a0::6
+        link_address: a0::7
+
 # IPv6 SVI configuration
 
   Vlan501:

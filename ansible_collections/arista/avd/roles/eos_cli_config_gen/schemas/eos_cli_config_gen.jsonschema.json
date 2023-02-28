@@ -14582,6 +14582,43 @@
             },
             "title": "IPv6 ND Prefixes"
           },
+          "ipv6_dhcp_relay_destinations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "DHCP server's IPv6 address",
+                  "title": "Address"
+                },
+                "vrf": {
+                  "type": "string",
+                  "title": "VRF"
+                },
+                "local_interface": {
+                  "type": "string",
+                  "description": "Local interface to communicate with DHCP server",
+                  "title": "Local Interface"
+                },
+                "source_address": {
+                  "type": "string",
+                  "description": "Source IPv6 address to communicate with DHCP server",
+                  "title": "Source Address"
+                },
+                "link_address": {
+                  "type": "string",
+                  "description": "Override the default link address specified in the relayed DHCP packet",
+                  "title": "Link Address"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "address"
+              ]
+            },
+            "title": "IPv6 DHCP Relay Destinations"
+          },
           "access_group_in": {
             "type": "string",
             "description": "IPv4 access-list name",

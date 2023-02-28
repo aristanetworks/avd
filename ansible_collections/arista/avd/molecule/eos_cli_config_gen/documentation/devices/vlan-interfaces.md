@@ -50,6 +50,8 @@ interface Management1
 | Vlan25 | SVI Description | default | - | False |
 | Vlan41 | SVI Description | default | - | False |
 | Vlan42 | SVI Description | default | - | False |
+| Vlan43 | SVI Description | default | - | False |
+| Vlan44 | SVI Description | default | - | False |
 | Vlan75 | SVI Description | default | - | False |
 | Vlan81 | IPv6 Virtual Address | Tenant_C | - | - |
 | Vlan83 | SVI Description | default | - | False |
@@ -86,6 +88,8 @@ interface Management1
 | Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
 | Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
@@ -114,6 +118,8 @@ interface Management1
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - |
 | Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
@@ -185,6 +191,18 @@ interface Vlan42
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
    ip address virtual 10.10.42.1/24
+!
+interface Vlan43
+   description SVI Description
+   no shutdown
+   ipv6 dhcp relay destination a0::2 vrf TEST local-interface Loopback43 link-address a0::4
+   ipv6 address a0::1/64
+!
+interface Vlan44
+   description SVI Description
+   no shutdown
+   ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
+   ipv6 address a0::4/64
 !
 interface Vlan75
    description SVI Description
