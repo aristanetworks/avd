@@ -4173,6 +4173,16 @@
           "ssh_key": {
             "type": "string",
             "title": "SSH Key"
+          },
+          "shell": {
+            "type": "string",
+            "description": "Specify shell for the user\n",
+            "enum": [
+              "/bin/bash",
+              "/bin/sh",
+              "/sbin/nologin"
+            ],
+            "title": "Shell"
           }
         },
         "required": [

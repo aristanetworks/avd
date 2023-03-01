@@ -133,11 +133,11 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_X
+- name: MGMT
+  ip_routing: false
+- name: Tenant_X_OP_Zone
+  tenant: Tenant_X
   ip_routing: true
-  name: Tenant_X_OP_Zone
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -231,38 +231,38 @@ prefix_lists:
     sequence: 10
   name: PL-STATIC-VRF-DEFAULT
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  - type: permit
+  - sequence: 30
+    type: permit
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-    sequence: 30
-  name: RM-CONN-2-BGP
-- sequence_numbers:
-  - type: permit
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-    sequence: 10
-  - type: permit
+  - sequence: 20
+    type: permit
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
-    sequence: 20
-  name: RM-EVPN-EXPORT-VRF-DEFAULT
-- sequence_numbers:
-  - type: permit
-    sequence: 20
-  - type: deny
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+  - sequence: 10
+    type: deny
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-    sequence: 10
-  - type: deny
+  - sequence: 15
+    type: deny
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
-    sequence: 15
-  name: RM-BGP-UNDERLAY-PEERS-OUT
 router_bfd:
   multihop:
     interval: 1200

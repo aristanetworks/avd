@@ -200,8 +200,8 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -224,12 +224,12 @@ prefix_lists:
     sequence: 20
   name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 1200

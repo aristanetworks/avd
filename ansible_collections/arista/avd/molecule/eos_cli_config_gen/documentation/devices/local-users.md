@@ -40,13 +40,15 @@ interface Management1
 
 ### Local Users Summary
 
-| User | Privilege | Role | Disabled |
-| ---- | --------- | ---- | -------- |
-| admin | - | - | True |
+| User | Privilege | Role | Disabled | Shell |
+| ---- | --------- | ---- | -------- | ----- |
+| admin | - | - | True | - |
+| shell | - | - | False | /sbin/nologin |
 
 ### Local Users Device Configuration
 
 ```eos
 !
 no username admin
+username shell shell /sbin/nologin nopassword
 ```

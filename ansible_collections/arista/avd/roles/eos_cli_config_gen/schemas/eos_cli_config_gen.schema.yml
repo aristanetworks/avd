@@ -3191,6 +3191,15 @@ keys:
             '
         ssh_key:
           type: str
+        shell:
+          type: str
+          description: 'Specify shell for the user
+
+            '
+          valid_values:
+          - /bin/bash
+          - /bin/sh
+          - /sbin/nologin
   logging:
     documentation_options:
       filename: data_model/Monitoring

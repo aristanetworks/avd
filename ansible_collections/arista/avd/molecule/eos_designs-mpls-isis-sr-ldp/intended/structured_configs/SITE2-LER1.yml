@@ -170,14 +170,14 @@ spanning_tree:
   - priority: 4096
     id: '0'
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: TENANT_B
+- name: MGMT
+  ip_routing: false
+- name: TENANT_B_INTRA
+  tenant: TENANT_B
   ip_routing: true
-  name: TENANT_B_INTRA
-- tenant: TENANT_B
+- name: TENANT_B_WAN
+  tenant: TENANT_B
   ip_routing: true
-  name: TENANT_B_WAN
 management_interfaces:
 - description: oob_management
   shutdown: false

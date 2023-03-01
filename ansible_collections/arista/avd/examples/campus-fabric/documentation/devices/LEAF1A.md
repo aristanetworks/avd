@@ -142,9 +142,9 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role | Disabled |
-| ---- | --------- | ---- | -------- |
-| admin | 15 | network-admin | False |
+| User | Privilege | Role | Disabled | Shell |
+| ---- | --------- | ---- | -------- | ----- |
+| admin | 15 | network-admin | False | - |
 
 ### Local Users Device Configuration
 
