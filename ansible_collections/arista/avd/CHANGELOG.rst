@@ -5,6 +5,22 @@ Arista.Avd Release Notes
 .. contents:: Topics
 
 
+v3.8.3
+======
+
+Release Summary
+---------------
+
+Release 3.8.3 - See documentation on avd.sh for details.
+
+
+Bugfixes
+--------
+
+- Fix(eos_cli_config_gen) - Update schema for logging (#2553) (https://github.com/aristanetworks/ansible-avd/pull/2582)
+- Fix(eos_cli_config_gen) - Update schema for storm_control levels to support int or float (#2562) (https://github.com/aristanetworks/ansible-avd/pull/2583)
+- Fix(eos_designs) - Ensure proper formatting of raised errors (https://github.com/aristanetworks/ansible-avd/pull/2580)
+
 v3.8.2
 ======
 
