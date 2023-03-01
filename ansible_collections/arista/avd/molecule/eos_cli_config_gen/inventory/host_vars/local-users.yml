@@ -2,3 +2,6 @@
 local_users:
   admin:
     disabled: true
+  shell:
+    shell: /sbin/nologin
+    no_password: true
