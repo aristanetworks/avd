@@ -14,7 +14,7 @@ class RouteMapsMixin(UtilsMixin):
     """
 
     @cached_property
-    def route_maps(self) -> dict | None:
+    def route_maps(self) -> list | None:
         """
         Return structured config for route_maps
 
@@ -27,47 +27,61 @@ class RouteMapsMixin(UtilsMixin):
             # some logic
             pass
 
-        route_maps = {}
+        route_maps = []
 
         if self._overlay_routing_protocol == "ebgp":
             if self._evpn_prevent_readvertise_to_server is True:
                 remote_asns = natural_sort(set(rs_dict.get("bgp_as") for route_server, rs_dict in self._evpn_route_servers.items()))
                 for remote_asn in remote_asns:
-                    route_map_name = f"RM-EVPN-FILTER-AS{ remote_asn }"
-                    route_maps[route_map_name] = {
-                        "sequence_numbers": {
-                            10: {
-                                "type": "deny",
-                                "match": [f"as {remote_asn}"],
-                            },
-                            20: {
-                                "type": "permit",
-                            },
+                    route_map_name = f"RM-EVPN-FILTER-AS{remote_asn}"
+                    route_maps.append(
+                        {
+                            "name": route_map_name,
+                            "sequence_numbers": [
+                                {
+                                    "sequence": 10,
+                                    "type": "deny",
+                                    "match": [f"as {remote_asn}"],
+                                },
+                                {
+                                    "sequence": 20,
+                                    "type": "permit",
+                                },
+                            ],
                         }
-                    }
+                    )
 
         elif self._overlay_routing_protocol == "ibgp":
             if self._vtep_ip is not None:
                 # Route-map IN and OUT for SOO
-                route_maps["RM-EVPN-SOO-IN"] = {
-                    "sequence_numbers": {
-                        10: {
-                            "type": "deny",
-                            "match": ["extcommunity ECL-EVPN-SOO"],
-                        },
-                        20: {
-                            "type": "permit",
-                        },
+                route_maps.append(
+                    {
+                        "name": "RM-EVPN-SOO-IN",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "deny",
+                                "match": ["extcommunity ECL-EVPN-SOO"],
+                            },
+                            {
+                                "sequence": 20,
+                                "type": "permit",
+                            },
+                        ],
                     }
-                }
-                route_maps["RM-EVPN-SOO-OUT"] = {
-                    "sequence_numbers": {
-                        10: {
-                            "type": "permit",
-                            "set": [f"extcommunity soo {self._vtep_ip}:1 additive"],
-                        },
+                )
+                route_maps.append(
+                    {
+                        "name": "RM-EVPN-SOO-OUT",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "set": [f"extcommunity soo {self._vtep_ip}:1 additive"],
+                            },
+                        ],
                     }
-                }
+                )
 
         # TODO - maybe need to clean None
         if route_maps:

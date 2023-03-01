@@ -290,26 +290,26 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_APP_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_APP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_DB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_DB_Zone
-- tenant: Tenant_A
+- name: Tenant_A_OP_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_OP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_WEB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WEB_Zone
-- tenant: Tenant_B
+- name: Tenant_B_OP_Zone
+  tenant: Tenant_B
   ip_routing: true
-  name: Tenant_B_OP_Zone
-- tenant: Tenant_C
+- name: Tenant_C_OP_Zone
+  tenant: Tenant_C
   ip_routing: true
-  name: Tenant_C_OP_Zone
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -534,12 +534,12 @@ prefix_lists:
     sequence: 20
   name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 1200
